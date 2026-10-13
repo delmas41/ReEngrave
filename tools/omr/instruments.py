@@ -56,6 +56,14 @@ _IN_KEY_RE = re.compile(
 _BARE_KEY_RE = re.compile(r"(?:^|\s)([a-h](?:b|is|s)?)\s*$")
 
 
+# A crook printed BEFORE the instrument word, in parentheses: "(C) Hr.",
+# "(Es) Hr." (Brahms 1 prints both orders). Only the parenthetical form --
+# `normalize_label` strips parentheses, so the bare-token reader below cannot
+# see this and a leading bare letter ("C Hr.") is not claimed. ROADMAP 2.94.
+_LEADING_CROOK_RE = re.compile(
+    r"^\s*\(\s*([A-Ha-h](?:b|-flat|is|s)?)\s*\)", re.IGNORECASE)
+
+
 @dataclass(frozen=True)
 class Match:
     """A label resolved to an instrument, with enough provenance to judge it."""
@@ -644,6 +652,20 @@ def parse_in_key(text: str) -> int | None:
     return None if fifths is None else -fifths
 
 
+def parse_leading_crook(text: str) -> int | None:
+    """Circle-of-fifths offset from a parenthetical crook that PRECEDES the
+    instrument word -- `(C) Hr.` -> 0, `(Es) Hr.` -> 3 -- exactly what the
+    trailing `Hr. (C)` gives. None where the label does not open with one."""
+    m = _LEADING_CROOK_RE.match(text)
+    if not m:
+        return None
+    key = m.group(1).lower()
+    if key == "b":
+        key = "bb"
+    fifths = _KEY_FIFTHS.get(key)
+    return None if fifths is None else -fifths
+
+
 def takes_key(inst: "Instrument") -> bool:
     """Whether this instrument is normally built in a key, and so may carry a
     bare key token after its abbreviation."""
@@ -1020,6 +1042,8 @@ def lookup(text: str) -> Match | None:
             offset = parse_in_key(norm)
             if offset is None and takes_key(inst):
                 offset = _parse_bare_key(probe, _fold_ocr(alias) if folded else alias)
+            if offset is None and takes_key(inst):
+                offset = parse_leading_crook(text)
             if offset is None:
                 offset = inst.default_fifths_offset
             coverage = _letters(alias) / max(1, _letters(candidate))

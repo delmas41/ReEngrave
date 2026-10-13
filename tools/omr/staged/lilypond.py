@@ -168,6 +168,7 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
     """
     for ev in events:
         if ev.get("kind") == "rest":
+            SX._count_guess(counters, (ev.get("rest") or {}).get("guess"), True)
             if (ev.get("rest") or {}).get("measure_rest"):
                 counters["measure_rests_read"] += 1
             else:
@@ -183,6 +184,7 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
         heads = ev.get("noteheads") or ()
         for head in heads:
             counters["notes"] += 1
+            SX._count_guess(counters, head.get("guess"), False)
             if condensed:
                 counters["notes_doubled_to_condensed_slot"] += 1
             if head.get("tied_to_next"):
@@ -313,6 +315,13 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             cell = run.cells.get(i)
             directions = tuple(cell.directions) if cell else ()
             events = SX._events(cell)
+            # ROADMAP 2.98: the same lone-whole-rest-is-the-bar sizing the
+            # MusicXML path makes, from the ONE copy, so the two files cannot
+            # disagree about which bars were held.
+            if events:
+                _sized = SX._lone_whole_rest_is_the_bar(events, judged)
+                if _sized is not None:
+                    events = _sized
             _hoist_fermata(events)
 
             if not events:
@@ -427,6 +436,61 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
     return bars, lane0, lane1
 
 
+_TWEAK = "\\tweak color #guessedColor "
+
+
+def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str]) -> str:
+    """`_legacy._lily_event`, with a GUESSED symbol drawn in the guess colour.
+
+    ROADMAP 2.103. The frozen legacy renderer is called UNCHANGED and its
+    text is only prefixed: a rest takes `\\once \\override Rest.color`, a
+    single note `\\tweak color` (which reaches the NoteHead only), and a
+    chord tweaks just the GUESSED heads inside the `<...>`, so a read head
+    beside a guessed one stays black. A READ event returns the legacy text
+    byte for byte.
+    """
+    text = _legacy._lily_event(ev, wedges)
+    if ev.get("kind") == "rest":
+        if (ev.get("rest") or {}).get("guess"):
+            return "\\once \\override Rest.color = #guessedColor " + text
+        return text
+    heads = [h for h in (ev.get("noteheads") or ())
+             if _legacy._pitch_to_lily(h["pitch"]) is not None]
+    if not any(h.get("guess") for h in heads) or text.startswith("r"):
+        return text
+    if len(heads) == 1:
+        return _TWEAK + text
+    close = text.index(">")
+    toks = text[1:close].split(" ")
+    if len(toks) != len(heads):
+        return text
+    toks = [(_TWEAK + t) if h.get("guess") else t for t, h in zip(toks, heads)]
+    return "<" + " ".join(toks) + text[close:]
+
+
+def _lily_measure_marked(events: List[Dict[str, Any]],
+                         wedges: Dict[int, str]) -> str:
+    """`_legacy._lily_measure` with `_lily_event_marked` -- the same tuplet
+    run walk, the same join. Equal to the legacy text where nothing is
+    guessed."""
+    runs = {first: (last, ratio)
+            for first, last, ratio in _legacy._tuplet_runs(events)}
+    out: List[str] = []
+    i = 0
+    while i < len(events):
+        run = runs.get(i)
+        if run is None:
+            out.append(_lily_event_marked(events[i], wedges))
+            i += 1
+            continue
+        last, ratio = run
+        inner = " ".join(_lily_event_marked(ev, wedges)
+                         for ev in events[i:last + 1])
+        out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
+        i = last + 1
+    return " ".join(out)
+
+
 def _render_bar(bar: _Bar, wedges: Dict[int, str],
                 counters: Dict[str, int]) -> str:
     if bar.kind in ("tacet", "empty"):
@@ -462,13 +526,13 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
     prefix = _meter_return_prefix(bar, counters)
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
-        return prefix + _legacy._lily_measure(bar.events, wedges) + " |"
+        return prefix + _lily_measure_marked(bar.events, wedges) + " |"
     # two_voice
     v1, v2 = bar.streams
     _tally(v1, counters, bar.condensed)
     _tally(v2, counters, bar.condensed)
-    inner1 = _legacy._lily_measure(v1, wedges)
-    inner2 = _legacy._lily_measure(v2, wedges)
+    inner1 = _lily_measure_marked(v1, wedges)
+    inner2 = _lily_measure_marked(v2, wedges)
     # ⚠️ PLAIN `<< {...} \\ {...} >>`, NOT `\\voiceOne`/`\\voiceTwo`. Legacy
     # picks the physical voice a lone stream belongs to from its STEM
     # DIRECTION (`_lone_voice_is_the_second`) — and `staged.export._place_
@@ -630,10 +694,18 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     src = (result.get("source") or {}).get("source_pdf")
     work_title = pathlib.Path(src).name if src else "OMR transcription"
 
-    lines = [f'\\version "{version}"', "",
-            "\\header {",
-            f'  title = "{_ly_escape(work_title)}"',
-            "  tagline = ##f",
+    n_guessed = int(counters.get("guessed_notes", 0)
+                    + counters.get("guessed_rests", 0))
+    lines = [f'\\version "{version}"', ""]
+    if n_guessed:
+        lines += [f"guessedColor = #{SX.GUESS_COLOR_LILY}", ""]
+    lines += ["\\header {",
+            f'  title = "{_ly_escape(work_title)}"']
+    if n_guessed:
+        lines.append(
+            '  subtitle = "Blue symbols are GUESSED, not read: '
+            f'{n_guessed} in this file. Check these first."')
+    lines += ["  tagline = ##f",
             "}", "",
             "\\score {",
             "  <<"]
@@ -644,6 +716,7 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     report = SX.coverage(result, written=dict(counters))
     report["written"] = dict(counters)
     report["written"]["parts"] = len(parts)
+    report["guessed"] = SX.guessed_report(counters)
     report["part_join"] = provenance
     report["notes_not_written"] = dict(dropped)
     report["notes_not_written_total"] = sum(dropped.values())

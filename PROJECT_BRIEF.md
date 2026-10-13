@@ -3,11 +3,35 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-10 (un-frozen 2026-10-07; kept current with every commit alongside
-`CLAUDE.md` and `version_memory.md`). Sections below the next one are the
+**Updated:** 2026-10-11 (un-frozen 2026-10-07; kept current with every commit alongside
+`CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
+2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
+`docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
+`docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
-## Where things stand (2026-10-10)
+## Where things stand (2026-10-11)
+
+**Landed 2026-10-11, each judged by Sean on blind tiles first:** 2.84 a ledger
+line boxed as a tenuto is not an articulation; 2.87 the stem finder (ON by
+default on STAGED: finds the thin stem inside a run refused as too wide, plus
+three more repairs); 2.13b the printed bar number read by Surya first (84 of 84
+plate tiles confirmed); 2.85 repeats and 1st/2nd endings, numbered the print's
+way. **In flight:** 2.83 the flag at the stem tip (Sean's tiles 5 right / 2
+narrowed / 3 wrong -- being fixed on `lane-2.83-flag-tip`), 2.12m a mark at the
+tip of a long chord stem (drop the losing owner when two staves claim a mark).
+2.86 (cautionary key after the last barline) measured DEAD and parked. **Next:**
+an overnight re-gather measuring all of today's landings together, then 2.80.
+2.81 phase 2 landed 2026-10-11: INFER settles a bare-stem narrowing only where its
+bar adds up to the printed meter (`OMR_BARE_STEM_BAR`, ON); the quarter-first
+ranking stays off. ROADMAP START HERE has the order.
+
+**How the work is split (2026-10-11):** Mac sessions (Remote Control, the Mac
+Studio) hold the weights and the library and do every gather and measurement;
+cloud sessions (the Claude app) have neither -- they record Sean's tile
+answers, write docs, and land branches. They meet only on GitHub. One branch
+lands on main at a time, in the order in ROADMAP START HERE.
+
 
 **The product path is STAGED** (`tools/omr/staged/`, DECISIONS 2026-09-22):
 five stages — GATHER, ADJUDICATE, EVALUATE, INFER, EXPORT — every decision
@@ -26,7 +50,7 @@ two stages only — "apples to apples, GATHER+ADJUDICATE vs GATHER+ADJUDICATE".
 The current work is reading far-from-staff noteheads by their ledger lines
 and deciding which staff a note belongs to on scanned conductor's pages
 (ROADMAP 2.44–2.59). Sean adjudicates contact sheets of crops; his rulings
-are the conventions in `docs/DECISIONS.md` and CLAUDE.md §10. Nothing is
+are the conventions in `docs/DECISIONS.md` and `docs/page-facts.md`. Nothing is
 measured through EVALUATE or EXPORT until he says so.
 
 **Text on the page (2026-10-08/09, ROADMAP 2.66/2.68, on main `8a74cf73`)**:
@@ -58,7 +82,7 @@ perfect eyes, a bar-by-bar LilyPond review (runbook: `data/hand-truth/README.md`
 The first page to label is Brahms 317803 PDF index 0; the test pages (Brahms pdf 0,
 Litolff 984073 pdf 2, Dvořák 405834 pdf 4) hold nothing the current weights trained on.
 
-**How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
+**How it is measured**: the acceptance set in `docs/measuring.md` (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather
 during the day (`tools.omr.acceptance_quick`), the full overnight re-gather,
 and Sean's cleanup count every two weeks. `python3 -m tools.omr.staged.check`
@@ -114,7 +138,7 @@ project is for and where it stands, not how the code works.
    hard, and the project has been steadily closing the gap between "reads
    an engraved page" and "reads a real 19th-century scan." Since
    2026-09-22 the pipeline is two readers: the STAGED product path and the
-   frozen LEGACY reader (see "Where things stand" above and CLAUDE.md §3).
+   frozen LEGACY reader (see "Where things stand" above and `docs/staged-internals.md` §1).
 
 A third, optional piece — the **Maestro theory layer**
 (`tools/maestro_bridge/`) — adds harmony/rhythm validation and pitch
@@ -315,7 +339,7 @@ worry about "not enough examples" was counting the wrong thing.
 ## Where the work is now (2026-09-03)
 
 - Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works
-  (the figure lives in CLAUDE.md's OMR-NED section; do not requote it).
+  (the figure lives in `benchmarks/omr-ned-2026-08/CURRENT.md`; do not requote it).
 - Scan domain: hollow noteheads are the top lever. All five round-2
   hollow-notehead batches are labeled, and the gated training run (Sean,
   2026-09-02) says the labels **work** — half-note detection 8 → 25 — while
@@ -1008,8 +1032,7 @@ Full reading: `benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md`.
   path actually in use — see the note in `version_memory.md` about the
   unused/disabled GitHub Actions Vercel+Railway workflow.
 
-Full setup and environment variables: CLAUDE.md → "Running locally" and
-"Environment variables".
+Full setup and environment variables: `docs/running.md`.
 
 ## Surya, measured: it is switched on now (2026-09-16)
 

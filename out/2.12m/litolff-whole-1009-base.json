@@ -1,0 +1,4249 @@
+{
+ "adjudicated_on": {
+  "commit": "40ab373a7fa9c5cc4b98e16b16a011ec5ecb1e60",
+  "dirty": false
+ },
+ "articulations": [
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1205.46,
+    2123.8675,
+    1234.2825,
+    2128.75
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.4749952554702759,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 6.0,
+     "dx_notehead_widths": 0.03773584905660377,
+     "gap_head_heights": 0.12121212121212122,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/2/1/0/5/2"
+   },
+   "owner_bbox_page": [
+    1208.295,
+    2100.5575,
+    1233.3375,
+    2121.3475
+   ],
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/0/5/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articAccentBelow",
+   "mark_bbox_page": [
+    708.695,
+    357.0,
+    766.2,
+    362.27
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "detector_class": "articAccentBelow",
+     "limit_canonical_px": 105.0,
+     "notehead_width": 140.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/0/1/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    437.466796875,
+    1430.828125,
+    442.560546875,
+    1437.9912109375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 6,
+   "side": null,
+   "subject": "glyph/6/0/6/0/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1622.16,
+    1967.16,
+    1646.32,
+    1972.12
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.7082391381263733,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 22.0,
+     "dx_notehead_widths": 0.15602836879432624,
+     "gap_head_heights": 0.7286821705426356,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/6/1/0/6/1"
+   },
+   "owner_bbox_page": [
+    1626.48,
+    1931.48,
+    1649.04,
+    1952.12
+   ],
+   "page": 6,
+   "side": null,
+   "subject": "glyph/6/1/0/6/2",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1912.12,
+    1961.56,
+    1942.04,
+    1967.0
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.5036238431930542,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.04964539007092199,
+     "gap_head_heights": 0.49242424242424243,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/6/1/0/8/1"
+   },
+   "owner_bbox_page": [
+    1916.92,
+    1930.04,
+    1939.48,
+    1951.16
+   ],
+   "page": 6,
+   "side": null,
+   "subject": "glyph/6/1/0/8/3",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    520.0450000000001,
+    1419.0,
+    538.63,
+    1422.6225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "detector_class": "articTenutoBelow",
+     "gap_head_heights": 3.9115646258503403,
+     "limit_canonical_px": 129.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/8/0/7/0/5",
+     "notehead_width": 173.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 8,
+   "side": null,
+   "subject": "glyph/8/0/7/0/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    2061.285,
+    386.52,
+    2090.58,
+    392.0325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "detector_class": "articTenutoBelow",
+     "gap_head_heights": 0.21481481481481482,
+     "measured_side": "below",
+     "nearest_head": "glyph/10/0/0/10/1",
+     "same_ink_twins": [],
+     "suffix_side": "below",
+     "unread_in_tie": []
+    },
+    "outcome": "narrowed",
+    "reason": "heads_about_equally_near",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 10,
+   "side": null,
+   "subject": "glyph/10/0/0/10/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    2357.545,
+    386.0475,
+    2379.91,
+    390.3
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.6412496566772461,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 4.0,
+     "dx_notehead_widths": 0.023255813953488372,
+     "gap_head_heights": 0.2595419847328244,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/10/0/0/12/1"
+   },
+   "owner_bbox_page": [
+    2355.8125,
+    360.06,
+    2382.9025,
+    380.6925
+   ],
+   "page": 10,
+   "side": null,
+   "subject": "glyph/10/0/0/12/3",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1568.9075,
+    1881.2375,
+    1593.4775,
+    1886.12
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.3886089324951172,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 8.0,
+     "dx_notehead_widths": 0.057971014492753624,
+     "gap_head_heights": 0.7744360902255639,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/11/1/0/8/2"
+   },
+   "owner_bbox_page": [
+    1571.585,
+    1845.9575,
+    1593.32,
+    1865.015
+   ],
+   "page": 11,
+   "side": null,
+   "subject": "glyph/11/1/0/8/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    570.8475000000001,
+    391.045,
+    596.52,
+    395.9275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.318463534116745,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 21.5,
+     "dx_notehead_widths": 0.134375,
+     "gap_head_heights": 0.19083969465648856,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/12/0/0/0/1"
+   },
+   "owner_bbox_page": [
+    574.47,
+    366.475,
+    599.6700000000001,
+    387.1075
+   ],
+   "page": 12,
+   "side": null,
+   "subject": "glyph/12/0/0/0/15",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1419.055,
+    379.705,
+    1443.1525,
+    385.5325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "detector_class": "articTenutoBelow",
+     "gap_head_heights": 0.22058823529411764,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/12/0/0/7/0",
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 12,
+   "side": null,
+   "subject": "glyph/12/0/0/7/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    2002.25,
+    374.0525,
+    2025.43,
+    378.3225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.6248846650123596,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.02023121387283237,
+     "gap_head_heights": 0.174496644295302,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/14/0/0/11/2"
+   },
+   "owner_bbox_page": [
+    2000.115,
+    349.805,
+    2026.4975,
+    370.0875
+   ],
+   "page": 14,
+   "side": null,
+   "subject": "glyph/14/0/0/11/3",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    2071.3325,
+    372.07,
+    2097.5625,
+    376.4925
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.5269541144371033,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.031791907514450865,
+     "gap_head_heights": 0.5503355704697986,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/14/0/0/11/1"
+   },
+   "owner_bbox_page": [
+    2072.4,
+    336.8425,
+    2094.8175,
+    359.565
+   ],
+   "page": 14,
+   "side": null,
+   "subject": "glyph/14/0/0/11/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    2000.725,
+    388.845,
+    2026.345,
+    393.5725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "confidence": 0.44297486543655396,
+     "detector_class": "articTenutoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.008670520231213872,
+     "gap_head_heights": 0.825503355704698,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/14/0/0/11/2"
+   },
+   "owner_bbox_page": [
+    2000.115,
+    349.805,
+    2026.4975,
+    370.0875
+   ],
+   "page": 14,
+   "side": null,
+   "subject": "glyph/14/0/0/11/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    2081.76,
+    3151.07,
+    2087.5875,
+    3161.3075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "confidence": 0.7807677984237671,
+     "detector_class": "articStaccatissimoAbove",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.03767123287671233,
+     "gap_head_heights": 0.25735294117647056,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/14/1/7/11/0"
+   },
+   "owner_bbox_page": [
+    2072.31,
+    3166.82,
+    2095.305,
+    3188.24
+   ],
+   "page": 14,
+   "side": null,
+   "subject": "glyph/14/1/7/11/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    2304.6625,
+    3137.84,
+    2311.75,
+    3144.6125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "confidence": 0.34640151262283325,
+     "detector_class": "articStaccatissimoAbove",
+     "dx_canonical_px": 24.5,
+     "dx_notehead_widths": 0.15705128205128205,
+     "gap_head_heights": 0.42857142857142855,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/14/1/7/13/0"
+   },
+   "owner_bbox_page": [
+    2292.0625,
+    3152.645,
+    2316.6325,
+    3171.3875
+   ],
+   "page": 14,
+   "side": null,
+   "subject": "glyph/14/1/7/13/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    940.5625,
+    698.2275,
+    946.39,
+    708.15
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "gap_head_heights": 0.1953125,
+     "measured_side": "above",
+     "n_unread_nearest": 2,
+     "nearest_head": "glyph/15/0/2/4/0",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 15,
+   "side": null,
+   "subject": "glyph/15/0/2/4/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    2452.565,
+    1514.58,
+    2458.455,
+    1522.485
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "confidence": 0.260161429643631,
+     "detector_class": "articStaccatissimoAbove",
+     "dx_canonical_px": 25.5,
+     "dx_notehead_widths": 0.16887417218543047,
+     "gap_head_heights": 0.3358208955223881,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/15/0/7/20/0"
+   },
+   "owner_bbox_page": [
+    2440.165,
+    1529.46,
+    2462.95,
+    1550.23
+   ],
+   "page": 15,
+   "side": null,
+   "subject": "glyph/15/0/7/20/4",
+   "suffix_side": "above"
+  }
+ ],
+ "fermatas": [
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8479577898979187,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 16.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/0/1/1"
+   },
+   "subject": "glyph/1/0/0/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8482120633125305,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 30.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/0/4/1"
+   },
+   "subject": "glyph/1/0/0/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8038477897644043,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/1/1/1"
+   },
+   "subject": "glyph/1/0/1/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.7253708839416504,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 26.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/1/4/1"
+   },
+   "subject": "glyph/1/0/1/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8147580027580261,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 22.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/2/1/1"
+   },
+   "subject": "glyph/1/0/2/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8532159924507141,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 32.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/2/4/1"
+   },
+   "subject": "glyph/1/0/2/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/1/0/3/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8300632834434509,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 14.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/3/4/2"
+   },
+   "subject": "glyph/1/0/3/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.5516656041145325,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 20.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/4/1/1"
+   },
+   "subject": "glyph/1/0/4/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.7778960466384888,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 14.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/4/4/1"
+   },
+   "subject": "glyph/1/0/4/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.829218864440918,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/5/1/1"
+   },
+   "subject": "glyph/1/0/5/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8215583562850952,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 4.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/5/4/3"
+   },
+   "subject": "glyph/1/0/5/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8192784786224365,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 27.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/6/1/1"
+   },
+   "subject": "glyph/1/0/6/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.8375602960586548,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 10.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/6/4/1"
+   },
+   "subject": "glyph/1/0/6/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8362932801246643,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 18.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/7/1/1"
+   },
+   "subject": "glyph/1/0/7/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.2625916600227356,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 36.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/7/1/1"
+   },
+   "subject": "glyph/1/0/7/1/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.742089033126831,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 48.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/7/4/1"
+   },
+   "subject": "glyph/1/0/7/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8516284823417664,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 38.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/8/1/6"
+   },
+   "subject": "glyph/1/0/8/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7536848187446594,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 15.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/8/1/6"
+   },
+   "subject": "glyph/1/0/8/1/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8174982666969299,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 2.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/8/4/4"
+   },
+   "subject": "glyph/1/0/8/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8324308395385742,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 22.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/9/1/2"
+   },
+   "subject": "glyph/1/0/9/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8270049691200256,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 2.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/9/4/3"
+   },
+   "subject": "glyph/1/0/9/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8538121581077576,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 16.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/10/1/6"
+   },
+   "subject": "glyph/1/0/10/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5983348488807678,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 19.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/10/1/6"
+   },
+   "subject": "glyph/1/0/10/1/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.6928210258483887,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 28.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/10/4/2"
+   },
+   "subject": "glyph/1/0/10/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.4841468334197998,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 48.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/10/4/2"
+   },
+   "subject": "glyph/1/0/10/4/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/1/0/11/1/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.6503633856773376,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 47.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/1/0/11/4/2"
+   },
+   "subject": "glyph/1/0/11/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8588752746582031,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 20.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/0/4/3"
+   },
+   "subject": "glyph/2/0/0/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.6615085005760193,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 7.5,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/0/4/3"
+   },
+   "subject": "glyph/2/0/0/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.910722553730011,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 43.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/0/7/4"
+   },
+   "subject": "glyph/2/0/0/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8085139393806458,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.0,
+     "measured_side": "below",
+     "n_carriers": 5,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/1/4/4"
+   },
+   "subject": "glyph/2/0/1/4/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8072677850723267,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 3.0,
+     "measured_side": "above",
+     "n_carriers": 5,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/1/4/4"
+   },
+   "subject": "glyph/2/0/1/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7652348279953003,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 29.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/1/7/4"
+   },
+   "subject": "glyph/2/0/1/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.3450101315975189,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 24.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/1/7/4"
+   },
+   "subject": "glyph/2/0/1/7/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8904635310173035,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/2/4/4"
+   },
+   "subject": "glyph/2/0/2/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.7999664545059204,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.5,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/2/4/4"
+   },
+   "subject": "glyph/2/0/2/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.5290160775184631,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 31.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/2/7/2"
+   },
+   "subject": "glyph/2/0/2/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.3339146077632904,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 38.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/2/7/2"
+   },
+   "subject": "glyph/2/0/2/7/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8068968653678894,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/3/4/3"
+   },
+   "subject": "glyph/2/0/3/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.6279056072235107,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 51.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/3/4/3"
+   },
+   "subject": "glyph/2/0/3/4/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/2/0/3/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/2/0/3/7/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8800755143165588,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 9.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/4/4/3"
+   },
+   "subject": "glyph/2/0/4/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.831682562828064,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 33.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/4/4/3"
+   },
+   "subject": "glyph/2/0/4/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8465392589569092,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 64.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/4/7/6"
+   },
+   "subject": "glyph/2/0/4/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.6517859697341919,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 63.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/4/7/6"
+   },
+   "subject": "glyph/2/0/4/7/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8722714781761169,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/5/4/3"
+   },
+   "subject": "glyph/2/0/5/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/2/0/5/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8769046068191528,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 3.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/6/4/4"
+   },
+   "subject": "glyph/2/0/6/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.84782475233078,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 31.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/6/4/2"
+   },
+   "subject": "glyph/2/0/6/4/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/2/0/6/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8970338702201843,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 48.0,
+     "measured_side": "above",
+     "n_carriers": 7,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/7/4/8"
+   },
+   "subject": "glyph/2/0/7/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8832773566246033,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 45.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/7/7/1"
+   },
+   "subject": "glyph/2/0/7/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.40789568424224854,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 30.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/7/7/1"
+   },
+   "subject": "glyph/2/0/7/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8121921420097351,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 3.0,
+     "measured_side": "above",
+     "n_carriers": 4,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/8/4/4"
+   },
+   "subject": "glyph/2/0/8/4/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/2/0/8/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8705365061759949,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 0.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/9/4/3"
+   },
+   "subject": "glyph/2/0/9/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.7679585814476013,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 9.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/9/4/3"
+   },
+   "subject": "glyph/2/0/9/4/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.8585607409477234,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 42.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/9/7/6"
+   },
+   "subject": "glyph/2/0/9/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.2541729211807251,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 53.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/9/7/6"
+   },
+   "subject": "glyph/2/0/9/7/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8561486005783081,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 33.5,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/10/4/5"
+   },
+   "subject": "glyph/2/0/10/4/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8721375465393066,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 51.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/2/0/10/7/2"
+   },
+   "subject": "glyph/2/0/10/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.49906226992607117,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/4/1/0/0/3"
+   },
+   "subject": "glyph/4/1/0/0/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.3536316454410553,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 0.5,
+     "measured_side": "level",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/4/1/0/11/2"
+   },
+   "subject": "glyph/4/1/0/11/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.4940545856952667,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 320.0,
+     "measured_side": "above",
+     "n_carriers": 5,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/4/1/1/0/0"
+   },
+   "subject": "glyph/4/1/1/0/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.4575386047363281,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 53.0,
+     "measured_side": "level",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/4/1/10/8/2"
+   },
+   "subject": "glyph/4/1/10/8/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/5/0/0/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/5/0/0/15/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/5/0/1/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/5/0/1/15/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8311493992805481,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 17.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/2/15/4"
+   },
+   "subject": "glyph/5/0/2/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8265787363052368,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 5.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/2/15/4"
+   },
+   "subject": "glyph/5/0/2/15/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8149302005767822,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 18.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/3/15/5"
+   },
+   "subject": "glyph/5/0/3/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8494133949279785,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 44.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/4/15/2"
+   },
+   "subject": "glyph/5/0/4/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.8811690807342529,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 15.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/5/15/3"
+   },
+   "subject": "glyph/5/0/5/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6454238891601562,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/6/15/3"
+   },
+   "subject": "glyph/5/0/6/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.44173464179039,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/7/15/2"
+   },
+   "subject": "glyph/5/0/7/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5594408512115479,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 27.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/8/15/3"
+   },
+   "subject": "glyph/5/0/8/15/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5132190585136414,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 16.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/5/0/8/15/3"
+   },
+   "subject": "glyph/5/0/8/15/1",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.36552414298057556,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 2.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/7/0/5/7/0"
+   },
+   "subject": "glyph/7/0/5/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.3781835734844208,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/7/1/9/3/8"
+   },
+   "subject": "glyph/7/1/9/3/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.3140685260295868,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.0,
+     "measured_side": "level",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/7/1/10/3/4"
+   },
+   "subject": "glyph/7/1/10/3/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.7353399395942688,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 3.5,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/0/2/4"
+   },
+   "subject": "glyph/9/0/0/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7014898061752319,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 10.0,
+     "measured_side": "below",
+     "n_carriers": 4,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/0/5/3"
+   },
+   "subject": "glyph/9/0/0/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8227828145027161,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 5.0,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/1/2/4"
+   },
+   "subject": "glyph/9/0/1/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7186984419822693,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 12.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/1/2/4"
+   },
+   "subject": "glyph/9/0/1/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8143212199211121,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 12.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/1/5/3"
+   },
+   "subject": "glyph/9/0/1/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.7488148808479309,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/1/5/3"
+   },
+   "subject": "glyph/9/0/1/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8604254722595215,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 2.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/2/2/2"
+   },
+   "subject": "glyph/9/0/2/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.7077274322509766,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 9.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/2/2/2"
+   },
+   "subject": "glyph/9/0/2/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.836431622505188,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/2/5/4"
+   },
+   "subject": "glyph/9/0/2/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.6332620978355408,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 39.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/2/5/4"
+   },
+   "subject": "glyph/9/0/2/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.7754576802253723,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 12.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/3/2/4"
+   },
+   "subject": "glyph/9/0/3/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.7248033285140991,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 34.0,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/3/2/4"
+   },
+   "subject": "glyph/9/0/3/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8826258182525635,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 41.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/3/5/3"
+   },
+   "subject": "glyph/9/0/3/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.5590848326683044,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 53.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/3/5/3"
+   },
+   "subject": "glyph/9/0/3/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8487453460693359,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 16.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/4/2/8"
+   },
+   "subject": "glyph/9/0/4/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.261172354221344,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 6.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/4/2/8"
+   },
+   "subject": "glyph/9/0/4/2/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove",
+     "n_candidates": 1
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "subject": "glyph/9/0/4/5/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.6968098282814026,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/5/2/0"
+   },
+   "subject": "glyph/9/0/5/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.811006486415863,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 6.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/5/5/2"
+   },
+   "subject": "glyph/9/0/5/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7617532014846802,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 36.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/6/2/1"
+   },
+   "subject": "glyph/9/0/6/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8434597849845886,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/6/5/3"
+   },
+   "subject": "glyph/9/0/6/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.42202019691467285,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 6.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/6/5/3"
+   },
+   "subject": "glyph/9/0/6/5/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8452090620994568,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 26.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/7/2/3"
+   },
+   "subject": "glyph/9/0/7/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7758622765541077,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 36.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/7/2/3"
+   },
+   "subject": "glyph/9/0/7/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8777583837509155,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 6.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/7/5/3"
+   },
+   "subject": "glyph/9/0/7/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8304850459098816,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 31.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/7/5/3"
+   },
+   "subject": "glyph/9/0/7/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.8438568711280823,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 36.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/8/2/1"
+   },
+   "subject": "glyph/9/0/8/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.5914274454116821,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 0.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/8/2/1"
+   },
+   "subject": "glyph/9/0/8/2/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8336642384529114,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 91.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/8/5/7"
+   },
+   "subject": "glyph/9/0/8/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7101340889930725,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 105.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/8/5/7"
+   },
+   "subject": "glyph/9/0/8/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8563414812088013,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 19.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/9/2/2"
+   },
+   "subject": "glyph/9/0/9/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5611454844474792,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 43.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/9/2/2"
+   },
+   "subject": "glyph/9/0/9/2/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadWholeOnLine",
+     "confidence": 0.7645601630210876,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 26.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/9/5/3"
+   },
+   "subject": "glyph/9/0/9/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.8029579520225525,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 50.0,
+     "measured_side": "above",
+     "n_carriers": 3,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/10/2/2"
+   },
+   "subject": "glyph/9/0/10/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/9/0/10/5/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/9/0/10/5/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5580800771713257,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 44.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/0/11/2/1"
+   },
+   "subject": "glyph/9/0/11/2/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8463867902755737,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 834.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/9/1/0/6/2"
+   },
+   "subject": "glyph/9/1/0/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8339062929153442,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 36.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/0/6/2"
+   },
+   "subject": "glyph/9/1/0/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.4847632944583893,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 638.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/9/1/0/6/2"
+   },
+   "subject": "glyph/9/1/0/6/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.8097144961357117,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 25.5,
+     "measured_side": "above",
+     "n_carriers": 8,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/1/6/2"
+   },
+   "subject": "glyph/9/1/1/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.7593895196914673,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 18.5,
+     "measured_side": "below",
+     "n_carriers": 8,
+     "side_agrees": true,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/1/6/6"
+   },
+   "subject": "glyph/9/1/1/6/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restWhole",
+     "confidence": 0.5380122065544128,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 26.5,
+     "measured_side": "below",
+     "n_carriers": 8,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/1/6/6"
+   },
+   "subject": "glyph/9/1/1/6/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.870356559753418,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/2/6/1"
+   },
+   "subject": "glyph/9/1/2/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.7901405692100525,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 24.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/2/6/1"
+   },
+   "subject": "glyph/9/1/2/6/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.7007683515548706,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 27.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/2/6/1"
+   },
+   "subject": "glyph/9/1/2/6/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8754067420959473,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/3/6/2"
+   },
+   "subject": "glyph/9/1/3/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8588089346885681,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/3/6/2"
+   },
+   "subject": "glyph/9/1/3/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8311265110969543,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 18.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/4/6/0"
+   },
+   "subject": "glyph/9/1/4/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.7925500273704529,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.0,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/4/6/0"
+   },
+   "subject": "glyph/9/1/4/6/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8552525639533997,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/5/6/1"
+   },
+   "subject": "glyph/9/1/5/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8663294315338135,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 8.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/6/6/1"
+   },
+   "subject": "glyph/9/1/6/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8752231001853943,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 0.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/7/6/1"
+   },
+   "subject": "glyph/9/1/7/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8514717817306519,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 30.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/8/6/2"
+   },
+   "subject": "glyph/9/1/8/6/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.8211576342582703,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 10.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/8/6/2"
+   },
+   "subject": "glyph/9/1/8/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.83495032787323,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/9/1/9/6/0"
+   },
+   "subject": "glyph/9/1/9/6/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6803430318832397,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 14.0,
+     "measured_side": "below",
+     "n_carriers": 4,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/10/1/8/8/3"
+   },
+   "subject": "glyph/10/1/8/8/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.331582635641098,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 92.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/11/0/5/7/1"
+   },
+   "subject": "glyph/11/0/5/7/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.5204882621765137,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 84.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/11/0/6/7/2"
+   },
+   "subject": "glyph/11/0/6/7/0",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.5542860627174377,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 3.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/10/1/1"
+   },
+   "subject": "glyph/12/0/10/1/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.7755410671234131,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 25.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/10/3/0"
+   },
+   "subject": "glyph/12/0/10/3/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6435327529907227,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 4.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/10/7/1"
+   },
+   "subject": "glyph/12/0/10/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.31060847640037537,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 5.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/10/9/0"
+   },
+   "subject": "glyph/12/0/10/9/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.2811592221260071,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.0,
+     "measured_side": "level",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/11/3/2"
+   },
+   "subject": "glyph/12/0/11/3/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.35137563943862915,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 2.5,
+     "measured_side": "level",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/12/0/11/7/2"
+   },
+   "subject": "glyph/12/0/11/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "restQuarter",
+     "confidence": 0.5981189012527466,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 41.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/14/0/9/13/2"
+   },
+   "subject": "glyph/14/0/9/13/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.5376150608062744,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 15.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/14/0/9/14/1"
+   },
+   "subject": "glyph/14/0/9/14/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.42756974697113037,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 11.5,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/14/1/0/0/4"
+   },
+   "subject": "glyph/14/1/0/0/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6524440050125122,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.5,
+     "measured_side": "above",
+     "n_carriers": 5,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/14/1/1/0/5"
+   },
+   "subject": "glyph/14/1/1/0/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6108986139297485,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.0,
+     "measured_side": "below",
+     "n_carriers": 3,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/15/1/0/16/1"
+   },
+   "subject": "glyph/15/1/0/16/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.5438809990882874,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 75.5,
+     "measured_side": "below",
+     "n_carriers": 4,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/15/1/1/6/13"
+   },
+   "subject": "glyph/15/1/1/6/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.7611056566238403,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 96.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/15/1/10/13/0"
+   },
+   "subject": "glyph/15/1/10/13/1",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.7257112264633179,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 10.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/0/7/4"
+   },
+   "subject": "glyph/16/0/0/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.6164494156837463,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 21.5,
+     "measured_side": "below",
+     "n_carriers": 5,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/0/10/8"
+   },
+   "subject": "glyph/16/0/0/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8706178665161133,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 25.0,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/1/7/4"
+   },
+   "subject": "glyph/16/0/1/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8424490690231323,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 19.0,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/1/7/4"
+   },
+   "subject": "glyph/16/0/1/7/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.8164434432983398,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 5.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/1/10/2"
+   },
+   "subject": "glyph/16/0/1/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.78847736120224,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/1/10/2"
+   },
+   "subject": "glyph/16/0/1/10/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/2/7/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/2/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/2/10/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.7409057021141052,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 54.5,
+     "measured_side": "above",
+     "n_carriers": 2,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/3/10/3"
+   },
+   "subject": "glyph/16/0/3/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/4/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/4/10/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/4/10/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackInSpace",
+     "confidence": 0.8099826574325562,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.0,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/5/10/3"
+   },
+   "subject": "glyph/16/0/5/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/6/7/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "detector_class": "fermataAbove"
+    },
+    "outcome": "abstained",
+    "reason": "no_carrier",
+    "value": null
+   },
+   "subject": "glyph/16/0/6/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.6573616862297058,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 12.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/6/10/7"
+   },
+   "subject": "glyph/16/0/6/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadBlackOnLine",
+     "confidence": 0.597148060798645,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 13.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/6/10/7"
+   },
+   "subject": "glyph/16/0/6/10/1",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.7600811123847961,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 42.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/7/7/4"
+   },
+   "subject": "glyph/16/0/7/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.7245213985443115,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 15.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": true,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/7/10/2"
+   },
+   "subject": "glyph/16/0/7/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfInSpace",
+     "confidence": 0.5097813010215759,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 1.5,
+     "measured_side": "below",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "contains_the_mark",
+    "value": "glyph/16/0/8/10/1"
+   },
+   "subject": "glyph/16/0/8/10/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "fermataBelow",
+   "owner": {
+    "detail": {
+     "carrier": "notehead",
+     "carrier_class": "noteheadHalfOnLine",
+     "confidence": 0.3039017617702484,
+     "detector_class": "fermataBelow",
+     "dx_canonical_px": 230.5,
+     "measured_side": "above",
+     "n_carriers": 1,
+     "side_agrees": false,
+     "suffix_side": "below"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/16/0/9/0/9"
+   },
+   "subject": "glyph/16/0/9/0/11",
+   "suffix_side": "below"
+  },
+  {
+   "class": "fermataAbove",
+   "owner": {
+    "detail": {
+     "carrier": "rest",
+     "carrier_class": "rest8th",
+     "confidence": 0.47608402371406555,
+     "detector_class": "fermataAbove",
+     "dx_canonical_px": 425.5,
+     "measured_side": "below",
+     "n_carriers": 2,
+     "side_agrees": false,
+     "suffix_side": "above"
+    },
+    "outcome": "decided",
+    "reason": "nearest_in_bar",
+    "value": "glyph/16/1/1/0/8"
+   },
+   "subject": "glyph/16/1/1/0/9",
+   "suffix_side": "above"
+  }
+ ],
+ "gathered_on": "00473387e0cab03c8c17881ec08a807e867ddb84",
+ "label": "base",
+ "order": [
+  "staff_group",
+  "staff_ordinal",
+  "instrument",
+  "clef",
+  "ledger_is_not_a_ledger",
+  "glyph_owner",
+  "fermata_owner",
+  "stem_direction",
+  "articulation_owner"
+ ],
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261009-all.record.json",
+ "summary": {
+  "articulation": {
+   "owner:abstained/no_notehead": 3,
+   "owner:abstained/stem_direction_unread": 2,
+   "owner:decided/nearest_on_notehead_side": 12,
+   "owner:narrowed/heads_about_equally_near": 1
+  },
+  "control_glyph_owner": [
+   9414,
+   9423
+  ],
+  "fermata": {
+   "owner:abstained/no_carrier": 21,
+   "owner:abstained/owned_by_another_staff": 1,
+   "owner:decided/contains_the_mark": 146,
+   "owner:decided/nearest_in_bar": 10
+  },
+  "fermatas": 178,
+  "info_articulation_owner_vs_saved": [
+   15,
+   18
+  ],
+  "marks": 18
+ },
+ "tree": "00473387e0cab03c8c17881ec08a807e867ddb84"
+}

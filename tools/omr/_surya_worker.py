@@ -119,6 +119,58 @@ def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
             for idx, items in per_staff.items()}
 
 
+#: ROADMAP 2.95. A block whose centre sits within this fraction of the gap
+#: between two ADJACENT ticks of that gap's own midpoint is reported as
+#: `between`, with the two staves it sits between and which one (if any)
+#: `_assign` gave it to. It is only a REPORT: nothing here names a staff --
+#: `staff_labels_surya.spread_shared_words` decides whether the word is shared,
+#: on what the two staves themselves carry. A word centred on ONE staff is
+#: half a gap from the midpoint, far outside this.
+_MIDPOINT_TOLERANCE = 0.15
+
+
+def _between(lines, tick_ys, staff_indices) -> list[dict]:
+    """Blocks centred BETWEEN two adjacent ticks, with who `_assign` gave them to.
+
+    ROADMAP 2.95. Brahms 1/i (Breitkopf 317803) prints `Hr.` once, centred
+    between the two braced horn staves, with `(C)` beside the upper and `(Es)`
+    beside the lower. Measured on pdf 26: the word is within 0.01 of the gap's
+    midpoint on both systems, and `_assign` either DROPS it (half the LOCAL
+    gap exceeds half the MEAN spacing) or hands it to whichever tick is
+    nearer by 2 px of 120 -- so one staff reads `(C) Hr.` and the other a bare
+    `(Es)`, or both read a bare crook. This reports the geometry; it changes
+    no assignment.
+    """
+    if len(tick_ys) < 2 or len(tick_ys) != len(staff_indices):
+        return []
+    span = max(tick_ys) - min(tick_ys)
+    spacing = span / (len(tick_ys) - 1)
+    tolerance = spacing * _TOLERANCE
+    height_cap = span * _RUNAWAY_HEIGHT_FRACTION
+    order = sorted(range(len(tick_ys)), key=tick_ys.__getitem__)
+    out = []
+    for text, y, height in lines:
+        if height > height_cap:
+            continue
+        for a, b in zip(order, order[1:]):
+            lo, hi = tick_ys[a], tick_ys[b]
+            gap = hi - lo
+            if gap <= 0 or not (lo < y < hi):
+                continue
+            offset = (y - (lo + hi) / 2.0) / gap
+            if abs(offset) <= _MIDPOINT_TOLERANCE:
+                dists = [abs(y - t) for t in tick_ys]
+                best = min(range(len(dists)), key=dists.__getitem__)
+                out.append({"text": text, "upper": staff_indices[a],
+                            "lower": staff_indices[b],
+                            "offset": round(offset, 3),
+                            "assigned_to": (staff_indices[best]
+                                            if dists[best] <= tolerance
+                                            else None)})
+            break
+    return out
+
+
 def _read_crops(predictor, Image, crops: list[str]) -> list[dict]:
     """Plain OCR: one image in, its text out. No tick mapping.
 
@@ -198,13 +250,14 @@ def _handle(job, predictor, Image) -> dict:
         labels = _assign(lines, tick_ys, staff_indices)
         results.append({
             "labels": {str(k): v for k, v in sorted(labels.items())},
+            "between": _between(lines, tick_ys, staff_indices),
             # Kept because a mapping bug and an OCR failure are indistinguishable
             # in the label count, and only the raw text tells them apart. Height
             # rides along too: a block the runaway-height gate dropped is a
             # THIRD failure mode a bare text list can't tell from "OCR read
             # nothing here" or "assigned fine" — a mapping bug, an OCR miss, and
             # a rejected runaway all look identical in `labels` alone.
-            "raw_lines": [{"text": t, "height": h} for t, _y, h in lines],
+            "raw_lines": [{"text": t, "height": h, "y": y} for t, y, h in lines],
         })
 
     return {"systems": results}

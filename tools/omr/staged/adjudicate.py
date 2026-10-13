@@ -1072,6 +1072,16 @@ ORDER: Tuple[str, ...] = (
     # that should not admit it -- finds it already decided rather than having
     # to move it and rediscover `wedge_anchor`'s ORDER fault.
     Q.NOTEHEAD_IS_A_WHOLE_REST,
+    # ⚠️ ROADMAP 2.80b, AFTER BOTH REFUSALS IT READS (`Q.NOTEHEAD_IS_NOT_A_
+    # NOTEHEAD` -- the `too_narrow` verdict that makes a box a candidate --
+    # and `Q.REST_IS_NOT_A_REST`, which says whether another box already
+    # stands over the same ink) AND BEFORE `Q.DURATION`, which EVALUATE's
+    # `size_reinstated_rest` then supersedes for a reinstated rest.
+    Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+    # ⚠️ ROADMAP 2.99, BESIDE ITS SIBLING AND BEFORE `Q.DURATION`. It reads
+    # GATHER's `Q.UNBOXED_REST_SHAPE` rows only (no verdict), so its place is
+    # kinship: `size_unboxed_rest` (EVALUATE) writes the duration it implies.
+    Q.UNBOXED_INK_IS_A_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads
@@ -1311,6 +1321,11 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).
             from .adjudicators import ownership as _own
             _own.reconcile_group_owners(log)
+        if quantity == Q.ARTICULATION_OWNER:
+            # ROADMAP 2.12m (Sean 2026-10-11): one printed mark, two owners
+            # -> the loser is dropped (superseded), never relocated.
+            from .adjudicators import ownership as _own
+            _own.reconcile_articulation_twins(log)
         if quantity == Q.DOT_ROLE:
             # ROADMAP 2.59: a dot's owner is its note's owner. A no-op
             # unless `OMR_DOT_FOLLOWS_NOTE` is on.

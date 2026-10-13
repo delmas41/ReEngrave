@@ -1,0 +1,454 @@
+{
+ "docs": {
+  "dvorak": {
+   "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-8-op88/dvorak--symphony-8-op88--novello-1892--imslp405841.pdf",
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/held-out-2101/dvorak8-novello-arm.record.json"
+  },
+  "schumann": {
+   "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/schumann/symphony-2-op61/schumann--symphony-2-op61--peters-1887--imslp514290.pdf",
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/held-out-2101/schumann2-peters-arm.record.json"
+  },
+  "tchaikovsky": {
+   "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/held-out-2101/tchaikovsky4-jurgenson-arm.record.json"
+  }
+ },
+ "tiles": [
+  {
+   "doc": "dvorak",
+   "kind": "mark",
+   "subject": "glyph/4/0/14/7/350001",
+   "box": [
+    4717.2,
+    5494.1,
+    4750.0,
+    5587.1
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "quarter",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "restQuarter_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "mark",
+   "subject": "glyph/7/0/3/6/350002",
+   "box": [
+    3577.7,
+    1587.0,
+    3618.8,
+    1658.1
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "eighth",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "rest8th_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/4/0/10/11/350002",
+   "box": [
+    3688.2,
+    4001.0,
+    3724.3,
+    4100.3
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "quarter",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "restQuarter_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/5/0/14/4/350002",
+   "box": [
+    3725.2,
+    5743.2,
+    3767.4,
+    5817.1
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "eighth",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "rest8th_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/4/0/5/0/350001",
+   "box": [
+    861.3,
+    2214.1,
+    903.1,
+    2287.1
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "eighth",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "rest8th_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/4/0/8/0/350004",
+   "box": [
+    865.1,
+    3321.1,
+    904.1,
+    3384.1
+   ],
+   "purpose": "2.99 rest read from unboxed ink (decided)",
+   "rule": "2.99_rest_decided",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": "eighth",
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "rest8th_shape"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/2/0/5/4/350000",
+   "box": [
+    3344.1,
+    2748.1,
+    3374.0,
+    2835.3
+   ],
+   "purpose": "2.99 look-alike REFUSED (stroke, not a rest)",
+   "rule": "2.99_refused_stroke",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": false,
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "stem_stroke_not_a_rest"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "mark",
+   "subject": "glyph/4/0/16/6/350000",
+   "box": [
+    4096.2,
+    6211.1,
+    4133.0,
+    6310.2
+   ],
+   "purpose": "2.99 abstained: shape cannot tell",
+   "rule": "2.99_abstained_shape",
+   "our_reading": {
+    "arm": {
+     "outcome": "abstained",
+     "value": null,
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "shape_cannot_tell"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "tchaikovsky",
+   "kind": "mark",
+   "subject": "glyph/4/0/10/0/350001",
+   "box": [
+    920.0,
+    4009.2,
+    952.0,
+    4106.1
+   ],
+   "purpose": "2.99 abstained: shape cannot tell",
+   "rule": "2.99_abstained_shape",
+   "our_reading": {
+    "arm": {
+     "outcome": "abstained",
+     "value": null,
+     "decider": "adjudicate_unboxed_ink_is_a_rest",
+     "reason": "shape_cannot_tell"
+    },
+    "base": null
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "note",
+   "subject": "glyph/4/0/13/1/1",
+   "box": [
+    1407.923828125,
+    5192.76220703125,
+    1431.91796875,
+    5216.75634765625
+   ],
+   "purpose": "base decided half; arm narrowed",
+   "rule": "2.88_half_lost_vs_base",
+   "our_reading": {
+    "arm": {
+     "outcome": "narrowed",
+     "value": null,
+     "decider": "adjudicate_duration",
+     "reason": "head_fill_from_ink"
+    },
+    "base": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     },
+     "decider": "adjudicate_duration",
+     "reason": "hollow_head_bare_stem"
+    }
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "note",
+   "subject": "glyph/4/0/2/1/2",
+   "box": [
+    1399.92578125,
+    1808.76318359375,
+    1425.91943359375,
+    1855.95166015625
+   ],
+   "purpose": "2.88 unread-tip half",
+   "rule": "2.88_half_tip_unread_same_as_base",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     },
+     "decider": "adjudicate_duration",
+     "reason": "hollow_head_bare_stem"
+    },
+    "base": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     },
+     "decider": "adjudicate_duration",
+     "reason": "hollow_head_bare_stem"
+    }
+   }
+  },
+  {
+   "doc": "schumann",
+   "kind": "note",
+   "subject": "glyph/4/0/10/3/12",
+   "box": [
+    2880.7265625,
+    4803.17529296875,
+    2913.8232421875,
+    4824.73828125
+   ],
+   "purpose": "new hollow-head half",
+   "rule": "2.88_half_other",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     },
+     "decider": "adjudicate_duration",
+     "reason": "hollow_head_bare_stem"
+    },
+    "base": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "decider": "adjudicate_duration",
+     "reason": "head_and_marks"
+    }
+   }
+  },
+  {
+   "doc": "schumann",
+   "kind": "note",
+   "subject": "glyph/3/0/3/4/7",
+   "box": [
+    2665.32,
+    2020.07,
+    2698.96,
+    2055.74
+   ],
+   "purpose": "2.81 bare stem settled by the bar",
+   "rule": "2.81_bare_stem_by_bar",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "decider": "infer:collapse_bare_stem_by_bar",
+     "reason": "the_bars_arithmetic_forces_this_length"
+    },
+    "base": {
+     "outcome": "narrowed",
+     "value": null,
+     "decider": "adjudicate_duration",
+     "reason": "beam_discounted_uncertain"
+    }
+   }
+  },
+  {
+   "doc": "schumann",
+   "kind": "note",
+   "subject": "glyph/2/0/0/5/8",
+   "box": [
+    3119.4,
+    983.3,
+    3153.9,
+    1013.3
+   ],
+   "purpose": "2.81 bare stem settled by the bar",
+   "rule": "2.81_bare_stem_by_bar",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "decider": "infer:collapse_bare_stem_by_bar",
+     "reason": "the_bars_arithmetic_forces_this_length"
+    },
+    "base": {
+     "outcome": "narrowed",
+     "value": null,
+     "decider": "adjudicate_duration",
+     "reason": "beam_discounted_uncertain"
+    }
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "note",
+   "subject": "glyph/4/0/15/5/6",
+   "box": [
+    3839.305,
+    5810.3125,
+    3878.665,
+    5849.6725
+   ],
+   "purpose": "2.81 bare stem settled by the bar",
+   "rule": "2.81_bare_stem_by_bar",
+   "our_reading": {
+    "arm": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "decider": "infer:collapse_bare_stem_by_bar",
+     "reason": "the_bars_arithmetic_forces_this_length"
+    },
+    "base": {
+     "outcome": "narrowed",
+     "value": null,
+     "decider": "adjudicate_duration",
+     "reason": "beam_discounted_uncertain"
+    }
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "mark",
+   "subject": "glyph/6/0/9/4/0",
+   "box": [
+    2652.3359375,
+    3724.93359375,
+    2696.03125,
+    3741.203125
+   ],
+   "purpose": "2.98 lone whole rest: written as the bar (file meter)",
+   "rule": "2.98_whole_rest_bar",
+   "our_reading": {
+    "arm": "whole-bar rest"
+   }
+  },
+  {
+   "doc": "dvorak",
+   "kind": "mark",
+   "subject": "glyph/6/0/16/4/1",
+   "box": [
+    2661.16796875,
+    6323.72265625,
+    2696.03125,
+    6336.73828125
+   ],
+   "purpose": "2.98 lone whole rest: written as the bar (file meter)",
+   "rule": "2.98_whole_rest_bar",
+   "our_reading": {
+    "arm": "whole-bar rest"
+   }
+  }
+ ]
+}

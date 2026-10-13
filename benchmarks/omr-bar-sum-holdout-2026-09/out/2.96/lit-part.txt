@@ -1,0 +1,111 @@
+lit: captured 988 + doubled 56 = 1044; expected 1044; partition sums to 1044  CONTROL PASS
+judged != printed meter on 0 bars
+
+== evidenced: 446 (42.7% of 1044)
+     73  N
+     57  B
+     54  I:quarter
+     41  I:eighth
+     30  W
+     23  R:too_narrow
+     19  U:rest_has_a_stem
+     17  E
+     16  G
+     13  Y
+     12  S
+     10  P
+      9  V
+      8  A
+      6  B+G
+      5  K
+      5  R:clipped_fragment
+      4  R:rest_clipped_by_crop
+      3  R:belongs_to_a_nearer_staff
+      3  U:clipped_fragment
+      3  E+K
+      2  I:eighth+G
+      2  K+D
+      2  K+A
+      2  R:too_narrow+I:eighth
+      2  O
+      2  N+B+G
+      1  N+A
+      1  E+B
+      1  K+R:too_narrow
+      1  R:rest_outside_its_staff
+      1  I:quarter+B
+      1  K+N
+      1  K+R:rest_clipped_by_crop
+      1  D
+      1  K+I:eighth+I:half_whole
+      1  S+R:too_narrow
+      1  E+I:eighth
+      1  E+I:half_whole
+      1  F
+      1  K+G
+      1  K+B
+      1  U:too_narrow
+      1  S+B
+      1  K+I:eighth
+      1  U:rest_touches_two_staff_lines
+      1  K+I:quarter
+      1  I:eighth+D
+      1  I:eighth+I:quarter
+      1  E+B+G
+
+== arith_only: 517 (49.5% of 1044)
+    177  F~
+    110  X~
+     81  B~
+     40  I:any
+     29  G~
+     25  E+K~
+     13  D
+      5  K+X~
+      5  R:rest_has_a_stem+X~+K~
+      4  K~
+      3  K+I:any
+      3  F~+X~
+      3  R:too_narrow+X~
+      2  S+X~
+      2  X~+K~
+      2  D+B
+      2  N+X~
+      1  D+K~
+      1  S+K+X~
+      1  K+B~
+      1  B~+X~
+      1  R:clipped_fragment+X~
+      1  K+R:rest_touches_two_staff_lines+X~
+      1  B+X~
+      1  D+B~
+      1  G~+F~
+      1  E+R:rest_has_a_stem+K~
+      1  I:eighth+X~
+
+== unexplained: 25 (2.4% of 1044)
+     25  unexplained
+
+bars on which each token is EVIDENCED (how common the evidence is): {'G': 218, 'B': 218, 'K': 146, 'I:quarter': 128, 'I:eighth': 114, 'N': 95, 'E': 60, 'R:too_narrow': 57, 'D': 39, 'I:half_whole': 35, 'W': 30, 'R:rest_has_a_stem': 29, 'S': 24, 'A': 21, 'U:rest_has_a_stem': 20, 'Y': 17, 'R:rest_clipped_by_crop': 16, 'R:clipped_fragment': 12, 'R:rest_off_center': 11, 'V': 11, 'P': 10, 'R:belongs_to_a_nearer_staff': 6, 'U:clipped_fragment': 5, 'O': 4, 'R:rest_touches_two_staff_lines': 4, 'F': 3, 'R:rest_outside_its_staff': 2, 'U:too_narrow': 2, 'U:rest_off_center': 1, 'R:head_cut_piece': 1, 'Q': 1, 'U:rest_touches_two_staff_lines': 1}
+
+single EVIDENCED fix releases alone: {'I:quarter': 75, 'B': 73, 'N': 73, 'I:eighth': 45, 'W': 30, 'R:too_narrow': 25, 'G': 23, 'U:rest_has_a_stem': 20, 'E': 18, 'Y': 14, 'A': 13, 'S': 12, 'P': 10, 'V': 9, 'R:clipped_fragment': 9, 'K': 8, 'U:clipped_fragment': 5, 'R:rest_clipped_by_crop': 5, 'R:belongs_to_a_nearer_staff': 3, 'O': 2, 'R:rest_outside_its_staff': 1, 'D': 1, 'R:head_cut_piece': 1, 'F': 1, 'U:too_narrow': 1, 'U:rest_touches_two_staff_lines': 1}
+single ARITHMETIC-only fix releases alone: {'I:any': 328, 'F~': 311, 'B~': 212, 'X~': 188, 'G~': 61, 'K~': 51, 'D': 37}
+necessary in every minimal evidenced set: {'B': 67, 'N': 56, 'I:quarter': 56, 'I:eighth': 40, 'G': 28, 'W': 27, 'E': 24, 'K': 19, 'R:too_narrow': 18, 'U:rest_has_a_stem': 15, 'S': 13, 'V': 8, 'Y': 8, 'A': 7, 'P': 6, 'R:rest_clipped_by_crop': 4, 'R:clipped_fragment': 4, 'U:clipped_fragment': 3, 'D': 3, 'R:belongs_to_a_nearer_staff': 2, 'I:half_whole': 2, 'R:rest_outside_its_staff': 1, 'F': 1, 'U:too_narrow': 1, 'U:rest_touches_two_staff_lines': 1}
+[evidenced] W: system meter verdict: {'decided/carried': 28, 'decided/voted': 2}
+[evidenced] W: residual (+ = short): {-2.0: 30}
+[evidenced] I:eighth: residual (+ = short): {0.5: 34, 1.0: 7, -0.5: 2, 0.75: 1, 1.5: 1}
+[evidenced] N: system meter verdict: {'decided/carried': 76}
+[evidenced] N: (landings, meter verdict): {(1, 'decided'): 70, (0, 'decided'): 6}
+[arith_only] D: system meter verdict: {'decided/carried': 17}
+[arith_only] D: residual (+ = short): {-1.0: 5, -0.5: 4, 0.5: 3, 0.75: 2, -3.0: 1, 0.25: 1, 0.375: 1}
+unexplained: residual sign: {'short': 23, 'over': 2}
+unexplained: has a refusal: {False: 17, True: 8}
+unexplained: ink: {'clear': 25}
+unexplained: n_streams: {1: 25}
+unexplained: residual: {1.0: 13, 1.5: 8, -2.0: 2, 1.312: 1, 1.542: 1}
+[evidenced] Y: (landings, meter verdict): {(1, 'decided'): 9, (0, 'decided'): 3, (2, 'decided'): 1}
+[evidenced] D: system meter verdict: {'decided/carried': 1}
+[evidenced] D: residual (+ = short): {0.5: 1}
+[arith_only] N: system meter verdict: {'decided/carried': 2}
+[arith_only] N: (landings, meter verdict): {(0, 'decided'): 2}
+[arith_only] I:eighth: residual (+ = short): {-2.5: 1}

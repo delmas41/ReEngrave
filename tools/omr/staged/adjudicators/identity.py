@@ -27,7 +27,7 @@ from ..record import Candidate, Kind, Q, Scope
     scope=Kind.STAFF,
     wants=(Q.MARGIN_LABEL, Q.ROSTER_ENTRY, Q.STAFF_ORDINAL, Q.STAFF_GROUP),
     reasons=("label", "roster", "score_order", "not_in_lexicon",
-             "no_evidence", "vetoed_by_the_work_roster"),
+             "no_evidence", "vetoed_by_the_work_roster", "orchestral_bass"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_instrument(ev: Evidence) -> Ruling:
@@ -108,7 +108,14 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
     # as a Contrabass, confidently and wrongly). Restating any of that here
     # would give this repo two copies of numbers it paid to measure once, and
     # the copies would drift.
-    decided = WR.decide(text, roster, hit=match)
+    # ROADMAP 2.94: the OTHER staves of this system, named by the lexicon,
+    # so a worn label (`Oh.` for `Ob.`) can be placed only in the system's
+    # own gap. Computed only when the lexicon abstained -- the one case that
+    # reads it -- because `lookup` on a non-matching string is slow.
+    named_in_system = (_names_in_system(ev, text) if match is None
+                       and roster is not None else None)
+    decided = WR.decide(text, roster, hit=match,
+                        named_in_system=named_in_system)
     used = tuple(r.id for r in labels) + tuple(r.id for r in roster_rows)
 
     if decided.kind == "vetoed":
@@ -138,6 +145,14 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
 
     match = decided.match
     inst = match.instrument
+    reason = "roster" if decided.kind != "unchanged" else "label"
+    if decided.kind == "unchanged" and _is_the_orchestral_bass(ev, match):
+        # ROADMAP 2.67b (Sean 2026-10-12, "yes"): `Bässe` on an orchestral
+        # page is the string basses. Mahler 5 Peters p6 named `Bässe. get.`
+        # a Bass VOICE (no roster: the work is not in the catalog).
+        from ...instruments import instrument_named
+        inst = instrument_named("Contrabass")
+        reason = "orchestral_bass"
     return Ruling(
         value={"name": inst.name, "family": inst.family,
                "expected_clef": inst.default_clef,
@@ -148,7 +163,7 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
         # it was written, and nothing could ever return it — the tier was
         # reserved and never wired, which is the same fault one layer up from
         # the parameter with no producer.
-        reason="roster" if decided.kind != "unchanged" else "label",
+        reason=reason,
         used=used,
         detail={"alias": match.alias, "coverage": match.coverage,
                 "reader_text": text, "roster_decision": decided.kind,
@@ -172,6 +187,62 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
                 # collapse_slot_index_to_family_block`'s, off the
                 # REFERENCE's own instrument run, not off this field.
                 "condensed_with": match.condensed_with})
+
+
+def _names_in_system(ev: Evidence, own_text: str) -> frozenset:
+    """Canonical instrument names the lexicon gives the OTHER staves' margin
+    labels in this staff's system (ROADMAP 2.94: the system's lineup, so the
+    gap can be found).
+
+    Sibling rows are read at `SELF_AND_DESCENDANTS` of the SYSTEM, which is
+    what `_margin_texts_by_system` does for the whole document. A sibling
+    that reads nothing contributes nothing (the gap test is then looser by
+    that staff; the other two conditions in `work_roster.recover_worn` --
+    exactly one lexicon neighbour, held by name in the catalog roster --
+    still bind).
+    """
+    from ...instruments import lookup
+    system = ev.subject.at(Kind.SYSTEM)
+    names = set()
+    for r in ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=system):
+        if r.subject == ev.subject or r.subject.kind is not Kind.STAFF:
+            continue
+        hit = lookup(str(r.value))
+        if hit is not None:
+            names.add(hit.instrument.name)
+    return frozenset(names)
+
+
+def _is_the_orchestral_bass(ev: Evidence, match) -> bool:
+    """A bass label the lexicon read as the VOICE but declares ambiguous with
+    the contrabass (`Basso`, `Bässe`, `Bass`) is the string basses when the
+    system names a string staff ABOVE it and none BELOW it.
+
+    POSITION, not presence: a choral-orchestral score (Beethoven 9) puts the
+    chorus basses in the same system as the strings, but above the cellos
+    and basses -- a string staff below keeps it a voice. The bass section is
+    the foot of the strings (`instruments._DECLARED_AMBIGUOUS_ALIASES`:
+    "the label sits directly below the cellos, where no voice belongs")."""
+    from ...instruments import AMBIGUOUS_ALIASES, lookup
+    if match.instrument.family != "voice":
+        return False
+    if "Contrabass" not in AMBIGUOUS_ALIASES.get(match.alias, ()):
+        return False
+    own = ev.subject.staff
+    above = below = False
+    for r in ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=ev.subject.at(Kind.SYSTEM)):
+        if r.subject == ev.subject or r.subject.kind is not Kind.STAFF:
+            continue
+        hit = lookup(str(r.value))
+        if hit is None or hit.instrument.family != "string":
+            continue
+        if r.subject.staff < own:
+            above = True
+        elif r.subject.staff > own:
+            below = True
+    return above and not below
 
 
 def _work_roster(value):

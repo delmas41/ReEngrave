@@ -1,0 +1,40 @@
+{
+ "fermata": {
+  "owner_identical": 67
+ },
+ "invariants": {
+  "decided_measured_side_equals_class": 56
+ },
+ "label": "arm",
+ "marks": 98,
+ "moved": [],
+ "moved_owners": {
+  "n": 0,
+  "where": {}
+ },
+ "r2_by_rule_and_reason": {
+  "abstained:no_notehead": 25,
+  "abstained:owned_by_another_staff": 1,
+  "abstained:stem_contradicts_class_side": 2,
+  "abstained:stem_direction_unread": 12,
+  "decided:notehead_side": 56,
+  "decided:single_voice": 56,
+  "narrowed:heads_about_equally_near": 2
+ },
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 25,
+  "abstained/owned_by_another_staff -> abstained/owned_by_another_staff": 1,
+  "abstained/stem_contradicts_class_side -> abstained/stem_contradicts_class_side": 2,
+  "abstained/stem_direction_unread -> abstained/stem_direction_unread": 12,
+  "decided/nearest_on_notehead_side -> decided/nearest_on_notehead_side (SAME head)": 56,
+  "narrowed/heads_about_equally_near -> narrowed/heads_about_equally_near": 2
+ },
+ "twins": {
+  "   ... the two owners differ": 4,
+  "abstained": 42,
+  "abstained, a twin is DECIDED (owned via the neighbour's cell)": 25,
+  "abstained, has a same-ink twin in another cell": 29,
+  "decided": 56,
+  "decided AND a twin is decided (one mark, two owners)": 4
+ }
+}

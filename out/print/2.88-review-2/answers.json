@@ -1,0 +1,53 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "words": "Four is an alto clef. Nine is ledger lines. All the rest are half notes.",
+ "answers": {
+  "tile_01": {
+   "sean": "half",
+   "manifest_kind": "newly_in",
+   "verdict": "right"
+  },
+  "tile_02": {
+   "sean": "half",
+   "manifest_kind": "known_half_tile1",
+   "verdict": "right"
+  },
+  "tile_03": {
+   "sean": "half",
+   "manifest_kind": "restored_refused",
+   "verdict": "right (refusal drops a real half: 2.92)"
+  },
+  "tile_04": {
+   "sean": "alto clef",
+   "manifest_kind": "must_stay_narrowed_clef",
+   "verdict": "right: stays narrowed"
+  },
+  "tile_05": {
+   "sean": "half",
+   "manifest_kind": "restored_refused",
+   "verdict": "right (refusal drops a real half: 2.92)"
+  },
+  "tile_06": {
+   "sean": "half",
+   "manifest_kind": "restored",
+   "verdict": "right"
+  },
+  "tile_07": {
+   "sean": "half",
+   "manifest_kind": "restored_refused",
+   "verdict": "right (refusal drops a real half: 2.92)"
+  },
+  "tile_08": {
+   "sean": "half",
+   "manifest_kind": "restored",
+   "verdict": "right"
+  },
+  "tile_09": {
+   "sean": "ledger lines",
+   "manifest_kind": "must_stay_narrowed_ledger",
+   "verdict": "right: stays narrowed"
+  }
+ },
+ "summary": "7 of 7 heads the rule decides half are halves; both controls (4 clef, 9 ledger) stay narrowed; 0 wrong."
+}

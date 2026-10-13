@@ -1,0 +1,72 @@
+{
+ "date": "2026-10-12",
+ "verbatim": "1. Barline 2.9 meter 3. Staff line under the accidentals 4. 2/4 meter 5. Key Flat (Eb) 6. 8 rest 7. 2/4 meter 8. 8 rest 9. 2/4 10. 8 rest 11. Flat key accidental",
+ "tiles": {
+  "tile_01": {
+   "class": "restQuarter",
+   "reading": "CONTROL kept: restQuarter 148 px right of the time signature (a real rest?)",
+   "sean": "1. Barline",
+   "verdict": "WRONG: kept restQuarter box is a BARLINE (pre-existing, not caused by 2.100)"
+  },
+  "tile_02": {
+   "class": "rest8th",
+   "reading": "REFUSED (tile 3 of round 1, Sean: a time signature): rest8th as meter digit",
+   "sean": "2. 9 meter (verbatim '2.9 meter'; a 9 time-signature digit, per coordinator)",
+   "verdict": "right: refusal correct (a meter digit)"
+  },
+  "tile_03": {
+   "class": "tie",
+   "reading": "NEWLY REFUSED: tie in the key slots",
+   "sean": "3. Staff line under the accidentals",
+   "verdict": "right: refusal correct (a staff line under the accidentals, not a tie)"
+  },
+  "tile_04": {
+   "class": "restQuarter",
+   "reading": "NEWLY REFUSED: restQuarter on the meter column, bar still held (a time signature?)",
+   "sean": "4. 2/4 meter",
+   "verdict": "right: refusal correct"
+  },
+  "tile_05": {
+   "class": "arpeggiato",
+   "reading": "NEWLY REFUSED: arpeggiato in the key slots",
+   "sean": "5. Key Flat (Eb)",
+   "verdict": "right: refusal correct"
+  },
+  "tile_06": {
+   "class": "rest8th",
+   "reading": "CONTROL kept: rest8th right of the time signature (page 0)",
+   "sean": "6. 8 rest",
+   "verdict": "right: real eighth rest kept"
+  },
+  "tile_07": {
+   "class": "restQuarter",
+   "reading": "NEWLY REFUSED: restQuarter on the meter column (a time signature?)",
+   "sean": "7. 2/4 meter",
+   "verdict": "right: refusal correct"
+  },
+  "tile_08": {
+   "class": "rest8th",
+   "reading": "CONTROL kept: rest8th right of the time signature",
+   "sean": "8. 8 rest",
+   "verdict": "right: real eighth rest kept"
+  },
+  "tile_09": {
+   "class": "restQuarter",
+   "reading": "NEWLY REFUSED: restQuarter on the meter column (a time signature?)",
+   "sean": "9. 2/4",
+   "verdict": "right: refusal correct"
+  },
+  "tile_10": {
+   "class": "rest8th",
+   "reading": "CONTROL kept: rest8th 40 px right of the time signature (a real rest?)",
+   "sean": "10. 8 rest",
+   "verdict": "right: real eighth rest kept"
+  },
+  "tile_11": {
+   "class": "arpeggiato",
+   "reading": "NEWLY REFUSED: arpeggiato in the key slots",
+   "sean": "11. Flat key accidental",
+   "verdict": "right: refusal correct"
+  }
+ }
+}

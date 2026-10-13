@@ -1,0 +1,127 @@
+flag {'decline:ink_not_flag_shaped': 1, 'flag:shaped': 19, 'decline:crosses_both_sides': 1}
+bare {'none:empty': 31, 'decline:ink_not_flag_shaped': 11, 'decline:crosses_both_sides': 1, 'decline:runs_on': 3}
+beam {'decline:crosses_both_sides': 60, 'decline:runs_on': 25}
+-- flag
+   b4134 {'line_rows_sp': 0.0, 'area': 0.101, 'left': 0.0, 'out': 0.31, 'arm': 0.0, 't_first': 0.72, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4132 {'line_rows_sp': 0.0, 'area': 0.189, 'left': 0.0, 'out': 0.54, 'arm': 0.63, 't_first': 0.59, 'v': 'flag', 'why': 'shaped'}
+   b4138 {'line_rows_sp': 0.0, 'area': 0.188, 'left': 0.0, 'out': 0.68, 'arm': 0.78, 't_first': 0.42, 'v': 'flag', 'why': 'shaped'}
+   q404 {'line_rows_sp': 0.0, 'area': 0.596, 'left': 0.0, 'out': 1.19, 'arm': 1.99, 't_first': 0.59, 'v': 'flag', 'why': 'shaped'}
+   b4048 {'line_rows_sp': 0.0, 'area': 0.213, 'left': 0.0, 'out': 0.59, 'arm': 0.74, 't_first': 0.57, 'v': 'flag', 'why': 'shaped'}
+   q967 {'line_rows_sp': 0.24, 'area': 0.589, 'left': 0.001, 'out': 1.18, 'arm': 2.27, 't_first': 0.57, 'v': 'flag', 'why': 'shaped'}
+   q1002 {'line_rows_sp': 0.24, 'area': 0.56, 'left': 0.0, 'out': 1.18, 'arm': 2.04, 't_first': 0.63, 'v': 'flag', 'why': 'shaped'}
+   q1039 {'line_rows_sp': 0.12, 'area': 0.67, 'left': 0.002, 'out': 1.27, 'arm': 2.18, 't_first': 0.66, 'v': 'flag', 'why': 'shaped'}
+   b4066 {'line_rows_sp': 0.05, 'area': 0.771, 'left': 0.007, 'out': 1.3, 'arm': 2.24, 't_first': 0.72, 'v': 'flag', 'why': 'shaped'}
+   b4238 {'line_rows_sp': 0.24, 'area': 0.46, 'left': 0.001, 'out': 1.18, 'arm': 2.05, 't_first': 0.81, 'v': 'flag', 'why': 'shaped'}
+   b4250 {'line_rows_sp': 0.21, 'area': 0.43, 'left': 0.001, 'out': 1.24, 'arm': 1.77, 't_first': 0.75, 'v': 'flag', 'why': 'shaped'}
+   b3977 {'line_rows_sp': 0.0, 'area': 0.363, 'left': 0.0, 'out': 0.82, 'arm': 1.28, 't_first': 0.54, 'v': 'flag', 'why': 'shaped'}
+   b3981 {'line_rows_sp': 0.0, 'area': 0.165, 'left': 0.0, 'out': 0.5, 'arm': 0.69, 't_first': 0.76, 'v': 'flag', 'why': 'shaped'}
+   b4273 {'line_rows_sp': 0.0, 'area': 0.253, 'left': 0.0, 'out': 0.62, 'arm': 0.63, 't_first': 0.76, 'v': 'flag', 'why': 'shaped'}
+   b4272 {'line_rows_sp': 0.0, 'area': 0.575, 'left': 0.0, 'out': 1.25, 'arm': 2.02, 't_first': 0.73, 'v': 'flag', 'why': 'shaped'}
+   b4282 {'line_rows_sp': 0.0, 'area': 0.264, 'left': 0.0, 'out': 0.57, 'arm': 0.66, 't_first': 0.73, 'v': 'flag', 'why': 'shaped'}
+   b4289 {'line_rows_sp': 0.0, 'area': 0.237, 'left': 0.0, 'out': 0.53, 'arm': 0.62, 't_first': 0.61, 'v': 'flag', 'why': 'shaped'}
+   b4337 {'line_rows_sp': 0.0, 'area': 0.367, 'left': 0.0, 'out': 0.96, 'arm': 1.38, 't_first': 0.49, 'v': 'flag', 'why': 'shaped'}
+   b4339 {'line_rows_sp': 0.0, 'area': 0.349, 'left': 0.0, 'out': 0.96, 'arm': 1.35, 't_first': 0.53, 'v': 'flag', 'why': 'shaped'}
+   b4340 {'line_rows_sp': 0.0, 'area': 0.505, 'left': 0.155, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4342 {'line_rows_sp': 0.0, 'area': 0.313, 'left': 0.0, 'out': 0.87, 'arm': 0.77, 't_first': 0.6, 'v': 'flag', 'why': 'shaped'}
+-- bare
+   b4102 {'line_rows_sp': 0.14, 'area': 0.145, 'left': 0.001, 'out': 1.33, 'arm': 0.17, 't_first': 2.89, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4181 {'line_rows_sp': 0.0, 'area': 0.1, 'left': 0.0, 'out': 0.38, 'arm': 0.37, 't_first': 1.12, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4185 {'line_rows_sp': 0.0, 'area': 0.044, 'left': 0.0, 'out': 0.37, 'arm': 0.37, 't_first': 1.18, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4018 {'line_rows_sp': 0.24, 'area': 0.485, 'left': 0.064, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4006 {'line_rows_sp': 0.26, 'area': 0.046, 'left': 0.002, 'out': 1.4, 'arm': 0.08, 't_first': 2.93, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4063 {'line_rows_sp': 0.21, 'area': 0.077, 'left': 0.002, 'out': 1.24, 'arm': 0.1, 't_first': 2.99, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   q1005 {'line_rows_sp': 0.21, 'area': 0.089, 'left': 0.001, 'out': 1.21, 'arm': 0.1, 't_first': 2.99, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4065 {'line_rows_sp': 0.0, 'area': 0.276, 'left': 0.007, 'out': 1.27, 'arm': 0.28, 't_first': 2.96, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   q1042 {'line_rows_sp': 0.18, 'area': 0.074, 'left': 0.001, 'out': 1.27, 'arm': 0.13, 't_first': 2.96, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4237 {'line_rows_sp': 0.0, 'area': 0.313, 'left': 0.001, 'out': 1.36, 'arm': 0.31, 't_first': 2.95, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4271 {'line_rows_sp': 0.0, 'area': 0.056, 'left': 0.0, 'out': 1.25, 'arm': 0.06, 't_first': 2.95, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4303 {'line_rows_sp': 0.0, 'area': 0.439, 'left': 0.0, 'out': 2.58, 'v': 'decline', 'why': 'runs_on'}
+   b4311 {'line_rows_sp': 0.0, 'area': 0.163, 'left': 0.033, 'out': 1.24, 'arm': 0.33, 't_first': -0.3, 'v': 'decline', 'why': 'ink_not_flag_shaped'}
+   b4338 {'line_rows_sp': 0.31, 'area': 0.121, 'left': 0.019, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4336 {'line_rows_sp': 0.0, 'area': 0.525, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+-- beam
+   b4099 {'line_rows_sp': 0.23, 'area': 0.03, 'left': 0.495, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4094 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b4088 {'line_rows_sp': 0.0, 'area': 1.836, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4118 {'line_rows_sp': 0.0, 'area': 1.812, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4125 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.655, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4123 {'line_rows_sp': 0.0, 'area': 1.773, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4151 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.275, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4149 {'line_rows_sp': 0.0, 'area': 1.863, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4160 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.406, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4159 {'line_rows_sp': 0.36, 'area': 0.776, 'left': 0.334, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4164 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.47}
+   b4182 {'line_rows_sp': 0.0, 'area': 1.656, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4184 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.494, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4186 {'line_rows_sp': 0.0, 'area': 1.69, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4188 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.5, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4187 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.47}
+   b4210 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.55}
+   b4206 {'line_rows_sp': 0.24, 'area': 1.998, 'left': 0.035, 'out': 2.58, 'v': 'decline', 'why': 'runs_on'}
+   b4207 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.62}
+   b4211 {'line_rows_sp': 0.31, 'area': 0.0, 'left': 0.529, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4208 {'line_rows_sp': 0.24, 'area': 0.001, 'left': 0.53, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4209 {'line_rows_sp': 0.28, 'area': 1.466, 'left': 0.006, 'out': 2.58, 'v': 'decline', 'why': 'runs_on'}
+   b3987 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.506, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b3988 {'line_rows_sp': 0.0, 'area': 1.375, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b3990 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.499, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b3985 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.59}
+   b3989 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b3984 {'line_rows_sp': 0.0, 'area': 1.763, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4050 {'line_rows_sp': 0.21, 'area': 1.485, 'left': 0.001, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4051 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.49}
+   q972 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b4052 {'line_rows_sp': 0.0, 'area': 0.32, 'left': 1.045, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4235 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b4233 {'line_rows_sp': 0.0, 'area': 1.483, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4234 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.59}
+   b4236 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.999, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4245 {'line_rows_sp': 0.0, 'area': 1.408, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4246 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b4248 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.939, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4247 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.52}
+   b4259 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.55}
+   b4265 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.52}
+   q1120 {'line_rows_sp': 0.0, 'area': 3.158, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4261 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4258 {'line_rows_sp': 0.0, 'area': 3.267, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4263 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4266 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.481, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4262 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.463, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4264 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4260 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4280 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 1.033, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4278 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.59}
+   b4279 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.56}
+   b4277 {'line_rows_sp': 0.0, 'area': 1.424, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4286 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.57}
+   b4284 {'line_rows_sp': 0.0, 'area': 1.465, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4285 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.6}
+   b4287 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.986, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4292 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.54}
+   b4290 {'line_rows_sp': 0.0, 'area': 2.994, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   q1263 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.57}
+   b4296 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4297 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.49}
+   b4298 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.472, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4293 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}
+   b4294 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.496, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4291 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.51}
+   b4295 {'line_rows_sp': 0.0, 'area': 3.094, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4315 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.52}
+   b4319 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.534, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4316 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.507, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4314 {'line_rows_sp': 0.0, 'area': 1.686, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4317 {'line_rows_sp': 0.0, 'area': 1.776, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4323 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.46}
+   b4325 {'line_rows_sp': 0.0, 'area': 1.832, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4326 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.47}
+   b4327 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.509, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4324 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.509, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4322 {'line_rows_sp': 0.0, 'area': 1.638, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4333 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.46}
+   b4332 {'line_rows_sp': 0.0, 'area': 1.614, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4329 {'line_rows_sp': 0.0, 'area': 2.154, 'left': 0.0, 'out': 2.59, 'v': 'decline', 'why': 'runs_on'}
+   b4334 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.513, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4331 {'line_rows_sp': 0.0, 'area': 0.0, 'left': 0.543, 'v': 'decline', 'why': 'crosses_both_sides'}
+   b4330 {'v': 'decline', 'why': 'crosses_both_sides', 'bar_sp': 0.53}

@@ -46,6 +46,14 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
             # ROADMAP 2.78: a stem's value reaches its heads' durations BEFORE
             # any meter rule reads them (the bar sums read heads that agree)
             "share_stem_value",
+            # ROADMAP 2.80b: a narrow box read as an eighth rest takes its
+            # length (cause: an ADJUDICATE verdict about one mark, never the
+            # bar) BEFORE any meter rule sums a bar missing it
+            "size_reinstated_rest",
+            # ROADMAP 2.99: rest-sized ink nobody boxed, read as an eighth or
+            # quarter rest on its own shape, takes its length -- the same
+            # cause class and place as its sibling
+            "size_unboxed_rest",
             "size_measure_rest",
             "reconcile_chord_duration", "reconcile_duration",
             "reinstate_rest_between_staves",

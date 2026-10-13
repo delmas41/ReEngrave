@@ -2785,3 +2785,726 @@ three corrected fixtures named in 2.79b, `out/print/2.79-review/` (7 tiles +
 control), `2.79_segment_footprint.py` (which verdicts sit on a cell whose
 `meter_at` differs from the opening, from a saved record), `2.79_diff_musicxml.py`
 (per-part, per-bar diff of two exports).
+
+---
+
+## 2.80 — a bar short by a MISSED REST is not a note one beam short (2026-10-11)
+
+Branch `lane-2.80-missed-rest` off `origin/main` 2e286351, with `d04fd058`
+(2.79's held sibling) cherry-picked as the base. STAGED. Not merged.
+
+**CONVENTION CONFIRMED FOR CONTRABASS BAR 13, ASSUMED FOR THE REST:** Sean,
+blind on tile 1 (the blue mark): *"It is an 8th note rest"* (DECISIONS
+2026-10-11) -- the missed mark is an eighth rest, not a note one beam short.
+The general convention -- a rest the detector never boxed is still printed ink
+in the bar, so a bar's shortfall is evidence about a NOTE only where the bar
+holds no ink that no standing glyph explains -- stays ASSUMED until the other
+tiles are read. **WHAT WOULD FALSIFY IT:** a tile where
+Sean sees the re-read note is right while the witness called ink unexplained
+(over-refusal -- tiles 8-10 are exactly where to look), or a missed rest whose
+ink a standing glyph box covers anyway (under-refusal). **NOT CONFIRMED** for
+the general case -- tile 1 is the only tile judged.
+
+### 2.80a. The case, on the record
+
+Brahms pdf p1 system 0, Contrabass (staff 13) bar 13 (cell 5). Print (Sean,
+2.79 tile 5): eighth note, eighth rest, eighth rest, quarter rest, eighth rest.
+The detector boxed the first eighth rest, the quarter rest and the last eighth
+rest, and boxed the SECOND eighth rest as `noteheadBlackInSpace` (box 4547-4566
+x 3784-3802, 0.7 x 0.7 spaces); ADJUDICATE refused it `too_narrow`. The bar is
+short by an eighth. `reconcile_duration`'s bound ("one note, exact landing,
+unique") says nothing about a missing rest, so it lengthened the eighth note to a
+quarter: the bar sums, the music is wrong, `bars_add_up` cannot see it.
+
+### 2.80b. The mechanism
+
+* GATHER `gather_cell_ink_pieces` (`Q.CELL_INK_PIECES`, reader `CV_INK_PIECES`,
+  beside `gather_ink`, same erased raster, reads no row and no detection): one
+  row per cell, `detail.pieces` = `[x0,y0,x1,y1,area_sp2]` in page px for each
+  connected piece with area >= 0.10 sp^2, <= 8 sp wide, centre within 1.5 spaces
+  of the staff. `Q.INK`'s default is a per-cell summary with no geometry and its
+  per-piece form (`--ink-rows`) costs ~115 MB/page, so this is the middle form.
+  A cell with no raster/staff unit/page frame gets an abstention, never an
+  empty row. Staff-line erasure splits an eighth rest into a blob (0.65 x 1.2
+  sp) and a tail (0.65 x 1.75 sp); that is why the reader names nothing.
+* EVALUATE `consequences._missed_rest_witness`: a piece is EXPLAINED if >= 50%
+  of its box is covered by a standing glyph box (not one a DECIDED
+  `not_a_notehead`/`not_a_rest` took out, unless decided a whole rest; boxes
+  wider than 8 spaces do not count) or a read direction word, or it is a merged
+  piece (box > 3.5 sp^2) containing a standing glyph's centre; stem/barline
+  crumbs (<= 0.3 wide, or >= 4.5 tall and <= 0.8 wide) are ignored. Answers
+  `clear` / `unexplained` / `unread`.
+* `reconcile_duration` asks it only when the unique landing LENGTHENS a note
+  (landed beats > the note's current/best reading). Only `clear` lands. A
+  shortening needs no witness. `unread` refuses (rule 8: a fallback never turns
+  "cannot tell" into "clear").
+* Part 2 (`reconcile_duration` / `reinstate_rest_between_staves` read `meter_at`
+  their bar): `d04fd058`, cherry-picked unchanged.
+
+### 2.80c. Tests (RED first)
+
+`test_staged_missed_rest_2_80.py`, 8 tests. With `_missed_rest_witness` forced
+to "clear" (the unrepaired rule) the 3 `*_RED` fail (ink nobody explains; a box
+decided not-a-notehead does not explain its ink -- the Contrabass shape; no ink
+reading) and 5 controls pass (explained ink still lands; a stem or crumb left
+still lands; a clear bar lands; a box decided a whole rest explains; a
+SHORTENING lands with unexplained ink and with no ink row at all). Four older
+reconcile tests (all lengthenings) now file a clear ink row.
+
+### 2.80d. Measured -- small re-gathers, base vs arm on ONE tree, ONE record
+
+Gather: `--through adjudicate`, tree = branch + uncommitted witness, Brahms
+pages 0-1 and Litolff pages 1-3 (the movement's first page through the count
+page). Both arms re-run ADJUDICATE..INFER from the SAME gather rows
+(`probe/2.80_ab.py`; the base arm answers "clear" for every bar).
+
+| | Brahms p0-1 | Litolff p1-3 |
+|---|---|---|
+| `reconcile_duration` landings, base | 4 (2 lengthen, 1 shorten, 1 narrowed) | 24 (11 shorten, 13 narrowed) |
+| witness asked (lengthenings) | 2: clear 1, unexplained 1 | 5: clear 5 |
+| landings, arm | 3 | 24 |
+| landings by the rest instead / abstained | 0 filled; 1 refused | 0 |
+| MusicXML bars changed | **1: Contrabass 13 (P14 bar 13)** | **0** |
+| bars held out (2.8) | 97 -> 98 | unchanged |
+
+Contrabass 13: the arm leaves the eighth note an eighth; the bar is held out
+(short by an eighth) instead of written as a quarter. Cello 13 (a flagged
+eighth read as a sixteenth, three eighth rests and a beamed pair -- right by
+eye) stays landed: its 'pizz.' word and its merged beamed group are explained.
+Reach: of ALL cells with an ink row the witness answers clear 210/314 (67%) on
+Brahms and 631/864 (73%) on Litolff, so it is not a blanket refusal (`probe/
+2.80_witness_rates.py`). First builds refused Cello 13 too (7 unexplained
+pieces: the word and the merged group) and two Litolff bars (a barline remnant
+8 spaces tall); the direction-word, merged-piece and barline rules above are
+the fixes, each found by reading the cell's own pieces against its boxes.
+
+### 2.80e. Limits, named
+
+* It REFUSES; it does not FILL. Where ink is found the bar is held out (2.8),
+  not completed with the rest. Filling needs a rest subject for the ink (the
+  refused `too_narrow` box at the second eighth rest is the obvious candidate);
+  that is an ADJUDICATE question and is not built here.
+* Over-refusal: tiles 8-10 are cells the witness calls unexplained that were
+  never asked about -- a clef/key at a system's head, the lower fragment of a
+  kept quarter rest, a slur fragment. Only lengthenings are gated, so the cost
+  is a held bar, but the number of right lengthenings it loses is measured on
+  two pages (0 of 6) and needs Sean's tiles and the overnight run to widen.
+* The witness subtracts BOXES; a missed rest that overlaps a standing glyph's
+  box is explained and slips through (under-refusal, unmeasured).
+* GATHER changed, so only a full re-gather prices it on the whole movement.
+
+### 2.80f. Gate
+
+`staged.check` 192 = base 192. Fast tier: see the lane report. Print tiles:
+`out/print/2.80-review/` (10; 1 refused, 6 landed, 3 unexplained-ink; blue
+corners = the subject, red = the bar, nothing of ours on the image;
+`manifest.json` holds our reading). Files: `consequences.py`, `gather.py`,
+`record.py`, `capture.py`, `test_staged_missed_rest_2_80.py` (+ two edited
+tests), `probe/2.80_ab.py`, `2.80_witness_rates.py`, `2.80_tiles.py`.
+
+---
+
+## 2.80b — the missed rest is READ, on its own ink (2026-10-11)
+
+Same branch `lane-2.80-missed-rest`. STAGED. Not merged. Sean, blind on tile 1
+of `out/print/2.80-review/`: *"It is an 8th note rest"* (DECISIONS 2026-10-11).
+The coordinator's ruling on how to build it: ADJUDICATE on the mark's OWN
+evidence; **a bar's shortfall is not a witness** (rule 8; two witnesses off one
+raster fall silent together -- the bar sum is made of the same readings the mark
+was refused out of); if the shape cannot tell, abstain and the bar stays held
+out. Any ranking by the shortfall would live in INFER, labelled, or nowhere --
+there is none: the shape admits one candidate (the eighth rest) here, and the
+decision declares no meter/event/duration/voice quantity (a test asserts it
+off the registry).
+
+### 2.80b-a. The pipeline
+
+* GATHER `gather_narrow_box_shape` -> `Q.NARROW_BOX_SHAPE`: one row per
+  notehead-classed box narrower than `TOO_NARROW_MIN_SPACES` (1.0, imported):
+  the ink pieces the box overlaps, plus pieces stacked against them (<= 0.25
+  space gap; staff-line erasure splits an eighth rest into a blob and a tail),
+  as width/height in spaces, the staff step of the centre, fill, whether it
+  touches the cell's edge, and the OTHER detections overlapping it. Residue is
+  excluded as a seed (a piece wider than 8 or taller than 3.5 spaces: the first
+  build let a 22 x 8 space remnant under bar 13 swallow the whole bar and every
+  box then read "claimed by another class"). No bar is read.
+* ADJUDICATE `adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+  `adjudicators/narrow_rest.py`, in `ORDER` after `Q.NOTEHEAD_IS_A_WHOLE_REST`):
+  speaks only on a box ALREADY refused `too_narrow`. `True`: width 0.9-1.6 x
+  height 1.6-2.6 spaces, <= 3 pieces, centre within 1 step of the middle line
+  (step 4), not touching the cell edge, and no standing glyph over the ink
+  (windows measured off the 107 Brahms + 17 Litolff kept `rest8th` boxes:
+  1.2-1.4 x 1.9-2.4, step median 3.9). `False`: decisively not a rest's size, or
+  a STANDING rest/notehead box already reads the ink (a duplicate box).
+  Abstain: another class (flag, beam) claims the ink, the size is in between,
+  off the middle line, or no ink to measure.
+* EVALUATE `size_reinstated_rest` (cause the verdict, `DOWNHILL` above `Q.METER`,
+  so it runs before every bar-summing rule): writes `Q.DURATION` {0.5, is_rest}
+  superseding the head reading. The length follows from the class, not the bar.
+  `_left_the_bar` and the 2.80 witness treat a reinstated box as in the bar and
+  as explaining its ink.
+* EXPORT writes a reinstated box as a rest (`class` `rest8th`); the refusal
+  `not_a_notehead` still stands -- it is not a head.
+
+### 2.80b-b. Reach (small re-gathers, `--through gather`, base vs arm from ONE record)
+
+| | Brahms p0-1 | Litolff p1-3 |
+|---|---|---|
+| `too_narrow` refusals | 243 | 20 |
+| no ink the reader can measure (`no_ink_under_box`) | 224 | 15 |
+| decided False: duplicate of a standing glyph | 5 | 1 |
+| decided False: not rest-shaped | 5 | 1 |
+| abstained: claimed by another class | 7 | 3 |
+| **decided True: eighth rest** | **2** | **0** |
+| MusicXML bars changed vs the decision off | **2** (P14 bars 13, 19) | 0 |
+| bars held out (2.8) | 98 -> 96 | 122 -> 122 |
+
+Almost all narrow boxes are crumbs the erased raster holds no rest-sized piece
+for, or sit in a merged component: the reader refuses to guess (224 of 243).
+
+**Contrabass bar 13 now adds up with no note changed:** `n2 R2 R2 R4 R2`
+(divisions 4: eighth, eighth rest, the reinstated eighth rest, quarter rest,
+eighth rest = 3.0 quarters, the 6/8 in force). Before (the 2.80 witness alone)
+the bar was held out; before 2.80, a quarter. The second reinstated rest is
+Contrabass bar 19 (`n2 n2 R2 R4 R2`, 3.0); both are print-checked below.
+
+### 2.80b-c. Tests
+
+`test_staged_narrow_rest_2_80b.py`, 20 tests, written RED (the quantity did not
+exist on the tree without it): rest-shaped refused box -> True; the same ink
+under a box refused for another reason -> abstain (positive control); a crumb,
+a head with its stem and a quarter rest's height stay refused (False); a
+barline-remnant at the cell edge, an off-middle position and an in-between size
+abstain, each with its twin that decides True; a standing rest/notehead over the
+same ink -> False, a REFUSED rest over it is no claim -> True, another class ->
+abstain; EVALUATE: the rest takes 0.5, is idempotent, a False/abstained verdict
+writes nothing, **with the rest the bar adds up and no note changes**, and
+without it the old repair is what happens (the control that makes the previous
+test mean something). `test_staged_evaluate_order` gains `size_reinstated_rest`.
+
+### 2.80b-d. Limits
+
+* Eighth rests only: the sixteenth and quarter shapes are not read here (a
+  quarter's height is decisively "not an eighth"). Narrow boxes on a MERGED
+  component abstain (`no_ink_under_box`): 224 of 243 on Brahms.
+* The windows are measured on two pages; the 2 reinstated rests are the whole
+  population there. `out/print/2.80-review-2/` holds the 2 plus controls (the
+  duplicates, three real narrow non-rests, abstentions) for Sean.
+* GATHER changed again: only a full re-gather prices it on the whole movement.
+* The bar-13 reinstatement does not make the bar-sum control a witness: the
+  bar adding up is the CONSEQUENCE checked, never the reason.
+
+### 2.80b-e. Sean's judgement of the tiles (2026-10-11)
+
+Blind, `out/print/2.80-review-2/` (`answers.json` holds his words and our
+reading side by side; tile 1 is the earlier *"It is an 8th note rest"*). Scored
+against `manifest.json`: **0 wrong of 10.**
+
+| tiles | our reading | Sean | |
+|---|---|---|---|
+| 1, 2 | decided True, eighth rest | 8th rest, 8 rest | right (2 of 2 reinstated) |
+| 3 | duplicate of a standing notehead, refused | dotted quarter, slur to two 16th notes | right |
+| 4, 5 | duplicate over an already-read rest8th, refused | 8 rest, 8 rest | right: the rest still stands, the second box stays refused |
+| 6, 7, 8 | real narrow non-rest, refused | stray ink, augmentation dot, text "arco" | right (3 of 3) |
+| 9, 10 | abstained (another class claims the ink) | dot-2 with a tremolo slash, trill with its squiggle | right (2 of 2) |
+
+So the reinstated population (2) is 2 of 2 right, every control that should
+refuse refused, and nothing was decided True on a non-rest. n is small; the
+shape windows remain measured on two pages.
+
+## 2.97 -- narrowed notes whose own candidates land the bar are settled by the bar (2026-10-12)
+
+PATH: STAGED, ADJUDICATE->INFER re-decided from the committed night records
+(`library/_shared-records/*-whole-20261011-night.record.json`, `record_io.load_record`,
+`probe/run_2_97.py`), base vs arm on one tree shape (copies of `tools/`, differing only
+in the three staged files + env `OMR_NARROWED_BAR=1`). Branch `lane-2.97-narrowed-bars`
+off `origin/main` `3fd59e2a`. NOT merged; Sean judges the tiles first.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a bar adds up to the PRINTED
+meter, so a narrowed head's candidate that lands it is the likely value. Falsified by a bar
+with a missed note/rest, a second voice or a wrong decided neighbour (each moves the sum
+and the rule cannot see it). NOT CONFIRMED: Sean has not judged the 12 tiles
+(`out/print/2.97-review/`).
+
+### Why the 136 single-head bars were not landed (Litolff's 39 traced, `probe/chain_2_97.py`)
+`reconcile_duration` was not blocked; the bars are not the case it was written for.
+Each note's verdict chain: in 24 of 39 INFER's 2.81 rule had already settled the OTHER
+narrowed heads of the bar, leaving one bare stem whose tip was not seen clean (Sean's 2.81
+condition) -- the arithmetic forces it, the condition refuses it; in 10 of 39 EVALUATE's
+single pass had re-read a DECIDED neighbour (the one landing at that moment) and left the
+narrowed head consistent with the bar but unwritten (`duration_narrowed`); in 4 nothing ran.
+`reconcile_duration` does not re-run after INFER. 8 more are refused by 2.80's ink witness
+and should stay refused.
+
+### What was built, and the stage
+- EVALUATE, `reconcile_duration` (the answer FOLLOWS: same bound, unit = EVENT): a chord whose
+  EVERY head is narrowed AND stands on ONE decided `Q.HEAD_STEM` changes together (one stem,
+  one value, 2.78); and a landing made on a DECIDED note also settles the bar's narrowed
+  events only where the JOINT search (narrowed events over their own candidates x at most one
+  decided re-reading) is itself unique. Lengthening still needs 2.80's ink witness.
+- INFER, `collapse_narrowed_by_bar`, flag `OMR_NARROWED_BAR` default OFF (best, not forced):
+  2.81's solver widened (`any_reason`) to every narrowed head/chord, jointly over several
+  columns, only where every landing agrees, on a meter that reaches the PRINTED reading (never
+  a bar-chosen one); a bare stem whose tip was not clean needs the bar's ink wholly explained;
+  any lengthening past the reader's best candidate needs the same witness. Where the meter
+  verdict abstains the rule declines (Brahms ~214 bars stay held; no printed reading to use).
+
+### A/B (re-decide of the night records)
+| | before | after |
+|---|--:|--:|
+| Litolff bars_held_out_sum | 1,085 | 990 |
+| Litolff notes in file | 5,894 | 6,022 |
+| Litolff narrowed heads not written | 354 | 180 |
+| Brahms bars_held_out_sum | 2,553 | 2,459 |
+| Brahms notes in file | 8,198 | 8,555 |
+| Brahms narrowed heads not written | 3,182 | 2,976 |
+
+Bars settled by part (heads): Litolff single 38 (45) / chord 25 (52) / columns 39 (108);
+Brahms single 13 (23) / chord 89 (178) / columns 3 (6). Of the held list: released Litolff 73,
+Brahms 96; newly held 0 / 2. A settled value NOT among the head's own candidates: 0 / 0 (control,
+can fail: it counts a verdict whose value is absent from its superseded verdict's candidates).
+CAVEAT: the first Litolff base, run in the worktree, held 1,044 (notes 5,782); the copy-tree base
+holds 1,085. Both arms of the A/B above are copy-trees; the 41-bar difference between tree
+shapes is NOT explained (not a code difference).
+
+### Control: Sean's hand truth (Brahms pdf 0, `probe/truth_2_97.py`, pages 0-1 re-decide)
+Judged heads 334: base decided right 297 / WRONG 12 / narrowed 25; arm right 306 / WRONG 14 /
+narrowed 14. 11 heads moved: 9 narrowed->right, 2 narrowed->WRONG. **Wrong rose by 2 -- the
+brief's condition is NOT met.** (a) glyph 0/0/9/3/3: INFER's two-column joint lengthened both
+(6/8, truth 0.5 for this head); the ink witness was clear; a missed rest or note is the likely
+cause. (b) 0/0/6/2/2: the chord's heads share one stem, our candidates 0.75/1.5 and Sean's
+derived truth 1.0 -- the scorer assigns the dot to one head only, so this may be a scoring
+artefact; agent-read, to be cropped. An earlier draft without the one-stem condition wrote a
+chord of two voices as one value; the condition was added after seeing it, so held-out tiles
+are the real test.
+
+### Tiles
+`out/print/2.97-review/` 12 tiles (4 single, 4 chord, 4 columns; Litolff and Brahms), blue =
+the settled heads, question "values of the bracketed notes?"; ours only in `manifest.json`;
+`answers.template.json`.
+
+### Gates
+Fast tier 7,458 passed (serial; no xdist); `staged.check` 192 = main. 29 new tests
+(`test_staged_narrowed_bar_2_97.py`), RED on the unrepaired tree.
+
+### 2.97b. Settled bars that used another staff's head or a duplicate box (manager's check on the tiles, 2026-10-12)
+`probe/clean_2_97.py` on the first arm's settled bars (before the guard): Litolff 32 of 102 settled bars
+dirty (a head boxed twice 9 bars [chord 4, columns 5], another staff's kept box on the same ink 2, a head
+beyond 1.6 staff spaces from its own lines 23); Brahms 33 of 105 dirty (off-staff 33, another staff's box 1).
+No settled head had a DECIDED other owner (those leave the bar), so the faults are heads nobody contested:
+a neighbour staff's note inside this cell's pad. Both hand-truth misses were of this kind or near it:
+0/0/9/3 (INFER, two columns) used heads that stand on the staff ABOVE (crop `out/print/2.97-misses/tile_02`);
+0/0/6/2 (chord) is shown in `tile_01` for Sean (candidates 0.75/1.5, derived truth 1.0, unresolved).
+FIX (before anything else): `consequences._bar_heads_are_clean` -- every kept head of the bar is one box
+(IoU <= 0.3 with the others), within 1.6 spaces of THIS staff's lines, and not boxed by another staff;
+else the new paths (chord unit, settle-alongside, INFER rule) decline. 4 new tests, positive control included.
+The same check on the re-run arms finds 0 dirty settled bars on both records.
+
+Re-run with the guard (arm vs the same base): Litolff held 1,085 -> 1,015, notes 5,894 -> 5,892, narrowed not
+written 354 -> 277; Brahms held 2,553 -> 2,494, notes 8,198 -> 8,422, narrowed 3,182 -> 3,049. Bars settled
+(heads): Litolff single 27 (31) / chord 9 (18) / columns 22 (53); Brahms single 7 (13) / chord 60 (120) / columns 0.
+Value outside own candidates 0. Hand truth, pages 0-1: right 297 -> 299, WRONG 12 -> 13 (the 0/0/6/2 chord,
+whose candidates do not contain the derived truth). 12 tiles re-rendered (one bracket per settled event; unclean
+bars dropped). Fast tier and `check` to be re-run on the final commit.
+
+### 2.97c. Tuplet guard (manager, 2.101: a 3-quarter triplet's sum settles a quarter as an eighth)
+`consequences._bar_has_tuplet` (a gathered `Q.TUPLET_MARKER` anywhere in the cell, or a duration carrying a
+ratio): the chord unit, settle-alongside and `collapse_narrowed_by_bar` all abstain on such a bar
+(`bar_holds_tuplet_evidence`). TODO: swap for 2.102's shared `bar_has_tuplet` when it lands. Of the settled
+bars on the guarded arms: Litolff 58, Brahms 67 -- 0 hold tuplet evidence (`probe/tuplet_2_97.py`), so the guard
+changes nothing on these two scans; it is for other publishers. 3 tests (positive control included).
+
+### 2.97d. Sean's answers (2026-10-12) and what they removed
+Verbatim in `out/print/2.97-review/answers.json`, `out/print/2.97-misses/answers.json`, DECISIONS 2026-10-12.
+Scored against the manifests: **singles 1-4: 0/4** (each settled 0.5 by `reconcile_duration`; all quarters);
+**chords 5-8: 4/4** (tile 6 dotted quarter = our 1.5); **columns 9-12: 4/4**. Misses: tile 1 (chord, we said 1.5)
+**right** -- the hand-truth "miss" 0/0/6/2 was the scorer attaching a dot to one head, not our error; tile 2
+(columns) the second head is an eighth, we said a quarter -- the staff above's heads (clean-heads guard).
+Why the singles were wrong: all four were `reconcile_duration` verdicts with `settled_alongside` -- a DECIDED
+neighbour was re-read by the old single-pass arithmetic (the only landing at that moment) and the bar's narrowed
+bare stem was then settled to its best candidate because the joint search was unique. Unique arithmetic is not the
+print (a bare stem is a quarter more often than the eighth the sum asked for). REMOVED (`_settle_alongside`,
+`_narrowed_units`); the neighbour's re-read stays the old rule's, the narrowed head stays narrowed. Chords and
+columns stay.
+
+## 2.98 -- a lone whole rest is the bar, in the bar the file writes (2026-10-12)
+
+PATH: STAGED. Branch `lane-2.98-whole-rest-bar`. CONVENTION (CLAUDE.md §10, Sean 2026-10-12 tiles 4-6, 3/3): a whole rest means the BAR whatever the meter. NOT CONFIRMED on the 12 new tiles (Sean has not judged them).
+
+**The blockers, shown first.** (1) Brahms: 428 held bars = one `restWhole` left at 4.0 unmarked; 403 sit on systems whose `Q.METER` abstained, so `size_measure_rest` (cause: a DECIDED meter) never fires. (2) Litolff, exact blocker (`probe/ab_2_98.py` run, inspected on the record): the bar holds TWO duration verdicts -- the `restWhole` box and a notehead-class box on the same ink (boxes overlap 0.93-1.0) with `notehead_is_not_a_notehead` decided False and `notehead_is_a_whole_rest` decided True. EXPORT refuses that second box (`ink_is_a_whole_rest`) so the file holds one rest, but 2.19's `_left_the_bar` lists only not-a-notehead / not-a-rest / owner removals, so `_standing` kept its 1.0 and the bar was "two things". (The brief said "refused `ink_is_a_whole_rest`"; the verdict is `Q.NOTEHEAD_IS_A_WHOLE_REST`, the refusal is EXPORT's.)
+
+**Stage.** (1) EXPORT: the length needed is the `<time>` in force in the exported part (`in_force`, carried across systems by `_part_xml`), which is not in the record; nothing is added to the record and nothing is decided that the file does not already say. (2) EVALUATE, because it follows from a decided verdict and sits where 2.19 put the same kind of removal. `_left_the_bar` is shared with INFER's duration rules (2.97's fence), so the set-aside is a separate helper `_whole_rest_ink_twin` used only by `size_measure_rest`: non-rest box, DECIDED True, the exporter's refusal flag on, overlapping the sized rest >= 0.8 of the smaller box. A twin elsewhere in the bar, a real head, an abstained verdict, `OMR_WHOLE_REST_INK=0` all keep the bar unsized (tests).
+
+**Base vs arm, one tree** (`out/2.98/*.json`; pre-merge tree 3fd59e2a, Litolff re-decided from its GATHER rows, base reproduces 2.96's 1,044 exactly):
+
+| | held | of bars with events | measure rests in file | notes | `bars add up` |
+|---|---|---|---|---|---|
+| Litolff base | 1,044 | 4,841 | 1,089 | 5,782 | exact 6,060, short 0, overfull 0 |
+| (2) EVALUATE only (twin fires 29) | 1,013 | | 1,120 | 5,782 | same |
+| (1) EXPORT only | 1,012 | | 1,121 | 5,782 | same |
+| both | 1,012 | | 1,121 | 5,782 | same |
+| Brahms base (export-only) | 2,553 | 5,955 | 974 | 8,198 | exact 6,988, short 0, overfull 0 |
+| Brahms (1) | 2,125 | | 1,402 | 8,198 | same |
+
+Released by part: Litolff (2) 29, (1) 30 (the 30 W bars; (1) subsumes (2) at the file; the extra one is page 16 sys 0 cell 14, whose second box is on another place in the bar and is dropped by EXPORT for a reason EVALUATE does not model -- a tile for it is in the set); Brahms (1) 428, 403 on a carried meter (`measure_rests_sized_by_a_carried_meter`). 2 more Litolff bars on a doubled staff are written, not in the held list. Notes and ordinary rests reaching the file are unchanged; the released bars were held-out events counted under `bar_does_not_add_up`, now `measure_rests_read`. Overfull stays 0: the rest takes the file's own `<time>` by construction, and `_bar_holds_out`'s lone-measure-rest equality still judges it. No released Brahms bar sits after a printed meter change (those systems declare their meter and EVALUATE sized them in 2.79), so the two change-adjacent tiles are controls, not releases. Engraved control (`acceptance --doc beethoven5-engraved`, base vs arm): identical (0 held, 432/432 add up, F1 0.951, OMR-NED 0.0806); inert there because EVALUATE already marks those rests. Brahms part (2) was not re-decided (5.9 GB record).
+
+**Tiles** `out/print/2.98-review/` (12; phone-sized, rest bracketed blue, bar red, our reading in `manifest.json` only): 1-4 Litolff released, 5-6 Brahms controls right after the 9/8 -> 6/8 change, 7-12 Brahms released (5 on a carried meter). Question: is the bracketed rest a whole-bar rest, and what meter is this bar in? NOT CONFIRMED until Sean answers.
+
+**Limit.** On a carried meter the file's `<time>` may itself be wrong (`carry_outweighed_by_the_bars`); the rest then agrees with a wrong `<time>`. The rest is the bar either way; the meter claim is a separate item.
+
+### 2.98i. Sean's answer (2026-10-12, `out/print/2.98-review/answers.json`)
+
+Verbatim: *"all of them are whole note rests"*. **12 of 12** bracketed rests are whole-bar rests (Litolff released 4/4, Brahms controls 2/2, Brahms released 6/6). No per-tile meter was given, so the meter the FILE wrote is confirmed by the print for none of them yet; see 2.98j.
+
+### 2.98j. Sean on the meter (2026-10-12)
+
+Shown full-system crops of tiles 7-12 and told the file writes 6/8 there: *"yes all 6/8"*. Tiles 7-12 are therefore confirmed whole-bar rests in a bar the print has in 6/8, equal to the `<time>` the file wrote, including the carried-meter ones (the carry was right on those six). Litolff tiles 1-4 (file: 2/4) and controls 5-6 were not asked about meter.
+
+### 2.98k. Re-run on the MERGED tree (origin/main with 2.93-2.95, `out/2.98m/`)
+
+Same harness, one tree, Litolff re-decided (twin off/on) and Brahms export-only. Litolff base moved to 1,085 held of 5,004 bars with events (main's 2.93 identifies the bottom staff, so more bars exist); the DELTAS are unchanged: (1) alone 1,085 -> 1,053 (-32), (2) alone 1,054 (twin fires 29), both 1,053; measure rests 1,139 -> 1,171; notes 5,897 and ordinary rests 797 unchanged. Brahms 2,553 -> 2,125 (-428, measure rests 974 -> 1,402; notes 8,198 and rests 2,602 unchanged). `bars add up` short=0 overfull=0 in every arm on both movements.
+## 2.99 -- eighth and quarter rests the detector never boxed are read from the ink (2026-10-12)
+
+PATH: STAGED, GATHER + ADJUDICATE + EVALUATE + EXPORT. Branch `lane-2.99-unboxed-rests`, NOT merged (Sean
+judges the tiles first). Sean, 2026-10-12: *"Send out 1-3"* (2.96's third item: 448 held bars hold
+eighth/quarter-rest shaped ink no box accounts for; 2.96's write-up is on `lane-2.96-held-funnel`).
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** A rest is read on its OWN ink: its size in
+staff spaces, the local staff step of its centre, where its ink sits in its box, and the absence of a flat's
+full-height left stroke -- and on NOTHING about the bar (rule 8; CLAUDE.md §10, two witnesses off one raster
+fall silent together). A rest off the middle of the staff (a second voice) abstains. Falsified by a blind tile
+where a decided rest is not a rest (2.96's tile 7 was a flat), or a decided rest in a bar that was already right
+and is not printed. Sean has not read the 12 tiles.
+
+### What was built
+| stage | function | what |
+|---|---|---|
+| GATHER | `gather_unboxed_rest_ink` -> `Q.UNBOXED_REST_SHAPE` | clusters of staff-erased pieces (joined across 0.25 space, as 2.80b) of a rest's size (w 0.5-2.4, h 1.2-3.8 spaces, centre on the staff): width, height, LOCAL staff step, `coverage`/`covered_by` (standing detector boxes), tallest ink column in 6 slices (`column_profile`), `mass_y`, nearest notehead on the right, header flags. Glyph ordinal 350000+ (below the human-evidence base 400k, which `test_stage_review_evidence` guards: my first draft used 400k and failed there). Covered clusters are filed too, as controls. Names nothing, no bar. |
+| ADJUDICATE | `adjudicate_unboxed_ink_is_a_rest` -> `Q.UNBOXED_INK_IS_A_REST` | `"eighth"` / `"quarter"` / False (already read by a standing box; a stem stroke) / abstain. `wants` is the shape row only; a test asserts no meter/event/duration/voice is declared. |
+| EVALUATE | `size_unboxed_rest` | 0.5 / 1.0 quarters from the class; ranked beside `size_reinstated_rest`. |
+| EXPORT | loop in `_place_notes` | writes the rest in its own bar; the accounting equality gained a named term (`unboxed_rests_placed`) and stays an equality. |
+
+No new flag (rides `OMR_INK`). 30 tests, RED-first (the quantity does not exist on main), each refusal with its
+positive control: a flat beside its head stays not-a-rest and the same size without the stroke is decided; a
+dot/crumb and a head-with-stem stay undecided; an arpeggio zigzag abstains beside its chord and is a quarter
+rest without one; export writes the rest, completes a short bar, and a rest in an already-right bar overfills it
+and says so. `test_staged_evaluate_order` gained the new rule.
+
+### Windows read off ink the detector already named (`probe/controls_2_99.py`, `out/2.99/controls-*.txt`)
+The decision run over covered clusters with coverage zeroed, against what the standing box called the ink:
+
+| | Litolff p1-3 | Brahms p0-1 |
+|---|--:|--:|
+| standing `rest8th` read eighth | 18 of 19 (+1 in header) | 88 of 111 (+4 header; 19 off-middle abstain) |
+| standing `restQuarter` read quarter | 89 of 100 | 20 of 27 |
+| standing flat/sharp/natural decided a rest | 0 of 8 | 0 of 44 (13 False, 31 abstain) |
+| standing notehead/clef/key/meter/flag/slur decided a rest | 2 of 28 | 0 of 54 |
+
+The 5 Litolff "negatives" (3 `accidentalDoubleSharp`, 2 `noteheadBlackOnLine`) sit on exactly eighth-rest ink
+(1.3-1.5 x 2.2-2.35 spaces, step 3.9-4.1, upper-heavy): detector mislabels, one shown as a control (tile 6).
+Features: an eighth rest is upper-heavy (`mass_y` 0.32-0.48, a flat 0.54-0.61) with no left slice above 0.65
+(a flat's two left slices are 0.94-1.0); a quarter rest peaks in the middle slices and is thin on the right (a
+sharp's right slices fill again). `max_column_share` alone cannot separate them: it is 1.0 for standing quarter
+rests too. Heads stand 0.1-0.6 spaces right of 18 of 19 standing eighths, so a head beside the ink is a claim only
+against a quarter-shaped zigzag (an arpeggio).
+
+### Reach and A/B (`probe/2.99_ab.py`; one saved gather record, one tree; OFF = decision abstains)
+Small re-gathers on the tree merged with main 3991579c; Brahms = PDF p0-1, Litolff = p1-3.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| rest-sized clusters filed / with no box over them | 219 / 44 | 270 / 27 |
+| decided eighth / quarter | 13 / 3 | 4 / 0 |
+| decided stem stroke (not a rest) / abstained | 7 / 35 | 0 / 28 |
+| decided rests' bars **released** | **10** | **1** |
+| ... still held / **newly overfull** / bar had no events | 3 / **2** / 1 | 1 / **1** / 0 |
+| bars held out, base -> arm | 122 -> 115 | 88 -> 88 |
+| MusicXML bars changed | 12 | 2 |
+| accounting equality | True | True |
+
+The 2.96 whole-record population (332 eighth + 116 quarter evidenced bars) cannot be re-priced: a GATHER change
+is invisible to `readjudicate`. The small pages are the price.
+
+### The false-positive measure: 3 bars newly overfull, explained
+A rest found in a bar that ALREADY added up is these 3 bars; none is a rest that is not printed -- each summed
+correctly in base only by cancellation with a wrong event already there:
+* Litolff p1 s0 staves 7 and 11, bar 0: base = `rest8th` + 3 eighths = 2.0, but that `rest8th` is the key
+  signature's third flat, boxed as both `keyFlat` and `rest8th` (identical box); the real rest (blue, tile 7) was
+  missing. Arm: 2.5, held out, on the spurious header rest it exposes. **4 of 30 `rest8th` boxes on Litolff p1-3
+  are key flats (0 of 133 on Brahms)** -- a `rest_is_not_a_rest` refusal (2.33's family), not built here: see 2.100.
+* Brahms p1 s0 staff 4 bar 1 (two rests found): the print (tile 2) is an eighth note, three eighth rests and a
+  quarter rest = 3.0 in 6/8; base had a 1.0 chord (cross-staff whole heads from the padded cell) cancelling a
+  missing rest; arm reads the rests the print shows and the same wrong chord leaves 4.0.
+A rest added to an already-right bar that stays right: 0.
+
+### Hand truth (Brahms pdf 0, swept cells; `probe/handtruth_2_99.py`)
+Frame control 7 of 8 truth rests overlap a filed cluster (a Litolff record against this page reads 0 of 8 and the
+script stops: it can fail). Ink alone: `rest8th` 5 of 5 read eighth, `restQuarter` 2 of 3 (the third is an 8 px
+sliver). Decided unboxed rests invented: 0. Page 0 is partly labelled and every truth rest on it is a detector
+pre-fill, so it can only fail the decision by inventing; it does not hold the unboxed population.
+
+### Tiles: `out/print/2.99-review/` (12, blind)
+900 px, 600 dpi, red = the bar, blue = the piece, big number, nothing of ours on the image; order shuffled;
+`manifest.json` holds each tile's purpose and our reading. Kinds: decided eighth x6 (3 released, 2 cancelling,
+1 still held), decided quarter x2, refused stem strokes x2, one abstention, one control (a double-sharp box over
+eighth-rest ink). Frame control: filed staff lines fitted locally at the piece's x must carry 2x the gap ink and
+fail half a space off; a tile that fails is skipped. My own look (rule 7, not evidence): tile 2 shows the three
+printed eighth rests and quarter rest with blue on the last; tile 8 (abstained) brackets a natural sign.
+
+### Limits
+Eighth and quarter only. Windows from two plates and five pages; displaced rests abstain (Brahms 4 decided of
+27 unboxed). `consequences._missed_rest_witness` does not yet count a decided unboxed rest as explaining its
+ink (read by 2.97's `reconcile_duration`; left alone: a still-short bar keeps its lengthening refused). GATHER
+changed: only a full re-gather prices the whole movement.
+
+### 2.99 -- Sean's judgement of the 12 tiles (2026-10-12) and the repair
+
+Verbatim: *"1. 8 rest 2. 8 rest 3. flat accidental 4. 4 rest 5. 8 rest 6. 8 rest 7. 8 rest 8. nat accidental 9. 8 rest 10. end of slur 11. key flat 12. 4 rest"* (`out/print/2.99-review/answers.json`).
+Decided rests 1, 2, 4, 5, 7, 9, 12: **7 right**. Refusals 3 (flat) and 11 (key flat) right; 8 (natural) abstained, fine.
+**Tile 10 WRONG: decided eighth, it is the end of a slur** (Brahms p1 s1 staff 3 bar 6: a thin diagonal stroke ending on a head).
+Tile 6 is a real eighth rest refused `already_read_as_a_glyph` under a double-sharp box: a known MISS, not built (a standing
+accidental box where no head follows could be re-read; the 3 such Litolff boxes are all eighth-rest ink).
+
+Repair (decision only, no re-gather): the arc boxes the record holds do not reach that cluster (the nearest `tie` boxes
+end 200 px away), so the evidence is the ink itself: no ink column is more than 39.5% of its height, and the thinnest of
+the 140 standing Brahms rests is 49%. `THIN_STROKE_MAX_COLUMN_SHARE = 0.45` refuses such ink (`thin_stroke_not_a_rest`,
+False). RED-first from tile 10's numbers, positive control a rest of the same size and place with a 62% column (stays an
+eighth). Controls unchanged (standing rests read the same; 0 of 52 accidentals decided a rest). **Removed from the decided
+rests on the two count pages: 1 (Brahms, tile 10 itself, a slur end), 0 on Litolff**; so no second tile set was cut. Decided
+now: Litolff 13 eighth + 3 quarter, Brahms 3 eighth; bars released 10 / 1.
+
+### 2.97e. Sean's evidence rule (2026-10-12, CLAUDE.md §10) -- final state of the lane
+Rule: *"only when we see evidence of an eigth shoulf it be called that"*, refined: the bar may CONFIRM an
+eighth that has positive evidence of its own, never SUPPLY one. `consequences._eighth_evidence` reads the narrowed
+verdict's own detail: `flag_levels`/`flags_attached`/reasons `flags_disagree`, `hooks_counted`, `flag_ink_unread`
+(= flag read), `beams_by_stem`, `levels_certain`, `levels_possible`. A candidate with beam levels and none of these
+is unavailable to every bar-sum settlement (EVALUATE chord unit, INFER rule); the settled verdict cites
+`eighth_evidence`. A REFUSED stroke (`beams_not_by_ink`, `too_thin`) is NOT evidence: Sean's singles 1-4 all had
+1-2 of them and were all quarters (0/4; likelihood floor not met; revisit with more tiles). Settle-alongside is
+removed (2.97d). 4 tests, positive control (flag read -> confirmed) and the longer candidate needs none.
+
+Re-measured on merged main (arm vs base on the same tree, `probe/run_2_97.py`, base = the three staged files
+from `origin/main`): Litolff held 1,026 -> 1,023 (released 14, newly held 11), notes 5,941 -> 5,973, narrowed
+not written 352 -> 307; Brahms held 2,112 -> 2,067 (released 57, newly held 12), notes 8,224 -> 8,387, narrowed
+3,180 -> 3,076. The newly-held bars (11 + 12) are NOT yet explained (a settled value makes a previously written
+bar no longer add up?) -- open. Settlements that survive: Litolff chord 9 bars / 18 heads (all the longer
+candidate), INFER single 15 / 19 (longer), columns 19 / 45 (41 longer; 4 eighths citing `beam_joined_to_stem` +
+`beam_levels_possible`); Brahms chord 59 / 118 (116 longer; 2 eighths citing `beam_levels_possible`), INFER single
+1, columns 0. Removed by the rule on Litolff (vs the arm before it): 16 heads, all eighths with no evidence (12
+columns, 4 INFER singles); chords lost none. Hand truth pages 0-1: base wrong 12, arm 13 -- the one added is the
+0/0/6/2 chord that Sean judged a dotted quarter = our value (scorer dot artefact), so true wrong = 12 = base.
+Value outside own candidates 0. Fast tier 7,592 (2 failures from 2.9x's hook tests fixed by counting
+`flag_ink_unread` as flag evidence); `check` 192.
+
+### 2.97f. The newly held bars, traced (follow-up, Sean 2026-10-13; `probe/newheld_2_97.py`)
+Litolff 11, Brahms 12 bars were written in base and held in the arm. Every one traces to ONE head:
+- Litolff 11: base's OLD single-note rule (`reconcile_duration`, not mine) had decided a narrowed head to 0.5
+  (an eighth) because it was the one landing. My evidence rule now filters `_admitted` for every bar-sum
+  settlement, so that landing no longer exists and the head stays narrowed. 6 of the 11 are narrowings with
+  reason `flag_ink_unread` (a flag was SEEN) -- FIXED by counting `flag_ink_unread` as flag evidence (the arm5
+  run predates the fix); 5 are `beam_discounted_uncertain` bare stems with no evidence of an eighth.
+- Brahms 12: 11 the same (a bare stem the old rule made an eighth), 1 (4/0/9/10) is the opposite -- the arm's
+  chord settlement took two `beams_ambiguous` heads (candidates 1.5 / 0.75, `levels_possible` evidence) to 0.75
+  and the exporter's voice-split bar check then disagrees with reconcile's single-stream sum; in base those
+  heads were unwritten, so the bar "added up" only because two notes were missing.
+So 16 bars lost a bare-stem eighth that base had written by arithmetic alone -- exactly what Sean's rule
+forbids -- not a fault in the new rules. BUT the print can show a flag our reader missed: tile 3 of
+`out/print/2.97-review-3/` (Brahms) is a flagged eighth the arm now leaves narrowed. Whether the old path should
+keep writing such eighths is Sean's call (the rule says no; the cost is these bars).
+Tiles: `out/print/2.97-review-3/` 6 tiles (2 surviving eighth settlements -- the third bar failed the frame
+control -- and 4 newly held bars), blue = the bracketed heads, ours only in manifest.json.
+Merged main (2.102): `bar_has_tuplet` is called beside the lane's own guard; main's `shortened_refused` check
+is bypassed for the widened rule (its evidence rule is `_eighth_evidence`) and kept for the bare-stem rule.
+
+---
+
+## 2.96 -- why bars are held out NOW: the 2.19/2.22 funnel on the 2026-10-11 night records (2026-10-12)
+
+PATH: STAGED, EXPORT-only (records loaded through `record_io.load_record`, exported
+with today's exporter, never re-gathered, never re-decided; no product code
+changed). Branch `lane-2.96-held-funnel` off `origin/main` `e671c4a7`. Records:
+`beethoven5-litolff-mvt1-whole-20261011-night` and `brahms1-breitkopf-mvt1-whole-20261011-night`.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+The printed meter is the dossier's (Beethoven 5/i 2/4; Brahms 1/i 6/8, with the one
+9/8 bar at page 1 / system 0 / cell 0, as 2.22 used). **Control that can fail:** the
+file's judged meter equals it on EVERY held bar (0 mismatches), and a deliberately wrong
+meter (+0.3 quarter) collapses the evidenced share from 43% to 3% (Litolff) and 75% to 17%
+(Brahms; the 17% is exactly the 428 whole-rest bars, which are the bar WHATEVER the
+meter). A "cause" is a SIMULATED fix whose arithmetic lands; what raises it to a
+finding is (a) a record row that points at it, and (b) a print crop (15 tiles, not yet
+read by Sean). Sean has judged none of them: NOT CONFIRMED.
+
+### 2.96a. What was built
+
+`probe/held_funnel_2_96.py` (reuses 2.22's `held_funnel_mvt_2_22.dump` whole -- its
+control, bars captured == `bars_held_out_sum` minus doubled-staff bars, PASSES on both:
+Litolff 988 + 56 = 1,044, Brahms 2,553 + 0) and adds, per held bar, from the record's own rows:
+the cell's ink pieces no standing box explains (2.80's witness rule restated over dicts),
+its `Q.AUG_DOT` rows with their `Q.DOT_ROLE`, the cell width against its system's median,
+and per event the owner and duration verdicts with the beam-doubt counters.
+`probe/classify_held_2_96.py` is 2.22's minimal-fix search with §18's lesson built in:
+**every simulated fix is EVIDENCED (a record row points at it and says what) or ARITHMETIC
+(the sum lands, nothing points at it).** Per bar: search evidenced fixes alone (size 1-3);
+else evidenced + arithmetic (`arith_only`, a sum, not a diagnosis); else `unexplained`.
+Exhaustive; the partition sums to the held total (asserted; it exits 3 otherwise).
+`probe/summarise_2_96.py`, `probe/n_shape_2_96.py`, `probe/tiles_2_96.py`.
+Results: `out/2.96/` (partitions per bar, the text of every run, `summary.md`).
+
+### 2.96b. The partition (exhaustive)
+
+| | Litolff 1,044 | Brahms 2,553 |
+|---|--:|--:|
+| evidenced, ONE cause | 409 (39.2%) | 1,692 (66.3%) |
+| evidenced, 2-3 causes together | 37 (3.5%) | 224 (8.8%) |
+| arithmetic only (a sum lands; no row points at it) | 517 (49.5%) | 633 (24.8%) |
+| unexplained (nothing, at 3 fixes, lands it) | **25 (2.4%)** | **4 (0.2%)** |
+| on a doubled staff (the exporter counts them, cannot locate them) | 56 (5.4%) | 0 |
+
+"Unexplained" is tiny because the arithmetic tier is permissive; the honest figure for
+"the record gives no reason" is the arithmetic-only row.
+
+### 2.96c. Ranking -- bars released if that ONE cause alone were fixed
+
+(overlapping: a bar can be released by two different single fixes)
+
+| cause | tier | Litolff | Brahms | both |
+|---|---|--:|--:|--:|
+| narrowed head(s) whose own candidates land the bar (`duration_narrowed`, not written) | evidenced | 73 | 719 | **792** |
+| a lone whole rest left at 4 beats (a bar rest in a 2/4 or 6/8 bar) | evidenced | 30 | 428 | **458** |
+| unboxed eighth-rest-shaped ink + bar short by an eighth or so | evidenced | 45 | 287 | **332** |
+| a head refused `too_narrow` whose value fills the gap | evidenced | 25 | 143 | 168 |
+| unboxed quarter-rest-shaped ink | evidenced | 75 | 41 | 116 |
+| a beam level at a note whose beam row carries doubt | evidenced | 73 | 114 | 187 |
+| `chord_value_undecided` | evidenced | 14 | 41 | 55 |
+| a dot (a row whose role is unsettled) | evidenced | 1 | 53 | 54 |
+| a head boxed twice / a barline read as a rest / two voices (each) | evidenced | 12 / 18 / 9 | 21 / 15 / 20 | 33 / 33 / 29 |
+| one head fill misread (quarter read, half printed) | ARITHMETIC | 311 | 229 | 540 |
+| drop one event | ARITHMETIC | 188 | 335 | 523 |
+| one beam level, one beam group | ARITHMETIC | 212+61 | 361+113 | 747 |
+| ink of no rest shape + any rest value | ARITHMETIC | 328 | 876 | 1,204 |
+
+The ARITHMETIC rows are not causes. They are listed because they are the large numbers a
+sum-only classifier prints; 2.22's `F` (300 Litolff bars) is the head-fill row here.
+
+Base rates (the control the ink witness needs; `out/2.96/controls.json`): unexplained ink
+of ANY kind sits in 28% of Litolff cells that are NOT held (1,228 of 4,389) and 43% of
+held ones (421 of 988); 35% (1,443 of 4,132) vs 51% (1,309 of 2,553) on Brahms. An
+eighth-rest-shaped unexplained piece sits in 5% of Litolff and 7% of Brahms non-held
+cells (218 of 4,389; 294 of 4,132), and the evidenced `I:eighth` fires on 12% and 23% of
+held ones: a lift of about 2x and 3x, enough to be evidence, not proof. That is why only
+SHAPED ink is evidenced and "ink of no rest shape" is arithmetic.
+
+### 2.96d. What the top cause is made of (`probe/n_shape_2_96.py`)
+
+Bars held because narrowed heads are not written, where the record's own candidates and the
+meter land the bar UNIQUELY:
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| ONE narrowed head, system meter DECIDED -- `reconcile_duration` (EVALUATE: one note, unique landing) should land these and does not | 39 | 97 |
+| ONE chord of 2-3 narrowed heads, meter decided (`reconcile_duration` "changes at most ONE note": a chord's heads are separate notes) | 21 | 175 |
+| several narrowed columns, meter decided (a joint landing; the rule changes one note) | ~11 | ~190 |
+| meter ABSTAINED on that system (`carry_not_corroborated` / `carry_outweighed_by_the_bars`; every consumer reads `Q.METER`) | 0 | ~214 |
+
+INFER's `collapse_duration_to_barline` cannot reach them: it collapses from OTHER staves
+at the same onset column, and refuses a witness whose length came from the meter.
+
+### 2.96e. The whole-rest bars (second cause)
+
+Brahms 428 bars, residual exactly -1.0 quarter (a 4-beat rest in a 3-quarter bar), 403 of
+them on a system whose `Q.METER` ABSTAINS (205 `carry_not_corroborated`, 198
+`carry_outweighed_by_the_bars`). CLAUDE.md §10: a whole rest means the BAR whatever the meter,
+so this fix needs no meter reading, but `size_measure_rest` takes `Q.METER` as its cause and
+does not run there. A control that holds: with the meter shifted 0.3 these 428 are exactly
+the bars still released. Litolff 30 are on systems whose meter is DECIDED -- a different
+cause: the record shows a SECOND box on the same ink refused `ink_is_a_whole_rest`, so the
+rest may not count as lone. Not confirmed: tile 6 shows the rest, not the second box.
+
+### 2.96f. Print check, 15 tiles for Sean (`out/print/2.96-review/`, `manifest.json`)
+
+Phone-sized (900 px), 600 dpi, red corners = the bar (following the staff), blue
+corners = the subject, big tile number, nothing of ours on the image. The frame control
+(five staff lines carry >= 2x the ink of the gaps AND the same test shifted half a space
+fails) REFUSED 4 candidates, so it can fail. Tiles 1-3 narrowed heads (2 Brahms, 1
+Litolff), 4-6 whole rest (2 Brahms meter-abstained, 1 Litolff meter-decided), 7-9 unboxed
+eighth-rest ink (2 Brahms, 1 Litolff), 10-12 a dot (Brahms), 13-15 one head fill
+(Litolff; the ARITHMETIC-only row, shown to see whether the print backs it).
+
+What I could see myself (the lane's own reading, rule 7: not evidence):
+- tile 1: the print is a dotted quarter, a tied quarter and an eighth: the two blue
+  heads are the narrowed ones and their candidates (1.5 and 1.0) land the bar.
+- tiles 4 and 6: a lone whole rest in a bar -- the print agrees with the classifier.
+- tile 7: two eighth rests sit in the bar and one has no box -- agrees.
+- tiles 10-12 (the dot): **my eye-read here was WRONG; Sean is the evidence.** I wrote that the blue dots were another staff's or a letter's. Sean: 10 is a staccato belonging to the staff above (not this staff's); 11 and 12 ARE augmentation dots. So the dot cause is real on 2 of 3 (the evidenced `D`, 54 bars released alone, is small but not spurious); the one false positive (10) is the cross-staff dot the classifier cannot yet tell from its own.
+- tile 13 (head fill): the head has the white slash of a hollow head (Sean: a half, tile 14 too).
+
+### 2.96g. Recommended next items (not built here)
+
+1. **Narrowed heads that the bar lands uniquely (792 bars; the largest evidenced cause).**
+   Two connections, no new guess: (a) why `reconcile_duration` does not land the 136
+   single-head, meter-decided bars it should (look at Litolff 9/1/0/0: it landed the
+   OTHER note instead); (b) let it change one CHORD (all heads at one onset) together,
+   then several columns jointly where exactly one joint assignment lands the bar.
+2. **A lone whole rest needs no meter (458 bars; 403 on abstaining Brahms systems).**
+   Exports as a measure rest of the file's bar. A connection (CLAUDE.md §10), plus the 30
+   Litolff bars whose second `ink_is_a_whole_rest` box defeats "lone".
+3. **The unboxed eighth/quarter rest (448 bars).** 2.80b reads a refused `too_narrow` box
+   as an eighth rest; the 332 remaining are ink with no box at all. A reader on the
+   unexplained piece (its shape and place on the staff), checked against the same 2.80
+   base rate; tiles 7 and 9 say the ink is real.
+4. **The head fill (540 arithmetic-only bars; Sean: tiles 13, 14 halves read as quarter, tile 15 a quarter).**
+   2 of 3 are real, so it is a cause with print support but no record row; it needs a row of its own (2.23's
+   hollow-ink reading, on the merged Litolff plate) before it is wired. Tile 15 is the warning: the sum lands on a
+   correct quarter too.
+Held back: beam levels (no row points at them except the doubt counters, present on 40% of bars).
+
+### 2.96h. Limits
+
+The dumps are the record's OWN verdicts exported by today's exporter; a GATHER change is
+invisible here. The ink witness is 2.80's rule restated over dicts (the base-rate table is
+its control). `U:`/`R:` refusal tokens are offered only for reasons that a refusal can
+wrongly make; duplicate-box and non-note refusals (clef, digit, dynamic letter) are never
+offered. K (a missed barline) is evidenced only where the cell is >= 1.6x its neighbours.
+
+### 2.96i. Sean's answers (2026-10-12, `out/print/2.96-review/answers.json`)
+
+Verbatim: *"1. dot4 , 4 2. 4 3. 4 4-6. whole note rest 7. 1st blue box is an accidental flat,t he secod blue box is a 8 rest 8-9. 8 rest 10. stacato mark belonging to the staff above 11-12. aug dots 13. 2 14. 2 15. 4"*
+
+| cause | tiles | scored |
+|---|---|---|
+| narrowed heads (N) | 1-3 | **3/3**: his values (1.5 + 1.0; 1.0; 1.0) are inside our candidates |
+| lone whole rest (W) | 4-6 | **3/3**: whole-note rest (the bar), including the Litolff meter-decided one |
+| unboxed eighth-rest ink (I:eighth) | 7-9 | **3/3** hold an eighth rest; in tile 7 the FIRST blue box is a flat, the second the rest (the ink witness boxed an accidental too) |
+| dot (D) | 10-12 | **2/3**: 11, 12 are this staff's augmentation dots; 10 is a staccato of the staff above |
+| head fill (F~, arithmetic only) | 13-15 | **2/3** halves read as quarter (13, 14); 15 a quarter, our reading right |
+
+Effect on the ranking: the three top evidenced causes (N 792, W 458, I:eighth 332, plus I:quarter 116) are
+confirmed by the print on every tile. D moves from "not a finding" to "a real but small cause with a cross-staff
+false-positive mode" (evidenced `D` alone releases 54; the 412 arithmetic-tier `D` are still unproven). The head fill
+moves from "arithmetic" to "print-supported, no record row" (2 of 3), so the order of next items is unchanged
+(narrowed heads, whole rest, unboxed rest ink) with the head fill added as item 4. The I:eighth ink box can also be a
+flat or other accidental: a shape test alone over-counts, so the reader in item 3 must use position on the staff.
+
+### 2.97g. Sean's answers on review-3 (2026-10-13) and the final re-measure
+Verbatim in `out/print/2.97-review-3/answers.json` and DECISIONS 2026-10-13: *"1. Dot 8 2. 8, 8 3. 8 4.4 5. 8 rest 6. 4"*.
+- Tiles 1-2 (eighths the rule still settles on weak beam evidence): **2 of 2 right** (dotted eighth; two eighths).
+- Tiles 3-6 (bars newly held because base's arithmetic-only eighth is now refused): base was RIGHT on tile 3 (a real
+  flagged eighth our reader missed -> ROADMAP 2.104), WRONG on 4 (a quarter), 5 (an eighth REST written as a note) and
+  6 (a quarter). **The strict rule avoids 3 wrong notes for 1 lost correct eighth.** n is small; the direction is
+  consistent with singles 0/4 in 2.97d.
+- Sean's choice: land the STRICT eighth-on-evidence rule as built; missed flags are 2.104's job, not the bar's.
+
+Re-measure with `flag_ink_unread` counted as flag evidence, Litolff night record
+(`beethoven5-litolff-mvt1-whole-20261011-night`), base = origin/main tools (incl. 2.102), arm = this branch merged with
+origin/main, `probe/run_2_97.py`, `probe/newheld_2_97.py` (the whole `held` list; the report's `bars` figure in brackets):
+| | held bars (report) | held list | notes in file | narrowed not written |
+|---|---|---|---|---|
+| base | 1,027 | 953 | 5,937 | 362 |
+| arm, `OMR_NARROWED_BAR=1` | 1,018 | 944 | 5,994 | 311 |
+| arm as shipped (`OMR_NARROWED_BAR` default OFF) | 1,033 | -- | 5,916 | 368 |
+ON vs base: released 14, **newly held 5** (was 11 before the `flag_ink_unread` fix), all 5 `beam_discounted_uncertain`
+bare stems with no evidence of an eighth -- the refusal Sean's rule asks for. The shipped default (INFER columns rule OFF)
+nets +6 held / -21 notes vs base on Litolff: the EVALUATE chord/joint settlement releases bars, the strict rule holds the
+arithmetic-only eighths. Brahms was not re-measured (6 GB record; light-load rule); its last figures are 2.97e's.

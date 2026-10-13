@@ -171,7 +171,7 @@ class TestBothCallersShareOneDispatcher(unittest.TestCase):
 
     def test_neither_caller_spawns_directly_any_more(self):
         import inspect
-        for fn in (S.read_crops_surya, S.read_crops_text):
+        for fn in (S.read_crops_surya_full, S.read_crops_text):  # 2.95: the margin dispatch moved into _full
             src = inspect.getsource(fn)
             self.assertIn("_dispatch(", src, fn.__name__)
             self.assertNotIn("subprocess.run", src, fn.__name__)

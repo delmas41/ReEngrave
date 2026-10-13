@@ -50,13 +50,14 @@ import copy
 import os
 import json
 import pathlib
+import re
 import sys
 from dataclasses import dataclass, field
 from fractions import Fraction
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
-from ..voicing import group_chords_in_measure
+from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
 # ⚠️ Imported as a bare module name, not through the dotted module path:
 # `wiring.details` matches a detail key by bare substring, and a dot followed
@@ -248,6 +249,168 @@ class Record:
 
     def verdicts_of(self, quantity: str) -> List[Dict[str, Any]]:
         return self._by_q.get(quantity, [])
+
+    def verdict_by_id(self, vid: str) -> Optional[Dict[str, Any]]:
+        idx = self.__dict__.get("_by_id")
+        if idx is None:
+            idx = self.__dict__["_by_id"] = {v["id"]: v for v in self.verdicts}
+        return idx.get(vid)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# READ / GUESSED  (ROADMAP 2.103; Sean 2026-10-12: "I don't want any hidden.")
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The colour a GUESSED note or rest is drawn in, in MusicXML (`color=` on
+#: `<note>`, a standard print-style attribute) and in LilyPond
+#: (`GUESS_COLOR_LILY`, the same blue). Sean 2026-10-12 ("Just blue"; orange
+#: "looks too much like red"): ONE blue for every guess, distinct from the
+#: unread-bar red (`#D00000`).
+GUESS_COLOR = "#1F6FEB"
+GUESS_COLOR_LILY = "(rgb-color 0.12 0.435 0.92)"
+
+#: EVALUATE consequences whose DECIDED duration rests on the BAR'S ARITHMETIC
+#: and not on a convention or on ink. Everything else EVALUATE writes into a
+#: duration is classed READ, each for its own reason:
+#:   * `size_measure_rest`   -- a lone whole rest IS the bar (a convention);
+#:   * `share_stem_value`, `reconcile_chord_duration` -- a stem-mate's own
+#:     decided ink (one stem, one value) FOLLOWS, no bar is consulted;
+#:     `reconcile_chord_duration` only picks the candidate the mate's beam
+#:     count admits, and refuses when more than one fits;
+#:   * `size_reinstated_rest`, `size_unboxed_rest` -- the rest's own shape;
+#:   * `reinstate_rest_between_staves` -- a rest's presence read off ink.
+#: `reconcile_duration` searches the bar for the re-reading that lands the
+#: meter: the bar-sum is the only witness for the value, so it is a guess.
+EVALUATE_GUESSERS = ("reconcile_duration",)
+
+_CAND_KEYS = ("beats", "written", "dots", "beam_levels", "is_rest")
+
+
+def _guess_candidates(v: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out = []
+    for c in (v or {}).get("candidates") or ():
+        val = c.get("value")
+        row = ({k: val[k] for k in _CAND_KEYS if k in val}
+               if isinstance(val, dict) else {"value": val})
+        row["support"] = c.get("support")
+        out.append(row)
+    return out
+
+
+def _guess_in_chain(rec: "Record", v: Optional[Dict[str, Any]]
+                    ) -> Optional[Dict[str, Any]]:
+    """The deciding GUESS in `v`'s supersession chain (newest first), with the
+    candidates of the NARROWING it settled, or None when the chain is READ."""
+    seen = set()
+    guess = None
+    cands: List[Dict[str, Any]] = []
+    while v is not None and v["id"] not in seen:
+        seen.add(v["id"])
+        d = v.get("decider") or ""
+        if guess is None:
+            if d.startswith("infer:"):
+                guess = {"stage": "INFER", "rule": d[len("infer:"):]}
+            elif d in EVALUATE_GUESSERS:
+                guess = {"stage": "EVALUATE", "rule": d}
+        if guess is not None and not cands:
+            cands = _guess_candidates(v)
+        if guess is not None and cands:
+            break
+        v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+    if guess is None:
+        return None
+    guess["candidates"] = cands
+    return guess
+
+
+def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """READ -> None. GUESSED -> `{rule, stage, quantity, candidates, chosen}`.
+
+    ⚠️ DERIVED FROM THE VERDICT'S OWN `decider` CHAIN, never from a side
+    table: the same `infer.is_inferred` primitive `_inferred_clefs` uses. The
+    DURATION chain is asked first (it is the shape every INFER duration rule
+    and `reconcile_duration` write). A PITCH read through an INFERRED clef or
+    part key (`fill_clef_gap`, `fill_part_key`) is a guess too: the head's
+    position was read, but the pitch name exists only because a clef/key was
+    inferred, and the verdicts the pitch rests on say so in their `basis`.
+    """
+    dur = rec.verdict(Q.DURATION, sub)
+    if dur is not None and dur["outcome"] == "decided":
+        g = _guess_in_chain(rec, dur)
+        if g is not None:
+            g["quantity"] = Q.DURATION
+            g["chosen"] = {k: dur["value"][k] for k in _CAND_KEYS
+                           if isinstance(dur["value"], dict) and k in dur["value"]}
+            return g
+    for q in (Q.PITCH, Q.ACCIDENTAL):
+        v = rec.verdict(q, sub)
+        if v is None or v["outcome"] != "decided":
+            continue
+        for bid in v.get("basis") or ():
+            b = rec.verdict_by_id(bid)
+            if b is not None and b["outcome"] == "decided" \
+                    and (b.get("decider") or "").startswith("infer:"):
+                return {"stage": "INFER",
+                        "rule": b["decider"][len("infer:"):],
+                        "quantity": b["quantity"],
+                        "candidates": _guess_candidates(b),
+                        "chosen": {"value": b.get("value")}}
+    return None
+
+
+def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
+    g = guess_of(rec, sub)
+    return {"guess": g} if g else {}
+
+
+def _count_guess(counters: Dict[str, int], guess: Optional[Dict[str, Any]],
+                 is_rest: bool) -> None:
+    """The ONE place a written symbol's flag is counted (MusicXML and LilyPond
+    both call it), by family and by deciding rule."""
+    if not guess:
+        return
+    counters["guessed_rests" if is_rest else "guessed_notes"] += 1
+    counters["guessed_by_rule:" + guess["rule"]] += 1
+
+
+def guessed_report(counters: Dict[str, int]) -> Dict[str, Any]:
+    by_rule = {k.split(":", 1)[1]: int(n) for k, n in counters.items()
+               if k.startswith("guessed_by_rule:") and n}
+    notes = int(counters.get("guessed_notes", 0))
+    rests = int(counters.get("guessed_rests", 0))
+    return {"notes": notes, "rests": rests, "total": notes + rests,
+            "by_rule": dict(sorted(by_rule.items()))}
+
+
+def mark_guessed_note_xml(xml: str, guess: Optional[Dict[str, Any]]) -> str:
+    """Flag one rendered `<note>` as GUESSED.
+
+    TWO CARRIERS, EACH FOR ONE READER. `color=` on `<note>` is what a person
+    sees (a standard print-style attribute: Verovio and MuseScore both draw
+    it). `<notations><other-notation type="single">` is what a program reads:
+    the schema's own extension point for a notation it has no element for,
+    valid MusicXML 4.0 and ignored by every importer that does not know it,
+    so a file with the flag opens exactly like a file without. Its text is
+    `reengrave:guessed <json>` with the rule, stage, quantity, chosen value
+    and every candidate with its support -- the suggest-and-choose UI's input.
+    """
+    if not guess:
+        return xml
+    body = json.dumps(guess, sort_keys=True, separators=(",", ":"))
+    body = (body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    carrier = ('<other-notation type="single">reengrave:guessed '
+               + body + "</other-notation>")
+    m = re.match(r"(\s*)<note>", xml)
+    if not m:
+        return xml
+    ind = m.group(1)
+    xml = xml.replace("<note>", f'<note color="{GUESS_COLOR}">', 1)
+    if "</notations>" in xml:
+        return xml.replace("</notations>",
+                           f"  {carrier}\n{ind}  </notations>", 1)
+    end = xml.rindex("</note>")
+    return (xml[:end].rstrip("\n") + f"\n{ind}  <notations>\n{ind}    "
+            + carrier + f"\n{ind}  </notations>\n{ind}" + xml[end:])
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -522,10 +685,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
             if not isinstance(rec.value(Q.SLOT_INDEX, _k), int):
                 held_out_runs.add(_k)
     relocated_out: Dict[str, int] = {}
+    divisi_out: Dict[str, int] = {}
     fates: Dict[str, str] = {}
     dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
                            held_out=held_out_runs, relocated=relocated_out,
-                           fates=fates)
+                           fates=fates, divisi=divisi_out)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -683,6 +847,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "unidentified_parts": sorted(unidentified),
         "held_out_staves": len(held_out_runs),
         "relocated_at_export": int(relocated_out.get("heads", 0)),
+        # ROADMAP 2.99: rests read off unboxed ink and placed in a bar. They
+        # are in no `notehead_class`/`rest` row, so the accounting equality
+        # adds them to its left-hand side BY NAME.
+        "unboxed_rests_placed": int(relocated_out.get("unboxed_rests", 0)),
+        "divisi_at_export": dict(divisi_out),
         "marks_census": marks_census(rec, fates),
         "join_decided": kind,
         "join_used": used,
@@ -755,11 +924,32 @@ def _sounding_pitch(pitch: str, alteration: str) -> str:
     return f"{letter}{spelled}{octave}"
 
 
+def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
+    """ROADMAP 2.90. A head's DECIDED stem direction and stem identity, for
+    `voicing.group_chords_in_measure`'s divisi guard (STAGED export only).
+
+    ⚠️ DECIDED ONLY. `stem_direction` is `"up"`/`"down"` where
+    `Q.STEM_DIRECTION` is decided, else `None`; `stem_id` is the canonical
+    `Q.STEM` row id of `Q.HEAD_STEM` where that is decided, else `None`.
+    A narrowed or abstained verdict is "cannot tell", and `None` is how the
+    guard hears it (unknown never blocks a merge).
+    """
+    out: Dict[str, Any] = {"stem_direction": None, "stem_id": None}
+    d = rec.verdict(Q.STEM_DIRECTION, sub)
+    if d and d.get("outcome") == "decided" and d.get("value") in ("up", "down"):
+        out["stem_direction"] = d["value"]
+    h = rec.verdict(Q.HEAD_STEM, sub)
+    if h and h.get("outcome") == "decided" and h.get("value"):
+        out["stem_id"] = str(h["value"])
+    return out
+
+
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  by_system: Optional[Dict[Tuple[int, int], Any]] = None,
                  held_out: Optional[set] = None,
                  relocated: Optional[Dict[str, int]] = None,
-                 fates: Optional[Dict[str, str]] = None) -> Dict[str, int]:
+                 fates: Optional[Dict[str, str]] = None,
+                 divisi: Optional[Dict[str, int]] = None) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
 
     ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF): the one exception to
@@ -864,6 +1054,16 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if s["glyph"] is None:
             continue
         is_rest = bool(rec.obs(Q.REST, sub))
+        # ⚠️ ROADMAP 2.80b. A narrow box refused `too_narrow` as a head that
+        # ADJUDICATE read, on its OWN ink, as an eighth rest (Sean, Brahms
+        # Contrabass bar 13: *"It is an 8th note rest"*) is WRITTEN AS A REST
+        # of the length EVALUATE gave it. It is no longer refused as a head:
+        # the refusal said it is not one, and that stands.
+        reinstated_rest = (not is_rest
+                           and rec.value(Q.NOTEHEAD_IS_AN_EIGHTH_REST, sub)
+                           is True)
+        if reinstated_rest:
+            is_rest = True
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
         nearer_staff_claim = False
@@ -1130,6 +1330,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         name, x, y, w, h = o["value"]
         if plan is not None:
             x, y, w, h = plan["bbox"]
+        if reinstated_rest:
+            name = "rest8th"        # what ADJUDICATE read it as, not the head
         written = float(dur.get("written") or dur.get("beats") or 0.0)
         # ⚠️ A MEASURE REST NEEDS NO NOTE VALUE, and demanding one would
         # refuse the bar the convention exists for. `<rest measure="yes"/>`
@@ -1142,6 +1344,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 "bbox": [int(x), int(y), int(w), int(h)],
                 "duration_beats": written, "duration_type": "whole", "dots": 0,
                 "measure_rest": True, "glyph": sub,
+                **_guess_fields(rec, sub),
             }, s, sub, float(o.get("score") or 0.0))
             continue
         fit = _legacy._dotted_duration_for_beats(written)
@@ -1192,6 +1395,19 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # shorten every untupleted note in it by a third.
             "tuplet": _tuplet_for(rec, run, cell_index, s["glyph"]),
             "glyph": sub,
+            # ⚠️ ROADMAP 2.103: READ carries no key at all; GUESSED carries
+            # the rule and the candidates it was chosen from.
+            **_guess_fields(rec, sub),
+            # ⚠️⚠️ ROADMAP 2.90 -- THE HEAD'S DECIDED STEM, CARRIED. The value
+            # existed on the record (`Q.STEM_DIRECTION`, `Q.HEAD_STEM`) and
+            # nothing here read it, so `voicing.group_chords_in_measure`'s own
+            # divisi guard (opposite stem directions never merge) could not
+            # fire on this path: two voices at one x arrived at the voice split
+            # already fused into ONE chord. Only a DECIDED verdict is carried;
+            # a narrowed or abstained one is ABSENT (`None`), and absence never
+            # blocks a merge -- that is rule 8 applied to the guard, not a new
+            # guess.
+            **_stem_facts_of(rec, sub),
             # ⚠️⚠️ THE PAGE BOX, IN THE *WIDTH* FORM, AND THE TWO FRAMES HERE
             # ARE A RECORDED TRAP. `bbox` above is CANONICAL -- measured
             # inside one cell, rescaled so the staff span is constant -- and
@@ -1211,6 +1427,57 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             pending_relocations.append(
                 (run, cell_index, _det, s, group_of.get(sub), sub,
                  float(o.get("score") or 0.0)))
+    # ⚠️ ROADMAP 2.99. Rest-sized INK the detector never boxed that ADJUDICATE
+    # read, on its own shape and place, as an eighth or a quarter rest
+    # (`Q.UNBOXED_INK_IS_A_REST`) and EVALUATE sized (`size_unboxed_rest`) is
+    # WRITTEN AS A REST. It is not a gathered notehead, so it is outside the
+    # accounting equality on purpose (nothing was detected to count); a rest
+    # whose staff is held out, or whose bar the file does not have, is simply
+    # not written, as every rest in that position is.
+    for o in rec.obs_of(Q.UNBOXED_REST_SHAPE):
+        sub = o["subject"]
+        v = rec.verdict(Q.UNBOXED_INK_IS_A_REST, sub)
+        if (v is None or v["outcome"] != "decided"
+                or v["value"] not in ("eighth", "quarter")):
+            continue
+        s = _parse_subject(sub)
+        dur_v = rec.verdict(Q.DURATION, sub)
+        dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
+        if not isinstance(dur, dict) or not dur.get("unboxed_rest"):
+            continue
+        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if held_out and home in held_out:
+            continue
+        run = runs.get(home)
+        cell_index = s["cell"] or 0
+        if run is None or cell_index >= run.n_measures:
+            continue
+        box = (o.get("detail") or {}).get("bbox_canonical")
+        if not box or len(box) != 4:
+            continue
+        written = float(dur.get("written") or dur.get("beats") or 0.0)
+        fit = _legacy._dotted_duration_for_beats(written)
+        if fit is None:
+            continue
+        dtype, derived_dots = fit
+        cell = run.cells.setdefault(
+            cell_index, Cell(run.page, run.system, run.staff, cell_index))
+        cell.detections.append({
+            "category": "rest",
+            "class": "rest8th" if v["value"] == "eighth" else "restQuarter",
+            "bbox": [int(box[0]), int(box[1]), int(box[2] - box[0]),
+                     int(box[3] - box[1])],
+            "duration_beats": float(dur.get("beats") or written),
+            "duration_type": dtype, "dots": max(0, derived_dots),
+            "beam_levels": 0, "key_alteration": None,
+            "printed_accidental": None, "tuplet": None, "glyph": sub,
+            "bbox_page": _corners_to_wh(_page_box_of(o)),
+            "unboxed_rest": True,
+        })
+        if relocated is not None:
+            relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1
+        if fates is not None:
+            fates[sub] = "written"
     # ⚠️ ROADMAP 2.58b: THE ONE-MARK-ONE-NOTE RULE. Of the members of a group
     # that would be written, the most confident is (ties: the lowest subject),
     # and the rest are COUNTED. Replayed in record order so a cell's detection
@@ -1271,7 +1538,131 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             fates[sub] = "written_relocated"
         if relocated is not None:
             relocated["heads"] = relocated.get("heads", 0) + 1
+    # ⚠️ ROADMAP 2.90, AFTER relocation (a relocated head joins a chord too) and
+    # BEFORE 2.89's refusal: which bars keep the heads' decided stem directions.
+    _settle_divisi_pairs(runs, divisi)
+    # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
+    # a chord too. See `_chords_whose_value_would_be_voted`.
+    for _det in _chords_whose_value_would_be_voted(runs):
+        _sub = _det.get("glyph")
+        if _sub is None:
+            continue
+        _drop("chord_value_undecided", _again(_sub))
     return dict(dropped)
+
+
+def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
+                         divisi: Optional[Dict[str, int]] = None) -> None:
+    """ROADMAP 2.90. Per bar: keep the heads' decided stem directions (so two
+    voices at one onset stay two events) only where the bar can then be
+    written as two voices; otherwise take them off, and the bar is exactly
+    what 2.89 left it.
+
+    ⚠️ WHY NOT ALWAYS KEEP THEM. Measured on Litolff (whole movement, 24 bars
+    with a divisi pair): splitting every pair held out five bars that were
+    written before, because the second voice then carried only the notes whose
+    stem was DECIDED down and was short -- `split_events_into_voices` puts an
+    unknown-direction event in voice 1, which is a guess about a stem we did
+    not read (rule 8). So a pair is kept apart only where (1) EVERY chord of
+    the bar has a decided direction (no event's voice is a guess) and (2) the
+    two streams `split_events_into_voices` makes carry the SAME total time (a
+    necessary condition for both to fill the bar; the meter itself is judged
+    where it is known, by `_bar_holds_out`). Otherwise the directions come off
+    the bar's heads and the chord grouping is the one 2.89 refuses on.
+
+    ⚠️ NOTHING IS DECIDED HERE. Taking the directions off is "cannot tell" kept
+    as cannot-tell; the split uses only what ADJUDICATE decided.
+    """
+    stats = divisi if divisi is not None else {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            if not any(d.get("stem_direction") for d in cell.detections):
+                continue
+            # ⚠️ ONE STEM IS ONE DIRECTION (2.78: heads on one stem are one
+            # chord). `Q.STEM_DIRECTION` is decided per head from the whole
+            # group on the stem so this cannot happen on a record the reader
+            # made; if a record says it, the direction is "cannot tell" for
+            # those heads and they stay one chord rather than become two voices.
+            by_stem: Dict[str, set] = {}
+            for d in cell.detections:
+                if d.get("stem_id") and d.get("stem_direction"):
+                    by_stem.setdefault(d["stem_id"], set()).add(d["stem_direction"])
+            clash = {k for k, v in by_stem.items() if len(v) > 1}
+            if clash:
+                for d in cell.detections:
+                    if d.get("stem_id") in clash:
+                        d["stem_direction"] = None
+                stats["stems_with_two_directions_taken_off"] = (
+                    stats.get("stems_with_two_directions_taken_off", 0) + len(clash))
+            events = group_chords_in_measure(cell.detections)
+            pairs = _divisi_pairs(events)
+            if not pairs:
+                continue
+            chords = [e for e in events if e.get("kind") == "chord"]
+            reason = None
+            if any(e.get("stem_direction") not in ("up", "down") for e in chords):
+                reason = "an_undecided_direction_in_the_bar"
+            else:
+                streams = split_events_into_voices(events)
+                if len(streams) != 2 or any(not st for st in streams):
+                    reason = "a_stream_is_empty"
+                elif (sum(_event_units(e, 720) for e in streams[0])
+                      != sum(_event_units(e, 720) for e in streams[1])):
+                    reason = "streams_carry_unequal_time"
+            if reason is None:
+                stats["bars_kept_as_two_voices"] = stats.get("bars_kept_as_two_voices", 0) + 1
+                continue
+            for d in cell.detections:
+                d["stem_direction"] = None
+            stats["bars_left_fused_" + reason] = stats.get("bars_left_fused_" + reason, 0) + 1
+
+
+def _chords_whose_value_would_be_voted(
+        runs: Dict[str, "StaffRun"]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.89. REMOVE from every cell each notehead of a chord whose
+    heads were written with DIFFERENT values, and return the removed heads.
+
+    ⚠️⚠️ `voicing.group_chords_in_measure` gives a chord ONE value, the MODE
+    of its members' (beats, type, dots) -- an argmax over a disagreement, which
+    is "cannot tell" converted into an answer (CLAUDE.md rule 8, §4c: EXPORT
+    refuses to argmax a narrowing). It was left open by 2.78: where
+    `Q.STEM_VALUE` is DECIDED, `share_stem_value` has already restated every
+    member to it (Sean: "no exceptions") and the members AGREE, so this finds
+    nothing there; where the stem value is NARROWED the heads keep their own
+    readings, and a decided whole on a stem (2.78 tile 9) was out-voted into
+    whatever its stem-mates read, or out-voted them.
+
+    ⚠️ NOTHING IS CHOSEN HERE EITHER. Every member of a disagreeing group is
+    refused, none kept as "the majority's" -- a two-against-one vote is still
+    a vote. The caller counts each under `chord_value_undecided`, so the
+    accounting equality holds and the bar the heads leave is short, which the
+    bar checks hold exactly as they hold any other unread content.
+
+    ⚠️ AGREEMENT IS ON (beats, type, dots), the same triple the vote counts, so
+    a group this leaves alone is a group the vote would have decided
+    unanimously: it changes nothing for them.
+    """
+    removed: List[Dict[str, Any]] = []
+    for run in runs.values():
+        for cell in run.cells.values():
+            if not cell.detections:
+                continue
+            doomed: List[int] = []
+            for ev in group_chords_in_measure(cell.detections):
+                heads = ev.get("noteheads") or ()
+                if len(heads) < 2:
+                    continue
+                values = {(h.get("duration_beats"), h.get("duration_type"),
+                           h.get("dots")) for h in heads}
+                if len(values) > 1:
+                    doomed.extend(id(h) for h in heads)
+            if not doomed:
+                continue
+            gone = set(doomed)
+            kept = [d for d in cell.detections if id(d) not in gone]
+            removed.extend(d for d in cell.detections if id(d) in gone)
+            cell.detections[:] = kept
+    return removed
 
 
 def marks_census(rec: Record, fates: Dict[str, str]) -> Dict[str, Any]:
@@ -1555,6 +1946,20 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
     out: Dict[int, int] = {}
     for run in part:
         for cell_index, cell in run.cells.items():
+            # ⚠️ ROADMAP 2.90. A bar the exporter parts itself (two voices at
+            # one onset, opposite decided stems) is numbered by the SAME split
+            # `_voice_split` writes, or a slur would be paired across streams
+            # the file keeps apart.
+            if any(d.get("stem_direction") for d in cell.detections):
+                evs = _events(cell)
+                if _divisi_pairs(evs):
+                    streams = _voice_split(rec, run, cell_index, evs)
+                    if streams is not None:
+                        for number, st in enumerate(streams, start=1):
+                            for ev in st:
+                                for det in ev.get("noteheads") or ():
+                                    out[id(det)] = number
+                        continue
             v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
             if not v or v["outcome"] != "decided":
                 continue
@@ -3483,6 +3888,17 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
+            # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
+            # meter the FILE has in force (`judged`), meter verdict or not.
+            # See `_lone_whole_rest_is_the_bar` for why this is EXPORT's.
+            if events:
+                _sized = _lone_whole_rest_is_the_bar(
+                    events, meter if meter is not None else in_force)
+                if _sized is not None:
+                    events = _sized
+                    counters["measure_rests_sized_by_the_file_meter"] += 1
+                    counters["measure_rests_sized_by_a_carried_meter"] += (
+                        1 if meter is None else 0)
             # ⚠️⚠️ ROADMAP 2.8, AND IT IS DECIDED BEFORE ANYTHING IS WRITTEN.
             # A held-out bar takes `_mxl_empty_measure`, which writes the
             # bar's directions itself — so the test cannot sit after the
@@ -3789,11 +4205,89 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     return "\n".join(lines)
 
 
+#: ROADMAP 2.90. `_voice_split` appends this to `why` when it wrote a bar's
+#: voices from the EXPORTER'S OWN events (two voices at one onset, opposite
+#: decided stems) rather than from `Q.VOICES`; `_measure_xml` counts it under
+#: `two_voice_bars_from_exporter_stems` and never as a refusal.
+DIVISI_FROM_EXPORTER_STEMS = "divisi_from_exporter_stems"
+
+
+def _divisi_pairs(events: Sequence[Dict[str, Any]]
+                  ) -> List[Tuple[Dict[str, Any], Dict[str, Any]]]:
+    """ROADMAP 2.90. Every (up-stem event, down-stem event) pair that stands at
+    ONE ONSET COLUMN in this bar -- the exporter's own events, after
+    `group_chords_in_measure`'s divisi guard has kept opposite-direction heads
+    apart.
+
+    ⚠️ RULE 1 OF `adjudicate_voices`, ASKED OF THE EVENTS THAT RULE NEEDS.
+    *Same beat, opposite stems, is ALWAYS two voices* (Sean, 2.21). The record
+    asked it of `Q.EVENT`'s groups, which on this path had FUSED the two voices
+    into one event (Sean's 2.89 tiles 7, 9, 10, 11: all four fused, all four two
+    voices), so the rule could not fire. "Same column" is the guard's own
+    tolerance (0.6 of a head width) widened to one whole head, so a pair the
+    guard separated is always found and a pair a head apart is not.
+    """
+    ups = [e for e in events if e.get("kind") == "chord"
+           and e.get("stem_direction") == "up"]
+    downs = [e for e in events if e.get("kind") == "chord"
+             and e.get("stem_direction") == "down"]
+    pairs = []
+    for u in ups:
+        for d in downs:
+            heads = list(u.get("noteheads") or ()) + list(d.get("noteheads") or ())
+            widths = [h["bbox"][2] for h in heads if h.get("bbox")]
+            tol = (sum(widths) / len(widths)) if widths else 30.0
+            if abs(float(u["x_position"]) - float(d["x_position"])) <= tol:
+                pairs.append((u, d))
+    return pairs
+
+
+def _parted(streams: Sequence[Sequence[Dict[str, Any]]],
+            a: Dict[str, Any], b: Dict[str, Any]) -> bool:
+    """True when `a` and `b` each stand in exactly one stream and not the same."""
+    ia = {k for k, st in enumerate(streams) if any(a is e for e in st)}
+    ib = {k for k, st in enumerate(streams) if any(b is e for e in st)}
+    return len(ia) == 1 and len(ib) == 1 and ia != ib
+
+
 def _voice_split(rec: Record, run: StaffRun, cell_index: int,
                  events: List[Dict[str, Any]],
                  why: Optional[List[str]] = None
                  ) -> Optional[List[List[Dict[str, Any]]]]:
     """This bar's events partitioned into voices, or None for one stream.
+
+    ⚠️ ROADMAP 2.90. THE RECORD'S SPLIT STANDS UNLESS THE EXPORTER SEES TWO
+    VOICES THE RECORD FUSED. Where an up-stem event and a down-stem event stand
+    at one onset (`_divisi_pairs`) the bar is two voices outright (Sean's 2.21
+    convention, rule 1), and the streams are `voicing.split_events_into_voices`
+    -- CALLED, not restated. `Q.VOICES` is kept whenever it already puts every
+    such pair in different streams; where it is one voice, abstained, or puts a
+    pair's two events in ONE stream, it was decided over a grouping that fused
+    the pair (that grouping is what this lane fixes) and cannot be right about
+    them. Nothing is guessed: the direction is a DECIDED `Q.STEM_DIRECTION` of
+    each head or the pair does not exist.
+    """
+    why = [] if why is None else why
+    recorded = _recorded_voice_split(rec, run, cell_index, events, why)
+    pairs = _divisi_pairs(events)
+    if not pairs:
+        return recorded
+    if recorded is not None and all(_parted(recorded, u, d) for u, d in pairs):
+        return recorded
+    streams = split_events_into_voices(events)
+    if len(streams) != 2 or any(not s for s in streams):
+        why.append("divisi_split_has_an_empty_stream")
+        return None
+    del why[:]                      # the recorded refusal(s) are superseded
+    why.append(DIVISI_FROM_EXPORTER_STEMS)
+    return streams
+
+
+def _recorded_voice_split(rec: Record, run: StaffRun, cell_index: int,
+                          events: List[Dict[str, Any]],
+                          why: Optional[List[str]] = None
+                          ) -> Optional[List[List[Dict[str, Any]]]]:
+    """`Q.VOICES`' own split of this bar's events (see `_voice_split`).
 
     ⚠️ THE RECORD'S DECISION, NOT A SECOND SPLIT. `adjudicate_voices` calls
     `voicing.split_events_into_voices` and records the answer as GLYPH lists;
@@ -3974,6 +4468,8 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
                                             doubled=doubled)
         return lines
     counters["two_voice_bars"] += 1
+    if DIVISI_FROM_EXPORTER_STEMS in why:
+        counters["two_voice_bars_from_exporter_stems"] += 1
     out, units = _measure_events_xml(streams[0], divisions, counters,
                                      voice=1, doubled=doubled)
     if units > 0:
@@ -4259,6 +4755,54 @@ def _bar_quarters(meter: Optional[Dict[str, Any]]) -> Optional[float]:
     return float(_legacy._measure_rest_beats(meter))
 
 
+def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
+                                judged: Optional[Dict[str, Any]]
+                                ) -> Optional[List[Dict[str, Any]]]:
+    """ROADMAP 2.98: a LONE, dotless whole rest is the BAR -- the length of the
+    bar the FILE writes there -- whether or not any meter was ever READ.
+
+    STAGE: EXPORT, and the reason is in the one fact this needs. The rest's
+    length is the length of the `<time>` the exported PART has in force at this
+    bar (`judged`), and that is a property of the FILE: `in_force` is carried
+    across systems by `_part_xml` and is no `Q.METER` verdict anywhere in the
+    record. EVALUATE's `size_measure_rest` can only size from a DECIDED
+    `Q.METER` verdict, so on a system whose meter ABSTAINED it is silent --
+    and on Brahms 1/i that was 403 bars. Nothing in the record is needed that
+    EXPORT does not already hold; nothing is added to the record. Where the
+    meter IS decided and EVALUATE has already marked the rest this returns
+    None (`measure_rest` is set) and `_bar_holds_out` keeps judging it.
+
+    ⚠️ NEVER AN INVENTED METER. `judged` None (the part has declared no
+    `<time>` at all) returns None and the bar is written/held exactly as
+    before (rule 8). The length written is the one the file has already
+    declared, so the rest cannot contradict it -- the 2.79 failure mode (a
+    rest sized to a meter other than the one written at that bar) is closed by
+    construction, and `_bar_holds_out`'s lone-measure-rest equality still runs
+    on the result.
+
+    ⚠️ LONE means ONE EVENT in the bar, whose glyph class is `restWhole`, with
+    no dots. A bar that also holds a note, a half rest, a quarter rest or any
+    second event is not this rule's. Returns the bar's events with the one
+    rest marked and sized, or None.
+    """
+    if len(events) != 1:
+        return None
+    ev = events[0]
+    det = ev.get("rest") or {}
+    if (ev.get("kind") != "rest" or det.get("class") != "restWhole"
+            or det.get("measure_rest") or int(ev.get("dots") or 0)
+            or int(det.get("dots") or 0)):
+        return None
+    want_q = _bar_quarters(judged)
+    if want_q is None:
+        return None
+    new = dict(ev)
+    new["duration_beats"] = want_q
+    new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
+                   "sized_by": "file_meter_in_force_2_98"}
+    return [new]
+
+
 def _bar_holds_out(events: List[Dict[str, Any]],
                    streams: Optional[List[List[Dict[str, Any]]]],
                    divisions: int, meter: Optional[Dict[str, Any]]
@@ -4497,7 +5041,7 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 counters["tuplet_notes"] += 1
             _lily, xml_type, dots = _legacy._duration_to_lily_xml(
                 head["duration_type"], int(head.get("dots") or 0))
-            out.append(_legacy._mxl_note(
+            out.append(mark_guessed_note_xml(_legacy._mxl_note(
                 head["pitch"], "", xml_type, dots, beats, divisions,
                 is_chord=(n > 0), is_rest=False, indent="      ",
                 voice=voice,
@@ -4552,8 +5096,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # altered still passes NOTHING here, and a note this glyph
                 # carried to in the bar passes nothing either.
                 accidental=head.get("printed_accidental"),
-                ))
+                ), head.get("guess")))
             counters["notes"] += 1
+            _count_guess(counters, head.get("guess"), False)
             if doubled:
                 # ⚠️ ROADMAP 2.1b. Subtracted back out of `written` in
                 # `to_musicxml`'s balance, the same shape as `rests_
@@ -4715,11 +5260,12 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
     fermata = bool(det.get("fermata"))
     if fermata:
         counters["fermatas"] += 1
-    return [_legacy._mxl_note(
+    _count_guess(counters, det.get("guess"), True)
+    return [mark_guessed_note_xml(_legacy._mxl_note(
         None, "", xml_type, dots, beats, divisions, is_chord=False,
         is_rest=True, indent="      ", voice=voice,
         measure_rest=measure_rest,
-        fermata=fermata)]
+        fermata=fermata), det.get("guess"))]
 
 
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
@@ -4858,6 +5404,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_sum", "notes_held_out_sum",
                "bars_judged_by_a_carried_meter",
                "empty_bars_sized_by_a_carried_meter",
+               "measure_rests_sized_by_the_file_meter",
+               "measure_rests_sized_by_a_carried_meter",
                "bars_held_out_sum_on_a_doubled_staff",
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
@@ -4871,6 +5419,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["written"] = dict(counters)
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
+    # ⚠️ ROADMAP 2.103: GUESSED symbols WRITTEN, counted where the element is
+    # written (the equality above is untouched -- a guess is still a note).
+    report["guessed"] = guessed_report(counters)
     report["part_join"] = provenance
     report["marks_census"] = provenance.get("marks_census", {})
     # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key is the whole
@@ -5199,6 +5750,19 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "placed_but_not_rendered": d_placed - d_written,
     }
     report["direction_words_not_written_total"] = d_decided - d_written
+    # ROADMAP 2.67b: words the reader READ and ADJUDICATE held back because
+    # their kind is never printed there (`pizz.` under a horn, `Allegro` under
+    # the oboe). They are not in any decided value, so they sit outside the
+    # balance above; they are counted here as UNREAD, by reason, never lost.
+    held_by_reason: Dict[str, int] = {}
+    for v in rec.verdicts_of(Q.DIRECTION):
+        for w in (v.get("detail") or {}).get("held_back") or ():
+            r = str(w.get("held_reason"))
+            held_by_reason[r] = held_by_reason.get(r, 0) + 1
+    report["direction_words_held_back"] = {
+        "total": sum(held_by_reason.values()),
+        "by_reason": dict(sorted(held_by_reason.items())),
+    }
     report["direction_balance"] = {
         "words_decided": d_decided,
         "placed": d_placed,
@@ -5247,6 +5811,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # it existed. So `to_musicxml` raises rather than returning an unbalanced
     # report: a control nobody consults is not a control.
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ ROADMAP 2.99: a rest read off unboxed ink is placed in a bar and is
+    # written or counted with the bar it stands in, like any event -- but no
+    # detector row announced it, so it joins the left-hand side by name. The
+    # equality stays an equality.
+    unboxed_placed = int(report["part_join"].get("unboxed_rests_placed", 0))
     # ⚠️ A REST IN A TWO-VOICE BAR IS WRITTEN ONCE PER VOICE, and subtracting
     # the duplicate is what keeps this an EQUALITY rather than an inequality
     # that can no longer fail. The convention is the engraving's — each voice
@@ -5271,6 +5840,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # balance that does not count a family cannot be unbalanced by losing
         # one.
         "events_in_log": events_in_log,
+        "unboxed_rests_placed": unboxed_placed,
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
@@ -5281,11 +5851,13 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # once as written -- informational, the equality is unchanged.
         "relocated_heads_written": int(
             report["part_join"].get("relocated_at_export", 0)),
-        "balanced": events_in_log == written + report["notes_not_written_total"],
+        "balanced": (events_in_log + unboxed_placed
+                     == written + report["notes_not_written_total"]),
     }
     if not report["balance"]["balanced"]:
         raise Unbalanced(
-            f"{events_in_log} noteheads+rests in the log, {written} written "
+            f"{events_in_log} noteheads+rests in the log (+{unboxed_placed} "
+            f"read off unboxed ink), {written} written "
             f"and {report['notes_not_written_total']} accounted as dropped — "
             f"the difference went nowhere. {report['notes_not_written']}")
     return xml, report

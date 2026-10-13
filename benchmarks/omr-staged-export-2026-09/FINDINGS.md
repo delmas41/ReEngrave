@@ -140,3 +140,54 @@ behaviour and is still right: the alternative is grafting.
   starved. Building it now would be writing rules for facts that do not exist.
 * **Rests, arcs, articulations, dynamics, directions.** Not the exporter's to
   fix: §1. The order the record forces is GATHER first, then the adjudicator.
+
+## 7. ROADMAP 2.103 -- GUESSED is visible in the file (2026-10-12; STAGED export, MusicXML + LilyPond)
+
+Sean, DECISIONS 2026-10-12: *"I don't want any hidden."* Every written symbol
+is READ (plain), GUESSED (written AND flagged, carrying its candidates) or
+UNREAD (already marked, 3.5). Display and accounting only: no decision moved.
+
+**Classification (`export.guess_of`, derived from each verdict's `decider`
+chain; no side table).** GUESSED = any `infer:*` decider, or the EVALUATE
+bar-sum settlement `reconcile_duration` (the bar's arithmetic is the only
+witness for the value); and a PITCH/ACCIDENTAL whose `basis` holds an inferred
+verdict (`fill_clef_gap`, `fill_part_key`) -- the head was measured, the name
+exists only because a clef/key was inferred. READ, each with its reason:
+`size_measure_rest` (convention), `share_stem_value` and
+`reconcile_chord_duration` (a stem-mate's decided ink; the second only when
+exactly one candidate fits), `size_reinstated_rest` / `size_unboxed_rest`
+(the rest's own shape), `reinstate_rest_between_staves`, every ADJUDICATE
+decision (incl. 2.102's `hollow_head_bare_stem`, which that lane owns).
+
+**Carriers.** MusicXML: `color="#1F6FEB"` on `<note>` (what a person sees; a
+standard print-style attribute) and `<notations><other-notation
+type="single">reengrave:guessed {json}</other-notation>` (what a program
+reads: rule, stage, quantity, chosen value, every candidate with support). The
+schema's own extension point, valid MusicXML 4.0, ignored by importers that do
+not know it. Verovio (Python bindings) loads it with an empty log and draws
+the notes blue; no schema file is in the repo, so schema validation was not
+run. LilyPond: `\tweak color #guessedColor` on a note (chord: only the guessed
+heads), `\once \override Rest.color` on a rest, `guessedColor` defined and a
+header subtitle legend with the count, all only when something is guessed; a
+file with no guess is byte-identical to before.
+
+**Re-export of the 2026-10-11 night records (one tree, base = the same export
+with `guess_of` forced to None).** Arm minus the flags equals base BYTE FOR
+BYTE on both; notes written, rests written and `notes_not_written_total` equal
+(`Unbalanced` never raised).
+
+| record | guessed notes | rests | collapse_bare_stem_by_bar | collapse_duration_to_barline | reconcile_duration | fill_clef_gap | fill_part_key |
+|---|---|---|---|---|---|---|---|
+| Litolff Beethoven 5 | 1,329 of 5,782 | 0 | 89 | 1 | 190 | 160 | 889 |
+| Brahms 1 Breitkopf | 737 of 8,198 | 6 | 26 | 0 | 207 | 0 | 510 |
+
+(Brahms: 743 symbols, of which six are rests.)
+`fill_part_key` is the largest bucket by far: it flags the notes whose sounding
+alteration came from an inferred part key, which is most of a staff's
+accidentalled notes -- Sean may want it a separate colour or off the default
+flag; that is a display choice, not a classification one.
+
+Print check: `out/print/2.103-review/` (Litolff, six phone-sized crops + the
+header legend, `manifest.json` carries the per-crop rule mix). Pending Sean.
+
+Colour: first built orange; Sean (2026-10-12) said it looks too much like the unread red, *"Just blue"* -- ONE blue (`#1F6FEB`) for every guess, durations and inferred-key/clef pitches alike (DECISIONS). The `fill_part_key` question is answered: same colour.

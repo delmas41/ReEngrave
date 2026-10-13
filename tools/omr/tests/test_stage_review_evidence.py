@@ -948,8 +948,17 @@ class TestARelabelINSIDETheNoteheadFamily(_Case):
         quarter AND the human's half. Closing it needs either a rule that
         `is_a:<other notehead>` supersedes the head class, or one that refuses
         the machine's box — and the second is `redrawn`'s open question, which
-        nobody has decided. Out of 3.4c's scope, IN 3.4c's report."""
-        self.assertEqual(self.d.notes_after, self.d.notes_before + 1)
+        nobody has decided. Out of 3.4c's scope, IN 3.4c's report.
+
+        ⚠️ ROADMAP 2.89 CHANGED WHAT THIS PRICE IS. EXPORT no longer mode-votes
+        a chord whose heads disagree, so the machine's quarter and the human's
+        half -- one chord by x, two values -- are BOTH refused
+        (`chord_value_undecided`) and the bar carries neither: one note FEWER
+        than before the review, where it used to carry two. The human's half
+        is lost with the machine's quarter, which is the same open question
+        (a relabel should supersede the head it relabels) in its other shape.
+        """
+        self.assertEqual(self.d.notes_after, self.d.notes_before - 1)
 
 
 class TestADuplicateIsOnePieceOfInk(_Case):
@@ -1182,7 +1191,10 @@ class TestBelongsToAnotherStaff(_Case):
         self.assertEqual(v["reason"], "human_other_staff")
         self.assertEqual(
             [(h["quantity"], h["how"]) for h in d.basis_names_human],
-            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used")])
+            # ROADMAP 2.102: `adjudicate_duration` now reads the refusal, so the
+            # duration (and the meter voted on it) name it in their basis too
+            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used"),
+             (Q.DURATION, "basis"), (Q.METER, "basis")])
         self.assertEqual(d.notes_after, d.notes_before - 1)
 
     def test_an_owner_row_on_a_CONTESTED_glyph_is_still_the_contest_s(self):
@@ -1336,8 +1348,11 @@ class TestAConfirmedBoxIsFiledAndChangesNothing(_Case):
         self.assertEqual(entry["human_rows"][0]["value"],
                          "confirmed:noteheadBlackOnLine")
         named = entry["verdicts_that_named_it"]
-        self.assertEqual([v["decider"] for v in named],
-                         ["adjudicate_notehead_is_not_a_notehead"])
+        self.assertEqual(sorted(v["decider"] for v in named),
+                         ["adjudicate_duration", "adjudicate_meter",
+                          "adjudicate_notehead_is_not_a_notehead"])  # 2.102
+        named = [v for v in named
+                 if v["decider"] == "adjudicate_notehead_is_not_a_notehead"]
         self.assertEqual(named[0]["in_used"], [],
                          "the agreement was WEIGHED — no rule reads "
                          "`confirmed`, so this is a finding, not a pass")

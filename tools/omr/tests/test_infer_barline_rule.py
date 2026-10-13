@@ -427,10 +427,28 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
     def setUp(self):
         infer._ensure_rules()
 
+    #: ⚠️ ONE NAMED EXCEPTION (ROADMAP 2.81 phase 2, Sean 2026-10-10: *"make
+    #: sure the bar math adds up"*; default ON since 2026-10-11, Sean "Yes"):
+    #: `collapse_bare_stem_by_bar` reads the printed meter, so bar-fill is NOT a
+    #: legitimate score for it. `test_staged_bare_stem_2_81` pins that it is the
+    #: only such rule, and `self_check.py` looks only at the rules that RAN, so
+    #: a run with the flag off keeps this invariant and a run with it on is
+    #: refused a bar-fill score instead of being given one.
+    METER_READERS = ("collapse_bare_stem_by_bar", "collapse_narrowed_by_bar")
+
     def test_no_registered_rule_declares_the_meter(self):
         for r in infer.RULES:
+            if r.inference.value in self.METER_READERS:
+                continue
             self.assertEqual(infer.scoring_conflict(r, (Q.METER,)), (),
                              f"{r.inference.value} reads Q.METER")
+
+    def test_with_the_bare_stem_flag_OFF_no_enabled_rule_declares_the_meter(
+            self):
+        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0", infer.NARROWED_BAR_ENV: "0"}):
+            for r in infer.enabled_rules():
+                self.assertEqual(infer.scoring_conflict(r, (Q.METER,)), (),
+                                 f"{r.inference.value} reads Q.METER")
 
     def test_the_barline_rule_is_registered(self):
         names = {r.inference for r in infer.RULES}

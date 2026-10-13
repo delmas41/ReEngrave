@@ -9,6 +9,25 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- housekeeping: CLAUDE.md cut from 6,174 to ~1,850 words (`housekeeping-claude-md`, NOT merged -- Sean reviews first)
+
+- Sean: "make Claude.md much more concise ... don't want to lose specific knowledge." No product code, no test runs. The detail moved, not deleted, into six focused docs: `docs/running.md` (setup, worktree symlinks, every CLI, small/full re-gathers, web app internals, deployment), `docs/staged-internals.md` (two readers, record model, adjudicators, EVALUATE/INFER/EXPORT, derived checks), `docs/page-facts.md` (the full engraving/plate facts with Sean's quotes and dates, plus the 2026-10-12/13 rulings), `docs/measuring.md` (acceptance set, A/B rules, tests, flags), `docs/data-sources.md`, `docs/detector.md`.
+- CLAUDE.md now holds: the product and definition of done, the ten rules, the stage model, a new §4 of Sean's 2026-10-12/13 output rules (READ/GUESSED-blue/UNREAD, eighth only on evidence, tuplet only when seen, clef-then-key order, 95% not fixed), the seven page conventions that cost lanes weekly, how a session works (worktrees, lean-lane and machine-load caps, evidence, landing, tests), and an index of where everything else lives.
+- Every old section/bullet is mapped in `docs/claude-md-migration-2026-10-13.md` (kept / moved / dropped with reason). PROJECT_BRIEF's five pointers into old CLAUDE.md sections repointed. Old section numbers cited in ROADMAP/DECISIONS lines resolve through the migration table.
+
+## 2026-10-13 -- docs-only landings: ROADMAP 2.96, ROADMAP 2.101, the inference-principles plan (`land-docs-2026-10-13`)
+
+- Sean, 2026-10-13: "Land the docs only branches." Each branch was checked docs-only first (diff of tools/, backend/, frontend/ against origin/main empty). Merges: `lane-2.96-held-funnel` `34265e13`, `lane-2.101-held-out` `cf5729cb`, `lane-infer-principles` `8560bb16`.
+- 2.96: why bars are held out (minimal-cause funnel over the 20261011-night records), findings in `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`, probes, Sean's 15 tile answers in `out/print/2.96-review/`. 2.101: held-out check on Dvorak 8 / Schumann 2 / Tchaikovsky 4, `benchmarks/omr-held-out-2026-10/FINDINGS.md` (now linked both ways with `FINDINGS-2.102.md`), Sean's 17 answers in `out/print/2.101-review/`. Plan: `docs/plan-2026-10-12-inference-principles.md`, status header added (proposal, superseded in part by the no-hidden-guesses decision).
+- Conflicts (ROADMAP, DECISIONS, version_memory, 2.96 FINDINGS) were all append-vs-append; both sides kept, no line dropped. Only exception: ROADMAP 2.101 row, where the branch's row (Sean's answers) replaced main's older 'in flight' row, and the branch's older 2.100 row was dropped in favour of main's landed one.
+
+## 2026-10-12 -- ROADMAP 2.101 held-out check (lane-2.101-held-out)
+
+Diagnosis only, no product code. Three non-Litolff/Breitkopf scans (Dvorak 8 Novello, Schumann 2 Peters, Tchaikovsky 4 Jurgenson), base vs arm gathers; probes, FINDINGS and 17 blind tiles in `benchmarks/omr-held-out-2026-10/` and `out/print/2.101-review/`. ROADMAP 2.101 updated.
+Sean's 17 tile answers scored (answers.json, FINDINGS, DECISIONS): rests 8/8 and whole-bar rests 2/2 right; 2.81 wrong on a tuplet and a quarter; hollow-head half wrong on a C meter and tremolo slashes.
+
+---
+
 ⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
 carries the dependency, not the heading.** Parallel sessions dated their own
 blocks by their own reckoning; the GATHER-coverage entry stands above the
@@ -29,6 +48,137 @@ pointing at headings no longer in the file.)*
 - Findings: production hollow rows trained on hollow3 via v19-v21 (not Jurgenson v12); Brahms p0 hollow recall 27/27 at 0.25 and 0.10; the hollow2 counter-ranker failed its print check and is not used to select.
 
 ---
+
+## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
+
+- `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
+- `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
+- Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
+## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
+
+## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)
+
+- STAGED EXPORT. `export.guess_of` classifies each written symbol READ / GUESSED from its verdict's `decider` chain (any `infer:*`, EVALUATE `reconcile_duration`, or a pitch/accidental resting on an inferred clef/key) and carries the superseded narrowing's candidates; MusicXML gets `color` on `<note>` plus a `<notations><other-notation>` JSON carrier; LilyPond (`staged/lilypond.py`, a marked renderer over the frozen legacy one) gets `\tweak color`, a rest override and a header legend; `report["guessed"]` counts per family and per rule. No decision changed: both night records re-export byte-identical minus the flags. Tests: `tools/omr/tests/test_staged_guess_flag_2_103.py` (RED first, READ controls). FINDINGS: `benchmarks/omr-staged-export-2026-09/FINDINGS.md` §7.
+
+---
+## 2026-10-12 -- ROADMAP 2.100 only a clef stands before a key signature's accidentals (branch `lane-2.100-key-order`, NOT merged, Sean judges the tiles)
+
+- STAGED ADJUDICATE. New `adjudicators/key_slots.py` (the header's key window: clef edge to the key run's last box, the run being `header._marker_run`'s own rule; one unboxed slot bridged for KEY-class boxes; a REST-class box on the next slot's x within 0.2 spaces); `adjudicate_rest_is_not_a_rest` and `adjudicate_notehead_is_not_a_notehead` refuse a box in it (`rest_in_a_key_signature_slot`, `notehead_in_a_key_signature_slot`). No flag, no GATHER change. Small re-gathers: Litolff p1-3 5 rest8th refused, 3 bars released, held 115 -> 111, 0 newly overfull, 0 key verdicts changed; Brahms p0-1 0 reach. 22 tests RED-first (`test_staged_key_slots_2_100.py`). Half (2) (the fixed order) measured, not built: see ROADMAP 2.100 and `benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §2.100. Tiles `out/print/2.100-review/` (13, answers only in manifest.json). `staged.check` 192 = base. ROUND 2 (Sean: tiles 3 and 13 are time signatures, the rest key accidentals): any non-structural class in the key slots is refused (`in_a_key_signature_slot` on the flag / arpeggiato / arc decisions; a `timeSig` in its own key slots leaves `movement.py`'s meter statement via `key_slots.meter_rows_outside_key_slots`); a rest box on the sibling staves' `timeSig` column is `rest_is_a_meter_digit`. Litolff p1-3 11 refused, held 115 -> 108, 0 newly overfull, 0 meter/key verdicts changed; Brahms p0-1 7 refused, 0 changed. Tiles `out/print/2.100-review-2/`. SEAN ANSWERED (2026-10-12): all 7 refusals and 3 kept eighth-rest controls right; control tile 1 wrong (a kept `restQuarter` box is a barline, pre-existing). A tie/arpeggiato/rest refusal cannot add a key accidental (key count comes only from `Q.KEYSIG_MARKER` rows, `gather.py:10061`).
+
+---
+## 2026-10-12 -- ROADMAP 2.67b the terms library wired into the direction reader, with limits (branch `lane-2.67b-terms-wiring`, LANDED on main 2026-10-12, Sean: "Yes to all")
+
+- STAGED only; LEGACY unchanged (no scope passed). `direction_lexicon.lookup(text, scope=)` + `LexiconScope`/`scope_for`; `direction_text.read_directions(lexicon_scope=)`; `gather_direction_words(roster=, work_id=)` builds the scope from the work id and the margin labels gathered so far and files it on every word; `adjudicators/text._held_back` (wrong family / heading out of place, positive evidence only, abstain `held_back`); export `direction_words_held_back`; `pipeline`/`__main__` forward `--work-id` to gather. Data: `data/musical-terms/composer-languages.json`; `musical_terms` gains `composer_languages`, `edition_languages`, `FAMILY_OF`, `is_heading`.
+- 12 tests (`test_direction_terms_scope_2_67b.py`), each of six limits broken in turn turns one red. Fast tier green; `check` 192 open on branch and on main `4275d7c3` alike. Re-decided `20261011-night`: 0 held on both; one-page gathers: Brahms p1 / Litolff p3 no library words, Mahler 5 Peters p6 `mit dem Bogen` x2 (one held: `Bässe` named a voice). Crops `out/print/2.67b/`.
+- Round 2: `identity._is_the_orchestral_bass` (an ambiguous bass label read as the voice, with string staves above and none below, is the Contrabass; reason `orchestral_bass`); the library re-copied from Gradus main `333423c66` (generated from `42a4c57ed`, 1,760 terms: + `Ein`, `Schritt`, `Kondukt`, `Geschlagen`, `Mit dem Bogen geschlagen`); `mit-dem-bogen-geschlagen` strings-only; `CONNECTIVE_MAX_LETTERS` (a lone `general` word of <=4 letters is glue, `loco`/`vide` excepted). Mahler 5 Peters p4+p6: `Bässe` -> Contrabass, 0 held, `mit dem Bogen geschlagen` read whole.
+
+## 2026-10-12 -- ROADMAP 2.95 a word printed between two braced staves names both (branch `lane-2.95-bracket-label`, LANDED on main 2026-10-12, Sean: "Land 2.95")
+
+- STAGED and LEGACY (the margin reader is shared). Brahms `(C)` / `Hr.` / `(Es)`: Surya read `Hr.` and `_surya_worker._assign` dropped it or gave it to a tick 2 px nearer, so horn staves read a bare crook no lexicon names. `_surya_worker._between` reports blocks centred within 0.15 of the gap between adjacent ticks (assignment unchanged); `staff_labels_surya.spread_shared_words` completes a bare-crook staff with the word only if it is a lexicon hit and both flanking staves are bare crooks (or one already holds it); `StaffLabel.shared_word` + `Q.MARGIN_LABEL` detail `shared_word`; completed text is word-first (`Hr. (C)` / `Hr. (Es)`) because `lookup` reads a crook only after the word (`(C) Hr.` -> offset 1, wrong; fix is 2.94's; Horn offsets are never consumed on STAGED, 0 key/clef verdict changes on the 47). No flag. Convention CONFIRMED by Sean 2026-10-12 (*"the bracket makes them all horns"*, DECISIONS); the brace itself is not read (extent = the two staves the word sits between; probe: 47 of 47 completions in a visibly braced pair, no horn brace over 2 staves in either movement). Reach: Brahms 47 staves (fresh Surya read of pdf 1-26), Litolff 0. Base vs arm re-adjudication of the 10-11 night records (identity chain, record streamed): Brahms `instrument` decided 635 -> 682, `slot_index` decided 690 -> 691, 0 decided values changed; Litolff identical; base rebuild reproduces the saved record 1,382 of 1,382. Fast tier 7,444 passed, `check` 192. FINDINGS `omr-staff-identity-2026-09` 2.95; `probe_shared_word_2_95.py`.
+
+
+## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, LANDED on main 2026-10-12, Sean: "Land 2.94 with the (C) Hr. fix")
+
+`work_roster.recover_worn` + `decide(named_in_system=)` + `identity._names_in_system`: a short token one letter off exactly one alias, instrument held by name in the catalog roster and absent from the system's other labels, is named (`recovered_worn`). Lexicon unchanged. Night records: Litolff 3 staves named, Brahms 1, 0 names changed, 4 of 4 print-checked. Tests `test_staged_worn_label.py`. FINDINGS §2.94. Also `instruments.parse_leading_crook`: `(C) Hr.` -> 0, `(Es) Hr.` -> 3 (was the horn default 1; LEGACY `StaffLabel.fifths_offset` changes for those labels); Brahms key chain re-decided, 0 of 1,436 verdicts moved; `test_lookup_leading_crook.py`, `test_instruments.py` updated.
+## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`, LANDED on main 2026-10-12, Sean: "Land 2.93 once it's green")
+
+- STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
+
+## 2026-10-12 -- ROADMAP 2.98 a lone whole rest is the bar even where the meter is not read (branch `lane-2.98-whole-rest-bar`, LANDED on main 2026-10-12, Sean: "Land")
+STAGED. `export._lone_whole_rest_is_the_bar` (EXPORT and `lilypond.py`): a lone dotless `restWhole` is marked a measure rest and sized to the `<time>` the file has in force; `consequences._whole_rest_ink_twin`: a second box on the rest's own ink decided a whole rest no longer blocks `size_measure_rest`. Litolff held 1,044 -> 1,012 (merged tree 1,085 -> 1,053), Brahms 2,553 -> 2,125 (identical on the merged tree), `bars add up` overfull 0, engraved control identical. Tests `test_staged_whole_rest_bar_2_98.py`, FINDINGS 2.98, 12 tiles. Sean: 12 of 12 tiles whole-bar rests, tiles 7-12 6/8.
+## 2026-10-12 -- ROADMAP 2.99 eighth and quarter rests the detector never boxed are read from the ink (branch `lane-2.99-unboxed-rests`, LANDED on main 2026-10-12, Sean: "Land 2.99"; tiles 7 of 8 decided right, tile 10 a slur end now refused, tile 6 a known miss; key-flat-as-rest: see 2.100)
+
+GATHER `gather_unboxed_rest_ink` (`Q.UNBOXED_REST_SHAPE`, ordinal 350000+) -> ADJUDICATE `adjudicate_unboxed_ink_is_a_rest` (`adjudicators/unboxed_rest.py`, no bar read) -> EVALUATE `size_unboxed_rest` -> EXPORT writes the rest; the accounting equality gained `unboxed_rests_placed`. Litolff p1-3: 16 decided, 10 bars released, held 122 -> 115; Brahms p0-1: 4 decided, 1 released. 3 bars newly overfull, explained (key-flat boxed as rest8th; cross-staff chord). 30 tests. `staged.check` 192 = base. Tiles `out/print/2.99-review/`. FINDINGS 2.99.
+
+---
+
+## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
+
+- Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
+## 2026-10-12 -- ROADMAP 2.96 why bars are held out now (branch `lane-2.96-held-funnel`, not merged)
+
+- Diagnosis only, STAGED, EXPORT-only; no product code changed. `benchmarks/omr-bar-sum-holdout-2026-09/probe/held_funnel_2_96.py` (reuses 2.22's dump and its control, adds ink pieces, dot rows, cell widths, per-event verdict flags), `classify_held_2_96.py` (evidenced vs arithmetic fixes, exhaustive partition asserted to sum, wrong-meter negative control), `summarise_2_96.py`, `n_shape_2_96.py`, `tiles_2_96.py`; results in `out/2.96/`; 15 tiles in `out/print/2.96-review/`. FINDINGS 2.96, ROADMAP 2.96. Top evidenced causes: narrowed heads the bar lands (792), a lone whole rest left at 4 beats (458), unboxed rest ink (448); the dot, head-fill and beam rows are not causes without a record row. Fast tier and `check` not run (no `tools/` change).
+
+## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
+
+- Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
+
+## 2026-10-11 -- ROADMAP 2.88 half notes 2.83 left narrowed (branch `lane-2.88-halves`, LANDED on main 2026-10-11, Sean: "Yes")
+
+- STAGED, ADJUDICATE only (`rhythm.adjudicate_duration`): a hollow head whose stem tip the tip reader cannot tell is a half on the head's own firm reading (two rasters, ring - centre >= 0.2, head-shaped box, filed cannot-tell, no flag/beam/dispute). 17 Litolff heads narrowed -> decided half (rule reads the RAW raster firmly after Sean's 14 tiles; fast tier 7,410 passed), nothing else moves; Sean's judged halves 18/18, quarters and the 2.83 tile-6 fragment unchanged; Brahms hand truth unchanged. 13 new tests (`test_staged_hollow_tip_unread_2_88.py`, RED first on `51a01593`). 14 blind tiles `out/print/2.88-review/`. FINDINGS `omr-missing-notes-2026-09` 21.
+## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
+
+STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so
+`group_chords_in_measure`'s divisi guard fires; `_settle_divisi_pairs` keeps them only in bars where every chord has a decided direction and the two streams carry equal
+time (the unconditional version held out 5 written Litolff bars), `_voice_split` falls back to 2.21 rule 1 on the exporter's own events where `Q.VOICES` did not part a pair;
+one stem is never split. Counters `part_join.divisi_at_export`, `written.two_voice_bars_from_exporter_stems`. Reach: opposite-direction refused chords Litolff 2/49,
+Brahms 39/178. Brahms two-voice bars 1 -> 7 (pitched 6990 unchanged), Litolff 1 -> 2 (pitched 5563 -> 5551: 2 mistimed fused bars now held out); engraved DEAD, identical.
+Fast tier 7,408 passed, `check` 192. Test `test_staged_divisi_carry_2026_10_11.py` (RED first with the facts patched off: 5 fail). Probes `probe/2.90_*.py`; 10 blind tiles `out/print/2.90-review/`. FINDINGS `omr-head-fill-2026-09` Sec.14.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.89 EXPORT stops mode-voting a chord (branch `lane-2.89-chord-export`, LANDED on main 2026-10-11, Sean: "Land")
+
+`staged/export.py`: heads of a chord whose written values disagree are refused as `chord_value_undecided` instead of being written at the mode.
+Litolff whole 49 chords/109 heads, p1-3 6/15, Brahms p1 13/29; engraved 0 (unchanged). Test `test_staged_chord_value_vote_2026_10_11.py` (RED first on the
+old tree); `test_stage_review_evidence` price test updated. Sean's 11 tiles: 6 one voice, 5 two voices (2.90 carries stem direction to EXPORT). Fast tier 7,398 passed, `check` 192. `probe/2.89_tiles.py`; 11 blind tiles `out/print/2.89-review/`. FINDINGS `omr-head-fill-2026-09` Sec.13.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+`reconcile_duration` no longer lengthens a note to land a short bar where the bar
+holds ink no standing glyph explains (a missed rest fills the same gap; Brahms
+Contrabass bar 13 was written as a quarter where the print has a second eighth
+rest). New GATHER row `Q.CELL_INK_PIECES` (`gather_cell_ink_pieces`, reader
+`CV_INK_PIECES`) + EVALUATE `_missed_rest_witness`; a shortening is unaffected;
+no ink reading refuses (rule 8). `d04fd058` (meter in force at the bar for
+`reconcile_duration` / `reinstate_rest_between_staves`) cherry-picked as the
+base. Brahms p0-1: 1 bar changed (Contrabass 13); Litolff p1-3: 0. Does not
+fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
+`staged.check` 192 = base. FINDINGS §2.80.
+
+---
+---
+
+## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+Sean (tile 1): *"It is an 8th note rest"*. A narrow notehead-classed box refused
+`too_narrow` is read as an eighth rest where its ink says so, never off the bar:
+GATHER `gather_narrow_box_shape` (`Q.NARROW_BOX_SHAPE`) -> ADJUDICATE
+`adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+`adjudicators/narrow_rest.py`) -> EVALUATE `size_reinstated_rest` -> EXPORT
+writes a rest. Brahms p0-1: 243 `too_narrow`, 2 become rests; Contrabass bar 13
+adds up with no note changed. Litolff p1-3: 20, 0. DECISIONS line added. 20
+tests. `staged.check` 192 = base. Tiles `out/print/2.80-review-2/`. FINDINGS 2.80b.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.81 phase 2: a bare stem is a quarter, as a labelled likelihood settled by the bar (branch `lane-2.81-phase2`, LANDED on main 2026-10-11, Sean: "Yes")
+
+- STAGED, ADJUDICATE + INFER. `OMR_BARE_STEM_BAR` is default ON (deny-list, Sean's "Yes" after his 14 tiles: the 6 settled heads 6/6 right); `OMR_BARE_STEM_RANK` stays OFF. A control arm with both off reproduces every standing duration on the two small re-gathers.
+- ADJUDICATE `adjudicate_duration` (`beam_discounted_uncertain`): `OMR_BARE_STEM_RANK` ranks the quarter above the eighth where the head's own stem is decided, its tip window reads clean and no refused stroke stands at the tip (`_refused_stroke_at_tip`); details `bare_stem_evidence_holds` / `_tip_window_clean` / `_refused_stroke_at_tip` / `_likelihood` written either way. Decides nothing. It moves `reconcile_duration`'s sums (2.80's): five Brahms pdf 1 bars change answer, so it ships OFF.
+- INFER `collapse_bare_stem_by_bar` (`OMR_BARE_STEM_BAR`, new `Inference` member): one staff's bar, decided notes fixed, every narrowing free over its own candidates, the printed meter must be landed exactly and every landing must agree on the member, whose tip window must read clean. Follows `Q.METER`'s `used` chain to the printed template/glyph/OCR rows (the verdict's basis holds the durations). Reads `Q.METER`: bar-fill is not a legitimate score for it.
+- Sean's page (Brahms pdf 0), 49 judged members: decided right 33 / wrong 0 / narrowed 16 (base 0 / 0 / 49). Count pages: Brahms pdf 1 0 of 47, Litolff pdf 3 7 of 13.
+- Tests: `tools/omr/tests/test_staged_bare_stem_2_81.py` (27, RED on the old tree first). Docs: two rows in `docs/flags-2026-09.md`. Probes `benchmarks/omr-missing-notes-2026-09/probe/l281p2_*.py`; tiles `out/print/2.81-phase2-review/`.
+
+---
+
+
+## 2026-10-11 -- ROADMAP 2.12m articulation owners LANDED on main (Sean: "Land", after 2.83; branch `lane-2.12g-long-stem` 56f637f1)
+
+- STAGED, ADJUDICATE, `adjudicate_articulation_owner` + `reconcile_articulation_twins` (run after ARTICULATION_OWNER): a mark at a long chord stem's tip is the chord's; one notehead with a stem up AND down is two voices (a mark on either side is its); a mark between two staves is the noted staff's when the other staff's bar is empty (whole rest, no note); one printed mark decided in two cells keeps one owner -- duplicates dropped, the more specific rule wins, an equal tie goes to the LOWER staff (Sean's confirmed convention). Sean's blind tiles across the item: every real mark right since round 1. Brahms whole on the 10-09 record: +5 +11 +9 decided, 0 marks with two owners. 2.83 touched no stem-direction or ownership code. On the landing merge: `check` 192 -> 192, fast tier 7,332 passed, 0 failed. FINDINGS `omr-shape-role-2026-09` Part 12.
+
+## 2026-10-11 -- 2.83 landed: the flag at the stem tip
+
+- `Q.STEM_TIP_INK` reads the flag's shape from the tip with the old window as a second witness; a decline never becomes 'no flag'; 2.70 halves only on a normal-sized head box. Sean's 24 tiles 0 wrong. Cost (18 Litolff halves narrowed) -> 2.88.
+
+## 2026-10-11 -- docs: coordination record (cloud session; no code change)
+
+- Sean asked for one view of cloud vs Mac work. Found and fixed a ROADMAP number clash (2.84 claimed by both `lane-tenuto-ledger` and `lane-stem-finder`; the stem finder became 2.87) and set one landing order, which held: q883 -> crops-bar-drift -> 2.84 -> 2.87 -> 2.13b -> 2.85, all on main.
+- Sean's blind answers on 2.83 recorded on `lane-2.83-flag-tip` (`d4c327c3`: 5 right / 2 narrowed / 3 wrong); fix requested.
+- ROADMAP: START HERE status line; 2.83 row (tile results); 2.86 row PARKED (measured dead on its lane). PROJECT_BRIEF: "Where things stand (2026-10-11)" and how the work is split between Mac and cloud sessions. CLAUDE.md section 13: claim a ROADMAP number on main before building; what a cloud session can and cannot do. DECISIONS: the two coordination lessons.
+- 11 finished sessions archived (their work verified on GitHub first).
 
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
@@ -101,6 +251,15 @@ pointing at headings no longer in the file.)*
 - Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
 - Sean's 21 gallery answers (2026-10-11): 2.12m 3 right / 2 wrong of 5 decided (it picked the upper staff's stem-down chord; the accent was the lower chord's) -> not landing as built; 2.84 tenuto tiles: 0 tenutos, 5 ledgers, 6 other ink (E, beam, half note, p, slur, accent area); mirror confirmed. answers.json in both review dirs.
 
+## 2026-10-10 (night) — 2.12m built on lane: an articulation at a long chord stem's tip
+
+- `lane-2.12g-long-stem` (not merged; the brief's "2.12g" is taken, row is 2.12m): `adjudicate_articulation_owner` decides `stem_tip_of_long_chord` for Sean's 2.12f tile-6 case (a chord stem reaching a ledger head, the mark at its tip) on positive evidence only; every other `stem_contradicts_class_side` stays abstained with the failed condition named. Research on stem-side placement (Gould 2nd-hand, Dorico, LilyPond source) in FINDINGS `omr-shape-role-2026-09` Part 12. 11 RED-first tests; `check` 192 -> 192. Needs the Mac readjudication + blind tiles.
+- Measured on the Mac (base `40ab373a` vs arm `46914018`, four shared records): Brahms whole 5 of 28 `stem_contradicts_class_side` marks now decided `stem_tip_of_long_chord` (the tile-6 control among them, decided to the chord below), 0 other rows changed; control `glyph_owner` short of N of N identically in both trees (`reconcile_group_owners`); 9 blind tiles `out/print/2.12m-review/` for Sean; new `select_artic_2_12m_tiles.py`. FINDINGS Part 12 §7.
+- Sean scored the 9 tiles (up-stem 3 right, down-stem 2 wrong); the misses are a two-voice test gap, not the stem reader (§8c). Upper-half/stem-up checked on 101 orchestral encodings: not reliable alone (§8d). Sean's "one head, stems up and down = two voices" built (`787fa6af`): 11 more Brahms marks decided, 10 blind tiles `out/print/2.12m-shared-head-review/` -- Sean 10 of 10 right; `check` 192 -> 192; fast tier 7,131 passed, 0 failed.
+- Sean's empty-bar rule built (`408398f6`): a mark between two staves is the noted staff's when the other staff's bar holds no note and a whole rest; 9 Brahms + 1 Litolff whole marks decided, 0 other rows changed; Sean 13 of 13 right (tile 5 a ledger line, not a tenuto). FINDINGS Part 12 §10.
+- Merged origin/main (`aed05e48`: 2.84, 2.87, 2.13b; merge moved 1 saved-record row, same head). One printed mark with two owners -> the loser dropped (`b1c0061f`, `reconcile_articulation_twins`, run after ARTICULATION_OWNER): 0 two-owner marks left; Brahms 2 duplicates, 4 losers, 4 opposite-side ties unowned; 6 blind tiles. FINDINGS Part 12 §11.
+- Sean confirmed the lower-staff convention (between two staves, nothing more specific -> the lower staff's), built `70e56c10` as the twin tie-breaker: the 4 Brahms ties now go to the copies Sean named. FINDINGS Part 12 §11a.
+
 ## 2026-10-10 (night) — 1.7 stems landed
 
 - `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
@@ -110,6 +269,9 @@ pointing at headings no longer in the file.)*
 
 - 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
 - 2.81 measured (~0.76, below 95%) and its misses imaged; 2.83 (flag tip) and 1.7-stems (stem measurement) running at session end. ROADMAP START HERE names the next session's plan.
+## 2026-10-11 (day) — 2.83 flag-tip: Sean's blind answers recorded
+
+- `out/print/2.83-review/answers.json` (branch `lane-2.83-flag-tip`, not merged to main): arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow).
 
 ## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
 
@@ -5887,3 +6049,32 @@ running changelog.
 theory layer, etc.) predates this file and is not backfilled here — see
 [PROJECT_STATUS.md](PROJECT_STATUS.md) for the narrative history and
 `git log` for the full commit record.*
+
+## 2026-10-12 -- ROADMAP 2.100 half 1 LANDED on main (branch `lane-2.100-key-order` 0a839061, Sean: "Land 2.100")
+
+- Merged origin/main `fcacfa10` (docs-only conflicts, ROADMAP and version_memory). Fast tier 7,554 passed / 12 skipped; `check` 192 open, status ok. Half 2 (fixed-order read of the key's accidentals) remains open.
+
+## 2026-10-12 -- ROADMAP 2.102 (branch `lane-2.102-tuplet-meter-trem`, not merged)
+
+STAGED. `inferences.bar_has_tuplet`; `solve_bare_stem_bar` declines tuplet bars, unseparated columns,
+a bar a 3:2 group of three unknown stems would land, and never shortens a bare stem without its own
+stroke evidence (Sean's rule). `adjudicate_duration`: a head refused for tremolo slash / dynamic
+letter / `too_narrow` in a meter-sign column is `not_a_note_mark`. Tests `test_staged_tuplet_meter_trem_2_102.py`
+(RED-first); 2.81's eighth tests rewritten. Numbers: `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`.
+
+## 2026-10-13 -- ROADMAP 2.102 scored (lane-2.102-tuplet-meter-trem)
+Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answers.json`, `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`, DECISIONS 2026-10-13). Not-a-note refusals right; the three bar-math eighths were quarters, so narrowing them was right. No product code changed.
+
+## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
+Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.
+
+## 2026-10-13 -- ROADMAP 2.104 built (lane-2.104-flag-misses), NOT merged
+Judged flag-miss set is 2 heads (1 tip reader, 1 stem finder). `OMR_TIP_UNBLOCKED` (default OFF, `gather._observe_stem_tip_ink`) reads the flag shape again where a detection box made the tip `occupied`; 0 invented on Sean's hand truth, 0 judged quarters moved. 14 blind tiles `out/print/2.104-review/`; FINDINGS `omr-missing-notes-2026-09` §22; docs/flags row added. Awaiting Sean's tiles.
+## 2026-10-13 -- ROADMAP 2.97 landed (lane-2.97-narrowed-bars)
+STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evidence rule; missed flags go to 2.104). His review-3 tiles: eighths 2 of 2 right; of 4 newly held bars base was wrong on 3. `OMR_NARROWED_BAR` ships default OFF; EVALUATE `reconcile_duration` chord/joint settlement on. Litolff re-measure (flag_ink_unread as evidence): base 1,027 held / 5,937 notes, arm ON 1,018 / 5,994 (newly held 5), arm as shipped 1,033 / 5,916; Brahms not re-measured. Fast tier 7,622 passed, 12 skipped, 2 xfailed; `staged.check` 192 open. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.97g, DECISIONS 2026-10-13.
+
+## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
+STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.
+
+## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
+STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.

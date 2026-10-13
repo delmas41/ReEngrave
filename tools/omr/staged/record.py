@@ -581,17 +581,36 @@ class Q(_Vocab):
     #: `cannot tell` the pipeline was writing as `quarter` (rule 8). One row
     #: per (`Q.STEM` row, END) -- GATHER does not know which end of a stem is
     #: its TIP (that is `Q.STEM_DIRECTION`'s question, decided later in
-    #: ADJUDICATE), so both the box's top and its bottom are asked. `value`
-    #: is whether a window to the stem's RIGHT, walking 1.0-2.5 staff spaces
-    #: from that end back toward the body, reads densely inked while the
-    #: mirrored window on the LEFT does not -- read off the staff-ERASED
-    #: raster (CLAUDE.md SS9), reusing `ledger_rung_ink`'s own windowed-
-    #: density-with-background-contrast shape. `detail.stem_row_id` joins it
-    #: back to the exact `Q.STEM` row it measured; ABSTAINS -- never
-    #: defaults -- where the raster or the cell's staff-space unit is
-    #: missing, or a beam stroke or ANY other detection already occupies the
-    #: window (a neighbour's head, an accidental, text, a slur/tie arc --
-    #: ink this record can already name is not this quantity's to claim).
+    #: ADJUDICATE), so both the box's top and its bottom are asked.
+    #:
+    #: ROADMAP 2.83 (Sean, 2026-10-10: *"8th note flags ... not being seen ...
+    #: make sure the reader box is big enough"*) REPLACED the window 2.18c
+    #: described here (1.0-2.5 spaces back, a 0.30 density cut: it sat on the
+    #: thin arm of his flags and read 20 of his 21 as bare). `value` is now
+    #: whether the ink CONNECTED to the stem at that end, to its RIGHT, from the
+    #: tip itself back to the stem's own head, is FLAG-SHAPED (starts at the tip,
+    #: stands out 0.33-1.5 spaces, an arm of 0.4), off the staff-ERASED raster
+    #: (CLAUDE.md SS9), sized from his flag boxes (FINDINGS 2.83). `False` is a
+    #: positive "nothing hangs from this tip" and nothing else: where ink hangs
+    #: there that is not flag-shaped (a beam or slur that runs on, ink on both
+    #: sides, a bar across the tip) or the tip cannot be read, the reader
+    #: ABSTAINS (`ambiguous`, `detail.why` and the measures) -- cannot tell is
+    #: never filed as clean (rule 8). `detail.stem_row_id` joins it back to the
+    #: exact `Q.STEM` row it measured; it also ABSTAINS where the raster or the
+    #: cell's staff-space unit is missing, where a notehead stands at that end,
+    #: or where a beam stroke or ANY other detection already occupies the
+    #: window (a neighbour's head, an accidental, text, a slur/tie arc -- ink
+    #: this record can already name is not this quantity's to claim).
+    #:
+    #: ROADMAP 2.83 FIX ROUND (Sean's tiles 4 and 8, eighths the 2.18c window
+    #: counted): the shape reader may ADD a witness, never REMOVE one. The 2.18c
+    #: density window is still read (`gather.stem_tip_window`, unchanged) as the
+    #: SECOND witness and each row says which spoke (`detail.witness`: `shape`,
+    #: `window` where the shape reader could not tell and the window saw a hook,
+    #: `disputed` where the shape reader saw NOTHING hanging and the window saw
+    #: a hook -- those rows carry `detail.tip_disagree`, and ADJUDICATE NARROWS
+    #: over them, never deciding level 0). `detail.window_found` is the window's
+    #: own answer where it was read.
     STEM_TIP_INK = "stem_tip_ink"
     #: ROADMAP 2.69 follow-up (Sean, 2026-10-09: *"a dot can not fully or
     #: mostly overlap a flag but it can touch it"*). Filed on an
@@ -756,6 +775,39 @@ class Q(_Vocab):
     #: the detector coverage so a rule can weigh them; this reader applies
     #: neither.
     INK = "ink"
+
+    #: ⚠️⚠️ ROADMAP 2.80 -- THE INK A BAR HOLDS THAT IS STAFF-SIZED, WITH ITS
+    #: PAGE BOX, so a later stage can ask "is any of it left unexplained?".
+    #: One row per cell (`value` = how many pieces), the pieces in `detail.
+    #: pieces` as `[x0, y0, x1, y1, area_in_staff_spaces_squared]` in PAGE
+    #: pixels. Not `Q.INK`: its per-piece form is behind `--ink-rows` and costs
+    #: a record ~115 MB a page, and its default is a per-cell SUMMARY with no
+    #: geometry. This is the middle: only the pieces a rest, a head or a
+    #: flag could be (area >= `INK_PIECE_MIN_AREA_SP2`, not wider than a bar's
+    #: own furniture, centre inside the staff band +/- 1.5 spaces).
+    #: ⚠️ A PIECE IS NOT A MARK (staff-line erasure splits an eighth rest into
+    #: a blob and a tail) and GATHER decides nothing: EVALUATE's
+    #: `reconcile_duration` subtracts the pieces the standing glyphs explain
+    #: and asks whether anything is left (a MISSED rest), because a bar short
+    #: by one rest looks exactly like a note one beam too short.
+    CELL_INK_PIECES = "cell_ink_pieces"
+
+    #: ⚠️⚠️ ROADMAP 2.80b -- WHAT THE INK UNDER A NARROW NOTEHEAD-CLASSED BOX
+    #: LOOKS LIKE. One row per notehead-classed detection narrower than
+    #: `notehead_precision.TOO_NARROW_MIN_SPACES` (a head is ~1.3 spaces wide;
+    #: Sean's Brahms Contrabass bar 13 tile 1: *"It is an 8th note rest"* --
+    #: the detector boxed an eighth rest's blob as `noteheadBlackInSpace`,
+    #: 0.67 spaces wide, and ADJUDICATE refused it `too_narrow`). `value` is
+    #: the height in staff spaces of the connected ink the box sits in; the
+    #: row measures that ink -- the pieces its box overlaps plus the pieces
+    #: stacked against them (staff-line erasure splits an eighth rest into a
+    #: blob and a tail) -- and which OTHER detections overlap it.
+    #: GATHER measures and names nothing: `adjudicate_narrow_box_is_a_rest`
+    #: weighs the shape. ⚠️ NO BAR IS CONSULTED -- a bar's length is not
+    #: evidence about what a mark IS (two witnesses off one raster fall
+    #: silent together, and a bar sum is the one that came from the same
+    #: reading).
+    NARROW_BOX_SHAPE = "narrow_box_shape"
 
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
@@ -1556,6 +1608,36 @@ class Q(_Vocab):
     #: only "not found"), the same INTERPRETATION claim `Q.UNREAD_MARK` and
     #: `Q.NOTEHEAD_IS_A_WHOLE_REST` make one stage over.
     EMPTY_BAR_WHOLE_REST = "empty_bar_whole_rest"
+    #: ⚠️ ROADMAP 2.80b -- IS THIS NARROW "NOTEHEAD" AN EIGHTH REST? ADJUDICATE's
+    #: weighing of `Q.NARROW_BOX_SHAPE` on a box already refused `too_narrow`.
+    #: `True` only where the ink's own shape (an eighth rest's blob and tail:
+    #: about 1.2 x 2.2 spaces, hung on the middle of the staff) says so and no
+    #: standing glyph already owns it; `False` where it is a definite
+    #: something else; abstains where the shape cannot tell. EVALUATE's
+    #: `size_reinstated_rest` gives it its length; EXPORT writes it as a rest.
+    NOTEHEAD_IS_AN_EIGHTH_REST = "notehead_is_an_eighth_rest"
+
+    #: ⚠️⚠️ ROADMAP 2.99 -- A CLUSTER OF INK THE DETECTOR NEVER BOXED THAT IS THE
+    #: SIZE OF A REST (an eighth or a quarter). Filed on a glyph subject at an
+    #: ordinal past every other reader's (`gather._UNBOXED_REST_GLYPH_BASE`), one
+    #: row per cluster of staff-sized pieces joined across the hair of gap
+    #: staff-line erasure leaves in a rest. `value` is the cluster's height in
+    #: staff spaces; the row measures its width, its staff step (the cell's own
+    #: local lines), how much of it standing detections cover and which, the
+    #: share of its height one pixel column fills (a flat/sharp has a stem; a
+    #: rest has none), and the nearest notehead to its right. It NAMES NOTHING
+    #: and consults NO BAR (CLAUDE.md §10: two witnesses off one raster fall
+    #: silent together, and a bar sum is the one built from the same reading).
+    UNBOXED_REST_SHAPE = "unboxed_rest_shape"
+
+    #: ⚠️ ROADMAP 2.99 -- IS THIS UNBOXED INK A REST, AND WHICH? ADJUDICATE's
+    #: weighing of `Q.UNBOXED_REST_SHAPE`: `"eighth"` or `"quarter"` only where
+    #: the ink's own shape and place on the staff say so and nothing else claims
+    #: it (no standing box over it, no stem-like stroke, no head beside it that
+    #: it could be the accidental of); `False` where it is decisively something
+    #: else; abstains where the shape cannot tell. EVALUATE's
+    #: `size_unboxed_rest` gives it its length; EXPORT writes it as a rest.
+    UNBOXED_INK_IS_A_REST = "unboxed_ink_is_a_rest"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2188,6 +2270,11 @@ CLAIMS: "dict[str, str]" = {
     #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
     #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
     "INK": CLAIM.MEASUREMENT,
+    "CELL_INK_PIECES": CLAIM.MEASUREMENT,
+    "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
+    "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
+    "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
+    "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
@@ -2680,6 +2767,16 @@ class READERS(_Vocab):
     #: POSITIONED piece of ink hanging under the staff's 4th line, that the
     #: detector never boxed.
     CV_REST_SEARCH = "cv_rest_search"        # gather: whole-rest search in a boxless bar
+    #: `gather.gather_cell_ink_pieces` -- ROADMAP 2.80. The SAME erased raster
+    #: `CV_INK` reads (one crop, one signal), filed as staff-sized pieces
+    #: with page boxes for EVALUATE's missed-rest question.
+    CV_INK_PIECES = "cv_ink_pieces"
+    #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
+    #: (one crop, one signal) asked what the ink under a narrow notehead box is.
+    CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
+    #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
+    #: (one crop, one signal) asked what rest-sized ink no box covers is.
+    CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"
     #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
     #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
     #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a

@@ -532,10 +532,11 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         None),
     "STEM_TIP_INK": (
         RELATION,
-        "ROADMAP 2.18c: a windowed ink density test 1.0-2.5 staff spaces "
-        "past a stem's own TOP and BOTTOM (GATHER does not know which end "
-        "is the true tip), to the stem's right, off the staff-ERASED "
-        "raster, with the mirrored window on the left as background — a "
+        "ROADMAP 2.18c, reshaped at 2.83: the shape of the ink connected "
+        "to a stem's own TOP and BOTTOM (GATHER does not know which end "
+        "is the true tip), from the tip back toward the stem's head, to "
+        "the stem's right, off the staff-ERASED raster -- flag-shaped, "
+        "nothing hanging there, or cannot tell (an abstention) -- a "
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),
@@ -635,6 +636,28 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "shape (`width_spaces`, `height_spaces`) and NO staff-grid position "
         "— see KNOWN_GAPS; this is the newest gather site and it did not get "
         "one either.",
+        None),
+    "NARROW_BOX_SHAPE": (
+        RAW_INK,
+        "ROADMAP 2.80b: the dimensions, staff position and overlapping "
+        "detections of the connected ink under a narrow notehead-classed "
+        "box. A measurement of ink with no class and no score; the staff "
+        "step it carries is a ruler reading, not a position decision.",
+        None),
+    "UNBOXED_REST_SHAPE": (
+        RAW_INK,
+        "ROADMAP 2.99: the dimensions, local staff step, stem-column share, "
+        "detector coverage and right-hand notehead neighbour of a rest-sized "
+        "cluster of ink. A measurement with no class and no score; the staff "
+        "step it carries is a ruler reading, not a position decision.",
+        None),
+    "CELL_INK_PIECES": (
+        RAW_INK,
+        "ROADMAP 2.80: the staff-sized connected pieces of ink in one cell "
+        "with their PAGE boxes, one row per cell -- `INK`'s middle form "
+        "(geometry without its per-piece record cost). No class and no "
+        "staff-grid position: `reconcile_duration` subtracts what standing "
+        "glyphs explain and asks whether anything is left.",
         None),
 
     # ── values a staff-grid coordinate would say nothing about ──────────────
@@ -809,6 +832,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.52. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
+    "CV_INK_PIECES": ("staged/gather.py", "gather_cell_ink_pieces"),
+    "CV_NARROW_BOX_SHAPE": ("staged/gather.py", "gather_narrow_box_shape"),
+    "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.

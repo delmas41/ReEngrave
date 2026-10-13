@@ -84,6 +84,16 @@ class Consequence(str, Enum):
     #: ROADMAP 2.68. A bar's direction words settled, so the word and the
     #: dynamic printed beside it on its line are ONE marking (`più f`).
     PAIR_WORD_AND_DYNAMIC = "pair_word_and_dynamic"
+    #: ROADMAP 2.80b. A narrow box ADJUDICATE refused as a head was read, on its
+    #: OWN ink, as an eighth rest (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`), so it takes
+    #: an eighth's length. Cause is that verdict and nothing about the bar, so
+    #: it runs BEFORE every meter-caused rule: the bar sums see the rest.
+    SIZE_REINSTATED_REST = "size_reinstated_rest"
+    #: ROADMAP 2.99. Rest-sized ink the detector never boxed, ADJUDICATE read as
+    #: an eighth or a quarter rest on its OWN shape and place
+    #: (`Q.UNBOXED_INK_IS_A_REST`), takes that value's length. Cause is that
+    #: verdict and nothing about the bar.
+    SIZE_UNBOXED_REST = "size_unboxed_rest"
 
 
 @dataclass(frozen=True)
@@ -161,6 +171,15 @@ DOWNHILL: Tuple[str, ...] = (
     # `reconcile_duration`, so none of them sums or re-reads a chord whose
     # heads still disagree.
     Q.STEM_VALUE,
+    # ⚠️ ROADMAP 2.80b, ABOVE `Q.METER` FOR THE REASON `Q.STEM_VALUE` IS: the
+    # rule's cause is an ADJUDICATE verdict about one mark, its effect is
+    # `Q.DURATION`, and `execution_order` sorts by the cause's rank -- so it
+    # runs before `size_measure_rest`, `reconcile_duration` and the rest, none
+    # of which then sums a bar missing a rest ADJUDICATE already read.
+    Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+    # ⚠️ ROADMAP 2.99, BESIDE IT FOR THE SAME REASON: a rest read off its own
+    # ink is in the bar before any meter-caused rule sums it.
+    Q.UNBOXED_INK_IS_A_REST,
     Q.METER,
     Q.DURATION,
     # ⚠️ ROADMAP 2.45. Downhill of `Q.DURATION` on purpose: the rule that

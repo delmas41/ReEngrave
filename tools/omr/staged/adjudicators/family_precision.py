@@ -146,6 +146,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
+from . import key_slots as _key_slots
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _same_mark_centres,
@@ -1628,6 +1629,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_is_a_duplicate_box",
+                                     "rest_in_a_key_signature_slot",
+                                     "rest_is_a_meter_digit",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1692,6 +1695,25 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         return refused
     box_row = _glyph_box_row(ev)
     if box_row is not None:
+        # ROADMAP 2.100, AFTER the human and BEFORE every rest rule: nothing
+        # but a clef stands before a key signature's accidentals (Sean,
+        # 2026-10-12), so a rest-named box in the signature's slots is the
+        # signature's own ink boxed under a second name. Geometry of the
+        # header, never the bar sum (`key_slots` module docstring).
+        in_key = _key_slots.key_slot_occupant(ev, box_row)
+        if in_key is not None:
+            detail.update(in_key["detail"])
+            return Ruling(value=True, reason="rest_in_a_key_signature_slot",
+                          used=(box_row.id,) + in_key["used"], detail=detail)
+        # ROADMAP 2.100 (Sean 2026-10-12, tiles 3 and 13: "time signatures"):
+        # a rest-class box standing in the column the system's printed time
+        # signature occupies, read off the sibling staves' digit boxes.
+        in_meter = _key_slots.meter_column_occupant(ev, box_row)
+        if in_meter is not None:
+            detail.update(in_meter["detail"])
+            return Ruling(value=True, reason="rest_is_a_meter_digit",
+                          used=(box_row.id,) + in_meter["used"],
+                          detail=detail)
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup
@@ -1726,13 +1748,14 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
 @decision(
     quantity=Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
     composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE),
+           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("arpeggiato",),
-    reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO),
+    reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO)
+    + ("in_a_key_signature_slot",),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
@@ -1746,6 +1769,9 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    in_key = _key_slot_refusal(ev, detail)
+    if in_key is not None:
+        return in_key
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)
 
 
@@ -1802,13 +1828,15 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
 @decision(
     quantity=Q.ARC_IS_NOT_AN_ARC,
     composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE),
+                   Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE,
+                   Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE),
+           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE),
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
-    + ("ink_is_a_staff_line", "ink_is_a_barline"),
+    + ("ink_is_a_staff_line", "ink_is_a_barline",
+       "in_a_key_signature_slot"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
@@ -1828,6 +1856,9 @@ def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    in_key = _key_slot_refusal(ev, detail)
+    if in_key is not None:
+        return in_key
     by_ink = _arc_ink_refusal(ev, detail)
     if by_ink is not None:
         return by_ink
@@ -2155,14 +2186,36 @@ def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _key_slot_refusal(ev: Evidence, detail: Dict[str, Any]
+                      ) -> Optional[Ruling]:
+    """ROADMAP 2.100: a box of ANY refusable class standing in its header's
+    key-signature slots is a key accidental the detector named something else
+    (Sean, 2026-10-12, tiles 1 6 7 8 9 11). Refused as what the detector
+    called it, citing the key rows. Geometry only (`key_slots`)."""
+    # the cell's own staff space, read HERE (not inside `key_slots`) so
+    # `inventory --check` sees the declaration read
+    spaces = [float(r.value) for r in ev.rows(
+        Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS)
+        if r.subject.kind is Kind.CELL and r.value]
+    in_key = _key_slots.key_slot_occupant(
+        ev, _glyph_box_row(ev), spaces[-1] if spaces else 0.0)
+    if in_key is None:
+        return None
+    detail.update(in_key["detail"])
+    return Ruling(value=True, reason="in_a_key_signature_slot",
+                  used=in_key["used"], detail=detail)
+
+
 @decision(
     quantity=Q.FLAG_IS_NOT_A_FLAG,
     composed_from=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE,
+           Q.CELL_STAFF_SPACE),
     subjects_from=Q.FLAG,
-    reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG),
+    reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG)
+    + ("in_a_key_signature_slot",),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
@@ -2181,6 +2234,9 @@ def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    in_key = _key_slot_refusal(ev, detail)
+    if in_key is not None:
+        return in_key
     return Ruling(value=False, reason="flag", used=used, detail=detail)
 
 

@@ -423,6 +423,7 @@ def main(argv=None) -> int:
     result = pipeline.run_staged(
         args.pdf, pages, detector=detector, dpi=args.dpi,
         conf_threshold=args.conf, imgsz=args.imgsz, roster=roster,
+        work_id=args.work_id,
         dossier=dossier,
         surya_fallback=args.surya, ocr_fallback=args.ocr,
         ink_component_rows=args.ink_rows,

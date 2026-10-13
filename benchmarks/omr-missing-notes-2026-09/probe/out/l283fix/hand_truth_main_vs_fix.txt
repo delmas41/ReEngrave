@@ -1,0 +1,62 @@
+base: 8be6cf5f42e4ffd6b8b1274b2c3ded3e2c53a6f3 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-base/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+arm: e9c8c202b140a90cdd6ecf3d8e6b85a354a5691f dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix2/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+
+truth black heads judged: 308  by kind: {'bare': 123, 'flag': 44, 'beam': 141}
+
+== truth flag (n=44)
+   base: {'right': 39, 'abstained': 2, 'narrowed+': 3}
+   arm:  {'right': 41, 'abstained': 2, 'narrowed+': 1}
+     right      -> right      39
+     abstained  -> abstained  2
+     narrowed+  -> right      2
+     narrowed+  -> narrowed+  1
+
+== truth beam (n=141)
+   base: {'right': 135, 'narrowed+': 4, 'abstained': 2}
+   arm:  {'right': 135, 'narrowed+': 4, 'abstained': 2}
+     right      -> right      135
+     narrowed+  -> narrowed+  4
+     abstained  -> abstained  2
+
+== truth bare (n=123)
+   base: {'narrowed+': 47, 'right': 70, 'abstained': 4, 'wrong': 2}
+   arm:  {'narrowed+': 47, 'right': 70, 'abstained': 4, 'wrong': 2}
+     right      -> right      70
+     narrowed+  -> narrowed+  47
+     abstained  -> abstained  4
+     wrong      -> wrong      2
+
+== tip row of the true tip end (flag heads), base -> arm
+   none                                     -> flag                                     34
+   flag                                     -> flag                                     3
+   none                                     -> none                                     2
+   abstained:occupied                       -> abstained:occupied:occupied              2
+   no_stem                                  -> no_stem                                  1
+   abstained:occupied                       -> flag                                     1
+   none                                     -> abstained:ambiguous:crosses_both_sides   1
+
+== GUARD: tip rows at the true tip of heads whose stem carries NO flag (bare + beam), arm
+   abstained:ambiguous:crosses_both_sides        96
+   none                                          90
+   abstained:occupied:occupied                   44
+   abstained:ambiguous:ink_not_flag_shaped       13
+   no_stem                                       13
+   abstained:ambiguous:runs_on                   6
+   flag                                          1
+   no_side                                       1
+   NEWLY read as a flag where his boxes show none: 1 ['q975']
+
+== his level>=1 heads that base does not decide right (11), base -> arm
+   q110     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q118     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q119     beam  L=1  base abstained  refused  ->  arm abstained  refused   tip none -> abstained:occupied:occupied
+   q226     beam  L=1  base abstained  refused  ->  arm abstained  refused   tip none -> abstained:ambiguous:crosses_both_sides
+   q86      beam  L=1  base narrowed+  ('beam_certain_not_joined', [0, 1])  ->  arm narrowed+  ('beam_certain_not_joined', [0, 1])   tip abstained:occupied -> none
+   q93      beam  L=1  base narrowed+  ('beam_certain_not_joined', [0, 1])  ->  arm narrowed+  ('beam_certain_not_joined', [0, 1])   tip abstained:occupied -> none
+   b4194    flag  L=1  base abstained  given_away  ->  arm abstained  given_away   tip no_stem -> no_stem
+   q1009    flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip abstained:occupied -> abstained:occupied:occupied
+   q1194    flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm right      ('hooks_counted', 1)   tip none -> flag
+   q1419    flag  L=1  base narrowed+  ('flags_disagree', [1, 2])  ->  arm right      ('hooks_counted', 1)   tip none -> flag
+   q741     flag  L=1  base abstained  refused  ->  arm abstained  refused   tip none -> flag
+
+== NEWLY WRONG (decided at another level than his, where base was not): 0

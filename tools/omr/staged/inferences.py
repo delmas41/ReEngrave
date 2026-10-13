@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -795,6 +795,20 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
     return name, tuple(ids)
 
 
+def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
+    """The clef the CV LOCATOR names on this staff, or None.
+
+    ROADMAP 2.93. ONE ANSWER OR NONE, like `_clef_read_on`: a staff whose
+    locator rows name two clefs, or none, is silent here. The locator is a
+    DIFFERENT reader from the detector's `Q.CLEF_GLYPH` (shape, line and
+    symmetry on the ink rather than a box class), and it is consulted only to
+    say whether a glyph reading that CONTRADICTS the block's expected clef
+    stands alone or is itself contradicted -- never to choose a slot.
+    """
+    named = {str(o.value) for o in log.rows(Q.CLEF_LOCATED, staff) if o.value}
+    return next(iter(named)) if len(named) == 1 else None
+
+
 @rule(
     inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
     # ⚠️⚠️ NO FLAG (promoted 2026-10-07, roadmap 0.2c; was
@@ -920,6 +934,7 @@ def collapse_slot_index_to_family_block(log: Log,
 
         reads = [_clef_read_on(log, m.subject) for m in members]
         conflict = None
+        overruled: List[str] = []
         witnesses: List[str] = []
         for i, (name, ids) in enumerate(reads):
             if name is None:
@@ -928,6 +943,22 @@ def collapse_slot_index_to_family_block(log: Log,
             if want is None:
                 continue
             if name != want:
+                # ⚠️⚠️ ROADMAP 2.93. A DETECTOR GLYPH THE LOCATOR CONTRADICTS
+                # IS NOT A WITNESS. On Litolff the detector files `clefG` on
+                # the VIOLA staff (the printed C clef, mis-classed) of five
+                # systems; the CV locator reads `alto` there and so does
+                # `Q.CLEF`. Taking the glyph alone as "a contradicting clef"
+                # withdrew the WHOLE block -- five bottom string staves held
+                # out as `staff_not_identified` while 15 identical systems
+                # were doubled. Two readers disagreeing is "cannot tell"
+                # (rule 8): this staff speaks neither for nor against, exactly
+                # as a staff carrying two glyph names does. Where the locator
+                # does NOT name the expected clef (agrees with the glyph, names a
+                # third clef, or is silent) the contradiction stands as before.
+                located = _clef_located_on(log, members[i].subject)
+                if located == want:
+                    overruled.append(members[i].subject.to_key())
+                    continue
                 conflict = {"block_index": i, "read": name, "expected": want,
                             "staff": members[i].subject.to_key()}
                 break
@@ -960,6 +991,10 @@ def collapse_slot_index_to_family_block(log: Log,
                                                if n is not None),
                     "clefs_agreeing": len(witnesses),
                     "refuses_on_a_contradicting_clef": True,
+                    # ROADMAP 2.93: staves whose glyph contradicted the run
+                    # and was itself contradicted by the CV locator (the
+                    # locator named the EXPECTED clef) -- not witnesses.
+                    "clef_glyph_overruled_by_locator": list(overruled),
                     # ⚠️ The member this rule DECLINES, named so a reader of
                     # the record can see the condensed pair was left alone
                     # rather than missed.
@@ -1012,6 +1047,7 @@ def collapse_slot_index_to_family_block(log: Log,
                                                    if n is not None),
                         "clefs_agreeing": len(witnesses),
                         "refuses_on_a_contradicting_clef": True,
+                        "clef_glyph_overruled_by_locator": list(overruled),
                         # ⚠️ THE ONE DETAIL EXPORT READS. A staff placed here
                         # is doubled onto this slot too, an octave down,
                         # with `condensed_from` naming the source staff in
@@ -1580,3 +1616,511 @@ def fill_part_key(log: Log, document: Subject) -> List[Proposal]:
             for g in part_key_census(log)
             if g.outcome in ("key_from_document_majority",
                              "key_from_other_systems")]
+
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 6 -- ROADMAP 2.81 PHASE 2: a bare stem, settled only by the bar's sum
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The `adjudicate_duration` reason this rule speaks into -- and ONLY this one.
+BARE_STEM_REASON = "beam_discounted_uncertain"
+
+#: How many unknown events one bar may hold before the rule declines. The DP
+#: below is linear in it; the cap is not for speed, it is that a bar with more
+#: than this many undecided events is a bar nobody read.
+BARE_STEM_MAX_UNKNOWNS = 24
+
+
+def _frac(x: Any):
+    from fractions import Fraction
+    return Fraction(float(x)).limit_denominator(1000)
+
+
+def bar_has_tuplet(log: Log, cell: Subject) -> Tuple[str, ...]:
+    """Does this bar PRINT a tuplet? The reasons we know, or `()`.
+
+    ROADMAP 2.102 (Sean's tiles 2026-10-12: a quarter in a 3-quarter tuplet
+    settled as an eighth). EVERY bar-sum settlement counts a tuplet note at its
+    written length -- a third too long -- so a bar that prints one is not a
+    sum the arithmetic can speak for (rule 8: the answer is "cannot tell").
+    Any bar-sum rule calls this first and declines on a non-empty answer.
+
+    ⚠️ IT ONLY SEES WHAT THE READERS SAW, and that is the rule (Sean
+    2026-10-13): a tuplet exists only where its printed marking (the 3 /
+    bracket) is seen; an unmarked triplet is never inferred. The detector filed
+    no `tuplet*`/`fingering3` box anywhere on Dvorak 8 pdf p4, where tile 6 is
+    a real triplet, so there this returns `()`.
+
+    Reasons: `tuplet_marker` (a `Q.TUPLET_MARKER` row under the cell that no
+    human struck out) and `tuplet_ratio` (`adjudicate_tuplet` DECIDED a ratio
+    on the cell).
+    """
+    reasons: List[str] = []
+    for m in log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        refusal = log.verdict(Q.TUPLET_MARKER_IS_NOT_A_MARKER, m.subject)
+        if (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True):
+            continue
+        reasons.append("tuplet_marker")
+        break
+    ratio = log.verdict(Q.TUPLET_RATIO, cell)
+    if ratio is not None and ratio.outcome is Outcome.DECIDED:
+        reasons.append("tuplet_ratio")
+    return tuple(reasons)
+
+
+def _simultaneous_heads(log: Log, cell: Subject,
+                        events: Sequence[Dict[str, Any]]) -> bool:
+    """Do two heads of DIFFERENT events stand in one column?
+
+    ROADMAP 2.102, tile 10 (Schumann 2, Peters p3): six dyads whose two heads
+    sit 3-13 px apart in x were grouped as 12 events, so the bar sum counted
+    every column twice and "landed" 6/4 on twelve eighths where the print has
+    six quarters. A voice is a sequence: two heads whose centres are less
+    than half a head apart cannot follow each other.
+    """
+    boxes = []
+    for e in events:
+        if e.get("kind") == "rest":
+            continue
+        for g in e.get("glyphs", ()):
+            rows = log.rows(Q.GLYPH_BOX, Subject(
+                Kind.GLYPH, cell.page, cell.system, cell.staff, cell.cell, g))
+            if not rows:
+                continue
+            v = rows[0].value
+            try:
+                boxes.append((float(v[1]) + float(v[3]) / 2.0, float(v[3]),
+                              id(e)))
+            except (TypeError, ValueError, IndexError):
+                continue
+    boxes.sort()
+    for (xa, wa, ea), (xb, wb, eb) in zip(boxes, boxes[1:]):
+        if ea != eb and (xb - xa) < 0.5 * min(wa, wb):
+            return True
+    return False
+
+
+@dataclass
+class BarOutcome:
+    """What `solve_bare_stem_bar` found in one bar. A probe's whole surface."""
+
+    #: why the bar yielded nothing, or None when it was solved (even if no
+    #: member was forced -- see `ambiguous`)
+    decline: Optional[str] = None
+    members: int = 0            # bare-stem narrowings in the bar
+    unknowns: int = 0           # events with more than one admitted length
+    landings: int = 0           # assignments of the unknowns that land the bar
+    forced: int = 0             # bare-stem members the arithmetic forces
+    ambiguous: int = 0          # members two landings disagree about
+    lengthening_unwitnessed: int = 0   # 2.97: forced, but longer than the reader's best and the bar's ink is not wholly explained
+    shortened_refused: int = 0  # forced to the shorter length, refused (Sean 2026-10-12)
+    tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
+    proposals: Optional[List[Proposal]] = None
+
+
+#: The `adjudicate_meter` reasons whose value IS a printed reading (or an
+#: unchanged carry of one that the bars did not overturn).
+_PRINTED_METER_REASONS = ("voted", "carried", "carried_uncontested")
+
+
+def _printed_meter_roots(log: Log, meter: Verdict, cell: Subject,
+                         _depth: int = 0) -> Optional[Tuple[str, ...]]:
+    """The printed time-signature READINGS a meter verdict ultimately used.
+
+    `None` where the meter does not reach the print by `used` alone: a reason
+    outside `_PRINTED_METER_REASONS`, a bar AT OR AFTER a printed CHANGE in its
+    system (a different reading is the evidence there, and this rule does not
+    guess which), or a chain that never reaches a template/glyph/OCR row.
+
+    ⚠️ A SYSTEM WITH A PRINTED CHANGE STILL SERVES ITS BARS BEFORE IT. Brahms
+    1's count page prints 9/8 at bar 8 and a return to 6/8 at bar 9; the first
+    draft declined every bar of that system (all 45 narrowings on the page).
+    The opening segment's evidence is the system's opening readings (or the
+    carried meter), and a bar before the change is in force under exactly that.
+    """
+    if _depth > 40 or meter.outcome is not Outcome.DECIDED \
+            or meter.reason not in _PRINTED_METER_REASONS:
+        return None
+    if _depth == 0:
+        segs = (meter.value or {}).get("segments") or ()
+        if len(segs) > 1 and cell.cell is not None \
+                and int(cell.cell) >= int(segs[1].get("from_cell") or 0):
+            return None
+    if meter.reason == "voted":
+        rows = [r for r in meter.used
+                if (log.row(r) is not None
+                    and log.row(r).quantity in (Q.METER_TEMPLATE, Q.METER_GLYPH,
+                                                Q.METER_OCR))]
+        return tuple(rows) or None
+    for r in meter.used:
+        src = log.row(r)
+        if isinstance(src, Verdict) and src.quantity == Q.METER:
+            if (src.value or {}).get("numerator") != (meter.value or {}).get(
+                    "numerator") or (src.value or {}).get(
+                        "denominator") != (meter.value or {}).get("denominator"):
+                return None
+            return _printed_meter_roots(log, src, cell, _depth + 1)
+    return None
+
+
+def solve_bare_stem_bar(log: Log, cell: Subject, *,
+                        any_reason: bool = False) -> BarOutcome:
+    """One staff's bar: which bare-stem members does the arithmetic force?
+
+    ⚠️⚠️ THE CLAIM, AND WHERE IT IS WEAK. Every DECIDED duration in the bar is
+    held fixed; every NARROWED one may take any of its OWN candidates; the bar
+    must land EXACTLY on the meter in force at it. A bare-stem member is
+    settled only if EVERY landing gives it the same length, and the bar has at
+    least one landing. It is NOT entailment: a missed note, a note the reader
+    invented, a wrong DECIDED neighbour, a second voice on the staff or a
+    mis-read meter each move the sum, and a unique landing through any of them
+    is a confident wrong answer (rule 8). That is why the verdict is labelled
+    INFERRED, why the flag is default OFF, and why the only legitimate score
+    is the print.
+
+    ⚠️ IT DOES NOT USE THE RANKING. The quarter-first order `adjudicate_
+    duration` carries where the bare-stem evidence holds is a likelihood;
+    nothing here reads `support` (rule (a) of `infer.py`). Where two landings
+    exist the member stays narrowed -- choosing between them by the prior
+    would be Sean's 0.76-0.80 laundered into an answer.
+    """
+    from collections import Counter
+    from .consequences import (WITNESS_CLEAR, _bar_beats_at, _is_rest,
+                               _left_the_bar, _missed_rest_witness,
+                               _on_one_stem, _standing,
+                               _bar_heads_are_clean, _bar_has_tuplet,
+                               _shortens_without_evidence, _eighth_evidence)
+    out = BarOutcome(proposals=[])
+    notes = []
+    for v in _standing(log, cell, Q.DURATION):
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        notes.append(v)
+    # ⚠️ ROADMAP 2.97 (`any_reason`): the SAME bar arithmetic over every
+    # narrowed note of the bar, whatever refused its beams. The bare-stem rule
+    # (2.81) keeps its own reading of the word; this widening is the second
+    # rule's, and it is what `collapse_narrowed_by_bar` passes.
+    def _is_member(v):
+        if v.reason == BARE_STEM_REASON:
+            return True
+        return bool(any_reason and v.candidates and not _is_rest(v))
+
+    members = [v for v in notes if v.outcome is Outcome.NARROWED
+               and _is_member(v)]
+    out.members = len(members)
+    if not members:
+        return out
+    # ROADMAP 2.102 (a): a bar that prints a tuplet is not a sum this
+    # arithmetic can speak for.
+    seen = bar_has_tuplet(log, cell)
+    if "tuplet_marker" in seen and "tuplet_ratio" not in seen:
+        # a tuplet is printed here but no ratio was decided, so the members'
+        # lengths are not scaled and the sum is not the bar's
+        out.decline = "tuplet_in_bar"
+        return out
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter is None or meter.outcome is not Outcome.DECIDED:
+        out.decline = "no_decided_meter"
+        return out
+    expected = _bar_beats_at(meter, cell)
+    if expected is None:
+        out.decline = "no_meter_in_force"
+        return out
+    grouping = log.verdict(Q.EVENT, cell)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        out.decline = "no_event_grouping"
+        return out
+    # ROADMAP 2.102, tile 10: heads standing in one column that the grouping
+    # left as separate events are counted as successive in time.
+    if _simultaneous_heads(log, cell, (grouping.value or {}).get("events", ())):
+        out.decline = "simultaneous_heads_not_grouped"
+        return out
+
+    # ⚠️⚠️ THE METER MAY NOT BE THE BARS' OWN. `adjudicate_meter` weighs the
+    # carry by the bars (its verdict's `basis` holds every duration of the
+    # system), so reading its verdict would make the bar an umpire of itself
+    # -- measured on both count pages: EVERY meter verdict has `Q.DURATION` in
+    # its closure, and the first draft of this rule declined 99 of 102 Brahms
+    # members and 24 of 26 Litolff ones for exactly that. What the meter
+    # verdict USED is narrower: a `voted` meter used the template/glyph/OCR
+    # readings of the printed time signature, a `carried` one used the earlier
+    # system's meter verdict. Follow `used` to the printed readings and take
+    # THOSE as the basis; a meter that does not reach the print that way (a
+    # change, a meter derived from the bars) is declined by name.
+    roots = _printed_meter_roots(log, meter, cell)
+    if roots is None:
+        out.decline = "meter_not_from_the_print"
+        return out
+    meter_closure = set()
+    for rid in roots:
+        meter_closure |= log.closure(rid)
+    if any(v.id in meter_closure for v in members):
+        out.decline = "meter_rests_on_these_bars"
+        return out
+
+    _witness: List[str] = []
+
+    def _ink_witness(c):
+        if not _witness:
+            _witness.append(_missed_rest_witness(log, c)[0])
+        return _witness[0]
+
+    if any_reason and not _bar_heads_are_clean(log, cell, notes):
+        out.decline = "heads_not_this_staffs_own"
+        return out
+    if any_reason and (_bar_has_tuplet(log, cell, notes)
+                       or bar_has_tuplet(log, cell)):
+        out.decline = "bar_holds_tuplet_evidence"
+        return out
+    by_glyph = {v.subject.glyph: v for v in notes}
+    fixed = _frac(0)
+    unknown_events: List[Tuple[List[Verdict], List[Any]]] = []
+    seen = set()
+    basis: List[str] = list(roots) + [grouping.id]
+    for ev in (grouping.value or {}).get("events", ()):
+        ms = [by_glyph[g] for g in ev.get("glyphs", ()) if g in by_glyph]
+        if not ms:
+            continue
+        seen.update(m.id for m in ms)
+        narrowed = [m for m in ms if m.outcome is Outcome.NARROWED]
+        if not narrowed:
+            beats = Counter(_frac(m.value.get("beats") or 0.0) for m in ms)
+            fixed = fixed + beats.most_common(1)[0][0]
+            basis.extend(m.id for m in ms)
+            continue
+        if len(narrowed) != len(ms):
+            out.decline = "event_mixes_decided_and_narrowed"
+            return out
+        if any_reason and len(ms) >= 2 and not _on_one_stem(log, ms):
+            out.decline = "chord_not_on_one_decided_stem"
+            return out
+        # ⚠️ SEAN'S RULE (2026-10-12): the widened rule never chooses a
+        # shorter reading for a stem with no flag or beam read on it.
+        opts = [tuple(sorted({_frac(c.value.get("beats")) for c in m.candidates
+                              if isinstance(c.value, dict)
+                              and c.value.get("beats") is not None
+                              and not (any_reason
+                                       and _shortens_without_evidence(m, c.value))}))
+                for m in ms]
+        if len(set(opts)) != 1 or not opts[0]:
+            out.decline = "event_members_admit_different_lengths"
+            return out
+        unknown_events.append((ms, list(opts[0])))
+    for v in notes:
+        if v.id in seen:
+            continue
+        if v.outcome is Outcome.NARROWED:
+            out.decline = "narrowed_note_outside_every_event"
+            return out
+        fixed = fixed + _frac(v.value.get("beats") or 0.0)
+        basis.append(v.id)
+    # the bar rests on the decided neighbours' verdicts; none of them may rest
+    # on a narrowing it is about to collapse
+    reach = set()
+    for rid in basis:
+        reach |= log.closure(rid)
+    if any(m.id in reach for m in members):
+        out.decline = "decided_neighbour_rests_on_the_narrowing"
+        return out
+
+    n = len(unknown_events)
+    out.unknowns = n
+    if n > BARE_STEM_MAX_UNKNOWNS:
+        out.decline = "too_many_unknowns"
+        return out
+    target = _frac(expected)
+    # prefix[i]: sum -> ways, using the unknowns before i, on top of `fixed`;
+    # suffix[i]: sum -> ways, using the unknowns from i on
+    prefix: List[Dict[Any, int]] = [{fixed: 1}]
+    for _ms, opts in unknown_events:
+        nxt: Dict[Any, int] = {}
+        for s_, c_ in prefix[-1].items():
+            for o in opts:
+                nxt[s_ + o] = nxt.get(s_ + o, 0) + c_
+        prefix.append(nxt)
+    out.landings = prefix[-1].get(target, 0)
+    if out.landings == 0:
+        out.decline = "bar_does_not_add_up"
+        return out
+    suffix: List[Dict[Any, int]] = [dict() for _ in range(n + 1)]
+    suffix[n] = {_frac(0): 1}
+    for i in range(n - 1, -1, -1):
+        cur: Dict[Any, int] = {}
+        for s_, c_ in suffix[i + 1].items():
+            for o in unknown_events[i][1]:
+                cur[s_ + o] = cur.get(s_ + o, 0) + c_
+        suffix[i] = cur
+    # SEAN 2026-10-13: a tuplet exists only where its printed marking is SEEN
+    # (the 3 / bracket); three unread stems never imply a hidden 3:2 group. A
+    # bar that would add up only under an unmarked triplet gives no
+    # confirmation (`bar_does_not_add_up`), and the written value stays what
+    # the shape says (quarter: no flag or beam read).
+    for i, (ms, opts) in enumerate(unknown_events):
+        feasible = [o for o in opts
+                    if any((target - s_ - o) in suffix[i + 1]
+                           for s_ in prefix[i])]
+        for m in ms:
+            if not (m.outcome is Outcome.NARROWED and _is_member(m)):
+                continue
+            if len(feasible) != 1:
+                out.ambiguous += 1
+                continue
+            # ⚠️ SEAN'S OWN CONDITION (2026-10-10): *a tip SEEN clean*. A head
+            # whose stem-tip window was occupied, held flag ink, or was never
+            # read is not that head, and a bar that "adds up" through a missed
+            # note settles it wrongly -- the one wrong decision on Sean's hand
+            # truth page (Brahms pdf 0, a flagged eighth) was exactly this: the
+            # arithmetic landed through a note nobody read, and the tip window
+            # was occupied. The 33 right ones all had a clean window.
+            # ⚠️ 2.97: the bare-stem rule keeps Sean's tip condition as it
+            # was. The widened rule (`any_reason`) asks for the OTHER
+            # evidence the tip window stood in for -- that no mark was missed
+            # -- instead: a head on a bare stem whose tip was not seen clean
+            # is settled only if the bar's ink is wholly explained by the
+            # standing glyphs (2.80's witness), and ANY lengthening past the
+            # reader's own best candidate needs that witness too (a missed
+            # rest or note fills the same gap: 2.80).
+            if m.reason == BARE_STEM_REASON \
+                    and (m.detail or {}).get(
+                        "bare_stem_tip_window_clean") is not True:
+                if not any_reason or _ink_witness(cell) != WITNESS_CLEAR:
+                    out.tip_not_clean += 1
+                    continue
+            top = next((c for c in m.candidates if isinstance(c.value, dict)
+                        and c.value.get("beats") is not None), None)
+            if any_reason and top is not None \
+                    and feasible[0] > _frac(top.value["beats"]) \
+                    and _ink_witness(cell) != WITNESS_CLEAR:
+                out.lengthening_unwitnessed += 1
+                continue
+            hit = [c for c in m.candidates if isinstance(c.value, dict)
+                   and c.value.get("beats") is not None
+                   and _frac(c.value["beats"]) == feasible[0]]
+            if len(hit) != 1:
+                out.ambiguous += 1
+                continue
+            # ⚠️ SEAN 2026-10-12 (CLAUDE.md §10): *"only when we see evidence of
+            # an eighth should it be called that"*, refined: the bar sum may
+            # CONFIRM a value the ink supports, never SUPPLY one. A shorter
+            # candidate (more beam levels than the longest) is settled only
+            # where the member's OWN reading holds a stroke at least that deep
+            # (`levels_certain` / `levels_possible`, refused-but-present
+            # strokes included); a bare stem is never shortened by arithmetic
+            # (tiles 6 and 10).
+            levels = int(hit[0].value.get("beam_levels") or 0)
+            floor = min(int(c.value.get("beam_levels") or 0)
+                        for c in m.candidates if isinstance(c.value, dict))
+            if levels > floor and not any_reason:
+                d_ = m.detail or {}
+                seen_levels = max(int(d_.get("levels_certain") or 0),
+                                  int(d_.get("levels_possible") or 0))
+                if seen_levels < levels:
+                    out.shortened_refused += 1
+                    continue
+            out.forced += 1
+            out.proposals.append(Proposal(
+                subject=m.subject, value=hit[0].value,
+                reason="the_bars_arithmetic_forces_this_length",
+                basis=tuple(dict.fromkeys(basis)), witnesses=(),
+                detail={
+                    "expected_beats": float(target),
+                    "bar_landings": out.landings,
+                    "bar_unknown_events": n,
+                    "bare_stem_likelihood": (m.detail or {}).get(
+                        "bare_stem_likelihood"),
+                    "chosen_candidate_support": hit[0].support,
+                    # ⚠️ REPORTED, NEVER THE REASON (infer.py rule (a))
+                    "was_readers_top_candidate": bool(
+                        m.candidates and m.candidates[0].value is hit[0].value),
+                    "reads_meter": True,
+                    "eighth_evidence": (
+                        list(_eighth_evidence(m)) if int(
+                            hit[0].value.get("beam_levels") or 0) > 0 else None),
+                }))
+    return out
+
+
+@rule(
+    inference=Inference.COLLAPSE_BARE_STEM_BY_BAR,
+    target=Q.DURATION,
+    reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=BARE_STEM_BAR_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration whose reason is "
+        "`beam_discounted_uncertain` to one of that reader's OWN candidates "
+        "and nothing else; only inside one staff's bar whose meter is DECIDED "
+        "and was not voted out of these bars, whose events are grouped, whose "
+        "decided notes are held fixed and whose every unknown is a narrowing "
+        "with identical candidate lengths per chord; the bar must land "
+        "EXACTLY on the meter under at least one assignment of the unknowns, "
+        "and a member is collapsed only if EVERY landing gives it the same "
+        "length, and only if that member's stem-tip window was READ clean "
+        "(Sean's condition). Where two landings disagree it declines. It "
+        "never reads `support` and never uses the bare-stem likelihood as a "
+        "reason."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is arithmetic over the bar's "
+        "other durations and the meter, which are NOT independent of the "
+        "ink being summed -- a missed note, a second voice or a mis-read "
+        "meter move the sum and the rule cannot see them. That correlation "
+        "is declared here rather than hidden behind a witness count, which "
+        "is why the verdict is labelled and the rule default OFF."),
+)
+def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
+    """A bare stem's narrowing, settled by the bar's sum alone.
+
+    See `solve_bare_stem_bar`. Roadmap 2.81 phase 2, Sean 2026-10-10: *"if it
+    is lower ... send it on to the other stages with a high likelihood of
+    being a quarter note and make sure the bar math adds up"*.
+    """
+    return solve_bare_stem_bar(log, cell).proposals or []
+
+
+@rule(
+    inference=Inference.COLLAPSE_NARROWED_BY_BAR,
+    target=Q.DURATION,
+    reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=NARROWED_BAR_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration -- a head, or every head of a "
+        "chord together (one stem, one value) -- to one of that reader's OWN "
+        "candidates and nothing else; only inside one staff's bar whose "
+        "meter is DECIDED and reaches the PRINTED time signature by `used` "
+        "(never a meter the bars themselves chose), whose events are grouped, "
+        "whose decided notes are held fixed, and where the bar lands EXACTLY "
+        "on the meter under at least one assignment of the narrowed events "
+        "and EVERY landing gives the member the same length. Two landings "
+        "that disagree leave it narrowed. A member whose reason is a bare "
+        "stem needs its tip seen clean (Sean's 2.81 condition) or the bar's "
+        "ink wholly explained by the standing glyphs; any lengthening past "
+        "the reader's best-supported candidate needs that ink witness too "
+        "(a missed rest or note fills the same gap, 2.80). It never reads "
+        "`support` and never overturns a DECIDED verdict."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is arithmetic over the bar's "
+        "other durations and the printed meter, which are NOT independent "
+        "of the ink being summed -- a missed note, a second voice or a "
+        "wrong decided neighbour move the sum and the rule cannot see them. "
+        "That correlation is declared here rather than hidden behind a "
+        "witness count, which is why the verdict is labelled and the rule "
+        "is gated."),
+)
+def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
+    """A narrowed head's (or chord's) value, settled by the bar's sum alone.
+
+    ROADMAP 2.97. Which stage, and why: the answer does not FOLLOW (a missed
+    rest, a spurious head or a wrong decided neighbour each move the sum), it
+    is merely BEST -- so it is INFER's, labelled, gated, and bounded to the
+    reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
+    """
+    return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
