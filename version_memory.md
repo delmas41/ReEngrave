@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- housekeeping: CLAUDE.md cut from 6,174 to ~1,850 words (`housekeeping-claude-md`, NOT merged -- Sean reviews first)
+
+- Sean: "make Claude.md much more concise ... don't want to lose specific knowledge." No product code, no test runs. The detail moved, not deleted, into six focused docs: `docs/running.md` (setup, worktree symlinks, every CLI, small/full re-gathers, web app internals, deployment), `docs/staged-internals.md` (two readers, record model, adjudicators, EVALUATE/INFER/EXPORT, derived checks), `docs/page-facts.md` (the full engraving/plate facts with Sean's quotes and dates, plus the 2026-10-12/13 rulings), `docs/measuring.md` (acceptance set, A/B rules, tests, flags), `docs/data-sources.md`, `docs/detector.md`.
+- CLAUDE.md now holds: the product and definition of done, the ten rules, the stage model, a new §4 of Sean's 2026-10-12/13 output rules (READ/GUESSED-blue/UNREAD, eighth only on evidence, tuplet only when seen, clef-then-key order, 95% not fixed), the seven page conventions that cost lanes weekly, how a session works (worktrees, lean-lane and machine-load caps, evidence, landing, tests), and an index of where everything else lives.
+- Every old section/bullet is mapped in `docs/claude-md-migration-2026-10-13.md` (kept / moved / dropped with reason). PROJECT_BRIEF's five pointers into old CLAUDE.md sections repointed. Old section numbers cited in ROADMAP/DECISIONS lines resolve through the migration table.
+
 ## 2026-10-13 -- docs-only landings: ROADMAP 2.96, ROADMAP 2.101, the inference-principles plan (`land-docs-2026-10-13`)
 
 - Sean, 2026-10-13: "Land the docs only branches." Each branch was checked docs-only first (diff of tools/, backend/, frontend/ against origin/main empty). Merges: `lane-2.96-held-funnel` `34265e13`, `lane-2.101-held-out` `cf5729cb`, `lane-infer-principles` `8560bb16`.
