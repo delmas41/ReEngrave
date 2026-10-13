@@ -3011,3 +3011,114 @@ against `manifest.json`: **0 wrong of 10.**
 So the reinstated population (2) is 2 of 2 right, every control that should
 refuse refused, and nothing was decided True on a non-rest. n is small; the
 shape windows remain measured on two pages.
+
+
+## 2.99 -- eighth and quarter rests the detector never boxed are read from the ink (2026-10-12)
+
+PATH: STAGED, GATHER + ADJUDICATE + EVALUATE + EXPORT. Branch `lane-2.99-unboxed-rests`, NOT merged (Sean
+judges the tiles first). Sean, 2026-10-12: *"Send out 1-3"* (2.96's third item: 448 held bars hold
+eighth/quarter-rest shaped ink no box accounts for; 2.96's write-up is on `lane-2.96-held-funnel`).
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** A rest is read on its OWN ink: its size in
+staff spaces, the local staff step of its centre, where its ink sits in its box, and the absence of a flat's
+full-height left stroke -- and on NOTHING about the bar (rule 8; CLAUDE.md §10, two witnesses off one raster
+fall silent together). A rest off the middle of the staff (a second voice) abstains. Falsified by a blind tile
+where a decided rest is not a rest (2.96's tile 7 was a flat), or a decided rest in a bar that was already right
+and is not printed. Sean has not read the 12 tiles.
+
+### What was built
+| stage | function | what |
+|---|---|---|
+| GATHER | `gather_unboxed_rest_ink` -> `Q.UNBOXED_REST_SHAPE` | clusters of staff-erased pieces (joined across 0.25 space, as 2.80b) of a rest's size (w 0.5-2.4, h 1.2-3.8 spaces, centre on the staff): width, height, LOCAL staff step, `coverage`/`covered_by` (standing detector boxes), tallest ink column in 6 slices (`column_profile`), `mass_y`, nearest notehead on the right, header flags. Glyph ordinal 350000+ (below the human-evidence base 400k, which `test_stage_review_evidence` guards: my first draft used 400k and failed there). Covered clusters are filed too, as controls. Names nothing, no bar. |
+| ADJUDICATE | `adjudicate_unboxed_ink_is_a_rest` -> `Q.UNBOXED_INK_IS_A_REST` | `"eighth"` / `"quarter"` / False (already read by a standing box; a stem stroke) / abstain. `wants` is the shape row only; a test asserts no meter/event/duration/voice is declared. |
+| EVALUATE | `size_unboxed_rest` | 0.5 / 1.0 quarters from the class; ranked beside `size_reinstated_rest`. |
+| EXPORT | loop in `_place_notes` | writes the rest in its own bar; the accounting equality gained a named term (`unboxed_rests_placed`) and stays an equality. |
+
+No new flag (rides `OMR_INK`). 30 tests, RED-first (the quantity does not exist on main), each refusal with its
+positive control: a flat beside its head stays not-a-rest and the same size without the stroke is decided; a
+dot/crumb and a head-with-stem stay undecided; an arpeggio zigzag abstains beside its chord and is a quarter
+rest without one; export writes the rest, completes a short bar, and a rest in an already-right bar overfills it
+and says so. `test_staged_evaluate_order` gained the new rule.
+
+### Windows read off ink the detector already named (`probe/controls_2_99.py`, `out/2.99/controls-*.txt`)
+The decision run over covered clusters with coverage zeroed, against what the standing box called the ink:
+
+| | Litolff p1-3 | Brahms p0-1 |
+|---|--:|--:|
+| standing `rest8th` read eighth | 18 of 19 (+1 in header) | 88 of 111 (+4 header; 19 off-middle abstain) |
+| standing `restQuarter` read quarter | 89 of 100 | 20 of 27 |
+| standing flat/sharp/natural decided a rest | 0 of 8 | 0 of 44 (13 False, 31 abstain) |
+| standing notehead/clef/key/meter/flag/slur decided a rest | 2 of 28 | 0 of 54 |
+
+The 5 Litolff "negatives" (3 `accidentalDoubleSharp`, 2 `noteheadBlackOnLine`) sit on exactly eighth-rest ink
+(1.3-1.5 x 2.2-2.35 spaces, step 3.9-4.1, upper-heavy): detector mislabels, one shown as a control (tile 6).
+Features: an eighth rest is upper-heavy (`mass_y` 0.32-0.48, a flat 0.54-0.61) with no left slice above 0.65
+(a flat's two left slices are 0.94-1.0); a quarter rest peaks in the middle slices and is thin on the right (a
+sharp's right slices fill again). `max_column_share` alone cannot separate them: it is 1.0 for standing quarter
+rests too. Heads stand 0.1-0.6 spaces right of 18 of 19 standing eighths, so a head beside the ink is a claim only
+against a quarter-shaped zigzag (an arpeggio).
+
+### Reach and A/B (`probe/2.99_ab.py`; one saved gather record, one tree; OFF = decision abstains)
+Small re-gathers on the tree merged with main 3991579c; Brahms = PDF p0-1, Litolff = p1-3.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| rest-sized clusters filed / with no box over them | 219 / 44 | 270 / 27 |
+| decided eighth / quarter | 13 / 3 | 4 / 0 |
+| decided stem stroke (not a rest) / abstained | 7 / 35 | 0 / 28 |
+| decided rests' bars **released** | **10** | **1** |
+| ... still held / **newly overfull** / bar had no events | 3 / **2** / 1 | 1 / **1** / 0 |
+| bars held out, base -> arm | 122 -> 115 | 88 -> 88 |
+| MusicXML bars changed | 12 | 2 |
+| accounting equality | True | True |
+
+The 2.96 whole-record population (332 eighth + 116 quarter evidenced bars) cannot be re-priced: a GATHER change
+is invisible to `readjudicate`. The small pages are the price.
+
+### The false-positive measure: 3 bars newly overfull, explained
+A rest found in a bar that ALREADY added up is these 3 bars; none is a rest that is not printed -- each summed
+correctly in base only by cancellation with a wrong event already there:
+* Litolff p1 s0 staves 7 and 11, bar 0: base = `rest8th` + 3 eighths = 2.0, but that `rest8th` is the key
+  signature's third flat, boxed as both `keyFlat` and `rest8th` (identical box); the real rest (blue, tile 7) was
+  missing. Arm: 2.5, held out, on the spurious header rest it exposes. **4 of 30 `rest8th` boxes on Litolff p1-3
+  are key flats (0 of 133 on Brahms)** -- a `rest_is_not_a_rest` refusal (2.33's family), not built here: see 2.100.
+* Brahms p1 s0 staff 4 bar 1 (two rests found): the print (tile 2) is an eighth note, three eighth rests and a
+  quarter rest = 3.0 in 6/8; base had a 1.0 chord (cross-staff whole heads from the padded cell) cancelling a
+  missing rest; arm reads the rests the print shows and the same wrong chord leaves 4.0.
+A rest added to an already-right bar that stays right: 0.
+
+### Hand truth (Brahms pdf 0, swept cells; `probe/handtruth_2_99.py`)
+Frame control 7 of 8 truth rests overlap a filed cluster (a Litolff record against this page reads 0 of 8 and the
+script stops: it can fail). Ink alone: `rest8th` 5 of 5 read eighth, `restQuarter` 2 of 3 (the third is an 8 px
+sliver). Decided unboxed rests invented: 0. Page 0 is partly labelled and every truth rest on it is a detector
+pre-fill, so it can only fail the decision by inventing; it does not hold the unboxed population.
+
+### Tiles: `out/print/2.99-review/` (12, blind)
+900 px, 600 dpi, red = the bar, blue = the piece, big number, nothing of ours on the image; order shuffled;
+`manifest.json` holds each tile's purpose and our reading. Kinds: decided eighth x6 (3 released, 2 cancelling,
+1 still held), decided quarter x2, refused stem strokes x2, one abstention, one control (a double-sharp box over
+eighth-rest ink). Frame control: filed staff lines fitted locally at the piece's x must carry 2x the gap ink and
+fail half a space off; a tile that fails is skipped. My own look (rule 7, not evidence): tile 2 shows the three
+printed eighth rests and quarter rest with blue on the last; tile 8 (abstained) brackets a natural sign.
+
+### Limits
+Eighth and quarter only. Windows from two plates and five pages; displaced rests abstain (Brahms 4 decided of
+27 unboxed). `consequences._missed_rest_witness` does not yet count a decided unboxed rest as explaining its
+ink (read by 2.97's `reconcile_duration`; left alone: a still-short bar keeps its lengthening refused). GATHER
+changed: only a full re-gather prices the whole movement.
+
+### 2.99 -- Sean's judgement of the 12 tiles (2026-10-12) and the repair
+
+Verbatim: *"1. 8 rest 2. 8 rest 3. flat accidental 4. 4 rest 5. 8 rest 6. 8 rest 7. 8 rest 8. nat accidental 9. 8 rest 10. end of slur 11. key flat 12. 4 rest"* (`out/print/2.99-review/answers.json`).
+Decided rests 1, 2, 4, 5, 7, 9, 12: **7 right**. Refusals 3 (flat) and 11 (key flat) right; 8 (natural) abstained, fine.
+**Tile 10 WRONG: decided eighth, it is the end of a slur** (Brahms p1 s1 staff 3 bar 6: a thin diagonal stroke ending on a head).
+Tile 6 is a real eighth rest refused `already_read_as_a_glyph` under a double-sharp box: a known MISS, not built (a standing
+accidental box where no head follows could be re-read; the 3 such Litolff boxes are all eighth-rest ink).
+
+Repair (decision only, no re-gather): the arc boxes the record holds do not reach that cluster (the nearest `tie` boxes
+end 200 px away), so the evidence is the ink itself: no ink column is more than 39.5% of its height, and the thinnest of
+the 140 standing Brahms rests is 49%. `THIN_STROKE_MAX_COLUMN_SHARE = 0.45` refuses such ink (`thin_stroke_not_a_rest`,
+False). RED-first from tile 10's numbers, positive control a rest of the same size and place with a 62% column (stays an
+eighth). Controls unchanged (standing rests read the same; 0 of 52 accidentals decided a rest). **Removed from the decided
+rests on the two count pages: 1 (Brahms, tile 10 itself, a slur end), 0 on Litolff**; so no second tile set was cut. Decided
+now: Litolff 13 eighth + 3 quarter, Brahms 3 eighth; bars released 10 / 1.
