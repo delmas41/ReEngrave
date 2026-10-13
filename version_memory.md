@@ -6076,3 +6076,6 @@ STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default
 
 ## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
 STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
+
+## 2026-10-13 -- every threshold refusal records its margin; judged-tile index (ROADMAP 2.106)
+STAGED, bookkeeping only (no decision changes). `staged/margins.py` + check part `staged.margins` (open=0): 15 threshold reasons over 4 deciders file `Verdict.margin`. `staged/judged.py` + `benchmarks/acceptance/judged-tiles.json` index Sean's judged tiles with a re-scorer: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`. Sean: "land 2.106".
