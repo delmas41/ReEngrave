@@ -1,0 +1,47 @@
+{
+  "cell_id": "litolff-p13-sys1-s15-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:29:06+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 341,
+        "y": 550,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 343,
+        "y": 650,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 351,
+        "y": 1150,
+        "w": 119,
+        "h": 50
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

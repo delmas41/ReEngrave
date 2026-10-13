@@ -1,0 +1,23 @@
+{
+  "cell_id": "litolff-p13-sys0-s2-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:28:20+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 104,
+        "y": 1028,
+        "w": 121,
+        "h": 102
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "cell_id": "brahms-p21-sys1-s13-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:14:08+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 303,
+        "y": 241,
+        "w": 99,
+        "h": 83
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 312,
+        "y": 454,
+        "w": 99,
+        "h": 83
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}
