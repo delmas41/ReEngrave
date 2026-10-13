@@ -904,6 +904,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # of the event is narrowed and not a rest (a mixed event stays per-head,
     # exactly as before) and the option is a length every head admits.
     chord_units = _narrowed_chords(log, subject, notes)
+    if chord_units and not _bar_heads_are_clean(log, subject, notes):
+        chord_units = []        # 2.97: not this staff's own heads
     in_chord = {m.id for ms in chord_units for m in ms}
     landings = []
     for ms in chord_units:
@@ -984,7 +986,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # decided re-reading, lands the bar exactly ONCE and that one re-reading is
     # the landing already made. Two joint answers settle nothing.
     extras: list = []
-    if all(m.outcome is Outcome.DECIDED for m in members):
+    if all(m.outcome is Outcome.DECIDED for m in members) \
+            and _bar_heads_are_clean(log, subject, notes):
         extras = _settle_alongside(log, subject, notes, current, total,
                                    expected, members, options)
     verdicts: List[Verdict] = []
@@ -1108,6 +1111,66 @@ def _settle_alongside(log, subject, notes, current, total, expected,
         if answer != WITNESS_CLEAR:
             return []
     return [(ms, p[1]) for ms, p in zip(units, pick)]
+
+
+#: How far (staff spaces) beyond its outer line a head may stand and still be
+#: read as THIS staff's own without ledger evidence.
+CLEAN_HEAD_OFF_STAFF_SPACES = 1.6
+#: Two boxes over the same ink: IoU above this.
+CLEAN_HEAD_DUPLICATE_IOU = 0.3
+
+
+def _box_iou(a, b) -> float:
+    x0, y0 = max(a[0], b[0]), max(a[1], b[1])
+    x1, y1 = min(a[2], b[2]), min(a[3], b[3])
+    i = max(0.0, x1 - x0) * max(0.0, y1 - y0)
+    u = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i
+    return i / u if u else 0.0
+
+
+def _bar_heads_are_clean(log: Log, subject: Subject, notes) -> bool:
+    """Is every kept notehead of this bar ONE head on THIS staff's own lines?
+    ROADMAP 2.97, found on the blind tiles: a bar summed from a head boxed
+    twice, from a head another staff also boxed, or from a head standing
+    above the staff (a neighbour's note) is a bar of the wrong music, and an
+    exact landing through it is a confident wrong answer. False -- never
+    "True by default" (rule 8) -- if any head fails; True where nothing is
+    wrong OR where there is no geometry to ask (then nothing is claimed
+    either way, and the other conditions stand)."""
+    cell = subject.at(Kind.CELL)
+    boxes = []
+    for v in notes:
+        if _is_rest(v):
+            continue
+        r = log.rows(Q.GLYPH_BOX, v.subject)
+        b = (r[-1].detail or {}).get("bbox_page_px") if r else None
+        if b and len(b) == 4:
+            boxes.append((v.subject, [float(x) for x in b]))
+    lines = log.rows(Q.STAFF_LINES, subject.at(Kind.STAFF))
+    ln = lines[-1].value if lines else None
+    for i, (s_, b) in enumerate(boxes):
+        for t_, c in boxes[i + 1:]:
+            if _box_iou(b, c) > CLEAN_HEAD_DUPLICATE_IOU:
+                return False            # one head boxed twice
+        if ln and len(ln) == 5:
+            sp = (ln[-1] - ln[0]) / 4.0
+            cy = (b[1] + b[3]) / 2.0
+            if sp > 0 and (cy < ln[0] - CLEAN_HEAD_OFF_STAFF_SPACES * sp
+                           or cy > ln[-1] + CLEAN_HEAD_OFF_STAFF_SPACES * sp):
+                return False            # not on this staff's own lines
+    if boxes:
+        for r in log.rows(Q.GLYPH_BOX, subject.at(Kind.SYSTEM),
+                          scope=Scope.SELF_AND_DESCENDANTS):
+            if r.subject.staff == subject.staff:
+                continue
+            ob = (r.detail or {}).get("bbox_page_px")
+            if not ob or len(ob) != 4 or _left_the_bar(log, r.subject) is not None:
+                continue
+            ob = [float(x) for x in ob]
+            if any(_box_iou(b, ob) > CLEAN_HEAD_DUPLICATE_IOU
+                   for _s, b in boxes):
+                return False            # another staff boxed the same ink
+    return True
 
 
 def _narrowed_chords(log: Log, subject: Subject, notes) -> List[List[Verdict]]:

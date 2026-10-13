@@ -564,5 +564,75 @@ class TestABareStemTipStillCounts(unittest.TestCase):
         self.assertEqual(o.forced, 0)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# The heads must be THIS staff's own, one box each (the blind tiles, 2.97)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _box(log, sub, x0, y0, x1, y1):
+    from tools.omr.staged.record import READERS
+    log.observe(sub, Q.GLYPH_BOX, ["noteheadBlack", 0, 0, 0, 0],
+                reader=READERS.DETECTOR, frame="cell",
+                bbox_page_px=[x0, y0, x1, y1])
+
+
+def _lines(log, staff_sub, top=100.0, sp=10.0):
+    from tools.omr.staged.record import READERS
+    log.observe(staff_sub, Q.STAFF_LINES, [top + i * sp for i in range(5)],
+                reader=READERS.GEOMETRY, frame="page")
+
+
+class TestTheHeadsAreThisStaffsOwn(unittest.TestCase):
+
+    def _bar(self, boxes):
+        """3 quarters + one narrowed head; `boxes` = page boxes for glyphs
+        0..3 (None = no box). Staff lines 100..140, space 10."""
+        b = _InferBar()
+        for _ in range(3):
+            b.decided(1.0)
+        b.narrowed_chord(1)
+        for g, bx in enumerate(boxes):
+            if bx:
+                _box(b.log, _sub(0, g, b.cell_idx), *bx)
+        _lines(b.log, _staff(0))
+        return b.finish()
+
+    CLEAN = [(10, 100, 24, 112), (40, 110, 54, 122), (70, 120, 84, 132),
+             (100, 125, 114, 137)]
+
+    def test_POSITIVE_CONTROL_clean_heads_are_settled(self):
+        log = self._bar(self.CLEAN)
+        _run(log)
+        self.assertEqual(_val(log, 3).outcome, Outcome.DECIDED)
+
+    def test_one_head_boxed_twice_blocks_the_bar_RED(self):
+        boxes = list(self.CLEAN)
+        boxes[3] = (70, 120, 84, 132)          # on top of glyph 2's box
+        log = self._bar(boxes)
+        self.assertEqual(_fired(_run(log)), [])
+        self.assertEqual(inferences.solve_bare_stem_bar(
+            log, _cell(), any_reason=True).decline, "heads_not_this_staffs_own")
+
+    def test_a_head_standing_above_the_staff_blocks_the_bar_RED(self):
+        boxes = list(self.CLEAN)
+        boxes[0] = (10, 40, 24, 52)           # 6 spaces above the top line
+        log = self._bar(boxes)
+        self.assertEqual(_fired(_run(log)), [])
+
+    def test_a_head_the_NEIGHBOUR_staff_also_boxed_blocks_the_bar(self):
+        b = _InferBar()
+        for _ in range(3):
+            b.decided(1.0)
+        b.narrowed_chord(1)
+        for g, bx in enumerate(self.CLEAN):
+            _box(b.log, _sub(0, g, b.cell_idx), *bx)
+        _lines(b.log, _staff(0))
+        # staff 1 holds a kept box on glyph 3's ink
+        _box(b.log, Subject(Kind.GLYPH, page=0, system=0, staff=1, cell=0,
+                            glyph=0), 100, 125, 114, 137)
+        log = b.finish()
+        self.assertEqual(_fired(_run(log)), [])
+
+
 if __name__ == "__main__":
     unittest.main()

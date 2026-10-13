@@ -1687,7 +1687,8 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
     from collections import Counter
     from .consequences import (WITNESS_CLEAR, _bar_beats_at, _is_rest,
                                _left_the_bar, _missed_rest_witness,
-                               _on_one_stem, _standing)
+                               _on_one_stem, _standing,
+                               _bar_heads_are_clean)
     out = BarOutcome(proposals=[])
     notes = []
     for v in _standing(log, cell, Q.DURATION):
@@ -1752,6 +1753,9 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
             _witness.append(_missed_rest_witness(log, c)[0])
         return _witness[0]
 
+    if any_reason and not _bar_heads_are_clean(log, cell, notes):
+        out.decline = "heads_not_this_staffs_own"
+        return out
     by_glyph = {v.subject.glyph: v for v in notes}
     fixed = _frac(0)
     unknown_events: List[Tuple[List[Verdict], List[Any]]] = []
