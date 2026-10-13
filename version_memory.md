@@ -6007,3 +6007,7 @@ running changelog.
 theory layer, etc.) predates this file and is not backfilled here — see
 [PROJECT_STATUS.md](PROJECT_STATUS.md) for the narrative history and
 `git log` for the full commit record.*
+
+## 2026-10-12 -- ROADMAP 2.100 half 1 LANDED on main (branch `lane-2.100-key-order` 0a839061, Sean: "Land 2.100")
+
+- Merged origin/main `fcacfa10` (docs-only conflicts, ROADMAP and version_memory). Fast tier 7,554 passed / 12 skipped; `check` 192 open, status ok. Half 2 (fixed-order read of the key's accidentals) remains open.
