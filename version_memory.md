@@ -63,6 +63,9 @@ GATHER `gather_unboxed_rest_ink` (`Q.UNBOXED_REST_SHAPE`, ordinal 350000+) -> AD
 ## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
 
 - Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
+## 2026-10-12 -- ROADMAP 2.96 why bars are held out now (branch `lane-2.96-held-funnel`, not merged)
+
+- Diagnosis only, STAGED, EXPORT-only; no product code changed. `benchmarks/omr-bar-sum-holdout-2026-09/probe/held_funnel_2_96.py` (reuses 2.22's dump and its control, adds ink pieces, dot rows, cell widths, per-event verdict flags), `classify_held_2_96.py` (evidenced vs arithmetic fixes, exhaustive partition asserted to sum, wrong-meter negative control), `summarise_2_96.py`, `n_shape_2_96.py`, `tiles_2_96.py`; results in `out/2.96/`; 15 tiles in `out/print/2.96-review/`. FINDINGS 2.96, ROADMAP 2.96. Top evidenced causes: narrowed heads the bar lands (792), a lone whole rest left at 4 beats (458), unboxed rest ink (448); the dot, head-fill and beam rows are not causes without a record row. Fast tier and `check` not run (no `tools/` change).
 
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
