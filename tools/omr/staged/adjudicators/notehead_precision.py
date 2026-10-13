@@ -89,6 +89,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
+from .. import margins as _margins
 from .. import record as R
 from ..record import ABSTAIN, Kind, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
@@ -3081,8 +3082,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         return Ruling(value=True, reason="clipped_fragment",
                       used=tuple(used), detail=detail)
     if _too_narrow(box_row, spacing, detail):
-        return Ruling(value=True, reason="too_narrow",
-                      used=tuple(used), detail=detail)
+        # ROADMAP 2.106: how far under the width floor (positive = refused
+        # by this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="too_narrow",
+                   used=tuple(used), detail=detail),
+            margin=TOO_NARROW_MIN_SPACES - detail["width_spaces"],
+            axis="width_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
     # ROADMAP 2.59: the hollow classes `too_narrow` does not reach. AFTER the
     # two shape rules above so every box they already refuse keeps its reason.
     if _ledger.dot_follows_note_enabled() \
@@ -3098,8 +3105,12 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 detail["barline_edges_page"] = [cell_box[0], cell_box[2]]
                 return Ruling(value=True, reason="on_a_barline",
                               used=tuple(used), detail=detail)
-        return Ruling(value=True, reason="is_a_dot",
-                      used=tuple(used), detail=detail)
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_dot",
+                   used=tuple(used), detail=detail),
+            margin=DOT_SIZED_MAX_SPACES - max(detail["dot_size_spaces"]),
+            axis="larger_side_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
     # ROADMAP 2.77b: a flat regular-head box lying inside a read beam stroke is
     # that beam's ink (Sean, crop 7). Its own helper; one call.
     beam_piece = _beam_piece_refusal(ev, box_row, spacing, detail)
