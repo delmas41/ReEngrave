@@ -119,10 +119,13 @@ later DECISIONS line disagree, DECISIONS wins. The conventions registry
   corpus print no label at all. A worn margin label is named only from the
   catalog roster + the system's gap + exactly one lexicon neighbour, never
   by widening the lexicon (ROADMAP 2.94).
-- **The brace makes them all one instrument** (Sean, 2026-10-12: *"the
-  bracket makes them all horns"*): a word printed in a braced group names the
-  WHOLE group, each staff keeping its own crook; the extent is the BRACE
-  (ROADMAP 2.95; reading the brace is the named gap).
+- **A word printed between braced staves names every staff in the brace**
+  (Sean, 2026-10-12, on Brahms `(C)` / `Hr.` / `(Es)`: *"the bracket makes
+  them all horns"*): the word names the WHOLE braced group, each staff
+  keeping its own crook; the extent is the BRACE, which may span more than
+  two staves. The brace by itself names nothing -- it also groups
+  Fag./K-Fag. and 1./2. Viol., which are different parts (ROADMAP 2.95;
+  reading the brace is the named gap).
 - **The condensed count cannot come from the page** (`Viola` = 1 part in one
   edition, 2 in another); it is an encoding property. **Identity loss on the
   staged path is PLACEMENT, never naming**: every part on both shared

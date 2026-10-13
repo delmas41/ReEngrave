@@ -133,8 +133,10 @@ registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
   tilts and ~1 px decides a near-boundary pitch.
 - Litolff MERGES and Breitkopf SHATTERS: an ink component is not a mark.
   A cell index restarts per system: key a bar on (page, system, cell).
-- The brace makes every staff in it one instrument; the condensed count is
-  an encoding property and cannot come from the page.
+- A word printed between the staves of a brace names every staff in that
+  brace, each with its own crook (`Hr.` with `(C)`/`(Es)`); a brace alone
+  names nothing (it also groups Fag./K-Fag. and 1./2. Viol.). The condensed
+  count is an encoding property and cannot come from the page.
 - Two witnesses off one raster fall silent together; a second witness comes
   from a different source (catalog, roster, a clef-free range check).
 
@@ -148,10 +150,13 @@ dirty file; never bare `git stash`. Claim a ROADMAP number by pushing its
 row to main before building; fence lanes by FUNCTION NAME when two touch one
 file.
 
-**Lean lanes, one shared box** (Sean, 2026-10-13; ROADMAP "How to work"):
-at most 2–3 lane agents at a time, every lane on Sonnet; one gather at a
-time; `pytest -n 4` at most; push at every milestone; small agents for
-landings and recording. Machine time is free, context and tokens are not —
+**Lean lanes, one shared box** (Sean, DECISIONS 2026-10-12 "HOW LANES
+RUN", after two machine crashes; ROADMAP "How to work"): at most 2–3 lanes
+at once, every lane on Sonnet; one page gather at a time; the fast tier at
+≤ 4 workers or serial; every lane commits and pushes at each milestone;
+test output quiet (pass count + failures only); landings, answer-recording
+and crash recovery go to a fresh small agent with a short brief, never by
+resuming the big lane agent; blind tiles and print checks are kept in full. Machine time is free, context and tokens are not —
 long runs are unattended nohup scripts that write a small summary, never
 per-change whole-movement A/Bs. Never `pkill -f llama-server`. Sean runs
 the overnight re-gather; never ask about it.

@@ -61,8 +61,8 @@ lightly trimmed into the named doc; DROPPED = removed, with the reason.
 | Written value from the shape; a tuplet only where its marking is seen | CLAUDE.md §4; `docs/page-facts.md` §1. |
 | Only a clef before key accidentals; key accidentals in fixed order | CLAUDE.md §4; `docs/page-facts.md` §2. |
 | 95% is not fixed; the bar is the cost of error | CLAUDE.md §4. |
-| Lean lanes and machine-load caps (2-3 lanes, one gather at a time, 4 test workers, push at milestones, small agents for landings/recording) | CLAUDE.md §6. The numbers are as Sean gave them for this housekeeping (2026-10-13); the "two lanes, Sonnet, machine time is free" half is ROADMAP "How to work" (DECISIONS 2026-09-28/29, 2026-10-01). No single DECISIONS line holds the 2026-10-13 numbers; if Sean wants one, append it. |
-| Brace names the whole group (2.95); cello+bass confirmed on the five Litolff staves (2.93); worn label from roster+gap+one neighbour (2.94); whole-bar rest sized to `<time>` (2.98) | `docs/page-facts.md`. |
+| Lean lanes and machine-load caps (2-3 lanes, one gather at a time, 4 test workers, push at milestones, small agents for landings/recording) | CLAUDE.md §6, citing DECISIONS 2026-10-12 "HOW LANES RUN" (Sean, after two machine crashes); the "Sonnet, machine time is free" half is ROADMAP "How to work" (DECISIONS 2026-09-28/29, 2026-10-01). |
+| A word between braced staves names every staff in the brace (2.95); cello+bass confirmed on the five Litolff staves (2.93); worn label from roster+gap+one neighbour (2.94); whole-bar rest sized to `<time>` (2.98) | `docs/page-facts.md`. |
 
 ## Dropped outright
 
