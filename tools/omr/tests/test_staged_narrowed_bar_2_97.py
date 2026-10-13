@@ -632,7 +632,7 @@ class TestATupletBarIsNotSettledByItsSum(unittest.TestCase):
         log = self._bar(True)
         self.assertEqual(_fired(_run(log)), [])
         self.assertEqual(inferences.solve_bare_stem_bar(
-            log, _cell(), any_reason=True).decline, "bar_holds_tuplet_evidence")
+            log, _cell(), any_reason=True).decline, "tuplet_in_bar")
 
     def test_POSITIVE_CONTROL_the_same_bar_without_one_is_settled(self):
         log = self._bar(False)

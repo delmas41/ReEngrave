@@ -2014,7 +2014,7 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
             levels = int(hit[0].value.get("beam_levels") or 0)
             floor = min(int(c.value.get("beam_levels") or 0)
                         for c in m.candidates if isinstance(c.value, dict))
-            if levels > floor:
+            if levels > floor and not any_reason:
                 d_ = m.detail or {}
                 seen_levels = max(int(d_.get("levels_certain") or 0),
                                   int(d_.get("levels_possible") or 0))
