@@ -146,6 +146,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
+from .. import margins as _margins
 from . import key_slots as _key_slots
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
@@ -1040,8 +1041,17 @@ def _rest_is_a_barline_refusal(ev: Evidence, this_row,
             and h_sp >= REST_BARLINE_MIN_HEIGHT_SPACES
             and edge_sp <= REST_BARLINE_EDGE_TOL_SPACES):
         detail["barline_signal"] = signal
-        return Ruling(value=True, reason="rest_is_a_barline",
-                      used=(this_row.id,), detail=detail)
+        # ROADMAP 2.106: how far INSIDE the tightest of the three cuts the
+        # box stands (>= 0 = refused by this much); no declared band.
+        axis, slk = _margins.tightest([
+            ("width_spaces", -signal["margin_width"]),
+            ("height_spaces", -signal["margin_height"]),
+            ("cell_edge_spaces", -signal["margin_edge"])])
+        return _margins.attach(
+            Ruling(value=True, reason="rest_is_a_barline",
+                   used=(this_row.id,), detail=detail),
+            margin=slk, axis=axis, unit="staff spaces", band=None,
+            would_choose=(True,))
     if w_sp < REST_BARLINE_MAX_WIDTH_SPACES and edge_sp <= 0.5:
         detail["barline_near_miss"] = signal
     return None

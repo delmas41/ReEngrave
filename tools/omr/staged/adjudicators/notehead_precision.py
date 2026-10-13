@@ -751,8 +751,14 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
         detail["beam_piece"] = {"stroke": s.id,
                                 "cover": round(cover, 3),
                                 "height_spaces": round(height_spaces, 3)}
-        return Ruling(value=True, reason="is_a_beam_piece",
-                      used=(box_row.id, s.id, row.id), detail=detail)
+        # ROADMAP 2.106: how far over the coverage floor (>= 0 = refused by
+        # this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_beam_piece",
+                   used=(box_row.id, s.id, row.id), detail=detail),
+            margin=cover - BEAM_PIECE_COVER_MIN, axis="beam_cover_fraction",
+            unit="fraction of the box inside the beam stroke", band=None,
+            would_choose=(True,))
     return None
 
 
