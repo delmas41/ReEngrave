@@ -3486,3 +3486,25 @@ false-positive mode" (evidenced `D` alone releases 54; the 412 arithmetic-tier `
 moves from "arithmetic" to "print-supported, no record row" (2 of 3), so the order of next items is unchanged
 (narrowed heads, whole rest, unboxed rest ink) with the head fill added as item 4. The I:eighth ink box can also be a
 flat or other accidental: a shape test alone over-counts, so the reader in item 3 must use position on the staff.
+
+### 2.97g. Sean's answers on review-3 (2026-10-13) and the final re-measure
+Verbatim in `out/print/2.97-review-3/answers.json` and DECISIONS 2026-10-13: *"1. Dot 8 2. 8, 8 3. 8 4.4 5. 8 rest 6. 4"*.
+- Tiles 1-2 (eighths the rule still settles on weak beam evidence): **2 of 2 right** (dotted eighth; two eighths).
+- Tiles 3-6 (bars newly held because base's arithmetic-only eighth is now refused): base was RIGHT on tile 3 (a real
+  flagged eighth our reader missed -> ROADMAP 2.104), WRONG on 4 (a quarter), 5 (an eighth REST written as a note) and
+  6 (a quarter). **The strict rule avoids 3 wrong notes for 1 lost correct eighth.** n is small; the direction is
+  consistent with singles 0/4 in 2.97d.
+- Sean's choice: land the STRICT eighth-on-evidence rule as built; missed flags are 2.104's job, not the bar's.
+
+Re-measure with `flag_ink_unread` counted as flag evidence, Litolff night record
+(`beethoven5-litolff-mvt1-whole-20261011-night`), base = origin/main tools (incl. 2.102), arm = this branch merged with
+origin/main, `probe/run_2_97.py`, `probe/newheld_2_97.py` (the whole `held` list; the report's `bars` figure in brackets):
+| | held bars (report) | held list | notes in file | narrowed not written |
+|---|---|---|---|---|
+| base | 1,027 | 953 | 5,937 | 362 |
+| arm, `OMR_NARROWED_BAR=1` | 1,018 | 944 | 5,994 | 311 |
+| arm as shipped (`OMR_NARROWED_BAR` default OFF) | 1,033 | -- | 5,916 | 368 |
+ON vs base: released 14, **newly held 5** (was 11 before the `flag_ink_unread` fix), all 5 `beam_discounted_uncertain`
+bare stems with no evidence of an eighth -- the refusal Sean's rule asks for. The shipped default (INFER columns rule OFF)
+nets +6 held / -21 notes vs base on Litolff: the EVALUATE chord/joint settlement releases bars, the strict rule holds the
+arithmetic-only eighths. Brahms was not re-measured (6 GB record; light-load rule); its last figures are 2.97e's.
