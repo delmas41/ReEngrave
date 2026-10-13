@@ -5462,6 +5462,19 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "placed_but_not_rendered": d_placed - d_written,
     }
     report["direction_words_not_written_total"] = d_decided - d_written
+    # ROADMAP 2.67b: words the reader READ and ADJUDICATE held back because
+    # their kind is never printed there (`pizz.` under a horn, `Allegro` under
+    # the oboe). They are not in any decided value, so they sit outside the
+    # balance above; they are counted here as UNREAD, by reason, never lost.
+    held_by_reason: Dict[str, int] = {}
+    for v in rec.verdicts_of(Q.DIRECTION):
+        for w in (v.get("detail") or {}).get("held_back") or ():
+            r = str(w.get("held_reason"))
+            held_by_reason[r] = held_by_reason.get(r, 0) + 1
+    report["direction_words_held_back"] = {
+        "total": sum(held_by_reason.values()),
+        "by_reason": dict(sorted(held_by_reason.items())),
+    }
     report["direction_balance"] = {
         "words_decided": d_decided,
         "placed": d_placed,

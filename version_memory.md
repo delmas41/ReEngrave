@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.67b the terms library wired into the direction reader, with limits (branch `lane-2.67b-terms-wiring`, NOT merged)
+
+- STAGED only; LEGACY unchanged (no scope passed). `direction_lexicon.lookup(text, scope=)` + `LexiconScope`/`scope_for`; `direction_text.read_directions(lexicon_scope=)`; `gather_direction_words(roster=, work_id=)` builds the scope from the work id and the margin labels gathered so far and files it on every word; `adjudicators/text._held_back` (wrong family / heading out of place, positive evidence only, abstain `held_back`); export `direction_words_held_back`; `pipeline`/`__main__` forward `--work-id` to gather. Data: `data/musical-terms/composer-languages.json`; `musical_terms` gains `composer_languages`, `edition_languages`, `FAMILY_OF`, `is_heading`.
+- 12 tests (`test_direction_terms_scope_2_67b.py`), each of six limits broken in turn turns one red. Fast tier green; `check` 192 open on branch and on main `4275d7c3` alike. Re-decided `20261011-night`: 0 held on both; one-page gathers: Brahms p1 / Litolff p3 no library words, Mahler 5 Peters p6 `mit dem Bogen` x2 (one held: `Bässe` named a voice). Crops `out/print/2.67b/`.
+
 ## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, LANDED on main 2026-10-12, Sean: "Land 2.94 with the (C) Hr. fix")
 
 `work_roster.recover_worn` + `decide(named_in_system=)` + `identity._names_in_system`: a short token one letter off exactly one alias, instrument held by name in the catalog roster and absent from the system's other labels, is named (`recovered_worn`). Lexicon unchanged. Night records: Litolff 3 staves named, Brahms 1, 0 names changed, 4 of 4 print-checked. Tests `test_staged_worn_label.py`. FINDINGS §2.94. Also `instruments.parse_leading_crook`: `(C) Hr.` -> 0, `(Es) Hr.` -> 3 (was the horn default 1; LEGACY `StaffLabel.fifths_offset` changes for those labels); Brahms key chain re-decided, 0 of 1,436 verdicts moved; `test_lookup_leading_crook.py`, `test_instruments.py` updated.

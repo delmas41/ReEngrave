@@ -149,6 +149,12 @@ class DirectionHit:
     #: 2026-10-08) -- so they stay in `text`; the caller links the detector's
     #: dynamic glyph so it is not counted twice.
     dynamics: tuple[str, ...] = ()
+    #: ROADMAP 2.67b: the terms-library ids a SCOPED lookup matched beyond
+    #: `TERMS` (empty on an unscoped lookup, which never reads the library).
+    library: tuple[str, ...] = ()
+    #: True when the match is a whole library word in a language outside the
+    #: work's scope, accepted only because it is 5+ letters long.
+    other_language: bool = False
 
 
 def _normalise(token: str) -> str:
@@ -185,15 +191,34 @@ def _trim_ends(text: str) -> str:
     return text.strip().lstrip(" ,;:.·•-").rstrip(" ,;:·•-") or text.strip()
 
 
-def lookup(text: str) -> DirectionHit | None:
+def lookup(text: str, *, scope: "LexiconScope | None" = None
+           ) -> DirectionHit | None:
     """The direction `text` names, or None if it is not one.
 
     Case and punctuation are ignored for MATCHING and preserved in the result.
+
+    ROADMAP 2.67b: with a `scope` (the STAGED reader passes one; LEGACY never
+    does, so the frozen path is unchanged) a string `TERMS` refuses is asked
+    of the terms library under that scope's limits -- see `_library_lookup`.
+    `TERMS` is asked first and its answer stands: the library only ever ADDS.
     """
     if not text:
         return None
     if _A_DUE.fullmatch(text.strip().lower()):
         return DirectionHit(text=text.strip(), category="part", terms=("a2",))
+    prepared = _prepare(text)
+    if prepared is None:
+        return None
+    shown, tokens = prepared
+    hit = _curated(shown, tokens)
+    if hit is not None or scope is None:
+        return hit
+    return _library_lookup(text, shown, tokens, scope)
+
+
+def _prepare(text: str) -> "tuple[str, list[str]] | None":
+    """The noise filters every lookup runs, and the tokens they leave:
+    `(the text as shown, its normalised tokens)`, or None if refused."""
     # Musical text is letters, spaces and abbreviation periods. A digit or a
     # bracket means a bar number, a metronome mark or a rehearsal letter — all
     # of which are somebody else's problem, and none of which is a direction.
@@ -226,7 +251,11 @@ def lookup(text: str) -> DirectionHit | None:
     # with a connective between. Only the immediate repeat is the failure.
     if any(a == b for a, b in zip(tokens, tokens[1:])):
         return None
+    return shown, tokens
 
+
+def _curated(shown: str, tokens: list[str]) -> DirectionHit | None:
+    """`TERMS` and `CONNECTIVE` alone: the lexicon as it stood before 2.67b."""
     matched: list[str] = []
     dynamics: list[str] = []
     for token in tokens:
@@ -243,3 +272,153 @@ def lookup(text: str) -> DirectionHit | None:
     category = next(c for c in _CATEGORY_RANK if c in categories)
     return DirectionHit(text=shown, category=category, terms=tuple(matched),
                         dynamics=tuple(dynamics))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.67b: the terms library, behind the limits Sean set (2026-10-12)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# The library (`musical_terms`, 1,755 terms copied from Gradus) is ~10x
+# `TERMS`, and every word it adds is a string OCR noise can now land on. So it
+# is admitted under three limits, all on the READING side; where a word is
+# printed (family, heading placement) is ADJUDICATE's, because only there is
+# the staff's instrument known (`adjudicators/text.py`, `_held_back`):
+#
+# 1. LANGUAGE. Italian and Latin always; the composer's own language (the
+#    committed `composer-languages.json`, keyed on the work) and the
+#    EDITION's (the language its margin labels are printed in) on top. A word
+#    in any other language is accepted only as a whole library entry of 5+
+#    letters, never inside a phrase. An unknown work admits every language,
+#    and the scope says so.
+# 2. NEVER A DIRECTION: theory vocabulary (`printedInScores: false`) and
+#    instrument names (`instrument: true`; the in-music part names stay
+#    `_PART`'s, and margin labels `instruments.py`'s).
+# 3. SHORT FORMS. A library form under 3 letters (`a`, `e`, `et`, `Fl`, `Vc`)
+#    never stands alone -- OCR invents those constantly. Inside a phrase it is
+#    glue, like a `CONNECTIVE`. The exceptions are the hand marks below.
+
+#: Library forms under 3 letters that are a whole direction on their own:
+#: the keyboard hands (`m.g.`, `m.d.`, `m.s.`, `l.H.`, `r.H.`) and `G.P.`.
+SHORT_ALONE = frozenset({"mg", "md", "ms", "lh", "rh", "gp"})
+
+#: Library entries printed in every repertoire whatever their language:
+#: `G.P.` is German (`Generalpause`) and Dvořák, Bruckner and Elgar all print it.
+UNIVERSAL = frozenset({"Generalpause"})
+
+#: The library's categories, as this lexicon's (`_CATEGORY_RANK`) -- the
+#: library's own is kept on the hit's `library` ids.
+_LIBRARY_CATEGORY = {"tempo": "tempo", "dynamics": "dynamic"}
+
+#: A word outside the scope's languages is admitted only this long (folded).
+OTHER_LANGUAGE_MIN_LETTERS = 5
+
+
+@dataclass(frozen=True)
+class LexiconScope:
+    """Which library languages a work's directions are read in."""
+
+    #: None = every language (the work, or its composer, is unknown).
+    languages: "frozenset[str] | None"
+    work_id: "str | None" = None
+    composer_languages: "tuple[str, ...] | None" = None
+    edition_languages: tuple[str, ...] = ()
+
+    def admits(self, language: str, term_id: str = "") -> bool:
+        return (self.languages is None or language in self.languages
+                or term_id in UNIVERSAL)
+
+    def to_json(self) -> dict:
+        return {"languages": (sorted(self.languages)
+                              if self.languages is not None else None),
+                "work_id": self.work_id,
+                "composer_languages": (list(self.composer_languages)
+                                       if self.composer_languages is not None
+                                       else None),
+                "edition_languages": list(self.edition_languages),
+                "unknown_work": self.languages is None}
+
+
+def scope_for(work_id: "str | None", label_texts=()) -> LexiconScope:
+    """The scope for a work, from its composer and its edition's labels."""
+    from . import musical_terms as MT
+    composer = MT.composer_languages(work_id)
+    edition = MT.edition_languages(label_texts)
+    if composer is None:
+        return LexiconScope(languages=None, work_id=work_id,
+                            composer_languages=None, edition_languages=edition)
+    return LexiconScope(
+        languages=frozenset(MT.ALWAYS) | frozenset(composer) | frozenset(edition),
+        work_id=work_id, composer_languages=composer, edition_languages=edition)
+
+
+def _eligible(matches):
+    """Library matches that may be a direction at all (limit 2)."""
+    return [m for m in matches
+            if m.term.printed_in_scores and not m.term.instrument]
+
+
+def _library_category(terms) -> str:
+    cats = {_LIBRARY_CATEGORY.get(t.category, "expression") for t in terms}
+    return next(c for c in _CATEGORY_RANK if c in cats)
+
+
+def _library_lookup(text: str, shown: str, tokens: list[str],
+                    scope: LexiconScope) -> DirectionHit | None:
+    from . import musical_terms as MT
+
+    # The whole string first: `a tempo`, `Tempo I`, `Sehr langsam`, `G.P.`.
+    whole = _eligible(MT.lookup(text))
+    if whole:
+        key = MT.fold(text)
+        if len(key) >= 3 or key in SHORT_ALONE:
+            inside = [m for m in whole
+                      if scope.admits(m.term.language, m.term.id)]
+            if inside:
+                return DirectionHit(
+                    text=shown, category=_library_category(
+                        m.term for m in inside),
+                    terms=tuple(t for t in tokens if t in TERMS),
+                    library=tuple(dict.fromkeys(m.term.id for m in inside)))
+            if len(key) >= OTHER_LANGUAGE_MIN_LETTERS:
+                return DirectionHit(
+                    text=shown, category=_library_category(
+                        m.term for m in whole),
+                    terms=(), other_language=True,
+                    library=tuple(dict.fromkeys(m.term.id for m in whole)))
+
+    # Then a phrase of words, each a `TERMS` entry, a connective, a dynamic
+    # letter or a library word in the scope's languages.
+    matched: list[str] = []
+    library: list[str] = []
+    dynamics: list[str] = []
+    real = False
+    categories: list[str] = []
+    for token in tokens:
+        if token in TERMS:
+            matched.append(token)
+            categories.append(TERMS[token])
+            real = True
+            continue
+        if token in _DYNAMIC_LETTERS:
+            dynamics.append(token)
+            continue
+        if token in CONNECTIVE:
+            continue
+        found = [m for m in _eligible(MT.lookup(token))
+                 if scope.admits(m.term.language, m.term.id)]
+        if not found:
+            return None
+        library.extend(m.term.id for m in found)
+        if len(MT.fold(token)) < 3:
+            continue                      # a short form is glue (limit 3)
+        categories.append(_library_category(m.term for m in found))
+        # `und mit sehr` is not a direction: a phrase needs a word that MEANS
+        # something, not only the library's connectives (`general`).
+        if any(m.term.category != "general" for m in found):
+            real = True
+    if not real:
+        return None
+    category = next(c for c in _CATEGORY_RANK if c in categories)
+    return DirectionHit(text=shown, category=category, terms=tuple(matched),
+                        dynamics=tuple(dynamics),
+                        library=tuple(dict.fromkeys(library)))
