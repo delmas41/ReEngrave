@@ -236,45 +236,18 @@ class TestAChordIsOneUnit(unittest.TestCase):
                          Outcome.NARROWED)
 
 
-class TestALandingOnADecidedNoteSettlesTheNarrowedBesideIt(unittest.TestCase):
+class TestALandingOnADecidedNoteLeavesTheNarrowedBesideItNarrowed(unittest.TestCase):
+    """REFUSED on Sean's blind tiles 2026-10-12 (singles 1-4 all wrong: bare
+    stems settled to an eighth that print a quarter). The old rule's landing
+    on the decided neighbour is unchanged; the narrowed head stays narrowed."""
 
-    def _bar(self):
-        """2/4: a narrowed head whose best (eighth) the bar needs, a decided
-        quarter that is really an eighth (the one landing), a decided quarter
-        rest. Best total 0.5 + 1 + 1 = 2.5."""
+    def test_the_narrowed_head_is_NOT_settled_beside_the_landing(self):
         b = _EvalBar(2, 4)
         n = b.narrowed()
         d = b.decided(1.0)
         b.decided(1.0, rest=True)
-        return b, n, d
-
-    def test_the_narrowed_head_is_settled_with_the_landing_RED(self):
-        b, n, d = self._bar()
         log, out = b.fire()
         self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 0.5)
-        v = log.verdict(Q.DURATION, n)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertIn("settled_alongside", v.detail)
-
-    def test_CONTROL_a_narrowed_head_in_a_MIXED_event_is_left_narrowed(self):
-        b = _EvalBar(2, 4)
-        n, mate = b.mixed_chord()
-        d = b.decided(1.0)
-        b.decided(1.0, rest=True)
-        log, out = b.fire()
-        self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED)
-
-    def test_CONTROL_no_landing_on_a_decided_note_means_no_extra_settlement(
-            self):
-        """The bar does not add up under any single re-reading: nothing at all
-        is written, narrowed or decided."""
-        b = _EvalBar(2, 4)
-        n = b.narrowed()
-        b.decided(2.0)
-        b.decided(1.0, rest=True)
-        log, out = b.fire()
-        self.assertEqual(out, [])
         self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED)
 
 

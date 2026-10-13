@@ -771,9 +771,7 @@ def _missed_rest_witness(log: Log, subject: Subject, *, pieces_out=None):
       bound="Searches only the levels a note ADMITS -- its own narrowed "
             "candidates, or +/-1 for a note that decided. Changes at most ONE "
             "EVENT (a note, or a chord whose every head is narrowed -- they "
-            "change together, one stem one value, 2.97); a landing made on a "
-            "DECIDED note also settles the bar's narrowed events only where "
-            "the joint answer is itself unique. The corrected bar must land "
+            "change together, one stem one value, 2.97). The corrected bar must land "
             "EXACTLY on the meter. The "
             "answer must be UNIQUE. Never adds, deletes or re-pitches a note. "
             "Tuplet members are excluded -- re-deriving a level would "
@@ -976,22 +974,12 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         detail["bar_fit_only_through_this_narrowing"] = True
     if len(members) > 1:
         detail["chord_of"] = len(members)
-    # ⚠️⚠️ ROADMAP 2.97: A LANDING THAT RE-READS A DECIDED NOTE LEAVES THE
-    # NARROWED ONES BESIDE IT WRITTEN OFF. The rule above changes ONE event, so
-    # a bar whose single fault was a decided note's beam level (Litolff 9/1/0/0:
-    # a decided quarter that is an eighth) landed that note and left the bar's
-    # narrowed head narrowed -- consistent with the bar, refused by EXPORT
-    # (`duration_narrowed`), and the bar held out. The narrowed heads are
-    # settled only where the JOINT search is itself unique: every assignment of
-    # the bar's narrowed events to their own candidates, with at most one
-    # decided re-reading, lands the bar exactly ONCE and that one re-reading is
-    # the landing already made. Two joint answers settle nothing.
-    extras: list = []
-    if all(m.outcome is Outcome.DECIDED for m in members) \
-            and _bar_heads_are_clean(log, subject, notes) \
-            and not _bar_has_tuplet(log, subject, notes):
-        extras = _settle_alongside(log, subject, notes, current, total,
-                                   expected, members, options)
+    # ⚠️ ROADMAP 2.97: NO "SETTLE THE NARROWED HEADS BESIDE A LANDING ON A
+    # DECIDED NOTE". It was built (joint search: narrowed events x one decided
+    # re-reading) and REFUSED on Sean's blind tiles -- singles 1-4 all wrong,
+    # every one a bare stem settled to an eighth that prints a quarter
+    # (out/print/2.97-review, answers.json). The decided neighbour's re-read
+    # is the old rule's; the narrowed head beside it stays narrowed.
     verdicts: List[Verdict] = []
     for note, option in zip(members, options):
         verdicts.append(log.record(Verdict(
@@ -1008,111 +996,7 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             # does -- a verdict claiming the exemption its rule does not
             # declare would be the guard disabled by a typo.
             single_pass_revision=True)))
-    for unit, opts in extras:
-        for note, option in zip(unit, opts):
-            verdicts.append(log.record(Verdict(
-                id=log._next_id("vrd"), subject=note.subject,
-                quantity=Q.DURATION, outcome=Outcome.DECIDED,
-                value={**option, "reconciled": True},
-                decider="reconcile_duration", reason="meter_reconciliation",
-                considered=(note.id, meter.id, *cleared_by,
-                            *(m.id for m in members)),
-                basis=(note.id, meter.id, *cleared_by,
-                       *(m.id for m in members)),
-                detail={**detail, "settled_alongside": [
-                    m.subject.to_key() for m in members]},
-                supersedes=note.id,
-                single_pass_revision=True)))
     return verdicts
-
-
-#: How many narrowed events one bar may hold before the joint search declines.
-SETTLE_ALONGSIDE_MAX_UNITS = 6
-
-
-def _narrowed_units(log: Log, subject: Subject, notes):
-    """Every narrowed non-rest note of the bar as an all-narrowed EVENT (a
-    single head or a chord), or None where any of them stands in a mixed event
-    or outside the grouping (their value is then not the bar's to settle)."""
-    grouping = log.verdict(Q.EVENT, subject)
-    if grouping is None or grouping.outcome is not Outcome.DECIDED:
-        return None
-    by_glyph = {v.subject.glyph: v for v in notes}
-    units, seen = [], set()
-    for event in (grouping.value or {}).get("events", ()):
-        ms = [by_glyph[g] for g in event.get("glyphs", ()) if g in by_glyph]
-        if not ms:
-            continue
-        seen.update(m.id for m in ms)
-        nar = [m for m in ms if m.outcome is Outcome.NARROWED
-               and not _is_rest(m)]
-        if not nar:
-            continue
-        if len(nar) != len(ms):
-            return None
-        if len(ms) >= 2 and not _on_one_stem(log, ms):
-            return None
-        units.append(ms)
-    if any(v.outcome is Outcome.NARROWED and not _is_rest(v)
-           and v.id not in seen for v in notes):
-        return None
-    return units
-
-
-def _settle_alongside(log, subject, notes, current, total, expected,
-                      members, options):
-    """`[(unit, [value per head])]` for the narrowed events a landing made on
-    a DECIDED note leaves beside it -- or [] where the joint answer is not
-    unique, a unit admits no common length, or the bar is lengthened without
-    the missed-rest witness clear. ROADMAP 2.97."""
-    units = _narrowed_units(log, subject, notes)
-    if not units or len(units) > SETTLE_ALONGSIDE_MAX_UNITS:
-        return []
-    choices, nows = [], []
-    for ms in units:
-        if any(float(current[m.id].get("beats") or 0.0)
-               != float(current[m.id].get("written") or -1.0) for m in ms):
-            return []
-        opts = _common_options(ms)
-        if not opts:
-            return []
-        choices.append(opts)
-        nows.append(Counter(float(current[m.id].get("beats") or 0.0)
-                            for m in ms).most_common(1)[0][0])
-    base = total - sum(nows)
-    # every re-reading a DECIDED note could take (the rule's own bound), and
-    # "none"
-    changes = [(None, None, 0.0)]
-    for note in notes:
-        if note.outcome is not Outcome.DECIDED or _is_rest(note):
-            continue
-        now = current[note.id]
-        if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
-            continue
-        for option in _admitted(note):
-            if option.get("beam_levels") == now.get("beam_levels"):
-                continue
-            changes.append((note, option, float(option.get("beats") or 0.0)
-                            - float(now.get("beats") or 0.0)))
-    import itertools
-    found = []
-    for pick in itertools.product(*choices):
-        for note, option, delta in changes:
-            if abs(base + sum(p[0] for p in pick) + delta - expected) < 1e-6:
-                found.append((pick, note, option))
-                if len(found) > 1:
-                    return []
-    if len(found) != 1:
-        return []
-    pick, note, option = found[0]
-    if note is None or note.id != members[0].id \
-            or option.get("beam_levels") != options[0].get("beam_levels"):
-        return []
-    if sum(p[0] for p in pick) > sum(nows) + 1e-9:
-        answer, _left = _missed_rest_witness(log, subject)
-        if answer != WITNESS_CLEAR:
-            return []
-    return [(ms, p[1]) for ms, p in zip(units, pick)]
 
 
 #: How far (staff spaces) beyond its outer line a head may stand and still be
