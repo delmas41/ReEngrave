@@ -69,3 +69,72 @@ check that the frame is right).
 
 Artefacts: `ab/score.json` (the records, 417 MB, stay in the ignored `runs/2.4b/ab-records/`; re-gather with `run_2.4b_ab.sh`), `hollow-class-recomputed.json`,
 `verdicts-recomputed/`, weights under `omr-weights/candidates/hollow4-2.4b-*` (gitignored).
+
+---
+
+# The re-assembly (Sean 2026-10-13: "yes, try the reassembly") -- REVERSE graft: KILLED, and it shows where the damage lives
+
+STAGED detector only, `--through adjudicate`; production weights NOT switched. Same two pages, same truth, same controls (self-match 59/59,
+shifted 0/59). Built with the unchanged `merge_class_head.py` (`--export-rows` from PRODUCTION, `--import-rows` onto the FINE-TUNE as `--base`;
+self-check PASSED on all six builds = every other tensor bit-identical to the fine-tune). `build_reverse_graft.py`, `build_bn_arm.py`,
+`class_counts.py`, `run_reverse_ab*.sh`; counts in `ab/class-counts-*.json`, scores `ab/score-reverse*.json`.
+
+**Arms** (each built on the v24 fine-tune AND on the CONTROL fine-tune, `last.pt` of `runs/2.4b/hollow4-{withv24,control}`):
+* **A** = fine-tune + production's `cv3.*.2` rows for the measured-damaged classes (>10% box drop vs production on either page, base >= 3: 23
+  names) + the named set (beam, ledgerLine, augmentationDot, flag*, stem*, timeSig*) = 42 class names. Hollow heads (idx 28-39) stay the fine-tune's.
+* **B** = fine-tune + production's rows for EVERY class except the taught hollow heads (156 names; includes the filled noteheads).
+* **C** (not in the brief; found by the tensor diff below) = B + production's BatchNorm running statistics put back.
+
+**Hollow heads** (Litolff TEST, 59 heads; Brahms pdf 0, 27 hollow):
+
+| arm | Litolff recall | precision | Brahms found | Brahms extra hollow boxes (on timeSig 8/9 eyes) | filled called half |
+|---|--:|--:|--:|--:|--:|
+| production | 43/59 = 72.9% | 88.9% | 27/27 | 32 (14) | 0 |
+| raw fine-tune (diagnostic, v24) | 54/59 = 91.5% | 88.1% | 25/27 | 48 (28) | 0 |
+| **A, v24** | 54/59 = 91.5% | 88.1% | **25/27** | 48 (28) | 0 |
+| **B, v24** | 54/59 = 91.5% | 88.1% | **25/27** | 48 (28) | 0 |
+| C, v24 | 50/59 = 84.7% | 83.6% | 25/27 | 52 (29) | 0 |
+| A / B, control (no v24) | 51/59 = 86.4% | 87.5% | 25/27 | 43 (22) | 0 |
+| C, control | 48/59 = 81.4% | 85.7% | 24/27 | 49 (29) | 0 |
+
+**Damaged classes** (detector boxes on the whole page, production -> arm; Litolff p1 / Brahms p0):
+
+| class | production | raw ft | A = B (v24) | C (v24) |
+|---|--:|--:|--:|--:|
+| beam | 63 / 178 | 11 / 47 | 13 / 50 | 21 / 71 |
+| ledgerLine | 103 / 231 | 27 / 190 | 26 / 184 | 128 / 236 |
+| augmentationDot | 2 / 139 | 0 / 142 | (Litolff not listed, < 5) / 141 | 141 on Brahms |
+| timeSig4 (Lit) ; 6, 8, 9 (Bra) | 7 ; 20, 33, 10 | 2 ; 12, 19, 5 | 2 ; 12, 19, 5 | 4 ; 11, 25, 6 |
+| keyFlat | 19 / 28 | 9 / 25 | 9 / 25 | 10 / 21 |
+| tie | 18 / 193 | 14 / 73 | 15 / 77 | 14 / 74 |
+| restWhole | 113 / 11 | 86 / 5 | 86 / 6 | 109 / 10 |
+| flag8thDown (Bra) | 40 | 27 | 27 | 34 |
+| timeSig-digit hollow boxes (Bra) | 14 | 28 | 28 | 29 |
+
+## Verdict: KILL (all three arms, both fine-tunes)
+* **A and B restore nothing.** Putting production's class rows back for every damaged class changes the box counts by 0-2 (beam 11 -> 13, ledger 27
+  -> 26, timeSig4 stays 2; A and B are the same to the box even though B restores 114 more classes). The raw fine-tune and A/B differ only in
+  the tiny row-level effects. **The damage this round is NOT in the last-layer class rows** -- the opposite of the 2026-09-29 finding
+  (docs/detector.md) that the six `cv3.*.2` tensors carry class deletion. That finding was for fine-tunes of the BASE on a corpus with 41-61% unboxed ink;
+  this 1-epoch fine-tune started FROM production, so the rows barely moved (max |diff| 2.6e-4 on beam/ledger rows) and what moved is upstream.
+* **Tensor diff, production vs the fine-tune: 422 of 595 tensors differ, but the conv weights moved < 2% (relative norm) while the BatchNorm
+  running statistics moved 3-23%** (running_var up to 0.23 in `model.22.cv3.2.*`, i.e. the class branch's own input statistics). Arm C tests
+  that suspect: it restores 291 BN buffers to production's and nothing else. **Result: BN statistics carry a large part of the damage -- ledger
+  lines 27 -> 128 on Litolff (production 103), whole rests 86 -> 109, dynamics, fermatas, arpeggiato, 8th rests all back to within ~10% -- and a
+  large part of the hollow gain: recall falls 91.5 -> 84.7 (v24) / 86.4 -> 81.4 (control), precision 88.1 -> 83.6.** Still not restored by C:
+  beams (63 -> 21 / 178 -> 71), ties (193 -> 74), key flats, 3 of 4 time-signature digits; Brahms 25/27 and the `8`-eye boxes stay doubled (29).
+  Those live in conv weights (cv3.* convs moved 1-2%, `model.19` 1.3%), not in anything that can be put back separately.
+* **No arm meets the bar.** Needed: hollow recall +10 points or >= 90% with precision -3 at most, AND damaged classes within ~10%, AND Brahms 27/27,
+  timeSig not doubled. A/B: recall 91.5% / precision -0.8 pts pass, but beams -79%, ledger -75%, timeSig4 -71%, Brahms 25/27, timeSig eyes x2 fail.
+  C: recall +11.8 pts but precision -5.3, beams -67%, Brahms 25/27 fail. Same for the control.
+* **Attribution.** v24 contributes +5 points at A/B (54 vs 51 heads = 3 heads) and +3 at C (50 vs 48 = 2 heads): ~one third of the gain over
+  production at most, and 2-3 heads of 59 is inside noise for a one-seed run. Two thirds is "one more epoch from production on the old mix" (the
+  control). The re-assembly therefore does not rescue the labeling round: the hollow gain and the class deletion are the same weight movement
+  (A/B/C show no setting that keeps one without the other), which is exactly why the head-row graft got 0.
+
+## Caveats
+* One epoch, one seed, 59 + 27 heads. imgsz 896. `last.pt` used (best.pt differs by md5 but the raw numbers reproduce 54/59 exactly).
+* Box counts are detector boxes after GATHER+ADJUDICATE on one Litolff page and one Brahms page; `staff`/`stem` classes are CV-side and not read
+  as damage. A BN-stat restore in a trained model without recalibration is a diagnostic, not a candidate.
+* Not tried (needs Sean's go; each is a new training run): freezing backbone + BN (`freeze` family was retired 2026-09-29 for the head, but BN-in-eval
+  with frozen conv layers was never run), fine-tuning with BN statistics frozen (`model.eval()`-style BN) so the stats cannot move, 2048 on a cloud GPU.
