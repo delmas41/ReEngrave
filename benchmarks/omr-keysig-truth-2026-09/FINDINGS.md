@@ -590,3 +590,9 @@ mid-movement headers (a GATHER reader's fault; the system meter is carried and r
 staff to have boxed a digit; a rest on a mid-system printed meter change (cell >= 1) is not covered.
 Blind tiles `out/print/2.100-review-2/` (11): 6 newly refused (3 `restQuarter` meter, 2 `arpeggiato`, 1 `tie`), the Brahms
 tile 3 again, 4 controls (real rests right of the time signature, 36-233 px).
+
+### Sean's answers on `out/print/2.100-review-2/` (2026-10-12; `answers.json` beside the tiles)
+Verbatim: *"1. Barline 2.9 meter 3. Staff line under the accidentals 4. 2/4 meter 5. Key Flat (Eb) 6. 8 rest 7. 2/4 meter 8. 8 rest 9. 2/4 10. 8 rest 11. Flat key accidental"* (tile 2 not answered; a repeat of round 1 tile 3). Scored against the manifest:
+refusals 3, 4, 5, 7, 9, 11 right (6 of 6 answered; with tile 2's repeat, the manager counts 7/7); tile 3 is a STAFF LINE under the accidentals, not a tie, so refusing it is right;
+controls 6, 8, 10 real eighth rests kept, right; **control tile 1 WRONG: the kept `restQuarter` box is a BARLINE** (pre-existing; not caused by 2.100; new candidate, not built).
+Does a refusal in the key slots count as a key accidental? No: the key count is built only from `Q.KEYSIG_MARKER` rows, filed by `gather._gather_keysig_markers` (`tools/omr/staged/gather.py:10061`) from `keySharp/keyFlat/keyNatural` boxes (`:9822`, `:10112`) and `accidental*` boxes (`_ACCIDENTAL_SHAPE`, `:9848`, `:10117`); any other class (tie, arpeggiato, rest) is skipped (`:10117`). The refusals cite rows as `used` evidence only (`family_precision.py:2205`) and write no marker. So tile 3's staff-line `tie` box cannot add a flat.
