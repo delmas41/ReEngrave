@@ -3315,3 +3315,174 @@ Tiles: `out/print/2.97-review-3/` 6 tiles (2 surviving eighth settlements -- the
 control -- and 4 newly held bars), blue = the bracketed heads, ours only in manifest.json.
 Merged main (2.102): `bar_has_tuplet` is called beside the lane's own guard; main's `shortened_refused` check
 is bypassed for the widened rule (its evidence rule is `_eighth_evidence`) and kept for the bare-stem rule.
+
+---
+
+## 2.96 -- why bars are held out NOW: the 2.19/2.22 funnel on the 2026-10-11 night records (2026-10-12)
+
+PATH: STAGED, EXPORT-only (records loaded through `record_io.load_record`, exported
+with today's exporter, never re-gathered, never re-decided; no product code
+changed). Branch `lane-2.96-held-funnel` off `origin/main` `e671c4a7`. Records:
+`beethoven5-litolff-mvt1-whole-20261011-night` and `brahms1-breitkopf-mvt1-whole-20261011-night`.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+The printed meter is the dossier's (Beethoven 5/i 2/4; Brahms 1/i 6/8, with the one
+9/8 bar at page 1 / system 0 / cell 0, as 2.22 used). **Control that can fail:** the
+file's judged meter equals it on EVERY held bar (0 mismatches), and a deliberately wrong
+meter (+0.3 quarter) collapses the evidenced share from 43% to 3% (Litolff) and 75% to 17%
+(Brahms; the 17% is exactly the 428 whole-rest bars, which are the bar WHATEVER the
+meter). A "cause" is a SIMULATED fix whose arithmetic lands; what raises it to a
+finding is (a) a record row that points at it, and (b) a print crop (15 tiles, not yet
+read by Sean). Sean has judged none of them: NOT CONFIRMED.
+
+### 2.96a. What was built
+
+`probe/held_funnel_2_96.py` (reuses 2.22's `held_funnel_mvt_2_22.dump` whole -- its
+control, bars captured == `bars_held_out_sum` minus doubled-staff bars, PASSES on both:
+Litolff 988 + 56 = 1,044, Brahms 2,553 + 0) and adds, per held bar, from the record's own rows:
+the cell's ink pieces no standing box explains (2.80's witness rule restated over dicts),
+its `Q.AUG_DOT` rows with their `Q.DOT_ROLE`, the cell width against its system's median,
+and per event the owner and duration verdicts with the beam-doubt counters.
+`probe/classify_held_2_96.py` is 2.22's minimal-fix search with §18's lesson built in:
+**every simulated fix is EVIDENCED (a record row points at it and says what) or ARITHMETIC
+(the sum lands, nothing points at it).** Per bar: search evidenced fixes alone (size 1-3);
+else evidenced + arithmetic (`arith_only`, a sum, not a diagnosis); else `unexplained`.
+Exhaustive; the partition sums to the held total (asserted; it exits 3 otherwise).
+`probe/summarise_2_96.py`, `probe/n_shape_2_96.py`, `probe/tiles_2_96.py`.
+Results: `out/2.96/` (partitions per bar, the text of every run, `summary.md`).
+
+### 2.96b. The partition (exhaustive)
+
+| | Litolff 1,044 | Brahms 2,553 |
+|---|--:|--:|
+| evidenced, ONE cause | 409 (39.2%) | 1,692 (66.3%) |
+| evidenced, 2-3 causes together | 37 (3.5%) | 224 (8.8%) |
+| arithmetic only (a sum lands; no row points at it) | 517 (49.5%) | 633 (24.8%) |
+| unexplained (nothing, at 3 fixes, lands it) | **25 (2.4%)** | **4 (0.2%)** |
+| on a doubled staff (the exporter counts them, cannot locate them) | 56 (5.4%) | 0 |
+
+"Unexplained" is tiny because the arithmetic tier is permissive; the honest figure for
+"the record gives no reason" is the arithmetic-only row.
+
+### 2.96c. Ranking -- bars released if that ONE cause alone were fixed
+
+(overlapping: a bar can be released by two different single fixes)
+
+| cause | tier | Litolff | Brahms | both |
+|---|---|--:|--:|--:|
+| narrowed head(s) whose own candidates land the bar (`duration_narrowed`, not written) | evidenced | 73 | 719 | **792** |
+| a lone whole rest left at 4 beats (a bar rest in a 2/4 or 6/8 bar) | evidenced | 30 | 428 | **458** |
+| unboxed eighth-rest-shaped ink + bar short by an eighth or so | evidenced | 45 | 287 | **332** |
+| a head refused `too_narrow` whose value fills the gap | evidenced | 25 | 143 | 168 |
+| unboxed quarter-rest-shaped ink | evidenced | 75 | 41 | 116 |
+| a beam level at a note whose beam row carries doubt | evidenced | 73 | 114 | 187 |
+| `chord_value_undecided` | evidenced | 14 | 41 | 55 |
+| a dot (a row whose role is unsettled) | evidenced | 1 | 53 | 54 |
+| a head boxed twice / a barline read as a rest / two voices (each) | evidenced | 12 / 18 / 9 | 21 / 15 / 20 | 33 / 33 / 29 |
+| one head fill misread (quarter read, half printed) | ARITHMETIC | 311 | 229 | 540 |
+| drop one event | ARITHMETIC | 188 | 335 | 523 |
+| one beam level, one beam group | ARITHMETIC | 212+61 | 361+113 | 747 |
+| ink of no rest shape + any rest value | ARITHMETIC | 328 | 876 | 1,204 |
+
+The ARITHMETIC rows are not causes. They are listed because they are the large numbers a
+sum-only classifier prints; 2.22's `F` (300 Litolff bars) is the head-fill row here.
+
+Base rates (the control the ink witness needs; `out/2.96/controls.json`): unexplained ink
+of ANY kind sits in 28% of Litolff cells that are NOT held (1,228 of 4,389) and 43% of
+held ones (421 of 988); 35% (1,443 of 4,132) vs 51% (1,309 of 2,553) on Brahms. An
+eighth-rest-shaped unexplained piece sits in 5% of Litolff and 7% of Brahms non-held
+cells (218 of 4,389; 294 of 4,132), and the evidenced `I:eighth` fires on 12% and 23% of
+held ones: a lift of about 2x and 3x, enough to be evidence, not proof. That is why only
+SHAPED ink is evidenced and "ink of no rest shape" is arithmetic.
+
+### 2.96d. What the top cause is made of (`probe/n_shape_2_96.py`)
+
+Bars held because narrowed heads are not written, where the record's own candidates and the
+meter land the bar UNIQUELY:
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| ONE narrowed head, system meter DECIDED -- `reconcile_duration` (EVALUATE: one note, unique landing) should land these and does not | 39 | 97 |
+| ONE chord of 2-3 narrowed heads, meter decided (`reconcile_duration` "changes at most ONE note": a chord's heads are separate notes) | 21 | 175 |
+| several narrowed columns, meter decided (a joint landing; the rule changes one note) | ~11 | ~190 |
+| meter ABSTAINED on that system (`carry_not_corroborated` / `carry_outweighed_by_the_bars`; every consumer reads `Q.METER`) | 0 | ~214 |
+
+INFER's `collapse_duration_to_barline` cannot reach them: it collapses from OTHER staves
+at the same onset column, and refuses a witness whose length came from the meter.
+
+### 2.96e. The whole-rest bars (second cause)
+
+Brahms 428 bars, residual exactly -1.0 quarter (a 4-beat rest in a 3-quarter bar), 403 of
+them on a system whose `Q.METER` ABSTAINS (205 `carry_not_corroborated`, 198
+`carry_outweighed_by_the_bars`). CLAUDE.md §10: a whole rest means the BAR whatever the meter,
+so this fix needs no meter reading, but `size_measure_rest` takes `Q.METER` as its cause and
+does not run there. A control that holds: with the meter shifted 0.3 these 428 are exactly
+the bars still released. Litolff 30 are on systems whose meter is DECIDED -- a different
+cause: the record shows a SECOND box on the same ink refused `ink_is_a_whole_rest`, so the
+rest may not count as lone. Not confirmed: tile 6 shows the rest, not the second box.
+
+### 2.96f. Print check, 15 tiles for Sean (`out/print/2.96-review/`, `manifest.json`)
+
+Phone-sized (900 px), 600 dpi, red corners = the bar (following the staff), blue
+corners = the subject, big tile number, nothing of ours on the image. The frame control
+(five staff lines carry >= 2x the ink of the gaps AND the same test shifted half a space
+fails) REFUSED 4 candidates, so it can fail. Tiles 1-3 narrowed heads (2 Brahms, 1
+Litolff), 4-6 whole rest (2 Brahms meter-abstained, 1 Litolff meter-decided), 7-9 unboxed
+eighth-rest ink (2 Brahms, 1 Litolff), 10-12 a dot (Brahms), 13-15 one head fill
+(Litolff; the ARITHMETIC-only row, shown to see whether the print backs it).
+
+What I could see myself (the lane's own reading, rule 7: not evidence):
+- tile 1: the print is a dotted quarter, a tied quarter and an eighth: the two blue
+  heads are the narrowed ones and their candidates (1.5 and 1.0) land the bar.
+- tiles 4 and 6: a lone whole rest in a bar -- the print agrees with the classifier.
+- tile 7: two eighth rests sit in the bar and one has no box -- agrees.
+- tiles 10-12 (the dot): **my eye-read here was WRONG; Sean is the evidence.** I wrote that the blue dots were another staff's or a letter's. Sean: 10 is a staccato belonging to the staff above (not this staff's); 11 and 12 ARE augmentation dots. So the dot cause is real on 2 of 3 (the evidenced `D`, 54 bars released alone, is small but not spurious); the one false positive (10) is the cross-staff dot the classifier cannot yet tell from its own.
+- tile 13 (head fill): the head has the white slash of a hollow head (Sean: a half, tile 14 too).
+
+### 2.96g. Recommended next items (not built here)
+
+1. **Narrowed heads that the bar lands uniquely (792 bars; the largest evidenced cause).**
+   Two connections, no new guess: (a) why `reconcile_duration` does not land the 136
+   single-head, meter-decided bars it should (look at Litolff 9/1/0/0: it landed the
+   OTHER note instead); (b) let it change one CHORD (all heads at one onset) together,
+   then several columns jointly where exactly one joint assignment lands the bar.
+2. **A lone whole rest needs no meter (458 bars; 403 on abstaining Brahms systems).**
+   Exports as a measure rest of the file's bar. A connection (CLAUDE.md §10), plus the 30
+   Litolff bars whose second `ink_is_a_whole_rest` box defeats "lone".
+3. **The unboxed eighth/quarter rest (448 bars).** 2.80b reads a refused `too_narrow` box
+   as an eighth rest; the 332 remaining are ink with no box at all. A reader on the
+   unexplained piece (its shape and place on the staff), checked against the same 2.80
+   base rate; tiles 7 and 9 say the ink is real.
+4. **The head fill (540 arithmetic-only bars; Sean: tiles 13, 14 halves read as quarter, tile 15 a quarter).**
+   2 of 3 are real, so it is a cause with print support but no record row; it needs a row of its own (2.23's
+   hollow-ink reading, on the merged Litolff plate) before it is wired. Tile 15 is the warning: the sum lands on a
+   correct quarter too.
+Held back: beam levels (no row points at them except the doubt counters, present on 40% of bars).
+
+### 2.96h. Limits
+
+The dumps are the record's OWN verdicts exported by today's exporter; a GATHER change is
+invisible here. The ink witness is 2.80's rule restated over dicts (the base-rate table is
+its control). `U:`/`R:` refusal tokens are offered only for reasons that a refusal can
+wrongly make; duplicate-box and non-note refusals (clef, digit, dynamic letter) are never
+offered. K (a missed barline) is evidenced only where the cell is >= 1.6x its neighbours.
+
+### 2.96i. Sean's answers (2026-10-12, `out/print/2.96-review/answers.json`)
+
+Verbatim: *"1. dot4 , 4 2. 4 3. 4 4-6. whole note rest 7. 1st blue box is an accidental flat,t he secod blue box is a 8 rest 8-9. 8 rest 10. stacato mark belonging to the staff above 11-12. aug dots 13. 2 14. 2 15. 4"*
+
+| cause | tiles | scored |
+|---|---|---|
+| narrowed heads (N) | 1-3 | **3/3**: his values (1.5 + 1.0; 1.0; 1.0) are inside our candidates |
+| lone whole rest (W) | 4-6 | **3/3**: whole-note rest (the bar), including the Litolff meter-decided one |
+| unboxed eighth-rest ink (I:eighth) | 7-9 | **3/3** hold an eighth rest; in tile 7 the FIRST blue box is a flat, the second the rest (the ink witness boxed an accidental too) |
+| dot (D) | 10-12 | **2/3**: 11, 12 are this staff's augmentation dots; 10 is a staccato of the staff above |
+| head fill (F~, arithmetic only) | 13-15 | **2/3** halves read as quarter (13, 14); 15 a quarter, our reading right |
+
+Effect on the ranking: the three top evidenced causes (N 792, W 458, I:eighth 332, plus I:quarter 116) are
+confirmed by the print on every tile. D moves from "not a finding" to "a real but small cause with a cross-staff
+false-positive mode" (evidenced `D` alone releases 54; the 412 arithmetic-tier `D` are still unproven). The head fill
+moves from "arithmetic" to "print-supported, no record row" (2 of 3), so the order of next items is unchanged
+(narrowed heads, whole rest, unboxed rest ink) with the head fill added as item 4. The I:eighth ink box can also be a
+flat or other accidental: a shape test alone over-counts, so the reader in item 3 must use position on the staff.

@@ -1,5 +1,7 @@
 # ROADMAP 2.102 -- tuplets, meter signs, tremolo slashes (STAGED)
 
+See also: FINDINGS.md (the 2.101 held-out check and Sean's 17 tile answers).
+
 Sean's held-out tiles 6, 10, 11, 17 (2026-10-12; 2.101). Separate file from the 2.101
 `FINDINGS.md` (not on main yet) to avoid an add/add conflict; fold in at landing.
 Method: INFER-only replay (`p102_diff.py`) and ADJUDICATE re-run (`p102_readj.py`) over saved

@@ -1,0 +1,501 @@
+{
+ "dpi": 600,
+ "question": "For the bar inside the RED corners: what is printed in it, in order (notes and rests, with their values)? Then look at the BLUE corners: what is there, and is anything in the bar missing from or different at that place?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "brah",
+   "cell": [
+    7,
+    1,
+    9,
+    0
+   ],
+   "measure": 124,
+   "part": "P13",
+   "claimed_cause": "N",
+   "tier": "evidenced",
+   "marks": "the notes we did not write because their value was undecided",
+   "our_reading": "refused duration_narrowed (not written), bar +2.5 q short: head candidates [0.75, 1.5]; head candidates [0.5, 1.0];",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 2.5,
+   "frame_control": {
+    "ratio": 3.73,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.26,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    576,
+    6509,
+    1397,
+    6860
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "brah",
+   "cell": [
+    19,
+    0,
+    5,
+    10
+   ],
+   "measure": 362,
+   "part": "P6",
+   "claimed_cause": "N",
+   "tier": "evidenced",
+   "marks": "the notes we did not write because their value was undecided",
+   "our_reading": "refused duration_narrowed (not written), bar +1.0 q short: head candidates [0.5, 1.0]; head candidates [0.5, 1.0];",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 3.66,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.26,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    5026,
+    1606,
+    5571,
+    1966
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "cell": [
+    12,
+    0,
+    1,
+    9
+   ],
+   "measure": 348,
+   "part": "P2",
+   "claimed_cause": "N",
+   "tier": "evidenced",
+   "marks": "the notes we did not write because their value was undecided",
+   "our_reading": "refused duration_narrowed (not written), bar +1.0 q short: head candidates [0.5, 1.0]; head candidates [0.5, 1.0];",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 9.78,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1577,
+    499,
+    1816,
+    700
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "brah",
+   "cell": [
+    8,
+    0,
+    10,
+    12
+   ],
+   "measure": 148,
+   "part": "P14",
+   "claimed_cause": "W",
+   "tier": "evidenced",
+   "marks": "a whole rest we left at four beats",
+   "our_reading": "lone dotless 4-beat rest not marked as a measure rest in a 3.0-quarter bar; system meter abstained/carry_not_corroborated",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": -1.0,
+   "frame_control": {
+    "ratio": 18.88,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    5058,
+    3304,
+    5558,
+    3649
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "cell": [
+    22,
+    0,
+    2,
+    8
+   ],
+   "measure": 418,
+   "part": "P3",
+   "claimed_cause": "W",
+   "tier": "evidenced",
+   "marks": "a whole rest we left at four beats",
+   "our_reading": "lone dotless 4-beat rest not marked as a measure rest in a 3.0-quarter bar; system meter abstained/carry_outweighed_by_the_bars",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": -1.0,
+   "frame_control": {
+    "ratio": 4.62,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.19,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4066,
+    1003,
+    4515,
+    1371
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "lit",
+   "cell": [
+    10,
+    0,
+    2,
+    7
+   ],
+   "measure": 282,
+   "part": "P3",
+   "claimed_cause": "W",
+   "tier": "evidenced",
+   "marks": "a whole rest we left at four beats",
+   "our_reading": "lone dotless 4-beat rest not marked as a measure rest in a 2.0-quarter bar; system meter decided/carried",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": -2.0,
+   "frame_control": {
+    "ratio": 6.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1505,
+    639,
+    1731,
+    843
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "brah",
+   "cell": [
+    10,
+    0,
+    10,
+    8
+   ],
+   "measure": 187,
+   "part": "P12",
+   "claimed_cause": "I:eighth",
+   "tier": "evidenced",
+   "marks": "ink in the bar that no box accounts for",
+   "our_reading": "bar short +0.5 q; unexplained eighth-rest-shaped ink (no standing box covers it)",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 0.5,
+   "frame_control": {
+    "ratio": 5.73,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4865,
+    2812,
+    5585,
+    3163
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "brah",
+   "cell": [
+    24,
+    0,
+    5,
+    4
+   ],
+   "measure": 459,
+   "part": "P6",
+   "claimed_cause": "I:eighth",
+   "tier": "evidenced",
+   "marks": "ink in the bar that no box accounts for",
+   "our_reading": "bar short +0.5 q; unexplained eighth-rest-shaped ink (no standing box covers it)",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 0.5,
+   "frame_control": {
+    "ratio": 5.78,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2861,
+    1598,
+    3496,
+    1955
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "lit",
+   "cell": [
+    7,
+    1,
+    1,
+    7
+   ],
+   "measure": 196,
+   "part": "P2",
+   "claimed_cause": "I:eighth",
+   "tier": "evidenced",
+   "marks": "ink in the bar that no box accounts for",
+   "our_reading": "bar short +0.5 q; unexplained eighth-rest-shaped ink (no standing box covers it)",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": 0.5,
+   "frame_control": {
+    "ratio": 2.43,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.4,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1451,
+    2163,
+    1709,
+    2371
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "brah",
+   "cell": [
+    6,
+    0,
+    11,
+    3
+   ],
+   "measure": 100,
+   "part": "P14",
+   "claimed_cause": "D",
+   "tier": "evidenced",
+   "marks": "a dot we saw and did not settle",
+   "our_reading": "bar +0.5 q short; Q.AUG_DOT row(s) in the cell whose Q.DOT_ROLE is not decided: ['abstained']",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 0.5,
+   "frame_control": {
+    "ratio": 6.32,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2334,
+    3385,
+    2999,
+    3753
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "brah",
+   "cell": [
+    14,
+    1,
+    4,
+    3
+   ],
+   "measure": 277,
+   "part": "P6",
+   "claimed_cause": "D",
+   "tier": "evidenced",
+   "marks": "a dot we saw and did not settle",
+   "our_reading": "bar -1.0 q short; Q.AUG_DOT row(s) in the cell whose Q.DOT_ROLE is not decided: ['decided', 'abstained']",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": -1.0,
+   "frame_control": {
+    "ratio": 4.33,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.19,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2391,
+    5046,
+    3056,
+    5403
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "brah",
+   "cell": [
+    22,
+    1,
+    4,
+    6
+   ],
+   "measure": 428,
+   "part": "P6",
+   "claimed_cause": "D",
+   "tier": "evidenced",
+   "marks": "a dot we saw and did not settle",
+   "our_reading": "bar +1.0 q short; Q.AUG_DOT row(s) in the cell whose Q.DOT_ROLE is not decided: ['abstained', 'decided', 'decided']",
+   "bar_quarters_in_force": 3.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 5.7,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3015,
+    5075,
+    3522,
+    5435
+   ]
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "movement": "lit",
+   "cell": [
+    4,
+    1,
+    10,
+    13
+   ],
+   "measure": 111,
+   "part": "P11",
+   "claimed_cause": "F~",
+   "tier": "arith_only",
+   "marks": "the note whose value we think we read one step wrong",
+   "our_reading": "ARITHMETIC ONLY (no record row points at it): quarter read, a re-read to 2.0 q lands the bar;",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 30.82,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.03,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2259,
+    3457,
+    2510,
+    3665
+   ]
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "movement": "lit",
+   "cell": [
+    10,
+    0,
+    9,
+    6
+   ],
+   "measure": 281,
+   "part": "P10",
+   "claimed_cause": "F~",
+   "tier": "arith_only",
+   "marks": "the note whose value we think we read one step wrong",
+   "our_reading": "ARITHMETIC ONLY (no record row points at it): quarter read, a re-read to 2.0 q lands the bar;",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 26.48,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.03,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1361,
+    1630,
+    1583,
+    1834
+   ]
+  },
+  {
+   "n": 15,
+   "file": "tile_15.png",
+   "movement": "lit",
+   "cell": [
+    15,
+    0,
+    4,
+    18
+   ],
+   "measure": 450,
+   "part": "P5",
+   "claimed_cause": "F~",
+   "tier": "arith_only",
+   "marks": "the note whose value we think we read one step wrong",
+   "our_reading": "ARITHMETIC ONLY (no record row points at it): quarter read, a re-read to 2.0 q lands the bar;",
+   "bar_quarters_in_force": 2.0,
+   "residual_quarters_short_positive": 1.0,
+   "frame_control": {
+    "ratio": 164500000.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.0,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2182,
+    970,
+    2402,
+    1174
+   ]
+  }
+ ]
+}
