@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-12 -- ROADMAP 2.101 held-out check (lane-2.101-held-out)
+
+Diagnosis only, no product code. Three non-Litolff/Breitkopf scans (Dvorak 8 Novello, Schumann 2 Peters, Tchaikovsky 4 Jurgenson), base vs arm gathers; probes, FINDINGS and 17 blind tiles in `benchmarks/omr-held-out-2026-10/` and `out/print/2.101-review/`. ROADMAP 2.101 updated.
+
+---
+
 ⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
 carries the dependency, not the heading.** Parallel sessions dated their own
 blocks by their own reckoning; the GATHER-coverage entry stands above the
