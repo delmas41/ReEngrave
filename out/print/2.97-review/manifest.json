@@ -4,17 +4,17 @@
   {
    "n": 1,
    "file": "tile_01.png",
-   "movement": "brah",
+   "movement": "lit",
    "bar": [
+    11,
     0,
     0,
-    10,
-    3
+    10
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/0/0/10/3/1",
+     "subject": "glyph/11/0/0/10/6",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -24,7 +24,7 @@
     }
    ],
    "frame_control": {
-    "ratio": 19.22,
+    "ratio": 75.0,
     "passes": true
    },
    "frame_control_negative": {
@@ -35,102 +35,111 @@
   {
    "n": 2,
    "file": "tile_02.png",
-   "movement": "brah",
+   "movement": "lit",
    "bar": [
+    14,
+    1,
     0,
-    0,
-    0,
-    2
+    6
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/0/0/0/2/4",
-     "ours": 1.5,
+     "subject": "glyph/14/1/0/6/2",
+     "ours": 0.5,
      "was_candidates": [
-      0.75,
-      1.5
+      0.5,
+      1.0
      ],
-     "decider": "infer:collapse_narrowed_by_bar"
-    },
-    {
-     "subject": "glyph/0/0/0/2/5",
-     "ours": 1.5,
-     "was_candidates": [
-      0.75,
-      1.5
-     ],
-     "decider": "infer:collapse_narrowed_by_bar"
+     "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 14.77,
+    "ratio": 29.47,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.05,
+    "ratio": 0.03,
     "passes": false
    }
   },
   {
    "n": 3,
    "file": "tile_03.png",
-   "movement": "lit",
+   "movement": "brah",
    "bar": [
-    16,
-    1,
     5,
-    10
+    1,
+    11,
+    8
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/16/1/5/10/0",
-     "ours": 1.0,
+     "subject": "glyph/5/1/11/8/2",
+     "ours": 0.5,
      "was_candidates": [
       0.5,
       1.0
      ],
-     "decider": "infer:collapse_narrowed_by_bar"
+     "decider": "reconcile_duration"
+    },
+    {
+     "subject": "glyph/5/1/11/8/6",
+     "ours": 0.5,
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 5.03,
+    "ratio": 5.53,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.22,
+    "ratio": 0.14,
     "passes": false
    }
   },
   {
    "n": 4,
    "file": "tile_04.png",
-   "movement": "lit",
+   "movement": "brah",
    "bar": [
-    16,
+    21,
     1,
-    5,
-    9
+    1,
+    7
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/16/1/5/9/1",
-     "ours": 1.0,
+     "subject": "glyph/21/1/1/7/0",
+     "ours": 0.75,
      "was_candidates": [
-      0.5,
-      1.0
+      0.75,
+      1.5
      ],
-     "decider": "infer:collapse_narrowed_by_bar"
+     "decider": "reconcile_duration"
+    },
+    {
+     "subject": "glyph/21/1/1/7/2",
+     "ours": 0.75,
+     "was_candidates": [
+      0.75,
+      1.5
+     ],
+     "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 5.78,
+    "ratio": 5.07,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.2,
+    "ratio": 0.16,
     "passes": false
    }
   },
@@ -177,40 +186,40 @@
   {
    "n": 6,
    "file": "tile_06.png",
-   "movement": "lit",
+   "movement": "brah",
    "bar": [
-    13,
+    16,
     0,
-    1,
+    2,
     8
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/13/0/1/8/3",
-     "ours": 0.5,
+     "subject": "glyph/16/0/2/8/0",
+     "ours": 1.5,
      "was_candidates": [
-      1.0,
-      0.5
+      0.75,
+      1.5
      ],
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/13/0/1/8/10",
-     "ours": 0.5,
+     "subject": "glyph/16/0/2/8/7",
+     "ours": 1.5,
      "was_candidates": [
-      1.0,
-      0.5
+      0.75,
+      1.5
      ],
      "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 3.43,
+    "ratio": 5.15,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.4,
+    "ratio": 0.16,
     "passes": false
    }
   },
@@ -219,78 +228,78 @@
    "file": "tile_07.png",
    "movement": "brah",
    "bar": [
-    0,
-    0,
-    0,
-    4
+    10,
+    1,
+    1,
+    7
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/0/0/0/4/2",
+     "subject": "glyph/10/1/1/7/5",
      "ours": 0.5,
      "was_candidates": [
-      1.0,
-      0.5
+      0.5,
+      1.0
      ],
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/0/0/0/4/9",
+     "subject": "glyph/10/1/1/7/9",
      "ours": 0.5,
      "was_candidates": [
-      1.0,
-      0.5
+      0.5,
+      1.0
      ],
      "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 36.63,
+    "ratio": 2.61,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.02,
+    "ratio": 0.32,
     "passes": false
    }
   },
   {
    "n": 8,
    "file": "tile_08.png",
-   "movement": "brah",
+   "movement": "lit",
    "bar": [
+    12,
     0,
-    0,
-    6,
-    2
+    2,
+    9
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/0/0/6/2/2",
-     "ours": 1.5,
+     "subject": "glyph/12/0/2/9/4",
+     "ours": 1.0,
      "was_candidates": [
-      0.75,
-      1.5
+      0.5,
+      1.0
      ],
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/0/0/6/2/12",
-     "ours": 1.5,
+     "subject": "glyph/12/0/2/9/11",
+     "ours": 1.0,
      "was_candidates": [
-      0.75,
-      1.5
+      0.5,
+      1.0
      ],
      "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 6.88,
+    "ratio": 7.86,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.15,
+    "ratio": 0.1,
     "passes": false
    }
   },
