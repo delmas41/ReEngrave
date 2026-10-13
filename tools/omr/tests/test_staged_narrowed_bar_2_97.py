@@ -264,7 +264,8 @@ class _InferBar(_Bar):
         self.ink_read = ink_read
 
     def narrowed_chord(self, n=2, reason="beams_ambiguous",
-                       beats=(0.5, 1.0), sup=(2.0, 1.0), stem="stem:1"):
+                       beats=(0.5, 1.0), sup=(2.0, 1.0), stem="stem:1",
+                       detail=None):
         gs = []
         for _ in range(n):
             g = self.g
@@ -274,9 +275,11 @@ class _InferBar(_Bar):
                 quantity=Q.DURATION, outcome=Outcome.NARROWED, value=None,
                 decider="adjudicate_duration", reason=reason,
                 candidates=tuple(
-                    Candidate({"beats": b, "written": b, "beam_levels": i},
+                    Candidate({"beats": b, "written": b,
+                               "beam_levels": 0 if b == max(beats) else 1},
                               support=s)
-                    for i, (b, s) in enumerate(zip(beats, sup))))))
+                    for b, s in zip(beats, sup)),
+                detail=dict(detail or {}))))
             _stem(self.log, _sub(0, g, self.cell_idx), stem)
             gs.append(g)
         self.events.append(gs)
@@ -346,7 +349,7 @@ class TestAnyNarrowedHeadIsSettledByTheBar(unittest.TestCase):
         b = _InferBar(7, 8)
         for _ in range(3):
             b.decided(1.0)
-        (g,) = b.narrowed_chord(1)
+        (g,) = b.narrowed_chord(1, detail={"flag_levels": 1})
         log = b.finish()
         _run(log)
         v = _val(log, g)
@@ -406,12 +409,15 @@ class TestSeveralColumnsJointly(unittest.TestCase):
         b = _InferBar(3, 4)
         b.decided(1.0)
         b.decided(1.0)
-        g1 = b.narrowed_chord(1)[0]
-        g2 = b.narrowed_chord(1)[0]
+        ev = {"beams_by_stem": 1}
+        g1 = b.narrowed_chord(1, detail=ev)[0]
+        g2 = b.narrowed_chord(1, detail=ev)[0]
         log = b.finish()
         _run(log)
         for g in (g1, g2):
             self.assertEqual(_val(log, g).value["beats"], 0.5)
+            self.assertEqual(_val(log, g).detail["eighth_evidence"],
+                             ["beam_joined_to_stem"])
 
     def test_two_assignments_that_fit_abstain_POSITIVE_CONTROL(self):
         """Same two columns in 3/8-worth of room (1.5): (1.0, 0.5) and
@@ -643,6 +649,45 @@ class TestATupletBarIsNotSettledByItsSum(unittest.TestCase):
                       x_center=5)
         log, out = b.fire()
         self.assertEqual(out, [])
+
+
+class TestAnEighthNeedsEvidenceOfItsOwn(unittest.TestCase):
+    """Sean 2026-10-12: the bar may CONFIRM an eighth that has its own
+    evidence, never SUPPLY one. His tiles 1-4: bare stems with only REFUSED
+    strokes (`too_thin`), all quarters."""
+
+    def _bar(self, detail):
+        b = _InferBar(7, 8)
+        for _ in range(3):
+            b.decided(1.0)
+        (g,) = b.narrowed_chord(1, detail=detail)
+        return b.finish(), g
+
+    def test_the_sum_alone_does_not_make_an_eighth_RED(self):
+        log, g = self._bar({})
+        self.assertEqual(_fired(_run(log)), [])
+        self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
+
+    def test_a_REFUSED_stroke_is_not_evidence(self):
+        log, g = self._bar({"beams_not_by_ink": 2,
+                            "beams_not_by_ink_why": {"too_thin": 2}})
+        self.assertEqual(_fired(_run(log)), [])
+
+    def test_POSITIVE_CONTROL_a_flag_read_on_the_stem_lets_the_sum_confirm_it(self):
+        log, g = self._bar({"flag_levels": 1})
+        _run(log)
+        v = _val(log, g)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["eighth_evidence"], ["flag_read_on_stem"])
+
+    def test_the_LONGER_candidate_needs_no_evidence(self):
+        b = _InferBar()
+        for _ in range(3):
+            b.decided(1.0)
+        (g,) = b.narrowed_chord(1)
+        log = b.finish()
+        _run(log)
+        self.assertEqual(_val(log, g).value["beats"], 1.0)
 
 
 if __name__ == "__main__":

@@ -1095,7 +1095,9 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             decider="reconcile_duration", reason="meter_reconciliation",
             considered=(note.id, meter.id, *cleared_by),
             basis=(note.id, meter.id, *cleared_by),
-            detail=dict(detail),
+            detail={**detail, **({"eighth_evidence": list(_eighth_evidence(note))}
+                                 if int(option.get("beam_levels") or 0) > 0
+                                 and note.outcome is Outcome.NARROWED else {})},
             supersedes=note.id,
             # ⚠️ MUST MATCH THIS RULE'S OWN `single_pass=` DECLARATION, and
             # `test_the_single_pass_flag_matches_its_rule` asserts that it
@@ -1234,6 +1236,39 @@ def _common_options(ms: Sequence[Verdict]):
     return [(b, [p[b] for p in per_head]) for b in sorted(common)]
 
 
+#: What on a narrowed duration's own detail counts as POSITIVE evidence, off
+#: the ink and not off the bar, that the stem carries a flag or beam. A refused
+#: stroke (`beams_not_by_ink`, e.g. `too_thin`) is NOT on this list: it was
+#: measured on Sean's blind tiles 2026-10-12 -- 4 of 4 singles had one or two
+#: such strokes, and all four were quarters. Floor not met; revisit with more tiles.
+def _eighth_evidence(note: Verdict) -> Tuple[str, ...]:
+    d = note.detail or {}
+    out = []
+    if (d.get("flag_levels") or 0) > 0 or (d.get("flags_attached") or 0) > 0             or note.reason in ("flags_disagree", "hooks_counted"):
+        out.append("flag_read_on_stem")
+    if (d.get("beams_by_stem") or 0) > 0:
+        out.append("beam_joined_to_stem")
+    if (d.get("levels_certain") or 0) > 0:
+        out.append("beam_levels_certain")
+    if (d.get("levels_possible") or 0) > 0:
+        out.append("beam_levels_possible")
+    return tuple(out)
+
+
+def _shortens_without_evidence(note: Verdict, value: Any) -> bool:
+    """SEAN'S RULE (2026-10-12, CLAUDE.md §10): *"only when we see evidence of
+    an eigth shoulf it be called that"*, refined: the bar's sum may CONFIRM a
+    candidate that carries positive evidence of its own, never SUPPLY one that
+    has none. A candidate with beam levels is an eighth or shorter; without
+    `_eighth_evidence` on the narrowing it is not available to a bar-sum
+    settlement (ROADMAP 2.97: 4 of 4 bare quarters made eighths)."""
+    try:
+        levels = int((value or {}).get("beam_levels") or 0)
+    except (TypeError, ValueError):
+        return False
+    return levels > 0 and not _eighth_evidence(note)
+
+
 def _admitted(note: Verdict) -> List[dict]:
     """The readings this note allows.
 
@@ -1243,7 +1278,8 @@ def _admitted(note: Verdict) -> List[dict]:
     that is the case the original bound was built for.
     """
     if note.outcome is Outcome.NARROWED:
-        return [c.value for c in note.candidates if isinstance(c.value, dict)]
+        return [c.value for c in note.candidates if isinstance(c.value, dict)
+                and not _shortens_without_evidence(note, c.value)]
     out = []
     written = float(note.value.get("written") or 0.0)
     old = int(note.value.get("beam_levels") or 0)

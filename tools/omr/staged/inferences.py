@@ -1724,7 +1724,8 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
     from .consequences import (WITNESS_CLEAR, _bar_beats_at, _is_rest,
                                _left_the_bar, _missed_rest_witness,
                                _on_one_stem, _standing,
-                               _bar_heads_are_clean, _bar_has_tuplet)
+                               _bar_heads_are_clean, _bar_has_tuplet,
+                               _shortens_without_evidence, _eighth_evidence)
     out = BarOutcome(proposals=[])
     notes = []
     for v in _standing(log, cell, Q.DURATION):
@@ -1817,9 +1818,13 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
         if any_reason and len(ms) >= 2 and not _on_one_stem(log, ms):
             out.decline = "chord_not_on_one_decided_stem"
             return out
+        # ⚠️ SEAN'S RULE (2026-10-12): the widened rule never chooses a
+        # shorter reading for a stem with no flag or beam read on it.
         opts = [tuple(sorted({_frac(c.value.get("beats")) for c in m.candidates
                               if isinstance(c.value, dict)
-                              and c.value.get("beats") is not None}))
+                              and c.value.get("beats") is not None
+                              and not (any_reason
+                                       and _shortens_without_evidence(m, c.value))}))
                 for m in ms]
         if len(set(opts)) != 1 or not opts[0]:
             out.decline = "event_members_admit_different_lengths"
@@ -1929,6 +1934,9 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
                     "was_readers_top_candidate": bool(
                         m.candidates and m.candidates[0].value is hit[0].value),
                     "reads_meter": True,
+                    "eighth_evidence": (
+                        list(_eighth_evidence(m)) if int(
+                            hit[0].value.get("beam_levels") or 0) > 0 else None),
                 }))
     return out
 
