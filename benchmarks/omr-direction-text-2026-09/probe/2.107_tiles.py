@@ -47,7 +47,7 @@ ANSWERED = [("litolff", 2, 1376, 2151, 1417, 2200)]
 OUT = Path(sys.argv[1])
 OUT.mkdir(parents=True, exist_ok=True)
 DPI = 600
-PER_KIND = {"read": 6, "refused": 2, "control": 2}
+PER_KIND = {"read": 7, "refused": 2, "control": 2}
 
 
 def overlaps(a, b):
@@ -115,6 +115,12 @@ for spec in sys.argv[2:]:
         if any(a[0] == doc and a[1] == x["page"] and overlaps(b, a[2:]) for a in ANSWERED):
             continue
         if x["status"] in ("read", "narrowed"):
+            # the bracket is the LETTERS (the regions), not the whole group:
+            # the group may hold a real rest or head the look left alone
+            rb = [r[2] for r in x["regions"]]
+            if rb:
+                x["subject_box"] = [min(b[0] for b in rb), min(b[1] for b in rb),
+                                    max(b[2] for b in rb), max(b[3] for b in rb)]
             candidates["read"].append(x)
         elif x["status"] == "rejected" and x["reason"] == "no_letter_read":
             best = x["near"][0][1] if x["near"] else 0.0
