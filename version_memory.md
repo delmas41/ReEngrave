@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- housekeeping: CLAUDE.md cut from 6,174 to ~1,850 words (`housekeeping-claude-md`, NOT merged -- Sean reviews first)
+
+- Sean: "make Claude.md much more concise ... don't want to lose specific knowledge." No product code, no test runs. The detail moved, not deleted, into six focused docs: `docs/running.md` (setup, worktree symlinks, every CLI, small/full re-gathers, web app internals, deployment), `docs/staged-internals.md` (two readers, record model, adjudicators, EVALUATE/INFER/EXPORT, derived checks), `docs/page-facts.md` (the full engraving/plate facts with Sean's quotes and dates, plus the 2026-10-12/13 rulings), `docs/measuring.md` (acceptance set, A/B rules, tests, flags), `docs/data-sources.md`, `docs/detector.md`.
+- CLAUDE.md now holds: the product and definition of done, the ten rules, the stage model, a new §4 of Sean's 2026-10-12/13 output rules (READ/GUESSED-blue/UNREAD, eighth only on evidence, tuplet only when seen, clef-then-key order, 95% not fixed), the seven page conventions that cost lanes weekly, how a session works (worktrees, lean-lane and machine-load caps, evidence, landing, tests), and an index of where everything else lives.
+- Every old section/bullet is mapped in `docs/claude-md-migration-2026-10-13.md` (kept / moved / dropped with reason). PROJECT_BRIEF's five pointers into old CLAUDE.md sections repointed. Old section numbers cited in ROADMAP/DECISIONS lines resolve through the migration table.
+
 ## 2026-10-13 -- docs-only landings: ROADMAP 2.96, ROADMAP 2.101, the inference-principles plan (`land-docs-2026-10-13`)
 
 - Sean, 2026-10-13: "Land the docs only branches." Each branch was checked docs-only first (diff of tools/, backend/, frontend/ against origin/main empty). Merges: `lane-2.96-held-funnel` `34265e13`, `lane-2.101-held-out` `cf5729cb`, `lane-infer-principles` `8560bb16`.
@@ -35,6 +41,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
+
+- `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
+- `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
+- Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
 ## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
 
 ## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)
@@ -6051,3 +6062,8 @@ Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103)
 
 ## 2026-10-13 -- ROADMAP 2.104 built (lane-2.104-flag-misses), NOT merged
 Judged flag-miss set is 2 heads (1 tip reader, 1 stem finder). `OMR_TIP_UNBLOCKED` (default OFF, `gather._observe_stem_tip_ink`) reads the flag shape again where a detection box made the tip `occupied`; 0 invented on Sean's hand truth, 0 judged quarters moved. 14 blind tiles `out/print/2.104-review/`; FINDINGS `omr-missing-notes-2026-09` §22; docs/flags row added. Awaiting Sean's tiles.
+## 2026-10-13 -- ROADMAP 2.97 landed (lane-2.97-narrowed-bars)
+STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evidence rule; missed flags go to 2.104). His review-3 tiles: eighths 2 of 2 right; of 4 newly held bars base was wrong on 3. `OMR_NARROWED_BAR` ships default OFF; EVALUATE `reconcile_duration` chord/joint settlement on. Litolff re-measure (flag_ink_unread as evidence): base 1,027 held / 5,937 notes, arm ON 1,018 / 5,994 (newly held 5), arm as shipped 1,033 / 5,916; Brahms not re-measured. Fast tier 7,622 passed, 12 skipped, 2 xfailed; `staged.check` 192 open. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.97g, DECISIONS 2026-10-13.
+
+## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
+STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.

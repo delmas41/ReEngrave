@@ -322,7 +322,10 @@ def _staff(i):
 
 
 def _run(log, *, flag="1"):
-    env = {infer.BARE_STEM_BAR_ENV: flag} if flag is not None else {}
+    # the 2.97 columns rule (default ON) is a different rule: isolate this one
+    env = {infer.NARROWED_BAR_ENV: "0"}
+    if flag is not None:
+        env[infer.BARE_STEM_BAR_ENV] = flag
     with mock.patch.dict(os.environ, env, clear=False):
         if flag is None:
             os.environ.pop(infer.BARE_STEM_BAR_ENV, None)
@@ -623,7 +626,7 @@ class TestTheFlagAndTheLabel(unittest.TestCase):
         infer._ensure_rules()
         readers = [r for r in infer.RULES if Q.METER in r.reads]
         self.assertEqual([r.inference.value for r in readers],
-                         ["collapse_bare_stem_by_bar"])
+                         ["collapse_bare_stem_by_bar", "collapse_narrowed_by_bar"])
         with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0"}):
             self.assertNotIn(
                 "collapse_bare_stem_by_bar",

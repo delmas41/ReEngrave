@@ -434,7 +434,7 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
     #: only such rule, and `self_check.py` looks only at the rules that RAN, so
     #: a run with the flag off keeps this invariant and a run with it on is
     #: refused a bar-fill score instead of being given one.
-    METER_READERS = ("collapse_bare_stem_by_bar",)
+    METER_READERS = ("collapse_bare_stem_by_bar", "collapse_narrowed_by_bar")
 
     def test_no_registered_rule_declares_the_meter(self):
         for r in infer.RULES:
@@ -445,7 +445,7 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
 
     def test_with_the_bare_stem_flag_OFF_no_enabled_rule_declares_the_meter(
             self):
-        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0"}):
+        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0", infer.NARROWED_BAR_ENV: "0"}):
             for r in infer.enabled_rules():
                 self.assertEqual(infer.scoring_conflict(r, (Q.METER,)), (),
                                  f"{r.inference.value} reads Q.METER")

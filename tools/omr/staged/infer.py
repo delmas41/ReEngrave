@@ -219,6 +219,24 @@ def bare_stem_bar_enabled() -> bool:
 BARE_STEM_BAR_SWITCH = Switch(BARE_STEM_BAR_ENV, bare_stem_bar_enabled)
 
 
+#: ROADMAP 2.97. The narrowed-heads bar-math rule's OWN flag, default ON since
+#: 2026-10-13 (Sean: "Yes, switch it on"). His blind tiles: columns 4 of 4 right
+#: (2.97-review tiles 9-12), eighths on beam evidence 2 of 2 (2.97-review-3
+#: tiles 1-2). Everything it settles is exported as GUESSED (blue, 2.103).
+#: A DENY-LIST, BECAUSE THE DEFAULT IS ON: a typo must leave the rule RUNNING
+#: (an empty value is an off-word, as for its siblings). Written out on its own line so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+NARROWED_BAR_ENV = "OMR_NARROWED_BAR"
+
+
+def narrowed_bar_enabled() -> bool:
+    """Read the narrowed-bar flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(NARROWED_BAR_ENV, "1").strip().lower() not in _OFF_WORDS
+
+
+NARROWED_BAR_SWITCH = Switch(NARROWED_BAR_ENV, narrowed_bar_enabled)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
 # ─────────────────────────────────────────────────────────────────────────────
@@ -299,6 +317,13 @@ class Inference(str, Enum):
     #: the only legitimate score. The likelihood the ranking carries (a bare
     #: stem is a quarter) is NOT the reason for any answer: the arithmetic is.
     COLLAPSE_BARE_STEM_BY_BAR = "collapse_bare_stem_by_bar"
+
+    #: ROADMAP 2.97 (Sean 2026-10-12). Any NARROWED head (or chord) of a bar,
+    #: whatever refused its beams, collapsed to the one candidate under which
+    #: the bar lands on the PRINTED meter and every landing agrees. The bare-
+    #: stem rule's arithmetic with its reach widened; it reads `Q.METER` for
+    #: the same reason that one does, so bar-fill is not a legitimate score.
+    COLLAPSE_NARROWED_BY_BAR = "collapse_narrowed_by_bar"
 
 
 #: The only prior states an inference may speak into.
