@@ -3294,6 +3294,9 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                 continue
             n += 1
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            # ⚠️ ROADMAP 2.107: a letter the SECOND LOOK read is attributed to
+            # the look, not to the production detector (`_glyph_reader`).
+            letter_reader = _glyph_reader(log, g)
             box = _page_box(c, d) if c is not None else None
             detail: Dict[str, Any] = {
                 "letter": d.smufl_name.replace("dynamic", "").lower(),
@@ -3306,7 +3309,7 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                 # band consumer may read.
                 detail["frame_note"] = "no page box: cell has no bbox/upscale"
                 log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
-                            reader=READERS.DETECTOR, frame=frame,
+                            reader=letter_reader, frame=frame,
                             score=float(d.confidence), **detail)
                 continue
             x0, y0, x1, y1 = box
@@ -3338,7 +3341,7 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                     detail.update(ink_height_spaces=extent["height_spaces"],
                                   ink_width_spaces=extent["width_spaces"])
             log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
-                        reader=READERS.DETECTOR, frame=FRAME_PAGE,
+                        reader=letter_reader, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
             spacing = band[2] if band is not None else None
             if other_ink is None or not spacing:
@@ -9007,6 +9010,223 @@ def gather_notehead_letter_ink(log: Log, pws: Any, cells: Sequence[Any],
     return census
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.107 — the second look at head/rest ink that is really dynamic letters
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A head or rest box needs at least this share of its own ink inside the read
+#: letters' boxes to get a `Q.LETTER_LOOK_COVER` row (ADJUDICATE refuses at its
+#: own, higher bar -- the row is the measurement, the bar is the decision's).
+LETTER_COVER_FILE_FLOOR = 0.2
+
+
+def _glyph_reader(log: Log, g: Subject) -> str:
+    """The reader that FILED this glyph's box: `DETECTOR` for the production
+    pass, another name for the rescue or the letter look. A letter row must be
+    attributed to the reader that read the letter."""
+    rows = log.rows(Q.GLYPH_BOX, g)
+    return rows[-1].reader if rows else READERS.DETECTOR
+
+
+def gather_letter_look(log: Log, pws: Any, cells: Sequence[Any],
+                       local: Dict[int, Tuple[int, int]],
+                       detections: Dict[str, List[Any]], *,
+                       detector: Any = None,
+                       progress: bool = False) -> Dict[str, int]:
+    """ROADMAP 2.107 (Sean 2026-10-13: *"sf should be read as a dynamic - it is
+    letters"*; *"we added a whole library of text to be checked"*). A SECOND
+    LOOK, by the same detector, at the ink under a head or rest box that looks
+    like letters; see `letter_look` for the method and for what each reader did
+    with this ink before.
+
+    GATHER decides nothing. This reads: where a group's ink spells a string the
+    TERMS LIBRARY holds as a dynamic, it APPENDS the letters to the cell's own
+    `detections` (at indices past every production box, the rescue's pattern)
+    as `dynamic*` boxes under `READERS.LETTER_LOOK`, files
+    `Q.LETTER_LOOK_COVER` on every head/rest box whose ink they explain, and
+    leaves the REFUSAL of those boxes to ADJUDICATE. A group it could not read
+    is a `Q.GLYPH_BOX` abstention on the cell with how close it came (the best
+    letter it saw, the strings the library refused, the best note/rest class it
+    competed with) -- never silence.
+
+    ⚠️ NEVER DOUBLES A DETECTED DYNAMIC (a read letter lying on a letter box the
+    production pass drew is skipped) and NEVER READS A LETTER ALONE INTO A
+    DYNAMIC: an unread letter beside a read one is an OPEN SLOT (twins of every
+    letter the library can complete), so the dynamic is NARROWED, not guessed.
+
+    ⚠️ ONE PAGE RASTER, the raw threshold-180 ink (`_raw_page_ink`) -- staff
+    lines erased locally per system strip by `letter_look.erase_staff_lines`.
+    A page with no raster, or a detector with no `detect_image`, files nothing.
+    """
+    census = {"seeds": 0, "groups": 0, "read": 0, "narrowed": 0, "rejected": 0,
+              "skipped": 0, "letters_added": 0, "boxes_covered": 0}
+    if detector is None or not hasattr(detector, "detect_image"):
+        return census
+    raw = _raw_page_ink(pws)
+    if raw is None:
+        return census
+    import numpy as _np
+    from . import letter_look as LL
+    from ..template_matcher import SymbolDetection
+
+    cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    page_no = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    sp_by_sys: Dict[Tuple[int, int], List[float]] = {}
+    ys_by_sys: Dict[Tuple[int, int], List[float]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        ys = [float(y) for y in st.line_ys]
+        if key is None or len(ys) < 2:
+            continue
+        sp_by_sys.setdefault((page_no, key[0]), []).append(
+            (ys[-1] - ys[0]) / (len(ys) - 1))
+        ys_by_sys.setdefault((page_no, key[0]), []).extend(ys)
+    if not sp_by_sys:
+        return census
+
+    def detect(img, imgsz):
+        return detector.detect_image(img, LL.LOOK_CONF_FLOOR, imgsz)
+
+    dyn_boxes = [tuple(float(v) for v in b)
+                 for b in _dynamic_letter_boxes(detections, cell_by_key)]
+    by_sys: Dict[Tuple[int, int], List[Tuple[str, Tuple[float, ...]]]] = {}
+    where: Dict[str, Tuple[Subject, Any, str, Tuple[int, ...]]] = {}
+    for cell_key, dets in list(detections.items()):
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            if not LL.is_seed_class(d.smufl_name):
+                continue
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            by_sys.setdefault((sub.page, sub.system), []).append(
+                (g.to_key(), tuple(float(v) for v in box)))
+            where[g.to_key()] = (g, c, str(d.smufl_name),
+                                 (sub.page, sub.system, sub.staff, sub.cell, gi))
+            census["seeds"] += 1
+
+    for (pg, sysn), members in by_sys.items():
+        spl = sorted(sp_by_sys.get((pg, sysn), []))
+        ys = ys_by_sys.get((pg, sysn), [])
+        if not spl or not ys:
+            continue
+        sp = spl[len(spl) // 2]
+        y0 = int(max(0, min(ys) - 8 * sp))
+        y1 = int(min(raw.shape[0], max(ys) + 8 * sp))
+        clean = _np.zeros(raw.shape[:2], dtype=_np.uint8)
+        clean[y0:y1] = LL.erase_staff_lines(raw[y0:y1], sp)
+        clean_alt = _np.zeros(raw.shape[:2], dtype=_np.uint8)
+        clean_alt[y0:y1] = LL.erase_staff_lines(
+            raw[y0:y1], sp, slack_px=LL.ERASE_SLACK_TIGHT_PX)
+        seed_boxes = {k: b for k, b in members}
+        for grp in LL.find_groups(clean, members, sp):
+            census["groups"] += 1
+            gr = LL.read_page_group(clean, grp, seed_boxes, sp, detect,
+                                    dyn_boxes, clean_alt=clean_alt)
+            census[gr.status] = census.get(gr.status, 0) + 1
+            ub = [float(v) for v in gr.box]
+            first_g, first_c, _n, _ix = where[grp.seeds[0]]
+            if gr.status not in ("read", "narrowed"):
+                reason = {"already_boxed_as_a_dynamic": ABSTAIN.ALREADY_BOXED,
+                          "not_in_library": ABSTAIN.NOT_IN_LIBRARY}.get(
+                    gr.reason, ABSTAIN.NO_LETTER_READ)
+                log.abstain(first_g.at(R.Kind.CELL), Q.GLYPH_BOX,
+                            reader=READERS.LETTER_LOOK,
+                            frame=frame_cell(first_c.measure_index),
+                            reason=reason, why=gr.reason, group_box_page=ub,
+                            seeds=[(k, where[k][2]) for k in grp.seeds],
+                            best_letters=[list(t) for t in gr.near],
+                            probe_only=gr.probe_only,
+                            unstable_across_erasures=[
+                                [list(l), c] for l, c in gr.unstable],
+                            best_note_or_rest=list(gr.rival) if gr.rival else None,
+                            library_tried=(list(gr.spelling.tried)
+                                           if gr.spelling else None))
+                continue
+            sp_ = gr.spelling
+
+            def _overlap(k):
+                b = seed_boxes[k]
+                ix = max(0.0, min(ub[2], b[2]) - max(ub[0], b[0]))
+                iy = max(0.0, min(ub[3], b[3]) - max(ub[1], b[1]))
+                return ix * iy
+
+            home_key = max(gr.seed_ids or grp.seeds, key=_overlap)
+            g0, c0, _n0, _ix0 = where[home_key]
+            cell_key0 = g0.at(R.Kind.CELL).to_key()
+            existing = detections.setdefault(cell_key0, [])
+            frame0 = frame_cell(c0.measure_index)
+            up = float(getattr(c0, "upscale_factor", 0) or 0)
+            bbox0 = getattr(c0, "bbox_page_px", None)
+            if not up or not bbox0:
+                continue
+            added: List[str] = []
+            for reg in sp_.regions:
+                bx0, by0, bx1, by1 = reg.box
+                for letter in (reg.letters or ()):
+                    cls = LL.CLASS_OF_LETTER[letter]
+                    conf = (reg.conf if reg.how == "read" else
+                            max(LL.LOOK_CONF_FLOOR,
+                                reg.weak.get(letter, (0.0, 0))[0]))
+                    det = SymbolDetection(
+                        cell=c0, smufl_name=cls, category="dynamic",
+                        x_canonical=int(round((bx0 - bbox0[0]) * up)),
+                        y_canonical=int(round((by0 - bbox0[1]) * up)),
+                        width_canonical=max(1, int(round((bx1 - bx0) * up))),
+                        height_canonical=max(1, int(round((by1 - by0) * up))),
+                        confidence=float(conf))
+                    gi = len(existing)
+                    existing.append(det)
+                    g = R.glyph(g0.page, g0.system, g0.staff, g0.cell, gi)
+                    added.append(g.to_key())
+                    detail: Dict[str, Any] = {
+                        "category": "dynamic", "how": reg.how,
+                        "read_as": sp_.text, "candidates": list(sp_.candidates),
+                        "library_term": sp_.term, "looks_seen": reg.scales_seen,
+                        "group_box_page": ub,
+                        "region_letters": list(reg.letters)}
+                    page_box = _page_box(c0, det)
+                    if page_box is not None:
+                        px0, py0, px1, py1 = page_box
+                        detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                      x_center_page=(px0 + px1) / 2.0,
+                                      y_center_page=(py0 + py1) / 2.0)
+                    log.observe(g, Q.GLYPH_BOX,
+                                (cls, det.x_canonical, det.y_canonical,
+                                 det.width_canonical, det.height_canonical),
+                                reader=READERS.LETTER_LOOK, frame=frame0,
+                                score=float(conf), **detail)
+                    log.observe(g, Q.GLYPH_CONF, float(conf),
+                                reader=READERS.LETTER_LOOK, frame=frame0,
+                                score=float(conf))
+                    census["letters_added"] += 1
+            for k, share in zip(gr.seed_ids, gr.cover):
+                if share < LETTER_COVER_FILE_FLOOR:
+                    continue
+                census["boxes_covered"] += 1
+                sp_pg, sp_sy, sp_st, sp_ce, sp_gi = where[k][3]
+                seed_g = R.glyph(sp_pg, sp_sy, sp_st, sp_ce, sp_gi)
+                log.observe(seed_g, Q.LETTER_LOOK_COVER, float(share),
+                            reader=READERS.LETTER_LOOK, frame=FRAME_PAGE,
+                            letters=added, read_as=sp_.text,
+                            candidates=list(sp_.candidates),
+                            status=gr.status, group_box_page=ub,
+                            library_term=sp_.term)
+            if progress:
+                print(f"  gather letter look {cell_key0}: {gr.status} "
+                      f"{sp_.text or list(sp_.candidates)} "
+                      f"({len(added)} letter box(es))")
+    return census
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -12464,6 +12684,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_lowconf_rescue(log, cells, local, detections,
                               detector=detector, imgsz=imgsz,
                               progress=progress)
+
+        # ⚠️ ROADMAP 2.107, AFTER the rescue (a rescued head can be a letter's
+        # ink too) and BEFORE every reader that walks `detections` by index:
+        # the dynamic letters it reads are APPENDED to their cell's list, the
+        # rescue's pattern, so `gather_dynamic_letters`, the ownership evidence
+        # and `gather_notehead_letter_ink` see them exactly as they see a
+        # production-pass letter.
+        gather_letter_look(log, pws, cells, local, detections,
+                           detector=detector, progress=progress)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files

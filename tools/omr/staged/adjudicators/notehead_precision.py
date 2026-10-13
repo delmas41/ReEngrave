@@ -98,6 +98,7 @@ from ..record import ABSTAIN, Kind, Q, Scope
 # a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is.
 from . import ownership as _ledger
 from . import key_slots as _key_slots
+from . import letter_cover as _letter_cover
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
 cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
@@ -2809,6 +2810,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # A head whose ink is a detected dynamic letter's stroke
                   # (`_on_a_dynamic_letter_refusal`).
                   Q.NOTEHEAD_LETTER_INK,
+                  # ROADMAP 2.107: a head whose ink the second look read as
+                  # dynamic letters (`letter_cover.refuse_head_on_a_read_letter`).
+                  Q.LETTER_LOOK_COVER,
                   # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
                   # stacked group -- see `_stacked_head_duplicate_refusal`'s
                   # own docstring. SUPERSEDES 2.40's pair-wise use of
@@ -2852,7 +2856,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
-          Q.BEAM_STROKE, Q.BEAM_STROKE_INK),
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3176,6 +3180,17 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     on_letter = _on_a_dynamic_letter_refusal(ev, box_row, detail)
     if on_letter is not None:
         return on_letter
+    # ROADMAP 2.107: the same refusal for ink the detector never boxed as a
+    # letter but the second look READ as one (library-checked) -- GATHER
+    # filed `Q.LETTER_LOOK_COVER` on the head.
+    cover_row, cover_share = _letter_cover.cover_of(
+        ev.rows(Q.LETTER_LOOK_COVER), detail)
+    if _letter_cover.refuses(cover_share):
+        detail["read_by"] = "letter_look"
+        return _letter_cover.with_margin(
+            Ruling(value=True, reason="on_a_dynamic_letter",
+                   used=(box_row.id, cover_row.id), detail=detail),
+            cover_share, would_choose="notehead")
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is
