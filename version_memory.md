@@ -27,6 +27,13 @@ pointing at headings no longer in the file.)*
 - `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
 - `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
 - Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
+## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
+
+## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)
+
+- STAGED EXPORT. `export.guess_of` classifies each written symbol READ / GUESSED from its verdict's `decider` chain (any `infer:*`, EVALUATE `reconcile_duration`, or a pitch/accidental resting on an inferred clef/key) and carries the superseded narrowing's candidates; MusicXML gets `color` on `<note>` plus a `<notations><other-notation>` JSON carrier; LilyPond (`staged/lilypond.py`, a marked renderer over the frozen legacy one) gets `\tweak color`, a rest override and a header legend; `report["guessed"]` counts per family and per rule. No decision changed: both night records re-export byte-identical minus the flags. Tests: `tools/omr/tests/test_staged_guess_flag_2_103.py` (RED first, READ controls). FINDINGS: `benchmarks/omr-staged-export-2026-09/FINDINGS.md` §7.
+
+---
 ## 2026-10-12 -- ROADMAP 2.100 only a clef stands before a key signature's accidentals (branch `lane-2.100-key-order`, NOT merged, Sean judges the tiles)
 
 - STAGED ADJUDICATE. New `adjudicators/key_slots.py` (the header's key window: clef edge to the key run's last box, the run being `header._marker_run`'s own rule; one unboxed slot bridged for KEY-class boxes; a REST-class box on the next slot's x within 0.2 spaces); `adjudicate_rest_is_not_a_rest` and `adjudicate_notehead_is_not_a_notehead` refuse a box in it (`rest_in_a_key_signature_slot`, `notehead_in_a_key_signature_slot`). No flag, no GATHER change. Small re-gathers: Litolff p1-3 5 rest8th refused, 3 bars released, held 115 -> 111, 0 newly overfull, 0 key verdicts changed; Brahms p0-1 0 reach. 22 tests RED-first (`test_staged_key_slots_2_100.py`). Half (2) (the fixed order) measured, not built: see ROADMAP 2.100 and `benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §2.100. Tiles `out/print/2.100-review/` (13, answers only in manifest.json). `staged.check` 192 = base. ROUND 2 (Sean: tiles 3 and 13 are time signatures, the rest key accidentals): any non-structural class in the key slots is refused (`in_a_key_signature_slot` on the flag / arpeggiato / arc decisions; a `timeSig` in its own key slots leaves `movement.py`'s meter statement via `key_slots.meter_rows_outside_key_slots`); a rest box on the sibling staves' `timeSig` column is `rest_is_a_meter_digit`. Litolff p1-3 11 refused, held 115 -> 108, 0 newly overfull, 0 meter/key verdicts changed; Brahms p0-1 7 refused, 0 changed. Tiles `out/print/2.100-review-2/`. SEAN ANSWERED (2026-10-12): all 7 refusals and 3 kept eighth-rest controls right; control tile 1 wrong (a kept `restQuarter` box is a barline, pre-existing). A tie/arpeggiato/rest refusal cannot add a key accidental (key count comes only from `Q.KEYSIG_MARKER` rows, `gather.py:10061`).
@@ -6016,3 +6023,17 @@ theory layer, etc.) predates this file and is not backfilled here — see
 ## 2026-10-12 -- ROADMAP 2.100 half 1 LANDED on main (branch `lane-2.100-key-order` 0a839061, Sean: "Land 2.100")
 
 - Merged origin/main `fcacfa10` (docs-only conflicts, ROADMAP and version_memory). Fast tier 7,554 passed / 12 skipped; `check` 192 open, status ok. Half 2 (fixed-order read of the key's accidentals) remains open.
+
+## 2026-10-12 -- ROADMAP 2.102 (branch `lane-2.102-tuplet-meter-trem`, not merged)
+
+STAGED. `inferences.bar_has_tuplet`; `solve_bare_stem_bar` declines tuplet bars, unseparated columns,
+a bar a 3:2 group of three unknown stems would land, and never shortens a bare stem without its own
+stroke evidence (Sean's rule). `adjudicate_duration`: a head refused for tremolo slash / dynamic
+letter / `too_narrow` in a meter-sign column is `not_a_note_mark`. Tests `test_staged_tuplet_meter_trem_2_102.py`
+(RED-first); 2.81's eighth tests rewritten. Numbers: `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`.
+
+## 2026-10-13 -- ROADMAP 2.102 scored (lane-2.102-tuplet-meter-trem)
+Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answers.json`, `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`, DECISIONS 2026-10-13). Not-a-note refusals right; the three bar-math eighths were quarters, so narrowing them was right. No product code changed.
+
+## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
+Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.

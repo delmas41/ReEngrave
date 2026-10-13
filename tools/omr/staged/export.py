@@ -50,6 +50,7 @@ import copy
 import os
 import json
 import pathlib
+import re
 import sys
 from dataclasses import dataclass, field
 from fractions import Fraction
@@ -248,6 +249,168 @@ class Record:
 
     def verdicts_of(self, quantity: str) -> List[Dict[str, Any]]:
         return self._by_q.get(quantity, [])
+
+    def verdict_by_id(self, vid: str) -> Optional[Dict[str, Any]]:
+        idx = self.__dict__.get("_by_id")
+        if idx is None:
+            idx = self.__dict__["_by_id"] = {v["id"]: v for v in self.verdicts}
+        return idx.get(vid)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# READ / GUESSED  (ROADMAP 2.103; Sean 2026-10-12: "I don't want any hidden.")
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The colour a GUESSED note or rest is drawn in, in MusicXML (`color=` on
+#: `<note>`, a standard print-style attribute) and in LilyPond
+#: (`GUESS_COLOR_LILY`, the same blue). Sean 2026-10-12 ("Just blue"; orange
+#: "looks too much like red"): ONE blue for every guess, distinct from the
+#: unread-bar red (`#D00000`).
+GUESS_COLOR = "#1F6FEB"
+GUESS_COLOR_LILY = "(rgb-color 0.12 0.435 0.92)"
+
+#: EVALUATE consequences whose DECIDED duration rests on the BAR'S ARITHMETIC
+#: and not on a convention or on ink. Everything else EVALUATE writes into a
+#: duration is classed READ, each for its own reason:
+#:   * `size_measure_rest`   -- a lone whole rest IS the bar (a convention);
+#:   * `share_stem_value`, `reconcile_chord_duration` -- a stem-mate's own
+#:     decided ink (one stem, one value) FOLLOWS, no bar is consulted;
+#:     `reconcile_chord_duration` only picks the candidate the mate's beam
+#:     count admits, and refuses when more than one fits;
+#:   * `size_reinstated_rest`, `size_unboxed_rest` -- the rest's own shape;
+#:   * `reinstate_rest_between_staves` -- a rest's presence read off ink.
+#: `reconcile_duration` searches the bar for the re-reading that lands the
+#: meter: the bar-sum is the only witness for the value, so it is a guess.
+EVALUATE_GUESSERS = ("reconcile_duration",)
+
+_CAND_KEYS = ("beats", "written", "dots", "beam_levels", "is_rest")
+
+
+def _guess_candidates(v: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out = []
+    for c in (v or {}).get("candidates") or ():
+        val = c.get("value")
+        row = ({k: val[k] for k in _CAND_KEYS if k in val}
+               if isinstance(val, dict) else {"value": val})
+        row["support"] = c.get("support")
+        out.append(row)
+    return out
+
+
+def _guess_in_chain(rec: "Record", v: Optional[Dict[str, Any]]
+                    ) -> Optional[Dict[str, Any]]:
+    """The deciding GUESS in `v`'s supersession chain (newest first), with the
+    candidates of the NARROWING it settled, or None when the chain is READ."""
+    seen = set()
+    guess = None
+    cands: List[Dict[str, Any]] = []
+    while v is not None and v["id"] not in seen:
+        seen.add(v["id"])
+        d = v.get("decider") or ""
+        if guess is None:
+            if d.startswith("infer:"):
+                guess = {"stage": "INFER", "rule": d[len("infer:"):]}
+            elif d in EVALUATE_GUESSERS:
+                guess = {"stage": "EVALUATE", "rule": d}
+        if guess is not None and not cands:
+            cands = _guess_candidates(v)
+        if guess is not None and cands:
+            break
+        v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+    if guess is None:
+        return None
+    guess["candidates"] = cands
+    return guess
+
+
+def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """READ -> None. GUESSED -> `{rule, stage, quantity, candidates, chosen}`.
+
+    ⚠️ DERIVED FROM THE VERDICT'S OWN `decider` CHAIN, never from a side
+    table: the same `infer.is_inferred` primitive `_inferred_clefs` uses. The
+    DURATION chain is asked first (it is the shape every INFER duration rule
+    and `reconcile_duration` write). A PITCH read through an INFERRED clef or
+    part key (`fill_clef_gap`, `fill_part_key`) is a guess too: the head's
+    position was read, but the pitch name exists only because a clef/key was
+    inferred, and the verdicts the pitch rests on say so in their `basis`.
+    """
+    dur = rec.verdict(Q.DURATION, sub)
+    if dur is not None and dur["outcome"] == "decided":
+        g = _guess_in_chain(rec, dur)
+        if g is not None:
+            g["quantity"] = Q.DURATION
+            g["chosen"] = {k: dur["value"][k] for k in _CAND_KEYS
+                           if isinstance(dur["value"], dict) and k in dur["value"]}
+            return g
+    for q in (Q.PITCH, Q.ACCIDENTAL):
+        v = rec.verdict(q, sub)
+        if v is None or v["outcome"] != "decided":
+            continue
+        for bid in v.get("basis") or ():
+            b = rec.verdict_by_id(bid)
+            if b is not None and b["outcome"] == "decided" \
+                    and (b.get("decider") or "").startswith("infer:"):
+                return {"stage": "INFER",
+                        "rule": b["decider"][len("infer:"):],
+                        "quantity": b["quantity"],
+                        "candidates": _guess_candidates(b),
+                        "chosen": {"value": b.get("value")}}
+    return None
+
+
+def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
+    g = guess_of(rec, sub)
+    return {"guess": g} if g else {}
+
+
+def _count_guess(counters: Dict[str, int], guess: Optional[Dict[str, Any]],
+                 is_rest: bool) -> None:
+    """The ONE place a written symbol's flag is counted (MusicXML and LilyPond
+    both call it), by family and by deciding rule."""
+    if not guess:
+        return
+    counters["guessed_rests" if is_rest else "guessed_notes"] += 1
+    counters["guessed_by_rule:" + guess["rule"]] += 1
+
+
+def guessed_report(counters: Dict[str, int]) -> Dict[str, Any]:
+    by_rule = {k.split(":", 1)[1]: int(n) for k, n in counters.items()
+               if k.startswith("guessed_by_rule:") and n}
+    notes = int(counters.get("guessed_notes", 0))
+    rests = int(counters.get("guessed_rests", 0))
+    return {"notes": notes, "rests": rests, "total": notes + rests,
+            "by_rule": dict(sorted(by_rule.items()))}
+
+
+def mark_guessed_note_xml(xml: str, guess: Optional[Dict[str, Any]]) -> str:
+    """Flag one rendered `<note>` as GUESSED.
+
+    TWO CARRIERS, EACH FOR ONE READER. `color=` on `<note>` is what a person
+    sees (a standard print-style attribute: Verovio and MuseScore both draw
+    it). `<notations><other-notation type="single">` is what a program reads:
+    the schema's own extension point for a notation it has no element for,
+    valid MusicXML 4.0 and ignored by every importer that does not know it,
+    so a file with the flag opens exactly like a file without. Its text is
+    `reengrave:guessed <json>` with the rule, stage, quantity, chosen value
+    and every candidate with its support -- the suggest-and-choose UI's input.
+    """
+    if not guess:
+        return xml
+    body = json.dumps(guess, sort_keys=True, separators=(",", ":"))
+    body = (body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    carrier = ('<other-notation type="single">reengrave:guessed '
+               + body + "</other-notation>")
+    m = re.match(r"(\s*)<note>", xml)
+    if not m:
+        return xml
+    ind = m.group(1)
+    xml = xml.replace("<note>", f'<note color="{GUESS_COLOR}">', 1)
+    if "</notations>" in xml:
+        return xml.replace("</notations>",
+                           f"  {carrier}\n{ind}  </notations>", 1)
+    end = xml.rindex("</note>")
+    return (xml[:end].rstrip("\n") + f"\n{ind}  <notations>\n{ind}    "
+            + carrier + f"\n{ind}  </notations>\n{ind}" + xml[end:])
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1181,6 +1344,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 "bbox": [int(x), int(y), int(w), int(h)],
                 "duration_beats": written, "duration_type": "whole", "dots": 0,
                 "measure_rest": True, "glyph": sub,
+                **_guess_fields(rec, sub),
             }, s, sub, float(o.get("score") or 0.0))
             continue
         fit = _legacy._dotted_duration_for_beats(written)
@@ -1231,6 +1395,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # shorten every untupleted note in it by a third.
             "tuplet": _tuplet_for(rec, run, cell_index, s["glyph"]),
             "glyph": sub,
+            # ⚠️ ROADMAP 2.103: READ carries no key at all; GUESSED carries
+            # the rule and the candidates it was chosen from.
+            **_guess_fields(rec, sub),
             # ⚠️⚠️ ROADMAP 2.90 -- THE HEAD'S DECIDED STEM, CARRIED. The value
             # existed on the record (`Q.STEM_DIRECTION`, `Q.HEAD_STEM`) and
             # nothing here read it, so `voicing.group_chords_in_measure`'s own
@@ -4874,7 +5041,7 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 counters["tuplet_notes"] += 1
             _lily, xml_type, dots = _legacy._duration_to_lily_xml(
                 head["duration_type"], int(head.get("dots") or 0))
-            out.append(_legacy._mxl_note(
+            out.append(mark_guessed_note_xml(_legacy._mxl_note(
                 head["pitch"], "", xml_type, dots, beats, divisions,
                 is_chord=(n > 0), is_rest=False, indent="      ",
                 voice=voice,
@@ -4929,8 +5096,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # altered still passes NOTHING here, and a note this glyph
                 # carried to in the bar passes nothing either.
                 accidental=head.get("printed_accidental"),
-                ))
+                ), head.get("guess")))
             counters["notes"] += 1
+            _count_guess(counters, head.get("guess"), False)
             if doubled:
                 # ⚠️ ROADMAP 2.1b. Subtracted back out of `written` in
                 # `to_musicxml`'s balance, the same shape as `rests_
@@ -5092,11 +5260,12 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
     fermata = bool(det.get("fermata"))
     if fermata:
         counters["fermatas"] += 1
-    return [_legacy._mxl_note(
+    _count_guess(counters, det.get("guess"), True)
+    return [mark_guessed_note_xml(_legacy._mxl_note(
         None, "", xml_type, dots, beats, divisions, is_chord=False,
         is_rest=True, indent="      ", voice=voice,
         measure_rest=measure_rest,
-        fermata=fermata)]
+        fermata=fermata), det.get("guess"))]
 
 
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
@@ -5250,6 +5419,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["written"] = dict(counters)
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
+    # ⚠️ ROADMAP 2.103: GUESSED symbols WRITTEN, counted where the element is
+    # written (the equality above is untouched -- a guess is still a note).
+    report["guessed"] = guessed_report(counters)
     report["part_join"] = provenance
     report["marks_census"] = provenance.get("marks_census", {})
     # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key is the whole
