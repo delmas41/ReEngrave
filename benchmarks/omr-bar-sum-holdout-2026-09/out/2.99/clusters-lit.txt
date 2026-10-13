@@ -19,7 +19,7 @@
   mass_x            -
   fill              n=58 min=0.28 p10=0.33 med=0.49 p90=0.58 max=0.75
   covered_by: [((), 39), (('ledgerLine',), 8), (('noteheadBlackOnLine',), 3), (('dynamicF',), 1)]
-  verdicts: Counter({('decided', 'False', 'stem_stroke_not_a_rest'): 24, ('abstained', 'None', 'claimed_by_another_class'): 14, ('abstained', 'None', 'shape_cannot_tell'): 13, ('abstained', 'None', 'head_beside_it'): 6, ('decided', 'eighth', 'rest8th_shape'): 1})
+  verdicts: Counter({('abstained', 'None', 'shape_cannot_tell'): 21, ('abstained', 'None', 'claimed_by_another_class'): 14, ('decided', 'eighth', 'rest8th_shape'): 13, ('decided', 'False', 'stem_stroke_not_a_rest'): 7, ('decided', 'quarter', 'restQuarter_shape'): 3})
 
 == notehead  (23)
   width_spaces      n=23 min=0.68 p10=0.75 med=0.89 p90=0.96 max=1.53

@@ -6,7 +6,7 @@
    "n": 1,
    "file": "tile_01.png",
    "movement": "lit",
-   "subject": "glyph/2/0/5/1/400000",
+   "subject": "glyph/2/0/5/1/350000",
    "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
    "our_reading": {
     "outcome": "decided",
@@ -55,7 +55,7 @@
    "n": 2,
    "file": "tile_02.png",
    "movement": "brah",
-   "subject": "glyph/1/0/4/1/400003",
+   "subject": "glyph/1/0/4/1/350003",
    "tile_is_for": "decided eighth rest (bar adds up in base by cancellation, overfull now)",
    "our_reading": {
     "outcome": "decided",
@@ -102,7 +102,7 @@
    "n": 3,
    "file": "tile_03.png",
    "movement": "lit",
-   "subject": "glyph/2/1/9/5/400000",
+   "subject": "glyph/2/1/9/5/350000",
    "tile_is_for": "REFUSED look-alike: stem stroke (a flat?), not a rest",
    "our_reading": {
     "outcome": "decided",
@@ -151,7 +151,7 @@
    "n": 4,
    "file": "tile_04.png",
    "movement": "lit",
-   "subject": "glyph/2/0/7/3/400000",
+   "subject": "glyph/2/0/7/3/350000",
    "tile_is_for": "decided quarter rest (its bar was held, now adds up)",
    "our_reading": {
     "outcome": "decided",
@@ -198,7 +198,7 @@
    "n": 5,
    "file": "tile_05.png",
    "movement": "brah",
-   "subject": "glyph/1/0/9/6/400001",
+   "subject": "glyph/1/0/9/6/350001",
    "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
    "our_reading": {
     "outcome": "decided",
@@ -245,7 +245,7 @@
    "n": 6,
    "file": "tile_06.png",
    "movement": "lit",
-   "subject": "glyph/2/0/2/5/400000",
+   "subject": "glyph/2/0/2/5/350000",
    "tile_is_for": "CONTROL: a standing box says accidentalDoubleSharp; the ink reads eighth rest",
    "our_reading": {
     "outcome": "decided",
@@ -294,7 +294,7 @@
    "n": 7,
    "file": "tile_07.png",
    "movement": "lit",
-   "subject": "glyph/1/0/7/0/400000",
+   "subject": "glyph/1/0/7/0/350000",
    "tile_is_for": "decided eighth rest (bar sums by cancellation in base; a key flat boxed as rest8th)",
    "our_reading": {
     "outcome": "decided",
@@ -341,7 +341,7 @@
    "n": 8,
    "file": "tile_08.png",
    "movement": "brah",
-   "subject": "glyph/1/0/2/0/400002",
+   "subject": "glyph/1/0/2/0/350002",
    "tile_is_for": "ABSTAINED: tall narrow ink, shape cannot tell",
    "our_reading": {
     "outcome": "abstained",
@@ -388,7 +388,7 @@
    "n": 9,
    "file": "tile_09.png",
    "movement": "lit",
-   "subject": "glyph/3/0/4/10/400000",
+   "subject": "glyph/3/0/4/10/350000",
    "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
    "our_reading": {
     "outcome": "decided",
@@ -435,7 +435,7 @@
    "n": 10,
    "file": "tile_10.png",
    "movement": "brah",
-   "subject": "glyph/1/1/3/6/400002",
+   "subject": "glyph/1/1/3/6/350002",
    "tile_is_for": "decided eighth rest (bar still held)",
    "our_reading": {
     "outcome": "decided",
@@ -482,7 +482,7 @@
    "n": 11,
    "file": "tile_11.png",
    "movement": "lit",
-   "subject": "glyph/3/0/9/0/400000",
+   "subject": "glyph/3/0/9/0/350000",
    "tile_is_for": "REFUSED look-alike: stem stroke (a flat?), first bar of a system",
    "our_reading": {
     "outcome": "decided",
@@ -529,7 +529,7 @@
    "n": 12,
    "file": "tile_12.png",
    "movement": "lit",
-   "subject": "glyph/2/0/6/3/400000",
+   "subject": "glyph/2/0/6/3/350000",
    "tile_is_for": "decided quarter rest (the bar had no events before)",
    "our_reading": {
     "outcome": "decided",

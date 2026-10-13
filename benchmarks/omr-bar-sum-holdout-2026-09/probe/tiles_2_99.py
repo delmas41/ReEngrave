@@ -40,15 +40,15 @@ OUT.mkdir(parents=True, exist_ok=True)
 # (movement, subject, what this tile is FOR) -- in the order they are SHOWN.
 PLAN = [
     ("lit", "glyph/2/0/5/1/350000", "decided eighth rest (its bar was held, now adds up)"),
-    ("brah", "glyph/1/0/4/1/400003", "decided eighth rest (bar adds up in base by cancellation, overfull now)"),
+    ("brah", "glyph/1/0/4/1/350003", "decided eighth rest (bar adds up in base by cancellation, overfull now)"),
     ("lit", "glyph/2/1/9/5/350000", "REFUSED look-alike: stem stroke (a flat?), not a rest"),
     ("lit", "glyph/2/0/7/3/350000", "decided quarter rest (its bar was held, now adds up)"),
-    ("brah", "glyph/1/0/9/6/400001", "decided eighth rest (its bar was held, now adds up)"),
+    ("brah", "glyph/1/0/9/6/350001", "decided eighth rest (its bar was held, now adds up)"),
     ("lit", "glyph/2/0/2/5/350000", "CONTROL: a standing box says accidentalDoubleSharp; the ink reads eighth rest"),
     ("lit", "glyph/1/0/7/0/350000", "decided eighth rest (bar sums by cancellation in base; a key flat boxed as rest8th)"),
-    ("brah", "glyph/1/0/2/0/400002", "ABSTAINED: tall narrow ink, shape cannot tell"),
+    ("brah", "glyph/1/0/2/0/350002", "ABSTAINED: tall narrow ink, shape cannot tell"),
     ("lit", "glyph/3/0/4/10/350000", "decided eighth rest (its bar was held, now adds up)"),
-    ("brah", "glyph/1/1/3/6/400002", "decided eighth rest (bar still held)"),
+    ("brah", "glyph/1/1/3/6/350002", "decided eighth rest (bar still held)"),
     ("lit", "glyph/3/0/9/0/350000", "REFUSED look-alike: stem stroke (a flat?), first bar of a system"),
     ("lit", "glyph/2/0/6/3/350000", "decided quarter rest (the bar had no events before)"),
 ]
