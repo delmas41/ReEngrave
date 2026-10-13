@@ -35,6 +35,24 @@ SUB = R.cell(0, 0, 0, 0)
 STEM_BOX = (STEM_X0, TIP_Y, STEM_X1 - STEM_X0, FAR_Y - TIP_Y)     # x, y, w, h
 
 
+
+def setUpModule():
+    """The CONTROL tests pin the tip reader as shipped BEFORE ROADMAP 2.104 (a covering box makes the tip `occupied`);
+    `OMR_TIP_UNBLOCKED` went default ON 2026-10-13, so this module runs with it off."""
+    import os
+    global _TIP_UNBLOCKED_WAS
+    _TIP_UNBLOCKED_WAS = os.environ.get("OMR_TIP_UNBLOCKED")
+    os.environ["OMR_TIP_UNBLOCKED"] = "0"
+
+
+def tearDownModule():
+    import os
+    if _TIP_UNBLOCKED_WAS is None:
+        os.environ.pop("OMR_TIP_UNBLOCKED", None)
+    else:
+        os.environ["OMR_TIP_UNBLOCKED"] = _TIP_UNBLOCKED_WAS
+
+
 class _Cell:
     def __init__(self, img):
         self.image_no_staff = img
