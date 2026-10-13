@@ -1,7 +1,299 @@
 {
- "refused": [],
- "classes": {},
+ "refused": [
+  {
+   "subject": "glyph/1/0/3/0/55",
+   "reason": "rest_is_a_meter_digit",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "meter_column_page_px": [
+     879.2,
+     921.0
+    ],
+    "meter_digit_rows": [
+     "obs:017334",
+     "obs:017703"
+    ]
+   }
+  },
+  {
+   "subject": "glyph/1/0/1/0/55",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     211.0,
+     420.9
+    ],
+    "key_slot_members": [
+     "obs:015193",
+     "obs:015154",
+     "obs:015162"
+    ],
+    "key_slot_clef": "obs:015087",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/0/3/0/49",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     225.0,
+     425.9
+    ],
+    "key_slot_members": [
+     "obs:016044",
+     "obs:016079",
+     "obs:016107"
+    ],
+    "key_slot_clef": "obs:016009",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/0/4/0/15",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     225.0,
+     422.0
+    ],
+    "key_slot_members": [
+     "obs:016635",
+     "obs:016657",
+     "obs:016631"
+    ],
+    "key_slot_clef": "obs:016606",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/1/3/0/27",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     318.0,
+     604.6
+    ],
+    "key_slot_members": [
+     "obs:020562",
+     "obs:020631",
+     "obs:020623",
+     "obs:020589"
+    ],
+    "key_slot_clef": "obs:020535",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/1/3/0/38",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     318.0,
+     604.6
+    ],
+    "key_slot_members": [
+     "obs:020562",
+     "obs:020631",
+     "obs:020623",
+     "obs:020589"
+    ],
+    "key_slot_clef": "obs:020535",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/0/0/12/0/28",
+   "reason": "in_a_key_signature_slot",
+   "class": "tie",
+   "detail": {
+    "class": "tie",
+    "key_slot_window": [
+     342.0,
+     643.0
+    ],
+    "key_slot_members": [
+     "obs:003721",
+     "obs:003699",
+     "obs:003703"
+    ],
+    "key_slot_clef": "obs:003697",
+    "key_slot_slots": 3
+   }
+  }
+ ],
+ "classes": {
+  "still_held": [
+   {
+    "subject": "glyph/1/0/3/0/55",
+    "cell": "1/0/3/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      9.0
+     ],
+     "want": 4.5,
+     "n_events": 11
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      8.5
+     ],
+     "want": 4.5,
+     "n_events": 10
+    }
+   },
+   {
+    "subject": "glyph/1/0/1/0/55",
+    "cell": "1/0/1/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      8.5
+     ],
+     "want": 4.5,
+     "n_events": 10
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      8.5
+     ],
+     "want": 4.5,
+     "n_events": 10
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/0/49",
+    "cell": "1/0/3/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      9.0
+     ],
+     "want": 4.5,
+     "n_events": 11
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      8.5
+     ],
+     "want": 4.5,
+     "n_events": 10
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/0/27",
+    "cell": "1/1/3/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.0
+     ],
+     "want": 3.0,
+     "n_events": 4
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.0
+     ],
+     "want": 3.0,
+     "n_events": 4
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/0/38",
+    "cell": "1/1/3/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.0
+     ],
+     "want": 3.0,
+     "n_events": 4
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.0
+     ],
+     "want": 3.0,
+     "n_events": 4
+    }
+   }
+  ],
+  "unchanged_ok": [
+   {
+    "subject": "glyph/1/0/4/0/15",
+    "cell": "1/0/4/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 9
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 9
+    }
+   },
+   {
+    "subject": "glyph/0/0/12/0/28",
+    "cell": "0/0/12/0",
+    "class": "tie",
+    "off": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 3
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 3
+    }
+   }
+  ]
+ },
  "keys_changed": {},
+ "meters_changed": {},
  "changed_bars": [],
  "held": [
   88,

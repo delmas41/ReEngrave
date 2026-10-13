@@ -486,8 +486,7 @@ key accidentals in a bar."*
 **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Between a system's clef and its last key
 accidental there is nothing but key accidentals; a rest or notehead box standing there, level with the signature,
 is the signature's own ink boxed under a second name. Falsified by a print with a real rest or note between a clef
-and a later accidental of the same signature (none known). Two parts are assumptions beyond Sean's sentence and are
-tile questions: (a) one unboxed slot between two boxed key flats is bridged (KEY-class boxes only, <= 2.8 spaces);
+and a later accidental of the same signature (none known). Two parts were assumptions beyond Sean's sentence and are now CONFIRMED by his blind answers (below): (a) one unboxed slot between two boxed key flats is bridged (KEY-class boxes only, <= 2.8 spaces);
 (b) a REST-class box standing within 0.2 spaces of where the NEXT accidental would be (run of >= 2 slots) is that
 accidental (tile 12).
 
@@ -547,3 +546,47 @@ gain there. What I measured as candidates, none good enough to move a key:
 Next step if wanted: a GATHER reader on the erased raster (the template reader's matcher, run only in the predicted
 next column, high prior) -- a measured `-3` instead of a majority fill; its value is provenance and key changes
 mid-movement, not today's file.
+
+
+### Sean's answers on the 13 tiles (2026-10-12; `out/print/2.100-review/answers.json`)
+Verbatim: *"Three and thirteen are time signatures. All the rest are key accidentals."* Scored against `manifest.json`:
+* REFUSED 2, 4, 5, 10, 12 = key accidentals, **5 of 5**. Tile 4 (the bridged slot) and tile 12 (a rest on the next slot)
+  CONFIRM the two assumed conventions.
+* NOT refused 1 (`flag8thUp`), 6 (`timeSig2`), 7 (`timeSig4`), 8 (`arpeggiato`), 9 and 11 (`timeSig1`) = all key
+  accidentals: **6 misses**. A key accidental is boxed under any class name; the first build refused only rests/notes.
+* The two "controls kept" were WRONG: 3 (`rest8th` 0.9 spaces past the key, Brahms) and 13 (`restQuarter` 1.3 spaces
+  past the next slot, Litolff) are time signatures. We kept a rest that is a meter digit.
+
+### Round 2 -- any class in the key slots, and a rest on the meter (same tree, one saved record per movement)
+Built (`adjudicators/key_slots.py`, `family_precision.py`, `movement.py`; no flag, no GATHER change):
+* ANY non-structural class (everything except staff/ledgerLine/stem/barline/brace/bracket/beam/clef/key/accidental) in
+  the key window is refused as what the detector called it: `adjudicate_flag_is_not_a_flag`,
+  `adjudicate_arpeggiato_is_not_an_arpeggiato`, `adjudicate_arc_is_not_an_arc` reason `in_a_key_signature_slot`, citing
+  the key rows. A `timeSig*` box in its own staff's key slots is dropped from the movement start's meter statement
+  (`meter_rows_outside_key_slots`; `Q.METER_GLYPH` cell-0 rows are read by nothing else -- the system meter's changes read
+  cells >= 1 and its opening reads the template/OCR rows).
+* A REST-class box standing in the time signature's column on the header (`rest_is_a_meter_digit`): the column is the
+  page-pixel extent of the `timeSig*` boxes of the system's OTHER staves (a meter is printed on every staff of the
+  system), excluding any that are key flats in their own staff's slots, +-0.3 spaces. Tile 13's own staff boxed no digit
+  at all; the sibling staves' boxes name where the signature stands (page x 818-848 vs 815-848). No sibling digit = no
+  column = no refusal.
+10 more tests (`test_staged_key_slots_any_class_2_100.py`), RED-first (flag, arpeggiato, rest-on-meter failed on
+88619a03; controls: a flag after the key stays, a rest 3 spaces after the digits stays, a sibling `timeSig` that is a key
+flat does not define a column that swallows a real rest, a digit after the key stays a meter statement).
+
+| | Litolff p1-3 | Brahms p0-1 |
+|---|--:|--:|
+| refused | 11: 5 `rest8th` + 1 `flag8thUp` + 1 `arpeggiato` in key slots; 4 `restQuarter` on the meter | 7: 5 `arpeggiato` + 1 `tie` in key slots; 1 `rest8th` on the meter |
+| bars of those: released / still held / left empty / unchanged | 5 / 2 / 2 / 1 (+1 no bar) | 0 / 5 / 0 / 2 |
+| bars held out, base -> arm | 115 -> 108 (of 840 -> 838) | 88 -> 88 |
+| newly overfull | 0 | 0 |
+| **meter / movement-start verdicts changed** | **0** | **0** |
+| key verdicts changed | 0 | 0 |
+| hand truth, Brahms pdf 0 | | 1 refusal (a tie where truth has no tie box), 0 rest/notehead invented |
+
+The meter is untouched: 4 `timeSig` boxes in key slots (2 each plate) leave the movement-start statement and no
+`Q.METER`/`Q.MOVEMENT_SPANS` verdict moves. NOT done and named: the template reader still reads a flat as a [4,4] on
+mid-movement headers (a GATHER reader's fault; the system meter is carried and right); a meter column needs a sibling
+staff to have boxed a digit; a rest on a mid-system printed meter change (cell >= 1) is not covered.
+Blind tiles `out/print/2.100-review-2/` (11): 6 newly refused (3 `restQuarter` meter, 2 `arpeggiato`, 1 `tie`), the Brahms
+tile 3 again, 4 controls (real rests right of the time signature, 36-233 px).

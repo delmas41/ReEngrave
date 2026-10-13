@@ -135,7 +135,7 @@ def main():
             print("skipped (frame control)", sub, fc)
             continue
         x0 = int(cellbox[0])
-        wx0, wx1 = max(x0 - int(1.0 * sp), 0), int(x0 + 15 * sp)
+        wx0, wx1 = max(x0 - int(1.0 * sp), 0), int(max(x0 + 15 * sp, mark[2] + 3 * sp))
         wy0, wy1 = int(lines[0] - 4.0 * sp), int(lines[-1] + 4.0 * sp)
         n += 1
         red = None

@@ -29,6 +29,8 @@ doc = load_record(rec_path)
 rec = doc["record"] if "record" in doc else doc
 adjudicate._ensure_decisions()
 real_occ = KS.key_slot_occupant
+real_mc = KS.meter_column_occupant
+real_mr = KS.meter_rows_outside_key_slots
 
 
 def cell_of(sub):
@@ -41,7 +43,9 @@ def cell_of(sub):
 def run(arm):
     log, _ = rerun.rebuild_gather(rec)
     if arm == "off":
-        KS.key_slot_occupant = lambda ev, row: None
+        KS.key_slot_occupant = lambda ev, row, space=0.0: None
+        KS.meter_column_occupant = lambda ev, row: None
+        KS.meter_rows_outside_key_slots = lambda ev, rows, spaces=None, glyph_rows=None: (list(rows), 0)
     bars = {}
     real_hold = EXPORT._bar_holds_out
 
@@ -71,6 +75,8 @@ def run(arm):
     finally:
         EXPORT._bar_holds_out = real_hold
         KS.key_slot_occupant = real_occ
+        KS.meter_column_occupant = real_mc
+        KS.meter_rows_outside_key_slots = real_mr
     (out / f"{arm}.musicxml").write_text(xml)
     r = result["record"]
     return {"verdicts": r["verdicts"], "obs": r["observations"], "bars": bars,
@@ -86,11 +92,16 @@ off, on = run("off"), run("on")
 box = {o["subject"]: o["value"] for o in on["obs"] if o["quantity"] == Q.GLYPH_BOX}
 last = {}
 for v in on["verdicts"]:
-    if v["quantity"] in (Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD):
+    if v["quantity"] in (Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                         Q.FLAG_IS_NOT_A_FLAG,
+                         Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
+                         Q.ARC_IS_NOT_AN_ARC):
         last[(v["quantity"], v["subject"])] = v
 refused = [(q, s, v) for (q, s), v in last.items()
            if v["reason"] in ("rest_in_a_key_signature_slot",
-                              "notehead_in_a_key_signature_slot")]
+                              "notehead_in_a_key_signature_slot",
+                              "in_a_key_signature_slot",
+                              "rest_is_a_meter_digit")]
 byc = collections.Counter((box[s][0], v["reason"]) for q, s, v in refused)
 print("REACH refused in key slots:", len(refused))
 for k, n in sorted(byc.items()):
@@ -157,6 +168,19 @@ def keys(a):
     return d
 
 
+def meters(a):
+    d = {}
+    for v in a["verdicts"]:
+        if v["quantity"] in (Q.METER, Q.MOVEMENT_SPANS):
+            d[(v["quantity"], v["subject"])] = (v["outcome"], str(v["value"])[:120], v["reason"])
+    return d
+
+
+m0, m1 = meters(off), meters(on)
+mchg = {k: (m0.get(k), m1.get(k)) for k in set(m0) | set(m1) if m0.get(k) != m1.get(k)}
+print("METER / MOVEMENT verdicts changed:", len(mchg))
+for k, (a, b) in sorted(mchg.items(), key=str)[:40]:
+    print("  ", k, a, "->", b)
 k0, k1 = keys(off), keys(on)
 chg = {s: (k0.get(s), k1.get(s)) for s in set(k0) | set(k1) if k0.get(s) != k1.get(s)}
 print("KEY verdicts changed:", len(chg))
@@ -181,6 +205,7 @@ print("MusicXML bars changed:", len(changed))
     "refused": [{"subject": s, "reason": v["reason"], "class": box[s][0],
                  "detail": v.get("detail")} for q, s, v in refused],
     "classes": cls, "keys_changed": {s: list(x) for s, x in chg.items()},
+    "meters_changed": {str(k): list(x) for k, x in mchg.items()},
     "changed_bars": [list(k) for k in changed],
     "held": [off["held"], on["held"]], "of": [off["of"], on["of"]]},
     indent=1, default=str))

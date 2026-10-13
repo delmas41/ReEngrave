@@ -49,6 +49,14 @@ ACCIDENTAL_SHAPES = {"accidentalFlat": "keyFlat", "accidentalSharp": "keySharp",
 #: ties, clefs, meter digits are not in question here.)
 MUSIC_PREFIXES = ("rest", "notehead", "flag", "artic", "augmentationDot")
 
+#: Classes that are STRUCTURE, not marks: a staff box spans the whole header, a
+#: ledger line or stem is a stroke, a barline or brace is a frame. Every other
+#: class standing in the key slots -- a flag, an arpeggiato, a tie, a time-
+#: signature digit -- is a key accidental the detector named something else
+#: (Sean, 2026-10-12, tiles 1 6 7 8 9 11: "All the rest are key accidentals").
+STRUCTURAL_PREFIXES = ("staff", "ledgerLine", "stem", "barline", "brace",
+                       "bracket", "beam", "clef", "key", "accidental")
+
 #: `header.MARKER_RUN_GAP_SPACES`, `header.MARKER_SLOT_TOLERANCE_SPACES` and
 #: `header.MAX_FIFTHS`, restated because `header` imports `clef`, which imports
 #: this package's other modules (a cycle waiting to happen). A test asserts the
@@ -219,6 +227,11 @@ def is_music_class(cls: str) -> bool:
     return cls.startswith(MUSIC_PREFIXES)
 
 
+def is_refusable_class(cls: str) -> bool:
+    """Not structure: any mark a key accidental could be boxed as."""
+    return not cls.startswith(STRUCTURAL_PREFIXES)
+
+
 def stands_in_the_window(window: KeySlotWindow, box: KeyBox) -> bool:
     """Is this box's centre between the clef and the last accidental, level
     with the signature? A key-shaped or clef box never is (it IS the run)."""
@@ -244,7 +257,8 @@ def cell_space(ev: Any, cell: Any) -> float:
     return 0.0
 
 
-def key_slot_occupant(ev: Any, box_row: Any) -> Optional[Dict[str, Any]]:
+def key_slot_occupant(ev: Any, box_row: Any, space: float = 0.0
+                      ) -> Optional[Dict[str, Any]]:
     """If THIS glyph's box stands in its header's key-signature slots, the
     facts that say so (`detail` for the verdict, `used` row ids); else `None`.
 
@@ -256,9 +270,9 @@ def key_slot_occupant(ev: Any, box_row: Any) -> Optional[Dict[str, Any]]:
     if cell is None or cell.cell != 0 or box_row is None:
         return None
     me = boxes_of([box_row])
-    if not me or not is_music_class(me[0].cls):
+    if not me or not is_refusable_class(me[0].cls):
         return None
-    space = cell_space(ev, cell)
+    space = space or cell_space(ev, cell)
     if space <= 0:
         return None
     rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
@@ -268,3 +282,146 @@ def key_slot_occupant(ev: Any, box_row: Any) -> Optional[Dict[str, Any]]:
     detail = window.detail()
     used = list(window.members) + ([window.clef] if window.clef else [])
     return {"detail": detail, "used": tuple(used)}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The meter's column. Sean, 2026-10-12, tiles 3 and 13: "Three and thirteen are
+# time signatures." A rest8th boxed on the 8 of a 6/8, a restQuarter boxed on a
+# whole 2/4 stack: a rest box standing where the printed time signature stands
+# is that signature's digit. A meter is printed at one bar on every staff of
+# the system (CLAUDE.md §10, Sean 2026-09-30), so WHERE it stands is read off
+# the `timeSig*` boxes of the system's OTHER staves, in PAGE pixels (the cell
+# frames differ per staff, the page column does not) -- never off the bar.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A rest's centre may stand this many staff spaces outside the column of the
+#: sibling staves' digit boxes and still be that column's ink.
+METER_COLUMN_MARGIN_SPACES = 0.3
+
+
+def _page_box(row: Any) -> Optional[Tuple[float, float, float, float]]:
+    bb = (row.detail or {}).get("bbox_page_px")
+    if isinstance(bb, (list, tuple)) and len(bb) == 4:
+        try:
+            return tuple(float(v) for v in bb)  # type: ignore[return-value]
+        except (TypeError, ValueError):
+            return None
+    return None
+
+
+def meter_column(ev: Any, system: Any, skip_staff: Optional[int]
+                 ) -> Optional[Tuple[float, float, List[str]]]:
+    """`(left, right, digit row ids)` of the time signature's column on this
+    system's header, in page pixels, from the `timeSig*` boxes of every staff
+    but `skip_staff` -- excluding those standing in their OWN staff's key slots
+    (a flat named a 4 is not the meter). `None` where no sibling printed one."""
+    by_staff: Dict[int, List[Any]] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=system):
+        sub = r.subject
+        if sub.cell != 0 or sub.staff is None or sub.staff == skip_staff:
+            continue
+        by_staff.setdefault(sub.staff, []).append(r)
+    left, right, ids = None, None, []
+    for staff, rows in by_staff.items():
+        digits = [r for r in rows if isinstance(r.value, (list, tuple))
+                  and str(r.value[0]).startswith("timeSig")]
+        if not digits:
+            continue
+        cell = rows[0].subject.at(Kind.CELL)
+        space = cell_space(ev, cell)
+        boxes = boxes_of(rows)
+        win = key_slot_window(boxes, space) if space > 0 else None
+        by_id = {b.row_id: b for b in boxes}
+        for r in digits:
+            b = by_id.get(r.id)
+            if b is None or (win is not None and stands_in_the_window(win, b)):
+                continue
+            pb = _page_box(r)
+            if pb is None:
+                continue
+            left = pb[0] if left is None else min(left, pb[0])
+            right = pb[2] if right is None else max(right, pb[2])
+            ids.append(r.id)
+    if left is None:
+        return None
+    return left, right, ids
+
+
+def meter_column_occupant(ev: Any, box_row: Any) -> Optional[Dict[str, Any]]:
+    """If THIS rest-class box stands in the printed time signature's column
+    (header cell 0), the facts that say so; else `None`."""
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or cell.cell != 0 or box_row is None:
+        return None
+    v = box_row.value
+    if not isinstance(v, (list, tuple)) or len(v) != 5 \
+            or not str(v[0]).startswith("rest"):
+        return None
+    pb = _page_box(box_row)
+    space = cell_space(ev, cell)
+    if pb is None or space <= 0 or not v[3]:
+        return None
+    sp_page = space * (pb[2] - pb[0]) / float(v[3])
+    col = meter_column(ev, ev.subject.at(Kind.SYSTEM), ev.subject.staff)
+    if col is None:
+        return None
+    left, right, ids = col
+    cx = (pb[0] + pb[2]) / 2.0
+    margin = METER_COLUMN_MARGIN_SPACES * sp_page
+    if not left - margin <= cx <= right + margin:
+        return None
+    return {"detail": {"meter_column_page_px": [round(left, 1), round(right, 1)],
+                       "meter_digit_rows": ids[:6]},
+            "used": tuple(ids[:6])}
+
+
+def _cell0(staff: Any) -> Any:
+    from ..record import Subject
+    return Subject(Kind.CELL, page=staff.page, system=staff.system,
+                   staff=staff.staff, cell=0)
+
+
+def meter_rows_outside_key_slots(ev: Any, rows: Sequence[Any],
+                                 spaces: Optional[Dict[str, float]] = None,
+                                 glyph_rows: Optional[Sequence[Any]] = None
+                                 ) -> Tuple[List[Any], int]:
+    """`Q.METER_GLYPH` rows minus those whose box stands in their staff's key
+    slots (header cell 0 only), and how many were dropped. A meter glyph row is
+    filed on the STAFF with the detection's class, `x` and `cell`; its box is
+    the cell-0 `Q.GLYPH_BOX` of the same class and left x."""
+    kept: List[Any] = []
+    dropped = 0
+    windows: Dict[Any, Tuple[Optional[KeySlotWindow], List[KeyBox]]] = {}
+    by_cell: Dict[str, List[Any]] = {}
+    for g in glyph_rows or ():
+        if g.subject.cell == 0:
+            by_cell.setdefault(g.subject.at(Kind.CELL).to_key(), []).append(g)
+    for r in rows:
+        d = r.detail or {}
+        if r.frame != "cell:0":
+            kept.append(r)
+            continue
+        staff = r.subject.at(Kind.STAFF)
+        key = staff.to_key()
+        if key not in windows:
+            cell = _cell0(staff)
+            space = (spaces or {}).get(cell.to_key()) or cell_space(ev, cell)
+            boxes = boxes_of(by_cell.get(cell.to_key(), []) if glyph_rows is not None
+                             else ev.rows(Q.GLYPH_BOX,
+                                          scope=Scope.SELF_AND_DESCENDANTS,
+                                          subject=cell))
+            windows[key] = (key_slot_window(boxes, space), boxes)
+        win, boxes = windows[key]
+        hit = None
+        if win is not None:
+            for b in boxes:
+                if b.cls == str(r.value) \
+                        and abs(b.x - float(d.get("x") or -1e9)) < 1.5:
+                    hit = b
+                    break
+        if hit is not None and stands_in_the_window(win, hit):
+            dropped += 1
+        else:
+            kept.append(r)
+    return kept, dropped
