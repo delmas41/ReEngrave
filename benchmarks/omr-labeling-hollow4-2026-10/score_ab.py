@@ -78,6 +78,7 @@ def score_litolff(run, truth, cellset, page=1, shift=0.0):
         if g.page == page and g.box_canon is not None and (g.system, g.staff, g.cell) in cellset:
             by_cell[(g.system, g.staff, g.cell)].append(g)
     n_t = found = 0
+    miss_kind = collections.Counter()
     hol_boxes = hol_match = kept = kept_match = 0
     extra = []
     for key in cellset:
@@ -88,6 +89,10 @@ def score_litolff(run, truth, cellset, page=1, shift=0.0):
             n_t += 1
             if any(same(t2, g.box_canon) for g in hs):
                 found += 1
+            else:
+                cs = [g for g in by_cell.get(key, []) if same(t2, g.box_canon)]
+                miss_kind["a BLACK head box sits on it" if any((g.cls or "").startswith("noteheadBlack") for g in cs)
+                          else ("another class sits on it" if cs else "no box at all")] += 1
         for g in hs:
             st, _ = RO.adjudicate_status(run, g)
             m = any(same((t[0] + shift, t[1], t[2] + shift, t[3]), g.box_canon) for t in ts)
@@ -102,7 +107,8 @@ def score_litolff(run, truth, cellset, page=1, shift=0.0):
             "hollow_boxes": hol_boxes, "hollow_boxes_on_a_truth_head": hol_match,
             "precision": hol_match / max(1, hol_boxes),
             "kept_hollow_boxes": kept, "kept_on_a_truth_head": kept_match,
-            "kept_precision": kept_match / max(1, kept), "extra_boxes": extra}
+            "kept_precision": kept_match / max(1, kept), "missed_truth_heads_by": dict(miss_kind),
+            "extra_boxes": extra}
 
 
 def score_brahms(run, page):
@@ -138,7 +144,7 @@ def score_brahms(run, page):
         sits[where] += 1
     kept_extra = sum(1 for g in hol if g.status not in (RO.REFUSED, RO.GIVEN_AWAY) and not any(same(t.rect, g.rect) for t in heads))
     return {"truth_hollow": len(heads), "found_hollow": found, "hollow_boxes": len(hol),
-            "extra_hollow_boxes": extra, "extra_survive_adjudicate": kept_extra,
+            "extra_hollow_boxes": extra, "extra_surviving_adjudicate": kept_extra,
             "extra_sits_on": dict(sits), "filled_heads_called_hollow": black_as_hollow}
 
 
@@ -177,13 +183,14 @@ def main():
         res["litolff"][lab] = r
         print(f"[litolff {lab}] hollow recall {r['found']}/{r['truth_heads']} = {100*r['recall']:.1f}%   "
               f"precision {r['hollow_boxes_on_a_truth_head']}/{r['hollow_boxes']} = {100*r['precision']:.1f}%   "
-              f"surviving ADJUDICATE {r['kept_on_a_truth_head']}/{r['kept_hollow_boxes']} = {100*r['kept_precision']:.1f}%")
+              f"surviving ADJUDICATE {r['kept_on_a_truth_head']}/{r['kept_hollow_boxes']} = {100*r['kept_precision']:.1f}%   "
+              f"missed: {r['missed_truth_heads_by']}")
     for spec in a.brahms:
         lab, p = spec.split("=", 1)
         r = score_brahms(RO.load_run(p), page)
         res["brahms"][lab] = r
         print(f"[brahms {lab}] hollow found {r['found_hollow']}/{r['truth_hollow']}  hollow boxes {r['hollow_boxes']} "
-              f"(extra {r['extra_hollow_boxes']}, kept by ADJ {r['extra_survive_adjudicate']}) sitting on {r['extra_sits_on']}  "
+              f"(extra {r['extra_hollow_boxes']}, surviving ADJ {r['extra_surviving_adjudicate']}) sitting on {r['extra_sits_on']}  "
               f"filled heads called hollow {r['filled_heads_called_hollow']}")
     if a.out:
         a.out.write_text(json.dumps(res, indent=1, default=str))

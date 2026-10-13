@@ -41,6 +41,13 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-13 -- ROADMAP 2.4b hollow-head run: graft KILLED (branch `lane-2.4b-hollow`, not merged; weights NOT switched)
+
+- Detector only; no GATHER/ADJUDICATE/EVALUATE/INFER code touched. New: `data/user-labeled/v24-2026-10-13-hollow4-train` (not in the catalog), `recompute_line_space.py`, `complete_with_teacher.py`, `train_2.4b.sh`, `run_2.4b_ab.sh`, `score_ab.py`, `FINDINGS.md` under `benchmarks/omr-labeling-hollow4-2026-10/`.
+- Litolff TEST (59 heads): production 72.9% / 88.9%; graft shift 0 = production exactly (v24 or control); shift 0.9 61.0% / 97.4% and Brahms 18/27; raw fine-tune 91.5% but deletes beams/ledgers and doubles 8-eye boxes. Gain is in the features, not the rows.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.4b hollow-head labelling batch BUILT, awaiting Sean (branch `lane-2.4b-hollow`, not merged)
 
 - STAGED + the detector; no GATHER/ADJUDICATE/EVALUATE/INFER code touched, nothing trained.
