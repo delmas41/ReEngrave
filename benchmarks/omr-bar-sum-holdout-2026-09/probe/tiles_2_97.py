@@ -21,7 +21,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, ".")
 from tools.omr.preprocessing import render_page  # noqa: E402
+import os  # noqa: E402
+from tools.omr.staged import record as R  # noqa: E402
 from tools.omr.staged.record import Outcome, Q, Subject  # noqa: E402
+
+ONLY = [tuple(int(x) for x in k.split('/')) for k in os.environ.get('ONLY_BARS', '').split(',') if k]
 
 LIB = "/Users/seanjohnson/Desktop/ReEngrave/library/editions/"
 PDFS = {
@@ -31,7 +35,7 @@ PDFS = {
 OUT = Path(sys.argv[1])
 OUT.mkdir(parents=True, exist_ok=True)
 LOGS = dict(a.split("=", 1) for a in sys.argv[2:])
-PLAN = [("single", 4), ("chord", 4), ("columns", 4)]
+PLAN = ([("single", 9), ("chord", 9), ("columns", 9)] if os.environ.get("ONLY_BARS") else [("single", 4), ("chord", 4), ("columns", 4)])
 
 
 def part_of(v):
@@ -95,7 +99,8 @@ def main():
     for mv, path in LOGS.items():
         logs[mv] = pickle.load(open(path, "rb"))
         for key, (p, heads) in sorted(bars_of(logs[mv]).items()):
-            pool[p].append((mv, key, heads))
+            if not ONLY or key in ONLY:
+                pool[p].append((mv, key, heads))
     print({p: len(v) for p, v in pool.items()})
     manifest = {"question": "Values of the bracketed notes? (e.g. 4 / 8 / 16, Dot 4 = dotted quarter)",
                 "tiles": []}
@@ -112,22 +117,38 @@ def main():
             if picked >= want:
                 break
             mv, key, heads = c[i]
-            if used_mv[mv] >= (want + 1) // 2 and len({m for m, _, _ in c}) > 1:
+            if not ONLY and used_mv[mv] >= (want + 1) // 2 and len({m for m, _, _ in c}) > 1:
                 continue
             log = logs[mv]
             page, system, staff, cell = key
-            from tools.omr.staged import record as R
+            from tools.omr.staged import consequences as C2
+            if not ONLY:
+                nts = [q for q in C2._standing(log, R.cell(page, system, staff, cell), Q.DURATION)
+                       if q.outcome in (Outcome.DECIDED, Outcome.NARROWED)
+                       and C2._left_the_bar(log, q.subject) is None]
+                if not C2._bar_heads_are_clean(log, R.cell(page, system, staff, cell), nts):
+                    continue
             cb = log.rows(Q.CELL_BOX, R.cell(page, system, staff, cell))
             sl = log.rows(Q.STAFF_LINES, R.staff(page, system, staff))
             if not cb or not sl:
                 continue
             bx, ln = cb[-1].value, sl[-1].value
-            boxes = []
+            # ONE bracket per settled EVENT: the union of its heads' boxes
+            # (a head boxed twice, or a chord's heads, is one mark to read).
+            from tools.omr.staged import record as R2
+            ev = log.verdict(Q.EVENT, R2.cell(page, system, staff, cell))
+            ev_of = {}
+            for k, e in enumerate((ev.value or {}).get("events", ()) if ev else ()):
+                for g in e.get("glyphs", ()):
+                    ev_of[g] = k
+            groups = collections.defaultdict(list)
             for s, v, old in heads:
                 rows = log.rows(Q.GLYPH_BOX, s)
                 b = (rows[-1].detail or {}).get("bbox_page_px") if rows else None
                 if b:
-                    boxes.append(b)
+                    groups[ev_of.get(s.glyph, -1 - s.glyph)].append([float(x) for x in b])
+            boxes = [[min(b[0] for b in g), min(b[1] for b in g),
+                      max(b[2] for b in g), max(b[3] for b in g)] for g in groups.values()]
             if not boxes:
                 continue
             if (mv, page) not in pages:
