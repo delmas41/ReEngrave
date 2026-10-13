@@ -1616,6 +1616,28 @@ class Q(_Vocab):
     #: something else; abstains where the shape cannot tell. EVALUATE's
     #: `size_reinstated_rest` gives it its length; EXPORT writes it as a rest.
     NOTEHEAD_IS_AN_EIGHTH_REST = "notehead_is_an_eighth_rest"
+
+    #: ⚠️⚠️ ROADMAP 2.99 -- A CLUSTER OF INK THE DETECTOR NEVER BOXED THAT IS THE
+    #: SIZE OF A REST (an eighth or a quarter). Filed on a glyph subject at an
+    #: ordinal past every other reader's (`gather._UNBOXED_REST_GLYPH_BASE`), one
+    #: row per cluster of staff-sized pieces joined across the hair of gap
+    #: staff-line erasure leaves in a rest. `value` is the cluster's height in
+    #: staff spaces; the row measures its width, its staff step (the cell's own
+    #: local lines), how much of it standing detections cover and which, the
+    #: share of its height one pixel column fills (a flat/sharp has a stem; a
+    #: rest has none), and the nearest notehead to its right. It NAMES NOTHING
+    #: and consults NO BAR (CLAUDE.md §10: two witnesses off one raster fall
+    #: silent together, and a bar sum is the one built from the same reading).
+    UNBOXED_REST_SHAPE = "unboxed_rest_shape"
+
+    #: ⚠️ ROADMAP 2.99 -- IS THIS UNBOXED INK A REST, AND WHICH? ADJUDICATE's
+    #: weighing of `Q.UNBOXED_REST_SHAPE`: `"eighth"` or `"quarter"` only where
+    #: the ink's own shape and place on the staff say so and nothing else claims
+    #: it (no standing box over it, no stem-like stroke, no head beside it that
+    #: it could be the accidental of); `False` where it is decisively something
+    #: else; abstains where the shape cannot tell. EVALUATE's
+    #: `size_unboxed_rest` gives it its length; EXPORT writes it as a rest.
+    UNBOXED_INK_IS_A_REST = "unboxed_ink_is_a_rest"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2251,6 +2273,8 @@ CLAIMS: "dict[str, str]" = {
     "CELL_INK_PIECES": CLAIM.MEASUREMENT,
     "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
+    "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
+    "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
@@ -2750,6 +2774,9 @@ class READERS(_Vocab):
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
+    #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
+    #: (one crop, one signal) asked what rest-sized ink no box covers is.
+    CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"
     #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
     #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
     #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a

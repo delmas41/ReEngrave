@@ -642,6 +642,42 @@ def size_reinstated_rest(log: Log, subject: Subject,
     return [log.record(out)]
 
 
+@rule(consequence=Consequence.SIZE_UNBOXED_REST,
+      cause=Q.UNBOXED_INK_IS_A_REST, effect=Q.DURATION, scope=Kind.GLYPH,
+      bound="Fires only on an unboxed-ink subject whose "
+            "`Q.UNBOXED_INK_IS_A_REST` is DECIDED `\"eighth\"` or "
+            "`\"quarter\"`. Writes ONE duration -- 0.5 or 1.0 quarters, no "
+            "dots, `is_rest`. Reads no bar, no meter and no other glyph; "
+            "adds, deletes and re-pitches nothing that ADJUDICATE did not "
+            "already read as a rest.")
+def size_unboxed_rest(log: Log, subject: Subject,
+                      verdict: Verdict) -> List[Verdict]:
+    """A rest read off unboxed ink takes its own value's length.
+
+    ROADMAP 2.99. THE LENGTH FOLLOWS FROM THE CLASS, NOT FROM THE BAR (same
+    posture as `size_reinstated_rest`): an eighth rest is half a quarter and a
+    quarter rest a quarter whatever the meter, so this is EVALUATE and it
+    consults nothing about the bar the rest stands in.
+    """
+    if verdict.outcome is not Outcome.DECIDED or verdict.value not in (
+            "eighth", "quarter"):
+        return []
+    prior = log.verdict(Q.DURATION, subject)
+    if prior is not None and prior.decider == "size_unboxed_rest":
+        return []                           # already written
+    beats = 0.5 if verdict.value == "eighth" else 1.0
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={"beats": beats, "written": beats, "dots": 0, "beam_levels": 0,
+               "is_rest": True, "unboxed_rest": True,
+               "rest_value": verdict.value},
+        decider="size_unboxed_rest", reason=f"{verdict.value}_rest_shape",
+        considered=(verdict.id,), basis=(verdict.id,),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.80: a bar short by a MISSED REST looks exactly like a note one beam
 # too short.

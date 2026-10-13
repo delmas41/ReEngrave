@@ -1078,6 +1078,10 @@ ORDER: Tuple[str, ...] = (
     # stands over the same ink) AND BEFORE `Q.DURATION`, which EVALUATE's
     # `size_reinstated_rest` then supersedes for a reinstated rest.
     Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+    # ⚠️ ROADMAP 2.99, BESIDE ITS SIBLING AND BEFORE `Q.DURATION`. It reads
+    # GATHER's `Q.UNBOXED_REST_SHAPE` rows only (no verdict), so its place is
+    # kinship: `size_unboxed_rest` (EVALUATE) writes the duration it implies.
+    Q.UNBOXED_INK_IS_A_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads

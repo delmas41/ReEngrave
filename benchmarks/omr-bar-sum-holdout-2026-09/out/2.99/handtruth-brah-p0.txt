@@ -1,0 +1,6 @@
+FRAME CONTROL: truth rests that overlap a filed cluster: 7 of 8
+FOUND (ink alone, coverage zeroed):
+   5 ('rest8th', 'READ eighth')
+   2 ('restQuarter', 'READ quarter')
+   1 ('restQuarter', 'no_cluster_filed')
+DECIDED unboxed rests in swept cells: 0

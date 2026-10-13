@@ -710,6 +710,176 @@ asserting the real, roster-silent shape) → GREEN, 12/12. `pytest -m "not
 slow"`: 3,830 passed / 3 skipped, 0 failed. `check`: 247, status=ok. No
 record-scale run either time.
 
+## ROADMAP 2.95 (2026-10-12) — a word printed between two braced staves names both
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Assumed: an
+instrument word centred between two ADJACENT staves, each of which carries only
+a crook/key in parentheses, names BOTH staves, each with its own crook (Brahms
+1/i prints `(C)` / `Hr.` / `(Es)`, i.e. Horns in C over Horns in E-flat).
+Falsified by: a plate where a centred word sits between two crook-only staves
+that are different instruments, or one printing the word between a crooked pair
+and meaning only one of them. Sean approved the lane 2026-10-12 and the page
+(`out/print/held-staves-20261011/tile_07.png`, Brahms pdf 26 system 1) shows the
+convention; no second plate has been asked.
+
+**What was in the record.** Brahms `staff/26/1/5` read `(C)` and `staff/26/1/6`
+read `(Es)` (rung `surya`); the word `Hr.` is in NEITHER row and in no other
+row. `Q.INSTRUMENT` abstained `not_in_lexicon` on both (no lexicon entry names a
+bare crook), `Q.SLOT_INDEX` on `/5` abstained `unnamed_in_short_system`, on `/6`
+it was `paired_by_bare_crook` (2.26b). `Q.BRACKET_BLOCK` is 0 for both and for
+every staff from Fl. to Pk.: it is the big winds/brass/timpani block (two blocks
+per system), not the horn pair's brace. **No record holds a pair brace**, so the
+group's extent cannot be read from the record; here it is "the two staves the
+word sits between".
+
+**Where the word went (measured, fresh Surya read of Brahms pdf 1-26, 52
+systems).** Surya reads `Hr.` as its own block, centred within 0.01 of the
+midpoint of the pair's two ticks. `_surya_worker._assign` then either DROPS it
+(the pair's gap is wider than average; half of it exceeds half the mean spacing
+-- pdf 26 system 1: 66 px vs tolerance 61) or gives it to the nearer tick by 2 px
+of 120 (pdf 26 system 0: `(C) Hr.` on the upper staff, bare `(Es)` below).
+Either way one or both staves read a bare crook.
+
+**The change (GATHER, the margin reader; shared by both paths).**
+`_surya_worker._between` reports every block centred within 0.15 of the gap
+between two adjacent ticks, with who `_assign` gave it to; `_assign` itself is
+unchanged. `staff_labels_surya.spread_shared_words` rewrites a staff's text only
+if the staff's text is a bare crook, the word is a lexicon hit, and both flanking
+staves are bare crooks (or one already holds the very word); otherwise both are
+left as read. A staff with its own full name, one that read nothing, a word the
+lexicon does not know (`H:`), and a crook between two other staves (`(C)` between
+Trpt. and Pk.) are all refused (tests carry each as a control).
+`StaffLabel.shared_word` and the `Q.MARGIN_LABEL` observation's `shared_word`
+detail record the completion. The completed text is WORD FIRST, `Hr. (C)` /
+`Hr. (Es)` (the first cut wrote the upper staff `(C) Hr.`, the plate's own
+order; see the transposition follow-up below for why that was changed). No flag (rule 9; it only fills a staff that read a bare crook).
+
+**Reach (fresh Surya read, pages 1-26, 52 systems).** The rule completes 53
+staves in the fresh read's own labels. Replayed on the RECORD's labels (which
+Surya read slightly differently -- it is not byte-stable run to run; 8 of the
+fresh read's staves differ from the record's) it completes 47. Refused,
+correctly (11 `between` blocks): 9 `(C)` centred between Trpt. and Pk. (a crook,
+not a word), 1 pdf 4 `H:` (OCR of `Hr.`, a lexicon miss, 2.94's), 1 pdf 24
+`C) Hr.` / `Es)` (the parentheses clipped by the crop, so not a bare crook).
+Litolff: 0 (it prints no bare crook; fresh read of 16 pages, 31 systems: 0
+completed; dead at zero by construction, a true negative control).
+
+**Base vs arm, one tree, ADJUDICATE only, GATHER fixed**
+(`probe_shared_word_2_95.py`; the 5.9 GB record is streamed, the identity chain
+re-decided; the labels both arms decide on are the record's own, the arm adds the
+rule using the `between` blocks of the fresh read). **Control that can fail:** the
+BASE rebuild reproduces the saved record's `instrument` and `slot_index` verdicts
+1,382 of 1,382 (Litolff 641 of 662, the same in both arms).
+
+| Brahms 691 staves | base | arm |
+|---|---|---|
+| `instrument` decided | 635 | 682 (+47, `abstained/not_in_lexicon` -> `decided/label`) |
+| `slot_index` decided | 690 | 691 (the one `unnamed_in_short_system` staff is named) |
+| a decided name or slot that CHANGED VALUE | -- | **0** |
+
+Slot reasons move, values do not: 19 `paired_by_bare_crook`, 22 `paired_by_crook`,
+23 `full_lineup`, 4 `forced_by_constraints` all become `paired_by_name` with the
+same slot. Litolff 331 staves: identical, 0 labels completed.
+
+**Not done / named.** (1) The brace is not read; a word centred between two
+crook-only staves of a NON-braced pair would be spread too (none exists in the
+two acceptance scores). (2) The tight-gap case where `_assign` already gave the
+word to one staff and the other staff reads a bare crook is handled (the
+`has_word` branch); a word centred between two staves with the pair not both
+crook-only is left unspread. (3) `lookup("(C) Hr.")` returns fifths_offset 1 (a
+horn in F's), `lookup("Hr. (Es)")` 3: the transposition read of a crook is
+`instruments.py`'s (2.94), not touched here -- see the follow-up below. (4) No whole-movement re-gather was
+run; the GATHER change is priced by a fresh Surya read of the affected pages and
+`acceptance_quick`, per the lane's fence.
+
+**Live control, `acceptance_quick --doc brahms1-breitkopf` (pages 0-1, GATHER +
+ADJUDICATE, this tree, 658 s).** The real pipeline end to end: page 1 system 0
+read `(C)` / `(Es)` + a between `Hr.` and filed `(C) Hr.` / `Hr. (Es)` with
+`shared_word: "Hr."` on both `Q.MARGIN_LABEL` rows; both staves `instrument`
+decided `Horn` (`label`), `slot_index` 5 and 6 decided `named`. System 1 read the
+word on its own this run (Surya's blocks differ run to run) and needed no
+completion. Pages 0-1 abstain `instrument` on ONE staff (`staff/0/0/5`, the
+`in C 1 2` label on page 0 -- 2.94's text, not a between word). Fast tier
+`pytest -m "not slow"`: 7,444 passed, 0 failed (15 new tests in
+`test_staff_labels_shared_word.py`, RED 15 of 15 on `origin/main`; one existing
+source-text test, `test_surya_worker_session`, repointed at `read_crops_surya_full`
+because the margin dispatch moved into it). `staged.check`: 192 = main.
+
+### 2.95 follow-up (2026-10-12, manager): what the crook offset does downstream
+
+**The parse.** `instruments.lookup` reads a crook only AFTER the instrument word.
+Measured: `Hr. (C)` 0, `Hr. in C` 0, `Hr. (Es)` 3, `Hr. (F)` 1, `Hr. (D)` -2 (all
+correct: C basso 0, E-flat +3, concert = written - 3); but a crook BEFORE the
+word falls through to the horn's default F, `(C) Hr.` 1 (wrong, should be 0) and
+`(Es) Hr.` 1 (wrong, should be 3), with `known=True`. The first cut of 2.95
+composed the upper staff `(C) Hr.` and so inherited that. **Changed:**
+`spread_shared_words` now writes the word first on both staves, `Hr. (C)` /
+`Hr. (Es)` (offsets 0 and 3, `resolve_label` agrees). The same fault already sits
+in the BASE record on every staff the reader itself read as `(C) Hr.` (the plate's
+own order: 43 of the record's horn labels read `(C) Hr.`, plus 1 `(C) Hr` and 1 `(Es) Hr.`) and on any such label the rule leaves
+as read (`has_word`): those stay offset 1. **Fix for 2.94 (not done, not my file):**
+parse a leading parenthetical crook `(X) <word>` exactly as the trailing one.
+
+**What each staff got before.** Base: `instrument` ABSTAINED `not_in_lexicon` (a
+bare crook resolves to no instrument, so `resolve_label` gives no name and no
+offset); `slot_index` named only by the 2.26b rule (`paired_by_bare_crook` 19,
+`paired_by_crook` 22 of these 47, one `unnamed_in_short_system`, the rest
+`full_lineup` / `forced_by_constraints`). Arm: `instrument` Horn (`label`), slot
+the same value.
+
+**What the offset reaches (Brahms night record, 691 staves, base vs arm, the key
+chain re-decided: `key_signature`, `part_key`, `clef`, and the INFER rule
+`fill_part_key`'s own census `part_key_census`, run on the same log).**
+1. `key_consensus.NO_SIGNATURE_CONVENTION` contains Horn, so
+   `inferences._staff_offset` and `header._transposition` return None for every
+   horn: the label's offset is NEVER consumed for a horn on the staged path, right
+   or wrong. The only other reader of `fifths_offset` on STAGED is
+   `effective_offset`, which falls back to the part's, also unread for horns.
+2. The 47 completed staves: `key_signature` verdict changes 0 and `clef` changes 0
+   (also 0 on every other staff); `fill_part_key` fill value changes on 1 (an
+   `declined_nothing_to_compare` staff now gets `key_from_other_systems` 0, which
+   is the part's own other systems' written key and is the dossier's C-horn value,
+   0), unchanged on the other 46. The fill is written-key tier, no offset
+   involved.
+3. STAGED export writes WRITTEN pitch (no `<transpose>` except the double bass's
+   octave), so an exported pitch can change only through the key verdict (accidental
+   spelling); key verdict changes are 0 on all 47. **Not run:** an exported-file
+   pitch comparison against the encoding (needs EVALUATE/INFER/EXPORT over the
+   whole movement, no whole-movement re-gather by the lane's fence). So the claim is
+   structural plus the verdict counts, not a scored file.
+4. The reference encoding does NOT agree with the print for the Brahms horns
+   (dossier: C Horn written 0, Eb Horn written -1, all `transposition_semitones`
+   -7 -- a modern horn-in-F edition) while the Breitkopf print shows NO signature
+   on either horn staff; the print is the umpire, and a scored comparison against
+   that encoding would charge the print, not the offset.
+
+### 2.95: convention CONFIRMED by Sean (2026-10-12), and the extent gap it names
+
+Sean, verbatim: *"the bracket makes them all horns"* (DECISIONS 2026-10-12). The
+brace/bracket around the staves is what makes every staff in it a horn; the word
+names the WHOLE braced group, each staff keeping its own crook. The
+`CONVENTION ASSUMED` header above is therefore CONFIRMED. The gap it exposes: the
+rule as built takes "the two staves the word sits between" as the group because
+no record reads the brace; Sean's convention says the extent is the BRACE and it
+may span more than two staves.
+
+**Measured, nothing built** (`probe_brace_waist_2_95.py`, raster at 600 dpi; a pair
+brace pinches to a cusp in the gap between its two staves, left of the thick
+bracket line; checked by eye on pdf 26 and page 1, threshold 0.4 not tuned):
+- **47 of the 47 completions sit in a pair whose brace is visible in the raster**
+  (a waist in the gap by the completed staff). Every one of the 52 Brahms systems
+  shows 2-3 waists (Fag./K-Fag., the horn pair, 1./2. Viol.); 0 systems show two
+  ADJACENT waists.
+- **No horn brace spans more than two staves in Brahms** (a three-staff brace has
+  its cusp at the middle staff, not in a gap; every horn pair here has its gap
+  waist) **or in Litolff** (31 systems, 0 pair braces: the horns are one condensed
+  `Cor.` staff). On both acceptance movements "the two staves the word sits
+  between" and "the brace" are therefore the same set; the gap bites only on a
+  score with a horn trio or quartet in one brace, none held.
+- Reading the brace (a raster fact in GATHER) and letting the word name the
+  brace's whole extent is the named next step, not done here; the probe measures,
+  it is not a reader.
+
 
 ## §2.94 A worn label (`Oh.` for `Ob.`) -- 2026-10-12, STAGED, ADJUDICATE only
 

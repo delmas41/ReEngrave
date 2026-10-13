@@ -68,6 +68,10 @@ class StaffLabel:
     y_center_px: float
     confidence: str = "none"        # high | medium | low | none — see instruments.Match
     alias: str = ""                 # the alias that fired, for auditing a bad read
+    #: ROADMAP 2.95. The instrument word printed BETWEEN this staff and its
+    #: neighbour that `text` was completed with ("Hr." for "(Es)" -> "Hr. (Es)"),
+    #: else "". `text` stays the plate's own words in the plate's own order.
+    shared_word: str = ""
 
     @property
     def matched(self) -> bool:
