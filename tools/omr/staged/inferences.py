@@ -1637,6 +1637,71 @@ def _frac(x: Any):
     return Fraction(float(x)).limit_denominator(1000)
 
 
+def bar_has_tuplet(log: Log, cell: Subject) -> Tuple[str, ...]:
+    """Does this bar PRINT a tuplet? The reasons we know, or `()`.
+
+    ROADMAP 2.102 (Sean's tiles 2026-10-12: a quarter in a 3-quarter tuplet
+    settled as an eighth). EVERY bar-sum settlement counts a tuplet note at its
+    written length -- a third too long -- so a bar that prints one is not a
+    sum the arithmetic can speak for (rule 8: the answer is "cannot tell").
+    Any bar-sum rule calls this first and declines on a non-empty answer.
+
+    ⚠️ IT ONLY SEES WHAT THE READERS SAW, and that is the rule (Sean
+    2026-10-13): a tuplet exists only where its printed marking (the 3 /
+    bracket) is seen; an unmarked triplet is never inferred. The detector filed
+    no `tuplet*`/`fingering3` box anywhere on Dvorak 8 pdf p4, where tile 6 is
+    a real triplet, so there this returns `()`.
+
+    Reasons: `tuplet_marker` (a `Q.TUPLET_MARKER` row under the cell that no
+    human struck out) and `tuplet_ratio` (`adjudicate_tuplet` DECIDED a ratio
+    on the cell).
+    """
+    reasons: List[str] = []
+    for m in log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        refusal = log.verdict(Q.TUPLET_MARKER_IS_NOT_A_MARKER, m.subject)
+        if (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True):
+            continue
+        reasons.append("tuplet_marker")
+        break
+    ratio = log.verdict(Q.TUPLET_RATIO, cell)
+    if ratio is not None and ratio.outcome is Outcome.DECIDED:
+        reasons.append("tuplet_ratio")
+    return tuple(reasons)
+
+
+def _simultaneous_heads(log: Log, cell: Subject,
+                        events: Sequence[Dict[str, Any]]) -> bool:
+    """Do two heads of DIFFERENT events stand in one column?
+
+    ROADMAP 2.102, tile 10 (Schumann 2, Peters p3): six dyads whose two heads
+    sit 3-13 px apart in x were grouped as 12 events, so the bar sum counted
+    every column twice and "landed" 6/4 on twelve eighths where the print has
+    six quarters. A voice is a sequence: two heads whose centres are less
+    than half a head apart cannot follow each other.
+    """
+    boxes = []
+    for e in events:
+        if e.get("kind") == "rest":
+            continue
+        for g in e.get("glyphs", ()):
+            rows = log.rows(Q.GLYPH_BOX, Subject(
+                Kind.GLYPH, cell.page, cell.system, cell.staff, cell.cell, g))
+            if not rows:
+                continue
+            v = rows[0].value
+            try:
+                boxes.append((float(v[1]) + float(v[3]) / 2.0, float(v[3]),
+                              id(e)))
+            except (TypeError, ValueError, IndexError):
+                continue
+    boxes.sort()
+    for (xa, wa, ea), (xb, wb, eb) in zip(boxes, boxes[1:]):
+        if ea != eb and (xb - xa) < 0.5 * min(wa, wb):
+            return True
+    return False
+
+
 @dataclass
 class BarOutcome:
     """What `solve_bare_stem_bar` found in one bar. A probe's whole surface."""
@@ -1649,6 +1714,7 @@ class BarOutcome:
     landings: int = 0           # assignments of the unknowns that land the bar
     forced: int = 0             # bare-stem members the arithmetic forces
     ambiguous: int = 0          # members two landings disagree about
+    shortened_refused: int = 0  # forced to the shorter length, refused (Sean 2026-10-12)
     tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
     proposals: Optional[List[Proposal]] = None
 
@@ -1733,6 +1799,14 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     out.members = len(members)
     if not members:
         return out
+    # ROADMAP 2.102 (a): a bar that prints a tuplet is not a sum this
+    # arithmetic can speak for.
+    seen = bar_has_tuplet(log, cell)
+    if "tuplet_marker" in seen and "tuplet_ratio" not in seen:
+        # a tuplet is printed here but no ratio was decided, so the members'
+        # lengths are not scaled and the sum is not the bar's
+        out.decline = "tuplet_in_bar"
+        return out
     meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
     if meter is None or meter.outcome is not Outcome.DECIDED:
         out.decline = "no_decided_meter"
@@ -1744,6 +1818,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     grouping = log.verdict(Q.EVENT, cell)
     if grouping is None or grouping.outcome is not Outcome.DECIDED:
         out.decline = "no_event_grouping"
+        return out
+    # ROADMAP 2.102, tile 10: heads standing in one column that the grouping
+    # left as separate events are counted as successive in time.
+    if _simultaneous_heads(log, cell, (grouping.value or {}).get("events", ())):
+        out.decline = "simultaneous_heads_not_grouped"
         return out
 
     # ⚠️⚠️ THE METER MAY NOT BE THE BARS' OWN. `adjudicate_meter` weighs the
@@ -1839,6 +1918,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             for o in unknown_events[i][1]:
                 cur[s_ + o] = cur.get(s_ + o, 0) + c_
         suffix[i] = cur
+    # SEAN 2026-10-13: a tuplet exists only where its printed marking is SEEN
+    # (the 3 / bracket); three unread stems never imply a hidden 3:2 group. A
+    # bar that would add up only under an unmarked triplet gives no
+    # confirmation (`bar_does_not_add_up`), and the written value stays what
+    # the shape says (quarter: no flag or beam read).
     for i, (ms, opts) in enumerate(unknown_events):
         feasible = [o for o in opts
                     if any((target - s_ - o) in suffix[i + 1]
@@ -1865,6 +1949,24 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             if len(hit) != 1:
                 out.ambiguous += 1
                 continue
+            # ⚠️ SEAN 2026-10-12 (CLAUDE.md §10): *"only when we see evidence of
+            # an eighth should it be called that"*, refined: the bar sum may
+            # CONFIRM a value the ink supports, never SUPPLY one. A shorter
+            # candidate (more beam levels than the longest) is settled only
+            # where the member's OWN reading holds a stroke at least that deep
+            # (`levels_certain` / `levels_possible`, refused-but-present
+            # strokes included); a bare stem is never shortened by arithmetic
+            # (tiles 6 and 10).
+            levels = int(hit[0].value.get("beam_levels") or 0)
+            floor = min(int(c.value.get("beam_levels") or 0)
+                        for c in m.candidates if isinstance(c.value, dict))
+            if levels > floor:
+                d_ = m.detail or {}
+                seen_levels = max(int(d_.get("levels_certain") or 0),
+                                  int(d_.get("levels_possible") or 0))
+                if seen_levels < levels:
+                    out.shortened_refused += 1
+                    continue
             out.forced += 1
             out.proposals.append(Proposal(
                 subject=m.subject, value=hit[0].value,

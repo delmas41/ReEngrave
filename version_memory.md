@@ -6018,3 +6018,14 @@ theory layer, etc.) predates this file and is not backfilled here — see
 ## 2026-10-12 -- ROADMAP 2.100 half 1 LANDED on main (branch `lane-2.100-key-order` 0a839061, Sean: "Land 2.100")
 
 - Merged origin/main `fcacfa10` (docs-only conflicts, ROADMAP and version_memory). Fast tier 7,554 passed / 12 skipped; `check` 192 open, status ok. Half 2 (fixed-order read of the key's accidentals) remains open.
+
+## 2026-10-12 -- ROADMAP 2.102 (branch `lane-2.102-tuplet-meter-trem`, not merged)
+
+STAGED. `inferences.bar_has_tuplet`; `solve_bare_stem_bar` declines tuplet bars, unseparated columns,
+a bar a 3:2 group of three unknown stems would land, and never shortens a bare stem without its own
+stroke evidence (Sean's rule). `adjudicate_duration`: a head refused for tremolo slash / dynamic
+letter / `too_narrow` in a meter-sign column is `not_a_note_mark`. Tests `test_staged_tuplet_meter_trem_2_102.py`
+(RED-first); 2.81's eighth tests rewritten. Numbers: `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`.
+
+## 2026-10-13 -- ROADMAP 2.102 scored (lane-2.102-tuplet-meter-trem)
+Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answers.json`, `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`, DECISIONS 2026-10-13). Not-a-note refusals right; the three bar-math eighths were quarters, so narrowing them was right. No product code changed.
