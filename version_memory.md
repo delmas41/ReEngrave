@@ -35,6 +35,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
+
+- `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
+- `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
+- Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
 ## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
 
 ## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)

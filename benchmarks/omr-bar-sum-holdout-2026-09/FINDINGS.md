@@ -3012,6 +3012,120 @@ So the reinstated population (2) is 2 of 2 right, every control that should
 refuse refused, and nothing was decided True on a non-rest. n is small; the
 shape windows remain measured on two pages.
 
+## 2.97 -- narrowed notes whose own candidates land the bar are settled by the bar (2026-10-12)
+
+PATH: STAGED, ADJUDICATE->INFER re-decided from the committed night records
+(`library/_shared-records/*-whole-20261011-night.record.json`, `record_io.load_record`,
+`probe/run_2_97.py`), base vs arm on one tree shape (copies of `tools/`, differing only
+in the three staged files + env `OMR_NARROWED_BAR=1`). Branch `lane-2.97-narrowed-bars`
+off `origin/main` `3fd59e2a`. NOT merged; Sean judges the tiles first.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a bar adds up to the PRINTED
+meter, so a narrowed head's candidate that lands it is the likely value. Falsified by a bar
+with a missed note/rest, a second voice or a wrong decided neighbour (each moves the sum
+and the rule cannot see it). NOT CONFIRMED: Sean has not judged the 12 tiles
+(`out/print/2.97-review/`).
+
+### Why the 136 single-head bars were not landed (Litolff's 39 traced, `probe/chain_2_97.py`)
+`reconcile_duration` was not blocked; the bars are not the case it was written for.
+Each note's verdict chain: in 24 of 39 INFER's 2.81 rule had already settled the OTHER
+narrowed heads of the bar, leaving one bare stem whose tip was not seen clean (Sean's 2.81
+condition) -- the arithmetic forces it, the condition refuses it; in 10 of 39 EVALUATE's
+single pass had re-read a DECIDED neighbour (the one landing at that moment) and left the
+narrowed head consistent with the bar but unwritten (`duration_narrowed`); in 4 nothing ran.
+`reconcile_duration` does not re-run after INFER. 8 more are refused by 2.80's ink witness
+and should stay refused.
+
+### What was built, and the stage
+- EVALUATE, `reconcile_duration` (the answer FOLLOWS: same bound, unit = EVENT): a chord whose
+  EVERY head is narrowed AND stands on ONE decided `Q.HEAD_STEM` changes together (one stem,
+  one value, 2.78); and a landing made on a DECIDED note also settles the bar's narrowed
+  events only where the JOINT search (narrowed events over their own candidates x at most one
+  decided re-reading) is itself unique. Lengthening still needs 2.80's ink witness.
+- INFER, `collapse_narrowed_by_bar`, flag `OMR_NARROWED_BAR` default OFF (best, not forced):
+  2.81's solver widened (`any_reason`) to every narrowed head/chord, jointly over several
+  columns, only where every landing agrees, on a meter that reaches the PRINTED reading (never
+  a bar-chosen one); a bare stem whose tip was not clean needs the bar's ink wholly explained;
+  any lengthening past the reader's best candidate needs the same witness. Where the meter
+  verdict abstains the rule declines (Brahms ~214 bars stay held; no printed reading to use).
+
+### A/B (re-decide of the night records)
+| | before | after |
+|---|--:|--:|
+| Litolff bars_held_out_sum | 1,085 | 990 |
+| Litolff notes in file | 5,894 | 6,022 |
+| Litolff narrowed heads not written | 354 | 180 |
+| Brahms bars_held_out_sum | 2,553 | 2,459 |
+| Brahms notes in file | 8,198 | 8,555 |
+| Brahms narrowed heads not written | 3,182 | 2,976 |
+
+Bars settled by part (heads): Litolff single 38 (45) / chord 25 (52) / columns 39 (108);
+Brahms single 13 (23) / chord 89 (178) / columns 3 (6). Of the held list: released Litolff 73,
+Brahms 96; newly held 0 / 2. A settled value NOT among the head's own candidates: 0 / 0 (control,
+can fail: it counts a verdict whose value is absent from its superseded verdict's candidates).
+CAVEAT: the first Litolff base, run in the worktree, held 1,044 (notes 5,782); the copy-tree base
+holds 1,085. Both arms of the A/B above are copy-trees; the 41-bar difference between tree
+shapes is NOT explained (not a code difference).
+
+### Control: Sean's hand truth (Brahms pdf 0, `probe/truth_2_97.py`, pages 0-1 re-decide)
+Judged heads 334: base decided right 297 / WRONG 12 / narrowed 25; arm right 306 / WRONG 14 /
+narrowed 14. 11 heads moved: 9 narrowed->right, 2 narrowed->WRONG. **Wrong rose by 2 -- the
+brief's condition is NOT met.** (a) glyph 0/0/9/3/3: INFER's two-column joint lengthened both
+(6/8, truth 0.5 for this head); the ink witness was clear; a missed rest or note is the likely
+cause. (b) 0/0/6/2/2: the chord's heads share one stem, our candidates 0.75/1.5 and Sean's
+derived truth 1.0 -- the scorer assigns the dot to one head only, so this may be a scoring
+artefact; agent-read, to be cropped. An earlier draft without the one-stem condition wrote a
+chord of two voices as one value; the condition was added after seeing it, so held-out tiles
+are the real test.
+
+### Tiles
+`out/print/2.97-review/` 12 tiles (4 single, 4 chord, 4 columns; Litolff and Brahms), blue =
+the settled heads, question "values of the bracketed notes?"; ours only in `manifest.json`;
+`answers.template.json`.
+
+### Gates
+Fast tier 7,458 passed (serial; no xdist); `staged.check` 192 = main. 29 new tests
+(`test_staged_narrowed_bar_2_97.py`), RED on the unrepaired tree.
+
+### 2.97b. Settled bars that used another staff's head or a duplicate box (manager's check on the tiles, 2026-10-12)
+`probe/clean_2_97.py` on the first arm's settled bars (before the guard): Litolff 32 of 102 settled bars
+dirty (a head boxed twice 9 bars [chord 4, columns 5], another staff's kept box on the same ink 2, a head
+beyond 1.6 staff spaces from its own lines 23); Brahms 33 of 105 dirty (off-staff 33, another staff's box 1).
+No settled head had a DECIDED other owner (those leave the bar), so the faults are heads nobody contested:
+a neighbour staff's note inside this cell's pad. Both hand-truth misses were of this kind or near it:
+0/0/9/3 (INFER, two columns) used heads that stand on the staff ABOVE (crop `out/print/2.97-misses/tile_02`);
+0/0/6/2 (chord) is shown in `tile_01` for Sean (candidates 0.75/1.5, derived truth 1.0, unresolved).
+FIX (before anything else): `consequences._bar_heads_are_clean` -- every kept head of the bar is one box
+(IoU <= 0.3 with the others), within 1.6 spaces of THIS staff's lines, and not boxed by another staff;
+else the new paths (chord unit, settle-alongside, INFER rule) decline. 4 new tests, positive control included.
+The same check on the re-run arms finds 0 dirty settled bars on both records.
+
+Re-run with the guard (arm vs the same base): Litolff held 1,085 -> 1,015, notes 5,894 -> 5,892, narrowed not
+written 354 -> 277; Brahms held 2,553 -> 2,494, notes 8,198 -> 8,422, narrowed 3,182 -> 3,049. Bars settled
+(heads): Litolff single 27 (31) / chord 9 (18) / columns 22 (53); Brahms single 7 (13) / chord 60 (120) / columns 0.
+Value outside own candidates 0. Hand truth, pages 0-1: right 297 -> 299, WRONG 12 -> 13 (the 0/0/6/2 chord,
+whose candidates do not contain the derived truth). 12 tiles re-rendered (one bracket per settled event; unclean
+bars dropped). Fast tier and `check` to be re-run on the final commit.
+
+### 2.97c. Tuplet guard (manager, 2.101: a 3-quarter triplet's sum settles a quarter as an eighth)
+`consequences._bar_has_tuplet` (a gathered `Q.TUPLET_MARKER` anywhere in the cell, or a duration carrying a
+ratio): the chord unit, settle-alongside and `collapse_narrowed_by_bar` all abstain on such a bar
+(`bar_holds_tuplet_evidence`). TODO: swap for 2.102's shared `bar_has_tuplet` when it lands. Of the settled
+bars on the guarded arms: Litolff 58, Brahms 67 -- 0 hold tuplet evidence (`probe/tuplet_2_97.py`), so the guard
+changes nothing on these two scans; it is for other publishers. 3 tests (positive control included).
+
+### 2.97d. Sean's answers (2026-10-12) and what they removed
+Verbatim in `out/print/2.97-review/answers.json`, `out/print/2.97-misses/answers.json`, DECISIONS 2026-10-12.
+Scored against the manifests: **singles 1-4: 0/4** (each settled 0.5 by `reconcile_duration`; all quarters);
+**chords 5-8: 4/4** (tile 6 dotted quarter = our 1.5); **columns 9-12: 4/4**. Misses: tile 1 (chord, we said 1.5)
+**right** -- the hand-truth "miss" 0/0/6/2 was the scorer attaching a dot to one head, not our error; tile 2
+(columns) the second head is an eighth, we said a quarter -- the staff above's heads (clean-heads guard).
+Why the singles were wrong: all four were `reconcile_duration` verdicts with `settled_alongside` -- a DECIDED
+neighbour was re-read by the old single-pass arithmetic (the only landing at that moment) and the bar's narrowed
+bare stem was then settled to its best candidate because the joint search was unique. Unique arithmetic is not the
+print (a bare stem is a quarter more often than the eighth the sum asked for). REMOVED (`_settle_alongside`,
+`_narrowed_units`); the neighbour's re-read stays the old rule's, the narrowed head stays narrowed. Chords and
+columns stay.
 
 ## 2.98 -- a lone whole rest is the bar, in the bar the file writes (2026-10-12)
 
@@ -3158,6 +3272,50 @@ False). RED-first from tile 10's numbers, positive control a rest of the same si
 eighth). Controls unchanged (standing rests read the same; 0 of 52 accidentals decided a rest). **Removed from the decided
 rests on the two count pages: 1 (Brahms, tile 10 itself, a slur end), 0 on Litolff**; so no second tile set was cut. Decided
 now: Litolff 13 eighth + 3 quarter, Brahms 3 eighth; bars released 10 / 1.
+
+### 2.97e. Sean's evidence rule (2026-10-12, CLAUDE.md §10) -- final state of the lane
+Rule: *"only when we see evidence of an eigth shoulf it be called that"*, refined: the bar may CONFIRM an
+eighth that has positive evidence of its own, never SUPPLY one. `consequences._eighth_evidence` reads the narrowed
+verdict's own detail: `flag_levels`/`flags_attached`/reasons `flags_disagree`, `hooks_counted`, `flag_ink_unread`
+(= flag read), `beams_by_stem`, `levels_certain`, `levels_possible`. A candidate with beam levels and none of these
+is unavailable to every bar-sum settlement (EVALUATE chord unit, INFER rule); the settled verdict cites
+`eighth_evidence`. A REFUSED stroke (`beams_not_by_ink`, `too_thin`) is NOT evidence: Sean's singles 1-4 all had
+1-2 of them and were all quarters (0/4; likelihood floor not met; revisit with more tiles). Settle-alongside is
+removed (2.97d). 4 tests, positive control (flag read -> confirmed) and the longer candidate needs none.
+
+Re-measured on merged main (arm vs base on the same tree, `probe/run_2_97.py`, base = the three staged files
+from `origin/main`): Litolff held 1,026 -> 1,023 (released 14, newly held 11), notes 5,941 -> 5,973, narrowed
+not written 352 -> 307; Brahms held 2,112 -> 2,067 (released 57, newly held 12), notes 8,224 -> 8,387, narrowed
+3,180 -> 3,076. The newly-held bars (11 + 12) are NOT yet explained (a settled value makes a previously written
+bar no longer add up?) -- open. Settlements that survive: Litolff chord 9 bars / 18 heads (all the longer
+candidate), INFER single 15 / 19 (longer), columns 19 / 45 (41 longer; 4 eighths citing `beam_joined_to_stem` +
+`beam_levels_possible`); Brahms chord 59 / 118 (116 longer; 2 eighths citing `beam_levels_possible`), INFER single
+1, columns 0. Removed by the rule on Litolff (vs the arm before it): 16 heads, all eighths with no evidence (12
+columns, 4 INFER singles); chords lost none. Hand truth pages 0-1: base wrong 12, arm 13 -- the one added is the
+0/0/6/2 chord that Sean judged a dotted quarter = our value (scorer dot artefact), so true wrong = 12 = base.
+Value outside own candidates 0. Fast tier 7,592 (2 failures from 2.9x's hook tests fixed by counting
+`flag_ink_unread` as flag evidence); `check` 192.
+
+### 2.97f. The newly held bars, traced (follow-up, Sean 2026-10-13; `probe/newheld_2_97.py`)
+Litolff 11, Brahms 12 bars were written in base and held in the arm. Every one traces to ONE head:
+- Litolff 11: base's OLD single-note rule (`reconcile_duration`, not mine) had decided a narrowed head to 0.5
+  (an eighth) because it was the one landing. My evidence rule now filters `_admitted` for every bar-sum
+  settlement, so that landing no longer exists and the head stays narrowed. 6 of the 11 are narrowings with
+  reason `flag_ink_unread` (a flag was SEEN) -- FIXED by counting `flag_ink_unread` as flag evidence (the arm5
+  run predates the fix); 5 are `beam_discounted_uncertain` bare stems with no evidence of an eighth.
+- Brahms 12: 11 the same (a bare stem the old rule made an eighth), 1 (4/0/9/10) is the opposite -- the arm's
+  chord settlement took two `beams_ambiguous` heads (candidates 1.5 / 0.75, `levels_possible` evidence) to 0.75
+  and the exporter's voice-split bar check then disagrees with reconcile's single-stream sum; in base those
+  heads were unwritten, so the bar "added up" only because two notes were missing.
+So 16 bars lost a bare-stem eighth that base had written by arithmetic alone -- exactly what Sean's rule
+forbids -- not a fault in the new rules. BUT the print can show a flag our reader missed: tile 3 of
+`out/print/2.97-review-3/` (Brahms) is a flagged eighth the arm now leaves narrowed. Whether the old path should
+keep writing such eighths is Sean's call (the rule says no; the cost is these bars).
+Tiles: `out/print/2.97-review-3/` 6 tiles (2 surviving eighth settlements -- the third bar failed the frame
+control -- and 4 newly held bars), blue = the bracketed heads, ours only in manifest.json.
+Merged main (2.102): `bar_has_tuplet` is called beside the lane's own guard; main's `shortened_refused` check
+is bypassed for the widened rule (its evidence rule is `_eighth_evidence`) and kept for the bare-stem rule.
+
 ---
 
 ## 2.96 -- why bars are held out NOW: the 2.19/2.22 funnel on the 2026-10-11 night records (2026-10-12)
@@ -3328,3 +3486,25 @@ false-positive mode" (evidenced `D` alone releases 54; the 412 arithmetic-tier `
 moves from "arithmetic" to "print-supported, no record row" (2 of 3), so the order of next items is unchanged
 (narrowed heads, whole rest, unboxed rest ink) with the head fill added as item 4. The I:eighth ink box can also be a
 flat or other accidental: a shape test alone over-counts, so the reader in item 3 must use position on the staff.
+
+### 2.97g. Sean's answers on review-3 (2026-10-13) and the final re-measure
+Verbatim in `out/print/2.97-review-3/answers.json` and DECISIONS 2026-10-13: *"1. Dot 8 2. 8, 8 3. 8 4.4 5. 8 rest 6. 4"*.
+- Tiles 1-2 (eighths the rule still settles on weak beam evidence): **2 of 2 right** (dotted eighth; two eighths).
+- Tiles 3-6 (bars newly held because base's arithmetic-only eighth is now refused): base was RIGHT on tile 3 (a real
+  flagged eighth our reader missed -> ROADMAP 2.104), WRONG on 4 (a quarter), 5 (an eighth REST written as a note) and
+  6 (a quarter). **The strict rule avoids 3 wrong notes for 1 lost correct eighth.** n is small; the direction is
+  consistent with singles 0/4 in 2.97d.
+- Sean's choice: land the STRICT eighth-on-evidence rule as built; missed flags are 2.104's job, not the bar's.
+
+Re-measure with `flag_ink_unread` counted as flag evidence, Litolff night record
+(`beethoven5-litolff-mvt1-whole-20261011-night`), base = origin/main tools (incl. 2.102), arm = this branch merged with
+origin/main, `probe/run_2_97.py`, `probe/newheld_2_97.py` (the whole `held` list; the report's `bars` figure in brackets):
+| | held bars (report) | held list | notes in file | narrowed not written |
+|---|---|---|---|---|
+| base | 1,027 | 953 | 5,937 | 362 |
+| arm, `OMR_NARROWED_BAR=1` | 1,018 | 944 | 5,994 | 311 |
+| arm as shipped (`OMR_NARROWED_BAR` default OFF) | 1,033 | -- | 5,916 | 368 |
+ON vs base: released 14, **newly held 5** (was 11 before the `flag_ink_unread` fix), all 5 `beam_discounted_uncertain`
+bare stems with no evidence of an eighth -- the refusal Sean's rule asks for. The shipped default (INFER columns rule OFF)
+nets +6 held / -21 notes vs base on Litolff: the EVALUATE chord/joint settlement releases bars, the strict rule holds the
+arithmetic-only eighths. Brahms was not re-measured (6 GB record; light-load rule); its last figures are 2.97e's.

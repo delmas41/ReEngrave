@@ -434,7 +434,7 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
     #: only such rule, and `self_check.py` looks only at the rules that RAN, so
     #: a run with the flag off keeps this invariant and a run with it on is
     #: refused a bar-fill score instead of being given one.
-    METER_READERS = ("collapse_bare_stem_by_bar",)
+    METER_READERS = ("collapse_bare_stem_by_bar", "collapse_narrowed_by_bar")
 
     def test_no_registered_rule_declares_the_meter(self):
         for r in infer.RULES:
