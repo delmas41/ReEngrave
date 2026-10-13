@@ -4307,7 +4307,7 @@ STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 #: pdf 0-1 the boxes were a mid-bar `clefF` the detector drew round the stem and its flag (score 0.31), a `ledgerLine` box over a
 #: ledger line crossing the stem near its head, a `dynamicF` and two `arpeggiato` boxes. `OMR_TIP_UNBLOCKED=1`: where the tip is
 #: `occupied` and the 2.18c window cannot say either, the SHAPE test is read ONCE MORE with the boxes set aside; only a flag-shaped
-#: reading (`found True`) is filed (witness `shape_unblocked`, with the blocked reading's `covered_area`). Any other result -- not
+#: reading (`found True`) is filed (witness `shape_unblocked`). Any other result -- not
 #: flag-shaped, runs on, ink past the tip, nothing -- leaves the `occupied` abstention exactly as before (rule 8: never a False).
 #: ALLOW-LIST, default OFF: a typo leaves the shipped reader in force. Measured on Sean's hand-truth page (FINDINGS 2.104).
 TIP_UNBLOCKED_ENV = "OMR_TIP_UNBLOCKED"
@@ -5040,8 +5040,7 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                 log.observe(sub, Q.STEM_TIP_INK, True,
                             reader=READERS.CV_STEM_TIP, frame=frame,
                             stem_row_id=stem_row_id, end=end, **m2, **window_detail,
-                            witness="shape_unblocked", blocked_covered_area=m.get("covered_area"),
-                            **(counted or {}))
+                            witness="shape_unblocked", **(counted or {}))
                 continue
         if found is None and not window_found:
             if m.get("why") == "occupied":

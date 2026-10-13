@@ -6048,3 +6048,6 @@ Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answe
 
 ## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
 Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.
+
+## 2026-10-13 -- ROADMAP 2.104 built (lane-2.104-flag-misses), NOT merged
+Judged flag-miss set is 2 heads (1 tip reader, 1 stem finder). `OMR_TIP_UNBLOCKED` (default OFF, `gather._observe_stem_tip_ink`) reads the flag shape again where a detection box made the tip `occupied`; 0 invented on Sean's hand truth, 0 judged quarters moved. 14 blind tiles `out/print/2.104-review/`; FINDINGS `omr-missing-notes-2026-09` §22; docs/flags row added. Awaiting Sean's tiles.
