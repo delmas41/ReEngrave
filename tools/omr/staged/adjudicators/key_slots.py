@@ -57,6 +57,11 @@ RUN_GAP_SPACES = 2.0
 SLOT_TOLERANCE_SPACES = 0.5
 MAX_SLOTS = 7
 
+#: Two slot pitches (a printed flat's left edge to the next one's is ~1.15
+#: spaces; measured on Litolff p1-3) plus the slot tolerance: the farthest
+#: apart two KEY-class boxes may stand with exactly one slot unboxed between.
+BRIDGE_GAP_SPACES = 2.8
+
 #: `key_signature_locator.max_start_after_clef_spaces` (2.00).
 MAX_START_AFTER_CLEF_SPACES = 2.0
 
@@ -156,15 +161,31 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
         return None
 
     chain = [first]
+    bridged = False
     for b in shaped[1:]:
-        if b.x - chain[-1].x > RUN_GAP_SPACES * space:
-            break
+        gap = b.x - chain[-1].x
+        if gap > RUN_GAP_SPACES * space:
+            # ONE unboxed slot may lie between two printed accidentals: the
+            # detector missed the middle flat (Litolff p1 s0 staff 11 boxes
+            # slots 1 and 3, 2.6 spaces apart). Bridged only for a box the
+            # detector itself called a KEY accidental, never an in-bar
+            # accidental, whose gap is two slot pitches; a real rest between
+            # a key's last flat and a later accidental must stay outside.
+            if (bridged or b.cls not in KEY_CLASSES
+                    or not any(c.cls in KEY_CLASSES
+                               and abs(c.x - chain[-1].x)
+                               <= SLOT_TOLERANCE_SPACES * space
+                               for c in chain)
+                    or gap > BRIDGE_GAP_SPACES * space):
+                break
+            bridged = True
         chain.append(b)
     centres = [chain[0].x]
     for b in chain[1:]:
         if b.x - centres[-1] > SLOT_TOLERANCE_SPACES * space:
             centres.append(b.x)
-    if len(centres) > MAX_SLOTS:
+    slots = len(centres) + (1 if bridged else 0)
+    if slots > MAX_SLOTS:
         return None
     lo = (clef.x + clef.w) if clef is not None \
         else first.x - EDGE_MARGIN_SPACES * space
@@ -174,7 +195,7 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
         y_lo=min(b.y for b in chain) - LEVEL_MARGIN_SPACES * space,
         y_hi=max(b.y + b.h for b in chain) + LEVEL_MARGIN_SPACES * space,
         members=tuple(b.row_id for b in chain),
-        clef=None if clef is None else clef.row_id, slots=len(centres))
+        clef=None if clef is None else clef.row_id, slots=slots)
 
 
 def is_music_class(cls: str) -> bool:

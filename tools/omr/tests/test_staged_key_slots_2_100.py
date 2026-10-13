@@ -182,6 +182,38 @@ class TestPositiveControlsStayMusic(unittest.TestCase):
         self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[4]).value, False)
 
 
+class TestOneUnboxedSlotIsBridged(unittest.TestCase):
+    """Litolff p1 s0 staff 11: the detector boxed slots 1 and 3 (2.6 spaces
+    apart) and the rest8th lies over the third flat's keyFlat."""
+
+    def test_the_rest_over_a_flat_past_one_missing_slot_is_refused(self):
+        log = Log()
+        g = _cell0(log, [CLEF, ("keyFlat", 526, 660, 97, 244),
+                         ("keyFlat", 766, 721, 102, 237),
+                         ("rest8th", 766, 721, 103, 234)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[3]).value, True)
+
+    def test_two_missing_slots_are_not_bridged(self):
+        """Control: a KEY-class box 3.5 spaces on is not this run's."""
+        log = Log()
+        g = _cell0(log, [CLEF, ("keyFlat", 526, 660, 97, 244),
+                         ("keyFlat", 850, 721, 102, 237),
+                         ("rest8th", 850, 721, 103, 234)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[3]).value, False)
+
+    def test_an_in_bar_accidental_class_box_is_not_bridged_to(self):
+        """Control: a real rest between the key's flat and a later in-bar
+        accidental (class accidentalFlat) stays a rest."""
+        log = Log()
+        g = _cell0(log, [CLEF, ("keyFlat", 526, 660, 97, 244),
+                         ("rest8th", 680, 721, 103, 234),
+                         ("accidentalFlat", 766, 721, 102, 237)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[2]).value, False)
+
+
 class TestTheKeyIsStillRead(unittest.TestCase):
 
     def test_three_flats_are_still_three_flats_with_the_rest_box_refused(self):
