@@ -1665,7 +1665,9 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
                                    spacing)
         if heir is not _SURVIVES and heir is not None \
                 and heir.subject == ev.subject \
-                and _plausible_head_box(mine, spacing):
+                and (_head_box_excess(mine, spacing)
+                     <= _head_box_excess(cell_boxes[best_row.subject].value,
+                                         spacing)):
             signal["winner_refused_in_favour_of_this_box"] = best_row.id
             return None
     detail["duplicate_of"] = best_row.id
@@ -1830,6 +1832,20 @@ def _plausible_head_box(box_value, spacing: float) -> bool:
             <= PLAUSIBLE_HEAD_HEIGHT_SPACES[1])
 
 
+def _head_box_excess(box_value, spacing: float) -> float:
+    """ROADMAP 2.105(b): how far (staff spaces, summed over both axes) a box
+    lies OUTSIDE the plausible-head ranges; 0.0 for a plausible one. Lets two
+    rules that both choose one keeper of a mark order its boxes the same way:
+    a plausible box beats an implausible one, and of two implausible boxes the
+    nearer to a head keeps it."""
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    lo_w, hi_w = PLAUSIBLE_HEAD_WIDTH_SPACES
+    lo_h, hi_h = PLAUSIBLE_HEAD_HEIGHT_SPACES
+    return (max(0.0, lo_w - w_sp, w_sp - hi_w)
+            + max(0.0, lo_h - h_sp, h_sp - hi_h))
+
+
 def _boxes_on_one_head(a, b, spacing: float) -> bool:
     """Do two `Q.GLYPH_BOX` values overlap, or stand within
     `SAME_HEAD_MAX_GAP_SPACES` of each other in both axes?"""
@@ -1989,7 +2005,19 @@ def _other_keeps_the_mark(this_val, this_row, other_val, other_row,
     """Of two same-class boxes on one mark, does OTHER keep it? ROADMAP 2.73:
     the more head-shaped one, where the two differ by more than
     `HEAD_SHAPE_MARGIN`; else the higher detector score (then the lower glyph
-    index), exactly 2.30's own priority before this item."""
+    index), exactly 2.30's own priority before this item.
+
+    ROADMAP 2.105(b), FIRST: a box nearer a head's plausible size keeps the
+    mark over one farther from it (`_head_box_excess`). Shape saturates at a
+    standard head, so an over-wide box that merged a neighbour's ink TIED a
+    clean head and won on detector score -- and 2.42, choosing by ink, took the
+    clean one: each refused the other and the head had NO box (14 mutual
+    circles, 33 slot groups on Litolff 984073; Sean's tiles 2.88 round 2)."""
+    if spacing:
+        e_this = _head_box_excess(this_val, spacing)
+        e_other = _head_box_excess(other_val, spacing)
+        if e_this != e_other:
+            return e_other < e_this
     d_shape = _box_shape(other_val, spacing) - _box_shape(this_val, spacing)
     if d_shape > HEAD_SHAPE_MARGIN:
         return True
