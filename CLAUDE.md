@@ -113,6 +113,22 @@ adjudicators, the derived checks: `docs/staged-internals.md`.
   (`docs/plan-2026-10-12-inference-principles.md`); measure it on Sean's
   blind tiles per lane, never assume it.
 
+**How inference decides** (Sean, 2026-10-13, adopted from
+`docs/plan-2026-10-12-inference-principles.md`; the full checklist is there):
+
+- **A convention is a prior; a cut-off is a measurement.** A rule resting on
+  a confirmed engraving convention may decide; a rule resting on a number
+  tuned on our two plates may only NARROW until another publisher confirms it.
+- **Count evidence by its source, not its number.** Two readings of the same
+  ink fall together and count once; a second witness comes from a different
+  source. The bar sum inherits every error in the bar, so it is the weakest
+  witness and can only confirm.
+- **A refusal says how close it came.** Every non-structural refusal records
+  its candidates and signed margin; near-misses go to Sean as blind tiles,
+  which tell "keep working" (wrong cut, or measure locally) from "wrong axis".
+- **Before landing, ask:** what evidence, from which source, what happens
+  when the rest of the bar is wrong, and who said it's right.
+
 ---
 
 ## 5. Page conventions every lane needs

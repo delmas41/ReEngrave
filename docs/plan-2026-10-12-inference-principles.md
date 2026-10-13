@@ -1,6 +1,6 @@
 # Inference principles: how close before we throw it out
 
-> **Status 2026-10-13: proposal. Superseded in part by Sean's DECISIONS of 2026-10-12/13.** No hidden guesses: every INFER/bar-sum symbol is READ, GUESSED (blue, with candidates) or UNREAD (2.103). 95% is a working number, not a fixed bar. An eighth only on evidence (a flag or beam), not bar arithmetic alone. A tuplet only where its marking is seen (2.102). Step 2b's cost question is answered: nothing hidden. Steps 1-2 not started.
+> **Status 2026-10-13: principles §1 ADOPTED into CLAUDE.md §4 ("How inference decides", Sean: "Add the inference block and land it"); plan steps still proposals. Superseded in part by Sean's DECISIONS of 2026-10-12/13.** No hidden guesses: every INFER/bar-sum symbol is READ, GUESSED (blue, with candidates) or UNREAD (2.103). 95% is a working number, not a fixed bar. An eighth only on evidence (a flag or beam), not bar arithmetic alone. A tuplet only where its marking is seen (2.102). Step 2b's cost question is answered: nothing hidden. Steps 1-2 not started.
 
 **Date:** 2026-10-12. **Status:** proposal for Sean. **Path:** STAGED only.
 
