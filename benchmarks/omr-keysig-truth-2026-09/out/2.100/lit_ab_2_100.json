@@ -1,0 +1,468 @@
+{
+ "refused": [
+  {
+   "subject": "glyph/1/0/0/0/6",
+   "reason": "rest_in_a_key_signature_slot",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "key_slot_window": [
+     510.0,
+     873.9
+    ],
+    "key_slot_members": [
+     "obs:000104",
+     "obs:000098",
+     "obs:000106"
+    ],
+    "key_slot_clef": "obs:000096",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/0/2/0/12",
+   "reason": "rest_is_a_meter_digit",
+   "class": "restQuarter",
+   "detail": {
+    "class": "restQuarter",
+    "meter_column_page_px": [
+     815.4,
+     848.1
+    ],
+    "meter_digit_rows": [
+     "obs:000212",
+     "obs:000214",
+     "obs:000216",
+     "obs:000849",
+     "obs:000985",
+     "obs:000987"
+    ]
+   }
+  },
+  {
+   "subject": "glyph/1/0/3/0/7",
+   "reason": "rest_is_a_meter_digit",
+   "class": "restQuarter",
+   "detail": {
+    "class": "restQuarter",
+    "meter_column_page_px": [
+     815.4,
+     848.1
+    ],
+    "meter_digit_rows": [
+     "obs:000212",
+     "obs:000214",
+     "obs:000216",
+     "obs:000849",
+     "obs:000985",
+     "obs:000987"
+    ]
+   }
+  },
+  {
+   "subject": "glyph/1/0/5/0/3",
+   "reason": "rest_is_a_meter_digit",
+   "class": "restQuarter",
+   "detail": {
+    "class": "restQuarter",
+    "meter_column_page_px": [
+     815.4,
+     848.1
+    ],
+    "meter_digit_rows": [
+     "obs:000212",
+     "obs:000214",
+     "obs:000216",
+     "obs:000849",
+     "obs:000985",
+     "obs:000987"
+    ]
+   }
+  },
+  {
+   "subject": "glyph/1/0/7/0/12",
+   "reason": "rest_in_a_key_signature_slot",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "key_slot_window": [
+     476.0,
+     866.4
+    ],
+    "key_slot_members": [
+     "obs:000983",
+     "obs:000970",
+     "obs:000989"
+    ],
+    "key_slot_clef": "obs:000966",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/1/0/8/0/11",
+   "reason": "rest_is_a_meter_digit",
+   "class": "restQuarter",
+   "detail": {
+    "class": "restQuarter",
+    "meter_column_page_px": [
+     815.4,
+     848.1
+    ],
+    "meter_digit_rows": [
+     "obs:000212",
+     "obs:000214",
+     "obs:000216",
+     "obs:000849",
+     "obs:000985",
+     "obs:000987"
+    ]
+   }
+  },
+  {
+   "subject": "glyph/1/0/10/0/13",
+   "reason": "rest_in_a_key_signature_slot",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "key_slot_window": [
+     475.0,
+     768.3
+    ],
+    "key_slot_members": [
+     "obs:001642",
+     "obs:001648"
+    ],
+    "key_slot_clef": "obs:001625",
+    "key_slot_slots": 2
+   }
+  },
+  {
+   "subject": "glyph/1/0/11/0/7",
+   "reason": "rest_in_a_key_signature_slot",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "key_slot_window": [
+     452.0,
+     895.8
+    ],
+    "key_slot_members": [
+     "obs:001824",
+     "obs:001819",
+     "obs:001830",
+     "obs:001828"
+    ],
+    "key_slot_clef": "obs:001799",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/3/1/5/0/9",
+   "reason": "rest_in_a_key_signature_slot",
+   "class": "rest8th",
+   "detail": {
+    "class": "rest8th",
+    "key_slot_window": [
+     491.0,
+     903.6
+    ],
+    "key_slot_members": [
+     "obs:032314",
+     "obs:032310",
+     "obs:032318"
+    ],
+    "key_slot_clef": "obs:032308",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/3/0/0/0/6",
+   "reason": "in_a_key_signature_slot",
+   "class": "arpeggiato",
+   "detail": {
+    "class": "arpeggiato",
+    "key_slot_window": [
+     468.0,
+     896.0
+    ],
+    "key_slot_members": [
+     "obs:028306",
+     "obs:028344",
+     "obs:028321",
+     "obs:028329"
+    ],
+    "key_slot_clef": "obs:028302",
+    "key_slot_slots": 3
+   }
+  },
+  {
+   "subject": "glyph/3/0/9/0/7",
+   "reason": "in_a_key_signature_slot",
+   "class": "flag8thUp",
+   "detail": {
+    "class": "flag8thUp",
+    "key_slot_window": [
+     627.0,
+     898.0
+    ],
+    "key_slot_members": [
+     "obs:030742",
+     "obs:030746"
+    ],
+    "key_slot_clef": null,
+    "key_slot_slots": 2
+   }
+  }
+ ],
+ "classes": {
+  "bar_missing_one_arm": [
+   {
+    "subject": "glyph/1/0/0/0/6",
+    "cell": "1/0/0/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      0.5
+     ],
+     "want": 2.0,
+     "n_events": 1
+    },
+    "on": null
+   },
+   {
+    "subject": "glyph/1/0/5/0/3",
+    "cell": "1/0/5/0",
+    "class": "restQuarter",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      1.0
+     ],
+     "want": 2.0,
+     "n_events": 1
+    },
+    "on": null
+   }
+  ],
+  "still_held": [
+   {
+    "subject": "glyph/1/0/2/0/12",
+    "cell": "1/0/2/0",
+    "class": "restQuarter",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      5.0
+     ],
+     "want": 2.0,
+     "n_events": 7
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      4.0
+     ],
+     "want": 2.0,
+     "n_events": 6
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/0/13",
+    "cell": "1/0/10/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      3.0
+     ],
+     "want": 2.0,
+     "n_events": 5
+    },
+    "on": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.5
+     ],
+     "want": 2.0,
+     "n_events": 4
+    }
+   }
+  ],
+  "released": [
+   {
+    "subject": "glyph/1/0/3/0/7",
+    "cell": "1/0/3/0",
+    "class": "restQuarter",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      3.0
+     ],
+     "want": 2.0,
+     "n_events": 3
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 2
+    }
+   },
+   {
+    "subject": "glyph/1/0/7/0/12",
+    "cell": "1/0/7/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.5
+     ],
+     "want": 2.0,
+     "n_events": 5
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 4
+    }
+   },
+   {
+    "subject": "glyph/1/0/8/0/11",
+    "cell": "1/0/8/0",
+    "class": "restQuarter",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      3.0
+     ],
+     "want": 2.0,
+     "n_events": 5
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 4
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/7",
+    "cell": "1/0/11/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.5
+     ],
+     "want": 2.0,
+     "n_events": 5
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 4
+    }
+   },
+   {
+    "subject": "glyph/3/1/5/0/9",
+    "cell": "3/1/5/0",
+    "class": "rest8th",
+    "off": {
+     "held": true,
+     "no_meter": false,
+     "quarters": [
+      2.5
+     ],
+     "want": 2.0,
+     "n_events": 2
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 1
+    }
+   }
+  ],
+  "unchanged_ok": [
+   {
+    "subject": "glyph/3/0/0/0/6",
+    "cell": "3/0/0/0",
+    "class": "arpeggiato",
+    "off": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 1
+    },
+    "on": {
+     "held": false,
+     "no_meter": false,
+     "quarters": null,
+     "want": null,
+     "n_events": 1
+    }
+   }
+  ],
+  "no_bar_either_arm": [
+   {
+    "subject": "glyph/3/0/9/0/7",
+    "cell": "3/0/9/0",
+    "class": "flag8thUp",
+    "off": null,
+    "on": null
+   }
+  ]
+ },
+ "keys_changed": {},
+ "meters_changed": {},
+ "changed_bars": [
+  [
+   "P12",
+   "1"
+  ],
+  [
+   "P4",
+   "1"
+  ],
+  [
+   "P8",
+   "1"
+  ],
+  [
+   "P9",
+   "1"
+  ],
+  [
+   "P9",
+   "65"
+  ]
+ ],
+ "held": [
+  115,
+  108
+ ],
+ "of": [
+  840,
+  838
+ ]
+}
