@@ -89,6 +89,11 @@ class Consequence(str, Enum):
     #: an eighth's length. Cause is that verdict and nothing about the bar, so
     #: it runs BEFORE every meter-caused rule: the bar sums see the rest.
     SIZE_REINSTATED_REST = "size_reinstated_rest"
+    #: ROADMAP 2.99. Rest-sized ink the detector never boxed, ADJUDICATE read as
+    #: an eighth or a quarter rest on its OWN shape and place
+    #: (`Q.UNBOXED_INK_IS_A_REST`), takes that value's length. Cause is that
+    #: verdict and nothing about the bar.
+    SIZE_UNBOXED_REST = "size_unboxed_rest"
 
 
 @dataclass(frozen=True)
@@ -172,6 +177,9 @@ DOWNHILL: Tuple[str, ...] = (
     # runs before `size_measure_rest`, `reconcile_duration` and the rest, none
     # of which then sums a bar missing a rest ADJUDICATE already read.
     Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+    # ⚠️ ROADMAP 2.99, BESIDE IT FOR THE SAME REASON: a rest read off its own
+    # ink is in the bar before any meter-caused rule sums it.
+    Q.UNBOXED_INK_IS_A_REST,
     Q.METER,
     Q.DURATION,
     # ⚠️ ROADMAP 2.45. Downhill of `Q.DURATION` on purpose: the rule that

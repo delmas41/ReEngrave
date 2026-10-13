@@ -684,6 +684,10 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "unidentified_parts": sorted(unidentified),
         "held_out_staves": len(held_out_runs),
         "relocated_at_export": int(relocated_out.get("heads", 0)),
+        # ROADMAP 2.99: rests read off unboxed ink and placed in a bar. They
+        # are in no `notehead_class`/`rest` row, so the accounting equality
+        # adds them to its left-hand side BY NAME.
+        "unboxed_rests_placed": int(relocated_out.get("unboxed_rests", 0)),
         "divisi_at_export": dict(divisi_out),
         "marks_census": marks_census(rec, fates),
         "join_decided": kind,
@@ -1256,6 +1260,57 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             pending_relocations.append(
                 (run, cell_index, _det, s, group_of.get(sub), sub,
                  float(o.get("score") or 0.0)))
+    # ⚠️ ROADMAP 2.99. Rest-sized INK the detector never boxed that ADJUDICATE
+    # read, on its own shape and place, as an eighth or a quarter rest
+    # (`Q.UNBOXED_INK_IS_A_REST`) and EVALUATE sized (`size_unboxed_rest`) is
+    # WRITTEN AS A REST. It is not a gathered notehead, so it is outside the
+    # accounting equality on purpose (nothing was detected to count); a rest
+    # whose staff is held out, or whose bar the file does not have, is simply
+    # not written, as every rest in that position is.
+    for o in rec.obs_of(Q.UNBOXED_REST_SHAPE):
+        sub = o["subject"]
+        v = rec.verdict(Q.UNBOXED_INK_IS_A_REST, sub)
+        if (v is None or v["outcome"] != "decided"
+                or v["value"] not in ("eighth", "quarter")):
+            continue
+        s = _parse_subject(sub)
+        dur_v = rec.verdict(Q.DURATION, sub)
+        dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
+        if not isinstance(dur, dict) or not dur.get("unboxed_rest"):
+            continue
+        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if held_out and home in held_out:
+            continue
+        run = runs.get(home)
+        cell_index = s["cell"] or 0
+        if run is None or cell_index >= run.n_measures:
+            continue
+        box = (o.get("detail") or {}).get("bbox_canonical")
+        if not box or len(box) != 4:
+            continue
+        written = float(dur.get("written") or dur.get("beats") or 0.0)
+        fit = _legacy._dotted_duration_for_beats(written)
+        if fit is None:
+            continue
+        dtype, derived_dots = fit
+        cell = run.cells.setdefault(
+            cell_index, Cell(run.page, run.system, run.staff, cell_index))
+        cell.detections.append({
+            "category": "rest",
+            "class": "rest8th" if v["value"] == "eighth" else "restQuarter",
+            "bbox": [int(box[0]), int(box[1]), int(box[2] - box[0]),
+                     int(box[3] - box[1])],
+            "duration_beats": float(dur.get("beats") or written),
+            "duration_type": dtype, "dots": max(0, derived_dots),
+            "beam_levels": 0, "key_alteration": None,
+            "printed_accidental": None, "tuplet": None, "glyph": sub,
+            "bbox_page": _corners_to_wh(_page_box_of(o)),
+            "unboxed_rest": True,
+        })
+        if relocated is not None:
+            relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1
+        if fates is not None:
+            fates[sub] = "written"
     # ⚠️ ROADMAP 2.58b: THE ONE-MARK-ONE-NOTE RULE. Of the members of a group
     # that would be written, the most confident is (ties: the lowest subject),
     # and the rest are COUNTED. Replayed in record order so a cell's detection
@@ -5571,6 +5626,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # it existed. So `to_musicxml` raises rather than returning an unbalanced
     # report: a control nobody consults is not a control.
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ ROADMAP 2.99: a rest read off unboxed ink is placed in a bar and is
+    # written or counted with the bar it stands in, like any event -- but no
+    # detector row announced it, so it joins the left-hand side by name. The
+    # equality stays an equality.
+    unboxed_placed = int(report["part_join"].get("unboxed_rests_placed", 0))
     # ⚠️ A REST IN A TWO-VOICE BAR IS WRITTEN ONCE PER VOICE, and subtracting
     # the duplicate is what keeps this an EQUALITY rather than an inequality
     # that can no longer fail. The convention is the engraving's — each voice
@@ -5595,6 +5655,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # balance that does not count a family cannot be unbalanced by losing
         # one.
         "events_in_log": events_in_log,
+        "unboxed_rests_placed": unboxed_placed,
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
@@ -5605,11 +5666,13 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # once as written -- informational, the equality is unchanged.
         "relocated_heads_written": int(
             report["part_join"].get("relocated_at_export", 0)),
-        "balanced": events_in_log == written + report["notes_not_written_total"],
+        "balanced": (events_in_log + unboxed_placed
+                     == written + report["notes_not_written_total"]),
     }
     if not report["balance"]["balanced"]:
         raise Unbalanced(
-            f"{events_in_log} noteheads+rests in the log, {written} written "
+            f"{events_in_log} noteheads+rests in the log (+{unboxed_placed} "
+            f"read off unboxed ink), {written} written "
             f"and {report['notes_not_written_total']} accounted as dropped — "
             f"the difference went nowhere. {report['notes_not_written']}")
     return xml, report
