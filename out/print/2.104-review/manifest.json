@@ -1,0 +1,359 @@
+{
+ "question": "What is the printed value of the note in the red brackets?",
+ "seed": 20261013,
+ "tile_scale": "32 px per staff space on every tile (600 dpi page, normalised)",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "litolff",
+   "pdf_page": 2,
+   "key": "glyph/2/0/9/1/3",
+   "role": "newly_read_flag_levels_only",
+   "hidden": {
+    "base": "narrowed quarter|eighth",
+    "arm": "narrowed over flagged levels (hooks uncounted)"
+   },
+   "window_page_px": [
+    661,
+    1717,
+    853,
+    1861
+   ],
+   "space_px_native": 16.0,
+   "frame_control": {
+    "inside": 0.902,
+    "left": 0.328,
+    "right": 0.651
+   }
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "litolff",
+   "pdf_page": 10,
+   "key": "glyph/10/0/8/0/7",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    443,
+    1523,
+    632,
+    1665
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.968,
+    "left": 0.404,
+    "right": 0.499
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 19,
+   "key": "glyph/19/0/2/5/8",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    3074,
+    994,
+    3401,
+    1240
+   ],
+   "space_px_native": 27.25,
+   "frame_control": {
+    "inside": 0.834,
+    "left": 0.327,
+    "right": 0.331
+   }
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "key": "glyph/0/0/12/1/6",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    2163,
+    6315,
+    2547,
+    6603
+   ],
+   "space_px_native": 32.0,
+   "frame_control": {
+    "inside": 0.931,
+    "left": 0.383,
+    "right": 0.89
+   }
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 1,
+   "key": "glyph/1/0/1/1/6",
+   "role": "look_alike_stays_unread",
+   "hidden": {
+    "arm": "unblocked reading ink_past_the_tip: stays narrowed flags_disagree"
+   },
+   "window_page_px": [
+    1836,
+    745,
+    2164,
+    1002
+   ],
+   "space_px_native": 27.31,
+   "frame_control": {
+    "inside": 0.846,
+    "left": 0.151,
+    "right": 0.252
+   }
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 25,
+   "key": "glyph/25/0/3/4/26",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    2809,
+    1275,
+    3142,
+    1565
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.693,
+    "left": 0.468,
+    "right": 0.516
+   }
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 21,
+   "key": "glyph/21/1/6/0/4",
+   "role": "control_quarter",
+   "hidden": {
+    "sean": "2.97 tile 4: \"4\""
+   },
+   "window_page_px": [
+    1053,
+    5793,
+    1387,
+    6043
+   ],
+   "space_px_native": 27.79,
+   "frame_control": {
+    "inside": 0.824,
+    "left": 0.206,
+    "right": 0.193
+   }
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 1,
+   "key": "glyph/1/0/2/1/16",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    1836,
+    979,
+    2166,
+    1240
+   ],
+   "space_px_native": 27.47,
+   "frame_control": {
+    "inside": 0.828,
+    "left": 0.337,
+    "right": 0.0
+   }
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 20,
+   "key": "glyph/20/1/10/1/15",
+   "role": "control_eighth_rest",
+   "hidden": {
+    "sean": "2.97 tile 5: \"8 rest\""
+   },
+   "window_page_px": [
+    1388,
+    6889,
+    1718,
+    7274
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.642,
+    "left": 0.472,
+    "right": 0.179
+   }
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "litolff",
+   "pdf_page": 3,
+   "key": "glyph/3/0/8/6/12",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    1458,
+    1632,
+    1644,
+    1772
+   ],
+   "space_px_native": 15.5,
+   "frame_control": {
+    "inside": 0.79,
+    "left": 0.243,
+    "right": 0.345
+   }
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "schumann",
+   "pdf_page": 2,
+   "key": "glyph/2/0/0/5/8",
+   "role": "control_quarter",
+   "hidden": {
+    "sean": "2.101 tile 7: quarter"
+   },
+   "window_page_px": [
+    2956,
+    817,
+    3316,
+    1087
+   ],
+   "space_px_native": 30.0,
+   "frame_control": {
+    "inside": 0.91,
+    "left": 0.297,
+    "right": 0.594
+   }
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 25,
+   "key": "glyph/25/0/3/4/14",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    2809,
+    1275,
+    3142,
+    1565
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.882,
+    "left": 0.634,
+    "right": 0.297
+   }
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "litolff",
+   "pdf_page": 13,
+   "key": "glyph/13/1/9/10/2",
+   "role": "newly_read_flag",
+   "hidden": {
+    "base": "decided quarter (head_and_marks) or narrowed",
+    "arm": "decided eighth (hooks_counted), tip witness shape_unblocked"
+   },
+   "window_page_px": [
+    1641,
+    3355,
+    1830,
+    3497
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.824,
+    "left": 0.382,
+    "right": 0.239
+   }
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "key": "glyph/0/0/9/3/1",
+   "role": "look_alike_stays_unread",
+   "hidden": {
+    "hand_truth": "q1007 bare (a quarter) by Sean hand-truth boxes",
+    "arm": "tip still occupied / not flag-shaped; narrowed quarter|eighth"
+   },
+   "window_page_px": [
+    2970,
+    4946,
+    3357,
+    5285
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.814,
+    "left": 0.0,
+    "right": 0.015
+   }
+  }
+ ],
+ "frame_control": {
+  "n": 14,
+  "true_frame_inside_beats_both_neighbours": 14,
+  "wrong_frame_(page_shifted_1.6_heads)_inside_beats_both": 0,
+  "reading": "the control can fail: it must pass on the true frame and mostly fail on the shifted one"
+ }
+}
