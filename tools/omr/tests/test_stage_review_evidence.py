@@ -1191,7 +1191,10 @@ class TestBelongsToAnotherStaff(_Case):
         self.assertEqual(v["reason"], "human_other_staff")
         self.assertEqual(
             [(h["quantity"], h["how"]) for h in d.basis_names_human],
-            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used")])
+            # ROADMAP 2.102: `adjudicate_duration` now reads the refusal, so the
+            # duration (and the meter voted on it) name it in their basis too
+            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used"),
+             (Q.DURATION, "basis"), (Q.METER, "basis")])
         self.assertEqual(d.notes_after, d.notes_before - 1)
 
     def test_an_owner_row_on_a_CONTESTED_glyph_is_still_the_contest_s(self):
@@ -1345,8 +1348,11 @@ class TestAConfirmedBoxIsFiledAndChangesNothing(_Case):
         self.assertEqual(entry["human_rows"][0]["value"],
                          "confirmed:noteheadBlackOnLine")
         named = entry["verdicts_that_named_it"]
-        self.assertEqual([v["decider"] for v in named],
-                         ["adjudicate_notehead_is_not_a_notehead"])
+        self.assertEqual(sorted(v["decider"] for v in named),
+                         ["adjudicate_duration", "adjudicate_meter",
+                          "adjudicate_notehead_is_not_a_notehead"])  # 2.102
+        named = [v for v in named
+                 if v["decider"] == "adjudicate_notehead_is_not_a_notehead"]
         self.assertEqual(named[0]["in_used"], [],
                          "the agreement was WEIGHED — no rule reads "
                          "`confirmed`, so this is a finding, not a pass")
