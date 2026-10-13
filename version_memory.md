@@ -22,10 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-12 -- ROADMAP 2.67b the terms library wired into the direction reader, with limits (branch `lane-2.67b-terms-wiring`, NOT merged)
+## 2026-10-12 -- ROADMAP 2.67b the terms library wired into the direction reader, with limits (branch `lane-2.67b-terms-wiring`, LANDED on main 2026-10-12, Sean: "Yes to all")
 
 - STAGED only; LEGACY unchanged (no scope passed). `direction_lexicon.lookup(text, scope=)` + `LexiconScope`/`scope_for`; `direction_text.read_directions(lexicon_scope=)`; `gather_direction_words(roster=, work_id=)` builds the scope from the work id and the margin labels gathered so far and files it on every word; `adjudicators/text._held_back` (wrong family / heading out of place, positive evidence only, abstain `held_back`); export `direction_words_held_back`; `pipeline`/`__main__` forward `--work-id` to gather. Data: `data/musical-terms/composer-languages.json`; `musical_terms` gains `composer_languages`, `edition_languages`, `FAMILY_OF`, `is_heading`.
 - 12 tests (`test_direction_terms_scope_2_67b.py`), each of six limits broken in turn turns one red. Fast tier green; `check` 192 open on branch and on main `4275d7c3` alike. Re-decided `20261011-night`: 0 held on both; one-page gathers: Brahms p1 / Litolff p3 no library words, Mahler 5 Peters p6 `mit dem Bogen` x2 (one held: `Bässe` named a voice). Crops `out/print/2.67b/`.
+- Round 2: `identity._is_the_orchestral_bass` (an ambiguous bass label read as the voice, with string staves above and none below, is the Contrabass; reason `orchestral_bass`); the library re-copied from Gradus main `333423c66` (generated from `42a4c57ed`, 1,760 terms: + `Ein`, `Schritt`, `Kondukt`, `Geschlagen`, `Mit dem Bogen geschlagen`); `mit-dem-bogen-geschlagen` strings-only; `CONNECTIVE_MAX_LETTERS` (a lone `general` word of <=4 letters is glue, `loco`/`vide` excepted). Mahler 5 Peters p4+p6: `Bässe` -> Contrabass, 0 held, `mit dem Bogen geschlagen` read whole.
 
 ## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, LANDED on main 2026-10-12, Sean: "Land 2.94 with the (C) Hr. fix")
 

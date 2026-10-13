@@ -299,7 +299,11 @@ def _curated(shown: str, tokens: list[str]) -> DirectionHit | None:
 
 #: Library forms under 3 letters that are a whole direction on their own:
 #: the keyboard hands (`m.g.`, `m.d.`, `m.s.`, `l.H.`, `r.H.`) and `G.P.`.
-SHORT_ALONE = frozenset({"mg", "md", "ms", "lh", "rh", "gp"})
+SHORT_ALONE = frozenset({"mg", "md", "ms", "lh", "rh", "gp",
+                         # short `general` words that ARE a direction alone
+                         # (the connective rule below): back to the written
+                         # octave after 8va, and the cut sign's word.
+                         "loco", "vide"})
 
 #: Library entries printed in every repertoire whatever their language:
 #: `G.P.` is German (`Generalpause`) and Dvořák, Bruckner and Elgar all print it.
@@ -308,6 +312,10 @@ UNIVERSAL = frozenset({"Generalpause"})
 #: The library's categories, as this lexicon's (`_CATEGORY_RANK`) -- the
 #: library's own is kept on the hit's `library` ids.
 _LIBRARY_CATEGORY = {"tempo": "tempo", "dynamics": "dynamic"}
+
+#: A single `general` library word this short or shorter is a connective and
+#: never a direction alone (`ein`, `und`, `sehr`, `avec`).
+CONNECTIVE_MAX_LETTERS = 4
 
 #: A word outside the scope's languages is admitted only this long (folded).
 OTHER_LANGUAGE_MIN_LETTERS = 5
@@ -368,6 +376,18 @@ def _library_lookup(text: str, shown: str, tokens: list[str],
 
     # The whole string first: `a tempo`, `Tempo I`, `Sehr langsam`, `G.P.`.
     whole = _eligible(MT.lookup(text))
+    # A connective alone (`ein`, `und`, `mit`, `wie`, `sehr`) is not a
+    # direction: one SHORT word whose every entry is the library's `general`
+    # is glue, as in the phrase rule below. The bound is length because
+    # `general` also holds real stand-alone directions -- `Attacca`,
+    # `Bouché`, `Steigerung`, `Hauptstimme` -- and those are all longer.
+    # `Wie oben` (two words) still stands.
+    if (whole and len(tokens) == 1
+            and len(MT.fold(text)) <= CONNECTIVE_MAX_LETTERS
+            and MT.fold(text) not in SHORT_ALONE
+            and all(m.term.category == "general"
+                    and m.term.id not in UNIVERSAL for m in whole)):
+        whole = []
     if whole:
         key = MT.fold(text)
         if len(key) >= 3 or key in SHORT_ALONE:

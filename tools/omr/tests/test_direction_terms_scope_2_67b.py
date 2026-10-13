@@ -65,6 +65,24 @@ def test_noise_short_forms_instruments_and_theory_are_never_directions():
             assert not _accepts(text, scope), (text, scope.work_id)
 
 
+def test_a_connective_alone_is_not_a_direction():
+    # `ein` (added 2026-10-12 for `Wie ein Kondukt`) must not stand alone
+    for text in ("ein", "eine", "und", "mit", "wie", "sehr"):
+        assert not _accepts(text, MAHLER), text
+    assert _accepts("Wie ein Kondukt.", MAHLER)
+    assert _accepts("Wie oben", MAHLER)
+    # ... while a real stand-alone `general` direction still reads
+    for text in ("Attacca", "Steigerung", "Hauptstimme", "loco", "Vide",
+                 "poco", "più"):
+        assert _accepts(text, MAHLER), text
+
+
+def test_mahlers_headings_read_whole():
+    for text in ("In gemessenem Schritt.", "Streng. Wie ein Kondukt.",
+                 "mit dem Bogen geschlagen"):
+        assert _accepts(text, MAHLER), text
+
+
 def test_the_hand_marks_and_GP_stand_alone():
     assert _accepts("l.H.", MAHLER)
     assert _accepts("G.P.", TCHAIK)          # German, printed everywhere
@@ -133,3 +151,46 @@ def test_a_heading_is_kept_above_the_system_the_first_strings_and_the_bottom():
 def test_tempo_changes_and_navigation_go_under_any_staff():
     for text in ("rit.", "a tempo", "accel.", "D.C.", "Fine"):
         assert _why(text, 0) is None, text
+
+
+# ── the orchestral bass: `Bässe` is the string basses, by position ──────────
+
+from tools.omr.instruments import lookup as _inst_lookup
+from tools.omr.staged.adjudicators import identity as ID
+
+
+class _LabelEv:
+    """A system's margin labels, one per staff index; this staff is `own`."""
+
+    def __init__(self, labels, own):
+        self.subject = Subject(Kind.STAFF, page=0, system=0, staff=own)
+        self._rows = [SimpleNamespace(
+            value=t, subject=Subject(Kind.STAFF, page=0, system=0, staff=i))
+            for i, t in labels.items()]
+
+    def rows(self, quantity, scope=None, subject=None):
+        return self._rows
+
+
+def _orch_bass(labels, own):
+    return ID._is_the_orchestral_bass(_LabelEv(labels, own),
+                                      _inst_lookup(labels[own]))
+
+
+def test_baesse_under_the_strings_is_the_contrabass():
+    # Mahler 5 Peters p6: the bottom pair `Bässe. get.` under the violins
+    mahler = {13: "1. Viol.", 14: "2. Viol.", 15: "Bratschen",
+              16: "Vcelle. get.", 18: "Bässe. get."}
+    assert _orch_bass(mahler, 18)
+
+
+def test_a_chorus_bass_above_the_cellos_stays_a_voice():
+    # Beethoven 9: the chorus sits between the violas and the cellos
+    b9 = {10: "Violino I", 11: "Violino II", 12: "Viola", 13: "Soprano",
+          14: "Alto", 15: "Tenore", 16: "Basso", 17: "Violoncello",
+          18: "Contrabasso"}
+    assert not _orch_bass(b9, 16)
+
+
+def test_a_bass_voice_with_no_strings_stays_a_voice():
+    assert not _orch_bass({0: "Soprano", 1: "Alto", 2: "Tenor", 3: "Bass"}, 3)

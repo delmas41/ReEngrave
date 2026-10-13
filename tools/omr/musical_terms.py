@@ -227,7 +227,8 @@ FAMILY_OF: dict[str, tuple[str, ...]] = {
         "sul-do", "al-tallone", "au-talon", "alla-punta", "punta-d-arco",
         "archet", "avec-l-archet", "mit-bogen", "bogen", "viel-bogen",
         "viel-bogen-wechseln", "wenig-bogen", "strich", "strich-fur-strich",
-        "breiter-strich", "down-bow", "up-bow"), _STRINGS),
+        "breiter-strich", "down-bow", "up-bow",
+        "mit-dem-bogen-geschlagen"), _STRINGS),
     **dict.fromkeys((
         "gestopft", "bouche", "cuivre", "offen", "stopped", "chiuso"),
         _BRASS),
