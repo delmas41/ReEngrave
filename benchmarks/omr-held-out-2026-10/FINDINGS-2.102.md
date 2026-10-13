@@ -40,3 +40,11 @@ sitting in a "meter column" because that plate's `timeSig*` boxes are not valida
 
 ## Tiles
 `out/print/2.102-review/` (10, phone-sized; subject = blue brackets; readings in manifest.json only).
+
+## Brahms (Breitkopf, night 20261011) -- added after the run finished
+Re-adjudication: 32,389 duration verdicts, 31,434 same, 955 -> `abstained not_a_note_mark`
+(`too_narrow` in a "meter column" 798, tremolo slash 112, dynamic letter 45). All 955 were ALREADY
+refused as noteheads (not exported). The 798 are mostly barline pieces on a SHATTERING plate that
+sit in the column of mis-detected `timeSig*` boxes: the outcome (not a note) is right but the
+`meter_sign_column` word is positional only, and the count is large. Not run: the hand-truth scorer
+on Brahms pdf 0.
