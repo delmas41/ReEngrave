@@ -86,6 +86,51 @@ class TestTwinBoxesNeverRefuseEachOther(unittest.TestCase):
         self.assertFalse(_refused(log, b))
 
 
+def _beam(log, box, *, sag=0.2):
+    """A READ beam stroke (CV) with ink rows that pass 2.77b's stroke tests."""
+    x, y, w, h = box
+    st = log.observe(R.cell(0, 0, 0, 0), Q.BEAM_STROKE, (x, y, w, h), reader=READERS.CV_LINES,
+                     frame="cell:0", x0=x, x1=x + w, y_center=y + h / 2.0,
+                     image="no_staff", staff_lines_erased=True)
+    ends = [{"found": True, "x": x}, {"found": True, "x": x + w}]
+    log.observe(R.cell(0, 0, 0, 0), Q.BEAM_STROKE_INK, 0.6, reader=READERS.CV_BEAM_SHAPE,
+                frame="cell:0", beam_row_id=st.id, thickness_px=60.0, line_px=28.0,
+                thickness_ratio=2.9, thickness_spaces=0.6, sagitta_spaces=sag,
+                end_stems=ends, columns=100, cover=1.0, band=[0.0, 60.0])
+    return st
+
+
+class TestAKeeperThatIsBeamInkIsNotKept(unittest.TestCase):
+    """Sean's 2.105 tile 6 (Brahms `glyph/0/0/10/1/20`): the shared twin ordering
+    kept the lesser-excess box of a twin pair that is two BEAMS -- 2.35 x 1.65
+    spaces, 94% inside a read sloped beam stroke. A group whose every box is
+    beam ink keeps none."""
+
+    def _pair(self, with_beam):
+        log = Log()
+        _cell_geometry(log)
+        a = _notehead(log, 0, cls="noteheadBlackOnLine", conf=0.37, x_c=200.0, y_c=200.0,
+                      w_c=3.24 * SPACING, h_c=1.7 * SPACING)
+        b = _notehead(log, 1, cls="noteheadBlackOnLine", conf=0.30, x_c=250.0, y_c=205.0,
+                      w_c=2.35 * SPACING, h_c=1.65 * SPACING)
+        _fit_row(log, a, ink=0.89)
+        _fit_row(log, b, ink=0.99)
+        if with_beam:
+            _beam(log, (150.0, 190.0, 641.0, 178.0))
+        return _run_notehead(log), a, b
+
+    def test_both_boxes_of_a_beam_pair_are_refused_RED(self):
+        log, a, b = self._pair(with_beam=True)
+        self.assertTrue(_refused(log, a))
+        self.assertTrue(_refused(log, b))
+
+    def test_CONTROL_the_same_pair_off_a_beam_keeps_one_head(self):
+        """Same geometry, no read beam stroke: nothing says beam, so the pair
+        still collapses to exactly one box."""
+        log, a, b = self._pair(with_beam=False)
+        self.assertEqual(len([g for g in (a, b) if not _refused(log, g)]), 1)
+
+
 class TestRestBoxThatIsABarline(unittest.TestCase):
     # fixture scale (family_refusals): 100 canonical px = 20 page px = 1 space
     BAR = (400.0, 900.0, 800.0, 1200.0)

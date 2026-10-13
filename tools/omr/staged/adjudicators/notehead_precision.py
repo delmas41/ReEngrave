@@ -702,7 +702,14 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
     if not _geom.is_regular_notehead(name) or spacing_canonical <= 0:
         return None
     height_spaces = h / spacing_canonical
-    if height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES or w <= 0 or h <= 0:
+    # ROADMAP 2.105 (Sean's tile 6, Brahms `glyph/0/0/10/1/20`): flat OR wider
+    # than any head is printed (`PLAUSIBLE_HEAD_WIDTH_SPACES`) -- a box 2.35 x 1.65
+    # spaces, 94% inside a read sloped beam stroke, is two beams, and its HEIGHT
+    # is the sloped stroke's own. Same beam witness below, so a wide box that
+    # lies in no read beam is untouched.
+    if w <= 0 or h <= 0 or (
+            height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES
+            and w / spacing_canonical <= PLAUSIBLE_HEAD_WIDTH_SPACES[1]):
         return None
     from . import rhythm as _rh
     cell = ev.subject.at(Kind.CELL)
@@ -1581,6 +1588,15 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     cell_boxes = _cell_notehead_boxes(ev, cell)
     this_box = cell_boxes.get(ev.subject)
     spacing = _cell_staff_space(ev)
+    # ROADMAP 2.105: a box that is a beam's ink is no head and cannot be the
+    # slot's keeper (the shared twin ordering kept one: Sean's tile 6). A group
+    # whose every box is beam ink keeps none -- each is refused as a beam piece
+    # before this rule runs.
+    if spacing:
+        group_rows = [r for r in group_rows if r.subject == ev.subject
+                      or r.subject not in cell_boxes
+                      or _beam_piece_refusal(ev, cell_boxes[r.subject],
+                                             spacing, {}) is None]
     if this_box is not None and spacing:
         mine = this_box.value
         group_rows = [

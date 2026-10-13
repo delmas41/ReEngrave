@@ -944,3 +944,25 @@ straight stem removed, as a letter-shaped component with no stem >= 2 sp tall); 
 
 **Noise seen, not ours:** two `direction` verdicts (`cresc`, `Cresc.` p2 sys 1) read by tesseract in base only -- the
 text reader, GATHER-side; neither change touches text.
+
+### 2.105 -- Sean's answers on `out/print/2.105-review/` (2026-10-13) and the tile-6 repair
+
+Verbatim: *"1. barline 2. 2 3. barline 4. 8 rest 5. 4 rest 6. beams ( 2 of them) 7. barline 8.2,2 9. 8 rest 10. barline 11. 4
+12. 2"*. Scored against the manifest (`answers.json` beside the tiles): barline refusals 4 of 4 (tiles 1, 3, 7, 10); rest
+controls 3 of 3 (4, 5, 9); twin fixes 4 of 4 real notes kept (2 half, 8 two halves, 11 quarter, 12 half); **tile 6 WRONG**:
+Brahms `glyph/0/0/10/1/20`, newly kept by the shared twin ordering, is two beams.
+
+**Why tile 6 escaped.** Its twin pair (`glyph/0/0/10/1/16` 3.24 x 1.70 sp and `/20` 2.35 x 1.65 sp) was refused in base by
+accident (each by the other). The new ordering ranks by distance from a plausible head, so it kept the less-wrong box of two
+beam boxes. The existing `is_a_beam_piece` refusal (2.77b) did not fire: it is gated on a box under 0.9 spaces tall, and this
+box lies 94% inside a read sloped beam stroke (6.4 x 1.8 sp, `thickness_ratio` 2.9, sagitta 0.21) whose bounding box is
+as tall as the box. Repair (own geometry plus the same beam witness): `_beam_piece_refusal` also fires for a regular-head box
+WIDER than any head is printed (`PLAUSIBLE_HEAD_WIDTH_SPACES` upper bound, 2.1 sp) that lies >= 70% in a read beam stroke, and
+2.42's keeper pool drops any group member that is a beam piece, so a group whose every box is beam ink keeps none. RED from
+tile 6's geometry (both boxes kept/one kept before, both refused after); the same pair with no read beam still keeps exactly
+one box; the four right twin tiles' geometry (plausible widths, no beam) is unchanged.
+**Re-measure (small re-gathers, one at a time):** Brahms p0-1 = base + the 4 barline rests only (tile 6 refused, nothing else
+moves); Litolff p0-3 = the first arm + **one more box**: `glyph/2/0/7/1/8`, a 6.5 x 1.1 sp flat "notehead" 93% inside a read
+beam stroke, kept -> refused; its neighbour `glyph/2/0/7/1/5` loses its decided stem_value (eighth, beam level 1) -> abstained
+(the false head no longer shares its stem; not judged by Sean -- a candidate tile).
+**The `sf` (2.91) stays a KNOWN MISS** (Sean, DECISIONS 2026-10-13): no new GATHER step.
