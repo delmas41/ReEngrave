@@ -1,6 +1,6 @@
 {
- "n_items": 49,
- "n_tiles": 600,
+ "n_items": 50,
+ "n_tiles": 614,
  "tiles": [
   {
    "answer": "right",
@@ -2560,6 +2560,300 @@
    "subjects": null,
    "tile": "tile_11",
    "value": "barline"
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    661.0,
+    1717.0,
+    853.0,
+    1861.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_01",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    443.0,
+    1523.0,
+    632.0,
+    1665.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_02",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    3074.0,
+    994.0,
+    3401.0,
+    1240.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_03",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    2163.0,
+    6315.0,
+    2547.0,
+    6603.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_04",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1836.0,
+    745.0,
+    2164.0,
+    1002.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_05",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    2809.0,
+    1275.0,
+    3142.0,
+    1565.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_06",
+   "value": 0.5
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1053.0,
+    5793.0,
+    1387.0,
+    6043.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_07",
+   "value": 1.0
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1836.0,
+    979.0,
+    2166.0,
+    1240.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_08",
+   "value": 0.5
+  },
+  {
+   "answer": "8 rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1388.0,
+    6889.0,
+    1718.0,
+    7274.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_09",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1458.0,
+    1632.0,
+    1644.0,
+    1772.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_10",
+   "value": 0.5
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "schumann",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    2956.0,
+    817.0,
+    3316.0,
+    1087.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_11",
+   "value": 1.0
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    2809.0,
+    1275.0,
+    3142.0,
+    1565.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_12",
+   "value": 0.5
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    1641.0,
+    3355.0,
+    1830.0,
+    3497.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_13",
+   "value": 0.5
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.104-review",
+   "page_box": [
+    2970.0,
+    4946.0,
+    3357.0,
+    5285.0
+   ],
+   "question_kind": "duration",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "tile_14",
+   "value": 1.0
   },
   {
    "answer": "Ledger line",
