@@ -1244,7 +1244,8 @@ def _common_options(ms: Sequence[Verdict]):
 def _eighth_evidence(note: Verdict) -> Tuple[str, ...]:
     d = note.detail or {}
     out = []
-    if (d.get("flag_levels") or 0) > 0 or (d.get("flags_attached") or 0) > 0             or note.reason in ("flags_disagree", "hooks_counted"):
+    if (d.get("flag_levels") or 0) > 0 or (d.get("flags_attached") or 0) > 0             or note.reason in ("flags_disagree", "hooks_counted",
+                                       "flag_ink_unread"):
         out.append("flag_read_on_stem")
     if (d.get("beams_by_stem") or 0) > 0:
         out.append("beam_joined_to_stem")

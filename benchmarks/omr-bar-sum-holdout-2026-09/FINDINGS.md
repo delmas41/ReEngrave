@@ -3272,3 +3272,26 @@ False). RED-first from tile 10's numbers, positive control a rest of the same si
 eighth). Controls unchanged (standing rests read the same; 0 of 52 accidentals decided a rest). **Removed from the decided
 rests on the two count pages: 1 (Brahms, tile 10 itself, a slur end), 0 on Litolff**; so no second tile set was cut. Decided
 now: Litolff 13 eighth + 3 quarter, Brahms 3 eighth; bars released 10 / 1.
+
+### 2.97e. Sean's evidence rule (2026-10-12, CLAUDE.md §10) -- final state of the lane
+Rule: *"only when we see evidence of an eigth shoulf it be called that"*, refined: the bar may CONFIRM an
+eighth that has positive evidence of its own, never SUPPLY one. `consequences._eighth_evidence` reads the narrowed
+verdict's own detail: `flag_levels`/`flags_attached`/reasons `flags_disagree`, `hooks_counted`, `flag_ink_unread`
+(= flag read), `beams_by_stem`, `levels_certain`, `levels_possible`. A candidate with beam levels and none of these
+is unavailable to every bar-sum settlement (EVALUATE chord unit, INFER rule); the settled verdict cites
+`eighth_evidence`. A REFUSED stroke (`beams_not_by_ink`, `too_thin`) is NOT evidence: Sean's singles 1-4 all had
+1-2 of them and were all quarters (0/4; likelihood floor not met; revisit with more tiles). Settle-alongside is
+removed (2.97d). 4 tests, positive control (flag read -> confirmed) and the longer candidate needs none.
+
+Re-measured on merged main (arm vs base on the same tree, `probe/run_2_97.py`, base = the three staged files
+from `origin/main`): Litolff held 1,026 -> 1,023 (released 14, newly held 11), notes 5,941 -> 5,973, narrowed
+not written 352 -> 307; Brahms held 2,112 -> 2,067 (released 57, newly held 12), notes 8,224 -> 8,387, narrowed
+3,180 -> 3,076. The newly-held bars (11 + 12) are NOT yet explained (a settled value makes a previously written
+bar no longer add up?) -- open. Settlements that survive: Litolff chord 9 bars / 18 heads (all the longer
+candidate), INFER single 15 / 19 (longer), columns 19 / 45 (41 longer; 4 eighths citing `beam_joined_to_stem` +
+`beam_levels_possible`); Brahms chord 59 / 118 (116 longer; 2 eighths citing `beam_levels_possible`), INFER single
+1, columns 0. Removed by the rule on Litolff (vs the arm before it): 16 heads, all eighths with no evidence (12
+columns, 4 INFER singles); chords lost none. Hand truth pages 0-1: base wrong 12, arm 13 -- the one added is the
+0/0/6/2 chord that Sean judged a dotted quarter = our value (scorer dot artefact), so true wrong = 12 = base.
+Value outside own candidates 0. Fast tier 7,592 (2 failures from 2.9x's hook tests fixed by counting
+`flag_ink_unread` as flag evidence); `check` 192.
