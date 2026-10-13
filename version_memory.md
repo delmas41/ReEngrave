@@ -6056,3 +6056,6 @@ Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103)
 
 ## 2026-10-13 -- ROADMAP 2.97 landed (lane-2.97-narrowed-bars)
 STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evidence rule; missed flags go to 2.104). His review-3 tiles: eighths 2 of 2 right; of 4 newly held bars base was wrong on 3. `OMR_NARROWED_BAR` ships default OFF; EVALUATE `reconcile_duration` chord/joint settlement on. Litolff re-measure (flag_ink_unread as evidence): base 1,027 held / 5,937 notes, arm ON 1,018 / 5,994 (newly held 5), arm as shipped 1,033 / 5,916; Brahms not re-measured. Fast tier 7,622 passed, 12 skipped, 2 xfailed; `staged.check` 192 open. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.97g, DECISIONS 2026-10-13.
+
+## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
+STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.

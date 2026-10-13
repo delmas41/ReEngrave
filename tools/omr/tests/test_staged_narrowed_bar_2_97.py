@@ -293,10 +293,8 @@ class _InferBar(_Bar):
 
 
 def _run(log, *, on=True):
-    env = {infer.NARROWED_BAR_ENV: "1"} if on else {}
+    env = {infer.NARROWED_BAR_ENV: "1" if on else "0"}
     with mock.patch.dict(os.environ, env, clear=False):
-        if not on:
-            os.environ.pop(infer.NARROWED_BAR_ENV, None)
         return infer.run(log, evaluate.Report([], [], []))
 
 
@@ -334,8 +332,9 @@ class TestAnyNarrowedHeadIsSettledByTheBar(unittest.TestCase):
         _run(log, on=False)
         self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
 
-    def test_the_flag_is_an_allow_list_default_OFF(self):
-        for word in ("", "nope", "0", "off"):
+    def test_the_flag_is_a_deny_list_default_ON(self):
+        for word, settled in (("", False), ("nope", True), ("1", True),
+                              ("0", False), ("off", False), ("no", False)):
             b = _InferBar()
             for _ in range(3):
                 b.decided(1.0)
@@ -343,7 +342,8 @@ class TestAnyNarrowedHeadIsSettledByTheBar(unittest.TestCase):
             log = b.finish()
             with mock.patch.dict(os.environ, {infer.NARROWED_BAR_ENV: word}):
                 infer.run(log, evaluate.Report([], [], []))
-            self.assertEqual(_val(log, g).outcome, Outcome.NARROWED, word)
+            want = Outcome.DECIDED if settled else Outcome.NARROWED
+            self.assertEqual(_val(log, g).outcome, want, word)
 
     def test_the_value_is_always_one_of_the_readers_own_candidates(self):
         b = _InferBar(7, 8)

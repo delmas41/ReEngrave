@@ -219,18 +219,19 @@ def bare_stem_bar_enabled() -> bool:
 BARE_STEM_BAR_SWITCH = Switch(BARE_STEM_BAR_ENV, bare_stem_bar_enabled)
 
 
-#: ROADMAP 2.97. The narrowed-heads bar-math rule's OWN flag, default OFF until
-#: Sean has judged the blind tiles (`out/print/2.97-review/`): CLAUDE.md rule 5,
-#: print before default. ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF: a typo or
-#: `OMR_NARROWED_BAR=` leaves the rule off. Written out on its own line so the
-#: AST scan in `test_flag_default_direction.py` sees this flag's own
-#: `os.environ.get`.
+#: ROADMAP 2.97. The narrowed-heads bar-math rule's OWN flag, default ON since
+#: 2026-10-13 (Sean: "Yes, switch it on"). His blind tiles: columns 4 of 4 right
+#: (2.97-review tiles 9-12), eighths on beam evidence 2 of 2 (2.97-review-3
+#: tiles 1-2). Everything it settles is exported as GUESSED (blue, 2.103).
+#: A DENY-LIST, BECAUSE THE DEFAULT IS ON: a typo must leave the rule RUNNING
+#: (an empty value is an off-word, as for its siblings). Written out on its own line so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
 NARROWED_BAR_ENV = "OMR_NARROWED_BAR"
 
 
 def narrowed_bar_enabled() -> bool:
-    """Read the narrowed-bar flag. Only an explicit on-word is ON."""
-    return os.environ.get(NARROWED_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """Read the narrowed-bar flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(NARROWED_BAR_ENV, "1").strip().lower() not in _OFF_WORDS
 
 
 NARROWED_BAR_SWITCH = Switch(NARROWED_BAR_ENV, narrowed_bar_enabled)

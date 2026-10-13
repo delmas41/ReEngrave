@@ -322,7 +322,10 @@ def _staff(i):
 
 
 def _run(log, *, flag="1"):
-    env = {infer.BARE_STEM_BAR_ENV: flag} if flag is not None else {}
+    # the 2.97 columns rule (default ON) is a different rule: isolate this one
+    env = {infer.NARROWED_BAR_ENV: "0"}
+    if flag is not None:
+        env[infer.BARE_STEM_BAR_ENV] = flag
     with mock.patch.dict(os.environ, env, clear=False):
         if flag is None:
             os.environ.pop(infer.BARE_STEM_BAR_ENV, None)
