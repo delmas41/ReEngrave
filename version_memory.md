@@ -6060,6 +6060,8 @@ Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answe
 ## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
 Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.
 
+## 2026-10-13 -- ROADMAP 2.104 built (lane-2.104-flag-misses), NOT merged
+Judged flag-miss set is 2 heads (1 tip reader, 1 stem finder). `OMR_TIP_UNBLOCKED` (default OFF, `gather._observe_stem_tip_ink`) reads the flag shape again where a detection box made the tip `occupied`; 0 invented on Sean's hand truth, 0 judged quarters moved. 14 blind tiles `out/print/2.104-review/`; FINDINGS `omr-missing-notes-2026-09` §22; docs/flags row added. Awaiting Sean's tiles.
 ## 2026-10-13 -- ROADMAP 2.97 landed (lane-2.97-narrowed-bars)
 STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evidence rule; missed flags go to 2.104). His review-3 tiles: eighths 2 of 2 right; of 4 newly held bars base was wrong on 3. `OMR_NARROWED_BAR` ships default OFF; EVALUATE `reconcile_duration` chord/joint settlement on. Litolff re-measure (flag_ink_unread as evidence): base 1,027 held / 5,937 notes, arm ON 1,018 / 5,994 (newly held 5), arm as shipped 1,033 / 5,916; Brahms not re-measured. Fast tier 7,622 passed, 12 skipped, 2 xfailed; `staged.check` 192 open. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.97g, DECISIONS 2026-10-13.
 
