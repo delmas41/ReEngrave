@@ -313,13 +313,6 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             cell = run.cells.get(i)
             directions = tuple(cell.directions) if cell else ()
             events = SX._events(cell)
-            # ROADMAP 2.98: the same lone-whole-rest-is-the-bar sizing the
-            # MusicXML path makes, from the ONE copy, so the two files cannot
-            # disagree about which bars were held.
-            if events:
-                _sized = SX._lone_whole_rest_is_the_bar(events, judged)
-                if _sized is not None:
-                    events = _sized
             _hoist_fermata(events)
 
             if not events:

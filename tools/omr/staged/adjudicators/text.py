@@ -1163,7 +1163,7 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
     checkable=Checkable.UNCHECKABLE,
     composed_from=(Q.DIRECTION_WORD,),
     scope=Kind.CELL,
-    wants=(Q.DIRECTION_WORD,),
+    wants=(Q.DIRECTION_WORD, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     # ⚠️ The subjects are the cells `Q.DIRECTION_WORD` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()`. That is what makes the reader-unavailable state
@@ -1173,7 +1173,7 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
     # silent `decided: 0`.
     subjects_from=Q.DIRECTION_WORD,
     reasons=("in_lexicon", "no_words", "reader_unavailable", "out_of_scope",
-             "no_detections"),
+             "no_detections", "held_back"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_direction(ev: Evidence) -> Ruling:
@@ -1258,9 +1258,25 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
             })
         words.sort(key=lambda w: (w["x_page"] if w["x_page"] is not None
                                   else 0.0, w["text"]))
-        return Ruling(value=[w["text"] for w in words], reason="in_lexicon",
+        # ROADMAP 2.67b: a word printed where its kind is never printed is
+        # HELD BACK -- out of the value, counted as unread (Sean 2026-10-12)
+        # -- and only on POSITIVE evidence of the wrong place: a staff whose
+        # instrument is not decided holds nothing back (rule 8).
+        held = []
+        kept = []
+        for w in words:
+            why = _held_back(ev, w)
+            if why is None:
+                kept.append(w)
+            else:
+                held.append({**w, **why})
+        if not kept:
+            return Ruling.abstain("held_back", held_back=held,
+                                  n_held_back=len(held))
+        return Ruling(value=[w["text"] for w in kept], reason="in_lexicon",
                       used=tuple(r.id for r in rows),
-                      detail={"words": words, "n_words": len(words)})
+                      detail={"words": kept, "n_words": len(kept),
+                              "held_back": held, "n_held_back": len(held)})
 
     blocked = [a for a in ev.refusals(Q.DIRECTION_WORD,
                        scope=Scope.SELF_AND_DESCENDANTS)
@@ -1301,6 +1317,81 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
                               n for r, n in reasons.items()
                               if r in (ABSTAIN.NO_READING,
                                        ABSTAIN.NOT_IN_LEXICON))})
+
+
+def _term_groups(text: str):
+    """The terms-library entries a direction's words name: one group for
+    the whole string when the library holds it (`con sord.`, `Allegro con
+    brio`), else one group per word. A group is every entry its string may
+    be (`Ped.` is the English, Italian and French pedal)."""
+    from ... import musical_terms as MT
+    from ...direction_lexicon import _normalise
+    whole = MT.lookup(text)
+    if whole:
+        return [whole]
+    return [g for g in (MT.lookup(_normalise(t)) for t in text.split()) if g]
+
+
+def _staff_family(ev: Evidence, subject) -> Optional[str]:
+    v = ev.verdict(Q.INSTRUMENT, subject=subject)
+    value = getattr(v, "value", None) if v is not None else None
+    if isinstance(value, dict):
+        return value.get("family")
+    return None
+
+
+def _held_back(ev: Evidence, word: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Why this word is not where its kind is printed, or None to keep it.
+
+    FAMILY: a technique word on a staff of another family (`pizz.` under a
+    horn) -- `musical_terms.FAMILY_OF`. HEADING: a movement or section
+    heading (`Allegro`, `Trio`) is printed above the system and above the
+    first string staff (Sean 2026-10-12), or under the system's last staff
+    (the print: Breitkopf Brahms 1 p3), so in the band under any other staff
+    it is not one -- `musical_terms.is_heading`. Each needs the staff's
+    instrument DECIDED; undecided keeps the word."""
+    from ... import musical_terms as MT
+    groups = _term_groups(word.get("text") or "")
+    if not groups:
+        return None
+    staff = ev.subject.at(Kind.STAFF)
+    family = _staff_family(ev, staff)
+
+    allowed = None
+    for group in groups:
+        fams = set()
+        for m in group:
+            got = MT.FAMILY_OF.get(m.term.id)
+            if got is None:
+                fams = None
+                break
+            fams.update(got)
+        if fams is not None:
+            allowed = fams if allowed is None else (allowed & fams)
+    if allowed is not None and family is not None and family not in allowed:
+        return {"held_reason": "wrong_family", "staff_family": family,
+                "families": sorted(allowed)}
+
+    heading = all(MT.is_heading(m.term) for m in groups[0])
+    if not heading or word.get("placement") != "below":
+        return None
+    count = ev.verdict(Q.SYSTEM_STAFF_COUNT, subject=ev.subject.at(Kind.SYSTEM))
+    n = getattr(count, "value", None) if count is not None else None
+    if isinstance(n, int) and staff.staff + 1 >= n:
+        # ⚠️ KEPT, AND THE PRINT SAYS SO: Breitkopf Brahms 1 p3 prints
+        # `Allegro` (bar 38) above the system AND under the K.-B., not above
+        # the violins (out/print/2.67b/). An edition repeats a heading over
+        # its first string staff OR under its last staff.
+        return None
+    below = Subject(Kind.STAFF, page=staff.page, system=staff.system,
+                    staff=staff.staff + 1)
+    below_family = _staff_family(ev, below)
+    if family is None or below_family is None:
+        return None
+    if below_family == "string" and family != "string":
+        return None                     # the band above the first string staff
+    return {"held_reason": "heading_out_of_place", "staff_family": family,
+            "below_family": below_family}
 
 
 # ─────────────────────────────────────────────────────────────────────────────

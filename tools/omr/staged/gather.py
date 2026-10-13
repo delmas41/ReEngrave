@@ -11609,6 +11609,33 @@ def _scan_gate_enabled() -> bool:
         in ("1", "true", "yes", "on")
 
 
+def _direction_lexicon_scope(log: Log, roster: Any,
+                             work_id: Optional[str] = None) -> Any:
+    """ROADMAP 2.67b: the languages this work's direction words are read in.
+
+    The composer's from the work id (a CATALOG fact, `--work-id`), the
+    edition's from the instrument labels gathered so far in this document.
+    ⚠️ READS `Q.MARGIN_LABEL`, so it runs after `gather_margin_labels` --
+    which `gather()` already does, page by page. The labels are a reading of
+    the page; they can only WIDEN the languages, never narrow them, so a
+    misread label costs at most a word of noise, never a real word.
+    """
+    try:
+        from .. import direction_lexicon as DL
+    except Exception:                                         # noqa: BLE001
+        return None
+    # ⚠️ THE WORK ID STANDS WITHOUT A ROSTER. Mahler 5 is not in the
+    # catalog's works, so `--work-id mahler--symphony-5` finds no roster --
+    # and the composer is still in the id (Peters p6, 2026-10-12: the scope
+    # read `unknown_work` until this fallback).
+    work_id = ((roster.get("work_id") if isinstance(roster, dict)
+                else getattr(roster, "work_id", None)) or work_id)
+    labels = [str(r.value) for r in log.rows(
+        Q.MARGIN_LABEL, R.DOCUMENT, scope=R.Scope.SELF_AND_DESCENDANTS)
+        if r.value]
+    return DL.scope_for(work_id, labels)
+
+
 def direction_text_enabled() -> bool:
     """`OMR_DIRECTION_TEXT` -- the ONE reader of this flag (ROADMAP 2.61b);
     `pipeline.py` calls this rather than re-reading the environment. DEFAULT
@@ -11628,7 +11655,9 @@ def direction_text_enabled() -> bool:
 
 def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
-                           detections: Dict[str, List[Any]]) -> None:
+                           detections: Dict[str, List[Any]], *,
+                           roster: Any = None,
+                           work_id: Optional[str] = None) -> None:
     """The printed words inside a system -- `legato`, `Allegro con brio`.
 
     ⚠️ IT SITS BEHIND ONE OF THE THREE HARD EDGES.
@@ -11794,9 +11823,11 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                                  note="no word-shaped ink on this page")
         return
 
+    scope = _direction_lexicon_scope(log, roster, work_id)
     try:
         found, info = DT.read_directions(pws, page_dict, readers=readers,
-                                         scan_order=True)
+                                         scan_order=True,
+                                         lexicon_scope=scope)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
@@ -11882,6 +11913,13 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                         category=d.category, terms=list(d.terms),
                         winning_reader=d.reader,
                         dynamics=list(d.dynamics),
+                        # ROADMAP 2.67b: what the terms library added, and
+                        # the languages this work's words were read in.
+                        library=list(getattr(d, "library", ()) or ()),
+                        other_language=bool(getattr(d, "other_language",
+                                                    False)),
+                        lexicon_scope=(scope.to_json() if scope is not None
+                                       else None),
                         # ONE marking: the word and the dynamic it includes.
                         # The glyph subjects below are the detector's own
                         # dynamic boxes, exported once, inside this marking.
@@ -12262,6 +12300,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            detector: Any = None, conf_threshold: float = 0.25,
            imgsz: Optional[int] = None, dossier: Any = None,
            roster: Any = None, pdf_path: Any = None,
+           work_id: Optional[str] = None,
            surya_fallback: bool = False, ocr_fallback: bool = False,
            ink_component_rows: bool = False,
            input_domain_classification: Any = None,
@@ -12522,7 +12561,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
-        gather_direction_words(log, pws, cells, local, detections)  # hard edge: last
+        gather_direction_words(log, pws, cells, local, detections,  # hard edge: last
+                               roster=roster, work_id=work_id)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries
