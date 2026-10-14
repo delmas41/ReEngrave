@@ -1,0 +1,35 @@
+{
+  "cell_id": "litolffp1-p2-sys0-s9-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:03:26+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 139,
+        "y": 540,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 159,
+        "y": 1495,
+        "w": 120,
+        "h": 98
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "cell_id": "peters-p31-sys0-s12-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:31:37+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 986,
+        "y": 514,
+        "w": 115,
+        "h": 67
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeInSpace"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

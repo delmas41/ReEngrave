@@ -1,0 +1,24 @@
+{
+  "cell_id": "brahms-p21-sys0-s7-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:13:56+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 142,
+        "y": 750,
+        "w": 119,
+        "h": 100
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

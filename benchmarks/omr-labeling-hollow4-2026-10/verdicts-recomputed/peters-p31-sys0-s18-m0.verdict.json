@@ -1,0 +1,50 @@
+{
+  "cell_id": "peters-p31-sys0-s18-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:32:14+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 981,
+        "y": 264,
+        "w": 115,
+        "h": 67
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeOnLine"
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 981,
+        "y": 364,
+        "w": 115,
+        "h": 67
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeOnLine"
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 976,
+        "y": 430,
+        "w": 115,
+        "h": 67
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeOnLine"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

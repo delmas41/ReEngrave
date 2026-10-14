@@ -1,0 +1,63 @@
+{
+  "cell_id": "simrock-p61-sys1-s27-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:36:32+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 183,
+        "y": 336,
+        "w": 101,
+        "h": 85
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 489,
+        "y": 420,
+        "w": 101,
+        "h": 85
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1133,
+        "y": 336,
+        "w": 101,
+        "h": 85
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1555,
+        "y": 420,
+        "w": 101,
+        "h": 85
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

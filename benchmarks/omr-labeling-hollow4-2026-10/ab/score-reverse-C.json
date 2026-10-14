@@ -1,0 +1,359 @@
+{
+ "litolff_truth_heads": 59,
+ "litolff_cells": 104,
+ "brahms_truth_hollow": 27,
+ "litolff": {
+  "production": {
+   "truth_heads": 59,
+   "found": 43,
+   "recall": 0.7288135593220338,
+   "hollow_boxes": 54,
+   "hollow_boxes_on_a_truth_head": 48,
+   "precision": 0.8888888888888888,
+   "kept_hollow_boxes": 44,
+   "kept_on_a_truth_head": 42,
+   "kept_precision": 0.9545454545454546,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 6,
+    "no box at all": 10
+   },
+   "extra_boxes": [
+    [
+     [
+      0,
+      3,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.55,
+     "refused"
+    ],
+    [
+     [
+      0,
+      2,
+      15
+     ],
+     "noteheadWholeInSpace",
+     0.26,
+     "refused"
+    ],
+    [
+     [
+      0,
+      9,
+      2
+     ],
+     "noteheadHalfOnLine",
+     0.38,
+     "kept"
+    ],
+    [
+     [
+      0,
+      9,
+      6
+     ],
+     "noteheadHalfInSpace",
+     0.3,
+     "given_away"
+    ],
+    [
+     [
+      0,
+      0,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.3,
+     "kept"
+    ],
+    [
+     [
+      0,
+      4,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.38,
+     "given_away"
+    ]
+   ]
+  },
+  "revC": {
+   "truth_heads": 59,
+   "found": 50,
+   "recall": 0.847457627118644,
+   "hollow_boxes": 67,
+   "hollow_boxes_on_a_truth_head": 56,
+   "precision": 0.835820895522388,
+   "kept_hollow_boxes": 54,
+   "kept_on_a_truth_head": 50,
+   "kept_precision": 0.9259259259259259,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 5,
+    "no box at all": 4
+   },
+   "extra_boxes": [
+    [
+     [
+      0,
+      3,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.57,
+     "refused"
+    ],
+    [
+     [
+      0,
+      10,
+      0
+     ],
+     "noteheadHalfOnLine",
+     0.28,
+     "refused"
+    ],
+    [
+     [
+      0,
+      9,
+      2
+     ],
+     "noteheadHalfOnLine",
+     0.4,
+     "refused"
+    ],
+    [
+     [
+      0,
+      9,
+      6
+     ],
+     "noteheadHalfInSpace",
+     0.3,
+     "given_away"
+    ],
+    [
+     [
+      0,
+      0,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.42,
+     "kept"
+    ],
+    [
+     [
+      0,
+      4,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.42,
+     "given_away"
+    ],
+    [
+     [
+      0,
+      3,
+      13
+     ],
+     "noteheadHalfOnLine",
+     0.45,
+     "kept"
+    ],
+    [
+     [
+      0,
+      7,
+      1
+     ],
+     "noteheadHalfOnLine",
+     0.41,
+     "refused"
+    ],
+    [
+     [
+      0,
+      7,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.29,
+     "kept"
+    ],
+    [
+     [
+      0,
+      11,
+      3
+     ],
+     "noteheadHalfOnLine",
+     0.11,
+     "kept"
+    ],
+    [
+     [
+      0,
+      3,
+      1
+     ],
+     "noteheadWholeInSpace",
+     0.33,
+     "refused"
+    ]
+   ]
+  },
+  "ctlC": {
+   "truth_heads": 59,
+   "found": 48,
+   "recall": 0.8135593220338984,
+   "hollow_boxes": 63,
+   "hollow_boxes_on_a_truth_head": 54,
+   "precision": 0.8571428571428571,
+   "kept_hollow_boxes": 50,
+   "kept_on_a_truth_head": 46,
+   "kept_precision": 0.92,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 5,
+    "no box at all": 6
+   },
+   "extra_boxes": [
+    [
+     [
+      0,
+      3,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.58,
+     "refused"
+    ],
+    [
+     [
+      0,
+      9,
+      2
+     ],
+     "noteheadHalfOnLine",
+     0.37,
+     "kept"
+    ],
+    [
+     [
+      0,
+      9,
+      6
+     ],
+     "noteheadHalfInSpace",
+     0.28,
+     "given_away"
+    ],
+    [
+     [
+      0,
+      0,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.39,
+     "kept"
+    ],
+    [
+     [
+      0,
+      4,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.38,
+     "given_away"
+    ],
+    [
+     [
+      0,
+      3,
+      13
+     ],
+     "noteheadHalfOnLine",
+     0.3,
+     "kept"
+    ],
+    [
+     [
+      0,
+      7,
+      1
+     ],
+     "noteheadHalfOnLine",
+     0.35,
+     "refused"
+    ],
+    [
+     [
+      0,
+      7,
+      3
+     ],
+     "noteheadHalfInSpace",
+     0.26,
+     "kept"
+    ],
+    [
+     [
+      0,
+      3,
+      1
+     ],
+     "noteheadWholeInSpace",
+     0.31,
+     "refused"
+    ]
+   ]
+  }
+ },
+ "brahms": {
+  "production": {
+   "truth_hollow": 27,
+   "found_hollow": 27,
+   "hollow_boxes": 64,
+   "extra_hollow_boxes": 32,
+   "extra_surviving_adjudicate": 22,
+   "extra_sits_on": {
+    "other": 15,
+    "timeSig digit": 14,
+    "tremolo slash": 3
+   },
+   "filled_heads_called_hollow": 0
+  },
+  "revC": {
+   "truth_hollow": 27,
+   "found_hollow": 25,
+   "hollow_boxes": 82,
+   "extra_hollow_boxes": 52,
+   "extra_surviving_adjudicate": 42,
+   "extra_sits_on": {
+    "timeSig digit": 29,
+    "other": 21,
+    "tremolo slash": 2
+   },
+   "filled_heads_called_hollow": 0
+  },
+  "ctlC": {
+   "truth_hollow": 27,
+   "found_hollow": 24,
+   "hollow_boxes": 77,
+   "extra_hollow_boxes": 49,
+   "extra_surviving_adjudicate": 38,
+   "extra_sits_on": {
+    "timeSig digit": 29,
+    "other": 18,
+    "tremolo slash": 2
+   },
+   "filled_heads_called_hollow": 0
+  }
+ }
+}

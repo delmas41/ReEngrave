@@ -55,6 +55,21 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-13 -- ROADMAP 2.4b hollow-head run: graft KILLED (branch `lane-2.4b-hollow`, not merged; weights NOT switched)
+
+- Detector only; no GATHER/ADJUDICATE/EVALUATE/INFER code touched. New: `data/user-labeled/v24-2026-10-13-hollow4-train` (not in the catalog), `recompute_line_space.py`, `complete_with_teacher.py`, `train_2.4b.sh`, `run_2.4b_ab.sh`, `score_ab.py`, `FINDINGS.md` under `benchmarks/omr-labeling-hollow4-2026-10/`.
+- Litolff TEST (59 heads): production 72.9% / 88.9%; graft shift 0 = production exactly (v24 or control); shift 0.9 61.0% / 97.4% and Brahms 18/27; raw fine-tune 91.5% but deletes beams/ledgers and doubles 8-eye boxes. Gain is in the features, not the rows.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.4b hollow-head labelling batch BUILT, awaiting Sean (branch `lane-2.4b-hollow`, not merged)
+
+- STAGED + the detector; no GATHER/ADJUDICATE/EVALUATE/INFER code touched, nothing trained.
+- New `benchmarks/omr-labeling-hollow4-2026-10/` (train batch, 100 cells, 9 presses) and `benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/` (104 cells, Litolff idx 1, TEST truth): `build_batch.py`, `cut_pool.sh`, `cut_pool2.sh`, `size_the_miss.py` (controls: self-match 27/27, shifted 0/27), `count_hollow.py`, `contact_sheet.py`, `brahms0-miss.json`.
+- Findings: production hollow rows trained on hollow3 via v19-v21 (not Jurgenson v12); Brahms p0 hollow recall 27/27 at 0.25 and 0.10; the hollow2 counter-ranker failed its print check and is not used to select.
+
+---
+
 ## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
 
 - `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
@@ -6088,5 +6103,10 @@ STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `r
 ## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
 STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
 
+## 2026-10-13 -- ROADMAP 2.4b re-assembly (reverse graft) KILLED
+STAGED detector, branch `lane-2.4b-hollow` (not merged, production weights NOT switched). Fine-tune + production class rows put back (arms A/B/C, v24 and control): rows restore nothing (beam 11 -> 13); damage is upstream -- conv weights moved < 2%, BatchNorm running stats 3-23%; restoring BN stats brings ledger lines/rests/dynamics back but loses the hollow gain (84.7%/83.6%) and beams/ties/timeSig stay damaged. v24 = +2-3 heads over its control. `benchmarks/omr-labeling-hollow4-2026-10/FINDINGS.md`.
+
+## 2026-10-13 -- ROADMAP 2.4b closed: BN-frozen fine-tune killed
+STAGED detector, branch `lane-2.4b-hollow`. 1 epoch from production with BatchNorm stats frozen (bit-identical to production): hollow 93.2%/89.2% but beams 0, ledger -92%, ties -72%, Brahms 24/27 -- same class deletion, in the conv weights. 2.4b KILLED; v24 labels stay test truth. FINDINGS in `benchmarks/omr-labeling-hollow4-2026-10/`.
 ## 2026-10-13 -- every threshold refusal records its margin; judged-tile index (ROADMAP 2.106)
 STAGED, bookkeeping only (no decision changes). `staged/margins.py` + check part `staged.margins` (open=0): 15 threshold reasons over 4 deciders file `Verdict.margin`. `staged/judged.py` + `benchmarks/acceptance/judged-tiles.json` index Sean's judged tiles with a re-scorer: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`. Sean: "land 2.106".
