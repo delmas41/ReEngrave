@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-14 · Sean · Land 2.122/2.123: export bar lists are keyed by (page, system, cell) + file ordinal, never the printed number, and reinstated refusals are counted; the exporter raises if a list names a bar twice · because the 2.118 report found 92 uncounted boxes and repeated bar numbers mixing ending bars · (benchmarks/omr-export-ledger-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · Land 2.124/2.125 at check 193: the new dot family exposes POSITION dot has no staff-grid position fact (KNOWN_GAPS); 2.127 closes it · because the bookkeeping fixes and the 6/8 whole-rest fix are worth having now · (benchmarks/omr-dots-articulations-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · Land 2.124/2.125: dots and staccatos are counted once and in their own family; output unchanged · because the 2.118 report showed the ledgers out of balance · (benchmarks/omr-dots-articulations-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · OMR_LILY_CARRIED_METER_REST ON: in LilyPond a whole-bar rest under a carried meter is written as that bar's length (6/8 -> r2.), never r1 · because a whole rest means the bar (page-facts) and r1 overfilled 6/8 bars (Brahms 445 LilyPond warnings) · (same FINDINGS)
