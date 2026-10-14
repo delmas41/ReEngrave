@@ -32,4 +32,4 @@ RED-first: 10 of the 15 first tests fail on the old tree. `tools/omr/tests/test_
 `out/print/2.115-recentre/` (12: 10 heads whose reading class changed on the truth pages + 2 black controls that were moved and stayed black; hidden `manifest.json`; red corner bracket on the head only). Built from the page-frame measurement; re-cut from the gather A/B when it exists.
 
 ## Not done yet / waiting
-A/B `--through adjudicate` (Litolff idx 1, Brahms pdf 0, flag OFF vs ON), `judged score`, `staged.check`: blocked by `library/_shared-records/.overnight-20261013.lock` and 2.114's running gather. Fast tier: see the lane report.
+A/B `--through adjudicate` (Litolff idx 1, Brahms pdf 0, flag OFF vs ON), `judged score`, `staged.check`: blocked by `library/_shared-records/.overnight-20261013.lock` and 2.114's running gather. Fast tier (`pytest -m "not slow" tools/omr/tests -q`, on 4109127e): 7787 passed, 11 skipped, 2 xfailed.
