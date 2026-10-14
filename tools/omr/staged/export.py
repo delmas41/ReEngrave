@@ -720,10 +720,13 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                 held_out_runs.add(_k)
     relocated_out: Dict[str, int] = {}
     divisi_out: Dict[str, int] = {}
+    reinstated_out: Dict[str, Dict[str, int]] = {"seen": {},
+                                                 "dropped_after": {}}
     fates: Dict[str, str] = {}
     dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
                            held_out=held_out_runs, relocated=relocated_out,
-                           fates=fates, divisi=divisi_out)
+                           fates=fates, divisi=divisi_out,
+                           reinstated=reinstated_out)
     if partial_bars_mode() != "off":
         _attach_unplaced(rec, runs, fates)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
@@ -888,6 +891,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         # adds them to its left-hand side BY NAME.
         "unboxed_rests_placed": int(relocated_out.get("unboxed_rests", 0)),
         "divisi_at_export": dict(divisi_out),
+        "refusals_reinstated": _reinstated_ledger(reinstated_out),
         "marks_census": marks_census(rec, fates),
         "join_decided": kind,
         "join_used": used,
@@ -985,8 +989,20 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  held_out: Optional[set] = None,
                  relocated: Optional[Dict[str, int]] = None,
                  fates: Optional[Dict[str, str]] = None,
-                 divisi: Optional[Dict[str, int]] = None) -> Dict[str, int]:
+                 divisi: Optional[Dict[str, int]] = None,
+                 reinstated: Optional[Dict[str, Dict[str, int]]] = None
+                 ) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
+
+    ⚠️ ROADMAP 2.122. `reinstated` (out-param) is the LEDGER LINE for a box
+    the record REFUSED as a notehead and that this function nevertheless
+    wrote: 2.80b's `too_narrow` box read, on its own ink, as an eighth rest.
+    It was in no ledger -- not `dropped` (it is not dropped), not a written
+    notehead -- so on Brahms 1 the record's 3,407 `too_narrow` refusals and
+    the exporter's 3,315 differed by exactly those 92. `seen` counts them by
+    the refusal they overturn; `dropped_after` ("refusal -> reason") the ones
+    a LATER reason then dropped (counted in `dropped` under that reason, so
+    never lost twice and never counted as placed).
 
     ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF): the one exception to
     the paragraph below. Sean, 2026-10-06 -- *"All note heads should be found
@@ -1048,6 +1064,10 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         the per-system counts must SUM to this function's own return.
         """
         dropped[reason] += 1
+        if reinstated is not None and s.get("_reinstated"):
+            _ak = "%s -> %s" % (s["_reinstated"], reason)
+            reinstated["dropped_after"][_ak] = (
+                reinstated["dropped_after"].get(_ak, 0) + 1)
         if fates is not None and "_sub" in s:
             fates[s["_sub"]] = reason
         if by_system is not None:
@@ -1100,6 +1120,13 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                            is True)
         if reinstated_rest:
             is_rest = True
+            # ⚠️ ROADMAP 2.122: THE REFUSAL IT OVERTURNS IS COUNTED, by name,
+            # so the record's refusals = dropped + reinstated.
+            _rv = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub) or {}
+            _rk = "not_a_notehead:%s" % (_rv.get("reason") or "?")
+            s["_reinstated"] = _rk
+            if reinstated is not None:
+                reinstated["seen"][_rk] = reinstated["seen"].get(_rk, 0) + 1
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
         nearer_staff_claim = False
@@ -3856,6 +3883,38 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
     return first, declared
 
 
+def _reinstated_ledger(reinstated: Dict[str, Dict[str, int]]
+                       ) -> Dict[str, Any]:
+    """ROADMAP 2.122. Refused boxes that were READ AS A REST anyway.
+
+    `refused_then_read_as_rest[reason]` = boxes the record refused as
+    `reason` and ADJUDICATE then read as an eighth rest; `placed_as_rest` =
+    those that reached a cell; `dropped_after` ("refusal -> reason") = those
+    a later reason dropped (they are in `notes_not_written` under THAT
+    reason). The record's count of a refusal = `notes_not_written[reason]` +
+    `refused_then_read_as_rest[reason]`.
+    """
+    seen = dict(reinstated.get("seen", {}))
+    after = dict(reinstated.get("dropped_after", {}))
+    placed = dict(seen)
+    for k, n in after.items():
+        placed[k.split(" -> ", 1)[0]] -= n
+    return {"refused_then_read_as_rest": seen,
+            "placed_as_rest": {k: v for k, v in placed.items() if v},
+            "dropped_after": after,
+            "total": sum(seen.values())}
+
+
+def _bar_ids(run: "StaffRun", cell: int, ordinal: int) -> Dict[str, Any]:
+    """ROADMAP 2.123. The UNIQUE name of one bar of one part: `bar_key` is
+    CLAUDE.md §5's (page, system, cell) -- a cell index restarts per system --
+    and `ordinal` its place among the part's `<measure>` elements in the file
+    (what a reader of the MusicXML can count). The printed bar number is a
+    label and is NOT unique: a first and second ending print the same ones."""
+    return {"bar_key": "%s/%s/%s" % (run.page, run.system, cell),
+            "ordinal": ordinal}
+
+
 def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               divisions: int, counters: Dict[str, int],
               offsets: Optional[Dict[Tuple[int, int], int]] = None,
@@ -3866,8 +3925,20 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               marks: Optional[Dict[str, int]] = None,
               marked_bars: Optional[List[Dict[str, Any]]] = None,
               plan: Optional["_EndingPlan"] = None,
-              partial_bars: Optional[List[Dict[str, Any]]] = None) -> str:
+              partial_bars: Optional[List[Dict[str, Any]]] = None,
+              unread_bars: Optional[List[Dict[str, Any]]] = None,
+              doubled_held_bars: Optional[List[Dict[str, Any]]] = None
+              ) -> str:
     """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ ROADMAP 2.123. EVERY BAR LIST THIS FUNCTION FILLS (`held_bars`,
+    `marked_bars`, `partial_bars`, and `unread_bars`: the bars we read
+    NOTHING in) NAMES ITS BAR BY `bar_key` -- `page/system/cell`, CLAUDE.md
+    §5 -- AND `ordinal` (this bar's place among the part's `<measure>`
+    elements in the file), NEVER BY THE PRINTED NUMBER ALONE. `measure` is
+    that printed number, kept as a LABEL: Brahms 1 prints bars 189-190 twice
+    (1st and 2nd endings), so on the 14 parts two bars share each number and
+    a list keyed by `(part, measure)` cannot say which copy it means.
 
     ⚠️ `partial_bars` IS ROADMAP 2.117: one entry per bar `_bar_holds_out`
     refused while `OMR_PARTIAL_BARS` is `measure` or `on`, saying whether it
@@ -3955,11 +4026,15 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     # ⚠️ None until the part declares its first `<time>`, and then a bar
     # really is unassessable — there is no claim to hold it to.
     in_force: Optional[Dict[str, Any]] = None
+    emitted = 0                      # `<measure>` elements so far (2.123)
     for sys_key, maybe_run, sys_bars in _tacet_walk(part, offsets, spans):
         if maybe_run is None:
+            _n0 = len(lines)
             first, _declared = _pad_tacet_span(
                 lines, sys_key, sys_bars, offsets or {}, meters or {},
                 divisions, counters, first, plan)
+            emitted += sum(1 for _l in lines[_n0:]
+                           if _l.startswith("    <measure number="))
             # ⚠️ ROADMAP 2.8: a LEADING pad can be the only place this part
             # ever declares a `<time>`, and every later bar is read against
             # it. See `_pad_tacet_span`'s second return value.
@@ -3999,6 +4074,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # instead of inheriting the meter that follows it.
             meter = _meter_dict(meter_at(run.meter, i))
             number += 1
+            emitted += 1
             _here = (run.page, run.system)
             lines.append(
                 f'    <measure number="{number if base is None else plan.number(_here, i, base)}">')
@@ -4096,6 +4172,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 counters["bars_with_a_possible_unread_mark"] += 1
                 if run.condensed_from is None and marked_bars is not None:
                     marked_bars.append({
+                        **_bar_ids(run, i, emitted),
                         "page": run.page, "system": run.system,
                         "staff": run.staff, "cell": i,
                         "measure": (number if base is None
@@ -4126,7 +4203,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                         cell_here.unplaced if cell_here else ())
                     if partial_bars is not None:
                         partial_bars.append({
-                            "page": run.page, "system": run.system,
+                            **_bar_ids(run, i, emitted),
+                        "page": run.page, "system": run.system,
                             "staff": run.staff, "cell": i,
                             "measure": (number if base is None
                                         else plan.number(_here, i, base)),
@@ -4212,7 +4290,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                             marks[_fam] += _n
                     if held_bars is not None:
                         held_bars.append({
-                            "page": run.page, "system": run.system,
+                            **_bar_ids(run, i, emitted),
+                        "page": run.page, "system": run.system,
                             "staff": run.staff, "cell": i,
                             "measure": (number if base is None
                                     else plan.number(_here, i, base)),
@@ -4239,6 +4318,18 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     # place its notes into streams and judges it as one
                     # voice. That is recorded here rather than papered over.
                     counters["bars_held_out_sum_on_a_doubled_staff"] += 1
+                    # ⚠️ ROADMAP 2.123: COUNTED BEFORE, NEVER NAMED -- so the
+                    # file's red bars exceeded the named ones by exactly this
+                    # many. Named now, in a list APART from `held` (the
+                    # accounting equality still charges the copy nothing).
+                    if doubled_held_bars is not None:
+                        doubled_held_bars.append({
+                            **_bar_ids(run, i, emitted),
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": (number if base is None
+                                        else plan.number(_here, i, base)),
+                            "part": pid})
                 # ⚠️ SIZED BY `judged`, THE METER IN FORCE IN THE FILE, and
                 # NOT by this bar's own — the one that is None here is the one
                 # that would make `_measure_rest_beats` fall back to 4.0 and
@@ -4335,6 +4426,16 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # is stated here so that the day a rest quantity lands, the
                 # rule has a home rather than being rediscovered.
                 counters["empty_bars_padded"] += 1
+                if unread_bars is not None:
+                    unread_bars.append({
+                        **_bar_ids(run, i, emitted),
+                        "page": run.page, "system": run.system,
+                        "staff": run.staff, "cell": i,
+                        "measure": (number if base is None
+                                    else plan.number(_here, i, base)),
+                        "part": pid,
+                        "meter_carried_in_file": meter is None,
+                        "doubled_staff_copy": run.condensed_from is not None})
                 # ⚠️ WRITTEN EVEN WHEN IT IS ZERO, and the `+= 0` is the whole
                 # point rather than a clumsy `if`. This counter is a QUALIFIED
                 # SUBSET of the one above it, so while it was incremented only
@@ -5884,6 +5985,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     marked_bars: List[Dict[str, Any]] = []
     #: ROADMAP 2.117: every held bar the partial-bar planner looked at.
     partial_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.123: every bar we read NOTHING in (`empty_bars_padded`), by
+    #: bar_key -- it had a COUNT and no list, so a file bar could not be
+    #: matched to it.
+    unread_bars: List[Dict[str, Any]] = []
+    doubled_held_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -5981,7 +6087,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    drops=_drop_at_render,
                                    held_bars=held_bars, marks=held_marks,
                                    marked_bars=marked_bars, plan=plan,
-                                   partial_bars=partial_bars))
+                                   partial_bars=partial_bars,
+                                   unread_bars=unread_bars,
+                                   doubled_held_bars=doubled_held_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -6067,6 +6175,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                      if counters.get("bars_with_events") else None),
         "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
         "held": held_bars,
+        # ROADMAP 2.123: the doubled-staff copies `bars_on_a_doubled_staff`
+        # counts, now NAMED (they are not in `held`, by design).
+        "held_doubled_staff_copies": doubled_held_bars,
     }
     # ⚠️⚠️ ROADMAP 2.117. REPORTED APART from `bars_held_out_sum` and from any
     # "bars add up" figure: a partial bar's red gap is sized to fill the bar,
@@ -6142,6 +6253,34 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # marking wrapper) cannot silently miss a bar or double-mark one --
     # `raise Unbalanced` rather than a quietly wrong report, the same
     # discipline `to_musicxml`'s other equalities already use.
+    # ⚠️ ROADMAP 2.123: THE LIST BEHIND "unread", one entry per bar, unique
+    # on (part, staff, bar_key). A count with no list is how 684 here became
+    # 683 in the file's own tally: a bar on a repeated number was filed
+    # elsewhere.
+    report["unread_empty_bars"] = {
+        "bars": len(unread_bars), "list": unread_bars}
+    if len(unread_bars) != int(counters.get("empty_bars_padded", 0)):
+        raise Unbalanced(
+            "unread-empty bars listed (%d) do not equal the count (%d)"
+            % (len(unread_bars), int(counters.get("empty_bars_padded", 0))))
+    if len(doubled_held_bars) != int(
+            counters.get("bars_held_out_sum_on_a_doubled_staff", 0)):
+        raise Unbalanced(
+            "doubled-staff held bars listed (%d) do not equal the count (%d)"
+            % (len(doubled_held_bars),
+               int(counters.get("bars_held_out_sum_on_a_doubled_staff", 0))))
+    for _nm, _lst in (("held", held_bars), ("marked", marked_bars),
+                      ("partial", partial_bars), ("unread", unread_bars),
+                      ("doubled-held", doubled_held_bars)):
+        # (staff, bar_key): a part can hold two staves on one system (the
+        # slot join, which `measure_numbering` refuses), and then
+        # (page, system, cell) alone is the same for both.
+        _ids = [(b["part"], b["staff"], b["bar_key"]) for b in _lst]
+        _o = [(b["part"], b["ordinal"]) for b in _lst]
+        if len(set(_ids)) != len(_ids) or len(set(_o)) != len(_o):
+            raise Unbalanced(
+                "the %s-bar list names a bar twice (part, staff, bar_key / "
+                "ordinal) -- a bar must be one entry" % _nm)
     report["unread_bar_marks"] = {
         "words": dict(UNREAD_BAR_MARK_WORDS),
         "color": UNREAD_BAR_MARK_COLOR,
