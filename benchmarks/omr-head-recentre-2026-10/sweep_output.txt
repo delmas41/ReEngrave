@@ -1,0 +1,21 @@
+pop: brahms black/hollow, litolff hollow/other;  cell = moved  nonhollow->hollow  hollow->nonhollow  black->nonblack
+gate 0.7 shift 0.10 |   3  0  0  0 |   3  3  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.7 shift 0.15 |   3  0  0  0 |   3  3  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.7 shift 0.20 |   3  0  0  0 |   3  3  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.7 shift 0.30 |   2  0  0  0 |   2  2  0  0 |   2  2  0  2 |   6  2  0  3
+gate 0.8 shift 0.10 |   5  0  0  0 |   6  4  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.8 shift 0.15 |   4  0  0  0 |   6  4  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.8 shift 0.20 |   4  0  0  0 |   5  4  0  0 |   2  2  0  2 |   7  2  0  3
+gate 0.8 shift 0.30 |   2  0  0  0 |   2  2  0  0 |   2  2  0  2 |   6  2  0  3
+gate 0.9 shift 0.10 |  26  0  0  0 |   6  4  0  0 |   4  3  0  3 |   9  2  0  3
+gate 0.9 shift 0.15 |  20  0  0  0 |   6  4  0  0 |   4  3  0  3 |   7  2  0  3
+gate 0.9 shift 0.20 |  14  0  0  0 |   5  4  0  0 |   4  3  0  3 |   7  2  0  3
+gate 0.9 shift 0.30 |   7  0  0  0 |   2  2  0  0 |   2  2  0  2 |   6  2  0  3
+gate 1.0 shift 0.10 | 153  0  0  0 |   6  4  0  0 |   4  3  0  3 |  15  2  0  3
+gate 1.0 shift 0.15 | 119  0  0  0 |   6  4  0  0 |   4  3  0  3 |   8  2  0  3
+gate 1.0 shift 0.20 |  96  0  0  0 |   5  4  0  0 |   4  3  0  3 |   8  2  0  3
+gate 1.0 shift 0.30 |  46  0  0  0 |   2  2  0  0 |   2  2  0  2 |   6  2  0  3
+gate 1.1 shift 0.10 | 155  0  0  0 |   6  4  0  0 |   5  4  0  3 |  15  2  0  3
+gate 1.1 shift 0.15 | 120  0  0  0 |   6  4  0  0 |   5  4  0  3 |   8  2  0  3
+gate 1.1 shift 0.20 |  96  0  0  0 |   5  4  0  0 |   5  4  0  3 |   8  2  0  3
+gate 1.1 shift 0.30 |  46  0  0  0 |   2  2  0  0 |   2  2  0  2 |   6  2  0  3

@@ -7493,6 +7493,252 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.115 -- a notehead box drawn on only PART of the head is re-centred
+# before its inside is read (2.114 round 2, Sean's tile 13: Litolff
+# glyph/1/0/9/11/1, a half note with the top staff line through its middle).
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED:
+#   ASSUMED: a notehead is a roughly symmetric blob, so the vertical centroid of
+#   its ink (the staff/ledger line's rows and any stem's columns left out) is its
+#   centre; and the detector's box is TRUSTED sideways (a sliver is wrong in
+#   height and size, not in x -- CLAUDE.md 5 "distrust the SIZE, never the
+#   CENTRE" is kept for x). The head is read in a standard head box at that
+#   centre, so a hollow head cut in two slits by a line is read where its
+#   white is.
+#   FALSIFIED BY: a print-confirmed BLACK head whose re-centred reading falls
+#   below the hollow band, or a head moved to another pitch step (neither seen on
+#   Brahms 317803 pdf 0 or Litolff 984073 idx 1 -- FINDINGS
+#   `omr-head-recentre-2026-10`).
+#   NOT CONFIRMED: the two cut-offs below are measured on two plates only (rule:
+#   they NARROW until Sean's tiles / another publisher). Flag default OFF.
+#
+# WHY NOT RAISE `RECENTRE_BOX_SIZE_GATE` (2.39b): that search maximises window
+# FILL, which a hollow head cannot win (12 of 39 Brahms hollow boxes decline
+# `below_threshold`; tile 13 itself declines at 0.54 against 0.55 and lands
+# 0.2 sp from the head), and a wider gate moves `Q.NOTEHEAD_RECENTRE`'s four
+# other consumers (ledger owner, nearer staff, stem mask, rung ink). This
+# reader moves ONLY the window `Q.NOTEHEAD_INK` reads and files the move in that
+# row's detail; no row another reader consumes changes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box is a candidate only where it is clearly short of a head in width OR
+#: height (the smaller of the two ratios to the standard head under this).
+RECENTRE_PART_SIZE_GATE = 0.9
+#: ... and only where the head's ink centre sits at least this far (staff
+#: spaces, vertical) from the box's centre; closer is a box already on its head.
+RECENTRE_PART_MIN_SHIFT_SPACES = 0.15
+#: ... and not further than 2.39b's own search bound (a farther "centre" is
+#: another mark's ink).
+RECENTRE_PART_MAX_SHIFT_SPACES = RECENTRE_MAX_DY_SPACES
+#: The ink window the centroid is taken over: half-height/half-width in staff
+#: spaces around the box centre (a head is ~1.1 x 1.4; 0.7 keeps a neighbouring
+#: line or head out; MEASURED against Sean's boxes, FINDINGS).
+RECENTRE_PART_HALF_WINDOW_SPACES = 0.8
+#: Ink in a column whose vertical run is longer than this is a STEM, left out.
+RECENTRE_PART_STEM_RUN_SPACES = 1.7
+#: Ink needed in the window (staff-space squares) before a centroid is trusted.
+RECENTRE_PART_MIN_INK_SPACES2 = 0.15
+#: ... and only where the box as drawn does NOT already read hollow: its
+#: smaller centre reading (raw / line rows left out) is above this. Restates
+#: `rhythm.HEAD_FILL_HOLLOW_CENTER_MAX` (2.23/2.73; `rhythm` imports this
+#: module, so the reverse import would be a cycle -- `test_staged_part_boxed_
+#: recentre_2_115` pins the two equal).
+RECENTRE_PART_ONLY_ABOVE_CENTRE = 0.75
+#: ... and a BLANK window is not a hollow reading (2.88's `HEAD_RAW_CENTER_FLOOR`, restated
+#: for the same reason): under this the box is not on a head at all and may be moved.
+RECENTRE_PART_HOLLOW_FLOOR = 0.2
+#: The estimate must not depend on the window: it is taken at each of these
+#: half-sizes (staff spaces; `RECENTRE_PART_HALF_WINDOW_SPACES` is the one
+#: used) and refused `unstable` where they disagree by more than the spread cut.
+#: ROUND 2 (page raster): on tile 13 the centroid is a function of the window
+#: below 0.75 sp (shift -0.17 / 0.01 / 0.26 / 0.38 at 0.5 / 0.6 / 0.7 / 0.75; by
+#: eye 0.27-0.30) because a window smaller than the head clips the ring
+#: asymmetrically once the line rows are left out, and settles from 0.75 up
+#: (0.38 / 0.36 / 0.36 at 0.75 / 0.8 / 0.9). Windows 0.75-0.9 are the ones that
+#: contain a whole head; MEASURED, not derived: five window sets x two spread cuts
+#: on Sean's truth pages are in the 2.115 FINDINGS (round 2). Same guard, same
+#: spread cut; only the windows moved.
+RECENTRE_PART_WINDOWS = (0.75, 0.8, 0.85, 0.9)
+RECENTRE_PART_MAX_SPREAD_SPACES = 0.1
+RECENTRE_PART_ITERATIONS = 40
+RECENTRE_PART_CONVERGED_SPACES = 0.01
+
+
+def part_boxed_recentre_enabled() -> bool:
+    """`OMR_RECENTRE_PART_BOXED` -- ROADMAP 2.115. **Default ON** (Sean,
+    2026-10-14, "Land 2.115 on"); `OMR_RECENTRE_PART_BOXED=0` turns it off."""
+    return os.environ.get("OMR_RECENTRE_PART_BOXED", "1").strip().lower() \
+        not in ("0", "false", "no", "off", "")
+
+
+def recentre_part_boxed(raw: Any, box: Tuple[float, float, float, float],
+                        spacing: float) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.115 -- where a head's ink centre sits against its detector box.
+
+    `raw` is the UNERASED raster (0 == ink) and `box` the detector's own
+    `(x, y, w, h)`, both in that raster's frame; `spacing` the staff space.
+    `None` off the raster or with no spacing. Otherwise a dict:
+    `accepted` (bool), `dy_sp` (centre shift to apply, staff spaces, + = down),
+    `reason` (None when accepted, else why the box keeps its reading:
+    `box_head_sized`, `centred_enough`, `no_ink`, `not_converged`, `too_far`),
+    and the numbers it came close with (`size_ratio`, `size_margin`,
+    `shift_sp`, `shift_margin`, `max_shift_margin`, `ink_spaces2`,
+    `line_rows`). Sideways the detector's centre is kept. Pure.
+    """
+    import numpy as np
+    if raw is None or getattr(raw, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    x, y, w, h = (float(v) for v in box)
+    ratio = min(w / (STANDARD_HEAD_WIDTH_SPACES * spacing),
+                h / (STANDARD_HEAD_HEIGHT_SPACES * spacing))
+    out: Dict[str, Any] = {
+        "accepted": False, "reason": None, "dy_sp": 0.0,
+        "size_ratio": round(ratio, 3),
+        "size_margin": round(RECENTRE_PART_SIZE_GATE - ratio, 3)}
+    if ratio >= RECENTRE_PART_SIZE_GATE:
+        out["reason"] = "box_head_sized"
+        return out
+    # A box whose own interior already reads hollow (raw or line-rows-left-out
+    # centre at or under 2.88's cut) keeps that reading: the question here is a
+    # box that reads FILLED or unclear while covering only part of its head. A
+    # move can then only ever turn a filled/unclear reading into the head's own,
+    # never lose a hollow one found by a window that happened to land well.
+    drawn = [m["windows"]["center"] for m in
+             (notehead_ink_under(raw, (x, y, w, h)),
+              notehead_ink_off_line(raw, (x, y, w, h), spacing))
+             if m is not None and m["windows"]["center"] is not None]
+    if drawn:
+        out["drawn_centre"] = round(min(drawn), 4)
+        if RECENTRE_PART_HOLLOW_FLOOR <= min(drawn) <= RECENTRE_PART_ONLY_ABOVE_CENTRE:
+            out["reason"] = "already_reads_hollow"
+            out["drawn_margin"] = round(min(drawn) - RECENTRE_PART_ONLY_ABOVE_CENTRE, 4)
+            return out
+    cx, cy = x + w / 2.0, y + h / 2.0
+    ink = (np.asarray(raw) == 0)
+    H, W = ink.shape
+    rad = int(3.2 * spacing)
+    X0, X1 = max(0, int(cx - rad)), min(W, int(cx + rad))
+    Y0, Y1 = max(0, int(cy - rad)), min(H, int(cy + rad))
+    if X1 <= X0 or Y1 <= Y0:
+        return None
+    sub = ink[Y0:Y1, X0:X1]
+    # a STEM: ink in a vertical run longer than the cut (a head is ~1.1 sp)
+    stem = np.zeros(sub.shape, dtype=bool)
+    cut = RECENTRE_PART_STEM_RUN_SPACES * spacing
+    for xi in range(sub.shape[1]):
+        col = sub[:, xi]
+        if not col.any():
+            continue
+        d = np.diff(np.concatenate([[0], col.astype(np.int8), [0]]))
+        for s0, e0 in zip(np.where(d == 1)[0], np.where(d == -1)[0]):
+            if e0 - s0 > cut:
+                stem[s0:e0, xi] = True
+    # a LINE row: ink past the head on both sides (2.73's own definition)
+    lo_l = int(round(cx - HEAD_LINE_ROW_BAND_SPACES[1] * spacing)) - X0
+    hi_l = int(round(cx - HEAD_LINE_ROW_BAND_SPACES[0] * spacing)) - X0
+    lo_r = int(round(cx + HEAD_LINE_ROW_BAND_SPACES[0] * spacing)) - X0
+    hi_r = int(round(cx + HEAD_LINE_ROW_BAND_SPACES[1] * spacing)) - X0
+    left = sub[:, max(0, lo_l):max(0, hi_l)]
+    right = sub[:, max(0, lo_r):max(0, hi_r)]
+    if left.shape[1] and right.shape[1]:
+        line_rows = (left.mean(axis=1) >= HEAD_LINE_ROW_FILL) \
+            & (right.mean(axis=1) >= HEAD_LINE_ROW_FILL)
+    else:
+        line_rows = np.zeros(sub.shape[0], dtype=bool)
+    out["line_rows"] = int(line_rows.sum())
+    ys, xs = np.mgrid[0:sub.shape[0], 0:sub.shape[1]]
+
+    def settle(half_sp: float):
+        """The centroid's fixed point for one window size: `(shift in spaces,
+        ink in space squares)`, or `(None, ink)` where it did not settle."""
+        half = half_sp * spacing
+        keep = sub & ~stem & ~line_rows[:, None] \
+            & (np.abs(xs + X0 - cx) <= half)
+        ey, n = cy, 0
+        for _ in range(RECENTRE_PART_ITERATIONS):
+            pts = keep & (np.abs(ys + Y0 - ey) <= half)
+            n = int(pts.sum())
+            if n < RECENTRE_PART_MIN_INK_SPACES2 * spacing * spacing:
+                return None, n / (spacing * spacing), "no_ink"
+            ny = float(ys[pts].mean() + Y0)
+            step = abs(ny - ey) / spacing
+            ey = ny
+            if step < RECENTRE_PART_CONVERGED_SPACES:
+                return (ey - cy) / spacing, n / (spacing * spacing), None
+        return None, n / (spacing * spacing), "not_converged"
+
+    results = [settle(hw) for hw in RECENTRE_PART_WINDOWS]
+    main = results[RECENTRE_PART_WINDOWS.index(RECENTRE_PART_HALF_WINDOW_SPACES)]
+    if main[2] is not None:
+        out["reason"] = main[2]
+        out["ink_spaces2"] = round(main[1], 3)
+        return out
+    shift = main[0]
+    shifts = [r[0] for r in results if r[0] is not None]
+    spread = (max(shifts) - min(shifts)) if len(shifts) == len(results) \
+        else float("inf")
+    out.update(shift_sp=round(shift, 3),
+               shift_margin=round(abs(shift) - RECENTRE_PART_MIN_SHIFT_SPACES, 3),
+               max_shift_margin=round(RECENTRE_PART_MAX_SHIFT_SPACES - abs(shift), 3),
+               ink_spaces2=round(main[1], 3),
+               window_spread_sp=(round(spread, 3) if spread != float("inf") else None),
+               spread_margin=(round(RECENTRE_PART_MAX_SPREAD_SPACES - spread, 3)
+                              if spread != float("inf") else None))
+    if abs(shift) < RECENTRE_PART_MIN_SHIFT_SPACES:
+        out["reason"] = "centred_enough"
+    elif spread > RECENTRE_PART_MAX_SPREAD_SPACES:
+        out["reason"] = "unstable"
+    elif abs(shift) > RECENTRE_PART_MAX_SHIFT_SPACES:
+        out["reason"] = "too_far"
+    else:
+        out["accepted"] = True
+        out["dy_sp"] = round(shift, 3)
+    return out
+
+
+def recentre_part_boxed_on_page(cell: Any, det: Any, page_binary: Any,
+                                space_canonical: float
+                                ) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.115 round 2 -- `recentre_part_boxed` run on the PAGE raster.
+
+    `cell` is the `MeasureCell` (its `bbox_page_px` and `upscale_factor` are
+    the canonical->page map `_page_box` and `Q.GLYPH_BOX` already use), `det`
+    the detection, `page_binary` `pws.page.binary` (0 == ink, staff lines in)
+    and `space_canonical` the cell's staff space. Returns `recentre_part_boxed`'s
+    dict with `frame: "page"` and the page-frame space; where it ACCEPTS, also
+    `_page_reads`: the interior of the standard head box at the moved centre
+    read off the page raster, `(notehead_ink_under, notehead_ink_off_line)` --
+    the caller pops it. `reason: "no_page_raster"` where the page raster, the
+    mapping or the staff unit is missing: DECLINED, never read from the cell.
+    """
+    declined = {"accepted": False, "reason": "no_page_raster", "dy_sp": 0.0,
+                "frame": "page"}
+    up = getattr(cell, "upscale_factor", None)
+    page_box = _page_box(cell, det)
+    if (page_binary is None or getattr(page_binary, "ndim", 0) != 2
+            or page_box is None or not up or not space_canonical):
+        return declined
+    space_page = float(space_canonical) / float(up)
+    px0, py0, px1, py1 = page_box
+    out = recentre_part_boxed(page_binary, (px0, py0, px1 - px0, py1 - py0),
+                              space_page)
+    if out is None:
+        return declined
+    out["frame"] = "page"
+    out["space_page"] = round(space_page, 3)
+    if out["accepted"]:
+        bx0, bx1, by0, by1 = _standard_head_box(
+            (px0 + px1) / 2.0, (py0 + py1) / 2.0 + out["dy_sp"] * space_page,
+            space_page)
+        std = (bx0, by0, bx1 - bx0, by1 - by0)
+        out["_page_reads"] = (
+            notehead_ink_under(page_binary, std),
+            notehead_ink_off_line(page_binary, std, space_page))
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.73 -- a hollow head CUT BY A LINE.
 #
 # Sean (2026-10-09): *"In many of the hand label cells I have found that half
@@ -7887,7 +8133,8 @@ def notehead_ink_off_line(img: Any, box: Tuple[float, float, float, float],
 
 def gather_notehead_ink(log: Log, cells: Sequence[Any],
                         local: Dict[int, Tuple[int, int]],
-                        detections: Dict[str, List[Any]]) -> None:
+                        detections: Dict[str, List[Any]],
+                        pws: Any = None) -> None:
     """`Q.NOTEHEAD_INK` on every notehead-classed glyph. ROADMAP 2.23
     (ported, GATHER half only, from `claude/no-ink-head-2.6h`, `a8394476`).
 
@@ -7931,6 +8178,7 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
     never ran (no measured line grid) or does not apply (a whole note,
     grace/cue head, or any class outside `geometry.is_regular_notehead`).
     """
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -7972,15 +8220,52 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 if isinstance(cv, (list, tuple)) and len(cv) == 4:
                     box = tuple(float(v) for v in cv)
                     box_source = cut_rows[-1].id
+            # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default ON): a
+            # box that is only PART of its head (2.39b's search declined it or
+            # never ran: it is not under 0.7) is moved vertically onto its
+            # head's own ink before the inside is read. Only THIS reader's window
+            # moves; no `Q.NOTEHEAD_RECENTRE` row is filed, so no other reader
+            # sees a different box. The reading is filed in the detail, taken or
+            # declined, with the margins.
+            #
+            # ⚠️ ROUND 2 (Sean 2026-10-14): THE PAGE'S OWN RASTER, NOT THE CELL.
+            # The cell's canonical `binary` is the page slice resized, and there
+            # a part-boxed head merges with its stem and the next staff line (tile
+            # 13: centroid shift 0.00/0.15/0.57 sp across windows -> `unstable`,
+            # nothing moved). The decision AND the interior it feeds are read off
+            # `pws.page.binary` at the head's page box (`_page_box`, the mapping
+            # `Q.GLYPH_BOX` files), the staff lines at the head's own x left out
+            # as rows (2.73). Declined `no_page_raster` where the page, its
+            # mapping or its staff unit is missing -- never read from the cell.
+            part_boxed = None
+            page_reads = None
+            if (part_boxed_recentre_enabled() and box_source is None
+                    and space_canonical and is_regular_notehead(str(d.smufl_name))
+                    and not log.rows(Q.NOTEHEAD_RECENTRE, g)):
+                part_boxed = recentre_part_boxed_on_page(
+                    c, d, page_binary, space_canonical)
+                if part_boxed is not None and part_boxed["accepted"]:
+                    ncx = box[0] + box[2] / 2.0
+                    ncy = box[1] + box[3] / 2.0 \
+                        + part_boxed["dy_sp"] * space_canonical
+                    bx0, bx1, by0, by1 = _standard_head_box(
+                        ncx, ncy, space_canonical)
+                    box = (bx0, by0, bx1 - bx0, by1 - by0)
+                    box_source = "part_boxed_recentre"
+                    page_reads = part_boxed.pop("_page_reads")
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
             m_net = notehead_ink_under(net_img, box) \
                 if net_img is not None else None
+            if page_reads is not None and page_reads[0] is not None:
+                m_raw = page_reads[0]
             # ⚠️ ROADMAP 2.73: the same reading with the LINE ROWS left out --
             # a line through a hollow head's hole must not read as fill. A
             # third reading beside the other two, never a replacement.
             m_off = (notehead_ink_off_line(raw_img, box, space_canonical)
                      if raw_img is not None and space_canonical else None)
+            if page_reads is not None and page_reads[1] is not None:
+                m_off = page_reads[1]
             if m_raw is None and m_net is None:
                 log.abstain(g, Q.NOTEHEAD_INK, reader=READERS.CV_NOTEHEAD_INK,
                            frame=frame, reason=ABSTAIN.NO_MASK,
@@ -7992,6 +8277,10 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 extra["ink_off_line"] = m_off
             if box_source is not None:
                 extra["box_source"] = box_source
+            if page_reads is not None:
+                extra["ink_frame"] = "page"
+            if part_boxed is not None and part_boxed["reason"] != "box_head_sized":
+                extra["part_boxed"] = part_boxed
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
@@ -12769,7 +13058,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # sibling witness for the notehead's OWN box rather than its rung,
         # reading `cell.image_no_staff` in common with it and `cell.binary`
         # besides.
-        gather_notehead_ink(log, cells, local, detections)
+        gather_notehead_ink(log, cells, local, detections, pws=pws)
         # (ROADMAP 2.52's `gather_empty_bar_rest_search` ran directly after
         # detection, above, since 2026-10-06 -- the rescue reads its row.)
         # ⚠️ ROADMAP 2.42, AFTER `gather_notehead_ink` AND `gather_cv_lines`:

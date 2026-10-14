@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.115 LANDED, switched ON: part-boxed notehead re-centre (Sean: "Land 2.115 on")
+
+STAGED GATHER. `gather.recentre_part_boxed_on_page` re-centres a notehead box drawn on only part of the head on the page raster (staff-line rows left out) before `Q.NOTEHEAD_INK` reads its inside; `OMR_RECENTRE_PART_BOXED` now defaults ON (`=0` turns it off). Sean's 6 blind tiles: 3 changed heads all moved toward his answer, 2 black controls right, 1 was a tremolo slash (not a note). Caveat: windows chosen on the same two pages. Fast tier 7796 passed; check open=192 (not up). `benchmarks/omr-head-recentre-2026-10/FINDINGS.md`.
+
 ## 2026-10-14 -- ROADMAP 2.116 LANDED: STAGED LilyPond export balanced again (Sean: "Land 2.116")
 
 - STAGED, EXPORT. `lilypond.to_lilypond` adds `provenance["unboxed_rests_placed"]` (2.99) to the log side of its balance check, as `export.to_musicxml` did; the `Unbalanced` raise stays. Broken by 8b69501f (2.99); the 2026-10-13 overnight exported no .ly. Tests `test_staged_unboxed_rest_2_99.py`, slow `test_staged_lilypond_whole_movement_2_116.py`. FINDINGS `benchmarks/omr-lily-export-2026-10`.

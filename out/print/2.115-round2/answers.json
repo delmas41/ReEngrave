@@ -1,0 +1,9 @@
+{
+ "sean": "1.2 2. Slash trem 3. Dot 8 4.2 5.8 6.2 (2026-10-14)",
+ "tile_01": {"answer": "hollow", "sean": "half"},
+ "tile_02": {"answer": "not a note", "sean": "tremolo slash"},
+ "tile_03": {"answer": "black", "sean": "dotted eighth"},
+ "tile_04": {"answer": "hollow", "sean": "half"},
+ "tile_05": {"answer": "black", "sean": "eighth"},
+ "tile_06": {"answer": "hollow", "sean": "half"}
+}

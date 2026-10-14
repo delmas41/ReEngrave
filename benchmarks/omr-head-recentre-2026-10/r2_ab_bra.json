@@ -1,0 +1,373 @@
+{
+ "glyphs_identical": true,
+ "n_glyphs": 1776,
+ "non_ink_observations_identical": true,
+ "n_obs": 11699,
+ "moved": 20,
+ "step_changes": 0,
+ "verdict_changes_on_moved": 0,
+ "duration_verdict_differences_off_moved_heads": 0,
+ "rest_diff_keys": [],
+ "changed": [
+  {
+   "key": "glyph/0/0/0/1/3",
+   "cls": "noteheadBlackOnLine",
+   "pos_off": -2.0,
+   "pos_on": -2.0,
+   "step_changed": false,
+   "duration_off": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "duration_on": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/0/4/10",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -2.2,
+   "pos_on": -2.2,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/1/6/2",
+   "cls": "noteheadBlackOnLine",
+   "pos_off": -0.10752688172043011,
+   "pos_on": -0.10752688172043011,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/11/4/7",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": 5.0,
+   "pos_on": 5.0,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/11/6/12",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -3.0933333333333333,
+   "pos_on": -3.0933333333333333,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/12/0/29",
+   "cls": "noteheadBlackOnLine",
+   "pos_off": 5.360544217687075,
+   "pos_on": 5.360544217687075,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/2/0/4",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -5.387755102040816,
+   "pos_on": -5.387755102040816,
+   "step_changed": false,
+   "duration_off": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "duration_on": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/2/6/5",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": 18.903225806451612,
+   "pos_on": 18.903225806451612,
+   "step_changed": false,
+   "duration_off": [
+    "abstained",
+    "null",
+    "[]"
+   ],
+   "duration_on": [
+    "abstained",
+    "null",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/3/0/3",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -1.054054054054054,
+   "pos_on": -1.054054054054054,
+   "step_changed": false,
+   "duration_off": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "duration_on": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/3/4/8",
+   "cls": "noteheadBlackOnLine",
+   "pos_off": 6.1,
+   "pos_on": 6.1,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/3/6/2",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -5.085106382978723,
+   "pos_on": -5.085106382978723,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/4/4/7",
+   "cls": "noteheadBlackOnLine",
+   "pos_off": 5.74,
+   "pos_on": 5.74,
+   "step_changed": false,
+   "duration_off": [
+    "abstained",
+    "null",
+    "[]"
+   ],
+   "duration_on": [
+    "abstained",
+    "null",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/6/0/7",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -0.9795918367346939,
+   "pos_on": -0.9795918367346939,
+   "step_changed": false,
+   "duration_off": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "duration_on": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}}]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/6/1/11",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": 1.14,
+   "pos_on": 1.14,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/7/0/20",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": 6.783783783783784,
+   "pos_on": 6.783783783783784,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/9/1/2",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -5.12,
+   "pos_on": -5.12,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.75, \"dots\": 1, \"written\": 0.75}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/9/1/7",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -5.16,
+   "pos_on": -5.16,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/9/3/3",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -9.1,
+   "pos_on": -9.1,
+   "step_changed": false,
+   "duration_off": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 2, \"beats\": 0.25, \"dots\": 0, \"written\": 0.25}}]"
+   ],
+   "duration_on": [
+    "narrowed",
+    "null",
+    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 2, \"beats\": 0.25, \"dots\": 0, \"written\": 0.25}}]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/9/6/6",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -5.184,
+   "pos_on": -5.184,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 2, \"beats\": 0.25, \"dots\": 0, \"written\": 0.25}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 2, \"beats\": 0.25, \"dots\": 0, \"written\": 0.25}",
+    "[]"
+   ],
+   "verdict_changed": false
+  },
+  {
+   "key": "glyph/0/0/9/6/8",
+   "cls": "noteheadBlackInSpace",
+   "pos_off": -3.0933333333333333,
+   "pos_on": -3.0933333333333333,
+   "step_changed": false,
+   "duration_off": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "duration_on": [
+    "decided",
+    "{\"beam_levels\": 1, \"beats\": 0.5, \"dots\": 0, \"written\": 0.5}",
+    "[]"
+   ],
+   "verdict_changed": false
+  }
+ ]
+}
