@@ -7565,10 +7565,10 @@ RECENTRE_PART_CONVERGED_SPACES = 0.01
 
 
 def part_boxed_recentre_enabled() -> bool:
-    """`OMR_RECENTRE_PART_BOXED` -- ROADMAP 2.115. **Default OFF** (an ALLOW
-    list: a typo leaves it off) until Sean's blind tiles."""
-    return os.environ.get("OMR_RECENTRE_PART_BOXED", "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    """`OMR_RECENTRE_PART_BOXED` -- ROADMAP 2.115. **Default ON** (Sean,
+    2026-10-14, "Land 2.115 on"); `OMR_RECENTRE_PART_BOXED=0` turns it off."""
+    return os.environ.get("OMR_RECENTRE_PART_BOXED", "1").strip().lower() \
+        not in ("0", "false", "no", "off", "")
 
 
 def recentre_part_boxed(raw: Any, box: Tuple[float, float, float, float],
@@ -8220,7 +8220,7 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 if isinstance(cv, (list, tuple)) and len(cv) == 4:
                     box = tuple(float(v) for v in cv)
                     box_source = cut_rows[-1].id
-            # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default OFF): a
+            # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default ON): a
             # box that is only PART of its head (2.39b's search declined it or
             # never ran: it is not under 0.7) is moved vertically onto its
             # head's own ink before the inside is read. Only THIS reader's window

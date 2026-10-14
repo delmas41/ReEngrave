@@ -92,3 +92,10 @@ RED first: on the round-1 tree (`gather_notehead_ink` without `pws`, round-1 win
 
 ## Tiles for Sean
 `out/print/2.115-round2/` (6; replaces round 1's page-frame `out/print/2.115-recentre/`, removed): the 4 heads whose reading class changed in the real gather A/B (3 Litolff, 1 Brahms) + 2 controls (Brahms black heads that were moved and stayed black). Nothing drawn but a small red corner bracket; "hollow or black? (or: not a note)"; hidden `manifest.json`. Fewer than the cap of 15 because the gather moves only 23 heads in all and only 4 change class. Lane 2.114's tiles not re-asked.
+
+## Sean's answers on the 6 round-2 tiles (2026-10-14; `out/print/2.115-round2/answers.json`, checked against `manifest.json`)
+Sean: "1.2 2. Slash trem 3. Dot 8 4.2 5.8 6.2" = 1 hollow (half), 2 not a note (tremolo slash), 3 black (dotted eighth), 4 hollow (half), 5 black (eighth), 6 hollow (half).
+* **Controls 3 and 5 (moved, stayed black): right** (black).
+* **Changed heads 1, 4, 6 all moved toward Sean's answer**: 1 (`10/7/1`) black->between (he says hollow); 4 (`9/11/1`, old tile 13) black->hollow; 6 (`3/7/2`) between->hollow.
+* **Tile 2 (`glyph/0/0/4/4/7`, the "surprise") is a tremolo slash that production boxes as a head**: not a note either way; it was already refused as `not_a_note_mark` downstream, so nothing it does matters. The black-looking-read-hollow worry is closed: it was never a head.
+* Landed ON by Sean's word, "Land 2.115 on" (2026-10-14). Caveat: the windows (0.9 box test, guard) were chosen on the same two pages (Litolff 984073 idx 1, Brahms 317803 pdf 0) the tiles come from; another publisher is untested.

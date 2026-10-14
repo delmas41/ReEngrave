@@ -1,6 +1,6 @@
 """ROADMAP 2.115 -- a notehead box drawn on only PART of the head is re-centred
 before its inside is read. PATH: STAGED GATHER (`gather.recentre_part_boxed`,
-`gather.gather_notehead_ink`; flag `OMR_RECENTRE_PART_BOXED`, default OFF).
+`gather.gather_notehead_ink`; flag `OMR_RECENTRE_PART_BOXED`, default ON since 2026-10-14).
 
 The case (Sean's 2.114 tile 13, Litolff glyph/1/0/9/11/1): a half note with the
 top staff line through its middle, its white two slits above and below the line;
@@ -97,10 +97,8 @@ def _gather_ink(img, box, *, net=None, flag=True):
     det = {sub.to_key(): [_detection(box)]}
     log = Log()
     pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=img))
-    env = {FLAG: "1"} if flag else {}
+    env = {FLAG: "1" if flag else "0"}
     with mock.patch.dict(os.environ, env, clear=False):
-        if not flag:
-            os.environ.pop(FLAG, None)
         gather.gather_notehead_recentre(log, [cell], {0: (0, 0)}, det)
         gather.gather_notehead_ink(log, [cell], {0: (0, 0)}, det, pws=pws)
     return log.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1], log
@@ -310,10 +308,8 @@ def _run_real(cell, page, box, *, flag, with_page=True):
     log = Log()
     pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=page)) \
         if with_page else None
-    env = {FLAG: "1"} if flag else {}
+    env = {FLAG: "1" if flag else "0"}
     with mock.patch.dict(os.environ, env, clear=False):
-        if not flag:
-            os.environ.pop(FLAG, None)
         gather.gather_notehead_recentre(log, [cell], {9: (0, 9)}, det)
         gather.gather_notehead_ink(log, [cell], {9: (0, 9)}, det, pws=pws)
     return log.rows(Q.NOTEHEAD_INK, R.glyph(1, 0, 9, 11, 0))[-1]
@@ -409,9 +405,7 @@ class TestPageFrameRound2(unittest.TestCase):
         sub = R.cell(0, 0, 0, 0)
         log = Log()
         pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=page))
-        with mock.patch.dict(os.environ, {FLAG: "1"} if flag else {}, clear=False):
-            if not flag:
-                os.environ.pop(FLAG, None)
+        with mock.patch.dict(os.environ, {FLAG: "1" if flag else "0"}, clear=False):
             gather.gather_notehead_ink(
                 log, [cell], {0: (0, 0)}, {sub.to_key(): [det]}, pws=pws)
         return log.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1]
