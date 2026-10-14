@@ -1,0 +1,13 @@
+TEST cells 104 (59 truth heads); leaked cell keys 9 holding 9 truth heads; clean 95 cells, 50 heads
+[prod litolff all104] recall 43/59=72.9%  precision 48/54=88.9%  missed {'a BLACK head box sits on it': 6, 'no box at all': 10}
+[prod litolff clean] recall 37/50=74.0%  precision 39/45=86.7%  missed {'no box at all': 10, 'a BLACK head box sits on it': 3}
+[prod brahms] hollow found 33/33 boxes 64 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3} filled-called-hollow 0
+[old litolff all104] recall 52/59=88.1%  precision 57/64=89.1%  missed {'no box at all': 6, 'a BLACK head box sits on it': 1}
+[old litolff clean] recall 44/50=88.0%  precision 45/52=86.5%  missed {'no box at all': 6}
+[old brahms] hollow found 31/33 boxes 70 extra 35 on {'timeSig digit': 22, 'other': 10, 'on a filled head': 1, 'tremolo slash': 2} filled-called-hollow 0
+[matched litolff all104] recall 15/59=25.4%  precision 15/16=93.8%  missed {'a BLACK head box sits on it': 28, 'no box at all': 16}
+[matched litolff clean] recall 14/50=28.0%  precision 14/14=100.0%  missed {'no box at all': 15, 'a BLACK head box sits on it': 21}
+[matched brahms] hollow found 21/33 boxes 56 extra 32 on {'timeSig digit': 25, 'other': 7} filled-called-hollow 0
+[packed litolff all104] recall 19/59=32.2%  precision 19/19=100.0%  missed {'a BLACK head box sits on it': 32, 'no box at all': 7, 'another class sits on it': 1}
+[packed litolff clean] recall 17/50=34.0%  precision 17/17=100.0%  missed {'a BLACK head box sits on it': 25, 'no box at all': 7, 'another class sits on it': 1}
+[packed brahms] hollow found 21/33 boxes 55 extra 32 on {'timeSig digit': 25, 'other': 7} filled-called-hollow 0

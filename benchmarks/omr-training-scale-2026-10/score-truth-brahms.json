@@ -1,0 +1,816 @@
+{
+ "truth_boxes": 1566,
+ "controls": [
+  "1 truth vs itself: every group recall=precision=1 -> PASS",
+  "2 all beams deleted: beam recall 0.8 -> 0.0, other groups changed: none -> PASS",
+  "3 all boxes shifted 3 spaces (96.0px): max recall now 0.0769 -> PASS",
+  "4 beam boxes x3 (2 shifted copies): recall 0.8->0.8, precision 0.2299->0.0769 -> PASS"
+ ],
+ "arms": {
+  "prod": {
+   "gather": {
+    "beam": {
+     "truth": 50,
+     "read": 174,
+     "matched": 40,
+     "recall": 0.8,
+     "precision": 0.2299,
+     "loose_matched": 40,
+     "loose_recall": 0.8,
+     "loose_precision": 0.2299
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 218,
+     "matched": 177,
+     "recall": 0.7137,
+     "precision": 0.8119,
+     "loose_matched": 177,
+     "loose_recall": 0.7137,
+     "loose_precision": 0.8119
+    },
+    "tie": {
+     "truth": 79,
+     "read": 179,
+     "matched": 45,
+     "recall": 0.5696,
+     "precision": 0.2514,
+     "loose_matched": 45,
+     "loose_recall": 0.5696,
+     "loose_precision": 0.2514
+    },
+    "slur": {
+     "truth": 65,
+     "read": 139,
+     "matched": 60,
+     "recall": 0.9231,
+     "precision": 0.4317,
+     "loose_matched": 60,
+     "loose_recall": 0.9231,
+     "loose_precision": 0.4317
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 58,
+     "matched": 32,
+     "recall": 1.0,
+     "precision": 0.5517,
+     "loose_matched": 32,
+     "loose_recall": 1.0,
+     "loose_precision": 0.5517
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 381,
+     "matched": 350,
+     "recall": 1.0,
+     "precision": 0.9186,
+     "loose_matched": 350,
+     "loose_recall": 1.0,
+     "loose_precision": 0.9186
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 55,
+     "matched": 38,
+     "recall": 0.7917,
+     "precision": 0.6909,
+     "loose_matched": 38,
+     "loose_recall": 0.7917,
+     "loose_precision": 0.6909
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 118,
+     "matched": 116,
+     "recall": 0.9915,
+     "precision": 0.9831,
+     "loose_matched": 116,
+     "loose_recall": 0.9915,
+     "loose_precision": 0.9831
+    }
+   },
+   "adj": {
+    "beam": {
+     "truth": 50,
+     "read": 139,
+     "matched": 40,
+     "recall": 0.8,
+     "precision": 0.2878,
+     "loose_matched": 40,
+     "loose_recall": 0.8,
+     "loose_precision": 0.2878
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 182,
+     "matched": 177,
+     "recall": 0.7137,
+     "precision": 0.9725,
+     "loose_matched": 177,
+     "loose_recall": 0.7137,
+     "loose_precision": 0.9725
+    },
+    "tie": {
+     "truth": 79,
+     "read": 52,
+     "matched": 35,
+     "recall": 0.443,
+     "precision": 0.6731,
+     "loose_matched": 35,
+     "loose_recall": 0.443,
+     "loose_precision": 0.6731
+    },
+    "slur": {
+     "truth": 65,
+     "read": 112,
+     "matched": 60,
+     "recall": 0.9231,
+     "precision": 0.5357,
+     "loose_matched": 60,
+     "loose_recall": 0.9231,
+     "loose_precision": 0.5357
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 44,
+     "matched": 31,
+     "recall": 0.9688,
+     "precision": 0.7045,
+     "loose_matched": 31,
+     "loose_recall": 0.9688,
+     "loose_precision": 0.7045
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 348,
+     "matched": 342,
+     "recall": 0.9771,
+     "precision": 0.9828,
+     "loose_matched": 342,
+     "loose_recall": 0.9771,
+     "loose_precision": 0.9828
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 55,
+     "matched": 38,
+     "recall": 0.7917,
+     "precision": 0.6909,
+     "loose_matched": 38,
+     "loose_recall": 0.7917,
+     "loose_precision": 0.6909
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 116,
+     "matched": 115,
+     "recall": 0.9829,
+     "precision": 0.9914,
+     "loose_matched": 115,
+     "loose_recall": 0.9829,
+     "loose_precision": 0.9914
+    }
+   },
+   "box_counts_all_classes": {
+    "ledgerLine": 231,
+    "noteheadBlackInSpace": 217,
+    "noteheadBlackOnLine": 205,
+    "tie": 193,
+    "beam": 178,
+    "slur": 155,
+    "augmentationDot": 139,
+    "staff": 66,
+    "dynamicF": 41,
+    "flag8thDown": 40,
+    "noteheadHalfInSpace": 36,
+    "timeSig8": 33,
+    "accidentalFlat": 29,
+    "keyFlat": 28,
+    "accidentalNatural": 21,
+    "timeSig6": 20,
+    "noteheadWholeInSpace": 20,
+    "accidentalSharp": 19,
+    "stem": 16,
+    "dynamicP": 14,
+    "restWhole": 11,
+    "timeSig9": 10,
+    "clefG": 9,
+    "noteheadHalfOnLine": 8,
+    "dynamicM": 6,
+    "clefF": 6,
+    "rest8th": 6,
+    "flag8thUp": 6,
+    "restQuarter": 3,
+    "arpeggiato": 2,
+    "clefCAlto": 2,
+    "timeSigCommon": 1,
+    "flag16thDown": 1,
+    "articTenutoBelow": 1,
+    "clefCTenor": 1,
+    "dynamicZ": 1,
+    "restHBar": 1
+   }
+  },
+  "old": {
+   "gather": {
+    "beam": {
+     "truth": 50,
+     "read": 67,
+     "matched": 27,
+     "recall": 0.54,
+     "precision": 0.403,
+     "loose_matched": 27,
+     "loose_recall": 0.54,
+     "loose_precision": 0.403
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 189,
+     "matched": 167,
+     "recall": 0.6734,
+     "precision": 0.8836,
+     "loose_matched": 167,
+     "loose_recall": 0.6734,
+     "loose_precision": 0.8836
+    },
+    "tie": {
+     "truth": 79,
+     "read": 68,
+     "matched": 40,
+     "recall": 0.5063,
+     "precision": 0.5882,
+     "loose_matched": 41,
+     "loose_recall": 0.519,
+     "loose_precision": 0.6029
+    },
+    "slur": {
+     "truth": 65,
+     "read": 126,
+     "matched": 60,
+     "recall": 0.9231,
+     "precision": 0.4762,
+     "loose_matched": 60,
+     "loose_recall": 0.9231,
+     "loose_precision": 0.4762
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 63,
+     "matched": 29,
+     "recall": 0.9062,
+     "precision": 0.4603,
+     "loose_matched": 29,
+     "loose_recall": 0.9062,
+     "loose_precision": 0.4603
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 363,
+     "matched": 350,
+     "recall": 1.0,
+     "precision": 0.9642,
+     "loose_matched": 350,
+     "loose_recall": 1.0,
+     "loose_precision": 0.9642
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 42,
+     "matched": 33,
+     "recall": 0.6875,
+     "precision": 0.7857,
+     "loose_matched": 33,
+     "loose_recall": 0.6875,
+     "loose_precision": 0.7857
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 118,
+     "matched": 115,
+     "recall": 0.9829,
+     "precision": 0.9746,
+     "loose_matched": 115,
+     "loose_recall": 0.9829,
+     "loose_precision": 0.9746
+    }
+   },
+   "adj": {
+    "beam": {
+     "truth": 50,
+     "read": 60,
+     "matched": 27,
+     "recall": 0.54,
+     "precision": 0.45,
+     "loose_matched": 27,
+     "loose_recall": 0.54,
+     "loose_precision": 0.45
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 173,
+     "matched": 167,
+     "recall": 0.6734,
+     "precision": 0.9653,
+     "loose_matched": 167,
+     "loose_recall": 0.6734,
+     "loose_precision": 0.9653
+    },
+    "tie": {
+     "truth": 79,
+     "read": 42,
+     "matched": 35,
+     "recall": 0.443,
+     "precision": 0.8333,
+     "loose_matched": 37,
+     "loose_recall": 0.4684,
+     "loose_precision": 0.881
+    },
+    "slur": {
+     "truth": 65,
+     "read": 102,
+     "matched": 60,
+     "recall": 0.9231,
+     "precision": 0.5882,
+     "loose_matched": 60,
+     "loose_recall": 0.9231,
+     "loose_precision": 0.5882
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 49,
+     "matched": 28,
+     "recall": 0.875,
+     "precision": 0.5714,
+     "loose_matched": 29,
+     "loose_recall": 0.9062,
+     "loose_precision": 0.5918
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 347,
+     "matched": 342,
+     "recall": 0.9771,
+     "precision": 0.9856,
+     "loose_matched": 342,
+     "loose_recall": 0.9771,
+     "loose_precision": 0.9856
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 42,
+     "matched": 33,
+     "recall": 0.6875,
+     "precision": 0.7857,
+     "loose_matched": 33,
+     "loose_recall": 0.6875,
+     "loose_precision": 0.7857
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 116,
+     "matched": 114,
+     "recall": 0.9744,
+     "precision": 0.9828,
+     "loose_matched": 114,
+     "loose_recall": 0.9744,
+     "loose_precision": 0.9828
+    }
+   },
+   "box_counts_all_classes": {
+    "noteheadBlackInSpace": 202,
+    "ledgerLine": 202,
+    "noteheadBlackOnLine": 197,
+    "slur": 140,
+    "augmentationDot": 139,
+    "tie": 74,
+    "beam": 68,
+    "dynamicF": 38,
+    "noteheadHalfInSpace": 35,
+    "accidentalFlat": 29,
+    "flag8thDown": 29,
+    "timeSig8": 27,
+    "noteheadWholeInSpace": 27,
+    "keyFlat": 26,
+    "staff": 23,
+    "accidentalNatural": 21,
+    "timeSig6": 17,
+    "accidentalSharp": 15,
+    "dynamicP": 14,
+    "clefG": 8,
+    "dynamicM": 8,
+    "noteheadHalfOnLine": 8,
+    "timeSig9": 6,
+    "restWhole": 6,
+    "flag8thUp": 6,
+    "clefF": 5,
+    "rest8th": 5,
+    "dynamicZ": 3,
+    "stem": 3,
+    "restQuarter": 3,
+    "timeSigCommon": 1,
+    "arpeggiato": 1,
+    "clefCAlto": 1,
+    "clefCTenor": 1
+   }
+  },
+  "matched": {
+   "gather": {
+    "beam": {
+     "truth": 50,
+     "read": 23,
+     "matched": 15,
+     "recall": 0.3,
+     "precision": 0.6522,
+     "loose_matched": 15,
+     "loose_recall": 0.3,
+     "loose_precision": 0.6522
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 20,
+     "matched": 20,
+     "recall": 0.0806,
+     "precision": 1.0,
+     "loose_matched": 20,
+     "loose_recall": 0.0806,
+     "loose_precision": 1.0
+    },
+    "tie": {
+     "truth": 79,
+     "read": 39,
+     "matched": 29,
+     "recall": 0.3671,
+     "precision": 0.7436,
+     "loose_matched": 29,
+     "loose_recall": 0.3671,
+     "loose_precision": 0.7436
+    },
+    "slur": {
+     "truth": 65,
+     "read": 80,
+     "matched": 44,
+     "recall": 0.6769,
+     "precision": 0.55,
+     "loose_matched": 45,
+     "loose_recall": 0.6923,
+     "loose_precision": 0.5625
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 48,
+     "matched": 20,
+     "recall": 0.625,
+     "precision": 0.4167,
+     "loose_matched": 20,
+     "loose_recall": 0.625,
+     "loose_precision": 0.4167
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 403,
+     "matched": 346,
+     "recall": 0.9886,
+     "precision": 0.8586,
+     "loose_matched": 346,
+     "loose_recall": 0.9886,
+     "loose_precision": 0.8586
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 15,
+     "matched": 11,
+     "recall": 0.2292,
+     "precision": 0.7333,
+     "loose_matched": 11,
+     "loose_recall": 0.2292,
+     "loose_precision": 0.7333
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 121,
+     "matched": 117,
+     "recall": 1.0,
+     "precision": 0.9669,
+     "loose_matched": 117,
+     "loose_recall": 1.0,
+     "loose_precision": 0.9669
+    }
+   },
+   "adj": {
+    "beam": {
+     "truth": 50,
+     "read": 21,
+     "matched": 15,
+     "recall": 0.3,
+     "precision": 0.7143,
+     "loose_matched": 15,
+     "loose_recall": 0.3,
+     "loose_precision": 0.7143
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 20,
+     "matched": 20,
+     "recall": 0.0806,
+     "precision": 1.0,
+     "loose_matched": 20,
+     "loose_recall": 0.0806,
+     "loose_precision": 1.0
+    },
+    "tie": {
+     "truth": 79,
+     "read": 30,
+     "matched": 25,
+     "recall": 0.3165,
+     "precision": 0.8333,
+     "loose_matched": 25,
+     "loose_recall": 0.3165,
+     "loose_precision": 0.8333
+    },
+    "slur": {
+     "truth": 65,
+     "read": 65,
+     "matched": 44,
+     "recall": 0.6769,
+     "precision": 0.6769,
+     "loose_matched": 45,
+     "loose_recall": 0.6923,
+     "loose_precision": 0.6923
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 40,
+     "matched": 20,
+     "recall": 0.625,
+     "precision": 0.5,
+     "loose_matched": 20,
+     "loose_recall": 0.625,
+     "loose_precision": 0.5
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 347,
+     "matched": 341,
+     "recall": 0.9743,
+     "precision": 0.9827,
+     "loose_matched": 341,
+     "loose_recall": 0.9743,
+     "loose_precision": 0.9827
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 15,
+     "matched": 11,
+     "recall": 0.2292,
+     "precision": 0.7333,
+     "loose_matched": 11,
+     "loose_recall": 0.2292,
+     "loose_precision": 0.7333
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 119,
+     "matched": 116,
+     "recall": 0.9915,
+     "precision": 0.9748,
+     "loose_matched": 116,
+     "loose_recall": 0.9915,
+     "loose_precision": 0.9748
+    }
+   },
+   "box_counts_all_classes": {
+    "noteheadBlackInSpace": 231,
+    "noteheadBlackOnLine": 212,
+    "augmentationDot": 142,
+    "slur": 85,
+    "tie": 45,
+    "dynamicF": 38,
+    "flag8thDown": 32,
+    "noteheadWholeInSpace": 30,
+    "accidentalFlat": 24,
+    "ledgerLine": 23,
+    "beam": 23,
+    "noteheadHalfInSpace": 23,
+    "accidentalNatural": 22,
+    "accidentalSharp": 14,
+    "keyFlat": 14,
+    "dynamicP": 12,
+    "timeSig8": 11,
+    "dynamicM": 9,
+    "restWhole": 9,
+    "clefG": 7,
+    "flag8thUp": 6,
+    "rest8th": 4,
+    "dynamicZ": 3,
+    "clefF": 3,
+    "restQuarter": 3,
+    "noteheadHalfOnLine": 3,
+    "timeSig6": 3,
+    "timeSigCutCommon": 1,
+    "timeSig9": 1,
+    "fingering3": 1,
+    "flag16thDown": 1,
+    "dynamicS": 1
+   }
+  },
+  "packed": {
+   "gather": {
+    "beam": {
+     "truth": 50,
+     "read": 73,
+     "matched": 39,
+     "recall": 0.78,
+     "precision": 0.5342,
+     "loose_matched": 40,
+     "loose_recall": 0.8,
+     "loose_precision": 0.5479
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 113,
+     "matched": 111,
+     "recall": 0.4476,
+     "precision": 0.9823,
+     "loose_matched": 111,
+     "loose_recall": 0.4476,
+     "loose_precision": 0.9823
+    },
+    "tie": {
+     "truth": 79,
+     "read": 81,
+     "matched": 41,
+     "recall": 0.519,
+     "precision": 0.5062,
+     "loose_matched": 41,
+     "loose_recall": 0.519,
+     "loose_precision": 0.5062
+    },
+    "slur": {
+     "truth": 65,
+     "read": 99,
+     "matched": 56,
+     "recall": 0.8615,
+     "precision": 0.5657,
+     "loose_matched": 57,
+     "loose_recall": 0.8769,
+     "loose_precision": 0.5758
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 49,
+     "matched": 20,
+     "recall": 0.625,
+     "precision": 0.4082,
+     "loose_matched": 20,
+     "loose_recall": 0.625,
+     "loose_precision": 0.4082
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 434,
+     "matched": 348,
+     "recall": 0.9943,
+     "precision": 0.8018,
+     "loose_matched": 348,
+     "loose_recall": 0.9943,
+     "loose_precision": 0.8018
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 25,
+     "matched": 18,
+     "recall": 0.375,
+     "precision": 0.72,
+     "loose_matched": 18,
+     "loose_recall": 0.375,
+     "loose_precision": 0.72
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 122,
+     "matched": 117,
+     "recall": 1.0,
+     "precision": 0.959,
+     "loose_matched": 117,
+     "loose_recall": 1.0,
+     "loose_precision": 0.959
+    }
+   },
+   "adj": {
+    "beam": {
+     "truth": 50,
+     "read": 64,
+     "matched": 39,
+     "recall": 0.78,
+     "precision": 0.6094,
+     "loose_matched": 40,
+     "loose_recall": 0.8,
+     "loose_precision": 0.625
+    },
+    "ledgerLine": {
+     "truth": 248,
+     "read": 111,
+     "matched": 111,
+     "recall": 0.4476,
+     "precision": 1.0,
+     "loose_matched": 111,
+     "loose_recall": 0.4476,
+     "loose_precision": 1.0
+    },
+    "tie": {
+     "truth": 79,
+     "read": 41,
+     "matched": 35,
+     "recall": 0.443,
+     "precision": 0.8537,
+     "loose_matched": 36,
+     "loose_recall": 0.4557,
+     "loose_precision": 0.878
+    },
+    "slur": {
+     "truth": 65,
+     "read": 81,
+     "matched": 56,
+     "recall": 0.8615,
+     "precision": 0.6914,
+     "loose_matched": 57,
+     "loose_recall": 0.8769,
+     "loose_precision": 0.7037
+    },
+    "hollow heads": {
+     "truth": 32,
+     "read": 43,
+     "matched": 20,
+     "recall": 0.625,
+     "precision": 0.4651,
+     "loose_matched": 20,
+     "loose_recall": 0.625,
+     "loose_precision": 0.4651
+    },
+    "black heads": {
+     "truth": 350,
+     "read": 352,
+     "matched": 342,
+     "recall": 0.9771,
+     "precision": 0.9716,
+     "loose_matched": 342,
+     "loose_recall": 0.9771,
+     "loose_precision": 0.9716
+    },
+    "timeSig digits": {
+     "truth": 48,
+     "read": 25,
+     "matched": 18,
+     "recall": 0.375,
+     "precision": 0.72,
+     "loose_matched": 18,
+     "loose_recall": 0.375,
+     "loose_precision": 0.72
+    },
+    "augmentationDot": {
+     "truth": 117,
+     "read": 120,
+     "matched": 116,
+     "recall": 0.9915,
+     "precision": 0.9667,
+     "loose_matched": 116,
+     "loose_recall": 0.9915,
+     "loose_precision": 0.9667
+    }
+   },
+   "box_counts_all_classes": {
+    "noteheadBlackInSpace": 251,
+    "noteheadBlackOnLine": 225,
+    "augmentationDot": 143,
+    "ledgerLine": 120,
+    "slur": 107,
+    "tie": 91,
+    "beam": 75,
+    "flag8thDown": 38,
+    "dynamicF": 37,
+    "noteheadWholeInSpace": 30,
+    "keyFlat": 26,
+    "noteheadHalfInSpace": 23,
+    "accidentalNatural": 22,
+    "timeSig8": 18,
+    "accidentalFlat": 16,
+    "accidentalSharp": 14,
+    "dynamicP": 13,
+    "timeSig6": 12,
+    "dynamicM": 12,
+    "restWhole": 10,
+    "clefG": 8,
+    "flag8thUp": 6,
+    "clefF": 5,
+    "rest8th": 5,
+    "staff": 4,
+    "arpeggiato": 2,
+    "stem": 2,
+    "restQuarter": 2,
+    "noteheadHalfOnLine": 2,
+    "timeSig9": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,230 @@
+{
+ "leaked_cells": [
+  [
+   0,
+   2,
+   3
+  ],
+  [
+   0,
+   3,
+   6
+  ],
+  [
+   0,
+   3,
+   7
+  ],
+  [
+   0,
+   3,
+   8
+  ],
+  [
+   0,
+   3,
+   11
+  ],
+  [
+   0,
+   3,
+   14
+  ],
+  [
+   0,
+   7,
+   1
+  ],
+  [
+   0,
+   8,
+   8
+  ],
+  [
+   0,
+   9,
+   15
+  ]
+ ],
+ "leaked_truth_heads": 9,
+ "prod": {
+  "all104": {
+   "truth_heads": 59,
+   "found": 43,
+   "recall": 0.7288135593220338,
+   "hollow_boxes": 54,
+   "hollow_boxes_on_a_truth_head": 48,
+   "precision": 0.8888888888888888,
+   "kept_hollow_boxes": 44,
+   "kept_on_a_truth_head": 42,
+   "kept_precision": 0.9545454545454546,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 6,
+    "no box at all": 10
+   }
+  },
+  "clean": {
+   "truth_heads": 50,
+   "found": 37,
+   "recall": 0.74,
+   "hollow_boxes": 45,
+   "hollow_boxes_on_a_truth_head": 39,
+   "precision": 0.8666666666666667,
+   "kept_hollow_boxes": 39,
+   "kept_on_a_truth_head": 37,
+   "kept_precision": 0.9487179487179487,
+   "missed_truth_heads_by": {
+    "no box at all": 10,
+    "a BLACK head box sits on it": 3
+   }
+  },
+  "brahms": {
+   "truth_hollow": 33,
+   "found_hollow": 33,
+   "hollow_boxes": 64,
+   "extra_hollow_boxes": 26,
+   "extra_surviving_adjudicate": 16,
+   "extra_sits_on": {
+    "other": 8,
+    "timeSig digit": 15,
+    "tremolo slash": 3
+   },
+   "filled_heads_called_hollow": 0
+  }
+ },
+ "old": {
+  "all104": {
+   "truth_heads": 59,
+   "found": 52,
+   "recall": 0.8813559322033898,
+   "hollow_boxes": 64,
+   "hollow_boxes_on_a_truth_head": 57,
+   "precision": 0.890625,
+   "kept_hollow_boxes": 53,
+   "kept_on_a_truth_head": 50,
+   "kept_precision": 0.9433962264150944,
+   "missed_truth_heads_by": {
+    "no box at all": 6,
+    "a BLACK head box sits on it": 1
+   }
+  },
+  "clean": {
+   "truth_heads": 50,
+   "found": 44,
+   "recall": 0.88,
+   "hollow_boxes": 52,
+   "hollow_boxes_on_a_truth_head": 45,
+   "precision": 0.8653846153846154,
+   "kept_hollow_boxes": 44,
+   "kept_on_a_truth_head": 41,
+   "kept_precision": 0.9318181818181818,
+   "missed_truth_heads_by": {
+    "no box at all": 6
+   }
+  },
+  "brahms": {
+   "truth_hollow": 33,
+   "found_hollow": 31,
+   "hollow_boxes": 70,
+   "extra_hollow_boxes": 35,
+   "extra_surviving_adjudicate": 26,
+   "extra_sits_on": {
+    "timeSig digit": 22,
+    "other": 10,
+    "on a filled head": 1,
+    "tremolo slash": 2
+   },
+   "filled_heads_called_hollow": 0
+  }
+ },
+ "matched": {
+  "all104": {
+   "truth_heads": 59,
+   "found": 15,
+   "recall": 0.2542372881355932,
+   "hollow_boxes": 16,
+   "hollow_boxes_on_a_truth_head": 15,
+   "precision": 0.9375,
+   "kept_hollow_boxes": 13,
+   "kept_on_a_truth_head": 13,
+   "kept_precision": 1.0,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 28,
+    "no box at all": 16
+   }
+  },
+  "clean": {
+   "truth_heads": 50,
+   "found": 14,
+   "recall": 0.28,
+   "hollow_boxes": 14,
+   "hollow_boxes_on_a_truth_head": 14,
+   "precision": 1.0,
+   "kept_hollow_boxes": 12,
+   "kept_on_a_truth_head": 12,
+   "kept_precision": 1.0,
+   "missed_truth_heads_by": {
+    "no box at all": 15,
+    "a BLACK head box sits on it": 21
+   }
+  },
+  "brahms": {
+   "truth_hollow": 33,
+   "found_hollow": 21,
+   "hollow_boxes": 56,
+   "extra_hollow_boxes": 32,
+   "extra_surviving_adjudicate": 27,
+   "extra_sits_on": {
+    "timeSig digit": 25,
+    "other": 7
+   },
+   "filled_heads_called_hollow": 0
+  }
+ },
+ "packed": {
+  "all104": {
+   "truth_heads": 59,
+   "found": 19,
+   "recall": 0.3220338983050847,
+   "hollow_boxes": 19,
+   "hollow_boxes_on_a_truth_head": 19,
+   "precision": 1.0,
+   "kept_hollow_boxes": 17,
+   "kept_on_a_truth_head": 17,
+   "kept_precision": 1.0,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 32,
+    "no box at all": 7,
+    "another class sits on it": 1
+   }
+  },
+  "clean": {
+   "truth_heads": 50,
+   "found": 17,
+   "recall": 0.34,
+   "hollow_boxes": 17,
+   "hollow_boxes_on_a_truth_head": 17,
+   "precision": 1.0,
+   "kept_hollow_boxes": 16,
+   "kept_on_a_truth_head": 16,
+   "kept_precision": 1.0,
+   "missed_truth_heads_by": {
+    "a BLACK head box sits on it": 25,
+    "no box at all": 7,
+    "another class sits on it": 1
+   }
+  },
+  "brahms": {
+   "truth_hollow": 33,
+   "found_hollow": 21,
+   "hollow_boxes": 55,
+   "extra_hollow_boxes": 32,
+   "extra_surviving_adjudicate": 28,
+   "extra_sits_on": {
+    "timeSig digit": 25,
+    "other": 7
+   },
+   "filled_heads_called_hollow": 0
+  }
+ }
+}
