@@ -138,3 +138,40 @@ self-check PASSED on all six builds = every other tensor bit-identical to the fi
   as damage. A BN-stat restore in a trained model without recalibration is a diagnostic, not a candidate.
 * Not tried (needs Sean's go; each is a new training run): freezing backbone + BN (`freeze` family was retired 2026-09-29 for the head, but BN-in-eval
   with frozen conv layers was never run), fine-tuning with BN statistics frozen (`model.eval()`-style BN) so the stats cannot move, 2048 on a cloud GPU.
+
+---
+
+# BN-statistics-FROZEN fine-tune (Sean 2026-10-13: "try it") -- is it the retired freeze family?
+
+History read first (`git log --all -S "freeze=22"`, `ROUND7_FREEZE22_2026-09-05.md`, round 4/5, DSv2 rehearsal): the retired family is ultralytics `freeze=N`
+(requires_grad off for layers 0..N-1; freeze=22 left only `model.22` trainable, where class deletion lives) plus rehearsal and label/imgsz/density arms.
+A search of the benchmarks, docs and training code finds **no BatchNorm-statistics freeze ever run** (`freeze` leaves BN running stats updating in train mode).
+1. **Different:** here every conv/head weight trains (incl. `model.22`); only the BN running mean/var are pinned (eval mode, momentum 0), so the
+   features keep their production activation statistics while the weights learn the hollow heads.
+2. **Same failure would look like:** beams/ledger lines/time-sig digits still collapse (beam < ~half of production) with the hollow gain intact -- then the
+   deletion is in the trained conv weights themselves (the same optimisation dynamics as rounds 4-7), and the stats were a symptom.
+3. **Different outcome would be:** damaged classes within ~10% of production with hollow recall >= 90% (or +10 pts) at precision -3 pts.
+
+## Result: BN-frozen fine-tune -- SAME FAILURE (worse). 2.4b CLOSED AS KILLED (labels stay as test truth)
+Trained from production, same mix, 1 epoch, imgsz 896 (`train_bnfrozen.py`, `train_2.4b_bn.sh`; checked after: BN running stats 194/194 tensors
+bit-identical to production, conv weights moved 1.6-1.9%). Raw `last.pt`, same A/B and controls (`ab/score-bn.json`, `ab/class-counts-bn.json`).
+
+| arm | Litolff recall | precision | Brahms found | Brahms extra boxes on timeSig digits |
+|---|--:|--:|--:|--:|
+| production | 72.9% | 88.9% | 27/27 | 14 |
+| BN-frozen, v24 | 93.2% (55/59) | 89.2% | **24/27** | 34 |
+| BN-frozen, control | 86.4% (51/59) | 92.1% | 23/27 | 20 |
+
+| class (Litolff / Brahms) | production | BN-frozen v24 | BN-frozen control |
+|---|--:|--:|--:|
+| beam | 63 / 178 | **0** / 13 | **0** / 14 |
+| ledgerLine | 103 / 231 | 8 / 143 | 0 / 87 |
+| tie | 18 / 193 | 5 / 33 | 7 / 45 |
+| timeSig4 (Lit) ; 6, 8, 9 (Bra) | 7 ; 20, 33, 10 | 0 ; 8, 14, 3 | 0 ; 11, 26, 4 |
+| augmentationDot (Bra) | 139 | 139 | 140 |
+
+Hollow recall and precision pass the bar (v24: +20 pts, precision +0.3) but beams are 0, ledger lines -92%/-38%, ties -72%/-83%, time signatures down by
+half or more and doubled-plus `8`-eye boxes, Brahms 24/27 -- the damaged classes are NOT restored; they are deleted harder than in the unfrozen
+fine-tune. This is the "same failure" outcome (point 2 above): the deletion lives in the trained conv weights, not the BN statistics (which in arm C
+only masked part of the symptom). v24 vs control: +4 heads (55 vs 51), so ~1/5 of the gain over production. No graft arms built: the 2.4b
+re-assembly showed restoring class rows changes nothing, and deletion is now deeper than before. **Kill** by the plan's bar; production unchanged.

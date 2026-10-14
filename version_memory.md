@@ -6088,3 +6088,6 @@ STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/pr
 
 ## 2026-10-13 -- ROADMAP 2.4b re-assembly (reverse graft) KILLED
 STAGED detector, branch `lane-2.4b-hollow` (not merged, production weights NOT switched). Fine-tune + production class rows put back (arms A/B/C, v24 and control): rows restore nothing (beam 11 -> 13); damage is upstream -- conv weights moved < 2%, BatchNorm running stats 3-23%; restoring BN stats brings ledger lines/rests/dynamics back but loses the hollow gain (84.7%/83.6%) and beams/ties/timeSig stay damaged. v24 = +2-3 heads over its control. `benchmarks/omr-labeling-hollow4-2026-10/FINDINGS.md`.
+
+## 2026-10-13 -- ROADMAP 2.4b closed: BN-frozen fine-tune killed
+STAGED detector, branch `lane-2.4b-hollow`. 1 epoch from production with BatchNorm stats frozen (bit-identical to production): hollow 93.2%/89.2% but beams 0, ledger -92%, ties -72%, Brahms 24/27 -- same class deletion, in the conv weights. 2.4b KILLED; v24 labels stay test truth. FINDINGS in `benchmarks/omr-labeling-hollow4-2026-10/`.
