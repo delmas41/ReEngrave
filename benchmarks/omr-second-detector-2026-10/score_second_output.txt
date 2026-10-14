@@ -1,0 +1,45 @@
+controls: truth self-match 59/59; shifted 3 head widths 0/59; 'every black glyph is hollow' view: precision 0.37 (plain 0.89) -> must collapse
+Litolff TEST cells 104 (59 truth heads); leaked cells 9; clean 95 cells, 50 heads
+[off litolff all104 gather] recall 43/59=72.9%  precision 48/54=88.9%
+[off litolff clean95 gather] recall 37/50=74.0%  precision 39/45=86.7%
+[off brahms gather] hollow found 33/33  boxes 64 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[off litolff all104 read  ] recall 44/59=74.6%  precision 49/55=89.1%
+[off litolff clean95 read  ] recall 37/50=74.0%  precision 39/45=86.7%
+[off brahms read  ] hollow found 33/33  boxes 64 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[off litolff all104 guess ] recall 44/59=74.6%  precision 49/55=89.1%
+[off litolff clean95 guess ] recall 37/50=74.0%  precision 39/45=86.7%
+[off brahms guess ] hollow found 33/33  boxes 64 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[on litolff all104 gather] recall 48/59=81.4%  precision 53/61=86.9%
+[on litolff clean95 gather] recall 42/50=84.0%  precision 44/52=84.6%
+[on brahms gather] hollow found 33/33  boxes 65 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[on litolff all104 read  ] recall 49/59=83.1%  precision 54/62=87.1%
+[on litolff clean95 read  ] recall 42/50=84.0%  precision 44/52=84.6%
+[on brahms read  ] hollow found 33/33  boxes 65 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[on litolff all104 guess ] recall 50/59=84.7%  precision 55/63=87.3%
+[on litolff clean95 guess ] recall 43/50=86.0%  precision 45/53=84.9%
+[on brahms guess ] hollow found 33/33  boxes 65 extra 26 on {'other': 8, 'timeSig digit': 15, 'tremolo slash': 3}  FILLED heads called hollow 0
+[on] touched glyphs 111
+    brahms | agrees | agrees (production already hollow) 56
+    brahms | disagrees | black stands (ink filled / marks) 1
+    brahms | disagrees | settled before the new rule: narrowed beam_discounted_uncertain 2
+    brahms | second_only | other: abstained owned_by_another_staff 1
+    litolff | agrees | agrees (production already hollow) 40
+    litolff | disagrees | NARROWED black/hollow (new rule) 1
+    litolff | disagrees | black stands (ink filled / marks) 2
+    litolff | disagrees | settled before the new rule: narrowed beam_discounted_uncertain 1
+    litolff | second_only | NARROWED (second-only head) 4
+    litolff | second_only | other: abstained owned_by_another_staff 2
+    litolff | second_only | refused: ink reads filled 1
+   by truth:
+    brahms | disagrees | black stands (ink filled / marks) | no truth box 1
+    brahms | disagrees | settled before the new rule: narrowed beam_discounted_uncertain | no truth box 1
+    brahms | disagrees | settled before the new rule: narrowed beam_discounted_uncertain | truth BLACK head 1
+    brahms | second_only | other: abstained owned_by_another_staff | truth hollow head 1
+    litolff | disagrees | NARROWED black/hollow (new rule) | truth hollow head 1
+    litolff | disagrees | black stands (ink filled / marks) | not a truth hollow head 1
+    litolff | disagrees | black stands (ink filled / marks) | truth hollow head 1
+    litolff | disagrees | settled before the new rule: narrowed beam_discounted_uncertain | truth hollow head 1
+    litolff | second_only | NARROWED (second-only head) | not a truth hollow head 1
+    litolff | second_only | NARROWED (second-only head) | truth hollow head 3
+    litolff | second_only | other: abstained owned_by_another_staff | truth hollow head 2
+    litolff | second_only | refused: ink reads filled | not a truth hollow head 1
