@@ -234,16 +234,22 @@ class TestEndToEndAndTheFlag(unittest.TestCase):
             os.environ.update(env)
             return infer.run(log, evaluate.Report([], [], []))
 
-    def test_the_default_is_off_and_nothing_collapses(self):
+    def test_the_default_is_ON_and_it_collapses_RED(self):
         log, g = _under_a_slur(tip_found=False)
         self._infer(log, {})
-        self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
+        self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.DECIDED)
 
-    def test_a_typo_leaves_it_off(self):
-        for bad in ("", "yess", "0", "ON!"):
+    def test_an_explicit_off_word_turns_it_off(self):
+        for bad in ("", "0", "off", "no", "false"):
             log, g = _under_a_slur(tip_found=False)
             self._infer(log, {infer.ARC_INK_NOT_BEAM_ENV: bad})
             self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED, bad)
+
+    def test_a_typo_leaves_it_on(self):
+        for bad in ("yess", "ON!"):
+            log, g = _under_a_slur(tip_found=False)
+            self._infer(log, {infer.ARC_INK_NOT_BEAM_ENV: bad})
+            self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.DECIDED, bad)
 
     def test_on_it_collapses_a_slur_covered_stem_to_a_labelled_inferred_quarter_RED(self):
         log, g = _under_a_slur(tip_found=False)
@@ -266,12 +272,12 @@ class TestEndToEndAndTheFlag(unittest.TestCase):
         self._infer(log, {infer.ARC_INK_NOT_BEAM_ENV: "1"})
         self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
 
-    def test_the_rule_is_registered_default_off(self):
+    def test_the_rule_is_registered_default_on(self):
         infer._ensure_rules()
         self.assertIn("collapse_arc_ink_not_beam", [r.inference.value for r in infer.RULES])
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(infer.ARC_INK_NOT_BEAM_ENV, None)
-            self.assertNotIn("collapse_arc_ink_not_beam", [r.inference.value for r in infer.enabled_rules()])
+            self.assertIn("collapse_arc_ink_not_beam", [r.inference.value for r in infer.enabled_rules()])
 
 
 if __name__ == "__main__":

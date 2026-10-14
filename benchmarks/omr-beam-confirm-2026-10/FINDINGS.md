@@ -60,3 +60,13 @@ rule picks the head's own unbeamed candidate, so the dot count is the dot reader
 The other 5 of the 24: q110/q118 (`beams_ambiguous`, NO own stem found: the fused-column stem finder, 2.82/2.83's open item); q93/q86
 (`beam_certain_not_joined`: beam read at `levels_certain` 1 with `certain_conflicts` 1, join not witnessed, long stem); q1009
 (`flag_ink_unread`: a printed flag the tip reader did not see). None is a slur case; this rule leaves all five narrowed (tested).
+
+## 6. Sean's answers (2026-10-14, recorded `out/print/2.121-review/answers.json`) and the landing
+Sean, verbatim: "1-5. Dot 4 6.8 7.2 8-9. Dot 4 10.8 11-15. Dot 4" -- tiles 1-5, 8-9, 11-15 dotted quarter (1.5); 6 and 10 eighth; 7 half.
+Scored against `tiles_MANIFEST_HIDDEN.json` (manager's read, verified against the manifest rule values):
+* Controls 6 and 10 (a flagged note, a beamed note): right -- the rule left both narrowed.
+* Of the 13 notes the rule changed, **9 exactly right**; **0 quarters made eighths** (the rule never makes an eighth).
+* Wrong, all four written BLUE (GUESSED): tiles 4 and 13 a missed augmentation dot (rule 1.0 vs Sean 1.5) and tile 12 an extra dot
+  (rule 1.75 vs Sean 1.5) -- the dot reader's, handed to 2.127; tile 7 (Litolff) a half read as a black head (rule 1.0 vs 2.0) -- a hollow-head
+  fill error, not this rule's.
+* Sean: "Land" -> `OMR_ARC_INK_NOT_BEAM` default ON (an explicit off-word turns it off).

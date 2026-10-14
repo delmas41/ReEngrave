@@ -257,16 +257,17 @@ def dynamic_ink_pick_enabled() -> bool:
 DYNAMIC_INK_PICK_SWITCH = Switch(DYNAMIC_INK_PICK_ENV, dynamic_ink_pick_enabled)
 
 
-#: ROADMAP 2.121. The arc-ink-is-not-a-beam rule's own flag, default OFF until Sean's tiles (the item authorises one flag): a bare
+#: ROADMAP 2.121. The arc-ink-is-not-a-beam rule's own flag, default ON since 2026-10-14 (Sean: "Land"; his 15 tiles: 9 of 13 exact,
+#: 0 quarters made eighths): a bare
 #: stem whose every refused "beam" stroke is a slur/tie's own ink or measured thinner/more bowed than any beam is collapsed to the
-#: unbeamed value, GUESSED (blue). A default-OFF flag is an ALLOW-LIST: a typo must leave the rule OFF. Written out on its own line
+#: unbeamed value, GUESSED (blue). A default-ON flag is a DENY-LIST: only an explicit off-word turns it off. Written out on its own line
 #: so the AST scan in `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
 ARC_INK_NOT_BEAM_ENV = "OMR_ARC_INK_NOT_BEAM"
 
 
 def arc_ink_not_beam_enabled() -> bool:
-    """Read the arc-ink flag. Only an explicit on-word is ON."""
-    return os.environ.get(ARC_INK_NOT_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """Read the arc-ink flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(ARC_INK_NOT_BEAM_ENV, "1").strip().lower() not in _OFF_WORDS
 
 
 ARC_INK_NOT_BEAM_SWITCH = Switch(ARC_INK_NOT_BEAM_ENV, arc_ink_not_beam_enabled)
