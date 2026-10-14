@@ -1,0 +1,78 @@
+{
+ "tile_01": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "1-5. Dot 4"
+ },
+ "tile_02": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "1-5. Dot 4"
+ },
+ "tile_03": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "1-5. Dot 4"
+ },
+ "tile_04": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "1-5. Dot 4"
+ },
+ "tile_05": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "1-5. Dot 4"
+ },
+ "tile_06": {
+  "answer": "eighth",
+  "beats": 0.5,
+  "sean": "6."
+ },
+ "tile_07": {
+  "answer": "half",
+  "beats": 2.0,
+  "sean": "7."
+ },
+ "tile_08": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "8-9. Dot 4"
+ },
+ "tile_09": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "8-9. Dot 4"
+ },
+ "tile_10": {
+  "answer": "eighth",
+  "beats": 0.5,
+  "sean": "10."
+ },
+ "tile_11": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "11-15. Dot 4"
+ },
+ "tile_12": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "11-15. Dot 4"
+ },
+ "tile_13": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "11-15. Dot 4"
+ },
+ "tile_14": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "11-15. Dot 4"
+ },
+ "tile_15": {
+  "answer": "dotted_quarter",
+  "beats": 1.5,
+  "sean": "11-15. Dot 4"
+ },
+ "_sean_verbatim": "1-5. Dot 4 6.8 7.2 8-9. Dot 4 10.8 11-15. Dot 4"
+}

@@ -5805,8 +5805,20 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # mark to it would inflate `written` past a population that did
             # not grow, and the balance would go False for CORRECT behaviour.
             # `dot_role_balance` (over `Q.AUG_DOT`) reads THIS key instead.
-            counters["dot_role_articulations"] += len(
-                head.get("dot_role_articulations") or ())
+            # ⚠️ ROADMAP 2.124. A condensed staff's doubled Contrabass copy
+            # is stripped of `_CONDENSED_STRIP_KEYS` but `dot_role_
+            # articulations` is not among them (2.12c added the key after
+            # that tuple was written), so the copy WEARS the staccato and the
+            # file really holds it twice while the log counted the dot ONCE.
+            # Counted in its own bucket -- the shape `accidentals_printed_on_
+            # a_doubled_copy` has -- so `dot_role_balance` stays an equality.
+            # The FILE is deliberately unchanged: the copy is the same music.
+            _dot_marks = len(head.get("dot_role_articulations") or ())
+            if doubled:
+                counters["dot_role_articulations_on_a_doubled_copy"] += (
+                    _dot_marks)
+            else:
+                counters["dot_role_articulations"] += _dot_marks
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and only
             # for the kinds `_mxl_ornament_elements` can spell -- the counter
             # says what reached the FILE, which is the `FAMILIES` rule.
@@ -6395,6 +6407,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "population": dot_role_population,
         "attached_augmentation": dot_role_report["attached_augmentation"],
         "written_staccato": dot_role_written,
+        # ROADMAP 2.124: the doubled Contrabass copy's second staccato --
+        # in the FILE, not in the population (the log counted the dot once).
+        "written_staccato_on_a_doubled_copy": int(
+            counters.get("dot_role_articulations_on_a_doubled_copy", 0)),
         "attached_staccato_before_hold_out": dot_role_report[
             "written_staccato"],
         "not_placed": report["dot_role_not_placed_total"],
@@ -6648,6 +6664,18 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "slur": (Q.ARC_KIND, ("slur",), ("slurs",)),
     "tie": (Q.ARC_KIND, ("tie",), ("ties",)),
     "articulation": (Q.ARTICULATION_OWNER, ("artic",), ("articulations",)),
+    # ⚠️⚠️ ROADMAP 2.125. `Q.AUG_DOT` is its OWN population and `adjudicate_
+    # dot_role` is its meaning: `gather_glyph_families` files no `articStaccato*`
+    # box into `Q.ARTICULATION_MARK`, so while the `artic` prefix above claimed
+    # them the articulation family counted 2,838 Brahms / 447 Litolff boxes
+    # it was never asked about, and the 2.118 report read them as "kept, no
+    # verdict". LONGEST PREFIX WINS (`_claims`), so these three beat `artic`.
+    # `augmentationDot` is claimed here too -- it IS a `Q.DOT_ROLE` subject --
+    # so `ink_rows` equals `dot_role_balance.population`. The counter is the
+    # staccato ELEMENT; an augmentation dot reaches the file inside a note's
+    # duration (`dot_role_balance.attached_augmentation`), not as an element.
+    "dot": (Q.DOT_ROLE, ("augmentationDot", "articStaccato",
+                         "articulationStaccato"), ("dot_role_articulations",)),
     # ⚠️⚠️ PROMOTED TO A FAMILY ON 2026-09-23 (ROADMAP 2.7), AND THE OLD
     # OBJECTION TO PROMOTING IT IS WHAT CHANGED. `coverage()` used to say the
     # accidental could not be a family row because "its quantity is an
@@ -6822,7 +6850,6 @@ NOT_NOTATION: Dict[str, str] = {
     "ledgerLine": "consumed by `glyph_owner`'s ladder arbitration",
     "brace": "grouping; `group_symbol` decides the symbol",
     "bracket": "as brace",
-    "augmentationDot": "consumed by `duration` as a dot",
     "flag": "consumed by `duration`: a flag says what a beam says for an "
             "unbeamed note (`Q.FLAG`)",
     # ⚠️⚠️ THIS ENTRY READ "consumed into `pitch` and `accidental`" UNTIL

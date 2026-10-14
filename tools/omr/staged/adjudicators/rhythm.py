@@ -2832,6 +2832,29 @@ def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
     return False
 
 
+def _refused_stroke_facts(pre_ink, ink_dropped, arc_dropped, neighbour_dropped,
+                          far_side, beyond, own_stems, side: Optional[str],
+                          space: float) -> list:
+    """What each stroke this decision REFUSED was refused AS, and whether it stands at the tip.
+
+    ROADMAP 2.121. DIAGNOSTIC ONLY -- it decides nothing here; INFER's `collapse_arc_ink_not_beam` reads it. One entry per stroke:
+    `why` is `arc` (inside a DECIDED slur/tie glyph, 2.25b), `ink:<too_thin|bowed|one_stem|through_heads>` (2.74's ink test),
+    `neighbour_staff`, `far_side` or `beyond_stem`; `at_tip` is `_refused_stroke_at_tip` for THAT stroke alone (`None` where it
+    cannot be asked). The counts already in the verdict detail cannot say whether EVERY refused stroke was a slur -- that is the
+    one fact the rule needs, so it is filed per stroke.
+    """
+    def _row(b, why):
+        return {"id": getattr(b, "id", None), "why": why,
+                "at_tip": _refused_stroke_at_tip([b], own_stems, side, space)}
+    out = [_row(b, "ink:" + str(ink_dropped[b.id])) for b in pre_ink
+           if b.id in ink_dropped]
+    out += [_row(b, "arc") for b in arc_dropped]
+    out += [_row(b, "neighbour_staff") for b in neighbour_dropped]
+    out += [_row(b, "far_side") for b in far_side]
+    out += [_row(b, "beyond_stem") for b in beyond]
+    return out
+
+
 def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tuple:
     """The rows at this head's own tip end where the shape reader and the 2.18c window DISAGREE (`tip_disagree`, filed by
     `gather._observe_stem_tip_ink`): the shape reader positively reads nothing hanging from the tip while the window reads a hook.
@@ -3639,6 +3662,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 support=sup))
         return Ruling.narrow(cands, "beam_discounted_uncertain",
                              used=tuple(used), **shared,
+                             refused_strokes=_refused_stroke_facts(
+                                 pre_ink, ink_dropped, arc_dropped,
+                                 neighbour_dropped, far_side, beyond,
+                                 own_stems, side, tip_zone_space),
                              bare_stem_likelihood=(
                                  "quarter_first" if quarter_first
                                  else "not_claimed"),
