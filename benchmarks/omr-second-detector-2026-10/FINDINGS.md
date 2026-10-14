@@ -116,3 +116,46 @@ Both pages gathered back to back after the overnight lock cleared (`score_second
 * Controls: every glyph that is not a second-only box is IDENTICAL OFF vs ON (beams, ledgers, ties, every non-second class): Litolff 751 = 751 (+7 second-only), Brahms 1776 = 1776 (+1). `judged score` OFF vs ON: right / wrong unchanged on every item of both docs (only the 2.114 tiles' own narrowed / abstained columns move). `python3 -m tools.omr.staged.check`: open 192, unchanged.
 * How the rule settled the touched heads now (ON): Litolff second-only NARROWED 3 (all truth hollow: tiles 3, 15, 17), abstained `second_only_no_independent_evidence` 1 (the tie fragment, tile 5: not a note), refused by ink 1 (tile 4), owned-by-another-staff 2 (tiles 1, 14: duplicates); production-black/second-hollow: NARROWED 1, black stands 2, older rule 1. Brahms: owned-by-another-staff 1 (tile 8), black stands 1, older rule 2. READ hollow by the new rule: 0. A second-only head never reaches the output without a stem or a dot.
 * Blind tiles for round 2: `out/print/2.114-round2/` (13 tiles, 2 controls; the new ON record touched no head round 1 had not already asked, so the rest are the 11 threshold tiles). Hidden manifest marks them and records interior readings (a, b, c). Eight Litolff "black" production boxes (the lowest-reading under (c), the staff/barline junction skipped; two near the "B." text at the left margin are probably not heads and will answer "not a note") and the three highest-reading truth hollow heads.
+
+## Sean's round-2 tiles (2026-10-14) and the cleaned 90% measurement
+Scripts: `cleaned_interior.py` (+ `cleaned_interior.json`, `cleaned_interior_output.txt`), reading `interior_variants.json` (round-2 raster readings, NOT re-gathered) and the Litolff idx 1 OFF record `runs/2.114/ab/rec-lit-off.json`. STAGED only (the interior reader and the ADJUDICATE readers); LEGACY is not involved.
+
+### Sean's answers, scored against the hidden manifest
+Verbatim: "1. Part of a bracket 2.2 3.f dyn 4.bracket 5. Key flat 6.2 7.4 8. Time signature number 4 9. Whole rest 10.2 11. Fermata 12.2 13. Dot 2" -> `out/print/2.114-round2/answers.json` (his word kept in `sean`; 2 / dot 2 = hollow, 4 = black, everything else = not_a_note).
+* Controls: tile 7 (Brahms, truth black) -> black, tile 13 (Brahms, truth hollow, dotted half) -> hollow. Both right.
+* The 8 "THRESHOLD black-labelled" Litolff production boxes: 0 real black heads, 1 hollow (tile 2, `glyph/1/0/9/3/2`), 7 not a note (bracket x2 = tiles 1 and 4, f dynamic = 3, key flat = 5, time-signature 4 = 8, whole rest = 9, fermata = 11). Exactly the expected split.
+* The 3 truth-hollow threshold tiles (6, 10, 12): all three hollow. Right.
+So the Litolff "black" side of the 2.114 soft label was wrong for 8 of its 90 boxes, and the print says 7 of those are not noteheads at all and one is a hollow half.
+
+### The 90% measurement on the cleaned black set (Litolff 984073 idx 1, 95 clean cells; Brahms untouched, hand truth)
+"Sean" = drop his 7 not-a-note boxes, move tile 2's box to hollow (black 90 -> 82, hollow 50 -> 51). "Sean + record" = also drop every remaining black box the record itself reads as a non-note mark (script docstring: R1 `notehead_is_not_a_notehead` decided True except the real-head reasons duplicate / stacked / nearer-staff; R2 whole-rest verdict; R3 >= 50% inside a detector box of a rest / fermata / dynamic / key / accidental / clef / time-signature / brace class; R4 centre within 1 sp of the staff's left/right extent). That removes 6 more (73-76 black left, by variant): `0/15/1` (whole rest), `3/0/8` (quarter-rest box), `6/6/1` (too narrow), `11/2/3`, `11/2/4`, `11/2/5` (clipped fragments). Not picked by eye; the record misses Sean's tile 5 (key flat: no key/accidental box and no refusal on it) and calls tile 8 only through a mis-detected quarter-rest box.
+Counts are errors as (black read < cut, hollow read >= cut); "best" is cut (errors, gap).
+| set | variant | black n: min/p5/med/p95/max | hollow n: min/p5/med/p95/max | cut 0.85 | cut 0.90 | cut 0.95 | best cut (errors, gap) |
+|---|---|---|---|---|---|---|---|
+| original | (a) current | 90: .72/1/1/1/1 | 50: .10/.20/.60/.99/1 | 2+17 | 2+11 | 3+7 | .988 (6, .024) |
+| original | (b) re-centred | 90: .23/.71/1/1/1 | 50: .23/.31/.47/.81/.84 | 7+0 | 9+0 | 11+0 | .848 (7, .018) |
+| original | (c) + line rows out | 89: .12/.71/1/1/1 | 50: .23/.29/.45/.67/.82 | 7+0 | 10+0 | 11+0 | .688 (6, .018) |
+| Sean | (a) | 82: .72/1/1/1/1 | 51: .10/.20/.62/1/1 | 2+18 | 2+12 | 2+8 | .988 (6, .024) |
+| Sean | (b) | 82: .23/1/1/1/1 | 51: .23/.31/.46/.81/.84 | 2+0 | 2+0 | 3+0 | .884 (2, .089) |
+| Sean | (c) | 81: .12/1/1/1/1 | 51: .23/.29/.45/.66/.82 | 1+0 | 2+0 | 3+0 | .848 (1, .054) |
+| Sean + record | (a) | 76: .72/1/1/1/1 | 51: .10/.20/.62/1/1 | 2+18 | 2+12 | 2+8 | .988 (6, .024) |
+| Sean + record | (b) | 76: .78/1/1/1/1 | 51: .23/.31/.46/.81/.84 | 1+0 | 1+0 | 2+0 | .884 (1, .089) |
+| Sean + record | (c) | 75: .88/1/1/1/1 | 51: .23/.29/.45/.66/.82 | 0+0 | 1+0 | 2+0 | .848 (0, .054) |
+| Brahms (unchanged) | (a) | 378: 1/1/1/1/1 | 33: .16/.19/.25/.80/.90 | 0+1 | 0+1 | 0+0 | .95 (0, .10) |
+| Brahms | (b) | 378: .53/1/1/1/1 | 33: .19/.25/.41/.80/.95 | 1+1 | 1+1 | 1+1 | .96 (1, .014) |
+| Brahms | (c) | 378: .24/1/1/1/1 | 33: .19/.25/.41/.77/.95 | 1+1 | 1+1 | 1+1 | .867 (2, .167) |
+(The "original" rows reproduce the Round 2 table of section 4 exactly, which is the control for this re-computation.)
+Reading:
+* Cleaning the black side changes the Litolff picture, because its errors were the soft label. With the head-centred window the black side now sits at 1.00 (p5) and the hollow side tops out at 0.84 (b) / 0.82 (c): a 0.85 cut is clean on Litolff variant (c) with the record's own verdicts too (0 errors, gap 0.054; best cut .848 sits inside it), and 1 error (a black box reading 0.88 under c, 0.78 under b) at the asked 0.90 cut. A 0.90 cut makes 2 errors on Sean-only (b) and (c).
+* (a), the window on the detector's box, does NOT improve: its errors are on the hollow side (12 of 51 truth-hollow heads read >= 0.90 because the box sits on the rim), unaffected by cleaning. The Litolff gain belongs to re-centring, not to the 90% idea itself.
+* The remaining Litolff black-side errors at 0.90, by key: `6/6/1` (0.23 b / 0.12 c, the staff/barline junction of section 4; the record already calls it `too_narrow`, so it leaves in Sean + record) and `9/2/1` (0.78 b / 0.88 c; the record calls it `stacked_head_duplicate`, a real head, kept). `9/2/1` is the one error left and is a question for the print, not asked of Sean yet.
+* Both pages together are still not a single rule: on Brahms (a) is clean at 0.95 and (b)/(c) carry the same one barline-junction black box and the one 0.90 / 0.95 hollow they had; on Litolff (c) at 0.85 is clean. A cut that is clean on both would be 0.95 on Brahms (a) and 0.85 on Litolff (c), two windows. Per CLAUDE.md §4 two plates only NARROW; nothing is wired.
+* Caveat, who says it's right: Sean saw only the 8 threshold boxes. The other 82 "black" boxes are still production's own class, so a clean row means "agrees with production's black on the boxes Sean was not asked about", not "verified black". The record-cleaned rows rest on the record's own readers, which are not a witness independent of the detector's boxes (R3 reuses the detector).
+
+### How many non-note black boxes reach the output as notes (Litolff idx 1 OFF record, STAGED export)
+All 99 production `noteheadBlack*` boxes of the page, the same four flags plus Sean's 7, and each one's fate from `export.build` (the `fates` the exporter keeps): 15 sit on such a mark (Sean's 7 + 8 flagged by the record; one of the 8, tile 2, is a real hollow head Sean confirmed and the record refuses as a clipped fragment).
+* Written as a note: 0 of 15.
+* Refused by an ADJUDICATE not-a-note verdict (`not_a_notehead:*`): 10 (too_narrow 3, clipped_fragment 7; Sean's tiles 1, 3, 4, 11 are in it; tile 2, a real head, is in it too).
+* Refused by the whole-rest verdict (`ink_is_a_whole_rest`): 2 (tile 9 and `0/15/1`).
+* Not refused by any not-a-note reader, dropped only because no pitch could be read (`no_pitch`): 3 -- Sean's tile 5 (key flat), tile 8 (time-signature 4), and `3/0/8` (a quarter-rest box). Their drop is incidental to the missing pitch, not a decision that the mark is not a note: with a ladder or a position they would be written.
+Numbers only; no fix proposed here.
