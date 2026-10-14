@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-14 · Sean · Land 2.116: the STAGED LilyPond writer counts 2.99 unboxed rests on its log side like the MusicXML writer; the Unbalanced raise stays · because the 2026-10-13 overnight exported no .ly on either movement · (benchmarks/omr-lily-export-2026-10/FINDINGS.md)
 - 2026-10-13 · Sean, on the 2.108 blind tiles (`out/print/2.108-review/`) · *"1. 2 note 2. B letter in german 3. a letter in a word  4. part of an o in sostenuto 5. Part of a K 6. 4 note  7. 8 noet 8. part of an N 9-10 part of letters"* · all 6 refused boxes are letters (4 and 10 are the 6-8-space band he chose), the 3 far-note controls are real and kept; tile 9 (kept just inside 6) is a letter, a known harmless slip (pre-fill only) · LAND 2.108 (*"yes"*) · (`benchmarks/omr-notehead-precision-2026-09/FINDINGS.md`, ROADMAP 2.108)
 - 2026-09-22 · Sean · **The staged pipeline is the product path. The legacy
   reader (`transcribe.py`, `export.py`, `contextual.py`) is FROZEN: bug fixes
