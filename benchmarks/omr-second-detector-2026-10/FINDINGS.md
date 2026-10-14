@@ -58,3 +58,19 @@ READ hollow via the new rule: 0. Filled heads wrongly turned hollow (Brahms hand
 ## Tests / checks
 24 RED-first tests (fast tier: 7,794 passed, 0 failed) `tools/omr/tests/test_staged_second_hollow_2_114.py` (RED on the unrepaired tree with only the helper module and the new `Q`/`READERS` present: 15 failed, 9 passed; green here): flag OFF bit-identical (also: OFF never builds the detector), non-hollow classes dropped, one head boxed twice, a staff line through the middle reads hollow, filled stays black with margin recorded, ambiguous NARROWED with both candidates, DECIDED verdict on other evidence not overturned, a detector that throws is a refusal, second-only heads never DECIDED.
 `python3 -m tools.omr.staged.check`: TOTAL 192 = main (no_producer fixed by letting the flag, not a parameter, build the detector; wiring/capture/reach entries registered). `judged score` on the OFF and ON records of both pages: identical, TOTAL right/wrong columns unchanged (`judged_output.txt`). Blind tiles: `out/print/2.114-second-detector/` (17 tiles incl. 2 controls; LEGEND.md; answers go in `answers.json` later).
+
+## Sean's blind tiles (2026-10-14)
+Answers in `out/print/2.114-second-detector/answers.json` (his verbatim word per tile beside the mapped answer; he answered with durations: 2 / dot 2 = hollow, 4 / dot 4 / 8 = black, trem slash / whole rest / part of a tie = not a note). Scored against `manifest.json` hidden fields; the second detector claimed hollow on every non-control tile.
+* **Controls: 2 of 2 right.** Tile 7 (truth black) -> Sean 4 = black; tile 10 (truth hollow) -> Sean dot 2 = hollow.
+* **Second detector's hollow claim, 15 non-control tiles: 9 right, 6 wrong.** Right: 1, 3, 6, 8, 12, 13, 14, 15, 17. Wrong: 2, 9 (tremolo slashes, not notes), 4 (whole rest), 5 (part of a tie), 11 (black), 16 (black).
+* **What the written output did, per settlement (right = the outcome matches Sean, no invented or lost note):**
+| settlement | tiles | right | wrong / note |
+|---|---|--:|---|
+| NARROWED (second-only head), new rule | 3, 5, 15, 17 | 3 of 4 | **5 wrong**: a tie fragment narrowed as a hollow head = a blue invented note |
+| NARROWED black/hollow (new rule) | 6 | 1 of 1 | real half, both candidates carried |
+| refused: ink reads filled | 4 | 1 of 1 | whole rest correctly refused |
+| black stands (ink filled / marks) | 9, 13, 16 | 1 of 3 | **13 wrong**: a real half kept black; **9 wrong**: a tremolo slash kept as a black head (both detectors boxed it); 16 right (black) |
+| abstained `owned_by_another_staff` (older decision) | 1, 8, 14 | no claim written | all three are real halves the second detector had right; none reached the output |
+| `beam_discounted_uncertain` (older rule decided first, not the new block) | 2, 11, 12 | 2 of 3 | **2 wrong**: a tremolo slash narrowed as a head; 11 (black) and 12 (hollow) keep both candidates |
+* Net: the new rule's own outcomes (NARROWED second-only, NARROWED black/hollow, refused, black stands) were right on 6 of 9 tiles; the three wrong ones are 5, 9 and 13. Tiles 2 and 9 are a detector-level fault shared with production (a tremolo slash boxed as a head), not caused by the second detector's class choice. Nothing was READ hollow by the new rule (see above).
+* Small n (one Litolff and one Brahms page, 15 tiles): this shows which failure kinds exist (tie fragment as second-only head, real half left black by the ink rule), not rates.
