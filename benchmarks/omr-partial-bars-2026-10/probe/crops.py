@@ -4,8 +4,9 @@ OUR LilyPond-rendered bar with `OMR_PARTIAL_BARS=1`.
 usage: crops.py RECORD PDF EXPORT_DIR OUT_DIR
   EXPORT_DIR holds on.bars.json + on.lilybars.json from the export run.
 
-Legend (also written on every image): black = read, blue = guessed,
-red = unread gap (nothing invented). One tile per bar; the last tile is a bar
+Legend (also written on every image): black = read, blue = guessed
+(including every kept note of a partial bar), red bracket = unread stretch
+(nothing invented; no rest drawn there). One tile per bar; the last tile is a bar
 that STAYS held (its whole bar is red `unread`).
 
 Frame control (it can fail): the five staff lines the record filed for the
@@ -25,6 +26,7 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, ".")
 from tools.omr.preprocessing import render_page  # noqa: E402
 from tools.omr.staged.record_io import load_record  # noqa: E402
+from tools.omr.staged import export as SX  # noqa: E402
 
 REC, PDF, EXP, OUT = sys.argv[1], sys.argv[2], Path(sys.argv[3]), Path(sys.argv[4])
 OUT.mkdir(parents=True, exist_ok=True)
@@ -76,6 +78,8 @@ def pick():
     take(lambda b: refused(b) and not beam(b), "head refused as too narrow / clipped", 2)
     take(lambda b: suffix_only(b), "suffix only (the gap opens the bar)", 1)
     take(lambda b: prefix_only(b), "prefix only (the gap closes the bar)", 1)
+    take(lambda b: b["gap_quarters"] and b["gap_quarters"] >= 2.0,
+         "LONG gap (2+ beats unread)", 1)
     held = [b for b in bars if b["status"] == "held"
             and b["why"] == "short_without_an_unread_symbol"
             and not b["two_voice"] and 3 <= b["events"] <= 7
@@ -99,7 +103,8 @@ def our_bar_png(b, entry, held, work):
     else:
         body = entry["text"]
         clef = CLEF.get(entry["clef"] or "treble", "treble")
-    ly = ('\\version "2.24.0"\n\\header { tagline = ##f }\n'
+    ly = ('\\version "2.24.0"\n' + f"guessedColor = #{SX.GUESS_COLOR_LILY}\n"
+          '\\header { tagline = ##f }\n'
           '\\paper { indent = 0 \\mm  paper-width = 90\\mm  page-breaking = #ly:one-line-breaking }\n'
           '\\layout { \\context { \\Score \\remove "Bar_number_engraver" } }\n'
           f'\\new Staff {{ \\clef {clef} \\time {n}/{d} {body} }}\n')
@@ -156,8 +161,8 @@ for n, (b, label) in enumerate(chosen, 1):
     dr.text((10, 24), "PRINT (nothing of ours drawn)", fill=(90, 90, 90))
     canvas.paste(print_crop, (10, 44))
     yo = 44 + print_crop.height + 14
-    dr.text((10, yo), "OURS with OMR_PARTIAL_BARS=1  (black = read, blue = guessed, "
-                      "red = unread gap)", fill=(90, 90, 90))
+    dr.text((10, yo), "OURS with OMR_PARTIAL_BARS=1  (black = read, blue = guessed incl. kept "
+                      "notes of a partial bar, red bracket = unread stretch)", fill=(90, 90, 90))
     canvas.paste(ours, (10, yo + 20))
     name = f"{n}-p{b['page']}-s{b['system']}-staff{b['staff']}-cell{b['cell']}.png"
     canvas.save(OUT / name)
