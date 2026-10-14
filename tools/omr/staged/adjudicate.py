@@ -1331,6 +1331,12 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # unless `OMR_DOT_FOLLOWS_NOTE` is on.
             from .adjudicators import ownership as _own
             _own.reconcile_dot_owners(log)
+        if quantity == Q.DURATION:
+            # ROADMAP 2.127: a dot SEEN beside a decided-plain note narrows
+            # the note instead of leaving it written plain. A no-op unless
+            # `OMR_AUG_DOT_JOIN` is on (default OFF until Sean's tiles).
+            from .adjudicators import aug_dot_join as _aug
+            _aug.reconcile_unjoined_dots(log)
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out
