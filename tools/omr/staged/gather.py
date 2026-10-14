@@ -7547,6 +7547,14 @@ RECENTRE_PART_ONLY_ABOVE_CENTRE = 0.75
 #: ... and a BLANK window is not a hollow reading (2.88's `HEAD_RAW_CENTER_FLOOR`, restated
 #: for the same reason): under this the box is not on a head at all and may be moved.
 RECENTRE_PART_HOLLOW_FLOOR = 0.2
+#: The estimate must not depend on the window: it is taken at each of these
+#: half-sizes (staff spaces; `RECENTRE_PART_HALF_WINDOW_SPACES` is the one
+#: used) and refused `unstable` where they disagree by more than the spread cut.
+#: MEASURED on a merged Litolff head (tile 13 in its canonical cell: shifts
+#: 0.00 / 0.15 / 0.57 at 0.60 / 0.65 / 0.70, truth 0.27) where the stem and the
+#: next staff line pull the centroid; one window alone said 0.57.
+RECENTRE_PART_WINDOWS = (0.6, 0.65, 0.7, 0.75)
+RECENTRE_PART_MAX_SPREAD_SPACES = 0.1
 RECENTRE_PART_ITERATIONS = 40
 RECENTRE_PART_CONVERGED_SPACES = 0.01
 
@@ -7635,33 +7643,47 @@ def recentre_part_boxed(raw: Any, box: Tuple[float, float, float, float],
         line_rows = np.zeros(sub.shape[0], dtype=bool)
     out["line_rows"] = int(line_rows.sum())
     ys, xs = np.mgrid[0:sub.shape[0], 0:sub.shape[1]]
-    half = RECENTRE_PART_HALF_WINDOW_SPACES * spacing
-    keep = sub & ~stem & ~line_rows[:, None] & (np.abs(xs + X0 - cx) <= half)
-    ey = cy
-    converged = False
-    n = 0
-    for _ in range(RECENTRE_PART_ITERATIONS):
-        pts = keep & (np.abs(ys + Y0 - ey) <= half)
-        n = int(pts.sum())
-        if n < RECENTRE_PART_MIN_INK_SPACES2 * spacing * spacing:
-            out["reason"] = "no_ink"
-            out["ink_spaces2"] = round(n / (spacing * spacing), 3)
-            return out
-        ny = float(ys[pts].mean() + Y0)
-        step = abs(ny - ey) / spacing
-        ey = ny
-        if step < RECENTRE_PART_CONVERGED_SPACES:
-            converged = True
-            break
-    shift = (ey - cy) / spacing
+
+    def settle(half_sp: float):
+        """The centroid's fixed point for one window size: `(shift in spaces,
+        ink in space squares)`, or `(None, ink)` where it did not settle."""
+        half = half_sp * spacing
+        keep = sub & ~stem & ~line_rows[:, None] \
+            & (np.abs(xs + X0 - cx) <= half)
+        ey, n = cy, 0
+        for _ in range(RECENTRE_PART_ITERATIONS):
+            pts = keep & (np.abs(ys + Y0 - ey) <= half)
+            n = int(pts.sum())
+            if n < RECENTRE_PART_MIN_INK_SPACES2 * spacing * spacing:
+                return None, n / (spacing * spacing), "no_ink"
+            ny = float(ys[pts].mean() + Y0)
+            step = abs(ny - ey) / spacing
+            ey = ny
+            if step < RECENTRE_PART_CONVERGED_SPACES:
+                return (ey - cy) / spacing, n / (spacing * spacing), None
+        return None, n / (spacing * spacing), "not_converged"
+
+    results = [settle(hw) for hw in RECENTRE_PART_WINDOWS]
+    main = results[RECENTRE_PART_WINDOWS.index(RECENTRE_PART_HALF_WINDOW_SPACES)]
+    if main[2] is not None:
+        out["reason"] = main[2]
+        out["ink_spaces2"] = round(main[1], 3)
+        return out
+    shift = main[0]
+    shifts = [r[0] for r in results if r[0] is not None]
+    spread = (max(shifts) - min(shifts)) if len(shifts) == len(results) \
+        else float("inf")
     out.update(shift_sp=round(shift, 3),
                shift_margin=round(abs(shift) - RECENTRE_PART_MIN_SHIFT_SPACES, 3),
                max_shift_margin=round(RECENTRE_PART_MAX_SHIFT_SPACES - abs(shift), 3),
-               ink_spaces2=round(n / (spacing * spacing), 3))
-    if not converged:
-        out["reason"] = "not_converged"
-    elif abs(shift) < RECENTRE_PART_MIN_SHIFT_SPACES:
+               ink_spaces2=round(main[1], 3),
+               window_spread_sp=(round(spread, 3) if spread != float("inf") else None),
+               spread_margin=(round(RECENTRE_PART_MAX_SPREAD_SPACES - spread, 3)
+                              if spread != float("inf") else None))
+    if abs(shift) < RECENTRE_PART_MIN_SHIFT_SPACES:
         out["reason"] = "centred_enough"
+    elif spread > RECENTRE_PART_MAX_SPREAD_SPACES:
+        out["reason"] = "unstable"
     elif abs(shift) > RECENTRE_PART_MAX_SHIFT_SPACES:
         out["reason"] = "too_far"
     else:

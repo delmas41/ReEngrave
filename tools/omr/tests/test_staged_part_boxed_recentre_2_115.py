@@ -182,6 +182,22 @@ class TestPureCentreOfAPartBox(unittest.TestCase):
         self.assertEqual(gather.RECENTRE_PART_HOLLOW_FLOOR,
                          rhythm.HEAD_RAW_CENTER_FLOOR)
 
+    def test_CONTROL_an_estimate_that_depends_on_the_window_is_refused_unstable(self):
+        """Litolff tile 13 IN ITS REAL canonical cell (a 400 x 700 px crop of
+        `cell/0/9/11`'s binary raster; 100 px per staff space): the stem and the
+        next staff line merge into the head, so the centroid's centre depends on
+        the window (0.00 / 0.15 / 0.57 sp, Sean's truth box 0.27). The box is left
+        as drawn, the spread filed -- a refusal says how close it came."""
+        import pathlib
+        z = np.load(pathlib.Path(__file__).with_name("data_part_boxed_tile13_cell.npz"))
+        shape = tuple(int(v) for v in z["shape"])
+        ink = np.unpackbits(z["ink"])[:shape[0] * shape[1]].reshape(shape).astype(bool)
+        raw = np.where(ink, 0, 255).astype(np.uint8)
+        r = gather.recentre_part_boxed(raw, tuple(float(v) for v in z["box"]), 100.0)
+        self.assertEqual(r["reason"], "unstable", r)
+        self.assertFalse(r["accepted"])
+        self.assertLess(r["spread_margin"], 0.0)
+
     def test_off_the_raster_or_no_spacing_is_none(self):
         self.assertIsNone(gather.recentre_part_boxed(None, (0, 0, 9, 9), S))
         self.assertIsNone(gather.recentre_part_boxed(_paper(), (0, 0, 9, 9), 0.0))
