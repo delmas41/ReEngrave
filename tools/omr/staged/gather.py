@@ -7493,6 +7493,160 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.115 -- a notehead box drawn on only PART of the head is re-centred
+# before its inside is read (2.114 round 2, Sean's tile 13: Litolff
+# glyph/1/0/9/11/1, a half note with the top staff line through its middle).
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED:
+#   ASSUMED: a notehead is a roughly symmetric blob, so the vertical centroid of
+#   its ink (the staff/ledger line's rows and any stem's columns left out) is its
+#   centre; and the detector's box is TRUSTED sideways (a sliver is wrong in
+#   height and size, not in x -- CLAUDE.md 5 "distrust the SIZE, never the
+#   CENTRE" is kept for x). The head is read in a standard head box at that
+#   centre, so a hollow head cut in two slits by a line is read where its
+#   white is.
+#   FALSIFIED BY: a print-confirmed BLACK head whose re-centred reading falls
+#   below the hollow band, or a head moved to another pitch step (neither seen on
+#   Brahms 317803 pdf 0 or Litolff 984073 idx 1 -- FINDINGS
+#   `omr-head-recentre-2026-10`).
+#   NOT CONFIRMED: the two cut-offs below are measured on two plates only (rule:
+#   they NARROW until Sean's tiles / another publisher). Flag default OFF.
+#
+# WHY NOT RAISE `RECENTRE_BOX_SIZE_GATE` (2.39b): that search maximises window
+# FILL, which a hollow head cannot win (12 of 39 Brahms hollow boxes decline
+# `below_threshold`; tile 13 itself declines at 0.54 against 0.55 and lands
+# 0.2 sp from the head), and a wider gate moves `Q.NOTEHEAD_RECENTRE`'s four
+# other consumers (ledger owner, nearer staff, stem mask, rung ink). This
+# reader moves ONLY the window `Q.NOTEHEAD_INK` reads and files the move in that
+# row's detail; no row another reader consumes changes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box is a candidate only where it is clearly short of a head in width OR
+#: height (the smaller of the two ratios to the standard head under this).
+RECENTRE_PART_SIZE_GATE = 0.9
+#: ... and only where the head's ink centre sits at least this far (staff
+#: spaces, vertical) from the box's centre; closer is a box already on its head.
+RECENTRE_PART_MIN_SHIFT_SPACES = 0.15
+#: ... and not further than 2.39b's own search bound (a farther "centre" is
+#: another mark's ink).
+RECENTRE_PART_MAX_SHIFT_SPACES = RECENTRE_MAX_DY_SPACES
+#: The ink window the centroid is taken over: half-height/half-width in staff
+#: spaces around the box centre (a head is ~1.1 x 1.4; 0.7 keeps a neighbouring
+#: line or head out; MEASURED against Sean's boxes, FINDINGS).
+RECENTRE_PART_HALF_WINDOW_SPACES = 0.7
+#: Ink in a column whose vertical run is longer than this is a STEM, left out.
+RECENTRE_PART_STEM_RUN_SPACES = 1.7
+#: Ink needed in the window (staff-space squares) before a centroid is trusted.
+RECENTRE_PART_MIN_INK_SPACES2 = 0.15
+RECENTRE_PART_ITERATIONS = 5
+RECENTRE_PART_CONVERGED_SPACES = 0.05
+
+
+def part_boxed_recentre_enabled() -> bool:
+    """`OMR_RECENTRE_PART_BOXED` -- ROADMAP 2.115. **Default OFF** (an ALLOW
+    list: a typo leaves it off) until Sean's blind tiles."""
+    return os.environ.get("OMR_RECENTRE_PART_BOXED", "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def recentre_part_boxed(raw: Any, box: Tuple[float, float, float, float],
+                        spacing: float) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.115 -- where a head's ink centre sits against its detector box.
+
+    `raw` is the UNERASED raster (0 == ink) and `box` the detector's own
+    `(x, y, w, h)`, both in that raster's frame; `spacing` the staff space.
+    `None` off the raster or with no spacing. Otherwise a dict:
+    `accepted` (bool), `dy_sp` (centre shift to apply, staff spaces, + = down),
+    `reason` (None when accepted, else why the box keeps its reading:
+    `box_head_sized`, `centred_enough`, `no_ink`, `not_converged`, `too_far`),
+    and the numbers it came close with (`size_ratio`, `size_margin`,
+    `shift_sp`, `shift_margin`, `max_shift_margin`, `ink_spaces2`,
+    `line_rows`). Sideways the detector's centre is kept. Pure.
+    """
+    import numpy as np
+    if raw is None or getattr(raw, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    x, y, w, h = (float(v) for v in box)
+    ratio = min(w / (STANDARD_HEAD_WIDTH_SPACES * spacing),
+                h / (STANDARD_HEAD_HEIGHT_SPACES * spacing))
+    out: Dict[str, Any] = {
+        "accepted": False, "reason": None, "dy_sp": 0.0,
+        "size_ratio": round(ratio, 3),
+        "size_margin": round(RECENTRE_PART_SIZE_GATE - ratio, 3)}
+    if ratio >= RECENTRE_PART_SIZE_GATE:
+        out["reason"] = "box_head_sized"
+        return out
+    cx, cy = x + w / 2.0, y + h / 2.0
+    ink = (np.asarray(raw) == 0)
+    H, W = ink.shape
+    rad = int(3.2 * spacing)
+    X0, X1 = max(0, int(cx - rad)), min(W, int(cx + rad))
+    Y0, Y1 = max(0, int(cy - rad)), min(H, int(cy + rad))
+    if X1 <= X0 or Y1 <= Y0:
+        return None
+    sub = ink[Y0:Y1, X0:X1]
+    # a STEM: ink in a vertical run longer than the cut (a head is ~1.1 sp)
+    stem = np.zeros(sub.shape, dtype=bool)
+    cut = RECENTRE_PART_STEM_RUN_SPACES * spacing
+    for xi in range(sub.shape[1]):
+        col = sub[:, xi]
+        if not col.any():
+            continue
+        d = np.diff(np.concatenate([[0], col.astype(np.int8), [0]]))
+        for s0, e0 in zip(np.where(d == 1)[0], np.where(d == -1)[0]):
+            if e0 - s0 > cut:
+                stem[s0:e0, xi] = True
+    # a LINE row: ink past the head on both sides (2.73's own definition)
+    lo_l = int(round(cx - HEAD_LINE_ROW_BAND_SPACES[1] * spacing)) - X0
+    hi_l = int(round(cx - HEAD_LINE_ROW_BAND_SPACES[0] * spacing)) - X0
+    lo_r = int(round(cx + HEAD_LINE_ROW_BAND_SPACES[0] * spacing)) - X0
+    hi_r = int(round(cx + HEAD_LINE_ROW_BAND_SPACES[1] * spacing)) - X0
+    left = sub[:, max(0, lo_l):max(0, hi_l)]
+    right = sub[:, max(0, lo_r):max(0, hi_r)]
+    if left.shape[1] and right.shape[1]:
+        line_rows = (left.mean(axis=1) >= HEAD_LINE_ROW_FILL) \
+            & (right.mean(axis=1) >= HEAD_LINE_ROW_FILL)
+    else:
+        line_rows = np.zeros(sub.shape[0], dtype=bool)
+    out["line_rows"] = int(line_rows.sum())
+    ys, xs = np.mgrid[0:sub.shape[0], 0:sub.shape[1]]
+    half = RECENTRE_PART_HALF_WINDOW_SPACES * spacing
+    keep = sub & ~stem & ~line_rows[:, None] & (np.abs(xs + X0 - cx) <= half)
+    ey = cy
+    converged = False
+    n = 0
+    for _ in range(RECENTRE_PART_ITERATIONS):
+        pts = keep & (np.abs(ys + Y0 - ey) <= half)
+        n = int(pts.sum())
+        if n < RECENTRE_PART_MIN_INK_SPACES2 * spacing * spacing:
+            out["reason"] = "no_ink"
+            out["ink_spaces2"] = round(n / (spacing * spacing), 3)
+            return out
+        ny = float(ys[pts].mean() + Y0)
+        step = abs(ny - ey) / spacing
+        ey = ny
+        if step < RECENTRE_PART_CONVERGED_SPACES:
+            converged = True
+            break
+    shift = (ey - cy) / spacing
+    out.update(shift_sp=round(shift, 3),
+               shift_margin=round(abs(shift) - RECENTRE_PART_MIN_SHIFT_SPACES, 3),
+               max_shift_margin=round(RECENTRE_PART_MAX_SHIFT_SPACES - abs(shift), 3),
+               ink_spaces2=round(n / (spacing * spacing), 3))
+    if not converged:
+        out["reason"] = "not_converged"
+    elif abs(shift) < RECENTRE_PART_MIN_SHIFT_SPACES:
+        out["reason"] = "centred_enough"
+    elif abs(shift) > RECENTRE_PART_MAX_SHIFT_SPACES:
+        out["reason"] = "too_far"
+    else:
+        out["accepted"] = True
+        out["dy_sp"] = round(shift, 3)
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.73 -- a hollow head CUT BY A LINE.
 #
 # Sean (2026-10-09): *"In many of the hand label cells I have found that half
@@ -7972,6 +8126,27 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 if isinstance(cv, (list, tuple)) and len(cv) == 4:
                     box = tuple(float(v) for v in cv)
                     box_source = cut_rows[-1].id
+            # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default OFF): a
+            # box that is only PART of its head (2.39b's search declined it or
+            # never ran: it is not under 0.7) is moved vertically onto its
+            # head's own ink before the inside is read. Only THIS reader's window
+            # moves; no `Q.NOTEHEAD_RECENTRE` row is filed, so no other reader
+            # sees a different box. The reading is filed in the detail, taken or
+            # declined, with the margins.
+            part_boxed = None
+            if (part_boxed_recentre_enabled() and box_source is None
+                    and space_canonical and raw_img is not None
+                    and is_regular_notehead(str(d.smufl_name))
+                    and not log.rows(Q.NOTEHEAD_RECENTRE, g)):
+                part_boxed = recentre_part_boxed(raw_img, box, space_canonical)
+                if part_boxed is not None and part_boxed["accepted"]:
+                    ncx = box[0] + box[2] / 2.0
+                    ncy = box[1] + box[3] / 2.0 \
+                        + part_boxed["dy_sp"] * space_canonical
+                    bx0, bx1, by0, by1 = _standard_head_box(
+                        ncx, ncy, space_canonical)
+                    box = (bx0, by0, bx1 - bx0, by1 - by0)
+                    box_source = "part_boxed_recentre"
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
             m_net = notehead_ink_under(net_img, box) \
@@ -7992,6 +8167,8 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 extra["ink_off_line"] = m_off
             if box_source is not None:
                 extra["box_source"] = box_source
+            if part_boxed is not None and part_boxed["reason"] != "box_head_sized":
+                extra["part_boxed"] = part_boxed
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
