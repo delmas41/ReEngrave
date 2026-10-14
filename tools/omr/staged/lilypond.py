@@ -166,14 +166,20 @@ class _Bar:
     meter_return: bool = False
 
 
-def _lily_gap_text(gap_units: int, divisions: int) -> str:
+def _lily_gap_text(gap_units: int, divisions: int,
+                   word: Optional[str] = None) -> str:
     """The unread span: an invisible skip of its length under a red `unread`
     bracket (a text spanner) -- NO rest glyph (rule 8; Sean 2026-10-14). The
     zero-length skip ends the spanner at the span's end, even at the barline."""
-    frac = Fraction(gap_units, divisions) / 4
+    return _lily_gap_text_quarters(Fraction(gap_units, divisions), word)
+
+
+def _lily_gap_text_quarters(quarters: Fraction,
+                            word: Optional[str] = None) -> str:
+    frac = Fraction(quarters) / 4
     dur = ("%d" % frac.numerator if frac.denominator == 1
            else "%d/%d" % (frac.numerator, frac.denominator))
-    word = SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
+    word = word or SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
     tick = "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
     return (
         "\\once \\override TextSpanner.style = #'line "
@@ -594,11 +600,15 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
             # so which grob applies is read off the token itself rather than
             # guessed from the meter a second time. CONVENTION ASSUMED: `red`
             # approximates MusicXML's `#D00000`, and Sean may rename either.
-            grob = "MultiMeasureRest" if rest.startswith("R") else "Rest"
+            # ⚠️ SEAN, 2026-10-14 (ROADMAP 2.117): *"use the bracket for held
+            # bars too"* -- an invisible skip of the bar's length under a red
+            # text-spanner bracket, NO rest glyph (a rest, even red, reads as
+            # silence). The rest token above only sized the bar.
             word = SX.UNREAD_BAR_MARK_WORDS.get(bar.reason, bar.reason)
             counters["unread_bar_marks_written"] += 1
-            return (f"\\once \\override {grob}.color = #red "
-                   f'{rest}^\\markup {{ "{_ly_escape(word)}" }} |')
+            beats = Fraction(_legacy._measure_rest_beats(bar.meter)
+                             ).limit_denominator(64)
+            return _lily_gap_text_quarters(beats, word) + " |"
         return rest + " |"
     prefix = _meter_return_prefix(bar, counters)
     if bar.kind == "partial":

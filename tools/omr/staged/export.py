@@ -125,9 +125,13 @@ PARTIAL_BARS_ENV = "OMR_PARTIAL_BARS"
 
 
 def partial_bars_mode() -> str:
-    """`"off"` (default), `"measure"` or `"on"`. Read once per part, never per
-    bar; an unknown value is OFF (an allow-list, like every flag here)."""
+    """`"on"` (DEFAULT, Sean 2026-10-14: *"Land 2.117 on"*), `"measure"` (plans
+    and reports only) or `"off"` (`0`/`off`/`false`/`no`). Read once per part,
+    never per bar. Unset means on; a value that is set but unknown is OFF (an
+    allow-list, like every flag here)."""
     v = os.environ.get(PARTIAL_BARS_ENV, "").strip().lower()
+    if v == "":
+        return "on"
     if v in ("1", "true", "yes", "on"):
         return "on"
     if v == "measure":
@@ -4834,24 +4838,19 @@ def _marked_empty_measure(reason: str, time_sig: Optional[Dict[str, Any]],
     `to_musicxml` to equal the three reasons summed, and never touches
     `direction_words` or `dynamics`.
     """
+    # ⚠️⚠️ SEAN, 2026-10-14: *"use the bracket for held bars too"* (ROADMAP
+    # 2.117). A bar we could not read is an empty red bracket labelled with
+    # the word over an INVISIBLE `<forward>` of the bar's length -- NO
+    # `<rest>`, because a rest, even red, reads as silence (rule 8). The
+    # legacy renderer still sizes the bar and carries the marks; its final
+    # element (the whole-bar rest) is the one thing dropped.
     lines = _legacy._mxl_empty_measure(time_sig, divisions, directions, indent)
-    prefix = f"{indent}<note>"
-    marked: List[str] = []
-    for line in lines:
-        if line.startswith(prefix):
-            marked.append(f'{indent}<note color="{UNREAD_BAR_MARK_COLOR}">'
-                          + line[len(prefix):])
-        else:
-            marked.append(line)
+    beats = _legacy._mxl_measure_rest(time_sig)[0]
+    units = int(round(beats * divisions))
     word = UNREAD_BAR_MARK_WORDS.get(reason, reason)
-    marker = (f'{indent}<direction placement="above">\n'
-             f"{indent}  <direction-type>\n"
-             f"{indent}    <words>{_legacy._xml_escape(word)}</words>\n"
-             f"{indent}  </direction-type>\n"
-             f"{indent}</direction>")
     if counters is not None:
         counters["unread_bar_marks_written"] += 1
-    return [marker] + marked
+    return lines[:-1] + _gap_xml(units, 1, indent, word)
 
 
 #: ROADMAP 2.12k. `_meter_return_marker` reads `Q.METER`'s FULL verdict (not
@@ -5472,8 +5471,9 @@ def _unread_bracket_xml(kind: str, number: int, indent: str = "      "
             f"{indent}</direction>")
 
 
-def _unread_gap_direction_xml(indent: str = "      ") -> str:
-    word = UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL]
+def _unread_gap_direction_xml(indent: str = "      ",
+                              word: Optional[str] = None) -> str:
+    word = word or UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL]
     return (f'{indent}<direction placement="above">\n'
             f"{indent}  <direction-type>\n"
             f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">'
@@ -5482,12 +5482,13 @@ def _unread_gap_direction_xml(indent: str = "      ") -> str:
             f"{indent}</direction>")
 
 
-def _gap_xml(units: int, voice: int, indent: str = "      ") -> List[str]:
+def _gap_xml(units: int, voice: int, indent: str = "      ",
+             word: Optional[str] = None) -> List[str]:
     """The unread span: a red `unread` bracket over an INVISIBLE `<forward>`
     of the span's length -- no `<rest>` and no `<note>`, because a rest, even
     red, reads as silence (rule 8; Sean 2026-10-14)."""
     return [_unread_bracket_xml("start", voice, indent),
-            _unread_gap_direction_xml(indent),
+            _unread_gap_direction_xml(indent, word),
             f"{indent}<forward>\n{indent}  <duration>{units}</duration>\n"
             f"{indent}  <voice>{voice}</voice>\n{indent}</forward>",
             _unread_bracket_xml("stop", voice, indent)]

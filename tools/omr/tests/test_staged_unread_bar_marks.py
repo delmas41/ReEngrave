@@ -43,7 +43,33 @@ def _note(xml):
 
 
 def _directions(xml):
-    return ET.fromstring(xml).findall(".//direction")
+    """The `unread` WORD directions (a bracket direction has no words)."""
+    return [d for d in ET.fromstring(xml).findall(".//direction")
+            if d.find("./direction-type/words") is not None]
+
+
+def _brackets(xml):
+    return ET.fromstring(xml).findall(".//bracket")
+
+
+def _assert_bracket_no_rest(tc, xml, word):
+    """ROADMAP 2.117 (Sean 2026-10-14: *"use the bracket for held bars
+    too"*): an empty red bracket over an invisible span, never a rest."""
+    root = ET.fromstring(xml)
+    tc.assertEqual(root.findall(".//note"), [])
+    tc.assertEqual([b.get("type") for b in _brackets(xml)], ["start", "stop"])
+    tc.assertTrue(all(b.get("color") == SX.UNREAD_BAR_MARK_COLOR
+                      for b in _brackets(xml)))
+    tc.assertEqual(len(root.findall(".//forward")), 1)
+    tc.assertEqual(_directions(xml)[0].find("./direction-type/words").text,
+                   word)
+
+
+def _assert_lily_bracket(tc, text, word):
+    tc.assertIn("startTextSpan", text)
+    tc.assertIn("TextSpanner.color = #red", text)
+    tc.assertIn(word, text)
+    tc.assertNotIn("Rest.color", text)
 
 
 class TestAnUnreadBarIsMarked(unittest.TestCase):
@@ -52,15 +78,11 @@ class TestAnUnreadBarIsMarked(unittest.TestCase):
     def _page(self):
         return _one_staff_page(notes=[], meter=TWO_FOUR, n_measures=1)
 
-    def test_the_note_is_coloured_and_counted(self):
+    def test_the_bar_is_a_red_bracket_and_counted(self):
         xml, rep = SX.to_musicxml(self._page())
-        note = _note(xml)
-        self.assertEqual(note.get("color"), SX.UNREAD_BAR_MARK_COLOR)
+        _assert_bracket_no_rest(self, xml, UNREAD)
         self.assertEqual(rep["unread_bar_marks"]["unread"], 1)
         self.assertEqual(rep["unread_bar_marks"]["written"], 1)
-        # ⚠️ the withheld `measure="yes"` marker still stands beside the new
-        # one -- this roadmap item ADDS a marker, it does not replace 2.8's.
-        self.assertEqual(note.find("rest").get("measure"), "yes")
 
     def test_the_direction_names_it_unread(self):
         xml, _rep = SX.to_musicxml(self._page())
@@ -71,8 +93,7 @@ class TestAnUnreadBarIsMarked(unittest.TestCase):
 
     def test_lilypond_carries_the_same_colour_and_word(self):
         text, rep = staged_lily.to_lilypond(self._page())
-        self.assertIn("\\override Rest.color = #red", text)
-        self.assertIn(UNREAD, text)
+        _assert_lily_bracket(self, text, UNREAD)
         self.assertEqual(rep["unread_bar_marks"]["unread"], 1)
         self.assertEqual(rep["unread_bar_marks"]["written"], 1)
 
@@ -84,10 +105,9 @@ class TestAHeldOutBarIsMarked(unittest.TestCase):
     def _page(self):
         return _bar([("C4", QUARTER), ("D4", QUARTER), ("E4", QUARTER)])
 
-    def test_the_note_is_coloured_and_still_held_out(self):
+    def test_the_bar_is_a_red_bracket_and_still_held_out(self):
         xml, rep = SX.to_musicxml(self._page())
-        note = _note(xml)
-        self.assertEqual(note.get("color"), SX.UNREAD_BAR_MARK_COLOR)
+        _assert_bracket_no_rest(self, xml, HELD_SUM)
         self.assertEqual(rep["unread_bar_marks"]["held_out_sum"], 1)
         # ⚠️ marking is cosmetic -- 2.8's own accounting is unchanged by it.
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 1)
@@ -102,8 +122,7 @@ class TestAHeldOutBarIsMarked(unittest.TestCase):
 
     def test_lilypond_carries_the_same_colour_and_word(self):
         text, rep = staged_lily.to_lilypond(self._page())
-        self.assertIn("\\override Rest.color = #red", text)
-        self.assertIn(HELD_SUM, text)
+        _assert_lily_bracket(self, text, HELD_SUM)
         self.assertEqual(rep["unread_bar_marks"]["held_out_sum"], 1)
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 1)
 
@@ -161,6 +180,7 @@ class TestTheAccountingStillBalances(unittest.TestCase):
         self.assertEqual(marks["held_out_sum"], 1)
         self.assertEqual(marks["written"], 2)
         self.assertEqual(len(_directions(xml)), 2)
+        self.assertEqual(len(_brackets(xml)), 4)
         self.assertEqual(rep["status_census"]["unaccounted"], [])
         self.assertTrue(rep["balance"]["balanced"])
 

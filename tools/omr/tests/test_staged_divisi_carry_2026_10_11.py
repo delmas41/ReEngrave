@@ -10,7 +10,9 @@ A bar keeps the directions (two voices) only where EVERY chord of the bar has a
 decided direction AND the two streams carry equal time; otherwise it is left
 exactly as 2.89 left it. Heads on one stem stay one chord.
 """
+import os
 import unittest
+from unittest import mock
 import xml.etree.ElementTree as ET
 
 from tools.omr.staged import export as SX
@@ -84,7 +86,10 @@ class TestTwoVoicesAtOneXAreTwoVoices(unittest.TestCase):
         """The pre-2.90 state: the same record with no stem verdicts. If this
         stopped being refused the test above would prove nothing."""
         page = _two_voices_page(directions=(None, None, None), stems=(None,) * 3)
-        xml, rep = SX.to_musicxml(page)
+        # ROADMAP 2.117 is ON by default and would keep the D; this pins the
+        # whole-bar hold-out, so the flag is set off explicitly.
+        with mock.patch.dict(os.environ, {"OMR_PARTIAL_BARS": "off"}):
+            xml, rep = SX.to_musicxml(page)
         self.assertEqual(rep["notes_not_written"]["chord_value_undecided"], 2)
         self.assertEqual(_notes(xml), [])  # bar held out / padded, 3 notes gone
         self.assertTrue(rep["balance"]["balanced"])

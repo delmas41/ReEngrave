@@ -159,7 +159,7 @@ class TestATacetSpanIsPadded(unittest.TestCase):
         # equality this test checks, so the looser pattern still proves the
         # same thing the strict one did before the marker existed.
         notes = lambda bs: re.findall(          # noqa: E731
-            r"<note[^>]*>.*?</note>", "".join(bs), re.S)
+            r"<(?:note|forward)[^>]*>.*?</(?:note|forward)>", "".join(bs), re.S)
         self.assertTrue(notes(mine))            # positive control: not empty
         self.assertEqual(notes(mine), notes(theirs))
 

@@ -6132,3 +6132,6 @@ HAND-TRUTH pre-fill + STAGED ADJUDICATE. Cause: the hand-truth session cuts regi
 
 ## 2026-10-14 -- ROADMAP 2.117 partial bars (lane-2.117-partial-bars, NOT merged; crops with Sean)
 STAGED EXPORT, flag `OMR_PARTIAL_BARS` off|measure|1. A held bar keeps prefix + suffix around a red `unread` rest located by a refused glyph's box x; a short bar with no refused glyph stays held. Brahms 765/1,822 bars partial (+1,163 notes), Litolff 156/861 (+212); `bars_add_up` passes partial bars by construction so they are reported apart. FINDINGS in `benchmarks/omr-partial-bars-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.117 landed ON (partial bars + bracket for every unread bar)
+`OMR_PARTIAL_BARS` default on. A bar that does not add up keeps its prefix/suffix in blue; every unread bar (partial gap, held out whole, eventless) is an empty red `unread` bracket over an invisible `<forward>` / skip, never a rest; bars READ as silent (decided whole rest, tacet) keep their rest. Litolff 156 partial / 705 held, Brahms 765 / 1,057. Sean: "Land 2.117 on, use the bracket for held bars too". FINDINGS `benchmarks/omr-partial-bars-2026-10`.

@@ -7,7 +7,7 @@ usage: crops.py RECORD PDF EXPORT_DIR OUT_DIR
 Legend (also written on every image): black = read, blue = guessed
 (including every kept note of a partial bar), red bracket = unread stretch
 (nothing invented; no rest drawn there). One tile per bar; the last tile is a bar
-that STAYS held (its whole bar is red `unread`).
+that STAYS held (its whole bar is an empty red `unread` bracket).
 
 Frame control (it can fail): the five staff lines the record filed for the
 staff must stand out in the crop (mean ink on the line rows >= 2x the rows
@@ -97,8 +97,10 @@ def our_bar_png(b, entry, held, work):
     meter = entry["meter"] if entry else None
     n, d = ((meter or {}).get("numerator", 4), (meter or {}).get("denominator", 4))
     if held:
-        body = ('\\once \\override MultiMeasureRest.color = #red '
-                f'R1*{n}/{d}^\\markup {{ "unread" }}')
+        from fractions import Fraction
+        from tools.omr.staged import lilypond as LY
+        # Sean 2026-10-14: held bars use the bracket too (no rest glyph)
+        body = LY._lily_gap_text_quarters(Fraction(4 * n, d), "unread")
         clef, key = "treble", 0
     else:
         body = entry["text"]

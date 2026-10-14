@@ -127,9 +127,13 @@ class TestTheLilyPondTwin(unittest.TestCase):
         self.assertEqual(rep["guessed"]["by_rule"][
             "onset_from_partial_bar_suffix"], 2)
 
-    def test_off_has_no_spanner(self):
-        ly, _rep = self._ly("")
-        self.assertNotIn("startTextSpan", ly)
+    def test_off_keeps_no_note_of_the_held_bar(self):
+        """Off, the bar is held whole: one bracket over the whole bar and not
+        one kept note (on keeps three)."""
+        ly, _rep = self._ly("off")
+        self.assertIn("s1*1\\startTextSpan", ly)
+        self.assertNotIn("\\tweak color", ly)
+        self.assertNotRegex(ly, r"[a-g]'4")
 
 
 class TestABarWithNoLocatableGapStaysHeld(unittest.TestCase):
@@ -162,14 +166,14 @@ class TestTheFlag(unittest.TestCase):
     NOTES = TestPrefixAndSuffixAreKept.NOTES
 
     def test_off_and_measure_write_the_identical_file(self):
-        off, _ = _export(self.NOTES, mode="")
+        off, _ = _export(self.NOTES, mode="off")
         meas, rep = _export(self.NOTES, mode="measure")
         self.assertEqual(off, meas)
         self.assertEqual(rep["partial_bars"]["planned_bars"], 1)
         self.assertEqual(rep["partial_bars"]["written"], 0)
 
     def test_off_holds_the_bar_as_before(self):
-        xml, rep = _export(self.NOTES, mode="")
+        xml, rep = _export(self.NOTES, mode="off")
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 1)
         self.assertEqual(_steps(xml), [])
 
@@ -193,6 +197,70 @@ class TestAGuessedDurationEndsThePrefix(unittest.TestCase):
         self.assertEqual(len(p["pre"]), 1)
         self.assertEqual(len(p["mid"]), 1)
         self.assertEqual(len(p["suf"]), 1)
+
+
+class TestHeldBarsUseTheBracketToo(unittest.TestCase):
+    """Sean, 2026-10-14: *"use the bracket for held bars too"*. A bar held out
+    whole is an empty red `unread` bracket over an invisible span of the bar,
+    never a rest glyph; a bar we READ as silent keeps its whole rest."""
+    SHORT = [("C4", QUARTER), ("E4", QUARTER)]     # held: no locatable gap
+
+    def test_a_held_bar_is_a_red_bracket_and_no_rest(self):
+        xml, rep = _export(self.SHORT)
+        root = ET.fromstring(xml)
+        m = root.find(".//measure")
+        self.assertEqual(rep["bars_held_out_sum"]["bars"], 1)
+        self.assertEqual(list(m.iter("note")), [])
+        self.assertEqual([b.get("type") for b in m.iter("bracket")],
+                         ["start", "stop"])
+        self.assertTrue(all(b.get("color") == RED for b in m.iter("bracket")))
+        self.assertEqual([(x.text, x.get("color")) for x in m.iter("words")],
+                         [("unread", RED)])
+        div = int(root.find(".//divisions").text)
+        self.assertEqual(int(m.find("forward/duration").text), 4 * div)
+
+    def test_an_eventless_unread_bar_is_the_same_bracket(self):
+        xml, rep = _export([("C4", None)])
+        m = ET.fromstring(xml).find(".//measure")
+        self.assertEqual(rep["written"]["empty_bars_padded"], 1)
+        self.assertEqual(list(m.iter("note")), [])
+        self.assertEqual(len(list(m.iter("bracket"))), 2)
+
+    def test_the_counts_still_balance(self):
+        _xml, rep = _export(self.SHORT)
+        ubm = rep["unread_bar_marks"]
+        self.assertEqual(ubm["written"], ubm["held_out_sum"] + ubm["unread"]
+                         + ubm["partial"])
+
+    def test_a_bar_read_as_silent_keeps_its_rest(self):
+        # the READ whole-bar rest / tacet takes the legacy renderer directly
+        from tools.omr import export as legacy
+        lines = legacy._mxl_empty_measure(FOUR_FOUR, 8, None, "")
+        self.assertTrue(any("<rest" in l for l in lines))
+        self.assertNotIn("bracket", "".join(lines))
+
+    def test_lilypond_held_bar_is_a_skip_under_a_red_bracket(self):
+        with mock.patch.dict(os.environ, {"OMR_PARTIAL_BARS": "on"}):
+            ly, rep = LY.to_lilypond(_one_staff_page(notes=self.SHORT,
+                                                     meter=FOUR_FOUR))
+        bar = next(l for l in ly.splitlines() if "startTextSpan" in l)
+        self.assertIn("s1*1\\startTextSpan", bar)
+        self.assertIn('"unread"', bar)
+        self.assertNotRegex(bar, r"(?<![a-zA-Z\\])[rR][0-9]")
+        self.assertNotIn("MultiMeasureRest", bar)
+        ubm = rep["unread_bar_marks"]
+        self.assertEqual(ubm["written"], ubm["held_out_sum"] + ubm["unread"]
+                         + ubm["partial"])
+
+
+class TestDefaultIsOn(unittest.TestCase):
+    def test_unset_is_on_and_zero_is_off(self):
+        env = {k: v for k, v in os.environ.items() if k != "OMR_PARTIAL_BARS"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            self.assertEqual(SX.partial_bars_mode(), "on")
+        for v, want in (("0", "off"), ("off", "off"), ("measure", "measure")):
+            with mock.patch.dict(os.environ, {"OMR_PARTIAL_BARS": v}):
+                self.assertEqual(SX.partial_bars_mode(), want)
 
 
 if __name__ == "__main__":

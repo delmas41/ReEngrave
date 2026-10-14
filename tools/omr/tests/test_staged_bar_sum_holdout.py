@@ -28,7 +28,9 @@ one-copy-of-the-arithmetic claim is checked by COMPARING TWO NUMBERS
 (`TestOneCopyOfTheArithmetic`), not by grepping for a call.
 """
 
+import os
 import unittest
+from unittest import mock
 import xml.etree.ElementTree as ET
 
 from tools.omr.staged import export as SX
@@ -88,10 +90,12 @@ class TestABarThatDoesNotAddUpIsHeldOut(unittest.TestCase):
         xml, _rep = SX.to_musicxml(
             _bar([("C4", QUARTER), ("D4", QUARTER), ("E4", QUARTER)]))
         root = ET.fromstring(xml)
-        rests = root.findall(".//note/rest")
-        self.assertEqual(len(rests), 1)
-        self.assertEqual(rests[0].get("measure"), "yes")
-        self.assertEqual(root.find(".//note/duration").text, "8")
+        # ROADMAP 2.117 (Sean 2026-10-14: "use the bracket for held bars
+        # too"): the bar's length is held by an invisible span under a red
+        # bracket, never a rest glyph.
+        self.assertEqual(root.findall(".//note/rest"), [])
+        self.assertEqual(len(root.findall(".//bracket")), 2)
+        self.assertEqual(root.find(".//forward/duration").text, "8")
 
     def test_it_is_NOT_counted_as_a_bar_we_read_nothing_in(self):
         """⚠️ `empty_bars_padded` means *the detector found no event here*.
@@ -282,7 +286,10 @@ class TestItNeverCountsOneHeadTwice(unittest.TestCase):
         no head can land in both buckets. This bar's remaining quarter is one
         of two, so the bar IS held out — and the narrowed head is still
         counted exactly once, under `duration_narrowed`."""
-        _xml, rep = SX.to_musicxml(_bar([("C4", QUARTER), ("D4", None)]))
+        # ROADMAP 2.117 is ON by default and would keep the C; this pins the
+        # whole-bar hold-out accounting, so the flag is set off explicitly.
+        with mock.patch.dict(os.environ, {"OMR_PARTIAL_BARS": "off"}):
+            _xml, rep = SX.to_musicxml(_bar([("C4", QUARTER), ("D4", None)]))
         self.assertEqual(rep["notes_not_written"]["duration_narrowed"], 1)
         self.assertEqual(rep["notes_not_written"][REFUSAL], 1)
         self.assertEqual(rep["notes_not_written_total"], 2)
