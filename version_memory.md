@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.122 + 2.123 LANDED (export ledger balances; bar lists keyed by page/system/cell + ordinal)
+STAGED EXPORT bookkeeping, `tools/omr/staged/export.py` + `regather_report.py`; MusicXML/.ly unchanged. 2.122: the 92 uncounted Brahms boxes were 2.80b eighth rests written, now counted as reinstated refusals (ledger 3,407). 2.123: held-out/partial/unread bar lists carry bar_key (page, system, cell) + file ordinal; repeated printed numbers stay distinct; exporter raises if a list names a bar twice. Sean: "Yes". `benchmarks/omr-export-ledger-2026-10/FINDINGS.md`.
+
 ## 2026-10-14 -- ROADMAP 2.118 LANDED: detailed stage-by-stage re-gather report (Sean: "Land 2.118 once tests pass")
 
 Every overnight compare now writes a report per movement: bars by state, a per-symbol funnel GATHER -> EXPORT that must balance, guess certainty, cleanup per page/part, regression guards and night-over-night movers. Built on the existing readout/inventory/export-report tools. It found 2.122-2.125 (ledger imbalances). FINDINGS in `benchmarks/omr-regather-report-2026-10`.
@@ -6152,3 +6155,6 @@ STAGED GATHER counts + LILYPOND EXPORT. 2.124: Litolff's doubled staccatos on co
 
 ## 2026-10-14 -- ROADMAP 2.127 built (dots seen beside a plain note narrow it; flag OFF)
 STAGED ADJUDICATE. The "1,108 / ~390 dotted notes written plain" was mostly ledger (duplicates, ghost heads, superseded `used`); the real wrong rhythms are ~65-95 Brahms notes beside an unplaced dot, 9 twin-boxed dots, and narrowings without a dotted candidate. `OMR_AUG_DOT_JOIN` (default OFF): `aug_dot_join.reconcile_unjoined_dots` narrows such notes to {plain, dotted}; `_attached_dots` merges twin boxes; `regather_report` has a `dots` row. Truth p0: written plain 5 -> 1. Tiles: `out/print/2.127-review/`. `benchmarks/omr-aug-dots-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.121 landed ON (arc ink is not a beam)
+STAGED INFER, `OMR_ARC_INK_NOT_BEAM` default ON (`collapse_arc_ink_not_beam`): a bare stem whose only refused beam strokes are slur/tie ink or too thin/bowed collapses to the head's own unbeamed value, GUESSED (blue); never an eighth, no bar sum. Sean's 15 blind tiles: 9 of 13 changed notes exact, 0 quarters made eighths, both controls right; the 4 misses (2 missed dots, 1 extra dot, 1 Litolff half read black) are written blue and go to 2.127 / hollow-head work. Off-word turns it off. See benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 6.

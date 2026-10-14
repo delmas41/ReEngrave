@@ -149,7 +149,7 @@ def test_render_with_previous_shows_deltas():
     assert "Balance ledger" in md and "One screen" in md
 
 
-def test_a_repeated_bar_number_is_kept_apart(tmp_path):
+def test_a_repeated_bar_number_is_two_bars_named_by_ordinal(tmp_path):
     xml = """<score-partwise><part-list><score-part id="P1"><part-name>Flute</part-name></score-part></part-list>
     <part id="P1">
       <measure number="1"><note><rest/></note></measure>
@@ -159,10 +159,29 @@ def test_a_repeated_bar_number_is_kept_apart(tmp_path):
     f = tmp_path / "x.musicxml"
     f.write_text(xml)
     mx = RR.read_musicxml(f)
-    assert set(mx["cells"]) == {"P1|1", "P1|2", "P1|2#2"}      # the repeat does not overwrite
-    st = RR.bar_states({}, mx)
+    assert set(mx["cells"]) == {"P1|1", "P1|2", "P1|3"}        # the repeat does not overwrite
+    assert [mx["cells"][k]["number"] for k in ("P1|1", "P1|2", "P1|3")] == [1, 2, 2]
+    # the exporter names the unread bar by ORDINAL: the FIRST "2", not the second
+    cov = {"unread_bar_marks": {"unread": 1},
+           "unread_empty_bars": {"list": [{"part": "P1", "ordinal": 2, "measure": 2}]}}
+    st = RR.bar_states(cov, mx)
     assert st["total"] == 3 and st["bars_on_repeated_numbers"] == 1
     assert st["repeated_bar_numbers"] == [2]
+    assert {k: v for k, v in st["states"].items() if v} == {
+        "written plain": 1, "unread, empty": 1, "written with guesses": 1}
+    assert all(c["agrees"] for c in st["checks"])
+
+
+def test_the_refusal_crosscheck_counts_a_box_read_as_a_rest():
+    facts = {"funnels": [{"meaning": "duration", "family": "note",
+                          "refused": {"too_narrow": 5}}]}
+    cov = {"notes_not_written": {"not_a_notehead:too_narrow": 3},
+           "part_join": {"refusals_reinstated": {"refused_then_read_as_rest": {
+               "not_a_notehead:too_narrow": 2}}}}
+    row = RR._refusal_crosscheck(facts, cov)[0]
+    assert row["agrees"] and row["export_read_as_rest"] == 2
+    cov["part_join"]["refusals_reinstated"]["refused_then_read_as_rest"]["not_a_notehead:too_narrow"] = 1
+    assert not RR._refusal_crosscheck(facts, cov)[0]["agrees"]      # a control that can fail
 
 
 def test_the_overnight_compare_writes_the_report_as_a_last_harmless_step():

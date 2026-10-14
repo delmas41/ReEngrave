@@ -529,8 +529,9 @@ def read_musicxml(path: Path) -> Dict[str, Any]:
     number is the document bar number the exporter wrote."""
     import xml.etree.ElementTree as ET
     parts: Dict[str, str] = {}
-    cells: Dict[Tuple[str, int, int], Dict[str, int]] = {}
+    cells: Dict[Tuple[str, int], Dict[str, int]] = {}
     seen: Dict[Tuple[str, int], int] = collections.Counter()
+    ordinal = 0
     cur_part = None
     for ev, el in ET.iterparse(str(path), events=("start", "end")):
         tag = el.tag
@@ -538,13 +539,15 @@ def read_musicxml(path: Path) -> Dict[str, Any]:
             parts[el.get("id")] = (el.findtext("part-name") or el.get("id")).strip()
         elif ev == "start" and tag == "part":
             cur_part = el.get("id")
+            ordinal = 0
         elif ev == "end" and tag == "measure":
             try:
                 num = int(re.match(r"\d+", el.get("number") or "0").group(0))
             except Exception:                                   # noqa: BLE001
                 num = -1
+            ordinal += 1
             c = {"notes": 0, "rests": 0, "blue_notes": 0, "blue_other": 0,
-                 "red": 0, "unread_words": 0}
+                 "red": 0, "unread_words": 0, "number": num}
             for sub in el.iter():
                 col = (sub.get("color") or "").upper()
                 if sub.tag == "note":
@@ -560,17 +563,19 @@ def read_musicxml(path: Path) -> Dict[str, Any]:
                     c["unread_words"] += 1     # red since 2.103; uncoloured before
                 if col == UNREAD_RED.upper():
                     c["red"] += 1
-            # ⚠️ A bar number can REPEAT inside one part (first and second
-            # endings: Brahms 1 prints 189 and 190 twice). Keyed by number
-            # alone the second would overwrite the first, and the exporter's
-            # own held/partial lists are keyed by number too, so the repeat
-            # occurrence is kept apart (`#2`) and reported as unmatched.
+            # ⚠️ ROADMAP 2.123. A bar number can REPEAT inside one part
+            # (first and second endings: Brahms 1 prints 189 and 190 twice),
+            # so a bar is named by its ORDINAL -- its place among the part's
+            # `<measure>` elements, the same `ordinal` the exporter files on
+            # every bar list -- and the printed number is only a label.
             seen[(cur_part, num)] += 1
-            cells[(cur_part, num, seen[(cur_part, num)])] = c
+            c["repeat"] = seen[(cur_part, num)]
+            cells[(cur_part, ordinal)] = c
             el.clear()
     return {"parts": parts,
-            "cells": {f"{p}|{m}" + (f"#{k}" if k > 1 else ""): c for (p, m, k), c in cells.items()},
-            "repeated_bar_numbers": sorted({m for (p, m, k) in cells if k > 1})}
+            "cells": {f"{p}|{o}": c for (p, o), c in cells.items()},
+            "repeated_bar_numbers": sorted({c["number"] for c in cells.values()
+                                            if c["repeat"] > 1})}
 
 
 def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
@@ -581,28 +586,37 @@ def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
     plain. The exporter's own lists name the partial and held bars; the file
     supplies the rest. ⚠️ The derived counts are compared with the exporter's
     own totals -- a mismatch is returned, never smoothed."""
-    partial = {(b["part"], b["measure"]) for b in
+    def bid(e):
+        """ROADMAP 2.123: a bar is (part, ordinal); (part, printed number)
+        only for an old coverage file that carries no ordinal."""
+        return (e["part"], e["ordinal"] if "ordinal" in e else e["measure"])
+    partial = {bid(b) for b in
                (cov.get("partial_bars") or {}).get("bars", []) if b.get("status") == "partial"}
-    held = {(h["part"], h["measure"]) for h in
+    held = {bid(h) for h in
             (cov.get("bars_held_out_sum") or {}).get("held", [])}
-    held |= {(h["part"], h["measure"]) for h in
+    held |= {bid(h) for h in
              (cov.get("bars_held_out_unread_mark") or {}).get("held", [])}
-    held_in_partial_list = {(b["part"], b["measure"]) for b in
+    held_in_partial_list = {bid(b) for b in
                             (cov.get("partial_bars") or {}).get("bars", [])
                             if b.get("status") == "held"}
+    ordinal_keyed = all("ordinal" in e for e in (
+        list((cov.get("partial_bars") or {}).get("bars", []))
+        + list((cov.get("bars_held_out_sum") or {}).get("held", []))))
     states = collections.Counter()
     per_cell: Dict[str, str] = {}
     dup_bars = 0
     for key, c in mx["cells"].items():
         part, m = key.rsplit("|", 1)
-        if "#" in m:                       # a repeated bar number: not in the exporter's lists
-            dup_bars += 1
+        if c.get("repeat", 1) > 1:
+            dup_bars += 1                  # a repeated printed number (labelled)
+        # an old coverage file (no ordinals) can only say a bar by its number
+        k2 = (part, int(m) if ordinal_keyed else c.get("number", int(m)))
+        if not ordinal_keyed and c.get("repeat", 1) > 1:
             s = ("unread, repeated bar number" if c["unread_words"] else
                  "written with guesses" if (c["blue_notes"] or c["blue_other"]) else "written plain")
             states[s] += 1
             per_cell[key] = s
             continue
-        k2 = (part, int(m))
         if k2 in partial:
             s = "partial"
         elif k2 in held or k2 in held_in_partial_list:
@@ -638,6 +652,13 @@ def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
                        int(hs["bars"]) + int(hu.get("bars") or 0)))
     if ub.get("unread") is not None:
         checks.append(("unread-empty bars", states["unread, empty"], ub["unread"]))
+    ue = (cov.get("unread_empty_bars") or {}).get("list")
+    if ue is not None and ordinal_keyed:
+        # ROADMAP 2.123: the exporter names each of these bars; the file's
+        # bar at that ordinal must carry the red `unread` word.
+        in_file = sum(1 for b in ue
+                      if (mx["cells"].get(f"{b['part']}|{b['ordinal']}") or {}).get("unread_words"))
+        checks.append(("unread-empty bars named by the exporter", in_file, len(ue)))
     rn = mx.get("repeated_bar_numbers") or []
     return {"states": dict(states), "total": sum(states.values()),
             "repeated_bar_numbers": rn, "bars_on_repeated_numbers": dup_bars,
@@ -670,7 +691,7 @@ def cleanup_proxy(cov: Dict[str, Any], mx: Dict[str, Any], st: Dict[str, Any]) -
     names = {pid: (nm if counts[nm] == 1 else f"{nm} [{pid}]") for pid, nm in names.items()}
     for key, c in mx["cells"].items():
         part, m = key.rsplit("|", 1)
-        page = pg(int(m.split("#")[0]))
+        page = pg(int(c.get("number", m)))
         red = c["unread_words"]
         blue = c["blue_notes"] + c["blue_other"]
         for d in (per_page[page], per_cell[(names.get(part, part), page)]):
@@ -879,7 +900,13 @@ def _refusal_crosscheck(facts, cov) -> List[Dict[str, Any]]:
                 rec_ref[pre + k] += n
     for k, n in sorted(rec_ref.items()):
         e = nw.get(k, 0)
-        out.append({"reason": k, "record_refused": n, "export_dropped": e, "agrees": n == e})
+        # ROADMAP 2.122: a refused box that ADJUDICATE then read as an eighth
+        # rest is WRITTEN (as a rest), so it is in `refusals_reinstated`, not
+        # in the drops. The record's refusals = dropped + reinstated.
+        r = ((cov.get("part_join") or {}).get("refusals_reinstated") or {}) \
+            .get("refused_then_read_as_rest", {}).get(k, 0)
+        out.append({"reason": k, "record_refused": n, "export_dropped": e,
+                    "export_read_as_rest": r, "agrees": n == e + r})
     return out
 
 

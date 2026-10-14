@@ -1,0 +1,133 @@
+[
+ {
+  "tile": 1,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/3/0/11",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 2,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/2/0/5",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 3,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/2/0/6",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 4,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/11/0/9",
+  "rule_value": 1.0,
+  "dots": 0
+ },
+ {
+  "tile": 5,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/3/0/6",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 6,
+  "kind": "control_flag",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "truth q1009 (Sean: flag)"
+ },
+ {
+  "tile": 7,
+  "kind": "changed",
+  "doc": "litolff",
+  "page": 2,
+  "sub": "glyph/2/0/7/10/3",
+  "rule_value": 1.0,
+  "dots": 0
+ },
+ {
+  "tile": 8,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/3/0/3",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 9,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/2/0/4",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 10,
+  "kind": "control_beamed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "truth q93 (Sean: under a beam)"
+ },
+ {
+  "tile": 11,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/2/0/14",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 12,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/11/0/10",
+  "rule_value": 1.75,
+  "dots": 2
+ },
+ {
+  "tile": 13,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/11/0/4",
+  "rule_value": 1.0,
+  "dots": 0
+ },
+ {
+  "tile": 14,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 1,
+  "sub": "glyph/1/0/9/0/13",
+  "rule_value": 1.5,
+  "dots": 1
+ },
+ {
+  "tile": 15,
+  "kind": "changed",
+  "doc": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/3/0/10",
+  "rule_value": 1.5,
+  "dots": 1
+ }
+]
