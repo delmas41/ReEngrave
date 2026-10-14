@@ -111,24 +111,26 @@ class TestStagedOffStaffGlyph(unittest.TestCase):
         log = _run(log)
         self.assertNotEqual(_verdict(log, g).reason, "off_staff_glyph")
 
-    def test_CONTROL_missing_staff_extent_never_calls_a_head_far(self):
-        """Rule 8: no staff measured on the page is not 'no staff near'."""
+    def test_CONTROL_no_staff_geometry_never_calls_a_head_far(self):
+        """Rule 8: a staff with no measured lines is not 'no staff near'."""
         log = Log()
         _cell_geometry(log)
-        _staff(log, extent=None)
         g = _head(log, 0, spaces_above_top=15.0)
         log = _run(log)
         self.assertNotEqual(_verdict(log, g).reason, "off_staff_glyph")
 
-    def test_CONTROL_a_head_beside_the_staff_but_off_its_x_is_judged_by_the_gap(self):
-        """The staff has a left end: a head 40 spaces left of it on the staff's own
-        height is as far from it as one 40 spaces above."""
+    def test_CONTROL_a_head_on_a_staff_whose_recorded_extent_is_short_is_kept(self):
+        """The first cut measured 'past the staff's end' off `Q.STAFF_EXTENT` and
+        refused 14 real heads of Brahms 317803 pdf 1 (`glyph/1/1/11/7/1`, a plain
+        head on a staff whose recorded x_end was 4335 against lines running to
+        ~5500). The record's extent is the detector's span, not the printed end;
+        the vertical band is the whole question inside a staged cell."""
         log = Log()
         _cell_geometry(log)
-        _staff(log, extent=(2000.0, 4000.0))
-        g = _head(log, 0, spaces_above_top=-2.0, x=2000.0 - 40 * SP_PAGE)
+        _staff(log, extent=(400.0, 900.0))
+        g = _head(log, 0, spaces_above_top=-2.0, x=1500.0)      # on the staff, past 'its end'
         log = _run(log)
-        self.assertEqual(_verdict(log, g).reason, "off_staff_glyph")
+        self.assertEqual(_verdict(log, g).reason, "notehead")
 
 
 class TestRegistered(unittest.TestCase):

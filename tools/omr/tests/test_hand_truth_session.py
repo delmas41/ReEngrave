@@ -326,7 +326,7 @@ def test_a_detector_box_on_an_old_human_box_is_dropped(monkeypatch, cut):
     monkeypatch.setattr(yd, "YoloDetector", FakeDetector)
     regions = {x.id: images[x.id] for x in page.cells if x.kind != "measure"}
     rep = session.prefill_detector(page, mcells, regions, Path("w.pt"))
-    assert rep == {"boxes_queued": 1, "boxes_dropped_as_duplicates": 1}
+    assert (rep["boxes_queued"], rep["boxes_dropped_as_duplicates"], rep["refused_off_staff"]) == (1, 1, 0)
     assert sorted(q.source.split(":")[0] for q in page.queue) == ["detector", "sean-v18"]
     rest = next(q for q in page.queue if q.cls == "restQuarter")
     assert rest.rect == pytest.approx(c.to_page((500, 300, 520, 360)))

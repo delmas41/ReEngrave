@@ -30,6 +30,14 @@ queue and never truth:
 A detector box on the same mark as an old human box (same family, IoU >= 0.5)
 is dropped; so is the second of two detector boxes on one mark seen from two
 overlapping cells.
+
+A pitch-bearing detector box (head, rest, accidental, dot) at or past
+`staged.geometry.OFF_STAFF_REACH_SPACES` of every staff is never queued (ROADMAP
+2.108, Sean: *"the title text like symphonie is showing up as noteheads but
+there is no staff anywhere near"*): the region cells run the detector over the
+title and the margin names, and a letter's bowl comes back `noteheadBlack*`.
+His old-label proposals and his own boxes are never filtered. `prune-off-staff`
+removes the same boxes from an EXISTING page store's queue (dry run by default).
 """
 from __future__ import annotations
 

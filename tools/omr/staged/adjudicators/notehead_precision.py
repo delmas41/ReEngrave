@@ -2537,24 +2537,28 @@ def _staff_geometry(ev: Evidence, staff) -> Optional[Tuple[List[float],
 def _page_staff_bands(ev: Evidence, page) -> List[Tuple[float, float, float,
                                                          float, float]]:
     """`geometry.staff_bands`-shaped `(x0, x1, top, bottom, spacing)` for every
-    staff of `page`, off the record's own `Q.STAFF_LINES` / `Q.STAFF_SPACING` /
-    `Q.STAFF_EXTENT` rows (page frame). A staff missing any of the three is
-    left out -- it has no band to measure from. `ev.subjects` is cached on the
-    frozen log, and this runs only for a box past the reach, so it is not a
-    per-head walk."""
+    staff of `page`, off the record's own `Q.STAFF_LINES` / `Q.STAFF_SPACING`
+    (page frame). A staff missing either is left out -- it has no band to
+    measure from. `ev.subjects` is cached on the frozen log, and this runs only
+    for a box past the reach, so it is not a per-head walk.
+
+    ⚠️ THE X EXTENT IS DELIBERATELY NOT READ. `Q.STAFF_EXTENT` is the staff
+    DETECTOR's span and it is not the staff's printed end: on Brahms 317803
+    pdf 1 it stops at x=4290-4335 on staves whose lines run to x~5500, and a
+    first cut that measured "past the staff's end" refused 14 real heads
+    standing on those staves (`glyph/1/1/11/7/1`, a plain head on the line).
+    A staged cell is a staff band plus a pad cut at the staff's own bars, so a
+    head's x is already the staff's; the vertical band is the whole question
+    here (GATHER's own `_band_distance_spaces`)."""
+    inf = float("inf")
     out = []
     for st in ev.subjects(Kind.STAFF):
         if st.page != page:
             continue
         geo = _staff_geometry(ev, st)
-        ext = ev.rows(Q.STAFF_EXTENT, subject=st)
-        if geo is None or not ext:
+        if geo is None:
             continue
-        try:
-            x0, x1 = float(ext[-1].value[0]), float(ext[-1].value[1])
-        except (TypeError, ValueError, IndexError):
-            continue
-        out.append((x0, x1, geo[0][0], geo[0][-1], geo[1]))
+        out.append((-inf, inf, geo[0][0], geo[0][-1], geo[1]))
     return out
 
 
@@ -2588,15 +2592,6 @@ def _off_staff_glyph_refusal(ev: Evidence, box_row,
     cy = (float(page_box[1]) + float(page_box[3])) / 2.0
     ys, sp, _used = mine
     filed = _band_spaces(cy, ys, sp)
-    ext = ev.rows(Q.STAFF_EXTENT, subject=staff)
-    if filed is not None and ext:
-        # at the head's own x: past the staff's end the gap is straight-line
-        try:
-            filed = _geom.distance_to_staff_spaces(
-                cx, cy, [(float(ext[-1].value[0]), float(ext[-1].value[1]),
-                          ys[0], ys[-1], sp)])
-        except (TypeError, ValueError, IndexError):
-            pass
     if filed is None or filed < _geom.OFF_STAFF_REACH_SPACES:
         return None
     bands = _page_staff_bands(ev, staff.page)
@@ -2979,8 +2974,6 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ⚠️ ROADMAP 2.77b: the beam strokes the CV reader read and
                   # their ink rows -- see `_beam_piece_refusal`.
                   Q.BEAM_STROKE, Q.BEAM_STROKE_INK,
-                  # ROADMAP 2.108: every staff's x extent, for the nearest-staff reach.
-                  Q.STAFF_EXTENT,
                   # ⚠️ ROADMAP 2.49 REDESIGN -- RE-ADDED. 2.42's own comment
                   # above notes `Q.STEM` was dropped when 2.40's pair-wise
                   # rule was superseded; the POSITION test
@@ -3000,7 +2993,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
-          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.STAFF_EXTENT),
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
