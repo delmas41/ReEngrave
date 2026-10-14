@@ -1,0 +1,26 @@
+all stages: NEW tree ca46eae46c630707ae597b9db8a14c9cdb5fba75 (2026-10-14T11:29:23Z)  vs  OLD (20261011-night) tree cb73dde2af02db7344d42163a2380db0f6553b1f (2026-10-12T19:29:54Z)
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5782 ->         6361
+  notes_reaching_file.fraction                                           0.5072374769716642 -> 0.5580314062637074
+  bars_held_out_sum.n                                                            1044 ->          861
+  bars_held_out_sum.of                                                           4841 ->         5022
+  bars_held_out_sum.fraction                                             0.21565792191695932 -> 0.17144563918757466
+  bars_held_out_sum.noteheads_and_rests                                          2498 ->         1973
+  bars_held_out_sum.bars_on_a_doubled_staff                                        56 ->           59
+  bars_held_out_sum.named_in_the_export_report                                    988 ->          802
+  held_out.staff_not_identified                                                   133 ->            0
+  held_out.fraction                                                      0.011667690148258619 ->          0.0
+  unread_bars.empty_bars_padded                                                   680 ->          691
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          8198 ->         9148
+  notes_reaching_file.fraction                                           0.33792250618301733 -> 0.37708161582852434
+  bars_held_out_sum.n                                                            2553 ->         1822
+  bars_held_out_sum.of                                                           5955 ->         5987
+  bars_held_out_sum.fraction                                             0.4287153652392947 -> 0.3043260397527977
+  bars_held_out_sum.noteheads_and_rests                                          7650 ->         6192
+  bars_held_out_sum.named_in_the_export_report                                   2553 ->         1822
+  held_out.staff_not_identified                                                    64 ->            0
+  held_out.fraction                                                      0.0026380873866446827 ->          0.0
+  unread_bars.empty_bars_padded                                                   705 ->          684
