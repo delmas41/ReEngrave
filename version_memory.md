@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- Brahms 317803 pdf 0 hand truth complete (Sean)
+
+- `data/hand-truth/pages/imslp317803/0.json` 1,352 -> 1,566 boxes; remaining in-progress cells are words only. DECISIONS line.
+
 ## 2026-10-13 -- manager session end: START HERE written
 
 - ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
