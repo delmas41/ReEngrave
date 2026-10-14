@@ -1,0 +1,25 @@
+{
+ "family": {
+  "A duration narrowed": 24,
+  "D partial-bar gap": 6,
+  "B bar-sum hold-out": 21,
+  "E refused not-a-notehead": 5,
+  "G chord value undecided": 2,
+  "F detector: wrong class": 3,
+  "C detector: no box": 8
+ },
+ "fine": {
+  "A duration narrowed | duration left narrowed, no INFER collapse: beam_discounted_uncertain": 19,
+  "D partial-bar gap | inside the red unread gap of a partial bar": 6,
+  "A duration narrowed | duration left narrowed, no INFER collapse: beam_certain_not_joined": 2,
+  "B bar-sum hold-out | bar held: voice_overfull": 14,
+  "B bar-sum hold-out | bar held: nothing_before_or_after_the_gap": 4,
+  "E refused not-a-notehead | refused as not-a-notehead: stacked_head_duplicate": 5,
+  "A duration narrowed | duration left narrowed, no INFER collapse: beams_ambiguous": 2,
+  "A duration narrowed | duration left narrowed, no INFER collapse: flag_ink_unread": 1,
+  "G chord value undecided | chord value undecided (stem value abstained on a chord)": 2,
+  "B bar-sum hold-out | bar held: short_without_an_unread_symbol": 3,
+  "F detector: wrong class | class wrong (hollow head called black)": 3,
+  "C detector: no box | no box at all": 8
+ }
+}

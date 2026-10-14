@@ -1,0 +1,282 @@
+{
+ "self_match_brahms": {
+  "n": 382,
+  "stage7": 382,
+  "other": {}
+ },
+ "self_match_litolff": {
+  "n": 50,
+  "stage7": 50,
+  "other": {}
+ },
+ "shifted3_brahms": {
+  "n": 382,
+  "matched_any_notehead_box": 12
+ },
+ "shifted3_litolff": {
+  "n": 50,
+  "matched_any_notehead_box": 0
+ },
+ "xml_spot_check_written": {
+  "checked": 40,
+  "found_in_file": 40,
+  "first10": [
+   {
+    "id": "q1412",
+    "key": "glyph/0/0/11/6/7",
+    "part": 11,
+    "cell": "s0-st11-m6",
+    "record_pitch": "C4",
+    "in_file": true,
+    "file_bar_pitches": [
+     "C5",
+     "B3",
+     "D5",
+     "C4",
+     "E5",
+     "D4",
+     "F5"
+    ]
+   },
+   {
+    "id": "q1098",
+    "key": "glyph/0/0/9/6/2",
+    "part": 9,
+    "cell": "s0-st9-m6",
+    "record_pitch": "G5",
+    "in_file": true,
+    "file_bar_pitches": [
+     "D6",
+     "C6",
+     "C5",
+     "A5",
+     "C6",
+     "C6",
+     "B5",
+     "C5",
+     "G5",
+     "B5"
+    ]
+   },
+   {
+    "id": "q1487",
+    "key": "glyph/0/0/12/2/4",
+    "part": 12,
+    "cell": "s0-st12-m2",
+    "record_pitch": "A4",
+    "in_file": true,
+    "file_bar_pitches": [
+     "G4",
+     "A4",
+     "A4",
+     "A4"
+    ]
+   },
+   {
+    "id": "q1384",
+    "key": "glyph/0/0/11/5/3",
+    "part": 11,
+    "cell": "s0-st11-m5",
+    "record_pitch": "A4",
+    "in_file": true,
+    "file_bar_pitches": [
+     "E4",
+     "G4",
+     "F4",
+     "A4",
+     "G4",
+     "B4"
+    ]
+   },
+   {
+    "id": "q1077",
+    "key": "glyph/0/0/9/5/5",
+    "part": 9,
+    "cell": "s0-st9-m5",
+    "record_pitch": "C6",
+    "in_file": true,
+    "file_bar_pitches": [
+     "F6",
+     "E6",
+     "E5",
+     "C6",
+     "E6",
+     "D6"
+    ]
+   },
+   {
+    "id": "q947",
+    "key": "glyph/0/0/9/1/6",
+    "part": 9,
+    "cell": "s0-st9-m1",
+    "record_pitch": "E6",
+    "in_file": true,
+    "file_bar_pitches": [
+     "C6",
+     "D6",
+     "D6",
+     "E6",
+     "F6",
+     "G6"
+    ]
+   },
+   {
+    "id": "q1528",
+    "key": "glyph/0/0/12/4/6",
+    "part": 12,
+    "cell": "s0-st12-m4",
+    "record_pitch": "F4",
+    "in_file": true,
+    "file_bar_pitches": [
+     "A4",
+     "G4",
+     "G3",
+     "D4",
+     "G4",
+     "F4"
+    ]
+   },
+   {
+    "id": "q1180",
+    "key": "glyph/0/0/10/2/7",
+    "part": 10,
+    "cell": "s0-st10-m2",
+    "record_pitch": "A5",
+    "in_file": true,
+    "file_bar_pitches": [
+     "G5",
+     "A5",
+     "A5",
+     "A5"
+    ]
+   },
+   {
+    "id": "q1240",
+    "key": "glyph/0/0/10/6/0",
+    "part": 10,
+    "cell": "s0-st10-m6",
+    "record_pitch": "C4",
+    "in_file": true,
+    "file_bar_pitches": [
+     "D5",
+     "C5",
+     "C4",
+     "A4",
+     "C5",
+     "C5",
+     "B4",
+     "C4",
+     "G4",
+     "B4"
+    ]
+   },
+   {
+    "id": "q1178",
+    "key": "glyph/0/0/10/2/5",
+    "part": 10,
+    "cell": "s0-st10-m2",
+    "record_pitch": "A5",
+    "in_file": true,
+    "file_bar_pitches": [
+     "G5",
+     "A5",
+     "A5",
+     "A5"
+    ]
+   }
+  ]
+ },
+ "xml_spot_check_missed": {
+  "checked": 21,
+  "pitch_present_anyway": 5,
+  "bars_empty_in_file": 12,
+  "rows": [
+   {
+    "id": "q974",
+    "code": "duration_narrowed",
+    "record_pitch": "A6",
+    "pitch_in_bar": true,
+    "n_notes_in_bar": 1
+   },
+   {
+    "id": "q976",
+    "code": "unread_gap_in_partial_bar",
+    "record_pitch": "A6",
+    "pitch_in_bar": true,
+    "n_notes_in_bar": 1
+   },
+   {
+    "id": "q977",
+    "code": "duration_narrowed",
+    "record_pitch": "G6",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 1
+   },
+   {
+    "id": "q1007",
+    "code": "duration_narrowed",
+    "record_pitch": "A6",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1008",
+    "code": "held_bar:nothing_before_or_after_the_gap",
+    "record_pitch": "B6",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1009",
+    "code": "duration_narrowed",
+    "record_pitch": "A6",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1011",
+    "code": "held_bar:nothing_before_or_after_the_gap",
+    "record_pitch": "B6",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1272",
+    "code": "duration_narrowed",
+    "record_pitch": "C4",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1273",
+    "code": "duration_narrowed",
+    "record_pitch": "C5",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1277",
+    "code": "duration_narrowed",
+    "record_pitch": "G4",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1278",
+    "code": "duration_narrowed",
+    "record_pitch": "B4",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   },
+   {
+    "id": "q1317",
+    "code": "duration_narrowed",
+    "record_pitch": "C4",
+    "pitch_in_bar": false,
+    "n_notes_in_bar": 0
+   }
+  ]
+ },
+ "hook_total_brahms": 10311,
+ "hook_total_litolff": 6573
+}

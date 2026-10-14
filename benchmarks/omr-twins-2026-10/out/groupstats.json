@@ -1,0 +1,619 @@
+{
+ "A duration narrowed": {
+  "n": 24,
+  "missed": {
+   "conf": 0.807,
+   "w_sp": 1.282,
+   "h_sp": 1.137,
+   "ink": 1.0,
+   "cv_beams": 0.0,
+   "yolo_beams": 2.0,
+   "yolo_kept": 1.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.282,
+   "h_sp_truthbox": 1.138,
+   "beam_evidence": {
+    "none_over_this_note": 22,
+    "read": 2
+   },
+   "dur_reason": {
+    "narrowed:beam_discounted_uncertain": 19,
+    "narrowed:beam_certain_not_joined": 2,
+    "narrowed:beams_ambiguous": 2,
+    "narrowed:flag_ink_unread": 1
+   },
+   "n_narrowed_in_bar_median": 2.0,
+   "fate": {
+    "duration_narrowed": 24
+   },
+   "guess_rule": {
+    "null": 24
+   }
+  },
+  "twin": {
+   "conf": 0.8,
+   "w_sp": 1.284,
+   "h_sp": 1.15,
+   "ink": 1.0,
+   "cv_beams": 2.0,
+   "yolo_beams": 2.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.284,
+   "h_sp_truthbox": 1.15,
+   "beam_evidence": {
+    "none_over_this_note": 7,
+    "read": 11,
+    "flag": 5,
+    "reader_declined": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 23,
+    "narrowed:beam_discounted_uncertain": 1
+   },
+   "n_narrowed_in_bar_median": 0.0,
+   "fate": {
+    "written_plain": 18,
+    "written_blue": 6
+   },
+   "guess_rule": {
+    "null": 18,
+    "collapse_bare_stem_by_bar": 1,
+    "onset_from_partial_bar_suffix": 4,
+    "onset_from_partial_bar_prefix": 1
+   }
+  }
+ },
+ "B bar-sum hold-out": {
+  "n": 21,
+  "missed": {
+   "conf": 0.767,
+   "w_sp": 1.299,
+   "h_sp": 1.14,
+   "ink": 1.0,
+   "cv_beams": 0.0,
+   "yolo_beams": 2.0,
+   "yolo_kept": 1.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.311,
+   "h_sp_truthbox": 1.165,
+   "beam_evidence": {
+    "none_over_this_note": 11,
+    "flag": 3,
+    "reader_declined": 1,
+    "read": 6
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 21
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "held_bar:voice_overfull": 14,
+    "held_bar:nothing_before_or_after_the_gap": 4,
+    "held_bar:short_without_an_unread_symbol": 3
+   },
+   "guess_rule": {
+    "null": 21
+   }
+  },
+  "twin": {
+   "conf": 0.76,
+   "w_sp": 1.296,
+   "h_sp": 1.149,
+   "ink": 1.0,
+   "cv_beams": 0.0,
+   "yolo_beams": 1.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.3,
+   "h_sp_truthbox": 1.149,
+   "beam_evidence": {
+    "none_over_this_note": 9,
+    "read": 7,
+    "reader_declined": 4,
+    "flag": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 18,
+    "narrowed:beam_discounted_uncertain": 3
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "written_plain": 17,
+    "written_blue": 4
+   },
+   "guess_rule": {
+    "null": 17,
+    "reconcile_duration": 2,
+    "collapse_bare_stem_by_bar": 1,
+    "onset_from_partial_bar_prefix": 1
+   }
+  }
+ },
+ "C detector: no box": {
+  "n": 8,
+  "missed": {
+   "conf": null,
+   "w_sp": null,
+   "h_sp": null,
+   "ink": null,
+   "cv_beams": null,
+   "yolo_beams": null,
+   "yolo_kept": null,
+   "beams_not_by_ink": null,
+   "flags_attached": null,
+   "w_sp_truthbox": 1.2,
+   "h_sp_truthbox": 1.01,
+   "beam_evidence": {
+    "null": 8
+   },
+   "dur_reason": {
+    "null": 8
+   },
+   "n_narrowed_in_bar_median": null,
+   "fate": {
+    "not_detected": 8
+   },
+   "guess_rule": {
+    "null": 8
+   }
+  },
+  "twin": {
+   "conf": 0.354,
+   "w_sp": null,
+   "h_sp": 1.415,
+   "ink": 0.773,
+   "cv_beams": 0.0,
+   "yolo_beams": 0.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.21,
+   "h_sp_truthbox": 1.02,
+   "beam_evidence": {
+    "reader_declined": 5,
+    "none_over_this_note": 3
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 8
+   },
+   "n_narrowed_in_bar_median": 0.0,
+   "fate": {
+    "written_plain": 5,
+    "written_blue": 3
+   },
+   "guess_rule": {
+    "null": 5,
+    "fill_part_key": 3
+   }
+  }
+ },
+ "D partial-bar gap": {
+  "n": 6,
+  "missed": {
+   "conf": 0.75,
+   "w_sp": 1.295,
+   "h_sp": 1.16,
+   "ink": 1.0,
+   "cv_beams": 1.0,
+   "yolo_beams": 2.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.295,
+   "h_sp_truthbox": 1.16,
+   "beam_evidence": {
+    "flag": 2,
+    "read": 4
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 6
+   },
+   "n_narrowed_in_bar_median": 2.0,
+   "fate": {
+    "unread_gap_in_partial_bar": 6
+   },
+   "guess_rule": {
+    "null": 6
+   }
+  },
+  "twin": {
+   "conf": 0.784,
+   "w_sp": 1.3,
+   "h_sp": 1.16,
+   "ink": 1.0,
+   "cv_beams": 1.0,
+   "yolo_beams": 1.5,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.3,
+   "h_sp_truthbox": 1.16,
+   "beam_evidence": {
+    "read": 3,
+    "none_over_this_note": 2,
+    "flag": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 5,
+    "narrowed:beam_discounted_uncertain": 1
+   },
+   "n_narrowed_in_bar_median": 0.0,
+   "fate": {
+    "written_plain": 4,
+    "written_blue": 2
+   },
+   "guess_rule": {
+    "null": 4,
+    "onset_from_partial_bar_prefix": 1,
+    "collapse_bare_stem_by_bar": 1
+   }
+  }
+ },
+ "E refused not-a-notehead": {
+  "n": 5,
+  "missed": {
+   "conf": 0.67,
+   "w_sp": 1.33,
+   "h_sp": 1.08,
+   "ink": 1.0,
+   "cv_beams": 1.0,
+   "yolo_beams": 1.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.33,
+   "h_sp_truthbox": 1.08,
+   "beam_evidence": {
+    "read": 2,
+    "none_over_this_note": 2,
+    "flag": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 5
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "not_a_notehead:stacked_head_duplicate": 5
+   },
+   "guess_rule": {
+    "null": 5
+   }
+  },
+  "twin": {
+   "conf": 0.731,
+   "w_sp": 1.301,
+   "h_sp": 1.065,
+   "ink": 1.0,
+   "cv_beams": 0.0,
+   "yolo_beams": 1.0,
+   "yolo_kept": 1.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.301,
+   "h_sp_truthbox": 1.065,
+   "beam_evidence": {
+    "flag": 2,
+    "none_over_this_note": 2,
+    "read": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 4,
+    "narrowed:beam_discounted_uncertain": 1
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "written_plain": 4,
+    "written_blue": 1
+   },
+   "guess_rule": {
+    "null": 4,
+    "collapse_bare_stem_by_bar": 1
+   }
+  }
+ },
+ "F detector: wrong class": {
+  "n": 3,
+  "missed": {
+   "conf": 0.356,
+   "w_sp": 1.38,
+   "h_sp": 1.25,
+   "ink": 0.942,
+   "cv_beams": 0.0,
+   "yolo_beams": 0.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.2,
+   "h_sp_truthbox": 1.01,
+   "beam_evidence": {
+    "reader_declined": 2,
+    "none_over_this_note": 1
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 3
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "class_wrong:hollow_called_black": 3
+   },
+   "guess_rule": {
+    "null": 3
+   }
+  },
+  "twin": {
+   "conf": 0.301,
+   "w_sp": null,
+   "h_sp": 1.44,
+   "ink": 0.739,
+   "cv_beams": 0.0,
+   "yolo_beams": 0.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.2,
+   "h_sp_truthbox": 1.01,
+   "beam_evidence": {
+    "none_over_this_note": 1,
+    "reader_declined": 2
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 3
+   },
+   "n_narrowed_in_bar_median": 0,
+   "fate": {
+    "written_blue": 1,
+    "written_plain": 2
+   },
+   "guess_rule": {
+    "fill_part_key": 1,
+    "null": 2
+   }
+  }
+ },
+ "G chord value undecided": {
+  "n": 2,
+  "missed": {
+   "conf": 0.776,
+   "w_sp": 1.335,
+   "h_sp": 1.11,
+   "ink": 1.0,
+   "cv_beams": 3.0,
+   "yolo_beams": 5.0,
+   "yolo_kept": 0.0,
+   "beams_not_by_ink": 0.5,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.335,
+   "h_sp_truthbox": 1.111,
+   "beam_evidence": {
+    "none_over_this_note": 2
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 2
+   },
+   "n_narrowed_in_bar_median": 0.0,
+   "fate": {
+    "chord_value_undecided": 2
+   },
+   "guess_rule": {
+    "null": 2
+   }
+  },
+  "twin": {
+   "conf": 0.818,
+   "w_sp": 1.325,
+   "h_sp": 1.14,
+   "ink": 1.0,
+   "cv_beams": 3.5,
+   "yolo_beams": 5.5,
+   "yolo_kept": 0.5,
+   "beams_not_by_ink": 0.0,
+   "flags_attached": 0.0,
+   "w_sp_truthbox": 1.325,
+   "h_sp_truthbox": 1.14,
+   "beam_evidence": {
+    "read": 2
+   },
+   "dur_reason": {
+    "decided:head_and_marks": 2
+   },
+   "n_narrowed_in_bar_median": 0.0,
+   "fate": {
+    "written_plain": 2
+   },
+   "guess_rule": {
+    "null": 2
+   }
+  }
+ },
+ "_cascade": {
+  "B bar-sum hold-out": {
+   "n": 21,
+   "cascade": {
+    "another note in the bar was lost earlier (not_a_notehead:stacked_head_duplicate+not_a_notehead:too_narrow)": 5,
+    "another note in the bar was lost earlier (duration_narrowed)": 3,
+    "no earlier loss among the boxed notes of the bar": 10,
+    "another note in the bar was lost earlier (not_a_notehead:notehead_is_a_duplicate_box+not_a_notehead:tremolo_slash_crosses_stem)": 1,
+    "another note in the bar was lost earlier (not_a_notehead:head_cut_piece+not_a_notehead:too_narrow)": 1,
+    "another note in the bar was lost earlier (not_a_notehead:too_narrow+not_a_rest:rest_off_center)": 1
+   },
+   "bar_sums(want, per voice)": [
+    [
+     3.0,
+     [
+      4.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      1.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      1.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      1.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      6.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      4.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      7.0
+     ]
+    ]
+   ]
+  },
+  "D partial-bar gap": {
+   "n": 6,
+   "cascade": {
+    "another note in the bar was lost earlier (duration_narrowed)": 2,
+    "another note in the bar was lost earlier (duration_narrowed+not_a_notehead:stacked_head_duplicate+not_a_notehead:too_narrow)": 4
+   },
+   "bar_sums(want, per voice)": [
+    [
+     3.0,
+     [
+      1.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      1.0
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.5
+     ]
+    ],
+    [
+     3.0,
+     [
+      2.5
+     ]
+    ]
+   ]
+  }
+ }
+}
