@@ -137,6 +137,8 @@ class _Bar:
     #: ROADMAP 2.117 (`kind == "partial"`): per voice, a list of pieces, each
     #: `("events", [event, ...])` or `("gap", lilypond_text)`.
     pieces: Optional[List[List[Tuple[str, Any]]]] = None
+    #: `(page, system, staff, cell)` of a partial bar, for the report/crops.
+    where: Optional[Tuple[int, int, int, int]] = None
     directions: Sequence[Tuple[float, str, str]] = ()
     condensed: bool = False
     #: A fermata standing over a WHOLE-BAR measure rest (`kind == "empty"`
@@ -421,7 +423,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                         1 for e in shared_rests if e.get("fermata"))
                 bars.append(_Bar("partial", meter, run.clef, key,
                                  directions=directions, pieces=pieces,
-                                 condensed=condensed))
+                                 condensed=condensed,
+                                 where=(run.page, run.system, run.staff, i)))
                 continue
             if held is not None:
                 # ⚠️ THE SAME BRANCH SHAPE AS THE EVENTLESS CASE ABOVE, AND

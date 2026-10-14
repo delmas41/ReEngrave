@@ -4138,6 +4138,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                             "rows": _bar_event_rows(events),
                             "rows_written": partial.get("written_rows", 0),
                             "rows_in_gap": partial.get("gap_rows", 0),
+                            "prefix_events": [len(q.get("pre", ()))
+                                              for q in partial.get("streams", ())],
+                            "suffix_events": [len(q.get("suf", ()))
+                                              for q in partial.get("streams", ())],
                             "gap_quarters": (
                                 round(partial["gap_units"] / divisions, 6)
                                 if partial["ok"] else None)})
