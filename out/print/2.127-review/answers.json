@@ -1,0 +1,92 @@
+{
+ "tile_01": {
+  "dotted": false,
+  "answer": "staccatissimo",
+  "kind": "N1_decided_augmentation_foreign_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_02": {
+  "dotted": false,
+  "answer": null,
+  "kind": "N1_decided_augmentation_foreign_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_03": {
+  "dotted": false,
+  "answer": "staccato",
+  "kind": "N1_flag_tip_in_a_flag_box",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_04": {
+  "dotted": false,
+  "answer": "staccato",
+  "kind": "N1_decided_augmentation_foreign_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_05": {
+  "dotted": true,
+  "answer": "dotted_quarter",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_06": {
+  "dotted": false,
+  "answer": "staccatissimo",
+  "kind": "N1_decided_augmentation_foreign_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_07": {
+  "dotted": true,
+  "answer": "dotted_quarter",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_08": {
+  "dotted": false,
+  "answer": "quarter",
+  "kind": "CONTROL_plain_note_no_dot_near",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_09": {
+  "dotted": true,
+  "answer": "dotted_half",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_10": {
+  "dotted": true,
+  "answer": "dotted_half",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_11": {
+  "dotted": false,
+  "answer": "staccatissimo",
+  "kind": "N1_decided_augmentation_foreign_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_12": {
+  "dotted": true,
+  "answer": "dotted_quarter",
+  "kind": "CONTROL_dotted_note",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_13": {
+  "dotted": true,
+  "answer": "dotted_half",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2"
+ },
+ "tile_14": {
+  "dotted": true,
+  "answer": "dotted_quarter",
+  "kind": "N2_ambiguous_beside_plain_head",
+  "sean": "14. Dot 4 15. Stacatto"
+ },
+ "tile_15": {
+  "dotted": false,
+  "answer": "staccato",
+  "kind": "N1_flag_tip_in_a_flag_box",
+  "sean": "14. Dot 4 15. Stacatto"
+ }
+}

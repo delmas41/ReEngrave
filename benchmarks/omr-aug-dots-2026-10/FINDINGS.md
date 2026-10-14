@@ -26,7 +26,7 @@ Page-geometry cross-check (nearest decided head, any cell): 4,275 served, 35 bes
 * Litolff: of 154 `augmentationDot`-class boxes most are not dots at all (f/ff letter tips, slur ends, ledger pieces; 18 crops viewed); 15 augmentation is not a loss. The 39 -> staccato are mostly the same junk (a mis-role to show Sean, not a lengthening bug). No Litolff truth.
 * Side find: 21 dotted heads read `beam_levels: 1` with `beam_evidence: none_over_this_note` (a dotted quarter as 0.75?) -- not this item.
 
-## 3. Fix (`OMR_AUG_DOT_JOIN`, default OFF)
+## 3. Fix (`OMR_AUG_DOT_JOIN`, default ON since 2026-10-14)
 * `adjudicators/aug_dot_join.reconcile_unjoined_dots` (called from `adjudicate.run` after `Q.DURATION`): a dot SEEN beside a decided-plain note -- a decided augmentation dot naming it from another cell, or a `dot_role_ambiguous` dot in a wider window (gap -0.1..1.2 sp, |dy| <= 1.3 sp, not centred over another head) -- supersedes the duration with NARROWED {as read, one dot} (equal support; nothing chosen); a narrowing with no dotted candidate gains them. A dot inside a detected flag box is the flag's curl and narrows nothing. It never lengthens a note: a flag curl, a neighbour's staccato and a dot are one box.
 * `rhythm._attached_dots`: boxes within 0.3 sp of each other are one dot.
 * `regather_report.FUNNELS`: a `dots` row (family `dot`, meaning `dot_role`); `articulations` no longer claims staccato dots.
@@ -41,3 +41,12 @@ Page-geometry cross-check (nearest decided head, any cell): 4,275 served, 35 bes
 
 ## 5. Open
 Sean's tiles (15, 2 controls, hidden manifest `out/print/2.127-review/_hidden/manifest.json`) decide whether the window (1.2 / 1.3 sp) is right; then whether to widen the role window itself instead of narrowing. A re-decide of one page with the flag on would show INFER collapsing the narrowed notes.
+
+## 6. Sean's 15 tiles (2026-10-14) -- manager's read, scored against `_hidden/manifest.json`
+Answers in `out/print/2.127-review/answers.json` (his words in `sean`). Sean then said "Yes" to landing with the switch ON.
+* **N2, ambiguous dot beside a plain head (tiles 5, 7, 9, 10, 13, 14): 6 of 6 truly dotted.** The fix narrows each to plain/dotted (blue); 0 over-flagged.
+* **N1, "decided augmentation on a foreign head" (1, 2, 4, 6, 11): all staccato/staccatissimo, not dotted.** The head stays undotted (rhythm right) but the dot ROLE is wrong -- an articulation is called augmentation. Follow-up (role decision, not this lane).
+* **N1, dot inside a flag box (3, 15): staccatos**, correctly refused.
+* **Controls: 8 (plain) and 12 (dotted quarter) right.**
+* **Follow-up, head value:** tiles 9, 10, 13 are dotted HALVES, which today export as a quarter (9) or a whole (10, 13) -- a head-value error beyond the dot (hollow-head work).
+* Window (1.2 / 1.3 sp): no false narrowing seen on 15 tiles; still a measurement on one score.

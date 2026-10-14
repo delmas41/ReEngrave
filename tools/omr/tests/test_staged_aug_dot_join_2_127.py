@@ -1,5 +1,5 @@
 """ROADMAP 2.127 -- a dot SEEN beside a decided-plain note must not leave the
-note written plain and unmarked (`OMR_AUG_DOT_JOIN`, default OFF).
+note written plain and unmarked (`OMR_AUG_DOT_JOIN`, default ON).
 
 Every number is a real case from Brahms `overnight-20261013-night`
 (`benchmarks/omr-aug-dots-2026-10/FINDINGS.md`): page boxes in 600 dpi page
@@ -71,7 +71,7 @@ def _dot(log, key, canon, page, role, head=None, reason=None):
 
 
 def _reconcile(log, on=True):
-    with mock.patch.dict(os.environ, ON if on else {"OMR_AUG_DOT_JOIN": ""},
+    with mock.patch.dict(os.environ, ON if on else {"OMR_AUG_DOT_JOIN": "0"},
                          clear=False):
         return J.reconcile_unjoined_dots(log)
 
@@ -310,7 +310,7 @@ class TestOneDotBoxedTwiceIsOneDot(unittest.TestCase):
             log.observe(d, Q.AUG_DOT, (1615.0, 345.0 + dy),
                         reader=READERS.DETECTOR, frame="cell:0", score=sc,
                         detector_role="dot", detector_class="augmentationDot")
-        env = {"OMR_AUG_DOT_JOIN": "1" if flag else ""}
+        env = {"OMR_AUG_DOT_JOIN": "1" if flag else "0"}
         with mock.patch.dict(os.environ, env, clear=False):
             adjudicate.run(log)
         v = log.verdict(Q.DURATION, h)
@@ -337,6 +337,16 @@ class TestTheHookRunsAfterDuration(unittest.TestCase):
         with mock.patch.object(J, "reconcile_unjoined_dots") as m:
             adjudicate.run(log)
         self.assertEqual(m.call_count, 1)
+
+
+class TestDefaultIsOn(unittest.TestCase):
+    def test_default_on_and_off_words(self):
+        env = {k: v for k, v in os.environ.items() if k != "OMR_AUG_DOT_JOIN"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            self.assertTrue(J.aug_dot_join_enabled())
+        for w in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {"OMR_AUG_DOT_JOIN": w}):
+                self.assertFalse(J.aug_dot_join_enabled(), w)
 
 
 if __name__ == "__main__":

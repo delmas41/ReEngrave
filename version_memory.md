@@ -6158,3 +6158,6 @@ STAGED ADJUDICATE. The "1,108 / ~390 dotted notes written plain" was mostly ledg
 
 ## 2026-10-14 -- ROADMAP 2.121 landed ON (arc ink is not a beam)
 STAGED INFER, `OMR_ARC_INK_NOT_BEAM` default ON (`collapse_arc_ink_not_beam`): a bare stem whose only refused beam strokes are slur/tie ink or too thin/bowed collapses to the head's own unbeamed value, GUESSED (blue); never an eighth, no bar sum. Sean's 15 blind tiles: 9 of 13 changed notes exact, 0 quarters made eighths, both controls right; the 4 misses (2 missed dots, 1 extra dot, 1 Litolff half read black) are written blue and go to 2.127 / hollow-head work. Off-word turns it off. See benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 6.
+
+## 2026-10-14 -- ROADMAP 2.127 landed ON (a dot seen beside a plain note narrows it)
+STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN` default ON (`aug_dot_join.reconcile_unjoined_dots`, twin-dot-box merge in `rhythm.py`; explicit `0/false/no/off` disables). Sean's 15 tiles: all 6 ambiguous-dot notes truly dotted (now blue plain/dotted), controls right. Follow-ups: staccato/staccatissimo dots decided as augmentation (role wrong, rhythm right); dotted halves read as quarter/whole (hollow-head work). `benchmarks/omr-aug-dots-2026-10/FINDINGS.md` section 6.

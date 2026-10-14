@@ -1,5 +1,5 @@
 """ROADMAP 2.127 -- a dot that was SEEN beside a note must not leave that note
-written plain and unmarked (STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN`, default OFF).
+written plain and unmarked (STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN`, default ON).
 
 WHAT THE BRAHMS RECORD SAID, AND WHAT IT WAS. `augmentation_decided_but_
 unattached` counted 1,108 dots DECIDED augmentation that reach no duration, and
@@ -40,9 +40,10 @@ AUG_DOT_JOIN_ENV = "OMR_AUG_DOT_JOIN"
 
 
 def aug_dot_join_enabled() -> bool:
-    """DEFAULT OFF (Sean's tiles first): only `1`/`true`/`yes`/`on` turn it on."""
-    return os.environ.get(AUG_DOT_JOIN_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """DEFAULT ON (Sean, 2026-10-14: "Yes"): an explicit `0`/`false`/`no`/`off`
+    turns it off."""
+    return os.environ.get(AUG_DOT_JOIN_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 #: A dot with no decided role counts as "beside" a head when its left edge is
@@ -110,7 +111,7 @@ def _dotted_candidate(value: Dict[str, Any]) -> Dict[str, Any]:
 def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
     """Narrow every decided-plain note that has a dot seen beside it.
 
-    Run after `Q.DURATION`. `{}` unless `OMR_AUG_DOT_JOIN` is on. Returns the
+    Run after `Q.DURATION`. `{}` when `OMR_AUG_DOT_JOIN` is switched off. Returns the
     census (also what the tests read): `narrowed_decided_dot_named_this_head`,
     `narrowed_unplaced_dot_beside_this_head`, `dot_is_a_flag_tip`,
     `head_already_dotted_or_not_a_decided_note`, `no_head_beside_the_dot`.
