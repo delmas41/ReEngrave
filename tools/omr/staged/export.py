@@ -5324,15 +5324,25 @@ def _plan_one_stream(stream: List[Dict[str, Any]], want: int, divisions: int,
         if not _event_duration_certain(stream[k]):
             break
     suf.reverse()
-    # A tuplet cut by the gap is not written half-way.
-    while pre and _event_in_tuplet(stream[pre[-1]]) \
-            and pre[-1] + 1 < len(stream) and pre[-1] + 1 not in suf \
-            and _event_in_tuplet(stream[pre[-1] + 1]):
-        pre.pop()
-    while suf and _event_in_tuplet(stream[suf[0]]) \
-            and suf[0] - 1 >= 0 and suf[0] - 1 not in pre \
-            and _event_in_tuplet(stream[suf[0] - 1]):
-        suf.pop(0)
+    # A tuplet group the gap cut is not written half-way: the run of tuplet
+    # events touching the gap must be a whole number of its ratio's members.
+    def _actual(i: int) -> int:
+        t = next((h["tuplet"] for h in stream[i].get("noteheads") or ()
+                  if isinstance(h.get("tuplet"), dict)), None)
+        return max(1, int((t or {}).get("actual", 3)))
+
+    if pre and _event_in_tuplet(stream[pre[-1]]):
+        run = 0
+        while run < len(pre) and _event_in_tuplet(stream[pre[-1 - run]]):
+            run += 1
+        if run % _actual(pre[-1]) != 0:
+            del pre[len(pre) - run:]
+    if suf and _event_in_tuplet(stream[suf[0]]):
+        run = 0
+        while run < len(suf) and _event_in_tuplet(stream[suf[run]]):
+            run += 1
+        if run % _actual(suf[0]) != 0:
+            del suf[:run]
     kept = set(pre) | set(suf)
     gap = want - sum(units[k] for k in kept)
     mid = [stream[k] for k in range(len(stream)) if k not in kept]
