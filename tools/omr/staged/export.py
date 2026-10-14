@@ -378,7 +378,9 @@ def guessed_report(counters: Dict[str, int]) -> Dict[str, Any]:
                if k.startswith("guessed_by_rule:") and n}
     notes = int(counters.get("guessed_notes", 0))
     rests = int(counters.get("guessed_rests", 0))
-    return {"notes": notes, "rests": rests, "total": notes + rests,
+    dyns = int(counters.get("guessed_dynamics", 0))
+    return {"notes": notes, "rests": rests, "dynamics": dyns,
+            "total": notes + rests + dyns,
             "by_rule": dict(sorted(by_rule.items()))}
 
 
@@ -2925,6 +2927,14 @@ def _count_directions(counters: Dict[str, int],
     it.
     """
     for _x, kind, text in directions:
+        if kind == "dynamics_guess":
+            # ROADMAP 2.107: a GUESSED dynamic (a NARROWED one written as the
+            # ink's closest candidate, or as `dyn.`) is a dynamic that reached
+            # the file, and a guess: counted in BOTH places, by deciding rule.
+            counters["dynamics"] += 1
+            counters["guessed_dynamics"] += 1
+            counters["guessed_by_rule:" + json.loads(text)["guess"]["rule"]] += 1
+            continue
         if kind == "marking":
             # ROADMAP 2.68: one `<direction>`, but a `<words>` AND its
             # `<dynamics>` reached the file -- each family counts its own.
@@ -2962,20 +2972,39 @@ def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     decisions apply ONE rule (`A.is_relocated_copy`) at two stages, which is
     why the rule and its argument live in `adjudicate.py` rather than twice.
 
-    ⚠️ A NARROWED VERDICT WRITES NOTHING, DELIBERATELY. An unspellable run
-    (`Ruling.narrow`, "there is a mark here and I cannot spell it") is not
-    `decided`, so `rec.value` returns None and it never reaches the file. That
-    is `OMR_PARTIAL_DYNAMICS`, which was built, measured over the 20-row scan
-    gate and REFUSED: `complete` costs +15 edits with NOT ONE ROW BETTER,
-    `other` +30. Do not resurrect it on this path without re-pricing it here.
+    ⚠️ A NARROWED VERDICT IS WRITTEN AS A GUESS (ROADMAP 2.107, Sean
+    2026-10-13, which replaces this paragraph's earlier "writes nothing"). An
+    unspellable run -- letters seen, not all read -- is written BLUE: as the
+    candidate the ink scores closest where INFER's `collapse_dynamic_by_ink`
+    chose one, as `dyn.` where it did not, carrying every candidate
+    (`_dynamic_guess`). The earlier `OMR_PARTIAL_DYNAMICS` experiment (an
+    unmarked partial word, +15/+30 edits, refused) is a different thing: that
+    wrote the agreed prefix PLAIN; this is never plain.
     """
     for key, run in runs.items():
         for cell_index in range(run.n_measures):
             sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
             words = rec.value(Q.DYNAMIC, sub)
+            verdict = rec.verdict(Q.DYNAMIC, sub) or {}
+            # ⚠️ ROADMAP 2.107 (Sean 2026-10-13: *"maybe the closest dynamic we
+            # can guess with the info that we have?"* / *"can it just say dyn.
+            # in blue"*). A dynamic whose letters were seen and not all read
+            # is NEVER written plain: INFER's `collapse_dynamic_by_ink` made it
+            # the candidate the ink scores closest (value is one word, a
+            # string), or it is still NARROWED and is written `dyn.`; either
+            # way blue, carrying every candidate.
+            guessed = _dynamic_guess(rec, verdict, words)
+            if guessed is not None:
+                x, shown, guess = guessed
+                cell = run.cells.setdefault(
+                    cell_index, Cell(run.page, run.system, run.staff, cell_index))
+                cell.directions.append((x, "dynamics_guess", json.dumps(
+                    {"text": shown, "guess": guess}, sort_keys=True,
+                    ensure_ascii=False)))
+                cell.directions.sort()
+                continue
             if not isinstance(words, list) or not words:
                 continue
-            verdict = rec.verdict(Q.DYNAMIC, sub) or {}
             detail = verdict.get("detail") or {}
             # ⚠️ THE X IS THE DECISION'S OWN, IN PAGE PIXELS, and it is only
             # used to ORDER marks within one bar. It is NOT compared against a
@@ -2995,6 +3024,82 @@ def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
             cell.directions.sort()
     _place_direction_words(rec, runs)
     _place_markings(rec, runs)
+
+
+def _dynamic_guess(rec: Record, v: Dict[str, Any], words: Any
+                   ) -> Optional[Tuple[float, str, Dict[str, Any]]]:
+    """`(x, text shown, guess record)` for a GUESSED dynamic, else None.
+
+    Two cases, both from the verdict's own chain and never a side table: INFER's
+    `collapse_dynamic_by_ink` DECIDED a one-word string (shown: that word), or
+    `adjudicate_dynamic` is still NARROWED / abstained `unspellable` (shown:
+    `dyn.`). A READ dynamic (a list of words) returns None and is written plain."""
+    inferred = (isinstance(words, str)
+                and str(v.get("decider") or "").startswith("infer:"))
+    still_open = (v.get("outcome") in ("narrowed", "abstained")
+                  and v.get("decider") == "adjudicate_dynamic"
+                  and v.get("reason") == "unspellable")
+    if not (inferred or still_open):
+        return None
+    base = v
+    seen = set()
+    while base.get("supersedes") and base["id"] not in seen:
+        seen.add(base["id"])
+        nxt = rec.verdict_by_id(base["supersedes"])
+        if nxt is None:
+            break
+        base = nxt
+    d = v.get("detail") or {}
+    bdetail = base.get("detail") or {}
+    opened = [w for w in (bdetail.get("words") or [])
+              if isinstance(w, dict) and not w.get("spelled")]
+    x = float((opened[0].get("x_page") if opened else None) or 0.0)
+    cands = _guess_candidates(base)
+    if not cands:
+        cands = [{"value": c, "support": None}
+                 for c in (bdetail.get("completions") or ())]
+    guess: Dict[str, Any] = {
+        "stage": "INFER" if inferred else "ADJUDICATE",
+        "rule": "collapse_dynamic_by_ink" if inferred
+                else "dynamic_with_an_unread_letter",
+        "quantity": Q.DYNAMIC, "candidates": cands,
+        "chosen": {"value": words if inferred else None},
+        "evidence": "the letter reader's own score for the open letter(s)"}
+    if inferred:
+        guess["margin"] = d.get("margin")
+        guess["runner_up"] = d.get("runner_up")
+        guess["ink_scores"] = d.get("ink_scores")
+    return x, (words if inferred else "dyn."), guess
+
+
+def _dynamic_guess_xml(payload: str, indent: str) -> str:
+    """A GUESSED dynamic: `<dynamics color=...>` holding the word (or a
+    `<words color=...>dyn.</words>` where the ink favoured none), and a second
+    `<direction-type>` with `<other-direction>reengrave:guessed {json}` -- the
+    direction twin of 2.103's `<other-notation>` carrier (a `<notations>` child
+    cannot sit in a `<direction>`; `<other-direction>` is the schema's own
+    extension point there)."""
+    m = json.loads(payload)
+    text = m["text"]
+    if text == "dyn.":
+        shown = (f'<words color="{GUESS_COLOR}">'
+                 f'{_legacy._xml_escape(text)}</words>')
+    else:
+        inner = (f"<{text}/>" if text in _legacy._DYNAMIC_ELEMENTS
+                 else f"<other-dynamics>{_legacy._xml_escape(text)}"
+                      f"</other-dynamics>")
+        shown = f'<dynamics color="{GUESS_COLOR}">{inner}</dynamics>'
+    body = json.dumps(m["guess"], sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False)
+    body = body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return (f'{indent}<direction placement="below">\n'
+            f"{indent}  <direction-type>\n{indent}    {shown}\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}  <direction-type>\n"
+            f"{indent}    <other-direction>reengrave:guessed {body}"
+            f"</other-direction>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
 
 
 def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
@@ -3117,6 +3222,8 @@ def _marking_direction_xml(payload: str, indent: str) -> str:
 def _direction_xml(kind: str, text: str, indent: str) -> str:
     if kind == "marking":
         return _marking_direction_xml(text, indent)
+    if kind == "dynamics_guess":
+        return _dynamic_guess_xml(text, indent)
     return _legacy._mxl_direction((kind, text), indent)
 
 

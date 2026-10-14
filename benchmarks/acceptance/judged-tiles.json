@@ -1,6 +1,6 @@
 {
- "n_items": 51,
- "n_tiles": 626,
+ "n_items": 52,
+ "n_tiles": 637,
  "tiles": [
   {
    "answer": "right",
@@ -3106,6 +3106,237 @@
    "subjects": null,
    "tile": "tile_12",
    "value": null
+  },
+  {
+   "answer": "8 rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    1499.0,
+    1826.0,
+    2030.0,
+    2183.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": 0.5
+  },
+  {
+   "answer": "pp",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "dvorak",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    2284.0,
+    1711.0,
+    2921.0,
+    2108.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "10",
+   "value": "dynamic"
+  },
+  {
+   "answer": "sf",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    2064.0,
+    344.0,
+    2389.0,
+    548.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "11",
+   "value": "dynamic"
+  },
+  {
+   "answer": "espress. (a word)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "dvorak",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    1266.0,
+    5740.0,
+    2098.0,
+    6140.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": null
+  },
+  {
+   "answer": "ff",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    1411.0,
+    2906.0,
+    1752.0,
+    3107.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": "dynamic"
+  },
+  {
+   "answer": "pp",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    1757.0,
+    352.0,
+    2102.0,
+    556.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "4",
+   "value": "dynamic"
+  },
+  {
+   "answer": "pp",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    837.0,
+    1864.0,
+    1175.0,
+    2068.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "5",
+   "value": "dynamic"
+  },
+  {
+   "answer": "ff",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    1410.0,
+    2083.0,
+    1755.0,
+    2287.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "6",
+   "value": "dynamic"
+  },
+  {
+   "answer": "8 rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    2745.0,
+    5986.0,
+    3278.0,
+    6346.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "7",
+   "value": 0.5
+  },
+  {
+   "answer": "ff",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    3763.0,
+    2493.0,
+    4326.0,
+    2847.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "8",
+   "value": "dynamic"
+  },
+  {
+   "answer": "pp",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-13",
+   "doc": "dvorak",
+   "followup": false,
+   "item": "2.107-review",
+   "page_box": [
+    2268.0,
+    2211.0,
+    2918.0,
+    2615.0
+   ],
+   "question_kind": "dynamic",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "9",
+   "value": "dynamic"
   },
   {
    "answer": "Ledger line",

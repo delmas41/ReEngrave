@@ -524,6 +524,8 @@ class TestTheDefaultsAreSeparate(unittest.TestCase):
     so a rule that silently stops being unflagged -- or a flagged rule that
     silently becomes unflagged -- fails here loudly."""
 
+    #: (`collapse_dynamic_by_ink`, ROADMAP 2.107, is NOT here: Sean 2026-10-13
+    #: "land with blue dyn only" put it behind default-OFF `OMR_DYNAMIC_INK_PICK`.)
     PROMOTED = ["collapse_slot_index_to_family_block", "fill_clef_gap"]
 
     #: ⚠️ EVERY remaining per-rule flag, DERIVED from the registry rather than

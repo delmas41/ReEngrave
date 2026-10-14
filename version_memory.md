@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- ROADMAP 2.107 LANDED with blue `dyn.` only (Sean: "land with blue dyn only")
+
+- STAGED, INFER + EXPORT. `collapse_dynamic_by_ink` moved from `ALWAYS_ON` to default-OFF research flag `OMR_DYNAMIC_INK_PICK` (allow-list; `docs/flags-2026-09.md`): the ink pick was wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). A narrowed dynamic exports only as a blue `dyn.` with every candidate and the ink scores in the `reengrave:guessed` carrier. `test_dynamic_guess_2_107.py` + `test_infer_stage.py` updated. Opened ROADMAP 2.109 (STAGED LilyPond writes no dynamics). Fast tier 7,751 passed; check 192, margins 0; judged index rebuilt.
 ## 2026-10-13 -- Brahms 317803 pdf 0 hand truth complete (Sean)
 
 - `data/hand-truth/pages/imslp317803/0.json` 1,352 -> 1,566 boxes; remaining in-progress cells are words only. DECISIONS line.
@@ -16,6 +19,12 @@ measurement; this file is the WHEN and WHAT of each commit.
 ## 2026-10-13 -- manager session end: START HERE written
 
 - ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
+## 2026-10-13 -- ROADMAP 2.107 dynamic letters the detector never boxed are READ, library-checked (branch `lane-2.107-dynamic-letters`, NOT merged; Sean judges `out/print/2.107-review/` first)
+
+- STAGED, GATHER + ADJUDICATE. Sean on 2.90 tile 9 (Litolff p2 `sf`, boxed note + two `rest16th`): *"sf should be read as a dynamic - it is letters"*. New `staged/letter_look.py` (pure) + `gather.gather_letter_look` (after the rescue, before every `detections` reader): the SAME detector (new `YoloDetector.detect_image`) is shown the staff-line-erased ink of a head/rest group at a two-scale probe, then five scales under two erasures; a letter needs >= 0.7 on >= 4 looks and the tight erasure's agreement; the string must be a `dynamics` entry of the 2.67 terms library; an unread letter beside a read one is an open slot (NARROWED, never guessed). Read letters are appended as `dynamic*` detections under `READERS.LETTER_LOOK` (`gather_dynamic_letters` now attributes each letter to the reader that boxed it); `Q.LETTER_LOOK_COVER` on the head/rest boxes they explain; `adjudicators/letter_cover.py` + a few lines in `notehead_precision` / `family_precision` refuse them (`on_a_dynamic_letter`, `rest_on_a_dynamic_letter`, margin recorded). `staged/letter_look_report.py` reads a record and counts what the look did.
+- Reach: Litolff 16 pp 3 read + 2 narrowed of 1,528 groups (14 heads/rests refused), Brahms 27 pp 1 of 6,018, Dvorak (held out) 1 + 1, Schumann / Tchaikovsky 0. Small re-gathers base vs arm on one tree: Litolff pp.1-3 differ in exactly tile 9; Brahms pp.0-1 zero. The tile 9 and p10 `sf` come out narrowed (`mf/rf/sf`), so EXPORT writes none; an INFER collapse by the document's own tally is the open step (Sean's yes).
+- 52 tests (`test_letter_look_2026_10_13.py`, RED on `origin/main`: the modules do not exist); fast tier 7,719 passed; `staged.check` 192 (unchanged), margins part 0. Tiles `out/print/2.107-review/` (11).
+- Same day, after Sean judged the tiles: tile 8 (Brahms `ff` decided `f`) fixed -- `regions_from` splits a cluster showing two same-class boxes at one scale, `_remnant_slots` narrows a read letter with letter-sized ink beside it; a NARROWED dynamic is now INFER-collapsed by `collapse_dynamic_by_ink` to the candidate the ink's own score (`letter_look.slot_evidence`, lower of two erasures, via `completion_support` in `adjudicate_dynamic`) favours, or left for EXPORT's blue `dyn.`; EXPORT writes it blue with an `<other-direction>reengrave:guessed` carrier (`_dynamic_guess`, `dynamics_guess`), counted in `guessed.dynamics`. The ink picks `mp`/`mf` where the print is `pp`/`sf` (tiles 10/11): reported, not tuned. 14 + 55 tests; `test_infer_stage` now lists three unflagged rules; judged index rebuilt.
 
 ## 2026-10-13 -- ROADMAP 2.106 steps 1-2: margins on threshold refusals + the index of Sean's judged tiles (`lane-2.106-margins-index`, NOT merged)
 
