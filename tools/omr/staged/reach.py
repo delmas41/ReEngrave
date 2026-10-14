@@ -384,6 +384,9 @@ ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 #: decoration.
 NOT_A_STAGE = frozenset({
     "inventory.py", "health.py", "wiring.py", "gather_coverage.py",
+    # ROADMAP 2.118: the detailed re-gather report. Reads a saved record, the
+    # exporter's own report and the MusicXML; runs no stage, decides nothing.
+    "regather_report.py",
     "check_helpers.py", "margins.py", "judged.py",
     # ⚠️ ROADMAP 2.114. Pure helpers for `gather.gather_second_hollow` (the flag, the class list, box matching): files no row, names
     # no quantity, so it is neither a reader nor a decider.
