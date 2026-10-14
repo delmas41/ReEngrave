@@ -136,8 +136,9 @@ class TestPureCentreOfAPartBox(unittest.TestCase):
     def test_CONTROL_an_undersized_box_already_on_its_head_is_a_no_op(self):
         """Undersized (0.83 x 0.81) but CENTRED: the ink centre is where the
         box is, so nothing moves and the refusal says how close it came."""
-        img, _ = _tile13()
-        r = gather.recentre_part_boxed(img, _box(150.0, 180.0, 0.83, 0.81, 0.0), S)
+        img = _paper()
+        _head(img, 150.0, 160.0, hollow=False)
+        r = gather.recentre_part_boxed(img, _box(150.0, 160.0, 0.83, 0.81, 0.0), S)
         self.assertFalse(r["accepted"])
         self.assertEqual(r["reason"], "centred_enough")
         self.assertLess(r["shift_margin"], 0.0)         # signed: short of the cut
@@ -162,6 +163,24 @@ class TestPureCentreOfAPartBox(unittest.TestCase):
         r = gather.recentre_part_boxed(img, box, S)
         self.assertTrue(r["accepted"], r)
         self.assertAlmostEqual(r["dy_sp"], 0.3, delta=0.15)
+
+    def test_CONTROL_a_part_box_that_already_reads_hollow_keeps_its_reading(self):
+        """The box is short and off its head, but its window already lands in
+        the white (a hollow head with no line, box centred a little low): no
+        move, so a hollow found stays found."""
+        img = _paper()
+        _head(img, 150.0, 160.0)
+        r = gather.recentre_part_boxed(img, _box(150.0, 160.0, 0.83, 0.81, 0.0), S)
+        self.assertFalse(r["accepted"])
+        self.assertEqual(r["reason"], "already_reads_hollow")
+        self.assertLess(r["drawn_margin"], 0.0)
+
+    def test_the_restated_cut_is_the_adjudicators(self):
+        from tools.omr.staged.adjudicators import rhythm
+        self.assertEqual(gather.RECENTRE_PART_ONLY_ABOVE_CENTRE,
+                         rhythm.HEAD_FILL_HOLLOW_CENTER_MAX)
+        self.assertEqual(gather.RECENTRE_PART_HOLLOW_FLOOR,
+                         rhythm.HEAD_RAW_CENTER_FLOOR)
 
     def test_off_the_raster_or_no_spacing_is_none(self):
         self.assertIsNone(gather.recentre_part_boxed(None, (0, 0, 9, 9), S))
@@ -221,8 +240,9 @@ class TestWiredIntoTheInteriorReading(unittest.TestCase):
         self.assertEqual(len(log.rows(Q.NOTEHEAD_RECENTRE, R.glyph(0, 0, 0, 0, 0))), 0)
 
     def test_a_declined_move_files_why_and_how_close(self):
-        img, _ = _tile13()
-        row, _ = _gather_ink(img, _box(150.0, 180.0, 0.83, 0.81, 0.0))
+        img = _paper()
+        _head(img, 150.0, 160.0, hollow=False)
+        row, _ = _gather_ink(img, _box(150.0, 160.0, 0.83, 0.81, 0.0))
         pb = row.detail["part_boxed"]
         self.assertFalse(pb["accepted"])
         self.assertEqual(pb["reason"], "centred_enough")

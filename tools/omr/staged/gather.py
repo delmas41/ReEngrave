@@ -7538,8 +7538,17 @@ RECENTRE_PART_HALF_WINDOW_SPACES = 0.7
 RECENTRE_PART_STEM_RUN_SPACES = 1.7
 #: Ink needed in the window (staff-space squares) before a centroid is trusted.
 RECENTRE_PART_MIN_INK_SPACES2 = 0.15
-RECENTRE_PART_ITERATIONS = 5
-RECENTRE_PART_CONVERGED_SPACES = 0.05
+#: ... and only where the box as drawn does NOT already read hollow: its
+#: smaller centre reading (raw / line rows left out) is above this. Restates
+#: `rhythm.HEAD_FILL_HOLLOW_CENTER_MAX` (2.23/2.73; `rhythm` imports this
+#: module, so the reverse import would be a cycle -- `test_staged_part_boxed_
+#: recentre_2_115` pins the two equal).
+RECENTRE_PART_ONLY_ABOVE_CENTRE = 0.75
+#: ... and a BLANK window is not a hollow reading (2.88's `HEAD_RAW_CENTER_FLOOR`, restated
+#: for the same reason): under this the box is not on a head at all and may be moved.
+RECENTRE_PART_HOLLOW_FLOOR = 0.2
+RECENTRE_PART_ITERATIONS = 40
+RECENTRE_PART_CONVERGED_SPACES = 0.01
 
 
 def part_boxed_recentre_enabled() -> bool:
@@ -7577,6 +7586,21 @@ def recentre_part_boxed(raw: Any, box: Tuple[float, float, float, float],
     if ratio >= RECENTRE_PART_SIZE_GATE:
         out["reason"] = "box_head_sized"
         return out
+    # A box whose own interior already reads hollow (raw or line-rows-left-out
+    # centre at or under 2.88's cut) keeps that reading: the question here is a
+    # box that reads FILLED or unclear while covering only part of its head. A
+    # move can then only ever turn a filled/unclear reading into the head's own,
+    # never lose a hollow one found by a window that happened to land well.
+    drawn = [m["windows"]["center"] for m in
+             (notehead_ink_under(raw, (x, y, w, h)),
+              notehead_ink_off_line(raw, (x, y, w, h), spacing))
+             if m is not None and m["windows"]["center"] is not None]
+    if drawn:
+        out["drawn_centre"] = round(min(drawn), 4)
+        if RECENTRE_PART_HOLLOW_FLOOR <= min(drawn) <= RECENTRE_PART_ONLY_ABOVE_CENTRE:
+            out["reason"] = "already_reads_hollow"
+            out["drawn_margin"] = round(min(drawn) - RECENTRE_PART_ONLY_ABOVE_CENTRE, 4)
+            return out
     cx, cy = x + w / 2.0, y + h / 2.0
     ink = (np.asarray(raw) == 0)
     H, W = ink.shape
