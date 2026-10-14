@@ -1,0 +1,45 @@
+ALL            READ non-arc neighbour touching      WRONG 4/11 (0.15, 0.65)  RIGHT 56/141 (0.32, 0.48)  UNDECIDED 1/24  diff -0.03  Fisher p=1.000  shuffle: mean|diff|=0.12 perm p=1.000
+ALL            READ non-arc neighbour near (<=1sp)  WRONG 6/11 (0.28, 0.79)  RIGHT 85/141 (0.52, 0.68)  UNDECIDED 3/24  diff -0.06  Fisher p=0.756  shuffle: mean|diff|=0.13 perm p=0.758
+ALL            READ neighbour touching (<=0.25sp)   WRONG 6/11 (0.28, 0.79)  RIGHT 85/141 (0.52, 0.68)  UNDECIDED 8/24  diff -0.06  Fisher p=0.756  shuffle: mean|diff|=0.12 perm p=0.756
+ALL            READ neighbour near (<=1sp)          WRONG 8/11 (0.43, 0.9)  RIGHT 115/141 (0.74, 0.87)  UNDECIDED 17/24  diff -0.09  Fisher p=0.440  shuffle: mean|diff|=0.10 perm p=0.701
+ALL            any non-part neighbour touching      WRONG 8/11 (0.43, 0.9)  RIGHT 105/141 (0.67, 0.81)  UNDECIDED 15/24  diff -0.02  Fisher p=1.000  shuffle: mean|diff|=0.11 perm p=1.000
+ALL            any non-part neighbour near          WRONG 10/11 (0.62, 0.98)  RIGHT 130/141 (0.87, 0.96)  UNDECIDED 21/24  diff -0.01  Fisher p=1.000  shuffle: mean|diff|=0.07 perm p=1.000
+litolff        READ non-arc neighbour touching      WRONG 1/4 (0.05, 0.7)  RIGHT 36/91 (0.3, 0.5)  UNDECIDED 1/7  diff -0.15  Fisher p=1.000  shuffle: mean|diff|=0.21 perm p=0.651
+litolff        READ non-arc neighbour near (<=1sp)  WRONG 2/4 (0.15, 0.85)  RIGHT 57/91 (0.52, 0.72)  UNDECIDED 1/7  diff -0.13  Fisher p=0.632  shuffle: mean|diff|=0.21 perm p=1.000
+litolff        READ neighbour touching (<=0.25sp)   WRONG 2/4 (0.15, 0.85)  RIGHT 47/91 (0.42, 0.62)  UNDECIDED 1/7  diff -0.02  Fisher p=1.000  shuffle: mean|diff|=0.20 perm p=1.000
+litolff        READ neighbour near (<=1sp)          WRONG 3/4 (0.3, 0.95)  RIGHT 71/91 (0.68, 0.85)  UNDECIDED 3/7  diff -0.03  Fisher p=1.000  shuffle: mean|diff|=0.17 perm p=1.000
+litolff        any non-part neighbour touching      WRONG 2/4 (0.15, 0.85)  RIGHT 63/91 (0.59, 0.78)  UNDECIDED 3/7  diff -0.19  Fisher p=0.588  shuffle: mean|diff|=0.20 perm p=0.593
+litolff        any non-part neighbour near          WRONG 4/4 (0.51, 1.0)  RIGHT 82/91 (0.82, 0.95)  UNDECIDED 6/7  diff +0.10  Fisher p=1.000  shuffle: mean|diff|=0.13 perm p=1.000
+brahms         READ non-arc neighbour touching      WRONG 3/7 (0.16, 0.75)  RIGHT 20/50 (0.28, 0.54)  UNDECIDED 0/17  diff +0.03  Fisher p=1.000  shuffle: mean|diff|=0.16 perm p=1.000
+brahms         READ non-arc neighbour near (<=1sp)  WRONG 4/7 (0.25, 0.84)  RIGHT 28/50 (0.42, 0.69)  UNDECIDED 2/17  diff +0.01  Fisher p=1.000  shuffle: mean|diff|=0.15 perm p=1.000
+brahms         READ neighbour touching (<=0.25sp)   WRONG 4/7 (0.25, 0.84)  RIGHT 38/50 (0.63, 0.86)  UNDECIDED 7/17  diff -0.19  Fisher p=0.365  shuffle: mean|diff|=0.14 perm p=0.361
+brahms         READ neighbour near (<=1sp)          WRONG 5/7 (0.36, 0.92)  RIGHT 44/50 (0.76, 0.94)  UNDECIDED 14/17  diff -0.17  Fisher p=0.252  shuffle: mean|diff|=0.10 perm p=0.245
+brahms         any non-part neighbour touching      WRONG 6/7 (0.49, 0.97)  RIGHT 42/50 (0.71, 0.92)  UNDECIDED 12/17  diff +0.02  Fisher p=1.000  shuffle: mean|diff|=0.11 perm p=1.000
+brahms         any non-part neighbour near          WRONG 6/7 (0.49, 0.97)  RIGHT 48/50 (0.87, 0.99)  UNDECIDED 15/17  diff -0.10  Fisher p=0.330  shuffle: mean|diff|=0.08 perm p=0.319
+
+per (subject kind, answer kind): n WRONG/RIGHT/UNDECIDED, touch_read, near_read clutter counts
+  notehead  /duration        n=145 | touch_read W 2/6 R 69/115 U 8/24 | near_read W 3/6 R 93/115 U 17/24
+  notehead  /not_a_note      n= 14 | touch_read W 0/1 R 5/13 U 0/0 | near_read W 1/1 R 9/13 U 0/0
+  arc       /arc             n= 13 | touch_read W 1/1 R 11/12 U 0/0 | near_read W 1/1 R 12/12 U 0/0
+  notehead  /rest            n=  4 | touch_read W 3/3 R 0/1 U 0/0 | near_read W 3/3 R 1/1 U 0/0
+
+WRONG rows (for the example read):
+  brahms 2.78-phase2-review 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15'] sean='16th' :: decided 0.5 beats (stem_value_follows); decided 0.5 beats (head_and_marks) | touch 2/2 near 4/4 {'notehead+READ': 1, 'arc+READ': 3}
+  brahms 2.80-review-2 4 ['glyph/1/0/13/5/11'] sean='8 rest' :: narrow box read as not a rest (ink_already_read_as_a_glyph) | touch 1/1 near 1/1 {'rest+READ': 1}
+  brahms 2.80-review-2 5 ['glyph/1/0/8/1/20'] sean='8 rest' :: narrow box read as not a rest (ink_already_read_as_a_glyph) | touch 1/1 near 3/3 {'arc+READ': 2, 'rest+READ': 1}
+  brahms 2.81-review tile_07 ['glyph/7/0/0/2/10'] sean='eighth rest' :: kept as a notehead | touch 4/4 near 4/4 {'rest+READ': 1, 'arc+READ': 3}
+  brahms 2.81-review tile_15 ['glyph/21/1/2/9/7'] sean='dotted quarter' :: narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain) | touch 0/1 near 0/1 {'notehead': 1}
+  brahms 2.81-review tile_18 ['glyph/23/1/12/4/0'] sean='dotted quarter' :: narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain) | touch 0/0 near 0/0 {}
+  brahms 2.83-review tile_01 ['glyph/21/1/3/8/20'] sean='Dot 2' :: decided 2 beats (hollow_head_bare_stem); head matches the UNDOTTED value of Sean's dotted answer | touch 0/1 near 2/5 {'accidental': 1, 'notehead': 1, 'ornament': 1, 'arc+READ': 2}
+  litolff 2.102-review tile_09 ['glyph/11/0/0/8/2'] sean='4' :: decided 0.5 beats (the_bars_arithmetic_forces_this_length) | touch 0/0 near 0/1 {'notehead': 1}
+  litolff 2.75-review litolff_04 ['glyph/2/0/7/9/0'] sean='Tie' :: read as slur (slur) | touch 3/4 near 3/4 {'notehead+READ': 2, 'notehead': 1, 'arc+READ': 1}
+  litolff 2.81-review tile_22 ['glyph/15/0/5/0/6'] sean='half' :: narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain) | touch 2/2 near 2/2 {'arc+READ': 2}
+  litolff 2.88-review-2 tile_04 ['glyph/11/0/2/15/5'] sean='alto clef' :: kept as a notehead | touch 0/0 near 1/3 {'notehead+READ': 1, 'notehead': 1, 'accidental': 1}
+
+pop-brahms-20261011-night.json: population of 600 sampled noteheads (397 READ): touch_read 0.54, near_read 0.75, near_any 0.89
+  sanity PRESENT: 161 chord heads with a READ mate -> neighbour code sees a READ neighbour (near) in 153/161
+  sanity ABSENT: 66 isolated sampled heads (no non-part glyph within 1sp) -> near_read>0 in 0 (must be 0)
+
+pop-litolff-20261011-night.json: population of 600 sampled noteheads (470 READ): touch_read 0.52, near_read 0.76, near_any 0.87
+  sanity PRESENT: 196 chord heads with a READ mate -> neighbour code sees a READ neighbour (near) in 187/196
+  sanity ABSENT: 77 isolated sampled heads (no non-part glyph within 1sp) -> near_read>0 in 0 (must be 0)

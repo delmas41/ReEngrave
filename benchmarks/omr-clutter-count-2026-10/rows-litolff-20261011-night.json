@@ -1,0 +1,3990 @@
+{
+"record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261011-night.record.json",
+"doc": "litolff",
+"staff_space_px": 20.480000000000018,
+"skipped": {
+"other_doc": 127,
+"subject_not_in_record": 51,
+"box_mismatch": 7
+},
+"n_glyph_boxes": 37121,
+"rows": [
+{
+"item": "2.100-review",
+"tile": "1",
+"subjects": [
+"glyph/3/0/9/0/7"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "flag",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"accidental": 1
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "10",
+"subjects": [
+"glyph/1/0/7/0/12"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"accidental": 1
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "11",
+"subjects": [
+"glyph/2/1/10/0/6"
+],
+"answer": "key accidental",
+"qkind": "meter",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "time_sig_digit",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 3,
+"near_any": 3,
+"near_kinds": {
+"accidental": 2,
+"arc+READ": 1
+},
+"touch_kinds": {
+"accidental": 2,
+"arc+READ": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "12",
+"subjects": [
+"glyph/1/0/10/0/13"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"accidental": 1
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "13",
+"subjects": [
+"glyph/1/0/8/0/11"
+],
+"answer": "time signature",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.100-review",
+"tile": "2",
+"subjects": [
+"glyph/1/0/0/0/6"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"accidental": 2
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "4",
+"subjects": [
+"glyph/1/0/11/0/7"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.100-review",
+"tile": "5",
+"subjects": [
+"glyph/3/1/5/0/9"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"accidental": 2
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "7",
+"subjects": [
+"glyph/2/1/0/0/6"
+],
+"answer": "key accidental",
+"qkind": "meter",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "time_sig_digit",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"accidental": 2
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review",
+"tile": "8",
+"subjects": [
+"glyph/3/0/0/0/6"
+],
+"answer": "key accidental",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "manifest+box",
+"kind": "ornament",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 4,
+"near_kinds": {
+"accidental": 2,
+"arc+READ": 2
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.100-review-2",
+"tile": "tile_01",
+"subjects": [
+"glyph/1/0/3/0/5"
+],
+"answer": "1. Barline",
+"qkind": "meter",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"ornament": 1,
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.100-review-2",
+"tile": "tile_04",
+"subjects": [
+"glyph/1/0/2/0/12"
+],
+"answer": "4. 2/4 meter",
+"qkind": "meter",
+"akind": "other",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.100-review-2",
+"tile": "tile_07",
+"subjects": [
+"glyph/1/0/3/0/7"
+],
+"answer": "7. 2/4 meter",
+"qkind": "meter",
+"akind": "other",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.100-review-2",
+"tile": "tile_09",
+"subjects": [
+"glyph/1/0/5/0/3"
+],
+"answer": "9. 2/4",
+"qkind": "meter",
+"akind": "other",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.100-review-2",
+"tile": "tile_10",
+"subjects": [
+"glyph/1/0/2/0/2"
+],
+"answer": "10. 8 rest",
+"qkind": "meter",
+"akind": "rest",
+"status": "unscored",
+"note": "question kind meter has no comparator",
+"doc_by": "manifest+box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.102-review",
+"tile": "tile_09",
+"subjects": [
+"glyph/11/0/0/8/2"
+],
+"answer": "4",
+"qkind": "identity",
+"akind": "duration",
+"status": "wrong",
+"note": "decided 0.5 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.105-review",
+"tile": "tile_01",
+"subjects": [
+"glyph/2/1/6/12/4"
+],
+"answer": "barline",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.105-review",
+"tile": "tile_02",
+"subjects": [
+"glyph/2/0/4/7/5"
+],
+"answer": "half",
+"qkind": "unknown",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_03",
+"subjects": [
+"glyph/3/0/9/11/2"
+],
+"answer": "barline",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_05",
+"subjects": [
+"glyph/3/1/7/13/2"
+],
+"answer": "4 rest",
+"qkind": "unknown",
+"akind": "rest",
+"status": "not_found",
+"note": "no rest verdict at this key",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.105-review",
+"tile": "tile_07",
+"subjects": [
+"glyph/1/0/3/0/5"
+],
+"answer": "barline",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "not_found",
+"note": "no note-or-not verdict at this key",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"ornament": 1,
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/2/1/3/14/6"
+],
+"answer": "2,2 (two halves)",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 4,
+"touch_any": 2,
+"near_any": 4,
+"near_kinds": {
+"arc+READ": 3,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_09",
+"subjects": [
+"glyph/1/0/2/0/2"
+],
+"answer": "8 rest",
+"qkind": "unknown",
+"akind": "rest",
+"status": "not_found",
+"note": "no rest verdict at this key",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_11",
+"subjects": [
+"glyph/2/0/1/3/5"
+],
+"answer": "4 (quarter)",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 4,
+"near_read": 5,
+"touch_any": 5,
+"near_any": 6,
+"near_kinds": {
+"notehead+READ": 3,
+"rest+READ": 2,
+"ornament": 1
+},
+"touch_kinds": {
+"notehead+READ": 3,
+"rest+READ": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.105-review",
+"tile": "tile_12",
+"subjects": [
+"glyph/2/1/1/12/3"
+],
+"answer": "2 (half)",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 3,
+"near_read": 6,
+"touch_any": 4,
+"near_any": 7,
+"near_kinds": {
+"arc+READ": 5,
+"notehead": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"arc+READ": 2,
+"notehead": 1,
+"notehead+READ": 1
+}
+},
+{
+"item": "2.12f-r2-review",
+"tile": "7",
+"subjects": [
+"glyph/10/0/0/10/6"
+],
+"answer": "Ledger line",
+"qkind": "owner",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind owner has no comparator",
+"doc_by": "page_box",
+"kind": "ornament",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead+READ": 2
+}
+},
+{
+"item": "2.12f-review",
+"tile": "4",
+"subjects": [
+"glyph/3/0/0/1/9"
+],
+"answer": "NOT an articulation: that is a tie that belongs to the notes it connects beneath it, but the box is too small",
+"qkind": "owner",
+"akind": "other",
+"status": "unscored",
+"note": "question kind owner has no comparator",
+"doc_by": "page_box",
+"kind": "ornament",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.65-headfill",
+"tile": "1",
+"subjects": [
+"glyph/6/1/9/2/9"
+],
+"answer": "Not a note - barline",
+"qkind": "unknown",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (too_narrow)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"notehead": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.65-headfill",
+"tile": "3",
+"subjects": [
+"glyph/6/1/11/5/3"
+],
+"answer": "Half note with a single trem slash and an accidental (natural) in front",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "ornament",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"rest+READ": 1
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.65-headfill",
+"tile": "4",
+"subjects": [
+"glyph/6/0/0/9/1"
+],
+"answer": "Whole rest hanging off the bottom line because it refers to the second voice in that measure (2/4 bar); the first voice above (not in red) is a half note",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.65-headfill",
+"tile": "5",
+"subjects": [
+"glyph/6/1/1/0/8"
+],
+"answer": "Half note in top voice; (outside the box) tied to the next measure",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 3,
+"touch_any": 0,
+"near_any": 3,
+"near_kinds": {
+"arc+READ": 3
+},
+"touch_kinds": {}
+},
+{
+"item": "2.65-headfill",
+"tile": "6",
+"subjects": [
+"glyph/6/0/8/3/4"
+],
+"answer": "Half note",
+"qkind": "unknown",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 3,
+"near_read": 3,
+"touch_any": 4,
+"near_any": 4,
+"near_kinds": {
+"notehead+READ": 2,
+"arc+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"arc+READ": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.70-review",
+"tile": "1",
+"subjects": [
+"glyph/6/0/1/11/3"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead": 2
+},
+"touch_kinds": {
+"notehead": 2
+}
+},
+{
+"item": "2.70-review",
+"tile": "2",
+"subjects": [
+"glyph/6/0/4/2/6"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.70-review",
+"tile": "3",
+"subjects": [
+"glyph/6/0/8/10/3"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 3,
+"near_any": 3,
+"near_kinds": {
+"arc+READ": 2,
+"notehead": 1
+},
+"touch_kinds": {
+"arc+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "2.70-review",
+"tile": "4",
+"subjects": [
+"glyph/6/1/11/4/1"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.70-review",
+"tile": "5",
+"subjects": [
+"glyph/6/1/6/11/3"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.70-review",
+"tile": "6",
+"subjects": [
+"glyph/6/0/4/1/6"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.70-review",
+"tile": "7",
+"subjects": [
+"glyph/3/1/5/13/2"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.70-review",
+"tile": "8",
+"subjects": [
+"glyph/3/1/6/0/9"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.71-review",
+"tile": "1",
+"subjects": [
+"glyph/3/0/10/4/1"
+],
+"answer": "Slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"accidental": 1
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.71-review",
+"tile": "2",
+"subjects": [
+"glyph/3/0/9/0/3"
+],
+"answer": "Slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.71-review",
+"tile": "5",
+"subjects": [
+"glyph/6/1/11/5/2"
+],
+"answer": "Tremolo slash (the box is big -- the whole stem); not a rest",
+"qkind": "identity",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (identity)",
+"doc_by": "page_box",
+"kind": "rest",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.71-review",
+"tile": "6",
+"subjects": [
+"glyph/2/1/8/12/1"
+],
+"answer": "Tremolo slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"accidental": 1
+},
+"touch_kinds": {
+"accidental": 1
+}
+},
+{
+"item": "2.71-review",
+"tile": "7",
+"subjects": [
+"glyph/3/0/6/5/2"
+],
+"answer": "Slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "2.71-review",
+"tile": "8",
+"subjects": [
+"glyph/6/1/11/3/3"
+],
+"answer": "Slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.71-review",
+"tile": "9",
+"subjects": [
+"glyph/3/0/10/6/5"
+],
+"answer": "Slash",
+"qkind": "identity",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (tremolo_slash_crosses_stem)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+}
+},
+{
+"item": "2.73-review",
+"tile": "1",
+"subjects": [
+"glyph/3/0/2/3/13"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 3,
+"touch_any": 2,
+"near_any": 10,
+"near_kinds": {
+"arc+READ": 2,
+"dynamic": 4,
+"notehead+READ": 1,
+"accidental": 2,
+"ornament": 1
+},
+"touch_kinds": {
+"accidental": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.73-review",
+"tile": "10",
+"subjects": [
+"glyph/2/0/2/1/12"
+],
+"answer": "Not a note - dynamic p",
+"qkind": "duration",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (on_a_dynamic_letter)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 3,
+"near_read": 4,
+"touch_any": 7,
+"near_any": 14,
+"near_kinds": {
+"accidental": 4,
+"dynamic": 2,
+"notehead+READ": 3,
+"rest+READ": 1,
+"notehead": 3,
+"ornament": 1
+},
+"touch_kinds": {
+"dynamic": 2,
+"notehead+READ": 3,
+"notehead": 2
+}
+},
+{
+"item": "2.73-review",
+"tile": "2",
+"subjects": [
+"glyph/3/0/10/6/1"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.73-review",
+"tile": "3",
+"subjects": [
+"glyph/3/0/4/12/2"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.73-review",
+"tile": "4",
+"subjects": [
+"glyph/3/0/5/6/8"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"accidental": 1,
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.73-review",
+"tile": "5",
+"subjects": [
+"glyph/3/0/4/3/12"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 4,
+"near_read": 4,
+"touch_any": 4,
+"near_any": 5,
+"near_kinds": {
+"accidental": 1,
+"arc+READ": 2,
+"notehead+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 2,
+"notehead+READ": 2
+}
+},
+{
+"item": "2.73-review",
+"tile": "6",
+"subjects": [
+"glyph/3/1/3/8/5"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.73-review",
+"tile": "9",
+"subjects": [
+"glyph/2/1/3/11/5"
+],
+"answer": "Half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.74-review",
+"tile": "litolff_01",
+"subjects": [
+"glyph/3/0/7/6/2"
+],
+"answer": "8th",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 2,
+"near_any": 7,
+"near_kinds": {
+"accidental": 4,
+"notehead+READ": 1,
+"notehead": 2
+},
+"touch_kinds": {
+"accidental": 1,
+"notehead": 1
+}
+},
+{
+"item": "2.75-chords",
+"tile": "1",
+"subjects": [
+"glyph/2/1/3/10/2"
+],
+"answer": "Tie",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as tie (tie)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 3,
+"near_read": 4,
+"touch_any": 3,
+"near_any": 6,
+"near_kinds": {
+"dynamic": 2,
+"notehead+READ": 3,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"arc+READ": 1
+}
+},
+{
+"item": "2.75-chords",
+"tile": "2",
+"subjects": [
+"glyph/3/1/2/14/5"
+],
+"answer": "Slur",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as slur (slur)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 4,
+"near_kinds": {
+"accidental": 2,
+"notehead+READ": 1,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+}
+},
+{
+"item": "2.75-chords",
+"tile": "3",
+"subjects": [
+"glyph/3/1/2/6/2"
+],
+"answer": "Slur",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as slur (slur)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_01",
+"subjects": [
+"glyph/3/1/1/5/1"
+],
+"answer": "Slur - different notes",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as slur (slur)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 1,
+"near_read": 3,
+"touch_any": 5,
+"near_any": 7,
+"near_kinds": {
+"accidental": 3,
+"clef": 1,
+"notehead+READ": 2,
+"arc+READ": 1
+},
+"touch_kinds": {
+"accidental": 3,
+"clef": 1,
+"arc+READ": 1
+}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_02",
+"subjects": [
+"glyph/3/0/4/4/5"
+],
+"answer": "Tie - same note",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as tie (tie)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 6,
+"near_read": 8,
+"touch_any": 6,
+"near_any": 8,
+"near_kinds": {
+"arc+READ": 6,
+"notehead+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 5,
+"notehead+READ": 1
+}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_03",
+"subjects": [
+"glyph/2/1/2/12/0"
+],
+"answer": "Tie",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as tie (tie)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 2,
+"near_read": 4,
+"touch_any": 2,
+"near_any": 4,
+"near_kinds": {
+"arc+READ": 2,
+"notehead+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 2
+}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_04",
+"subjects": [
+"glyph/2/0/7/9/0"
+],
+"answer": "Tie",
+"qkind": "arc",
+"akind": "arc",
+"status": "wrong",
+"note": "read as slur (slur)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 3,
+"near_read": 3,
+"touch_any": 4,
+"near_any": 4,
+"near_kinds": {
+"notehead+READ": 2,
+"notehead": 1,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"notehead": 1,
+"arc+READ": 1
+}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_05",
+"subjects": [
+"glyph/3/0/3/5/0"
+],
+"answer": "Tie -- as a rule, wherever the arc sits, if it is close to noteheads that are the same, it is a tie",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as tie (tie)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.75-review",
+"tile": "litolff_06",
+"subjects": [
+"glyph/3/1/3/8/0"
+],
+"answer": "Tie",
+"qkind": "arc",
+"akind": "arc",
+"status": "right",
+"note": "read as tie (tie)",
+"doc_by": "manifest",
+"kind": "arc",
+"touch_read": 2,
+"near_read": 5,
+"touch_any": 2,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 3,
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 2
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "1",
+"subjects": [
+"glyph/7/0/4/1/4",
+"glyph/7/0/4/1/6",
+"glyph/7/0/4/1/7"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (stem_value_follows); decided 2 beats (stem_value_follows); decided 2 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "10",
+"subjects": [
+"glyph/5/0/6/8/0",
+"glyph/5/0/6/8/2"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "11",
+"subjects": [
+"glyph/6/1/10/9/5",
+"glyph/6/1/10/9/9"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (stem_value_follows)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "2",
+"subjects": [
+"glyph/1/0/7/13/0",
+"glyph/1/0/7/13/3"
+],
+"answer": "eighth (2 eighths on one beam)",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "3",
+"subjects": [
+"glyph/1/0/8/6/1",
+"glyph/1/0/8/6/3"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks); decided 2 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"arc+READ": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "6",
+"subjects": [
+"glyph/7/0/0/7/4",
+"glyph/7/0/0/7/10"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (stem_value_follows); decided 0.5 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "7",
+"subjects": [
+"glyph/3/0/5/2/2",
+"glyph/3/0/5/2/8"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 3,
+"touch_any": 2,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 3,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"notehead": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "8",
+"subjects": [
+"glyph/6/1/6/10/6",
+"glyph/6/1/6/10/7"
+],
+"answer": "half, tremolo slash",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 4,
+"near_kinds": {
+"dynamic": 3,
+"arc+READ": 1
+},
+"touch_kinds": {
+"dynamic": 1
+}
+},
+{
+"item": "2.78-phase2-review",
+"tile": "9",
+"subjects": [
+"glyph/5/0/2/3/1",
+"glyph/5/0/2/3/5"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 5,
+"near_read": 5,
+"touch_any": 5,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 5
+},
+"touch_kinds": {
+"notehead+READ": 5
+}
+},
+{
+"item": "2.78-review",
+"tile": "1",
+"subjects": [
+"glyph/3/0/5/2/0",
+"glyph/3/0/5/2/3"
+],
+"answer": "8th note, yes (every mark on the stem is a notehead)",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 3,
+"touch_any": 1,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 3,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead": 1
+}
+},
+{
+"item": "2.78-review",
+"tile": "10",
+"subjects": [
+"glyph/2/1/8/11/0",
+"glyph/2/1/8/11/4"
+],
+"answer": "2 half notes and a trem slash",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.78-review",
+"tile": "11",
+"subjects": [
+"glyph/2/1/8/13/3",
+"glyph/2/1/8/13/5"
+],
+"answer": "Same (as tile 10): 2 half notes and a trem slash",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.78-review",
+"tile": "14",
+"subjects": [
+"glyph/2/1/8/2/6",
+"glyph/2/1/8/2/7"
+],
+"answer": "Half note",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks); decided 2 beats (stem_value_follows)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.78-review",
+"tile": "2",
+"subjects": [
+"glyph/3/0/0/1/2",
+"glyph/3/0/0/1/8",
+"glyph/3/0/0/1/11"
+],
+"answer": "Half notes",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (head_and_marks); decided 2 beats (head_and_marks); decided 2 beats (stem_value_follows)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.78-review",
+"tile": "6",
+"subjects": [
+"glyph/3/0/10/5/1",
+"glyph/3/0/10/5/5"
+],
+"answer": "Half note with a trem slash",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"ornament": 1,
+"accidental": 1
+},
+"touch_kinds": {
+"ornament": 1,
+"accidental": 1
+}
+},
+{
+"item": "2.78-review",
+"tile": "7",
+"subjects": [
+"glyph/2/1/9/11/1",
+"glyph/2/1/9/11/3"
+],
+"answer": "2 half notes with a trem slash",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"rest+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"rest+READ": 1
+}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_03",
+"subjects": [
+"glyph/2/1/4/9/3"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"dynamic": 2,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead": 1
+}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_04",
+"subjects": [
+"glyph/3/0/2/2/3"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead": 2
+},
+"touch_kinds": {
+"notehead": 1
+}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/3/1/4/13/0"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_09",
+"subjects": [
+"glyph/3/1/4/11/3"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead": 1,
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_10",
+"subjects": [
+"glyph/2/1/4/1/0"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"arc+READ": 2,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead": 1
+}
+},
+{
+"item": "2.81-phase2-review",
+"tile": "tile_13",
+"subjects": [
+"glyph/3/1/1/4/2"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.81-review",
+"tile": "tile_02",
+"subjects": [
+"glyph/10/1/9/7/5"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead+READ": 2
+}
+},
+{
+"item": "2.81-review",
+"tile": "tile_10",
+"subjects": [
+"glyph/12/0/5/9/1"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.81-review",
+"tile": "tile_16",
+"subjects": [
+"glyph/11/1/0/1/2"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 2,
+"near_any": 3,
+"near_kinds": {
+"accidental": 2,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"accidental": 2
+}
+},
+{
+"item": "2.81-review",
+"tile": "tile_20",
+"subjects": [
+"glyph/12/0/5/10/1"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead": 2
+},
+"touch_kinds": {
+"notehead": 1
+}
+},
+{
+"item": "2.81-review",
+"tile": "tile_21",
+"subjects": [
+"glyph/13/0/10/4/1"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (meter_reconciliation)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"rest+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.81-review",
+"tile": "tile_22",
+"subjects": [
+"glyph/15/0/5/0/6"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "wrong",
+"note": "narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 2
+},
+"touch_kinds": {
+"arc+READ": 2
+}
+},
+{
+"item": "2.81-review",
+"tile": "tile_23",
+"subjects": [
+"glyph/4/0/9/10/5"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"clef": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"clef": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.81-review",
+"tile": "tile_24",
+"subjects": [
+"glyph/15/0/5/14/1"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (stem_value_follows)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "2.81-review",
+"tile": "tile_25",
+"subjects": [
+"glyph/16/1/5/10/0"
+],
+"answer": "quarter",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.81-review",
+"tile": "tile_29",
+"subjects": [
+"glyph/13/1/2/9/1"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 4,
+"touch_any": 1,
+"near_any": 5,
+"near_kinds": {
+"time_sig_digit": 1,
+"notehead+READ": 4
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.82-review",
+"tile": "tile_04",
+"subjects": [
+"glyph/10/1/9/7/1"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 5,
+"touch_any": 3,
+"near_any": 7,
+"near_kinds": {
+"notehead+READ": 5,
+"ornament": 1,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "2.82-review",
+"tile": "tile_07",
+"subjects": [
+"glyph/10/1/9/7/12"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 4,
+"touch_any": 2,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 4,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 2
+}
+},
+{
+"item": "2.82-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/10/1/9/7/2"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 4,
+"touch_any": 2,
+"near_any": 7,
+"near_kinds": {
+"notehead+READ": 4,
+"ornament": 1,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"ornament": 1
+}
+},
+{
+"item": "2.82-review",
+"tile": "tile_09",
+"subjects": [
+"glyph/10/1/9/7/5"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead+READ": 2
+}
+},
+{
+"item": "2.82-review",
+"tile": "tile_10",
+"subjects": [
+"glyph/13/1/2/9/2"
+],
+"answer": "eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 3,
+"touch_any": 1,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 3
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.83-fix-review",
+"tile": "tile_01",
+"subjects": [
+"glyph/3/1/4/12/3"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.83-fix-review",
+"tile": "tile_02",
+"subjects": [
+"glyph/13/0/0/8/12"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (hooks_counted)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 3,
+"near_any": 4,
+"near_kinds": {
+"accidental": 3,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"accidental": 3
+}
+},
+{
+"item": "2.83-fix-review",
+"tile": "tile_05",
+"subjects": [
+"glyph/4/0/7/7/10"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (stem_value_follows)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 3,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 1,
+"ornament": 2
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"ornament": 2
+}
+},
+{
+"item": "2.83-fix-review",
+"tile": "tile_06",
+"subjects": [
+"glyph/10/1/4/8/7"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.83-fix-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/11/1/8/16/3"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (meter_reconciliation)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 3,
+"touch_any": 0,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 1,
+"arc+READ": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "2.83-review",
+"tile": "tile_03",
+"subjects": [
+"glyph/15/1/8/17/2"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.83-review",
+"tile": "tile_04",
+"subjects": [
+"glyph/13/0/2/3/0"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (hooks_counted)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.83-review",
+"tile": "tile_07",
+"subjects": [
+"glyph/16/0/10/3/3"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (hooks_counted)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.83-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/13/0/2/3/15"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (hooks_counted)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.83-review",
+"tile": "tile_10",
+"subjects": [
+"glyph/15/1/3/17/5"
+],
+"answer": "4",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 1 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.84-review",
+"tile": "3",
+"subjects": [
+"glyph/6/1/0/8/3"
+],
+"answer": "L",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "manifest+box",
+"kind": "ornament",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.84-review",
+"tile": "7",
+"subjects": [
+"glyph/8/0/7/0/6"
+],
+"answer": "N -- a half note",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "manifest+box",
+"kind": "ornament",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"accidental": 1,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.88-review",
+"tile": "tile_01",
+"subjects": [
+"glyph/10/1/9/5/0"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_02",
+"subjects": [
+"glyph/6/0/3/9/4"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "2.88-review",
+"tile": "tile_03",
+"subjects": [
+"glyph/15/0/5/11/2"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_04",
+"subjects": [
+"glyph/13/1/8/13/5"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_05",
+"subjects": [
+"glyph/11/0/2/15/5"
+],
+"answer": "alto clef",
+"qkind": "duration",
+"akind": "not_a_note",
+"status": "wrong",
+"note": "kept as a notehead",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 1,
+"notehead": 1,
+"accidental": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_06",
+"subjects": [
+"glyph/13/0/8/13/6"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 3,
+"near_kinds": {
+"notehead": 1,
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead": 1,
+"notehead+READ": 1
+}
+},
+{
+"item": "2.88-review",
+"tile": "tile_07",
+"subjects": [
+"glyph/10/1/4/8/7"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_08",
+"subjects": [
+"glyph/6/1/11/4/1"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.88-review",
+"tile": "tile_10",
+"subjects": [
+"glyph/4/1/5/6/10"
+],
+"answer": "ledger lines",
+"qkind": "duration",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (belongs_to_a_nearer_staff)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 4,
+"touch_any": 3,
+"near_any": 6,
+"near_kinds": {
+"notehead+READ": 4,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "2.88-review",
+"tile": "tile_12",
+"subjects": [
+"glyph/6/1/6/11/3"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_13",
+"subjects": [
+"glyph/13/1/8/11/6"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 3,
+"touch_any": 0,
+"near_any": 4,
+"near_kinds": {
+"notehead": 1,
+"notehead+READ": 3
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review",
+"tile": "tile_14",
+"subjects": [
+"glyph/2/0/8/6/6"
+],
+"answer": "2",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"arc+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_01",
+"subjects": [
+"glyph/11/1/3/11/4"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_02",
+"subjects": [
+"glyph/10/1/9/5/0"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_03",
+"subjects": [
+"glyph/2/1/4/14/9"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 4,
+"near_read": 5,
+"touch_any": 6,
+"near_any": 7,
+"near_kinds": {
+"arc+READ": 4,
+"ornament": 1,
+"notehead+READ": 1,
+"notehead": 1
+},
+"touch_kinds": {
+"arc+READ": 4,
+"ornament": 1,
+"notehead": 1
+}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_04",
+"subjects": [
+"glyph/11/0/2/15/5"
+],
+"answer": "alto clef",
+"qkind": "duration",
+"akind": "not_a_note",
+"status": "wrong",
+"note": "kept as a notehead",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 1,
+"notehead": 1,
+"accidental": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_05",
+"subjects": [
+"glyph/13/0/5/10/6"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 0,
+"near_kinds": {},
+"touch_kinds": {}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_06",
+"subjects": [
+"glyph/16/0/5/10/3"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_07",
+"subjects": [
+"glyph/4/0/3/3/8"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 3,
+"near_any": 3,
+"near_kinds": {
+"arc+READ": 2,
+"notehead": 1
+},
+"touch_kinds": {
+"arc+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_08",
+"subjects": [
+"glyph/2/0/7/6/1"
+],
+"answer": "half",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 2 beats (hollow_head_bare_stem)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"ornament": 1
+},
+"touch_kinds": {
+"ornament": 1
+}
+},
+{
+"item": "2.88-review-2",
+"tile": "tile_09",
+"subjects": [
+"glyph/4/1/5/6/10"
+],
+"answer": "ledger lines",
+"qkind": "duration",
+"akind": "not_a_note",
+"status": "right",
+"note": "refused as not a note (belongs_to_a_nearer_staff)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 4,
+"touch_any": 3,
+"near_any": 6,
+"near_kinds": {
+"notehead+READ": 4,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "1",
+"subjects": [
+"glyph/2/0/1/5/13"
+],
+"answer": "Dynamic ff",
+"qkind": "dynamic",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 7,
+"near_any": 8,
+"near_kinds": {
+"dynamic": 7,
+"accidental": 1
+},
+"touch_kinds": {
+"dynamic": 7
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "3",
+"subjects": [
+"glyph/2/1/8/6/7"
+],
+"answer": "NOTES: the box sits over two different noteheads just right of the sf (not the dynamic)",
+"qkind": "dynamic",
+"akind": "other",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 6,
+"near_any": 7,
+"near_kinds": {
+"notehead+READ": 1,
+"dynamic": 3,
+"ornament": 1,
+"notehead": 2
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"dynamic": 2,
+"ornament": 1,
+"notehead": 2
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "4",
+"subjects": [
+"glyph/2/1/0/8/8"
+],
+"answer": "Dynamic: a small portion of the f in sf",
+"qkind": "dynamic",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"rest+READ": 1,
+"dynamic": 1
+},
+"touch_kinds": {
+"dynamic": 1
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "5",
+"subjects": [
+"glyph/2/0/1/2/9"
+],
+"answer": "Dynamic: a small portion of the f",
+"qkind": "dynamic",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 3,
+"near_any": 5,
+"near_kinds": {
+"rest+READ": 2,
+"dynamic": 2,
+"clef": 1
+},
+"touch_kinds": {
+"dynamic": 2,
+"clef": 1
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "6",
+"subjects": [
+"glyph/3/0/1/3/6"
+],
+"answer": "Dynamic: a small portion of one f of ff",
+"qkind": "dynamic",
+"akind": "not_a_note",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 4,
+"near_any": 4,
+"near_kinds": {
+"dynamic": 4
+},
+"touch_kinds": {
+"dynamic": 4
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "7",
+"subjects": [
+"glyph/2/0/7/5/6"
+],
+"answer": "Dynamic: a small portion of one f of ff (same as 6)",
+"qkind": "dynamic",
+"akind": "other",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 3,
+"near_any": 5,
+"near_kinds": {
+"dynamic": 5
+},
+"touch_kinds": {
+"dynamic": 3
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "8",
+"subjects": [
+"glyph/2/0/2/1/13"
+],
+"answer": "Dynamic p (Sean already judged this subject as 2.73 tile 10: \"Not a note - dynamic p\"; not re-asked)",
+"qkind": "dynamic",
+"akind": "other",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 3,
+"touch_any": 7,
+"near_any": 14,
+"near_kinds": {
+"accidental": 4,
+"dynamic": 2,
+"notehead+READ": 2,
+"notehead": 4,
+"rest+READ": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"dynamic": 2,
+"notehead+READ": 2,
+"notehead": 3
+}
+},
+{
+"item": "dynamic-not-a-head-review",
+"tile": "9",
+"subjects": [
+"glyph/2/1/9/6/9"
+],
+"answer": "NOTES: two small notes just to the right of the sf",
+"qkind": "dynamic",
+"akind": "other",
+"status": "unscored",
+"note": "question kind dynamic has no comparator",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 6,
+"near_any": 7,
+"near_kinds": {
+"notehead+READ": 2,
+"dynamic": 3,
+"ornament": 1,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"dynamic": 2,
+"ornament": 1,
+"notehead": 1
+}
+},
+{
+"item": "rhythm-leftovers-2",
+"tile": "10",
+"subjects": [
+"glyph/2/0/3/1/2"
+],
+"answer": "8th",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"dynamic": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-2",
+"tile": "6",
+"subjects": [
+"glyph/1/0/2/2/0"
+],
+"answer": "8th",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"arc+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-2",
+"tile": "7",
+"subjects": [
+"glyph/3/0/7/4/13"
+],
+"answer": "NOT a notehead: the red box is around a beam that connects 8th notes, but is not a notehead",
+"qkind": "duration",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (duration)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "rhythm-leftovers-2",
+"tile": "8",
+"subjects": [
+"glyph/2/1/7/13/1"
+],
+"answer": "8th",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 4,
+"near_any": 4,
+"near_kinds": {
+"notehead": 3,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead": 3,
+"notehead+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-2",
+"tile": "9",
+"subjects": [
+"glyph/2/0/3/1/4"
+],
+"answer": "8th",
+"qkind": "duration",
+"akind": "duration",
+"status": "abstained",
+"note": "abstained (owned_by_another_staff)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 5,
+"touch_any": 5,
+"near_any": 8,
+"near_kinds": {
+"notehead+READ": 4,
+"rest+READ": 1,
+"accidental": 1,
+"notehead": 1,
+"ornament": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"accidental": 1,
+"notehead": 1,
+"ornament": 1
+}
+},
+{
+"item": "rhythm-leftovers-3",
+"tile": "2",
+"subjects": [
+"glyph/2/1/7/13/3"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 3,
+"near_read": 3,
+"touch_any": 4,
+"near_any": 4,
+"near_kinds": {
+"notehead+READ": 3,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 3,
+"notehead": 1
+}
+},
+{
+"item": "rhythm-leftovers-3",
+"tile": "3",
+"subjects": [
+"glyph/2/1/5/13/1"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "narrowed",
+"note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 0,
+"touch_any": 0,
+"near_any": 2,
+"near_kinds": {
+"notehead": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "rhythm-leftovers-3",
+"tile": "4",
+"subjects": [
+"glyph/2/1/7/13/2"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (meter_reconciliation)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 2,
+"near_any": 5,
+"near_kinds": {
+"notehead+READ": 1,
+"accidental": 3,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"notehead": 1
+}
+},
+{
+"item": "rhythm-leftovers-3",
+"tile": "6",
+"subjects": [
+"glyph/2/1/7/13/0"
+],
+"answer": "8",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 2,
+"near_read": 2,
+"touch_any": 3,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 2,
+"notehead": 1
+},
+"touch_kinds": {
+"notehead+READ": 2,
+"notehead": 1
+}
+},
+{
+"item": "rhythm-leftovers-review",
+"tile": "10",
+"subjects": [
+"glyph/2/0/8/0/5"
+],
+"answer": "Eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-review",
+"tile": "6",
+"subjects": [
+"glyph/2/1/7/10/3"
+],
+"answer": "Eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 4,
+"near_any": 8,
+"near_kinds": {
+"notehead": 2,
+"dynamic": 2,
+"ornament": 2,
+"notehead+READ": 2
+},
+"touch_kinds": {
+"notehead": 1,
+"ornament": 2,
+"notehead+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-review",
+"tile": "7",
+"subjects": [
+"glyph/3/0/7/4/0"
+],
+"answer": "Eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"notehead+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "rhythm-leftovers-review",
+"tile": "8",
+"subjects": [
+"glyph/2/0/3/1/0"
+],
+"answer": "Eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 4,
+"near_any": 6,
+"near_kinds": {
+"accidental": 3,
+"dynamic": 2,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"accidental": 3,
+"notehead+READ": 1
+}
+},
+{
+"item": "rhythm-leftovers-review",
+"tile": "9",
+"subjects": [
+"glyph/2/0/0/5/5"
+],
+"answer": "Eighth",
+"qkind": "duration",
+"akind": "duration",
+"status": "right",
+"note": "decided 0.5 beats (head_and_marks)",
+"doc_by": "manifest+box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 2,
+"near_any": 3,
+"near_kinds": {
+"notehead+READ": 2,
+"dynamic": 1
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"dynamic": 1
+}
+},
+{
+"item": "stem-finder/round2",
+"tile": "1",
+"subjects": [
+"glyph/2/0/3/1/0"
+],
+"answer": "Y",
+"qkind": "stem",
+"akind": "yes_no",
+"status": "unscored",
+"note": "question kind stem has no comparator",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 4,
+"near_any": 6,
+"near_kinds": {
+"accidental": 3,
+"dynamic": 2,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"accidental": 3,
+"notehead+READ": 1
+}
+},
+{
+"item": "stem-finder/round2",
+"tile": "2",
+"subjects": [
+"glyph/2/0/2/7/2"
+],
+"answer": "Y",
+"qkind": "stem",
+"akind": "yes_no",
+"status": "unscored",
+"note": "question kind stem has no comparator",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 1,
+"touch_any": 0,
+"near_any": 1,
+"near_kinds": {
+"arc+READ": 1
+},
+"touch_kinds": {}
+},
+{
+"item": "stem-finder/round2",
+"tile": "3",
+"subjects": [
+"glyph/1/0/3/11/1"
+],
+"answer": "Y",
+"qkind": "stem",
+"akind": "yes_no",
+"status": "unscored",
+"note": "question kind stem has no comparator",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 0,
+"near_read": 2,
+"touch_any": 0,
+"near_any": 3,
+"near_kinds": {
+"accidental": 1,
+"arc+READ": 2
+},
+"touch_kinds": {}
+},
+{
+"item": "stem-finder/round2",
+"tile": "5",
+"subjects": [
+"glyph/2/1/10/0/14"
+],
+"answer": "1 beam",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 2,
+"near_any": 4,
+"near_kinds": {
+"notehead+READ": 1,
+"ornament": 3
+},
+"touch_kinds": {
+"notehead+READ": 1,
+"ornament": 1
+}
+},
+{
+"item": "stem-finder/round2",
+"tile": "6",
+"subjects": [
+"glyph/2/1/10/0/1"
+],
+"answer": "1 beam",
+"qkind": "unknown",
+"akind": "other",
+"status": "unscored",
+"note": "no comparator for other answer (unknown)",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 2,
+"touch_any": 1,
+"near_any": 5,
+"near_kinds": {
+"ornament": 1,
+"arc+READ": 1,
+"rest": 2,
+"notehead+READ": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+},
+{
+"item": "stem-finder/round2",
+"tile": "9",
+"subjects": [
+"glyph/2/0/0/5/6"
+],
+"answer": "2 stems",
+"qkind": "stem",
+"akind": "other",
+"status": "unscored",
+"note": "question kind stem has no comparator",
+"doc_by": "page_box",
+"kind": "notehead",
+"touch_read": 1,
+"near_read": 1,
+"touch_any": 1,
+"near_any": 2,
+"near_kinds": {
+"notehead+READ": 1,
+"dynamic": 1
+},
+"touch_kinds": {
+"notehead+READ": 1
+}
+}
+]
+}
