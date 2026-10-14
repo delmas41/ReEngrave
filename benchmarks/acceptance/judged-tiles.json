@@ -1,6 +1,6 @@
 {
- "n_items": 53,
- "n_tiles": 647,
+ "n_items": 54,
+ "n_tiles": 664,
  "tiles": [
   {
    "answer": "right",
@@ -3547,6 +3547,363 @@
    "subjects": null,
    "tile": "tile_10",
    "value": null
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2336.0,
+    2884.0,
+    2368.0,
+    2895.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/14/8",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_01",
+   "value": 2.0
+  },
+  {
+   "answer": "Trem slash",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2245.0,
+    3136.0,
+    2294.0,
+    3163.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/4/1/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_02",
+   "value": "tremolo"
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2167.0,
+    2595.0,
+    2191.0,
+    2614.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/8/12/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_03",
+   "value": 2.0
+  },
+  {
+   "answer": "Whole rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1021.0,
+    1647.0,
+    1046.0,
+    1659.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/3/1/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_04",
+   "value": 4.0
+  },
+  {
+   "answer": "Part of a tie",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2228.0,
+    1648.0,
+    2249.0,
+    1661.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/3/13/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_05",
+   "value": null
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2481.0,
+    1616.0,
+    2502.0,
+    1635.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/3/15/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_06",
+   "value": 2.0
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    4714.0,
+    2368.0,
+    4757.0,
+    2407.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/2/6/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_07",
+   "value": 1.0
+  },
+  {
+   "answer": "Dot 2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    4146.0,
+    3764.0,
+    4188.0,
+    3777.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/6/5/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_08",
+   "value": 3.0
+  },
+  {
+   "answer": "trem slash",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2243.0,
+    6710.0,
+    2291.0,
+    6749.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/13/1/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_09",
+   "value": "tremolo"
+  },
+  {
+   "answer": "Dot 2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    4720.0,
+    3735.0,
+    4763.0,
+    3774.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/5/6/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_10",
+   "value": 3.0
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1646.0,
+    2690.0,
+    1688.0,
+    2728.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/3/0/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_11",
+   "value": 1.5
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1738.0,
+    1605.0,
+    1763.0,
+    1625.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/3/8/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_12",
+   "value": 2.0
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2051.0,
+    2726.0,
+    2069.0,
+    2740.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/11/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_13",
+   "value": 2.0
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1604.0,
+    2885.0,
+    1626.0,
+    2895.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/7/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_14",
+   "value": 2.0
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    2233.0,
+    2748.0,
+    2258.0,
+    2766.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/13/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_15",
+   "value": 2.0
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1112.0,
+    2791.0,
+    1134.0,
+    2813.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/2/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_16",
+   "value": 0.5
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-14",
+   "doc": null,
+   "followup": false,
+   "item": "2.114-second-detector",
+   "page_box": [
+    1286.0,
+    2804.0,
+    1313.0,
+    2829.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/1/0/9/4/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "tile_17",
+   "value": 2.0
   },
   {
    "answer": "Ledger line",
