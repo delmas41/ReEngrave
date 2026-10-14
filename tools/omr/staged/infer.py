@@ -257,6 +257,21 @@ def dynamic_ink_pick_enabled() -> bool:
 DYNAMIC_INK_PICK_SWITCH = Switch(DYNAMIC_INK_PICK_ENV, dynamic_ink_pick_enabled)
 
 
+#: ROADMAP 2.121. The arc-ink-is-not-a-beam rule's own flag, default OFF until Sean's tiles (the item authorises one flag): a bare
+#: stem whose every refused "beam" stroke is a slur/tie's own ink or measured thinner/more bowed than any beam is collapsed to the
+#: unbeamed value, GUESSED (blue). A default-OFF flag is an ALLOW-LIST: a typo must leave the rule OFF. Written out on its own line
+#: so the AST scan in `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+ARC_INK_NOT_BEAM_ENV = "OMR_ARC_INK_NOT_BEAM"
+
+
+def arc_ink_not_beam_enabled() -> bool:
+    """Read the arc-ink flag. Only an explicit on-word is ON."""
+    return os.environ.get(ARC_INK_NOT_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+ARC_INK_NOT_BEAM_SWITCH = Switch(ARC_INK_NOT_BEAM_ENV, arc_ink_not_beam_enabled)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
 # ─────────────────────────────────────────────────────────────────────────────
@@ -353,6 +368,12 @@ class Inference(str, Enum):
     #: Where the ink favours none (no letter scored, or a tie inside the
     #: declared margin) the narrowing stands and EXPORT writes `dyn.`.
     COLLAPSE_DYNAMIC_BY_INK = "collapse_dynamic_by_ink"
+
+    #: ROADMAP 2.121 (Sean 2026-10-14, "start the beam confirmation fix"; 2.119 twins split A). A stemmed head whose EVERY candidate
+    #: beam stroke was refused, each as a slur/tie's own ink or as thinner/more bowed than any beam (2.74's ink test), with its stem
+    #: tip read clean, collapsed to the head's own unbeamed value. Evidence: the arc reader's DECIDED glyph and the CV ink test read
+    #: the SAME ink, so they are ONE witness -- GUESSED, never READ. No bar arithmetic.
+    COLLAPSE_ARC_INK_NOT_BEAM = "collapse_arc_ink_not_beam"
 
 
 #: The only prior states an inference may speak into.
