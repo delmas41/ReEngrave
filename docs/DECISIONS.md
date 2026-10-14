@@ -9,8 +9,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-14 · Sean · Land 2.124/2.125 at check 193: the new dot family exposes POSITION dot has no staff-grid position fact (KNOWN_GAPS); 2.127 closes it · because the bookkeeping fixes and the 6/8 whole-rest fix are worth having now · (benchmarks/omr-dots-articulations-2026-10/FINDINGS.md)
+<<<<<<< HEAD
 - 2026-10-14 · Sean · Land 2.124/2.125: dots and staccatos are counted once and in their own family; output unchanged · because the 2.118 report showed the ledgers out of balance · (benchmarks/omr-dots-articulations-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · OMR_LILY_CARRIED_METER_REST ON: in LilyPond a whole-bar rest under a carried meter is written as that bar's length (6/8 -> r2.), never r1 · because a whole rest means the bar (page-facts) and r1 overfilled 6/8 bars (Brahms 445 LilyPond warnings) · (same FINDINGS)
+=======
+- 2026-10-14 · Sean · Land 2.121 ON: a bare stem whose only refused "beam" strokes are slur/tie ink or too thin/bowed for a beam takes the head's own unbeamed value, GUESSED (blue); it never makes an eighth and never uses the bar sum · because 19 of 24 twins split-A losses were quarters under a slur, not missing beams · (benchmarks/omr-beam-confirm-2026-10/FINDINGS.md)
+>>>>>>> origin/main
 - 2026-10-14 · Sean · Land 2.118: every overnight compare writes a stage-by-stage re-gather report per movement (bars by state, per-symbol funnel GATHER->EXPORT that must balance, guess certainty, cleanup per page/part, regression guards, night-over-night movers) · because Sean asked for detailed reports and imbalances in them are findings · (benchmarks/omr-regather-report-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · Land 2.114 with OMR_SECOND_HOLLOW_DETECTOR OFF: a hollow-tuned second detector at GATHER contributes only hollow-head boxes, never mixed into production; a head only it saw needs a stem or dot witness and stays GUESSED · because it lifts clean Litolff hollow recall 74% -> 80% with every other glyph identical, but the gain is small and its cut-offs are Litolff-tuned · (benchmarks/omr-second-detector-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · Land 2.117 ON: a bar that does not add up keeps its prefix (from the opening barline) and suffix (back from the closing barline, meter read or carried) in BLUE; only the unread stretch is marked, by an empty red bracket "unread", never a rest; held bars use the same bracket · because the bar sum was throwing away thousands of read notes (Brahms 1,822 bars held) · (benchmarks/omr-partial-bars-2026-10/FINDINGS.md)

@@ -6147,5 +6147,10 @@ STAGED EXPORT, flag `OMR_PARTIAL_BARS` off|measure|1. A held bar keeps prefix + 
 ## 2026-10-14 -- ROADMAP 2.114 landed, switch OFF (second hollow-only detector at GATHER)
 STAGED GATHER + ADJUDICATE, flag `OMR_SECOND_HOLLOW_DETECTOR` default OFF (`gather.gather_second_hollow`, `staged/second_hollow.py`, 2.114 blocks in `rhythm.adjudicate_duration`, `Q.SECOND_HOLLOW`). Only hollow-head boxes are kept; OFF is byte-identical and never builds the detector; ON with `omr-weights/candidates/scale2110-OLD896-raw-2026-10-13.pt` (gitignored, machine-local) missing RAISES (new test). Clean Litolff hollow recall 74% -> 80%, Brahms 33/33, other glyphs identical; a second-only head needs a stem/dot witness. Fast tier 7,848 passed; `check` 192. Merge note: `benchmarks/acceptance/judged-tiles.json` is derived -- union then `judged build`.
 
+<<<<<<< HEAD
 ## 2026-10-14 -- ROADMAP 2.124 + 2.125 landed (dots counted once, dot family, carried-meter LilyPond rest ON)
 STAGED GATHER counts + LILYPOND EXPORT. 2.124: Litolff's doubled staccatos on condensed Cello/Bass copies counted once. 2.125: staccato boxes are a `dot` family (`Q.DOT_ROLE`), not undecided articulations (counts only). `OMR_LILY_CARRIED_METER_REST` default ON (Sean 2026-10-14): a whole-bar rest under a carried meter is the bar's length (`r2.` in 6/8); Brahms 20261013-night LilyPond warnings 445 -> 116. See benchmarks/omr-dots-articulations-2026-10/FINDINGS.md.
+=======
+## 2026-10-14 -- ROADMAP 2.121 landed ON (arc ink is not a beam)
+STAGED INFER, `OMR_ARC_INK_NOT_BEAM` default ON (`collapse_arc_ink_not_beam`): a bare stem whose only refused beam strokes are slur/tie ink or too thin/bowed collapses to the head's own unbeamed value, GUESSED (blue); never an eighth, no bar sum. Sean's 15 blind tiles: 9 of 13 changed notes exact, 0 quarters made eighths, both controls right; the 4 misses (2 missed dots, 1 extra dot, 1 Litolff half read black) are written blue and go to 2.127 / hollow-head work. Off-word turns it off. See benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 6.
+>>>>>>> origin/main

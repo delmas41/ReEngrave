@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -2124,6 +2124,103 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
     """
     return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.121 -- a bare stem whose every refused "beam" is a slur's or tie's ink
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Why a refused stroke counts as POSITIVELY not a beam. `arc`: inside a DECIDED slur/tie glyph (2.25b). `ink:too_thin` /
+#: `ink:bowed`: 2.74's ink test measured it thinner than any beam / bowed (Sean 2026-10-09: *"a beam never has an arc"*, thicker
+#: than a hairpin's line). NOT here, on purpose: `ink:one_stem` (2.82: a real beam whose other stem the stem finder missed is
+#: refused this way), `ink:through_heads`, `neighbour_staff`, `far_side`, `beyond_stem` -- each says the stroke may belong to
+#: something else or to a stem nobody read, which is "cannot tell", not "a slur".
+ARC_INK_NOT_BEAM_POSITIVE = ("arc", "ink:too_thin", "ink:bowed")
+
+
+def arc_ink_not_beam_decline(v: Any) -> Optional[str]:
+    """Why a narrowed duration verdict is NOT settled by this rule, or `None` where it is. One place so the tests and the rule agree."""
+    d = v.detail or {}
+    if v.reason != BARE_STEM_REASON:
+        return "not_beam_discounted_uncertain"
+    if d.get("beam_evidence") != "none_over_this_note":
+        return "a_beam_or_flag_was_read"
+    if int(d.get("stems_attached") or 0) < 1:
+        return "no_own_stem_seen"
+    if d.get("bare_stem_tip_window_clean") is not True:
+        return "tip_not_read_clean"
+    if int(d.get("flags_attached") or 0) or int(d.get("flag_levels") or 0) \
+            or int(d.get("levels_certain") or 0) or int(d.get("levels_possible") or 0):
+        return "a_mark_stands_on_the_stem"
+    strokes = d.get("refused_strokes")
+    if not isinstance(strokes, (list, tuple)) or not strokes:
+        return "no_refused_stroke_facts"
+    for st in strokes:
+        why = st.get("why")
+        if why not in ARC_INK_NOT_BEAM_POSITIVE:
+            return "a_refusal_that_is_not_a_slur_reading:%s" % why
+        # a stroke AT the tip is where a refused real beam would stand (2.81); only a decided slur/tie glyph may stand there
+        # (a slur starts at the stem end), never a bare ink-shape refusal.
+        if st.get("at_tip") is not False and why != "arc":
+            return "ink_shape_refusal_at_the_tip"
+    return None
+
+
+@rule(
+    inference=Inference.COLLAPSE_ARC_INK_NOT_BEAM,
+    target=Q.DURATION,
+    reads=(Q.DURATION, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=ARC_INK_NOT_BEAM_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration whose reason is `beam_discounted_uncertain` to that reader's OWN unbeamed candidate and "
+        "nothing else, only where the head's own stem was seen, nothing was read on it (no beam, no flag, no level), its stem-tip "
+        "window was READ clean, and EVERY stroke the reader refused is on file as a decided slur/tie's own ink or as measured thinner "
+        "or more bowed than any beam (a refusal for one stem, through the heads, another staff's or the far side's is not enough). A "
+        "stroke refused by ink shape alone and standing at the tip declines. It uses no bar arithmetic, never reads `support` and "
+        "never overturns a DECIDED verdict; it never shortens a note (the unbeamed value is the head's own)."),
+    why_witnesses_are_independent=(
+        "ONE witness, declared: the arc reader's decided slur/tie glyph and the CV ink test (thickness, bow) read the SAME ink, so "
+        "they fall together and count once (CLAUDE.md §4); the stem-tip window is a separate reading of a different region but "
+        "answers a different question (no hook). One witness cannot READ, so the verdict is GUESSED (blue, with both candidates) and "
+        "the rule is default OFF until Sean's blind tiles."),
+)
+def collapse_arc_ink_not_beam(log: Log, cell: Subject) -> List[Proposal]:
+    """A bare stem under a slur is a quarter -- GUESSED, not read.
+
+    ROADMAP 2.121. Which stage, and why: 2.119's twins split A (24 pairs) read as "the beam reader missed a beam"; Sean's own boxes
+    (Brahms 317803 pdf 0) say otherwise -- 19 of the 24 stems carry no beam and no flag, the detector's `beam` boxes beside them are
+    his slurs and ties. The ink reader was RIGHT to refuse them; the narrowing stood because 2.74's rule 8 will not turn a refusal
+    into an unmarked note. Whether "every refused stroke is a slur" FOLLOWS is not forced (the ink is one witness), so it is INFER's:
+    best, labelled, bounded to the reader's own candidates.
+    """
+    from .consequences import _left_the_bar, _standing
+    out: List[Proposal] = []
+    for v in _standing(log, cell, Q.DURATION):
+        if v.outcome is not Outcome.NARROWED or not v.candidates:
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        declined = arc_ink_not_beam_decline(v)
+        if declined is not None:
+            continue
+        unbeamed = [c for c in v.candidates if isinstance(c.value, dict)
+                    and int(c.value.get("beam_levels") or 0) == 0]
+        if len(unbeamed) != 1:
+            continue
+        strokes = (v.detail or {}).get("refused_strokes") or []
+        out.append(Proposal(
+            subject=v.subject, value=unbeamed[0].value,
+            reason="refused_strokes_are_slurs_or_too_thin_for_a_beam",
+            basis=(v.id,), witnesses=(),
+            detail={"refused_strokes": [dict(st) for st in strokes],
+                    "n_refused_strokes": len(strokes),
+                    "n_decided_arc": sum(1 for st in strokes if st.get("why") == "arc"),
+                    "tip_window_clean": True,
+                    "margin_axis": "no_margin: a conjunction of readings, not a score",
+                    "witness_count": 1}))
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
