@@ -1,0 +1,18 @@
+{
+  "pass_name": "hollow noteheads (every one)",
+  "note": "Box EVERY open (hollow) notehead in the cell: half notes = key 1, whole notes = key 2. Press a, then CLICK each head (a sized box lands on it and picks on-line / in-space for you). Include heads with a tie, slur, ledger line, staff line or stem through them, chord notes, and heads at the cell edge that are mostly visible. Do NOT box black heads, rests, or the holes of 8s / ff / cresc. / beams. Nothing is pre-drawn. A cell with no hollow head: just press Tab -- that stamps it as looked-at, and an empty looked-at cell is a real label.",
+  "classes": [
+    {
+      "label": "half notehead",
+      "on_line": "noteheadHalfOnLine",
+      "in_space": "noteheadHalfInSpace",
+      "click_box": true
+    },
+    {
+      "label": "whole notehead",
+      "on_line": "noteheadWholeOnLine",
+      "in_space": "noteheadWholeInSpace",
+      "click_box": true
+    }
+  ]
+}

@@ -89,3 +89,8 @@ v21-2026-09-03-complete-lamer
 # 38 ties and 37 slurs, the family production misses worst (0.26 coverage
 # against truth on the scan benchmark).
 v22-2026-09-04-simrock-dense
+
+# NOT ADMITTED (2026-10-13, ROADMAP 2.4b) -- v24-2026-10-13-hollow4-train: Sean's hollow-head TRAIN batch (100 cells,
+# 90 hollow heads, OnLine/InSpace recomputed from geometry). Like v23 it is experiment-corpus material: the 2.4b run
+# builds its own catalog from it (benchmarks/omr-labeling-hollow4-2026-10/FINDINGS.md). Admission is Sean's call after
+# the A/B; the membership test pins this file.

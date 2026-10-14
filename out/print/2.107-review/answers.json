@@ -1,0 +1,19 @@
+{
+ "verbatim": "1. 8 rest 2.espress. 3. ff 4. pp 5. pp 6. ff 7.  8 rest 8. ff 910. pp 11. sf",
+ "date": "2026-10-13",
+ "question": "What is the bracketed mark?",
+ "convention": "'910. pp' read as tiles 9 and 10 both pp",
+ "tiles": {
+  "1": {"sean": "8 rest", "kind": "control", "ours": "no letter read", "verdict": "right"},
+  "2": {"sean": "espress. (a word)", "kind": "refused", "ours": "no letter read", "verdict": "right"},
+  "3": {"sean": "ff", "kind": "read", "ours": "ff", "verdict": "right"},
+  "4": {"sean": "pp", "kind": "refused", "ours": "no letter read (erasure disagreement)", "verdict": "miss"},
+  "5": {"sean": "pp", "kind": "read", "ours": "pp", "verdict": "right"},
+  "6": {"sean": "ff", "kind": "read", "ours": "ff", "verdict": "right"},
+  "7": {"sean": "8 rest", "kind": "control", "ours": "no letter read", "verdict": "right"},
+  "8": {"sean": "ff", "kind": "read", "ours": "f (decided)", "verdict": "WRONG: one letter read, the second f missed"},
+  "9": {"sean": "pp", "kind": "read", "ours": "pp", "verdict": "right"},
+  "10": {"sean": "pp", "kind": "read", "ours": "narrowed fp/mp/pp", "verdict": "truth inside the candidates"},
+  "11": {"sean": "sf", "kind": "read", "ours": "narrowed ff/mf/rf/sf", "verdict": "truth inside the candidates"}
+ }
+}

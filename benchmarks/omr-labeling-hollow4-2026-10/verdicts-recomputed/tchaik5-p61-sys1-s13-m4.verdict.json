@@ -1,0 +1,63 @@
+{
+  "cell_id": "tchaik5-p61-sys1-s13-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:37:50+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1353,
+        "y": 543,
+        "w": 100,
+        "h": 84
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1353,
+        "y": 824,
+        "w": 100,
+        "h": 84
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1536,
+        "y": 823,
+        "w": 100,
+        "h": 84
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfInSpace"
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1527,
+        "y": 543,
+        "w": 100,
+        "h": 84
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

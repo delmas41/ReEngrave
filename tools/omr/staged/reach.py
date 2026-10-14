@@ -532,6 +532,11 @@ NOT_A_STAGE = frozenset({
     # read off the record. Registered here for the reason every entry above
     # gives: an unregistered staged `.py` trips `unaccounted_modules()`.
     "geometry.py",
+    # ROADMAP 2.107. `letter_look.py` is PURE (ink in, a reading out: no log, no
+    # cell, no quantity named) -- `gather.gather_letter_look` is its stage;
+    # `letter_look_report.py` READS a saved record to count and show what the
+    # look did, and runs no stage.
+    "letter_look.py", "letter_look_report.py",
 })
 
 

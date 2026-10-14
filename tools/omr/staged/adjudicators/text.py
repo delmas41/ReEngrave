@@ -479,6 +479,10 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     ink_groups = _same_ink_groups(rows)
     seen_ink: set = set()
     alts_of: Dict[str, Tuple[str, ...]] = {}
+    #: ROADMAP 2.107: for an UNREAD slot the second look filed (twins of every
+    #: letter the library could complete), the letter reader's own score per
+    #: letter -- the ink's evidence, the only thing that ranks the candidates.
+    alt_scores: Dict[str, Dict[str, float]] = {}
     group_ids: Dict[str, List[str]] = {}
     same_ink_collapsed = identity_by_ink = identity_abstained = 0
     # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
@@ -617,6 +621,17 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                 continue
             seen_ink.add(key)
             ident, how, possible = _identity_of_ink(group)
+            if any((r.detail or {}).get("how") == "unread" for r in group):
+                # ⚠️ ROADMAP 2.107. An UNREAD letter is never resolved by the
+                # ink's height or by the lexicon: that would turn "a letter
+                # nobody read" into a written word. It stays open, and what
+                # ranks its candidates is the reader's own score for each.
+                ident, how = None, "unread_slot"
+                possible = tuple(sorted({_letter_of(r) for r in group
+                                         if _letter_of(r)}))
+                alt_scores[row.id] = {
+                    _letter_of(r): float(r.score or 0.0) for r in group
+                    if _letter_of(r)}
             # the run is ordered and measured by THIS row's own box, not the
             # group's union: a twin boxed bigger would pull the letter under
             # its neighbour (an `s` before an `f` came out `fs`)
@@ -664,10 +679,10 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if x0 - prev_right <= width and abs(y - run[0][2]) <= width:
             run.append(entry)
         else:
-            words.append(_close(run, alts_of))
+            words.append(_close(run, alts_of, alt_scores))
             run = [entry]
         prev_right = x1
-    words.append(_close(run, alts_of))
+    words.append(_close(run, alts_of, alt_scores))
     for w in words:
         # ⚠️ KEPT PER RUN AS `letters` (ROADMAP 2.68): `used` flattens every
         # run's letters into one list, and the pairing of a word with ITS
@@ -717,9 +732,19 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # ⚠️ Only the whole-cell case narrows. A cell holding one good `ff` and
         # one unspellable `s` has DECIDED something, and reporting it as
         # narrowed would lose the `ff`.
+        ranked: Dict[str, float] = {}
+        for w in unspellable:
+            for c in w["completions"]:
+                ranked[c] = max(ranked.get(c, 0.0),
+                                (w.get("completion_support") or {}).get(c, 1.0))
+        if len(ranked) < 2:
+            # a single completion is not a narrowing (`Verdict` needs two); it
+            # is still a guess and must not be written plain
+            return Ruling.abstain("unspellable", completions=sorted(ranked),
+                                  **{k: v for k, v in detail.items()
+                                     if k != "completions"})
         return Ruling.narrow(
-            [Candidate(value=c, support=1.0) for c in
-             sorted({c for w in unspellable for c in w["completions"]})],
+            [Candidate(value=c, support=ranked[c]) for c in sorted(ranked)],
             reason="unspellable", used=used, **detail)
     return Ruling(value=[w["text"] for w in words if w["spelled"]],
                   reason="spelled", used=tuple(used), detail=detail)
@@ -1113,7 +1138,9 @@ def _token_is_a_word(letter_box, word_box, text: str) -> bool:
 
 
 def _close(run: List[Tuple[float, float, float, str, Any]],
-           alts: Optional[Dict[str, Tuple[str, ...]]] = None) -> Dict[str, Any]:
+           alts: Optional[Dict[str, Tuple[str, ...]]] = None,
+           alt_scores: Optional[Dict[str, Dict[str, float]]] = None
+           ) -> Dict[str, Any]:
     """One assembled run, with the vertical evidence the exporter never had.
 
     `alts` maps a row id to the letters its ink may still be (ROADMAP 2.68,
@@ -1126,15 +1153,32 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
     text = "".join(e[3] for e in run)
     slots = [sorted(alts.get(e[4].id) or (e[3],)) for e in run]
     open_slot = any(len(sl) > 1 for sl in slots)
+    support: Dict[str, float] = {}
     if open_slot:
         combos = {"".join(c) for c in itertools.product(*slots)}
         full = sorted(c for c in combos if c in DYNAMIC_WORDS)
-        spelled = len(full) == 1
+        # ROADMAP 2.107: a slot the second look filed is NEVER spelled by the
+        # lexicon -- one surviving completion is still a guess, not a reading.
+        from_look = any(e[4].id in (alt_scores or {}) for e in run)
+        spelled = len(full) == 1 and not from_look
         if spelled:
             text = full[0]
         completions = full if full else sorted(
             w for w in DYNAMIC_WORDS if any(w.startswith(c) for c in combos))
         identity = "lexicon" if spelled else "open"
+        if from_look:
+            # the ink's own evidence for each completion: the product, over the
+            # run's open slots, of the reader's score for the letter the word
+            # puts there (a slot nobody scored contributes nothing: 0.0)
+            for wd in completions:
+                if len(wd) != len(run):
+                    continue
+                sc = 1.0
+                for i, e in enumerate(run):
+                    scores = (alt_scores or {}).get(e[4].id)
+                    if scores is not None:
+                        sc *= scores.get(wd[i], 0.0)
+                support[wd] = round(sc, 4)
     else:
         spelled = text in DYNAMIC_WORDS
         completions = sorted(w for w in DYNAMIC_WORDS if w.startswith(text))
@@ -1146,6 +1190,9 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
         "spelled": spelled,
         "identity": identity,
         "completions": completions,
+        #: ROADMAP 2.107: the ink's evidence per completion (empty unless the
+        #: open letter came from the second look)
+        "completion_support": support,
         "x_page": run[0][0],
         "n_letters": len(run),
         #: ⚠️ RECORDED, NOT USED. The letters of one word sit at one height, so

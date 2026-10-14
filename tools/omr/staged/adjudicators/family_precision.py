@@ -148,6 +148,7 @@ from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
 from .. import margins as _margins
 from . import key_slots as _key_slots
+from . import letter_cover as _letter_cover
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _same_mark_centres,
@@ -1680,14 +1681,16 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
-                   Q.STEM, Q.STEM_SLASH),
+                   Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT),
+           Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
+           Q.LETTER_LOOK_COVER),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
+                                     "rest_on_a_dynamic_letter",
                                      "rest_is_a_duplicate_box",
                                      "rest_in_a_key_signature_slot",
                                      "rest_is_a_meter_digit",
@@ -1778,6 +1781,16 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup
+        # ROADMAP 2.107: a rest whose ink the second look read as a dynamic
+        # letter (the `s` of an `sf` boxed `rest16th`).
+        cover_row, cover_share = _letter_cover.cover_of(
+            ev.rows(Q.LETTER_LOOK_COVER), detail)
+        if _letter_cover.refuses(cover_share):
+            detail["read_by"] = "letter_look"
+            return _letter_cover.with_margin(
+                Ruling(value=True, reason="rest_on_a_dynamic_letter",
+                       used=(box_row.id, cover_row.id), detail=detail),
+                cover_share, would_choose="rest")
         clipped = _rest_clipped_by_crop_refusal(ev, box_row, detail)
         if clipped is not None:
             return clipped

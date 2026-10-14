@@ -1141,6 +1141,15 @@ class Q(_Vocab):
     #: the box). Only filed where the head lies at least 0.2 inside a letter
     #: box; a head clear of every letter has no row, which is not a reading.
     NOTEHEAD_LETTER_INK = "notehead_letter_ink"
+    #: ROADMAP 2.107 (Sean 2026-10-13: *"sf should be read as a dynamic - it is
+    #: letters"*). For a notehead or rest box whose INK the second look
+    #: (`gather.gather_letter_look`) read as dynamic letters the detector never
+    #: boxed: the share of the box's own (staff-line-erased) ink that lies inside
+    #: the read letters' boxes. Filed on the HEAD's / REST's glyph, only where the
+    #: share is at least `letter_look.COVER_SHARE`'s neighbour 0.2; the letters
+    #: themselves are `Q.GLYPH_BOX` rows under `READERS.LETTER_LOOK`. A box on no
+    #: read letter has no row, which is not a reading.
+    LETTER_LOOK_COVER = "letter_look_cover"
 
     #: PROMOTED from the `CV_HAIRPINS` half of `WEDGE_BOX.band_offset_spaces`,
     #: and MEASURED for the detector half, which never carried one.
@@ -2400,6 +2409,9 @@ CLAIMS: "dict[str, str]" = {
     #: two ruler readings off the raster (a filled-disc width, an ink share);
     #: what they MEAN for the head is `notehead_is_not_a_notehead`'s.
     "NOTEHEAD_LETTER_INK": CLAIM.MEASUREMENT,
+    #: a share of ink off the raster; what it MEANS for the head or rest is
+    #: `notehead_is_not_a_notehead`'s and `rest_is_not_a_rest`'s.
+    "LETTER_LOOK_COVER": CLAIM.MEASUREMENT,
     "DIRECTION_BAND_POSITION": CLAIM.MEASUREMENT,
     "WEDGE_BAND_POSITION": CLAIM.MEASUREMENT,
 
@@ -2687,6 +2699,14 @@ class READERS(_Vocab):
     #: `gather.gather_notehead_letter_ink`: a head box against a dynamic
     #: letter's box, read off the page's raster.
     CV_NOTEHEAD_LETTER_INK = "cv_notehead_letter_ink"
+    #: `gather.gather_letter_look` -- ROADMAP 2.107. The SAME `YoloDetector` a
+    #: cell is read by, shown the staff-line-erased ink of a head/rest group at
+    #: the scales dynamic letters live at (`letter_look.LOOK_SCALES`), its letter
+    #: classes voted over the looks and the string they spell checked against
+    #: the terms library. Its own reader name, never `DETECTOR`, so a letter it
+    #: files is separable from one the production pass boxed; reads the page's
+    #: raster, so it is not `CV_INK`'s signal.
+    LETTER_LOOK = "yolo_letter_look"
     #: `gather.gather_arc_ink` -- ROADMAP 2.60. Reads the page's own binary
     #: raster (`pws.page.binary`, the staff lines left in, like `LEDGER_
     #: FARHEAD`), so it shares a crop with every other reader of this page
@@ -3011,6 +3031,17 @@ class ABSTAIN(_Vocab):
     #: guided prediction. Recorded so an unguided low-confidence box is
     #: traceable as SEEN AND DECLINED, never silently dropped.
     RESCUE_UNGUIDED = "rescue_unguided"
+
+    # ── ROADMAP 2.107 (the second look at head/rest ink) ─────────────────────
+    #: The look showed the detector the group's ink and no dynamic letter was
+    #: seen on `STRONG_MIN_SCALES` looks at `STRONG_CONF` -- the group is a
+    #: note or a rest or something else. The best letter it saw rides on the row.
+    NO_LETTER_READ = "no_letter_read"
+    #: Letters were read, and no string they (and any unread letter beside them)
+    #: can spell is a dynamic in the terms library. The strings tried ride on it.
+    NOT_IN_LIBRARY = "not_in_library"
+    #: The detector already boxed these letters as dynamics; nothing is added.
+    ALREADY_BOXED = "already_boxed_as_a_dynamic"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

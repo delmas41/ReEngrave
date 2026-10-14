@@ -9,9 +9,22 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- ROADMAP 2.107 LANDED with blue `dyn.` only (Sean: "land with blue dyn only")
+
+- STAGED, INFER + EXPORT. `collapse_dynamic_by_ink` moved from `ALWAYS_ON` to default-OFF research flag `OMR_DYNAMIC_INK_PICK` (allow-list; `docs/flags-2026-09.md`): the ink pick was wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). A narrowed dynamic exports only as a blue `dyn.` with every candidate and the ink scores in the `reengrave:guessed` carrier. `test_dynamic_guess_2_107.py` + `test_infer_stage.py` updated. Opened ROADMAP 2.109 (STAGED LilyPond writes no dynamics). Fast tier 7,751 passed; check 192, margins 0; judged index rebuilt.
+## 2026-10-13 -- Brahms 317803 pdf 0 hand truth complete (Sean)
+
+- `data/hand-truth/pages/imslp317803/0.json` 1,352 -> 1,566 boxes; remaining in-progress cells are words only. DECISIONS line.
+
 ## 2026-10-13 -- manager session end: START HERE written
 
 - ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
+## 2026-10-13 -- ROADMAP 2.107 dynamic letters the detector never boxed are READ, library-checked (branch `lane-2.107-dynamic-letters`, NOT merged; Sean judges `out/print/2.107-review/` first)
+
+- STAGED, GATHER + ADJUDICATE. Sean on 2.90 tile 9 (Litolff p2 `sf`, boxed note + two `rest16th`): *"sf should be read as a dynamic - it is letters"*. New `staged/letter_look.py` (pure) + `gather.gather_letter_look` (after the rescue, before every `detections` reader): the SAME detector (new `YoloDetector.detect_image`) is shown the staff-line-erased ink of a head/rest group at a two-scale probe, then five scales under two erasures; a letter needs >= 0.7 on >= 4 looks and the tight erasure's agreement; the string must be a `dynamics` entry of the 2.67 terms library; an unread letter beside a read one is an open slot (NARROWED, never guessed). Read letters are appended as `dynamic*` detections under `READERS.LETTER_LOOK` (`gather_dynamic_letters` now attributes each letter to the reader that boxed it); `Q.LETTER_LOOK_COVER` on the head/rest boxes they explain; `adjudicators/letter_cover.py` + a few lines in `notehead_precision` / `family_precision` refuse them (`on_a_dynamic_letter`, `rest_on_a_dynamic_letter`, margin recorded). `staged/letter_look_report.py` reads a record and counts what the look did.
+- Reach: Litolff 16 pp 3 read + 2 narrowed of 1,528 groups (14 heads/rests refused), Brahms 27 pp 1 of 6,018, Dvorak (held out) 1 + 1, Schumann / Tchaikovsky 0. Small re-gathers base vs arm on one tree: Litolff pp.1-3 differ in exactly tile 9; Brahms pp.0-1 zero. The tile 9 and p10 `sf` come out narrowed (`mf/rf/sf`), so EXPORT writes none; an INFER collapse by the document's own tally is the open step (Sean's yes).
+- 52 tests (`test_letter_look_2026_10_13.py`, RED on `origin/main`: the modules do not exist); fast tier 7,719 passed; `staged.check` 192 (unchanged), margins part 0. Tiles `out/print/2.107-review/` (11).
+- Same day, after Sean judged the tiles: tile 8 (Brahms `ff` decided `f`) fixed -- `regions_from` splits a cluster showing two same-class boxes at one scale, `_remnant_slots` narrows a read letter with letter-sized ink beside it; a NARROWED dynamic is now INFER-collapsed by `collapse_dynamic_by_ink` to the candidate the ink's own score (`letter_look.slot_evidence`, lower of two erasures, via `completion_support` in `adjudicate_dynamic`) favours, or left for EXPORT's blue `dyn.`; EXPORT writes it blue with an `<other-direction>reengrave:guessed` carrier (`_dynamic_guess`, `dynamics_guess`), counted in `guessed.dynamics`. The ink picks `mp`/`mf` where the print is `pp`/`sf` (tiles 10/11): reported, not tuned. 14 + 55 tests; `test_infer_stage` now lists three unflagged rules; judged index rebuilt.
 
 ## 2026-10-13 -- ROADMAP 2.106 steps 1-2: margins on threshold refusals + the index of Sean's judged tiles (`lane-2.106-margins-index`, NOT merged)
 
@@ -48,6 +61,21 @@ session's dated claim to tidy a sort would be the ledger overwriting the tree.
 wrote them re-dated its own blocks to `2026-09-09 (night)` in the same commits
 that landed on main, so that wording is gone — corrected here rather than left
 pointing at headings no longer in the file.)*
+
+---
+
+## 2026-10-13 -- ROADMAP 2.4b hollow-head run: graft KILLED (branch `lane-2.4b-hollow`, not merged; weights NOT switched)
+
+- Detector only; no GATHER/ADJUDICATE/EVALUATE/INFER code touched. New: `data/user-labeled/v24-2026-10-13-hollow4-train` (not in the catalog), `recompute_line_space.py`, `complete_with_teacher.py`, `train_2.4b.sh`, `run_2.4b_ab.sh`, `score_ab.py`, `FINDINGS.md` under `benchmarks/omr-labeling-hollow4-2026-10/`.
+- Litolff TEST (59 heads): production 72.9% / 88.9%; graft shift 0 = production exactly (v24 or control); shift 0.9 61.0% / 97.4% and Brahms 18/27; raw fine-tune 91.5% but deletes beams/ledgers and doubles 8-eye boxes. Gain is in the features, not the rows.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.4b hollow-head labelling batch BUILT, awaiting Sean (branch `lane-2.4b-hollow`, not merged)
+
+- STAGED + the detector; no GATHER/ADJUDICATE/EVALUATE/INFER code touched, nothing trained.
+- New `benchmarks/omr-labeling-hollow4-2026-10/` (train batch, 100 cells, 9 presses) and `benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/` (104 cells, Litolff idx 1, TEST truth): `build_batch.py`, `cut_pool.sh`, `cut_pool2.sh`, `size_the_miss.py` (controls: self-match 27/27, shifted 0/27), `count_hollow.py`, `contact_sheet.py`, `brahms0-miss.json`.
+- Findings: production hollow rows trained on hollow3 via v19-v21 (not Jurgenson v12); Brahms p0 hollow recall 27/27 at 0.25 and 0.10; the hollow2 counter-ranker failed its print check and is not used to select.
 
 ---
 
@@ -6084,6 +6112,11 @@ STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `r
 ## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
 STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
 
+## 2026-10-13 -- ROADMAP 2.4b re-assembly (reverse graft) KILLED
+STAGED detector, branch `lane-2.4b-hollow` (not merged, production weights NOT switched). Fine-tune + production class rows put back (arms A/B/C, v24 and control): rows restore nothing (beam 11 -> 13); damage is upstream -- conv weights moved < 2%, BatchNorm running stats 3-23%; restoring BN stats brings ledger lines/rests/dynamics back but loses the hollow gain (84.7%/83.6%) and beams/ties/timeSig stay damaged. v24 = +2-3 heads over its control. `benchmarks/omr-labeling-hollow4-2026-10/FINDINGS.md`.
+
+## 2026-10-13 -- ROADMAP 2.4b closed: BN-frozen fine-tune killed
+STAGED detector, branch `lane-2.4b-hollow`. 1 epoch from production with BatchNorm stats frozen (bit-identical to production): hollow 93.2%/89.2% but beams 0, ledger -92%, ties -72%, Brahms 24/27 -- same class deletion, in the conv weights. 2.4b KILLED; v24 labels stay test truth. FINDINGS in `benchmarks/omr-labeling-hollow4-2026-10/`.
 ## 2026-10-13 -- every threshold refusal records its margin; judged-tile index (ROADMAP 2.106)
 STAGED, bookkeeping only (no decision changes). `staged/margins.py` + check part `staged.margins` (open=0): 15 threshold reasons over 4 deciders file `Verdict.margin`. `staged/judged.py` + `benchmarks/acceptance/judged-tiles.json` index Sean's judged tiles with a re-scorer: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`. Sean: "land 2.106".
 

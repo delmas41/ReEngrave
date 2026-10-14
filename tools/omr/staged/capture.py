@@ -405,6 +405,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "off the page raster. Scoreless: it names nothing a note or a "
         "letter, only whether the head's ink is a stroke or a filled blob.",
         None),
+    "LETTER_LOOK_COVER": (
+        RELATION,
+        "ROADMAP 2.107: for a notehead or rest box whose ink the second look "
+        "read as dynamic letters (letters the detector never boxed), the share "
+        "of the box's own staff-line-erased ink inside the read letters' boxes "
+        "-- a relation between a detected box and a reading over the ink "
+        "under it. Scoreless: it names nothing a note, a rest or a letter; "
+        "what a covered head or rest MEANS is `notehead_is_not_a_notehead`'s "
+        "and `rest_is_not_a_rest`'s.",
+        None),
     "DYNAMIC_BAND_POSITION": (
         STAFF_GRID_POSITION,
         "PROMOTED, not invented: `DYNAMIC_LETTER.band_offset_spaces` is the "
@@ -853,6 +863,11 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # Its own reader name exists so a row from this pass is traceable and
     # separable from the production one, not because it reads anything else.
     "RESCUE_LOWCONF": ("yolo_detector.py", "detect"),
+    # ⚠️ ROADMAP 2.107. `YoloDetector.detect_image` on a crop BUILT for the
+    # model (the group's staff-line-erased ink at LOOK_SCALES), not on a cell;
+    # its own reader name so a letter it files is separable from the
+    # production pass's.
+    "LETTER_LOOK": ("yolo_detector.py", "detect_image"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),

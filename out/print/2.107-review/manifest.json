@@ -1,0 +1,946 @@
+{
+ "dpi": 600,
+ "question": "What is the bracketed mark? (a dynamic -- which letters? -- a note, a rest, or something else)",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "kind": "control",
+   "document": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 6,
+   "bracket_page_box_600dpi": [
+    1747,
+    1975,
+    1783,
+    2022
+   ],
+   "our_reading": {
+    "status": "rejected",
+    "text": null,
+    "candidates": null,
+    "regions": [],
+    "best_letters": [],
+    "best_note_or_rest": [
+     "rest8th",
+     0.881
+    ],
+    "library_tried": null,
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/19/0/6/1/7",
+     "rest8th"
+    ],
+    [
+     "glyph/19/0/6/1/9",
+     "rest8th"
+    ]
+   ],
+   "cover": [],
+   "frame_control": {
+    "ratio": 9.24,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    1499,
+    1826,
+    2030,
+    2183
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "kind": "refused",
+   "document": "dvorak",
+   "page": 4,
+   "system": 0,
+   "staff": 15,
+   "bracket_page_box_600dpi": [
+    1543,
+    5976,
+    1822,
+    6036
+   ],
+   "our_reading": {
+    "status": "rejected",
+    "text": null,
+    "candidates": null,
+    "regions": [],
+    "best_letters": [
+     [
+      "p",
+      0.786,
+      3
+     ],
+     [
+      "m",
+      0.272,
+      1
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": null,
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/4/0/15/1/12",
+     "noteheadBlackInSpace"
+    ]
+   ],
+   "cover": [],
+   "frame_control": {
+    "ratio": 8.3,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.2,
+   "page_box_600dpi": [
+    1266,
+    5740,
+    2098,
+    6140
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "kind": "read",
+   "document": "litolff",
+   "page": 13,
+   "system": 1,
+   "staff": 6,
+   "bracket_page_box_600dpi": [
+    1551,
+    3033,
+    1613,
+    3081
+   ],
+   "our_reading": {
+    "status": "read",
+    "text": "ff",
+    "candidates": [],
+    "regions": [
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       1551,
+       3033,
+       1593,
+       3081
+      ],
+      0.901,
+      5
+     ],
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       1571,
+       3034,
+       1613,
+       3080
+      ],
+      0.881,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "f",
+      0.901,
+      5
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "ff"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/13/1/6/9/1",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/13/1/6/9/7",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/13/1/7/8/3",
+     "noteheadBlackInSpace"
+    ],
+    [
+     "glyph/13/1/7/9/1",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/13/1/7/9/4",
+     "noteheadBlackOnLine"
+    ]
+   ],
+   "cover": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "frame_control": {
+    "ratio": 7.15,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.13,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    1411,
+    2906,
+    1752,
+    3107
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "kind": "refused",
+   "document": "litolff",
+   "page": 8,
+   "system": 0,
+   "staff": 0,
+   "bracket_page_box_600dpi": [
+    1899,
+    421,
+    1961,
+    465
+   ],
+   "our_reading": {
+    "status": "rejected",
+    "text": null,
+    "candidates": null,
+    "regions": [],
+    "best_letters": [
+     [
+      "p",
+      0.85,
+      3
+     ],
+     [
+      "m",
+      0.616,
+      2
+     ],
+     [
+      "f",
+      0.112,
+      1
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": null,
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/8/0/0/15/10",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/8/0/0/15/7",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/8/0/0/15/9",
+     "noteheadBlackOnLine"
+    ]
+   ],
+   "cover": [],
+   "frame_control": {
+    "ratio": 5.53,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    1757,
+    352,
+    2102,
+    556
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "kind": "read",
+   "document": "litolff",
+   "page": 8,
+   "system": 1,
+   "staff": 0,
+   "bracket_page_box_600dpi": [
+    979,
+    1941,
+    1034,
+    1974
+   ],
+   "our_reading": {
+    "status": "read",
+    "text": "pp",
+    "candidates": [],
+    "regions": [
+     [
+      "read",
+      [
+       "p"
+      ],
+      [
+       979,
+       1942,
+       1009,
+       1974
+      ],
+      0.81,
+      5
+     ],
+     [
+      "read",
+      [
+       "p"
+      ],
+      [
+       1004,
+       1941,
+       1034,
+       1974
+      ],
+      0.848,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "p",
+      0.848,
+      5
+     ],
+     [
+      "m",
+      0.488,
+      3
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "pp"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/8/1/0/5/6",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/8/1/0/5/7",
+     "noteheadBlackOnLine"
+    ]
+   ],
+   "cover": [
+    1.0,
+    1.0
+   ],
+   "frame_control": {
+    "ratio": 5.79,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    837,
+    1864,
+    1175,
+    2068
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "kind": "read",
+   "document": "litolff",
+   "page": 13,
+   "system": 1,
+   "staff": 0,
+   "bracket_page_box_600dpi": [
+    1552,
+    2194,
+    1614,
+    2242
+   ],
+   "our_reading": {
+    "status": "read",
+    "text": "ff",
+    "candidates": [],
+    "regions": [
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       1552,
+       2194,
+       1594,
+       2242
+      ],
+      0.893,
+      5
+     ],
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       1572,
+       2194,
+       1614,
+       2241
+      ],
+      0.891,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "f",
+      0.893,
+      5
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "ff"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/13/1/0/8/3",
+     "noteheadBlackOnLine"
+    ],
+    [
+     "glyph/13/1/0/9/5",
+     "rest8th"
+    ]
+   ],
+   "cover": [
+    1.0,
+    1.0
+   ],
+   "frame_control": {
+    "ratio": 8.04,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1410,
+    2083,
+    1755,
+    2287
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "kind": "control",
+   "document": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 7,
+   "bracket_page_box_600dpi": [
+    2995,
+    6144,
+    3029,
+    6196
+   ],
+   "our_reading": {
+    "status": "rejected",
+    "text": null,
+    "candidates": null,
+    "regions": [],
+    "best_letters": [],
+    "best_note_or_rest": [
+     "rest8th",
+     0.871
+    ],
+    "library_tried": null,
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/25/1/7/4/3",
+     "rest8th"
+    ]
+   ],
+   "cover": [],
+   "frame_control": {
+    "ratio": 14.05,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    2745,
+    5986,
+    3278,
+    6346
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "kind": "read",
+   "document": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 9,
+   "bracket_page_box_600dpi": [
+    4009,
+    2686,
+    4081,
+    2757
+   ],
+   "our_reading": {
+    "status": "read",
+    "text": "f",
+    "candidates": [],
+    "regions": [
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       4009,
+       2686,
+       4081,
+       2757
+      ],
+      0.889,
+      4
+     ]
+    ],
+    "best_letters": [
+     [
+      "f",
+      0.889,
+      5
+     ],
+     [
+      "p",
+      0.545,
+      2
+     ]
+    ],
+    "best_note_or_rest": [
+     "rest8th",
+     0.871
+    ],
+    "library_tried": [
+     "f"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/5/0/10/5/21",
+     "noteheadBlackInSpace"
+    ],
+    [
+     "glyph/5/0/9/5/6",
+     "rest8th"
+    ]
+   ],
+   "cover": [
+    1.0,
+    0.0
+   ],
+   "frame_control": {
+    "ratio": 17.55,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    3763,
+    2493,
+    4326,
+    2847
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "kind": "read",
+   "document": "dvorak",
+   "page": 5,
+   "system": 0,
+   "staff": 5,
+   "bracket_page_box_600dpi": [
+    2547,
+    2519,
+    2639,
+    2584
+   ],
+   "our_reading": {
+    "status": "read",
+    "text": "pp",
+    "candidates": [],
+    "regions": [
+     [
+      "read",
+      [
+       "p"
+      ],
+      [
+       2547,
+       2519,
+       2593,
+       2584
+      ],
+      0.801,
+      5
+     ],
+     [
+      "read",
+      [
+       "p"
+      ],
+      [
+       2591,
+       2519,
+       2639,
+       2583
+      ],
+      0.85,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "p",
+      0.85,
+      5
+     ],
+     [
+      "m",
+      0.202,
+      1
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "pp"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/5/0/6/4/1",
+     "rest16th"
+    ],
+    [
+     "glyph/5/0/6/4/2",
+     "rest32nd"
+    ]
+   ],
+   "cover": [
+    1.0,
+    1.0
+   ],
+   "frame_control": {
+    "ratio": 5.31,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    2268,
+    2211,
+    2918,
+    2615
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "kind": "read",
+   "document": "dvorak",
+   "page": 5,
+   "system": 0,
+   "staff": 4,
+   "bracket_page_box_600dpi": [
+    2559,
+    1985,
+    2647,
+    2050
+   ],
+   "our_reading": {
+    "status": "narrowed",
+    "text": null,
+    "candidates": [
+     "fp",
+     "mp",
+     "pp"
+    ],
+    "regions": [
+     [
+      "unread",
+      [
+       "f",
+       "m",
+       "p"
+      ],
+      [
+       2559,
+       1985,
+       2606,
+       2048
+      ],
+      0.0,
+      0
+     ],
+     [
+      "read",
+      [
+       "p"
+      ],
+      [
+       2601,
+       1986,
+       2647,
+       2050
+      ],
+      0.814,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "p",
+      0.814,
+      5
+     ],
+     [
+      "m",
+      0.492,
+      5
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "fp",
+     "mp",
+     "pp",
+     "rp",
+     "sp",
+     "zp"
+    ],
+    "unstable_across_erasures": []
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/5/0/4/4/10",
+     "rest16th"
+    ],
+    [
+     "glyph/5/0/4/4/7",
+     "rest32nd"
+    ],
+    [
+     "glyph/5/0/4/4/9",
+     "rest16th"
+    ]
+   ],
+   "cover": [
+    0.994,
+    1.0,
+    0.996
+   ],
+   "frame_control": {
+    "ratio": 8.35,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    2284,
+    1711,
+    2921,
+    2108
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "kind": "read",
+   "document": "litolff",
+   "page": 10,
+   "system": 0,
+   "staff": 0,
+   "bracket_page_box_600dpi": [
+    2206,
+    415,
+    2248,
+    462
+   ],
+   "our_reading": {
+    "status": "narrowed",
+    "text": null,
+    "candidates": [
+     "ff",
+     "mf",
+     "rf",
+     "sf"
+    ],
+    "regions": [
+     [
+      "unread",
+      [
+       "f",
+       "m",
+       "r",
+       "s"
+      ],
+      [
+       2206,
+       428,
+       2218,
+       445
+      ],
+      0.0,
+      0
+     ],
+     [
+      "read",
+      [
+       "f"
+      ],
+      [
+       2207,
+       415,
+       2248,
+       462
+      ],
+      0.884,
+      5
+     ]
+    ],
+    "best_letters": [
+     [
+      "f",
+      0.884,
+      5
+     ],
+     [
+      "m",
+      0.739,
+      4
+     ],
+     [
+      "s",
+      0.356,
+      1
+     ]
+    ],
+    "best_note_or_rest": null,
+    "library_tried": [
+     "ff",
+     "mf",
+     "pf",
+     "rf",
+     "sf",
+     "zf"
+    ],
+    "unstable_across_erasures": [
+     [
+      [
+       "m"
+      ],
+      0.739
+     ]
+    ]
+   },
+   "head_and_rest_boxes_under_it": [
+    [
+     "glyph/10/0/0/11/5",
+     "rest8th"
+    ],
+    [
+     "glyph/10/0/0/11/6",
+     "rest16th"
+    ]
+   ],
+   "cover": [
+    1.0,
+    1.0
+   ],
+   "frame_control": {
+    "ratio": 4.86,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.4,
+   "page_box_600dpi": [
+    2064,
+    344,
+    2389,
+    548
+   ]
+  }
+ ]
+}

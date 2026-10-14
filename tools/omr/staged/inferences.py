@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -2124,3 +2124,76 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
     """
     return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 9 -- a NARROWED dynamic, collapsed to the candidate the INK scores closest
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The letter reader must have scored the winning completion at least this well
+#: (its confidence over the open letter's ink, the lower of two erasures), and
+#: its lead over the runner-up must be at least `INK_PICK_MARGIN`. Both are
+#: CONVENTION ASSUMED -- not measured on a corpus -- and NOT CONFIRMED by Sean;
+#: WHAT WOULD FALSIFY THEM: a blue dynamic that is the wrong letter on a print
+#: the margin would have refused. Each pick records its scores and winning
+#: margin (ROADMAP 2.106), so the near calls are countable.
+INK_PICK_MIN_SCORE = 0.3
+INK_PICK_MARGIN = 0.15
+
+
+@rule(
+    inference=Inference.COLLAPSE_DYNAMIC_BY_INK,
+    switch=DYNAMIC_INK_PICK_SWITCH,
+    target=Q.DYNAMIC,
+    reads=(Q.DYNAMIC, Q.DYNAMIC_LETTER),
+    scope=Kind.CELL,
+    sideways=False,
+    bound=(
+        "It collapses a NARROWED `dynamic` -- a bar whose only dynamic run has "
+        "an unread letter beside the letters that were read -- to one of that "
+        "reader's OWN completions and nothing else, only where the cell holds "
+        "exactly one unspellable run, the winning completion's ink score "
+        f"(`completion_support`: the letter reader's own confidence for the "
+        f"letter it puts in each open slot, the lower of two staff-line "
+        f"erasures) is at least {INK_PICK_MIN_SCORE} and leads the runner-up "
+        f"by at least {INK_PICK_MARGIN}. A tie, or an open letter nobody "
+        "scored, leaves it narrowed (EXPORT then writes `dyn.`). It reads no "
+        "word frequency from the document and never overturns a DECIDED "
+        "verdict."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is ONE reader's scores for the "
+        "open letter over the same ink (two erasures of it), so it is one "
+        "signal and is labelled a guess; a second witness would have to come "
+        "from a different source, and the document's own dynamics are not "
+        "evidence about THIS mark's letter (Sean 2026-10-13)."),
+)
+def collapse_dynamic_by_ink(log: Log, cell: Subject) -> List[Proposal]:
+    """The closest dynamic the ink can name, for a dynamic with an unread letter.
+
+    ROADMAP 2.107. Which stage, and why: the letter reader saw the letters and
+    could not read one; the answer does not FOLLOW, it is merely BEST -- so it
+    is INFER's, labelled (blue in the file), bounded to the reader's own
+    completions, and recorded with the margin it won by."""
+    prior = log.verdict(Q.DYNAMIC, cell)
+    if prior is None or prior.outcome is not Outcome.NARROWED:
+        return []
+    detail = prior.detail or {}
+    unspellable = [w for w in (detail.get("words") or [])
+                   if isinstance(w, dict) and not w.get("spelled")]
+    if len(unspellable) != 1:
+        return []
+    ranked = sorted(((float(c.support), str(c.value))
+                     for c in (prior.candidates or ())), reverse=True)
+    if len(ranked) < 2:
+        return []
+    (top, word), (second, runner) = ranked[0], ranked[1]
+    if top < INK_PICK_MIN_SCORE or (top - second) < INK_PICK_MARGIN:
+        return []
+    return [Proposal(
+        subject=cell, value=word, reason="ink_evidence", basis=(), witnesses=(),
+        detail={"ink_scores": {w: s for s, w in ranked},
+                "margin": round(top - second, 4), "margin_axis": "ink_score_gap",
+                "margin_unit": "letter-reader confidence, lower of two erasures",
+                "runner_up": runner, "min_score": INK_PICK_MIN_SCORE,
+                "required_margin": INK_PICK_MARGIN})]
+

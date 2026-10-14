@@ -566,6 +566,38 @@ class YoloDetector:
         # the cheap half of the fix, not the invisible-half one.
         return _collapse_role_twins(detections, cell)
 
+    def detect_image(self, image: "np.ndarray", conf_threshold: float,
+                     imgsz: int) -> list[tuple[str, float, tuple[float, float, float, float]]]:
+        """Run the SAME model on a bare image (BGR or gray), at the caller's
+        `imgsz`, and return `(class name, confidence, (x0, y0, x1, y1))` in the
+        image's own pixels, class names spelled as every other detection
+        spells them. No cell, no twin collapse, no routing: the second-look
+        readers (ROADMAP 2.107) give it a crop built for the model and read the
+        raw answer. Empty list where nothing fires."""
+        self._ensure_loaded()
+        assert self._model is not None
+        img = image
+        if img.ndim == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        results = self._model.predict(
+            source=img, conf=conf_threshold, imgsz=int(imgsz),
+            device=self.device if self.device != "auto" else None,
+            verbose=False)
+        if not results:
+            return []
+        boxes = getattr(results[0], "boxes", None)
+        if boxes is None or len(boxes) == 0:
+            return []
+        xyxy = boxes.xyxy.cpu().numpy() if hasattr(boxes.xyxy, "cpu") else np.asarray(boxes.xyxy)
+        confs = boxes.conf.cpu().numpy() if hasattr(boxes.conf, "cpu") else np.asarray(boxes.conf)
+        clses = boxes.cls.cpu().numpy() if hasattr(boxes.cls, "cpu") else np.asarray(boxes.cls)
+        out = []
+        for (x0, y0, x1, y1), conf, cls in zip(xyxy, confs, clses):
+            name = (self._class_names or {}).get(int(cls), f"cls_{int(cls)}")
+            out.append((name, float(conf),
+                        (float(x0), float(y0), float(x1), float(y1))))
+        return out
+
     # --------------- diagnostics ---------------
 
     def time_detect(

@@ -1,0 +1,37 @@
+{
+  "cell_id": "elgar2-p31-sys0-s7-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:16:20+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 140,
+        "y": 308,
+        "w": 67,
+        "h": 56
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 128,
+        "y": 447,
+        "w": 97,
+        "h": 56
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeInSpace"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}
