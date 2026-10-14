@@ -79,8 +79,13 @@ def test_an_imbalance_is_reported_not_hidden():
     md = RR.render_md(rep)
     assert "IMBALANCE +3" in md
     # the control can fail: a balanced ledger prints no such word
-    clean = RR.render_md(RR.build_report(RR.extract_facts(_record()), {"families": []}, None, "t"))
+    cov = {"families": [], "notes_not_written": {"not_a_notehead:too_narrow": 1}}
+    clean = RR.render_md(RR.build_report(RR.extract_facts(_record()), cov, None, "t"))
     assert "IMBALANCE" not in clean.split("## 9.")[1]
+    # and the exporter dropping a different number than the record refused IS a finding
+    cov["notes_not_written"]["not_a_notehead:too_narrow"] = 0
+    off = RR.render_md(RR.build_report(RR.extract_facts(_record()), cov, None, "t"))
+    assert "IMBALANCE" in off.split("## 9.")[1]
 
 
 def test_margin_bands_and_missing_margins_are_counted():
@@ -142,3 +147,28 @@ def test_render_with_previous_shows_deltas():
     prev = RR.build_report(facts, {"families": []}, None, "before")
     md = RR.render_md(rep, prev)
     assert "Balance ledger" in md and "One screen" in md
+
+
+def test_a_repeated_bar_number_is_kept_apart(tmp_path):
+    xml = """<score-partwise><part-list><score-part id="P1"><part-name>Flute</part-name></score-part></part-list>
+    <part id="P1">
+      <measure number="1"><note><rest/></note></measure>
+      <measure number="2"><direction><direction-type><words>unread</words></direction-type></direction></measure>
+      <measure number="2"><note color="#1F6FEB"><pitch/></note></measure>
+    </part></score-partwise>"""
+    f = tmp_path / "x.musicxml"
+    f.write_text(xml)
+    mx = RR.read_musicxml(f)
+    assert set(mx["cells"]) == {"P1|1", "P1|2", "P1|2#2"}      # the repeat does not overwrite
+    st = RR.bar_states({}, mx)
+    assert st["total"] == 3 and st["bars_on_repeated_numbers"] == 1
+    assert st["repeated_bar_numbers"] == [2]
+
+
+def test_the_overnight_compare_writes_the_report_as_a_last_harmless_step():
+    from pathlib import Path
+    sh = (Path(__file__).resolve().parents[3] / "benchmarks/acceptance/overnight/compare_20261009.sh").read_text()
+    assert "tools.omr.staged.regather_report night" in sh
+    tail = sh.split("tools.omr.staged.regather_report night")[1]
+    assert "||" in tail.split("\n\n")[0] or "|| echo" in tail      # a failure only adds a README line
+    assert sh.rindex("regather_report night") > sh.rindex("acceptance --manifest")  # after the existing steps

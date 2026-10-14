@@ -96,4 +96,14 @@ for doc in ("beethoven5-litolff", "brahms1-breitkopf"):
     print(f"\n== {doc}  (old -> new; only the numbers that moved)")
     walk(new.get("summary", {}).get(doc, {}), old.get("summary", {}).get(doc, {}))
 EOF
+
+# C. ROADMAP 2.118: the DETAILED stage-by-stage report, per movement, beside the previous night.
+# A separate, last step: it reads what the steps above wrote and cannot change them. A failure
+# here only adds a line to the README.
+REPORT_OUT=${REPORT_OUT:-$HERE/../../omr-regather-report-2026-10/$TAG}
+mkdir -p "$REPORT_OUT"
+python3 -m tools.omr.staged.check > "$REPORT_OUT/check.txt" 2>&1
+python3 -m tools.omr.staged.regather_report night --tag "$TAG" --base "$BASE" \
+    --compare-dir "$OUT" --out "$REPORT_OUT" > "$OUT/regather-report.log" 2>&1 \
+    || echo "regather_report exit $? (see $OUT/regather-report.log)" >> "$SUM/README.txt"
 echo "done $(date -u +%FT%TZ)" >> "$SUM/README.txt"

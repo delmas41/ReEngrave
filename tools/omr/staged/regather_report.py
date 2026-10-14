@@ -524,7 +524,8 @@ def read_musicxml(path: Path) -> Dict[str, Any]:
     number is the document bar number the exporter wrote."""
     import xml.etree.ElementTree as ET
     parts: Dict[str, str] = {}
-    cells: Dict[Tuple[str, int], Dict[str, int]] = {}
+    cells: Dict[Tuple[str, int, int], Dict[str, int]] = {}
+    seen: Dict[Tuple[str, int], int] = collections.Counter()
     cur_part = None
     for ev, el in ET.iterparse(str(path), events=("start", "end")):
         tag = el.tag
@@ -554,9 +555,17 @@ def read_musicxml(path: Path) -> Dict[str, Any]:
                     c["unread_words"] += 1     # red since 2.103; uncoloured before
                 if col == UNREAD_RED.upper():
                     c["red"] += 1
-            cells[(cur_part, num)] = c
+            # ⚠️ A bar number can REPEAT inside one part (first and second
+            # endings: Brahms 1 prints 189 and 190 twice). Keyed by number
+            # alone the second would overwrite the first, and the exporter's
+            # own held/partial lists are keyed by number too, so the repeat
+            # occurrence is kept apart (`#2`) and reported as unmatched.
+            seen[(cur_part, num)] += 1
+            cells[(cur_part, num, seen[(cur_part, num)])] = c
             el.clear()
-    return {"parts": parts, "cells": {f"{p}|{m}": c for (p, m), c in cells.items()}}
+    return {"parts": parts,
+            "cells": {f"{p}|{m}" + (f"#{k}" if k > 1 else ""): c for (p, m, k), c in cells.items()},
+            "repeated_bar_numbers": sorted({m for (p, m, k) in cells if k > 1})}
 
 
 def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
@@ -578,8 +587,16 @@ def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
                             if b.get("status") == "held"}
     states = collections.Counter()
     per_cell: Dict[str, str] = {}
+    dup_bars = 0
     for key, c in mx["cells"].items():
         part, m = key.rsplit("|", 1)
+        if "#" in m:                       # a repeated bar number: not in the exporter's lists
+            dup_bars += 1
+            s = ("unread, repeated bar number" if c["unread_words"] else
+                 "written with guesses" if (c["blue_notes"] or c["blue_other"]) else "written plain")
+            states[s] += 1
+            per_cell[key] = s
+            continue
         k2 = (part, int(m))
         if k2 in partial:
             s = "partial"
@@ -616,7 +633,9 @@ def bar_states(cov: Dict[str, Any], mx: Dict[str, Any]) -> Dict[str, Any]:
                        int(hs["bars"]) + int(hu.get("bars") or 0)))
     if ub.get("unread") is not None:
         checks.append(("unread-empty bars", states["unread, empty"], ub["unread"]))
+    rn = mx.get("repeated_bar_numbers") or []
     return {"states": dict(states), "total": sum(states.values()),
+            "repeated_bar_numbers": rn, "bars_on_repeated_numbers": dup_bars,
             "doubled_staff_bars_not_named": moved, "cells": per_cell,
             "checks": [{"name": n + ": file vs exporter", "file": a, "exporter": b, "agrees": a == b}
                        for n, a, b in checks]}
@@ -646,7 +665,7 @@ def cleanup_proxy(cov: Dict[str, Any], mx: Dict[str, Any], st: Dict[str, Any]) -
     names = {pid: (nm if counts[nm] == 1 else f"{nm} [{pid}]") for pid, nm in names.items()}
     for key, c in mx["cells"].items():
         part, m = key.rsplit("|", 1)
-        page = pg(int(m))
+        page = pg(int(m.split("#")[0]))
         red = c["unread_words"]
         blue = c["blue_notes"] + c["blue_other"]
         for d in (per_page[page], per_cell[(names.get(part, part), page)]):
@@ -769,6 +788,8 @@ def build_report(facts: Dict[str, Any], cov: Dict[str, Any], mx: Optional[Dict[s
         "meter_missing": (cov.get("bars_held_out_sum") or {}).get("bars_with_events_without_a_meter"),
         "states_from_the_file": st["states"] if st else None,
         "states_checks": st["checks"] if st else None,
+        "repeated_bar_numbers": st["repeated_bar_numbers"] if st else None,
+        "bars_on_repeated_numbers": st["bars_on_repeated_numbers"] if st else None,
     }
     hold_reasons: Dict[str, int] = collections.Counter()
     for h in (cov.get("bars_held_out_sum") or {}).get("held", []):
@@ -925,7 +946,7 @@ def flatten(rep: Dict[str, Any]) -> Dict[str, float]:
             out[path] = v
 
     b = rep.get("bars", {})
-    for k in ("total_bars_in_file", "held_out_does_not_add_up", "partial_bars",
+    for k in ("total_bars_in_file", "partial_bars",
               "unread_empty_padded", "tacet_bars_padded_with_rests", "unread_marks_in_file"):
         put(f"bars / {k.replace('_', ' ')}", b.get(k))
     for k, v in (b.get("states_from_the_file") or {}).items():
@@ -1081,13 +1102,22 @@ def render_md(rep: Dict[str, Any], prev: Optional[Dict[str, Any]] = None) -> str
                 "partial": "kept in part: readable notes written, the unreadable gap marked red (2.117)",
                 "held out": "notes held back because the bar does not add up; red mark (not written)",
                 "unread, empty": "nothing read in this bar; padded and marked red"}
-    for s in ("written plain", "written with guesses", "partial", "held out", "unread, empty"):
+    glossary["unread, repeated bar number"] = ("red mark on a bar whose number repeats (first/second ending): "
+                                                "cannot be matched to the exporter's lists")
+    for s in ("written plain", "written with guesses", "partial", "held out", "unread, empty",
+              "unread, repeated bar number"):
+        if s == "unread, repeated bar number" and not st.get(s) and not pst.get(s):
+            continue
         a(f"| {s} | {_d(st.get(s), pst.get(s) if P else None)} | {glossary[s]} |")
     a(f"| **total bars (parts x measures)** | {_d(b.get('total_bars_in_file'), pb_.get('total_bars_in_file') if P else None)} | |")
     bb = rep.get("bar_balance")
     if bb:
         a("")
         a(_bal_line(bb))
+    if b.get("repeated_bar_numbers"):
+        a(f"- bar numbers that repeat inside a part (endings): {b['repeated_bar_numbers']}; "
+          f"{b.get('bars_on_repeated_numbers')} bars sit on them. The exporter's held/partial lists are keyed by bar number, "
+          f"so they cannot tell the two apart.")
     for c in b.get("states_checks") or []:
         a(f"- check, {c['name']}: file {c['file']}, exporter {c['exporter']} -> {'agrees' if c['agrees'] else '**IMBALANCE**'}")
     a("")
@@ -1102,6 +1132,7 @@ def render_md(rep: Dict[str, Any], prev: Optional[Dict[str, Any]] = None) -> str
     a("")
     a(f"Red marks written: {um['red_marks_written']}. Equation: empty {um['empty']} + held out {um['held_out_sum']} + "
       f"partial {um['partial_gaps_marked']} = {um['equation']['empty + held_out + partial']} "
+      f"(the partial bars carry {um['unread_gaps_written']} red bracketed gaps) "
       f"-> {'balanced' if um['balanced'] else '**IMBALANCE**'}.")
     a("")
     # ── 2. symbols ──
@@ -1324,6 +1355,15 @@ def render_md(rep: Dict[str, Any], prev: Optional[Dict[str, Any]] = None) -> str
                 + list((rep.get("glyph_verdict_crosscheck") or {}).values()))
     if rep.get("bar_balance"):
         bal_rows.append(rep["bar_balance"])
+    for r in rep["refusals_vs_export_drops"]:
+        if r["record_refused"] or r["export_dropped"]:
+            bal_rows.append(_balance(f"refusal vs exporter drop: {r['reason']}", r["record_refused"],
+                                     {"exporter dropped": r["export_dropped"]}))
+    for c in rep["bars"].get("states_checks") or []:
+        bal_rows.append(_balance(c["name"], c["exporter"], {"file": c["file"]}, "file vs exporter"))
+    bal_rows.append(_balance("red marks: empty + held out + partial = written",
+                             rep["unread_marks"]["equation"]["written"] or 0,
+                             {"sum": rep["unread_marks"]["equation"]["empty + held_out + partial"]}))
     if ex["events"].get("balance"):
         bal_rows.append(ex["events"]["balance"])
     bad = [r for r in bal_rows if not r["balanced"]]

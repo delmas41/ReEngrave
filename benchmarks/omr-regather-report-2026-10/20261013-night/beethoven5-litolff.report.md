@@ -6,16 +6,15 @@ Every number below is read off the saved record, the exporter's own report or th
 
 ### Run
 
-- **tree**: ca46eae4 (previous: cb73dde2)
+- **tree**: ca46eae4; the export, LilyPond and this report were re-run on tree d5ba473c (previous: cb73dde2)
 - **landings since the previous night**:
+  - 139 commits (merges left out); the newest 15:
   - ca46eae4 ROADMAP 2.114: claim the second (hollow-only) detector at GATHER; Sean's interior-white rule
   - 14cd2946 ROADMAP 2.113: claim the clutter count (measure before a remove-what's-known view)
   - a31a2cca ROADMAP 2.112: claim the test-set leakage audit (2.110 found TEST cells in training)
   - 2892eb71 hand_truth inventory: declare v24 (2.4b hollow4 TRAIN, single-family:hollow, not admitted) -- fixes test_every_label_version_on_disk_has_a_declared_tier
   - 4863f784 Docs: ROADMAP START HERE landing order, version_memory for 2.108
-  - 36f4a4cf Land 2.108 a music glyph more than 6 staff spaces from any staff is not music; kept out of the labelling pre-fill (lane-2.108-off-staff-glyphs 6d9f9207) (Sean: "yes")
   - 6d9f9207 Rebuild judged-tiles index after merging main
-  - b0fd2e09 Merge origin/main into lane-2.108
   - d10affe3 2.108: Sean's answers on the blind tiles; FINDINGS, DECISIONS, ROADMAP
   - abec2a05 ROADMAP 2.111: park the plate's-own notehead template idea (Sean: keep the idea)
   - 753e5dd7 2.108: off-staff reach 6 spaces (Sean: go with 6); re-measure, blind tiles, DECISIONS line
@@ -23,32 +22,8 @@ Every number below is read off the saved record, the exporter's own report or th
   - ad26d0d1 ROADMAP START HERE: Sean wants to revisit 2.4b hollow heads next session; ideas to weigh (two detectors, complete cells, combined round, resolution)
   - 04592685 2.108: FINDINGS, ROADMAP row, version_memory
   - 6f6c71c9 2.108: staged reach reads the vertical band only (record STAFF_EXTENT is the detector span; it refused 14 real Brahms p1 heads); prune-off-staff; probes + tiles
-  - 59dd07d4 Land 2.107 dynamic letters read from the ink against the terms library; an unsure dynamic is written blue "dyn." (lane-2.107-dynamic-letters e450e31a) (Sean: "land with blue dyn only")
   - e450e31a Docs: ROADMAP 2.107 landed, START HERE landing order, version_memory
   - db798ecc Rebuild judged-tiles index after merging main
-  - 8ef0ee1e Land 2.4b records: hollow-head labels (Litolff p1 TEST + 100-cell TRAIN, v24) and the killed retraining A/B; production weights unchanged (lane-2.4b-hollow 5e0e7f56)
-  - 5e0e7f56 Merge origin/main into lane-2.4b-hollow; ROADMAP 2.4b KILLED, 2.5 unblocked
-  - 9fea5569 2.4b: BN-frozen fine-tune (v24 + control) -- same class deletion, worse; 2.4b closed as killed. FINDINGS, ROADMAP, version_memory.
-  - 595c6373 1.7 hand truth: Sean finished Brahms 317803 pdf 0 (1,352 -> 1,566 boxes; remaining cells are words only)
-  - 659c84a4 Merge origin/main into lane-2.107-dynamic-letters
-  - 437b32e9 2.107: ink pick OFF by default (OMR_DYNAMIC_INK_PICK); narrowed dynamic exports only blue dyn. (Sean: "land with blue dyn only"); ROADMAP 2.109 opened
-  - 5ac5b06a 2.108: off_staff_glyph (STAGED notehead decider) + hand-truth pre-fill never queues a pitch glyph with no staff near; RED-first tests
-  - 39af6bd9 2.107: Sean's answers; tile 8 fixed; a narrowed dynamic is written blue as the ink's closest guess
-  - 96df14ed ROADMAP 2.108 opened: music glyphs far from any staff (title text) are not music (Sean)
-  - ec782bab 2.4b re-assembly: reverse graft (arms A/B/C, v24 + control) KILLED -- class rows restore nothing; damage is in BN stats/conv weights. FINDINGS, ROADMAP, version_memory.
-  - 47a113a8 ROADMAP START HERE after 2026-10-13: landed, Sean's rules, in flight (2.107, 2.4b re-assembly), next; version_memory
-  - 057565e7 Docs: ROADMAP 2.105 landed (sf moved to 2.107), START HERE landing order, version_memory
-  - 20112bd5 Land 2.105 a barline is not a rest; twin boxes keep one plausible head and never a beam (lane-2.105-not-a-note b2d55319) (Sean: "land 2.105")
-  - b2d55319 2.105: rest_is_a_barline and the widened is_a_beam_piece file their 2.106 margins; rebuild judged index
-  - 486d4983 Merge remote-tracking branch 'origin/main' into lane-2.107-dynamic-letters
-  - 6fa0b0d3 DECISIONS: a narrowed dynamic is written as its best candidate by the ink, in blue; 'dyn.' only where the ink favours none (Sean)
-  - cb5f42a7 DECISIONS: a narrowed dynamic is written as 'dyn.' in blue with its candidates, never picked by frequency (Sean)
-  - aa27c1df 2.4b re-assembly: reverse-graft builder (fine-tune + production class rows), per-class counter, A/B runner
-  - 2a465417 Merge origin/main into lane-2.105-not-a-note
-  - 92d415e1 2.107: FINDINGS, ROADMAP row, version_memory, 11 blind tiles, reach probes
-  - d93b371e 2.107: read the dynamic letters the detector never boxed (second look, library-checked)
-  - 416d2f71 2.4b: hollow-head run result -- graft KILLED (0 points at shift 0, -12 at 0.9); raw fine-tune 91.5% but deletes beams/ledgers. FINDINGS, ROADMAP row, version_memory.
-  - ... and 149 more
 - **flags/settings that differ from defaults**:
   - OMR_SURYA_KEEP_ALIVE=0
 - **weights**: --weights auto (weight routing off)
@@ -59,7 +34,8 @@ Every number below is read off the saved record, the exporter's own report or th
 
 | question | this night | previous |
 |---|---|---|
-| staves named | 203 (not named: 128) | 200 (not named: 131) |
+| parts in the file | 12 | 12 |
+| staves named (staff rows over all systems) | 203 (not named: 128) | 200 (not named: 131) |
 | staves held out (counted, not placed in a part) | 0 | 6 |
 | meter, per system: read / carried / guessed / narrowed / abstained | 1 / 30 / 0 / 0 / 0 | 1 / 30 / 0 / 0 / 0 |
 | key, per staff and system: read / carried / guessed / narrowed / abstained | 136 / 0 / 195 / 0 / 0 | 137 / 0 / 190 / 0 / 4 |
@@ -74,14 +50,14 @@ Every number below is read off the saved record, the exporter's own report or th
 |---|---|---|---|
 | rests / added without a box | 0 | 125 | +125 |
 | bars / tacet bars padded with rests | 539 | 347 | -192 |
-| bars / held out | 988 | 646 | -342 |
 | export not written / bar_does_not_add_up | 2,498 | 1,673 | -825 |
-| bars / held out does not add up | 1,044 | 705 | -339 |
-| bars / written plain | 5,072 | 3,559 | -1,513 |
+| bars / held out | 1,044 | 705 | -339 |
 | rests / refused total | 478 | 598 | +120 |
+| bars / written plain | 4,336 | 3,559 | -777 |
 | export rest / written | 1,876 | 2,168 | +292 |
 | noteheads: how long / narrowed | 392 | 343 | -49 |
 | export accidental / written | 314 | 358 | +44 |
+| export not written / duration_narrowed | 354 | 311 | -43 |
 
 ## 1. Bars
 
@@ -89,23 +65,23 @@ A bar is one measure of one part. Each bar of the file is in exactly one state.
 
 | state | bars | plain words |
 |---|---|---|
-| written plain | 3,559 (-1,513) | all notes written, none guessed |
+| written plain | 3,559 (-777) | all notes written, none guessed |
 | written with guesses | 949 | written; at least one note/dynamic is a guess (blue) |
 | partial | 156 | kept in part: readable notes written, the unreadable gap marked red (2.117) |
-| held out | 646 (-342) | notes held back because the bar does not add up; red mark (not written) |
-| unread, empty | 750 | nothing read in this bar; padded and marked red |
+| held out | 705 (-339) | notes held back because the bar does not add up; red mark (not written) |
+| unread, empty | 691 (+11) | nothing read in this bar; padded and marked red |
 | **total bars (parts x measures)** | 6,060 | |
 
-- bars: in 6,060 = unread, empty 750, written plain 3,559, held out 646, partial 156, written with guesses 949 (sum 6,060) -> balanced
+- bars: in 6,060 = unread, empty 691, written plain 3,559, held out 705, partial 156, written with guesses 949 (sum 6,060) -> balanced
 - check, partial bars: file vs exporter: file 156, exporter 156 -> agrees
-- check, held-out bars: file vs exporter: file 646, exporter 705 -> **IMBALANCE**
-- check, unread-empty bars: file vs exporter: file 750, exporter 691 -> **IMBALANCE**
+- check, held-out bars (named + doubled-staff copies): file vs exporter: file 705, exporter 705 -> agrees
+- check, unread-empty bars: file vs exporter: file 691, exporter 691 -> agrees
 
 Bars with notes read off the page: 5,022 (+181). Tacet bars padded with rests (written, not unread): 347 (-192). Meter: 0 bars judged on a carried meter, 0 with notes and no meter.
 
 Bars that could have been partial but stay held, by reason: voice_overfull 191, short_without_an_unread_symbol 412, nothing_before_or_after_the_gap 43.
 
-Red marks written: 1552. Equation: empty 691 + held out 705 + partial 156 = 1552 -> balanced.
+Red marks written: 1552. Equation: empty 691 + held out 705 + partial 156 = 1552 (the partial bars carry 158 red bracketed gaps) -> balanced.
 
 ## 2. Symbols: what happens to each kind at each stage
 
@@ -126,6 +102,19 @@ GATHER finds boxes. ADJUDICATE asks 'is it really one of these?' (refused) and t
 | ornaments | 3 | 0 | 2 | 0 | 1 | 0 | 0 | balanced |
 | hairpins | 0 +5 | 0 | 5 | 0 | 0 | 0 | 0 | balanced |
 
+Is-it-really-one refusals for every family, from the exporter's own `family_refusals` (kept / refused / abstained):
+
+- ledger_is_not_a_ledger: kept 1,761, refused 5,919, abstained 21 (inside_the_staff 5199, on_a_staff_line 693, no_head_on_the_rung 25)
+- accidental_is_not_an_accidental: kept 1,508, refused 0, abstained 0
+- rest_is_not_a_rest: kept 2,275, refused 598, abstained 0 (rest_has_a_stem 120, rest_is_a_duplicate_box 104, rest_touches_two_staff_lines 98)
+- arpeggiato_is_not_an_arpeggiato: kept 1,876, refused 21, abstained 0 (in_a_key_signature_slot 21)
+- arc_is_not_an_arc: kept 2,141, refused 503, abstained 0 (ink_is_a_staff_line 502, in_a_key_signature_slot 1)
+- dynamic_is_not_a_dynamic: kept 1,589, refused 0, abstained 0
+- articulation_is_not_an_articulation: kept 7, refused 11, abstained 0 (ledger_between_staff_and_note 11)
+- flag_is_not_a_flag: kept 252, refused 2, abstained 0 (in_a_key_signature_slot 2)
+- keysig_marker_is_not_a_marker: kept 528, refused 0, abstained 0
+- tuplet_marker_is_not_a_marker: kept 13, refused 0, abstained 0
+
 Top reasons per kind (refused, narrowed, abstained):
 
 - **noteheads: how long** (each detected notehead box: is it a real notehead, and what length is it): refused stacked_head_duplicate 448; refused clipped_fragment 342; refused too_narrow 258; abstained: owned_by_another_staff 1317; narrowed: beam_discounted_uncertain 262; narrowed: beams_ambiguous 54; narrowed: head_fill_from_ink 18
@@ -140,25 +129,25 @@ Top reasons per kind (refused, narrowed, abstained):
 
 ### 2b. Readings that belong to a staff or system, not to one box
 
-| reading | verdicts | read | carried | guessed (INFER) | narrowed | abstained | other | balance |
-|---|---|---|---|---|---|---|---|---|
-| clefs (one per staff and system) | 331 | 317 | 0 | 11 | 3 | 0 | 0 | balanced |
-| key signatures (one per staff and system) | 331 | 136 (-1) | 0 | 195 (+5) | 0 | 0 (-4) | 0 | balanced |
-| meters (time signatures) (one per system) | 31 | 1 | 30 | 0 | 0 | 0 | 0 | balanced |
-| instrument names (one per staff) | 331 | 203 (+3) | 0 | 0 | 0 | 128 (-3) | 0 | balanced |
-| direction words (words like cresc., dolce, one per word) | 5377 | 0 | 0 | 0 | 0 | 1 (+1) | 5,376 (-1) | balanced |
-| dynamic words (p, f, sf ... letters spelled into a word; the boxes are the letters) | 5377 | 0 | 0 | 0 | 17 (+2) | 18 | 5,342 (-2) | balanced |
-| tuplet ratios (the 3 over a triplet) | 12 | 0 | 0 | 0 | 0 | 9 | 3 | balanced |
+| reading | boxes | verdicts | read | carried | guessed (INFER) | decided (yes/no) | narrowed | abstained | other | balance |
+|---|---|---|---|---|---|---|---|---|---|---|
+| clefs (one per staff and system) | 513 | 331 | 317 | 0 | 11 | 0 | 3 | 0 | 0 | balanced |
+| key signatures (one per staff and system) | 542 | 331 | 136 (-1) | 0 | 195 (+5) | 0 | 0 | 0 (-4) | 0 | balanced |
+| meters (time signatures) (one per system) | 82 | 31 | 1 | 30 | 0 | 0 | 0 | 0 | 0 | balanced |
+| instrument names (one per staff) | 0 | 331 | 203 (+3) | 0 | 0 | 0 | 0 | 128 (-3) | 0 | balanced |
+| direction words (words like cresc., dolce, one per word) | 0 | 5,377 | 0 | 0 | 0 | 0 | 0 | 1 (+1) | 5,376 (-1) | balanced |
+| dynamic words (p, f, sf ... letters spelled into a word; the boxes are the letters) | 1,589 | 5,377 | 0 | 0 | 0 | 0 | 17 (+2) | 18 | 5,342 (-2) | balanced |
+| tuplet ratios (the 3 over a triplet) | 13 | 12 | 0 | 0 | 0 | 0 | 0 | 9 | 3 | balanced |
 
 ### 2c. EXPORT: what reached the file (the exporter's own report)
 
-| family | detected | decided | abstained | written | of which guessed (blue) | exporter status |
+| family | detector boxes | decided | abstained | written to the file | of which guessed (blue) | exporter status |
 |---|---|---|---|---|---|---|
-| accidental | 3,016 | 648 | 860 | 358 (+44) | n/a | emitted |
+| accidental | 1,508 | 648 | 860 | 358 (+44) | n/a | emitted |
 | articulation | 465 | 13 | 5 | 3 | n/a | emitted |
 | clef | 513 | 328 | 14 | 0 | n/a | emitted |
-| direction | 75 (+5) | 5,376 (-1) | 1 (+1) | 74 (+6) | n/a | emitted |
-| dynamic | 1,605 (+32) | 5,342 (-2) | 35 (+2) | 558 (+47) | 35 | emitted |
+| direction | 0 | 5,376 (-1) | 1 (+1) | 74 (+6) | n/a | emitted |
+| dynamic | 1,589 (+16) | 5,342 (-2) | 35 (+2) | 558 (+47) | 35 | emitted |
 | fermata | 178 | 156 | 22 | 77 (+3) | n/a | emitted |
 | key | 542 | 331 (+4) | 195 (+1) | 0 | n/a | emitted |
 | note | 11,399 | 15,091 (-9) | 0 | 6,573 (+791) | 1701 | emitted |
@@ -168,9 +157,13 @@ Top reasons per kind (refused, narrowed, abstained):
 | tie | 1,419 | 1,582 (+2) | 0 | 219 (+4) | n/a | emitted |
 | time | 82 | 31 | 0 | 0 | n/a | emitted |
 | tuplet | 13 | 3 | 9 | 0 | n/a | emitted |
-| wedge | 5 | 5 | 0 | 0 | n/a | decided_but_unwritten |
+| wedge | 0 | 5 | 0 | 0 | n/a | decided_but_unwritten |
 
-- export: events in the log -> file: in 14,689 = written 8,324, not written (reasons below) 6,073 (sum 14,397) -> **IMBALANCE +292**
+
+(`rest` reads 'abstained' only because the exporter has no separate rest verdict; rests are read, see 2a. `decided` counts verdicts, which can exceed boxes where one box has several.)
+
+- export: events in the log -> file: in 14,397 = written 8,324, not written (reasons below) 6,073 (sum 14,397) -> balanced
+(Of the written events, 415 notes were doubled onto a condensed slot and 2 rests duplicated across voices; the exporter nets those out.)
 
 Notes and rests not written, by reason (top 12):
 
@@ -187,34 +180,12 @@ Notes and rests not written, by reason (top 12):
 - not_a_rest:rest_is_a_duplicate_box: 104 (-2)
 - not_a_rest:rest_touches_two_staff_lines: 98
 
-Does the record's refusal count match the exporter's drop count? (two stages, one fact)
+Two stages, one fact: the record's refusals (ADJUDICATE) against the exporter's drop reasons of the same name: 23 of 23 reasons agree exactly.
 
-- not_a_notehead:belongs_to_a_nearer_staff: record 41, exporter 41 -> agrees
-- not_a_notehead:clipped_fragment: record 342, exporter 342 -> agrees
-- not_a_notehead:head_cut_piece: record 17, exporter 17 -> agrees
-- not_a_notehead:is_a_beam_piece: record 19, exporter 19 -> agrees
-- not_a_notehead:is_a_clef: record 30, exporter 30 -> agrees
-- not_a_notehead:notehead_in_a_key_signature_slot: record 12, exporter 12 -> agrees
-- not_a_notehead:notehead_is_a_duplicate_box: record 257, exporter 257 -> agrees
-- not_a_notehead:on_a_dynamic_letter: record 64, exporter 64 -> agrees
-- not_a_notehead:stacked_head_duplicate: record 448, exporter 448 -> agrees
-- not_a_notehead:too_narrow: record 258, exporter 258 -> agrees
-- not_a_notehead:tremolo_slash_crosses_stem: record 61, exporter 61 -> agrees
-- not_a_rest:rest_clipped_by_crop: record 75, exporter 75 -> agrees
-- not_a_rest:rest_has_a_stem: record 120, exporter 120 -> agrees
-- not_a_rest:rest_in_a_key_signature_slot: record 23, exporter 23 -> agrees
-- not_a_rest:rest_is_a_barline: record 90, exporter 90 -> agrees
-- not_a_rest:rest_is_a_duplicate_box: record 104, exporter 104 -> agrees
-- not_a_rest:rest_is_a_meter_digit: record 8, exporter 8 -> agrees
-- not_a_rest:rest_is_a_slashed_stem: record 1, exporter 1 -> agrees
-- not_a_rest:rest_off_center: record 58, exporter 58 -> agrees
-- not_a_rest:rest_on_a_dynamic_letter: record 2, exporter 2 -> agrees
-- not_a_rest:rest_outside_its_staff: record 7, exporter 7 -> agrees
-- not_a_rest:rest_overlaps_a_notehead: record 12, exporter 12 -> agrees
-- not_a_rest:rest_touches_two_staff_lines: record 98, exporter 98 -> agrees
+Every standing glyph verdict of the quantities above is in a row, on a refused box, or on a box of a kind no row covers: 8 of 8 quantities account for all their verdicts.
+- pitch: 2,309 of 13,603 verdicts sit on boxes of another kind (e.g. a pitch computed for a rest box) -- listed, not hidden
 
-Glyph verdicts counted by the funnels against all standing glyph verdicts of that quantity (the gap is verdicts on refused boxes or subjects no row lists):
-
+Kept boxes that nothing was asked about (no verdict): noteheads: which pitch 95; articulations 447.
 
 ## 3. How sure are the guesses
 
@@ -254,32 +225,33 @@ Durations that are guesses at glyph level: 2162; of those, settled by the bar's 
 - unidentified parts: 0
 - noteheads owner not read: 9
 - noteheads no pitch: 95
-- notes whose length is undecided: [311, 98, 98]
-- adjudication missing evidence: {'accidental_staff_position': 433, 'arc_box': 6959, 'aug_dot': 11525, 'beam_stem_join': 411, 'beam_stroke_ink': 3968, 'cell_box': 189, 'cell_staff_space': 35, 'clef_position': 40, 'clef_seed': 331, 'dot_stroke_ink': 447, 'dynamic_band_position': 33, 'event': 243, 'far_head_owner_ledger': 5098, 'flag': 8885, 'glyph_band_distance': 6884, 'glyph_box': 915, 'glyph_ladder': 4838, 'glyph_owner': 24643, 'head_line_cut': 10667, 'head_stem_reach': 6254, 'human_box_verdict': 39846, 'keysig_clef_fit': 375, 'keysig_marker_is_not_a_marker': 123, 'keysig_template_fit': 143, 'ledger_owner_density': 4838, 'letter_look_cover': 12627, 'meter_ocr': 4, 'meter_ocr_at_bar': 31, 'notehead_class': 3974, 'notehead_letter_ink': 9835, 'notehead_position': 976, 'notehead_staff_position': 5224, 'notehead_stem_cross_ink': 5671, 'rest': 14444, 'stacked_head_fit': 6606, 'stem_slash': 2447, 'tuplet_ratio': 12595}
+- notes whose length stayed undecided (narrowed, abstained, chord): {'narrowed': 311, 'rest abstained': 98, 'chord undecided': 98}
+- evidence the deciders asked for and did not find (record `adjudication.missing_evidence`, top 8): human_box_verdict 39,846, glyph_owner 24,643, rest 14,444, letter_look_cover 12,627, tuplet_ratio 12,595, aug_dot 11,525, head_line_cut 10,667, notehead_letter_ink 9,835
 
 ## 5. Where the fixing time goes
 
-Cleanup proxy = red (unread) + blue (guessed) items in the MusicXML: 3,337 over 16 pages (about 209 per page). Previous: 0.
+Cleanup proxy = red (unread) + blue (guessed) items in the MusicXML: 3,337 over 16 pages (about 209 per page). Previous: 1724.
 
 Five worst pages: p15: 122 red + 193 blue; p4: 106 red + 184 blue; p14: 125 red + 155 blue; p6: 102 red + 141 blue; p2: 90 red + 147 blue.
 
-Five worst staves (instrument, page): Violin p4: 13 red + 70 blue; Violin p14: 13 red + 64 blue; Violin p2: 14 red + 53 blue; Violin p15: 17 red + 44 blue; Violin p5: 28 red + 32 blue.
+Five worst staves (instrument, page): Viola p15: 13 red + 39 blue; Viola p4: 9 red + 41 blue; Viola p6: 9 red + 41 blue; Bassoon p16: 10 red + 39 blue; Bassoon p15: 11 red + 33 blue.
 
 Per instrument (part):
 
 | instrument | notes plain | notes guessed | unread marks | events held out | rows in unread gaps |
 |---|---|---|---|---|---|
-| Violin | 1,231 (-343) | 455 (+455) | 232 (+232) | 359 (-144) | 10 |
-| Viola | 370 (-223) | 285 (+285) | 158 (+158) | 178 (-73) | 6 |
-| Bassoon | 423 (-193) | 300 (+300) | 136 (+136) | 173 (-110) | 2 |
-| Cello | 330 (-37) | 147 (+147) | 172 (+172) | 147 (-43) | 4 |
-| Flute | 362 (-104) | 152 (+152) | 131 (+131) | 148 (-81) | 5 |
-| Oboe | 356 (-65) | 145 (+145) | 125 (+125) | 185 (-87) | 1 |
-| Contrabass | 323 (-13) | 98 (+98) | 129 (+129) | 26 (-15) | 0 |
-| Clarinet | 578 (-20) | 72 (+72) | 147 (+147) | 199 (-56) | 3 |
-| Horn | 336 (+7) | 50 (+50) | 111 (+111) | 124 (-78) | 3 |
-| Trumpet | 351 (+19) | 30 (+30) | 104 (+104) | 66 (-66) | 1 |
-| Timpani | 158 (+8) | 21 (+21) | 109 (+109) | 68 (-72) | 0 |
+| Viola | 370 (-223) | 285 (+285) | 158 (-14) | 178 (-73) | 6 |
+| Bassoon | 423 (-193) | 300 (+300) | 136 (-27) | 173 (-110) | 2 |
+| Violin [P8] | 633 (-185) | 245 (+245) | 105 (-19) | 190 (-75) | 4 |
+| Violin [P9] | 598 (-158) | 210 (+210) | 127 (-17) | 169 (-69) | 6 |
+| Cello | 330 (-37) | 147 (+147) | 172 (+13) | 147 (-43) | 4 |
+| Flute | 362 (-104) | 152 (+152) | 131 (-22) | 148 (-81) | 5 |
+| Oboe | 356 (-65) | 145 (+145) | 125 (-18) | 185 (-87) | 1 |
+| Contrabass | 323 (-13) | 98 (+98) | 129 (+14) | 26 (-15) | 0 |
+| Clarinet | 578 (-20) | 72 (+72) | 147 (-11) | 199 (-56) | 3 |
+| Horn | 336 (+7) | 50 (+50) | 111 (-24) | 124 (-78) | 3 |
+| Trumpet | 351 (+19) | 30 (+30) | 104 (-16) | 66 (-66) | 1 |
+| Timpani | 158 (+8) | 21 (+21) | 109 (-29) | 68 (-72) | 0 |
 
 ## 6. Detected, then dropped
 
@@ -296,21 +268,20 @@ Ink rows no class explains (Q.INK): 5377.
 - 646 x bar held out: does not add up -- e.g. p1 sys0 staff0 cell3 (bar 4, part P1)
 - 497 x ties: refused, ink_is_a_staff_line -- e.g. p1 sys0 staff1 cell7 glyph1
 - 448 x noteheads: how long: refused, stacked_head_duplicate -- e.g. p1 sys0 staff3 cell7 glyph2
-- 448 x noteheads: which pitch: refused, stacked_head_duplicate -- e.g. p1 sys0 staff3 cell7 glyph2
 - 412 x bar stays held: short_without_an_unread_symbol -- e.g. p2 sys0 staff0 cell5 (bar 22, part P1)
 - 342 x noteheads: how long: refused, clipped_fragment -- e.g. p1 sys0 staff3 cell3 glyph2
-- 342 x noteheads: which pitch: refused, clipped_fragment -- e.g. p1 sys0 staff3 cell3 glyph2
 - 262 x noteheads: how long: narrowed: beam_discounted_uncertain -- e.g. p1 sys0 staff7 cell1 glyph1
+- 258 x noteheads: how long: refused, too_narrow -- e.g. p1 sys0 staff2 cell0 glyph9
+- 257 x noteheads: how long: refused, notehead_is_a_duplicate_box -- e.g. p1 sys0 staff8 cell14 glyph5
 
 ## 8. Regression guards
 
-- judged: doc_unresolved 234, not_found 13, unscored 97, other_doc 213, narrowed 4, right 107, wrong 12, abstained 1  (previous: doc_unresolved 234, not_found 19, unscored 97, other_doc 213, wrong 12, right 99, narrowed 6, abstained 1)
+- judged: right 107, wrong 12, narrowed 4, abstained 1, not_found 13, unscored 97 (Sean's past answers on the tiles that fall on this record)  (previous: right 99, wrong 12, narrowed 6, abstained 1, not_found 19, unscored 97 (Sean's past answers on the tiles that fall on this record))
 - check open: 192 open findings (tree-level, same for both movements)
 
 ## 9. Balance ledger (every row that must add up)
 
-18 of 19 rows balance. **Imbalances:**
+71 of 71 rows balance. No imbalance.
 
-- export: events in the log -> file: in 14,689 = written 8,324, not written (reasons below) 6,073 (sum 14,397) -> **IMBALANCE +292**
 - exporter's own `dot_role_balance` says balanced = False: {'population': 601, 'attached_augmentation': 15, 'written_staccato': 364, 'attached_staccato_before_hold_out': 410, 'not_placed': 241}
 

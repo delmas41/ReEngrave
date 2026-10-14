@@ -2,16 +2,15 @@
  "report": {
   "label": "Brahms 1 mvt 1 (Breitkopf scan), 20261013-night",
   "run": {
-   "tree": "ca46eae4",
+   "tree": "ca46eae4; the export, LilyPond and this report were re-run on tree d5ba473c",
    "landings": [
+    "139 commits (merges left out); the newest 15:",
     "ca46eae4 ROADMAP 2.114: claim the second (hollow-only) detector at GATHER; Sean's interior-white rule",
     "14cd2946 ROADMAP 2.113: claim the clutter count (measure before a remove-what's-known view)",
     "a31a2cca ROADMAP 2.112: claim the test-set leakage audit (2.110 found TEST cells in training)",
     "2892eb71 hand_truth inventory: declare v24 (2.4b hollow4 TRAIN, single-family:hollow, not admitted) -- fixes test_every_label_version_on_disk_has_a_declared_tier",
     "4863f784 Docs: ROADMAP START HERE landing order, version_memory for 2.108",
-    "36f4a4cf Land 2.108 a music glyph more than 6 staff spaces from any staff is not music; kept out of the labelling pre-fill (lane-2.108-off-staff-glyphs 6d9f9207) (Sean: \"yes\")",
     "6d9f9207 Rebuild judged-tiles index after merging main",
-    "b0fd2e09 Merge origin/main into lane-2.108",
     "d10affe3 2.108: Sean's answers on the blind tiles; FINDINGS, DECISIONS, ROADMAP",
     "abec2a05 ROADMAP 2.111: park the plate's-own notehead template idea (Sean: keep the idea)",
     "753e5dd7 2.108: off-staff reach 6 spaces (Sean: go with 6); re-measure, blind tiles, DECISIONS line",
@@ -19,180 +18,8 @@
     "ad26d0d1 ROADMAP START HERE: Sean wants to revisit 2.4b hollow heads next session; ideas to weigh (two detectors, complete cells, combined round, resolution)",
     "04592685 2.108: FINDINGS, ROADMAP row, version_memory",
     "6f6c71c9 2.108: staged reach reads the vertical band only (record STAFF_EXTENT is the detector span; it refused 14 real Brahms p1 heads); prune-off-staff; probes + tiles",
-    "59dd07d4 Land 2.107 dynamic letters read from the ink against the terms library; an unsure dynamic is written blue \"dyn.\" (lane-2.107-dynamic-letters e450e31a) (Sean: \"land with blue dyn only\")",
     "e450e31a Docs: ROADMAP 2.107 landed, START HERE landing order, version_memory",
-    "db798ecc Rebuild judged-tiles index after merging main",
-    "8ef0ee1e Land 2.4b records: hollow-head labels (Litolff p1 TEST + 100-cell TRAIN, v24) and the killed retraining A/B; production weights unchanged (lane-2.4b-hollow 5e0e7f56)",
-    "5e0e7f56 Merge origin/main into lane-2.4b-hollow; ROADMAP 2.4b KILLED, 2.5 unblocked",
-    "9fea5569 2.4b: BN-frozen fine-tune (v24 + control) -- same class deletion, worse; 2.4b closed as killed. FINDINGS, ROADMAP, version_memory.",
-    "595c6373 1.7 hand truth: Sean finished Brahms 317803 pdf 0 (1,352 -> 1,566 boxes; remaining cells are words only)",
-    "659c84a4 Merge origin/main into lane-2.107-dynamic-letters",
-    "437b32e9 2.107: ink pick OFF by default (OMR_DYNAMIC_INK_PICK); narrowed dynamic exports only blue dyn. (Sean: \"land with blue dyn only\"); ROADMAP 2.109 opened",
-    "5ac5b06a 2.108: off_staff_glyph (STAGED notehead decider) + hand-truth pre-fill never queues a pitch glyph with no staff near; RED-first tests",
-    "39af6bd9 2.107: Sean's answers; tile 8 fixed; a narrowed dynamic is written blue as the ink's closest guess",
-    "96df14ed ROADMAP 2.108 opened: music glyphs far from any staff (title text) are not music (Sean)",
-    "ec782bab 2.4b re-assembly: reverse graft (arms A/B/C, v24 + control) KILLED -- class rows restore nothing; damage is in BN stats/conv weights. FINDINGS, ROADMAP, version_memory.",
-    "47a113a8 ROADMAP START HERE after 2026-10-13: landed, Sean's rules, in flight (2.107, 2.4b re-assembly), next; version_memory",
-    "057565e7 Docs: ROADMAP 2.105 landed (sf moved to 2.107), START HERE landing order, version_memory",
-    "20112bd5 Land 2.105 a barline is not a rest; twin boxes keep one plausible head and never a beam (lane-2.105-not-a-note b2d55319) (Sean: \"land 2.105\")",
-    "b2d55319 2.105: rest_is_a_barline and the widened is_a_beam_piece file their 2.106 margins; rebuild judged index",
-    "486d4983 Merge remote-tracking branch 'origin/main' into lane-2.107-dynamic-letters",
-    "6fa0b0d3 DECISIONS: a narrowed dynamic is written as its best candidate by the ink, in blue; 'dyn.' only where the ink favours none (Sean)",
-    "cb5f42a7 DECISIONS: a narrowed dynamic is written as 'dyn.' in blue with its candidates, never picked by frequency (Sean)",
-    "aa27c1df 2.4b re-assembly: reverse-graft builder (fine-tune + production class rows), per-class counter, A/B runner",
-    "2a465417 Merge origin/main into lane-2.105-not-a-note",
-    "92d415e1 2.107: FINDINGS, ROADMAP row, version_memory, 11 blind tiles, reach probes",
-    "d93b371e 2.107: read the dynamic letters the detector never boxed (second look, library-checked)",
-    "416d2f71 2.4b: hollow-head run result -- graft KILLED (0 points at shift 0, -12 at 0.9); raw fine-tune 91.5% but deletes beams/ledgers. FINDINGS, ROADMAP row, version_memory.",
-    "84cc7860 ROADMAP 2.105: Sean's answers recorded; beam-piece guard for the twin keeper (tile 6), sf stays a known miss",
-    "f2ed5a68 ROADMAP 2.107 opened: dynamic letters read as dynamics, checked against the 2.67 terms library (Sean: \"yes, open 2.107\")",
-    "ca0ea97a 2.4b: training, graft-A/B and scoring scripts (1-epoch run from production, score_ab on Litolff TEST truth + Brahms hand truth)",
-    "2a7146a4 Docs: ROADMAP 2.106 landed, START HERE landing order, CLAUDE.md \u00a76 pointer, version_memory",
-    "370ec064 Land 2.106 every threshold refusal records its margin; an index of Sean's 600 judged tiles with a re-scorer (lane-2.106-margins-index 863b8ab5) (Sean: \"land 2.106\")",
-    "863b8ab5 2.106: rebuild judged index after merging main's 2.104-review answers",
-    "ad5f7502 2.4b step 1: v24 hollow4-train version (100 cells, 90 hollow heads; OnLine/InSpace recomputed from geometry; teacher-completed at conf 0.25, hollow classes human-only)",
-    "370b1833 ROADMAP 2.105: blind tiles, FINDINGS, ROADMAP/version_memory (2.91/2.92 folded in)",
-    "0a4c8e04 Merge remote-tracking branch 'origin/main' into lane-2.106-margins-index",
-    "2541a50e Merge origin/main into lane-2.4b-hollow",
-    "bbd22c62 ROADMAP 2.106: no-decision-change proof tooling (redecide/compare), baselines, ROADMAP/plan/version_memory",
-    "55d8a176 2.4b: Sean's hollow-head labels on the TRAIN batch (100 of 100 cells; 64 half + 26 whole heads). OnLine/InSpace tag NOT trusted off the staff -- recompute from geometry before training (DECISIONS 2026-10-13)",
-    "baf5b10d DECISIONS: 2.4b labelling rulings -- recompute OnLine/InSpace from geometry before training; tremolo-beamed hollow heads boxed; tempo-mark notes not boxed; neighbour-staff heads boxed",
-    "537c3a03 ROADMAP 2.104 landed: START HERE landing order, version_memory (Sean: \"go ahead switch on and land\")",
-    "aef6cf6f Land 2.104 a flag under a stray box is read from its shape, switch ON (lane-2.104-flag-misses 3e3cb229) (Sean: \"go ahead switch on and land\")",
-    "3e3cb229 2.104: pin the 2.105 occupied CONTROLs with OMR_TIP_UNBLOCKED=0",
-    "7509f3a0 2.104: pin pre-2.104 tip-reader tests with OMR_TIP_UNBLOCKED=0; ROADMAP dedupe",
-    "df6b989a 2.4b: Sean's hollow-head labels on the Litolff p1 TEST batch (104 cells: 103 by hand, 1 empty cell stamped at his word; 59 half heads, 0 whole) -- test truth, never trained on",
-    "a7ab54bf Merge remote-tracking branch 'origin/main' into lane-2.104-flag-misses",
-    "180ba0ca 2.104: Sean's tile answers (9/9), OMR_TIP_UNBLOCKED default ON (deny-list) (Sean: \"go ahead switch on and land\")",
-    "29329fc3 ROADMAP 2.105: rest_is_a_barline, twin boxes never refuse each other (2.92), tests RED-first, probes",
-    "b84ea473 ROADMAP 2.106 step 2: index of Sean's judged tiles (600 tiles, 49 items) and a streaming re-scorer",
-    "bd34b488 ROADMAP 2.104: findings, tiles, roadmap row, version_memory; drop an unread detail key (staged.check 192)",
-    "cbc9dece ROADMAP 2.106 step 1: threshold refusals file a signed margin, axis, band and would-be value; staged.margins check part (no decision changes)",
-    "1e1fd629 ROADMAP 2.105 (not-a-note leftovers) and 2.106 (inference plan steps 1-2) opened (Sean: \"go ahead\")",
-    "4b5ad10d Page facts vs DECISIONS: never quietly disagree, rulings carry scope, a lane that finds a conflict asks Sean (Sean: \"yes, swap it for those three\")",
-    "77b6fa21 CLAUDE.md: add 'How inference decides' (adopted principles); DECISIONS (Sean: \"Add the inference block and land it\")",
-    "0b0a451c Land the concise CLAUDE.md (housekeeping-claude-md 7e54c112): 6,174 -> ~1,900 words, detail moved to docs/ with a migration table (Sean: \"Add the inference block and land it\")",
-    "d9a35223 Land OMR_NARROWED_BAR default ON (2.97 columns rule) (Sean: \"Yes, switch it on\")",
-    "ff4aea95 OMR_NARROWED_BAR default ON (2.97 columns rule) (Sean: \"Yes, switch it on\")",
-    "7e54c112 housekeeping-claude-md: brace rule reworded to Sean's actual ruling (a word between braced staves names the brace); lean-lane caps cite DECISIONS 2026-10-12 HOW LANES RUN; merged origin/main",
-    "ecfd2342 Merge remote-tracking branch 'origin/main' into housekeeping-claude-md",
-    "aa2544a5 DECISIONS: how lanes run (load caps, lean tokens) -- recorded from Sean's 2026-10-12 approval",
-    "3aa5768b Housekeeping: cut CLAUDE.md to ~1,850 words; detail moved into six focused docs (Sean: \"much more concise ... don't lose specific knowledge\")",
-    "2363ebc5 ROADMAP 2.104: read a flag under a covering detector box by its shape (OMR_TIP_UNBLOCKED, default OFF)",
-    "31ddceb5 Document the 2.97 landing: ROADMAP row, START HERE landing order, version_memory",
-    "abb5228d Land 2.97 chords and joint columns settled by the bar only with eighth evidence; singles removed (lane-2.97-narrowed-bars 5e31d80d) (Sean: \"Go ahead with both\")",
-    "5e31d80d 2.97: FINDINGS 2.97g (Sean's review-3 answers, final Litolff re-measure), DECISIONS 2026-10-13",
-    "1a3da95f Merge origin/main into lane-2.97 (docs: keep both sides)",
-    "ddcc38c0 2.97: Sean's answers on review-3 tiles (2026-10-13)",
-    "2ebc61d9 ROADMAP 2.104 opened: recover missed flags by reading them, not by arithmetic (Sean: \"Go ahead with both\")",
-    "a734d8fa 2.97: newly held bars traced (FINDINGS 2.97f); review-3 tiles",
-    "4de92098 Document the docs-only landings: ROADMAP 2.96/2.101 done, inference-principles status, cross-pointers, version_memory",
-    "8560bb16 Land inference-principles plan (lane-infer-principles)",
-    "cf5729cb Land ROADMAP 2.101 docs: held-out check on Dvorak 8 / Schumann 2 / Tchaikovsky 4 (lane-2.101-held-out)",
-    "57c10e4c 2.97: reconcile with main's 2.102 tuplet guard and shortened_refused",
-    "34265e13 Land ROADMAP 2.96 docs: why bars are held (lane-2.96-held-funnel)",
-    "ce9c232c Merge origin/main (2.102) into lane-2.97",
-    "d1657b81 2.97: flag_ink_unread counts as flag evidence; FINDINGS 2.97e; ROADMAP",
-    "1f52beb1 ROADMAP 2.102 landed; START HERE landing order; version_memory entry",
-    "75566ae5 Land 2.102 no bar-sum settlement past the evidence: tuplets only where marked, no eighth without a flag or beam; C meter, tremolo slashes and barline pieces are not notes (lane-2.102-tuplet-meter-trem 8558922b) (Sean: \"Yes\")",
-    "8558922b Merge origin/main into lane-2.102-tuplet-meter-trem",
-    "18be2a34 ROADMAP 2.102: tuplet only where seen (Sean 2026-10-13); hidden 3:2 inference removed",
-    "54a1b653 DECISIONS: a tuplet exists only where its marking is seen; written value from the shape (Sean)",
-    "55cf983f ROADMAP 2.102: Sean's 11 tiles scored (11 of 11 right), Brahms page 0 gate, DECISIONS",
-    "9d464fe4 ROADMAP 2.103 landed; START HERE landing order; version_memory entry",
-    "e4ed261c Land 2.103 guessed symbols flagged in blue, with their candidates (lane-2.103-flag-guesses 58c85c7b) (Sean: \"Blue reads better\" / \"Land\")",
-    "58c85c7b Merge origin/main into lane-2.103-flag-guesses",
-    "6182e1c0 DECISIONS: written value from the note's shape; a tuplet changes sounding duration, not the written value (Sean); 2.103 approved",
-    "cc1b9f43 ROADMAP 2.102: Brahms re-adjudication numbers",
-    "13ab0c0f ROADMAP 2.103: ONE blue (#1F6FEB) for every GUESSED symbol (Sean: \"Just blue\"); crops re-rendered; DECISIONS line",
-    "a64902c7 ROADMAP 2.102: review-evidence tests name duration/meter as downstream of a notehead refusal",
-    "6b5f026c ROADMAP 2.103: GUESSED symbols flagged in MusicXML and LilyPond (RED-first tests; both night records byte-identical minus flags)",
-    "22458489 ROADMAP 2.102: no eighth without its own evidence (Sean), hollow gate dropped, docs, tiles",
-    "21ddeb21 ROADMAP 2.103 opened: guessed symbols flagged in the file (Sean: \"Yes\")",
-    "7e2d874f DECISIONS: nothing uncertain written unmarked -- READ / GUESSED (flagged, with candidates) / UNREAD (Sean)",
-    "da58feb6 Plan: inference principles, a cost-derived DECIDED bar, margins on every refusal, audit of the six INFER rules (Sean 2026-10-12: 'principles allied to every infer decision'; 'I am not tied to 95%')",
-    "116402fb DECISIONS: Sean is not tied to the 95% bar",
-    "8b2dbc2a 2.97: a bar-sum settlement may confirm an eighth that has evidence of its own, never supply one (Sean 2026-10-12); tests",
-    "18de0d54 Merge remote-tracking branch 'origin/main' into lane-2.102-tuplet-meter-trem",
-    "9c73bebe Rule refined (Sean): the bar sum may confirm a value the ink supports, never supply one",
-    "f01f5b5a Merge origin/main into lane-2.97",
-    "fe144050 Merge origin/main into lane-2.102",
-    "be486ac5 Rule (Sean): a note is an eighth only on evidence -- a flag or beam seen; bar arithmetic never shortens a bare stem (CLAUDE.md \u00a710, DECISIONS)",
-    "3eee697b 2.97: Sean's answers recorded (answers.json x2, DECISIONS, FINDINGS 2.97d)",
-    "ba16f95d 2.97: remove settle-alongside (Sean: singles 1-4 all wrong)",
-    "681f2d94 ROADMAP 2.102: no bar-sum settlement in a tuplet bar or over unseparated columns; a mark refused as not-a-note has no duration",
-    "c386fb09 ROADMAP 2.100 half 1 landed; START HERE landing order; version_memory",
-    "29435751 Land 2.100 only a clef before the key: any box in the key slots, and a rest on the meter, is not music (lane-2.100-key-order 0a839061) (Sean: \"Land 2.100\")",
-    "093a20cb 2.97: abstain on a bar holding tuplet evidence (2.101); count; tests",
-    "0a839061 Merge origin/main into lane-2.100-key-order",
-    "a304283f 2.100 round 2: tile 2 was answered (a 9 meter digit); 7/7 refusals",
-    "b6b35e33 ROADMAP 2.100 round 2: Sean's answers on the 11 tiles scored (6/6 refusals, 3/3 controls right; tile 1 a barline kept as a rest)",
-    "fcacfa10 ROADMAP 2.102 opened: no bar-sum settlement in a tuplet bar; C meter and tremolo slashes are never hollow heads (Sean: \"Yes open them as a lane\")",
-    "68d5757a 2.97: clean-heads guard measured; tiles re-rendered; FINDINGS 2.97b",
-    "254cbc43 2.100 round 2: any class in the key slots refused, rest on the meter column is a meter digit; Sean's answers recorded; tiles round 2",
-    "6dc58520 2.101: Sean's 17 tile answers \u2014 rests and whole-bar rests hold; 2.81 wrong on a tuplet, 2.88-class wrong on a C meter and tremolo slashes",
-    "270e6e02 2.101: ROADMAP row, version_memory",
-    "84d7c144 2.101: held-out FINDINGS, 17 blind tiles",
-    "edacd6b3 2.101: held-out probes (reach/proxies, case lister, tile cutter); records stay in library/",
-    "f5f43143 Restore 2.98, dropped by the 2.67b landing 9c8beef4",
-    "837ae4ea Merge commit '5d85650c' into fix-2.67b-landing",
-    "9c8beef4 Land 2.67b the terms library wired into the direction reader, with limits; B\u00e4sse named the string basses (lane-2.67b-terms-wiring 9011e11d) (Sean: \"Yes to all\")",
-    "88619a03 2.100: next-slot rest rule, A/B + hand-truth results, 13 blind tiles, FINDINGS, ROADMAP, version_memory",
-    "5d85650c Merge remote-tracking branch 'origin/main' into lane-2.98-whole-rest-bar",
-    "ac18f508 Land 2.98 a lone whole rest is the bar, sized to the file's meter (lane-2.98-whole-rest-bar 97e157b9) (Sean: \"Land\")",
-    "5859cbf7 2.97: crops of the two hand-truth misses; tile script merges boxes per event, drops unclean bars",
-    "c96ebc46 2.97: settle only bars whose heads are this staff's own, one box each (found on the tiles); tests",
-    "875bc295 2.97: ROADMAP row, FINDINGS, version_memory, stats probe",
-    "7eec1bd9 ROADMAP 2.101 opened: held-out check of today's rules on other publishers (Sean: \"And a 3rd lane and start it\")",
-    "9011e11d Merge remote-tracking branch 'origin/main' into lane-2.67b-terms-wiring",
-    "d9b58cea 2.67b round 2: B\u00e4sse is the string basses, five Mahler words, connectives",
-    "97e157b9 2.98: Sean's answers (12/12 whole-bar rests, tiles 7-12 6/8), re-run on the merged tree (same deltas, overfull 0)",
-    "54ae1fb0 2.100: bridge one unboxed key slot (KEY-class boxes only); A/B + hand-truth probes",
-    "e26eba3a 2.100: key-signature slot window; a rest or notehead box in the slots is the signature's ink (RED-first tests with controls)",
-    "86c1c8c5 Land 2.99 eighth and quarter rests read from unboxed ink (lane-2.99-unboxed-rests 055f3d5a) (Sean: \"Land 2.99\")",
-    "8c9bfaf2 ROADMAP 2.100 opened: key-signature accidentals in fixed order, only a clef before them (Sean: \"open key flat issue\"); DECISIONS",
-    "055f3d5a 2.99: ROADMAP landed, START HERE order, version_memory, see 2.100",
-    "d0e2230b 2.99: Sean's tile answers (7 of 8 decided right; tile 10 a slur end), thin-stroke refusal RED-first, DECISIONS line",
-    "6075fa41 2.97: tiles regenerated with the full Brahms arm",
-    "8dc63a52 2.67b: the terms library wired into the direction reader, with limits",
-    "ab23dcca 2.99: docs, re-gather on merged tree, 12 blind tiles",
-    "7226f6b7 Merge remote-tracking branch 'origin/main' into lane-2.99-unboxed-rests",
-    "acc63ac6 2.98: a lone whole rest is the bar even where the meter is not read -- ROADMAP, FINDINGS, version_memory; 12 tiles for Sean (RED-first tests; fast tier green)",
-    "9e88c9fd 2.97: chain2 base re-runs",
-    "0063f750 WIP 2.98: 12 blind tiles (controls inside the staff)",
-    "9c57d79e Merge remote-tracking branch 'origin/main' into lane-2.98-whole-rest-bar",
-    "5db0014e WIP 2.98: tile script, tiles",
-    "3991579c Land 2.95 a word between a bracketed pair names both staves (lane-2.95-bracket-label cb52802d) (Sean: \"Land 2.95\")",
-    "cb52802d 2.95: ROADMAP fast tier count 7,457 after the 2.94 merge",
-    "e4c322e2 2.97: blind tiles (12) and tile script",
-    "d6fef3b0 2.97: chained re-decide script",
-    "f7f6b5ca Merge origin/main (2.94) into lane-2.95-bracket-label",
-    "daa88655 2.95: ROADMAP fast tier count",
-    "4275d7c3 Land 2.94 a worn label named from the roster, plus the leading-crook horn fix (lane-2.94-worn-label dcb5a356) (Sean: \"Land 2.94 with the (C) Hr. fix\")",
-    "8eee23e1 2.97: a chord is one unit only on one decided stem (hand-truth control); tests",
-    "e041f038 Merge origin/main (2.93) into lane-2.95-bracket-label",
-    "dcb5a356 Merge origin/main (2.93) into lane-2.94-worn-label; 2.94 landed rows, Vel. still open",
-    "ce3bac24 WIP 2.98: a lone whole rest is the bar (EXPORT sizing by the file's meter, EVALUATE twin-box set-aside); tests, A/B probe, A/B numbers",
-    "8b69501f WIP 2.99: unboxed eighth/quarter rests read from the ink (GATHER Q.UNBOXED_REST_SHAPE -> ADJUDICATE -> EVALUATE size_unboxed_rest -> EXPORT); docs pending",
-    "8ff150f0 WIP 2.97: reconcile_duration chord/alongside, collapse_narrowed_by_bar (OMR_NARROWED_BAR, default off), tests, probes",
-    "4bdd2d32 2.94: lookup reads a leading parenthetical crook ((C) Hr. -> 0, (Es) Hr. -> 3)",
-    "349eaf23 Land 2.93 the condensed bass staff doubled when the viola's clef is misread (lane-2.93-bassi 14e1879b) (Sean: \"Land 2.93 once it's green\")",
-    "14e1879b 2.93: ROADMAP landed, START HERE landing order, version_memory",
-    "31821ede Merge origin/main into lane-2.95-bracket-label",
-    "a9dc78d4 2.95: convention CONFIRMED (Sean: the bracket makes them all horns); brace-extent gap measured by a raster probe",
-    "d7043c06 Merge origin/main into lane-2.93-bassi; record Sean's confirmation (2.93 cello and bass together)",
-    "9ec76da1 2.96: record Sean's answers on the 15 tiles (N 3/3, W 3/3, I:eighth 3/3, D 2/3, F 2/3); correct the dots eye-read",
-    "4e97cd31 2.95: complete shared-word labels word-first (Hr. (C)) so the crook offset reads right; FINDINGS follow-up on what the offset reaches",
-    "0639e9de 2.95: a word printed between two braced staves names both (Brahms (C)/Hr./(Es)); ROADMAP, FINDINGS, version_memory",
-    "698ef23a 2.94: FINDINGS control, fast tier count, crop frame control",
-    "5c4fccc5 2.96: why bars are held out now -- the 2.19/2.22 funnel on the 2026-10-11 night records, evidence-gated (diagnosis only, no product code; 15 tiles for Sean)",
-    "c677bf29 2.94: re-render the 4 print crops with the box on the label's own ink (frame control that fails when shifted)",
-    "ecf7e0a1 2.93: a detector clef glyph the CV locator contradicts is not a witness against the condensed cello/bass block (Litolff held 5 -> 0)",
-    "81d9eae7 2.94: name a worn instrument label from the roster and the system's gap",
-    "3fd59e2a Overnight 20261011-night read: SUMMARY, comparison files, current.json (forced: dirty only with acceptance outputs), held-staff crops (Sean: \"Save the results and write the short summary\")",
-    "e671c4a7 Land 2.67 a copy of the Gradus terms library with an exact lookup (claude/gradus-terms-reengraver-d5220f e532a0a2) (Sean: \"Yes, land it on main\")",
-    "e532a0a2 2.67: copy the Gradus terms library into ReEngrave with an exact lookup",
-    "75b2ac1e ROADMAP 2.4b: hollow-head labelling batches (train 100 cells + Litolff p1 TEST 104 cells), miss sizing on Sean's hand truth, plan; nothing trained"
+    "db798ecc Rebuild judged-tiles index after merging main"
    ],
    "flags": [
     "OMR_SURYA_KEEP_ALIVE=0"
@@ -210,7 +37,7 @@
     "warnings": 445
    },
    "guards": {
-    "judged": "doc_unresolved 235, other_doc 207, unscored 133, not_found 7, right 66, wrong 10, narrowed 22, abstained 1",
+    "judged": "right 66, wrong 10, narrowed 22, abstained 1, not_found 7, unscored 133 (Sean's past answers on the tiles that fall on this record)",
     "check_open": "192 open findings (tree-level, same for both movements)"
    }
   },
@@ -246,7 +73,8 @@
    "families": [
     {
      "family": "accidental",
-     "ink_rows": 13088,
+     "ink_rows": 6544,
+     "cv_rows": 6544,
      "decided": 4429,
      "abstained": 2115,
      "written": 1695,
@@ -256,6 +84,7 @@
     {
      "family": "articulation",
      "ink_rows": 4101,
+     "cv_rows": 0,
      "decided": 742,
      "abstained": 530,
      "written": 523,
@@ -265,6 +94,7 @@
     {
      "family": "clef",
      "ink_rows": 1102,
+     "cv_rows": 0,
      "decided": 691,
      "abstained": 1,
      "written": 0,
@@ -273,7 +103,8 @@
     },
     {
      "family": "direction",
-     "ink_rows": 368,
+     "ink_rows": 0,
+     "cv_rows": 368,
      "decided": 6682,
      "abstained": 3,
      "written": 365,
@@ -282,7 +113,8 @@
     },
     {
      "family": "dynamic",
-     "ink_rows": 3943,
+     "ink_rows": 3941,
+     "cv_rows": 2,
      "decided": 6599,
      "abstained": 86,
      "written": 1081,
@@ -292,6 +124,7 @@
     {
      "family": "fermata",
      "ink_rows": 12,
+     "cv_rows": 0,
      "decided": 11,
      "abstained": 1,
      "written": 6,
@@ -301,6 +134,7 @@
     {
      "family": "key",
      "ink_rows": 1354,
+     "cv_rows": 0,
      "decided": 691,
      "abstained": 213,
      "written": 0,
@@ -310,6 +144,7 @@
     {
      "family": "note",
      "ink_rows": 24260,
+     "cv_rows": 0,
      "decided": 39680,
      "abstained": 0,
      "written": 10311,
@@ -319,6 +154,7 @@
     {
      "family": "ornament",
      "ink_rows": 24,
+     "cv_rows": 0,
      "decided": 10,
      "abstained": 14,
      "written": 6,
@@ -328,6 +164,7 @@
     {
      "family": "rest",
      "ink_rows": 8129,
+     "cv_rows": 0,
      "decided": 0,
      "abstained": 0,
      "written": 5448,
@@ -337,6 +174,7 @@
     {
      "family": "slur",
      "ink_rows": 3148,
+     "cv_rows": 0,
      "decided": 2589,
      "abstained": 0,
      "written": 483,
@@ -346,6 +184,7 @@
     {
      "family": "tie",
      "ink_rows": 11666,
+     "cv_rows": 0,
      "decided": 12205,
      "abstained": 0,
      "written": 392,
@@ -355,6 +194,7 @@
     {
      "family": "time",
      "ink_rows": 518,
+     "cv_rows": 0,
      "decided": 44,
      "abstained": 9,
      "written": 0,
@@ -364,6 +204,7 @@
     {
      "family": "tuplet",
      "ink_rows": 4,
+     "cv_rows": 0,
      "decided": 0,
      "abstained": 4,
      "written": 0,
@@ -372,7 +213,8 @@
     },
     {
      "family": "wedge",
-     "ink_rows": 278,
+     "ink_rows": 2,
+     "cv_rows": 276,
      "decided": 274,
      "abstained": 4,
      "written": 67,
@@ -383,21 +225,107 @@
    "events": {
     "name": "notes and rests (events)",
     "in": 32389,
-    "plus_added": 21,
+    "plus_added": 450,
+    "doubled_to_condensed_slot": 0,
+    "rests_duplicated_across_voices": 21,
     "written": 15738,
     "not_written": 17101,
     "relocated": 0,
     "balance": {
      "name": "export: events in the log -> file",
-     "in": 32410,
+     "in": 32839,
      "outs": {
       "written": 15738,
       "not written (reasons below)": 17101
      },
      "out_total": 32839,
-     "imbalance": -429,
-     "balanced": false,
-     "note": "the exporter's own `balance`, re-checked here from its numbers"
+     "imbalance": 0,
+     "balanced": true,
+     "note": "events in the log + rests read off unboxed ink = events written (net of doubled and duplicated copies) + events not written; the exporter's own `balance`, re-checked here"
+    }
+   },
+   "family_refusals": {
+    "ledger_is_not_a_ledger": {
+     "kept": 6305,
+     "refused": 1500,
+     "abstained": 20,
+     "refused_reasons": {
+      "inside_the_staff": 1212,
+      "on_a_staff_line": 287,
+      "no_head_on_the_rung": 1
+     }
+    },
+    "accidental_is_not_an_accidental": {
+     "kept": 6544,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "rest_is_not_a_rest": {
+     "kept": 6321,
+     "refused": 1808,
+     "abstained": 0,
+     "refused_reasons": {
+      "rest_has_a_stem": 45,
+      "rest_off_center": 46,
+      "rest_is_a_duplicate_box": 863,
+      "rest_clipped_by_crop": 544,
+      "rest_outside_its_staff": 138,
+      "rest_is_a_meter_digit": 30,
+      "rest_is_a_barline": 53,
+      "rest_touches_two_staff_lines": 46,
+      "rest_overlaps_a_notehead": 19,
+      "rest_in_a_key_signature_slot": 24
+     }
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+     "kept": 839,
+     "refused": 21,
+     "abstained": 0,
+     "refused_reasons": {
+      "in_a_key_signature_slot": 21
+     }
+    },
+    "arc_is_not_an_arc": {
+     "kept": 6864,
+     "refused": 7950,
+     "abstained": 0,
+     "refused_reasons": {
+      "ink_is_a_staff_line": 7944,
+      "in_a_key_signature_slot": 6
+     }
+    },
+    "dynamic_is_not_a_dynamic": {
+     "kept": 3941,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "articulation_is_not_an_articulation": {
+     "kept": 1238,
+     "refused": 23,
+     "abstained": 2,
+     "refused_reasons": {
+      "ledger_between_staff_and_note": 23
+     }
+    },
+    "flag_is_not_a_flag": {
+     "kept": 3033,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "keysig_marker_is_not_a_marker": {
+     "kept": 1327,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "tuplet_marker_is_not_a_marker": {
+     "kept": 4,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
     }
    },
    "not_written_reasons": {
@@ -525,7 +453,7 @@
    "status_census_balanced": true
   },
   "bars": {
-   "total_bars_in_file": 6960,
+   "total_bars_in_file": 6988,
    "bars_with_notes_from_the_page": 5987,
    "held_out_does_not_add_up": 1057,
    "held_out_unread_mark": 0,
@@ -541,11 +469,12 @@
    "meter_carried": 979,
    "meter_missing": 0,
    "states_from_the_file": {
-    "written plain": 3833,
+    "written plain": 3853,
     "written with guesses": 625,
     "partial": 765,
     "held out": 1057,
-    "unread, empty": 680
+    "unread, empty": 683,
+    "unread, repeated bar number": 5
    },
    "states_checks": [
     {
@@ -555,33 +484,39 @@
      "agrees": true
     },
     {
-     "name": "held-out bars: file vs exporter",
+     "name": "held-out bars (named + doubled-staff copies): file vs exporter",
      "file": 1057,
      "exporter": 1057,
      "agrees": true
     },
     {
      "name": "unread-empty bars: file vs exporter",
-     "file": 680,
+     "file": 683,
      "exporter": 684,
      "agrees": false
     }
    ],
+   "repeated_bar_numbers": [
+    189,
+    190
+   ],
+   "bars_on_repeated_numbers": 28,
    "held_out_by_reason": {
     "does not add up": 1057
    }
   },
   "bar_balance": {
    "name": "bars",
-   "in": 6960,
+   "in": 6988,
    "outs": {
-    "written plain": 3833,
+    "written plain": 3853,
     "written with guesses": 625,
     "partial": 765,
     "held out": 1057,
-    "unread, empty": 680
+    "unread, empty": 683,
+    "unread, repeated bar number": 5
    },
-   "out_total": 6960,
+   "out_total": 6988,
    "imbalance": 0,
    "balanced": true,
    "note": "parts x measures in the MusicXML = the bar states"
@@ -2940,7 +2875,112 @@
     }
    }
   },
-  "funnel_vs_standing": {},
+  "glyph_verdict_crosscheck": {
+   "accidental_owner": {
+    "name": "verdicts on glyphs: accidental_owner",
+    "in": 6544,
+    "outs": {
+     "in a row above": 6544,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 6544,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "arc_kind": {
+    "name": "verdicts on glyphs: arc_kind",
+    "in": 14814,
+    "outs": {
+     "in a row above": 6864,
+     "on a refused box": 7950,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 14814,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "fermata_owner": {
+    "name": "verdicts on glyphs: fermata_owner",
+    "in": 12,
+    "outs": {
+     "in a row above": 12,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 12,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "ornament_owner": {
+    "name": "verdicts on glyphs: ornament_owner",
+    "in": 24,
+    "outs": {
+     "in a row above": 24,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 24,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "articulation_owner": {
+    "name": "verdicts on glyphs: articulation_owner",
+    "in": 1263,
+    "outs": {
+     "in a row above": 1240,
+     "on a refused box": 23,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 1263,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "duration": {
+    "name": "verdicts on glyphs: duration",
+    "in": 32839,
+    "outs": {
+     "in a row above": 26396,
+     "on a refused box": 6443,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 32839,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "wedge_anchor": {
+    "name": "verdicts on glyphs: wedge_anchor",
+    "in": 278,
+    "outs": {
+     "in a row above": 278,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 278,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "pitch": {
+    "name": "verdicts on glyphs: pitch",
+    "in": 35852,
+    "outs": {
+     "in a row above": 19625,
+     "on a refused box": 4635,
+     "on a box of a kind no row covers, or unplaced": 11592
+    },
+    "out_total": 35852,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   }
+  },
   "refusals_vs_export_drops": [
    {
     "reason": "not_a_notehead:belongs_to_a_nearer_staff",
@@ -3243,11 +3283,11 @@
    "noteheads_staff_not_identified": null,
    "noteheads_owner_not_read": 40,
    "noteheads_no_pitch": null,
-   "notes_whose_length_is_undecided": [
-    3021,
-    48,
-    212
-   ],
+   "notes_whose_length_is_undecided": {
+    "narrowed": 3021,
+    "rest abstained": 48,
+    "chord undecided": 212
+   },
    "adjudication_missing_evidence": {
     "accidental_staff_position": 1526,
     "arc_box": 4712,
@@ -3386,9 +3426,9 @@
      "items": 185
     },
     "10": {
-     "red": 63,
-     "blue": 91,
-     "items": 154
+     "red": 73,
+     "blue": 104,
+     "items": 177
     },
     "11": {
      "red": 120,
@@ -3505,48 +3545,48 @@
    ],
    "worst_staves": [
     {
-     "instrument": "Violin",
-     "page": 19,
+     "instrument": "Clarinet",
+     "page": 23,
      "red": 15,
-     "blue": 54,
-     "items": 69
+     "blue": 28,
+     "items": 43
     },
     {
-     "instrument": "Violin",
-     "page": 3,
-     "red": 20,
-     "blue": 36,
-     "items": 56
+     "instrument": "Violin [P11]",
+     "page": 19,
+     "red": 6,
+     "blue": 37,
+     "items": 43
     },
     {
-     "instrument": "Violin",
+     "instrument": "Cello",
      "page": 5,
-     "red": 21,
+     "red": 13,
+     "blue": 29,
+     "items": 42
+    },
+    {
+     "instrument": "Clarinet",
+     "page": 16,
+     "red": 8,
      "blue": 33,
-     "items": 54
+     "items": 41
     },
     {
-     "instrument": "Violin",
-     "page": 13,
-     "red": 19,
-     "blue": 34,
-     "items": 53
-    },
-    {
-     "instrument": "Horn",
+     "instrument": "Horn [P7]",
      "page": 8,
-     "red": 24,
+     "red": 15,
      "blue": 24,
-     "items": 48
+     "items": 39
     }
    ],
    "per_part": {
     "Flute": {
-     "notes_plain": 384,
-     "notes_guessed": 212,
-     "rests": 460,
-     "unread_marks": 209,
-     "bars_written_plain": 269,
+     "notes_plain": 382,
+     "notes_guessed": 214,
+     "rests": 462,
+     "unread_marks": 211,
+     "bars_written_plain": 271,
      "bars_written_with_guesses": 32,
      "bars_partial": 70,
      "bars_held_out": 76,
@@ -3555,76 +3595,90 @@
      "rows_in_unread_gaps": 20
     },
     "Oboe": {
-     "notes_plain": 501,
-     "notes_guessed": 283,
-     "rests": 453,
-     "unread_marks": 221,
-     "bars_written_plain": 241,
+     "notes_plain": 499,
+     "notes_guessed": 285,
+     "rests": 455,
+     "unread_marks": 223,
+     "bars_written_plain": 242,
      "bars_written_with_guesses": 52,
      "bars_held_out": 93,
      "bars_partial": 77,
-     "bars_unread_empty": 49,
+     "bars_unread_empty": 50,
      "events_held_out": 342,
      "rows_in_unread_gaps": 34
     },
     "Clarinet": {
-     "notes_plain": 533,
-     "notes_guessed": 318,
-     "rests": 434,
-     "unread_marks": 236,
+     "notes_plain": 531,
+     "notes_guessed": 320,
+     "rests": 436,
+     "unread_marks": 238,
      "bars_held_out": 93,
      "bars_written_with_guesses": 39,
-     "bars_written_plain": 240,
+     "bars_written_plain": 241,
      "bars_partial": 92,
-     "bars_unread_empty": 48,
+     "bars_unread_empty": 49,
      "events_held_out": 335,
      "rows_in_unread_gaps": 38
     },
     "Bassoon": {
-     "notes_plain": 790,
+     "notes_plain": 794,
      "notes_guessed": 304,
-     "rests": 358,
-     "unread_marks": 227,
+     "rests": 360,
+     "unread_marks": 228,
      "bars_held_out": 105,
      "bars_written_with_guesses": 52,
      "bars_written_plain": 236,
      "bars_partial": 76,
      "bars_unread_empty": 43,
+     "bars_unread_repeated_bar_number": 2,
      "events_held_out": 487,
      "rows_in_unread_gaps": 19
     },
     "Contrabassoon": {
-     "notes_plain": 224,
-     "notes_guessed": 121,
-     "rests": 362,
-     "unread_marks": 116,
+     "notes_plain": 222,
+     "notes_guessed": 124,
+     "rests": 365,
+     "unread_marks": 117,
      "bars_held_out": 36,
      "bars_partial": 38,
-     "bars_written_plain": 307,
+     "bars_written_plain": 309,
      "bars_unread_empty": 42,
      "bars_written_with_guesses": 30,
      "events_held_out": 94,
      "rows_in_unread_gaps": 6
     },
-    "Horn": {
-     "notes_plain": 870,
-     "notes_guessed": 263,
-     "rests": 902,
-     "unread_marks": 301,
-     "bars_written_plain": 684,
-     "bars_held_out": 115,
-     "bars_unread_empty": 102,
-     "bars_partial": 83,
-     "bars_written_with_guesses": 40,
-     "events_held_out": 420,
-     "rows_in_unread_gaps": 20
+    "Horn [P6]": {
+     "notes_plain": 609,
+     "notes_guessed": 140,
+     "rests": 455,
+     "unread_marks": 157,
+     "bars_written_plain": 332,
+     "bars_held_out": 64,
+     "bars_unread_empty": 51,
+     "bars_partial": 41,
+     "bars_written_with_guesses": 26,
+     "events_held_out": 243,
+     "rows_in_unread_gaps": 13
+    },
+    "Horn [P7]": {
+     "notes_plain": 263,
+     "notes_guessed": 123,
+     "rests": 454,
+     "unread_marks": 145,
+     "bars_written_with_guesses": 14,
+     "bars_held_out": 51,
+     "bars_written_plain": 355,
+     "bars_unread_empty": 52,
+     "bars_partial": 42,
+     "events_held_out": 177,
+     "rows_in_unread_gaps": 7
     },
     "Trumpet": {
-     "notes_plain": 241,
+     "notes_plain": 243,
      "notes_guessed": 46,
-     "rests": 492,
+     "rests": 497,
      "unread_marks": 59,
-     "bars_written_plain": 365,
+     "bars_written_plain": 367,
      "bars_held_out": 17,
      "bars_written_with_guesses": 8,
      "bars_unread_empty": 29,
@@ -3633,11 +3687,11 @@
      "rows_in_unread_gaps": 0
     },
     "Timpani": {
-     "notes_plain": 200,
+     "notes_plain": 201,
      "notes_guessed": 40,
-     "rests": 445,
+     "rests": 450,
      "unread_marks": 82,
-     "bars_written_plain": 356,
+     "bars_written_plain": 358,
      "bars_held_out": 37,
      "bars_unread_empty": 29,
      "bars_written_with_guesses": 5,
@@ -3645,51 +3699,66 @@
      "events_held_out": 169,
      "rows_in_unread_gaps": 9
     },
-    "Violin": {
-     "notes_plain": 1641,
-     "notes_guessed": 519,
-     "rests": 708,
-     "unread_marks": 433,
-     "bars_held_out": 196,
-     "bars_written_plain": 440,
-     "bars_partial": 129,
-     "bars_written_with_guesses": 151,
-     "bars_unread_empty": 108,
-     "events_held_out": 721,
-     "rows_in_unread_gaps": 41
+    "Violin [P10]": {
+     "notes_plain": 670,
+     "notes_guessed": 248,
+     "rests": 358,
+     "unread_marks": 233,
+     "bars_held_out": 98,
+     "bars_written_plain": 217,
+     "bars_partial": 74,
+     "bars_written_with_guesses": 64,
+     "bars_unread_empty": 61,
+     "events_held_out": 348,
+     "rows_in_unread_gaps": 30
+    },
+    "Violin [P11]": {
+     "notes_plain": 973,
+     "notes_guessed": 271,
+     "rests": 360,
+     "unread_marks": 200,
+     "bars_written_with_guesses": 87,
+     "bars_held_out": 98,
+     "bars_written_plain": 227,
+     "bars_partial": 55,
+     "bars_unread_empty": 47,
+     "events_held_out": 373,
+     "rows_in_unread_gaps": 11
     },
     "Viola": {
-     "notes_plain": 1035,
+     "notes_plain": 1036,
      "notes_guessed": 232,
-     "rests": 309,
+     "rests": 314,
      "unread_marks": 196,
      "bars_held_out": 94,
      "bars_partial": 50,
-     "bars_written_plain": 256,
+     "bars_written_plain": 257,
      "bars_written_with_guesses": 64,
      "bars_unread_empty": 48,
+     "bars_unread_repeated_bar_number": 1,
      "events_held_out": 352,
      "rows_in_unread_gaps": 30
     },
     "Cello": {
-     "notes_plain": 683,
+     "notes_plain": 684,
      "notes_guessed": 282,
-     "rests": 305,
+     "rests": 310,
      "unread_marks": 232,
      "bars_written_plain": 205,
      "bars_partial": 61,
      "bars_written_with_guesses": 78,
      "bars_held_out": 111,
      "bars_unread_empty": 57,
+     "bars_unread_repeated_bar_number": 2,
      "events_held_out": 446,
      "rows_in_unread_gaps": 18
     },
     "Contrabass": {
-     "notes_plain": 350,
-     "notes_guessed": 224,
-     "rests": 485,
-     "unread_marks": 203,
-     "bars_written_plain": 234,
+     "notes_plain": 347,
+     "notes_guessed": 228,
+     "rests": 489,
+     "unread_marks": 204,
+     "bars_written_plain": 236,
      "bars_unread_empty": 60,
      "bars_held_out": 84,
      "bars_written_with_guesses": 74,
@@ -3698,7 +3767,7 @@
      "rows_in_unread_gaps": 17
     }
    },
-   "items_total": 5421,
+   "items_total": 5444,
    "pages": 27
   },
   "examples": [
@@ -3711,12 +3780,6 @@
    {
     "count": 3407,
     "reason": "noteheads: how long: refused, too_narrow",
-    "example": "p0 sys0 staff0 cell4 glyph16",
-    "source": "record"
-   },
-   {
-    "count": 3407,
-    "reason": "noteheads: which pitch: refused, too_narrow",
     "example": "p0 sys0 staff0 cell4 glyph16",
     "source": "record"
    },
@@ -3757,10 +3820,16 @@
     "source": "record"
    },
    {
-    "count": 593,
-    "reason": "noteheads: which pitch: refused, clipped_fragment",
-    "example": "p0 sys0 staff1 cell0 glyph18",
+    "count": 544,
+    "reason": "rests: refused, rest_clipped_by_crop",
+    "example": "p1 sys0 staff0 cell1 glyph21",
     "source": "record"
+   },
+   {
+    "count": 490,
+    "reason": "bar stays held: voice_overfull",
+    "example": "p1 sys0 staff0 cell0 (bar 8, part P1)",
+    "source": "export"
    }
   ]
  },
@@ -3783,7 +3852,7 @@
     "warnings": 93
    },
    "guards": {
-    "judged": "doc_unresolved 235, other_doc 207, unscored 133, not_found 10, right 63, wrong 10, narrowed 22, abstained 1"
+    "judged": "right 63, wrong 10, narrowed 22, abstained 1, not_found 10, unscored 133 (Sean's past answers on the tiles that fall on this record)"
    }
   },
   "provenance": {
@@ -3818,7 +3887,8 @@
    "families": [
     {
      "family": "accidental",
-     "ink_rows": 13088,
+     "ink_rows": 6544,
+     "cv_rows": 6544,
      "decided": 4427,
      "abstained": 2117,
      "written": 1319,
@@ -3828,6 +3898,7 @@
     {
      "family": "articulation",
      "ink_rows": 4101,
+     "cv_rows": 0,
      "decided": 742,
      "abstained": 530,
      "written": 423,
@@ -3837,6 +3908,7 @@
     {
      "family": "clef",
      "ink_rows": 1102,
+     "cv_rows": 0,
      "decided": 691,
      "abstained": 1,
      "written": 0,
@@ -3845,7 +3917,8 @@
     },
     {
      "family": "direction",
-     "ink_rows": 340,
+     "ink_rows": 0,
+     "cv_rows": 340,
      "decided": 6685,
      "abstained": 0,
      "written": 339,
@@ -3855,6 +3928,7 @@
     {
      "family": "dynamic",
      "ink_rows": 3939,
+     "cv_rows": 0,
      "decided": 6596,
      "abstained": 89,
      "written": 1005,
@@ -3864,6 +3938,7 @@
     {
      "family": "fermata",
      "ink_rows": 12,
+     "cv_rows": 0,
      "decided": 11,
      "abstained": 1,
      "written": 2,
@@ -3873,6 +3948,7 @@
     {
      "family": "key",
      "ink_rows": 1354,
+     "cv_rows": 0,
      "decided": 690,
      "abstained": 213,
      "written": 0,
@@ -3882,6 +3958,7 @@
     {
      "family": "note",
      "ink_rows": 24260,
+     "cv_rows": 0,
      "decided": 39697,
      "abstained": 0,
      "written": 8198,
@@ -3891,6 +3968,7 @@
     {
      "family": "ornament",
      "ink_rows": 24,
+     "cv_rows": 0,
      "decided": 10,
      "abstained": 14,
      "written": 4,
@@ -3900,6 +3978,7 @@
     {
      "family": "rest",
      "ink_rows": 8129,
+     "cv_rows": 0,
      "decided": 0,
      "abstained": 0,
      "written": 3576,
@@ -3909,6 +3988,7 @@
     {
      "family": "slur",
      "ink_rows": 3148,
+     "cv_rows": 0,
      "decided": 2589,
      "abstained": 0,
      "written": 367,
@@ -3918,6 +3998,7 @@
     {
      "family": "tie",
      "ink_rows": 11666,
+     "cv_rows": 0,
      "decided": 12205,
      "abstained": 0,
      "written": 311,
@@ -3927,6 +4008,7 @@
     {
      "family": "time",
      "ink_rows": 518,
+     "cv_rows": 0,
      "decided": 40,
      "abstained": 13,
      "written": 0,
@@ -3936,6 +4018,7 @@
     {
      "family": "tuplet",
      "ink_rows": 4,
+     "cv_rows": 0,
      "decided": 0,
      "abstained": 4,
      "written": 0,
@@ -3944,7 +4027,8 @@
     },
     {
      "family": "wedge",
-     "ink_rows": 278,
+     "ink_rows": 2,
+     "cv_rows": 276,
      "decided": 274,
      "abstained": 4,
      "written": 47,
@@ -3955,21 +4039,101 @@
    "events": {
     "name": "notes and rests (events)",
     "in": 32389,
-    "plus_added": 4,
+    "plus_added": 0,
+    "doubled_to_condensed_slot": 0,
+    "rests_duplicated_across_voices": 4,
     "written": 11770,
     "not_written": 20619,
     "relocated": 0,
     "balance": {
      "name": "export: events in the log -> file",
-     "in": 32393,
+     "in": 32389,
      "outs": {
       "written": 11770,
       "not written (reasons below)": 20619
      },
      "out_total": 32389,
-     "imbalance": 4,
-     "balanced": false,
-     "note": "the exporter's own `balance`, re-checked here from its numbers"
+     "imbalance": 0,
+     "balanced": true,
+     "note": "events in the log + rests read off unboxed ink = events written (net of doubled and duplicated copies) + events not written; the exporter's own `balance`, re-checked here"
+    }
+   },
+   "family_refusals": {
+    "ledger_is_not_a_ledger": {
+     "kept": 6305,
+     "refused": 1500,
+     "abstained": 20,
+     "refused_reasons": {
+      "inside_the_staff": 1212,
+      "on_a_staff_line": 287,
+      "no_head_on_the_rung": 1
+     }
+    },
+    "accidental_is_not_an_accidental": {
+     "kept": 6544,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "rest_is_not_a_rest": {
+     "kept": 6418,
+     "refused": 1711,
+     "abstained": 0,
+     "refused_reasons": {
+      "rest_has_a_stem": 45,
+      "rest_off_center": 46,
+      "rest_is_a_duplicate_box": 868,
+      "rest_clipped_by_crop": 548,
+      "rest_outside_its_staff": 139,
+      "rest_touches_two_staff_lines": 46,
+      "rest_overlaps_a_notehead": 19
+     }
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+     "kept": 860,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "arc_is_not_an_arc": {
+     "kept": 6868,
+     "refused": 7946,
+     "abstained": 0,
+     "refused_reasons": {
+      "ink_is_a_staff_line": 7946
+     }
+    },
+    "dynamic_is_not_a_dynamic": {
+     "kept": 3939,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "articulation_is_not_an_articulation": {
+     "kept": 1238,
+     "refused": 23,
+     "abstained": 2,
+     "refused_reasons": {
+      "ledger_between_staff_and_note": 23
+     }
+    },
+    "flag_is_not_a_flag": {
+     "kept": 3033,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "keysig_marker_is_not_a_marker": {
+     "kept": 1327,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "tuplet_marker_is_not_a_marker": {
+     "kept": 4,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
     }
    },
    "not_written_reasons": {
@@ -4092,7 +4256,7 @@
    "status_census_balanced": true
   },
   "bars": {
-   "total_bars_in_file": 6960,
+   "total_bars_in_file": 6988,
    "bars_with_notes_from_the_page": 5955,
    "held_out_does_not_add_up": 2553,
    "held_out_unread_mark": 0,
@@ -4104,35 +4268,44 @@
    "meter_carried": 1440,
    "meter_missing": 0,
    "states_from_the_file": {
-    "written plain": 4408,
-    "held out": 2552
+    "written plain": 3727,
+    "held out": 2552,
+    "unread, empty": 704,
+    "unread, repeated bar number": 5
    },
    "states_checks": [
     {
-     "name": "held-out bars: file vs exporter",
+     "name": "held-out bars (named + doubled-staff copies): file vs exporter",
      "file": 2552,
      "exporter": 2553,
      "agrees": false
     },
     {
      "name": "unread-empty bars: file vs exporter",
-     "file": 0,
+     "file": 704,
      "exporter": 705,
      "agrees": false
     }
    ],
+   "repeated_bar_numbers": [
+    189,
+    190
+   ],
+   "bars_on_repeated_numbers": 28,
    "held_out_by_reason": {
     "does not add up": 2553
    }
   },
   "bar_balance": {
    "name": "bars",
-   "in": 6960,
+   "in": 6988,
    "outs": {
-    "written plain": 4408,
-    "held out": 2552
+    "written plain": 3727,
+    "held out": 2552,
+    "unread, empty": 704,
+    "unread, repeated bar number": 5
    },
-   "out_total": 6960,
+   "out_total": 6988,
    "imbalance": 0,
    "balanced": true,
    "note": "parts x measures in the MusicXML = the bar states"
@@ -6451,7 +6624,112 @@
     }
    }
   },
-  "funnel_vs_standing": {},
+  "glyph_verdict_crosscheck": {
+   "accidental_owner": {
+    "name": "verdicts on glyphs: accidental_owner",
+    "in": 6544,
+    "outs": {
+     "in a row above": 6544,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 6544,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "arc_kind": {
+    "name": "verdicts on glyphs: arc_kind",
+    "in": 14814,
+    "outs": {
+     "in a row above": 6868,
+     "on a refused box": 7946,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 14814,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "fermata_owner": {
+    "name": "verdicts on glyphs: fermata_owner",
+    "in": 12,
+    "outs": {
+     "in a row above": 12,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 12,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "ornament_owner": {
+    "name": "verdicts on glyphs: ornament_owner",
+    "in": 24,
+    "outs": {
+     "in a row above": 24,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 24,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "articulation_owner": {
+    "name": "verdicts on glyphs: articulation_owner",
+    "in": 1263,
+    "outs": {
+     "in a row above": 1240,
+     "on a refused box": 23,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 1263,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "duration": {
+    "name": "verdicts on glyphs: duration",
+    "in": 32389,
+    "outs": {
+     "in a row above": 26043,
+     "on a refused box": 6346,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 32389,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "wedge_anchor": {
+    "name": "verdicts on glyphs: wedge_anchor",
+    "in": 278,
+    "outs": {
+     "in a row above": 278,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 278,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "pitch": {
+    "name": "verdicts on glyphs: pitch",
+    "in": 35869,
+    "outs": {
+     "in a row above": 19625,
+     "on a refused box": 4635,
+     "on a box of a kind no row covers, or unplaced": 11609
+    },
+    "out_total": 35869,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   }
+  },
   "refusals_vs_export_drops": [
    {
     "reason": "not_a_notehead:belongs_to_a_nearer_staff",
@@ -6644,11 +6922,11 @@
    "noteheads_staff_not_identified": 64,
    "noteheads_owner_not_read": 40,
    "noteheads_no_pitch": null,
-   "notes_whose_length_is_undecided": [
-    3182,
-    48,
-    224
-   ],
+   "notes_whose_length_is_undecided": {
+    "narrowed": 3182,
+    "rest abstained": 48,
+    "chord undecided": 224
+   },
    "adjudication_missing_evidence": {
     "accidental_staff_position": 1526,
     "arc_box": 4900,
@@ -6736,321 +7014,356 @@
   "cleanup": {
    "per_page": {
     "0": {
-     "red": 0,
+     "red": 28,
      "blue": 0,
-     "items": 0
+     "items": 28
     },
     "1": {
-     "red": 0,
+     "red": 66,
      "blue": 0,
-     "items": 0
+     "items": 66
     },
     "2": {
-     "red": 0,
+     "red": 63,
      "blue": 0,
-     "items": 0
+     "items": 63
     },
     "3": {
-     "red": 0,
+     "red": 96,
      "blue": 0,
-     "items": 0
+     "items": 96
     },
     "4": {
-     "red": 0,
+     "red": 113,
      "blue": 0,
-     "items": 0
+     "items": 113
     },
     "5": {
-     "red": 0,
+     "red": 141,
      "blue": 0,
-     "items": 0
+     "items": 141
     },
     "6": {
-     "red": 0,
+     "red": 126,
      "blue": 0,
-     "items": 0
+     "items": 126
     },
     "7": {
-     "red": 0,
+     "red": 94,
      "blue": 0,
-     "items": 0
+     "items": 94
     },
     "8": {
-     "red": 0,
+     "red": 230,
      "blue": 0,
-     "items": 0
+     "items": 230
     },
     "9": {
-     "red": 0,
+     "red": 93,
      "blue": 0,
-     "items": 0
+     "items": 93
     },
     "10": {
-     "red": 0,
+     "red": 90,
      "blue": 0,
-     "items": 0
+     "items": 90
     },
     "11": {
-     "red": 0,
+     "red": 167,
      "blue": 0,
-     "items": 0
+     "items": 167
     },
     "12": {
-     "red": 0,
+     "red": 115,
      "blue": 0,
-     "items": 0
+     "items": 115
     },
     "13": {
-     "red": 0,
+     "red": 212,
      "blue": 0,
-     "items": 0
+     "items": 212
     },
     "14": {
-     "red": 0,
+     "red": 137,
      "blue": 0,
-     "items": 0
+     "items": 137
     },
     "15": {
-     "red": 0,
+     "red": 193,
      "blue": 0,
-     "items": 0
+     "items": 193
     },
     "16": {
-     "red": 0,
+     "red": 136,
      "blue": 0,
-     "items": 0
+     "items": 136
     },
     "17": {
-     "red": 0,
+     "red": 48,
      "blue": 0,
-     "items": 0
+     "items": 48
     },
     "18": {
-     "red": 0,
+     "red": 77,
      "blue": 0,
-     "items": 0
+     "items": 77
     },
     "19": {
-     "red": 0,
+     "red": 134,
      "blue": 0,
-     "items": 0
+     "items": 134
     },
     "20": {
-     "red": 0,
+     "red": 78,
      "blue": 0,
-     "items": 0
+     "items": 78
     },
     "21": {
-     "red": 0,
+     "red": 108,
      "blue": 0,
-     "items": 0
+     "items": 108
     },
     "22": {
-     "red": 0,
+     "red": 211,
      "blue": 0,
-     "items": 0
+     "items": 211
     },
     "23": {
-     "red": 0,
+     "red": 154,
      "blue": 0,
-     "items": 0
+     "items": 154
     },
     "24": {
-     "red": 0,
+     "red": 106,
      "blue": 0,
-     "items": 0
+     "items": 106
     },
     "25": {
-     "red": 0,
+     "red": 107,
      "blue": 0,
-     "items": 0
+     "items": 107
     },
     "26": {
-     "red": 0,
+     "red": 135,
      "blue": 0,
-     "items": 0
+     "items": 135
     }
    },
    "worst_pages": [
     {
-     "page": 0,
-     "red": 0,
+     "page": 8,
+     "red": 230,
      "blue": 0,
-     "items": 0
+     "items": 230
     },
     {
-     "page": 1,
-     "red": 0,
+     "page": 13,
+     "red": 212,
      "blue": 0,
-     "items": 0
+     "items": 212
     },
     {
-     "page": 2,
-     "red": 0,
+     "page": 22,
+     "red": 211,
      "blue": 0,
-     "items": 0
+     "items": 211
     },
     {
-     "page": 3,
-     "red": 0,
+     "page": 15,
+     "red": 193,
      "blue": 0,
-     "items": 0
+     "items": 193
     },
     {
-     "page": 4,
-     "red": 0,
+     "page": 11,
+     "red": 167,
      "blue": 0,
-     "items": 0
+     "items": 167
     }
    ],
    "worst_staves": [
     {
-     "instrument": "Flute",
-     "page": 0,
-     "red": 0,
+     "instrument": "Bassoon",
+     "page": 8,
+     "red": 24,
      "blue": 0,
-     "items": 0
+     "items": 24
+    },
+    {
+     "instrument": "Contrabass",
+     "page": 8,
+     "red": 24,
+     "blue": 0,
+     "items": 24
     },
     {
      "instrument": "Flute",
-     "page": 1,
-     "red": 0,
+     "page": 8,
+     "red": 23,
      "blue": 0,
-     "items": 0
+     "items": 23
     },
     {
-     "instrument": "Flute",
-     "page": 2,
-     "red": 0,
+     "instrument": "Oboe",
+     "page": 22,
+     "red": 23,
      "blue": 0,
-     "items": 0
+     "items": 23
     },
     {
-     "instrument": "Flute",
-     "page": 3,
-     "red": 0,
+     "instrument": "Horn [P6]",
+     "page": 8,
+     "red": 23,
      "blue": 0,
-     "items": 0
-    },
-    {
-     "instrument": "Flute",
-     "page": 4,
-     "red": 0,
-     "blue": 0,
-     "items": 0
+     "items": 23
     }
    ],
    "per_part": {
     "Flute": {
      "notes_plain": 445,
      "notes_guessed": 0,
-     "rests": 549,
-     "unread_marks": 0,
-     "bars_written_plain": 305,
+     "rests": 551,
+     "unread_marks": 278,
+     "bars_written_plain": 236,
      "bars_held_out": 207,
+     "bars_unread_empty": 71,
      "events_held_out": 593
     },
     "Oboe": {
      "notes_plain": 578,
      "notes_guessed": 0,
-     "rests": 554,
-     "unread_marks": 0,
-     "bars_written_plain": 275,
+     "rests": 556,
+     "unread_marks": 290,
+     "bars_written_plain": 224,
      "bars_held_out": 237,
+     "bars_unread_empty": 53,
      "events_held_out": 708
     },
     "Clarinet": {
      "notes_plain": 563,
      "notes_guessed": 0,
-     "rests": 548,
-     "unread_marks": 0,
+     "rests": 550,
+     "unread_marks": 298,
      "bars_held_out": 246,
-     "bars_written_plain": 266,
+     "bars_written_plain": 216,
+     "bars_unread_empty": 52,
      "events_held_out": 758
     },
     "Bassoon": {
-     "notes_plain": 837,
+     "notes_plain": 841,
      "notes_guessed": 0,
-     "rests": 482,
-     "unread_marks": 0,
+     "rests": 485,
+     "unread_marks": 290,
      "bars_held_out": 243,
-     "bars_written_plain": 269,
+     "bars_written_plain": 223,
+     "bars_unread_empty": 46,
+     "bars_unread_repeated_bar_number": 2,
      "events_held_out": 882
     },
     "Contrabassoon": {
      "notes_plain": 266,
      "notes_guessed": 0,
-     "rests": 447,
-     "unread_marks": 0,
+     "rests": 449,
+     "unread_marks": 162,
      "bars_held_out": 120,
-     "bars_written_plain": 333,
+     "bars_written_plain": 293,
+     "bars_unread_empty": 42,
      "events_held_out": 251
     },
-    "Horn": {
-     "notes_plain": 837,
+    "Horn [P6]": {
+     "notes_plain": 530,
      "notes_guessed": 0,
-     "rests": 1072,
-     "unread_marks": 0,
-     "bars_written_plain": 665,
-     "bars_held_out": 359,
-     "events_held_out": 901
+     "rests": 546,
+     "unread_marks": 229,
+     "bars_written_plain": 285,
+     "bars_held_out": 177,
+     "bars_unread_empty": 52,
+     "events_held_out": 506
+    },
+    "Horn [P7]": {
+     "notes_plain": 308,
+     "notes_guessed": 0,
+     "rests": 531,
+     "unread_marks": 237,
+     "bars_written_plain": 277,
+     "bars_held_out": 182,
+     "bars_unread_empty": 55,
+     "events_held_out": 395
     },
     "Trumpet": {
-     "notes_plain": 234,
+     "notes_plain": 236,
      "notes_guessed": 0,
-     "rests": 504,
-     "unread_marks": 0,
-     "bars_written_plain": 356,
+     "rests": 509,
+     "unread_marks": 105,
+     "bars_written_plain": 329,
      "bars_held_out": 76,
+     "bars_unread_empty": 29,
      "events_held_out": 203
     },
     "Timpani": {
-     "notes_plain": 169,
+     "notes_plain": 170,
      "notes_guessed": 0,
-     "rests": 479,
-     "unread_marks": 0,
-     "bars_written_plain": 337,
+     "rests": 484,
+     "unread_marks": 135,
+     "bars_written_plain": 310,
      "bars_held_out": 106,
+     "bars_unread_empty": 29,
      "events_held_out": 342
     },
-    "Violin": {
-     "notes_plain": 1847,
+    "Violin [P10]": {
+     "notes_plain": 744,
      "notes_guessed": 0,
-     "rests": 991,
-     "unread_marks": 0,
-     "bars_held_out": 401,
-     "bars_written_plain": 623,
-     "events_held_out": 1221
+     "rests": 522,
+     "unread_marks": 272,
+     "bars_held_out": 209,
+     "bars_written_plain": 242,
+     "bars_unread_empty": 63,
+     "events_held_out": 622
+    },
+    "Violin [P11]": {
+     "notes_plain": 1105,
+     "notes_guessed": 0,
+     "rests": 479,
+     "unread_marks": 239,
+     "bars_written_plain": 275,
+     "bars_held_out": 192,
+     "bars_unread_empty": 47,
+     "events_held_out": 599
     },
     "Viola": {
      "notes_plain": 1113,
      "notes_guessed": 0,
-     "rests": 456,
-     "unread_marks": 0,
+     "rests": 458,
+     "unread_marks": 213,
      "bars_held_out": 164,
-     "bars_written_plain": 348,
+     "bars_written_plain": 301,
+     "bars_unread_empty": 48,
+     "bars_unread_repeated_bar_number": 1,
      "events_held_out": 574
     },
     "Cello": {
-     "notes_plain": 826,
+     "notes_plain": 827,
      "notes_guessed": 0,
-     "rests": 469,
-     "unread_marks": 0,
-     "bars_written_plain": 318,
+     "rests": 474,
+     "unread_marks": 252,
+     "bars_written_plain": 260,
      "bars_held_out": 194,
+     "bars_unread_empty": 58,
+     "bars_unread_repeated_bar_number": 2,
      "events_held_out": 658
     },
     "Contrabass": {
      "notes_plain": 472,
      "notes_guessed": 0,
-     "rests": 566,
-     "unread_marks": 0,
-     "bars_written_plain": 313,
+     "rests": 568,
+     "unread_marks": 258,
+     "bars_written_plain": 256,
+     "bars_unread_empty": 59,
      "bars_held_out": 199,
      "events_held_out": 559
     }
    },
-   "items_total": 0,
+   "items_total": 3258,
    "pages": 27
   },
   "examples": [
@@ -7063,12 +7376,6 @@
    {
     "count": 3408,
     "reason": "noteheads: how long: refused, too_narrow",
-    "example": "p0 sys0 staff0 cell4 glyph16",
-    "source": "record"
-   },
-   {
-    "count": 3408,
-    "reason": "noteheads: which pitch: refused, too_narrow",
     "example": "p0 sys0 staff0 cell4 glyph16",
     "source": "record"
    },
@@ -7109,9 +7416,15 @@
     "source": "record"
    },
    {
-    "count": 593,
-    "reason": "noteheads: which pitch: refused, clipped_fragment",
-    "example": "p0 sys0 staff1 cell0 glyph18",
+    "count": 548,
+    "reason": "rests: refused, rest_clipped_by_crop",
+    "example": "p1 sys0 staff0 cell1 glyph21",
+    "source": "record"
+   },
+   {
+    "count": 424,
+    "reason": "articulations: abstained: no_notehead",
+    "example": "p1 sys0 staff2 cell4 glyph9",
     "source": "record"
    }
   ]
