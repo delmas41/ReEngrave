@@ -1,0 +1,68 @@
+n 1566 outside table 0 survive conv 1566 survive all 1537
+FAILURES by (symbol, rule): [(('text', 'loc IN'), 10), (('brace', 'zone KEYSLOT'), 6), (('dynamic_letter', 'width'), 3), (('tie', 'fill'), 3), (('barline', 'fill'), 2), (('flag', 'width'), 1), (('tie', 'height'), 1), (('head_black', 'width'), 1), (('beam', 'height'), 1), (('rest_quarter', 'width'), 1), (('rest_quarter', 'height'), 1)]
+  q159 dynamicF w6.70 h2.39 fill0.27 NEAR BODY out1.9 edgeFalse | width 6.70 not in 0.50-3.60
+  q299 dynamicF w6.55 h2.82 fill0.24 NEAR BODY out2.1 edgeFalse | width 6.55 not in 0.50-3.60
+  b4161 barlineSingle w0.32 h13.34 fill0.14 IN BODY out0.0 edgeTrue | fill 0.14 not in 0.15-1.00
+  q399 flag8thDown w2.06 h3.55 fill0.39 IN BODY out0.0 edgeFalse | width 2.06 not in 0.40-1.90
+  q405 barlineSingle w0.30 h10.33 fill0.13 IN BODY out0.0 edgeTrue | fill 0.13 not in 0.15-1.00
+  b4171 brace w1.18 h13.66 fill0.64 IN KEYSLOT out0.0 edgeFalse | zone KEYSLOT not in MARGIN/BARTAIL
+  q648 tie w1.36 h0.52 fill0.60 IN BARHEAD out0.0 edgeFalse | fill 0.60 not in 0.03-0.60
+  q660 tie w1.13 h0.38 fill0.64 IN BARHEAD out0.0 edgeFalse | fill 0.64 not in 0.03-0.60
+  q710 tie w1.19 h0.49 fill0.72 IN BARHEAD out0.0 edgeFalse | fill 0.72 not in 0.03-0.60
+  b4010 tie w12.70 h2.39 fill0.10 NEAR BODY out4.7 edgeFalse | height 2.39 not in 0.12-2.20
+  b4011 brace w1.29 h14.03 fill0.68 IN KEYSLOT out0.0 edgeFalse | zone KEYSLOT not in MARGIN/BARTAIL
+  q751 noteheadBlackOnLine w0.46 h0.43 fill0.75 IN BODY out0.0 edgeFalse | width 0.46 not in 0.90-2.40
+  q871 beam w4.30 h0.23 fill0.87 IN BODY out0.0 edgeFalse | height 0.23 not in 0.25-inf
+  b3991 brace w2.05 h12.83 fill0.43 IN KEYSLOT out0.0 edgeFalse | zone KEYSLOT not in MARGIN/BARTAIL
+  q880 restQuarter w0.26 h1.43 fill0.78 IN BARHEAD out0.0 edgeTrue | width 0.26 not in 0.50-1.70; height 1.43 not in 1.80-4.00
+  q922 dynamicP w12.43 h2.04 fill0.26 NEAR BODY out1.9 edgeFalse | width 12.43 not in 0.50-3.60
+  b3979 brace w1.46 h12.46 fill0.60 IN KEYSLOT out0.0 edgeFalse | zone KEYSLOT not in MARGIN/BARTAIL
+  b4309 brace w1.16 h12.03 fill0.65 IN KEYSLOT out0.0 edgeFalse | zone KEYSLOT not in MARGIN/BARTAIL
+  b3027 brace w0.57 h4.31 fill0.83 IN KEYSLOT out0.0 edgeTrue | zone KEYSLOT not in MARGIN/BARTAIL
+  b2967 text w8.69 h2.36 fill0.28 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2962 text w1.47 h2.04 fill0.34 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2893 text w8.88 h2.52 fill0.24 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2889 text w1.47 h2.13 fill0.32 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2879 text w2.21 h2.42 fill0.36 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2794 text w18.29 h2.41 fill0.23 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2789 text w1.57 h2.23 fill0.28 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2686 text w10.42 h3.00 fill0.23 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2683 text w1.40 h2.03 fill0.29 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+  b2595 text w18.09 h3.02 fill0.20 IN MARGIN out0.0 edgeFalse | loc IN not in NEAR/FAR
+
+PER CLASS: n, survive_all, size_all med/p90/max, size_conv med
+ stem                   n 277 surv 277  all med   1 p90  2 max  7  conv med 25  top:stem x209
+ ledgerLine             n 248 surv 248  all med   5 p90  8 max 12  conv med 27  top:beam/ledger/rest_block/tenuto/tremolo x91
+ noteheadBlackInSpace   n 190 surv 190  all med   3 p90  6 max 10  conv med 25  top:beam/head_black/tremolo x123
+ noteheadBlackOnLine    n 188 surv 187  all med   6 p90  9 max 10  conv med 25  top:beam/head_black/head_half/head_whole/rest_hook/tremolo x88
+ augmentationDot        n 131 surv 131  all med   1 p90  2 max  2  conv med 25  top:dot x104
+ tie                    n  84 surv  80  all med   7 p90 11 max 12  conv med 27  top:beam/rest_multibar/slur/tie x12
+ slur                   n  69 surv  69  all med   4 p90  5 max 12  conv med 27  top:hairpin/slur/text x26
+ beam                   n  50 surv  49  all med   2 p90  4 max  4  conv med 27  top:beam/rest_multibar x15
+ flag8thDown            n  38 surv  37  all med   8 p90  8 max  8  conv med 25  top:accidental/arpeggiato/beam/clef/flag/rest_hook/rest_quarter/slur x27
+ text                   n  32 surv  22  all med   4 p90  5 max  6  conv med 27  top: x10
+ barlineSingle          n  27 surv  25  all med   3 p90  4 max  6  conv med 25  top:arpeggiato/barline/stem x15
+ keyFlat                n  26 surv  26  all med   3 p90  4 max  4  conv med 25  top:key_accidental/meter_digit/slur x20
+ timeSig8               n  25 surv  25  all med   8 p90 11 max 11  conv med 25  top:accidental/beam/flag/key_accidental/meter_digit/rest_hook/rest_quarter/tremolo x14
+ accidentalNatural      n  21 surv  21  all med   9 p90 10 max 10  conv med 27  top:accidental/arpeggiato/beam/dynamic_letter/flag/rest_hook/rest_quarter/slur/text x6
+ noteheadHalfInSpace    n  19 surv  19  all med   8 p90 13 max 14  conv med 25  top:beam/head_black/head_half/head_whole/rest_hook/tremolo x7
+ dynamicF               n  16 surv  14  all med   7 p90  7 max  8  conv med 27  top:beam/clef/dynamic_letter/hairpin/slur/text/tremolo x11
+ tremolo1               n  16 surv  16  all med  10 p90 13 max 14  conv med 26  top:beam/flag/head_black/head_half/head_whole/meter_digit/rest_hook/tremolo x3
+ timeSig9               n  14 surv  14  all med   8 p90  8 max  8  conv med 25  top:accidental/beam/flag/key_accidental/meter_digit/rest_hook/rest_quarter/tremolo x13
+ noteheadHalfOnLine     n  14 surv  14  all med  10 p90 10 max 16  conv med 27  top:beam/dynamic_letter/flag/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit x6
+ timeSig6               n  11 surv  11  all med   8 p90  9 max  9  conv med 25  top:accidental/beam/flag/key_accidental/meter_digit/rest_hook/rest_quarter/tremolo x8
+ brace                  n  11 surv   5  all med   1 p90  4 max  4  conv med 25  top: x3
+ accidentalSharp        n  10 surv  10  all med   9 p90 10 max 11  conv med 25  top:accidental/arpeggiato/beam/clef/flag/key_accidental/meter_digit/rest_hook/rest_quarter x4
+ accidentalFlat         n  10 surv  10  all med  10 p90 11 max 12  conv med 27  top:accidental/arpeggiato/beam/dynamic_letter/flag/rest_hook/rest_quarter/slur/text/tremolo x4
+ clefG                  n   8 surv   8  all med   2 p90  2 max  2  conv med 25  top:clef/slur x8
+ restWhole              n   8 surv   8  all med   5 p90  5 max  5  conv med 25  top:beam/head_black/rest_block/tenuto/tremolo x8
+ clefF                  n   5 surv   5  all med   3 p90  3 max  4  conv med 25  top:clef/meter_digit/slur x3
+ rest8th                n   5 surv   5  all med   9 p90  9 max  9  conv med 25  top:accidental/beam/fermata/flag/rest_hook/rest_quarter/slur/tie/tremolo x2
+ flag8thUp              n   4 surv   4  all med   9 p90  9 max 10  conv med 27  top:accidental/arpeggiato/beam/dynamic_letter/flag/rest_hook/rest_quarter/slur/text x2
+ barlineDouble          n   3 surv   3  all med   4 p90  4 max  4  conv med 25  top:arpeggiato/barline/brace/stem x2
+ restQuarter            n   3 surv   2  all med   7 p90  7 max  9  conv med 25  top:accidental/arpeggiato/beam/clef/flag/key_accidental/meter_digit/rest_hook/rest_quarter x1
+ dynamicP               n   1 surv   0  all med   5 p90  5 max  5  conv med 27  top:beam/hairpin/slur/text/tie x1
+ clefCAlto              n   1 surv   1  all med   2 p90  2 max  2  conv med 25  top:clef/meter_digit x1
+ clefCTenor             n   1 surv   1  all med   2 p90  2 max  2  conv med 25  top:clef/meter_digit x1
+ALL marks: all-set median 3.0 p90 9 | conv-set median 25.0 | table size 29
+share with all-set <= 3: 784 / 1566

@@ -1,0 +1,50 @@
+
+== G1 too_narrow (w < 1.0 sp) | target head_black n=378 0.46-1.82
+  vs ledger         n=108 1.42-2.10  best-thr 1.48 errors 2  | at today's 1.00: errors 109 (others kept 108, target lost 1)
+  vs head_half      n=33 1.23-1.56  best-thr 1.46 errors 30  | at today's 1.00: errors 34 (others kept 33, target lost 1)
+  vs tremolo        n=11 1.57-2.14  best-thr 1.48 errors 1  | at today's 1.00: errors 12 (others kept 11, target lost 1)
+  vs rest_block     n=8 1.24-1.34  best-thr 0.46 errors 8  | at today's 1.00: errors 9 (others kept 8, target lost 1)
+  vs tie            n=5 1.13-2.23  best-thr 1.82 errors 3  | at today's 1.00: errors 6 (others kept 5, target lost 1)
+  vs meter_digit    n=3 1.37-1.47  best-thr 0.46 errors 3  | at today's 1.00: errors 4 (others kept 3, target lost 1)
+
+== G2 is_a_dot (max side <= 0.75) | target dot n=131 0.33-0.58
+  vs head_black     n=1 0.46-0.46  best-thr 0.33 errors 1  | at today's 0.75: errors 1 (others kept 1, target lost 0)
+
+== G3 head interior (centre 40% fill; proxy, NOT 2.88's reader) | target head_half n=33 0.16-0.89
+  vs head_black     n=185 1.00-1.00  best-thr 0.89 errors 0
+
+== G4 ledger vs flat strokes (height) | target ledger n=248 0.15-0.44
+  vs tie            n=13 0.32-0.67  best-thr 0.44 errors 4
+  vs head_black     n=2 0.52-0.59  best-thr 0.44 errors 0
+  vs slur           n=2 0.37-0.52  best-thr 0.44 errors 1
+  vs beam           n=2 0.58-0.69  best-thr 0.44 errors 0
+
+== G4b ledger vs flat strokes (fill) | target ledger n=248 0.58-0.99
+  vs tie            n=13 0.22-0.49  best-thr 0.58 errors 0
+  vs head_black     n=2 0.71-0.75  best-thr 0.58 errors 2
+  vs slur           n=2 0.28-0.43  best-thr 0.58 errors 0
+  vs beam           n=2 0.86-0.97  best-thr 0.58 errors 2
+
+== G5 stem vs barline etc (height) | target stem n=277 2.03-7.49
+  vs barline        n=26 4.31-15.68  best-thr 7.49 errors 15
+  vs brace          n=3 6.48-14.14  best-thr 7.49 errors 1
+
+G5 edge: barline edge True 30/30; stem edge True 0/277
+
+G6 tie/slur: tie marks whose set contains slur 81/84; slur marks whose set contains tie 41/69
+
+G7 header marks by true class -> survivor sets:
+   20 ('keyFlat', ('key_accidental', 'meter_digit', 'slur'))
+   11 ('dynamicF', ('beam', 'clef', 'dynamic_letter', 'hairpin', 'slur', 'text', 'tremolo'))
+   8 ('clefG', ('clef', 'slur'))
+   8 ('timeSig6', ('accidental', 'beam', 'flag', 'key_accidental', 'meter_digit', 'rest_hook', 'rest_quarter', 'tremolo'))
+   7 ('timeSig8', ('accidental', 'beam', 'flag', 'key_accidental', 'meter_digit', 'rest_hook', 'rest_quarter', 'tremolo'))
+   6 ('keyFlat', ('clef', 'key_accidental', 'meter_digit', 'slur'))
+   3 ('clefF', ('clef', 'meter_digit', 'slur'))
+   3 ('brace', ())
+   2 ('noteheadBlackOnLine', ('beam', 'dynamic_letter', 'head_black', 'head_half', 'head_whole', 'rest_hook', 'text', 'tremolo', 'tuplet_digit'))
+   2 ('stem', ('arpeggiato', 'stem'))
+   2 ('ledgerLine', ('beam', 'ledger', 'rest_block', 'tenuto', 'tremolo'))
+   2 ('timeSig6', ('accidental', 'arpeggiato', 'beam', 'flag', 'key_accidental', 'meter_digit', 'rest_hook', 'rest_quarter', 'tremolo'))
+   2 ('brace', ('slur',))
+   2 ('stem', ('stem',))
