@@ -997,6 +997,17 @@ KNOWN_GAPS: Dict[str, str] = {
     # `gather_ink`'s discipline, one day older. The table's `position` column
     # therefore still reads NONE for all eleven, and that grading is correct:
     # nothing has reached a decision.
+    # ⚠️ ROADMAP 2.125. The `dot` family is NEW as a row (it was the
+    # augmentation dots under `NOT_NOTATION` and the staccato boxes under
+    # `articulation`), so this gap is not new -- it was hidden by the claim.
+    "POSITION dot": (
+        "`Q.AUG_DOT` carries the dot's (x, y) in the CELL's canonical frame, "
+        "and `adjudicate_dot_role` reads its geometry against the head boxes "
+        "in that same frame -- there is no staff-grid position fact for a dot "
+        "(a staccato's side of the head is the staff-grid-free distinction "
+        "the role verdict makes). Sean 2026-09-17: no family is exempt from "
+        "carrying a position. Shown here rather than hidden under "
+        "`articulation`/`NOT_NOTATION`."),
     "UNREAD-POSITION Q.METER_GLYPH_POSITION": (
         "⚠️⚠️ THE MOTIVATING CASE, and the fact now exists. A time "
         "signature's placement is RIGID — numerator in the upper two spaces, "
