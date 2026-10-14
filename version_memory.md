@@ -6129,3 +6129,6 @@ HAND-TRUTH pre-fill + STAGED ADJUDICATE. Cause: the hand-truth session cuts regi
 
 ## 2026-10-13 · 2.108 landed
 `OFF_STAFF_REACH_SPACES` 6.0: STAGED `off_staff_glyph` + hand-truth pre-fill + `prune-off-staff`. Sean's 10 blind tiles: all 6 refused boxes letters, 3 far-note controls kept, tile 9 a known harmless slip. FINDINGS in `benchmarks/omr-notehead-precision-2026-09`.
+
+## 2026-10-14 -- ROADMAP 2.117 partial bars (lane-2.117-partial-bars, NOT merged; crops with Sean)
+STAGED EXPORT, flag `OMR_PARTIAL_BARS` off|measure|1. A held bar keeps prefix + suffix around a red `unread` rest located by a refused glyph's box x; a short bar with no refused glyph stays held. Brahms 765/1,822 bars partial (+1,163 notes), Litolff 156/861 (+212); `bars_add_up` passes partial bars by construction so they are reported apart. FINDINGS in `benchmarks/omr-partial-bars-2026-10`.

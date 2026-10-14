@@ -1,0 +1,204 @@
+[
+ {
+  "n": 1,
+  "file": "1-p26-s1-staff0-cell3.png",
+  "label": "beam-narrowed head, prefix + suffix",
+  "page": 26,
+  "system": 1,
+  "staff": 0,
+  "cell": 3,
+  "measure": 505,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "duration_narrowed"
+  ],
+  "prefix_events": [
+   1
+  ],
+  "suffix_events": [
+   2
+  ],
+  "rows_in_gap": 0,
+  "gap_quarters": 1.0,
+  "page_box_600dpi": [
+   2324,
+   3860,
+   2909,
+   4130
+  ]
+ },
+ {
+  "n": 2,
+  "file": "2-p1-s1-staff10-cell0.png",
+  "label": "beam-narrowed head, prefix + suffix",
+  "page": 1,
+  "system": 1,
+  "staff": 10,
+  "cell": 0,
+  "measure": 15,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "duration_narrowed"
+  ],
+  "prefix_events": [
+   1
+  ],
+  "suffix_events": [
+   3
+  ],
+  "rows_in_gap": 0,
+  "gap_quarters": 1.0,
+  "page_box_600dpi": [
+   586,
+   6428,
+   1533,
+   6706
+  ]
+ },
+ {
+  "n": 3,
+  "file": "3-p6-s1-staff1-cell4.png",
+  "label": "head refused as too narrow / clipped",
+  "page": 6,
+  "system": 1,
+  "staff": 1,
+  "cell": 4,
+  "measure": 110,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "rest_duration_abstained",
+   "not_a_notehead:too_narrow"
+  ],
+  "prefix_events": [
+   2
+  ],
+  "suffix_events": [
+   1
+  ],
+  "rows_in_gap": 1,
+  "gap_quarters": 1.0,
+  "page_box_600dpi": [
+   3179,
+   4261,
+   3770,
+   4551
+  ]
+ },
+ {
+  "n": 4,
+  "file": "4-p9-s0-staff9-cell7.png",
+  "label": "head refused as too narrow / clipped",
+  "page": 9,
+  "system": 0,
+  "staff": 9,
+  "cell": 7,
+  "measure": 168,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "not_a_notehead:clipped_fragment"
+  ],
+  "prefix_events": [
+   2
+  ],
+  "suffix_events": [
+   0
+  ],
+  "rows_in_gap": 1,
+  "gap_quarters": 1.5,
+  "page_box_600dpi": [
+   4250,
+   2708,
+   5003,
+   2983
+  ]
+ },
+ {
+  "n": 5,
+  "file": "5-p8-s1-staff6-cell8.png",
+  "label": "suffix only (the gap opens the bar)",
+  "page": 8,
+  "system": 1,
+  "staff": 6,
+  "cell": 8,
+  "measure": 157,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "duration_narrowed",
+   "duration_narrowed"
+  ],
+  "prefix_events": [
+   0
+  ],
+  "suffix_events": [
+   3
+  ],
+  "rows_in_gap": 0,
+  "gap_quarters": 1.0,
+  "page_box_600dpi": [
+   3559,
+   5659,
+   4083,
+   5934
+  ]
+ },
+ {
+  "n": 6,
+  "file": "6-p5-s0-staff10-cell3.png",
+  "label": "prefix only (the gap closes the bar)",
+  "page": 5,
+  "system": 0,
+  "staff": 10,
+  "cell": 3,
+  "measure": 82,
+  "status": "partial",
+  "why": null,
+  "unread_glyphs": [
+   "not_a_notehead:too_narrow",
+   "not_a_notehead:too_narrow",
+   "not_a_notehead:too_narrow",
+   "not_a_notehead:too_narrow"
+  ],
+  "prefix_events": [
+   4
+  ],
+  "suffix_events": [
+   0
+  ],
+  "rows_in_gap": 0,
+  "gap_quarters": 0.5,
+  "page_box_600dpi": [
+   2526,
+   2751,
+   3187,
+   3021
+  ]
+ },
+ {
+  "n": 7,
+  "file": "7-p19-s0-staff9-cell1.png",
+  "label": "STAYS HELD: short with no refused symbol, so the missing note's place is unknown",
+  "page": 19,
+  "system": 0,
+  "staff": 9,
+  "cell": 1,
+  "measure": 353,
+  "status": "held",
+  "why": "short_without_an_unread_symbol",
+  "unread_glyphs": [],
+  "prefix_events": [],
+  "suffix_events": [],
+  "rows_in_gap": 0,
+  "gap_quarters": null,
+  "page_box_600dpi": [
+   1480,
+   2547,
+   2035,
+   2822
+  ]
+ }
+]
