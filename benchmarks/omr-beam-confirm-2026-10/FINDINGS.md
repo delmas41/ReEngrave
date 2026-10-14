@@ -44,4 +44,19 @@ So "confirm the beam" would make eighths out of quarters. What is missing is a p
   noteheads in held bars 396 -> 409: 16 of the 19 collapsed notes sit in bars that stay held (the cascade, 2.119 B/D), so the
   yield in written notes is small.
 * Litolff: 1 duration changes; bars held 69 -> 70, notes written 872 -> 872 (that bar now holds an event that fails its sum).
-* Not done after the reboot: blind tiles (needs the 6.7 GB record re-sliced), `judged` and `check` runs. See the report.
+* Re-run after the reboot (one gather re-decided, flag OFF vs ON, same slices): identical numbers (Brahms 19 changed, Litolff 1).
+* `judged score` over the Brahms pages 0-1 slice, OFF vs ON: right 48 -> 51, wrong 5 -> 5, narrowed 11 -> 8 (no regression).
+  `staged.check` TOTAL 192 (= main). Fast tier on the branch before the merge: 7,872 passed, 1 failed (the stale judged index, fixed on
+  main 88391a63); the 2.121 tests + the flag/infer/judged-index tests after merging main: 96 passed.
+
+## 4. Sean's yes (2026-10-14) and blind tiles
+Sean said yes to building the tiles and to recording this fix as the actual 2.121. 15 tiles in `out/print/2.121-review/` (13 notes whose value
+the rule changed: 7 on page 0, 5 on Brahms p1, 1 Litolff; plus 2 controls Sean's own boxes call a beamed note (tile 10) and a flagged note
+(tile 6), both left narrowed by the rule). Nothing drawn but a small red corner bracket; the question is "what is this note's value?
+(quarter / eighth / other)"; the key is `tiles_MANIFEST_HIDDEN.json` (do not show it). Tile 12 is the one at 1.75 beats (two dots): the
+rule picks the head's own unbeamed candidate, so the dot count is the dot reader's; it needs a look.
+
+## 5. Split out (a separate item; the manager claims the number)
+The other 5 of the 24: q110/q118 (`beams_ambiguous`, NO own stem found: the fused-column stem finder, 2.82/2.83's open item); q93/q86
+(`beam_certain_not_joined`: beam read at `levels_certain` 1 with `certain_conflicts` 1, join not witnessed, long stem); q1009
+(`flag_ink_unread`: a printed flag the tip reader did not see). None is a slur case; this rule leaves all five narrowed (tested).
