@@ -57,6 +57,7 @@ for _v in ("v7-2026-09-02-hollow", "v8-2026-09-02-hollow2-5pub", "v9-2026-09-03-
            "v12-2026-09-03-hollow3-tchaikovsky1-lowres"):
     TIERS[_v] = ("single-family:hollow", "hollow-notehead passes; superseded by v13-v21 or never admitted")
 TIERS["v23-2026-09-04-arcs-reconcile"] = ("single-family:arcs", "inspected_passes 'ties+slurs-reconcile' only")
+TIERS["v24-2026-10-13-hollow4-train"] = ("single-family:hollow", "2.4b hollow4 TRAIN batch (Sean, blind click-to-box, hollow heads only; other classes filled from production boxes); NOT ADMITTED -- the retraining was killed 2026-10-13")
 
 
 def _rel(p: Path) -> str:
