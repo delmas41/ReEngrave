@@ -96,12 +96,13 @@ def _gather_ink(img, box, *, net=None, flag=True):
     sub = R.cell(0, 0, 0, 0)
     det = {sub.to_key(): [_detection(box)]}
     log = Log()
+    pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=img))
     env = {FLAG: "1"} if flag else {}
     with mock.patch.dict(os.environ, env, clear=False):
         if not flag:
             os.environ.pop(FLAG, None)
         gather.gather_notehead_recentre(log, [cell], {0: (0, 0)}, det)
-        gather.gather_notehead_ink(log, [cell], {0: (0, 0)}, det)
+        gather.gather_notehead_ink(log, [cell], {0: (0, 0)}, det, pws=pws)
     return log.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1], log
 
 
@@ -193,7 +194,11 @@ class TestPureCentreOfAPartBox(unittest.TestCase):
         shape = tuple(int(v) for v in z["shape"])
         ink = np.unpackbits(z["ink"])[:shape[0] * shape[1]].reshape(shape).astype(bool)
         raw = np.where(ink, 0, 255).astype(np.uint8)
-        r = gather.recentre_part_boxed(raw, tuple(float(v) for v in z["box"]), 100.0)
+        with mock.patch.object(gather, "RECENTRE_PART_WINDOWS",
+                               (0.6, 0.65, 0.7, 0.75)), \
+                mock.patch.object(gather, "RECENTRE_PART_HALF_WINDOW_SPACES", 0.7):
+            r = gather.recentre_part_boxed(
+                raw, tuple(float(v) for v in z["box"]), 100.0)
         self.assertEqual(r["reason"], "unstable", r)
         self.assertFalse(r["accepted"])
         self.assertLess(r["spread_margin"], 0.0)
@@ -263,6 +268,183 @@ class TestWiredIntoTheInteriorReading(unittest.TestCase):
         self.assertFalse(pb["accepted"])
         self.assertEqual(pb["reason"], "centred_enough")
         self.assertIn("shift_margin", pb)
+
+
+# ───────────────────────── ROUND 2: the PAGE raster ─────────────────────────
+import pathlib
+
+_HERE = pathlib.Path(__file__).parent
+
+
+def _tile13_real():
+    """Sean's tile 13 as the gather sees it: a PAGE binary (600 dpi, the real
+    crop pasted at its page position) and a CELL whose canonical raster is the
+    real merged one (head + stem + next staff line: the cell-frame rule says
+    `unstable` on it, see the test above)."""
+    z = np.load(_HERE / "data_part_boxed_tile13_cell.npz")
+    cell_ink = np.unpackbits(z["ink"])[:int(z["shape"][0]) * int(z["shape"][1])] \
+        .reshape(tuple(int(v) for v in z["shape"])).astype(bool)
+    cell_raw = np.where(cell_ink, 0, 255).astype(np.uint8)
+    pshape = tuple(int(v) for v in z["page_shape"])
+    crop = np.unpackbits(z["page_ink"])[:pshape[0] * pshape[1]].reshape(pshape)
+    ox, oy = (int(v) for v in z["page_origin"])
+    page = np.full((oy + pshape[0], ox + pshape[1]), 255, np.uint8)
+    page[oy:, ox:][crop.astype(bool)] = 0
+    up = float(z["cell_up"])
+    bx, by, bw, bh = (float(v) for v in z["box"])
+    px0, py0 = (float(v) for v in z["page_box"][:2])
+    # the crop starts 219 canonical rows below the cell's top (fixture origin)
+    lines = [v - 219 for v in (590, 686, 787, 889, 990)]
+    cell = MeasureCell(
+        page_index=1, system_index=0, staff_index=9, measure_index=11,
+        image=cell_raw, image_no_staff=cell_raw,
+        bbox_page_px=(px0 - bx / up, py0 - by / up, px0 + 1, py0 + 1),
+        staff_line_ys_canonical=lines, upscale_factor=up)
+    cell.__dict__["binary"] = cell_raw
+    return cell, page, (bx, by, bw, bh)
+
+
+def _run_real(cell, page, box, *, flag, with_page=True):
+    sub = R.cell(1, 0, 9, 11)
+    det = {sub.to_key(): [_detection(box)]}
+    log = Log()
+    pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=page)) \
+        if with_page else None
+    env = {FLAG: "1"} if flag else {}
+    with mock.patch.dict(os.environ, env, clear=False):
+        if not flag:
+            os.environ.pop(FLAG, None)
+        gather.gather_notehead_recentre(log, [cell], {9: (0, 9)}, det)
+        gather.gather_notehead_ink(log, [cell], {9: (0, 9)}, det, pws=pws)
+    return log.rows(Q.NOTEHEAD_INK, R.glyph(1, 0, 9, 11, 0))[-1]
+
+
+class TestPageFrameRound2(unittest.TestCase):
+
+    def test_tile13_real_cell_flag_off_reads_black(self):
+        cell, page, box = _tile13_real()
+        row = _run_real(cell, page, box, flag=False)
+        self.assertGreaterEqual(_centre(row, "ink_raw"), 0.9)
+        self.assertNotIn("part_boxed", row.detail)
+
+    def test_tile13_real_cell_the_cell_raster_alone_would_have_refused(self):
+        """The control that can fail: round 1's windows on the cell's merged
+        raster are `unstable` (the cell frame refused it, 0 heads moved); the
+        page-frame gather must succeed where it refused. And the cell raster
+        is not to be trusted even with the new windows (it lands 0.41 sp, 0.1
+        past the page's and the eye's): the gather does not use it."""
+        cell, page, box = _tile13_real()
+        with mock.patch.object(gather, "RECENTRE_PART_WINDOWS",
+                               (0.6, 0.65, 0.7, 0.75)), \
+                mock.patch.object(gather, "RECENTRE_PART_HALF_WINDOW_SPACES", 0.7):
+            r = gather.recentre_part_boxed(cell.binary, box, 100.0)
+        self.assertEqual(r["reason"], "unstable")
+        row = _run_real(cell, page, box, flag=True)
+        pb = row.detail["part_boxed"]
+        self.assertTrue(pb["accepted"], pb)
+        self.assertEqual(pb["frame"], "page")
+
+    def test_tile13_real_cell_flag_on_reads_hollow_off_the_line(self):
+        cell, page, box = _tile13_real()
+        row = _run_real(cell, page, box, flag=True)
+        self.assertEqual(row.detail["box_source"], "part_boxed_recentre")
+        # by eye the head is 0.27-0.30 sp below the box centre
+        # (the stable window sets read it 0.36; 0.06 sp low is inside the
+        # standard box's own tolerance and the reading is the same hollow)
+        self.assertGreater(row.detail["part_boxed"]["dy_sp"], 0.2)
+        self.assertLess(row.detail["part_boxed"]["dy_sp"], 0.42)
+        off = _centre(row, "ink_off_line")
+        self.assertGreaterEqual(off, 0.2)
+        self.assertLessEqual(off, 0.75, off)
+        self.assertLessEqual(_centre(row, "ink_raw"), 0.9)
+
+    def test_the_guard_still_bites_on_the_page_with_round_ones_windows(self):
+        """Round 1's windows (0.6-0.75) on the REAL page crop: shifts 0.01 ..
+        0.38, spread 0.37 sp -> `unstable`. The guard is unchanged; what moved
+        is the window set that contains a whole head."""
+        cell, page, box = _tile13_real()
+        with mock.patch.object(gather, "RECENTRE_PART_WINDOWS",
+                               (0.6, 0.65, 0.7, 0.75)), \
+                mock.patch.object(gather, "RECENTRE_PART_HALF_WINDOW_SPACES", 0.7):
+            row = _run_real(cell, page, box, flag=True)
+        pb = row.detail["part_boxed"]
+        self.assertEqual(pb["reason"], "unstable")
+        self.assertGreater(pb["window_spread_sp"], 0.3)
+
+    def test_no_page_raster_is_declined_not_read_from_the_cell(self):
+        cell, page, box = _tile13_real()
+        row = _run_real(cell, page, box, flag=True, with_page=False)
+        pb = row.detail["part_boxed"]
+        self.assertFalse(pb["accepted"])
+        self.assertEqual(pb["reason"], "no_page_raster")
+        self.assertNotIn("box_source", row.detail)
+        self.assertGreaterEqual(_centre(row, "ink_raw"), 0.9)
+
+    def _black_tile(self, name):
+        z = np.load(_HERE / "data_part_boxed_black_tiles.npz")
+        shape = tuple(int(v) for v in z[name + "_shape"])
+        crop = np.unpackbits(z[name + "_ink"])[:shape[0] * shape[1]] \
+            .reshape(shape).astype(bool)
+        ox, oy = (int(v) for v in z[name + "_origin"])
+        page = np.full((oy + shape[0], ox + shape[1]), 255, np.uint8)
+        page[oy:, ox:][crop] = 0
+        box = tuple(float(v) for v in z[name + "_box"])
+        sp = float(z[name + "_space"])
+        cell = MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=page, image_no_staff=page,
+            bbox_page_px=(0.0, 0.0, 1.0, 1.0),
+            staff_line_ys_canonical=[0.0, sp, 2 * sp, 3 * sp, 4 * sp],
+            upscale_factor=1.0)
+        cell.__dict__["binary"] = page
+        det = types.SimpleNamespace(
+            smufl_name="noteheadBlackOnLine", x_canonical=box[0],
+            y_canonical=box[1], width_canonical=box[2] - box[0],
+            height_canonical=box[3] - box[1],
+            x_center=(box[0] + box[2]) / 2, y_center=(box[1] + box[3]) / 2)
+        return cell, page, det, sp
+
+    def _black_tile_row(self, name, flag):
+        cell, page, det, sp = self._black_tile(name)
+        sub = R.cell(0, 0, 0, 0)
+        log = Log()
+        pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=page))
+        with mock.patch.dict(os.environ, {FLAG: "1"} if flag else {}, clear=False):
+            if not flag:
+                os.environ.pop(FLAG, None)
+            gather.gather_notehead_ink(
+                log, [cell], {0: (0, 0)}, {sub.to_key(): [det]}, pws=pws)
+        return log.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1]
+
+    def test_seans_black_tiles_stay_black_and_unmoved_on_the_page(self):
+        """Tiles 7 and 11 (Brahms), 16 (Litolff): his BLACK heads, real page
+        crops. Flag ON leaves every reading exactly as OFF (head-sized boxes:
+        `box_head_sized`, never moved); tiles 7 and 11 read 1.00, tile 16 (a
+        black head with a staff line through it) reads 0.78 raw / 0.875 off the
+        line on the page, which is its reading with the flag OFF too."""
+        for name in ("t7_bra", "t11_bra", "t16_lit"):
+            on = self._black_tile_row(name, True)
+            off = self._black_tile_row(name, False)
+            self.assertEqual(on.value, off.value, name)
+            self.assertEqual(on.detail["ink_raw"], off.detail["ink_raw"], name)
+            self.assertEqual(on.detail["ink_off_line"],
+                             off.detail["ink_off_line"], name)
+            self.assertNotIn("box_source", on.detail, name)
+        for name in ("t7_bra", "t11_bra"):
+            self.assertGreaterEqual(
+                _centre(self._black_tile_row(name, True), "ink_raw"), 0.85, name)
+        # tile 16 is the weakest black: its unmoved page reading is the floor
+        r16 = self._black_tile_row("t16_lit", True)
+        self.assertGreater(_centre(r16, "ink_off_line"), 0.85)
+
+    def test_centred_head_sized_box_is_a_noop_on_the_page(self):
+        img = _paper(); _head(img, 150.0, 160.0, hollow=False)
+        full = _box(150.0, 160.0, 1.0, 1.0)
+        on, _ = _gather_ink(img, full, flag=True)
+        off, _ = _gather_ink(img, full, flag=False)
+        self.assertEqual(on.value, off.value)
+        self.assertEqual(on.detail["ink_raw"], off.detail["ink_raw"])
+        self.assertNotEqual(on.detail.get("box_source"), "part_boxed_recentre")
 
 
 if __name__ == "__main__":
