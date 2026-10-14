@@ -9,6 +9,20 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- Brahms 317803 pdf 0 hand truth complete (Sean)
+
+- `data/hand-truth/pages/imslp317803/0.json` 1,352 -> 1,566 boxes; remaining in-progress cells are words only. DECISIONS line.
+
+## 2026-10-13 -- manager session end: START HERE written
+
+- ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
+
+## 2026-10-13 -- ROADMAP 2.106 steps 1-2: margins on threshold refusals + the index of Sean's judged tiles (`lane-2.106-margins-index`, NOT merged)
+
+- Step 1 (STAGED, bookkeeping, no decision changes): `tools/omr/staged/margins.py` (slack/attach helpers, registry of which reasons are threshold vs structural, the AST count of threshold returns with no margin, a record-level `audit`, and `redecide`/`compare` for the no-change proof). Margins filed on `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_notehead_is_not_a_notehead` (`too_narrow`, `is_a_dot` returns only) and `adjudicate_duration` (the three 2.70/2.88 hollow-head returns only). `Verdict.margin` is signed (>=0 cleared the cut, <0 declined short); axis, unit, declared band (None where the cut has none) and the would-be value ride in `detail` -- not `Verdict.candidates`, because an ABSTAINED verdict may not carry candidates and a dozen consumers read `candidates` as "narrowed". New check part `staged.margins` (open=0; total stays 192). Proof: Litolff 20261011-night re-decided base vs arm, 171,392 verdicts, signatures identical; threshold verdicts without a margin 504 -> 0.
+- Step 2: `tools/omr/staged/judged.py`, `benchmarks/acceptance/judged-tiles.json` (600 tiles, 49 galleries, every `out/print/**/answers.json` joined to its manifest; Sean's words kept verbatim beside a conservative parse), and a streaming re-scorer for 6 GB records. Baselines on the 20261011-night records in `benchmarks/acceptance/judged-baseline-20261011-night.*.json`.
+- Tests: `tools/omr/tests/test_margins_2_106.py`, `test_judged_index_2_106.py`.
+
 ## 2026-10-13 -- housekeeping: CLAUDE.md cut from 6,174 to ~1,850 words (`housekeeping-claude-md`, NOT merged -- Sean reviews first)
 
 - Sean: "make Claude.md much more concise ... don't want to lose specific knowledge." No product code, no test runs. The detail moved, not deleted, into six focused docs: `docs/running.md` (setup, worktree symlinks, every CLI, small/full re-gathers, web app internals, deployment), `docs/staged-internals.md` (two readers, record model, adjudicators, EVALUATE/INFER/EXPORT, derived checks), `docs/page-facts.md` (the full engraving/plate facts with Sean's quotes and dates, plus the 2026-10-12/13 rulings), `docs/measuring.md` (acceptance set, A/B rules, tests, flags), `docs/data-sources.md`, `docs/detector.md`.
@@ -6083,6 +6097,9 @@ STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evide
 ## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
 STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.
 
+## 2026-10-13 -- ROADMAP 2.105 landed (lane-2.105-not-a-note; Sean: "land 2.105")
+STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `rest_is_a_barline` (thin tall rest-class box on a cell edge): small re-gather Litolff 15 rests newly refused, Brahms 4. (b) 2.92: `notehead_precision._head_box_excess` orders twin boxes the same way in 2.30 and 2.42 (33 of 424 stacked-duplicate slot groups had no live box): Litolff 4 groups neither->one, 2 swapped, Brahms 1; Sean's five 2.88 heads were already kept via their Half-class twin. (a) 2.91 `sf` boxed as a note: no letter box, no box rule separates it, moved to ROADMAP 2.107 (read dynamic letters). Landing merged 2.106: `rest_is_a_barline` and the widened `is_a_beam_piece` file margins; `staged.margins` open=0 (17 threshold reasons, 5 deciders). 12 blind tiles `out/print/2.105-review/`. Tests `test_staged_not_a_note_2_105.py`. `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` 2.105.
+
 ## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
 STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
 
@@ -6091,3 +6108,5 @@ STAGED detector, branch `lane-2.4b-hollow` (not merged, production weights NOT s
 
 ## 2026-10-13 -- ROADMAP 2.4b closed: BN-frozen fine-tune killed
 STAGED detector, branch `lane-2.4b-hollow`. 1 epoch from production with BatchNorm stats frozen (bit-identical to production): hollow 93.2%/89.2% but beams 0, ledger -92%, ties -72%, Brahms 24/27 -- same class deletion, in the conv weights. 2.4b KILLED; v24 labels stay test truth. FINDINGS in `benchmarks/omr-labeling-hollow4-2026-10/`.
+## 2026-10-13 -- every threshold refusal records its margin; judged-tile index (ROADMAP 2.106)
+STAGED, bookkeeping only (no decision changes). `staged/margins.py` + check part `staged.margins` (open=0): 15 threshold reasons over 4 deciders file `Verdict.margin`. `staged/judged.py` + `benchmarks/acceptance/judged-tiles.json` index Sean's judged tiles with a re-scorer: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`. Sean: "land 2.106".

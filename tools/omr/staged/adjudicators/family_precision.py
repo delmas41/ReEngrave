@@ -146,6 +146,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
+from .. import margins as _margins
 from . import key_slots as _key_slots
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
@@ -997,6 +998,65 @@ def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
     return out
 
 
+#: ROADMAP 2.105(c) -- a rest-class box that is a BARLINE (Sean 2026-10-12,
+#: `out/print/2.100-review-2` tile 1: *"Barline"*). Its OWN geometry: a box
+#: flush on its cell's edge column (cells are cut AT the barlines), narrower
+#: than any rest is printed, and at least two spaces tall. Measured on the
+#: 2026-10-11 Litolff record (2,873 rest boxes): 76 kept `restQuarter`
+#: boxes are 0.2-0.4 sp wide and flush on a cell edge, and every one of the
+#: 23 flush ones at 0.4-0.8 sp that was cropped is a barline too. A cut-off
+#: measured on one plate: it REFUSES (the bar stays marked unread), it never
+#: decides a value.
+REST_BARLINE_MAX_WIDTH_SPACES = 0.8
+REST_BARLINE_MIN_HEIGHT_SPACES = 2.0
+REST_BARLINE_EDGE_TOL_SPACES = 0.15
+
+
+def _rest_is_a_barline_refusal(ev: Evidence, this_row,
+                               detail: Dict[str, Any]) -> Optional[Ruling]:
+    """A thin tall box standing on the cell edge is the barline, not a rest.
+    Records the signed margin to each cut (negative = inside the refusal)."""
+    page_box = (this_row.detail or {}).get("bbox_page_px")
+    cell_box = _cell_box_page_px(ev)
+    spacing = _cell_staff_space(ev)
+    val = this_row.value
+    if (not page_box or len(page_box) != 4 or cell_box is None or not spacing
+            or not isinstance(val, (list, tuple)) or len(val) != 5
+            or not val[3]):
+        return None
+    sp_page = spacing * (page_box[2] - page_box[0]) / float(val[3])
+    if sp_page <= 0:
+        return None
+    w_sp = (page_box[2] - page_box[0]) / sp_page
+    h_sp = (page_box[3] - page_box[1]) / sp_page
+    edge_sp = min(abs(page_box[0] - cell_box[0]), abs(page_box[2] - cell_box[0]),
+                  abs(page_box[0] - cell_box[2]), abs(page_box[2] - cell_box[2])
+                  ) / sp_page
+    signal = {"width_spaces": round(w_sp, 3), "height_spaces": round(h_sp, 3),
+              "cell_edge_spaces": round(edge_sp, 3),
+              "margin_width": round(w_sp - REST_BARLINE_MAX_WIDTH_SPACES, 3),
+              "margin_height": round(REST_BARLINE_MIN_HEIGHT_SPACES - h_sp, 3),
+              "margin_edge": round(edge_sp - REST_BARLINE_EDGE_TOL_SPACES, 3)}
+    if (w_sp < REST_BARLINE_MAX_WIDTH_SPACES
+            and h_sp >= REST_BARLINE_MIN_HEIGHT_SPACES
+            and edge_sp <= REST_BARLINE_EDGE_TOL_SPACES):
+        detail["barline_signal"] = signal
+        # ROADMAP 2.106: how far INSIDE the tightest of the three cuts the
+        # box stands (>= 0 = refused by this much); no declared band.
+        axis, slk = _margins.tightest([
+            ("width_spaces", -signal["margin_width"]),
+            ("height_spaces", -signal["margin_height"]),
+            ("cell_edge_spaces", -signal["margin_edge"])])
+        return _margins.attach(
+            Ruling(value=True, reason="rest_is_a_barline",
+                   used=(this_row.id,), detail=detail),
+            margin=slk, axis=axis, unit="staff spaces", band=None,
+            would_choose=(True,))
+    if w_sp < REST_BARLINE_MAX_WIDTH_SPACES and edge_sp <= 0.5:
+        detail["barline_near_miss"] = signal
+    return None
+
+
 def _rest_overlaps_notehead_refusal(ev: Evidence, this_row,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
@@ -1637,7 +1697,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_touches_two_staff_lines",
                                      "rest_off_center",
                                      "rest_outside_its_staff",
-                                     "rest_overlaps_a_notehead"),
+                                     "rest_overlaps_a_notehead",
+                                     "rest_is_a_barline"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
@@ -1742,6 +1803,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
         if overlap is not None:
             return overlap
+        # ROADMAP 2.105(c): LAST, so every refusal already standing keeps its
+        # reason; this only adds the barline the others could not name.
+        barline = _rest_is_a_barline_refusal(ev, box_row, detail)
+        if barline is not None:
+            return barline
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

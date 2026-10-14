@@ -33,6 +33,7 @@ from collections import Counter
 from ... import transcribe as _legacy_stems
 from ... import voicing as _legacy_voicing
 
+from .. import margins as _margins
 from .. import movements as _movements
 from ..record import (ABSTAIN, DOCUMENT, Kind, Outcome, Q, READERS, Scope,
                       State, Subject, meter_at)
@@ -163,6 +164,52 @@ def _raw_reads_firmly_hollow(ink_detail: Dict[str, Any]) -> bool:
     if center is None or ring is None:
         return False
     return HEAD_RAW_CENTER_FLOOR <= center <= HEAD_FILL_HOLLOW_CENTER_MAX and (ring - center) >= HEAD_RAW_RING_GAP_MIN
+def _hollow_margin(ink_detail: Dict[str, Any], head_box=None, space=None,
+                   *, raw_gate: bool = True) -> Tuple[Optional[str], Optional[float]]:
+    """ROADMAP 2.106 (bookkeeping, decides nothing): the tightest slack of the
+    2.88 hollow-head gate, `(axis, margin)`, in the gate's own units (window
+    shares, a reading count, staff spaces). `raw_gate=False` measures the older
+    2.70 cut instead (any raster decisively hollow: the best raster's tightest
+    slack). >= 0 passes; < 0 is short by that much."""
+    def win(key):
+        reading = ink_detail.get(key)
+        w = (reading.get("windows") if isinstance(reading, dict) else None) or {}
+        return w.get("center"), w.get("ring")
+    if not raw_gate:
+        best = (None, None)
+        for key in ("ink_raw", "ink_net", "ink_off_line"):
+            c, r = win(key)
+            if c is None or r is None:
+                continue
+            got = _margins.tightest((
+                (f"{key}.center", _margins.slack(c, hi=HEAD_FILL_HOLLOW_CENTER_MAX)),
+                (f"{key}.ring_gap", _margins.slack(r - c, lo=HEAD_FILL_HOLLOW_RING_GAP_MIN))))
+            if best[1] is None or (got[1] is not None and got[1] > best[1]):
+                best = got
+        return best
+    c, r = win("ink_raw")
+    items = [("raw.center", _margins.slack(c, HEAD_RAW_CENTER_FLOOR, HEAD_FILL_HOLLOW_CENTER_MAX)),
+             ("raw.ring_gap", None if c is None or r is None
+              else _margins.slack(r - c, lo=HEAD_RAW_RING_GAP_MIN)),
+             ("readings", _hollow_readings(ink_detail) - HEAD_HOLLOW_MIN_READINGS)]
+    if head_box is not None and space:
+        items += [("box_height_spaces", _margins.slack(head_box[3] / space, HEAD_BOX_MIN_SPACES, HEAD_BOX_MAX_SPACES)),
+                  ("box_width_spaces", _margins.slack(head_box[2] / space, hi=HEAD_BOX_MAX_WIDTH_SPACES))]
+    return _margins.tightest(items)
+
+
+def _with_hollow_margin(ruling: Ruling, ink_detail, head_box=None, space=None, *, raw_gate=True) -> Ruling:
+    """`ruling` with the hollow gate's margin filed (ROADMAP 2.106); value, reason, candidates untouched."""
+    axis, m = _hollow_margin(ink_detail, head_box, space, raw_gate=raw_gate)
+    return _margins.attach(ruling, margin=m, axis=axis, unit=_HOLLOW_UNIT,
+                           band=_HOLLOW_BAND if raw_gate else None, would_choose=("half",))
+
+
+_HOLLOW_UNIT = "mixed (window share, readings, staff spaces)"
+_HOLLOW_BAND = {"raw.center": (HEAD_RAW_CENTER_FLOOR, HEAD_FILL_HOLLOW_CENTER_MAX),
+                "raw.ring_gap": (HEAD_RAW_RING_GAP_MIN, 1.0),
+                "readings": (HEAD_HOLLOW_MIN_READINGS, 3)}
+
 HEAD_BOX_MIN_SPACES = 0.9
 HEAD_BOX_MAX_WIDTH_SPACES = 1.9
 TIP_UNREAD_REASONS = ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip", "occupied", "head_at_this_end")
@@ -3606,14 +3653,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             for _ in range(n_dots):
                 add /= 2.0
                 t += add
-            return Ruling(
+            return _with_hollow_margin(Ruling(
                 value={"beats": _scale(t, ratio, ev), "written": t,
                        "dots": n_dots, "beam_levels": 0,
                        "head_fill": "half"},
                 reason="hollow_head_bare_stem", used=tuple(used),
                 detail={**shared, "beam_reader": beam_reader,
                         "stem_tip_hook": False,
-                        "notehead_ink": fill_row.detail or {}})
+                        "notehead_ink": fill_row.detail or {}}),
+                fill_row.detail or {}, raw_gate=False)
 
     # ⚠️⚠️ ROADMAP 2.88 (see `HEAD_HOLLOW_MIN_READINGS`): the same half, where the tip reader could not tell. The tip no longer decides
     # anything for a hollow head; the head's own reading must be firm (two rasters, a head-shaped box).
@@ -3630,7 +3678,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             for _ in range(n_dots):
                 add /= 2.0
                 t += add
-            return Ruling(
+            return _with_hollow_margin(Ruling(
                 value={"beats": _scale(t, ratio, ev), "written": t,
                        "dots": n_dots, "beam_levels": 0,
                        "head_fill": "half"},
@@ -3638,7 +3686,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 detail={**shared, "beam_reader": _beam_reader_looked(ev, cell),
                         "stem_tip_hook": None, "tip_unread": unread,
                         "hollow_readings": _hollow_readings(fill_row.detail or {}),
-                        "notehead_ink": fill_row.detail or {}})
+                        "notehead_ink": fill_row.detail or {}}),
+                fill_row.detail or {}, head_box, space)
 
     # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8. 2.70 DECIDES a half in a BEAMLESS cell (the beam reader RAN and accepted nothing, so
     # `beam_evidence` reads `reader_declined`) over a tip read clean; where the tip is NOT read clean the head fell through all of this to
@@ -3674,9 +3723,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 # is the rarer two-step misread and ranks with the
                 # detector's own reading, not above it.
                 support=support))
-        return Ruling.narrow(cands, "head_fill_from_ink",
-                             used=tuple(used), **shared,
-                             notehead_ink=ink_detail)
+        return _with_hollow_margin(
+            Ruling.narrow(cands, "head_fill_from_ink",
+                          used=tuple(used), **shared,
+                          notehead_ink=ink_detail),
+            ink_detail, head_box, space)
 
     # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8 (Sean's tiles 4 and 8, eighths the 2.18c window counted and the shape reader could not
     # tell). A tip the TWO tip witnesses DISPUTE -- the shape reader positively reads nothing hanging from it, the 2.18c window (and

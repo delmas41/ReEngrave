@@ -42,6 +42,7 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
+from .. import margins as M
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import record as R
 from ..record import Kind, Outcome, Q
@@ -60,6 +61,25 @@ REST8TH_STEP_TOLERANCE = 1.0
 #: head-with-stem, a quarter rest, a beam), not a close call.
 DECISIVELY_NOT_WIDTH_SPACES = (0.5, 2.0)
 DECISIVELY_NOT_HEIGHT_SPACES = (1.0, 3.2)
+
+#: ROADMAP 2.106: the declared bands, `{axis: [lo, hi]}`. The eighth-rest
+#: window is the "shaped" cut; the decisive window is the "not a rest" cut;
+#: between them is the abstention band.
+_BAND = {"width_spaces/rest": REST8TH_WIDTH_SPACES,
+         "height_spaces/rest": REST8TH_HEIGHT_SPACES,
+         "width_spaces/decisive": DECISIVELY_NOT_WIDTH_SPACES,
+         "height_spaces/decisive": DECISIVELY_NOT_HEIGHT_SPACES}
+_UNIT = "mixed (staff spaces, staff steps, pieces)"
+
+
+def _shaped_slacks(w, h, step, pieces):
+    return (("width_spaces", M.slack(w, *REST8TH_WIDTH_SPACES)),
+            ("height_spaces", M.slack(h, *REST8TH_HEIGHT_SPACES)),
+            ("staff_step", M.slack(step, REST8TH_STEP_CENTRE
+                                   - REST8TH_STEP_TOLERANCE,
+                                   REST8TH_STEP_CENTRE
+                                   + REST8TH_STEP_TOLERANCE)),
+            ("pieces", REST8TH_MAX_PIECES - pieces))
 
 
 @decision(
@@ -128,14 +148,33 @@ def adjudicate_narrow_box_is_an_eighth_rest(ev: Evidence) -> Ruling:
     if (not DECISIVELY_NOT_WIDTH_SPACES[0] <= w <= DECISIVELY_NOT_WIDTH_SPACES[1]
             or not DECISIVELY_NOT_HEIGHT_SPACES[0] <= h
             <= DECISIVELY_NOT_HEIGHT_SPACES[1]):
-        return Ruling(value=False, reason="not_rest_shaped", used=used,
-                      detail=detail)
+        # margin: how far OUTSIDE the decisive window (positive = refused by
+        # this much, a decided "no").
+        far = max((("width_spaces",
+                    -M.slack(w, *DECISIVELY_NOT_WIDTH_SPACES)),
+                   ("height_spaces",
+                    -M.slack(h, *DECISIVELY_NOT_HEIGHT_SPACES))),
+                  key=lambda t: t[1])
+        return M.attach(
+            Ruling(value=False, reason="not_rest_shaped", used=used,
+                   detail=detail),
+            margin=far[1], axis=far[0], unit=_UNIT, band=_BAND,
+            would_choose=(False,))
     shaped = (REST8TH_WIDTH_SPACES[0] <= w <= REST8TH_WIDTH_SPACES[1]
               and REST8TH_HEIGHT_SPACES[0] <= h <= REST8TH_HEIGHT_SPACES[1]
               and d["n_pieces"] <= REST8TH_MAX_PIECES
               and abs(step - REST8TH_STEP_CENTRE) <= REST8TH_STEP_TOLERANCE
               and not d.get("touches_cell_edge"))
     if shaped:
-        return Ruling(value=True, reason="rest8th_shape", used=used,
-                      detail=detail)
-    return Ruling.abstain("shape_cannot_tell", **detail)
+        axis, m = M.tightest(_shaped_slacks(w, h, step, d["n_pieces"]))
+        return M.attach(
+            Ruling(value=True, reason="rest8th_shape", used=used,
+                   detail=detail),
+            margin=m, axis=axis, unit=_UNIT, band=_BAND,
+            would_choose=(True,))
+    axis, m = M.tightest(_shaped_slacks(w, h, step, d["n_pieces"]))
+    return M.attach(
+        Ruling.abstain("shape_cannot_tell", **detail),
+        margin=m, axis=axis, unit=_UNIT, band=_BAND, would_choose=(True,),
+        **({"blocked_by": "touches_cell_edge"} if d.get("touches_cell_edge")
+           else {}))

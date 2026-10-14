@@ -89,6 +89,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
+from .. import margins as _margins
 from .. import record as R
 from ..record import ABSTAIN, Kind, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
@@ -702,7 +703,14 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
     if not _geom.is_regular_notehead(name) or spacing_canonical <= 0:
         return None
     height_spaces = h / spacing_canonical
-    if height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES or w <= 0 or h <= 0:
+    # ROADMAP 2.105 (Sean's tile 6, Brahms `glyph/0/0/10/1/20`): flat OR wider
+    # than any head is printed (`PLAUSIBLE_HEAD_WIDTH_SPACES`) -- a box 2.35 x 1.65
+    # spaces, 94% inside a read sloped beam stroke, is two beams, and its HEIGHT
+    # is the sloped stroke's own. Same beam witness below, so a wide box that
+    # lies in no read beam is untouched.
+    if w <= 0 or h <= 0 or (
+            height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES
+            and w / spacing_canonical <= PLAUSIBLE_HEAD_WIDTH_SPACES[1]):
         return None
     from . import rhythm as _rh
     cell = ev.subject.at(Kind.CELL)
@@ -743,8 +751,14 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
         detail["beam_piece"] = {"stroke": s.id,
                                 "cover": round(cover, 3),
                                 "height_spaces": round(height_spaces, 3)}
-        return Ruling(value=True, reason="is_a_beam_piece",
-                      used=(box_row.id, s.id, row.id), detail=detail)
+        # ROADMAP 2.106: how far over the coverage floor (>= 0 = refused by
+        # this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_beam_piece",
+                   used=(box_row.id, s.id, row.id), detail=detail),
+            margin=cover - BEAM_PIECE_COVER_MIN, axis="beam_cover_fraction",
+            unit="fraction of the box inside the beam stroke", band=None,
+            would_choose=(True,))
     return None
 
 
@@ -1581,6 +1595,15 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     cell_boxes = _cell_notehead_boxes(ev, cell)
     this_box = cell_boxes.get(ev.subject)
     spacing = _cell_staff_space(ev)
+    # ROADMAP 2.105: a box that is a beam's ink is no head and cannot be the
+    # slot's keeper (the shared twin ordering kept one: Sean's tile 6). A group
+    # whose every box is beam ink keeps none -- each is refused as a beam piece
+    # before this rule runs.
+    if spacing:
+        group_rows = [r for r in group_rows if r.subject == ev.subject
+                      or r.subject not in cell_boxes
+                      or _beam_piece_refusal(ev, cell_boxes[r.subject],
+                                             spacing, {}) is None]
     if this_box is not None and spacing:
         mine = this_box.value
         group_rows = [
@@ -1665,7 +1688,9 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
                                    spacing)
         if heir is not _SURVIVES and heir is not None \
                 and heir.subject == ev.subject \
-                and _plausible_head_box(mine, spacing):
+                and (_head_box_excess(mine, spacing)
+                     <= _head_box_excess(cell_boxes[best_row.subject].value,
+                                         spacing)):
             signal["winner_refused_in_favour_of_this_box"] = best_row.id
             return None
     detail["duplicate_of"] = best_row.id
@@ -1830,6 +1855,20 @@ def _plausible_head_box(box_value, spacing: float) -> bool:
             <= PLAUSIBLE_HEAD_HEIGHT_SPACES[1])
 
 
+def _head_box_excess(box_value, spacing: float) -> float:
+    """ROADMAP 2.105(b): how far (staff spaces, summed over both axes) a box
+    lies OUTSIDE the plausible-head ranges; 0.0 for a plausible one. Lets two
+    rules that both choose one keeper of a mark order its boxes the same way:
+    a plausible box beats an implausible one, and of two implausible boxes the
+    nearer to a head keeps it."""
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    lo_w, hi_w = PLAUSIBLE_HEAD_WIDTH_SPACES
+    lo_h, hi_h = PLAUSIBLE_HEAD_HEIGHT_SPACES
+    return (max(0.0, lo_w - w_sp, w_sp - hi_w)
+            + max(0.0, lo_h - h_sp, h_sp - hi_h))
+
+
 def _boxes_on_one_head(a, b, spacing: float) -> bool:
     """Do two `Q.GLYPH_BOX` values overlap, or stand within
     `SAME_HEAD_MAX_GAP_SPACES` of each other in both axes?"""
@@ -1989,7 +2028,19 @@ def _other_keeps_the_mark(this_val, this_row, other_val, other_row,
     """Of two same-class boxes on one mark, does OTHER keep it? ROADMAP 2.73:
     the more head-shaped one, where the two differ by more than
     `HEAD_SHAPE_MARGIN`; else the higher detector score (then the lower glyph
-    index), exactly 2.30's own priority before this item."""
+    index), exactly 2.30's own priority before this item.
+
+    ROADMAP 2.105(b), FIRST: a box nearer a head's plausible size keeps the
+    mark over one farther from it (`_head_box_excess`). Shape saturates at a
+    standard head, so an over-wide box that merged a neighbour's ink TIED a
+    clean head and won on detector score -- and 2.42, choosing by ink, took the
+    clean one: each refused the other and the head had NO box (14 mutual
+    circles, 33 slot groups on Litolff 984073; Sean's tiles 2.88 round 2)."""
+    if spacing:
+        e_this = _head_box_excess(this_val, spacing)
+        e_other = _head_box_excess(other_val, spacing)
+        if e_this != e_other:
+            return e_other < e_this
     d_shape = _box_shape(other_val, spacing) - _box_shape(this_val, spacing)
     if d_shape > HEAD_SHAPE_MARGIN:
         return True
@@ -3081,8 +3132,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         return Ruling(value=True, reason="clipped_fragment",
                       used=tuple(used), detail=detail)
     if _too_narrow(box_row, spacing, detail):
-        return Ruling(value=True, reason="too_narrow",
-                      used=tuple(used), detail=detail)
+        # ROADMAP 2.106: how far under the width floor (positive = refused
+        # by this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="too_narrow",
+                   used=tuple(used), detail=detail),
+            margin=TOO_NARROW_MIN_SPACES - detail["width_spaces"],
+            axis="width_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
     # ROADMAP 2.59: the hollow classes `too_narrow` does not reach. AFTER the
     # two shape rules above so every box they already refuse keeps its reason.
     if _ledger.dot_follows_note_enabled() \
@@ -3098,8 +3155,12 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 detail["barline_edges_page"] = [cell_box[0], cell_box[2]]
                 return Ruling(value=True, reason="on_a_barline",
                               used=tuple(used), detail=detail)
-        return Ruling(value=True, reason="is_a_dot",
-                      used=tuple(used), detail=detail)
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_dot",
+                   used=tuple(used), detail=detail),
+            margin=DOT_SIZED_MAX_SPACES - max(detail["dot_size_spaces"]),
+            axis="larger_side_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
     # ROADMAP 2.77b: a flat regular-head box lying inside a read beam stroke is
     # that beam's ink (Sean, crop 7). Its own helper; one call.
     beam_piece = _beam_piece_refusal(ev, box_row, spacing, detail)
