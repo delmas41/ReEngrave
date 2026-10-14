@@ -1033,4 +1033,6 @@ time: Brahms pdf 0-1 20,732 verdicts, 0 differ, `off_staff_glyph` 0; Litolff pdf
 verdicts are obs-id shifts by one and two Surya words, run-to-run, none an off-staff reason), so 0 real glyphs refused.
 Tiles regenerated at 6 (`tiles.py`: title letter, margin name letters, footer, two letters of the tempo word
 "sostenuto" in the new 6-8 band, 3 far-note controls, 1 queued box just inside 6): 10 in `out/print/2.108-review/`, reading in
-`manifest.json`, `answers.template.json`. Waiting on Sean; NOT landed.
+`manifest.json`, `answers.template.json`.
+
+**Sean's answers (2026-10-13, `answers.json`):** *"1. 2 note 2. B letter in german 3. a letter in a word  4. part of an o in sostenuto 5. Part of a K 6. 4 note  7. 8 noet 8. part of an N 9-10 part of letters"*. Scored against the manifest: the 6 refused boxes (tiles 2, 3, 4, 5, 8, 10) are all letters, so every refusal was right, including tiles 4 and 10 in the 6-8 band he chose; the 3 far-note controls (1 half, 6 quarter, 7 eighth) are real notes and kept, right; tile 9 (queued box just inside 6) is part of a letter, a known slip, harmless (labelling pre-fill only; the STAGED rule fires 0 times on the acceptance pages).
