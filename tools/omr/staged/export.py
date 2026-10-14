@@ -3861,8 +3861,14 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               held_bars: Optional[List[Dict[str, Any]]] = None,
               marks: Optional[Dict[str, int]] = None,
               marked_bars: Optional[List[Dict[str, Any]]] = None,
-              plan: Optional["_EndingPlan"] = None) -> str:
+              plan: Optional["_EndingPlan"] = None,
+              partial_bars: Optional[List[Dict[str, Any]]] = None) -> str:
     """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ `partial_bars` IS ROADMAP 2.117: one entry per bar `_bar_holds_out`
+    refused while `OMR_PARTIAL_BARS` is `measure` or `on`, saying whether it
+    was kept in part (`status: "partial"`) or stays held (`status: "held"`,
+    with the reason). In `measure` mode the file is written exactly as OFF.
 
     ⚠️ `marked_bars` IS ROADMAP 2.4c, THE SAME SHAPE AS `held_bars` ONE
     PARAGRAPH DOWN AND A SEPARATE LIST ON PURPOSE. A bar can be held out for
@@ -3926,6 +3932,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     tacet bar.
     """
     lines = [f'  <part id="{pid}">']
+    partial_mode = partial_bars_mode()
     plan = plan or _EndingPlan()
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
@@ -4102,7 +4109,68 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     1 if _bar_quarters(judged) is None else 0)
                 counters["bars_judged_by_a_carried_meter"] += (
                     1 if meter is None and judged is not None else 0)
-            if held is not None:
+            # ⚠️⚠️ ROADMAP 2.117, DECIDED before any line of the bar is
+            # written, as 2.8's own test above is. Planned for every held bar
+            # when the flag is `measure` or `on`; only `on` writes it.
+            partial = None
+            if held is not None and partial_mode != "off":
+                if run.condensed_from is not None:
+                    partial = {"ok": False, "why": "doubled_staff_copy"}
+                else:
+                    partial = _partial_bar_plan(
+                        events, split[0], divisions, judged,
+                        cell_here.unplaced if cell_here else ())
+                    if partial_bars is not None:
+                        partial_bars.append({
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": (number if base is None
+                                        else plan.number(_here, i, base)),
+                            "part": pid,
+                            "status": "partial" if partial["ok"] else "held",
+                            "why": partial.get("why"),
+                            "unread_glyphs": [
+                                u["reason"] for u in
+                                (cell_here.unplaced if cell_here else ())],
+                            "meter_carried_in_file": meter is None,
+                            "two_voice": split[0] is not None,
+                            "events": len(events),
+                            "rows": _bar_event_rows(events),
+                            "rows_written": partial.get("written_rows", 0),
+                            "rows_in_gap": partial.get("gap_rows", 0),
+                            "gap_quarters": (
+                                round(partial["gap_units"] / divisions, 6)
+                                if partial["ok"] else None)})
+            if partial is not None and partial["ok"] and partial_mode == "on":
+                # ⚠️⚠️ ROADMAP 2.117 (Sean, 2026-10-14). KEPT where certain:
+                # prefix from the opening barline, suffix back from the
+                # closing one, only the span between a red `unread` rest.
+                # Every row in the gap is COUNTED under `_GAP_REFUSAL`, so
+                # the accounting equality still balances; the bar sum sizes
+                # the span and supplies no note, pitch or value.
+                counters["bars_partial"] += 1
+                counters["bars_partial_on_a_carried_meter"] += (
+                    1 if meter is None else 0)
+                counters["notes_in_partial_gaps"] += partial["gap_rows"]
+                counters["notes_written_in_partial_bars"] += (
+                    partial["written_rows"])
+                counters["unread_bar_marks_written"] += 1
+                if drops is not None:
+                    for _ in range(partial["gap_rows"]):
+                        drops(_GAP_REFUSAL, run.page, run.system)
+                if marks is not None:
+                    for _fam, _n in _held_bar_marks(
+                            partial["unwritten"]).items():
+                        marks[_fam] += _n
+                if meter_return_cell is not None and i == meter_return_cell:
+                    lines.append(_meter_return_direction_xml("      "))
+                    counters["meter_returns_not_read"] += 1
+                lines.extend(_direction_xml(kind, text, "      ")
+                             for _x, kind, text in directions)
+                _count_directions(counters, directions)
+                lines.extend(_partial_measure_xml(
+                    rec, run, i, partial, divisions, counters, split[1]))
+            elif held is not None:
                 # ⚠️⚠️ THE HOLD-OUT, AND IT IS NOT A MARK ON A KEPT BAR.
                 # Sean, 2026-09-23: *"hold out — I don't care about print
                 # right now — I want to know what we are getting correct."*
@@ -5798,6 +5866,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     #: separate so a reader can tell WHICH mechanism held a bar out without
     #: re-deriving it.
     marked_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.117: every held bar the partial-bar planner looked at.
+    partial_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -5894,7 +5964,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    offsets, pad, meters,
                                    drops=_drop_at_render,
                                    held_bars=held_bars, marks=held_marks,
-                                   marked_bars=marked_bars, plan=plan))
+                                   marked_bars=marked_bars, plan=plan,
+                                   partial_bars=partial_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -5909,7 +5980,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
                "two_voice_bars_held_out_by_unread_mark",
-               "bars_with_a_possible_unread_mark"):
+               "bars_with_a_possible_unread_mark",
+               "bars_partial", "notes_in_partial_gaps",
+               "notes_written_in_partial_bars", "unread_gaps_written"):
         counters[_k] += 0
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
@@ -5979,6 +6052,30 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
         "held": held_bars,
     }
+    # ⚠️⚠️ ROADMAP 2.117. REPORTED APART from `bars_held_out_sum` and from any
+    # "bars add up" figure: a partial bar's red gap is sized to fill the bar,
+    # so it adds up BY CONSTRUCTION and that proves nothing about reading.
+    _pb_mode = partial_bars_mode()
+    _planned = [b for b in partial_bars if b["status"] == "partial"]
+    _still = collections.Counter(
+        b["why"] for b in partial_bars if b["status"] == "held")
+    report["partial_bars"] = {
+        "mode": _pb_mode,
+        "written": int(counters.get("bars_partial", 0)),
+        "written_on_a_carried_meter": int(
+            counters.get("bars_partial_on_a_carried_meter", 0)),
+        "rows_written_in_partial_bars": int(
+            counters.get("notes_written_in_partial_bars", 0)),
+        "rows_in_gaps": int(counters.get("notes_in_partial_gaps", 0)),
+        "unread_gaps": int(counters.get("unread_gaps_written", 0)),
+        "planned_bars": len(_planned),
+        "planned_rows_written": sum(b["rows_written"] for b in _planned),
+        "planned_rows_in_gap": sum(b["rows_in_gap"] for b in _planned),
+        "planned_on_a_carried_meter": sum(
+            1 for b in _planned if b["meter_carried_in_file"]),
+        "stay_held_by_reason": dict(_still),
+        "bars": partial_bars,
+    }
     # ⚠️⚠️ ROADMAP 2.4c: THE SAME SHAPE, A DIFFERENT MECHANISM. A bar can be
     # held out because its durations do not sum to the meter OR because it
     # carries an unread mark (never both -- `_part_xml` tests `held is None`
@@ -6036,11 +6133,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
         "held_out_unread_mark": int(
             counters.get("bars_held_out_unread_mark", 0)),
+        "partial": int(counters.get("bars_partial", 0)),
         "written": int(counters.get("unread_bar_marks_written", 0)),
     }
     _ubm = report["unread_bar_marks"]
     _ubm_expected = (_ubm["unread"] + _ubm["held_out_sum"]
-                     + _ubm["held_out_unread_mark"])
+                     + _ubm["held_out_unread_mark"] + _ubm["partial"])
     if _ubm["written"] != _ubm_expected:
         raise Unbalanced(
             "unread-bar marks written (%d) do not equal unread (%d) + "

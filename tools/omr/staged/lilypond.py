@@ -49,6 +49,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass
+from fractions import Fraction
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
@@ -127,12 +128,15 @@ class _Bar:
     `_Bar` carries plain data so `_render_bar` cannot accidentally ask the
     record a second question the first pass already answered differently.
     """
-    kind: str                      # "tacet" | "empty" | "single" | "two_voice"
+    kind: str            # "tacet" | "empty" | "single" | "two_voice" | "partial"
     meter: Optional[Dict[str, Any]]
     clef: Optional[str] = None
     key: Optional[Dict[str, int]] = None
     events: Optional[List[Dict[str, Any]]] = None
     streams: Optional[Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]] = None
+    #: ROADMAP 2.117 (`kind == "partial"`): per voice, a list of pieces, each
+    #: `("events", [event, ...])` or `("gap", lilypond_text)`.
+    pieces: Optional[List[List[Tuple[str, Any]]]] = None
     directions: Sequence[Tuple[float, str, str]] = ()
     condensed: bool = False
     #: A fermata standing over a WHOLE-BAR measure rest (`kind == "empty"`
@@ -158,6 +162,25 @@ class _Bar:
     #: notes are written exactly as read (CLAUDE.md rule 8: cannot-tell is
     #: never converted into an answer, including "empty").
     meter_return: bool = False
+
+
+def _lily_gap_text(gap_units: int, divisions: int) -> str:
+    """The unread span as red rests, the first marked `unread` -- never a
+    plain rest (CLAUDE.md rule 8). Segments from `SX._gap_segments`."""
+    toks = []
+    for n, (u, fit) in enumerate(SX._gap_segments(gap_units, divisions)):
+        if fit is not None:
+            tok = _legacy._lily_event({"kind": "rest", "duration_type": fit[0],
+                                       "dots": fit[1]})
+        else:
+            frac = Fraction(u, divisions) / 4
+            tok = ("r1*%d" % frac.numerator if frac.denominator == 1
+                   else "r1*%d/%d" % (frac.numerator, frac.denominator))
+        t = "\\once \\override Rest.color = #red " + tok
+        if n == 0:
+            t += '^\\markup { "%s" }' % SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
+        toks.append(t)
+    return " ".join(toks)
 
 
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
@@ -274,6 +297,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
     `\\time` re-stated at an unchanged value is silent noise, never a wrong
     answer) and this is the simpler rule to read back.
     """
+    partial_mode = SX.partial_bars_mode()
     bars: List[_Bar] = []
     lane0: List[Dict[str, Any]] = []
     lane1: List[Dict[str, Any]] = []
@@ -351,6 +375,54 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             # and reused below rather than asking `_voice_split` twice.
             streams = SX._voice_split(rec, run, i, events)
             held = SX._bar_holds_out(events, streams, divisions, judged)
+            # ⚠️ ROADMAP 2.117, THE LILYPOND TWIN of `_part_xml`'s branch: the
+            # SAME planner (`SX._partial_bar_plan`), so the two files cannot
+            # disagree about which bars were kept in part.
+            partial = None
+            if held is not None and partial_mode != "off" and not condensed:
+                partial = SX._partial_bar_plan(
+                    events, streams, divisions, judged,
+                    cell.unplaced if cell else ())
+                counters["partial_plan_ok" if partial["ok"]
+                         else "partial_plan_held:" + str(partial["why"])] += 1
+            if partial is not None and partial["ok"] and partial_mode == "on":
+                counters["bars_partial"] += 1
+                counters["notes_in_partial_gaps"] += partial["gap_rows"]
+                counters["notes_written_in_partial_bars"] += (
+                    partial["written_rows"])
+                counters["unread_bar_marks_written"] += 1
+                if drops is not None:
+                    for _ in range(partial["gap_rows"]):
+                        drops(SX._GAP_REFUSAL, run.page, run.system)
+                pieces = []
+                for p in partial["streams"]:
+                    if p["status"] == "complete":
+                        pieces.append([("events", p["events"])])
+                        continue
+                    pieces.append([
+                        ("events", p["pre"]),
+                        ("gap", _lily_gap_text(p["gap_units"], divisions)),
+                        ("events", p["suf"])])
+                    counters["unread_gaps_written"] += 1
+                written_by_voice = [
+                    [e for kind_, v in pc if kind_ == "events" for e in v]
+                    for pc in pieces]
+                lane0.extend(written_by_voice[0])
+                if len(written_by_voice) > 1:
+                    lane1.extend(written_by_voice[1])
+                    counters["two_voice_bars"] += 1
+                    shared_rests = [
+                        e for e in written_by_voice[1]
+                        if e.get("kind") == "rest"
+                        and any(e is other for other in written_by_voice[0])]
+                    counters["rests_duplicated_across_voices"] += len(
+                        shared_rests)
+                    counters["fermatas_duplicated_across_voices"] += sum(
+                        1 for e in shared_rests if e.get("fermata"))
+                bars.append(_Bar("partial", meter, run.clef, key,
+                                 directions=directions, pieces=pieces,
+                                 condensed=condensed))
+                continue
             if held is not None:
                 # ⚠️ THE SAME BRANCH SHAPE AS THE EVENTLESS CASE ABOVE, AND
                 # FOR THE SAME REASON (CLAUDE.md rule 8): a bar we could not
@@ -524,6 +596,20 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
                    f'{rest}^\\markup {{ "{_ly_escape(word)}" }} |')
         return rest + " |"
     prefix = _meter_return_prefix(bar, counters)
+    if bar.kind == "partial":
+        voices = []
+        for pc in bar.pieces:
+            txt = []
+            for kind_, v in pc:
+                if kind_ == "gap":
+                    txt.append(v)
+                elif v:
+                    _tally(v, counters, bar.condensed)
+                    txt.append(_lily_measure_marked(v, wedges))
+            voices.append(" ".join(txt))
+        if len(voices) == 1:
+            return prefix + voices[0] + " |"
+        return f"{prefix}<< {{ {voices[0]} }} \\\\ {{ {voices[1]} }} >> |"
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
         return prefix + _lily_measure_marked(bar.events, wedges) + " |"
@@ -778,10 +864,11 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         "color": SX.UNREAD_BAR_MARK_COLOR,
         "unread": int(counters.get("empty_bars_padded", 0)),
         "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
+        "partial": int(counters.get("bars_partial", 0)),
         "written": int(counters.get("unread_bar_marks_written", 0)),
     }
     _ubm = report["unread_bar_marks"]
-    _ubm_expected = _ubm["unread"] + _ubm["held_out_sum"]
+    _ubm_expected = _ubm["unread"] + _ubm["held_out_sum"] + _ubm["partial"]
     if _ubm["written"] != _ubm_expected:
         raise SX.Unbalanced(
             "lilypond unread-bar marks written (%d) do not equal unread "
@@ -789,6 +876,18 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "being marked, or marked without being refused" % (
                 _ubm["written"], _ubm["unread"], _ubm["held_out_sum"],
                 _ubm_expected))
+    report["partial_bars"] = {
+        "mode": SX.partial_bars_mode(),
+        "written": int(counters.get("bars_partial", 0)),
+        "rows_written_in_partial_bars": int(
+            counters.get("notes_written_in_partial_bars", 0)),
+        "rows_in_gaps": int(counters.get("notes_in_partial_gaps", 0)),
+        "unread_gaps": int(counters.get("unread_gaps_written", 0)),
+        "planned_ok": int(counters.get("partial_plan_ok", 0)),
+        "stay_held_by_reason": {
+            k.split(":", 1)[1]: int(v) for k, v in counters.items()
+            if k.startswith("partial_plan_held:")},
+    }
     report["bars_held_out_sum"] = {
         "bars": int(counters.get("bars_held_out_sum", 0)),
         "bars_on_a_doubled_staff": int(
