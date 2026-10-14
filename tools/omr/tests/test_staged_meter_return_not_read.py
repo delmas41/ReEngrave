@@ -402,7 +402,8 @@ class TestTheMark(unittest.TestCase):
         # hold-out mark fires here. This control is about THIS mechanism
         # only: no "meter?" word, anywhere.
         words = [d.find("./direction-type/words").text
-                for d in _directions(xml)]
+                for d in _directions(xml)
+                if d.find("./direction-type/words") is not None]
         self.assertNotIn("meter?", words)
         self.assertEqual(rep["meter_returns_not_read"], 0)
         text, ly_rep = staged_lily.to_lilypond(_meter_return_page(marked=False))

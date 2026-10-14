@@ -49,6 +49,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass
+from fractions import Fraction
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
@@ -127,12 +128,17 @@ class _Bar:
     `_Bar` carries plain data so `_render_bar` cannot accidentally ask the
     record a second question the first pass already answered differently.
     """
-    kind: str                      # "tacet" | "empty" | "single" | "two_voice"
+    kind: str            # "tacet" | "empty" | "single" | "two_voice" | "partial"
     meter: Optional[Dict[str, Any]]
     clef: Optional[str] = None
     key: Optional[Dict[str, int]] = None
     events: Optional[List[Dict[str, Any]]] = None
     streams: Optional[Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]] = None
+    #: ROADMAP 2.117 (`kind == "partial"`): per voice, a list of pieces, each
+    #: `("events", [event, ...])` or `("gap", lilypond_text)`.
+    pieces: Optional[List[List[Tuple[str, Any]]]] = None
+    #: `(page, system, staff, cell)` of a partial bar, for the report/crops.
+    where: Optional[Tuple[int, int, int, int]] = None
     directions: Sequence[Tuple[float, str, str]] = ()
     condensed: bool = False
     #: A fermata standing over a WHOLE-BAR measure rest (`kind == "empty"`
@@ -158,6 +164,32 @@ class _Bar:
     #: notes are written exactly as read (CLAUDE.md rule 8: cannot-tell is
     #: never converted into an answer, including "empty").
     meter_return: bool = False
+
+
+def _lily_gap_text(gap_units: int, divisions: int,
+                   word: Optional[str] = None) -> str:
+    """The unread span: an invisible skip of its length under a red `unread`
+    bracket (a text spanner) -- NO rest glyph (rule 8; Sean 2026-10-14). The
+    zero-length skip ends the spanner at the span's end, even at the barline."""
+    return _lily_gap_text_quarters(Fraction(gap_units, divisions), word)
+
+
+def _lily_gap_text_quarters(quarters: Fraction,
+                            word: Optional[str] = None) -> str:
+    frac = Fraction(quarters) / 4
+    dur = ("%d" % frac.numerator if frac.denominator == 1
+           else "%d/%d" % (frac.numerator, frac.denominator))
+    word = word or SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
+    tick = "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
+    return (
+        "\\once \\override TextSpanner.style = #'line "
+        "\\once \\override TextSpanner.color = #red "
+        "\\once \\override TextSpanner.direction = #UP "
+        "\\once \\override TextSpanner.bound-details.left.text = " + tick
+        + "\\once \\override TextSpanner.bound-details.right.text = " + tick
+        + "\\once \\override TextSpanner.bound-details.left-broken.text = ##f "
+        "s1*%s\\startTextSpan^\\markup { \\with-color #red \"%s\" } "
+        "s1*0\\stopTextSpan" % (dur, _ly_escape(word)))
 
 
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
@@ -274,6 +306,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
     `\\time` re-stated at an unchanged value is silent noise, never a wrong
     answer) and this is the simpler rule to read back.
     """
+    partial_mode = SX.partial_bars_mode()
     bars: List[_Bar] = []
     lane0: List[Dict[str, Any]] = []
     lane1: List[Dict[str, Any]] = []
@@ -351,6 +384,56 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             # and reused below rather than asking `_voice_split` twice.
             streams = SX._voice_split(rec, run, i, events)
             held = SX._bar_holds_out(events, streams, divisions, judged)
+            # ⚠️ ROADMAP 2.117, THE LILYPOND TWIN of `_part_xml`'s branch: the
+            # SAME planner (`SX._partial_bar_plan`), so the two files cannot
+            # disagree about which bars were kept in part.
+            partial = None
+            if held is not None and partial_mode != "off" and not condensed:
+                partial = SX._partial_bar_plan(
+                    events, streams, divisions, judged,
+                    cell.unplaced if cell else ())
+                counters["partial_plan_ok" if partial["ok"]
+                         else "partial_plan_held:" + str(partial["why"])] += 1
+            if partial is not None and partial["ok"] and partial_mode == "on":
+                counters["bars_partial"] += 1
+                counters["notes_in_partial_gaps"] += partial["gap_rows"]
+                counters["notes_written_in_partial_bars"] += (
+                    partial["written_rows"])
+                counters["unread_bar_marks_written"] += 1
+                if drops is not None:
+                    for _ in range(partial["gap_rows"]):
+                        drops(SX._GAP_REFUSAL, run.page, run.system)
+                SX._mark_kept_onsets(partial)
+                pieces = []
+                for p in partial["streams"]:
+                    if p["status"] == "complete":
+                        pieces.append([("events", p["events"])])
+                        continue
+                    pieces.append([
+                        ("events", p["pre"]),
+                        ("gap", _lily_gap_text(p["gap_units"], divisions)),
+                        ("events", p["suf"])])
+                    counters["unread_gaps_written"] += 1
+                written_by_voice = [
+                    [e for kind_, v in pc if kind_ == "events" for e in v]
+                    for pc in pieces]
+                lane0.extend(written_by_voice[0])
+                if len(written_by_voice) > 1:
+                    lane1.extend(written_by_voice[1])
+                    counters["two_voice_bars"] += 1
+                    shared_rests = [
+                        e for e in written_by_voice[1]
+                        if e.get("kind") == "rest"
+                        and any(e is other for other in written_by_voice[0])]
+                    counters["rests_duplicated_across_voices"] += len(
+                        shared_rests)
+                    counters["fermatas_duplicated_across_voices"] += sum(
+                        1 for e in shared_rests if e.get("fermata"))
+                bars.append(_Bar("partial", meter, run.clef, key,
+                                 directions=directions, pieces=pieces,
+                                 condensed=condensed,
+                                 where=(run.page, run.system, run.staff, i)))
+                continue
             if held is not None:
                 # ⚠️ THE SAME BRANCH SHAPE AS THE EVENTLESS CASE ABOVE, AND
                 # FOR THE SAME REASON (CLAUDE.md rule 8): a bar we could not
@@ -517,13 +600,31 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
             # so which grob applies is read off the token itself rather than
             # guessed from the meter a second time. CONVENTION ASSUMED: `red`
             # approximates MusicXML's `#D00000`, and Sean may rename either.
-            grob = "MultiMeasureRest" if rest.startswith("R") else "Rest"
+            # ⚠️ SEAN, 2026-10-14 (ROADMAP 2.117): *"use the bracket for held
+            # bars too"* -- an invisible skip of the bar's length under a red
+            # text-spanner bracket, NO rest glyph (a rest, even red, reads as
+            # silence). The rest token above only sized the bar.
             word = SX.UNREAD_BAR_MARK_WORDS.get(bar.reason, bar.reason)
             counters["unread_bar_marks_written"] += 1
-            return (f"\\once \\override {grob}.color = #red "
-                   f'{rest}^\\markup {{ "{_ly_escape(word)}" }} |')
+            beats = Fraction(_legacy._measure_rest_beats(bar.meter)
+                             ).limit_denominator(64)
+            return _lily_gap_text_quarters(beats, word) + " |"
         return rest + " |"
     prefix = _meter_return_prefix(bar, counters)
+    if bar.kind == "partial":
+        voices = []
+        for pc in bar.pieces:
+            txt = []
+            for kind_, v in pc:
+                if kind_ == "gap":
+                    txt.append(v)
+                elif v:
+                    _tally(v, counters, bar.condensed)
+                    txt.append(_lily_measure_marked(v, wedges))
+            voices.append(" ".join(txt))
+        if len(voices) == 1:
+            return prefix + voices[0] + " |"
+        return f"{prefix}<< {{ {voices[0]} }} \\\\ {{ {voices[1]} }} >> |"
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
         return prefix + _lily_measure_marked(bar.events, wedges) + " |"
@@ -778,10 +879,11 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         "color": SX.UNREAD_BAR_MARK_COLOR,
         "unread": int(counters.get("empty_bars_padded", 0)),
         "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
+        "partial": int(counters.get("bars_partial", 0)),
         "written": int(counters.get("unread_bar_marks_written", 0)),
     }
     _ubm = report["unread_bar_marks"]
-    _ubm_expected = _ubm["unread"] + _ubm["held_out_sum"]
+    _ubm_expected = _ubm["unread"] + _ubm["held_out_sum"] + _ubm["partial"]
     if _ubm["written"] != _ubm_expected:
         raise SX.Unbalanced(
             "lilypond unread-bar marks written (%d) do not equal unread "
@@ -789,6 +891,18 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "being marked, or marked without being refused" % (
                 _ubm["written"], _ubm["unread"], _ubm["held_out_sum"],
                 _ubm_expected))
+    report["partial_bars"] = {
+        "mode": SX.partial_bars_mode(),
+        "written": int(counters.get("bars_partial", 0)),
+        "rows_written_in_partial_bars": int(
+            counters.get("notes_written_in_partial_bars", 0)),
+        "rows_in_gaps": int(counters.get("notes_in_partial_gaps", 0)),
+        "unread_gaps": int(counters.get("unread_gaps_written", 0)),
+        "planned_ok": int(counters.get("partial_plan_ok", 0)),
+        "stay_held_by_reason": {
+            k.split(":", 1)[1]: int(v) for k, v in counters.items()
+            if k.startswith("partial_plan_held:")},
+    }
     report["bars_held_out_sum"] = {
         "bars": int(counters.get("bars_held_out_sum", 0)),
         "bars_on_a_doubled_staff": int(
@@ -831,6 +945,12 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "per-reason total (%d) after rendering -- a refusal reaches one "
             "counter and not the other" % (_by_sys_total, sum(dropped.values())))
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ ROADMAP 2.116. The STAGED twin of `staged.export.to_musicxml`'s own
+    # `unboxed_placed`: a rest read off unboxed ink (2.99) is placed in a bar
+    # and written, but no detector row announced it, so it joins the log side
+    # BY NAME. Without it every record holding one raised `Unbalanced` here
+    # (20261013-night: 125 on Litolff, 450 on Brahms) while MusicXML balanced.
+    unboxed_placed = int(provenance.get("unboxed_rests_placed", 0))
     duplicated = int(counters.get("rests_duplicated_across_voices", 0))
     doubled_to_condensed = int(
         counters.get("notes_doubled_to_condensed_slot", 0))
@@ -839,17 +959,20 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
                - doubled_to_condensed)
     report["balance"] = {
         "events_in_log": events_in_log,
+        "unboxed_rests_placed": unboxed_placed,
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
         "rests_duplicated_across_voices": duplicated,
         "notes_doubled_to_condensed_slot": doubled_to_condensed,
         "events_not_written": report["notes_not_written_total"],
-        "balanced": events_in_log == written + report["notes_not_written_total"],
+        "balanced": (events_in_log + unboxed_placed
+                     == written + report["notes_not_written_total"]),
     }
     if not report["balance"]["balanced"]:
         raise SX.Unbalanced(
-            f"lilypond: {events_in_log} noteheads+rests in the log, {written} "
+            f"lilypond: {events_in_log} noteheads+rests in the log (+"
+            f"{unboxed_placed} read off unboxed ink), {written} "
             f"written and {report['notes_not_written_total']} accounted as "
             f"dropped -- the difference went nowhere. "
             f"{report['notes_not_written']}")

@@ -113,6 +113,32 @@ def relocate_at_export_enabled() -> bool:
         "1", "true", "yes", "on")
 
 
+#: ROADMAP 2.117 (Sean, 2026-10-14: *"I want to make sure that the measure
+#: math isn't keeping us from getting info. If we have a bar and know that
+#: there is a quarter note in the measure on beat 1, I don't want that [lost]
+#: because we can't figure out beat 3."*). A bar whose voices do not sum to
+#: the meter keeps what was read on either side of its unread span.
+#: `1`/`true`/`yes`/`on` writes it; `measure` PLANS it and reports what it
+#: would have written but writes the file exactly as OFF does (the
+#: measurement-first step of the item); anything else is OFF.
+PARTIAL_BARS_ENV = "OMR_PARTIAL_BARS"
+
+
+def partial_bars_mode() -> str:
+    """`"on"` (DEFAULT, Sean 2026-10-14: *"Land 2.117 on"*), `"measure"` (plans
+    and reports only) or `"off"` (`0`/`off`/`false`/`no`). Read once per part,
+    never per bar. Unset means on; a value that is set but unknown is OFF (an
+    allow-list, like every flag here)."""
+    v = os.environ.get(PARTIAL_BARS_ENV, "").strip().lower()
+    if v == "":
+        return "on"
+    if v in ("1", "true", "yes", "on"):
+        return "on"
+    if v == "measure":
+        return "measure"
+    return "off"
+
+
 def whole_rest_ink_enabled() -> bool:
     """`OMR_WHOLE_REST_INK` — refuse to write a NOTE where the record says the
     ink is a whole rest (`Q.NOTEHEAD_IS_A_WHOLE_REST`).
@@ -436,6 +462,12 @@ class Cell:
     #: the WIDTH form `_merge_arcs_across_barlines` reads -- see `_place_arcs`
     #: for why the record's own corner form is converted here and not there.
     arcs: List[Tuple[str, List[float]]] = field(default_factory=list)
+    #: ROADMAP 2.117. Glyphs of THIS bar that `_place_notes` refused to write
+    #: and that may be a real symbol of this staff (`_attach_unplaced`): each
+    #: `{"sub", "reason", "x", "w"}` with `x` the box centre in the same
+    #: canonical frame as an event's `x_position`. EMPTY unless
+    #: `OMR_PARTIAL_BARS` is on or `measure`; nothing else reads it.
+    unplaced: List[Dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -692,6 +724,8 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
                            held_out=held_out_runs, relocated=relocated_out,
                            fates=fates, divisi=divisi_out)
+    if partial_bars_mode() != "off":
+        _attach_unplaced(rec, runs, fates)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -3831,8 +3865,14 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               held_bars: Optional[List[Dict[str, Any]]] = None,
               marks: Optional[Dict[str, int]] = None,
               marked_bars: Optional[List[Dict[str, Any]]] = None,
-              plan: Optional["_EndingPlan"] = None) -> str:
+              plan: Optional["_EndingPlan"] = None,
+              partial_bars: Optional[List[Dict[str, Any]]] = None) -> str:
     """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ `partial_bars` IS ROADMAP 2.117: one entry per bar `_bar_holds_out`
+    refused while `OMR_PARTIAL_BARS` is `measure` or `on`, saying whether it
+    was kept in part (`status: "partial"`) or stays held (`status: "held"`,
+    with the reason). In `measure` mode the file is written exactly as OFF.
 
     ⚠️ `marked_bars` IS ROADMAP 2.4c, THE SAME SHAPE AS `held_bars` ONE
     PARAGRAPH DOWN AND A SEPARATE LIST ON PURPOSE. A bar can be held out for
@@ -3896,6 +3936,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     tacet bar.
     """
     lines = [f'  <part id="{pid}">']
+    partial_mode = partial_bars_mode()
     plan = plan or _EndingPlan()
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
@@ -4072,7 +4113,72 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     1 if _bar_quarters(judged) is None else 0)
                 counters["bars_judged_by_a_carried_meter"] += (
                     1 if meter is None and judged is not None else 0)
-            if held is not None:
+            # ⚠️⚠️ ROADMAP 2.117, DECIDED before any line of the bar is
+            # written, as 2.8's own test above is. Planned for every held bar
+            # when the flag is `measure` or `on`; only `on` writes it.
+            partial = None
+            if held is not None and partial_mode != "off":
+                if run.condensed_from is not None:
+                    partial = {"ok": False, "why": "doubled_staff_copy"}
+                else:
+                    partial = _partial_bar_plan(
+                        events, split[0], divisions, judged,
+                        cell_here.unplaced if cell_here else ())
+                    if partial_bars is not None:
+                        partial_bars.append({
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": (number if base is None
+                                        else plan.number(_here, i, base)),
+                            "part": pid,
+                            "status": "partial" if partial["ok"] else "held",
+                            "why": partial.get("why"),
+                            "unread_glyphs": [
+                                u["reason"] for u in
+                                (cell_here.unplaced if cell_here else ())],
+                            "meter_carried_in_file": meter is None,
+                            "two_voice": split[0] is not None,
+                            "events": len(events),
+                            "rows": _bar_event_rows(events),
+                            "rows_written": partial.get("written_rows", 0),
+                            "rows_in_gap": partial.get("gap_rows", 0),
+                            "prefix_events": [len(q.get("pre", ()))
+                                              for q in partial.get("streams", ())],
+                            "suffix_events": [len(q.get("suf", ()))
+                                              for q in partial.get("streams", ())],
+                            "gap_quarters": (
+                                round(partial["gap_units"] / divisions, 6)
+                                if partial["ok"] else None)})
+            if partial is not None and partial["ok"] and partial_mode == "on":
+                # ⚠️⚠️ ROADMAP 2.117 (Sean, 2026-10-14). KEPT where certain:
+                # prefix from the opening barline, suffix back from the
+                # closing one, only the span between a red `unread` rest.
+                # Every row in the gap is COUNTED under `_GAP_REFUSAL`, so
+                # the accounting equality still balances; the bar sum sizes
+                # the span and supplies no note, pitch or value.
+                counters["bars_partial"] += 1
+                counters["bars_partial_on_a_carried_meter"] += (
+                    1 if meter is None else 0)
+                counters["notes_in_partial_gaps"] += partial["gap_rows"]
+                counters["notes_written_in_partial_bars"] += (
+                    partial["written_rows"])
+                counters["unread_bar_marks_written"] += 1
+                if drops is not None:
+                    for _ in range(partial["gap_rows"]):
+                        drops(_GAP_REFUSAL, run.page, run.system)
+                if marks is not None:
+                    for _fam, _n in _held_bar_marks(
+                            partial["unwritten"]).items():
+                        marks[_fam] += _n
+                if meter_return_cell is not None and i == meter_return_cell:
+                    lines.append(_meter_return_direction_xml("      "))
+                    counters["meter_returns_not_read"] += 1
+                lines.extend(_direction_xml(kind, text, "      ")
+                             for _x, kind, text in directions)
+                _count_directions(counters, directions)
+                lines.extend(_partial_measure_xml(
+                    rec, run, i, partial, divisions, counters, split[1]))
+            elif held is not None:
                 # ⚠️⚠️ THE HOLD-OUT, AND IT IS NOT A MARK ON A KEPT BAR.
                 # Sean, 2026-09-23: *"hold out — I don't care about print
                 # right now — I want to know what we are getting correct."*
@@ -4732,24 +4838,19 @@ def _marked_empty_measure(reason: str, time_sig: Optional[Dict[str, Any]],
     `to_musicxml` to equal the three reasons summed, and never touches
     `direction_words` or `dynamics`.
     """
+    # ⚠️⚠️ SEAN, 2026-10-14: *"use the bracket for held bars too"* (ROADMAP
+    # 2.117). A bar we could not read is an empty red bracket labelled with
+    # the word over an INVISIBLE `<forward>` of the bar's length -- NO
+    # `<rest>`, because a rest, even red, reads as silence (rule 8). The
+    # legacy renderer still sizes the bar and carries the marks; its final
+    # element (the whole-bar rest) is the one thing dropped.
     lines = _legacy._mxl_empty_measure(time_sig, divisions, directions, indent)
-    prefix = f"{indent}<note>"
-    marked: List[str] = []
-    for line in lines:
-        if line.startswith(prefix):
-            marked.append(f'{indent}<note color="{UNREAD_BAR_MARK_COLOR}">'
-                          + line[len(prefix):])
-        else:
-            marked.append(line)
+    beats = _legacy._mxl_measure_rest(time_sig)[0]
+    units = int(round(beats * divisions))
     word = UNREAD_BAR_MARK_WORDS.get(reason, reason)
-    marker = (f'{indent}<direction placement="above">\n'
-             f"{indent}  <direction-type>\n"
-             f"{indent}    <words>{_legacy._xml_escape(word)}</words>\n"
-             f"{indent}  </direction-type>\n"
-             f"{indent}</direction>")
     if counters is not None:
         counters["unread_bar_marks_written"] += 1
-    return [marker] + marked
+    return lines[:-1] + _gap_xml(units, 1, indent, word)
 
 
 #: ROADMAP 2.12k. `_meter_return_marker` reads `Q.METER`'s FULL verdict (not
@@ -5071,6 +5172,381 @@ def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
         if ev.get("rest"):
             n += 1
     return n
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.117 -- a bar that does not add up keeps what was read
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGE: EXPORT, STAGED path only (CLAUDE.md §3). Fenced functions:
+# `partial_bars_mode`, `_attach_unplaced`, `_partial_bar_plan`,
+# `_plan_one_stream`, `_scrub_cut_beams`, `_mark_kept_onsets`, `_gap_xml`,
+# `_unread_bracket_xml`, `_unread_gap_direction_xml`, `_partial_measure_xml`, and the one branch in
+# `_part_xml` / `lilypond._collect_bars` that calls them.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (Sean, 2026-10-14
+# asked for this; the encoding below is NOT confirmed by him):
+#   * ASSUMED: an event's ONSET is certain when every event before it in its
+#     voice (back to the opening barline) was read with a certain DURATION and
+#     no unread glyph lies before it in x -- and, symmetrically, a trailing
+#     event's onset is certain when every later event (up to the closing
+#     barline) was read the same way and the bar's length is known. Only the
+#     span between is unread. A bar sum never SUPPLIES a value here: it only
+#     sizes the span we say we could not read (the way a held-out bar's rest
+#     is sized), and the span is drawn red and worded "unread".
+#   * FALSIFIED BY: a print crop where a written prefix/suffix event sits at
+#     the wrong beat (a note the detector MISSED before it, which the old
+#     hold-out would also not have seen unless the bar was short), or a gap the
+#     print shows holding no music. Sean reads the side-by-side crops.
+#   * SEAN, 2026-10-14: the gap is an empty red bracket over an invisible
+#     span (no rest glyph), the kept notes are written blue (GUESSED).
+#   * NOT CONFIRMED: that a duration-GUESSED event ends a prefix (its onset is certain,
+#     the next one's is not); that a refused glyph the detector boxed too
+#     narrow counts as a possible head (strict) rather than ink.
+
+#: ROADMAP 2.117. A glyph EXPORT refused inside a partial bar's gap. Its own
+#: name so a reader can tell "the bar did not add up" from "this was the
+#: unread span of a bar we kept the rest of".
+_GAP_REFUSAL = "unread_gap_in_partial_bar"
+UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL] = "unread"
+
+#: Refusals that say the box is NOT an unread symbol of THIS staff's bar: the
+#: ink was positively identified as something else, or is a duplicate of a box
+#: that stands for it (a duplicate whose twin was itself refused is in the
+#: list through the twin), or belongs to another staff / no bar at all. Every
+#: OTHER refusal (a narrowed or abstained duration, a pitch not read, a box
+#: too narrow or clipped to be sure, an owner not read, ink read as a whole
+#: rest) may be a real head or rest, so it marks a place we cannot be sure of.
+#: ⚠️ `too_narrow` stays a GAP: Sean read one such box as a real eighth rest
+#: (2.80 tile 1).
+_NOT_A_GAP_REASONS = frozenset({
+    "owned_by_another_staff", "mark_group_duplicate",
+    "not_a_notehead:belongs_to_a_nearer_staff",
+    "not_a_notehead:stacked_head_duplicate",
+    "not_a_notehead:notehead_is_a_duplicate_box",
+    "not_a_rest:rest_is_a_duplicate_box",
+    "not_a_notehead:is_a_time_signature_digit",
+    "not_a_notehead:is_a_meter_digit", "not_a_rest:rest_is_a_meter_digit",
+    "not_a_notehead:is_a_clef", "not_a_notehead:is_a_dot",
+    "not_a_notehead:is_a_beam_piece", "not_a_notehead:on_a_barline",
+    "not_a_rest:rest_is_a_barline",
+    "not_a_notehead:tremolo_slash_crosses_stem",
+    "not_a_notehead:on_a_dynamic_letter", "not_a_rest:rest_has_a_stem",
+    "not_a_rest:rest_in_a_key_signature_slot",
+    "not_a_notehead:notehead_in_a_key_signature_slot",
+    "cell_past_the_last_bar", "bar_count_not_decided",
+    "staff_not_identified", "owner_staff_has_no_measures",
+    "relocation_collides",
+})
+
+
+def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
+                     fates: Dict[str, str]) -> None:
+    """File every refused glyph that may be a real symbol onto its bar's
+    `Cell.unplaced` (ROADMAP 2.117). Reads `fates` -- `_place_notes`' own
+    per-subject ledger -- and the glyph's box; decides nothing.
+
+    ⚠️ A bar with no written event has no `Cell`, and needs none: it exports
+    as unread already. A head the owner staff holds is in
+    `_NOT_A_GAP_REASONS`, not a gap on this staff.
+    """
+    boxes = {o["subject"]: o["value"] for o in rec.obs_of(Q.GLYPH_BOX)}
+    for sub, reason in fates.items():
+        if reason in ("written", "written_relocated") \
+                or reason in _NOT_A_GAP_REASONS:
+            continue
+        v = boxes.get(sub)
+        if not v or len(v) != 5:
+            continue
+        s = _parse_subject(sub)
+        run = runs.get(_staff_key(s["page"] or 0, s["system"] or 0,
+                                  s["staff"] or 0))
+        if run is None:
+            continue
+        cell = run.cells.get(s["cell"] or 0)
+        if cell is None:
+            continue
+        _name, x, _y, w, _h = v
+        cell.unplaced.append({"sub": sub, "reason": reason,
+                              "x": float(x) + float(w) / 2.0,
+                              "w": float(w)})
+
+
+def _event_duration_certain(ev: Dict[str, Any]) -> bool:
+    """True where the event's DURATION was read (not an INFER collapse). A
+    guessed duration leaves its own end -- and so every later onset -- unsure."""
+    if ev.get("kind") == "rest":
+        g = (ev.get("rest") or {}).get("guess")
+        return not (g and g.get("quantity") == Q.DURATION)
+    for h in ev.get("noteheads") or ():
+        g = h.get("guess")
+        if g and g.get("quantity") == Q.DURATION:
+            return False
+    return True
+
+
+def _event_in_tuplet(ev: Dict[str, Any]) -> bool:
+    return any(isinstance(h.get("tuplet"), dict)
+               for h in ev.get("noteheads") or ())
+
+
+def _plan_one_stream(stream: List[Dict[str, Any]], want: int, divisions: int,
+                     gap_xs: Sequence[float], tol: float) -> Dict[str, Any]:
+    """One voice of a bar that does not add up: its prefix, its middle (read
+    but unanchorable) and its suffix, or the reason it cannot be split."""
+    stream = sorted(stream, key=lambda e: float(e.get("x_position") or 0))
+    units = [_event_units(e, divisions) for e in stream]
+    total = sum(units)
+    lone = (len(stream) == 1
+            and bool((stream[0].get("rest") or {}).get("measure_rest")))
+    if lone:
+        if total == want:
+            return {"status": "complete", "events": stream}
+        return {"status": "hold", "why": "measure_rest_length_disagrees"}
+    if total == want:
+        return {"status": "complete", "events": stream}
+    if total > want:
+        return {"status": "hold", "why": "voice_overfull"}
+    if not gap_xs:
+        # ⚠️ THE GAP CANNOT BE LOCATED. A note the detector never boxed may be
+        # anywhere in the bar, before the first event as well as after the
+        # last, so no onset here is certain. Held, as before.
+        return {"status": "hold", "why": "short_without_an_unread_symbol"}
+    lo, hi = min(gap_xs) - tol, max(gap_xs) + tol
+    pre: List[int] = []
+    for k, e in enumerate(stream):
+        if float(e.get("x_position") or 0) >= lo:
+            break
+        pre.append(k)
+        if not _event_duration_certain(e):
+            break
+    suf: List[int] = []
+    for k in range(len(stream) - 1, -1, -1):
+        if k in pre or float(stream[k].get("x_position") or 0) <= hi:
+            break
+        suf.append(k)
+        if not _event_duration_certain(stream[k]):
+            break
+    suf.reverse()
+    # A tuplet group the gap cut is not written half-way: the run of tuplet
+    # events touching the gap must be a whole number of its ratio's members.
+    def _actual(i: int) -> int:
+        t = next((h["tuplet"] for h in stream[i].get("noteheads") or ()
+                  if isinstance(h.get("tuplet"), dict)), None)
+        return max(1, int((t or {}).get("actual", 3)))
+
+    if pre and _event_in_tuplet(stream[pre[-1]]):
+        run = 0
+        while run < len(pre) and _event_in_tuplet(stream[pre[-1 - run]]):
+            run += 1
+        if run % _actual(pre[-1]) != 0:
+            del pre[len(pre) - run:]
+    if suf and _event_in_tuplet(stream[suf[0]]):
+        run = 0
+        while run < len(suf) and _event_in_tuplet(stream[suf[run]]):
+            run += 1
+        if run % _actual(suf[0]) != 0:
+            del suf[:run]
+    kept = set(pre) | set(suf)
+    gap = want - sum(units[k] for k in kept)
+    mid = [stream[k] for k in range(len(stream)) if k not in kept]
+    if gap <= 0:
+        return {"status": "hold", "why": "gap_not_positive"}
+    return {"status": "partial" if kept else "gap_only", "events": stream,
+            "pre": [stream[k] for k in pre], "mid": mid,
+            "suf": [stream[k] for k in suf], "gap_units": gap}
+
+
+def _partial_bar_plan(events: List[Dict[str, Any]],
+                      streams: Optional[List[List[Dict[str, Any]]]],
+                      divisions: int, meter: Optional[Dict[str, Any]],
+                      unplaced: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """ROADMAP 2.117. For a bar `_bar_holds_out` refused: what to keep.
+
+    Returns `{"ok": False, "why": ...}` (the bar stays held, with the reason)
+    or `{"ok": True, "streams": [...], "written": [...events], "unwritten":
+    [...], "written_rows", "gap_rows", "gap_units"}`. PURE: reads events,
+    streams and unread-glyph positions; never writes anything.
+    """
+    want_q = _bar_quarters(meter)
+    if want_q is None:
+        return {"ok": False, "why": "no_bar_length"}
+    want = int(round(want_q * divisions))
+    widths = [float((h.get("bbox") or [0, 0, 0, 0])[2])
+              for ev in events for h in (ev.get("noteheads") or ())]
+    tol = 0.6 * (sum(widths) / len(widths)) if widths else 30.0
+    gap_xs = [float(u["x"]) for u in unplaced]
+    per = [_plan_one_stream(st, want, divisions, gap_xs, tol)
+           for st in (streams if streams is not None else [events])]
+    held = [p for p in per if p["status"] == "hold"]
+    if held:
+        return {"ok": False, "why": held[0]["why"]}
+    written_ids = set()
+    for p in per:
+        for e in (p["events"] if p["status"] == "complete"
+                  else p["pre"] + p["suf"]):
+            written_ids.add(id(e))
+    written = [e for e in events if id(e) in written_ids]
+    unwritten = [e for e in events if id(e) not in written_ids]
+    written_rows = _bar_event_rows(written)
+    gap_rows = _bar_event_rows(unwritten)
+    if written_rows + gap_rows != _bar_event_rows(events):
+        return {"ok": False, "why": "streams_do_not_partition_the_events"}
+    if written_rows == 0:
+        return {"ok": False, "why": "nothing_before_or_after_the_gap"}
+    return {"ok": True, "streams": per, "two_voice": streams is not None,
+            "written": written, "unwritten": unwritten,
+            "written_rows": written_rows, "gap_rows": gap_rows,
+            "gap_units": sum(p.get("gap_units", 0) for p in per),
+            "want_units": want}
+
+
+def _scrub_cut_beams(portion: List[Dict[str, Any]]) -> None:
+    """Take the beam marks off events whose beam group the gap cut in two (a
+    `begin` with no `end` at the gap's near edge, a `continue`/`end` with no
+    `begin` at its far edge): a beam drawn into an unread span is a claim
+    about notes we did not read. Events keep their flags."""
+    open_grp: List[Dict[str, Any]] = []
+    orphan = False
+    for ev in portion:
+        st = (ev.get("beam_states") or {}).get(1)
+        if st == "begin":
+            open_grp = [ev]
+            orphan = False
+        elif st == "continue":
+            if open_grp:
+                open_grp.append(ev)
+            else:
+                ev.pop("beam_states", None)
+                orphan = True
+        elif st == "end":
+            if open_grp:
+                open_grp = []
+            else:
+                ev.pop("beam_states", None)
+                orphan = False
+        elif open_grp or orphan:
+            # a non-beamed event inside a "group" means the group ended
+            # without an `end` mark
+            for g in open_grp:
+                g.pop("beam_states", None)
+            open_grp = []
+            orphan = False
+    for g in open_grp:
+        g.pop("beam_states", None)
+
+
+def _mark_kept_onsets(plan: Dict[str, Any]) -> None:
+    """Sean, 2026-10-14: *"write kept notes blue"*. Every event kept in a
+    partial bar's prefix/suffix is GUESSED (2.103): its beat rests on no note
+    having been missed before it (prefix) / after it (suffix). An event that
+    already carries a guess keeps its own; the rule is named apart so the
+    report counts these apart from ordinary guesses."""
+    for p in plan["streams"]:
+        if p["status"] == "complete":
+            continue
+        for side, rule in (("pre", "onset_from_partial_bar_prefix"),
+                           ("suf", "onset_from_partial_bar_suffix")):
+            for ev in p[side]:
+                g = {"stage": "EXPORT", "rule": rule, "quantity": "onset",
+                     "candidates": [], "chosen": {}}
+                if ev.get("kind") == "rest":
+                    det = ev.get("rest")
+                    if isinstance(det, dict) and not det.get("guess"):
+                        det["guess"] = dict(g)
+                    continue
+                for h in ev.get("noteheads") or ():
+                    if not h.get("guess"):
+                        h["guess"] = dict(g)
+
+
+def _unread_bracket_xml(kind: str, number: int, indent: str = "      "
+                        ) -> str:
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <bracket type="{kind}" number="{number}" '
+            f'line-end="down" end-length="12" line-type="solid" '
+            f'color="{UNREAD_BAR_MARK_COLOR}"/>\n'
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
+def _unread_gap_direction_xml(indent: str = "      ",
+                              word: Optional[str] = None) -> str:
+    word = word or UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL]
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">'
+            f"{_legacy._xml_escape(word)}</words>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
+def _gap_xml(units: int, voice: int, indent: str = "      ",
+             word: Optional[str] = None) -> List[str]:
+    """The unread span: a red `unread` bracket over an INVISIBLE `<forward>`
+    of the span's length -- no `<rest>` and no `<note>`, because a rest, even
+    red, reads as silence (rule 8; Sean 2026-10-14)."""
+    return [_unread_bracket_xml("start", voice, indent),
+            _unread_gap_direction_xml(indent, word),
+            f"{indent}<forward>\n{indent}  <duration>{units}</duration>\n"
+            f"{indent}  <voice>{voice}</voice>\n{indent}</forward>",
+            _unread_bracket_xml("stop", voice, indent)]
+
+
+def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
+                         plan: Dict[str, Any], divisions: int,
+                         counters: Dict[str, int],
+                         why: Sequence[str]) -> List[str]:
+    """The MusicXML of a partial bar: per voice, prefix, red unread rest(s),
+    suffix; a voice that adds up is written as `_measure_xml` writes it."""
+    per = plan["streams"]
+    _mark_kept_onsets(plan)
+    for p in per:
+        _annotate_beams_for(rec, run, cell_index, p["events"], counters)
+        if p["status"] != "complete":
+            _scrub_cut_beams(p["pre"])
+            _scrub_cut_beams(p["suf"])
+    if not plan["two_voice"]:
+        for reason in why:
+            counters["two_voice_bars_refused_" + reason] += 1
+    else:
+        counters["two_voice_bars"] += 1
+        if DIVISI_FROM_EXPORTER_STEMS in why:
+            counters["two_voice_bars_from_exporter_stems"] += 1
+
+    def _render(p: Dict[str, Any], voice: int) -> Tuple[List[str], int]:
+        if p["status"] == "complete":
+            return _measure_events_xml(p["events"], divisions, counters,
+                                       voice=voice)
+        out, units = _measure_events_xml(p["pre"], divisions, counters,
+                                         voice=voice)
+        out.extend(_gap_xml(p["gap_units"], voice))
+        units += p["gap_units"]
+        counters["unread_gaps_written"] += 1
+        counters["unread_gap_units"] += p["gap_units"]
+        suf, su = _measure_events_xml(p["suf"], divisions, counters,
+                                      voice=voice)
+        return out + suf, units + su
+
+    def _written(p: Dict[str, Any]) -> List[Dict[str, Any]]:
+        return p["events"] if p["status"] == "complete" else p["pre"] + p["suf"]
+
+    lines, units = _render(per[0], 1)
+    if len(per) > 1:
+        if units > 0:
+            lines.append("      <backup>\n"
+                         f"        <duration>{units}</duration>\n"
+                         "      </backup>")
+        second, _ = _render(per[1], 2)
+        lines.extend(second)
+        w0 = _written(per[0])
+        shared = [ev for ev in _written(per[1]) if ev.get("kind") == "rest"
+                  and any(ev is other for other in w0)]
+        counters["rests_duplicated_across_voices"] += len(shared)
+        counters["fermatas_duplicated_across_voices"] += sum(
+            1 for ev in shared if (ev.get("rest") or {}).get("fermata"))
+    return lines
 
 
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
@@ -5406,6 +5882,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     #: separate so a reader can tell WHICH mechanism held a bar out without
     #: re-deriving it.
     marked_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.117: every held bar the partial-bar planner looked at.
+    partial_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -5502,7 +5980,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    offsets, pad, meters,
                                    drops=_drop_at_render,
                                    held_bars=held_bars, marks=held_marks,
-                                   marked_bars=marked_bars, plan=plan))
+                                   marked_bars=marked_bars, plan=plan,
+                                   partial_bars=partial_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -5517,7 +5996,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
                "two_voice_bars_held_out_by_unread_mark",
-               "bars_with_a_possible_unread_mark"):
+               "bars_with_a_possible_unread_mark",
+               "bars_partial", "notes_in_partial_gaps",
+               "notes_written_in_partial_bars", "unread_gaps_written"):
         counters[_k] += 0
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
@@ -5587,6 +6068,30 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
         "held": held_bars,
     }
+    # ⚠️⚠️ ROADMAP 2.117. REPORTED APART from `bars_held_out_sum` and from any
+    # "bars add up" figure: a partial bar's red gap is sized to fill the bar,
+    # so it adds up BY CONSTRUCTION and that proves nothing about reading.
+    _pb_mode = partial_bars_mode()
+    _planned = [b for b in partial_bars if b["status"] == "partial"]
+    _still = collections.Counter(
+        b["why"] for b in partial_bars if b["status"] == "held")
+    report["partial_bars"] = {
+        "mode": _pb_mode,
+        "written": int(counters.get("bars_partial", 0)),
+        "written_on_a_carried_meter": int(
+            counters.get("bars_partial_on_a_carried_meter", 0)),
+        "rows_written_in_partial_bars": int(
+            counters.get("notes_written_in_partial_bars", 0)),
+        "rows_in_gaps": int(counters.get("notes_in_partial_gaps", 0)),
+        "unread_gaps": int(counters.get("unread_gaps_written", 0)),
+        "planned_bars": len(_planned),
+        "planned_rows_written": sum(b["rows_written"] for b in _planned),
+        "planned_rows_in_gap": sum(b["rows_in_gap"] for b in _planned),
+        "planned_on_a_carried_meter": sum(
+            1 for b in _planned if b["meter_carried_in_file"]),
+        "stay_held_by_reason": dict(_still),
+        "bars": partial_bars,
+    }
     # ⚠️⚠️ ROADMAP 2.4c: THE SAME SHAPE, A DIFFERENT MECHANISM. A bar can be
     # held out because its durations do not sum to the meter OR because it
     # carries an unread mark (never both -- `_part_xml` tests `held is None`
@@ -5644,11 +6149,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
         "held_out_unread_mark": int(
             counters.get("bars_held_out_unread_mark", 0)),
+        "partial": int(counters.get("bars_partial", 0)),
         "written": int(counters.get("unread_bar_marks_written", 0)),
     }
     _ubm = report["unread_bar_marks"]
     _ubm_expected = (_ubm["unread"] + _ubm["held_out_sum"]
-                     + _ubm["held_out_unread_mark"])
+                     + _ubm["held_out_unread_mark"] + _ubm["partial"])
     if _ubm["written"] != _ubm_expected:
         raise Unbalanced(
             "unread-bar marks written (%d) do not equal unread (%d) + "

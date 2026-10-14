@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.115 LANDED, switched ON: part-boxed notehead re-centre (Sean: "Land 2.115 on")
+
+STAGED GATHER. `gather.recentre_part_boxed_on_page` re-centres a notehead box drawn on only part of the head on the page raster (staff-line rows left out) before `Q.NOTEHEAD_INK` reads its inside; `OMR_RECENTRE_PART_BOXED` now defaults ON (`=0` turns it off). Sean's 6 blind tiles: 3 changed heads all moved toward his answer, 2 black controls right, 1 was a tremolo slash (not a note). Caveat: windows chosen on the same two pages. Fast tier 7796 passed; check open=192 (not up). `benchmarks/omr-head-recentre-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.116 LANDED: STAGED LilyPond export balanced again (Sean: "Land 2.116")
+
+- STAGED, EXPORT. `lilypond.to_lilypond` adds `provenance["unboxed_rests_placed"]` (2.99) to the log side of its balance check, as `export.to_musicxml` did; the `Unbalanced` raise stays. Broken by 8b69501f (2.99); the 2026-10-13 overnight exported no .ly. Tests `test_staged_unboxed_rest_2_99.py`, slow `test_staged_lilypond_whole_movement_2_116.py`. FINDINGS `benchmarks/omr-lily-export-2026-10`.
+
 ## 2026-10-13 -- ROADMAP 2.107 LANDED with blue `dyn.` only (Sean: "land with blue dyn only")
 
 - STAGED, INFER + EXPORT. `collapse_dynamic_by_ink` moved from `ALWAYS_ON` to default-OFF research flag `OMR_DYNAMIC_INK_PICK` (allow-list; `docs/flags-2026-09.md`): the ink pick was wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). A narrowed dynamic exports only as a blue `dyn.` with every candidate and the ink scores in the `reengrave:guessed` carrier. `test_dynamic_guess_2_107.py` + `test_infer_stage.py` updated. Opened ROADMAP 2.109 (STAGED LilyPond writes no dynamics). Fast tier 7,751 passed; check 192, margins 0; judged index rebuilt.
@@ -6125,3 +6133,12 @@ HAND-TRUTH pre-fill + STAGED ADJUDICATE. Cause: the hand-truth session cuts regi
 
 ## 2026-10-13 · 2.108 landed
 `OFF_STAFF_REACH_SPACES` 6.0: STAGED `off_staff_glyph` + hand-truth pre-fill + `prune-off-staff`. Sean's 10 blind tiles: all 6 refused boxes letters, 3 far-note controls kept, tile 9 a known harmless slip. FINDINGS in `benchmarks/omr-notehead-precision-2026-09`.
+
+## 2026-10-14 -- ROADMAP 2.117 partial bars (lane-2.117-partial-bars, NOT merged; crops with Sean)
+STAGED EXPORT, flag `OMR_PARTIAL_BARS` off|measure|1. A held bar keeps prefix + suffix around a red `unread` rest located by a refused glyph's box x; a short bar with no refused glyph stays held. Brahms 765/1,822 bars partial (+1,163 notes), Litolff 156/861 (+212); `bars_add_up` passes partial bars by construction so they are reported apart. FINDINGS in `benchmarks/omr-partial-bars-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.117 landed ON (partial bars + bracket for every unread bar)
+`OMR_PARTIAL_BARS` default on. A bar that does not add up keeps its prefix/suffix in blue; every unread bar (partial gap, held out whole, eventless) is an empty red `unread` bracket over an invisible `<forward>` / skip, never a rest; bars READ as silent (decided whole rest, tacet) keep their rest. Litolff 156 partial / 705 held, Brahms 765 / 1,057. Sean: "Land 2.117 on, use the bracket for held bars too". FINDINGS `benchmarks/omr-partial-bars-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.114 landed, switch OFF (second hollow-only detector at GATHER)
+STAGED GATHER + ADJUDICATE, flag `OMR_SECOND_HOLLOW_DETECTOR` default OFF (`gather.gather_second_hollow`, `staged/second_hollow.py`, 2.114 blocks in `rhythm.adjudicate_duration`, `Q.SECOND_HOLLOW`). Only hollow-head boxes are kept; OFF is byte-identical and never builds the detector; ON with `omr-weights/candidates/scale2110-OLD896-raw-2026-10-13.pt` (gitignored, machine-local) missing RAISES (new test). Clean Litolff hollow recall 74% -> 80%, Brahms 33/33, other glyphs identical; a second-only head needs a stem/dot witness. Fast tier 7,848 passed; `check` 192. Merge note: `benchmarks/acceptance/judged-tiles.json` is derived -- union then `judged build`.

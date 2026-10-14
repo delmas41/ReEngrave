@@ -167,6 +167,12 @@ class TestGatherFilesASeparateWitness(unittest.TestCase):
                             for a in log.refusals(Q.SECOND_HOLLOW, R.cell(0, 0, 0, 0))))
         self.assertEqual(_dump_without_second(log), _dump_without_second(self.base))
 
+    def test_flag_ON_with_the_weights_missing_RAISES_loudly(self):
+        # the weights are gitignored and machine-local: ON without them is an error, never a silent "no second detector"
+        with mock.patch.dict(os.environ, {SH.ENV: "1"}), mock.patch.object(SH, "default_weights_path", return_value=None):
+            with self.assertRaisesRegex(RuntimeError, "not on this machine"):
+                gather.gather(build_page(), detector=FakeDetector())
+
     def test_a_detector_that_throws_is_a_refusal_not_no_hollow_heads(self):
         log = _gather_with(_Second([], where=lambda c: True, error=ValueError("x")))
         ref = log.refusals(Q.SECOND_HOLLOW, R.cell(0, 0, 0, 0))

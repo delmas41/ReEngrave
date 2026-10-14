@@ -428,7 +428,7 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
     """
     bar_fill = _import_from_path("acceptance_bar_fill", _BAR_FILL_MODULE)
     root = ET.fromstring(xml_text)
-    exact = short = over = empty = unassessable = 0
+    exact = short = over = empty = unassessable = partial_unread = 0
     for part in root.findall("part"):
         div = None
         beats = beat_type = None
@@ -450,6 +450,22 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
                 continue
             total, _holds = bar_fill.bar_total(meas, div)
             want = beats * 4.0 / beat_type
+            # ROADMAP 2.117: a bar with an invisible `<forward>` is a PARTIAL
+            # bar (a red `unread` bracket over the gap). It fills the bar only
+            # because the gap is sized to, so it is counted APART and never as
+            # a bar that adds up on its own.
+            if meas.find("forward") is not None:
+                per_voice: Dict[str, float] = {}
+                for el in meas:
+                    if el.tag in ("note", "forward") \
+                            and el.find("chord") is None \
+                            and el.find("duration") is not None:
+                        v = el.findtext("voice") or "1"
+                        per_voice[v] = (per_voice.get(v, 0.0)
+                                        + float(el.findtext("duration")) / div)
+                if per_voice and abs(max(per_voice.values()) - want) < 1e-6:
+                    partial_unread += 1
+                    continue
             if abs(total) < 1e-9:
                 empty += 1
             elif abs(total - want) < 1e-6:
@@ -460,6 +476,7 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
                 over += 1
     assessed = exact + short + over + empty
     return {"exact": exact, "short": short, "overfull": over, "empty": empty,
+            "partial_unread": partial_unread,
             "unassessable": unassessable,
             "n": exact, "of": assessed,
             "fraction": _fraction(exact, assessed)}

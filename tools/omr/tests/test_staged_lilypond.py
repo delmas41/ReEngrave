@@ -240,7 +240,10 @@ class TestAnUnreadBarIsAMeasureRestNeverInventedNotes(unittest.TestCase):
     def test_two_empty_bars_become_two_rests(self):
         text, report = LY.to_lilypond(_one_staff_page(notes=[], n_measures=2))
         self.assertEqual(report["written"]["empty_bars_padded"], 2)
-        self.assertEqual(text.count("r1"), 2)
+        # ROADMAP 2.117 (Sean 2026-10-14): an unread bar is an invisible
+        # skip under a red bracket, never a rest.
+        self.assertEqual(text.count("startTextSpan"), 2)
+        self.assertNotRegex(text, r"(?<![a-zA-Z\\])r1")
         # ⚠️ NEVER INVENTED NOTES -- the one thing this test exists to
         # refuse. A bar with no decided events must not contain a pitch.
         self.assertEqual(re.findall(r"[a-g](?:is|es)*[',]*\d", text), [])

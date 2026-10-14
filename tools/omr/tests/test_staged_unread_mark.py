@@ -428,9 +428,9 @@ class TestTheHoldOutBranchStillWorksWhenTrusted(unittest.TestCase):
         self.assertEqual(rep["written"].get("notes", 0), 0)
         root = ET.fromstring(xml)
         self.assertEqual(root.findall(".//pitch"), [])
-        rests = root.findall(".//note/rest")
-        self.assertEqual(len(rests), 1)
-        self.assertEqual(rests[0].get("measure"), "yes")
+        # ROADMAP 2.117: a held bar is a red bracket over an invisible span.
+        self.assertEqual(root.findall(".//note/rest"), [])
+        self.assertEqual(len(root.findall(".//bracket")), 2)
 
     def test_it_is_still_not_counted_under_the_bar_sum_refusal(self):
         """Two mechanisms, two names -- a reader must be able to tell which
