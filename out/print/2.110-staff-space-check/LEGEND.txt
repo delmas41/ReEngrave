@@ -1,0 +1,5 @@
+2.110 staff-space check. One file per sampled training cell: <version>_<cell>.png (scaled to <=1000 px).
+GREEN line = the 5 staff lines found by an independent method (open the binarised cell with a long horizontal kernel, keep surviving rows, take the best equal-gap 5-run).
+RED line   = the 5 staff lines implied by the survey's comb fit (shown_space.measure_lines: spacing d and first-line row y0).
+Where the two coincide the survey's staff space is right. check.json = per-cell numbers (survey, independent, error px/%).
+_odd-narrow-cells.png = four cells where the survey is WRONG (95/109 px-wide barline slivers and a 430 px black bracket block: no staff in view, red lines are noise).

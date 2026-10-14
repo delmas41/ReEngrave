@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 
-def measure_space(img: np.ndarray):
+def measure_lines(img: np.ndarray):
     """Staff space in pixels of `img` (BGR or gray) by a 5-line COMB fit on the row-darkness profile: choose spacing d
     and first-line row y0 maximising  mean(profile at y0+k*d, k=0..4) - mean(profile at the 5 half-way rows).
     Uses darkness (255-gray), not a threshold, so a downscaled image whose lines are gray hairlines is measured by
@@ -42,4 +42,10 @@ def measure_space(img: np.ndarray):
             best = (float(sc[j]), (float(d), float(y0[j])))
     if best[1] is None or best[0] < 0.02:
         return None
-    return best[1][0], best[0]
+    return best[1][0], best[0], best[1][1]
+
+
+def measure_space(img: np.ndarray):
+    """(space_px, comb_score) -- see measure_lines, which also returns the first-line row."""
+    m = measure_lines(img)
+    return None if m is None else (m[0], m[1])
