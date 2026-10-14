@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.116 LANDED: STAGED LilyPond export balanced again (Sean: "Land 2.116")
+
+- STAGED, EXPORT. `lilypond.to_lilypond` adds `provenance["unboxed_rests_placed"]` (2.99) to the log side of its balance check, as `export.to_musicxml` did; the `Unbalanced` raise stays. Broken by 8b69501f (2.99); the 2026-10-13 overnight exported no .ly. Tests `test_staged_unboxed_rest_2_99.py`, slow `test_staged_lilypond_whole_movement_2_116.py`. FINDINGS `benchmarks/omr-lily-export-2026-10`.
+
 ## 2026-10-13 -- ROADMAP 2.107 LANDED with blue `dyn.` only (Sean: "land with blue dyn only")
 
 - STAGED, INFER + EXPORT. `collapse_dynamic_by_ink` moved from `ALWAYS_ON` to default-OFF research flag `OMR_DYNAMIC_INK_PICK` (allow-list; `docs/flags-2026-09.md`): the ink pick was wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). A narrowed dynamic exports only as a blue `dyn.` with every candidate and the ink scores in the `reengrave:guessed` carrier. `test_dynamic_guess_2_107.py` + `test_infer_stage.py` updated. Opened ROADMAP 2.109 (STAGED LilyPond writes no dynamics). Fast tier 7,751 passed; check 192, margins 0; judged index rebuilt.

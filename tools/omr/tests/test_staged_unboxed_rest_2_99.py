@@ -322,6 +322,23 @@ class TestExportWritesTheRest(unittest.TestCase):
         self.assertTrue(rep1["balance"]["balanced"])
         self.assertEqual(rep1["balance"]["unboxed_rests_placed"], 1)
 
+    def test_the_lilypond_twin_balances_with_an_unboxed_rest_RED(self):
+        """ROADMAP 2.116. `to_musicxml` adds `unboxed_rests_placed` to the
+        log side of its equality; `to_lilypond`'s twin did not, so every
+        record with a decided unboxed rest raised `Unbalanced` (both movements
+        of the 20261013 overnight: 125 and 450 rests the log never held)."""
+        from tools.omr.staged import lilypond as LY
+        notes = [("C4", self.QUARTER), ("D4", self.EIGHTH)]
+        _ly, rep0 = LY.to_lilypond(self._page(notes))        # control: no rest
+        self.assertTrue(rep0["balance"]["balanced"])
+        ly, rep1 = LY.to_lilypond(self._page(notes, rest="eighth"))
+        self.assertTrue(rep1["balance"]["balanced"])
+        self.assertEqual(rep1["balance"]["unboxed_rests_placed"], 1)
+        _x, rx = SX.to_musicxml(self._page(notes, rest="eighth"))
+        self.assertEqual(rep1["balance"]["unboxed_rests_placed"],
+                         rx["balance"]["unboxed_rests_placed"])
+        self.assertIn("r8", ly)
+
     def test_an_abstained_reading_writes_nothing_POSITIVE_CONTROL(self):
         notes = [("C4", self.QUARTER), ("D4", self.EIGHTH)]
         _xml, rep = SX.to_musicxml(self._page(notes, rest="eighth",

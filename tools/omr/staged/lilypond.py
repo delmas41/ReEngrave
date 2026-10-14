@@ -831,6 +831,12 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "per-reason total (%d) after rendering -- a refusal reaches one "
             "counter and not the other" % (_by_sys_total, sum(dropped.values())))
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ ROADMAP 2.116. The STAGED twin of `staged.export.to_musicxml`'s own
+    # `unboxed_placed`: a rest read off unboxed ink (2.99) is placed in a bar
+    # and written, but no detector row announced it, so it joins the log side
+    # BY NAME. Without it every record holding one raised `Unbalanced` here
+    # (20261013-night: 125 on Litolff, 450 on Brahms) while MusicXML balanced.
+    unboxed_placed = int(provenance.get("unboxed_rests_placed", 0))
     duplicated = int(counters.get("rests_duplicated_across_voices", 0))
     doubled_to_condensed = int(
         counters.get("notes_doubled_to_condensed_slot", 0))
@@ -839,17 +845,20 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
                - doubled_to_condensed)
     report["balance"] = {
         "events_in_log": events_in_log,
+        "unboxed_rests_placed": unboxed_placed,
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
         "rests_duplicated_across_voices": duplicated,
         "notes_doubled_to_condensed_slot": doubled_to_condensed,
         "events_not_written": report["notes_not_written_total"],
-        "balanced": events_in_log == written + report["notes_not_written_total"],
+        "balanced": (events_in_log + unboxed_placed
+                     == written + report["notes_not_written_total"]),
     }
     if not report["balance"]["balanced"]:
         raise SX.Unbalanced(
-            f"lilypond: {events_in_log} noteheads+rests in the log, {written} "
+            f"lilypond: {events_in_log} noteheads+rests in the log (+"
+            f"{unboxed_placed} read off unboxed ink), {written} "
             f"written and {report['notes_not_written_total']} accounted as "
             f"dropped -- the difference went nowhere. "
             f"{report['notes_not_written']}")
