@@ -684,6 +684,9 @@ def _dot_sized(box_row, spacing_canonical: float,
 # ─────────────────────────────────────────────────────────────────────────────
 
 BEAM_PIECE_REASON = "is_a_beam_piece"
+
+#: ROADMAP 2.108 -- no staff within `geometry.OFF_STAFF_REACH_SPACES`.
+OFF_STAFF_REASON = "off_staff_glyph"
 #: The share of the box that must lie inside ONE read beam stroke.
 BEAM_PIECE_COVER_MIN = 0.7
 #: The box is no taller than this many staff spaces.
@@ -2532,6 +2535,94 @@ def _staff_geometry(ev: Evidence, staff) -> Optional[Tuple[List[float],
     return ys, sp, [lines[-1].id, spacing[-1].id]
 
 
+def _page_staff_bands(ev: Evidence, page) -> List[Tuple[float, float, float,
+                                                         float, float]]:
+    """`geometry.staff_bands`-shaped `(x0, x1, top, bottom, spacing)` for every
+    staff of `page`, off the record's own `Q.STAFF_LINES` / `Q.STAFF_SPACING`
+    (page frame). A staff missing either is left out -- it has no band to
+    measure from. `ev.subjects` is cached on the frozen log, and this runs only
+    for a box past the reach, so it is not a per-head walk.
+
+    ⚠️ THE X EXTENT IS DELIBERATELY NOT READ. `Q.STAFF_EXTENT` is the staff
+    DETECTOR's span and it is not the staff's printed end: on Brahms 317803
+    pdf 1 it stops at x=4290-4335 on staves whose lines run to x~5500, and a
+    first cut that measured "past the staff's end" refused 14 real heads
+    standing on those staves (`glyph/1/1/11/7/1`, a plain head on the line).
+    A staged cell is a staff band plus a pad cut at the staff's own bars, so a
+    head's x is already the staff's; the vertical band is the whole question
+    here (GATHER's own `_band_distance_spaces`)."""
+    inf = float("inf")
+    out = []
+    for st in ev.subjects(Kind.STAFF):
+        if st.page != page:
+            continue
+        geo = _staff_geometry(ev, st)
+        if geo is None:
+            continue
+        out.append((-inf, inf, geo[0][0], geo[0][-1], geo[1]))
+    return out
+
+
+def _off_staff_glyph_refusal(ev: Evidence, box_row,
+                             detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.108 -- `Ruling(True, "off_staff_glyph")` where this head stands
+    `geometry.OFF_STAFF_REACH_SPACES` or more from EVERY staff of its page, at
+    its own x (title text, a word in the margin, a page number). `None`
+    otherwise; the nearest-staff distance rides on `detail["off_staff_signal"]`
+    whenever it was measured.
+
+    The cheap test first: the head's distance from its FILED staff (the same
+    arithmetic as `Q.GLYPH_BAND_DISTANCE`). Within the reach there is nothing to
+    ask. Past it the page's other staves are swept, because a head filed on
+    one staff may stand beside another's ledger lines (a cell's pad reaches the
+    next staff -- see `_belongs_to_a_nearer_staff`).
+
+    The ledger lines name the owner (CLAUDE.md §5): a kept rung in the head's
+    cell overlapping its x and within that distance of it keeps the head
+    whatever its distance -- the reach is a cut-off measured on two plates and
+    may only refuse what no ladder vouches for. Missing geometry never refuses
+    (rule 8: a missing number is not "far")."""
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    staff = ev.subject.at(Kind.STAFF)
+    if not page_box or len(page_box) != 4 or staff is None:
+        return None
+    mine = _staff_geometry(ev, staff)
+    if mine is None:
+        return None
+    cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+    cy = (float(page_box[1]) + float(page_box[3])) / 2.0
+    ys, sp, _used = mine
+    filed = _band_spaces(cy, ys, sp)
+    if filed is None or filed < _geom.OFF_STAFF_REACH_SPACES:
+        return None
+    bands = _page_staff_bands(ev, staff.page)
+    nearest = _geom.distance_to_staff_spaces(cx, cy, bands)
+    if nearest is None:
+        return None            # no staff measured at all: nothing is "far"
+    signal: Dict[str, Any] = {"nearest_spaces": round(nearest, 3),
+                              "filed_spaces": round(filed, 3),
+                              "reach_spaces": _geom.OFF_STAFF_REACH_SPACES}
+    detail["off_staff_signal"] = signal
+    if nearest < _geom.OFF_STAFF_REACH_SPACES:
+        return None
+    # a kept ledger rung near the head vouches for it (the ladder names the owner)
+    spacing = _cell_staff_space(ev)
+    _name, x_c, y_c, w_c, h_c = box_row.value
+    if spacing:
+        y_mid = y_c + h_c / 2.0
+        for rx0, rx1, ry in _ledger_rungs_in_cell(ev):
+            if min(rx1, x_c + w_c) - max(rx0, x_c) > 0 and abs(ry - y_mid) <= (
+                    nearest * spacing + h_c):
+                signal["spared"] = "a_kept_ledger_rung_near"
+                return None
+    return _margins.attach(
+        Ruling(value=True, reason="off_staff_glyph",
+               used=(box_row.id,), detail=detail),
+        margin=_geom.off_staff_margin(nearest),
+        axis="nearest_staff_spaces", unit="staff spaces",
+        band=None, would_choose=(True,))
+
+
 def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
                                detail: Dict[str, Any]
                                ) -> Optional[Tuple[str, List[str]]]:
@@ -2921,6 +3012,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
+                                     OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -3131,6 +3223,12 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if ladder_detail:
         detail["unladdered_signal"] = {"would_fire": would_unladder,
                                        **ladder_detail}
+
+    # ROADMAP 2.108 (Sean 2026-10-13): a head with no staff anywhere near is
+    # not music. Before the shape rules: it is the stronger, simpler fact.
+    off_staff = _off_staff_glyph_refusal(ev, box_row, detail)
+    if off_staff is not None:
+        return off_staff
 
     if _clipped_fragment(ev, box_row, spacing, detail):
         return Ruling(value=True, reason="clipped_fragment",

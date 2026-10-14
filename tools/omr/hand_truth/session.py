@@ -8,6 +8,7 @@
     python3 -m tools.omr.hand_truth.session flag <page.json> f3 accepted|rejected
     python3 -m tools.omr.hand_truth.session resync <page.json> --bench <bench>
     python3 -m tools.omr.hand_truth.session advance <page.json> --to checked --pdf <score>
+    python3 -m tools.omr.hand_truth.session prune-off-staff <page.json> [--bench <bench> --apply]
 
 THE CELLS are the pipeline's own: ``detect_staves`` -> ``detect_barlines`` ->
 ``extract_measures`` at the product pads (no monkey-patch), each cell's page
@@ -29,6 +30,14 @@ queue and never truth:
 A detector box on the same mark as an old human box (same family, IoU >= 0.5)
 is dropped; so is the second of two detector boxes on one mark seen from two
 overlapping cells.
+
+A pitch-bearing detector box (head, rest, accidental, dot) at or past
+`staged.geometry.OFF_STAFF_REACH_SPACES` of every staff is never queued (ROADMAP
+2.108, Sean: *"the title text like symphonie is showing up as noteheads but
+there is no staff anywhere near"*): the region cells run the detector over the
+title and the margin names, and a letter's bowl comes back `noteheadBlack*`.
+His old-label proposals and his own boxes are never filtered. `prune-off-staff`
+removes the same boxes from an EXISTING page store's queue (dry run by default).
 """
 from __future__ import annotations
 
@@ -269,6 +278,73 @@ def prefill_old_labels(page: PageTruth, pdf: Path, *, dpi: Optional[int] = None,
     return report
 
 
+def page_staff_bands(page: PageTruth) -> List[Tuple[float, float, float, float, float]]:
+    """`(x0, x1, top, bottom, spacing)` in PAGE pixels for every five-line staff
+    of a cut page, from its measure cells alone (each cell records its staff's
+    line ys in its own canonical frame and its exact page rectangle), so a page
+    store read back from disk needs no PDF and no detector. A staff's x extent
+    is the union of its measure cells."""
+    groups: Dict[Tuple[int, int], List] = {}
+    for c in page.cells:
+        if c.kind == "measure" and c.staff_line_ys and len(c.staff_line_ys) >= 5:
+            groups.setdefault((c.system, c.staff), []).append(c)
+    out = []
+    for cells in groups.values():
+        ys = []
+        for c in cells:
+            _x0, y0, _x1, y1 = c.rect
+            sy = (y1 - y0) / c.canonical_h
+            ys.append([y0 + y * sy for y in c.staff_line_ys])
+        n = len(ys)
+        lines = [sum(col) / n for col in zip(*ys)]
+        top, bot = min(lines), max(lines)
+        if bot <= top:
+            continue
+        out.append((min(c.rect[0] for c in cells), max(c.rect[2] for c in cells),
+                    top, bot, (bot - top) / (len(lines) - 1)))
+    return out
+
+
+def off_staff_spaces(bands, cls: str, rect: Rect) -> Optional[float]:
+    """ROADMAP 2.108 -- the glyph's distance in staff spaces from the nearest
+    staff, IF it is a pitch-bearing class standing at or past the declared
+    reach; `None` for anything else (another class, a page with no staff
+    measured, or a glyph within reach). One rule, shared with the STAGED
+    notehead decider's `off_staff_glyph` through `staged.geometry`."""
+    from tools.omr.staged import geometry as G
+
+    if not G.is_pitch_bearing(cls):
+        return None
+    d = G.distance_to_staff_spaces((rect[0] + rect[2]) / 2.0, (rect[1] + rect[3]) / 2.0, bands)
+    return d if d is not None and d >= G.OFF_STAFF_REACH_SPACES else None
+
+
+def prune_off_staff(page: PageTruth, *, apply: bool = False) -> Dict:
+    """Drop every QUEUED detector box that is a pitch-bearing glyph at or past
+    the reach (title letters read as noteheads). NEVER touches truth (`page.boxes`
+    are Sean's) and never a queued OLD-LABEL proposal (`sean-*`): his own boxes
+    stay wherever they stand. Dry run unless `apply`."""
+    bands = page_staff_bands(page)
+    drop = [q for q in page.queue if q.source.startswith("detector:")
+            and off_staff_spaces(bands, q.cls, q.rect) is not None]
+    by_cell: Dict[str, int] = {}
+    for q in drop:
+        cell = next((c.id for c in page.cells if c.kind != "measure" and _inside(q.rect, c.rect)),
+                    next((c.id for c in page.cells if _inside(q.rect, c.rect)), "?"))
+        by_cell[cell] = by_cell.get(cell, 0) + 1
+    if apply:
+        gone = {q.id for q in drop}
+        page.queue = [q for q in page.queue if q.id not in gone]
+    return {"queued": len(page.queue) + (len(drop) if apply else 0), "off_staff": len(drop),
+            "applied": bool(apply), "by_region_cell": by_cell,
+            "affected_cells": sorted(by_cell)}
+
+
+def _inside(r: Rect, cell: Rect) -> bool:
+    cx, cy = (r[0] + r[2]) / 2.0, (r[1] + r[3]) / 2.0
+    return cell[0] <= cx <= cell[2] and cell[1] <= cy <= cell[3]
+
+
 def prefill_detector(page: PageTruth, measure_cells_list: list, region_images: Dict[str, np.ndarray],
                      weights: Path, *, conf: float = 0.25) -> Dict:
     """The detector's boxes per cell, into the queue in page pixels."""
@@ -276,7 +352,12 @@ def prefill_detector(page: PageTruth, measure_cells_list: list, region_images: D
     from tools.omr.yolo_detector import YoloDetector
 
     det = YoloDetector(weights)
-    report = {"boxes_queued": 0, "boxes_dropped_as_duplicates": 0}
+    report = {"boxes_queued": 0, "boxes_dropped_as_duplicates": 0,
+              "refused_off_staff": 0, "refused_off_staff_by_cell_kind": {}}
+    # ROADMAP 2.108: a title letter is not a notehead. A pitch-bearing box at or
+    # past the reach of every staff is never offered to Sean (never queued, so
+    # never his to reject); nothing of his own is read or removed here.
+    bands = page_staff_bands(page)
     by_id = {f"s{m.system_index}-st{m.staff_index}-m{m.measure_index}": m for m in measure_cells_list}
     for c in page.cells:
         mc = by_id.get(c.id)
@@ -290,6 +371,11 @@ def prefill_detector(page: PageTruth, measure_cells_list: list, region_images: D
         for d in det.detect(mc, conf_threshold=conf):
             r = c.to_page((d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical,
                            d.y_canonical + d.height_canonical))
+            if off_staff_spaces(bands, d.smufl_name, r) is not None:
+                report["refused_off_staff"] += 1
+                k = report["refused_off_staff_by_cell_kind"]
+                k[c.kind] = k.get(c.kind, 0) + 1
+                continue
             if propose_deduped(page, d.smufl_name, r, source=f"detector:{Path(weights).name}",
                                score=float(d.confidence)):
                 report["boxes_queued"] += 1
@@ -431,6 +517,23 @@ def cmd_advance(a) -> int:
     return 0
 
 
+def cmd_prune_off_staff(a) -> int:
+    """Take title letters (and any other glyph with no staff near) out of an
+    EXISTING page store's pre-fill queue. Dry run by default; `--apply` writes
+    the page store and rewrites the affected cells of `--bench`. Truth boxes
+    and Sean's old-label proposals are never touched. Run it with his server
+    stopped: a running server holds the cells it served."""
+    path = Path(a.page)
+    page = store.load(path)
+    rep = prune_off_staff(page, apply=a.apply)
+    if a.apply:
+        _write(page, path)
+        if a.bench:
+            bench_mod.refresh_cells(page, Path(a.bench), rep["affected_cells"])
+    print(json.dumps(rep, indent=1))
+    return 0
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -465,8 +568,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     v.add_argument("page")
     v.add_argument("--to", required=True, choices=store.STATES[1:])
     v.add_argument("--pdf")
+    pr = sub.add_parser("prune-off-staff")
+    pr.add_argument("page")
+    pr.add_argument("--bench", help="rewrite the affected cells of this bench (with --apply)")
+    pr.add_argument("--apply", action="store_true")
     a = ap.parse_args(list(argv) if argv is not None else None)
-    return {"new": cmd_new, "status": cmd_status, "resync": cmd_resync, "raise": cmd_raise, "flag": cmd_flag,
+    return {"prune-off-staff": cmd_prune_off_staff, "new": cmd_new, "status": cmd_status, "resync": cmd_resync, "raise": cmd_raise, "flag": cmd_flag,
             "advance": cmd_advance}[a.cmd](a)
 
 

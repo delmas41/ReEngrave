@@ -144,6 +144,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
     "adjudicate_notehead_is_not_a_notehead": {
         "too_narrow": THRESHOLD, "is_a_dot": THRESHOLD,
         "is_a_beam_piece": THRESHOLD,
+        # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
+        "off_staff_glyph": THRESHOLD,
     },
     "adjudicate_rest_is_not_a_rest": {
         "rest_is_a_barline": THRESHOLD,

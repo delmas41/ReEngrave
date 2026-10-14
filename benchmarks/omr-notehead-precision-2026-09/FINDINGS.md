@@ -966,3 +966,73 @@ moves); Litolff p0-3 = the first arm + **one more box**: `glyph/2/0/7/1/8`, a 6.
 beam stroke, kept -> refused; its neighbour `glyph/2/0/7/1/5` loses its decided stem_value (eighth, beam level 1) -> abstained
 (the false head no longer shares its stem; not judged by Sean -- a candidate tile).
 **The `sf` (2.91) stays a KNOWN MISS** (Sean, DECISIONS 2026-10-13): no new GATHER step.
+
+## 2.108 -- title text read as noteheads: no staff near, so not music (2026-10-13)
+
+Sean, hand-labelling Brahms 317803 pdf 0 on :5050: *"the title text like symphonie is showing up as noteheads but there
+is no staff anywhere near"*. Probes: `probe/2.108/` (`reach.py`, `census.py`, `filed.py`, `prune_probe.py`, `ab.py`,
+`run_base.py`, `crop.py`, `tiles.py`). Tests: `tools/omr/tests/test_off_staff_glyph_2_108.py`.
+
+**Cause (HAND-TRUTH SESSION, not the staged gather).** `tools/omr/hand_truth/session.py` cuts every bit of ink outside
+the measure cells into `top` / `margin` / `bottom` region cells and runs the detector over them
+(`prefill_detector`), so a letter's bowl comes back `noteheadBlack*` and is queued as a pre-fill. On the committed page
+store of Brahms pdf 0 the queue held 2,639 boxes; 1,663 pitch-bearing detector boxes (1,657 of them heads: 890 margin, 736
+top, 31 bottom) stand 8+ staff spaces from every staff (title, composer and publisher lines, the instrument names, the footer). Sean's live store
+(`ReEngrave-handtruth`, read only, 2026-10-13 evening): 1,031 queued, 603 of them off-staff (572 margin names, 31
+footer), so the margin names are the larger share still ahead of him.
+
+**STAGED gather: it never gets there, measured.** STAGED cuts no region cells; a cell is a staff band plus a 4 space
+pad that grows to 6, so no title ink reaches it beyond the pad. Census of every pitch-bearing box (head, rest, accidental,
+dot, flag) against the NEAREST staff of its page: Brahms pdf 0-1, 2,513 boxes, farthest 4.95 spaces (a clipped sliver
+already refused, `clipped_fragment`), farthest KEPT head 4.90; Litolff pdf 0-3, farthest accidental 5.48, farthest head
+4.78. Sean's hand truth (Brahms pdf 0: 360 heads, 38 accidentals, 16 rests): farthest head 4.9, accidental 4.86, 0 rests
+off the staff. So the farthest real glyph on every source is under 5.5 spaces, and nothing standing farther is a note.
+
+**Rule + reach.** A pitch-bearing glyph (`notehead*`, `rest*`, `accidental*`, `augmentationDot`; flags, stems and beams
+are NOT measured: they hang a stem's length farther) at `OFF_STAFF_REACH_SPACES = 8.0` or more from the nearest staff is
+not music (`staged/geometry.py`, one stick, two users). 8 is the seventh ledger line, 2.5 spaces past the farthest glyph on
+any source (5.48), declared and not tuned: the reach moves 603 queued boxes at 8 on Sean's live queue against 728 at 5.5 and
+504 at 10, and catches 0 of his 1,565 labelled boxes at any of 5.5 / 6 / 7 / 8 / 10 (`prune_probe.py`). Ledger lines name the
+owner (CLAUDE.md §5): a kept rung near a head spares it whatever its distance.
+* STAGED: new reason `off_staff_glyph` on `adjudicate_notehead_is_not_a_notehead`, before the shape rules, margin filed
+  (`nearest_staff_spaces`, `staff spaces`, positive = past the reach) and registered THRESHOLD in
+  `margins.PARTIAL` (`staged.margins` open=0). The cheap test is the head's distance from its FILED staff; only past the
+  reach are the page's other staves swept, because a head filed on one staff can stand beside another's ledger lines.
+  Other families: rests already have `rest_outside_its_staff` (a per-class window); accidentals/flags/dots decide on a
+  human witness only (module docstrings) and the staged census says 0 of them stand beyond 5.5, so nothing was added there.
+* HAND TRUTH: `prefill_detector` never queues such a box (report keys `refused_off_staff`, `..._by_cell_kind`), reading
+  staves from the page store's own measure cells (so it works on a saved store, no PDF). New CLI
+  `session prune-off-staff PAGE [--bench B --apply]` (dry run by default) removes the same boxes from an EXISTING queue:
+  detector-sourced only, never truth, never a queued old-label proposal (`sean-*`). **Not run on Sean's live store**
+  (his server is up; a running server holds the cells it served). Run it with the server stopped.
+
+**A wrong first cut, caught by the 0-real-notes measure.** The staged rule first took the staff's x end from `Q.STAFF_EXTENT`
+("past the staff's end the gap is straight-line", as the hand-truth side does from its cells). The small re-gather of Brahms
+pdf 0-1 refused 14 real heads (`glyph/1/1/11/7/1` and 13 more: plain heads on staves 10-11, whose RECORDED x_end is
+4290-4335 against lines that run to ~5500). `Q.STAFF_EXTENT` is the detector's span, not the printed end. The staged rule now
+reads the vertical band only (a staged cell is cut at its own bars, so x is already the staff's), with a RED regression
+(`test_CONTROL_a_head_on_a_staff_whose_recorded_extent_is_short_is_kept`). The hand-truth side keeps the x test (a label
+cell has no pad cap and its staff extent is the union of its measure cells; 0 of Sean's 1,565 boxes caught).
+
+**Measure (small re-gathers, one at a time, GATHER + ADJUDICATE).** Brahms pdf 0-1: base vs arm 20,732 verdicts, **0
+differ**, `off_staff_glyph` 0 (judged-tile re-score unchanged); Litolff pdf 0-3: `off_staff_glyph` 0, 0 real notes refused.
+That the staged rule fires 0 times is the finding, not a failure: it is the guard for a cell that ever reaches farther (a
+page-level detector pass, a taller pad). The measured effect is on the pre-fill queue above.
+
+**Blind tiles** `out/print/2.108-review/` (10; reading only in `manifest.json`): 6 refused queue boxes (5 heads, 1 accidental,
+on the title and publisher lines, margin names and the footer), 3 controls that must stay (Sean's own
+confirmed heads standing 4.6 to 4.9 spaces out), 1 queued box in text just inside the reach (7.9) the rule KEEPS, to show
+what the reach lets through.
+
+**Reach set to 6 (Sean, 2026-10-13: *"go with 6"*; was 8).** `OFF_STAFF_REACH_SPACES = 6.0`, one constant read by STAGED
+`off_staff_glyph`, the pre-fill and `prune-off-staff`. Farthest real glyph: Brahms 4.95, Litolff 5.48, so the margin is
+thin (0.5 space) and the kept-ledger-rung exemption stays. Re-measured at 6 (`prune_probe.py`, read only): committed Brahms
+pdf 0 store, 1,831 of 2,639 queued boxes refused (8: 1,663), 0 of 1,352 truth boxes caught; Sean's live store (read only,
+865 queued now), 623 refused (8: 562), 0 of 1,566 truth boxes caught. Staged small re-gathers at 6, base vs arm, one at a
+time: Brahms pdf 0-1 20,732 verdicts, 0 differ, `off_staff_glyph` 0; Litolff pdf 0-3 `off_staff_glyph` 0 (the 524 differing
+verdicts are obs-id shifts by one and two Surya words, run-to-run, none an off-staff reason), so 0 real glyphs refused.
+Tiles regenerated at 6 (`tiles.py`: title letter, margin name letters, footer, two letters of the tempo word
+"sostenuto" in the new 6-8 band, 3 far-note controls, 1 queued box just inside 6): 10 in `out/print/2.108-review/`, reading in
+`manifest.json`, `answers.template.json`.
+
+**Sean's answers (2026-10-13, `answers.json`):** *"1. 2 note 2. B letter in german 3. a letter in a word  4. part of an o in sostenuto 5. Part of a K 6. 4 note  7. 8 noet 8. part of an N 9-10 part of letters"*. Scored against the manifest: the 6 refused boxes (tiles 2, 3, 4, 5, 8, 10) are all letters, so every refusal was right, including tiles 4 and 10 in the 6-8 band he chose; the 3 far-note controls (1 half, 6 quarter, 7 eighth) are real notes and kept, right; tile 9 (queued box just inside 6) is part of a letter, a known slip, harmless (labelling pre-fill only; the STAGED rule fires 0 times on the acceptance pages).

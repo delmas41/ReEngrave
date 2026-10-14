@@ -202,3 +202,83 @@ def stem_touches_head(stem: Any, head: Any) -> bool:
     bx, by, bw, bh = head
     return (ax <= bx + bw + tol and ax + aw >= bx - tol
             and ay <= by + bh + tol and ay + ah >= by - tol)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.108 -- how far a music glyph stands from every staff
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Sean, 2026-10-13: *"in the hand labeling I am doing the title text like
+# symphonie is showing up as noteheads but there is no staff anywhere near"*.
+# The ledger lines name the owner (CLAUDE.md §5): a note far from every staff
+# has no owner, and the farthest REAL one is a ledger-line note or an ottava
+# passage a few spaces out. The reach itself, and the measurement that set it,
+# live with the decider that uses it (`adjudicators/notehead_precision.py`,
+# `OFF_STAFF_REACH_SPACES`); this is only the measuring stick, shared by that
+# decider and by the hand-labelling session's pre-fill so the two cannot drift.
+
+def staff_bands(staves: Iterable[Any]) -> list:
+    """`[(x0, x1, y_top, y_bottom, spacing_px)]` per five-line staff, page
+    pixels. A staff with fewer than five lines or no usable spacing is left
+    out: it has no band to measure from, and a missing number is not zero."""
+    out = []
+    for s in staves:
+        ys = list(getattr(s, "line_ys", None) or [])
+        if len(ys) < 5:
+            continue
+        sp = float(getattr(s, "line_spacing_px", 0) or 0)
+        if sp <= 0:
+            sp = (max(ys) - min(ys)) / (len(ys) - 1)
+        if sp <= 0:
+            continue
+        out.append((float(s.x_start), float(s.x_end), float(min(ys)),
+                    float(max(ys)), sp))
+    return out
+
+
+def distance_to_staff_spaces(cx: float, cy: float, bands: Iterable[Any]
+                             ) -> Optional[float]:
+    """Distance from the point `(cx, cy)` to the NEAREST staff's band (its
+    lines and the space between them, over its x extent), in THAT staff's
+    spaces: 0 inside the band, a vertical gap where the point is within the
+    staff's x extent, the straight-line gap past either end. `None` when no
+    staff was detected at all (nothing to measure from; never "far")."""
+    best = None
+    for x0, x1, top, bot, sp in bands:
+        dx = max(x0 - cx, 0.0, cx - x1)
+        dy = max(top - cy, 0.0, cy - bot)
+        d = (dx * dx + dy * dy) ** 0.5 / sp
+        if best is None or d < best:
+            best = d
+    return best
+
+
+#: ROADMAP 2.108 -- the REACH: a pitch-bearing glyph this many staff spaces (or
+#: more) from every staff is not music. MEASURED, then SET BY SEAN (2026-10-13,
+#: "go with 6"; it was 8): the farthest REAL glyph on the evidence is 4.95
+#: spaces (Sean's hand-labelled Brahms 317803 pdf 0 noteheads 4.9, accidentals
+#: 4.86; the staged Brahms pdf 0-1 kept heads 4.9-4.95) and 5.48 on Litolff. The
+#: margin over the farthest real glyph is thin (0.5 space), so the rule only
+#: REFUSES a box nothing else vouches for: a ledger-rung ladder reaching the box
+#: (`ownership.ledger_direction`'s own question, asked by the decider) keeps it
+#: whatever its distance -- that exemption must stay. A title letter sits tens
+#: of spaces out. A declared cut-off on two plates, not a law.
+OFF_STAFF_REACH_SPACES = 6.0
+
+#: The classes whose position carries a pitch or a place on a staff: a head, a
+#: rest, an accidental, an augmentation dot. (Flags hang from a stem and beams
+#: and stems span a group, so their centres legitimately stand a stem's length
+#: farther; they are not measured with this stick.)
+_PITCH_BEARING_PREFIXES = ("notehead", "rest", "accidental", "augmentationDot")
+
+
+def is_pitch_bearing(name: Optional[str]) -> bool:
+    return bool(name) and str(name).startswith(_PITCH_BEARING_PREFIXES)
+
+
+def off_staff_margin(distance_spaces: Optional[float]) -> Optional[float]:
+    """Signed margin of a refusal by the reach: how far PAST it the glyph
+    stands (positive = refused by this much)."""
+    if distance_spaces is None:
+        return None
+    return float(distance_spaces) - OFF_STAFF_REACH_SPACES
