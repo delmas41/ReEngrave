@@ -60,3 +60,11 @@ passed before the last two logging edits; the new file, flag-triage and bar-sum 
 that stays held), print beside our LilyPond bar; black = read, blue = guessed, red = the unread gap.
 Open questions: (1) does red rest + "unread" read clearly (a red quarter-rest glyph can still look like silence)?
 (2) a prefix assumes no missed note stands ahead of it -- write prefix/suffix notes plain, or blue?
+
+## Sean's rulings 2026-10-14
+*"Use a red bracket instead, write kept notes blue"* (on the two questions above). Changed, in BOTH writers:
+* **The gap is a red bracket, not a rest.** MusicXML: a red `<bracket>` start/stop and a red `unread` word around an invisible `<forward>` of the gap's length (timing balanced, no `<rest>`, no `<note>`). LilyPond: an invisible skip `s1*n/d` under a red text-spanner bracket with `unread`. Counted still under `unread_gap_in_partial_bar`; `Unbalanced` unchanged.
+* **Every kept event of a partial bar (prefix and suffix) is GUESSED, blue `#1F6FEB`**, rules `onset_from_partial_bar_prefix` / `_suffix` (stage EXPORT), counted apart in `report["guessed"]["by_rule"]`. A voice that adds up on its own stays plain; an event already guessed keeps its own rule. Kept rests are blue too.
+* `acceptance.bars_add_up` now counts a bar with a `<forward>` as `partial_unread`, apart from `exact`.
+
+Re-export (flag ON, same two 20261013-night records): Litolff partial 156 bars (65 prefix + 123 suffix blue events), held 861 -> 705; Brahms partial 765 (867 + 971 blue), held 1,822 -> 1,057. Guessed total off -> on: Litolff 1,527 -> 1,790, Brahms 1,034 -> 2,943; written notes + rests plain on = 5,734 / 11,393. `bars_add_up`: Litolff exact 6,060 -> 5,904 + 156 `partial_unread`; Brahms 6,988 -> 6,223 + 765; short/overfull 0. Both LilyPond files compile (barcheck warnings unchanged: 0 and 199). Crops re-cut (8 tiles, incl. one 2.5-beat gap).
