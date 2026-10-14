@@ -205,6 +205,68 @@ def _with_hollow_margin(ruling: Ruling, ink_detail, head_box=None, space=None, *
                            band=_HOLLOW_BAND if raw_gate else None, would_choose=("half",))
 
 
+# ⚠️⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF; `second_hollow.py`). A second detector's hollow-head box is a WITNESS
+# (`Q.SECOND_HOLLOW`), never a verdict. Where it and production's box DISAGREE (production a black head, the second a hollow one) or production
+# boxed NOTHING (`second_only`), the head's OWN ink decides, on Sean's rule (2026-10-13): *"It can't be as simple as a clear middle because many
+# hollow noteheads have lines through the middle of them. It needs to be a certain amount of white on the inside of the notehead."* -- the
+# 2.88 reading, reused as is (`_raw_reads_firmly_hollow`, `_hollow_readings`, `_hollow_margin`; the RAW raster, never staff-erased alone).
+# CONVENTION CONFIRMED (Sean): the interior-white rule. NOT CONFIRMED: its cut-offs on any publisher but Litolff (tuned on two plates), so the
+# only DECIDED outcome is the one the landed 2.88 rule already admits (production saw a head, the second agrees it is hollow, the interior is
+# firm, one bare stem, nothing on it); a head production never saw stays NARROWED however firm, and one the ink reads filled is refused.
+SECOND_ONLY_READER = "yolo_second_hollow"
+
+
+def _second_hollow_row(ev: Evidence):
+    """The latest `Q.SECOND_HOLLOW` row on this glyph, or None."""
+    rows = ev.rows(Q.SECOND_HOLLOW)
+    return rows[-1] if rows else None
+
+
+def _is_second_only(ev: Evidence) -> bool:
+    """Every `Q.NOTEHEAD_CLASS` row on this glyph is the second detector's: production boxed nothing here."""
+    rows = ev.rows(Q.NOTEHEAD_CLASS)
+    return bool(rows) and all(r.reader == SECOND_ONLY_READER for r in rows)
+
+
+def _second_hollow_interior(ink_detail: Dict[str, Any], head_box, space) -> Tuple[str, Optional[str], Optional[float]]:
+    """`(reading, margin axis, signed margin)` of the head's own interior. `firm`: the 2.88 gate (raw centre / ring gap, two rasters, a
+    head-shaped box). `unclear`: some raster still has the middle at or under `HEAD_FILL_HOLLOW_CENTER_MAX` but not firmly (a line through the
+    middle, a thin ring, a cluster box). `filled`: every raster reads the middle as ink. `unread`: no raster could be read at all."""
+    seen = False
+    any_light = False
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
+        reading = ink_detail.get(key)
+        windows = (reading.get("windows") if isinstance(reading, dict) else None) or {}
+        center = windows.get("center")
+        if center is None:
+            continue
+        seen = True
+        if center <= HEAD_FILL_HOLLOW_CENTER_MAX:
+            any_light = True
+    axis, margin = _hollow_margin(ink_detail, head_box, space)
+    if not seen:
+        return "unread", axis, margin
+    shaped = (head_box is not None and space and HEAD_BOX_MIN_SPACES <= head_box[3] / space <= HEAD_BOX_MAX_SPACES
+              and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES)
+    if shaped and _raw_reads_firmly_hollow(ink_detail) and _hollow_readings(ink_detail) >= HEAD_HOLLOW_MIN_READINGS:
+        return "firm", axis, margin
+    return ("unclear" if any_light else "filled"), axis, margin
+
+
+def _fill_candidates(order, n_dots, ratio, ev, supports):
+    """Candidates for `order` = names among black / half / whole, each with its support."""
+    beats = {"black": 1.0, "half": 2.0, "whole": 4.0}
+    cands = []
+    for name in order:
+        t, add = beats[name], beats[name]
+        for _ in range(n_dots):
+            add /= 2.0
+            t += add
+        cands.append(Candidate(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": 0, "head_fill": name},
+                               support=supports[name]))
+    return cands
+
+
 _HOLLOW_UNIT = "mixed (window share, readings, staff spaces)"
 _HOLLOW_BAND = {"raw.center": (HEAD_RAW_CENTER_FLOOR, HEAD_FILL_HOLLOW_CENTER_MAX),
                 "raw.ring_gap": (HEAD_RAW_RING_GAP_MIN, 1.0),
@@ -2910,8 +2972,10 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
-    reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW),
+    reasons=("second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
+             "second_hollow_contradicted_by_marks",
+             "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "tip_readers_disagree",
              "beam_certain_not_joined",
@@ -3348,6 +3412,41 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # *a flag with no direction*.
               **_flag_direction(ev, flags)}
 
+    # ⚠️⚠️ ROADMAP 2.114: A HEAD ONLY THE SECOND DETECTOR BOXED. Production saw nothing here, so there is no production class to
+    # disagree with -- the second detector's hollow class is the only claim, and the head's own ink and marks test it. NEVER DECIDED (see the
+    # block comment above `_second_hollow_row`): a hollow box over ink that reads FILLED is refused (`second_hollow_refuted_by_ink`, nothing
+    # invented); a beam or flag on the stem contradicts a hollow head (`second_hollow_contradicted_by_marks`); anything else is NARROWED, the
+    # second detector's class first, the black head and the other hollow value beside it unless the interior is firm.
+    if _is_second_only(ev):
+        sh = _second_hollow_row(ev)
+        ink_rows = ev.rows(Q.NOTEHEAD_INK)
+        ink_detail = (ink_rows[-1].detail or {}) if ink_rows else {}
+        reading, axis, margin = _second_hollow_interior(ink_detail, head_box, space)
+        facts = {"relation": "second_only", "second_class": str(head), "second_score": (sh.detail or {}).get("second_score") if sh else None,
+                 "interior": reading, "margin_axis": axis, "margin": margin, "settled": None}
+        # `levels` is zeroed for a hollow CLASS (2.43 discounts its beams), so the strokes the stem joined are read from `shared`.
+        if levels or flags or shared.get("beams_by_stem"):
+            facts["settled"] = "refused_marks"
+            return Ruling.abstain("second_hollow_contradicted_by_marks", **shared, second_hollow=facts)
+        if reading == "filled":
+            facts["settled"] = "refused_filled"
+            return Ruling.abstain("second_hollow_refuted_by_ink", **shared, second_hollow=facts,
+                                  notehead_ink=ink_detail)
+        own_name = "half" if base == _HEAD_BEATS["noteheadHalf"] else "whole"
+        other = "whole" if own_name == "half" else "half"
+        if reading == "firm":
+            order, sup = (own_name, other), {own_name: 2.0, other: 1.0}
+        else:
+            order, sup = (own_name, "black", other), {own_name: 2.0, "black": 1.0, other: 1.0}
+        facts["settled"] = "narrowed_firm" if reading == "firm" else "narrowed_" + reading
+        used.extend(r.id for r in ink_rows[-1:])
+        if sh is not None:
+            used.append(sh.id)
+        return _with_hollow_margin(
+            Ruling.narrow(_fill_candidates(order, n_dots, ratio, ev, sup), "second_only_hollow", used=tuple(used), **shared,
+                          second_hollow=facts, notehead_ink=ink_detail),
+            ink_detail, head_box, space)
+
     # ⚠️⚠️ ROADMAP 2.38b, RULE 8, CHECKED FIRST. A CERTAIN stroke (box
     # geometry) the ink reads NOT JOINED is a DISAGREEMENT between two
     # independent witnesses, not a count to silently correct in either
@@ -3699,6 +3798,42 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # (`HEAD_BOX_MAX_SPACES`): a cluster box's ink windows say nothing about a head, and it keeps the detector's black as it did.
     beamless_looked = (beam_evidence == "reader_declined" and one_head_box
                        and _beam_reader_looked(ev, cell) is not None)
+    # ⚠️⚠️ ROADMAP 2.114: production boxed a BLACK head and the second detector a HOLLOW one on it. The head's own ink decides (see the block
+    # comment above `_second_hollow_row`). Reached only where nothing above spoke for this head (no flag, no read hook, no 2.70 / 2.88 half).
+    second_dis = None
+    sh_row = _second_hollow_row(ev)
+    if sh_row is not None and (sh_row.detail or {}).get("relation") == "disagrees" and base == _HEAD_BEATS["noteheadBlack"]:
+        ink_rows2 = ev.rows(Q.NOTEHEAD_INK)
+        ink_detail2 = (ink_rows2[-1].detail or {}) if ink_rows2 else {}
+        reading2, axis2, margin2 = _second_hollow_interior(ink_detail2, head_box, space)
+        second_dis = {"relation": "disagrees", "second_class": (sh_row.detail or {}).get("second_class"),
+                      "second_score": (sh_row.detail or {}).get("second_score"),
+                      "production_class": (sh_row.detail or {}).get("production_class"), "interior": reading2,
+                      "margin_axis": axis2, "margin": margin2, "settled": "black_stands"}
+        marks_free = (not flag_levels and not tip_ink and strokes_before_hollow == (0, 0, 0)
+                      and (beam_evidence == "none_over_this_note" or beamless_looked))
+        if reading2 in ("firm", "unclear") and marks_free:
+            used.append(sh_row.id)
+            used.extend(r.id for r in ink_rows2[-1:])
+            tip_clear = not (tip_ink_rows and any(bool(r.value) for r in tip_ink_rows))
+            if reading2 == "firm" and own_stems and not flags and one_head_box and tip_clear \
+                    and not _stem_tip_disputed(ev, cell, own_stems, side) and _beam_reader_looked(ev, cell) is not None:
+                second_dis["settled"] = "hollow_read"
+                t, add = 2.0, 2.0
+                for _ in range(n_dots):
+                    add /= 2.0
+                    t += add
+                return _with_hollow_margin(Ruling(
+                    value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": 0, "head_fill": "half"},
+                    reason="second_hollow_confirmed", used=tuple(used),
+                    detail={**shared, "second_hollow": second_dis, "notehead_ink": ink_detail2}),
+                    ink_detail2, head_box, space)
+            second_dis["settled"] = "narrowed_" + reading2
+            return _with_hollow_margin(
+                Ruling.narrow(_fill_candidates(("black", "half", "whole"), n_dots, ratio, ev, {"black": 1.0, "half": 2.0, "whole": 1.0}),
+                              "second_hollow_unclear", used=tuple(used), **shared, second_hollow=second_dis,
+                              notehead_ink=ink_detail2),
+                ink_detail2, head_box, space)
     if (beam_evidence == "none_over_this_note" or beamless_looked) and ink_hollow:
         ink_detail = fill_row.detail or {}
         used.append(fill_row.id)
@@ -3755,6 +3890,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
                                  hooks_counted=counted)
 
+    if second_dis is not None:
+        # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.
+        return Ruling(value={"beats": scaled, "written": total,
+                             "dots": n_dots, "beam_levels": levels},
+                      reason="head_and_marks", used=tuple(used), detail={**shared, "second_hollow": second_dis})
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},
                   reason="head_and_marks", used=tuple(used), detail=shared)

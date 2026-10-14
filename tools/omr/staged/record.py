@@ -481,6 +481,12 @@ class Q(_Vocab):
     #: with the anchor can re-derive without a re-gather.
     ACCIDENTAL_STAFF_POSITION = "accidental_staff_position"
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
+    #: ⚠️ ROADMAP 2.114 -- A SECOND DETECTOR'S HOLLOW-HEAD BOX, kept as a separate witness. Filed (flag `OMR_SECOND_HOLLOW_DETECTOR`, default
+    #: OFF) by `gather.gather_second_hollow` on the glyph it overlaps (a production notehead box: `detail.relation` `agrees` / `disagrees`
+    #: with production's class) or on a glyph of its own where production boxed NOTHING there (`detail.relation` `second_only`, the glyph
+    #: carries the second detector's `Q.GLYPH_BOX` / `Q.NOTEHEAD_CLASS` under `READERS.SECOND_DETECTOR`). `value` is the second
+    #: detector's class; hollow classes only, never a black head or any other class. It overwrites and merges NOTHING.
+    SECOND_HOLLOW = "second_hollow"
     #: ⚠️ The REST GLYPH's class -- whole/half/quarter/8th -- before duration,
     #: the exact parallel of `NOTEHEAD_CLASS`.
     #:
@@ -2170,6 +2176,7 @@ CLAIMS: "dict[str, str]" = {
     # ── detection: the ink, and what we call it ────────────────────────────
     "GLYPH_BOX": CLAIM.IDENTIFICATION,
     "NOTEHEAD_CLASS": CLAIM.IDENTIFICATION,
+    "SECOND_HOLLOW": CLAIM.IDENTIFICATION,
     "REST": CLAIM.IDENTIFICATION,
     "FLAG": CLAIM.IDENTIFICATION,
     "AUG_DOT": CLAIM.IDENTIFICATION,
@@ -2797,6 +2804,9 @@ class READERS(_Vocab):
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"
+    #: `gather.gather_second_hollow` -- ROADMAP 2.114. A DIFFERENT model's weights (2.110's OLD arm), hollow-head classes only, run on the
+    #: same cell at the same imgsz production got. Its own reader name so its boxes are never mistaken for `DETECTOR`'s.
+    SECOND_DETECTOR = "yolo_second_hollow"
     #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
     #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
     #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a

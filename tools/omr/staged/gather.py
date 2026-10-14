@@ -811,6 +811,94 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                   f"candidate(s), {len(witnesses)} witness(es)")
 
 
+def gather_second_hollow(log: Log, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]], *,
+                         second_detector: Any = None,
+                         conf_threshold: float = 0.25,
+                         imgsz: Optional[int] = None,
+                         progress: bool = False) -> None:
+    """ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF; the caller gates). A SECOND detector -- 2.110's OLD arm, hollow
+    classes ONLY (`second_hollow.HOLLOW_CLASSES`) -- run on the SAME cell at the SAME conf and imgsz production got, and recorded as a
+    SEPARATE witness. It decides nothing, merges nothing, overwrites no production box and moves no production row.
+
+      * a second box on a production NOTEHEAD box (IoU >= `SAME_HEAD_IOU`): `Q.SECOND_HOLLOW` on that glyph, `relation` `agrees`
+        (production's class is hollow too) or `disagrees` (production boxed a black head);
+      * a second box on a production box of ANOTHER class (a time-signature digit, a rest ...): production SAW something there -- an
+        abstention (`ABSTAIN.AMBIGUOUS`, `relation` `over_other`), no glyph;
+      * a second box on NOTHING: a glyph of its own, appended to this cell's `detections` (the rescue's pattern, so every later reader that
+        walks `detections` by index sees it) with `Q.GLYPH_BOX` / `Q.GLYPH_CONF` / `Q.NOTEHEAD_CLASS` all under `READERS.SECOND_DETECTOR`
+        and `Q.SECOND_HOLLOW` `relation` `second_only`.
+
+    Runs AFTER the rescue (a rescued box is production's reading at a lower floor, so a second box over it is not "unseen") and BEFORE every
+    reader that walks `detections` (the ink, ledger, stem and stacked-head readers). A detector that THROWS files `ABSTAIN.READER_UNAVAILABLE`
+    with the exception class on the cell -- never read as "no hollow heads here"."""
+    from . import second_hollow as SH
+    if second_detector is None:
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        frame = frame_cell(c.measure_index)
+        cell_key = cell_sub.to_key()
+        try:
+            second = second_detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz)
+        except Exception as exc:                                  # noqa: BLE001
+            log.abstain(cell_sub, Q.SECOND_HOLLOW, reader=READERS.SECOND_DETECTOR, frame=frame,
+                        reason=ABSTAIN.READER_UNAVAILABLE, error=type(exc).__name__)
+            continue
+        if not second:
+            continue
+        existing = detections.get(cell_key)
+        if existing is None:
+            existing = []
+            detections[cell_key] = existing
+        plan = SH.plan_cell(existing, second)
+
+        def _row_detail(d: Any, relation: str, **extra: Any) -> Dict[str, Any]:
+            return dict(relation=relation, second_class=d.smufl_name, second_box=[float(v) for v in SH.box(d)],
+                        second_score=float(d.confidence), **extra)
+
+        for pi, d, overlap in plan["on_head"]:
+            prod = existing[pi]
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, pi)
+            relation = "agrees" if SH.is_hollow_family(prod.smufl_name) else "disagrees"
+            log.observe(g, Q.SECOND_HOLLOW, d.smufl_name, reader=READERS.SECOND_DETECTOR, frame=frame,
+                        score=float(d.confidence),
+                        **_row_detail(d, relation, production_class=prod.smufl_name, iou=round(overlap, 4)))
+        for pi, d, overlap in plan["over_other"]:
+            log.abstain(cell_sub, Q.SECOND_HOLLOW, reader=READERS.SECOND_DETECTOR, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        production_class=existing[pi].smufl_name,
+                        **_row_detail(d, "over_other", iou=round(overlap, 4)))
+        n_existing = len(existing)
+        for k, d in enumerate(plan["second_only"]):
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, n_existing + k)
+            page_box = _page_box(c, d)
+            box_detail: Dict[str, Any] = {"category": d.category, "source": "second_detector"}
+            if page_box is None:
+                box_detail["frame_note"] = "no page box: cell has no bbox_page_px/upscale_factor"
+            else:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX, (d.smufl_name, d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical),
+                        reader=READERS.SECOND_DETECTOR, frame=frame, score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence), reader=READERS.SECOND_DETECTOR, frame=frame,
+                        score=float(d.confidence))
+            log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name, reader=READERS.SECOND_DETECTOR, frame=frame,
+                        score=float(d.confidence))
+            log.observe(g, Q.SECOND_HOLLOW, d.smufl_name, reader=READERS.SECOND_DETECTOR, frame=frame,
+                        score=float(d.confidence), **_row_detail(d, "second_only"))
+            existing.append(d)
+        if progress:
+            print(f"  gather second hollow {cell_key}: {len(plan['on_head'])} on a head, "
+                  f"{len(plan['second_only'])} second-only, {len(plan['over_other'])} over another class")
+
+
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
                               detections: Dict[str, List[Any]]) -> None:
@@ -12689,6 +12777,17 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_lowconf_rescue(log, cells, local, detections,
                               detector=detector, imgsz=imgsz,
                               progress=progress)
+
+        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
+        # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
+        # reach it one way.
+        from . import second_hollow as _SH
+        if detector is not None and _SH.enabled():
+            second_detector = _SH.default_detector()
+            if second_detector is None:
+                raise RuntimeError("OMR_SECOND_HOLLOW_DETECTOR is on but " + _SH.DEFAULT_WEIGHTS + " is not on this machine")
+            gather_second_hollow(log, cells, local, detections, second_detector=second_detector,
+                                 conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
 
         # ⚠️ ROADMAP 2.107, AFTER the rescue (a rescued head can be a letter's
         # ink too) and BEFORE every reader that walks `detections` by index:
