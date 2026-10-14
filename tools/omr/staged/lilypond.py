@@ -128,15 +128,14 @@ def _hoist_fermata(events: List[Dict[str, Any]]) -> None:
 #: bar: LilyPond reports `barcheck failed` there and `mid-measure time
 #: signature without \partial` at the next `\time`, and every later barline
 #: of that staff is out of step (Brahms 20261013: 199 + 120 of 445 warnings;
-#: the red brackets caused none). ON writes `r2.` where 6/8 is in force. The
-#: page changes (a rest glyph and the barline alignment), so it waits for Sean.
+#: the red brackets caused none). ON (default, Sean 2026-10-14) writes `r2.` where 6/8 is in force.
 CARRIED_METER_REST_ENV = "OMR_LILY_CARRIED_METER_REST"
 
 
 def carried_meter_rest_enabled() -> bool:
-    """Allow-list, default OFF: only `1`/`true`/`yes`/`on` turn it on."""
-    return os.environ.get(CARRIED_METER_REST_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Default ON (Sean 2026-10-14): an explicit off-word turns it off."""
+    return os.environ.get(CARRIED_METER_REST_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 @dataclass

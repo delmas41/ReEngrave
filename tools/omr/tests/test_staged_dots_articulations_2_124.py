@@ -184,7 +184,7 @@ class TestAWholeBarRestOnACarriedMeterIsSizedByTheMeterInForce(unittest.TestCase
     """2.125 (LilyPond warnings). `r1` in a 6/8 bar overflows it: LilyPond
     reports `barcheck failed` there and `mid-measure time signature` at the
     next `\\time`. The MusicXML twin already sized this bar by `judged`.
-    Behind `OMR_LILY_CARRIED_METER_REST`, default OFF (the page changes)."""
+    `OMR_LILY_CARRIED_METER_REST` is default ON (Sean 2026-10-14)."""
 
     def test_the_rest_is_a_bar_of_the_meter_in_force(self):
         with mock.patch.dict(os.environ, {LY.CARRIED_METER_REST_ENV: "1"}):
@@ -194,10 +194,17 @@ class TestAWholeBarRestOnACarriedMeterIsSizedByTheMeterInForce(unittest.TestCase
         self.assertNotIn("r1 |", flat, text)
         self.assertIn("r2. |", flat, text)
 
-    def test_default_off_leaves_the_file_as_it_was(self):
+    def test_default_is_on(self):
         env = {k: v for k, v in os.environ.items()
                if k != LY.CARRIED_METER_REST_ENV}
         with mock.patch.dict(os.environ, env, clear=True):
+            self.assertTrue(LY.carried_meter_rest_enabled())
+            text, _rep = LY.to_lilypond(
+                _two_system_page_with_a_carried_meter())
+        self.assertIn("r2. |", [l.strip() for l in text.split("\n")])
+
+    def test_explicit_off_leaves_the_file_as_it_was(self):
+        with mock.patch.dict(os.environ, {LY.CARRIED_METER_REST_ENV: "0"}):
             self.assertFalse(LY.carried_meter_rest_enabled())
             text, _rep = LY.to_lilypond(
                 _two_system_page_with_a_carried_meter())
