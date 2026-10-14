@@ -1,0 +1,83 @@
+
+TS1 Litolff 984073 idx1 hollow4 TEST (104 cells, 59 hand heads) | cells 104 pages 1
+    UL/v13-2026-09-03-complete-v7-beet5-bolero                   {'same_cell_key': 9, 'train_cells_on_test_pages': 9}
+    UL/v7-2026-09-02-hollow                                      {'same_cell_key': 9, 'train_cells_on_test_pages': 9}
+    D25/v13-2026-09-03-complete-v7-beet5-bolero                  {'same_cell_key': 9, 'train_cells_on_test_pages': 9}
+
+TS2 Brahms 317803 idx0 hand truth (202 cells, 1352 boxes) | cells 112 pages 1
+
+TS3 Litolff 984073 idx1 WHOLE page (beet5-p1: GATE/SHIP hollow-payoff page, 12 staves) | cells 0 pages 1
+    UL/v13-2026-09-03-complete-v7-beet5-bolero                   {'train_cells_on_test_pages': 9, 'by_page': {'imslp984073:1': 9}}
+    UL/v7-2026-09-02-hollow                                      {'train_cells_on_test_pages': 9, 'by_page': {'imslp984073:1': 9}}
+    D25/v13-2026-09-03-complete-v7-beet5-bolero                  {'train_cells_on_test_pages': 9, 'by_page': {'imslp984073:1': 9}}
+
+TS4 held-out.json pages (Brahms 0,1; Litolff 2,3; Simrock 4) | cells 0 pages 5
+    UL/v13-2026-09-03-complete-v7-beet5-bolero                   {'train_cells_on_test_pages': 7, 'by_page': {'imslp984073:3': 7}}
+    UL/v18-2026-09-03-complete-breitkopf                         {'train_cells_on_test_pages': 19, 'by_page': {'imslp317803:1': 19}}
+    UL/v23-2026-09-04-arcs-reconcile                             {'train_cells_on_test_pages': 16, 'by_page': {'imslp317803:1': 16}}
+    UL/v7-2026-09-02-hollow                                      {'train_cells_on_test_pages': 7, 'by_page': {'imslp984073:3': 7}}
+    UL/v8-2026-09-02-hollow2-5pub                                {'train_cells_on_test_pages': 4, 'by_page': {'imslp317803:1': 4}}
+    D25/v13-2026-09-03-complete-v7-beet5-bolero                  {'train_cells_on_test_pages': 7, 'by_page': {'imslp984073:3': 7}}
+    D25/v18-2026-09-03-complete-breitkopf                        {'train_cells_on_test_pages': 19, 'by_page': {'imslp317803:1': 19}}
+
+TS5 20-row scan gate / structure-truth pages (Beethoven x2 editions, Brahms 0-3, Dvorak9 4-6, Mahler local 1-4, Bach) | cells 0 pages 20
+    UL/v1-2026-05-18-orchestral                                  {'train_cells_on_test_pages': 9, 'by_page': {'imslp984073:4': 9}}
+    UL/v13-2026-09-03-complete-v7-beet5-bolero                   {'train_cells_on_test_pages': 16, 'by_page': {'imslp984073:1': 9, 'imslp984073:3': 7}}
+    UL/v17-2026-09-03-complete-simrock                           {'train_cells_on_test_pages': 2, 'by_page': {'imslp405834:6': 2}}
+    UL/v18-2026-09-03-complete-breitkopf                         {'train_cells_on_test_pages': 56, 'by_page': {'imslp317803:1': 19, 'imslp317803:2': 16, 'imslp317803:3': 21}}
+    UL/v23-2026-09-04-arcs-reconcile                             {'train_cells_on_test_pages': 38, 'by_page': {'imslp317803:1': 16, 'imslp317803:2': 8, 'imslp317803:3': 14}}
+    UL/v3-2026-06-09-mahler5                                     {'train_cells_on_test_pages': 4, 'by_page': {'mahler--symphony-5--unidentified-scan-2016--local:3': 4}}
+    UL/v5-2026-07-12-clef                                        {'train_cells_on_test_pages': 11, 'by_page': {'mahler--symphony-5--unidentified-scan-2016--local:1': 11}}
+    UL/v7-2026-09-02-hollow                                      {'train_cells_on_test_pages': 16, 'by_page': {'imslp984073:1': 9, 'imslp984073:3': 7}}
+    UL/v8-2026-09-02-hollow2-5pub                                {'train_cells_on_test_pages': 13, 'by_page': {'imslp317803:1': 4, 'imslp317803:2': 5, 'imslp317803:3': 2, 'imslp405834:6': 2}}
+    D25/v1-2026-05-18-orchestral                                 {'train_cells_on_test_pages': 9, 'by_page': {'imslp984073:4': 9}}
+    D25/v13-2026-09-03-complete-v7-beet5-bolero                  {'train_cells_on_test_pages': 16, 'by_page': {'imslp984073:1': 9, 'imslp984073:3': 7}}
+    D25/v17-2026-09-03-complete-simrock                          {'train_cells_on_test_pages': 2, 'by_page': {'imslp405834:6': 2}}
+    D25/v18-2026-09-03-complete-breitkopf                        {'train_cells_on_test_pages': 56, 'by_page': {'imslp317803:1': 19, 'imslp317803:2': 16, 'imslp317803:3': 21}}
+    D25/v3-2026-06-09-mahler5                                    {'train_cells_on_test_pages': 4, 'by_page': {'mahler--symphony-5--unidentified-scan-2016--local:3': 4}}
+
+TS6 omr-phase2.5 '30 held-out dense cells' (forgetting axis + class-inventory screen) | cells 30 pages 3
+
+TS7 held_out_rests (35 cells held out of the rest-specialist corpus; WITHDRAWN round 6) | cells 35 pages 18
+    UL/v10-2026-09-03-hollow3-elgar1                             {'same_cell_key': 1, 'train_cells_on_test_pages': 1}
+    UL/v14-2026-09-03-complete-litolff                           {'same_cell_key': 6, 'train_cells_on_test_pages': 30}
+    UL/v15-2026-09-03-complete-peters                            {'same_cell_key': 3, 'train_cells_on_test_pages': 27}
+    UL/v16-2026-09-03-complete-eulenburg                         {'same_cell_key': 5, 'train_cells_on_test_pages': 55}
+    UL/v18-2026-09-03-complete-breitkopf                         {'same_cell_key': 7, 'train_cells_on_test_pages': 56}
+    UL/v20-2026-09-03-complete-elgar1                            {'same_cell_key': 1, 'train_cells_on_test_pages': 1}
+    UL/v22-2026-09-04-simrock-dense                              {'same_cell_key': 13, 'train_cells_on_test_pages': 74}
+    UL/v23-2026-09-04-arcs-reconcile                             {'same_cell_key': 16, 'train_cells_on_test_pages': 98}
+    UL/v3-2026-06-09-mahler5                                     {'same_cell_key': 0, 'train_cells_on_test_pages': 2}
+    UL/v8-2026-09-02-hollow2-5pub                                {'same_cell_key': 3, 'train_cells_on_test_pages': 75}
+    D25/v14-2026-09-03-complete-litolff                          {'same_cell_key': 6, 'train_cells_on_test_pages': 30}
+    D25/v15-2026-09-03-complete-peters                           {'same_cell_key': 3, 'train_cells_on_test_pages': 27}
+    D25/v16-2026-09-03-complete-eulenburg                        {'same_cell_key': 5, 'train_cells_on_test_pages': 55}
+    D25/v18-2026-09-03-complete-breitkopf                        {'same_cell_key': 7, 'train_cells_on_test_pages': 56}
+    D25/v20-2026-09-03-complete-elgar1                           {'same_cell_key': 1, 'train_cells_on_test_pages': 1}
+    D25/v22-2026-09-04-simrock-dense                             {'same_cell_key': 13, 'train_cells_on_test_pages': 74}
+    D25/v3-2026-06-09-mahler5                                    {'same_cell_key': 0, 'train_cells_on_test_pages': 2}
+
+TS8 blind tiles Litolff (Sean-judged, 168 tiles, pages [1, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16]) | cells 138 pages 14
+    UL/v1-2026-05-18-orchestral                                  {'same_cell_key': 0, 'train_cells_on_test_pages': 19}
+    UL/v13-2026-09-03-complete-v7-beet5-bolero                   {'same_cell_key': 0, 'train_cells_on_test_pages': 16}
+    UL/v24-2026-10-13-hollow4-train                              {'same_cell_key': 0, 'train_cells_on_test_pages': 10}
+    UL/v7-2026-09-02-hollow                                      {'same_cell_key': 0, 'train_cells_on_test_pages': 16}
+    D25/v1-2026-05-18-orchestral                                 {'same_cell_key': 0, 'train_cells_on_test_pages': 19}
+    D25/v13-2026-09-03-complete-v7-beet5-bolero                  {'same_cell_key': 0, 'train_cells_on_test_pages': 16}
+
+TS9 blind tiles Brahms (Sean-judged, 171 tiles, pages [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]) | cells 136 pages 26
+    UL/v18-2026-09-03-complete-breitkopf                         {'same_cell_key': 7, 'train_cells_on_test_pages': 56}
+    UL/v23-2026-09-04-arcs-reconcile                             {'same_cell_key': 7, 'train_cells_on_test_pages': 38}
+    UL/v24-2026-10-13-hollow4-train                              {'same_cell_key': 0, 'train_cells_on_test_pages': 11}
+    UL/v8-2026-09-02-hollow2-5pub                                {'same_cell_key': 1, 'train_cells_on_test_pages': 11}
+    D25/v18-2026-09-03-complete-breitkopf                        {'same_cell_key': 7, 'train_cells_on_test_pages': 56}
+
+TWIN-SCAN (same plate, other scan): {
+ "v1-2026-05-18-orchestral": {
+  "trained 984073:4 -> gate row 575951:3": 9
+ },
+ "v13-2026-09-03-complete-v7-beet5-bolero": {
+  "trained 984073:1 -> gate row 575951:0": 9,
+  "trained 984073:3 -> gate row 575951:2": 7
+ }
+}
