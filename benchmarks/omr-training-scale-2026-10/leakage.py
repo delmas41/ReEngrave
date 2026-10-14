@@ -48,7 +48,13 @@ def inv_small(im, space):
 
 
 def main():
-    train = json.load(open(HERE / "train-spaces-control.json"))  # control + v24, with measured space
+    train = json.load(open(HERE / "train-spaces-control.json"))  # control train + v24, with measured space
+    seen = {r["path"] for r in train}
+    for l in open("runs/2.110/cat-old/_catalog_val.txt"):  # the val images of the same catalog (also in the mix)
+        p = l.strip()
+        if p and p not in seen:
+            im = cv2.imread(p); m = measure_space(im)
+            train.append({"path": p, "h": im.shape[0], "w": im.shape[1], "space": None if m is None else m[0], "comb": None if m is None else m[1], "split": "val"})
     tests = {}
     for tag in PAGES:
         d = Path("runs/2.110/test-cells") / tag
@@ -78,27 +84,26 @@ def main():
                 near.append((r["path"], k, ham))
     out["exact_pixel_matches"] = exact
     out["near_dhash_le10"] = near
-    # reproducibility: saved TEST png vs regenerated product cell
+    # reproducibility: saved TEST png vs regenerated product cell, joined on (system, staff, measure)
     same = diff = 0
-    for k, v in tests.items():
-        if k.startswith("saved-TEST/"):
-            cid = k.split("/", 1)[1]
-            m = [c for c in json.load(open(Path("runs/2.110/test-cells/litolff984073_p1/cells.json")))
-                 if (c["system_index"], c["staff_index"], c["measure_index"]) ==
-                 tuple(int(x[1:]) for x in cid.split("-")[2:5])]
-            if m:
-                a = cv2.imread(str(v)); b = cv2.imread(str(Path("runs/2.110/test-cells/litolff984073_p1") / f"{m[0]['cell_id']}.png"))
-                if a is not None and b is not None and a.shape == b.shape and (a == b).all():
-                    same += 1
-                else:
-                    diff += 1
+    sm = {(c["system_index"], c["staff_index"], c["measure_index"]): c["cell_id"]
+          for c in json.load(open("benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/cells.json"))}
+    rc = {(c["system_index"], c["staff_index"], c["measure_index"]): c["cell_id"]
+          for c in json.load(open("runs/2.110/test-cells/litolff984073_p1/cells.json"))}
+    for key, sid in sm.items():
+        a = cv2.imread(f"benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/cells/{sid}.png")
+        b = cv2.imread(f"runs/2.110/test-cells/litolff984073_p1/{rc[key]}.png") if key in rc else None
+        if a is not None and b is not None and a.shape == b.shape and (a == b).all():
+            same += 1
+        else:
+            diff += 1
     out["saved_TEST_vs_recut_pixel_identical"] = {"identical": same, "different_or_missing": diff}
     # 3 crop of the page
     from tools.omr.preprocessing import render_page
     res = {}
     for tag, (pdf, pg) in PAGES.items():
         page = render_page(pdf, pg, dpi=600)
-        pg_gray = page if page.ndim == 2 else cv2.cvtColor(page, cv2.COLOR_BGR2GRAY)
+        pg_gray = cv2.cvtColor(page.rgb, cv2.COLOR_RGB2GRAY)
         cells = json.load(open(Path("runs/2.110/test-cells") / tag / "cells.json"))
         # page staff space: a cell's page crop is measured by the same comb
         sp = []
@@ -108,20 +113,20 @@ def main():
             if m:
                 sp.append(m[0])
         pspace = float(np.median(sp))
-        P = inv_small(pg_gray, pspace * 1.0 * 1.0 / 1.0 * (1.0)) if False else cv2.resize(255 - pg_gray, None, fx=25.0 / pspace, fy=25.0 / pspace, interpolation=cv2.INTER_AREA).astype(np.float32)
+        P = cv2.resize(255 - pg_gray, None, fx=25.0 / pspace, fy=25.0 / pspace, interpolation=cv2.INTER_AREA).astype(np.float32)
         # controls: a product cell cut from this very page, then CROPPED (shifted pad) -> must be found
         ctl = []
         for c in cells[:3]:
             im = cv2.imread(str(Path("runs/2.110/test-cells") / tag / f"{c['cell_id']}.png"))
             crop = im[60:-90, 40:-30]
-            T = inv_small(crop, 100.0 if c["staff_line_ys_canonical"] else 100.0)
+            T = inv_small(crop, measure_space(crop)[0])
             r = cv2.matchTemplate(P, T, cv2.TM_CCOEFF_NORMED)
             ctl.append(round(float(r.max()), 3))
         scores = []
         for r in train:
             im = cv2.imread(r["path"])
             T = inv_small(im, r["space"])
-            if T.shape[0] >= P.shape[0] or T.shape[1] >= P.shape[1] or T.std() < 1e-3:
+            if r["w"] < 500 or r["space"] is None or T.shape[0] >= P.shape[0] or T.shape[1] >= P.shape[1] or T.std() < 1e-3:
                 scores.append((r["path"], None)); continue
             res_ = cv2.matchTemplate(P, T, cv2.TM_CCOEFF_NORMED)
             scores.append((r["path"], round(float(res_.max()), 3)))
