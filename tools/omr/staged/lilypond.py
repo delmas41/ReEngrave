@@ -44,6 +44,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -117,6 +118,25 @@ def _hoist_fermata(events: List[Dict[str, Any]]) -> None:
         else:
             ev["fermata"] = any(h.get("fermata")
                                 for h in (ev.get("noteheads") or ()))
+
+
+#: ROADMAP 2.125 (Sean 2026-10-14 "another that does 24 and 25"), DEFAULT OFF.
+#: A decided whole-bar rest on a bar whose OWN system declared no meter was
+#: sized by that bar's own `meter` (None -> `_lily_measure_rest`'s 4.0-quarter
+#: fallback, `r1`), not by the meter IN FORCE (`judged`) the way every other
+#: branch here and the MusicXML twin size it. In 6/8 or 3/4 `r1` overflows the
+#: bar: LilyPond reports `barcheck failed` there and `mid-measure time
+#: signature without \partial` at the next `\time`, and every later barline
+#: of that staff is out of step (Brahms 20261013: 199 + 120 of 445 warnings;
+#: the red brackets caused none). ON writes `r2.` where 6/8 is in force. The
+#: page changes (a rest glyph and the barline alignment), so it waits for Sean.
+CARRIED_METER_REST_ENV = "OMR_LILY_CARRIED_METER_REST"
+
+
+def carried_meter_rest_enabled() -> bool:
+    """Allow-list, default OFF: only `1`/`true`/`yes`/`on` turn it on."""
+    return os.environ.get(CARRIED_METER_REST_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
 
 
 @dataclass
@@ -479,9 +499,12 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 counters["measure_rests_read"] += 1
                 if condensed:
                     counters["notes_doubled_to_condensed_slot"] += 1
-                bars.append(_Bar("empty", meter, run.clef, key,
-                                 directions=directions, condensed=condensed,
-                                 fermata=bool(events[0].get("fermata"))))
+                bars.append(_Bar(
+                    "empty",
+                    judged if carried_meter_rest_enabled() else meter,
+                    run.clef, key, directions=directions,
+                    condensed=condensed,
+                    fermata=bool(events[0].get("fermata"))))
                 continue
 
             # ⚠️ `streams` IS ALREADY COMPUTED, ABOVE, FOR THE HOLD-OUT CHECK
