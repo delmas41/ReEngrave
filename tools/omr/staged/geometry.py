@@ -254,18 +254,16 @@ def distance_to_staff_spaces(cx: float, cy: float, bands: Iterable[Any]
 
 
 #: ROADMAP 2.108 -- the REACH: a pitch-bearing glyph this many staff spaces (or
-#: more) from every staff is not music. MEASURED, not chosen: the farthest REAL
-#: glyph on the evidence is 4.9-4.95 spaces from its nearest staff (Sean's
-#: hand-labelled Brahms 317803 pdf 0: noteheads 4.9, accidentals 4.86; the
-#: staged gather of Brahms pdf 0-1: kept noteheads 4.9, none farther -- the
-#: cell's pad is 4 spaces and grows to 6 at most, so staged cells cannot reach
-#: farther). 8 spaces is the seventh ledger line, past any note an orchestral
-#: part prints without an 8va, and 3 spaces past the farthest real one seen. A
-#: title letter sits tens of spaces out. The reach is a declared cut-off on two
-#: plates, so it only REFUSES a box nothing else vouches for: a ledger-rung
-#: ladder reaching the box (`ownership.ledger_direction`'s own question, asked
-#: by the decider) keeps it whatever its distance.
-OFF_STAFF_REACH_SPACES = 8.0
+#: more) from every staff is not music. MEASURED, then SET BY SEAN (2026-10-13,
+#: "go with 6"; it was 8): the farthest REAL glyph on the evidence is 4.95
+#: spaces (Sean's hand-labelled Brahms 317803 pdf 0 noteheads 4.9, accidentals
+#: 4.86; the staged Brahms pdf 0-1 kept heads 4.9-4.95) and 5.48 on Litolff. The
+#: margin over the farthest real glyph is thin (0.5 space), so the rule only
+#: REFUSES a box nothing else vouches for: a ledger-rung ladder reaching the box
+#: (`ownership.ledger_direction`'s own question, asked by the decider) keeps it
+#: whatever its distance -- that exemption must stay. A title letter sits tens
+#: of spaces out. A declared cut-off on two plates, not a law.
+OFF_STAFF_REACH_SPACES = 6.0
 
 #: The classes whose position carries a pitch or a place on a staff: a head, a
 #: rest, an accidental, an augmentation dot. (Flags hang from a stem and beams

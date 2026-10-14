@@ -59,16 +59,17 @@ for q in refused:                       # largest box first (a letter's bowl, no
         continue
     seen.add(key)
     picked.append(q)
-want = {'top': 2, 'margin': 2, 'bottom': 1}
+want = {'top': 1, 'margin': 2, 'bottom': 1}
 chosen = []
 for q in picked:
     k = region(q.rect)
     if want.get(k, 0) > 0:
         want[k] -= 1
         chosen.append(q)
-rest_acc = [q for q in refused if not q.cls.startswith('notehead')]
-if rest_acc:
-    chosen.append(rest_acc[0])
+# the band 6 <= d < 8: boxes the old reach (8) let through and the new one (6, Sean "go with 6") refuses -- the
+# letters of the tempo word "sostenuto" ("...etten...") over the first system, largest boxes first
+band = sorted((q for q in det if 6 <= dist(q.rect) < 8 and region(q.rect) == 'top'),
+              key=lambda q: -((q.rect[2] - q.rect[0]) * (q.rect[3] - q.rect[1])))[:2]
 
 items = [{"kind": "refused_off_staff", "id": q.id, "cls": q.cls, "rect": q.rect,
           "region": region(q.rect), "nearest_staff_spaces": round(dist(q.rect), 1),
@@ -85,6 +86,9 @@ items += [{"kind": "control_kept_just_inside_reach", "id": q.id, "cls": q.cls, "
            "region": region(q.rect), "nearest_staff_spaces": round(dist(q.rect), 1),
            "source": q.source, "conf": q.score} for q in kept]
 
+items += [{"kind": "refused_in_new_band_6_to_8", "id": q.id, "cls": q.cls, "rect": q.rect,
+           "region": region(q.rect), "nearest_staff_spaces": round(dist(q.rect), 1),
+           "source": q.source, "conf": q.score} for q in band]
 random.Random(20261013).shuffle(items)
 tiles = []
 for n, it in enumerate(items, 1):

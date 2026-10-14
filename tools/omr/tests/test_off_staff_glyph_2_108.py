@@ -5,14 +5,14 @@ anywhere near"*.
 CAUSE. The hand-truth session (`tools/omr/hand_truth/session.py`) cuts every bit
 of ink outside the measure cells into `top` / `margin` / `bottom` region cells and
 runs the DETECTOR on them, so a title letter's bowl comes back `noteheadBlack*`
-and is queued as a pre-fill (Brahms pdf 0: 1,610 of 2,221 queued heads are 8+
+and is queued as a pre-fill (Brahms pdf 0: most queued heads are 6+
 staff spaces from every staff). The STAGED gather cuts no region cells (a cell is
 a staff band plus a 4-6 space pad), so nothing in the title reaches it; its
 farthest kept head on Brahms pdf 0-1 is 4.95 spaces out. The staged rule is the
 guard against a cell that ever reaches farther.
 
 RULE. A pitch-bearing glyph (head, rest, accidental, dot) `OFF_STAFF_REACH_SPACES`
-(8) or more from EVERY staff at its x is not music: STAGED `off_staff_glyph` on
+(6) or more from EVERY staff at its x is not music: STAGED `off_staff_glyph` on
 the notehead decider, and the pre-fill queue never offers it. Positive controls:
 real far notes (a head 5 spaces out, a head with a ledger rung, a head beside
 another staff), and Sean's own labels.

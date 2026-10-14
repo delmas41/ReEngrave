@@ -1023,3 +1023,14 @@ page-level detector pass, a taller pad). The measured effect is on the pre-fill 
 on the title and publisher lines, margin names and the footer), 3 controls that must stay (Sean's own
 confirmed heads standing 4.6 to 4.9 spaces out), 1 queued box in text just inside the reach (7.9) the rule KEEPS, to show
 what the reach lets through.
+
+**Reach set to 6 (Sean, 2026-10-13: *"go with 6"*; was 8).** `OFF_STAFF_REACH_SPACES = 6.0`, one constant read by STAGED
+`off_staff_glyph`, the pre-fill and `prune-off-staff`. Farthest real glyph: Brahms 4.95, Litolff 5.48, so the margin is
+thin (0.5 space) and the kept-ledger-rung exemption stays. Re-measured at 6 (`prune_probe.py`, read only): committed Brahms
+pdf 0 store, 1,831 of 2,639 queued boxes refused (8: 1,663), 0 of 1,352 truth boxes caught; Sean's live store (read only,
+865 queued now), 623 refused (8: 562), 0 of 1,566 truth boxes caught. Staged small re-gathers at 6, base vs arm, one at a
+time: Brahms pdf 0-1 20,732 verdicts, 0 differ, `off_staff_glyph` 0; Litolff pdf 0-3 `off_staff_glyph` 0 (the 524 differing
+verdicts are obs-id shifts by one and two Surya words, run-to-run, none an off-staff reason), so 0 real glyphs refused.
+Tiles regenerated at 6 (`tiles.py`: title letter, margin name letters, footer, two letters of the tempo word
+"sostenuto" in the new 6-8 band, 3 far-note controls, 1 queued box just inside 6): 10 in `out/print/2.108-review/`, reading in
+`manifest.json`, `answers.template.json`. Waiting on Sean; NOT landed.

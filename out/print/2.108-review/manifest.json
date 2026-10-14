@@ -1,0 +1,274 @@
+{
+ "question": "What is the bracketed mark?",
+ "tile_scale": "32 px per staff space",
+ "reach_spaces": 6.0,
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "control_real_far_note",
+    "id": "q677",
+    "cls": "noteheadHalfInSpace",
+    "rect": [
+     3618.644675925926,
+     3743.32,
+     3661.847800925926,
+     3783.96
+    ],
+    "region": "measure",
+    "nearest_staff_spaces": 4.6,
+    "source": "truth:prefill-confirmed"
+   },
+   "page_box_600dpi": [
+    3619,
+    3743,
+    3662,
+    3784
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_off_staff",
+    "id": "q4072",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     984.0458776595744,
+     6783.118155619596,
+     1005.6515957446809,
+     6811.521613832853
+    ],
+    "region": "margin",
+    "nearest_staff_spaces": 7.0,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.2554973065853119
+   },
+   "page_box_600dpi": [
+    984,
+    6783,
+    1006,
+    6812
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_off_staff",
+    "id": "q2313",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     4976.075591459896,
+     1183.4856711915536,
+     5010.589728793999,
+     1211.5671191553545
+    ],
+    "region": "top",
+    "nearest_staff_spaces": 12.0,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.2501310110092163
+   },
+   "page_box_600dpi": [
+    4976,
+    1183,
+    5011,
+    1212
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_in_new_band_6_to_8",
+    "id": "q2542",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     2000.2704149933065,
+     1365.7096774193549,
+     2015.756358768407,
+     1381.1935483870968
+    ],
+    "region": "top",
+    "nearest_staff_spaces": 6.5,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.3674032390117645
+   },
+   "page_box_600dpi": [
+    2000,
+    1366,
+    2016,
+    1381
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_off_staff",
+    "id": "q3082",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     544.1465884861407,
+     3140.5767195767194,
+     563.4962686567164,
+     3171.5608465608466
+    ],
+    "region": "margin",
+    "nearest_staff_spaces": 20.5,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.2878701388835907
+   },
+   "page_box_600dpi": [
+    544,
+    3141,
+    563,
+    3172
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "control_real_far_note",
+    "id": "q1011",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     3323.628205128205,
+     4986.102130325815,
+     3365.5726495726494,
+     5022.565162907268
+    ],
+    "region": "measure",
+    "nearest_staff_spaces": 4.9,
+    "source": "truth:prefill-confirmed"
+   },
+   "page_box_600dpi": [
+    3324,
+    4986,
+    3366,
+    5023
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "control_real_far_note",
+    "id": "q1008",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     3255.5491452991455,
+     4985.7794486215535,
+     3296.8482905982905,
+     5022.242481203008
+    ],
+    "region": "measure",
+    "nearest_staff_spaces": 4.9,
+    "source": "truth:prefill-confirmed"
+   },
+   "page_box_600dpi": [
+    3256,
+    4986,
+    3297,
+    5022
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_off_staff",
+    "id": "q4125",
+    "cls": "noteheadBlackInSpace",
+    "rect": [
+     2183.2048681541582,
+     7061.142857142857,
+     2207.7160243407707,
+     7069.178571428572
+    ],
+    "region": "bottom",
+    "nearest_staff_spaces": 6.0,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.29312458634376526
+   },
+   "page_box_600dpi": [
+    2183,
+    7061,
+    2208,
+    7069
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "control_kept_just_inside_reach",
+    "id": "q2609",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     1801.0718015665796,
+     1388.9259259259259,
+     1804.2963446475196,
+     1393.4444444444443
+    ],
+    "region": "top",
+    "nearest_staff_spaces": 6.0,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.265836238861084
+   },
+   "page_box_600dpi": [
+    1801,
+    1389,
+    1804,
+    1393
+   ],
+   "dpi": 600
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "question": "What is the bracketed mark?",
+   "hidden": {
+    "kind": "refused_in_new_band_6_to_8",
+    "id": "q2540",
+    "cls": "noteheadBlackOnLine",
+    "rect": [
+     2168.6800535475236,
+     1367.3225806451612,
+     2191.5863453815264,
+     1376.3548387096773
+    ],
+    "region": "top",
+    "nearest_staff_spaces": 6.6,
+    "source": "detector:deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.38103199005126953
+   },
+   "page_box_600dpi": [
+    2169,
+    1367,
+    2192,
+    1376
+   ],
+   "dpi": 600
+  }
+ ]
+}
