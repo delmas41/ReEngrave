@@ -167,22 +167,23 @@ class _Bar:
 
 
 def _lily_gap_text(gap_units: int, divisions: int) -> str:
-    """The unread span as red rests, the first marked `unread` -- never a
-    plain rest (CLAUDE.md rule 8). Segments from `SX._gap_segments`."""
-    toks = []
-    for n, (u, fit) in enumerate(SX._gap_segments(gap_units, divisions)):
-        if fit is not None:
-            tok = _legacy._lily_event({"kind": "rest", "duration_type": fit[0],
-                                       "dots": fit[1]})
-        else:
-            frac = Fraction(u, divisions) / 4
-            tok = ("r1*%d" % frac.numerator if frac.denominator == 1
-                   else "r1*%d/%d" % (frac.numerator, frac.denominator))
-        t = "\\once \\override Rest.color = #red " + tok
-        if n == 0:
-            t += '^\\markup { "%s" }' % SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
-        toks.append(t)
-    return " ".join(toks)
+    """The unread span: an invisible skip of its length under a red `unread`
+    bracket (a text spanner) -- NO rest glyph (rule 8; Sean 2026-10-14). The
+    zero-length skip ends the spanner at the span's end, even at the barline."""
+    frac = Fraction(gap_units, divisions) / 4
+    dur = ("%d" % frac.numerator if frac.denominator == 1
+           else "%d/%d" % (frac.numerator, frac.denominator))
+    word = SX.UNREAD_BAR_MARK_WORDS[SX._GAP_REFUSAL]
+    tick = "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
+    return (
+        "\\once \\override TextSpanner.style = #'line "
+        "\\once \\override TextSpanner.color = #red "
+        "\\once \\override TextSpanner.direction = #UP "
+        "\\once \\override TextSpanner.bound-details.left.text = " + tick
+        + "\\once \\override TextSpanner.bound-details.right.text = " + tick
+        + "\\once \\override TextSpanner.bound-details.left-broken.text = ##f "
+        "s1*%s\\startTextSpan^\\markup { \\with-color #red \"%s\" } "
+        "s1*0\\stopTextSpan" % (dur, _ly_escape(word)))
 
 
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
@@ -396,6 +397,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 if drops is not None:
                     for _ in range(partial["gap_rows"]):
                         drops(SX._GAP_REFUSAL, run.page, run.system)
+                SX._mark_kept_onsets(partial)
                 pieces = []
                 for p in partial["streams"]:
                     if p["status"] == "complete":

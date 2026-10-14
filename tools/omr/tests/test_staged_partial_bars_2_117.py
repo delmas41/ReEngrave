@@ -14,10 +14,12 @@ import xml.etree.ElementTree as ET
 from unittest import mock
 
 from tools.omr.staged import export as SX
+from tools.omr.staged import lilypond as LY
 from tools.omr.tests.test_staged_export import QUARTER, _one_staff_page
 
 FOUR_FOUR = {"numerator": 4, "denominator": 4, "raw": "4/4"}
 RED = "#D00000"
+BLUE = "#1F6FEB"
 
 
 def _export(notes, mode="on", meter=FOUR_FOUR):
@@ -45,6 +47,8 @@ class TestPrefixAndSuffixAreKept(unittest.TestCase):
         xml, _ = _export(self.NOTES)
         offs, t = {}, 0
         for n in ET.fromstring(xml).find(".//measure"):
+            if n.tag == "forward":
+                t += int(n.find("duration").text)
             if n.tag != "note":
                 continue
             step = n.find("pitch/step")
@@ -55,15 +59,36 @@ class TestPrefixAndSuffixAreKept(unittest.TestCase):
         self.assertEqual({k: v / div for k, v in offs.items()},
                          {"C": 0.0, "E": 2.0, "F": 3.0})
 
-    def test_the_gap_is_red_worded_unread_and_never_a_plain_rest(self):
+    def test_the_gap_is_a_red_bracket_and_NO_rest_glyph(self):
+        """Sean, 2026-10-14: *"Use a red bracket instead"* -- a rest, even
+        red, reads as silence (rule 8). The gap is an invisible `<forward>`
+        under a red bracket and the word `unread`."""
         xml, _ = _export(self.NOTES)
         root = ET.fromstring(xml)
-        rests = root.findall(".//note/rest/..")
-        self.assertEqual(len(rests), 1)
-        self.assertEqual(rests[0].get("color"), RED)
-        self.assertIsNone(rests[0].find("rest").get("measure"))
+        self.assertEqual(root.findall(".//note/rest"), [])
+        fw = root.findall(".//measure/forward")
+        self.assertEqual(len(fw), 1)
+        br = root.findall(".//bracket")
+        self.assertEqual([b.get("type") for b in br], ["start", "stop"])
+        self.assertTrue(all(b.get("color") == RED for b in br))
         words = [w.text for w in root.findall(".//words")]
         self.assertIn("unread", words)
+
+    def test_every_kept_note_is_BLUE_and_counted_as_a_partial_bar_guess(self):
+        xml, rep = _export(self.NOTES)
+        notes = [n for n in ET.fromstring(xml).findall(".//note")
+                 if n.find("pitch") is not None]
+        self.assertEqual([n.get("color") for n in notes], [BLUE] * 3)
+        by_rule = rep["guessed"]["by_rule"]
+        self.assertEqual(by_rule.get("onset_from_partial_bar_prefix"), 1)
+        self.assertEqual(by_rule.get("onset_from_partial_bar_suffix"), 2)
+
+    def test_a_bar_that_adds_up_on_its_own_stays_plain_black(self):
+        xml, rep = _export([("C4", QUARTER), ("D4", QUARTER),
+                            ("E4", QUARTER), ("F4", QUARTER)])
+        notes = ET.fromstring(xml).findall(".//note")
+        self.assertTrue(all(n.get("color") is None for n in notes))
+        self.assertEqual(rep["partial_bars"]["written"], 0)
 
     def test_every_row_still_balances_and_the_gap_head_is_counted(self):
         _xml, rep = _export(self.NOTES)
@@ -76,6 +101,35 @@ class TestPrefixAndSuffixAreKept(unittest.TestCase):
         _xml, rep = _export(self.NOTES)
         b = rep["partial_bars"]["bars"][0]
         self.assertEqual((b["status"], b["rows_written"]), ("partial", 3))
+
+
+class TestTheLilyPondTwin(unittest.TestCase):
+    NOTES = TestPrefixAndSuffixAreKept.NOTES
+
+    def _ly(self, mode="on"):
+        with mock.patch.dict(os.environ, {"OMR_PARTIAL_BARS": mode}):
+            return LY.to_lilypond(_one_staff_page(notes=self.NOTES,
+                                                  meter=FOUR_FOUR))
+
+    def test_the_gap_is_an_invisible_skip_under_a_red_unread_bracket(self):
+        ly, rep = self._ly()
+        bar = next(l for l in ly.splitlines() if "startTextSpan" in l)
+        self.assertIn("s1*1/4\\startTextSpan", bar)
+        self.assertIn('"unread"', bar)
+        self.assertIn("#red", bar)
+        self.assertNotRegex(bar, r"(?<![a-zA-Z\\])r[0-9]")   # no rest token
+        self.assertEqual(rep["partial_bars"]["written"], 1)
+
+    def test_every_kept_note_is_blue(self):
+        ly, rep = self._ly()
+        bar = next(l for l in ly.splitlines() if "startTextSpan" in l)
+        self.assertEqual(bar.count("\\tweak color #guessedColor"), 3)
+        self.assertEqual(rep["guessed"]["by_rule"][
+            "onset_from_partial_bar_suffix"], 2)
+
+    def test_off_has_no_spanner(self):
+        ly, _rep = self._ly("")
+        self.assertNotIn("startTextSpan", ly)
 
 
 class TestABarWithNoLocatableGapStaysHeld(unittest.TestCase):

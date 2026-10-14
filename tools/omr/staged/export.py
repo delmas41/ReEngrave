@@ -5181,8 +5181,8 @@ def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
 #
 # STAGE: EXPORT, STAGED path only (CLAUDE.md §3). Fenced functions:
 # `partial_bars_mode`, `_attach_unplaced`, `_partial_bar_plan`,
-# `_plan_one_stream`, `_scrub_cut_beams`, `_gap_segments`, `_gap_rest_xml`,
-# `_unread_gap_direction_xml`, `_partial_measure_xml`, and the one branch in
+# `_plan_one_stream`, `_scrub_cut_beams`, `_mark_kept_onsets`, `_gap_xml`,
+# `_unread_bracket_xml`, `_unread_gap_direction_xml`, `_partial_measure_xml`, and the one branch in
 # `_part_xml` / `lilypond._collect_bars` that calls them.
 #
 # CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (Sean, 2026-10-14
@@ -5199,8 +5199,9 @@ def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
 #     the wrong beat (a note the detector MISSED before it, which the old
 #     hold-out would also not have seen unless the bar was short), or a gap the
 #     print shows holding no music. Sean reads the side-by-side crops.
-#   * NOT CONFIRMED: red (#D00000) rest(s) + the word "unread" as the gap's
-#     look; that a duration-GUESSED event ends a prefix (its onset is certain,
+#   * SEAN, 2026-10-14: the gap is an empty red bracket over an invisible
+#     span (no rest glyph), the kept notes are written blue (GUESSED).
+#   * NOT CONFIRMED: that a duration-GUESSED event ends a prefix (its onset is certain,
 #     the next one's is not); that a refused glyph the detector boxed too
 #     narrow counts as a possible head (strict) rather than ink.
 
@@ -5436,49 +5437,39 @@ def _scrub_cut_beams(portion: List[Dict[str, Any]]) -> None:
         g.pop("beam_states", None)
 
 
-_GAP_CANDIDATE_BEATS = (4.0, 3.0, 2.0, 1.5, 1.0, 0.75, 0.5, 0.375, 0.25,
-                        0.1875, 0.125)
-
-
-def _gap_segments(gap_units: int, divisions: int
-                  ) -> List[Tuple[int, Optional[Tuple[str, int]]]]:
-    """Cut an unread span into rests that each have a clean written value
-    where one fits, the remainder (a length no single value names) typeless.
-    Greedy, largest first. Units sum to `gap_units` exactly."""
-    out: List[Tuple[int, Optional[Tuple[str, int]]]] = []
-    left = int(gap_units)
-    for beats in _GAP_CANDIDATE_BEATS:
-        u = beats * divisions
-        if u != int(u) or u <= 0:
+def _mark_kept_onsets(plan: Dict[str, Any]) -> None:
+    """Sean, 2026-10-14: *"write kept notes blue"*. Every event kept in a
+    partial bar's prefix/suffix is GUESSED (2.103): its beat rests on no note
+    having been missed before it (prefix) / after it (suffix). An event that
+    already carries a guess keeps its own; the rule is named apart so the
+    report counts these apart from ordinary guesses."""
+    for p in plan["streams"]:
+        if p["status"] == "complete":
             continue
-        u = int(u)
-        fit = _legacy._dotted_duration_for_beats(beats)
-        if fit is None:
-            continue
-        while left >= u:
-            out.append((u, fit))
-            left -= u
-    if left > 0:
-        out.append((left, None))
-    return out
+        for side, rule in (("pre", "onset_from_partial_bar_prefix"),
+                           ("suf", "onset_from_partial_bar_suffix")):
+            for ev in p[side]:
+                g = {"stage": "EXPORT", "rule": rule, "quantity": "onset",
+                     "candidates": [], "chosen": {}}
+                if ev.get("kind") == "rest":
+                    det = ev.get("rest")
+                    if isinstance(det, dict) and not det.get("guess"):
+                        det["guess"] = dict(g)
+                    continue
+                for h in ev.get("noteheads") or ():
+                    if not h.get("guess"):
+                        h["guess"] = dict(g)
 
 
-def _gap_rest_xml(units: int, fit: Optional[Tuple[str, int]], voice: int,
-                  indent: str = "      ") -> List[str]:
-    """ONE red rest of an unread span. ⚠️ NOT A `_rest_xml`: it is not a
-    rest the page printed, so no rest counter moves and no `measure="yes"`
-    claims the bar is silent -- the colour and the `unread` word beside it
-    (`_unread_gap_direction_xml`) are what say so."""
-    lines = [f'{indent}<note color="{UNREAD_BAR_MARK_COLOR}">',
-             f"{indent}  <rest/>",
-             f"{indent}  <duration>{units}</duration>",
-             f"{indent}  <voice>{voice}</voice>"]
-    if fit is not None:
-        _l, xml_type, dots = _legacy._duration_to_lily_xml(fit[0], fit[1])
-        lines.append(f"{indent}  <type>{xml_type}</type>")
-        lines.extend(f"{indent}  <dot/>" for _ in range(int(dots)))
-    lines.append(f"{indent}</note>")
-    return ["\n".join(lines)]
+def _unread_bracket_xml(kind: str, number: int, indent: str = "      "
+                        ) -> str:
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <bracket type="{kind}" number="{number}" '
+            f'line-end="down" end-length="12" line-type="solid" '
+            f'color="{UNREAD_BAR_MARK_COLOR}"/>\n'
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
 
 
 def _unread_gap_direction_xml(indent: str = "      ") -> str:
@@ -5491,6 +5482,17 @@ def _unread_gap_direction_xml(indent: str = "      ") -> str:
             f"{indent}</direction>")
 
 
+def _gap_xml(units: int, voice: int, indent: str = "      ") -> List[str]:
+    """The unread span: a red `unread` bracket over an INVISIBLE `<forward>`
+    of the span's length -- no `<rest>` and no `<note>`, because a rest, even
+    red, reads as silence (rule 8; Sean 2026-10-14)."""
+    return [_unread_bracket_xml("start", voice, indent),
+            _unread_gap_direction_xml(indent),
+            f"{indent}<forward>\n{indent}  <duration>{units}</duration>\n"
+            f"{indent}  <voice>{voice}</voice>\n{indent}</forward>",
+            _unread_bracket_xml("stop", voice, indent)]
+
+
 def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
                          plan: Dict[str, Any], divisions: int,
                          counters: Dict[str, int],
@@ -5498,6 +5500,7 @@ def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
     """The MusicXML of a partial bar: per voice, prefix, red unread rest(s),
     suffix; a voice that adds up is written as `_measure_xml` writes it."""
     per = plan["streams"]
+    _mark_kept_onsets(plan)
     for p in per:
         _annotate_beams_for(rec, run, cell_index, p["events"], counters)
         if p["status"] != "complete":
@@ -5517,9 +5520,7 @@ def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
                                        voice=voice)
         out, units = _measure_events_xml(p["pre"], divisions, counters,
                                          voice=voice)
-        out.append(_unread_gap_direction_xml())
-        for u, fit in _gap_segments(p["gap_units"], divisions):
-            out.extend(_gap_rest_xml(u, fit, voice))
+        out.extend(_gap_xml(p["gap_units"], voice))
         units += p["gap_units"]
         counters["unread_gaps_written"] += 1
         counters["unread_gap_units"] += p["gap_units"]
