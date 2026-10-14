@@ -898,3 +898,71 @@ not as a pass.
 heads read 0.63-0.76 at p10 on the plate, though none lies on a letter box here) that lay on a letter box would be refused as
 a stroke; a thick letter-shaped blob on a false letter box over a real head would be kept (the narrow-`f` guard covers the one
 measured). Shapes with no dynamic box over them and heads on direction-word boxes: not built.
+
+## 2026-10-13 -- ROADMAP 2.105: three not-a-note leftovers (b, c fixed; a diagnosed, NOT fixed)
+
+STAGED, ADJUDICATE only (GATHER unchanged). Probes: `probe/2.105/`. Base vs arm = the small re-gather
+(`acceptance_quick`) run twice on one tree with the two production files swapped (arm = this branch, base = its parent);
+tiles `out/print/2.105-review/` (12, blind, readings in `manifest.json` only).
+
+**(c) a BARLINE boxed as a rest** (`out/print/2.100-review-2` tile 1, Sean: "Barline"). Cause: nothing asked the box's own
+geometry. Litolff night record, 2,873 rest boxes: 76 kept `restQuarter` boxes are 0.2-0.4 sp wide and flush on a cell edge
+(cells are cut at the barlines), 23 more flush ones at 0.4-0.8 sp were cropped and are all barlines; every kept rest box
+that is not flush is >= 0.4 and the bulk 1.0-1.3. New `family_precision._rest_is_a_barline_refusal`, reason
+`rest_is_a_barline`, LAST in the rest decision so no refusal already standing changes its reason: width < 0.8 sp AND height
+>= 2.0 sp AND within 0.15 sp of a cell edge. Records `barline_signal` (width/height/edge and the signed margin to each cut)
+and, for a narrow box near an edge that did not qualify, `barline_near_miss`. A cut measured on one plate: it refuses (the bar
+stays marked unread), it never decides a value. Small re-gather: Litolff p0-3 **15 rests newly refused** (0 other rest
+change), Brahms p0-1 **4**. Controls kept: a real quarter rest flush-adjacent but 1.2 sp wide, mid-bar thin box.
+
+**(b) 2.92 `stacked_head_duplicate`.** Sean's five tiles (2.88 tiles 2, 6; round-2 3, 5, 7) are the BLACK-class twin box of a
+head whose HALF-class twin is KEPT and decided half (duration `2.0`, `head_and_marks`) -- on the 2026-10-11 record the printed
+half has its box in all five (probe `cellhead.py`, `dur.py`). The roadmap premise ("drops a real half") held for the BOX Sean's
+tile bracketed, not for the head. The real defect the sweep found (probe `group_sweep.py`): of 424 slot groups holding a
+`stacked_head_duplicate` refusal, **33 had NO live box** (381 one, 10 two). 14 are mutual circles: 2.30
+(`notehead_is_a_duplicate_box`) ordered two same-class boxes by a SATURATING shape (>= a standard head = 1.0), so an
+over-wide box that had merged a neighbour's ink (2.1-2.6 sp against a clean 1.4-1.7) tied a clean head and won on detector
+score, while 2.42 chose by ink and took the clean one; each refused the other. The 2.73 heir shield could not break it because
+it demanded the survivor be a plausible head box. Fix (`notehead_precision`): one ordering for both rules -- `_head_box_excess`
+(spaces outside the plausible-head ranges): a plausible box beats an implausible one, of two implausible boxes the nearer to a
+head keeps the mark, then shape, then score; the heir shield uses the same ordering instead of a hard cut. Of the rest of the 33, about 11 have a twin given to another staff (ownership contest, a different decision) and 3 were refused by `on_a_dynamic_letter`
+(a twin of letter ink is letter ink). Small re-gather: Litolff **4 groups neither -> one box, 2 groups swapped keeper**
+(`notehead_is_not_a_notehead` 6 true->false, 2 false->true, every one inside a twin group), Brahms 1 refused -> kept.
+Controls: a plausible twin pair still collapses to exactly one; two heads on different slots both stay. Not claimed: that the
+chosen keeper is the better head in the 2 swaps -- tiles 10, 11.
+
+**(a) 2.91 an `sf` boxed as a note: diagnosed, not fixed.** `glyph/2/1/0/6/6` (Litolff p2, 2.90 tile 9) is the hook of the
+`f`: the detector drew NO dynamic box on that ink (it boxed one `noteheadBlackOnLine` and two `rest16th`), so
+`Q.NOTEHEAD_LETTER_INK` files nothing and `on_a_dynamic_letter` is never asked (the bar's `dynamic` verdict reads "no
+letters"). No refusal on the mark's own box evidence separates it from real heads: its widest filled disc is 0.89 sp (the
+stroke cut is 0.9) but 75 of 1,583 kept black heads on Litolff p1-4 are under 0.9 and 36 of those are stemless -- contact
+sheet: almost all real slanted heads on staff lines; 19 kept filled heads abut a kept flagged-rest box and 17 of the 19 are a
+real eighth rest beside a real note (the sf's overlap, 0.09 of the head, equals a real pair's 0.05); a missing stem is not
+evidence (381 of 1,583 kept heads carry no decided stem). Connected-component share was already tried and refused for letters
+(this file, 2026-10-09). What would work needs a new GATHER reading (the connected ink around the head, staff lines and a
+straight stem removed, as a letter-shaped component with no stem >= 2 sp tall); that is not built here.
+
+**Noise seen, not ours:** two `direction` verdicts (`cresc`, `Cresc.` p2 sys 1) read by tesseract in base only -- the
+text reader, GATHER-side; neither change touches text.
+
+### 2.105 -- Sean's answers on `out/print/2.105-review/` (2026-10-13) and the tile-6 repair
+
+Verbatim: *"1. barline 2. 2 3. barline 4. 8 rest 5. 4 rest 6. beams ( 2 of them) 7. barline 8.2,2 9. 8 rest 10. barline 11. 4
+12. 2"*. Scored against the manifest (`answers.json` beside the tiles): barline refusals 4 of 4 (tiles 1, 3, 7, 10); rest
+controls 3 of 3 (4, 5, 9); twin fixes 4 of 4 real notes kept (2 half, 8 two halves, 11 quarter, 12 half); **tile 6 WRONG**:
+Brahms `glyph/0/0/10/1/20`, newly kept by the shared twin ordering, is two beams.
+
+**Why tile 6 escaped.** Its twin pair (`glyph/0/0/10/1/16` 3.24 x 1.70 sp and `/20` 2.35 x 1.65 sp) was refused in base by
+accident (each by the other). The new ordering ranks by distance from a plausible head, so it kept the less-wrong box of two
+beam boxes. The existing `is_a_beam_piece` refusal (2.77b) did not fire: it is gated on a box under 0.9 spaces tall, and this
+box lies 94% inside a read sloped beam stroke (6.4 x 1.8 sp, `thickness_ratio` 2.9, sagitta 0.21) whose bounding box is
+as tall as the box. Repair (own geometry plus the same beam witness): `_beam_piece_refusal` also fires for a regular-head box
+WIDER than any head is printed (`PLAUSIBLE_HEAD_WIDTH_SPACES` upper bound, 2.1 sp) that lies >= 70% in a read beam stroke, and
+2.42's keeper pool drops any group member that is a beam piece, so a group whose every box is beam ink keeps none. RED from
+tile 6's geometry (both boxes kept/one kept before, both refused after); the same pair with no read beam still keeps exactly
+one box; the four right twin tiles' geometry (plausible widths, no beam) is unchanged.
+**Re-measure (small re-gathers, one at a time):** Brahms p0-1 = base + the 4 barline rests only (tile 6 refused, nothing else
+moves); Litolff p0-3 = the first arm + **one more box**: `glyph/2/0/7/1/8`, a 6.5 x 1.1 sp flat "notehead" 93% inside a read
+beam stroke, kept -> refused; its neighbour `glyph/2/0/7/1/5` loses its decided stem_value (eighth, beam level 1) -> abstained
+(the false head no longer shares its stem; not judged by Sean -- a candidate tile).
+**The `sf` (2.91) stays a KNOWN MISS** (Sean, DECISIONS 2026-10-13): no new GATHER step.

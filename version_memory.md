@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- manager session end: START HERE written
+
+- ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
 ## 2026-10-13 -- ROADMAP 2.107 dynamic letters the detector never boxed are READ, library-checked (branch `lane-2.107-dynamic-letters`, NOT merged; Sean judges `out/print/2.107-review/` first)
 
 - STAGED, GATHER + ADJUDICATE. Sean on 2.90 tile 9 (Litolff p2 `sf`, boxed note + two `rest16th`): *"sf should be read as a dynamic - it is letters"*. New `staged/letter_look.py` (pure) + `gather.gather_letter_look` (after the rescue, before every `detections` reader): the SAME detector (new `YoloDetector.detect_image`) is shown the staff-line-erased ink of a head/rest group at a two-scale probe, then five scales under two erasures; a letter needs >= 0.7 on >= 4 looks and the tight erasure's agreement; the string must be a `dynamics` entry of the 2.67 terms library; an unread letter beside a read one is an open slot (NARROWED, never guessed). Read letters are appended as `dynamic*` detections under `READERS.LETTER_LOOK` (`gather_dynamic_letters` now attributes each letter to the reader that boxed it); `Q.LETTER_LOOK_COVER` on the head/rest boxes they explain; `adjudicators/letter_cover.py` + a few lines in `notehead_precision` / `family_precision` refuse them (`on_a_dynamic_letter`, `rest_on_a_dynamic_letter`, margin recorded). `staged/letter_look_report.py` reads a record and counts what the look did.
@@ -6080,6 +6083,9 @@ STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evide
 
 ## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
 STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.
+
+## 2026-10-13 -- ROADMAP 2.105 landed (lane-2.105-not-a-note; Sean: "land 2.105")
+STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `rest_is_a_barline` (thin tall rest-class box on a cell edge): small re-gather Litolff 15 rests newly refused, Brahms 4. (b) 2.92: `notehead_precision._head_box_excess` orders twin boxes the same way in 2.30 and 2.42 (33 of 424 stacked-duplicate slot groups had no live box): Litolff 4 groups neither->one, 2 swapped, Brahms 1; Sean's five 2.88 heads were already kept via their Half-class twin. (a) 2.91 `sf` boxed as a note: no letter box, no box rule separates it, moved to ROADMAP 2.107 (read dynamic letters). Landing merged 2.106: `rest_is_a_barline` and the widened `is_a_beam_piece` file margins; `staged.margins` open=0 (17 threshold reasons, 5 deciders). 12 blind tiles `out/print/2.105-review/`. Tests `test_staged_not_a_note_2_105.py`. `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` 2.105.
 
 ## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
 STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
