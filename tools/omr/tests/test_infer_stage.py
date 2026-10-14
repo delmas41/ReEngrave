@@ -524,7 +524,12 @@ class TestTheDefaultsAreSeparate(unittest.TestCase):
     so a rule that silently stops being unflagged -- or a flagged rule that
     silently becomes unflagged -- fails here loudly."""
 
-    PROMOTED = ["collapse_slot_index_to_family_block", "fill_clef_gap"]
+    #: ⚠️ THREE since ROADMAP 2.107 (Sean 2026-10-13): `collapse_dynamic_by_ink`
+    #: was registered `ALWAYS_ON` from the start -- a ruling, not a gate: a
+    #: NARROWED dynamic is written as the ink's closest candidate in blue, or as
+    #: `dyn.`, and no flag may switch a guess back to "nothing" or to "plain".
+    PROMOTED = ["collapse_slot_index_to_family_block", "fill_clef_gap",
+                "collapse_dynamic_by_ink"]
 
     #: ⚠️ EVERY remaining per-rule flag, DERIVED from the registry rather than
     #: typed, so a rule added without a line here cannot pass silently.

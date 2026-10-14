@@ -330,6 +330,43 @@ class Region:
     #: letters the default erasure read strongly and the tight one did not
     #: confirm: evidence that SOMETHING letter-shaped is here, never a name
     unstable: Tuple[str, ...] = ()
+    #: an UNREAD slot's own evidence, per letter: the best confidence the letter
+    #: reader gave that letter over this ink, the LOWER of the two erasures (a
+    #: class one erasure does not give is no evidence). Frequency in the
+    #: document is never evidence (Sean 2026-10-13).
+    evidence: Dict[str, float] = field(default_factory=dict)
+
+
+#: A same-class pair at one scale counts only if both boxes are this confident.
+PAIR_CONF = 0.5
+#: ... on at least this many scales.
+PAIR_MIN_SCALES = 3
+
+
+def _cluster(hs: Sequence[Hypothesis], iou: float) -> List[List[Hypothesis]]:
+    ordered = sorted(hs, key=lambda h: -h.conf)
+    clusters: List[List[Hypothesis]] = []
+    for h in ordered:
+        for c in clusters:
+            if _iou(h.box, c[0].box) >= iou:
+                c.append(h)
+                break
+        else:
+            clusters.append([h])
+    return clusters
+
+
+def _shows_a_pair(c: Sequence[Hypothesis]) -> bool:
+    by_scale: Dict[Tuple[float, str], List[Hypothesis]] = {}
+    for h in c:
+        if h.conf >= PAIR_CONF:
+            by_scale.setdefault((h.scale, h.cls), []).append(h)
+    scales = set()
+    for (scale, _cls), hs in by_scale.items():
+        if any(0.0 < _iou(a.box, b.box) < 0.5
+               for i, a in enumerate(hs) for b in hs[i + 1:]):
+            scales.add(scale)
+    return len(scales) >= PAIR_MIN_SCALES
 
 
 def regions_from(hyps: Sequence[Hypothesis]) -> List[Region]:
@@ -339,15 +376,19 @@ def regions_from(hyps: Sequence[Hypothesis]) -> List[Region]:
     `STRONG_MIN_SCALES` looks is READ; two such classes on one ink are both
     kept (twins: `f`/`p`, left to the 2.68 identity-by-ink rule)."""
     letters = [h for h in hyps if h.cls in LETTER_OF_CLASS]
-    letters.sort(key=lambda h: -h.conf)
-    clusters: List[List[Hypothesis]] = []
-    for h in letters:
-        for c in clusters:
-            if _iou(h.box, c[0].box) >= 0.4:
-                c.append(h)
-                break
-        else:
-            clusters.append([h])
+    clusters = _cluster(letters, 0.4)
+    # ⚠️ TWO LETTERS OF ONE CLASS ON ONE INK (Sean's tile 8, Brahms p5 `ff`:
+    # the look read `f` and the print is `ff`). The two `f` of an `ff` are
+    # boxed at an IoU of ~0.41, so the 0.4 clustering votes them as ONE. What
+    # tells them apart is that, at one scale, the detector draws TWO boxes of
+    # the same class on the cluster, both confident and overlapping less than
+    # 0.5, on at least `PAIR_MIN_SCALES` scales. A cluster showing that is
+    # re-clustered at 0.6; any other cluster is left as it was (a single `p`
+    # whose boxes wander across scales must not split).
+    split: List[List[Hypothesis]] = []
+    for c in clusters:
+        split += _cluster(c, 0.6) if _shows_a_pair(c) else [c]
+    clusters = split
     out: List[Region] = []
     for c in clusters:
         stats: Dict[str, Tuple[float, set]] = {}
@@ -376,6 +417,41 @@ def regions_from(hyps: Sequence[Hypothesis]) -> List[Region]:
     return out
 
 
+#: How much of a slot's box a hypothesis's box must cover for the hypothesis to
+#: be about THAT ink (the second `f` of an `ff` is boxed wider than its ink).
+EVIDENCE_COVER = 0.3
+
+
+def slot_evidence(box: Sequence[float], hyps: Sequence[Hypothesis],
+                  hyps_b: Optional[Sequence[Hypothesis]],
+                  own_boxes: Sequence[Sequence[float]]) -> Dict[str, float]:
+    """The letter reader's own score for each letter over an unread slot's ink:
+    the best confidence among hypotheses covering >= `EVIDENCE_COVER` of the
+    slot's box, EXCLUDING the boxes of the letters already read (IoU >= 0.5 with
+    one of `own_boxes`: they are those letters' evidence, not the slot's); under
+    two erasures, the LOWER of the two."""
+    def best(hs):
+        out: Dict[str, float] = {}
+        area = max(1.0, (box[2] - box[0]) * (box[3] - box[1]))
+        for h in hs:
+            if h.cls not in LETTER_OF_CLASS:
+                continue
+            if any(_iou(h.box, o) >= 0.5 for o in own_boxes):
+                continue
+            ix = max(0.0, min(box[2], h.box[2]) - max(box[0], h.box[0]))
+            iy = max(0.0, min(box[3], h.box[3]) - max(box[1], h.box[1]))
+            if ix * iy / area < EVIDENCE_COVER:
+                continue
+            l = LETTER_OF_CLASS[h.cls]
+            out[l] = max(out.get(l, 0.0), float(h.conf))
+        return out
+    a = best(hyps)
+    if hyps_b is None:
+        return {k: round(v, 3) for k, v in a.items()}
+    b = best(hyps_b)
+    return {k: round(min(v, b.get(k, 0.0)), 3) for k, v in a.items()}
+
+
 def _covered(c: Comp, boxes: Sequence[Sequence[float]]) -> float:
     area = max(1, c.w * c.h)
     best = 0.0
@@ -396,7 +472,17 @@ SLOT_WEAK_LOOKS = 2
 
 
 def slots_for(strong: Sequence[Region], weak: Sequence[Region],
-              comps: Sequence[Comp], sp: float) -> List[Region]:
+              comps: Sequence[Comp], sp: float,
+              mask: Optional[np.ndarray] = None) -> List[Region]:
+    """Every unread letter beside a read one: other pieces a weak hypothesis
+    stands over (`_piece_slots`) and letter-sized ink outside the read letters'
+    boxes (`_remnant_slots`, tile 8)."""
+    slots = _piece_slots(strong, weak, comps, sp)
+    return slots + _remnant_slots(strong, mask, sp, slots)
+
+
+def _piece_slots(strong: Sequence[Region], weak: Sequence[Region],
+                 comps: Sequence[Comp], sp: float) -> List[Region]:
     """UNREAD LETTERS: ink of the group that is not the core piece of a read
     letter, that a WEAK letter hypothesis stands over, and that is beside a read
     letter. The read letter's BOX may cover such ink (the 2.90 `sf`: the
@@ -466,6 +552,48 @@ def slots_for(strong: Sequence[Region], weak: Sequence[Region],
     return out
 
 
+#: Ink of the group OUTSIDE every read letter's box that is itself letter-sized
+#: is a letter nobody read (Sean, 2.107 tile 8: Brahms `ff`, the look read ONE
+#: `f` and decided `f`). It must be this big (staff spaces) and stand beside a
+#: read letter on its baseline. No weak hypothesis is needed: a read letter's
+#: neighbour of its own size is an unread letter whatever the model said.
+REMNANT_MIN_H_SPACES = 1.0
+REMNANT_MIN_W_SPACES = 0.7
+REMNANT_MIN_AREA_SPACES2 = 0.5
+REMNANT_BOX_PAD_SPACES = 0.15
+
+
+def _remnant_slots(strong: Sequence[Region], mask: Optional[np.ndarray],
+                   sp: float, taken: Sequence[Region]) -> List[Region]:
+    if mask is None or not strong:
+        return []
+    rest = (mask > 0).astype(np.uint8)
+    pad = int(round(REMNANT_BOX_PAD_SPACES * sp))
+    H, W = rest.shape
+    for r in list(strong) + list(taken):
+        x0, y0, x1, y1 = (int(round(v)) for v in r.box)
+        rest[max(0, y0 - pad):min(H, y1 + pad), max(0, x0 - pad):min(W, x1 + pad)] = 0
+    n, _lab, st, _c = cv2.connectedComponentsWithStats(rest, connectivity=8)
+    out: List[Region] = []
+    for i in range(1, n):
+        x, y, w, h, a = (int(st[i, k]) for k in range(5))
+        if (h < REMNANT_MIN_H_SPACES * sp or w < REMNANT_MIN_W_SPACES * sp
+                or a < REMNANT_MIN_AREA_SPACES2 * sp * sp):
+            continue
+        beside = False
+        for r in strong:
+            gap = max(0.0, max(x, r.box[0]) - min(x + w, r.box[2]))
+            overlap = min(y + h, r.box[3]) - max(y, r.box[1])
+            if gap <= SLOT_GAP_SPACES * sp and overlap >= 0.5 * h:
+                beside = True
+                break
+        if beside:
+            out.append(Region(box=(float(x), float(y), float(x + w), float(y + h)),
+                              letters=(), how="unread", conf=0.0, scales_seen=0,
+                              weak={}))
+    return out
+
+
 # ── spelling, against the library ────────────────────────────────────────────
 
 
@@ -507,7 +635,7 @@ def spell(regions: Sequence[Region]) -> Spelling:
     for i, r in enumerate(ordered):
         letters = tuple(sorted({v[i] for v in valid}))
         resolved.append(Region(r.box, letters, r.how, r.conf, r.scales_seen,
-                               r.weak, r.unstable))
+                               r.weak, r.unstable, r.evidence))
     if len(valid) == 1:
         return Spelling("spelled", "library", text=valid[0],
                         term=library_dynamic(valid[0]), tried=tuple(combos[:8]),
@@ -626,6 +754,7 @@ def read_group(window_clean: np.ndarray, comps: Sequence[Comp],
     regions = regions_from(hyps)
     strong = [r for r in regions if r.how == "read"]
     unstable: List[Tuple[Tuple[str, ...], float]] = []
+    hyps_b: Optional[List[Hypothesis]] = None
     if window_alt is not None and strong:
         # ⚠️ A LETTER IS READ ONLY IF IT READS THE SAME WHEN THE STAFF LINES
         # ARE TAKEN OUT ANOTHER WAY. Litolff p10 prints an `sf` whose `s` lies
@@ -637,7 +766,8 @@ def read_group(window_clean: np.ndarray, comps: Sequence[Comp],
             y0, y1 = max(0, c.y0 - 1), min(window_alt.shape[0], c.y1 + 1)
             x0, x1 = max(0, c.x0 - 1), min(window_alt.shape[1], c.x1 + 1)
             mask_b[y0:y1, x0:x1] |= window_alt[y0:y1, x0:x1]
-        regions_b = regions_from(look(mask_b, box, sp, detect))
+        hyps_b = look(mask_b, box, sp, detect)
+        regions_b = regions_from(hyps_b)
         strong, demoted, unstable = _confirm_under_the_tight_erasure(
             strong, regions_b)
         regions = sorted([r for r in regions if r.how != "read"] + demoted
@@ -661,7 +791,10 @@ def read_group(window_clean: np.ndarray, comps: Sequence[Comp],
                                     rival=rival, n_hypotheses=len(hyps),
                                     near=near)
     weak = [r for r in regions if r.how == "weak"]
-    slots = slots_for(strong, weak, comps, sp)
+    slots = slots_for(strong, weak, comps, sp, mask)
+    for sl in slots:
+        sl.evidence = slot_evidence(sl.box, hyps, hyps_b,
+                                    [r.box for r in strong])
     sp_ = spell(list(strong) + slots)
     if sp_.status == "rejected":
         return GroupReading("rejected", sp_.reason, box, spelling=sp_,

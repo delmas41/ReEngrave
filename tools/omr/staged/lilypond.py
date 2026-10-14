@@ -584,8 +584,13 @@ def _staff_block(rec: SX.Record, part: Sequence[SX.StaffRun], name: str,
         for _x, kind, _text in bar.directions:
             if kind == "words":
                 counters["direction_words_not_renderable"] += 1
-            elif kind == "dynamics":
+            elif kind in ("dynamics", "dynamics_guess"):
+                # LilyPond writes NO dynamics on the staged path (an inherited
+                # limit, counted); a GUESSED one is counted apart so the blue
+                # `dyn.` Sean asked for is visibly missing HERE, not silently.
                 counters["dynamics_not_renderable"] += 1
+                if kind == "dynamics_guess":
+                    counters["guessed_dynamics_not_renderable"] += 1
 
     lines = [f'{indent}\\new Staff \\with {{',
             f'{indent}  instrumentName = "{_ly_escape(name)}"',
@@ -737,6 +742,8 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         "ornaments_not_renderable": int(counters.get("ornaments_not_renderable", 0)),
         "direction_words_not_renderable": int(counters.get("direction_words_not_renderable", 0)),
         "dynamics_not_renderable": int(counters.get("dynamics_not_renderable", 0)),
+        "guessed_dynamics_not_renderable": int(
+            counters.get("guessed_dynamics_not_renderable", 0)),
         # ⚠️⚠️ A THIRD, INHERITED LIMITATION, MEASURED ON THE BREITKOPF
         # SHARED RECORD: `_lily_event` writes ONE articulation suffix per
         # CHORD (from the event-level deduplicated list), while `_mxl_note`

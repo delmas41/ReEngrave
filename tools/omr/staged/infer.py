@@ -325,6 +325,15 @@ class Inference(str, Enum):
     #: the same reason that one does, so bar-fill is not a legitimate score.
     COLLAPSE_NARROWED_BY_BAR = "collapse_narrowed_by_bar"
 
+    #: ROADMAP 2.107 (Sean 2026-10-13: *"maybe the closest dynamic we can guess
+    #: with the info that we have?"*). A NARROWED dynamic -- letters seen, not
+    #: all read -- collapsed to the candidate the INK itself scores closest: the
+    #: letter reader's own score for the open letter(s) over their ink, under two
+    #: erasures. Never the document's frequency of a word (Sean: not evidence).
+    #: Where the ink favours none (no letter scored, or a tie inside the
+    #: declared margin) the narrowing stands and EXPORT writes `dyn.`.
+    COLLAPSE_DYNAMIC_BY_INK = "collapse_dynamic_by_ink"
+
 
 #: The only prior states an inference may speak into.
 #:

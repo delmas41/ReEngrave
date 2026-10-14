@@ -112,6 +112,20 @@ def test_the_first_builds_mf_for_an_sf_is_not_read():
     assert [r.how for r in regs] == ["weak"], "three looks are not enough"
 
 
+def test_two_overlapping_boxes_of_one_class_at_each_scale_are_two_letters():
+    """Sean's tile 8 (Brahms `ff`): the two `f` boxes overlap at IoU ~0.41 and
+    voted as ONE. Two confident same-class boxes at one scale, on >= 3 scales,
+    are two letters. CONTROL: one `p` whose single box wanders across scales is
+    one letter."""
+    a, b = (0, 0, 72, 70), (30, 0, 102, 70)
+    hyps = [LL.Hypothesis("dynamicF", 0.85, box, s)
+            for s in LL.LOOK_SCALES for box in (a, b)]
+    assert [r.letters for r in LL.regions_from(hyps)] == [("f",), ("f",)]
+    wander = [LL.Hypothesis("dynamicP", 0.85, (0, 0, 60 + 3 * i, 70), s)
+              for i, s in enumerate(LL.LOOK_SCALES)]
+    assert len(LL.regions_from(wander)) == 1
+
+
 # ── the spelling is the library's ───────────────────────────────────────────
 
 def _region(letters, how="read", box=(0, 0, 10, 10), conf=0.9, looks=5):
@@ -299,6 +313,52 @@ def test_a_real_rest_beside_the_dynamic_is_not_covered():
     model = _FakeModel([("dynamicS", 0.9, 0.0, 0.4), ("dynamicF", 0.9, 0.4, 1.0)])
     gr = LL.read_page_group(clean, sf_group, members, SP, model)
     assert "real_rest" not in gr.seed_ids
+
+
+# ── Sean's tile 8 (Brahms p5): ONE f read, the second f beside it unexplained ─
+
+def _ff_ink(two=True):
+    """Two joined f strokes (one connected piece, like the Brahms `ff`), or one."""
+    img = _staff_page(w=300)
+    _stroke(img, 100, 110, 112, 64)                 # first f, 2.9 spaces
+    _stroke(img, 108, 64, 122, 60)
+    if two:
+        _stroke(img, 132, 110, 144, 64)             # second f, touching via a bar
+        _stroke(img, 140, 64, 154, 60)
+        _stroke(img, 112, 88, 140, 88)
+    return img
+
+
+def _ff_members():
+    return {"head": (96.0, 56.0, 126.0, 112.0)}
+
+
+def test_one_f_read_beside_unexplained_letter_ink_is_not_decided():
+    """Sean, 2.107 tile 8: the look read `f` and the print is `ff`. The second f
+    is letter-sized ink beside the read one on the same baseline: the dynamic
+    is NARROWED with the read f fixed and the neighbour open, never `f`."""
+    img = _ff_ink()
+    members = _ff_members()
+    clean, groups = _clean_and_groups(img, members)
+    model = _FakeModel([("dynamicF", 0.9, 0.0, 0.5)])
+    gr = LL.read_page_group(clean, groups[0], members, SP, model)
+    assert gr.status == "narrowed", (gr.status, gr.reason, gr.spelling)
+    assert gr.spelling.text is None
+    assert "ff" in gr.spelling.candidates and "f" not in gr.spelling.candidates
+
+
+def test_two_f_read_and_one_clean_f_stay_decided():
+    """POSITIVE CONTROLS in the same class (tiles 3/5/6/9): both letters read
+    -> `ff`; a single f with nothing beside it -> `f`."""
+    members = _ff_members()
+    clean, groups = _clean_and_groups(_ff_ink(), members)
+    two = _FakeModel([("dynamicF", 0.9, 0.0, 0.5), ("dynamicF", 0.9, 0.5, 1.0)])
+    gr = LL.read_page_group(clean, groups[0], members, SP, two)
+    assert (gr.status, gr.spelling.text) == ("read", "ff")
+    clean, groups = _clean_and_groups(_ff_ink(two=False), members)
+    one = _FakeModel([("dynamicF", 0.9, 0.0, 1.0)])
+    gr = LL.read_page_group(clean, groups[0], members, SP, one)
+    assert (gr.status, gr.spelling.text) == ("read", "f")
 
 
 # ── ADJUDICATE: one reason for a head, one for a rest ───────────────────────

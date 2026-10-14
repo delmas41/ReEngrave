@@ -53,7 +53,7 @@ for pg in pages:
                 text=sp_.text if sp_ else None, cands=list(sp_.candidates) if sp_ else None,
                 tried=list(sp_.tried) if sp_ else None, near=gr.near, rival=gr.rival, unstable=gr.unstable,
                 cover=gr.cover, seeds=[(k, cls_of.get(k)) for k in gr.seed_ids], secs=round(time.time() - t1, 2),
-                regions=[(r.how, r.letters, [round(v) for v in r.box], r.conf, r.scales_seen) for r in (sp_.regions if sp_ else [])]))
+                regions=[(r.how, r.letters, [round(v) for v in r.box], r.conf, r.scales_seen, r.evidence) for r in (sp_.regions if sp_ else [])]))
     print(f'page {pg}: seeds {n_seeds} groups {n_groups} {round(time.time() - t0, 1)}s', flush=True)
 json.dump(results, open(f'{S}/{OUTTAG}.reach.json', 'w'), default=str)
 c = collections.Counter((r['status'], r['reason']) for r in results)

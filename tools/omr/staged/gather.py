@@ -9173,9 +9173,13 @@ def gather_letter_look(log: Log, pws: Any, cells: Sequence[Any],
                 bx0, by0, bx1, by1 = reg.box
                 for letter in (reg.letters or ()):
                     cls = LL.CLASS_OF_LETTER[letter]
+                    # a slot twin's confidence IS the letter reader's own
+                    # evidence for that letter over the ink (both erasures,
+                    # `letter_look.slot_evidence`), floored so a letter nothing
+                    # scored still has a row; never the document's frequency.
                     conf = (reg.conf if reg.how == "read" else
                             max(LL.LOOK_CONF_FLOOR,
-                                reg.weak.get(letter, (0.0, 0))[0]))
+                                reg.evidence.get(letter, 0.0)))
                     det = SymbolDetection(
                         cell=c0, smufl_name=cls, category="dynamic",
                         x_canonical=int(round((bx0 - bbox0[0]) * up)),
@@ -9191,6 +9195,7 @@ def gather_letter_look(log: Log, pws: Any, cells: Sequence[Any],
                         "category": "dynamic", "how": reg.how,
                         "read_as": sp_.text, "candidates": list(sp_.candidates),
                         "library_term": sp_.term, "looks_seen": reg.scales_seen,
+                        "evidence": dict(reg.evidence),
                         "group_box_page": ub,
                         "region_letters": list(reg.letters)}
                     page_box = _page_box(c0, det)
