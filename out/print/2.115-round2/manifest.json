@@ -1,0 +1,126 @@
+{
+ "tiles": [
+  {
+   "n": 1,
+   "hidden": {
+    "doc": "litolff",
+    "key": "glyph/1/0/10/7/1",
+    "group": "CHANGED",
+    "cls": "noteheadHalfInSpace",
+    "dy": 0.282,
+    "before": "black",
+    "after": "between",
+    "raw_off": [
+     0.9865,
+     0.9857
+    ],
+    "raw_on": [
+     0.9062,
+     0.8125
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "hidden": {
+    "doc": "brahms",
+    "key": "glyph/0/0/4/4/7",
+    "group": "CHANGED",
+    "cls": "noteheadBlackOnLine",
+    "dy": -0.252,
+    "before": "black",
+    "after": "hollow",
+    "raw_off": [
+     1.0,
+     1.0
+    ],
+    "raw_on": [
+     0.6587,
+     0.6587
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "hidden": {
+    "doc": "brahms",
+    "key": "glyph/0/0/9/1/2",
+    "group": "CONTROL black (moved, stayed black)",
+    "cls": "noteheadBlackInSpace",
+    "dy": 0.183,
+    "before": "black",
+    "after": "black",
+    "raw_off": [
+     1.0,
+     1.0
+    ],
+    "raw_on": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "hidden": {
+    "doc": "litolff",
+    "key": "glyph/1/0/9/11/1",
+    "group": "CHANGED",
+    "cls": "noteheadBlackOnLine",
+    "dy": 0.361,
+    "before": "black",
+    "after": "hollow",
+    "raw_off": [
+     1.0,
+     1.0
+    ],
+    "raw_on": [
+     0.6786,
+     0.25
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "hidden": {
+    "doc": "brahms",
+    "key": "glyph/0/0/1/6/2",
+    "group": "CONTROL black (moved, stayed black)",
+    "cls": "noteheadBlackOnLine",
+    "dy": 0.212,
+    "before": "black",
+    "after": "black",
+    "raw_off": [
+     1.0,
+     1.0
+    ],
+    "raw_on": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "hidden": {
+    "doc": "litolff",
+    "key": "glyph/1/0/3/7/2",
+    "group": "CHANGED",
+    "cls": "noteheadHalfOnLine",
+    "dy": -0.307,
+    "before": "between",
+    "after": "hollow",
+    "raw_off": [
+     0.8968,
+     0.7765
+    ],
+    "raw_on": [
+     0.8929,
+     0.75
+    ]
+   }
+  }
+ ],
+ "n_changed_total": 4,
+ "n_moved_total": 23
+}

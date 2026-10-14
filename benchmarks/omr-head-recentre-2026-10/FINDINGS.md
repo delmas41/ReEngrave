@@ -43,3 +43,52 @@ Command: `python3 -m tools.omr.staged <pdf> --pages 1|0 --weights omr-weights/de
 
 ## What would fix it (not built; needs a decision)
 The centroid needs an uncontaminated raster or another locator: (a) read the head on the PAGE raster (the cell holds only the canonical binary; a cell-to-page map exists in the cell metadata) where the same rule is stable (+0.26 sp, 0 black flips of 381); (b) a hollow-aware locator that finds the head's two white slits (the hole, not the ink) and centres on them; (c) Sean boxes a few more part-boxed heads so the second detector's box (2.114) could carry the centre. Fast tier 7787 passed, 11 skipped, 2 xfailed (`c7790dc2`).
+
+---
+
+# ROUND 2 (2026-10-14) -- read the head off the PAGE raster (Sean's decision)
+
+**CONVENTION ASSUMED:** same as round 1 (a head is a roughly symmetric blob; its vertical ink centre, line rows and stem columns left out, is its centre). **WHAT WOULD FALSIFY IT:** a print-black head read hollow after the move (see tile 2 below -- one candidate), a head moved to another step (0). **NOT CONFIRMED:** the window set, the size gate 0.9, the shift cut 0.15 sp and the spread cut 0.1 sp, all measured on two plates; Sean's tiles are not back.
+
+## What changed (STAGED GATHER; LEGACY untouched; flag `OMR_RECENTRE_PART_BOXED` still default OFF)
+* `gather.gather_notehead_ink(..., pws=None)`: the call site now passes `pws`. The part-boxed branch calls **`gather.recentre_part_boxed_on_page(cell, det, page_binary, space_canonical)`**, which maps the detection to page pixels with the existing `_page_box` (cell `bbox_page_px` + `upscale_factor`, the mapping `Q.GLYPH_BOX` files; page space = canonical space / upscale, as `gather_arc_ink` does) and runs the unchanged `recentre_part_boxed` on **`pws.page.binary`** (0 = ink, staff lines in -- the page raster `gather_arc_ink` already reads; it IS available at that point in GATHER). Line rows are the rows with ink past the head both sides at the head's own x, i.e. local by construction (2.73's definition). Where accepted, `ink_raw` and `ink_off_line` are read off the page raster at the standard head box at the moved centre (`detail.ink_frame = "page"`); `ink_net` stays the cell's erased raster at the same moved box. No page raster / mapping / staff unit: declined `no_page_raster`, **never read from the cell**. Nothing else moved (no `Q.NOTEHEAD_RECENTRE` row; fence respected).
+* **Round 1's page-frame claim was wrong once the guard existed.** The "+0.26 sp, stable on the page" number was a single window (0.7) measured BEFORE the stability guard. On the real page raster tile 13's centroid is a function of the window too: shift -0.17 / -0.08 / 0.01 / 0.12 / 0.26 / 0.38 / 0.36 / 0.36 at half-window 0.5 / 0.55 / 0.6 / 0.65 / 0.7 / 0.75 / 0.8 / 0.9 sp (by eye 0.27-0.30). A window smaller than the head clips the ring asymmetrically once the line rows are out. With round 1's windows (0.6-0.75) and the guard, the page frame refuses tile 13 too (`unstable`, spread 0.374), Litolff truth moves 0 (`truth_guarded`, in this section's table below). The windows that contain a whole head (0.75-0.9) settle. So the one change beyond the brief: **`RECENTRE_PART_WINDOWS` = (0.75, 0.8, 0.85, 0.9), main 0.8** (was 0.6-0.75, main 0.7); guard and spread cut (0.1 sp) unchanged. Tile 13's centre lands 0.36 sp (eye 0.27-0.30; 0.06 sp low, reads 0.68 raw / 0.25 off-line, inside the hollow band). On the cell raster those same new windows would land it 0.41 sp (merged stem/line): the cell is not used.
+* Window sweep (page frame, truth populations, `sweep_windows_r2.py`; guard on). Rows: windows, main, spread cut -> Brahms black moved/flips | Brahms hollow gained | Litolff truth-hollow gained | tile 13:
+  (0.6,.65,.7,.75) 0.7 / 0.10: 8 / 0 | +2 | 0 | unstable (this is the round-1 setting + guard)
+  (0.6,.65,.7,.75) 0.7 / 0.15: 8 / 0 | +4 | 0 | unstable
+  (0.75,.8,.9,1.0) 0.8 / 0.10: 10 / 0 | +3 | +3 (+1 to between) | moved 0.36
+  (0.75,.8,.9,1.0) 0.8 / 0.15: 15 / 0 | +4 | +3 (+1) | moved
+  (0.7,.75,.8,.9) 0.8 / 0.10: 14 / 0 | +4 | +2 (+1) | unstable
+  (0.7,.75,.8,.9) 0.8 / 0.15: 16 / 0 | +4 | +3 (+1) | moved
+  **(0.75,.8,.85,.9) 0.8 / 0.10 (adopted): 19 / 0 | +4 | +3 (+1) | moved 0.36**
+  (0.75,.8,.85,.9) 0.8 / 0.15: 21 / 0 | +4 | +3 (+1) | moved
+  (0.8,.9,1.0) 0.9 / 0.10: 15 / **1 black->hollow** | +3 | +3 | moved
+  (0.8,.9,1.0) 0.9 / 0.15: 21 / **1** | +4 | +3 | moved
+  Chosen on the same truth pages it is reported on (so it is a measurement, not an out-of-sample test) and with the spread cut left at round 1's value; it narrows until Sean's tiles / another publisher.
+
+## Truth measurement (page frame, `measure_truth.py`, rows `truth_rows_r2.json`; hollow = min(raw, off-line centre) <= 0.75, black = both >= 0.85; Litolff = the 95 clean TEST cells of 2.114's run of the 2.112 guard, 9 of 104 excluded; the 2.112 `leakage_guard.py` itself not re-run)
+| population | heads | re-centred | before hollow/between/black | after |
+|---|---|---|---|---|
+| Brahms pdf 0, Sean's BLACK heads | 381 | 19 | 0/0/381 | 0/0/381 (black -> hollow 0) |
+| Brahms pdf 0, Sean's HOLLOW heads | 39 | 6 | 32/6/1 | 36/2/1 (+4, lost 0) |
+| Litolff idx 1, truth HOLLOW | 43 | 4 | 36/2/5 | 39/3/1 (+3 hollow, 1 black->between, lost 0) |
+| Litolff idx 1, other production boxes (unlabelled) | 96 | 6 | 3/2/91 | 5/2/89 (black->hollow 2) |
+Same function round 1 used; round 1 (no guard, windows 0.6-0.75) read: Brahms black 20 moved / 0 flips, hollow 32->36, Litolff truth 36->39. Round 1 windows + guard, same pages (this session): Brahms black 8 / 0, hollow 32->34, **Litolff truth 36->36 (0 moved)**.
+
+## A/B in the real gather (`--through adjudicate`, tree `7f7a647c`, flag OFF vs ON, fresh OFF and ON for each page, one page at a time, `ab_compare.py`; `r2_ab_lit.json`, `r2_ab_bra.json`; records in gitignored `runs/2.115/r2-*.json`)
+Command as round 1 (weights `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`, `--pages 1` Litolff 984073 / `--pages 0` Brahms 317803, `--no-surya --no-ocr`).
+| | heads moved | `ink` reading numbers changed | reading class changed | pitch-step changes | duration verdict changes | everything else |
+|---|---|---|---|---|---|---|
+| Litolff 984073 idx 1 | 3 (was 0) | 3 | 3 (black->hollow 1, black->between 1, between->hollow 1) | 0 | 1 (tile 13) | 751/751 glyphs and 4761/4761 other observations identical; 0 other duration verdict differences |
+| Brahms 317803 pdf 0 | 20 (was 10) | 20 | 1 (black->hollow: `glyph/0/0/4/4/7`, unlabelled; 19 black stay black, all 17 of Sean's labelled heads among them) | 0 | 0 | 1776/1776 glyphs and 11699/11699 other observations identical; 0 other differences |
+* **Tile 13 in the REAL gather (`glyph/1/0/9/11/1`): OFF** raw 1.00 / net 1.00 / off-line 1.00, duration DECIDED quarter (1 beat, `head_and_marks`). **ON** shift +0.361 sp, raw 0.68 / net 0.71 / off-line 0.25, duration **narrowed** (`head_fill_from_ink`: half 2.0 / quarter 1.0 / whole 4.0 beats, none chosen) -- the reader no longer states a quarter on a hollow head, it says it cannot tell. `ink_frame: page`.
+* The other two Litolff moves: `10/7/1` (halfInSpace, 0.99 -> raw 0.91 / off-line 0.81, still decided half), `3/7/2` (halfOnLine, 0.90/0.78 -> 0.89/0.75, still decided half): reading closer to Sean's hollow band, no verdict change.
+* **One surprise, shown not hidden: `glyph/0/0/4/4/7` (Brahms, unlabelled, `noteheadBlackOnLine`, moved -0.25 sp) reads 1.00 OFF and 0.66 ON, and on the printed crop (tile 2) it looks black.** Both verdicts are `abstained not_a_note_mark`, so nothing downstream changed, but it is a black-looking head read hollow after the move: the rule can still mis-centre a small slanted black head and the standard box then holds white. 0 of Sean's 381 labelled black heads did this; 1 of 3 moved unlabelled Brahms heads did. Tile 2 settles whether it is a real failure; do not turn the flag on before the tiles.
+* `judged score` (litolff TOTAL 3/0/0/0/106/73; brahms 16/1/10/1/68/96): OFF and ON identical, and identical to round 1's. `python3 -m tools.omr.staged.check`: open=192 status ok (round 1: 192; not up).
+* Declined reasons (ON): Litolff centred_enough 11, no_ink 3, already_reads_hollow 2; Brahms centred_enough 39, unstable 21, no_ink 12, too_far 3, already_reads_hollow 3.
+
+## Tests (`tools/omr/tests/test_staged_part_boxed_recentre_2_115.py`, 25)
+RED first: on the round-1 tree (`gather_notehead_ink` without `pws`, round-1 windows) 13 of the 24 then-existing/new tests failed (the wired ones all, `TypeError` on `pws`, plus the real-cell ones). New real fixtures: `data_part_boxed_tile13_cell.npz` (the page crop of tile 13 at 600 dpi from `render_page(...).binary` + the cell's real merged raster + the cell's mapping), `data_part_boxed_black_tiles.npz` (page crops of Sean's black tiles 7, 11 Brahms and 16 Litolff). Pinned: tile 13 flag OFF black; flag ON re-centres off the page, `part_boxed.frame == "page"`, off-line centre in [0.2, 0.75]; round 1's windows on the real cell raster AND on the real page crop still refuse `unstable` (the guard bites where it should); no page raster declines `no_page_raster` and reads black as before; Sean's tiles 7/11/16 ON == OFF exactly (head-sized boxes, never moved; 7 and 11 read 1.00; tile 16, a black head with a line through it, reads 0.78 raw / 0.875 off-line on the page, with the flag off too); a centred head-sized box is a no-op; flag OFF identical. Fast tier at the code commit: 7795 passed, 11 skipped, 2 xfailed.
+
+## Tiles for Sean
+`out/print/2.115-round2/` (6; replaces round 1's page-frame `out/print/2.115-recentre/`, removed): the 4 heads whose reading class changed in the real gather A/B (3 Litolff, 1 Brahms) + 2 controls (Brahms black heads that were moved and stayed black). Nothing drawn but a small red corner bracket; "hollow or black? (or: not a note)"; hidden `manifest.json`. Fewer than the cap of 15 because the gather moves only 23 heads in all and only 4 change class. Lane 2.114's tiles not re-asked.
