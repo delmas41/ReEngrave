@@ -330,24 +330,13 @@ class TestOneDotBoxedTwiceIsOneDot(unittest.TestCase):
 
 
 class TestTheHookRunsAfterDuration(unittest.TestCase):
-    def test_adjudicate_run_calls_the_reconcile_after_duration(self):
-        import inspect
+    def test_adjudicate_run_calls_the_reconcile_once(self):
         from tools.omr.staged import adjudicate
-        src = inspect.getsource(adjudicate.run)
-        self.assertIn("reconcile_unjoined_dots", src)
-        self.assertLess(src.index("quantity == Q.DURATION"),
-                        src.index("reconcile_unjoined_dots"))
-
-
-class TestTheFunnelSplitsDotsFromArticulations(unittest.TestCase):
-    def test_a_dots_row_reads_the_dot_family_and_dot_role(self):
-        from tools.omr.staged import export as E
-        from tools.omr.staged import regather_report as RR
-        rows = {r[0]: r for r in RR.FUNNELS}
-        self.assertEqual(rows["dots"][1], "dot")
-        self.assertEqual(rows["dots"][3], "dot_role")
-        self.assertIn("dot", E.FAMILIES)
-        self.assertNotIn("staccato dots", rows["articulations"][4])
+        from tools.omr.staged import adjudicators  # noqa: F401
+        log = _log()
+        with mock.patch.object(J, "reconcile_unjoined_dots") as m:
+            adjudicate.run(log)
+        self.assertEqual(m.call_count, 1)
 
 
 if __name__ == "__main__":

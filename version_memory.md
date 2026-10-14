@@ -6149,3 +6149,6 @@ STAGED GATHER + ADJUDICATE, flag `OMR_SECOND_HOLLOW_DETECTOR` default OFF (`gath
 
 ## 2026-10-14 -- ROADMAP 2.124 + 2.125 landed (dots counted once, dot family, carried-meter LilyPond rest ON)
 STAGED GATHER counts + LILYPOND EXPORT. 2.124: Litolff's doubled staccatos on condensed Cello/Bass copies counted once. 2.125: staccato boxes are a `dot` family (`Q.DOT_ROLE`), not undecided articulations (counts only). `OMR_LILY_CARRIED_METER_REST` default ON (Sean 2026-10-14): a whole-bar rest under a carried meter is the bar's length (`r2.` in 6/8); Brahms 20261013-night LilyPond warnings 445 -> 116. See benchmarks/omr-dots-articulations-2026-10/FINDINGS.md.
+
+## 2026-10-14 -- ROADMAP 2.127 built (dots seen beside a plain note narrow it; flag OFF)
+STAGED ADJUDICATE. The "1,108 / ~390 dotted notes written plain" was mostly ledger (duplicates, ghost heads, superseded `used`); the real wrong rhythms are ~65-95 Brahms notes beside an unplaced dot, 9 twin-boxed dots, and narrowings without a dotted candidate. `OMR_AUG_DOT_JOIN` (default OFF): `aug_dot_join.reconcile_unjoined_dots` narrows such notes to {plain, dotted}; `_attached_dots` merges twin boxes; `regather_report` has a `dots` row. Truth p0: written plain 5 -> 1. Tiles: `out/print/2.127-review/`. `benchmarks/omr-aug-dots-2026-10/FINDINGS.md`.
