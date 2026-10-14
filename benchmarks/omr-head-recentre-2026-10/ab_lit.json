@@ -3,83 +3,10 @@
  "n_glyphs": 751,
  "non_ink_observations_identical": true,
  "n_obs": 4761,
- "moved": 4,
+ "moved": 0,
  "step_changes": 0,
- "verdict_changes_on_moved": 1,
+ "verdict_changes_on_moved": 0,
  "duration_verdict_differences_off_moved_heads": 0,
  "rest_diff_keys": [],
- "changed": [
-  {
-   "key": "glyph/1/0/10/6/6",
-   "cls": "noteheadHalfInSpace",
-   "pos_off": -1.98,
-   "pos_on": -1.98,
-   "step_changed": false,
-   "duration_off": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}",
-    "[]"
-   ],
-   "duration_on": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}",
-    "[]"
-   ],
-   "verdict_changed": false
-  },
-  {
-   "key": "glyph/1/0/10/7/1",
-   "cls": "noteheadHalfInSpace",
-   "pos_off": -2.88,
-   "pos_on": -2.88,
-   "step_changed": false,
-   "duration_off": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}",
-    "[]"
-   ],
-   "duration_on": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}",
-    "[]"
-   ],
-   "verdict_changed": false
-  },
-  {
-   "key": "glyph/1/0/8/8/4",
-   "cls": "noteheadBlackInSpace",
-   "pos_off": 8.54,
-   "pos_on": 8.54,
-   "step_changed": false,
-   "duration_off": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"head_fill\": \"half\", \"written\": 2.0}",
-    "[]"
-   ],
-   "duration_on": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"head_fill\": \"half\", \"written\": 2.0}",
-    "[]"
-   ],
-   "verdict_changed": false
-  },
-  {
-   "key": "glyph/1/0/9/11/1",
-   "cls": "noteheadBlackOnLine",
-   "pos_off": -0.54,
-   "pos_on": -0.54,
-   "step_changed": false,
-   "duration_off": [
-    "decided",
-    "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
-    "[]"
-   ],
-   "duration_on": [
-    "narrowed",
-    "null",
-    "[{\"support\": 2.0, \"value\": {\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"head_fill\": \"half\", \"written\": 2.0}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"head_fill\": \"black\", \"written\": 1.0}}, {\"support\": 1.0, \"value\": {\"beam_levels\": 0, \"beats\": 4.0, \"dots\": 0, \"head_fill\": \"whole\", \"written\": 4.0}}]"
-   ],
-   "verdict_changed": true
-  }
- ]
+ "changed": []
 }
