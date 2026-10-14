@@ -237,6 +237,26 @@ def narrowed_bar_enabled() -> bool:
 NARROWED_BAR_SWITCH = Switch(NARROWED_BAR_ENV, narrowed_bar_enabled)
 
 
+#: ROADMAP 2.107. The dynamic INK PICK's own flag, default OFF (Sean 2026-10-13,
+#: "land with blue dyn only"): a narrowed dynamic is exported as a blue `dyn.`
+#: carrying every candidate, never as one of them. Sean's tiles 10/11: the pick
+#: was WRONG on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`) -- a letter
+#: on a staff line erases to fragments the detector calls `m`. Kept for when
+#: the letter reader improves.
+#: A default-OFF flag is an ALLOW-LIST: a typo must leave the pick OFF. Written
+#: out on its own line so the AST scan in `test_flag_default_direction.py` sees
+#: this flag's own `os.environ.get`.
+DYNAMIC_INK_PICK_ENV = "OMR_DYNAMIC_INK_PICK"
+
+
+def dynamic_ink_pick_enabled() -> bool:
+    """Read the ink-pick flag. Only an explicit on-word is ON."""
+    return os.environ.get(DYNAMIC_INK_PICK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+DYNAMIC_INK_PICK_SWITCH = Switch(DYNAMIC_INK_PICK_ENV, dynamic_ink_pick_enabled)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
 # ─────────────────────────────────────────────────────────────────────────────

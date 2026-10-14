@@ -173,6 +173,43 @@ class TestTheInkPick(unittest.TestCase):
         self.assertEqual(set(rule.reads), {Q.DYNAMIC, Q.DYNAMIC_LETTER})
 
 
+class TestTheInkPickIsOffByDefault(unittest.TestCase):
+    """Sean 2026-10-13, "land with blue dyn only": tiles 10/11 -- the pick was
+    wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). So by default
+    the rule does not run and EXPORT writes a blue `dyn.`; `OMR_DYNAMIC_INK_PICK`
+    keeps the pick for when the letter reader improves."""
+
+    def _enabled(self, env):
+        from unittest import mock
+        import os
+        INF._ensure_rules()
+        with mock.patch.dict(os.environ, env, clear=False):
+            return "collapse_dynamic_by_ink" in [
+                r.inference.value for r in INF.enabled_rules()]
+
+    def test_the_default_does_not_run_the_pick_RED(self):
+        from unittest import mock
+        import os
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("OMR_DYNAMIC_INK_PICK", None)
+            self.assertFalse(self._enabled({}))
+
+    def test_a_typo_leaves_it_off(self):
+        for bad in ("", "yess", "ON!", "0"):
+            self.assertFalse(self._enabled({"OMR_DYNAMIC_INK_PICK": bad}), bad)
+
+    def test_with_the_flag_on_the_pick_runs_and_still_picks(self):
+        self.assertTrue(self._enabled({"OMR_DYNAMIC_INK_PICK": "1"}))
+        log, sub = _log_with({"ff": 0.75, "fp": 0.45}, _word({"ff": 0.75, "fp": 0.45}))
+        self.assertEqual(INFS.collapse_dynamic_by_ink(log, sub)[0].value, "ff")
+
+    def test_the_default_writes_blue_dyn_for_a_narrowed_dynamic(self):
+        page = _page_with(_narrowed({"sf": 0.05, "mf": 0.59, "rf": 0.05}))
+        xml, _ = SX.to_musicxml(page)
+        words = _directions(xml)[0].find("direction-type/words")
+        self.assertEqual((words.text, words.get("color")), ("dyn.", SX.GUESS_COLOR))
+
+
 class TestAdjudicateRanksTheOpenLetterByTheInk(unittest.TestCase):
     """`adjudicate_dynamic` over the twins the second look files for an UNREAD
     letter: never spelled by height or lexicon, ranked by the reader's score."""

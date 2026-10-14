@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -2143,7 +2143,7 @@ INK_PICK_MARGIN = 0.15
 
 @rule(
     inference=Inference.COLLAPSE_DYNAMIC_BY_INK,
-    switch=ALWAYS_ON,
+    switch=DYNAMIC_INK_PICK_SWITCH,
     target=Q.DYNAMIC,
     reads=(Q.DYNAMIC, Q.DYNAMIC_LETTER),
     scope=Kind.CELL,
