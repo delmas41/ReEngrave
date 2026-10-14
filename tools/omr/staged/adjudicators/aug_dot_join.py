@@ -81,6 +81,16 @@ def _box(log: R.Log, sub: R.Subject):
     return str(v[0]), v, tuple(float(x) for x in bb), r
 
 
+def _undotted_narrowing(v: Optional[R.Verdict]) -> bool:
+    """A NARROWED note none of whose candidates carries a dot (Brahms
+    `0/0/11/0/4`, `0/0/11/0/9`: candidates {eighth, quarter}, and INFER chose
+    the plain quarter where Sean reads a DOTTED quarter)."""
+    return (v is not None and v.outcome is Outcome.NARROWED
+            and bool(v.candidates)
+            and all(isinstance(c.value, dict) and not c.value.get("is_rest")
+                    and c.value.get("dots") == 0 for c in v.candidates))
+
+
 def _plain_note(v: Optional[R.Verdict]) -> bool:
     return (v is not None and v.outcome is Outcome.DECIDED
             and isinstance(v.value, dict) and not v.value.get("is_rest")
@@ -195,6 +205,26 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
     for head_key, (dsub, role, kind) in claims.items():
         hsub = R.Subject.from_key(head_key)
         hv = log.verdict(Q.DURATION, hsub)
+        if _undotted_narrowing(hv):
+            # the reader's own candidates plus each one with a dot, in the
+            # reader's order and support; nothing is chosen here
+            cands = list(hv.candidates) + [
+                R.Candidate(value=_dotted_candidate(dict(c.value)),
+                            support=c.support) for c in hv.candidates]
+            basis = tuple(x for x in (hv.id, role.id) if x)
+            log.record(R.Verdict(
+                id=log._next_id("vrd"), subject=hsub, quantity=Q.DURATION,
+                outcome=Outcome.NARROWED, value=None,
+                decider="reconcile_unjoined_dots",
+                reason=NARROWED_REASON, considered=basis, basis=basis,
+                used=tuple(hv.used or ()), candidates=tuple(cands),
+                supersedes=hv.id,
+                detail={"dot": dsub.to_key(), "dot_role": role.reason,
+                        "dot_role_outcome": role.outcome.value,
+                        "kind": kind, "was_reason": hv.reason,
+                        "extended_narrowing": True}))
+            census["extended_a_narrowing_with_dotted_candidates"] += 1
+            continue
         if not _plain_note(hv):
             census["head_already_dotted_or_not_a_decided_note"] += 1
             continue

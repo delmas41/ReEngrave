@@ -185,7 +185,9 @@ class TestAnUnplacedDotBesideAPlainNote(unittest.TestCase):
             id=log._next_id("vrd"), subject=h, quantity=Q.DURATION,
             outcome=Outcome.NARROWED, value=None,
             decider="adjudicate_duration", reason="beams_ambiguous",
-            candidates=(R.Candidate(value=dict(QUARTER), support=1.0),
+            candidates=(R.Candidate(value={"beats": 1.5, "written": 1.5,
+                                           "dots": 1, "beam_levels": 0},
+                                    support=1.0),
                         R.Candidate(value=dict(EIGHTH), support=1.0))))
         _dot(log, "glyph/0/0/4/1/0", (547, 914, 39, 44),
              (2289.78, 3237.05, 2302.45, 3251.35), "abstain")
@@ -229,6 +231,104 @@ class TestAnUnplacedDotBesideAPlainNote(unittest.TestCase):
         self.assertEqual(log.verdict(Q.DURATION, h).value["dots"], 1)
 
 
+class TestSeansTilesOfTheSameChord(unittest.TestCase):
+    """Brahms 317803 p0 `0/0/11/0`, Sean's 2.121 tiles: `/4` and `/9` are
+    DOTTED quarters (the dot was missed and the plain quarter chosen) and
+    `/10` a SINGLE-dotted quarter (one dot boxed twice made it 1.75)."""
+
+    def _narrowed_head(self, log, key, canon, page):
+        g = _glyph(log, key, "noteheadBlackOnLine", canon, page)
+        log.record(R.Verdict(
+            id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+            outcome=Outcome.NARROWED, value=None,
+            decider="adjudicate_duration", reason="beam_discounted_uncertain",
+            candidates=(R.Candidate(value=dict(EIGHTH), support=2.0),
+                        R.Candidate(value=dict(QUARTER), support=1.0))))
+        return g
+
+    def test_RED_a_narrowing_with_no_dotted_candidate_gains_them(self):
+        log = _log(74.0, cells=((0, 0, 11, 0),))
+        h = self._narrowed_head(log, "glyph/0/0/11/0/4", (990, 551, 95, 87),
+                                (1651.19, 6044.99, 1692.57, 6082.88))
+        _dot(log, "glyph/0/0/11/0/8", (1112, 611, 30, 33),
+             (1704.33, 6071.12, 1717.39, 6085.49), "abstain")
+        census = _reconcile(log)
+        v = log.verdict(Q.DURATION, h)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.5, 0.75, 1.0, 1.5])
+        self.assertIn(1.5, [c.value["beats"] for c in v.candidates
+                            if c.value["dots"] == 1])
+        self.assertEqual(
+            census["extended_a_narrowing_with_dotted_candidates"], 1)
+
+    def test_the_flag_off_leaves_the_narrowing_alone(self):
+        log = _log(74.0, cells=((0, 0, 11, 0),))
+        h = self._narrowed_head(log, "glyph/0/0/11/0/4", (990, 551, 95, 87),
+                                (1651.19, 6044.99, 1692.57, 6082.88))
+        _dot(log, "glyph/0/0/11/0/8", (1112, 611, 30, 33),
+             (1704.33, 6071.12, 1717.39, 6085.49), "abstain")
+        _reconcile(log, on=False)
+        self.assertEqual(len(log.verdict(Q.DURATION, h).candidates), 2)
+
+    def test_CONTROL_a_narrowing_that_already_has_a_dotted_candidate_stays(self):
+        log = _log(74.0, cells=((0, 0, 11, 0),))
+        g = _glyph(log, "glyph/0/0/11/0/4", "noteheadBlackOnLine",
+                   (990, 551, 95, 87), (1651.19, 6044.99, 1692.57, 6082.88))
+        dotted = {"beats": 1.5, "written": 1.5, "dots": 1, "beam_levels": 0}
+        log.record(R.Verdict(
+            id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+            outcome=Outcome.NARROWED, value=None,
+            decider="adjudicate_duration", reason="beam_discounted_uncertain",
+            candidates=(R.Candidate(value=dict(dotted), support=2.0),
+                        R.Candidate(value=dict(QUARTER), support=1.0))))
+        _dot(log, "glyph/0/0/11/0/8", (1112, 611, 30, 33),
+             (1704.33, 6071.12, 1717.39, 6085.49), "abstain")
+        _reconcile(log)
+        self.assertEqual(len(log.verdict(Q.DURATION, g).candidates), 2)
+
+
+class TestOneDotBoxedTwiceIsOneDot(unittest.TestCase):
+    """`0/0/11/0/15` and `0/0/11/0/24`: two boxes, 2 px apart, one dot."""
+
+    def _attached(self, flag, gap_px=2.0):
+        from tools.omr.staged import adjudicate
+        from tools.omr.staged import adjudicators  # noqa: F401
+        log = _log(74.0, cells=((0, 0, 11, 0),))
+        log.observe(R.cell(0, 0, 11, 0), Q.CELL_BOX, (0.0, 0.0, 2000.0, 700.0),
+                    reader=READERS.GEOMETRY, frame="page")
+        h = R.glyph(0, 0, 11, 0, 10)
+        log.observe(h, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(h, Q.GLYPH_BOX, ("noteheadBlackOnLine", 1464, 330, 97, 84),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        for gi, dy, sc in ((15, 0, 0.6), (24, int(gap_px), 0.5)):
+            d = R.glyph(0, 0, 11, 0, gi)
+            log.observe(d, Q.GLYPH_BOX,
+                        ("augmentationDot", 1600, 330 + dy, 30, 30),
+                        reader=READERS.DETECTOR, frame="cell:0", score=sc)
+            log.observe(d, Q.AUG_DOT, (1615.0, 345.0 + dy),
+                        reader=READERS.DETECTOR, frame="cell:0", score=sc,
+                        detector_role="dot", detector_class="augmentationDot")
+        env = {"OMR_AUG_DOT_JOIN": "1" if flag else ""}
+        with mock.patch.dict(os.environ, env, clear=False):
+            adjudicate.run(log)
+        v = log.verdict(Q.DURATION, h)
+        return v
+
+    def test_RED_two_boxes_on_one_dot_make_one_dot(self):
+        v = self._attached(True)
+        self.assertEqual((v.detail or {}).get("dots_attached"), 1)
+
+    def test_the_flag_off_counts_both_as_before(self):
+        v = self._attached(False)
+        self.assertEqual((v.detail or {}).get("dots_attached"), 2)
+
+    def test_CONTROL_two_dots_over_a_third_of_a_space_apart_are_two_dots(self):
+        v = self._attached(True, gap_px=25.0)       # 0.34 sp
+        self.assertEqual((v.detail or {}).get("dots_attached"), 2)
+
+
 class TestTheHookRunsAfterDuration(unittest.TestCase):
     def test_adjudicate_run_calls_the_reconcile_after_duration(self):
         import inspect
@@ -237,6 +337,17 @@ class TestTheHookRunsAfterDuration(unittest.TestCase):
         self.assertIn("reconcile_unjoined_dots", src)
         self.assertLess(src.index("quantity == Q.DURATION"),
                         src.index("reconcile_unjoined_dots"))
+
+
+class TestTheFunnelSplitsDotsFromArticulations(unittest.TestCase):
+    def test_a_dots_row_reads_the_dot_family_and_dot_role(self):
+        from tools.omr.staged import export as E
+        from tools.omr.staged import regather_report as RR
+        rows = {r[0]: r for r in RR.FUNNELS}
+        self.assertEqual(rows["dots"][1], "dot")
+        self.assertEqual(rows["dots"][3], "dot_role")
+        self.assertIn("dot", E.FAMILIES)
+        self.assertNotIn("staccato dots", rows["articulations"][4])
 
 
 if __name__ == "__main__":

@@ -54,6 +54,7 @@ from . import structure as _structure
 # different_staff` -- `ownership.py` imports neither `rhythm` nor
 # `notehead_precision`, so this is not a new circular-import risk.
 from . import ownership as _own
+from . import aug_dot_join as _aug_join
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -2178,7 +2179,30 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
                 best_score, best = score, key
         if best == mine:
             out.append(d)
+    # ⚠️ ROADMAP 2.127 (`OMR_AUG_DOT_JOIN`): ONE PHYSICAL DOT BOXED TWICE IS
+    # ONE DOT. Brahms 317803 `0/0/11/0/15` and `0/0/11/0/24` are two detector
+    # boxes on the same upper dot of a chord of seconds (page boxes 2 px
+    # apart); both joined `0/0/11/0/10`, which went out double-dotted (1.75)
+    # where Sean reads a single dot. Two attached boxes whose centres lie
+    # within `DOT_TWIN_MAX_SPACES` of each other are one mark; the more
+    # confident box stands for it.
+    if len(out) > 1 and _aug_join.aug_dot_join_enabled():
+        kept = []
+        for d in sorted(out, key=lambda r: -(r.score or 0.0)):
+            db = _xywh_head(boxes[d.subject.to_key()].value)
+            cx, cy = db[0] + db[2] / 2.0, db[1] + db[3] / 2.0
+            if any(abs(cx - kx) <= DOT_TWIN_MAX_SPACES * space
+                   and abs(cy - ky) <= DOT_TWIN_MAX_SPACES * space
+                   for _k, kx, ky in kept):
+                continue
+            kept.append((d, cx, cy))
+        keep_ids = {k.id for k, _x, _y in kept}
+        out = [d for d in out if d.id in keep_ids]
     return out
+
+
+#: Two dot boxes this close (cell frame, in staff spaces) are one dot.
+DOT_TWIN_MAX_SPACES = 0.3
 
 
 #: A dot box whose ink is at least this share elongated stroke is not a dot

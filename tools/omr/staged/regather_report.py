@@ -82,7 +82,12 @@ FUNNELS: Tuple[Tuple[str, str, Optional[str], str, str], ...] = (
     ("ties", "tie", "arc_is_not_an_arc", "arc_kind",
      "curved lines read as ties"),
     ("articulations", "articulation", "articulation_is_not_an_articulation",
-     "articulation_owner", "staccato dots, accents, tenuto: which note"),
+     "articulation_owner", "accents, tenuto, staccatissimo: which note"),
+    # ROADMAP 2.127 (the 2.125 split): `articStaccato*` and `augmentationDot`
+    # boxes are `Q.DOT_ROLE` subjects, not `articulation_owner` ones; the old
+    # single row counted them as boxes "with no verdict" (Brahms 2,838).
+    ("dots", "dot", None, "dot_role",
+     "small dots: lengthening a note or marking it short (staccato)"),
     ("fermatas", "fermata", None, "fermata_owner", "fermatas: which note"),
     ("ornaments", "ornament", None, "ornament_owner", "trills, turns, tremolo"),
     ("hairpins", "wedge", None, "wedge_anchor", "crescendo/diminuendo wedges"),
