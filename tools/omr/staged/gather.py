@@ -8865,6 +8865,13 @@ def measure_head_stem(ink: Any, box: Tuple[float, float, float, float],
                 up_clipped=bool(best["up"][2]) if u_ok else False)
 
 
+def _is_second_only_head(log: Log, g: Any) -> bool:
+    """ROADMAP 2.114 round 2: a head ONLY the second detector boxed (`Q.SECOND_HOLLOW` `relation` `second_only`; empty unless
+    `OMR_SECOND_HOLLOW_DETECTOR` is on). It is not contested, but ADJUDICATE needs the ruler's stem reading as the witness of a note that
+    is not the second box itself (`rhythm._second_only_evidence`)."""
+    return any((r.detail or {}).get("relation") == "second_only" for r in log.rows(Q.SECOND_HOLLOW, g))
+
+
 def gather_head_stem_reach(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
                            detections: Dict[str, List[Any]]) -> Dict[str, int]:
@@ -8903,7 +8910,7 @@ def gather_head_stem_reach(log: Log, pws: Any, cells: Sequence[Any],
             if not str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX):
                 continue
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
-            if not log.rows(Q.GLYPH_BAND_DISTANCE, g):
+            if not log.rows(Q.GLYPH_BAND_DISTANCE, g) and not _is_second_only_head(log, g):
                 continue
             box = _page_box(c, d)
             if box is None:

@@ -253,6 +253,23 @@ def _second_hollow_interior(ink_detail: Dict[str, Any], head_box, space) -> Tupl
     return ("unclear" if any_light else "filled"), axis, margin
 
 
+def _second_only_evidence(ev: Evidence, own_stems, n_dots: int) -> List[str]:
+    """ROADMAP 2.114 round 2 (Sean's tile 5, 2026-10-14: a tie fragment the second detector alone boxed became a blue invented note). What,
+    OTHER THAN THE SECOND DETECTOR'S OWN BOX, says a note stands where only it saw a head. Three witnesses, each from a different source than
+    the box: a stem the stem reader attached to the head (`stem_box`), the CV ruler's vertical run beside it going up or down
+    (`stem_reach`, `Q.HEAD_STEM_REACH`, not `both`: that is a barline), an augmentation dot beside it (`aug_dot`). Ledger rungs are NOT
+    read: `Q.GLYPH_LADDER` is filed only for contested heads. Empty = nothing says a note is there."""
+    out: List[str] = []
+    if own_stems:
+        out.append("stem_box")
+    reach = ev.rows(Q.HEAD_STEM_REACH)
+    if reach and str(reach[-1].value) in ("up", "down"):
+        out.append("stem_reach")
+    if n_dots:
+        out.append("aug_dot")
+    return out
+
+
 def _fill_candidates(order, n_dots, ratio, ev, supports):
     """Candidates for `order` = names among black / half / whole, each with its support."""
     beats = {"black": 1.0, "half": 2.0, "whole": 4.0}
@@ -2974,7 +2991,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW),
     reasons=("second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
-             "second_hollow_contradicted_by_marks",
+             "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "tip_readers_disagree",
@@ -3438,6 +3455,16 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             order, sup = (own_name, other), {own_name: 2.0, other: 1.0}
         else:
             order, sup = (own_name, "black", other), {own_name: 2.0, "black": 1.0, other: 1.0}
+        # ROUND 2: a head ONLY the second detector saw needs a witness of a note that is not that box. None -> refused, candidates and
+        # signed margin recorded (CLAUDE.md 4: a refusal says how close it came), nothing written.
+        witnesses = _second_only_evidence(ev, own_stems, n_dots)
+        facts["independent_evidence"] = witnesses
+        if not witnesses:
+            facts["settled"] = "refused_no_evidence"
+            facts["would_narrow"] = [c.value["head_fill"] for c in _fill_candidates(order, n_dots, ratio, ev, sup)]
+            return _with_hollow_margin(
+                Ruling.abstain("second_only_no_independent_evidence", **shared, second_hollow=facts, notehead_ink=ink_detail),
+                ink_detail, head_box, space)
         facts["settled"] = "narrowed_firm" if reading == "firm" else "narrowed_" + reading
         used.extend(r.id for r in ink_rows[-1:])
         if sh is not None:

@@ -22,7 +22,7 @@ from tools.omr.staged import record as R
 from tools.omr.staged import second_hollow as SH
 from tools.omr.staged.record import ABSTAIN, Log, Outcome, Q, READERS
 
-from tools.omr.tests.test_staged_duration import CELL, _beam, _note, _staff_space, _stem
+from tools.omr.tests.test_staged_duration import CELL, _beam, _dot, _note, _staff_space, _stem
 from tools.omr.tests.test_staged_pipeline import FakeDet, FakeDetector, build_page
 
 
@@ -146,6 +146,18 @@ class TestGatherFilesASeparateWitness(unittest.TestCase):
         det_boxes = [r.value for r in log.all_rows() if r.quantity == Q.GLYPH_BOX and r.reader == READERS.DETECTOR]
         base_boxes = [r.value for r in self.base.all_rows() if r.quantity == Q.GLYPH_BOX and r.reader == READERS.DETECTOR]
         self.assertEqual(det_boxes, base_boxes)
+
+    def test_a_second_only_head_gets_the_rulers_stem_reading_RED(self):
+        """Round 2: the witness of a note that is not the second box. A second-only head is not contested, so it had no `Q.HEAD_STEM_REACH`."""
+        unseen = FakeDet("noteheadHalfInSpace", 600, 100, confidence=0.6)
+        log = _gather_with(_Second([unseen]))
+        g = R.glyph(0, 0, 0, 0, 2)
+        rows = log.rows(Q.HEAD_STEM_REACH, g)
+        # the fake page may carry no raster; where it does, the row exists and is the ruler's. Never an invented direction either way.
+        for r in rows:
+            self.assertIn(r.value, ("up", "down", "both", "none"))
+        if getattr(getattr(build_page(), "page", None), "rgb", None) is not None:
+            self.assertEqual(len(rows), 1)
 
     def test_a_hollow_box_over_another_production_class_is_refused_not_added(self):
         over_clef = FakeDet("noteheadHalfInSpace", 20, 92, confidence=0.7)        # production's clefG sits at (20, 92)
@@ -351,10 +363,56 @@ class TestAHeadOnlyTheSecondDetectorBoxed(_Heads):
     def test_a_whole_note_class_ranks_whole_first(self):
         log = Log()
         g = self._second_only(log, cls="noteheadWholeInSpace", stem=False)
+        _dot(log, gi=900, x=160, y=96)                   # a whole note has no stem: its evidence is a dot
         _ink(log, g, center=0.45, ring=0.85)
         v = self._duration(log, g)
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual([c.value["head_fill"] for c in v.candidates][0], "whole")
+
+    # ── round 2: Sean's tile 5 (a tie fragment boxed by the second detector alone became a blue invented note) ──
+    def test_a_second_only_head_with_NO_stem_dot_or_reach_is_refused_nothing_written_RED(self):
+        log = Log()
+        g = self._second_only(log, stem=False)
+        _ink(log, g, center=0.45, ring=0.85)            # a firm interior: the INK alone is not a note
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "second_only_no_independent_evidence")
+        self.assertIsNone(v.value)
+        self.assertEqual(v.detail["second_hollow"]["independent_evidence"], [])
+        self.assertEqual(v.detail["second_hollow"]["would_narrow"], ["half", "whole"])      # candidates recorded
+        self.assertIn("margin", v.detail["second_hollow"])                                   # and how close
+
+    def test_CONTROL_each_witness_alone_lets_the_head_through(self):
+        # the stem reader's stem
+        log = Log()
+        g = self._second_only(log, stem=True)
+        _ink(log, g, center=0.45, ring=0.85)
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.detail["second_hollow"]["independent_evidence"], ["stem_box"])
+        # the CV ruler's stem reading
+        log = Log()
+        g = self._second_only(log, stem=False)
+        log.observe(g, Q.HEAD_STEM_REACH, "down", reader=READERS.CV_HEAD_STEM_REACH, frame="page")
+        _ink(log, g, center=0.45, ring=0.85)
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.detail["second_hollow"]["independent_evidence"], ["stem_reach"])
+        # an augmentation dot
+        log = Log()
+        g = self._second_only(log, stem=False)
+        _dot(log, gi=900, x=160, y=96)
+        _ink(log, g, center=0.45, ring=0.85)
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.detail["second_hollow"]["independent_evidence"], ["aug_dot"])
+
+    def test_CONTROL_through_ink_is_a_barline_not_a_witness(self):
+        log = Log()
+        g = self._second_only(log, stem=False)
+        log.observe(g, Q.HEAD_STEM_REACH, "both", reader=READERS.CV_HEAD_STEM_REACH, frame="page")
+        _ink(log, g, center=0.45, ring=0.85)
+        self.assertEqual(self._duration(log, g).reason, "second_only_no_independent_evidence")
 
 
 if __name__ == "__main__":
