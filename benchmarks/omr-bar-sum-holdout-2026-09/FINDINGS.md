@@ -3934,3 +3934,12 @@ Brahms Breitkopf and Beethoven Litolff, mvt 1 each, one night's records; not a r
 carried 6/8 after a 9/8 system); W2 is evidenced on Brahms by step 1's 12 tiles but on Litolff by nothing the print has shown. The owner verdicts W2
 trusts are ADJUDICATE's, and `judged score` has no item on a ledger owner. The flag stays OFF until Sean has seen these tiles. Fast tier
 `pytest -m "not slow" tools/omr/tests`: 8069 passed, 12 skipped, 2 xfailed; `staged.check` TOTAL open = 192.
+
+### 2.136-2f. Sean's answers (2026-10-15)
+
+Recorded in `out/print/2.136-step2-review/answers.json` (values compared as multisets against `tiles-key.json`). Brahms settled bars 7/7 right (tiles 1, 2,
+3, 4, 5, 7, 12; W1 4/4, W2 3/3). Controls 8 and 11 right (2/2). Litolff settled bars 1/3 (tile 9 right; tiles 6 and 10 wrong); all three Litolff tiles
+are W2. W1 is right on every tile where it fired (4/4 here, and 8 of Sean's earlier 10). W2 is 3/3 on Brahms but 1/3 on Litolff. Tile 6 is a bar sum
+landing on the WRONG combination: we settled 16, 16, 4 and Sean reads 8, 8, 8, so the sum inherits a misread elsewhere in the bar. Tile 10 counted a
+whole rest as a notehead and summed two voices as one: we settled quarter + eighth, Sean reads a whole rest and a quarter in different voices. The two
+Litolff failures say W2 should not ship ON until those causes are understood; W1 has no failure on the print so far (Brahms only).
