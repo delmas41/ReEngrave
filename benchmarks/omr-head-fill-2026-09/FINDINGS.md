@@ -1232,3 +1232,100 @@ Verbatim: *"I'll only give one number if both values are the same. 1.8 2.8 3-5. 
 
 Every bar the export WRITES (1, 2, 3, 4, 5, 8) is right on both voices, 6 of 6. No held bar was wrong to hold. Tiles 7/10 split-and-hold vs refuse (the label for a
 bar where the other voice is short): left as is; relabelling was not shown to be file-identical, so not done.
+
+## Sec.15. ROADMAP 2.137 -- tremolo slashes still boxed as noteheads (2026-10-15)
+
+Path: STAGED, GATHER + ADJUDICATE only, no gather. Branch `lane-2.137-trem-slash`, off main `ca70f1ad`. Records: the saved
+`20261014-night` pair (read through `record_io.load_record`). Sean, 2026-10-15 (page-facts §1, general scope): *"They are never oval
+shaped - always thick diagonal lines."* Fix: `OMR_SLASH_AT_STEM_END`, **default OFF**. Probes: `probe/2.137_redecide.py`,
+`2.137_p0_records.py`, `2.137_tiles.py` (+ `2.137_tiles_spec.json`); outputs `out/2.137/`; tiles `out/print/2.137-review/` (10, blind).
+
+### 15.0 The anchor case is not a slash
+
+Brahms p14 sys1 staff7 cell0 (bar 274, P10, 2.134 tile 13): what a human reads is a high dotted quarter ABOVE the staff with three
+LEDGER LINES under its head. The three strokes sit exactly one staff space apart (page y 5935 / 5987 / 6021, space 30 px at 600 dpi),
+read 0.2-0.3 degrees, and the detector boxed them `ledgerLine`. `Q.STEM_SLASH` already refuses all three (`one_sided`, correctly). The
+record keeps ONE head there (the dotted quarter) and that is right; nothing is standing as a head that should not. The ROADMAP row's
+"three slashes on one stem" was read off the ledger lines. Tile 4 is this bar, as a control.
+
+### 15.1 What stands as a head and is a slash (diagnosis, no code)
+
+Census: every kept `notehead_is_not_a_notehead` box that GATHER filed a `Q.NOTEHEAD_STEM_CROSS_INK` row for (Brahms 5,807 of 19,665 kept;
+Litolff 4,683 of 9,850). The shape witness: elongation >= 1.8, fill <= 0.55, both sides >= 0.30, angle 10-70; plus every kept box holding a
+passing `Q.STEM_SLASH` stroke (Brahms 17, Litolff 10). Each candidate then read on a 600 dpi crop (contact sheets, the box bracketed), one line
+of what a human reads: *a thick diagonal stroke across the stem, usually the first of a stack of two or three at the stem's tip; a half or
+dotted-half head at the other end of the stem.*
+
+Confirmed by crop and standing as heads on the night records: **Brahms 37, Litolff 12** (49). Two more candidates are NOT slashes: Brahms
+`15/1/7/5/9` is a quarter rest's zigzag and Litolff `11/0/2/11/1` is the curl of a bass clef beside a barline.
+
+Which of the 2.49 / 2.71 tests let each of the 49 through (first failing test; margins are the measured values):
+
+* **A. POSITION only** (shape and crossing pass; the box centre lies 0.07-0.49 box-heights from the stem's tip, under the 0.5 floor):
+  Brahms 16, Litolff 10. The first slash of a stack sits at the tip; the measured positions hug the cut (median 0.43 box-heights).
+* **B. the 20-degree SHAPE floor only** (angle 10.9-19.7 degrees, position fine): Brahms 10.
+* **C. angle floor AND position:** Brahms 9, Litolff 2.
+* **D. crossing share fails, the 2.71 stroke witness stood** (ink split 0.16/0.84 and 0.20/0.80, the stem in the box's left third; a stroke
+  read across both sides): Brahms 2 -- position refused them again.
+* 2.71 as a whole: of the 27 kept boxes that hold a passing slash stroke, ALL fail the POSITION test and nothing else (0.15-0.50).
+
+Not guilty: crossing share split between stacked slashes (every share was 0.27-0.73), a stem not found (every candidate has a matched stem
+by construction -- see 15.5 for the unmeasured population), a head box without the slash centre line (all 27 hold it).
+
+### 15.2 Control (rule 7)
+
+* A real head the 2.71 stroke witness sits under: Litolff `12/0/2/8/7` (half head, elongation 1.25, position 0.25). Dropping POSITION from
+  the stroke witness alone would refuse it; the oval witness keeps it. A unit test pairs the two (`..._oval_with_a_stroke...` is kept, the
+  same box with elongation 2.0 is refused), so the control can fail.
+* Real heads near a slash: Litolff `13/0/5/8/5` (the half head under the slash `13/0/5/8/4`; the old keep-choice kept the SLASH and refused
+  this head, the flag keeps the head) -- tile 2; the anchor head, Brahms `14/1/7/0/4`, kept before and after -- tile 4.
+* The oval witness over everything else: of the 10,490 kept boxes with a cross row, the flag refuses 51 and each of the 51 was read on its crop.
+
+### 15.3 The fix (flag `OMR_SLASH_AT_STEM_END`, default OFF)
+
+`notehead_precision._slash_at_stem_end` (read by `_tremolo_slash_crosses_stem` and `_is_tremolo_slash`, so a stacked group never keeps a slash
+either). A box is refused as the slash it is when its own ink is NOT OVAL -- elongation >= 1.8 and fill <= 0.55 (2.49's own cut-offs), angle
+10-45 degrees, fill >= 0.15 ("thick") -- AND the stroke crosses the stem (each side >= 0.30 of the glyph's own ink, or a passing `Q.STEM_SLASH`
+stroke under the box). POSITION is recorded (`position_ok`), never asked. Reason stays `tremolo_slash_crosses_stem`; the verdict carries a
+signed margin (fraction of the cut), the tightest axis and `refused_via`; a KEPT near miss files its negative margin
+(`detail.tremolo_slash_signal.at_stem_end`). A refused slash is never a notehead and never a rest, the head beside it is kept, the written
+value never changes (2.71).
+
+What decides and what only narrows: "never oval, thick, diagonal, across both sides of one stem" is Sean's convention and decides. The cut-offs
+are 2.49's (shipped on Sean's review) plus two measured on these two plates only (the 10-degree floor, the 0.15 fill floor): so the flag stays OFF
+until Sean has read the tiles, and the margins are on the record. The confirmed slashes' tightest margins: median 0.125 of the cut, minimum 0.001
+(Brahms), 0.026 (Litolff); tightest axis is the 0.55 fill ceiling for 30 of 49.
+
+### 15.4 What the flag does on the night records (ADJUDICATE only; `probe/2.137_redecide.py`, flag off then on, per subject)
+
+Control: the flag-OFF arm reproduces the saved Litolff verdicts exactly (every reason count identical). On Brahms it differs from the saved record in
+ONE reason, `is_a_meter_digit` 30 -> 0 (a decider the limited re-run omits feeds it); the comparison is therefore arm-on against arm-off, per subject.
+
+* Brahms: +38 refused (37 slashes + the rest zigzag, wrong label, right outcome); 10 boxes already refused (duplicate/stacked) now carry the slash
+  reason; 1 box leaves the refused set (`12/0/10/0/14`, the second slash of a stack whose partner is now refused; elongation 1.76, 0.02 under the cut:
+  a slash still stands there, as before).
+* Litolff: +13 refused (12 slashes + the bass-clef curl, wrong label, right outcome); 8 already-refused now carry the slash reason; 2 boxes
+  leave the refused set because the slash that beat them in the stacked keep-choice is gone: `13/0/5/8/5` (a real half head, tile 2) and
+  `16/0/0/8/13` (not yet looked at on a crop).
+
+### 15.5 Checks
+
+* **Hand-truth scorer, Brahms p0** (`out/2.137/handtruth-p0-{off,on}.txt`; the page-0 slice of the night record re-decided by `rerun`, the off-arm
+  reproduces the saved record's 3 slash refusals): notehead recall at ADJUDICATE 0.990 -> 0.990 (378 of 382 matched both ways, 4 lost both ways --
+  no head lost); precision 0.952 -> 0.962 (439 read both ways); owner 377 right / 0 wrong and position 375 right / 1 wrong both ways. Independent
+  witness: Sean's own 16 hand-drawn `tremolo1` boxes on this page overlap 4 kept head boxes at IoU >= 0.3 with the flag off and 1 with it on (3 fixed;
+  none of the 4 newly refused page-0 boxes overlaps a truth notehead).
+* `judged score` (Sean's past answers), night records, flag-off: Litolff right 108 / wrong 11 / narrowed 4 / abstained 1 / not_found 13 / unscored
+  99; Brahms 70 / 10 / 18 / 1 / 7 / 145. None of the 72 subjects the flag changes (49 Brahms + 23 Litolff) is a judged subject, so the score is
+  identical with the flag on BY CONSTRUCTION -- a computation, not a measurement.
+* Tests: `test_staged_slash_at_stem_end_2_137.py` (15; 8 RED on main, the 7 controls pass on main) + `test_staged_tremolo_slash.py` (27) pass.
+
+### 15.6 Not fixed, and what Sean is asked
+
+* Slashes whose ink reads round because two sit in one box (Brahms `16/0/10/2/5` elongation 1.27, `11/1/10/8/6` 1.55, the pair partner
+  `12/0/10/0/14` 1.76) still stand as heads: the oval witness cannot read them. At least 3 seen.
+* Slash boxes no stem reached have no cross-ink row and no shape on the record (Brahms p0 `0/0/4/3/5`, a half-class 83 x 110 box on Sean's
+  tremolo truth box, IoU 0.36): unmeasured population, needs a GATHER change (not this lane's fence).
+* The two label errors (rest zigzag, bass-clef curl) are refused rightly under the wrong reason.
+* Blind tiles for Sean: `out/print/2.137-review/` (10 tiles: 5 fixed slashes, 3 real-head controls, 2 label-error cases; kinds only in `manifest.json`).
+  Red corners = the bar, blue corners = the box in question; nothing of ours is drawn.

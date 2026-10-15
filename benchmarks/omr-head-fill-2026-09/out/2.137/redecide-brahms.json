@@ -1,0 +1,1179 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20261014-night.record.json",
+ "control": {
+  "saved": {
+   "(False, 'notehead')": 19665,
+   "(True, 'stacked_head_duplicate')": 171,
+   "(True, 'too_narrow')": 3407,
+   "(True, 'clipped_fragment')": 593,
+   "(True, 'is_a_time_signature_digit')": 4,
+   "(True, 'head_cut_piece')": 13,
+   "(True, 'tremolo_slash_crosses_stem')": 112,
+   "(True, 'notehead_is_a_duplicate_box')": 115,
+   "(True, 'is_a_beam_piece')": 4,
+   "(True, 'is_a_meter_digit')": 30,
+   "(True, 'belongs_to_a_nearer_staff')": 53,
+   "(True, 'on_a_dynamic_letter')": 49,
+   "(True, 'on_a_barline')": 6,
+   "(True, 'is_a_clef')": 32,
+   "(True, 'is_a_dot')": 4,
+   "(True, 'notehead_in_a_key_signature_slot')": 2
+  },
+  "off_arm": {
+   "(False, 'notehead')": 19695,
+   "(True, 'stacked_head_duplicate')": 171,
+   "(True, 'too_narrow')": 3407,
+   "(True, 'clipped_fragment')": 593,
+   "(True, 'is_a_time_signature_digit')": 4,
+   "(True, 'head_cut_piece')": 13,
+   "(True, 'tremolo_slash_crosses_stem')": 112,
+   "(True, 'notehead_is_a_duplicate_box')": 115,
+   "(True, 'is_a_beam_piece')": 4,
+   "(True, 'belongs_to_a_nearer_staff')": 53,
+   "(True, 'on_a_dynamic_letter')": 49,
+   "(True, 'on_a_barline')": 6,
+   "(True, 'is_a_clef')": 32,
+   "(True, 'is_a_dot')": 4,
+   "(True, 'notehead_in_a_key_signature_slot')": 2
+  },
+  "identical": false
+ },
+ "on_counts": {
+  "(False, 'notehead')": 19658,
+  "(True, 'stacked_head_duplicate')": 167,
+  "(True, 'too_narrow')": 3407,
+  "(True, 'clipped_fragment')": 593,
+  "(True, 'is_a_time_signature_digit')": 4,
+  "(True, 'tremolo_slash_crosses_stem')": 160,
+  "(True, 'head_cut_piece')": 13,
+  "(True, 'notehead_is_a_duplicate_box')": 108,
+  "(True, 'is_a_beam_piece')": 4,
+  "(True, 'belongs_to_a_nearer_staff')": 53,
+  "(True, 'on_a_dynamic_letter')": 49,
+  "(True, 'on_a_barline')": 6,
+  "(True, 'is_a_clef')": 32,
+  "(True, 'is_a_dot')": 4,
+  "(True, 'notehead_in_a_key_signature_slot')": 2
+ },
+ "newly_refused": [
+  {
+   "subject": "glyph/0/0/4/1/6",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0273,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 20.2,
+    "elongation": 2.63,
+    "fill": 0.535,
+    "left_share": 0.4246,
+    "right_share": 0.5754,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0273,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 20.2,
+     "elongation": 2.63,
+     "fill": 0.535
+    }
+   }
+  },
+  {
+   "subject": "glyph/0/0/4/2/4",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1253,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 24.1,
+    "elongation": 2.1,
+    "fill": 0.4811,
+    "left_share": 0.649,
+    "right_share": 0.351,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1253,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 24.1,
+     "elongation": 2.1,
+     "fill": 0.4811
+    }
+   }
+  },
+  {
+   "subject": "glyph/0/0/8/1/3",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1771,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 33.7,
+    "elongation": 2.72,
+    "fill": 0.4526,
+    "left_share": 0.5456,
+    "right_share": 0.4544,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1771,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 33.7,
+     "elongation": 2.72,
+     "fill": 0.4526
+    }
+   }
+  },
+  {
+   "subject": "glyph/0/0/8/5/5",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0891,
+   "axis": "fill_ceiling",
+   "via": "stem_slash_stroke",
+   "signal": {
+    "angle_deg": 33.6,
+    "elongation": 2.08,
+    "fill": 0.501,
+    "left_share": 0.156,
+    "right_share": 0.844,
+    "shape_ok": true,
+    "crossing_ok": false,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "stem_slash_stroke",
+     "margin": 0.0891,
+     "axis": "fill_ceiling",
+     "crossing_ok": false,
+     "angle_deg": 33.6,
+     "elongation": 2.08,
+     "fill": 0.501
+    }
+   }
+  },
+  {
+   "subject": "glyph/3/0/10/6/2",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1491,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 22.9,
+    "elongation": 2.57,
+    "fill": 0.468,
+    "left_share": 0.4446,
+    "right_share": 0.5554,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1491,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 22.9,
+     "elongation": 2.57,
+     "fill": 0.468
+    }
+   }
+  },
+  {
+   "subject": "glyph/3/1/11/0/17",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0473,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 23.3,
+    "elongation": 2.31,
+    "fill": 0.524,
+    "left_share": 0.5647,
+    "right_share": 0.4353,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0473,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 23.3,
+     "elongation": 2.31,
+     "fill": 0.524
+    }
+   }
+  },
+  {
+   "subject": "glyph/4/0/10/10/10",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1285,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 24.1,
+    "elongation": 3.0,
+    "fill": 0.4793,
+    "left_share": 0.4469,
+    "right_share": 0.5531,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1285,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 24.1,
+     "elongation": 3.0,
+     "fill": 0.4793
+    }
+   }
+  },
+  {
+   "subject": "glyph/6/1/9/0/12",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.191,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 17.0,
+    "elongation": 2.91,
+    "fill": 0.4289,
+    "left_share": 0.6427,
+    "right_share": 0.3573,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.191,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 17.0,
+     "elongation": 2.91,
+     "fill": 0.4289
+    }
+   }
+  },
+  {
+   "subject": "glyph/7/1/8/11/2",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0907,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 26.1,
+    "elongation": 2.12,
+    "fill": 0.5001,
+    "left_share": 0.4668,
+    "right_share": 0.5332,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0907,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 26.1,
+     "elongation": 2.12,
+     "fill": 0.5001
+    }
+   }
+  },
+  {
+   "subject": "glyph/8/0/8/1/3",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2444,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.7,
+    "elongation": 2.24,
+    "fill": 0.3483,
+    "left_share": 0.5371,
+    "right_share": 0.4629,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.2444,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 19.7,
+     "elongation": 2.24,
+     "fill": 0.3483
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/0/10/7/8",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1715,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.3,
+    "elongation": 2.25,
+    "fill": 0.4557,
+    "left_share": 0.4062,
+    "right_share": 0.5938,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1715,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 19.3,
+     "elongation": 2.25,
+     "fill": 0.4557
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/0/10/9/10",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0975,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 20.6,
+    "elongation": 2.37,
+    "fill": 0.4964,
+    "left_share": 0.4426,
+    "right_share": 0.5574,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0975,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 20.6,
+     "elongation": 2.37,
+     "fill": 0.4964
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/1/9/4/9",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2987,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 27.1,
+    "elongation": 3.04,
+    "fill": 0.3857,
+    "left_share": 0.473,
+    "right_share": 0.527,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.2987,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 27.1,
+     "elongation": 3.04,
+     "fill": 0.3857
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/1/10/5/6",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0611,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 18.2,
+    "elongation": 1.91,
+    "fill": 0.4331,
+    "left_share": 0.496,
+    "right_share": 0.504,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0611,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 18.2,
+     "elongation": 1.91,
+     "fill": 0.4331
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/1/10/6/10",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.001,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 29.2,
+    "elongation": 1.92,
+    "fill": 0.4143,
+    "left_share": 0.6997,
+    "right_share": 0.3003,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.001,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 29.2,
+     "elongation": 1.92,
+     "fill": 0.4143
+    }
+   }
+  },
+  {
+   "subject": "glyph/11/1/11/2/2",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.23,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.7,
+    "elongation": 2.62,
+    "fill": 0.4235,
+    "left_share": 0.613,
+    "right_share": 0.387,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.23,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 19.7,
+     "elongation": 2.62,
+     "fill": 0.4235
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/0/19",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1222,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 13.7,
+    "elongation": 2.02,
+    "fill": 0.4088,
+    "left_share": 0.6322,
+    "right_share": 0.3678,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1222,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 13.7,
+     "elongation": 2.02,
+     "fill": 0.4088
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/2/4",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1778,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 23.5,
+    "elongation": 2.12,
+    "fill": 0.445,
+    "left_share": 0.4608,
+    "right_share": 0.5392,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1778,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 23.5,
+     "elongation": 2.12,
+     "fill": 0.445
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/3/4",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1298,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 22.5,
+    "elongation": 2.58,
+    "fill": 0.4786,
+    "left_share": 0.4349,
+    "right_share": 0.5651,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1298,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 22.5,
+     "elongation": 2.58,
+     "fill": 0.4786
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/4/6",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0929,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 18.4,
+    "elongation": 2.29,
+    "fill": 0.4989,
+    "left_share": 0.5951,
+    "right_share": 0.4049,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0929,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 18.4,
+     "elongation": 2.29,
+     "fill": 0.4989
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/5/6",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2763,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.5,
+    "elongation": 2.51,
+    "fill": 0.3175,
+    "left_share": 0.6171,
+    "right_share": 0.3829,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.2763,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 19.5,
+     "elongation": 2.51,
+     "fill": 0.3175
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/10/7/5",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0833,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 20.9,
+    "elongation": 1.95,
+    "fill": 0.4733,
+    "left_share": 0.4068,
+    "right_share": 0.5932,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0833,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 20.9,
+     "elongation": 1.95,
+     "fill": 0.4733
+    }
+   }
+  },
+  {
+   "subject": "glyph/12/0/11/6/5",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.09,
+   "axis": "angle_floor",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 10.9,
+    "elongation": 2.9,
+    "fill": 0.4032,
+    "left_share": 0.5329,
+    "right_share": 0.4671,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.09,
+     "axis": "angle_floor",
+     "crossing_ok": true,
+     "angle_deg": 10.9,
+     "elongation": 2.9,
+     "fill": 0.4032
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/7/5/9",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0222,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 16.4,
+    "elongation": 1.84,
+    "fill": 0.2595,
+    "left_share": 0.6484,
+    "right_share": 0.3516,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0222,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 16.4,
+     "elongation": 1.84,
+     "fill": 0.2595
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/3/21",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1615,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 14.4,
+    "elongation": 2.63,
+    "fill": 0.4612,
+    "left_share": 0.5644,
+    "right_share": 0.4356,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1615,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 14.4,
+     "elongation": 2.63,
+     "fill": 0.4612
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/4/17",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.014,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 14.5,
+    "elongation": 2.12,
+    "fill": 0.5423,
+    "left_share": 0.5115,
+    "right_share": 0.4885,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.014,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 14.5,
+     "elongation": 2.12,
+     "fill": 0.5423
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/5/6",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0058,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 16.4,
+    "elongation": 2.26,
+    "fill": 0.5468,
+    "left_share": 0.4662,
+    "right_share": 0.5338,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0058,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 16.4,
+     "elongation": 2.26,
+     "fill": 0.5468
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/8/12",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2045,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 21.2,
+    "elongation": 2.35,
+    "fill": 0.4375,
+    "left_share": 0.4858,
+    "right_share": 0.5142,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.2045,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 21.2,
+     "elongation": 2.35,
+     "fill": 0.4375
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/9/13",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0653,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 26.3,
+    "elongation": 2.12,
+    "fill": 0.4037,
+    "left_share": 0.3196,
+    "right_share": 0.6804,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0653,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 26.3,
+     "elongation": 2.12,
+     "fill": 0.4037
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/9/18",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0727,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 20.6,
+    "elongation": 2.63,
+    "fill": 0.51,
+    "left_share": 0.4439,
+    "right_share": 0.5561,
+    "shape_ok": true,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0727,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 20.6,
+     "elongation": 2.63,
+     "fill": 0.51
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/9/10/11",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0391,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.6,
+    "elongation": 2.25,
+    "fill": 0.5285,
+    "left_share": 0.3178,
+    "right_share": 0.6822,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0391,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 19.6,
+     "elongation": 2.25,
+     "fill": 0.5285
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/10/6/17",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2378,
+   "axis": "fill_ceiling",
+   "via": "stem_slash_stroke",
+   "signal": {
+    "angle_deg": 20.8,
+    "elongation": 2.42,
+    "fill": 0.4192,
+    "left_share": 0.2049,
+    "right_share": 0.7951,
+    "shape_ok": true,
+    "crossing_ok": false,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "stem_slash_stroke",
+     "margin": 0.2378,
+     "axis": "fill_ceiling",
+     "crossing_ok": false,
+     "angle_deg": 20.8,
+     "elongation": 2.42,
+     "fill": 0.4192
+    }
+   }
+  },
+  {
+   "subject": "glyph/15/1/10/8/7",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1778,
+   "axis": "elongation",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.4,
+    "elongation": 2.12,
+    "fill": 0.4204,
+    "left_share": 0.4912,
+    "right_share": 0.5088,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1778,
+     "axis": "elongation",
+     "crossing_ok": true,
+     "angle_deg": 19.4,
+     "elongation": 2.12,
+     "fill": 0.4204
+    }
+   }
+  },
+  {
+   "subject": "glyph/16/0/10/3/8",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.1873,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 17.4,
+    "elongation": 2.37,
+    "fill": 0.2828,
+    "left_share": 0.6438,
+    "right_share": 0.3562,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.1873,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 17.4,
+     "elongation": 2.37,
+     "fill": 0.2828
+    }
+   }
+  },
+  {
+   "subject": "glyph/16/0/10/5/10",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.0407,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 19.2,
+    "elongation": 1.91,
+    "fill": 0.5276,
+    "left_share": 0.4139,
+    "right_share": 0.5861,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": false,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.0407,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 19.2,
+     "elongation": 1.91,
+     "fill": 0.5276
+    }
+   }
+  },
+  {
+   "subject": "glyph/16/0/11/1/2",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.2405,
+   "axis": "fill_ceiling",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 18.7,
+    "elongation": 2.49,
+    "fill": 0.4177,
+    "left_share": 0.4787,
+    "right_share": 0.5213,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.2405,
+     "axis": "fill_ceiling",
+     "crossing_ok": true,
+     "angle_deg": 18.7,
+     "elongation": 2.49,
+     "fill": 0.4177
+    }
+   }
+  },
+  {
+   "subject": "glyph/16/0/11/4/5",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.008,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 13.8,
+    "elongation": 1.91,
+    "fill": 0.4176,
+    "left_share": 0.6976,
+    "right_share": 0.3024,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.008,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 13.8,
+     "elongation": 1.91,
+     "fill": 0.4176
+    }
+   }
+  },
+  {
+   "subject": "glyph/16/0/11/4/9",
+   "reason": "tremolo_slash_crosses_stem",
+   "margin": 0.241,
+   "axis": "crossing_share",
+   "via": "crossing_share",
+   "signal": {
+    "angle_deg": 14.3,
+    "elongation": 2.62,
+    "fill": 0.2801,
+    "left_share": 0.6277,
+    "right_share": 0.3723,
+    "shape_ok": false,
+    "crossing_ok": true,
+    "position_ok": true,
+    "would_fire": false,
+    "at_stem_end": {
+     "fires": true,
+     "via": "crossing_share",
+     "margin": 0.241,
+     "axis": "crossing_share",
+     "crossing_ok": true,
+     "angle_deg": 14.3,
+     "elongation": 2.62,
+     "fill": 0.2801
+    }
+   }
+  }
+ ],
+ "refused_off_arm_but_kept_now": [
+  "glyph/12/0/10/0/14"
+ ],
+ "refused_both_but_reason_changed": [
+  {
+   "subject": "glyph/3/1/11/0/18",
+   "was": "stacked_head_duplicate",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/8/0/8/1/10",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/11/0/9/8/4",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/11/0/10/7/5",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/11/1/10/4/20",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/12/0/9/5/7",
+   "was": "stacked_head_duplicate",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/15/1/9/3/20",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/15/1/9/4/7",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/15/1/10/8/8",
+   "was": "stacked_head_duplicate",
+   "now": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/25/0/7/1/12",
+   "was": "notehead_is_a_duplicate_box",
+   "now": "tremolo_slash_crosses_stem"
+  }
+ ]
+}

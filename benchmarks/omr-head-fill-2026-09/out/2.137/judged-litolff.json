@@ -1,0 +1,2682 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261014-night.record.json",
+ "doc": "litolff",
+ "totals": {
+  "doc_unresolved": 327,
+  "not_found": 13,
+  "unscored": 99,
+  "other_doc": 225,
+  "narrowed": 4,
+  "right": 108,
+  "wrong": 11,
+  "abstained": 1
+ },
+ "per_item": {
+  "1.7-far-notes-review": {
+   "doc_unresolved": 92
+  },
+  "2.100-review": {
+   "not_found": 8,
+   "unscored": 2,
+   "other_doc": 3
+  },
+  "2.100-review-2": {
+   "unscored": 5,
+   "other_doc": 6
+  },
+  "2.101-review": {
+   "other_doc": 17
+  },
+  "2.102-review": {
+   "other_doc": 9,
+   "narrowed": 1,
+   "doc_unresolved": 1
+  },
+  "2.104-review": {
+   "unscored": 4,
+   "other_doc": 10
+  },
+  "2.105-review": {
+   "not_found": 5,
+   "right": 1,
+   "doc_unresolved": 3,
+   "unscored": 3
+  },
+  "2.107-review": {
+   "other_doc": 6,
+   "unscored": 5
+  },
+  "2.108-review": {
+   "doc_unresolved": 10
+  },
+  "2.114-round2": {
+   "unscored": 4,
+   "wrong": 4,
+   "doc_unresolved": 5
+  },
+  "2.114-second-detector": {
+   "doc_unresolved": 13,
+   "wrong": 2,
+   "right": 2
+  },
+  "2.115-round2": {
+   "doc_unresolved": 6
+  },
+  "2.121-review": {
+   "doc_unresolved": 15
+  },
+  "2.127-review": {
+   "doc_unresolved": 15
+  },
+  "2.128-review": {
+   "doc_unresolved": 12
+  },
+  "2.129-review": {
+   "doc_unresolved": 15
+  },
+  "2.12f-r2-review": {
+   "doc_unresolved": 11,
+   "unscored": 1
+  },
+  "2.12f-review": {
+   "doc_unresolved": 11,
+   "unscored": 1
+  },
+  "2.12m-review": {
+   "doc_unresolved": 9
+  },
+  "2.130-review": {
+   "doc_unresolved": 15
+  },
+  "2.131-review": {
+   "doc_unresolved": 13
+  },
+  "2.133-review": {
+   "doc_unresolved": 8
+  },
+  "2.134-review": {
+   "other_doc": 12,
+   "unscored": 2
+  },
+  "2.13b-bar-number": {
+   "doc_unresolved": 1
+  },
+  "2.65": {
+   "doc_unresolved": 22
+  },
+  "2.65-headfill": {
+   "right": 2,
+   "doc_unresolved": 1,
+   "unscored": 3
+  },
+  "2.65-held": {
+   "doc_unresolved": 8
+  },
+  "2.68-dynamic-owner-review": {
+   "unscored": 7,
+   "other_doc": 3
+  },
+  "2.68-dynamics-back": {
+   "unscored": 2,
+   "other_doc": 8
+  },
+  "2.68-twins-review": {
+   "other_doc": 5,
+   "unscored": 5
+  },
+  "2.69-review": {
+   "doc_unresolved": 2
+  },
+  "2.70-review": {
+   "right": 8
+  },
+  "2.71-review": {
+   "right": 6,
+   "doc_unresolved": 2,
+   "unscored": 1
+  },
+  "2.73-review": {
+   "right": 8,
+   "other_doc": 2
+  },
+  "2.74-review": {
+   "other_doc": 9,
+   "right": 1
+  },
+  "2.75-chords": {
+   "right": 3,
+   "doc_unresolved": 2
+  },
+  "2.75-review": {
+   "other_doc": 4,
+   "right": 5,
+   "wrong": 1
+  },
+  "2.78-phase2-review": {
+   "right": 7,
+   "doc_unresolved": 3,
+   "unscored": 2
+  },
+  "2.78-review": {
+   "unscored": 5,
+   "doc_unresolved": 7,
+   "right": 2
+  },
+  "2.79-review": {
+   "doc_unresolved": 7
+  },
+  "2.80-review-2": {
+   "other_doc": 10
+  },
+  "2.81-phase2-review": {
+   "other_doc": 8,
+   "right": 5,
+   "narrowed": 1
+  },
+  "2.81-review": {
+   "other_doc": 24,
+   "right": 8,
+   "wrong": 1,
+   "narrowed": 1
+  },
+  "2.82-review": {
+   "other_doc": 5,
+   "right": 5
+  },
+  "2.83-fix-review": {
+   "other_doc": 5,
+   "right": 5
+  },
+  "2.83-review": {
+   "other_doc": 9,
+   "right": 5
+  },
+  "2.84-review": {
+   "other_doc": 10,
+   "unscored": 2
+  },
+  "2.85-review": {
+   "doc_unresolved": 5
+  },
+  "2.88-review": {
+   "right": 11,
+   "wrong": 1,
+   "other_doc": 2
+  },
+  "2.88-review-2": {
+   "right": 8,
+   "wrong": 1
+  },
+  "2.89-review": {
+   "unscored": 6,
+   "other_doc": 5
+  },
+  "2.90-review": {
+   "other_doc": 7,
+   "unscored": 3
+  },
+  "2.96-review": {
+   "other_doc": 9,
+   "unscored": 6
+  },
+  "2.97-misses": {
+   "other_doc": 2
+  },
+  "2.97-review": {
+   "unscored": 8,
+   "other_doc": 4
+  },
+  "2.97-review-3": {
+   "other_doc": 5,
+   "unscored": 1
+  },
+  "2.98-review": {
+   "unscored": 4,
+   "other_doc": 8
+  },
+  "2.99-review": {
+   "right": 5,
+   "other_doc": 4,
+   "unscored": 2,
+   "wrong": 1
+  },
+  "dynamic-not-a-head-review": {
+   "unscored": 8,
+   "other_doc": 1
+  },
+  "rhythm-leftovers-2": {
+   "other_doc": 5,
+   "right": 3,
+   "unscored": 1,
+   "abstained": 1
+  },
+  "rhythm-leftovers-3": {
+   "other_doc": 3,
+   "right": 3,
+   "narrowed": 1
+  },
+  "rhythm-leftovers-review": {
+   "other_doc": 5,
+   "right": 5
+  },
+  "stem-finder": {
+   "doc_unresolved": 10
+  },
+  "stem-finder/round2": {
+   "unscored": 6,
+   "doc_unresolved": 3
+  }
+ },
+ "tiles": [
+  {
+   "item": "2.100-review",
+   "tile": "1",
+   "subject": "glyph/3/0/9/0/7",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "10",
+   "subject": "glyph/1/0/7/0/12",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "11",
+   "subject": "glyph/2/1/10/0/6",
+   "answer": "key accidental",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "12",
+   "subject": "glyph/1/0/10/0/13",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "13",
+   "subject": "glyph/1/0/8/0/11",
+   "answer": "time signature",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "2",
+   "subject": "glyph/1/0/0/0/6",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "4",
+   "subject": "glyph/1/0/11/0/7",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "5",
+   "subject": "glyph/3/1/5/0/9",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "7",
+   "subject": "glyph/2/1/0/0/6",
+   "answer": "key accidental",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "8",
+   "subject": "glyph/3/0/0/0/6",
+   "answer": "key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_01",
+   "subject": "glyph/1/0/3/0/5",
+   "answer": "1. Barline",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_04",
+   "subject": "glyph/1/0/2/0/12",
+   "answer": "4. 2/4 meter",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_07",
+   "subject": "glyph/1/0/3/0/7",
+   "answer": "7. 2/4 meter",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_09",
+   "subject": "glyph/1/0/5/0/3",
+   "answer": "9. 2/4",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_10",
+   "subject": "glyph/1/0/2/0/2",
+   "answer": "10. 8 rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.102-review",
+   "tile": "tile_09",
+   "subject": "glyph/11/0/0/8/2",
+   "answer": "4",
+   "status": "narrowed",
+   "note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_01",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_02",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_10",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_13",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_01",
+   "subject": "glyph/2/1/6/12/4",
+   "answer": "barline",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_02",
+   "subject": "glyph/2/0/4/7/5",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_03",
+   "subject": "glyph/3/0/9/11/2",
+   "answer": "barline",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_05",
+   "subject": "glyph/3/1/7/13/2",
+   "answer": "4 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_07",
+   "subject": "glyph/1/0/3/0/5",
+   "answer": "barline",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_08",
+   "subject": "glyph/2/1/3/14/6",
+   "answer": "2,2 (two halves)",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_09",
+   "subject": "glyph/1/0/2/0/2",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_11",
+   "subject": "glyph/2/0/1/3/5",
+   "answer": "4 (quarter)",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.105-review",
+   "tile": "tile_12",
+   "subject": "glyph/2/1/1/12/3",
+   "answer": "2 (half)",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "11",
+   "subject": null,
+   "answer": "sf",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "3",
+   "subject": null,
+   "answer": "ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "4",
+   "subject": null,
+   "answer": "pp",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "5",
+   "subject": null,
+   "answer": "pp",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "6",
+   "subject": null,
+   "answer": "ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_01",
+   "subject": "glyph/1/0/2/0/9",
+   "answer": "Part of a bracket",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_02",
+   "subject": "glyph/1/0/9/3/2",
+   "answer": "2",
+   "status": "wrong",
+   "note": "narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_03",
+   "subject": "glyph/1/0/9/0/12",
+   "answer": "f dyn",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_04",
+   "subject": "glyph/1/0/2/0/14",
+   "answer": "bracket",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_05",
+   "subject": "glyph/1/0/2/0/8",
+   "answer": "Key flat",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_08",
+   "subject": "glyph/1/0/2/0/15",
+   "answer": "Time signature number 4",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_09",
+   "subject": "glyph/1/0/5/4/1",
+   "answer": "Whole rest",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-round2",
+   "tile": "tile_11",
+   "subject": "glyph/1/0/9/4/3",
+   "answer": "Fermata",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-second-detector",
+   "tile": "tile_06",
+   "subject": "glyph/1/0/3/15/1",
+   "answer": "2",
+   "status": "wrong",
+   "note": "decided 1 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-second-detector",
+   "tile": "tile_12",
+   "subject": "glyph/1/0/3/8/5",
+   "answer": "2",
+   "status": "wrong",
+   "note": "decided 1 beats (chord_mate_shares_the_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-second-detector",
+   "tile": "tile_13",
+   "subject": "glyph/1/0/9/11/1",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.114-second-detector",
+   "tile": "tile_16",
+   "subject": "glyph/1/0/9/2/1",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.12f-r2-review",
+   "tile": "7",
+   "subject": "glyph/10/0/0/10/6",
+   "answer": "Ledger line",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.12f-review",
+   "tile": "4",
+   "subject": "glyph/3/0/0/1/9",
+   "answer": "NOT an articulation: that is a tie that belongs to the notes it connects beneath it, but the box is too small",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "3",
+   "subject": "cell/9/1/1/6",
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 269, \"our_reading\": \"quarter dots 0\", \"part\": \"P2\", \"what\": \"a plain quarter, no beam over it\"}, \"n\": 3, \"our_reading\": \"quarter\", \"role\": \"control_decided_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "7",
+   "subject": "cell/9/1/0/0",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 2.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 263, \"part\": \"P1\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 7, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.65-headfill",
+   "tile": "1",
+   "subject": "glyph/6/1/9/2/9",
+   "answer": "Not a note - barline",
+   "status": "right",
+   "note": "refused as not a note (too_narrow)",
+   "margin": 0.6,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.65-headfill",
+   "tile": "3",
+   "subject": "glyph/6/1/11/5/3",
+   "answer": "Half note with a single trem slash and an accidental (natural) in front",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.65-headfill",
+   "tile": "4",
+   "subject": "glyph/6/0/0/9/1",
+   "answer": "Whole rest hanging off the bottom line because it refers to the second voice in that measure (2/4 bar); the first voice above (not in red) is a half note",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.65-headfill",
+   "tile": "5",
+   "subject": "glyph/6/1/1/0/8",
+   "answer": "Half note in top voice; (outside the box) tied to the next measure",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.65-headfill",
+   "tile": "6",
+   "subject": "glyph/6/0/8/3/4",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.375,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "1",
+   "subject": "cell/1/0/3/0",
+   "answer": "No dynamics",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "2",
+   "subject": "cell/1/0/10/0",
+   "answer": "ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "3",
+   "subject": "cell/1/0/10/6",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "5",
+   "subject": "cell/1/0/11/6",
+   "answer": "None",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "6",
+   "subject": "cell/2/0/0/1",
+   "answer": "p cresc. f",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "7",
+   "subject": "cell/2/0/1/2",
+   "answer": "cresc. f underneath the staff belong to it",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "8",
+   "subject": "cell/2/0/3/1",
+   "answer": "cresc. f underneath",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "1",
+   "subject": "cell/2/0/7/1",
+   "answer": "Dynamics are underneath - cresc. (and an f in the next bar)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "2",
+   "subject": "cell/3/0/7/14",
+   "answer": "p, and dolce as the expression",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "10",
+   "subject": "cell/2/0/6/1",
+   "answer": "p cresc., with the f on beat 1 of the next measure",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "3",
+   "subject": "cell/1/0/7/7",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "4",
+   "subject": "cell/2/0/8/9",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "8",
+   "subject": "cell/2/1/9/4",
+   "answer": "sf",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "9",
+   "subject": "cell/2/0/3/2",
+   "answer": "f",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "1",
+   "subject": "glyph/6/0/1/11/3",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1838,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "2",
+   "subject": "glyph/6/0/4/2/6",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1862,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "3",
+   "subject": "glyph/6/0/8/10/3",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1087,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "4",
+   "subject": "glyph/6/1/11/4/1",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.06,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "5",
+   "subject": "glyph/6/1/6/11/3",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1781,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "6",
+   "subject": "glyph/6/0/4/1/6",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.2482,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "7",
+   "subject": "glyph/3/1/5/13/2",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1166,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.70-review",
+   "tile": "8",
+   "subject": "glyph/3/1/6/0/9",
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.2384,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "1",
+   "subject": "glyph/3/0/10/4/1",
+   "answer": "Slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "2",
+   "subject": "glyph/3/0/9/0/3",
+   "answer": "Slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "5",
+   "subject": "glyph/6/1/11/5/2",
+   "answer": "Tremolo slash (the box is big -- the whole stem); not a rest",
+   "status": "unscored",
+   "note": "no comparator for other answer (identity)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "6",
+   "subject": "glyph/2/1/8/12/1",
+   "answer": "Tremolo slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "7",
+   "subject": "glyph/3/0/6/5/2",
+   "answer": "Slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "8",
+   "subject": "glyph/6/1/11/3/3",
+   "answer": "Slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.71-review",
+   "tile": "9",
+   "subject": "glyph/3/0/10/6/5",
+   "answer": "Slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "1",
+   "subject": "glyph/3/0/2/3/13",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "10",
+   "subject": "glyph/2/0/2/1/12",
+   "answer": "Not a note - dynamic p",
+   "status": "right",
+   "note": "refused as not a note (on_a_dynamic_letter)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "2",
+   "subject": "glyph/3/0/10/6/1",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "3",
+   "subject": "glyph/3/0/4/12/2",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "4",
+   "subject": "glyph/3/0/5/6/8",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "5",
+   "subject": "glyph/3/0/4/3/12",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1249,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "6",
+   "subject": "glyph/3/1/3/8/5",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "9",
+   "subject": "glyph/2/1/3/11/5",
+   "answer": "Half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1124,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "litolff_01",
+   "subject": "glyph/3/0/7/6/2",
+   "answer": "8th",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-chords",
+   "tile": "1",
+   "subject": "glyph/2/1/3/10/2",
+   "answer": "Tie",
+   "status": "right",
+   "note": "read as tie (tie)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-chords",
+   "tile": "2",
+   "subject": "glyph/3/1/2/14/5",
+   "answer": "Slur",
+   "status": "right",
+   "note": "read as slur (slur)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-chords",
+   "tile": "3",
+   "subject": "glyph/3/1/2/6/2",
+   "answer": "Slur",
+   "status": "right",
+   "note": "read as slur (slur)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_01",
+   "subject": "glyph/3/1/1/5/1",
+   "answer": "Slur - different notes",
+   "status": "right",
+   "note": "read as slur (slur)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_02",
+   "subject": "glyph/3/0/4/4/5",
+   "answer": "Tie - same note",
+   "status": "right",
+   "note": "read as tie (tie)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_03",
+   "subject": "glyph/2/1/2/12/0",
+   "answer": "Tie",
+   "status": "right",
+   "note": "read as tie (tie)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_04",
+   "subject": "glyph/2/0/7/9/0",
+   "answer": "Tie",
+   "status": "wrong",
+   "note": "read as slur (slur)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_05",
+   "subject": "glyph/3/0/3/5/0",
+   "answer": "Tie -- as a rule, wherever the arc sits, if it is close to noteheads that are the same, it is a tie",
+   "status": "right",
+   "note": "read as tie (tie)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "litolff_06",
+   "subject": "glyph/3/1/3/8/0",
+   "answer": "Tie",
+   "status": "right",
+   "note": "read as tie (tie)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "1",
+   "subject": [
+    "glyph/7/0/4/1/4",
+    "glyph/7/0/4/1/6",
+    "glyph/7/0/4/1/7"
+   ],
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (stem_value_follows); decided 2 beats (stem_value_follows); decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "10",
+   "subject": [
+    "glyph/5/0/6/8/0",
+    "glyph/5/0/6/8/2"
+   ],
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "11",
+   "subject": [
+    "glyph/6/1/10/9/5",
+    "glyph/6/1/10/9/9"
+   ],
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (stem_value_follows)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "2",
+   "subject": [
+    "glyph/1/0/7/13/0",
+    "glyph/1/0/7/13/3"
+   ],
+   "answer": "eighth (2 eighths on one beam)",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "3",
+   "subject": [
+    "glyph/1/0/8/6/1",
+    "glyph/1/0/8/6/3"
+   ],
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks); decided 2 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "6",
+   "subject": [
+    "glyph/7/0/0/7/4",
+    "glyph/7/0/0/7/10"
+   ],
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (stem_value_follows); decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "7",
+   "subject": [
+    "glyph/3/0/5/2/2",
+    "glyph/3/0/5/2/8"
+   ],
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "8",
+   "subject": [
+    "glyph/6/1/6/10/6",
+    "glyph/6/1/6/10/7"
+   ],
+   "answer": "half, tremolo slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-phase2-review",
+   "tile": "9",
+   "subject": [
+    "glyph/5/0/2/3/1",
+    "glyph/5/0/2/3/5"
+   ],
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks); decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "1",
+   "subject": [
+    "glyph/3/0/5/2/0",
+    "glyph/3/0/5/2/3"
+   ],
+   "answer": "8th note, yes (every mark on the stem is a notehead)",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "10",
+   "subject": [
+    "glyph/2/1/8/11/0",
+    "glyph/2/1/8/11/4"
+   ],
+   "answer": "2 half notes and a trem slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "11",
+   "subject": [
+    "glyph/2/1/8/13/3",
+    "glyph/2/1/8/13/5"
+   ],
+   "answer": "Same (as tile 10): 2 half notes and a trem slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "14",
+   "subject": [
+    "glyph/2/1/8/2/6",
+    "glyph/2/1/8/2/7"
+   ],
+   "answer": "Half note",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks); decided 2 beats (stem_value_follows)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "2",
+   "subject": [
+    "glyph/3/0/0/1/2",
+    "glyph/3/0/0/1/8",
+    "glyph/3/0/0/1/11"
+   ],
+   "answer": "Half notes",
+   "status": "right",
+   "note": "decided 2 beats (head_and_marks); decided 2 beats (head_and_marks); decided 2 beats (stem_value_follows)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "6",
+   "subject": [
+    "glyph/3/0/10/5/1",
+    "glyph/3/0/10/5/5"
+   ],
+   "answer": "Half note with a trem slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.78-review",
+   "tile": "7",
+   "subject": [
+    "glyph/2/1/9/11/1",
+    "glyph/2/1/9/11/3"
+   ],
+   "answer": "2 half notes with a trem slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_03",
+   "subject": "glyph/2/1/4/9/3",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_04",
+   "subject": "glyph/3/0/2/2/3",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_08",
+   "subject": "glyph/3/1/4/13/0",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_09",
+   "subject": "glyph/3/1/4/11/3",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_10",
+   "subject": "glyph/2/1/4/1/0",
+   "answer": "4",
+   "status": "narrowed",
+   "note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_13",
+   "subject": "glyph/3/1/1/4/2",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_02",
+   "subject": "glyph/10/1/9/7/5",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_10",
+   "subject": "glyph/12/0/5/9/1",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_16",
+   "subject": "glyph/11/1/0/1/2",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_20",
+   "subject": "glyph/12/0/5/10/1",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_21",
+   "subject": "glyph/13/0/10/4/1",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_22",
+   "subject": "glyph/15/0/5/0/6",
+   "answer": "half",
+   "status": "wrong",
+   "note": "narrowed [0.5, 1.0], answer NOT in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_23",
+   "subject": "glyph/4/0/9/10/5",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (the_bars_arithmetic_forces_this_length)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_24",
+   "subject": "glyph/15/0/5/14/1",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (stem_value_follows)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_25",
+   "subject": "glyph/16/1/5/10/0",
+   "answer": "quarter",
+   "status": "narrowed",
+   "note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_29",
+   "subject": "glyph/13/1/2/9/1",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_04",
+   "subject": "glyph/10/1/9/7/1",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_07",
+   "subject": "glyph/10/1/9/7/12",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_08",
+   "subject": "glyph/10/1/9/7/2",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_09",
+   "subject": "glyph/10/1/9/7/5",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_10",
+   "subject": "glyph/13/1/2/9/2",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_01",
+   "subject": "glyph/3/1/4/12/3",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_02",
+   "subject": "glyph/13/0/0/8/12",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (hooks_counted)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_05",
+   "subject": "glyph/4/0/7/7/10",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (stem_value_follows)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_06",
+   "subject": "glyph/10/1/4/8/7",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.15,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_08",
+   "subject": "glyph/11/1/8/16/3",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_03",
+   "subject": "glyph/15/1/8/17/2",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_04",
+   "subject": "glyph/13/0/2/3/0",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (hooks_counted)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_07",
+   "subject": "glyph/16/0/10/3/3",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (hooks_counted)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_08",
+   "subject": "glyph/13/0/2/3/15",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (hooks_counted)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_10",
+   "subject": "glyph/15/1/3/17/5",
+   "answer": "4",
+   "status": "right",
+   "note": "decided 1 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "3",
+   "subject": "glyph/6/1/0/8/3",
+   "answer": "L",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "7",
+   "subject": "glyph/8/0/7/0/6",
+   "answer": "N -- a half note",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_01",
+   "subject": "glyph/10/1/9/5/0",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_02",
+   "subject": "glyph/6/0/3/9/4",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.09,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_03",
+   "subject": "glyph/15/0/5/11/2",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.11,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_04",
+   "subject": "glyph/13/1/8/13/5",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.15,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_05",
+   "subject": "glyph/11/0/2/15/5",
+   "answer": "alto clef",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_06",
+   "subject": "glyph/13/0/8/13/6",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1485,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_07",
+   "subject": "glyph/10/1/4/8/7",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.15,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_08",
+   "subject": "glyph/6/1/11/4/1",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.06,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_10",
+   "subject": "glyph/4/1/5/6/10",
+   "answer": "ledger lines",
+   "status": "right",
+   "note": "refused as not a note (belongs_to_a_nearer_staff)",
+   "margin": -0.1331,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_12",
+   "subject": "glyph/6/1/6/11/3",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1781,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_13",
+   "subject": "glyph/13/1/8/11/6",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0438,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_14",
+   "subject": "glyph/2/0/8/6/6",
+   "answer": "2",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0792,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_01",
+   "subject": "glyph/11/1/3/11/4",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0305,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_02",
+   "subject": "glyph/10/1/9/5/0",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_03",
+   "subject": "glyph/2/1/4/14/9",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.2092,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_04",
+   "subject": "glyph/11/0/2/15/5",
+   "answer": "alto clef",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_05",
+   "subject": "glyph/13/0/5/10/6",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.21,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_06",
+   "subject": "glyph/16/0/5/10/3",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.0568,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_07",
+   "subject": "glyph/4/0/3/3/8",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.1853,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_08",
+   "subject": "glyph/2/0/7/6/1",
+   "answer": "half",
+   "status": "right",
+   "note": "decided 2 beats (hollow_head_bare_stem)",
+   "margin": 0.22,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review-2",
+   "tile": "tile_09",
+   "subject": "glyph/4/1/5/6/10",
+   "answer": "ledger lines",
+   "status": "right",
+   "note": "refused as not a note (belongs_to_a_nearer_staff)",
+   "margin": -0.1331,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "1",
+   "subject": "cell/2/0/7/4",
+   "answer": "{\"is_one_chord\": true, \"note\": \"probably an instrument that can play chords - it is strange though\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "2",
+   "subject": "cell/4/0/5/12",
+   "answer": "{\"is_one_chord\": false, \"note\": \"2 voices, unison\", \"voices\": 2}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "3",
+   "subject": "cell/6/0/5/9",
+   "answer": "{\"is_one_chord\": true, \"note\": \"\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "4",
+   "subject": "cell/7/1/2/13",
+   "answer": "{\"is_one_chord\": true, \"note\": \"\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "5",
+   "subject": "cell/12/0/2/5",
+   "answer": "{\"is_one_chord\": true, \"note\": \"\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "6",
+   "subject": "cell/13/1/9/13",
+   "answer": "{\"is_one_chord\": true, \"note\": \"\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "10",
+   "subject": "cell/14/1/1/16",
+   "answer": "null",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "8",
+   "subject": "cell/15/0/2/0",
+   "answer": "half, half",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "9",
+   "subject": "cell/2/1/0/6",
+   "answer": "{\"actual_bar\": \"top voice a quarter note and a quarter rest; bottom voice a whole-note rest\", \"lower_box\": \"ink around an sf dynamic, not a note\", \"top\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "13",
+   "subject": "cell/4/1/10/13",
+   "answer": "half (2)",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "14",
+   "subject": "cell/10/0/9/6",
+   "answer": "half (2)",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "15",
+   "subject": "cell/15/0/4/18",
+   "answer": "quarter (4)",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "3",
+   "subject": "cell/12/0/1/9",
+   "answer": "quarter",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "6",
+   "subject": "cell/10/0/2/7",
+   "answer": "whole note rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "9",
+   "subject": "cell/7/1/1/7",
+   "answer": "eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "1",
+   "subject": "cell/11/1/6/15",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "10",
+   "subject": "cell/15/1/9/4",
+   "answer": "4,4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "11",
+   "subject": "cell/15/1/8/9",
+   "answer": "4,4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "12",
+   "subject": "cell/15/1/4/12",
+   "answer": "4,4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "3",
+   "subject": "cell/11/1/6/13",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "5",
+   "subject": "cell/2/1/4/9",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "8",
+   "subject": "cell/12/1/5/9",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "9",
+   "subject": "cell/3/1/4/13",
+   "answer": "4,4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_02",
+   "subject": "cell/8/1/1/15",
+   "answer": "8, 8",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "1",
+   "subject": "cell/3/0/6/13",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "2",
+   "subject": "cell/8/1/4/3",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "3",
+   "subject": "cell/15/0/7/14",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "4",
+   "subject": "cell/16/0/0/14",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "1",
+   "subject": "glyph/2/0/5/1/350000",
+   "answer": "8 rest",
+   "status": "right",
+   "note": "read as eighth rest (rest8th_shape)",
+   "margin": 0.039,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "11",
+   "subject": "glyph/3/0/9/0/350000",
+   "answer": "key flat",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "12",
+   "subject": "glyph/2/0/6/3/350000",
+   "answer": "4 rest",
+   "status": "right",
+   "note": "read as quarter rest (restQuarter_shape)",
+   "margin": 0.1,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "3",
+   "subject": "glyph/2/1/9/5/350000",
+   "answer": "flat accidental",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "4",
+   "subject": "glyph/2/0/7/3/350000",
+   "answer": "4 rest",
+   "status": "right",
+   "note": "read as quarter rest (restQuarter_shape)",
+   "margin": 0.15,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "6",
+   "subject": "glyph/2/0/2/5/350000",
+   "answer": "8 rest",
+   "status": "wrong",
+   "note": "read as not a rest (already_read_as_a_glyph)",
+   "margin": 0.329,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "7",
+   "subject": "glyph/1/0/7/0/350000",
+   "answer": "8 rest",
+   "status": "right",
+   "note": "read as eighth rest (rest8th_shape)",
+   "margin": 0.03,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "9",
+   "subject": "glyph/3/0/4/10/350000",
+   "answer": "8 rest",
+   "status": "right",
+   "note": "read as eighth rest (rest8th_shape)",
+   "margin": 0.053,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "1",
+   "subject": "glyph/2/0/1/5/13",
+   "answer": "Dynamic ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "3",
+   "subject": "glyph/2/1/8/6/7",
+   "answer": "NOTES: the box sits over two different noteheads just right of the sf (not the dynamic)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "4",
+   "subject": "glyph/2/1/0/8/8",
+   "answer": "Dynamic: a small portion of the f in sf",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "5",
+   "subject": "glyph/2/0/1/2/9",
+   "answer": "Dynamic: a small portion of the f",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "6",
+   "subject": "glyph/3/0/1/3/6",
+   "answer": "Dynamic: a small portion of one f of ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "7",
+   "subject": "glyph/2/0/7/5/6",
+   "answer": "Dynamic: a small portion of one f of ff (same as 6)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "8",
+   "subject": "glyph/2/0/2/1/13",
+   "answer": "Dynamic p (Sean already judged this subject as 2.73 tile 10: \"Not a note - dynamic p\"; not re-asked)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "9",
+   "subject": "glyph/2/1/9/6/9",
+   "answer": "NOTES: two small notes just to the right of the sf",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "10",
+   "subject": "glyph/2/0/3/1/2",
+   "answer": "8th",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "6",
+   "subject": "glyph/1/0/2/2/0",
+   "answer": "8th",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "7",
+   "subject": "glyph/3/0/7/4/13",
+   "answer": "NOT a notehead: the red box is around a beam that connects 8th notes, but is not a notehead",
+   "status": "unscored",
+   "note": "no comparator for other answer (duration)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "8",
+   "subject": "glyph/2/1/7/13/1",
+   "answer": "8th",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "9",
+   "subject": "glyph/2/0/3/1/4",
+   "answer": "8th",
+   "status": "abstained",
+   "note": "abstained (owned_by_another_staff)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "2",
+   "subject": "glyph/2/1/7/13/3",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "3",
+   "subject": "glyph/2/1/5/13/1",
+   "answer": "8",
+   "status": "narrowed",
+   "note": "narrowed [0.5, 1.0], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "4",
+   "subject": "glyph/2/1/7/13/2",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (meter_reconciliation)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "6",
+   "subject": "glyph/2/1/7/13/0",
+   "answer": "8",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "10",
+   "subject": "glyph/2/0/8/0/5",
+   "answer": "Eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "6",
+   "subject": "glyph/2/1/7/10/3",
+   "answer": "Eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "7",
+   "subject": "glyph/3/0/7/4/0",
+   "answer": "Eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "8",
+   "subject": "glyph/2/0/3/1/0",
+   "answer": "Eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "9",
+   "subject": "glyph/2/0/0/5/5",
+   "answer": "Eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "1",
+   "subject": "glyph/2/0/3/1/0",
+   "answer": "Y",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "2",
+   "subject": "glyph/2/0/2/7/2",
+   "answer": "Y",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "3",
+   "subject": "glyph/1/0/3/11/1",
+   "answer": "Y",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "5",
+   "subject": "glyph/2/1/10/0/14",
+   "answer": "1 beam",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "6",
+   "subject": "glyph/2/1/10/0/1",
+   "answer": "1 beam",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "stem-finder/round2",
+   "tile": "9",
+   "subject": "glyph/2/0/0/5/6",
+   "answer": "2 stems",
+   "status": "unscored",
+   "note": "question kind stem has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  }
+ ]
+}
