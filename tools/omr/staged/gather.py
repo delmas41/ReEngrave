@@ -4956,7 +4956,8 @@ def _runs_true(col: Any) -> List[Tuple[int, int]]:
 
 def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
                    into_sign: float, space: float,
-                   head_edge: Optional[float] = None
+                   head_edge: Optional[float] = None,
+                   line_rows: Any = None
                    ) -> Optional[Dict[str, Any]]:
     """How many hooks hang from this stem tip? ROADMAP 2.69.
 
@@ -5049,6 +5050,12 @@ def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
         for r in _runs_true(band[:, cx]):
             if r[1] - r[0] < tmin:
                 continue
+            # ROADMAP 2.126 (`OMR_HOOKS_LINE_BRIDGE`, `line_rows` is passed only then): a run that is nothing but line rows -- a ledger
+            # or staff line crossing the band -- is not a hook. A hook that merely CROSSES a line is mostly not line rows and stays.
+            if line_rows is not None:
+                ya, yb = iy0 + r[0], min(len(line_rows), iy0 + r[1])
+                if yb > ya and float(line_rows[ya:yb].mean()) >= LINE_RUN_MIN_SHARE:
+                    continue
             if merged and r[0] - merged[-1][1] < gmin:
                 merged[-1] = (merged[-1][0], r[1])
             else:
@@ -5313,7 +5320,8 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
             m2 = stem_tip_ink(img, x0, x1, tip_y, into_sign, space, head_edge=edge, blockers=())
             if m2 is not None and m2.get("found") is True:
                 m2.pop("found")
-                counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space, head_edge=edge)
+                counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space, head_edge=edge,
+                                         line_rows=_hook_line_rows(cell, x0, x1, space))
                 log.observe(sub, Q.STEM_TIP_INK, True,
                             reader=READERS.CV_STEM_TIP, frame=frame,
                             stem_row_id=stem_row_id, end=end, **m2, **window_detail,
@@ -5350,7 +5358,8 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         hook_detail: Dict[str, Any] = {}
         if value:
             counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space,
-                                     head_edge=edge)
+                                     head_edge=edge,
+                                     line_rows=_hook_line_rows(cell, x0, x1, space))
             if counted is not None:
                 hook_detail = counted
         log.observe(sub, Q.STEM_TIP_INK, value,
@@ -6188,6 +6197,120 @@ BEAM_STEM_JOIN_GAP_TOLERANCE_THICKNESS_MULT = 1.0
 #: on either of this lane's own documents needed it). NOT CONFIRMED.
 BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES = 0.09
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.126 -- a stem that crosses a staff or ledger line is ONE stroke
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a stem is one continuous stroke through the staff lines it crosses (Sean,
+# 2026-10-09: *"a beam never has an arc"* is the same family -- strokes are not cut by what they cross). The staff-line ERASE (`staff_line_
+# removal`: a vertical ink run through a line row no taller than 2x the line's thickness is "the line" and is erased) wipes a short stem piece
+# that sits between two thin spots of the scan, and the scan itself thins the stem on both flanks of a line. Brahms 317803 p0 q86/q93 (cell
+# 0/0/0/4): the join walk saw ONE 46 px blank run against the 21.7 px tolerance (the line band 25 rows + two real breaks of 8 and 14 rows,
+# both measured off the raw page); each flank alone is under the tolerance. WHAT WOULD FALSIFY IT: a beam whose stem has a real break wider
+# than the tolerance on a flank of a line (not bridged: the flank rule keeps it NOT joined, tested), or a stroke other than a stem standing in
+# the walked window (`_beam_stem_intervening_stroke` still runs first, on the erased image). NOT CONFIRMED by Sean; default OFF.
+#
+# A sibling row mask serves the hook counter (`stem_tip_hooks`, `OMR_HOOKS_LINE_BRIDGE`, `line_rows_past_flag`): a run of attached ink that is
+# nothing but line rows is a ledger or staff line crossing the hook band, not a second hook (Brahms p0 q1009: a 28-row ledger line of which
+# the shipped `_tip_line_rows` classed 5, counted as a second run in 36.7% of the band's columns against the 0.12 glitch cut). It asks the
+# right side only, because that ledger line ends just LEFT of the stem (left flank 0.2-0.38) and runs 1.26 spaces out on the right.
+BEAM_JOIN_LINE_BRIDGE_ENV = "OMR_BEAM_JOIN_LINE_BRIDGE"
+HOOKS_LINE_BRIDGE_ENV = "OMR_HOOKS_LINE_BRIDGE"
+#: A row is a LINE row at a stem where the RAW page inks both flanks of the stem: this wide, this far out (staff spaces), at least this much.
+LINE_ROW_FLANK_NEAR_SPACES = 0.1
+LINE_ROW_FLANK_FAR_SPACES = 0.5
+LINE_ROW_FLANK_FILL = 0.7
+#: A run of attached ink counts as a line when at least this share of its rows are line rows (a ledger line's soft edges are not).
+LINE_RUN_MIN_SHARE = 0.75
+
+
+def beam_join_line_bridge_enabled() -> bool:
+    """Default OFF: only an explicit on-word is ON (a typo must leave the shipped reader)."""
+    return os.environ.get(BEAM_JOIN_LINE_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def hooks_line_bridge_enabled() -> bool:
+    """Default OFF: only an explicit on-word is ON (a typo must leave the shipped reader)."""
+    return os.environ.get(HOOKS_LINE_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def line_rows_across_stem(raw_ink: Any, stem_x0: float, stem_x1: float, space: float,
+                          y_lo: float, y_hi: float) -> Any:
+    """Boolean per row of the raster: a LINE (staff or ledger) crosses this stem here -- the RAW page's ink fills at least
+    `LINE_ROW_FLANK_FILL` of the flank on EACH side of the stem (`LINE_ROW_FLANK_NEAR_SPACES`..`FAR_SPACES` out). ROADMAP 2.126.
+
+    ⚠️ Raw, never the erased image: the erase is what hid the line's pixels. Both flanks are required, so a flag, a head or a beam on ONE
+    side of the stem is not a line; only rows in `[y_lo, y_hi)` are tested."""
+    import numpy as np
+    H, W = raw_ink.shape
+    out = np.zeros(H, dtype=bool)
+    a = max(0, int(round(stem_x0 - LINE_ROW_FLANK_FAR_SPACES * space)))
+    b = max(0, int(round(stem_x0 - LINE_ROW_FLANK_NEAR_SPACES * space)))
+    c = min(W, int(round(stem_x1 + LINE_ROW_FLANK_NEAR_SPACES * space)))
+    d = min(W, int(round(stem_x1 + LINE_ROW_FLANK_FAR_SPACES * space)))
+    if b <= a or d <= c:
+        return out
+    y0, y1 = max(0, int(round(y_lo))), min(H, int(round(y_hi)))
+    if y1 <= y0:
+        return out
+    left = raw_ink[y0:y1, a:b].mean(axis=1) >= LINE_ROW_FLANK_FILL
+    right = raw_ink[y0:y1, c:d].mean(axis=1) >= LINE_ROW_FLANK_FILL
+    out[y0:y1] = left & right
+    return out
+
+
+#: Where a straight line leaves a stem's RIGHT edge far past any flag: a flag reaches about 0.85 space from its stem (Brahms p0), so ink
+#: filling this flank, with the near flank, on the same rows is a horizontal stroke and not a hook. A ledger line can end just LEFT of the stem
+#: (q1009: its left flank reads 0.2-0.38), which is why the hook counter asks the right side only.
+LINE_ROW_PAST_FLAG_NEAR_SPACES = (0.1, 0.5)
+LINE_ROW_PAST_FLAG_FAR_SPACES = (0.9, 1.2)
+LINE_ROW_PAST_FLAG_FILL = 0.85
+
+
+def line_rows_past_flag(raw_ink: Any, stem_x1: float, space: float, y_lo: float, y_hi: float) -> Any:
+    """Boolean per row: the RAW page inks the right flank of this stem both beside it and `LINE_ROW_PAST_FLAG_FAR_SPACES` out -- a straight
+    horizontal stroke runs through, past where any flag reaches. ROADMAP 2.126 (`OMR_HOOKS_LINE_BRIDGE`)."""
+    import numpy as np
+    H, W = raw_ink.shape
+    out = np.zeros(H, dtype=bool)
+    y0, y1 = max(0, int(round(y_lo))), min(H, int(round(y_hi)))
+    if y1 <= y0:
+        return out
+    na, nb = (int(round(stem_x1 + v * space)) for v in LINE_ROW_PAST_FLAG_NEAR_SPACES)
+    fa, fb = (int(round(stem_x1 + v * space)) for v in LINE_ROW_PAST_FLAG_FAR_SPACES)
+    nb, fb = min(W, nb), min(W, fb)
+    if nb <= na or fb <= fa or fa >= W:
+        return out
+    near = raw_ink[y0:y1, na:nb].mean(axis=1) >= LINE_ROW_PAST_FLAG_FILL
+    far = raw_ink[y0:y1, fa:fb].mean(axis=1) >= LINE_ROW_PAST_FLAG_FILL
+    out[y0:y1] = near & far
+    return out
+
+
+def _cell_raw_ink(cell: Any) -> Any:
+    """The cell's UN-erased ink (True = ink), or `None`."""
+    import numpy as np
+    b = getattr(cell, "binary", None)
+    if b is not None and getattr(b, "ndim", 0) == 2:
+        return np.asarray(b) == 0
+    img = getattr(cell, "image", None)
+    if img is None:
+        return None
+    img = np.asarray(img)
+    gray = img if img.ndim == 2 else img[..., :3].mean(axis=2)
+    return gray < 128
+
+
+def _hook_line_rows(cell: Any, x0: float, x1: float, space: float) -> Any:
+    """`line_rows` for `stem_tip_hooks` -- `None` unless `OMR_HOOKS_LINE_BRIDGE` is on and the cell's raw and erased rasters agree."""
+    if not hooks_line_bridge_enabled():
+        return None
+    raw_ink = _cell_raw_ink(cell)
+    img = getattr(cell, "image_no_staff", None)
+    if raw_ink is None or img is None or raw_ink.shape != img.shape:
+        return None
+    return line_rows_past_flag(raw_ink, x1, space, 0, raw_ink.shape[0])
+
 
 def _beam_stem_beyond_tip(tip_y: float, end: str, stroke_y0: float,
                           stroke_y1: float) -> bool:
@@ -6300,7 +6423,8 @@ def _beam_stem_intervening_stroke(ink: Any, ix0: int, ix1: int, iy0: int,
 def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
                        tip_y: float, end: str, stroke_x0: float,
                        stroke_x1: float, stroke_y0: float,
-                       stroke_y1: float, gap_tolerance_px: float
+                       stroke_y1: float, gap_tolerance_px: float,
+                       line_rows: Any = None
                        ) -> Optional[Dict[str, Any]]:
     """Does this stem's own ink, in its own x-range, run CONTINUOUSLY from
     `tip_y` into ink at or past the candidate stroke's near edge -- with no
@@ -6402,11 +6526,33 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
             if run > max_blank:
                 max_blank = run
     found = max_blank <= gap_tolerance_px
-    return {"found": bool(found), "gap_px": round(float(y1 - y0), 2),
-            "max_blank_run_px": int(max_blank),
-            "gap_tolerance_px": round(float(gap_tolerance_px), 2),
-            "window_canonical": [round(stem_x0, 2), round(y0, 2),
-                                 round(stem_x1, 2), round(y1, 2)]}
+    out = {"found": bool(found), "gap_px": round(float(y1 - y0), 2),
+           "max_blank_run_px": int(max_blank),
+           "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+           "window_canonical": [round(stem_x0, 2), round(y0, 2),
+                                round(stem_x1, 2), round(y1, 2)]}
+    if not found and line_rows is not None:
+        # ⚠️⚠️ ROADMAP 2.126 (`OMR_BEAM_JOIN_LINE_BRIDGE`, default OFF; the caller passes `line_rows` only then): the walk's rows that a
+        # staff or ledger line fills (the RAW page inks both flanks of the stem there) are where the erase took the stem's own pixels, so
+        # they are set aside -- neither ink nor blank -- and each flank's blank run is measured alone against the SAME tolerance. A real
+        # break wider than the tolerance on either side of the line, or a gap with no line in it, is still NOT joined.
+        n_set, run, max_off = 0, 0, 0
+        for k, v in enumerate(row_ink):
+            y = iy0 + k
+            if y < len(line_rows) and line_rows[y]:
+                n_set += 1
+                run = 0
+            elif v:
+                run = 0
+            else:
+                run += 1
+                if run > max_off:
+                    max_off = run
+        bridged = n_set > 0 and max_off <= gap_tolerance_px
+        out["line_bridge"] = {"rows_set_aside": int(n_set), "max_blank_off_line_px": int(max_off),
+                              "margin_px": round(float(gap_tolerance_px) - float(max_off), 2)}
+        out["found"] = bool(bridged)
+    return out
 
 
 def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
@@ -6444,6 +6590,13 @@ def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
         sy0 = float(stem_d.y_canonical)
         sy1 = sy0 + float(stem_d.height_canonical)
         no_x = sx1 <= sx0
+        # ROADMAP 2.126 (`OMR_BEAM_JOIN_LINE_BRIDGE`): where a line crosses THIS stem, read off the RAW page; `None` with the flag off, so
+        # `beam_stem_join_ink` runs exactly as shipped and files not one new key.
+        line_rows = None
+        if beam_join_line_bridge_enabled() and not no_x and space:
+            raw_ink = _cell_raw_ink(cell)
+            if raw_ink is not None and raw_ink.shape == img.shape:
+                line_rows = line_rows_across_stem(raw_ink, sx0, sx1, space, 0, img.shape[0])
         for beam_d, beam_id in beam_rows_logged:
             bx0 = float(beam_d.x_canonical)
             bx1 = bx0 + float(beam_d.width_canonical)
@@ -6465,7 +6618,7 @@ def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
                                 end=end, note="no cell staff-space unit")
                     continue
                 m = beam_stem_join_ink(img, sx0, sx1, tip_y, end,
-                                      bx0, bx1, by0, by1, tol)
+                                      bx0, bx1, by0, by1, tol, line_rows=line_rows)
                 if m is None:
                     if _beam_stem_beyond_tip(tip_y, end, by0, by1):
                         reason = ABSTAIN.NO_STAFF_GEOMETRY

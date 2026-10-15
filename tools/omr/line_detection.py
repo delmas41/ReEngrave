@@ -246,6 +246,12 @@ def staged_stem_finder() -> frozenset:
 #: a run that is not at least this much taller than its widest non-stem column
 #: has no stem to find (the shortest stem Sean's page loses is 2.85 spaces).
 THIN_STEM_PROTRUDE_SPACES = 0.8
+#: ROADMAP 2.126 (`OMR_STEM_FINDER=thin_run_stack`, default OFF). The same interval for a stem fused with a STACK of heads, where the stem's
+#: own columns climb across its width on a slanted scan: Brahms 317803 p0 q110/q118 (cell 0/0/0/5) protrudes 75 canonical px = 0.75 space
+#: against the shipped 80 (the widest gap of the sorted column extents, 403 -> 478; the other gaps are 50, 74, 44). 0.7 is the nearest round
+#: figure under it and is NOT CONFIRMED beyond that one cell: a cut tuned on one plate, so it sits behind its own name, is priced by the false
+#: stems it adds on the hand-truth page (FINDINGS 2.126), and a stem it finds is no more than the CV reader's stem.
+THIN_STEM_PROTRUDE_STACK_SPACES = 0.7
 
 
 #: Marks whose own strokes are NOT stems, with the share of a stroke's area that
@@ -266,6 +272,10 @@ THIN_STEM_PROTRUDE_SPACES = 0.8
 OWNER_MIN_SHARE = {"clef": 0.5, "key": 0.5, "digit": 0.5,
                    "accidental": 0.8, "rest": 0.8}
 OWNER_KINDS = tuple(OWNER_MIN_SHARE)
+#: ROADMAP 2.126 (`pair_flag_curve`): the share of a vertical stroke that must lie inside a detector FLAG box for it to be the flag's own
+#: curve. The same 0.8 an accidental or rest owns a stroke at; a flag stays OUT of `OWNER_MIN_SHARE` (its box wraps a short flagged stem whole,
+#: 2.87), so the share is read only inside the pair rule, where the stroke it names is the PARTNER and never the one kept or dropped by it.
+FLAG_CURVE_MIN_SHARE = 0.8
 
 
 def mark_kind(smufl_name: str) -> str | None:
@@ -307,7 +317,8 @@ def _owned_by(stroke, marks, kinds) -> str | None:
 
 
 def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
-                      h: int, line_spacing: float, max_w: int):
+                      h: int, line_spacing: float, max_w: int,
+                      protrude_spaces: float = THIN_STEM_PROTRUDE_SPACES):
     """The thin stem inside a run that is too wide to be one, or None.
 
     Two heads a third apart touch (their boxes are 2 steps = 1 space apart,
@@ -342,7 +353,7 @@ def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
     order = np.sort(best)
     gaps = np.diff(order)
     k = int(np.argmax(gaps))
-    if gaps[k] < int(round(line_spacing * THIN_STEM_PROTRUDE_SPACES)):
+    if gaps[k] < int(round(line_spacing * protrude_spaces)):
         return None                      # nothing sticks out: no stem here
     cut = (order[k] + order[k + 1]) / 2.0
     full = best > cut
@@ -667,7 +678,8 @@ def _meets_a_notehead(stroke, heads) -> bool:
 
 
 def _drop_paired_strokes(stems, line_spacing: float, gap: float,
-                         min_overlap: float, heads=None, on_accidental=None):
+                         min_overlap: float, heads=None, on_accidental=None,
+                         on_flag=None):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
     A sharp and a natural are each built from two parallel verticals about half
@@ -742,6 +754,12 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
             # not the accidental's second stroke: it is not condemned by it.
             if (on_accidental is not None and on_accidental[j]
                     and not on_accidental[i]):
+                continue
+            # OMR_STEM_FINDER=pair_flag_curve (ROADMAP 2.126): the same argument for a FLAG. A vertical stroke lying wholly inside the
+            # detector's flag box is the flag's own curve, not an accidental's twin stroke; a stroke that is NOT inside it is the stem the
+            # flag hangs from (Brahms p6 sys0 staff11 cell5, bar 102: the stem was condemned by the curve). Both inside, or neither: the
+            # shipped rule.
+            if on_flag is not None and on_flag[j] and not on_flag[i]:
                 continue
             overlap = min(bottoms[i], bottoms[j]) - max(tops[i], tops[j])
             if overlap <= 0:
@@ -909,8 +927,10 @@ def detect_stems(
             # record above still says so) but the thin stem fused into it is
             # looked for and filtered like any other stroke.
             if "thin_run" in stem_finder:
-                thin = _thin_stem_in_run(labels, i, x, y, w, h,
-                                         line_spacing, max_w)
+                thin = _thin_stem_in_run(
+                    labels, i, x, y, w, h, line_spacing, max_w,
+                    THIN_STEM_PROTRUDE_STACK_SPACES if "thin_run_stack" in stem_finder
+                    else THIN_STEM_PROTRUDE_SPACES)
                 if thin is not None:
                     tx, ty, tw, th = thin
                     if (th >= min_h and tx >= edge_margin
@@ -967,6 +987,8 @@ def detect_stems(
         # `on_accidental` is passed ONLY when `pair_evidence` built it, so the
         # shipped call is the shipped call, argument for argument.
         extra = {} if on_acc is None else {"on_accidental": on_acc}
+        if "pair_flag_curve" in stem_finder and marks is not None:
+            extra["on_flag"] = [any(k == "flag" and _inside_share(s, b) >= FLAG_CURVE_MIN_SHARE for k, b in marks) for s in out]
         out = _drop_paired_strokes(
             out, line_spacing, accidental_pair_gap_lines,
             accidental_pair_overlap, heads=gate_heads, **extra,

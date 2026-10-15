@@ -1,0 +1,377 @@
+{
+ "dpi": 600,
+ "question": "In the bar inside the RED corners, look at the note inside the BLUE corners (a chord is one stem and one value). What is its value: an eighth (beamed or flagged), a quarter, a dotted eighth, a dotted quarter, or something else? Say if you cannot tell.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "role": "control",
+   "what": "flagged eighth (hooks counted)",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    11,
+    6
+   ],
+   "record_says": {
+    "glyph/0/0/11/6/14": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 7.69,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4604,
+    5852,
+    5468,
+    6272
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "role": "case",
+   "what": "q86+q93 chord (beam_certain_not_joined)",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    0,
+    4
+   ],
+   "record_says": {
+    "glyph/0/0/0/4/2": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "glyph/0/0/0/4/9": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 36.63,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3474,
+    1423,
+    4187,
+    1858
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "role": "control",
+   "what": "beamed eighth (beam read, joined)",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    3,
+    3
+   ],
+   "record_says": {
+    "glyph/0/0/3/3/1": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 3.76,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.22,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3021,
+    2595,
+    3634,
+    3015
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "role": "control",
+   "what": "plain quarter, no beam, no flag",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    9,
+    4
+   ],
+   "record_says": {
+    "glyph/0/0/9/4/2": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 16.61,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3474,
+    4949,
+    4187,
+    5436
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "role": "case",
+   "what": "q1009 (flag_ink_unread)",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    9,
+    3
+   ],
+   "record_says": {
+    "glyph/0/0/9/3/3": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 23.2,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.03,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3021,
+    4933,
+    3634,
+    5436
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "role": "case",
+   "what": "p6 sys0 staff9 cell4 (unjudged side effect: quarter -> eighth)",
+   "page": 6,
+   "cell": [
+    6,
+    0,
+    9,
+    4
+   ],
+   "record_says": {
+    "glyph/6/0/9/4/0": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 3.52,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.24,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2861,
+    2887,
+    3518,
+    3244
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "role": "case",
+   "what": "p6 sys0 staff10 cell5 (unjudged side effect: quarter -> eighth)",
+   "page": 6,
+   "cell": [
+    6,
+    0,
+    10,
+    5
+   ],
+   "record_says": {
+    "glyph/6/0/10/5/1": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 6.07,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3380,
+    3148,
+    4097,
+    3512
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "role": "case",
+   "what": "q110+q118 chord (no stem found)",
+   "page": 0,
+   "cell": [
+    0,
+    0,
+    0,
+    5
+   ],
+   "record_says": {
+    "glyph/0/0/0/5/4": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "glyph/0/0/0/5/12": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 14.92,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4027,
+    1438,
+    4764,
+    1858
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "role": "case",
+   "what": "p6 sys0 staff11 cell5 bar 102 (flag missed)",
+   "page": 6,
+   "cell": [
+    6,
+    0,
+    11,
+    5
+   ],
+   "record_says": {
+    "glyph/6/0/11/5/0": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    }
+   },
+   "frame_control": {
+    "ratio": 6.59,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3380,
+    3385,
+    4097,
+    3753
+   ]
+  }
+ ]
+}
