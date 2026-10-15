@@ -62,14 +62,18 @@ def dot_position_join_enabled() -> bool:
         in _ON_WORDS
 
 
-#: A dot whose position lies closer than this (in half-steps) to the
-#: line/space boundary has not told us which it is on; so has a head. CONVENTION
-#: ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED -- a cut-off is a
-#: measurement: on Brahms 317803 p.0 the two dots read "on a line" at a space
-#: head had margins 0.01 and 0.00, i.e. noise, and a head's own residual runs
-#: 0.02..0.18 (90th percentile) with parity agreeing with Sean's
-#: OnLine/InSpace labels 406 of 410. One score, one publisher.
-DOT_MIN_MARGIN = 0.1
+#: A dot is read as ON A LINE only within `DOT_LINE_BAND` half-steps of a line
+#: centre, and as IN A SPACE only beyond `DOT_SPACE_BAND`; between, it has not
+#: told us (rule 8). CONVENTION CONFIRMED by Sean, 2026-10-14: *"Always in a
+#: space"* -- an augmentation dot never stands on a line. So a reading near a
+#: line is a measurement near the boundary or not a dot at all, and only a
+#: reading CLEARLY on the line may refuse one. Measured on Brahms 317803 p.0
+#: against Sean's labels: every one of 120 truth dots lies >= 0.31 steps from
+#: a line centre (the nearest, `0/0/3/1/6`, is a dotted quarter's dot Sean
+#: confirmed, standing 0.31 from the ledger line above its head); detected
+#: dot-class boxes lie as close as 0.004. A cut-off is a measurement: one score.
+DOT_LINE_BAND = 0.2
+DOT_SPACE_BAND = 0.3
 HEAD_MAX_RESIDUAL = 0.25
 #: A head standing further than this many half-steps off the five lines has a
 #: geometry position that is a long extrapolation (`Q.NOTEHEAD_POSITION`'s
@@ -95,8 +99,27 @@ def expected_dot_steps(head_step: int) -> Tuple[int, ...]:
 
 
 def _clean_step(pos: float, margin_floor: float) -> Optional[int]:
+    """A HEAD's step: the nearest integer, or None within `margin_floor` of the
+    line/space boundary."""
     step = int(round(pos))
     return step if 0.5 - abs(pos - step) >= margin_floor else None
+
+
+def _dot_cell(pos: float) -> Tuple[str, Optional[int]]:
+    """`("line", even step)`, `("space", odd step)` or `("unclear", None)`.
+
+    A space is the interval between two line centres, so a dot 0.31 steps off
+    the line above its head is IN the space above it (step -1), not "on" the
+    line: the nearest-integer step of 2.128's first cut read it as the line
+    (-2) and vetoed a real dotted quarter.
+    """
+    line = 2 * int(round(pos / 2.0))
+    off = abs(pos - line)
+    if off <= DOT_LINE_BAND:
+        return "line", line
+    if off >= DOT_SPACE_BAND:
+        return "space", line + (1 if pos > line else -1)
+    return "unclear", None
 
 
 def dot_head_compatible(dot_row: Optional[R.Observation],
@@ -120,10 +143,12 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
             -HEAD_MAX_OUTSIDE_STEPS <= float(hp) <= 8.0 + HEAD_MAX_OUTSIDE_STEPS:
         return None
     h = _clean_step(float(hp), 0.5 - HEAD_MAX_RESIDUAL)
-    d = _clean_step(float(dot_row.value), DOT_MIN_MARGIN)
-    if h is None or d is None:
+    kind, d = _dot_cell(float(dot_row.value))
+    if h is None or kind == "unclear":
         return None
-    return d in expected_dot_steps(h)
+    # on a line: never an augmentation dot (Sean: always in a space);
+    # in a space: only the head's own, or the one above/below its line
+    return kind == "space" and d in expected_dot_steps(h)
 
 
 #: A dot with no decided role counts as "beside" a head when its left edge is

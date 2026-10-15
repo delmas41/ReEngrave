@@ -414,7 +414,7 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
         cases = {
             "no position row": dict(pos=None),
             "another staff": dict(pos=4.0, staff=R.staff(0, 0, 1)),
-            "on the boundary": dict(pos=3.5),
+            "on the boundary": dict(pos=3.75),   # 0.25 from the line: unclear
         }
         for name, kw in cases.items():
             with self.subTest(name):
@@ -469,6 +469,49 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
             adjudicate.run(log_none)
             self.assertEqual(_role(log_off, 1).value,
                              _role(log_none, 1).value, pos)
+
+
+
+class TestTile1AReadingNearTheLineIsNotAVeto(unittest.TestCase):
+    """Sean, 2026-10-14, tile 1 of `out/print/2.128-review`: the note in the red
+    corners (Brahms 317803 `glyph/0/0/3/1/1`, a top-line head, step -0.04) IS a
+    dotted quarter. Its dot (`glyph/0/0/3/1/6`) was measured at step -1.69 --
+    0.31 steps below the ledger line above the head, i.e. IN the space above
+    it -- and the first cut, which rounded that to the line at -2, vetoed it.
+    Sean, same day: a dot is *"Always in a space"*, so only a reading CLEARLY
+    on a line may refuse one."""
+
+    def _role(self, dot_pos, head_pos=-0.04):
+        log = _jlog()
+        head = _head(log, 0, head_pos)
+        _dot(log, 1, x=112, y=4, pos=dot_pos)
+        with mock.patch.dict(os.environ, FLAG):
+            adjudicate.run(log)
+        return _role(log, 1), head
+
+    def test_RED_tile_1_s_real_numbers_keep_the_dot(self):
+        role, head = self._role(-1.6886178861788677)
+        self.assertEqual(role.value, "augmentation")
+        self.assertEqual(role.detail["head"], head.to_key())
+
+    def test_a_reading_between_line_and_space_never_vetoes(self):
+        for pos in (-1.75, -1.72, -2.25, -2.28):
+            with self.subTest(pos):
+                role, _h = self._role(pos)
+                self.assertEqual(role.value, "augmentation")
+
+    def test_CONTROL_a_reading_clearly_on_the_line_still_vetoes(self):
+        for pos in (-2.0, -1.9, -2.15):
+            with self.subTest(pos):
+                role, _h = self._role(pos)
+                self.assertNotEqual(role.value, "augmentation")
+
+    def test_the_cell_classification(self):
+        from tools.omr.staged.adjudicators import aug_dot_join as AJ
+        self.assertEqual(AJ._dot_cell(-1.69), ("space", -1))
+        self.assertEqual(AJ._dot_cell(0.597), ("space", 1))
+        self.assertEqual(AJ._dot_cell(4.0), ("line", 4))
+        self.assertEqual(AJ._dot_cell(3.75)[0], "unclear")
 
 
 
