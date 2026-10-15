@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.129 LANDED ON (filled stacked heads)
+STAGED GATHER `gather.stacked_second_head_enabled`, `OMR_STACKED_SECOND_HEAD` default ON (explicit `0/false/no/off` disables). Sean: "1 land". Brahms p0 truth: 5/5 lost second heads recovered, 0 false keeps; his 15 tiles right (tile 9, a real hollow second head, still refused -> new ROADMAP 2.132). Docs: flags row, ROADMAP 2.129/2.132, DECISIONS. Tests: default-ON check, OFF tests set the flag off explicitly.
+
 ## 2026-10-14 -- ROADMAP 2.129 BUILT, OFF: stacked chord heads (a third's second head)
 STAGED GATHER `gather.fit_stacked_head_count` / `gather_stacked_head_fit`, `OMR_STACKED_SECOND_HEAD` (default OFF). The stack fit's mean gate turned away the second head of two touching heads a third apart (5 of 5 on Sean's Brahms pdf 0, each refused `stacked_head_duplicate`); it is now kept where the detector's boxes stand a third apart, both slots hold ink >= 0.75 and the ink column is >= 1.6 spaces tall (filled heads only). Truth pdf 0: 5/5 recovered, 0 lost, 0 new duplicates; Litolff 0-3 unchanged. Near-miss recorded on every close refusal. Tiles `out/print/2.129-review/`. `benchmarks/omr-stacked-heads-2026-10/FINDINGS.md`. Lesson: a threshold set on the page raster lost 3 of 5 in the cell raster; a second witness (the boxes' spread) was needed.
 ## 2026-10-14 -- ROADMAP 2.130 LANDED ON (open heads on a stem are halves)

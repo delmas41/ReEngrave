@@ -8,7 +8,7 @@ removal) so the pair's mean fell 0.068 under the lone best and the mean gate ref
 are right: one head boxed twice (dy 0) and a box on no head (ink blob 0.7 spaces).
 
 Layers: A `gather.stacked_blob_height_spaces` (pure); B `gather.fit_stacked_head_count` with the blob witness;
-C `gather.gather_stacked_head_fit` behind `OMR_STACKED_SECOND_HEAD` (default OFF, byte-identical when off);
+C `gather.gather_stacked_head_fit` behind `OMR_STACKED_SECOND_HEAD` (default ON since 2026-10-14, byte-identical when off);
 D the refusal that says how close it came. The painted twin: two heads at -1.1 / +1.02 half-steps with the
 lower one cut across its centre (the staff line removed) -- the shape that reads k=1 on the shipped path.
 
@@ -183,10 +183,17 @@ class TestGatherBehindTheFlag(unittest.TestCase):
     def _dets(self, cx, observed):
         return [_detection("noteheadBlackInSpace", cx, TOP + p * HALF) for p in observed]
 
-    def test_off_by_default_the_twin_is_k1_and_unchanged(self):
-        img, cx = _twin_ink()
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_STACKED_SECOND_HEAD", None)
+            self.assertTrue(gather.stacked_second_head_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": off}):
+                self.assertFalse(gather.stacked_second_head_enabled())
+
+    def test_off_explicitly_the_twin_is_k1_and_unchanged(self):
+        img, cx = _twin_ink()
+        with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "0"}):
             log = self._run(img, self._dets(cx, OBS_TWIN), (cx - 22.0, 40.0, 20.0, 260.0))
         for gi in range(2):
             row = log.rows(Q.STACKED_HEAD_FIT, R.glyph(0, 0, 0, 0, gi))[0]

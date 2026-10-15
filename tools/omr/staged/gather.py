@@ -8601,7 +8601,7 @@ STACKED_HEAD_SEARCH_MARGIN_POSITIONS = 1
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.129 -- a second head the MEAN test turned away, kept where the INK
-# is two heads tall. `OMR_STACKED_SECOND_HEAD`, default OFF.
+# is two heads tall. `OMR_STACKED_SECOND_HEAD`, default ON (landed 2026-10-14).
 #
 # Brahms 20261013-night, pdf 0 (Sean's every-head truth): 5 of 5 notes lost to
 # `stacked_head_duplicate` were the second head of a chord of THIRDS on one side
@@ -8655,10 +8655,10 @@ STACKED_BLOB_WINDOW_SPACES = 2.5
 
 
 def stacked_second_head_enabled() -> bool:
-    """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default OFF** until Sean
-    has seen the 2.129 tiles; `OMR_STACKED_SECOND_HEAD=1` turns it on."""
-    return os.environ.get("OMR_STACKED_SECOND_HEAD", "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default ON** (landed
+    2026-10-14, Sean: "1 land"); an explicit `0/false/no/off` turns it off."""
+    return os.environ.get("OMR_STACKED_SECOND_HEAD", "1").strip().lower() \
+        not in ("0", "false", "no", "off")
 
 
 def stacked_blob_height_spaces(img: Any, cx: float, mid_y: float,
