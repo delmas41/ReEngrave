@@ -1,0 +1,3910 @@
+{
+ "label": "lit-partial",
+ "captured": 161,
+ "doubled": 0,
+ "total": 161,
+ "expect_total": 161,
+ "partition_sums": true,
+ "meter_mismatch": 0,
+ "primary": {
+  "evidenced|N": 58,
+  "evidenced|Y": 13,
+  "evidenced|R:too_narrow": 11,
+  "evidenced|P": 11,
+  "evidenced|I:eighth": 8,
+  "evidenced|B": 5,
+  "arith_only|G~": 5,
+  "evidenced|A": 4,
+  "evidenced|U:too_narrow": 4,
+  "evidenced|R:clipped_fragment": 4,
+  "arith_only|B~": 3,
+  "evidenced|I:quarter": 3,
+  "evidenced|U:rest_has_a_stem": 3,
+  "arith_only|I:any": 3,
+  "evidenced|R:too_narrow+I:eighth": 2,
+  "evidenced|O": 2,
+  "evidenced|G": 2,
+  "evidenced|V": 2,
+  "evidenced|R:rest_clipped_by_crop": 2,
+  "evidenced|U:clipped_fragment": 2,
+  "arith_only|N+X~": 2,
+  "evidenced|N+A": 1,
+  "arith_only|F~": 1,
+  "evidenced|R:rest_outside_its_staff": 1,
+  "evidenced|N+I:eighth": 1,
+  "evidenced|K+I:eighth+I:half_whole": 1,
+  "evidenced|S+R:too_narrow": 1,
+  "arith_only|R:rest_clipped_by_crop+X~": 1,
+  "arith_only|R:rest_has_a_stem+X~+K~": 1,
+  "arith_only|D": 1,
+  "evidenced|N+D": 1,
+  "evidenced|U:rest_touches_two_staff_lines": 1,
+  "evidenced|N+B+G": 1
+ },
+ "evidence_frequency": {
+  "B": 46,
+  "G": 46,
+  "A": 10,
+  "N": 69,
+  "D": 9,
+  "I:half_whole": 11,
+  "K": 24,
+  "I:quarter": 23,
+  "U:too_narrow": 4,
+  "R:too_narrow": 23,
+  "R:rest_clipped_by_crop": 6,
+  "I:eighth": 20,
+  "V": 3,
+  "Y": 14,
+  "R:rest_has_a_stem": 6,
+  "R:rest_outside_its_staff": 1,
+  "R:clipped_fragment": 9,
+  "O": 2,
+  "U:rest_has_a_stem": 3,
+  "R:rest_off_center": 6,
+  "S": 1,
+  "U:clipped_fragment": 2,
+  "P": 11,
+  "U:rest_touches_two_staff_lines": 1
+ },
+ "single_evidenced": {
+  "B": 17,
+  "A": 9,
+  "N": 58,
+  "U:too_narrow": 4,
+  "I:quarter": 14,
+  "R:too_narrow": 12,
+  "I:eighth": 13,
+  "Y": 14,
+  "R:rest_outside_its_staff": 1,
+  "R:clipped_fragment": 8,
+  "O": 2,
+  "U:rest_has_a_stem": 3,
+  "G": 3,
+  "V": 2,
+  "R:rest_clipped_by_crop": 3,
+  "U:clipped_fragment": 2,
+  "P": 11,
+  "U:rest_touches_two_staff_lines": 1
+ },
+ "single_arith": {
+  "B~": 40,
+  "D": 13,
+  "I:any": 61,
+  "F~": 49,
+  "G~": 14
+ },
+ "necessary": {
+  "B": 6,
+  "A": 3,
+  "N": 44,
+  "U:too_narrow": 3,
+  "R:too_narrow": 11,
+  "I:quarter": 3,
+  "R:rest_outside_its_staff": 1,
+  "Y": 8,
+  "I:eighth": 9,
+  "K": 1,
+  "I:half_whole": 1,
+  "G": 3,
+  "S": 1,
+  "V": 2,
+  "R:rest_clipped_by_crop": 2,
+  "R:clipped_fragment": 4,
+  "U:rest_has_a_stem": 1,
+  "D": 1,
+  "P": 9,
+  "U:clipped_fragment": 1,
+  "U:rest_touches_two_staff_lines": 1
+ },
+ "sub": {
+  "[evidenced] B: system meter verdict": {
+   "decided/carried": 5
+  },
+  "[evidenced] B: residual (+ = short)": {
+   "0.5": 5
+  },
+  "[evidenced] A: system meter verdict": {
+   "decided/carried": 4
+  },
+  "[evidenced] A: residual (+ = short)": {
+   "1.5": 1,
+   "1.0": 3
+  },
+  "[evidenced] N: system meter verdict": {
+   "decided/carried": 62
+  },
+  "[evidenced] N: residual (+ = short)": {
+   "1.5": 4,
+   "0.5": 22,
+   "1.0": 34,
+   "1.75": 1,
+   "1.25": 1
+  },
+  "[evidenced] N: ways the record's own candidates land the bar": {
+   "1": 55,
+   "0": 7
+  },
+  "[evidenced] N: (landings, meter verdict)": {
+   "(1, 'decided')": 55,
+   "(0, 'decided')": 7
+  },
+  "[evidenced] N: narrowed/undecided heads in the cell": {
+   "3": 6,
+   "4": 3,
+   "2": 20,
+   "1": 33
+  },
+  "[arith_only] B~: system meter verdict": {
+   "decided/carried": 3
+  },
+  "[arith_only] B~: residual (+ = short)": {
+   "0.5": 3
+  },
+  "[evidenced] U:too_narrow: system meter verdict": {
+   "decided/carried": 4
+  },
+  "[evidenced] U:too_narrow: residual (+ = short)": {
+   "1.0": 3,
+   "0.5": 1
+  },
+  "[arith_only] F~: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[arith_only] F~: residual (+ = short)": {
+   "1.0": 1
+  },
+  "[evidenced] R:too_narrow: system meter verdict": {
+   "decided/carried": 13
+  },
+  "[evidenced] R:too_narrow: residual (+ = short)": {
+   "1.0": 12,
+   "0.5": 1
+  },
+  "[evidenced] I:quarter: system meter verdict": {
+   "decided/carried": 2,
+   "decided/voted": 1
+  },
+  "[evidenced] I:quarter: residual (+ = short)": {
+   "0.0": 1,
+   "1.0": 2
+  },
+  "[evidenced] R:rest_outside_its_staff: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[evidenced] R:rest_outside_its_staff: residual (+ = short)": {
+   "0.5": 1
+  },
+  "[evidenced] Y: system meter verdict": {
+   "decided/carried": 13
+  },
+  "[evidenced] Y: residual (+ = short)": {
+   "1.0": 9,
+   "0.5": 4
+  },
+  "[evidenced] Y: ways the record's own candidates land the bar": {
+   "1": 11,
+   "0": 2
+  },
+  "[evidenced] Y: (landings, meter verdict)": {
+   "(1, 'decided')": 11,
+   "(0, 'decided')": 2
+  },
+  "[evidenced] Y: narrowed/undecided heads in the cell": {
+   "3": 2,
+   "2": 9,
+   "4": 2
+  },
+  "[evidenced] O: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[evidenced] O: residual (+ = short)": {
+   "1.0": 2
+  },
+  "[arith_only] G~: system meter verdict": {
+   "decided/carried": 5
+  },
+  "[arith_only] G~: residual (+ = short)": {
+   "1.0": 5
+  },
+  "[evidenced] U:rest_has_a_stem: system meter verdict": {
+   "decided/carried": 3
+  },
+  "[evidenced] U:rest_has_a_stem: residual (+ = short)": {
+   "1.0": 1,
+   "1.5": 1,
+   "0.5": 1
+  },
+  "[evidenced] K: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[evidenced] K: residual (+ = short)": {
+   "1.5": 1
+  },
+  "[evidenced] G: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[evidenced] G: residual (+ = short)": {
+   "1.0": 2
+  },
+  "[evidenced] S: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[evidenced] S: residual (+ = short)": {
+   "0.5": 1
+  },
+  "[evidenced] I:eighth: system meter verdict": {
+   "decided/carried": 8
+  },
+  "[evidenced] I:eighth: residual (+ = short)": {
+   "0.5": 5,
+   "1.0": 3
+  },
+  "[evidenced] V: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[evidenced] V: residual (+ = short)": {
+   "1.0": 1,
+   "0.0": 1
+  },
+  "[arith_only] R:rest_clipped_by_crop: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[arith_only] R:rest_clipped_by_crop: residual (+ = short)": {
+   "0.542": 1
+  },
+  "[evidenced] R:rest_clipped_by_crop: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[evidenced] R:rest_clipped_by_crop: residual (+ = short)": {
+   "1.0": 2
+  },
+  "[evidenced] R:clipped_fragment: system meter verdict": {
+   "decided/carried": 4
+  },
+  "[evidenced] R:clipped_fragment: residual (+ = short)": {
+   "1.0": 3,
+   "0.5": 1
+  },
+  "[arith_only] R:rest_has_a_stem: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[arith_only] R:rest_has_a_stem: residual (+ = short)": {
+   "1.5": 1
+  },
+  "[arith_only] D: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[arith_only] D: residual (+ = short)": {
+   "0.5": 1
+  },
+  "[evidenced] U:clipped_fragment: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[evidenced] U:clipped_fragment: residual (+ = short)": {
+   "1.0": 2
+  },
+  "[arith_only] I:any: system meter verdict": {
+   "decided/carried": 3
+  },
+  "[arith_only] I:any: residual (+ = short)": {
+   "1.5": 3
+  },
+  "[evidenced] P: system meter verdict": {
+   "decided/carried": 11
+  },
+  "[evidenced] P: residual (+ = short)": {
+   "1.5": 3,
+   "1.0": 7,
+   "0.5": 1
+  },
+  "[arith_only] N: system meter verdict": {
+   "decided/carried": 2
+  },
+  "[arith_only] N: residual (+ = short)": {
+   "1.875": 1,
+   "0.75": 1
+  },
+  "[arith_only] N: ways the record's own candidates land the bar": {
+   "0": 2
+  },
+  "[arith_only] N: (landings, meter verdict)": {
+   "(0, 'decided')": 2
+  },
+  "[arith_only] N: narrowed/undecided heads in the cell": {
+   "2": 1,
+   "1": 1
+  },
+  "[evidenced] U:rest_touches_two_staff_lines: system meter verdict": {
+   "decided/carried": 1
+  },
+  "[evidenced] U:rest_touches_two_staff_lines: residual (+ = short)": {
+   "1.5": 1
+  }
+ },
+ "rows": [
+  {
+   "cell": [
+    2,
+    0,
+    0,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "B",
+   "evidenced_tokens": [
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    3,
+    1,
+    0,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "A",
+   "evidenced_tokens": [
+    "N",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    0,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "D",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    0,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    0,
+    0,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:half_whole",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    8,
+    1,
+    0,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "arith_only",
+   "cause": "B~",
+   "evidenced_tokens": [
+    "K",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    10,
+    1,
+    0,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:half_whole",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    16
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    1,
+    0,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.75,
+   "tier": "evidenced",
+   "cause": "N+A",
+   "evidenced_tokens": [
+    "N",
+    "A",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    1,
+    0,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:too_narrow",
+   "evidenced_tokens": [
+    "U:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    0,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "A",
+   "evidenced_tokens": [
+    "K",
+    "A",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    1,
+    0,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    1,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "F~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    1,
+    1,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    1,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "K",
+    "N",
+    "R:rest_clipped_by_crop",
+    "I:eighth",
+    "I:quarter",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    6,
+    1,
+    1,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:eighth",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 4
+  },
+  {
+   "cell": [
+    10,
+    0,
+    1,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "A",
+   "evidenced_tokens": [
+    "A",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    1,
+    1,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    1,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.0,
+   "tier": "evidenced",
+   "cause": "I:quarter",
+   "evidenced_tokens": [
+    "V",
+    "K",
+    "I:quarter",
+    "I:half_whole",
+    "B",
+    "G"
+   ],
+   "n_streams": 2,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    14,
+    1,
+    1,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    15,
+    0,
+    1,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    1,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    1,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "R:rest_has_a_stem"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    2,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "R:rest_outside_its_staff",
+   "evidenced_tokens": [
+    "N",
+    "R:rest_outside_its_staff",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    5,
+    0,
+    2,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    1,
+    0,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow",
+    "I:quarter",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    5,
+    1,
+    0,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    2,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "B",
+   "evidenced_tokens": [
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    0,
+    2,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    1,
+    2,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    12,
+    0,
+    2,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    2,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    2,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow+I:eighth",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "I:eighth"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    2,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "N+I:eighth",
+   "evidenced_tokens": [
+    "N",
+    "I:eighth"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    2,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "O",
+   "evidenced_tokens": [
+    "O",
+    "I:eighth",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    14,
+    0,
+    2,
+    11
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    2,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "G~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    2,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    2,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    2,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:rest_has_a_stem",
+   "evidenced_tokens": [
+    "U:rest_has_a_stem",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    16,
+    0,
+    2,
+    16
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "A",
+   "evidenced_tokens": [
+    "A",
+    "I:quarter",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    1,
+    0,
+    3,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "I:quarter",
+   "evidenced_tokens": [
+    "K",
+    "R:rest_off_center",
+    "I:quarter",
+    "I:half_whole",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 5
+  },
+  {
+   "cell": [
+    2,
+    1,
+    3,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "K+I:eighth+I:half_whole",
+   "evidenced_tokens": [
+    "K",
+    "R:rest_off_center",
+    "I:eighth",
+    "I:half_whole"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 3
+  },
+  {
+   "cell": [
+    4,
+    0,
+    3,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    4,
+    1,
+    3,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "G",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "S+R:too_narrow",
+   "evidenced_tokens": [
+    "S",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    0,
+    3,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    0,
+    2,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow",
+    "I:eighth",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 3
+  },
+  {
+   "cell": [
+    11,
+    0,
+    2,
+    15
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    1,
+    3,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    3,
+    15
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    3,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "U:too_narrow",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    15,
+    1,
+    3,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    3,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "G~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    3,
+    15
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "O",
+   "evidenced_tokens": [
+    "O",
+    "A"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    3,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "G~",
+   "evidenced_tokens": [
+    "R:rest_clipped_by_crop"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    4,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "I:eighth",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    2,
+    1,
+    4,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:half_whole"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    3,
+    0,
+    4,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:eighth",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    4,
+    0,
+    4,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "V",
+   "evidenced_tokens": [
+    "V",
+    "B",
+    "G"
+   ],
+   "n_streams": 2,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    1,
+    4,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    4,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    7,
+    0,
+    4,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    12,
+    1,
+    4,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.542,
+   "tier": "arith_only",
+   "cause": "R:rest_clipped_by_crop+X~",
+   "evidenced_tokens": [
+    "R:rest_clipped_by_crop"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    4,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:too_narrow",
+   "evidenced_tokens": [
+    "U:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "G~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    4,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    1,
+    4,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:rest_clipped_by_crop",
+   "evidenced_tokens": [
+    "R:rest_clipped_by_crop"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    16,
+    0,
+    4,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:clipped_fragment",
+   "evidenced_tokens": [
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "arith_only",
+   "cause": "R:rest_has_a_stem+X~+K~",
+   "evidenced_tokens": [
+    "N",
+    "R:rest_has_a_stem"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    5,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    1,
+    5,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    1,
+    5,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    5,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    1,
+    5,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    5,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "arith_only",
+   "cause": "D",
+   "evidenced_tokens": [
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    5,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    5,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "R:rest_has_a_stem"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    6,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:clipped_fragment",
+   "evidenced_tokens": [
+    "U:clipped_fragment",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    9,
+    1,
+    5,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    6,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "U:rest_has_a_stem",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "U:rest_has_a_stem"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    1,
+    6,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    1,
+    6,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    7,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    1,
+    7,
+    11
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    1,
+    7,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    5,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    0,
+    5,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    1,
+    7,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "arith_only",
+   "cause": "I:any",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    10,
+    0,
+    7,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N+D",
+   "evidenced_tokens": [
+    "N",
+    "R:rest_has_a_stem",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    10,
+    1,
+    7,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:quarter",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    5,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    1,
+    6,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    1,
+    6,
+    15
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    7,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    7,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "U:rest_has_a_stem",
+   "evidenced_tokens": [
+    "U:rest_has_a_stem",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    7,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "arith_only",
+   "cause": "I:any",
+   "evidenced_tokens": [
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    7,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "arith_only",
+   "cause": "I:any",
+   "evidenced_tokens": [
+    "K",
+    "R:rest_off_center",
+    "I:half_whole"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    14,
+    1,
+    7,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    7,
+    17
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "K",
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    8,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "K",
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 3
+  },
+  {
+   "cell": [
+    2,
+    1,
+    8,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "R:clipped_fragment",
+   "evidenced_tokens": [
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    6,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    6,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    6,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    6,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    6,
+    16
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    9,
+    1,
+    7,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    8,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow+I:eighth",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "I:eighth"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    8,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "B",
+   "evidenced_tokens": [
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    1,
+    8,
+    7
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "U:too_narrow",
+   "evidenced_tokens": [
+    "R:rest_has_a_stem",
+    "U:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    15,
+    0,
+    8,
+    17
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    0,
+    9,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "K",
+    "I:eighth",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 5
+  },
+  {
+   "cell": [
+    3,
+    0,
+    9,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "U:clipped_fragment",
+   "evidenced_tokens": [
+    "U:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    3,
+    0,
+    9,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "I:quarter",
+   "evidenced_tokens": [
+    "R:rest_off_center",
+    "I:eighth",
+    "I:quarter",
+    "I:half_whole",
+    "D",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 5
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "arith_only",
+   "cause": "B~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    5
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "B",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    9
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "arith_only",
+   "cause": "B~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    6,
+    1,
+    9,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "I:eighth",
+    "I:quarter"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 7
+  },
+  {
+   "cell": [
+    7,
+    0,
+    9,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "arith_only",
+   "cause": "G~",
+   "evidenced_tokens": [],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    0,
+    9,
+    15
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.875,
+   "tier": "arith_only",
+   "cause": "N+X~",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    7,
+    1,
+    9,
+    4
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "K",
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    10,
+    1,
+    9,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    9,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.75,
+   "tier": "arith_only",
+   "cause": "N+X~",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    9,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    9,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "K",
+    "I:eighth",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 5
+  },
+  {
+   "cell": [
+    15,
+    0,
+    9,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "K",
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    16
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.0,
+   "tier": "evidenced",
+   "cause": "V",
+   "evidenced_tokens": [
+    "V"
+   ],
+   "n_streams": 2,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    9,
+    2
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.5,
+   "tier": "evidenced",
+   "cause": "U:rest_touches_two_staff_lines",
+   "evidenced_tokens": [
+    "U:rest_touches_two_staff_lines"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    2,
+    0,
+    10,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "B",
+   "evidenced_tokens": [
+    "B",
+    "G"
+   ],
+   "n_streams": 2,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    2,
+    1,
+    10,
+    1
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:clipped_fragment",
+   "evidenced_tokens": [
+    "R:clipped_fragment",
+    "R:rest_has_a_stem"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    4,
+    0,
+    9,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    4,
+    0,
+    9,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P",
+    "D"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    8,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "K",
+    "N",
+    "I:eighth",
+    "I:quarter",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 4
+  },
+  {
+   "cell": [
+    5,
+    0,
+    8,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "Y",
+   "evidenced_tokens": [
+    "Y",
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    6,
+    6
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.25,
+   "tier": "evidenced",
+   "cause": "N+B+G",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    6,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    11,
+    0,
+    8,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "K",
+    "R:rest_off_center",
+    "I:eighth",
+    "I:half_whole"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 7
+  },
+  {
+   "cell": [
+    11,
+    1,
+    9,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    10,
+    10
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    10,
+    11
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P",
+    "R:rest_clipped_by_crop"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    10,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    10,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "P",
+   "evidenced_tokens": [
+    "P",
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    12,
+    1,
+    10,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:clipped_fragment",
+   "evidenced_tokens": [
+    "R:clipped_fragment"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    10,
+    14
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "R:too_narrow"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    11
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 0.5,
+   "tier": "evidenced",
+   "cause": "R:too_narrow",
+   "evidenced_tokens": [
+    "K",
+    "R:too_narrow",
+    "I:eighth",
+    "I:half_whole",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 4
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    8
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "G",
+   "evidenced_tokens": [
+    "N",
+    "B",
+    "G"
+   ],
+   "n_streams": 1,
+   "ink": "clear",
+   "n_unexplained_ink": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    12
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "N",
+   "evidenced_tokens": [
+    "N",
+    "I:eighth"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 2
+  },
+  {
+   "cell": [
+    16,
+    1,
+    10,
+    3
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "R:too_narrow",
+    "I:eighth"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 3
+  },
+  {
+   "cell": [
+    6,
+    1,
+    11,
+    13
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "R:rest_clipped_by_crop",
+   "evidenced_tokens": [
+    "R:rest_clipped_by_crop"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    11,
+    0
+   ],
+   "measure": null,
+   "part": null,
+   "T": 2.0,
+   "judged": 2.0,
+   "residual": 1.0,
+   "tier": "evidenced",
+   "cause": "I:eighth",
+   "evidenced_tokens": [
+    "K",
+    "R:rest_off_center",
+    "I:eighth",
+    "I:quarter",
+    "I:half_whole"
+   ],
+   "n_streams": 1,
+   "ink": "unexplained",
+   "n_unexplained_ink": 13
+  }
+ ]
+}

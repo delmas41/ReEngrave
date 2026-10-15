@@ -1,0 +1,85 @@
+brah-partial: captured 742 + doubled 0 = 742; expected 742; partition sums to 742  CONTROL PASS
+judged != printed meter on 0 bars
+
+== evidenced: 674 (90.8% of 742)
+    404  N
+     41  Y
+     40  R:too_narrow
+     38  I:eighth
+     21  N+I:eighth
+     16  U:too_narrow
+     13  V
+     12  B
+      9  D
+      8  N+R:too_narrow
+      8  R:too_narrow+B
+      5  G
+      5  N+Y
+      5  N+I:quarter
+      4  V+Y
+      4  R:clipped_fragment
+      4  N+B
+      3  R:rest_clipped_by_crop
+      3  N+U:too_narrow
+      3  V+N
+      2  A
+      2  R:belongs_to_a_nearer_staff
+      2  N+D
+      2  R:too_narrow+D
+      2  I:quarter+B
+      2  N+G
+      1  Y+I:eighth
+      1  U:clipped_fragment
+      1  Y+R:rest_clipped_by_crop
+      1  V+D
+      1  N+I:half_whole
+      1  O+R:too_narrow
+      1  I:half_whole
+      1  O
+      1  U:rest_clipped_by_crop
+      1  R:rest_clipped_by_crop+D
+      1  V+B
+      1  R:clipped_fragment+B
+      1  U:too_narrow+B
+      1  N+R:rest_clipped_by_crop
+      1  R:too_narrow+G
+      1  R:rest_has_a_stem+B
+
+== arith_only: 66 (8.9% of 742)
+     28  D
+     10  I:any
+      7  F~
+      7  N+F~
+      4  N+D
+      3  B~
+      1  N+X~
+      1  G~
+      1  N+B~
+      1  D+F~
+      1  V+N+D
+      1  V+F~
+      1  B~+I:any
+
+== unexplained: 2 (0.3% of 742)
+      2  unexplained
+
+bars on which each token is EVIDENCED (how common the evidence is): {'N': 517, 'G': 377, 'B': 377, 'R:too_narrow': 197, 'I:eighth': 181, 'I:quarter': 92, 'D': 90, 'Y': 59, 'U:too_narrow': 54, 'R:rest_clipped_by_crop': 36, 'R:clipped_fragment': 30, 'K': 30, 'I:half_whole': 29, 'V': 28, 'U:clipped_fragment': 15, 'A': 6, 'R:rest_outside_its_staff': 6, 'R:belongs_to_a_nearer_staff': 5, 'S': 5, 'U:rest_clipped_by_crop': 5, 'O': 4, 'R:rest_has_a_stem': 4, 'U:rest_outside_its_staff': 3, 'Q': 2, 'F': 2, 'R:rest_overlaps_a_notehead': 1}
+
+single EVIDENCED fix releases alone: {'N': 404, 'I:eighth': 82, 'R:too_narrow': 61, 'U:too_narrow': 48, 'B': 46, 'Y': 42, 'G': 26, 'D': 21, 'I:quarter': 20, 'V': 13, 'U:clipped_fragment': 10, 'R:clipped_fragment': 9, 'A': 6, 'R:rest_clipped_by_crop': 5, 'U:rest_clipped_by_crop': 5, 'U:rest_outside_its_staff': 3, 'R:belongs_to_a_nearer_staff': 2, 'R:rest_overlaps_a_notehead': 1, 'I:half_whole': 1, 'O': 1}
+single ARITHMETIC-only fix releases alone: {'I:any': 401, 'D': 126, 'F~': 109, 'B~': 94, 'G~': 32}
+necessary in every minimal evidenced set: {'N': 316, 'I:eighth': 44, 'Y': 41, 'R:too_narrow': 36, 'B': 25, 'V': 22, 'D': 13, 'U:too_narrow': 12, 'G': 8, 'I:quarter': 7, 'R:rest_clipped_by_crop': 3, 'R:clipped_fragment': 3, 'I:half_whole': 2, 'U:clipped_fragment': 1, 'U:rest_clipped_by_crop': 1}
+[evidenced] N: system meter verdict: {'decided/carried': 205, 'abstained/carry_outweighed_by_the_bars': 101, 'abstained/carry_not_corroborated': 73, 'decided/carried_uncontested': 64, 'decided/voted': 13}
+[evidenced] N: (landings, meter verdict): {(1, 'decided'): 240, (1, 'abstained'): 145, (0, 'decided'): 36, (0, 'abstained'): 25, (2, 'abstained'): 3, (2, 'decided'): 2, (3, 'decided'): 2, (None, 'abstained'): 1}
+[evidenced] Y: (landings, meter verdict): {(1, 'decided'): 30, (1, 'abstained'): 7, (0, 'decided'): 5, (0, 'abstained'): 1}
+[arith_only] D: system meter verdict: {'decided/carried': 22, 'abstained/carry_outweighed_by_the_bars': 3, 'decided/carried_uncontested': 3, 'abstained/carry_not_corroborated': 1}
+[arith_only] D: residual (+ = short): {0.5: 25, 1.0: 3, 1.5: 1}
+[arith_only] N: system meter verdict: {'decided/carried': 4, 'decided/carried_uncontested': 3, 'abstained/carry_outweighed_by_the_bars': 3, 'abstained/carry_not_corroborated': 3}
+[arith_only] N: (landings, meter verdict): {(0, 'decided'): 7, (0, 'abstained'): 6}
+[evidenced] I:eighth: residual (+ = short): {0.5: 30, 0.25: 4, 1.5: 3, 0.75: 1}
+[evidenced] D: system meter verdict: {'decided/carried': 4, 'abstained/carry_not_corroborated': 4, 'abstained/carry_outweighed_by_the_bars': 1}
+[evidenced] D: residual (+ = short): {0.5: 8, 0.125: 1}
+unexplained: residual sign: {'short': 2}
+unexplained: has a refusal: {True: 2}
+unexplained: ink: {'clear': 2}
+unexplained: n_streams: {1: 2}
+unexplained: residual: {2.5: 2}

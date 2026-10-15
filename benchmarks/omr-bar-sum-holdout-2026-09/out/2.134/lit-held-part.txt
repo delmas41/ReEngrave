@@ -1,0 +1,80 @@
+lit-held: captured 640 + doubled 59 = 699; expected 699; partition sums to 699  CONTROL PASS
+judged != printed meter on 0 bars
+
+== evidenced: 188 (26.9% of 699)
+     38  B
+     25  I:quarter
+     23  I:eighth
+     17  U:rest_has_a_stem
+     12  G
+     11  S
+     10  N
+      9  B+G
+      9  V
+      6  K
+      4  R:too_narrow
+      2  A
+      2  R:belongs_to_a_nearer_staff
+      2  U:clipped_fragment
+      1  K+D
+      1  K+A
+      1  K+R:too_narrow+I:quarter
+      1  I:quarter+B
+      1  K+N
+      1  R:rest_clipped_by_crop
+      1  D
+      1  F
+      1  S+G
+      1  R:clipped_fragment
+      1  K+B
+      1  U:too_narrow
+      1  P
+      1  N+B+G
+      1  K+I:eighth
+      1  K+I:quarter
+      1  I:eighth+D
+      1  I:eighth+I:quarter
+
+== arith_only: 431 (61.7% of 699)
+    179  F~
+     96  X~
+     59  B~
+     34  I:any
+     21  G~
+     14  D
+      6  K~
+      4  R:rest_has_a_stem+X~+K~
+      3  F~+X~
+      2  K+X~
+      2  K+B~
+      2  D+B
+      1  D+K~
+      1  S+K+X~
+      1  D+G~
+      1  R:too_narrow+X~
+      1  D+X~
+      1  I:quarter+X~
+      1  G~+F~
+      1  S+X~
+      1  K+I:any
+
+== unexplained: 21 (3.0% of 699)
+     21  unexplained
+
+bars on which each token is EVIDENCED (how common the evidence is): {'B': 147, 'G': 147, 'K': 78, 'I:eighth': 77, 'I:quarter': 59, 'D': 28, 'R:rest_has_a_stem': 23, 'S': 21, 'N': 21, 'R:too_narrow': 18, 'U:rest_has_a_stem': 17, 'I:half_whole': 17, 'V': 9, 'R:rest_clipped_by_crop': 7, 'A': 5, 'R:belongs_to_a_nearer_staff': 4, 'U:clipped_fragment': 3, 'F': 3, 'Y': 2, 'R:clipped_fragment': 2, 'U:too_narrow': 2, 'R:rest_outside_its_staff': 1, 'U:rest_off_center': 1, 'Q': 1, 'P': 1, 'R:rest_touches_two_staff_lines': 1}
+
+single EVIDENCED fix releases alone: {'B': 43, 'I:quarter': 33, 'I:eighth': 23, 'U:rest_has_a_stem': 17, 'G': 16, 'S': 11, 'N': 10, 'V': 9, 'R:too_narrow': 6, 'K': 6, 'A': 3, 'U:clipped_fragment': 3, 'R:belongs_to_a_nearer_staff': 2, 'R:clipped_fragment': 2, 'R:rest_clipped_by_crop': 1, 'D': 1, 'F': 1, 'U:too_narrow': 1, 'P': 1}
+single ARITHMETIC-only fix releases alone: {'F~': 221, 'I:any': 196, 'X~': 151, 'B~': 129, 'G~': 39, 'K~': 22, 'D': 20}
+necessary in every minimal evidenced set: {'B': 47, 'I:quarter': 29, 'G': 23, 'I:eighth': 21, 'U:rest_has_a_stem': 14, 'K': 13, 'S': 11, 'V': 8, 'N': 6, 'R:too_narrow': 3, 'A': 2, 'R:belongs_to_a_nearer_staff': 2, 'U:clipped_fragment': 2, 'D': 2, 'F': 1, 'R:clipped_fragment': 1, 'U:too_narrow': 1}
+[evidenced] I:eighth: residual (+ = short): {0.5: 19, 1.0: 5, 1.5: 1}
+[evidenced] N: system meter verdict: {'decided/carried': 11}
+[evidenced] N: (landings, meter verdict): {(1, 'decided'): 10, (0, 'decided'): 1}
+[arith_only] D: system meter verdict: {'decided/carried': 19}
+[arith_only] D: residual (+ = short): {-1.0: 7, 0.5: 4, -0.5: 3, 0.75: 2, -3.0: 1, -5.0: 1, 0.25: 1}
+unexplained: residual sign: {'short': 21}
+unexplained: has a refusal: {False: 13, True: 8}
+unexplained: ink: {'clear': 21}
+unexplained: n_streams: {1: 21}
+unexplained: residual: {1.0: 13, 1.5: 6, 1.375: 1, 1.583: 1}
+[evidenced] D: system meter verdict: {'decided/carried': 1}
+[evidenced] D: residual (+ = short): {0.5: 1}

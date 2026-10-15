@@ -3508,3 +3508,189 @@ ON vs base: released 14, **newly held 5** (was 11 before the `flag_ink_unread` f
 bare stems with no evidence of an eighth -- the refusal Sean's rule asks for. The shipped default (INFER columns rule OFF)
 nets +6 held / -21 notes vs base on Litolff: the EVALUATE chord/joint settlement releases bars, the strict rule holds the
 arithmetic-only eighths. Brahms was not re-measured (6 GB record; light-load rule); its last figures are 2.97e's.
+
+## 2.134 -- the bar cascade, sized: why bars are held NOW, on the 20261014-night records (2026-10-15)
+
+PATH: STAGED, EXPORT-only (records loaded once through `record_io.load_record`, exported with
+today's exporter, never re-gathered, never re-decided; no product code, no flag). Branch
+`lane-2.134-cascade` off `origin/main` `afdd39c2`. Records: `beethoven5-litolff-mvt1-whole-20261014-night`
+and `brahms1-breitkopf-mvt1-whole-20261014-night` (tree `8b9eb97c`). Probes (all new, none in `tools/`):
+`probe/held_funnel_2_134.py` (the 2.117 adaptation of `held_funnel_2_96.py`, which it reuses whole),
+`probe/split_2_134.py`, `probe/classify_all_2_134.py` (runs `classify_held_2_96.py` UNCHANGED),
+`probe/summarise_2_134.py`, `probe/dissect_2_134.py`, `probe/tiles_2_134.py`. Outputs: `out/2.134/`.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+Printed meter as 2.96 (Beethoven 5/i 2/4; Brahms 1/i 6/8 with the one 9/8 bar at 1/0/0). A "cause" is a
+SIMULATED fix whose sum lands; it is evidenced only if a record row points at it. The file's judged
+meter equals the printed one on every captured bar (0 mismatches, both movements). Sean has judged
+none of this section's tiles: NOT CONFIRMED. Every landing-to-cause link in 2.134e is a HYPOTHESIS
+unless it says READ.
+
+### 2.134a. The 2.117 adaptation, and the controls
+
+Since 2.117 `export._bar_holds_out` is called for EVERY bar that does not add up, but a bar with a
+certain prefix/suffix is then written PARTIAL (blue notes + red `unread` bracket) and is NOT in
+`bars_held_out_sum`. 2.22's `dump` captures both, so its own control reads FAIL by design. The probe
+replaces it with a control that can fail: captured == held_sum - doubled + `partial_bars.written`, the
+exporter's `held` list == held_sum - doubled, the rest == `partial_bars.written`.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| `bars_held_out_sum` (the "699" / "975") | 699 (640 + 59 on a doubled staff) | 975 |
+| partial bars (written, counted APART) | 161 | 742 |
+| captured by `_bar_holds_out` | 801 (+59 doubled = 860) | 1,717 |
+| control (captured == held - doubled + partial; held and partial each bar for bar) | PASS | PASS |
+| partition sums to the total (asserted, per kind) | 699 PASS; 161 PASS | 975 PASS; 742 PASS |
+| judged != printed meter | 0 | 0 |
+| **wrong-meter run (+0.3 quarter)**: evidenced / arithmetic / unexplained | 0 / 0 / 640 (evidenced share 26.9% -> 0%) | 0 / 0 / 975 (46.5% -> 0%) |
+
+The wrong-meter run is the control that has to fail, and it fails completely: no evidenced and no
+arithmetic fix lands any bar. (2.96's run left 3% / 17% standing; by 2.96 that residue WAS the lone whole
+rests, which the record no longer holds -- 2.134c.) HELD and PARTIAL are classified apart: a partial bar is
+one the file already keeps part of, so only held is "still held out"; partial is the second population the
+same causes also gate.
+
+Sean's judged index (`judged score ... --doc litolff|brahms`, run first): Litolff 108 right / 11 wrong /
+4 narrowed / 1 abstained / 13 not_found / 97 unscored; Brahms 70 / 10 / 18 / 1 / 7 / 133. The wrong ones sit
+in `2.114-*` (second detector, OFF), `2.75`, `2.78`, `2.80-review-2`, `2.81`, `2.83`, `2.88`, `2.99`; none is a
+narrowed-duration head of the kind the tiles below ask about. (`out/2.134/judged-*.json`.)
+
+### 2.134b. The partition, against 2.96
+
+HELD bars (the doubled-staff copies are the exporter's count and cannot be located):
+
+| | 2.96 Litolff 1,044 | **2.134 Litolff 699** | 2.96 Brahms 2,553 | **2.134 Brahms 975** |
+|---|--:|--:|--:|--:|
+| evidenced, ONE cause | 409 (39.2%) | **167 (23.9%)** | 1,692 (66.3%) | **374 (38.4%)** |
+| evidenced, 2-3 causes | 37 (3.5%) | 21 (3.0%) | 224 (8.8%) | 79 (8.1%) |
+| arithmetic only (a sum lands, no row points at it) | 517 (49.5%) | **431 (61.7%)** | 633 (24.8%) | **520 (53.3%)** |
+| unexplained | 25 (2.4%) | 21 (3.0%) | 4 (0.2%) | 2 (0.2%) |
+| on a doubled staff | 56 (5.4%) | 59 (8.4%) | 0 | 0 |
+
+Every bar that does not add up, held PLUS partial (the like-for-like figure against 2.96's total): Litolff
+1,044 -> **860** (699 + 161), Brahms 2,553 -> **1,717** (975 + 742). Partial bars alone: Litolff 161 = evidenced
+one 136 / two-three 8 / arithmetic 17; Brahms 742 = 593 / 81 / 66 / 2 unexplained. Held plus partial, evidenced
+ONE cause: Litolff 303 (35%), Brahms 967 (56%).
+
+The honest "record gives no reason" figure is still the arithmetic-only row, and it is now the MAJORITY of
+held Litolff bars (431): 179 head fill misread (`F~`), 96 drop one event (`X~`), 59 one beam level (`B~`),
+34 ink of no rest shape, 21 one beam group. Sums, not diagnoses (2.24's lesson); nothing in the record points at them.
+
+### 2.134c. Bars released if ONE evidenced cause alone were fixed (held | partial)
+
+| cause | Litolff held | Litolff partial | Brahms held | Brahms partial | 2.96 Lit / Brahms |
+|---|--:|--:|--:|--:|--:|
+| **narrowed head(s), candidates land the bar (N)** | 10 | 58 | **179** | **404** | 73 / 719 |
+| unboxed eighth-rest-shaped ink (I:eighth) | 23 | 13 | 79 | 82 | 45 / 287 |
+| a beam level at a doubted note (B) | 43 | 17 | 56 | 46 | 73 / 114 |
+| unboxed quarter-rest-shaped ink (I:quarter) | 33 | 14 | 8 | 20 | 75 / 41 |
+| refused `too_narrow`, value fills (R:too_narrow) | 6 | 12 | 26 | 61 | 25 / 143 |
+| a dot the record saw and did not settle (D) | 1 | 0 | 33 | 21 | 1 / 53 |
+| `chord_value_undecided` (Y) | 0 | 14 | 5 | 42 | 14 / 41 |
+| a rest refused `rest_has_a_stem` (position only) | 17 | 3 | 2 | 0 | -- |
+| one rest/head boxed twice (S) | 11 | 0 | 19 | 0 | 12 / 21 |
+| **a lone whole rest left at 4 beats (W)** | **0** | 0 | **0** | 0 | **30 / 428** |
+
+W is evidenced on ZERO bars in all four sets (READ off the data): no lone 4-beat rest is left, where 2.96 had 458.
+
+### 2.134d. How many held bars hold because of ONE lost or narrowed NOTE, and which verdict lost it
+
+Definition (`dissect_2_134.py`): the bar's minimal EVIDENCED cause is a single token naming a head the record
+narrowed or refused (N, Y, O, P, Q, R:/U: on a head) whose own value fills the gap. Rests, beam-value doubt,
+structure and the arithmetic tier are NOT counted.
+
+| | Litolff held 640 | Brahms held 975 |
+|---|--:|--:|
+| ONE note-family cause | **21 (3.3%)** | **198 (20.3%)** |
+| of which N (narrowed, `Q.DURATION`) | 10 | **179** |
+| N shape: ONE head | 3 | **30** |
+| N shape: ONE chord (2-3 heads at one onset, one stem) | 7 | 38 |
+| N shape: two columns / three or more | 0 | 83 / 28 |
+| N where the record's own candidates land the bar UNIQUELY | 10 of 10 | 165 of 179 |
+| other note causes (Y chord undecided / R,U too_narrow / O / Q / P) | 11 | 19 |
+| rest causes (I:*, rest_* refusals, A) | 68 | 76 |
+| beam-value doubt (B, G) | 50 | 44 |
+| structure (S, V, K) / dot | 26 / 1 | 30 / 26 |
+
+**Which verdict lost the note (the record's own words):** ALL 189 N bars are `Q.DURATION` narrowed by the
+ADJUDICATE duration reader. Head by head (404 narrowed heads on Brahms, 18 on Litolff) the reason is
+`beam_discounted_uncertain` on 394 of 404 (Brahms) and 18 of 18 (Litolff): the reader saw beam strokes and
+DISCOUNTED them, so the head stayed eighth-or-quarter. The two candidates are always the same pair across the
+note-family bars: eighth(beam 1)|quarter(beam 0) on 218 Brahms heads, dotted eighth|dotted quarter on 191
+(Litolff 18 plain eighth|quarter). The other 10 Brahms N heads: `dot_seen_beside_a_plain_note` 3,
+`head_fill_from_ink` 3, `flag_ink_unread` 2, `beams_ambiguous` 2. Meter at the system: Brahms N bars sit on a
+DECIDED meter in 121 of 179 (89 `carried`, 29 `carried_uncontested`, 3 `voted`) and an ABSTAINED one in 58
+(38 `carry_not_corroborated`, 20 `carry_outweighed_by_the_bars`); Litolff 10 of 10 decided.
+
+The non-N note causes are other verdicts: `chord_value_undecided` (Y, 4 Brahms bars), an `owned_by_another_staff`
+abstention on a `too_narrow`/`clipped_fragment` box (R/U, 7 + 13 heads on Brahms; 7 on Litolff), `owner_not_read`
+(O, 1 Brahms bar), `no_pitch` (P, 1 Litolff bar).
+
+**Why these still hold (design, not a bug; the record and the ledger agree).** 2.97 lands, at ONE note, a narrowed
+head the bar settles, but only where there is evidence of an eighth (Sean's strict rule, DECISIONS 2026-10-13: the
+strict rule avoids 3 wrong notes for 1 lost correct eighth). The N bars are the ones whose beam evidence was
+discounted: the bar would land them and the rule refuses to let the bar SUPPLY the eighth. Nothing in this probe says
+the strict rule is wrong. It says the note is lost at the BEAM reading (is there an eighth beam on this stem or not),
+not at the bar sum. The tiles put that question to Sean.
+
+### 2.134e. Which of the 10-14 landings moved which cause (HYPOTHESES, except READ)
+
+- **2.117 (partial bars)** READ: held fell 1,044 -> 699 and 2,553 -> 975 only partly because bars were fixed; 161 / 742
+  of the held-type bars are now written partial. Bars that do not add up at all fell 1,044 -> 860 and 2,553 -> 1,717.
+  Partial bars are mostly N / Y / R (Brahms 404 of 742 N alone, Litolff 58 of 161): the note-family cause is now
+  mostly already written as a blue prefix + red bracket and counted apart.
+- **2.98 (a lone whole rest is the bar)** READ: W evidenced on 0 bars (2.96: 458). Hypothesis: all of Brahms 428 and
+  Litolff 30. The largest single change since 2.96.
+- **2.99 (unboxed eighth/quarter rests read from ink)** hypothesis: I:eighth Brahms 287 -> 79 held (+82 partial);
+  I:quarter Litolff 75 -> 33. The residue is ink with no box and can be a flat (2.96 tile 7).
+- **2.97 (`OMR_NARROWED_BAR`) + 2.121 (bare stem takes the head's own unbeamed value, GUESSED)** hypothesis: N held
+  Brahms 719 -> 179 alone (held + partial 583), Litolff 73 -> 10 (68). 2.121 is named because 19 of 24 twins split
+  losses were quarters under a slur; the reason `refused_strokes_are_slurs_or_too_thin_for_a_beam` is READ on 70 Brahms
+  and 2 Litolff single-head events in the held dump.
+- **2.115 (head re-centred on the page raster)** hypothesis, small: R:too_narrow alone fell Litolff 25 -> 6 and Brahms
+  143 -> 26; the N reason `head_fill_from_ink` survives on only 3 Brahms heads.
+- **2.127/2.128 (dot role, dot staff position)** hypothesis: D alone Brahms 53 -> 33 held (+21 partial).
+- **2.129/2.130/2.131 (stacked heads, whole->half, staccatissimo)**: no cause in this table is named for them; any
+  effect would sit in the arithmetic-only `F~` row, which fell Litolff 311 -> 221 (alone) and Brahms 229 -> 69 --
+  hypothesis, no row points at it.
+- **B (beam level at a doubted note)** did not fall (Litolff 73 -> 43 + 17, Brahms 114 -> 56 + 46): no landing in the
+  list worked beams.
+
+### 2.134f. Print check, 14 blind tiles for Sean (`out/print/2.134-review/`, `manifest.json`)
+
+11 tiles are ONE narrowed head (`Q.DURATION` narrowed, `beam_discounted_uncertain`; candidates eighth|quarter or
+dotted eighth|dotted quarter; meter decided; the bar lands uniquely): 1 Litolff (tile 7), 10 Brahms (pages 5-26, both
+candidate pairs). 3 CONTROLS are a head the record DECIDED, cut identically: tile 2 a dotted quarter with no beam over
+it (Brahms), tile 3 a plain quarter with no beam (Litolff; dense bar, cluttered), tile 6 a beamed eighth the beam reader
+READ (Brahms). Shuffled with a fixed seed (controls are not at the end); the key is `manifest.json` only. 900 px wide,
+600 dpi, RED corners = the bar (following the staff), BLUE corners = the note asked about, big tile number, nothing of
+ours drawn. Frame control (five staff lines >= 2x the ink of the gaps AND the half-space-shifted test must fail) REFUSED
+4 candidates (Litolff 4/0/8/2 and 16/0/0/2, Brahms 9/0/11/0 and 12/0/5/0), so it can fail; the next candidate was taken.
+System-start bars (clef and key in the way) are excluded from the controls. The lane has not judged the print
+(rule 7): Sean is the evidence.
+
+### 2.134g. Recommended next (not built here)
+
+1. Sean's reading of tiles 1-14 decides it. If the blue notes are mostly UNBEAMED (quarter / dotted quarter), the
+   lost note is a beam FALSE POSITIVE (the discounted strokes are slur ink or too short) and the fix is reading "no
+   beam", which needs no bar. If mostly beamed eighths, the bar is right and the beam reader too timid; the fix is the
+   beam evidence (tip, join), still no bar-supplied value.
+2. The 83 two-column and 28 many-column Brahms N bars are the cascade's tail: they only land JOINTLY, which the
+   one-note rule cannot do. Not sized for a fix until the single case says which way it goes.
+3. Litolff's 431 arithmetic-only held bars (179 `F~`) have no record row; 2.96 item 4 (a head-fill row) is still the
+   missing piece there.
+
+### 2.134h. Limits
+
+The dumps are the record's OWN verdicts exported by today's exporter (the 8b9eb97c tree); a GATHER change is invisible
+here. Partial-bar cause tokens use the cell's full event list (the `_bar_holds_out` input), not the prefix/suffix the file
+wrote. The landing-to-cause links in 2.134e are hypotheses: no 20261011 record was loaded here, so the two nights were
+not compared bar by bar. The 59 doubled-staff bars are the exporter's count, not located.
+
+### Sean's answers (2026-10-15)
+
+11 of 11 narrowed heads land where the bar puts them (6 quarters, 4 dotted quarters, 1 eighth whose printed flag the tip
+reader missed, tile 10), and 3 of 3 controls (tiles 2, 3, 6) are right. Tile 13 has a tremolo stem and a dot (Sean: "13 is
+a dot 4"). Caveat: these are the bar-unique cases with a DECIDED meter only, so this is n=11 on one cause and not yet a
+rule. Answers: `out/print/2.134-review/answers.json`.

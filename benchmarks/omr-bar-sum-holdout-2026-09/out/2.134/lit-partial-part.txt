@@ -1,0 +1,55 @@
+lit-partial: captured 161 + doubled 0 = 161; expected 161; partition sums to 161  CONTROL PASS
+judged != printed meter on 0 bars
+
+== evidenced: 144 (89.4% of 161)
+     58  N
+     13  Y
+     11  R:too_narrow
+     11  P
+      8  I:eighth
+      5  B
+      4  A
+      4  U:too_narrow
+      4  R:clipped_fragment
+      3  I:quarter
+      3  U:rest_has_a_stem
+      2  R:too_narrow+I:eighth
+      2  O
+      2  G
+      2  V
+      2  R:rest_clipped_by_crop
+      2  U:clipped_fragment
+      1  N+A
+      1  R:rest_outside_its_staff
+      1  N+I:eighth
+      1  K+I:eighth+I:half_whole
+      1  S+R:too_narrow
+      1  N+D
+      1  U:rest_touches_two_staff_lines
+      1  N+B+G
+
+== arith_only: 17 (10.6% of 161)
+      5  G~
+      3  B~
+      3  I:any
+      2  N+X~
+      1  F~
+      1  R:rest_clipped_by_crop+X~
+      1  R:rest_has_a_stem+X~+K~
+      1  D
+
+== unexplained: 0 (0.0% of 161)
+
+bars on which each token is EVIDENCED (how common the evidence is): {'N': 69, 'B': 46, 'G': 46, 'K': 24, 'I:quarter': 23, 'R:too_narrow': 23, 'I:eighth': 20, 'Y': 14, 'I:half_whole': 11, 'P': 11, 'A': 10, 'D': 9, 'R:clipped_fragment': 9, 'R:rest_clipped_by_crop': 6, 'R:rest_has_a_stem': 6, 'R:rest_off_center': 6, 'U:too_narrow': 4, 'V': 3, 'U:rest_has_a_stem': 3, 'O': 2, 'U:clipped_fragment': 2, 'R:rest_outside_its_staff': 1, 'S': 1, 'U:rest_touches_two_staff_lines': 1}
+
+single EVIDENCED fix releases alone: {'N': 58, 'B': 17, 'I:quarter': 14, 'Y': 14, 'I:eighth': 13, 'R:too_narrow': 12, 'P': 11, 'A': 9, 'R:clipped_fragment': 8, 'U:too_narrow': 4, 'U:rest_has_a_stem': 3, 'G': 3, 'R:rest_clipped_by_crop': 3, 'O': 2, 'V': 2, 'U:clipped_fragment': 2, 'R:rest_outside_its_staff': 1, 'U:rest_touches_two_staff_lines': 1}
+single ARITHMETIC-only fix releases alone: {'I:any': 61, 'F~': 49, 'B~': 40, 'G~': 14, 'D': 13}
+necessary in every minimal evidenced set: {'N': 44, 'R:too_narrow': 11, 'I:eighth': 9, 'P': 9, 'Y': 8, 'B': 6, 'R:clipped_fragment': 4, 'A': 3, 'U:too_narrow': 3, 'I:quarter': 3, 'G': 3, 'V': 2, 'R:rest_clipped_by_crop': 2, 'R:rest_outside_its_staff': 1, 'K': 1, 'I:half_whole': 1, 'S': 1, 'U:rest_has_a_stem': 1, 'D': 1, 'U:clipped_fragment': 1, 'U:rest_touches_two_staff_lines': 1}
+[evidenced] N: system meter verdict: {'decided/carried': 62}
+[evidenced] N: (landings, meter verdict): {(1, 'decided'): 55, (0, 'decided'): 7}
+[evidenced] Y: (landings, meter verdict): {(1, 'decided'): 11, (0, 'decided'): 2}
+[evidenced] I:eighth: residual (+ = short): {0.5: 5, 1.0: 3}
+[arith_only] D: system meter verdict: {'decided/carried': 1}
+[arith_only] D: residual (+ = short): {0.5: 1}
+[arith_only] N: system meter verdict: {'decided/carried': 2}
+[arith_only] N: (landings, meter verdict): {(0, 'decided'): 2}
