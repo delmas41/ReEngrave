@@ -1,14 +1,15 @@
 """ROADMAP 2.136 step 2 -- the two WIRING faults that kept INFER's bar-math rule
 (`collapse_narrowed_by_bar`, STAGED) from settling bars whose heads are all
-unbeamed, behind ONE flag `OMR_INFER_CARRIED_METER_FIX`, default OFF.
+unbeamed. Sean 2026-10-15 split them in two flags: W1 `OMR_INFER_CARRIED_METER_FIX`
+(default ON, a deny-list) and W2 `OMR_INFER_LEDGER_OWNER_HEADS` (default OFF).
 
   W1  `_printed_meter_roots` compared a CARRIED meter with the source system's
       OPENING segment; a carry carries the segment in force at the source's END.
   W2  `_bar_heads_are_clean` dropped a head standing beyond the staff although a
       DECIDED `Q.GLYPH_OWNER` names THIS staff (the ledger lines name the owner).
 
-Each RED test is the case that is refused on main (flag unset/OFF) and settled
-with the flag ON; each has a refusal that must STAY refused with it ON:
+Each RED test is the case that is refused with its flag disabled and settled
+with it enabled; each has a refusal that must STAY refused with it ON:
 the 2.80 Contrabass bar (a missed rest fills the same gap), 2.97's refused
 single (a bare stem never shortened to an eighth with no flag/beam), a bar with
 two different landings, a bar holding a tuplet (2.102), an owner that is
@@ -28,12 +29,20 @@ from tools.omr.tests.test_staged_missed_rest_2_80 import ink
 from tools.omr.tests.test_staged_narrowed_bar_2_97 import (CELL as _unused,  # noqa: F401
                                                            _InferBar, _box, _lines)
 
-FLAG = infer.CARRIED_METER_FIX_ENV
+FLAG = infer.CARRIED_METER_FIX_ENV          # W1, default ON
+W2FLAG = infer.LEDGER_OWNER_HEADS_ENV       # W2, default OFF
 
 
-def _run(log, *, on):
+def _run(log, *, on, w2=None):
+    """`on` sets W1; W2 is set only when `w2` is given (else its default)."""
     env = {FLAG: "1" if on else "0"}
+    if w2 is None:
+        env.pop(W2FLAG, None)
+    else:
+        env[W2FLAG] = "1" if w2 else "0"
     with mock.patch.dict(os.environ, env, clear=False):
+        if w2 is None:
+            os.environ.pop(W2FLAG, None)
         return infer.run(log, evaluate.Report([], [], []))
 
 
@@ -46,8 +55,13 @@ def _val(log, g):
     return log.verdict(Q.DURATION, _sub(0, g))
 
 
-def _decline(log, *, on):
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}, clear=False):
+def _decline(log, *, on, w2=None):
+    env = {FLAG: "1" if on else "0"}
+    if w2 is not None:
+        env[W2FLAG] = "1" if w2 else "0"
+    with mock.patch.dict(os.environ, env, clear=False):
+        if w2 is None:
+            os.environ.pop(W2FLAG, None)
         return inferences.solve_bare_stem_bar(log, _cell(), any_reason=True).decline
 
 
@@ -124,16 +138,17 @@ class TestW1TheCarryIsComparedWithTheSegmentInForceAtTheSourcesEnd(
             self.assertTrue(v.decider.startswith("infer:"))
             self.assertEqual(len(v.candidates), 2)
 
-    def test_CONTROL_with_the_flag_OFF_it_is_refused_as_on_main(self):
+    def test_CONTROL_with_W1_disabled_it_is_refused_as_before(self):
         b, g1, g2 = _unbeamed_pair_bar()
         log = b.finish()
         self.assertEqual(_decline(log, on=False), "meter_not_from_the_print")
         self.assertEqual(_fired(_run(log, on=False)), [])
         self.assertEqual(_val(log, g1).outcome, Outcome.NARROWED)
 
-    def test_the_default_is_OFF_and_a_typo_leaves_it_off(self):
-        for word, on in (("", False), ("yess", False), ("0", False),
-                         ("1", True), ("true", True), ("ON", True)):
+    def test_the_default_is_ON_and_only_an_off_word_disables_it(self):
+        for word, on in (("", False), ("0", False), ("false", False),
+                         ("no", False), ("OFF", False),
+                         ("1", True), ("true", True), ("yess", True)):
             b, g1, _g2 = _unbeamed_pair_bar()
             log = b.finish()
             with mock.patch.dict(os.environ, {FLAG: word}):
@@ -145,7 +160,7 @@ class TestW1TheCarryIsComparedWithTheSegmentInForceAtTheSourcesEnd(
         env = {k: v for k, v in os.environ.items() if k != FLAG}
         with mock.patch.dict(os.environ, env, clear=True):
             infer.run(log, evaluate.Report([], [], []))
-        self.assertEqual(_val(log, g1).outcome, Outcome.NARROWED)
+        self.assertEqual(_val(log, g1).outcome, Outcome.DECIDED)
 
     def test_a_carry_that_REALLY_changed_is_still_refused(self):
         """The source ends in 9/8; the carried verdict says 6/8: a carry that
@@ -206,46 +221,65 @@ class TestW2AnOwnedHeadStaysInTheBar(unittest.TestCase):
 
     def test_a_head_above_the_staff_with_a_DECIDED_owner_naming_this_staff_RED(self):
         log, g = self._bar(Outcome.DECIDED)
-        self.assertEqual(len(_fired(_run(log, on=True))), 1)
+        self.assertEqual(len(_fired(_run(log, on=True, w2=True))), 1)
         v = _val(log, g)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 1.0)
         self.assertTrue(v.decider.startswith("infer:"))
         self.assertEqual(len(v.candidates), 2)
 
-    def test_CONTROL_with_the_flag_OFF_the_same_bar_is_refused_as_on_main(self):
+    def test_CONTROL_with_W2_unset_the_same_bar_is_refused(self):
         log, g = self._bar(Outcome.DECIDED)
-        self.assertEqual(_decline(log, on=False), "heads_not_this_staffs_own")
+        self.assertEqual(_decline(log, on=True), "heads_not_this_staffs_own")
+        self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
+
+    def test_W2_is_inactive_by_default_and_only_an_on_word_enables_it(self):
+        for word, on in (("", False), ("yess", False), ("0", False),
+                         ("1", True), ("true", True), ("ON", True)):
+            log, g = self._bar(Outcome.DECIDED)
+            with mock.patch.dict(os.environ, {W2FLAG: word}):
+                infer.run(log, evaluate.Report([], [], []))
+            want = Outcome.DECIDED if on else Outcome.NARROWED
+            self.assertEqual(_val(log, g).outcome, want, word)
+        log, g = self._bar(Outcome.DECIDED)
+        env = {k: v for k, v in os.environ.items() if k != W2FLAG}
+        with mock.patch.dict(os.environ, env, clear=True):
+            infer.run(log, evaluate.Report([], [], []))
+        self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
+
+    def test_W1_alone_does_not_enable_W2(self):
+        log, g = self._bar(Outcome.DECIDED)
+        self.assertEqual(_fired(_run(log, on=True)), [])
         self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
 
     def test_an_ABSTAINED_owner_keeps_it_refused(self):
         log, _g = self._bar(Outcome.ABSTAINED)
-        self.assertEqual(_decline(log, on=True), "heads_not_this_staffs_own")
+        self.assertEqual(_decline(log, on=True, w2=True), "heads_not_this_staffs_own")
 
     def test_no_owner_verdict_keeps_it_refused(self):
         log, _g = self._bar(None)
-        self.assertEqual(_decline(log, on=True), "heads_not_this_staffs_own")
+        self.assertEqual(_decline(log, on=True, w2=True), "heads_not_this_staffs_own")
 
     def test_an_owner_naming_ANOTHER_staff_keeps_it_refused(self):
         """The head leaves this bar altogether (`_left_the_bar`: a relocated
         copy), so the bar is a different sum and settles nothing."""
         log, g = self._bar(Outcome.DECIDED, owner_value=_staff(1).to_key())
-        self.assertEqual(_fired(_run(log, on=True)), [])
+        self.assertEqual(_fired(_run(log, on=True, w2=True)), [])
         self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
 
     def test_a_head_boxed_twice_is_still_refused_even_when_owned(self):
         boxes = list(self.CLEAN)
         boxes[3] = boxes[2]                     # glyph 3 on glyph 2's ink
         log, _g = self._bar(Outcome.DECIDED, boxes=boxes)
-        self.assertEqual(_decline(log, on=True), "heads_not_this_staffs_own")
+        self.assertEqual(_decline(log, on=True, w2=True), "heads_not_this_staffs_own")
 
     def test_a_head_the_NEIGHBOUR_staff_also_boxed_is_still_refused(self):
         log, _g = self._bar(Outcome.DECIDED, neighbour=True)
-        self.assertEqual(_decline(log, on=True), "heads_not_this_staffs_own")
+        self.assertEqual(_decline(log, on=True, w2=True), "heads_not_this_staffs_own")
 
     def test_a_tuplet_bar_is_still_refused_even_when_owned(self):
         log, _g = self._bar(Outcome.DECIDED, tuplet=True)
-        self.assertEqual(_decline(log, on=True), "tuplet_in_bar")
+        self.assertEqual(_decline(log, on=True, w2=True), "tuplet_in_bar")
 
 
 class TestWhatStaysRefusedWithTheFlagOn(unittest.TestCase):

@@ -237,18 +237,27 @@ def narrowed_bar_enabled() -> bool:
 NARROWED_BAR_SWITCH = Switch(NARROWED_BAR_ENV, narrowed_bar_enabled)
 
 
-#: ROADMAP 2.136 step 2. The two WIRING connections INFER's bar-math rule was missing, behind ONE flag, default OFF until Sean's
-#: step-2 tiles: (W1) a CARRIED meter is compared with the segment in force at the END of the system it was carried from (not its
-#: opening one), and (W2) a head beyond the staff with a DECIDED ledger owner naming THIS staff is this staff's own. Neither changes
-#: what the rule may settle (GUESSED, the reader's own candidates, no eighth without a flag or beam, every landing agreeing).
-#: A default-OFF flag is an ALLOW-LIST: a typo must leave it OFF. Written out on its own line so the AST scan in
-#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+#: ROADMAP 2.136 step 2, SPLIT in two flags (Sean 2026-10-15). (W1) `OMR_INFER_CARRIED_METER_FIX`, default ON: a CARRIED meter is
+#: compared with the segment in force at the END of the system it was carried from (not its opening one). A deny-list: only an
+#: explicit off-word restores the old comparison. Written out on its own line so the AST scan in `test_flag_default_direction.py`
+#: sees this flag's own `os.environ.get`. Neither fix changes what the rule may settle (GUESSED, the reader's own candidates,
+#: no eighth without a flag or beam, every landing agreeing).
 CARRIED_METER_FIX_ENV = "OMR_INFER_CARRIED_METER_FIX"
 
 
 def carried_meter_fix_enabled() -> bool:
-    """Read the 2.136 wiring flag. Only an explicit on-word is ON."""
-    return os.environ.get(CARRIED_METER_FIX_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """Read the 2.136 W1 flag. Default ON: a deny-list, only an explicit off-word restores the old comparison."""
+    return os.environ.get(CARRIED_METER_FIX_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+#: (W2) `OMR_INFER_LEDGER_OWNER_HEADS`, default OFF until the Litolff failures are understood (ROADMAP 2.141): a head beyond the
+#: staff whose `Q.GLYPH_OWNER` is DECIDED and names THIS staff stays in the bar. An allow-list: a typo must leave it OFF.
+LEDGER_OWNER_HEADS_ENV = "OMR_INFER_LEDGER_OWNER_HEADS"
+
+
+def ledger_owner_heads_enabled() -> bool:
+    """Read the 2.136 W2 flag. Only an explicit on-word is ON."""
+    return os.environ.get(LEDGER_OWNER_HEADS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 #: ROADMAP 2.107. The dynamic INK PICK's own flag, default OFF (Sean 2026-10-13,

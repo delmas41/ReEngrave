@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, carried_meter_fix_enabled, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, carried_meter_fix_enabled, ledger_owner_heads_enabled, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -1757,7 +1757,7 @@ def _printed_meter_roots(log: Log, meter: Verdict, cell: Subject,
     for r in meter.used:
         src = log.row(r)
         if isinstance(src, Verdict) and src.quantity == Q.METER:
-            # ROADMAP 2.136 W1 (flag `OMR_INFER_CARRIED_METER_FIX`, default OFF): what a
+            # ROADMAP 2.136 W1 (flag `OMR_INFER_CARRIED_METER_FIX`, default ON): what a
             # carry carries is the meter in force at the END of the source system, not
             # its opening segment (2.79). Brahms 1/i opens 9/8, prints a return to 6/8
             # at bar 1, and every later system carries 6/8.
@@ -1877,7 +1877,7 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
         return _witness[0]
 
     if any_reason and not _bar_heads_are_clean(
-            log, cell, notes, ledger_owner_aware=carried_meter_fix_enabled()):
+            log, cell, notes, ledger_owner_aware=ledger_owner_heads_enabled()):
         out.decline = "heads_not_this_staffs_own"
         return out
     if any_reason and (_bar_has_tuplet(log, cell, notes)
