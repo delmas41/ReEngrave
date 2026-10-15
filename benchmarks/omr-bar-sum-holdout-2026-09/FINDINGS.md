@@ -3687,3 +3687,10 @@ The dumps are the record's OWN verdicts exported by today's exporter (the 8b9eb9
 here. Partial-bar cause tokens use the cell's full event list (the `_bar_holds_out` input), not the prefix/suffix the file
 wrote. The landing-to-cause links in 2.134e are hypotheses: no 20261011 record was loaded here, so the two nights were
 not compared bar by bar. The 59 doubled-staff bars are the exporter's count, not located.
+
+### Sean's answers (2026-10-15)
+
+11 of 11 narrowed heads land where the bar puts them (6 quarters, 4 dotted quarters, 1 eighth whose printed flag the tip
+reader missed, tile 10), and 3 of 3 controls (tiles 2, 3, 6) are right. Tile 13 has a tremolo stem and a dot (Sean: "13 is
+a dot 4"). Caveat: these are the bar-unique cases with a DECIDED meter only, so this is n=11 on one cause and not yet a
+rule. Answers: `out/print/2.134-review/answers.json`.
