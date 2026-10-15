@@ -6161,3 +6161,6 @@ STAGED INFER, `OMR_ARC_INK_NOT_BEAM` default ON (`collapse_arc_ink_not_beam`): a
 
 ## 2026-10-14 -- ROADMAP 2.127 landed ON (a dot seen beside a plain note narrows it)
 STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN` default ON (`aug_dot_join.reconcile_unjoined_dots`, twin-dot-box merge in `rhythm.py`; explicit `0/false/no/off` disables). Sean's 15 tiles: all 6 ambiguous-dot notes truly dotted (now blue plain/dotted), controls right. Follow-ups: staccato/staccatissimo dots decided as augmentation (role wrong, rhythm right); dotted halves read as quarter/whole (hollow-head work). `benchmarks/omr-aug-dots-2026-10/FINDINGS.md` section 6.
+
+## 2026-10-14 -- ROADMAP 2.130 built (dotted halves read as whole or quarter; flag OFF, tiles to Sean)
+STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default OFF (`rhythm.py`: `_stem_flush_to_head`, `_reads_filled`, block before the beam-conflict narrowings). A detector WHOLE-class head with a flush stem read is a half (decided; narrowed {quarter, half} where the ink reads filled); a flag on an OPEN-class head narrows half-first. Truth unchanged; Brahms pp 6/7/10: 16 whole-class heads -> half/dotted half, 2 black ones narrowed; 8 non-note boxes (clef/rest shapes) were already wrong. Open: black class on hollow cluster boxes (Litolff 2 of 50), stem-reader miss. FINDINGS `benchmarks/omr-dotted-halves-2026-10/`.

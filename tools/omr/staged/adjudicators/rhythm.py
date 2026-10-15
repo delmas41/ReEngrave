@@ -2947,6 +2947,61 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
     return t
 
 
+# ⚠️⚠️ ROADMAP 2.130 (`OMR_OPEN_HEAD_ON_STEM`, default OFF until Sean's tiles). CONVENTION (Sean, DECISIONS 2026-10-09, confirmed): *"Whole
+# notes never have stems"* and *"a hollow note with nothing on the stem is always a half note"*; *"open noteheads are never beamed"*
+# (2.43). `stem_value` applies the first only where a stem is SHARED (`lone_head` is skipped), so a detector WHOLE class with a stem read
+# on it stayed 4.0 (Brahms 20261013-night: three of Sean's dotted halves). WHAT WOULD FALSIFY IT: a print whole note with a barline or a
+# neighbour's stem flush against its box, made a half. NOT CONFIRMED: the flush window and the stem length (measured on Brahms 317803
+# only); they NARROW (flagged, candidates kept) wherever the ink reads the head FILLED.
+OPEN_HEAD_ON_STEM_ENV = "OMR_OPEN_HEAD_ON_STEM"
+OPEN_STEM_FLUSH_FRAC = (-0.25, 0.40)   # stem centre, as a fraction of the head width, measured in from the head's own near edge
+OPEN_STEM_MIN_SPACES = 2.0
+HEAD_FILLED_CENTER_MIN = 0.85
+OPEN_ON_STEM_BEAMED_CENTER_MAX = 0.80   # strokes joined to the stem: the head must read clearly hollow to be decided
+
+
+def open_head_on_stem_enabled() -> bool:
+    """Only an explicit on-word is ON (default OFF, Sean 2026-10-14: tiles first)."""
+    return os.environ.get(OPEN_HEAD_ON_STEM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _min_center(ink_detail: Dict[str, Any]) -> Optional[float]:
+    """The lowest centre-window reading over the three `Q.NOTEHEAD_INK` rasters (None where none was read)."""
+    seen = []
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
+        reading = ink_detail.get(key)
+        windows = (reading.get("windows") if isinstance(reading, dict) else None) or {}
+        if windows.get("center") is not None:
+            seen.append(windows["center"])
+    return min(seen) if seen else None
+
+
+def _reads_filled(ink_detail: Dict[str, Any]) -> bool:
+    """Every `Q.NOTEHEAD_INK` reading that exists puts the centre window at the black level (>= `HEAD_FILLED_CENTER_MIN`), at least one exists.
+    Measured on Brahms pp 6-7 (FINDINGS): black heads boxed whole read min 0.95-1.0, the print-hollow ones 0.49-0.79."""
+    m = _min_center(ink_detail)
+    return m is not None and m >= HEAD_FILLED_CENTER_MIN
+
+
+def _stem_flush_to_head(own_stems, head_box, space) -> bool:
+    """Is one of this head's own stems a real stem of THIS head: standing at a SIDE of the head (not through its middle, not a barline across
+    it) and at least `OPEN_STEM_MIN_SPACES` long? Geometry of the stem rows only; the head's class and ink are asked elsewhere."""
+    if head_box is None or not space or space <= 0:
+        return False
+    hx, hw = head_box[0], head_box[2]
+    if hw <= 0:
+        return False
+    lo, hi = OPEN_STEM_FLUSH_FRAC
+    for st in own_stems:
+        b = _xywh(st)
+        if b is None or b[3] < OPEN_STEM_MIN_SPACES * space:
+            continue
+        cx = b[0] + b[2] / 2.0
+        if (hx + lo * hw <= cx <= hx + hi * hw) or (hx + hw - hi * hw <= cx <= hx + hw - lo * hw):
+            return True
+    return False
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -3037,7 +3092,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW),
-    reasons=("second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
+    reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
@@ -3520,6 +3575,46 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             Ruling.narrow(_fill_candidates(order, n_dots, ratio, ev, sup), "second_only_hollow", used=tuple(used), **shared,
                           second_hollow=facts, notehead_ink=ink_detail),
             ink_detail, head_box, space)
+
+
+    # ⚠️⚠️ ROADMAP 2.130 (`OMR_OPEN_HEAD_ON_STEM`): AN OPEN-CLASS HEAD WITH A STEM OR A FLAG THAT CANNOT BE ITS OWN VALUE. (a) a detector WHOLE
+    # class with a stem READ flush at its side is not a whole (whole notes have no stem): the head is hollow by its class and the ink does not
+    # say filled, so it is a HALF -- DECIDED, with the margin recorded; where the ink reads the head FILLED the class is contradicted and the
+    # head NARROWS (black, half). (b) an open head never carries a flag (2.43), so a flag attached to one is another stem's (Brahms p10: a
+    # black eighth's flag counted on the hollow half beside it, a quarter on a dotted half): NARROWED between the open value and the flagged
+    # levels, the open value ranked first. Reached only where no beam/flag claim was already narrowed above; the bar sum is not read.
+    if open_by_class and open_head_on_stem_enabled():
+        ink_rows_o = ev.rows(Q.NOTEHEAD_INK)
+        ink_o = (ink_rows_o[-1].detail or {}) if ink_rows_o else {}
+        filled_o = _reads_filled(ink_o)
+        stem_flush = base >= 4.0 and _stem_flush_to_head(own_stems, head_box, space)
+        min_c = _min_center(ink_o)
+        beamed_unclear = bool(strokes_before_hollow[0]) and (min_c is None or min_c > OPEN_ON_STEM_BEAMED_CENTER_MAX)
+        if stem_flush and not flag_levels:
+            half_t = _at_level_value(2.0, 0, n_dots)
+            if not filled_o and not beamed_unclear:
+                if ink_rows_o:
+                    used.append(ink_rows_o[-1].id)
+                return Ruling(value={"beats": _scale(half_t, ratio, ev), "written": half_t, "dots": n_dots, "beam_levels": 0,
+                                     "head_fill": "half"},
+                              reason="whole_class_on_a_stem", used=tuple(used),
+                              detail={**shared, "open_on_stem": {"settled": "half", "class": str(head), "ink_filled": False,
+                                                                   "own_stems": len(own_stems)}, "notehead_ink": ink_o})
+            cands = [Candidate(value={"beats": _scale(_at_level_value(b, 0, n_dots), ratio, ev), "written": _at_level_value(b, 0, n_dots),
+                                      "dots": n_dots, "beam_levels": 0, "head_fill": nm}, support=1.0)
+                     for b, nm in ((1.0, "black"), (2.0, "half"))]
+            return Ruling.narrow(cands, "whole_class_filled_on_a_stem", used=tuple(used), **shared,
+                                 open_on_stem={"settled": "narrowed", "class": str(head), "ink_filled": True}, notehead_ink=ink_o)
+        if flag_levels and not (base >= 4.0 and not stem_flush):
+            open_val = 2.0 if stem_flush else base
+            lvls = sorted(flag_level_votes) if flag_level_votes else [flag_levels]
+            cands = []
+            for lv in [0] + [l for l in lvls if l]:
+                t = _at_level_value(open_val, lv, n_dots)
+                cands.append(Candidate(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv},
+                                       support=(2.0 if (lv == 0 and not filled_o) else 1.0)))
+            return Ruling.narrow(cands, "open_head_flag_contradiction", used=tuple(used), **shared,
+                                 open_on_stem={"settled": "narrowed_flag", "class": str(head), "ink_filled": filled_o})
 
     # ⚠️⚠️ ROADMAP 2.38b, RULE 8, CHECKED FIRST. A CERTAIN stroke (box
     # geometry) the ink reads NOT JOINED is a DISAGREEMENT between two
