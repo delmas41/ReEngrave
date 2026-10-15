@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.109 landed (land merge 6dbf600c)
+Merged lane-2.109-lily-marks (head 84a25e57): the STAGED LilyPond writer (`tools/omr/staged/lilypond.py`) writes staccato/staccatissimo/tenuto/accent/marcato and dynamics (read plain, guessed blue `dyn.`) with a marks ledger of what is not written; no flag; tests in test_staged_lilypond_marks_2_109.py; FINDINGS in benchmarks/omr-lily-export-2026-10. Sean "Yes land"; his 6 crops (out/print/2.109-review/answers.json) found every placed mark right; misses go to 2.138, the marc. word read as a dyn. to 2.139.
+
 ## 2026-10-15 -- ROADMAP 2.134 + 2.135 landed (land merge 96cf4872)
 Merged lane-2.135-balance-row (report section-9 "refusal vs exporter drop" row counts refusals read as rests; tests in test_regather_report.py; no flag) and lane-2.134-cascade (diagnosis only: probe, out/2.134, FINDINGS 2.134, out/print/2.134-review tiles + answers.json; no tools/ change). Sean: "Yes". Follow-up 2.136.
 
