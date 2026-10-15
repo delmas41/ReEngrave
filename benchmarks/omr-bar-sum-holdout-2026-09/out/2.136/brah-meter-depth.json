@@ -1,0 +1,2521 @@
+{
+ "hist": {
+  "('decided', 'carried', 'depth<=40', 'changed_between_systems')": 89,
+  "('abstained', 'carry_outweighed_by_the_bars', 'depth<=40', 'reason:carry_outweighed_by_the_bars')": 20,
+  "('decided', 'carried_uncontested', 'depth<=40', 'changed_between_systems')": 29,
+  "('abstained', 'carry_not_corroborated', 'depth<=40', 'reason:carry_not_corroborated')": 38,
+  "('decided', 'voted', 'depth<=40', 'voted')": 3
+ },
+ "all_carried_systems": {
+  "depth<=40": 40
+ },
+ "max_depth_population": 0,
+ "rows": [
+  {
+   "cell": [
+    3,
+    1,
+    0,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    1,
+    0,
+    8
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    9,
+    0,
+    0,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    1
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    2
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    9
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    0,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    14,
+    1,
+    0,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    11
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    16,
+    1,
+    0,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    0,
+    0,
+    2
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    20,
+    1,
+    0,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    3,
+    0,
+    1,
+    2
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    1,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    7,
+    1,
+    1,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    8,
+    0,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    1,
+    1,
+    7
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    1,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    1,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    0,
+    1,
+    5
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    0,
+    1,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    1,
+    1,
+    7
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    21,
+    0,
+    1,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    6
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    7
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    26,
+    1,
+    1,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    2,
+    6
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    9,
+    0,
+    2,
+    7
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    15,
+    0,
+    2,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    0,
+    2,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    1,
+    2,
+    1
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    0
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    20,
+    1,
+    2,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    22,
+    0,
+    2,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    23,
+    0,
+    2,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    24,
+    0,
+    2,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    3,
+    0,
+    3,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    1,
+    3,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    0,
+    3,
+    9
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    14,
+    0,
+    3,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    1,
+    3,
+    0
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    20,
+    1,
+    3,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    0,
+    3,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    1,
+    3,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    0,
+    3,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    1,
+    3,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    3,
+    1,
+    4,
+    0
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    4,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    0,
+    4,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    0,
+    4,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    0,
+    4,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    4,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    1,
+    4,
+    1
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    1,
+    0,
+    5,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "voted",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "voted",
+   "segments": 2
+  },
+  {
+   "cell": [
+    3,
+    1,
+    5,
+    2
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    5,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    1,
+    4,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    12,
+    0,
+    5,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    17,
+    0,
+    5,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    0,
+    5,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    0,
+    5,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    7,
+    0,
+    5,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    8,
+    1,
+    5,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    9,
+    1,
+    6,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    0,
+    6,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    6,
+    4
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    5,
+    0,
+    7,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    2,
+    0,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    3,
+    1,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    9,
+    1,
+    8,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    10,
+    1,
+    9,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    14,
+    1,
+    7,
+    0
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    15,
+    1,
+    8,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    16,
+    1,
+    9,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    18,
+    1,
+    9,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    1,
+    8,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    21,
+    1,
+    6,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    25,
+    1,
+    7,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    26,
+    0,
+    8,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    26,
+    1,
+    8,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    10,
+    2
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    10,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    15,
+    0,
+    8,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    21,
+    1,
+    7,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    22,
+    1,
+    7,
+    10
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    25,
+    1,
+    8,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    0,
+    0,
+    11,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "voted",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "voted",
+   "segments": 1
+  },
+  {
+   "cell": [
+    1,
+    0,
+    11,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "reason": "voted",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "voted",
+   "segments": 2
+  },
+  {
+   "cell": [
+    1,
+    1,
+    10,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    3,
+    1,
+    11,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    0,
+    11,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    11,
+    8
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    11,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    15,
+    0,
+    9,
+    3
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    15,
+    1,
+    10,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    16,
+    0,
+    11,
+    2
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    11,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    20,
+    1,
+    8,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    0,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    2,
+    0,
+    12,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    3,
+    1,
+    12,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    3
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    12,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    7,
+    1,
+    9,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    9,
+    1,
+    11,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_outweighed_by_the_bars",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_outweighed_by_the_bars",
+   "segments": 0
+  },
+  {
+   "cell": [
+    19,
+    1,
+    11,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    0,
+    10,
+    1
+   ],
+   "gate": "G6_witness_refused",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    23,
+    1,
+    11,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    26,
+    1,
+    11,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    4,
+    0,
+    13,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    5,
+    1,
+    13,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    0,
+    11,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried_uncontested",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    6,
+    1,
+    10,
+    0
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    9,
+    0,
+    11,
+    0
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    9,
+    1,
+    12,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    16,
+    1,
+    13,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    17,
+    0,
+    13,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  },
+  {
+   "cell": [
+    19,
+    0,
+    13,
+    10
+   ],
+   "gate": "G0_cause_not_reached",
+   "reason": "carry_not_corroborated",
+   "outcome": "abstained",
+   "depth": 0,
+   "end": "reason:carry_not_corroborated",
+   "segments": 0
+  },
+  {
+   "cell": [
+    21,
+    0,
+    10,
+    0
+   ],
+   "gate": "G5_many_landings",
+   "reason": "carried",
+   "outcome": "decided",
+   "depth": 0,
+   "end": "changed_between_systems",
+   "segments": 1
+  }
+ ]
+}

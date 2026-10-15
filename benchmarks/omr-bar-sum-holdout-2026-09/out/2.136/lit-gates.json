@@ -1,0 +1,2730 @@
+{
+ "label": "lit",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261014-night.record.json",
+ "population": 10,
+ "gates": {
+  "G9_rule_fired_on_another_note": 2,
+  "G6_witness_refused": 2,
+  "G4_zero_landings": 5,
+  "G5_many_landings": 1
+ },
+ "sub": {
+  "G9_rule_fired_on_another_note | changed_a_decided_neighbour": 2,
+  "G6_witness_refused | witness_unexplained": 2,
+  "G4_zero_landings | unevidenced_eighth__bar_fits_at_best_candidates": 4,
+  "G4_zero_landings | needs_two_or_more_events": 1,
+  "G5_many_landings | same_event_or_columns": 1
+ },
+ "partition_sums": true,
+ "control": {
+  "fired_cells": 216,
+  "replay_landed": 216,
+  "pass": true,
+  "unfired_narrowed_cells": 484,
+  "unfired_but_replay_lands": 6,
+  "of_which_settled_by_another_decider": 6,
+  "settled_by_deciders": {
+   "infer:collapse_bare_stem_by_bar": 9
+  },
+  "gates_of_fired": {
+   "LANDED": 216
+  }
+ },
+ "rows": [
+  {
+   "cell": [
+    8,
+    0,
+    0,
+    15
+   ],
+   "infer_any_reason": {
+    "decline": "simultaneous_heads_not_grouped",
+    "members": 2,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "7",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "9",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 2,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "changed_a_decided_neighbour",
+   "fired_in_log": true,
+   "rule_fired_here": {
+    "verdicts": [
+     {
+      "glyph": "glyph/8/0/0/15/4",
+      "to_beats": 1.0,
+      "to_levels": 1,
+      "was_outcome": "decided"
+     }
+    ],
+    "pre_gate": "REPLAY_LANDS",
+    "pre_landing": {
+     "glyphs": [
+      "glyph/8/0/0/15/4"
+     ],
+     "was_beats": 2.0,
+     "new_beats": 1.0,
+     "new_levels": [
+      1
+     ],
+     "cands": null
+    },
+    "pre_n_landings": 1
+   },
+   "evaluate_time": {
+    "gate": "REPLAY_LANDS",
+    "why": null,
+    "n_landings": 1
+   },
+   "part_row": {
+    "measure": 222,
+    "part": "P1",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "R:too_narrow"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    9,
+    1,
+    0,
+    0
+   ],
+   "infer_any_reason": {
+    "decline": null,
+    "members": 1,
+    "unknowns": 1,
+    "landings": 1,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 1,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 2,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/9/1/0/0/3"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained",
+   "witness_unexplained": 3,
+   "witness_pieces": [
+    [
+     364.1,
+     2192.1,
+     379.1,
+     2227.1
+    ],
+    [
+     349.2,
+     2221.1,
+     363.1,
+     2349.0
+    ],
+    [
+     476.0,
+     2235.1,
+     494.0,
+     2277.0
+    ]
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G6_witness_refused",
+    "why": "witness_unexplained",
+    "n_landings": 1
+   },
+   "part_row": {
+    "measure": 263,
+    "part": "P1",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "K",
+     "N",
+     "R:too_narrow",
+     "I:eighth",
+     "I:quarter"
+    ],
+    "n_streams": 1,
+    "ink": "unexplained"
+   }
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    8
+   ],
+   "infer_any_reason": {
+    "decline": "simultaneous_heads_not_grouped",
+    "members": 2,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "2",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G4_zero_landings",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 2,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 312,
+    "part": "P1",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "A",
+     "B",
+     "G"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    2
+   ],
+   "infer_any_reason": {
+    "decline": "tuplet_in_bar",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 1,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "0",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 1,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "changed_a_decided_neighbour",
+   "fired_in_log": true,
+   "rule_fired_here": {
+    "verdicts": [
+     {
+      "glyph": "glyph/16/0/0/2/10",
+      "to_beats": 0.5,
+      "to_levels": 1,
+      "was_outcome": "decided"
+     }
+    ],
+    "pre_gate": "REPLAY_LANDS",
+    "pre_landing": {
+     "glyphs": [
+      "glyph/16/0/0/2/10"
+     ],
+     "was_beats": 1.0,
+     "new_beats": 0.5,
+     "new_levels": [
+      1
+     ],
+     "cands": null
+    },
+    "pre_n_landings": 1
+   },
+   "evaluate_time": {
+    "gate": "REPLAY_LANDS",
+    "why": null,
+    "n_landings": 1
+   },
+   "part_row": {
+    "measure": 476,
+    "part": "P1",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "Y",
+     "I:half_whole"
+    ],
+    "n_streams": 1,
+    "ink": "unexplained"
+   }
+  },
+  {
+   "cell": [
+    4,
+    0,
+    1,
+    12
+   ],
+   "infer_any_reason": {
+    "decline": "event_mixes_decided_and_narrowed",
+    "members": 3,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 3,
+   "total": 1.0,
+   "fits": false,
+   "n_chord_units": 1,
+   "chord_heads": [
+    2
+   ],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "0",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "4",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G4_zero_landings",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 0,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 1,
+    "joint_min_events_moved_filter_on": 2,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 2
+   },
+   "fits_at_best_candidates": false,
+   "why": "needs_two_or_more_events",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "needs_two_or_more_events",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 95,
+    "part": "P2",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "B",
+     "G"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    12,
+    0,
+    1,
+    9
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 2,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 2,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 1,
+   "chord_heads": [
+    2
+   ],
+   "chords_dropped_by": "heads_not_clean",
+   "n_landings": 2,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "8",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G5_many_landings",
+   "landings": [
+    {
+     "glyphs": [
+      "glyph/12/0/1/9/2"
+     ],
+     "was_beats": 0.5,
+     "new_beats": 1.0,
+     "new_levels": [
+      0
+     ],
+     "cands": [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ]
+    },
+    {
+     "glyphs": [
+      "glyph/12/0/1/9/8"
+     ],
+     "was_beats": 0.5,
+     "new_beats": 1.0,
+     "new_levels": [
+      0
+     ],
+     "cands": [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "why": "same_event_or_columns",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G5_many_landings",
+    "why": "same_event_or_columns",
+    "n_landings": 2
+   },
+   "part_row": {
+    "measure": 348,
+    "part": "P2",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "U:clipped_fragment",
+     "B",
+     "G"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    14,
+    1,
+    1,
+    6
+   ],
+   "infer_any_reason": {
+    "decline": "bar_does_not_add_up",
+    "members": 2,
+    "unknowns": 2,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "0",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G4_zero_landings",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 2,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 421,
+    "part": "P2",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    2
+   ],
+   "infer_any_reason": {
+    "decline": null,
+    "members": 1,
+    "unknowns": 1,
+    "landings": 1,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 1,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/4/0/8/2/3"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained",
+   "witness_unexplained": 1,
+   "witness_pieces": [
+    [
+     772.0,
+     1637.0,
+     786.1,
+     1694.0
+    ]
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "needs_two_or_more_events",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 85,
+    "part": "P10",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N",
+     "I:quarter"
+    ],
+    "n_streams": 1,
+    "ink": "unexplained"
+   }
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    13
+   ],
+   "infer_any_reason": {
+    "decline": "bar_does_not_add_up",
+    "members": 2,
+    "unknowns": 2,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "0",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "4",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G4_zero_landings",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 2,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 143,
+    "part": "P10",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    14
+   ],
+   "infer_any_reason": {
+    "decline": "bar_does_not_add_up",
+    "members": 2,
+    "unknowns": 2,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 0,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "6",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "gate": "G4_zero_landings",
+   "counterfactual": {
+    "unevidenced_eighth_allowed": 2,
+    "tuplet_member_allowed": 0,
+    "joint_assignments_filter_on": 0,
+    "joint_min_events_moved_filter_on": null,
+    "joint_assignments_filter_off": 1,
+    "joint_min_events_moved_filter_off": 0
+   },
+   "fits_at_best_candidates": true,
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "fired_in_log": false,
+   "evaluate_time": {
+    "gate": "G4_zero_landings",
+    "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+    "n_landings": 0
+   },
+   "part_row": {
+    "measure": 144,
+    "part": "P10",
+    "T": 2.0,
+    "judged": 2.0,
+    "residual": 1.0,
+    "evidenced_tokens": [
+     "N"
+    ],
+    "n_streams": 1,
+    "ink": "clear"
+   }
+  }
+ ],
+ "control_rows": [
+  {
+   "cell": [
+    1,
+    0,
+    2,
+    15
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "voted",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 1,
+   "n_narrowed": 0,
+   "total": 4.0,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/1/0/2/15/5"
+    ],
+    "was_beats": 4.0,
+    "new_beats": 2.0,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    1,
+    0,
+    7,
+    11
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "voted",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 1,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       1.0,
+       0
+      ],
+      [
+       0.5,
+       1
+      ]
+     ],
+     "beams_ambiguous",
+     [
+      "beam_levels_possible"
+     ]
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/1/0/7/11/3"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    1,
+    0,
+    9,
+    0
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "voted",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 4,
+   "n_narrowed": 0,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/1/0/9/0/10"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    1,
+    0,
+    9,
+    11
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "voted",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 1,
+   "n_narrowed": 1,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "1",
+     [
+      [
+       2.0,
+       0
+      ],
+      [
+       1.0,
+       0
+      ],
+      [
+       4.0,
+       0
+      ]
+     ],
+     "head_fill_from_ink",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/1/0/9/11/1"
+    ],
+    "was_beats": 2.0,
+    "new_beats": 2.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      2.0,
+      0
+     ],
+     [
+      1.0,
+      0
+     ],
+     [
+      4.0,
+      0
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0,
+    16
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 1,
+   "n_narrowed": 0,
+   "total": 4.0,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/2/0/0/16/3"
+    ],
+    "was_beats": 4.0,
+    "new_beats": 2.0,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    0,
+    1,
+    15
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 2,
+   "n_notes": 4,
+   "n_narrowed": 0,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/2/0/1/15/7"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    0,
+    8,
+    0
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 4,
+   "n_narrowed": 2,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       1.0,
+       0
+      ],
+      [
+       0.5,
+       1
+      ]
+     ],
+     "beam_certain_not_joined",
+     [
+      "beam_joined_to_stem",
+      "beam_levels_certain",
+      "beam_levels_possible"
+     ]
+    ],
+    [
+     "3",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/0/8/0/2"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    0,
+    10,
+    15
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 4,
+   "n_narrowed": 0,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/2/0/10/15/6"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    0,
+    13
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       2.0,
+       0
+      ],
+      [
+       1.0,
+       0
+      ],
+      [
+       4.0,
+       0
+      ]
+     ],
+     "head_fill_from_ink",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/0/13/3"
+    ],
+    "was_beats": 2.0,
+    "new_beats": 2.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      2.0,
+      0
+     ],
+     [
+      1.0,
+      0
+     ],
+     [
+      4.0,
+      0
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    4,
+    9
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 3,
+   "n_narrowed": 2,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 1,
+   "chord_heads": [
+    2
+   ],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "3",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ],
+    [
+     "5",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/4/9/3",
+     "glyph/2/1/4/9/5"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    4,
+    14
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 2,
+   "n_narrowed": 0,
+   "total": 3.0,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/4/14/8"
+    ],
+    "was_beats": 2.0,
+    "new_beats": 1.0,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    6,
+    9
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "10",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/6/9/10"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    7,
+    7
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 1,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       1.0,
+       0
+      ],
+      [
+       0.5,
+       1
+      ]
+     ],
+     "beams_ambiguous",
+     [
+      "beam_levels_possible"
+     ]
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/7/7/2"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    7,
+    13
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 1,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       1.0,
+       0
+      ],
+      [
+       0.5,
+       1
+      ]
+     ],
+     "beam_certain_not_joined",
+     [
+      "beam_levels_certain",
+      "beam_levels_possible"
+     ]
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/7/13/2"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    9,
+    6
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 0,
+   "total": 2.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/9/6/0"
+    ],
+    "was_beats": 1.0,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": null
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    10,
+    3
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/10/3/2"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    10,
+    4
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "7",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/10/4/7"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    2,
+    1,
+    10,
+    5
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "7",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/2/1/10/5/7"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    3,
+    0,
+    7,
+    3
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 4,
+   "n_narrowed": 1,
+   "total": 2.0,
+   "fits": true,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "5",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       0.25,
+       2
+      ]
+     ],
+     "flags_disagree",
+     [
+      "flag_read_on_stem"
+     ]
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/3/0/7/3/5"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 0.5,
+    "new_levels": [
+     1
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      0.25,
+      2
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed",
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  },
+  {
+   "cell": [
+    3,
+    0,
+    7,
+    15
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/3/0/7/15/1"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "LANDED",
+   "pre_state": 1,
+   "fired_in_log": true,
+   "control_ok": true
+  }
+ ],
+ "control_failures": [],
+ "unfired_replay_lands": [
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    10
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "6",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/11/0/0/10/6"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    16
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/11/0/0/16/1"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  },
+  {
+   "cell": [
+    15,
+    0,
+    8,
+    17
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 0,
+   "n_notes": 2,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/15/0/8/17/2"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  },
+  {
+   "cell": [
+    16,
+    0,
+    1,
+    2
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar",
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 3,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "2",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/16/0/1/2/2"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  },
+  {
+   "cell": [
+    16,
+    1,
+    5,
+    9
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar",
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 3,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "1",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/16/1/5/9/1"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  },
+  {
+   "cell": [
+    16,
+    1,
+    5,
+    10
+   ],
+   "infer_any_reason": {
+    "decline": "heads_not_this_staffs_own",
+    "members": 1,
+    "unknowns": 0,
+    "landings": 0,
+    "forced": 0,
+    "ambiguous": 0,
+    "tip_not_clean": 0,
+    "lengthening_unwitnessed": 0,
+    "shortened_refused": 0
+   },
+   "settled_by": [
+    "infer:collapse_bare_stem_by_bar",
+    "infer:collapse_bare_stem_by_bar"
+   ],
+   "meter_outcome": "decided",
+   "meter_reason": "carried",
+   "expected": 2.0,
+   "n_set_aside": 1,
+   "n_notes": 3,
+   "n_narrowed": 1,
+   "total": 1.5,
+   "fits": false,
+   "n_chord_units": 0,
+   "chord_heads": [],
+   "chords_dropped_by": null,
+   "n_landings": 1,
+   "tuplet_member_notes": 0,
+   "narrowed_cands": [
+    [
+     "0",
+     [
+      [
+       0.5,
+       1
+      ],
+      [
+       1.0,
+       0
+      ]
+     ],
+     "beam_discounted_uncertain",
+     []
+    ]
+   ],
+   "landing": {
+    "glyphs": [
+     "glyph/16/1/5/10/0"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "clear",
+   "witness_unexplained": 0,
+   "witness_pieces": [],
+   "gate": "REPLAY_LANDS",
+   "by_other_stage": true
+  }
+ ]
+}
