@@ -8883,7 +8883,14 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                 + STACKED_HEAD_SEARCH_MARGIN_POSITIONS
 
             blob_fn = None
-            if stacked_second_head_enabled():
+            # ⚠️ ROADMAP 2.129 -- FILLED HEADS ONLY. The blob test reads a solid
+            # column through the heads' middle; a hollow head's middle is its
+            # hole, and a tremolo slash boxed beside a half note is no head at
+            # all (Litolff pdf 2: the first draft kept a slash as a second
+            # half note, 1.78 spaces of ink). Two black-class boxes or no test.
+            if stacked_second_head_enabled() and all(
+                    str(dets[gi].smufl_name).startswith("noteheadBlack")
+                    for gi in members):
                 def blob_fn(pos, _img=img, _cx=cx, _top=top_y, _hs=half_step,
                             _sp=spacing):
                     return stacked_blob_height_spaces(

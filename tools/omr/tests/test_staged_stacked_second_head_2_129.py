@@ -202,6 +202,17 @@ class TestGatherBehindTheFlag(unittest.TestCase):
         self.assertEqual({r.value[1] for r in rows}, {0, 1})
         self.assertEqual(rows[0].detail["second_head_by"], "blob_height")
 
+    def test_on_hollow_class_boxes_are_never_second_heads(self):
+        """Litolff pdf 2: a half note with a tremolo slash boxed beside it read 1.78 spaces of ink and the first
+        draft kept the slash as a second half note. The blob test is for FILLED heads only."""
+        img, cx = _twin_ink()
+        dets = [_detection("noteheadHalfInSpace", cx, TOP + p * HALF) for p in OBS_TWIN]
+        with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
+            log = self._run(img, dets, (cx - 22.0, 40.0, 20.0, 260.0))
+        rows = [log.rows(Q.STACKED_HEAD_FIT, R.glyph(0, 0, 0, 0, gi))[0] for gi in range(2)]
+        self.assertEqual([r.value[0] for r in rows], [1, 1])
+        self.assertNotIn("second_head_by", rows[0].detail)
+
     def test_on_a_duplicate_box_is_still_one_head(self):
         img, cx = _one_head_ink(p=1.0)
         with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
