@@ -5882,9 +5882,10 @@ MARK_SHAPE_ENV = "OMR_STACCATISSIMO_SHAPE"
 
 
 def mark_shape_enabled() -> bool:
-    """`OMR_STACCATISSIMO_SHAPE`, default OFF until Sean's tiles (2.131)."""
-    return os.environ.get(MARK_SHAPE_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_STACCATISSIMO_SHAPE`, default ON (2.131, landed 2026-10-14);
+    `0/false/no/off` disables."""
+    return os.environ.get(MARK_SHAPE_ENV, "1").strip().lower() \
+        not in ("0", "false", "no", "off")
 
 
 def mark_shape(img: Any, box: Tuple[float, float, float, float],

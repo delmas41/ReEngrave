@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.131 landed ON (staccato vs staccatissimo)
+STAGED GATHER `Q.MARK_SHAPE` (`gather.mark_shape`), ADJUDICATE wedge reading in `rhythm.py` (`staccatissimo_shape_enabled`), EXPORT `<staccatissimo/>`. `OMR_STACCATISSIMO_SHAPE` default ON (Sean: "1"); `0/off` disables. A wedge (h/w, taper, pointing at a head) is a staccatissimo and never an augmentation dot; no head to point at -> abstains. Sean's 13 tiles: 8/8 changed marks right, control right; misses (tile 3, tile 11) go to 2.133. Findings: `benchmarks/omr-staccatissimo-2026-10/FINDINGS.md`.
+
 ## 2026-10-14 -- ROADMAP 2.129 LANDED ON (filled stacked heads)
 STAGED GATHER `gather.stacked_second_head_enabled`, `OMR_STACKED_SECOND_HEAD` default ON (explicit `0/false/no/off` disables). Sean: "1 land". Brahms p0 truth: 5/5 lost second heads recovered, 0 false keeps; his 15 tiles right (tile 9, a real hollow second head, still refused -> new ROADMAP 2.132). Docs: flags row, ROADMAP 2.129/2.132, DECISIONS. Tests: default-ON check, OFF tests set the flag off explicitly.
 

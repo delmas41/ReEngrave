@@ -1,5 +1,5 @@
 """ROADMAP 2.131 -- a staccato DOT and a staccatissimo TRIANGLE
-(`OMR_STACCATISSIMO_SHAPE`, default OFF until Sean's tiles).
+(`OMR_STACCATISSIMO_SHAPE`, default ON since 2026-10-14).
 
 Numbers are real: Brahms 317803 (`benchmarks/omr-staccatissimo-2026-10/
 FINDINGS.md`), height/width and the top/bottom-third ink widths of boxes read
@@ -79,10 +79,22 @@ class TestWedgeIsStaccatissimo(unittest.TestCase):
         d = _below(log, WEDGE_BELOW)
         self.assertEqual(_role(log, d).value, "staccatissimo")
 
+    @mock.patch.dict(os.environ, {"OMR_STACCATISSIMO_SHAPE": "0"})
     def test_FLAG_OFF_the_same_wedge_stays_staccato(self):
         log = Log()
         d = _above(log, WEDGE_ABOVE)
         self.assertEqual(_role(log, d).value, "staccato")
+
+    def test_DEFAULT_is_ON_and_off_word_turns_it_off(self):
+        env = {k: v for k, v in os.environ.items()
+               if k != "OMR_STACCATISSIMO_SHAPE"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            self.assertTrue(gather.mark_shape_enabled())
+            from tools.omr.staged.adjudicators import rhythm
+            self.assertTrue(rhythm.staccatissimo_shape_enabled())
+        for w in ("0", "off", "false", "no"):
+            with mock.patch.dict(os.environ, {"OMR_STACCATISSIMO_SHAPE": w}):
+                self.assertFalse(gather.mark_shape_enabled())
 
     @mock.patch.dict(os.environ, ON)
     def test_CONTROL_a_round_staccato_stays_staccato(self):

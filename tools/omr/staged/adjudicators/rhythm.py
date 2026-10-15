@@ -2259,7 +2259,7 @@ DOT_TWIN_MAX_SPACES = 0.3
 #: (Sean 2026-10-09: "mostly overlap"). Real dots read 0.0 on Brahms p1.
 DOT_ON_STROKE_MIN = 0.5
 
-# ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default OFF until Sean's tiles).
+# ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default ON, landed 2026-10-14).
 # A wedge is the staccatissimo and is never an augmentation dot. MEASURED on
 # Brahms 317803 (`benchmarks/omr-staccatissimo-2026-10/FINDINGS.md`): the
 # detector's own staccatissimo boxes read h/w 1.45 (5th pct 1.2), taper
@@ -2273,8 +2273,9 @@ WEDGE_MAX_HEIGHT_SPACES = 0.85
 
 
 def staccatissimo_shape_enabled() -> bool:
-    return os.environ.get("OMR_STACCATISSIMO_SHAPE", "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Default ON (landed 2026-10-14, Sean: "1"); `0/false/no/off` disables."""
+    return os.environ.get("OMR_STACCATISSIMO_SHAPE", "1").strip().lower() \
+        not in ("0", "false", "no", "off")
 
 
 def _wedge_reading(shape_row):

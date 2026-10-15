@@ -1,6 +1,6 @@
 # ROADMAP 2.131 -- a staccato dot is not a staccatissimo triangle (STAGED GATHER / ADJUDICATE / EXPORT)
 
-Flag `OMR_STACCATISSIMO_SHAPE`, **default OFF** until Sean's tiles (`out/print/2.131-review/staccatissimo-review.png`,
+Flag `OMR_STACCATISSIMO_SHAPE`, **default ON since 2026-10-14 (landed)**; was OFF until Sean's tiles (`out/print/2.131-review/staccatissimo-review.png`,
 hidden `_hidden/manifest.json`). Records: Brahms 317803 `20261013-night`; page measurements off the 600 dpi raster.
 
 ## 1. How staccatissimo is handled today (STAGED, measured)

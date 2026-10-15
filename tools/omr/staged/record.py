@@ -642,7 +642,7 @@ class Q(_Vocab):
     #: contact. ABSTAINS where the raster, the staff-space unit or the box
     #: is missing.
     DOT_STROKE_INK = "dot_stroke_ink"
-    #: ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default OFF; Sean 2026-10-14:
+    #: ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default ON; Sean 2026-10-14:
     #: *"make sure that we know the difference between a stacatto dot and a
     #: stacatisso triangle"*). Filed on the glyph of every `augmentationDot` /
     #: `articStaccato*` detection: the SHAPE of the ink inside its own box,
