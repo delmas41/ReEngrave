@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.132 landed, switch OFF
+Merged lane-2.132-hollow-stacked into main with `OMR_STACKED_HOLLOW_PAIR` default OFF (output unchanged with the flag off; OFF test in test_staged_stacked_hollow_pair_2_132.py). Sean: "After all our open lanes land"; tiles not yet judged, so the default waits for them.
+
 ## 2026-10-15 -- ROADMAP 2.132 built, flag OFF (hollow stacked heads)
 STAGED GATHER `gather.stacked_hollow_pair_enabled` / `fit_hollow_stacked_pair` / `_hollow_pair_from_page`, `OMR_STACKED_HOLLOW_PAIR` default OFF (Sean has not seen the tiles). A hollow group the 2.129 fit reads as k=1 is two heads where both slots of a third read hollow on the PAGE raster (line rows left out) and a stem at an edge reaches both heads and runs >= 1.5 spaces past the pair; the stem excludes the "8" of a printed 9/8 (the 2.129 "bass clef", a crop shows it) and the real bass clef. Brahms: 18 of 19 refused chords kept, pdf 0 truth byte-identical; Litolff pp0-3 7 groups kept (unconfirmed). Cost: ties 41 -> 38 on Litolff (tie pairing abstains on a chord). 15 tiles in `out/print/2.132-review/`. Check 192.
 
