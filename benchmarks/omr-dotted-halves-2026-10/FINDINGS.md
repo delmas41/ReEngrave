@@ -59,3 +59,20 @@ Sean: "1-2. Dot half 3. Dot half and a quarter 4. Dot half's 5-8 dot half 9. Dot
 - Still wrong, all for a MISSING DOT: 1, 11, 12, 14 decided plain half 2.0 (truth 3.0); 4 (control, a half written plain, truth dotted half 2.0 vs 3.0); 9 and 15 blue {1,2} without the dotted 1.5.
 - 10: not a note -- a flat accidental boxed as a head (follow-up).
 Landed ON with 2.128 (dot position join) already ON; the re-check of the missing dots follows in section 7.
+
+## 7. Re-check on main with 2.128 AND 2.130 ON (2026-10-14)
+Method: a real page GATHER + ADJUDICATE of Brahms 317803 pdf pages 6, 7, 10 (the glyph keys' first index; `--through adjudicate --no-surya --no-ocr`, one page at a time, `nice -n 10`) on the landed tree, both flags at their new defaults. Not a replay: the old 20261013-night records have no `Q.DOT_STAFF_POSITION`, so the join could not be re-decided from them. Steps are `notehead_staff_position` / `dot_staff_position` (half-spaces, smaller = higher).
+
+**The six whole-class boxes of tiles 1, 4, 11, 12, 14, 15 are NOT the note.** Each is a second box over the same head (a `noteheadHalfOnLine` / black twin sits on it) and is decided a non-note (`stacked_head_duplicate`; tile 11 `head_cut_piece`). The tile's value is the TWIN's, so the question is the twin's dot:
+
+| tile | the twin's duration now | dot |
+|---|---|---|
+| 4 (twin `10/1/1/3/19`) | 3.0, dots 1 (decided) | joined: a dot box at +0.22 head heights, step 0.77, one step above the lower note of the pair (step 1.95), the "above" rule |
+| 14 (twin `10/1/13/3/10`) | 3.0, dots 1 (decided) | joined: dot box -0.43 head heights, step 4.90 against a head on step 5.83 (space above) |
+| 15 (twin `7/0/3/4/8`) | 1.5, dots 1 (decided) | joined: dot box step 2.69 against a head on step 3.82 (space above) |
+| 9 (twin `7/1/3/4/7`) | blue {0.75, 1.5}, dots 1 | the dot (`7/1/3/4/11`, level with the head, step 7.03 vs 7.14, its own space) is joined and includes the dotted quarter; the whole-class box `7/1/3/4/21` is NOT flagged a duplicate and stays blue {1.0, 2.0} (a 2.129-style duplicate-detection miss) |
+| 1 (twin `10/1/3/4/8`) | 2.0, no dot | NO dot box within 2.2 head widths right of the head and +-1.2 head heights: the detector never boxed it |
+| 11 (twin `6/1/5/8/7`) | 2.0, no dot | no dot box either (the head is also a ledger note, `ledger_note_first`) |
+| 12 (twin `6/0/5/7/8`) | 2.0, no dot | no dot box either (the nearest dot, `6/0/5/7/6`, is 12.9 steps away on another staff) |
+
+So 4, 9, 14, 15 are now right (3.0 / blue incl. 1.5 / 3.0 / 1.5). The three still plain halves (1, 11, 12) have no dot box at all, so neither the join nor the position can help: the reach lies in the detector (or a CV dot reader at the expected step: for a head on step s the dot belongs at s-1, one step above), per CLAUDE.md §7. Open follow-ups: a dot reader at the expected position for 1/11/12; the unflagged whole-class duplicate at tile 9; tile 10 (an accidental boxed as a head).
