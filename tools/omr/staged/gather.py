@@ -3071,7 +3071,8 @@ def dot_step_fields(cy: float, top_y: float, half_step: float
 
 
 def _local_staff_lines(binary: Any, line_ys: Sequence[float], spacing: float,
-                       cx: float) -> Optional[List[float]]:
+                       cx: float, window_spaces: Optional[float] = None
+                       ) -> Optional[List[float]]:
     """The five printed line rows IN THE COLUMNS AROUND `cx`, or `None`.
 
     CLAUDE.md Sec.5: a scanned staff tilts and ~1 px decides a near-boundary
@@ -3086,8 +3087,9 @@ def _local_staff_lines(binary: Any, line_ys: Sequence[float], spacing: float,
         return None
     from .. import measure_extractor as ME
     width = binary.shape[1]
-    lo = max(0, int(round(cx - DOT_LINE_WINDOW_SPACES * spacing)))
-    hi = min(width, int(round(cx + DOT_LINE_WINDOW_SPACES * spacing)))
+    win = DOT_LINE_WINDOW_SPACES if window_spaces is None else window_spaces
+    lo = max(0, int(round(cx - win * spacing)))
+    hi = min(width, int(round(cx + win * spacing)))
     if hi - lo < max(2.0, ME.CELL_LINE_MIN_WIDTH_SPACES * spacing):
         return None
     try:
@@ -4414,9 +4416,10 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
             space_c = _grid_d[1] * 2.0 if _grid_d is not None else None
         _observe_dot_stroke_ink(log, sub, frame, c,
                                 (detections or {}).get(sub.to_key()), space_c)
+
         # ROADMAP 2.131: is a dot-class box a round dot or a staccatissimo
         # wedge? Same raster, same detections.
-        if mark_shape_enabled():
+        if mark_shape_enabled() and not mark_shape_line_removed_enabled():
             _observe_mark_shape(log, sub, frame, c,
                                 (detections or {}).get(sub.to_key()), space_c)
 
@@ -5879,6 +5882,16 @@ def dot_stroke_ink(img: Any, box: Tuple[float, float, float, float],
 # ─────────────────────────────────────────────────────────────────────────────
 
 MARK_SHAPE_ENV = "OMR_STACCATISSIMO_SHAPE"
+MARK_SHAPE_LOCAL_ENV = "OMR_MARK_SHAPE_LINE_REMOVED"
+
+
+def mark_shape_line_removed_enabled() -> bool:
+    """`OMR_MARK_SHAPE_LINE_REMOVED` (ROADMAP 2.133), default OFF: measure
+    the mark off the PAGE raster with the staff line under it bridged out,
+    instead of the cell's `image_no_staff`. Measurement only until it is
+    shown to separate (FINDINGS 2.133: it does not, cleanly)."""
+    return os.environ.get(MARK_SHAPE_LOCAL_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
 
 
 def mark_shape_enabled() -> bool:
@@ -5888,37 +5901,183 @@ def mark_shape_enabled() -> bool:
         not in ("0", "false", "no", "off")
 
 
-def mark_shape(img: Any, box: Tuple[float, float, float, float],
-               space: float) -> Optional[Dict[str, Any]]:
-    """Height/width and the widths of the top and bottom third of the ink
-    inside `box` (`x, y, w, h`, canonical cell px), padded by one pixel.
-    `None` -- declined -- where the raster, unit or box is unusable or the
-    box holds under four ink pixels. ROADMAP 2.131."""
-    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
-        return None
-    x, y, w, h = [float(v) for v in box]
-    if w <= 0 or h <= 0:
-        return None
+def line_band_beside(ink: Any, row: float, x_in0: int, x_in1: int,
+                     half_fallback: int, reach: int = 4
+                     ) -> Tuple[int, int]:
+    """The rows `(lo, hi)` the staff line near window row `row` occupies
+    BESIDE the mark -- in the `reach` columns just outside its box columns
+    `x_in0:x_in1` -- so a scan's thick or wavering line is erased at its own
+    thickness and not at the staff's median. Falls back to `row +- 
+    half_fallback` where neither side shows a line. ROADMAP 2.133."""
     import numpy as np
-    H, W = img.shape
-    x0, y0 = max(0, int(round(x)) - 1), max(0, int(round(y)) - 1)
-    x1, y1 = min(W, int(round(x + w)) + 2), min(H, int(round(y + h)) + 2)
-    if x1 - x0 < 2 or y1 - y0 < 2:
-        return None
-    ink = img[y0:y1, x0:x1] == 0
+    H, W = ink.shape
+    r = int(round(row))
+    tops, bots = [], []
+    for cols in (range(max(0, x_in0 - reach), x_in0),
+                 range(x_in1, min(W, x_in1 + reach))):
+        for c in cols:
+            if not (0 <= r < H) or not ink[r, c]:
+                continue
+            t = r
+            while t - 1 >= 0 and ink[t - 1, c]:
+                t -= 1
+            b_ = r
+            while b_ + 1 < H and ink[b_ + 1, c]:
+                b_ += 1
+            if b_ - t + 1 <= 3 * half_fallback + 3:      # a line, not a stem
+                tops.append(t)
+                bots.append(b_)
+    if len(tops) >= 2:
+        return int(np.median(tops)), int(np.median(bots))
+    return r - half_fallback, r + half_fallback
+
+
+def erase_staff_lines(ink: Any, bands: Sequence[Tuple[int, int]]) -> Any:
+    """`ink` (bool, True = ink, a window) with each staff-line BAND `(lo, hi)`
+    bridged out: the band keeps only the columns where ink stands both just
+    above and just below it -- the mark's body crossing the line survives, the
+    line does not. ROADMAP 2.133."""
+    import numpy as np
+    out = ink.copy()
+    H = out.shape[0]
+    for lo, hi in bands:
+        if hi < 0 or lo >= H:
+            continue
+        above = out[lo - 1] if lo - 1 >= 0 else np.zeros(out.shape[1], bool)
+        below = out[hi + 1] if hi + 1 < H else np.zeros(out.shape[1], bool)
+        out[max(0, lo):min(H, hi + 1)] = (above & below)[None, :]
+    return out
+
+
+def mark_shape_of_ink(ink: Any, space: float, rows: bool = False
+                      ) -> Optional[Dict[str, Any]]:
+    """Height/width, the top/bottom third widths and the row-width profile of
+    the ink in a bool window (True = ink). `None` under four ink pixels.
+    ROADMAP 2.131 / 2.133."""
+    import numpy as np
     ys, xs = np.where(ink)
-    if len(ys) < 4:
+    if len(ys) < 4 or not space or space <= 0:
         return None
     top, bot = int(ys.min()), int(ys.max())
     ih, iw = bot - top + 1, int(xs.max() - xs.min() + 1)
     thirds = np.array_split(np.arange(top, bot + 1), 3)
     wid = [int(ink[t].any(axis=0).sum()) if len(t) else 0 for t in thirds]
-    prof = [int(ink[r].sum()) for r in range(top, bot + 1)]   # row widths
-    return {"hw": round(ih / float(iw), 4), "top": wid[0], "bot": wid[2],
-            "rows": prof,
-            "h_spaces": round(ih / float(space), 4),
-            "w_spaces": round(iw / float(space), 4),
-            "fill": round(len(ys) / float(ih * iw), 4)}
+    out = {"hw": round(ih / float(iw), 4), "top": wid[0], "bot": wid[2],
+           "h_spaces": round(ih / float(space), 4),
+           "w_spaces": round(iw / float(space), 4),
+           "fill": round(len(ys) / float(ih * iw), 4)}
+    if rows:                    # the row-width profile, for the page reader
+        out["rows"] = [int(ink[r].sum()) for r in range(top, bot + 1)]
+    return out
+
+
+def mark_shape(img: Any, box: Tuple[float, float, float, float],
+               space: float) -> Optional[Dict[str, Any]]:
+    """`mark_shape_of_ink` on the ink (0 = ink) inside `box` (`x, y, w, h`),
+    padded by one pixel. `None` -- declined -- where the raster, unit or box
+    is unusable. ROADMAP 2.131."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    x, y, w, h = [float(v) for v in box]
+    if w <= 0 or h <= 0:
+        return None
+    H, W = img.shape
+    x0, y0 = max(0, int(round(x)) - 1), max(0, int(round(y)) - 1)
+    x1, y1 = min(W, int(round(x + w)) + 2), min(H, int(round(y + h)) + 2)
+    if x1 - x0 < 2 or y1 - y0 < 2:
+        return None
+    return mark_shape_of_ink(img[y0:y1, x0:x1] == 0, space)
+
+
+def gather_mark_shapes(log: Log, pws: Any, cells: Sequence[Any],
+                       local: Dict[int, Tuple[int, int]],
+                       detections: Dict[str, List[Any]]) -> None:
+    """`Q.MARK_SHAPE` for every dot / staccato-class box, off the PAGE raster
+    (`pws.page.binary`, 0 = ink, staff lines IN) with the staff line(s)
+    under the mark bridged out at the mark's own x. ROADMAP 2.133.
+
+    ⚠️ LOCAL (CLAUDE.md Sec.5): the line rows are the ones
+    `_local_staff_lines` re-finds in the columns around the mark -- the same
+    finder `gather_dot_positions` (2.128) uses; where they cannot be placed
+    the staff's own `line_ys` are used and `detail.lines` says `staff_grid`,
+    and where the mark crosses no line `detail.lines` is `none_under_mark`.
+    """
+    page = getattr(pws, "page", None)
+    binary = getattr(page, "binary", None)
+    if binary is None or getattr(binary, "ndim", 0) != 2:
+        return
+    staves = []
+    for st in getattr(pws, "staves", ()) or ():
+        key = local.get(st.staff_index)
+        ys = [float(y) for y in getattr(st, "line_ys", ()) or ()]
+        sp = _spacing(st) if len(ys) >= 5 else None
+        if key is None or not sp:
+            continue
+        thick = getattr(st, "median_line_thickness_px", None)
+        staves.append((ys, float(sp), float(thick) if thick else None))
+    cell_by_key = {}
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    H, W = binary.shape
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        frame = frame_cell(sub.cell)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        for gi, d in enumerate(dets):
+            name = d.smufl_name
+            if not (name == _DOT_CLASS or name in _STACCATO_CLASSES):
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            box = _page_box(c, d) if c is not None else None
+            if box is None or not staves:
+                log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="no page box or no staves")
+                continue
+            cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+            ys, sp, thick = min(
+                staves, key=lambda t: max(min(t[0]) - cy, cy - max(t[0]),
+                                          0.0) / t[1])
+            x0, y0 = max(0, int(round(box[0])) - 1), max(0, int(round(box[1])) - 1)
+            x1, y1 = min(W, int(round(box[2])) + 2), min(H, int(round(box[3])) + 2)
+            if x1 - x0 < 2 or y1 - y0 < 2:
+                log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="box off the raster")
+                continue
+            half = int(math.ceil((thick or 0.12 * sp) / 2.0))
+            rows = None
+            for win_sp in (DOT_LINE_WINDOW_SPACES, 5.0, 8.0):
+                # the SAME finder, a wider window where the near one cannot
+                # place five lines (a stem or a barline beside the mark)
+                rows = _local_staff_lines(binary, ys, sp, cx, win_sp)
+                if rows is not None:
+                    break
+            basis = "local_ink" if rows is not None else "staff_grid"
+            use = rows if rows is not None else ys
+            under = [r for r in use if y0 - half - 1 <= r <= y1 + half + 1]
+            # the window is read wider than the box: a line's own thickness is
+            # taken from the columns beside the mark, a bridge needs ink above
+            # and below the band
+            px = 5
+            wx0, wx1 = max(0, x0 - px), min(W, x1 + px)
+            wy0, wy1 = max(0, y0 - 3 * half - 4), min(H, y1 + 3 * half + 4)
+            win = binary[wy0:wy1, wx0:wx1] == 0
+            bands = [line_band_beside(win, r - wy0, x0 - wx0, x1 - wx0, half)
+                     for r in under]
+            win = erase_staff_lines(win, bands)
+            win = win[y0 - wy0:y1 - wy0, x0 - wx0:x1 - wx0]
+            m = mark_shape_of_ink(win, sp, rows=True)
+            if m is None:
+                log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="no ink in the box")
+                continue
+            log.observe(g, Q.MARK_SHAPE, m.pop("hw"),
+                        reader=READERS.CV_MARK_SHAPE, frame=frame,
+                        lines=(basis if under else "none_under_mark"), **m)
 
 
 def _observe_mark_shape(log: Log, sub: Subject, frame: str, cell: Any,
@@ -13588,6 +13747,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
         gather_dot_positions(log, pws, cells, local, detections)
+        if mark_shape_enabled() and mark_shape_line_removed_enabled():
+            gather_mark_shapes(log, pws, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
         # search blanks the point detections out of the ink first) and BEFORE
