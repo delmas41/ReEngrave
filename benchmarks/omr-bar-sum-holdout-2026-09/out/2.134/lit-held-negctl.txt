@@ -1,0 +1,20 @@
+lit-held: captured 640 + doubled 59 = 699; expected 699; partition sums to 699  CONTROL PASS
+judged != printed meter on 640 bars
+
+== evidenced: 0 (0.0% of 699)
+
+== arith_only: 0 (0.0% of 699)
+
+== unexplained: 640 (91.6% of 699)
+    640  unexplained
+
+bars on which each token is EVIDENCED (how common the evidence is): {'B': 147, 'G': 147, 'K': 78, 'I:eighth': 77, 'I:quarter': 59, 'D': 28, 'R:rest_has_a_stem': 23, 'S': 21, 'N': 21, 'R:too_narrow': 18, 'U:rest_has_a_stem': 17, 'I:half_whole': 17, 'V': 9, 'R:rest_clipped_by_crop': 7, 'A': 5, 'R:belongs_to_a_nearer_staff': 4, 'U:clipped_fragment': 3, 'F': 3, 'Y': 2, 'R:clipped_fragment': 2, 'U:too_narrow': 2, 'R:rest_outside_its_staff': 1, 'U:rest_off_center': 1, 'Q': 1, 'P': 1, 'R:rest_touches_two_staff_lines': 1}
+
+single EVIDENCED fix releases alone: {}
+single ARITHMETIC-only fix releases alone: {}
+necessary in every minimal evidenced set: {}
+unexplained: residual sign: {'short': 443, 'over': 190, 'zero': 7}
+unexplained: has a refusal: {True: 354, False: 286}
+unexplained: ink: {'clear': 379, 'unexplained': 261}
+unexplained: n_streams: {1: 630, 2: 10}
+unexplained: residual: {1.0: 303, 0.5: 114, -1.0: 98, -0.5: 36, -2.0: 25, 1.5: 18, -1.5: 10, 0.0: 7}

@@ -1,0 +1,8 @@
+[    0.9s] loading /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20261014-night.record.json
+[   49.8s] loaded
+[   49.8s] own: export
+[   63.9s] own: exported, 1717 held captured; indexing
+[   64.6s] own: held 975 (doubled 0) of 6073; captured 1717; control FAIL; -> /private/tmp/claude-501/h134/brah-own.held.json
+[   71.3s] control 2.134: {'held_sum': 975, 'doubled': 0, 'of_bars_with_events': 6073, 'partial_written': 742, 'captured': 1717, 'kinds': {'held': 975, 'partial': 742}, 'stay_held_by_reason': {'voice_overfull': 515, 'nothing_before_or_after_the_gap': 241, 'short_without_an_unread_symbol': 219}, 'PASS': True}
+[   72.3s] enrich: rows indexed
+[   73.6s] enrich: {'ink_clear': 741, 'ink_unexplained': 976} -> /private/tmp/claude-501/h134/brah-2.134.held.json

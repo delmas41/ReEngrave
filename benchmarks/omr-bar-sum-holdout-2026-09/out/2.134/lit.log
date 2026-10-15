@@ -1,0 +1,8 @@
+[    0.8s] loading /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261014-night.record.json
+[   11.5s] loaded
+[   11.5s] own: export
+[   16.7s] own: exported, 860 held captured; indexing
+[   17.0s] own: held 699 (doubled 59) of 5034; captured 801; control FAIL; -> /private/tmp/claude-501/h134/lit-own.held.json
+[   18.9s] control 2.134: {'held_sum': 699, 'doubled': 59, 'of_bars_with_events': 5034, 'partial_written': 161, 'captured': 801, 'kinds': {'held': 640, 'partial': 161}, 'stay_held_by_reason': {'voice_overfull': 190, 'short_without_an_unread_symbol': 408, 'nothing_before_or_after_the_gap': 42}, 'PASS': True}
+[   19.3s] enrich: rows indexed
+[   19.7s] enrich: {'ink_clear': 478, 'ink_unexplained': 323} -> /private/tmp/claude-501/h134/lit-2.134.held.json
