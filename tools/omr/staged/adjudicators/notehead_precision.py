@@ -84,6 +84,7 @@ CONFIRMED, NOT BUILT.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
 from ... import transcribe as _legacy
@@ -1232,6 +1233,92 @@ TREMOLO_SLASH_REASON = "tremolo_slash_crosses_stem"
 TREMOLO_SLASH_SHIPS = True
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.137 -- a slash is never oval, so it need not stand away from the
+# stem's ends. `OMR_SLASH_AT_STEM_END`, STAGED, default ON since 2026-10-15 (Sean: 5/5 fixed, 3/3 controls).
+#
+# Sean, 2026-10-15 (page-facts §1, general scope): *"They are never oval shaped
+# - always thick diagonal lines."* The 20261014-night records (FINDINGS 2.137)
+# keep print-confirmed tremolo slashes as noteheads (Brahms 35, Litolff 12).
+# Every one passes 2.49's CROSSING test (or 2.71's stroke witness) and fails
+# only what the convention does not ask for: POSITION (the first slash of a
+# stack sits 0.07-0.49 box-heights from the stem's tip, under the 0.5 floor) and
+# the 20-degree floor of SHAPE (Brahms slashes lie at 10-20 degrees). With the
+# flag on, a box whose own ink is NOT OVAL is refused as the slash it is,
+# without the position test, and its margin is filed.
+#
+# What decides and what only narrows (CLAUDE.md §4): "never oval, thick,
+# diagonal, across both sides of one stem" is the convention and decides. The
+# numbers are 2.49's existing cut-offs (elongation, fill ceiling) plus two
+# measured on these two plates only (angle band, fill floor); they are filed as
+# margins; Sean read the tiles and landed it ON (tile 9, a deformed half note, is refused and accepted).
+SLASH_AT_STEM_END_ENV = "OMR_SLASH_AT_STEM_END"
+#: degrees off horizontal. A slash crosses a stem sideways: the confirmed ones
+#: read 10.3-34.8; a quarter rest's zigzag reads 64-67 and is not asked.
+NOT_OVAL_ANGLE_MIN_DEG = 10.0
+NOT_OVAL_ANGLE_MAX_DEG = 45.0
+#: "thick": a thin slur or beam sliver boxed as a head fills ~0.07; the
+#: confirmed slashes fill 0.26-0.55.
+NOT_OVAL_MIN_FILL = 0.15
+
+
+def slash_at_stem_end_enabled() -> bool:
+    """Default ON (Sean 2026-10-15, ROADMAP 2.137): a deny-list -- only an explicit off-word restores the old reader."""
+    return os.environ.get(SLASH_AT_STEM_END_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
+
+
+def _not_oval_slack(cross_detail: Dict[str, Any]
+                    ) -> Tuple[Optional[str], Optional[float]]:
+    """`(tightest axis, signed slack as a fraction of its cut)` of the
+    NOT-OVAL shape witness on one box's own ink, or `(None, None)` where GATHER
+    read no shape. >= 0 on every axis = a thick diagonal, not an oval."""
+    angle = cross_detail.get("angle_deg")
+    elong = cross_detail.get("elongation")
+    fill = cross_detail.get("fill")
+    if angle is None or elong is None or fill is None:
+        return None, None
+    return _margins.tightest((
+        ("angle_floor", (angle - NOT_OVAL_ANGLE_MIN_DEG) / NOT_OVAL_ANGLE_MIN_DEG),
+        ("angle_ceiling", (NOT_OVAL_ANGLE_MAX_DEG - angle) / NOT_OVAL_ANGLE_MAX_DEG),
+        ("elongation", (elong - SHAPE_MIN_ELONGATION) / SHAPE_MIN_ELONGATION),
+        ("fill_ceiling", (SHAPE_MAX_FILL - fill) / SHAPE_MAX_FILL),
+        ("fill_floor", (fill - NOT_OVAL_MIN_FILL) / NOT_OVAL_MIN_FILL)))
+
+
+def _slash_at_stem_end(ev: Evidence, subject, box_xywh,
+                       cross_detail: Optional[Dict[str, Any]]
+                       ) -> Optional[Dict[str, Any]]:
+    """The flagged witness (2.137) for one notehead-classed box on a matched
+    stem: `{"fires", "via", "margin", "axis", ...}`, or `None` where no shape
+    was read (a box this cannot read is not one it clears). Reads rows only.
+
+    FIRES when the box's ink is NOT OVAL (`_not_oval_slack` >= 0) AND the
+    stroke crosses the stem: each side holds `CROSSING_MIN_SHARE` of the
+    glyph's own ink, or GATHER's `Q.STEM_SLASH` read a passing stroke under
+    the box (which already means both sides reach). POSITION is not asked."""
+    if cross_detail is None:
+        return None
+    axis, slack = _not_oval_slack(cross_detail)
+    if slack is None:
+        return None
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    via = "crossing_share" if crossing_ok else None
+    if via is None and _slash_read_under_box(
+            ev, subject, box_xywh, need_position=False) is not None:
+        via = "stem_slash_stroke"
+    if via == "crossing_share":
+        share_slack = (min(cross_detail["left_share"], cross_detail["right_share"])
+                       - CROSSING_MIN_SHARE) / CROSSING_MIN_SHARE
+        if share_slack < slack:
+            axis, slack = "crossing_share", share_slack
+    return {"fires": bool(via is not None and slack >= 0.0), "via": via,
+            "margin": round(slack, 4), "axis": axis, "crossing_ok": crossing_ok,
+            "angle_deg": cross_detail.get("angle_deg"),
+            "elongation": cross_detail.get("elongation"),
+            "fill": cross_detail.get("fill")}
+
+
 def _notehead_stem_cross_detail(ev: Evidence, subject) -> Optional[Dict[str, Any]]:
     """`Q.NOTEHEAD_STEM_CROSS_INK`'s own `detail` for `subject`, or `None`
     where GATHER filed no row (no overlapping stem, or no area to split --
@@ -1312,7 +1399,8 @@ SLASH_READ_COVER_MIN = 0.6
 SLASH_READ_BOX_MAX_FOOTPRINTS = 4.0
 
 
-def _slash_read_under_box(ev: Evidence, subject, box_xywh
+def _slash_read_under_box(ev: Evidence, subject, box_xywh,
+                          need_position: bool = True
                           ) -> Optional[Tuple[Any, Dict[str, Any]]]:
     """`(Q.STEM_SLASH row, stroke)` where a PASSING slash read by GATHER lies
     inside `box_xywh` (a notehead-classed box, canonical cell px) on the shaft
@@ -1349,7 +1437,7 @@ def _slash_read_under_box(ev: Evidence, subject, box_xywh
             area = max(1e-6, ((lx1 - lx0) ** 2 + (ly1 - ly0) ** 2) ** 0.5 * thick)
             if (w * h) > SLASH_READ_BOX_MAX_FOOTPRINTS * area:
                 continue
-            if _tremolo_position_ok(box_xywh, stem_xywh):
+            if not need_position or _tremolo_position_ok(box_xywh, stem_xywh):
                 return r, s
     return None
 
@@ -1388,7 +1476,14 @@ def _is_tremolo_slash(ev: Evidence, subject) -> bool:
     shape_ok = _tremolo_shape_ok(cross_detail)
     crossing_ok = _tremolo_crossing_ok(cross_detail)
     position_ok = _tremolo_position_ok(box_xywh, stem_xywh)
-    return bool(shape_ok and crossing_ok and position_ok)
+    if shape_ok and crossing_ok and position_ok:
+        return True
+    # ROADMAP 2.137 (flag, default OFF): the same witness the direct refusal
+    # takes, so a stacked group's keep-choice never picks a slash either.
+    if slash_at_stem_end_enabled():
+        alt = _slash_at_stem_end(ev, subject, box_xywh, cross_detail)
+        return bool(alt is not None and alt["fires"])
+    return False
 
 
 def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
@@ -1450,6 +1545,23 @@ def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
         "right_share": cross_detail.get("right_share"),
         "shape_ok": shape_ok, "crossing_ok": crossing_ok,
         "position_ok": position_ok, "would_fire": would_fire}
+    if not would_fire and TREMOLO_SLASH_SHIPS and box_xywh is not None \
+            and slash_at_stem_end_enabled():
+        # ROADMAP 2.137: not oval + across the stem; position recorded, not
+        # asked. A near miss files its margin on the KEPT head too (2.106).
+        alt = _slash_at_stem_end(ev, this_row.subject, box_xywh, cross_detail)
+        if alt is not None:
+            detail["tremolo_slash_signal"]["at_stem_end"] = alt
+            if alt["fires"]:
+                rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK,
+                               subject=this_row.subject)
+                used = (this_row.id, rows[-1].id) if rows else (this_row.id,)
+                return _margins.attach(
+                    Ruling(value=True, reason="tremolo_slash_crosses_stem",
+                           used=used, detail=detail),
+                    margin=alt["margin"], axis=alt["axis"],
+                    unit="fraction of the cut", band=None,
+                    would_choose=(True,), refused_via=alt["via"])
     if not would_fire or not TREMOLO_SLASH_SHIPS:
         return None
     rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=this_row.subject)

@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.137 landed ON (tremolo slash at the stem end)
+STAGED ADJUDICATE, `OMR_SLASH_AT_STEM_END` default ON (`notehead_precision.slash_at_stem_end_enabled`; explicit `0/false/no/off` disables): a non-oval box crossing a stem is refused as a slash without 2.49's position test. 49 slashes stood as heads (Brahms 37, Litolff 12). Sean's 10 tiles: 5/5 fixed, 3/3 controls, tile 9 (deformed half note) refused and accepted. Land merge 6643c70e. Reaches records at the next re-decide/re-gather.
+
 ## 2026-10-15 -- ROADMAP 2.136 landed, flag split (land merge dfba2439)
 Merged lane-2.136-step2 (head ffb82ac0), then split its one flag (Sean 2026-10-15). `OMR_INFER_CARRIED_METER_FIX` is default ON, W1 only (`infer.carried_meter_fix_enabled`, read in `inferences._printed_meter_roots`; deny-list). `OMR_INFER_LEDGER_OWNER_HEADS` is default OFF, W2 only (`infer.ledger_owner_heads_enabled`, read in `inferences.solve_bare_stem_bar`, passed to `consequences._bar_heads_are_clean`); held for 2.141 (Litolff tiles 6 and 10). Takes effect when records are re-decided and at the next re-gather; no gather run. Fast tier 8093 passed, check 192.
 
