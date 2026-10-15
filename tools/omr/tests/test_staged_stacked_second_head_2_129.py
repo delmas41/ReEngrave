@@ -213,6 +213,30 @@ class TestGatherBehindTheFlag(unittest.TestCase):
         self.assertEqual([r.value[0] for r in rows], [1, 1])
         self.assertNotIn("second_head_by", rows[0].detail)
 
+    def test_a_refused_hollow_pair_says_it_was_not_tested(self):
+        """Sean's tile 9 (Brahms pdf 21): a real hollow third stays refused; the row says why (near-miss)."""
+        img, cx = _twin_ink()
+        dets = [_detection("noteheadHalfInSpace", cx, TOP + p * HALF) for p in OBS_TWIN]
+        with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
+            log = self._run(img, dets, (cx - 22.0, 40.0, 20.0, 260.0))
+        row = log.rows(Q.STACKED_HEAD_FIT, R.glyph(0, 0, 0, 0, 0))[0]
+        self.assertIn("hollow", row.detail["near_miss"]["not_tested"])
+
+    def test_a_head_with_a_thin_diagonal_slash_below_is_not_two_heads(self):
+        """Sean's tile 6 (Brahms pdf 16): a head and the tremolo slash below it, boxed as two. The slash's slot
+        holds a thin diagonal stroke, not a head's ink: stays one head."""
+        img, cx = _one_head_ink(p=-1.0)
+        for i in range(60):
+            y = int(TOP + 0.4 * HALF) + i // 3
+            x = int(cx - 30 + i)
+            img[y:y + 4, x:x + 3] = 0
+        dets = [_detection("noteheadBlackInSpace", cx, TOP + p * HALF) for p in (-1.0, 1.0)]
+        with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
+            log = self._run(img, dets, (cx - 22.0, 40.0, 20.0, 260.0))
+        rows = [log.rows(Q.STACKED_HEAD_FIT, R.glyph(0, 0, 0, 0, gi))[0] for gi in range(2)]
+        self.assertEqual([r.value[0] for r in rows], [1, 1])
+        self.assertNotIn("second_head_by", rows[0].detail)
+
     def test_on_a_duplicate_box_is_still_one_head(self):
         img, cx = _one_head_ink(p=1.0)
         with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
