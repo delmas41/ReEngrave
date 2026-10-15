@@ -1,6 +1,6 @@
 {
- "n_items": 67,
- "n_tiles": 812,
+ "n_items": 70,
+ "n_tiles": 845,
  "tiles": [
   {
    "answer": "right",
@@ -4611,6 +4611,150 @@
    "value": null
   },
   {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": 0.5
+  },
+  {
+   "answer": "quarter",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "4",
+   "value": 1.0
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "5",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "6",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "7",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "8",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.126-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "9",
+   "value": 0.5
+  },
+  {
    "answer": "1. no (stacatissimo triangle) 2. no 3-4. stac 5. yes dot 4 6. stacatissimo 7. dot 4 8. no just 4 9-10. dot 2 11. stacatissimo 12. dot 4 13. dot 2",
    "answer_kind": "other",
    "control": false,
@@ -6844,6 +6988,520 @@
    "subjects": null,
    "tile": "9",
    "value": null
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    1882.0,
+    3299.0,
+    2381.0,
+    3653.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/4/0/12/3",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "1",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    2803.0,
+    6837.0,
+    3434.0,
+    7194.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/16/1/13/4",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "10",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "dot4, 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    4266.0,
+    435.0,
+    4821.0,
+    792.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/13/0/0/9",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "11",
+   "value": [
+    1.5,
+    1.0
+   ]
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    3298.0,
+    4749.0,
+    3914.0,
+    5103.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/16/1/4/5",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "12",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "4, 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    2213.0,
+    5726.0,
+    2836.0,
+    6086.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/21/1/6/3",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "2",
+   "value": [
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "answer": "8, 8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    2675.0,
+    6355.0,
+    3399.0,
+    6712.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/9/1/10/4",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "3",
+   "value": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "16, 16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    4777.0,
+    6627.0,
+    5571.0,
+    6981.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/18/1/12/7",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "4",
+   "value": [
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "dot4, 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    2677.0,
+    6877.0,
+    3397.0,
+    7225.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/9/1/12/4",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "5",
+   "value": [
+    1.5,
+    1.0
+   ]
+  },
+  {
+   "answer": "dot4, 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    3836.0,
+    6666.0,
+    4502.0,
+    7020.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/4/1/12/6",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "6",
+   "value": [
+    1.5,
+    1.0
+   ]
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    2892.0,
+    6670.0,
+    3317.0,
+    7027.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/3/1/12/4",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "7",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    575.0,
+    4749.0,
+    1489.0,
+    5103.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/16/1/4/0",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "8",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "4, dot4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.136-review",
+   "page_box": [
+    1374.0,
+    2957.0,
+    2097.0,
+    3314.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/5/0/11/1",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "9",
+   "value": [
+    1.0,
+    1.5
+   ]
+  },
+  {
+   "answer": "8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "whole rest, 4 (different voices)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "10",
+   "value": null
+  },
+  {
+   "answer": "4,4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "11",
+   "value": [
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "answer": "4,4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "12",
+   "value": [
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "answer": "16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": [
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "4,4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": [
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "answer": "4,4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "4",
+   "value": [
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "answer": "dot 4, dot 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "5",
+   "value": [
+    1.5,
+    1.5
+   ]
+  },
+  {
+   "answer": "8,8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "6",
+   "value": [
+    0.5,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "dot 4, dot 4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "7",
+   "value": [
+    1.5,
+    1.5
+   ]
+  },
+  {
+   "answer": "8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "8",
+   "value": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "4,4",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.136-step2-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "9",
+   "value": [
+    1.0,
+    1.0
+   ]
   },
   {
    "answer": "slash",

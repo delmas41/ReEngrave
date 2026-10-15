@@ -250,5 +250,23 @@ class TestScorer(unittest.TestCase):
         self.assertEqual(got, ["vrd:%d" % i for i in range(40)])
 
 
+class TestTileKeyedAnswerLists(unittest.TestCase):
+    """2.126 / 2.136 / 2.136-step2 answer files key a tile as `tile`, not `n`,
+    and keep Sean's words in `sean_raw` or as a list in `sean`."""
+
+    def test_tile_key_and_raw_words(self):
+        _, cells = J.answer_cells({"tiles": [
+            {"tile": 1, "sean_raw": "8,8", "sean": [0.5, 0.5]},
+            {"tile": 2, "sean": ["4", "dot4"]},
+            {"n": 3, "sean": "16"}]})
+        self.assertEqual(cells["1"][0], "8,8")
+        self.assertEqual(cells["2"][0], "4, dot4")
+        self.assertEqual(cells["3"][0], "16")
+
+    def test_a_list_of_numbers_is_not_taken_as_words_NEGATIVE_CONTROL(self):
+        _, cells = J.answer_cells({"tiles": [{"tile": 1, "sean": [0.5, 0.5]}]})
+        self.assertNotEqual(cells["1"][0], "0.5, 0.5")
+
+
 if __name__ == "__main__":
     unittest.main()
