@@ -105,14 +105,14 @@ class TestBeamJoinThroughAStaffLine(unittest.TestCase):
         erased, _ = _stem_through_a_line()
         self.assertNotIn("line_bridge", _join(erased))
 
-    def test_the_flag_is_off_by_default_and_a_typo_leaves_it_off(self):
+    def test_the_flag_is_ON_by_default_and_only_an_off_word_restores_the_old_reader(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(gather.BEAM_JOIN_LINE_BRIDGE_ENV, None)
-            self.assertFalse(gather.beam_join_line_bridge_enabled())
-        for typo in ("", "yess", "ON!", "2"):
-            with mock.patch.dict(os.environ, {gather.BEAM_JOIN_LINE_BRIDGE_ENV: typo}):
-                self.assertFalse(gather.beam_join_line_bridge_enabled(), typo)
-        with mock.patch.dict(os.environ, {gather.BEAM_JOIN_LINE_BRIDGE_ENV: "1"}):
+            self.assertTrue(gather.beam_join_line_bridge_enabled())
+        for off in ("0", "off", "false", "no", ""):
+            with mock.patch.dict(os.environ, {gather.BEAM_JOIN_LINE_BRIDGE_ENV: off}):
+                self.assertFalse(gather.beam_join_line_bridge_enabled(), off)
+        with mock.patch.dict(os.environ, {gather.BEAM_JOIN_LINE_BRIDGE_ENV: "yess"}):
             self.assertTrue(gather.beam_join_line_bridge_enabled())
 
 
@@ -177,12 +177,12 @@ class TestAHookBesideALine(unittest.TestCase):
         self.assertEqual(_count(img2)["hooks"], _count(img2, raw2)["hooks"])
         self.assertEqual(_count(img2)["hooks"], 1)
 
-    def test_the_hooks_flag_is_off_by_default_and_a_typo_leaves_it_off(self):
+    def test_the_hooks_flag_is_ON_by_default_and_only_an_off_word_restores_the_old_reader(self):
         os.environ.pop(gather.HOOKS_LINE_BRIDGE_ENV, None)
-        self.assertFalse(gather.hooks_line_bridge_enabled())
-        for typo in ("", "yess", "ON!"):
-            with mock.patch.dict(os.environ, {gather.HOOKS_LINE_BRIDGE_ENV: typo}):
-                self.assertFalse(gather.hooks_line_bridge_enabled(), typo)
+        self.assertTrue(gather.hooks_line_bridge_enabled())
+        for off in ("0", "off", "false", "no", ""):
+            with mock.patch.dict(os.environ, {gather.HOOKS_LINE_BRIDGE_ENV: off}):
+                self.assertFalse(gather.hooks_line_bridge_enabled(), off)
 
 
 # ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

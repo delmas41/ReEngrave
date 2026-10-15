@@ -6208,7 +6208,7 @@ BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES = 0.09
 # 0/0/0/4): the join walk saw ONE 46 px blank run against the 21.7 px tolerance (the line band 25 rows + two real breaks of 8 and 14 rows,
 # both measured off the raw page); each flank alone is under the tolerance. WHAT WOULD FALSIFY IT: a beam whose stem has a real break wider
 # than the tolerance on a flank of a line (not bridged: the flank rule keeps it NOT joined, tested), or a stroke other than a stem standing in
-# the walked window (`_beam_stem_intervening_stroke` still runs first, on the erased image). NOT CONFIRMED by Sean; default OFF.
+# the walked window (`_beam_stem_intervening_stroke` still runs first, on the erased image). Sean confirmed on 9 tiles (9/9); default ON 2026-10-15.
 #
 # A sibling row mask serves the hook counter (`stem_tip_hooks`, `OMR_HOOKS_LINE_BRIDGE`, `line_rows_past_flag`): a run of attached ink that is
 # nothing but line rows is a ledger or staff line crossing the hook band, not a second hook (Brahms p0 q1009: a 28-row ledger line of which
@@ -6225,13 +6225,13 @@ LINE_RUN_MIN_SHARE = 0.75
 
 
 def beam_join_line_bridge_enabled() -> bool:
-    """Default OFF: only an explicit on-word is ON (a typo must leave the shipped reader)."""
-    return os.environ.get(BEAM_JOIN_LINE_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """Default ON (Sean 2026-10-15, ROADMAP 2.126): a deny-list -- only an explicit off-word restores the shipped reader."""
+    return os.environ.get(BEAM_JOIN_LINE_BRIDGE_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def hooks_line_bridge_enabled() -> bool:
-    """Default OFF: only an explicit on-word is ON (a typo must leave the shipped reader)."""
-    return os.environ.get(HOOKS_LINE_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """Default ON (Sean 2026-10-15, ROADMAP 2.126): a deny-list -- only an explicit off-word restores the shipped reader."""
+    return os.environ.get(HOOKS_LINE_BRIDGE_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def line_rows_across_stem(raw_ink: Any, stem_x0: float, stem_x1: float, space: float,
@@ -6532,7 +6532,7 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
            "window_canonical": [round(stem_x0, 2), round(y0, 2),
                                 round(stem_x1, 2), round(y1, 2)]}
     if not found and line_rows is not None:
-        # ⚠️⚠️ ROADMAP 2.126 (`OMR_BEAM_JOIN_LINE_BRIDGE`, default OFF; the caller passes `line_rows` only then): the walk's rows that a
+        # ⚠️⚠️ ROADMAP 2.126 (`OMR_BEAM_JOIN_LINE_BRIDGE`, default ON since 2026-10-15; the caller passes `line_rows` only then): the walk's rows that a
         # staff or ledger line fills (the RAW page inks both flanks of the stem there) are where the erase took the stem's own pixels, so
         # they are set aside -- neither ink nor blank -- and each flank's blank run is measured alone against the SAME tolerance. A real
         # break wider than the tolerance on either side of the line, or a gap with no line in it, is still NOT joined.

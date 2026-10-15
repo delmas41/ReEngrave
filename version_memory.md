@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.126 landed, two switches ON (land merge abb02244)
+Merged lane-2.126-beam-flag (head 6046e2fb). `OMR_BEAM_JOIN_LINE_BRIDGE` and `OMR_HOOKS_LINE_BRIDGE` now default ON (`gather.beam_join_line_bridge_enabled`, `gather.hooks_line_bridge_enabled`, deny-list like `OMR_TIP_UNBLOCKED`); Sean's 9 tiles 9/9. `thin_run_stack` and `pair_flag_curve` stay OFF. GATHER readers: they reach records only at the next re-gather. Tests: tools/omr/tests/test_staged_beam_flag_2_126.py (default ON, off-word restores).
+
 ## 2026-10-15 -- ROADMAP 2.109 landed (land merge 6dbf600c)
 Merged lane-2.109-lily-marks (head 84a25e57): the STAGED LilyPond writer (`tools/omr/staged/lilypond.py`) writes staccato/staccatissimo/tenuto/accent/marcato and dynamics (read plain, guessed blue `dyn.`) with a marks ledger of what is not written; no flag; tests in test_staged_lilypond_marks_2_109.py; FINDINGS in benchmarks/omr-lily-export-2026-10. Sean "Yes land"; his 6 crops (out/print/2.109-review/answers.json) found every placed mark right; misses go to 2.138, the marc. word read as a dyn. to 2.139.
 
