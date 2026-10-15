@@ -4034,3 +4034,15 @@ controls. Only 4 other bars share an accepted cause, so 4 shared-cause tiles, no
 
 Litolff mvt 1 and Brahms mvt 1, one night's records; n = 3 per cause. The ledger-line reading of stroke 079965 is box geometry mapped to page pixels, not an ink test. W is Litolff-only
 evidence. Every count is of what the record holds, not of what is right.
+
+### 2.141g. Sean's answers (2026-10-15) -- 6/6 agree with W2
+
+Raw: "1-4 quarter notes 5 and 6 8th notes". Key (`out/2.141/tiles-key.json`, `settled_beats_beamlevels`): W2 settled every note in tiles 1-4 as quarters and in tiles 5-6 as eighths.
+
+| tiles | role | Sean | W2 settled | agree |
+|---|---|---|---|---|
+| 1, 3 | U (shared cause) | quarters | quarters | 2/2 |
+| 5, 6 | T6 (shared cause) | eighths | eighths | 2/2 |
+| 2, 4 | unflagged controls | quarters | quarters | 2/2 |
+
+W2's settlements on the 4 shared-cause bars (2 U, 2 T6) were right, so the shared causes did not make these bars wrong; the controls also agree. Only 2.136 tiles 6 and 10 are known wrong. n = 4 shared-cause bars, one publisher (Litolff), so this does not show the causes harmless in general. W2 stays OFF until fixes 1-3 of 2.141d land and pass tiles on both publishers. Recorded in `out/print/2.141-review/answers.json` and `benchmarks/acceptance/judged-tiles.json`.

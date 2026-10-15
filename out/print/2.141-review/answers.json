@@ -1,0 +1,73 @@
+{
+ "date": "2026-10-15",
+ "who": "Sean",
+ "raw_answer": "1-4 quarter notes 5 and 6 8th notes",
+ "tally": {
+  "U_shared_cause": "2/2 agree",
+  "T6_shared_cause": "2/2 agree",
+  "controls_not_flagged": "2/2 agree",
+  "all": "6/6 agree"
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "U",
+   "sean": "4",
+   "w2_settled": "4",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: quarters (key settled_beats_beamlevels)",
+   "n": 1,
+   "verbatim": "quarter notes"
+  },
+  {
+   "tile": 2,
+   "role": "control_not_flagged",
+   "sean": "4",
+   "w2_settled": "4",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: quarters (key settled_beats_beamlevels)",
+   "n": 2,
+   "verbatim": "quarter notes"
+  },
+  {
+   "tile": 3,
+   "role": "U",
+   "sean": "4",
+   "w2_settled": "4",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: quarters (key settled_beats_beamlevels)",
+   "n": 3,
+   "verbatim": "quarter notes"
+  },
+  {
+   "tile": 4,
+   "role": "control_not_flagged",
+   "sean": "4",
+   "w2_settled": "4",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: quarters (key settled_beats_beamlevels)",
+   "n": 4,
+   "verbatim": "quarter notes"
+  },
+  {
+   "tile": 5,
+   "role": "T6",
+   "sean": "8",
+   "w2_settled": "8",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: eighths (key settled_beats_beamlevels)",
+   "n": 5,
+   "verbatim": "8th notes"
+  },
+  {
+   "tile": 6,
+   "role": "T6",
+   "sean": "8",
+   "w2_settled": "8",
+   "agrees": true,
+   "note": "all W2-settled notes in the tile: eighths (key settled_beats_beamlevels)",
+   "n": 6,
+   "verbatim": "8th notes"
+  }
+ ]
+}
