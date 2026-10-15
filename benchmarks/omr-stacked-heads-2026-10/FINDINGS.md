@@ -1,0 +1,56 @@
+# 2.129 -- stacked chord heads counted as one (STAGED GATHER stack fit, read by ADJUDICATE)
+
+Sean, 2026-10-14: "yes start the stacked chord heads". Fix: `OMR_STACKED_SECOND_HEAD`, default OFF, until Sean sees `out/print/2.129-review/`.
+Truth: Sean's Brahms 317803 pdf 0 (every head boxed, 382 heads). Record: `brahms1-breitkopf-mvt1-whole-20261013-night`. Scripts in `probe/` (paths are scratch-local).
+
+## What the 2.119 brief had slightly wrong
+The twins are NOT "a step apart". They are heads a THIRD apart (1.0 staff space, 2 half-steps) on the SAME side of one stem, so they touch and the ink is one tall blob. (A second is on opposite sides of the stem and never forms a group.) `out/diagnosis_sheet.png`: green = Sean's heads, blue = box kept, red = box refused `stacked_head_duplicate`, panels A-E the five twins, F a true duplicate, G a written third.
+
+## Step 1: diagnosis (Brahms pdf 0)
+91 chord pairs on Sean's truth have heads within 1.5 spaces (`out/chords.json`). All are same-stem thirds; 85 fit as k=2 and are written. The 7 `stacked_head_duplicate` refusals on pdf 0 are:
+| n | what | verdict |
+|--:|---|---|
+| 5 | the second head of a third (the 5 twins) | WRONG refusal, the whole loss |
+| 1 | `glyph/0/0/0/4/15`, one head boxed twice (both boxes on Sean's head q98) | right |
+| 1 | `glyph/0/0/11/7/1`, a box on no head (ink column 0.7 spaces) | right |
+
+Cause, ranked: (1) the fit's MEAN gate. Slot scores of twin 1 are 1.00 / 1.00 / 0.86: the middle slot saturates on the blob and the lower head's own slot loses its centre to staff-line removal, so the pair's mean (0.93) is 0.068 under the lone best (1.00) and "adding it cost explanatory power" (margin 0.05) turns it away. 5 of 5 twins have mean gap -0.057 to -0.095 and a second slot that holds real ink (fill gap +0.41 to +0.49). So the fit calls k=1, both boxes map to slot 0, and the lower-ink box is refused. (2) Not the blob height, not the window, not the stem side (all five are right-side groups with the stem on the left): the stem side and window are fine. A mean over saturated ink is no witness for two heads that touch.
+
+The 211 refusals page-wide (Brahms, all 26 pages; boxes and the keeper's box from the record, ink from the page raster, spaces from each box's own `height_spaces`; geometry classes, not truth, except pdf 0):
+| n | geometry | reading |
+|--:|---|---|
+| 108 | the two boxes <0.5 space apart | one head boxed twice: true duplicates |
+| 56 | >=0.85 space apart AND the ink column is >=1.8 spaces tall | two heads: second heads wrongly refused (pdf 0: 5, each confirmed by Sean's truth) |
+| 24 | >=0.85 space apart, column <1.8 | a ghost box beside one head: right |
+| 23 | 0.5-0.85 apart | unsettled |
+
+So about 108 of 211 are true duplicates and about 56 are real second heads lost; the 56 is a proxy off the page raster, confirmed only on pdf 0 (5 of 5, 0 false). Litolff pdf 0-3: 64 refusals, none changed by the fix.
+
+## Step 2: the fix (STAGED GATHER `gather_stacked_head_fit` -> `fit_stacked_head_count`; ADJUDICATE untouched except a record line)
+Where the mean test is the ONLY test that fails and the pair is a third, the fit asks three independent things, and all must hold:
+1. the detector's own lowest and highest box of the group stand >= 1.5 half-steps apart and each is within one half-step of its slot (`_stacked_slots_have_boxes`): the fit never adds a head the detector did not box at a second head's place. One head boxed twice is 0.4 apart.
+2. each slot holds >= 0.75 ink (`STACKED_BLOB_MIN_SLOT_FILL`; the twins' weaker slot reads 0.81-0.89).
+3. the ink column through the heads' middle (`stacked_blob_height_spaces`: +-0.28 space of x, rows >= 0.3 ink, gaps up to 0.2 space bridged, local to the heads' x) is >= 0.8 x (gap/2 + 1) = 1.6 spaces.
+Filled heads only (`noteheadBlack*`): the test reads a solid column, and a Litolff tremolo slash boxed beside a half note read 1.78 spaces of ink in the first draft and was kept as a second half note (caught in the one-page A/B, Litolff pdf 2).
+When the blob test fails the refusal keeps `detail.near_miss` {pair, blob height, needed, mean gap, fill gap} on the fit row and `stacked_head_signal.near_miss` on the verdict (2.106). A true duplicate stays refused (1 fails), a box on blank paper stays refused (2 fails).
+
+Calibration was wrong once and that is the lesson: the blob measured on the page raster read 2.17-2.25 for the twins, the cell raster (staff lines removed) reads 1.74-2.23, so a 1.8 cut, set on the page, kept 2 of 5. And a head with a ledger line, boxed twice, read 1.76 in the cell (Brahms pdf 1, `glyph/1/0/0/4/33`) -- the same number as a twin. The blob alone cannot separate them; the boxes' spread (0.38 and 0.40 vs 1.89-2.12) does, so the blob is the second witness.
+
+## Step 3: measured (this tree, flag OFF vs ON, `--weights auto --no-surya --no-ocr`, through EXPORT)
+Truth, Brahms pdf 0 (`probe/ab.py`):
+| | OFF | ON |
+|---|--:|--:|
+| of Sean's 382 heads, with a surviving box | 376 | **381** |
+| second heads kept (twins recovered) | 0 of 5 | **5 of 5** |
+| heads lost | | 0 |
+| true duplicates wrongly kept (a head with 2 surviving boxes, new) | 1 (the pre-existing 4/10+4/15 pair, same either way) | 0 new |
+| `stacked_head_duplicate` refusals | 7 | 2 (the two right ones) |
+Export, pages 0-1: written notes 649 -> 653, guessed 104 -> 105, bars held out 59 -> 59, noteheads inside held bars 403 -> 404. Litolff pages 0-3: nothing changes (817 / 817 written, 59 / 59 held, 64 / 64 refusals, 4 near-miss rows recorded, 0 kept). The cascade the 2.119 study predicted did NOT show on these two pages: the 4 recovered notes did not release a held bar (the bars stay held for `voice_overfull` and other reasons); the recovery is the 5 notes, not a bar count. `judged score` unchanged both docs (Brahms TOTAL right 51 / wrong 5 / narrowed 8 / abstained 1 / not_found 39 / unscored 102; Litolff 56 / 8 / 2 / 1 / 62 / 91). `staged.check` open 193 = main 193. Fast tier on the first draft: 7,939 passed, 1 failed (a flag-table cell the doc/predicate test reads by its first token, fixed); the final tree's new + stack-fit tests 35 pass.
+
+## Tiles for Sean (`out/print/2.129-review/`, sheets 1-3, 15 tiles)
+Question: how many noteheads are in the red corners? (1 / 2 / other). A fixed-size red corner bracket only. 13 tiles are the proxy class above (Brahms, 11+ pages, black heads, boxes >= 0.85 space apart and a >= 1.8 space column), 2 are controls (one head boxed twice, expect 1; a ghost box beside one head, expect 1). Manifest hidden in `_hidden/`. These are the proxy, not exactly what the shipped rule keeps; Sean's answers decide the default.
+
+## Open
+- Hollow second heads (half notes a third apart on one stem) are not touched: the blob test is for filled heads (the 23 + any hollow among the 211).
+- The 23 refusals 0.5-0.85 space apart are not settled by this item.
+- Default stays OFF until the tiles come back; the cascade (bars released) needs the other four 2.119 splits (A, B, D) fixed too.
