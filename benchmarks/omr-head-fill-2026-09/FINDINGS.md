@@ -1337,3 +1337,15 @@ Fast tier (serial, 738 s): 8,048 passed, 12 skipped, **2 failed** -- `test_flag_
 `docs/flags-2026-09.md` (the two tables `OMR_BARE_STEM_RANK` sits in, lines ~48 and ~172). That file is outside this lane's fence, so the rows are NOT
 written here; they are the landing step: `| OMR_SLASH_AT_STEM_END | off | ADJUDICATE ... roadmap 2.137 |` in both tables. No other failure.
 `python3 -m tools.omr.staged.check`: TOTAL open=192 (limit 192; `staged.margins` open=0).
+
+### 15.6 Sean's answers (2026-10-15)
+
+Recorded in `out/print/2.137-review/answers.json`. Tally: 5/5 fixed slashes right, 3/3 controls right, 1 right outcome with wrong label (tile 6, a
+quarter-rest piece refused under the slash reason), 1 wrong (tile 9, a real head refused).
+
+* **Tile 9 (Litolff `glyph/11/0/2/11/1`) is a real half note refused as a slash.** The key called it a bass-clef curl; Sean reads a deformed, large,
+  open-ended half note, a printing defect that has come up in several tests, extremely rare, which he expects to need human eyes. So the right outcome
+  for this kind is a head left UNREAD and marked for a human, never silently refused.
+* **The anchor case named in ROADMAP 2.137** (Brahms p14 sys1 staff7 cell0, 2.134 tile 13) is ledger lines, not slashes, as the lane found. The
+  manager misread that crop.
+* **Still open at landing:** the flag still lacks rows in `docs/flags-2026-09.md` (the 2 fast-tier failures in 15.5), to be added at landing.
