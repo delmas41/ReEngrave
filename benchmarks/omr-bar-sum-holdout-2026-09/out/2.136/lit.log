@@ -1,0 +1,11 @@
+[    0.9s] population 10 N bars from /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a45c68acb647eb29e/benchmarks/omr-bar-sum-holdout-2026-09/out/2.134/lit-held-part.json
+[   11.8s] loaded
+[   34.9s] log built: 173257 verdicts inserted as written
+[   34.9s] reconcile_duration verdicts in the re-decided log: 225 over 216 cells
+[   36.6s] population gates: {'G9_rule_fired_on_another_note': 2, 'G6_witness_refused': 2, 'G4_zero_landings': 5, 'G5_many_landings': 1}
+[   36.8s] control (fired cells, pre-state): 216/216 replay as landed; {'LANDED': 216}
+[   44.4s] cells with a narrowed duration and no reconcile verdict: 484; of which replay LANDS (rule should have fired): 6
+[   59.5s] clean-helper control over 636 cells with a narrowed duration: {'false_to_true': 127, 'true_to_false': 0, 'checked': 636}
+[   59.8s] counterfactual 2 (carry vs last segment + ledger-owner-aware clean helper): {'infer_declines': {'simultaneous_heads_not_grouped': 2, None: 3, 'tuplet_in_bar': 1, 'event_mixes_decided_and_narrowed': 1, 'bar_does_not_add_up': 3}, 'infer_bars_fully_released': 1, 'infer_settled_heads': 2, 'reconcile_gates_with_clean_patch': {'G9_rule_fired_on_another_note | unevidenced_eighth__bar_fits_at_best_candidates': 2, 'G6_witness_refused | witness_unexplained': 2, 'G4_zero_landings | unevidenced_eighth__bar_fits_at_best_candidates': 4, 'G4_zero_landings | needs_two_or_more_events': 1, 'REPLAY_LANDS | None': 1}, 'clean_helper_control': {'false_to_true': 127, 'true_to_false': 0, 'checked': 636}}
+[   59.8s] INFER counterfactual (carry compared with the source's LAST segment): {'declines_after_patch': {'simultaneous_heads_not_grouped': 2, None: 2, 'tuplet_in_bar': 1, 'event_mixes_decided_and_narrowed': 1, 'heads_not_this_staffs_own': 1, 'bar_does_not_add_up': 3}, 'bars_with_a_settled_head': 0, 'bars_fully_released': 0, 'settled_heads': 0}
+[   59.8s] control PASS=True; partition sums=True; written /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a45c68acb647eb29e/benchmarks/omr-bar-sum-holdout-2026-09/out/2.136/lit-gates.json

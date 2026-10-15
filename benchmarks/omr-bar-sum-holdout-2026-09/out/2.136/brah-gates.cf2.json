@@ -1,0 +1,6714 @@
+{
+ "summary": {
+  "infer_declines": {
+   "null": 77,
+   "event_mixes_decided_and_narrowed": 4,
+   "chord_not_on_one_decided_stem": 8,
+   "no_decided_meter": 58,
+   "decided_neighbour_rests_on_the_narrowing": 3,
+   "simultaneous_heads_not_grouped": 8,
+   "heads_not_this_staffs_own": 3,
+   "bar_does_not_add_up": 13,
+   "event_members_admit_different_lengths": 4,
+   "meter_not_from_the_print": 1
+  },
+  "infer_bars_fully_released": 46,
+  "infer_settled_heads": 103,
+  "reconcile_gates_with_clean_patch": {
+   "G4_zero_landings | needs_two_or_more_events": 50,
+   "REPLAY_LANDS | None": 5,
+   "G6_witness_refused | witness_unexplained": 23,
+   "G4_zero_landings | needs_two_or_more_events_and_unevidenced_eighth": 4,
+   "G0_cause_not_reached | cause_abstained": 58,
+   "G9_rule_fired_on_another_note | unevidenced_eighth__bar_fits_at_best_candidates": 8,
+   "G9_rule_fired_on_another_note | no_assignment_of_own_candidates_lands": 1,
+   "G4_zero_landings | no_assignment_of_own_candidates_lands": 10,
+   "G4_zero_landings | unevidenced_eighth__bar_fits_at_best_candidates": 7,
+   "G5_many_landings | same_event_or_columns": 11,
+   "G5_many_landings | chord_vs_head": 2
+  },
+  "clean_helper_control": {
+   "false_to_true": 488,
+   "true_to_false": 0,
+   "checked": 2112
+  }
+ },
+ "infer_rows": [
+  {
+   "cell": [
+    3,
+    1,
+    0,
+    6
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "6",
+     1.0,
+     0
+    ],
+    [
+     "12",
+     1.0,
+     0
+    ],
+    [
+     "5",
+     1.5,
+     0
+    ],
+    [
+     "8",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    4,
+    1,
+    0,
+    8
+   ],
+   "decline": "event_mixes_decided_and_narrowed",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    9,
+    0,
+    0,
+    4
+   ],
+   "decline": "event_mixes_decided_and_narrowed",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    1
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    2
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    1
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    9
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "4",
+     1.5,
+     0
+    ],
+    [
+     "5",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    13,
+    1,
+    0,
+    7
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    1,
+    0,
+    4
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "5",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    11
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    1,
+    0,
+    1
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.0,
+     0
+    ],
+    [
+     "0",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    18,
+    0,
+    0,
+    2
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.5,
+     0
+    ],
+    [
+     "24",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "decline": "decided_neighbour_rests_on_the_narrowing",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "7",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    20,
+    1,
+    0,
+    5
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    3,
+    0,
+    1,
+    2
+   ],
+   "decline": "heads_not_this_staffs_own",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    6,
+    1,
+    1,
+    6
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    7,
+    1,
+    1,
+    0
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    8,
+    0,
+    1,
+    6
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    1
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ],
+    [
+     "6",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "9",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    3
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    1,
+    1,
+    7
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    1,
+    9
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    0,
+    1,
+    7
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 4,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    17,
+    0,
+    1,
+    5
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    18,
+    0,
+    1,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.5,
+     0
+    ],
+    [
+     "7",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    18,
+    1,
+    1,
+    7
+   ],
+   "decline": "heads_not_this_staffs_own",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    3
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    0,
+    1,
+    5
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 4,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    6
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    7
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    6
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    7
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    26,
+    1,
+    1,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "7",
+     1.0,
+     0
+    ],
+    [
+     "9",
+     0.5,
+     1
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    1,
+    2,
+    6
+   ],
+   "decline": null,
+   "forced": 1,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 1,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    9,
+    0,
+    2,
+    7
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "5",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    1
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 4,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    9
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    0,
+    2,
+    3
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    17,
+    0,
+    2,
+    5
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    18,
+    1,
+    2,
+    1
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    0
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    3
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    20,
+    1,
+    2,
+    5
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    22,
+    0,
+    2,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    0,
+    2,
+    8
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "6",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "2",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    24,
+    0,
+    2,
+    1
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "6",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    3,
+    0,
+    3,
+    9
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    4,
+    1,
+    3,
+    3
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 6,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    3,
+    9
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    0,
+    3,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    5
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    6
+   ],
+   "decline": "event_members_admit_different_lengths",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    17,
+    1,
+    3,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    20,
+    1,
+    3,
+    5
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    0,
+    3,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "7",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    21,
+    1,
+    3,
+    5
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ],
+    [
+     "14",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    23,
+    0,
+    3,
+    2
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 4,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    3,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    3,
+    1,
+    4,
+    0
+   ],
+   "decline": "decided_neighbour_rests_on_the_narrowing",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    0,
+    4,
+    1
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    0,
+    4,
+    3
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 1,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    5
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.0,
+     0
+    ],
+    [
+     "0",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    17,
+    0,
+    4,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    18,
+    0,
+    4,
+    2
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    4,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    4,
+    1
+   ],
+   "decline": null,
+   "forced": 1,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 1,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    5,
+    0
+   ],
+   "decline": "event_members_admit_different_lengths",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    3,
+    1,
+    5,
+    2
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    0,
+    5,
+    6
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    7
+   ],
+   "decline": "event_members_admit_different_lengths",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    6,
+    1,
+    4,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    12,
+    0,
+    5,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 0,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    3
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    17,
+    0,
+    5,
+    5
+   ],
+   "decline": "event_mixes_decided_and_narrowed",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    1
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "12",
+     1.0,
+     0
+    ],
+    [
+     "3",
+     1.5,
+     0
+    ],
+    [
+     "15",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    2
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 1,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    0,
+    5,
+    8
+   ],
+   "decline": null,
+   "forced": 4,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 4,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "8",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.5,
+     0
+    ],
+    [
+     "9",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    6,
+    0,
+    5,
+    8
+   ],
+   "decline": "event_members_admit_different_lengths",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    7,
+    0,
+    5,
+    6
+   ],
+   "decline": "event_mixes_decided_and_narrowed",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    8,
+    1,
+    5,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    9,
+    1,
+    6,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "3",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    17,
+    0,
+    6,
+    5
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    6,
+    4
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    0,
+    7,
+    6
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    2,
+    0,
+    9,
+    5
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "4",
+     1.0,
+     0
+    ],
+    [
+     "3",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    3,
+    1,
+    9,
+    5
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 2,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    9,
+    1,
+    8,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "7",
+     1.0,
+     0
+    ],
+    [
+     "6",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    10,
+    1,
+    9,
+    6
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    1
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ],
+    [
+     "3",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    2
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    14,
+    1,
+    7,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    1,
+    8,
+    7
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    1,
+    9,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "6",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    18,
+    1,
+    9,
+    6
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    8,
+    4
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 2,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    1,
+    6,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    7
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 6,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    25,
+    1,
+    7,
+    3
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    26,
+    0,
+    8,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    26,
+    1,
+    8,
+    4
+   ],
+   "decline": null,
+   "forced": 1,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 1,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    0,
+    10,
+    2
+   ],
+   "decline": null,
+   "forced": 1,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 1,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "7",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    1,
+    10,
+    4
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    3
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    0,
+    8,
+    6
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "8",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    3
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    4
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    7
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    2
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    7
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    1,
+    7,
+    3
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    22,
+    1,
+    7,
+    10
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    25,
+    1,
+    8,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "1",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    11,
+    2
+   ],
+   "decline": "simultaneous_heads_not_grouped",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    1,
+    0,
+    11,
+    3
+   ],
+   "decline": "meter_not_from_the_print",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    1,
+    1,
+    10,
+    6
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "9",
+     1.0,
+     0
+    ],
+    [
+     "0",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    3,
+    1,
+    11,
+    4
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 1,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    0,
+    11,
+    1
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "3",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    1,
+    11,
+    8
+   ],
+   "decline": "decided_neighbour_rests_on_the_narrowing",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    11,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    0,
+    9,
+    3
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    15,
+    1,
+    10,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    0,
+    11,
+    2
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    0,
+    11,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    20,
+    1,
+    8,
+    5
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    0,
+    9,
+    5
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "5",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    12,
+    5
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    3,
+    1,
+    12,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    2
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "9",
+     1.0,
+     0
+    ],
+    [
+     "5",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "9",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    3
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    6
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "0",
+     1.5,
+     0
+    ],
+    [
+     "1",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    1,
+    12,
+    0
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    7,
+    1,
+    9,
+    1
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "0",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    9,
+    1,
+    11,
+    2
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    5
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    8
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    19,
+    1,
+    11,
+    1
+   ],
+   "decline": "heads_not_this_staffs_own",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    0,
+    10,
+    1
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    23,
+    1,
+    11,
+    1
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    26,
+    1,
+    11,
+    5
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "4",
+     1.0,
+     0
+    ],
+    [
+     "2",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    4,
+    0,
+    13,
+    2
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.0,
+     0
+    ],
+    [
+     "4",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    5,
+    1,
+    13,
+    0
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 1,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    6,
+    0,
+    11,
+    5
+   ],
+   "decline": "bar_does_not_add_up",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    6,
+    1,
+    10,
+    0
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    9,
+    0,
+    11,
+    0
+   ],
+   "decline": null,
+   "forced": 1,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 1,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "16",
+     0.5,
+     1
+    ]
+   ]
+  },
+  {
+   "cell": [
+    9,
+    1,
+    12,
+    4
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "3",
+     1.5,
+     0
+    ],
+    [
+     "4",
+     1.0,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    16,
+    1,
+    13,
+    4
+   ],
+   "decline": null,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 1,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    17,
+    0,
+    13,
+    3
+   ],
+   "decline": null,
+   "forced": 2,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 2,
+   "bar_fully_released": true,
+   "settled_to": [
+    [
+     "2",
+     1.0,
+     0
+    ],
+    [
+     "1",
+     1.5,
+     0
+    ]
+   ]
+  },
+  {
+   "cell": [
+    19,
+    0,
+    13,
+    10
+   ],
+   "decline": "no_decided_meter",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    21,
+    0,
+    10,
+    0
+   ],
+   "decline": "chord_not_on_one_decided_stem",
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 4,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  }
+ ],
+ "reconcile_rows": [
+  {
+   "cell": [
+    3,
+    1,
+    0,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    4,
+    1,
+    0,
+    8
+   ],
+   "gate": "REPLAY_LANDS",
+   "why": null,
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/4/1/0/8/6",
+     "glyph/4/1/0/8/19"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 0.5,
+    "new_levels": [
+     1,
+     1
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      0.25,
+      2
+     ]
+    ]
+   },
+   "witness": "shortening_no_witness_needed"
+  },
+  {
+   "cell": [
+    9,
+    0,
+    0,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    1
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/11/0/0/1/2",
+     "glyph/11/0/0/1/16"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    2
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/11/0/0/2/2",
+     "glyph/11/0/0/2/14"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events_and_unevidenced_eighth",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    0,
+    0,
+    9
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    0,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    1,
+    0,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    11
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/16/0/0/11/3"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    16,
+    1,
+    0,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    18,
+    0,
+    0,
+    2
+   ],
+   "gate": "REPLAY_LANDS",
+   "why": null,
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/18/0/0/2/3",
+     "glyph/18/0/0/2/24"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "clear"
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    0,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    0,
+    4
+   ],
+   "gate": "REPLAY_LANDS",
+   "why": null,
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/19/1/0/4/1",
+     "glyph/19/1/0/4/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "clear"
+  },
+  {
+   "cell": [
+    20,
+    1,
+    0,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    0,
+    1,
+    2
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    1,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    7,
+    1,
+    1,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    8,
+    0,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    1,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    1,
+    1,
+    7
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/11/1/1/7/4"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    13,
+    0,
+    1,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/13/0/1/9/2",
+     "glyph/13/0/1/9/3"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    0,
+    1,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    0,
+    1,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    1,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/17/0/1/5/0",
+     "glyph/17/0/1/5/6"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    18,
+    0,
+    1,
+    3
+   ],
+   "gate": "REPLAY_LANDS",
+   "why": null,
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/18/0/1/3/3",
+     "glyph/18/0/1/3/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "clear"
+  },
+  {
+   "cell": [
+    18,
+    1,
+    1,
+    7
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 2,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    1,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    0,
+    1,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/21/0/1/5/9"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    6
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    1,
+    1,
+    7
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    6
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    22,
+    0,
+    1,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    26,
+    1,
+    1,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 2,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    1,
+    2,
+    6
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 2,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    0,
+    2,
+    7
+   ],
+   "gate": "G5_many_landings",
+   "why": "chord_vs_head",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    0,
+    2,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/13/0/2/9/1",
+     "glyph/13/0/2/9/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    15,
+    0,
+    2,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    2,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/17/0/2/5/5"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    18,
+    1,
+    2,
+    1
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/18/1/2/1/0",
+     "glyph/18/1/2/1/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    0
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    2,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    20,
+    1,
+    2,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    22,
+    0,
+    2,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    0,
+    2,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    24,
+    0,
+    2,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    0,
+    3,
+    9
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/3/0/3/9/2",
+     "glyph/3/0/3/9/6"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    4,
+    1,
+    3,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events_and_unevidenced_eighth",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    1,
+    3,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    0,
+    3,
+    9
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    0,
+    3,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events_and_unevidenced_eighth",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    0,
+    3,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    1,
+    3,
+    0
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/17/1/3/0/3",
+     "glyph/17/1/3/0/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    3,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    20,
+    1,
+    3,
+    5
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    0,
+    3,
+    4
+   ],
+   "gate": "REPLAY_LANDS",
+   "why": null,
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/21/0/3/4/1",
+     "glyph/21/0/3/4/7"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "clear"
+  },
+  {
+   "cell": [
+    21,
+    1,
+    3,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    0,
+    3,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    3,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    1,
+    4,
+    0
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    4,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    0,
+    4,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    4,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    1,
+    4,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    4,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    18,
+    0,
+    4,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    4,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    4,
+    1
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 2,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    1,
+    0,
+    5,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    1,
+    5,
+    2
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/3/1/5/2/1",
+     "glyph/3/1/5/2/4"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    5,
+    0,
+    5,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/5/0/5/6/5",
+     "glyph/5/0/5/6/10"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    1,
+    4,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    12,
+    0,
+    5,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    5,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    5,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/17/0/5/5/1"
+    ],
+    "was_beats": 0.5,
+    "new_beats": 1.0,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    5,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    0,
+    5,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    0,
+    5,
+    8
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    7,
+    0,
+    5,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/7/0/5/6/5"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    8,
+    1,
+    5,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    1,
+    6,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "why": "chord_vs_head",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    6,
+    5
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/17/0/6/5/0"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    19,
+    0,
+    6,
+    4
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    0,
+    7,
+    6
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/5/0/7/6/0",
+     "glyph/5/0/7/6/17"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0,
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    1,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    1,
+    8,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    10,
+    1,
+    9,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    11,
+    0,
+    9,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    1,
+    7,
+    0
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/14/1/7/0/4"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    15,
+    1,
+    8,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    1,
+    9,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    18,
+    1,
+    9,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    8,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    1,
+    6,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    8,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    25,
+    1,
+    7,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    26,
+    0,
+    8,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    26,
+    1,
+    8,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    0,
+    10,
+    2
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    1,
+    10,
+    4
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    10,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    14,
+    0,
+    10,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    0,
+    8,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    3
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    1,
+    9,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    0,
+    10,
+    7
+   ],
+   "gate": "G4_zero_landings",
+   "why": "no_assignment_of_own_candidates_lands",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    2
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    7
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    10,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    1,
+    7,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    22,
+    1,
+    7,
+    10
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    1,
+    9,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    25,
+    1,
+    8,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    0,
+    0,
+    11,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    1,
+    0,
+    11,
+    3
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 4,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    1,
+    1,
+    10,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    1,
+    11,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    0,
+    11,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    1,
+    11,
+    8
+   ],
+   "gate": "G9_rule_fired_on_another_note",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    11,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    15,
+    0,
+    9,
+    3
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/15/0/9/3/0"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    15,
+    1,
+    10,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    0,
+    11,
+    2
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/16/0/11/2/2"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    19,
+    0,
+    11,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    20,
+    1,
+    8,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events_and_unevidenced_eighth",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    0,
+    9,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    2,
+    0,
+    12,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    3,
+    1,
+    12,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    4,
+    0,
+    12,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    3
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/4/1/12/3/0"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    4,
+    1,
+    12,
+    6
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    1,
+    12,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    7,
+    1,
+    9,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    1,
+    11,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    5
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    13,
+    1,
+    12,
+    8
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    1,
+    11,
+    1
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    23,
+    0,
+    10,
+    1
+   ],
+   "gate": "G6_witness_refused",
+   "why": "witness_unexplained",
+   "n_landings": 1,
+   "landing": {
+    "glyphs": [
+     "glyph/23/0/10/1/4"
+    ],
+    "was_beats": 0.75,
+    "new_beats": 1.5,
+    "new_levels": [
+     0
+    ],
+    "cands": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ]
+   },
+   "witness": "unexplained"
+  },
+  {
+   "cell": [
+    23,
+    1,
+    11,
+    1
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    26,
+    1,
+    11,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    4,
+    0,
+    13,
+    2
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    5,
+    1,
+    13,
+    0
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    0,
+    11,
+    5
+   ],
+   "gate": "G4_zero_landings",
+   "why": "unevidenced_eighth__bar_fits_at_best_candidates",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    6,
+    1,
+    10,
+    0
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    0,
+    11,
+    0
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 2,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    9,
+    1,
+    12,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    16,
+    1,
+    13,
+    4
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    17,
+    0,
+    13,
+    3
+   ],
+   "gate": "G4_zero_landings",
+   "why": "needs_two_or_more_events",
+   "n_landings": 0,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    19,
+    0,
+    13,
+    10
+   ],
+   "gate": "G0_cause_not_reached",
+   "why": "cause_abstained",
+   "n_landings": null,
+   "landing": null,
+   "witness": null
+  },
+  {
+   "cell": [
+    21,
+    0,
+    10,
+    0
+   ],
+   "gate": "G5_many_landings",
+   "why": "same_event_or_columns",
+   "n_landings": 3,
+   "landing": null,
+   "witness": null
+  }
+ ]
+}

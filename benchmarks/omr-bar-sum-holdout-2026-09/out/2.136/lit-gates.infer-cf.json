@@ -1,0 +1,359 @@
+{
+ "summary": {
+  "declines_after_patch": {
+   "simultaneous_heads_not_grouped": 2,
+   "null": 2,
+   "tuplet_in_bar": 1,
+   "event_mixes_decided_and_narrowed": 1,
+   "heads_not_this_staffs_own": 1,
+   "bar_does_not_add_up": 3
+  },
+  "bars_with_a_settled_head": 0,
+  "bars_fully_released": 0,
+  "settled_heads": 0
+ },
+ "rows": [
+  {
+   "cell": [
+    8,
+    0,
+    0,
+    15
+   ],
+   "clean_why": {
+    "fails": [
+     "off_staff"
+    ],
+    "detail": [
+     {
+      "clause": "off_staff",
+      "glyph": 4,
+      "spaces_off": 3.0,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/8/0/0"
+      ],
+      "narrowed": false
+     }
+    ],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "simultaneous_heads_not_grouped",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    9,
+    1,
+    0,
+    0
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": null,
+   "members": 1,
+   "landings": 1,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    11,
+    0,
+    0,
+    8
+   ],
+   "clean_why": {
+    "fails": [
+     "off_staff"
+    ],
+    "detail": [
+     {
+      "clause": "off_staff",
+      "glyph": 2,
+      "spaces_off": 2.02,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/11/0/0"
+      ],
+      "narrowed": true
+     }
+    ],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "simultaneous_heads_not_grouped",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    16,
+    0,
+    0,
+    2
+   ],
+   "clean_why": {
+    "fails": [
+     "off_staff",
+     "off_staff",
+     "off_staff"
+    ],
+    "detail": [
+     {
+      "clause": "off_staff",
+      "glyph": 0,
+      "spaces_off": 3.0,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/16/0/0"
+      ],
+      "narrowed": true
+     },
+     {
+      "clause": "off_staff",
+      "glyph": 10,
+      "spaces_off": 2.04,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/16/0/0"
+      ],
+      "narrowed": false
+     },
+     {
+      "clause": "off_staff",
+      "glyph": 12,
+      "spaces_off": 3.41,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/16/0/0"
+      ],
+      "narrowed": false
+     }
+    ],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "tuplet_in_bar",
+   "members": 1,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    4,
+    0,
+    1,
+    12
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "event_mixes_decided_and_narrowed",
+   "members": 3,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 3,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    12,
+    0,
+    1,
+    9
+   ],
+   "clean_why": {
+    "fails": [
+     "off_staff",
+     "off_staff"
+    ],
+    "detail": [
+     {
+      "clause": "off_staff",
+      "glyph": 0,
+      "spaces_off": 2.87,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/12/0/1"
+      ],
+      "narrowed": false
+     },
+     {
+      "clause": "off_staff",
+      "glyph": 2,
+      "spaces_off": 1.62,
+      "owner": [
+       "decided",
+       "ledger_note_first",
+       "staff/12/0/1"
+      ],
+      "narrowed": true
+     }
+    ],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "heads_not_this_staffs_own",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    14,
+    1,
+    1,
+    6
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "bar_does_not_add_up",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    4,
+    0,
+    8,
+    2
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": null,
+   "members": 1,
+   "landings": 1,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 1,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 1,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    13
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "bar_does_not_add_up",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  },
+  {
+   "cell": [
+    5,
+    1,
+    5,
+    14
+   ],
+   "clean_why": {
+    "fails": [],
+    "detail": [],
+    "restatement_agrees_with_helper": true
+   },
+   "decline": "bar_does_not_add_up",
+   "members": 2,
+   "landings": 0,
+   "forced": 0,
+   "ambiguous": 0,
+   "tip_not_clean": 0,
+   "lengthening_unwitnessed": 0,
+   "shortened_refused": 0,
+   "narrowed_heads": 2,
+   "settled_heads": 0,
+   "bar_fully_released": false,
+   "settled_to": []
+  }
+ ]
+}
