@@ -1329,3 +1329,11 @@ ONE reason, `is_a_meter_digit` 30 -> 0 (a decider the limited re-run omits feeds
 * The two label errors (rest zigzag, bass-clef curl) are refused rightly under the wrong reason.
 * Blind tiles for Sean: `out/print/2.137-review/` (10 tiles: 5 fixed slashes, 3 real-head controls, 2 label-error cases; kinds only in `manifest.json`).
   Red corners = the bar, blue corners = the box in question; nothing of ours is drawn.
+
+### 15.7 Fast tier and check (the one open item)
+
+Fast tier (serial, 738 s): 8,048 passed, 12 skipped, **2 failed** -- `test_flag_triage.py::test_every_read_flag_is_documented` and
+`test_flag_docs_match_predicates.py::test_undocumented_is_exact_no_stale_entries`. Both say the same thing: `OMR_SLASH_AT_STEM_END` has no row in
+`docs/flags-2026-09.md` (the two tables `OMR_BARE_STEM_RANK` sits in, lines ~48 and ~172). That file is outside this lane's fence, so the rows are NOT
+written here; they are the landing step: `| OMR_SLASH_AT_STEM_END | off | ADJUDICATE ... roadmap 2.137 |` in both tables. No other failure.
+`python3 -m tools.omr.staged.check`: TOTAL open=192 (limit 192; `staged.margins` open=0).
