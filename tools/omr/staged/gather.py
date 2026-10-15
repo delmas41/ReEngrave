@@ -4237,6 +4237,11 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
             space_c = _grid_d[1] * 2.0 if _grid_d is not None else None
         _observe_dot_stroke_ink(log, sub, frame, c,
                                 (detections or {}).get(sub.to_key()), space_c)
+        # ROADMAP 2.131: is a dot-class box a round dot or a staccatissimo
+        # wedge? Same raster, same detections.
+        if mark_shape_enabled():
+            _observe_mark_shape(log, sub, frame, c,
+                                (detections or {}).get(sub.to_key()), space_c)
 
         # ROADMAP 2.38: a second, independent witness for the beams_
         # ambiguous population -- does THIS stem's own ink run unbroken
@@ -5680,6 +5685,93 @@ def dot_stroke_ink(img: Any, box: Tuple[float, float, float, float],
     on_stroke = int(keep[by0:by1, bx0:bx1].sum())
     return {"fraction": round(on_stroke / float(inside), 4) if inside else 0.0,
             "ink_px": inside, "line_px": L}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.131 -- a staccato dot and a staccatissimo triangle are different
+# marks (Sean 2026-10-14). The detector boxes both with the same small box and
+# often the same class; the ink says which. Measured on Brahms 317803 (14
+# pages, 600 dpi, `benchmarks/omr-staccatissimo-2026-10/FINDINGS.md`): the
+# detector's own `articStaccatissimo*` boxes read height/width 1.45 (IQR
+# 1.36-1.55) with the narrow end at the head, its `articStaccato*` boxes 1.0
+# (IQR 0.91-1.10) and equal ends. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT /
+# NOT CONFIRMED: the staccatissimo is a wedge pointing at its head (Bravura,
+# Gould); falsified by a Sean-read crop of a wedge that is not one. The cut
+# (1.3, 0.8) is a MEASUREMENT on one score (Breitkopf), so the adjudicator
+# that reads it is behind a flag until Sean's tiles.
+# ─────────────────────────────────────────────────────────────────────────────
+
+MARK_SHAPE_ENV = "OMR_STACCATISSIMO_SHAPE"
+
+
+def mark_shape_enabled() -> bool:
+    """`OMR_STACCATISSIMO_SHAPE`, default OFF until Sean's tiles (2.131)."""
+    return os.environ.get(MARK_SHAPE_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def mark_shape(img: Any, box: Tuple[float, float, float, float],
+               space: float) -> Optional[Dict[str, Any]]:
+    """Height/width and the widths of the top and bottom third of the ink
+    inside `box` (`x, y, w, h`, canonical cell px), padded by one pixel.
+    `None` -- declined -- where the raster, unit or box is unusable or the
+    box holds under four ink pixels. ROADMAP 2.131."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    x, y, w, h = [float(v) for v in box]
+    if w <= 0 or h <= 0:
+        return None
+    import numpy as np
+    H, W = img.shape
+    x0, y0 = max(0, int(round(x)) - 1), max(0, int(round(y)) - 1)
+    x1, y1 = min(W, int(round(x + w)) + 2), min(H, int(round(y + h)) + 2)
+    if x1 - x0 < 2 or y1 - y0 < 2:
+        return None
+    ink = img[y0:y1, x0:x1] == 0
+    ys, xs = np.where(ink)
+    if len(ys) < 4:
+        return None
+    top, bot = int(ys.min()), int(ys.max())
+    ih, iw = bot - top + 1, int(xs.max() - xs.min() + 1)
+    thirds = np.array_split(np.arange(top, bot + 1), 3)
+    wid = [int(ink[t].any(axis=0).sum()) if len(t) else 0 for t in thirds]
+    return {"hw": round(ih / float(iw), 4), "top": wid[0], "bot": wid[2],
+            "h_spaces": round(ih / float(space), 4),
+            "w_spaces": round(iw / float(space), 4),
+            "fill": round(len(ys) / float(ih * iw), 4)}
+
+
+def _observe_mark_shape(log: Log, sub: Subject, frame: str, cell: Any,
+                        dets: Optional[Sequence[Any]],
+                        space: Optional[float]) -> None:
+    """`Q.MARK_SHAPE` -- one row per `augmentationDot` / `articStaccato*`
+    detection in this cell, on its own glyph subject. ROADMAP 2.131."""
+    img = getattr(cell, "image_no_staff", None)
+    for gi, d in enumerate(dets or ()):
+        name = str(getattr(d, "smufl_name", ""))
+        if not (name.startswith("augmentationDot") or name in _STACCATO_CLASSES):
+            continue
+        g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+        if img is None or getattr(img, "ndim", 0) != 2:
+            log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if not space or space <= 0:
+            log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="no cell staff-space unit")
+            continue
+        m = mark_shape(img, (float(d.x_canonical), float(d.y_canonical),
+                             float(d.width_canonical),
+                             float(d.height_canonical)), space)
+        if m is None:
+            log.abstain(g, Q.MARK_SHAPE, reader=READERS.CV_MARK_SHAPE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="box off the raster or no ink")
+            continue
+        log.observe(g, Q.MARK_SHAPE, m.pop("hw"),
+                    reader=READERS.CV_MARK_SHAPE, frame=frame, **m)
 
 
 def _observe_dot_stroke_ink(log: Log, sub: Subject, frame: str, cell: Any,

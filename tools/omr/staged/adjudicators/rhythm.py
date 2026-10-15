@@ -2209,6 +2209,45 @@ DOT_TWIN_MAX_SPACES = 0.3
 #: (Sean 2026-10-09: "mostly overlap"). Real dots read 0.0 on Brahms p1.
 DOT_ON_STROKE_MIN = 0.5
 
+# ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default OFF until Sean's tiles).
+# A wedge is the staccatissimo and is never an augmentation dot. MEASURED on
+# Brahms 317803 (`benchmarks/omr-staccatissimo-2026-10/FINDINGS.md`): the
+# detector's own staccatissimo boxes read h/w 1.45 (5th pct 1.2), taper
+# (point end / base end) 0.58 (95th pct 0.9); its staccato boxes 1.0 and 0.91.
+# A cut on one score: it NARROWS to "wedge" (staccatissimo, with the staccato
+# as the named alternative) and never decides past what the ink says.
+WEDGE_MIN_HW = 1.3
+WEDGE_MAX_TAPER = 0.8
+WEDGE_MIN_HEIGHT_SPACES = 0.40
+WEDGE_MAX_HEIGHT_SPACES = 0.85
+
+
+def staccatissimo_shape_enabled() -> bool:
+    return os.environ.get("OMR_STACCATISSIMO_SHAPE", "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _wedge_reading(shape_row):
+    """-> (is_wedge, detail). A wedge: taller than wide, one end clearly
+    narrower than the other, and tall enough to be more than a speck.
+    `tip` is the narrow end (`"top"` / `"bottom"`)."""
+    if shape_row is None:
+        return False, {}
+    v = shape_row.value
+    d = shape_row.detail or {}
+    try:
+        hw, top, bot = float(v), float(d["top"]), float(d["bot"])
+        hs = float(d.get("h_spaces", 0.0))
+    except (TypeError, ValueError, KeyError):
+        return False, {}
+    base = max(top, bot)
+    taper = (min(top, bot) / base) if base else 1.0
+    tip = "bottom" if bot < top else "top"
+    det = {"mark_hw": round(hw, 3), "mark_taper": round(taper, 3),
+           "mark_tip": tip, "mark_h_spaces": round(hs, 3)}
+    return (hw >= WEDGE_MIN_HW and taper <= WEDGE_MAX_TAPER
+            and WEDGE_MIN_HEIGHT_SPACES <= hs <= WEDGE_MAX_HEIGHT_SPACES), det
+
 
 @decision(
     quantity=Q.DOT_ROLE,
@@ -2221,15 +2260,18 @@ DOT_ON_STROKE_MIN = 0.5
     # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
+                   Q.MARK_SHAPE),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK, Q.MARK_SHAPE),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
+             "wedge_pointing_at_a_head",
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
-             "owned_by_another_staff", "on_a_barline", "on_a_stroke"),
+             "owned_by_another_staff", "on_a_barline", "on_a_stroke",
+             "wedge_without_a_head", "wedge_points_away"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -2362,6 +2404,62 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                                         else ())
     detail = {"detector_role": (row.detail or {}).get("detector_role"),
               "detector_class": (row.detail or {}).get("detector_class")}
+
+    # ⚠️ ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`): a WEDGE is the
+    # staccatissimo, never a lengthening dot (Sean 2026-10-14). Tried before
+    # the augmentation window because a wedge standing over a head's column
+    # must not be offered to it. It needs a head in the STACCATO window (above
+    # or below, centred) and the narrow end toward that head; otherwise it
+    # abstains -- never augmentation, never a default staccato.
+    if staccatissimo_shape_enabled():
+        shape = ev.rows(Q.MARK_SHAPE)
+        is_wedge, wdet = _wedge_reading(shape[-1] if shape else None)
+        if is_wedge:
+            wused = used + (shape[-1].id,)
+            wdetail = {**detail, **wdet,
+                       "candidates": ["staccatissimo", "staccato"]}
+            # The narrow end points AT the owner, so the owner is the nearest
+            # head in the staccato window on the tip's side: tip at the
+            # bottom -> the head is below the mark.
+            tip_below = wdet["mark_tip"] == "bottom"
+            mcy = dot_box[1] + dot_box[3] / 2.0
+            mcx = dot_box[0] + dot_box[2] / 2.0
+
+            def _nearest(cands):
+                best, best_d, n_any = None, float("inf"), 0
+                for key, hb in cands:
+                    if not _in_staccato_window(dot_box, hb, space):
+                        continue
+                    n_any += 1
+                    hcy = hb[1] + hb[3] / 2.0
+                    if (hcy > mcy) != tip_below:
+                        continue
+                    d_ = (hb[0] + hb[2] / 2.0 - mcx) ** 2 + (hcy - mcy) ** 2
+                    if d_ < best_d:
+                        best_d, best = d_, key
+                return best, n_any
+
+            owner, n_any = _nearest(note_targets)
+            foreign = False
+            if owner is None and keep_foreign:
+                owner, n_f = _nearest([
+                    (k, hb) for k, hb in foreign_targets
+                    if abs((hb[1] + hb[3] / 2.0) - mcy)
+                    - hb[3] / 2.0 <= STACCATO_MAX_GAP_SPACES * space])
+                n_any += n_f
+                foreign = owner is not None
+            if owner is None and n_any:
+                return Ruling(value=None, reason="wedge_points_away",
+                              used=wused, detail=wdetail)
+            if owner is None:
+                return Ruling(value=None, reason="wedge_without_a_head",
+                              used=wused, detail=wdetail)
+            out = {**wdetail, "owner": owner, "articulation": "staccatissimo"}
+            if foreign:
+                out["head_owned_elsewhere"] = True
+            return Ruling(value="staccatissimo",
+                          reason="wedge_pointing_at_a_head", used=wused,
+                          detail=out)
 
     max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)

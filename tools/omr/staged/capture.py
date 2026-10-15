@@ -550,6 +550,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),
+    "MARK_SHAPE": (
+        RELATION,
+        "ROADMAP 2.131: the height/width and the top-third / bottom-third "
+        "widths of the ink inside an `augmentationDot` or `articStaccato*` "
+        "detection's own box, off the staff-ERASED raster -- a relation "
+        "between a detector box and the paper under it; scoreless, same "
+        "reason as `DOT_STROKE_INK`.",
+        None),
     "DOT_STROKE_INK": (
         RELATION,
         "ROADMAP 2.69 follow-up (Sean, 2026-10-09): the share of the ink "
@@ -803,6 +811,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.69 follow-up. Also `staged/gather.py` -- reads
     # `image_no_staff` only, same reason `CV_STEM_TIP` does.
     "CV_DOT_STROKE": ("staged/gather.py", "_observe_dot_stroke_ink"),
+    # ⚠️ ROADMAP 2.131. Also `staged/gather.py`; reads `image_no_staff` only,
+    # same reason `CV_DOT_STROKE` does.
+    "CV_MARK_SHAPE": ("staged/gather.py", "_observe_mark_shape"),
     # ⚠️ ROADMAP 2.74. Also `staged/gather.py`; reads the UNERASED
     # `cell.image` (the staff-erase thins a beam where it crosses a line).
     "CV_BEAM_SHAPE": ("staged/gather.py", "gather_beam_stroke_ink"),

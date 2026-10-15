@@ -628,6 +628,17 @@ class Q(_Vocab):
     #: contact. ABSTAINS where the raster, the staff-space unit or the box
     #: is missing.
     DOT_STROKE_INK = "dot_stroke_ink"
+    #: ROADMAP 2.131 (`OMR_STACCATISSIMO_SHAPE`, default OFF; Sean 2026-10-14:
+    #: *"make sure that we know the difference between a stacatto dot and a
+    #: stacatisso triangle"*). Filed on the glyph of every `augmentationDot` /
+    #: `articStaccato*` detection: the SHAPE of the ink inside its own box,
+    #: off the staff-erased raster -- value = height / width of the ink, and
+    #: `detail` carries `top`/`bot` (the ink's width in the top and bottom
+    #: third) so a reader can say which end is the point. A round dot reads
+    #: ~1.0 with equal thirds; a staccatissimo wedge ~1.45 with one third
+    #: ~0.6 of the other. A ruler, never a role. ABSTAINS where the raster,
+    #: the staff-space unit or the box is missing.
+    MARK_SHAPE = "mark_shape"
     #: ROADMAP 2.74 (Sean, 2026-10-09: *"A beam never has an arc"* / *"The
     #: thickness on a beam is always more than a hairpin"* / *"A beam must not
     #: only connect to its note but also to another note"*). Filed on a CELL,
@@ -2315,6 +2326,9 @@ CLAIMS: "dict[str, str]" = {
     #: same reason as `STEM_TIP_INK` -- it says how much of a dot box is
     #: stroke, never that the box is or is not a dot.
     "DOT_STROKE_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.131: height/width and thirds of one dot-class box's own ink
+    #: -- a ruler, same reason as `DOT_STROKE_INK`.
+    "MARK_SHAPE": CLAIM.MEASUREMENT,
     #: ROADMAP 2.74: thickness, straightness and end-stem rulers over one beam
     #: stroke's own ink -- same reason as `DOT_STROKE_INK`.
     "BEAM_STROKE_INK": CLAIM.MEASUREMENT,
@@ -2688,6 +2702,10 @@ class READERS(_Vocab):
     #: of it (one crop, one signal). Its own reader name because it asks a
     #: different question (is the ink in THIS dot box a stroke).
     CV_DOT_STROKE = "cv_dot_stroke"          # gather: dot box ink is a stroke
+    #: `gather._observe_mark_shape` -- ROADMAP 2.131. Reads the SAME
+    #: staff-erased raster `CV_DOT_STROKE` reads (one crop, one signal), asks
+    #: a different question: is the ink in THIS box a dot or a wedge.
+    CV_MARK_SHAPE = "cv_mark_shape"          # gather: dot box ink is a wedge
     #: `gather.gather_beam_stroke_ink` -- ROADMAP 2.74. Reads the UNERASED
     #: cell raster (`cell.image`), the one raster no other CV reader of this
     #: family reads, because the staff-erase thins a beam where it crosses a

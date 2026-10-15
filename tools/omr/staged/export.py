@@ -2845,6 +2845,7 @@ def _place_dot_role_marks(rec: Record, runs: Dict[str, StaffRun]
 
     attached_augmentation = 0
     written_staccato = 0
+    written_staccatissimo = 0
     for o in rec.obs_of(Q.AUG_DOT):
         sub = o["subject"]
         v = rec.verdict(Q.DOT_ROLE, sub)
@@ -2862,7 +2863,7 @@ def _place_dot_role_marks(rec: Record, runs: Dict[str, StaffRun]
                 # NEITHER candidate note -- not a bug, but not silent either.
                 dropped["augmentation_decided_but_unattached"] += 1
             continue
-        if v["value"] != "staccato":
+        if v["value"] not in ("staccato", "staccatissimo"):
             dropped["dot_role_names_an_unknown_value"] += 1
             continue
         owner = (v.get("detail") or {}).get("owner")
@@ -2870,10 +2871,16 @@ def _place_dot_role_marks(rec: Record, runs: Dict[str, StaffRun]
         if head is None:
             dropped["staccato_owning_notehead_not_written"] += 1
             continue
-        head.setdefault("dot_role_articulations", []).append("staccato")
+        # ROADMAP 2.131: a wedge-shaped mark is a staccatissimo
+        # (`<staccatissimo/>` / `-!`); counted with the staccatos -- one
+        # population, one equality -- and reported apart below.
+        head.setdefault("dot_role_articulations", []).append(v["value"])
         written_staccato += 1
+        if v["value"] == "staccatissimo":
+            written_staccatissimo += 1
     return {"attached_augmentation": attached_augmentation,
            "written_staccato": written_staccato,
+           "written_staccatissimo": written_staccatissimo,
            "dropped": dict(dropped)}
 
 
@@ -6413,6 +6420,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             counters.get("dot_role_articulations_on_a_doubled_copy", 0)),
         "attached_staccato_before_hold_out": dot_role_report[
             "written_staccato"],
+        # ROADMAP 2.131: how many of those are staccatissimo (a subset of the
+        # line above, informational, not in the equality).
+        "attached_staccatissimo_before_hold_out": dot_role_report.get(
+            "written_staccatissimo", 0),
         "not_placed": report["dot_role_not_placed_total"],
         "balanced": dot_role_population == (
             dot_role_report["attached_augmentation"] + dot_role_written
