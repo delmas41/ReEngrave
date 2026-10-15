@@ -23,6 +23,7 @@ machine-readable form.
   not. A lone dotless whole rest is the bar, sized to the `<time>` in force
   (ROADMAP 2.98, print-confirmed 12 of 12, 2026-10-12).
 - **An augmentation dot always stands in a SPACE, never on a line** (Sean, 2026-10-14: *"Always in a space"*; scope: general engraving; ROADMAP 2.128): in its note's own space; after a note on a line, in the space **above** by default, and **below** for the lower (stems-down) voice of two on one staff or the lower note of a second in a chord (Sean, same day, *"Yes"* to the researched rule; PROVISIONAL for 19th-c. German plates -- Brahms p.0 labels: 41 above, 15 apparent "below" are the lower chord partner's above-dot, 4 are a lower voice, 0 contradictions). Registry: `docs/engraving-conventions.md`.
+- **A tremolo slash is never oval: always a thick diagonal line** (Sean, 2026-10-15: *"They are never oval shaped - always thick diagonal lines"*; scope: general engraving; ROADMAP 2.137). It crosses one stem and joins no other note (2.49, 2.71), so a box over one is never a notehead, and a slash never changes the written value.
 - A dot sits a space higher on a line note (the usual case); the box window is asymmetric and misses the below-line dots (`OMR_DOT_POSITION_JOIN`).
 - A beam runs from the first stem it joins to the last, and a stem stands at
   the SIDE of its head -- so the outer note's centre is half a head past the

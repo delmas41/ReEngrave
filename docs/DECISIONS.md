@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-15 · Sean · A tremolo slash is never oval: always a thick diagonal line (general scope; page-facts §1); open ROADMAP 2.137 for slashes still boxed as noteheads · because 2.134 tile 13 showed three slashes on a stem standing as heads despite 2.49/2.71 · (ROADMAP 2.137; docs/page-facts.md)
 - 2026-10-15 · Sean · Land 2.135: the report's refusal-vs-drop balance row counts refusals written as rests (2.122) as their own part · because Brahms 20261014-night showed a false IMBALANCE +92 (3,407 = 3,315 dropped + 92 read as rests) · (benchmarks/omr-regather-report-2026-10/FINDINGS.md)
 - 2026-10-15 · Sean, on the 2.134 blind tiles · "1.4 2. Dot 4 3.4 4.4 5.4 6.8 7.4 8. Dot 4 9. Dot 4 10.8 11-13.4 14. Dot 4" and "13 is a dot 4": 11/11 narrowed heads whose own candidates land the bar uniquely are the value the bar lands on, 3/3 controls right; land 2.134 (diagnosis) and open 2.136 ("Yes to both") · because the cause is now sized and checked by the print, but n=11 on one cause is not yet a rule · (benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md 2.134; out/print/2.134-review/answers.json)
 - 2026-10-15 · Sean · Land 2.133 with OMR_MARK_SHAPE_LINE_REMOVED OFF: a measurement-only reader that bridges out the staff line before a dot-family mark's shape is read; no decision uses it · because line removal did not separate wedges from dots cleanly; kept for later (Sean confirmed 8 round Litolff staccatos) · (benchmarks/omr-staccatissimo-2026-10/FINDINGS.md)
