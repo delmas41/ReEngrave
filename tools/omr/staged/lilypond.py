@@ -211,6 +211,178 @@ def _lily_gap_text_quarters(quarters: Fraction,
         "s1*0\\stopTextSpan" % (dur, _ly_escape(word)))
 
 
+#: ROADMAP 2.109. The LilyPond twin of the marks the MusicXML carries. Every
+#: mark is counted on BOTH sides of a ledger (`report["marks_ledger"]`):
+#: `in_musicxml` is what `staged.export.to_musicxml` writes for the same bars
+#: (one `<articulations>` child per HEAD, merged with the 2.12c dot-role
+#: staccato; one `<dynamics>` per decided/guessed dynamic), `written` is
+#: MEASURED off the `.ly` text actually produced, and `dropped` names every
+#: remainder by reason. `_assert_ledger` raises `Unbalanced` otherwise.
+_ARTIC_TOKEN = re.compile(r"-[.!>^-]")
+_DYN_LETTERS = frozenset("fmprsz")
+
+
+def _assert_ledger(family: str, led: Dict[str, Any]) -> None:
+    dropped = sum(led["dropped"].values())
+    if led["in_musicxml"] != led["written"] + dropped:
+        raise SX.Unbalanced(
+            "lilypond %s ledger: %d in the MusicXML, %d written and %d "
+            "dropped (%s) -- a mark went nowhere" % (
+                family, led["in_musicxml"], led["written"], dropped,
+                led["dropped"]))
+
+
+def _ledger(counters: Dict[str, int], family: str) -> Dict[str, Any]:
+    pre = family + "_"
+    return {
+        "in_musicxml": int(counters.get(pre + "in_musicxml", 0)),
+        "written": int(counters.get(pre + "written", 0)),
+        "dropped": {k.split(":", 1)[1]: int(v) for k, v in counters.items()
+                    if k.startswith(pre + "dropped:") and v},
+    }
+
+
+def _merge_dot_role_marks(events: Sequence[Dict[str, Any]]) -> None:
+    """Put each head's 2.12c dot-role staccato (`head["dot_role_articulations"]`)
+    on the EVENT's `articulations`, which is the only list `_lily_event` reads.
+
+    ⚠️ `voicing.group_chords_in_measure` hoists `head["articulations"]` only;
+    `staged.export._merged_articulations` merges the dot-role list at the
+    point the MusicXML is written, so the same merge is made here, where the
+    LilyPond is. `_lily_artic_event_level` keeps the PRE-merge count so
+    `counters["articulations"]` keeps meaning what it always meant.
+    """
+    for ev in events:
+        if ev.get("kind") == "rest":
+            continue
+        marks = list(ev.get("articulations") or ())
+        ev["_lily_artic_event_level"] = len(marks)
+        for head in ev.get("noteheads") or ():
+            for k in head.get("dot_role_articulations") or ():
+                if k not in marks:
+                    marks.append(k)
+        if marks:
+            ev["articulations"] = marks
+
+
+def _note_unwritten_marks(counters: Dict[str, int], held: Dict[str, int],
+                          reason: str) -> None:
+    """Articulation marks of events this file does NOT write as music
+    (`SX._held_bar_marks`, the MusicXML side's own count), on the ledger."""
+    n = int(held.get("articulations", 0)) + int(
+        held.get("dot_role_articulations", 0))
+    counters["articulations_in_musicxml"] += n
+    counters["articulations_dropped:" + reason] += n
+
+
+def _head_mark_count(ev: Dict[str, Any]) -> int:
+    """What MusicXML writes for this event: one element per mark per HEAD."""
+    return sum(len(SX._merged_articulations(h) or ())
+               for h in (ev.get("noteheads") or ()))
+
+
+def _dyn_token(word: str, guessed: bool = False,
+               script_ok: bool = True) -> Optional[str]:
+    """LilyPond for one dynamic word, or None where it cannot be spelled.
+
+    ⚠️ `script_ok` False once the event already carries a dynamic SCRIPT: two
+    on one moment make LilyPond warn `conflict with event:
+    absolute-dynamic-event` and DISCARD one (Brahms: 14 pairs, 28 warnings),
+    so the later ones are written as a `\\dynamic` markup -- the same letters,
+    not discarded."""
+    if script_ok and word in _legacy._DYNAMIC_ELEMENTS:
+        return ("-\\tweak color #guessedColor " if guessed else "") + "\\" + word
+    if word and set(word) <= _DYN_LETTERS:
+        inner = "\\dynamic " + word
+        if guessed:
+            inner = "\\with-color #guessedColor " + inner
+        return "-\\markup { %s }" % inner
+    return None
+
+
+def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
+                      counters: Dict[str, int], writable: bool,
+                      why_not: str = "") -> str:
+    """The post-events for a bar's dynamics, counted on the ledger.
+
+    ⚠️ AT THE HEAD OF THE BAR, exactly where MusicXML writes them (a `<direction>`
+    at offset 0): the marks carry a PAGE x and the noteheads a canonical one,
+    so a finer placement would be a guess. A bar this file does not write as
+    music (`writable` False) drops them, by `why_not`, counted.
+    """
+    out: List[str] = []
+    led = "dynamics_"
+    scripts = 0
+
+    def drop(reason: str, n: int = 1) -> None:
+        counters[led + "dropped:" + reason] += n
+        counters["dynamics_not_renderable"] += n
+
+    for _x, kind, text in directions:
+        if kind == "words":
+            counters["direction_words_not_renderable"] += 1
+            continue
+        if kind == "dynamics_guess":
+            payload = json.loads(text)
+            counters[led + "in_musicxml"] += 1
+            if not writable:
+                drop(why_not)
+                counters["guessed_dynamics_not_renderable"] += 1
+                continue
+            shown = payload["text"]
+            if shown == "dyn.":
+                out.append('_\\markup { \\with-color #guessedColor '
+                           '\\italic "dyn." }')
+            else:
+                tok = _dyn_token(shown, guessed=True, script_ok=scripts == 0)
+                if tok is not None and tok.startswith(("\\", "-\\tweak")):
+                    scripts += 1
+                if tok is None:
+                    drop("dynamic_text_not_spellable")
+                    counters["guessed_dynamics_not_renderable"] += 1
+                    continue
+                out.append(tok)
+            counters[led + "written"] += 1
+            counters["dynamics"] += 1
+            counters["guessed_dynamics"] += 1
+            counters["guessed_by_rule:" + payload["guess"]["rule"]] += 1
+        elif kind == "marking":
+            m = json.loads(text)
+            dyns = list(m.get("dynamics") or ())
+            counters[led + "in_musicxml"] += len(dyns)
+            if not writable:
+                drop(why_not, len(dyns))
+                counters["direction_words_not_renderable"] += 1
+                continue
+            word = ('\\italic "%s"' % _ly_escape(m.get("word") or ""))
+            ok = [d for d in dyns if d and set(d) <= _DYN_LETTERS]
+            for d in dyns:
+                if d not in ok:
+                    drop("dynamic_text_not_spellable")
+            parts = ["\\dynamic " + d for d in ok]
+            parts = ([word] + parts) if m.get("word_first", True) else (
+                parts + [word])
+            out.append("_\\markup { %s }" % " ".join(parts))
+            counters["direction_words"] += 1
+            counters[led + "written"] += len(ok)
+            counters["dynamics"] += len(ok)
+        else:
+            counters[led + "in_musicxml"] += 1
+            if not writable:
+                drop(why_not)
+                continue
+            tok = _dyn_token(str(text), script_ok=scripts == 0)
+            if tok is not None and tok.startswith("\\"):
+                scripts += 1
+            if tok is None:
+                drop("dynamic_text_not_spellable")
+                continue
+            out.append(tok)
+            counters[led + "written"] += 1
+            counters["dynamics"] += 1
+    return "".join(out)
+
+
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
           condensed: bool) -> None:
     """Count what THIS render wrote, in the same counter names the MusicXML
@@ -257,7 +429,20 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
             # is where it is surfaced rather than silently swallowed.
             counters["articulation_marks_on_chord_members"] += len(
                 head.get("articulations") or ())
-        counters["articulations"] += len(ev.get("articulations") or ())
+        counters["articulations"] += ev.get(
+            "_lily_artic_event_level", len(ev.get("articulations") or ()))
+        # ROADMAP 2.109: the marks ledger, per rendered event.
+        _heads_marks = _head_mark_count(ev)
+        _event_marks = list(ev.get("articulations") or ())
+        _unspelled = [k for k in _event_marks
+                      if k not in _legacy._LILY_ARTICULATION]
+        counters["articulations_in_musicxml"] += _heads_marks
+        counters["articulations_expected_written"] += (
+            len(_event_marks) - len(_unspelled))
+        counters["articulations_dropped:one_mark_per_chord_in_lilypond"] += (
+            _heads_marks - len(_event_marks))
+        counters["articulations_dropped:kind_without_lilypond_syntax"] += len(
+            _unspelled)
         for orn in (ev.get("ornaments") or ()):
             kind = (orn or {}).get("kind")
             if kind in _legacy._LILY_ORNAMENT:
@@ -375,6 +560,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 if _sized is not None:
                     events = _sized
             _hoist_fermata(events)
+            _merge_dot_role_marks(events)
 
             if not events:
                 # ⚠️ AN EVENTLESS BAR IS A BAR WE READ NOTHING IN, not a bar
@@ -423,6 +609,9 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                     for _ in range(partial["gap_rows"]):
                         drops(SX._GAP_REFUSAL, run.page, run.system)
                 SX._mark_kept_onsets(partial)
+                _note_unwritten_marks(
+                    counters, SX._held_bar_marks(partial["unwritten"]),
+                    "unread_gap_in_partial_bar")
                 pieces = []
                 for p in partial["streams"]:
                     if p["status"] == "complete":
@@ -459,6 +648,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 # read to its meter is a bar we could not read. Nothing pads,
                 # trims or re-times it.
                 counters["bars_held_out_sum"] += 1
+                _note_unwritten_marks(counters, SX._held_bar_marks(events),
+                                      "bar_held_out_by_sum")
                 if condensed:
                     # ⚠️ MIRRORS `staged.export`'s own condensed case: a
                     # doubled Contrabass copy holds ink the log recorded
@@ -544,7 +735,39 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
 _TWEAK = "\\tweak color #guessedColor "
 
 
-def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str]) -> str:
+def _retouch_marks(ev: Dict[str, Any], dyn: str,
+                   wedges: Dict[int, str]) -> str:
+    """`_legacy._lily_event` plus ROADMAP 2.109's two changes to it: the bar's
+    dynamics (inserted BEFORE the hairpin suffix -- `c4\\p\\<`, never
+    `c4\\<\\p`) and a BLUE articulation where the head carrying it is a
+    GUESS (the MusicXML colours the whole `<note>`). An event with neither is
+    the legacy text byte for byte."""
+    wsuf = wedges.get(id(ev), "")
+    marks = [k for k in (ev.get("articulations") or ())
+             if k in _legacy._LILY_ARTICULATION]
+    guessed = any(h.get("guess") for h in (ev.get("noteheads") or ())
+                  if SX._merged_articulations(h))
+    if not marks or not guessed or ev.get("kind") == "rest":
+        if not dyn:
+            return _legacy._lily_event(ev, wedges)
+        return _legacy._lily_event(ev, None) + dyn + wsuf
+    core = _legacy._lily_event(ev, None)
+    bare = _legacy._lily_event(dict(ev, articulations=[]), None)
+    i = 0
+    while i < len(bare) and core[i] == bare[i]:
+        i += 1
+    a_len = len(core) - len(bare)
+    plain = "".join(_legacy._LILY_ARTICULATION[k] for k in marks)
+    if a_len != len(plain) or core[i:i + a_len] != plain:
+        return core + dyn + wsuf
+    blue = "".join("-\\tweak color #guessedColor " + _legacy._LILY_ARTICULATION[k]
+                   for k in marks)
+    return core[:i] + blue + core[i + a_len:] + dyn + wsuf
+
+
+def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
+                       dyns: Optional[Dict[int, str]] = None,
+                       counters: Optional[Dict[str, int]] = None) -> str:
     """`_legacy._lily_event`, with a GUESSED symbol drawn in the guess colour.
 
     ROADMAP 2.103. The frozen legacy renderer is called UNCHANGED and its
@@ -554,7 +777,10 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str]) -> str:
     beside a guessed one stays black. A READ event returns the legacy text
     byte for byte.
     """
-    text = _legacy._lily_event(ev, wedges)
+    text = _retouch_marks(ev, (dyns or {}).get(id(ev), ""), wedges)
+    if counters is not None:
+        counters["articulations_written"] += len(_ARTIC_TOKEN.findall(
+            text.replace((dyns or {}).get(id(ev), "") or "\0", "", 1)))
     if ev.get("kind") == "rest":
         if (ev.get("rest") or {}).get("guess"):
             return "\\once \\override Rest.color = #guessedColor " + text
@@ -574,7 +800,9 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str]) -> str:
 
 
 def _lily_measure_marked(events: List[Dict[str, Any]],
-                         wedges: Dict[int, str]) -> str:
+                         wedges: Dict[int, str],
+                         dyns: Optional[Dict[int, str]] = None,
+                         counters: Optional[Dict[str, int]] = None) -> str:
     """`_legacy._lily_measure` with `_lily_event_marked` -- the same tuplet
     run walk, the same join. Equal to the legacy text where nothing is
     guessed."""
@@ -585,11 +813,11 @@ def _lily_measure_marked(events: List[Dict[str, Any]],
     while i < len(events):
         run = runs.get(i)
         if run is None:
-            out.append(_lily_event_marked(events[i], wedges))
+            out.append(_lily_event_marked(events[i], wedges, dyns, counters))
             i += 1
             continue
         last, ratio = run
-        inner = " ".join(_lily_event_marked(ev, wedges)
+        inner = " ".join(_lily_event_marked(ev, wedges, dyns, counters)
                          for ev in events[i:last + 1])
         out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
         i = last + 1
@@ -598,6 +826,19 @@ def _lily_measure_marked(events: List[Dict[str, Any]],
 
 def _render_bar(bar: _Bar, wedges: Dict[int, str],
                 counters: Dict[str, int]) -> str:
+    # ROADMAP 2.109: the bar's dynamics, once, counted on the ledger. Written
+    # on the first event of a bar this file writes as music (or on a decided
+    # whole-bar rest), dropped -- by name -- from a bar it marks unread.
+    if bar.kind in ("single", "two_voice"):
+        dyn = _direction_suffix(bar.directions, counters, True)
+    elif bar.kind == "empty" and bar.reason is None:
+        dyn = _direction_suffix(bar.directions, counters, True)
+    elif bar.kind == "partial":
+        dyn = _direction_suffix(bar.directions, counters, False,
+                                "bar_partly_unread")
+    else:
+        dyn = _direction_suffix(bar.directions, counters, False,
+                                "bar_unread_or_held_out")
     if bar.kind in ("tacet", "empty"):
         rest = _legacy._lily_measure_rest(bar.meter)
         # ⚠️ `_lily_measure_rest` BUILDS A BARE REST DICT FROM THE METER
@@ -608,6 +849,7 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
         if bar.fermata:
             rest += "\\fermata"
             counters["fermatas"] += 1
+        rest += dyn
         if bar.reason is not None:
             # ⚠️⚠️ ROADMAP 3.5. THE MUSICXML TWIN: `staged.export.
             # _marked_empty_measure` colours the `<note>` and prepends a
@@ -642,20 +884,21 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
                     txt.append(v)
                 elif v:
                     _tally(v, counters, bar.condensed)
-                    txt.append(_lily_measure_marked(v, wedges))
+                    txt.append(_lily_measure_marked(v, wedges, None, counters))
             voices.append(" ".join(txt))
         if len(voices) == 1:
             return prefix + voices[0] + " |"
         return f"{prefix}<< {{ {voices[0]} }} \\\\ {{ {voices[1]} }} >> |"
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
-        return prefix + _lily_measure_marked(bar.events, wedges) + " |"
+        return prefix + _lily_measure_marked(
+            bar.events, wedges, {id(bar.events[0]): dyn}, counters) + " |"
     # two_voice
     v1, v2 = bar.streams
     _tally(v1, counters, bar.condensed)
     _tally(v2, counters, bar.condensed)
-    inner1 = _lily_measure_marked(v1, wedges)
-    inner2 = _lily_measure_marked(v2, wedges)
+    inner1 = _lily_measure_marked(v1, wedges, {id(v1[0]): dyn}, counters)
+    inner2 = _lily_measure_marked(v2, wedges, None, counters)
     # ⚠️ PLAIN `<< {...} \\ {...} >>`, NOT `\\voiceOne`/`\\voiceTwo`. Legacy
     # picks the physical voice a lone stream belongs to from its STEM
     # DIRECTION (`_lone_voice_is_the_second`) — and `staged.export._place_
@@ -702,18 +945,6 @@ def _staff_block(rec: SX.Record, part: Sequence[SX.StaffRun], name: str,
     wedges: Dict[int, str] = {}
     wedges.update(_legacy._lily_wedge_plan(lane0))
     wedges.update(_legacy._lily_wedge_plan(lane1))
-
-    for bar in bars:
-        for _x, kind, _text in bar.directions:
-            if kind == "words":
-                counters["direction_words_not_renderable"] += 1
-            elif kind in ("dynamics", "dynamics_guess"):
-                # LilyPond writes NO dynamics on the staged path (an inherited
-                # limit, counted); a GUESSED one is counted apart so the blue
-                # `dyn.` Sean asked for is visibly missing HERE, not silently.
-                counters["dynamics_not_renderable"] += 1
-                if kind == "dynamics_guess":
-                    counters["guessed_dynamics_not_renderable"] += 1
 
     lines = [f'{indent}\\new Staff \\with {{',
             f'{indent}  instrumentName = "{_ly_escape(name)}"',
@@ -823,7 +1054,8 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     work_title = pathlib.Path(src).name if src else "OMR transcription"
 
     n_guessed = int(counters.get("guessed_notes", 0)
-                    + counters.get("guessed_rests", 0))
+                    + counters.get("guessed_rests", 0)
+                    + counters.get("guessed_dynamics", 0))
     lines = [f'\\version "{version}"', ""]
     if n_guessed:
         lines += [f"guessedColor = #{SX.GUESS_COLOR_LILY}", ""]
@@ -855,6 +1087,21 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     report["articulations_not_written"] = dict(artics_dropped)
     report["fermatas_not_written"] = dict(fermatas_dropped)
     report["ornaments_not_written"] = dict(ornaments_dropped)
+    # ROADMAP 2.109: the marks ledger. `written` is MEASURED off the text.
+    # Both families raise `Unbalanced` rather than flag.
+    report["marks_ledger"] = {
+        "articulations": _ledger(counters, "articulations"),
+        "dynamics": _ledger(counters, "dynamics"),
+    }
+    for _fam, _led in report["marks_ledger"].items():
+        _assert_ledger(_fam, _led)
+    _artic_expected = int(counters.get("articulations_expected_written", 0))
+    if _artic_expected != report["marks_ledger"]["articulations"]["written"]:
+        raise SX.Unbalanced(
+            "lilypond: %d articulation marks were meant to be written and %d "
+            "are in the text" % (
+                _artic_expected,
+                report["marks_ledger"]["articulations"]["written"]))
     report["lilypond"] = {
         # ⚠️ THE TWO MARKS `_lily_event` HAS NO SYNTAX FOR, COUNTED AT THE
         # RENDER -- see `_LILY_ONLY_DROPS` and `_tally`/`_staff_block`. Both

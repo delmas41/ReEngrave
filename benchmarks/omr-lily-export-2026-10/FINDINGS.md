@@ -47,3 +47,45 @@ a bar the reader could not read, nothing invented; black = READ.
 
 Fast tier: `pytest -m "not slow" tools/omr/tests -q` = 7771 passed, 11 skipped, 2 xfailed.
 Slow whole-movement file: 3 passed (115 s).
+
+---
+
+# 2.109 -- STAGED LilyPond carries the marks the MusicXML carries
+
+Path: STAGED (`tools/omr/staged/lilypond.py`). LEGACY untouched; no change to `export.py`.
+
+## What the writer does now
+- Articulations: staccato `-.`, staccatissimo `-!`, tenuto `--`, accent `->`, marcato `-^`
+  (the legacy table `_LILY_ARTICULATION`, the same five kinds `_MXL_ARTICULATION` writes).
+  CAUSE of the gap: `voicing.group_chords_in_measure` hoists `head["articulations"]` only; the
+  2.12c / 2.131 dot-role staccato lives in `head["dot_role_articulations"]`, which MusicXML merges
+  at write time (`_merged_articulations`) and the `.ly` never read. `_merge_dot_role_marks` makes the same merge.
+- A mark on a GUESSED head is blue (`-\tweak color #guessedColor -.`), as the MusicXML colours the whole note.
+- Dynamics, at the head of the bar exactly where MusicXML writes its `<direction>`: READ = `\p \f \sf ...`;
+  GUESSED = `_\markup { \with-color #guessedColor \italic "dyn." }` (a blue letter only if the OFF
+  `OMR_DYNAMIC_INK_PICK` ever supplies one; the pick stays OFF). A word+dynamic marking writes both.
+  A second dynamic on one moment is a `\dynamic` markup: two scripts made LilyPond DISCARD one (28 warnings, 14 pairs).
+- Bookkeeping: `report["marks_ledger"]` holds `in_musicxml == written + dropped{reason}`, `written` MEASURED off the
+  text; `Unbalanced` is raised otherwise (the 2.116 raises are untouched).
+
+## Brahms 20261014-night record, whole movement (`.ly` only; no gather)
+| family | in MusicXML | in .ly | dropped, by reason |
+|---|---|---|---|
+| articulations | 3199 | 2011 | 623 `bar_held_out_by_sum`, 523 `one_mark_per_chord_in_lilypond`, 42 `unread_gap_in_partial_bar` |
+| dynamics | 1081 | 647 | 283 `bar_unread_or_held_out`, 151 `bar_partly_unread` |
+
+Dynamics written include 53 guessed (blue `dyn.`). Words (`direction_words_not_renderable`) 306 are still not written
+(out of scope). Every dropped mark is in a bar this file marks unread (red bracket) or is a chord member sharing one
+mark (LilyPond draws one per chord). Before: no staccato and no dynamic in the `.ly`.
+
+Warnings, `lilypond` run without `-s`: before 124, after 128; 3 compile errors both times (the unchanged
+`bounds of this piece aren't breakable` text-spanner errors). The +4 are `page N has been compressed` layout notes
+(markup takes room), none a mark conflict. (The first cut gave 156; the extra 28 were the two-dynamics conflict, fixed.)
+
+## Print check
+`out/print/2.109-review/crop_0*.png`: Brahms p24, the plate (left, nothing of ours drawn) beside our LilyPond of the
+same bar (right). Marks sit on the right notes. The read `ff` of crop 3 prints BELOW our bar and ABOVE the plate's
+(MusicXML also says below; bar-head placement is a declared simplification). Crop 3 also shows our NOTES differ from
+the plate in that bar: a reading issue, not a marks issue.
+
+Tests: `tools/omr/tests/test_staged_lilypond_marks_2_109.py` (15; the staccato and dynamic ones RED on main).
