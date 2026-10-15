@@ -1855,6 +1855,36 @@ def _flags_on_reach_stem(ev: Evidence, cell, head_box, side: str, reach_row, tol
     return out, levels
 
 
+def _right_of_within_reach(dot_box, head_box):
+    """The horizontal half of `_in_augmentation_window` alone: the head lies
+    wholly LEFT of the dot and no more than five dot-widths away. A staccato
+    stands over the head's column, so it is never 'right of' it."""
+    dot_x_left, _y0, dot_w, _h = dot_box
+    hx, _hy0, hw, _hh = head_box
+    if hx + hw > dot_x_left:
+        return False
+    return dot_x_left - (hx + hw) <= max(dot_w, 12) * 5
+
+
+def _pos_verdicts(ev: Evidence, cell, home: str, head_keys):
+    """`pos_of(head_key) -> True | False | None` for THE DOT `ev` is about
+    (`None` = cannot tell). ROADMAP 2.128. A callable that is `None`-valued
+    for every head when the dot has no position row, so a flag-ON run on a
+    record gathered before 2.128 changes nothing.
+    """
+    dot_rows = ev.rows(Q.DOT_STAFF_POSITION)
+    if not dot_rows:
+        return lambda _key: None
+    dot_row = dot_rows[-1]
+    heads = {r.subject.to_key(): r for r in ev.rows(
+        Q.NOTEHEAD_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS,
+        subject=cell)}
+
+    def pos_of(key):
+        return _aug_join.dot_head_compatible(dot_row, heads.get(key), home)
+    return pos_of
+
+
 def _in_augmentation_window(dot_box, head_box, max_above, max_below):
     """Does `dot_box` sit in `head_box`'s augmentation-dot window?
 
@@ -2151,6 +2181,12 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
     out = []
+    # ROADMAP 2.128 (`OMR_DOT_POSITION_JOIN`): the heads' staff positions, once
+    # per call, fetched only when the flag is on.
+    pos_join = _aug_join.dot_position_join_enabled()
+    head_pos = {r.subject.to_key(): r for r in ev.rows(
+        Q.NOTEHEAD_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS,
+        subject=cell)} if pos_join else {}
     for d in ev.rows(Q.AUG_DOT, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
         role = ev.verdict(Q.DOT_ROLE, subject=d.subject)
@@ -2166,10 +2202,24 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
         best, best_score = None, float("inf")
         named = ((role.detail or {}).get("head")
                  if foreign_keys else None)
+        # ROADMAP 2.128: a dot the role decision placed BY ITS STAFF POSITION
+        # belongs to the head it named, whatever the box window says; and
+        # (flag on) a dot on the wrong step is not any head's.
+        pos_named = ((role.detail or {}).get("head")
+                     if pos_join and (role.detail or {}).get(
+                         "position_admitted") else None)
+        dot_pos = (ev.rows(Q.DOT_STAFF_POSITION, subject=d.subject)
+                   if pos_join else ())
         for key, hb in heads:
             if key in foreign_keys and key != named:
                 continue
-            if not _in_augmentation_window(db, hb, max_above, max_below):
+            if pos_join and dot_pos and key not in foreign_keys \
+                    and _aug_join.dot_head_compatible(
+                        dot_pos[-1], head_pos.get(key), home) is False:
+                continue
+            if key == pos_named and _right_of_within_reach(db, hb):
+                pass
+            elif not _in_augmentation_window(db, hb, max_above, max_below):
                 continue
             hx_right = hb[0] + hb[2]
             hy = hb[1] + hb[3] / 2.0
@@ -2219,14 +2269,21 @@ DOT_ON_STROKE_MIN = 0.5
     # (beside `Q.ARC_OWNER`, long before the rhythm block), so this reads a
     # settled verdict, never a hole -- `test_staged_dot_role.py`'s
     # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
+    # ⚠️ ROADMAP 2.128 ADDS `Q.DOT_STAFF_POSITION` and the heads'
+    # `Q.NOTEHEAD_STAFF_POSITION` -- read only under `OMR_DOT_POSITION_JOIN`
+    # (default OFF): an augmentation dot stands in a SPACE, in its note's own
+    # space or in the space above/below a line note's line.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
+                   Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
+             "right_of_a_head_at_its_dot_step",
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
              "owned_by_another_staff", "on_a_barline", "on_a_stroke"),
@@ -2367,7 +2424,13 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
     home_best, home_score = None, float("inf")
     stacked = bool(keep_foreign and ctx is not None and ctx["stacked"])
+    # ⚠️ ROADMAP 2.128 (`OMR_DOT_POSITION_JOIN`, default ON): the dot's and
+    # each head's STAFF POSITION, where both are known. See `_pos_verdicts`.
+    pos_of = _pos_verdicts(ev, cell, home, all_keys) \
+        if _aug_join.dot_position_join_enabled() else None
     for key, hb in ([] if stacked else zip(all_keys, all_targets)):
+        if pos_of is not None and pos_of(key) is False:
+            continue            # a dot on the wrong step is not THIS head's
         if _in_augmentation_window(dot_box, hb, max_above, max_below):
             if not keep_foreign:
                 return Ruling(value="augmentation",
@@ -2384,6 +2447,22 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
         return Ruling(value="augmentation",
                       reason="right_of_and_level_with_a_head",
                       used=used, detail={**detail, "head": home_best})
+
+    if home_best is None and pos_of is not None and not stacked:
+        # ⚠️ ROADMAP 2.128. Nothing fits the box window, but ONE head of this
+        # cell sits immediately left of the dot and the dot stands exactly
+        # where its augmentation dot stands (its own space, or the space
+        # above/below its line): the near-misses 2.127 measured -- a dot 0.5
+        # sp BELOW a line note, outside the 0.25 sp window. Two such heads
+        # (a chord of seconds shares its space) leave the dot unplaced.
+        fits = [key for key, hb in zip(all_keys, all_targets)
+                if pos_of(key) is True and _right_of_within_reach(dot_box, hb)]
+        if len(fits) == 1:
+            return Ruling(value="augmentation",
+                          reason="right_of_a_head_at_its_dot_step",
+                          used=used,
+                          detail={**detail, "head": fits[0],
+                                  "position_admitted": True})
 
     dot_cx = dot_box[0] + dot_box[2] / 2.0
     dot_cy = dot_box[1] + dot_box[3] / 2.0
@@ -2947,7 +3026,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
     return t
 
 
-# ⚠️⚠️ ROADMAP 2.130 (`OMR_OPEN_HEAD_ON_STEM`, default OFF until Sean's tiles). CONVENTION (Sean, DECISIONS 2026-10-09, confirmed): *"Whole
+# ⚠️⚠️ ROADMAP 2.130 (`OMR_OPEN_HEAD_ON_STEM`, default ON since 2026-10-14, Sean: "Yes"). CONVENTION (Sean, DECISIONS 2026-10-09, confirmed): *"Whole
 # notes never have stems"* and *"a hollow note with nothing on the stem is always a half note"*; *"open noteheads are never beamed"*
 # (2.43). `stem_value` applies the first only where a stem is SHARED (`lone_head` is skipped), so a detector WHOLE class with a stem read
 # on it stayed 4.0 (Brahms 20261013-night: three of Sean's dotted halves). WHAT WOULD FALSIFY IT: a print whole note with a barline or a
@@ -2961,8 +3040,8 @@ OPEN_ON_STEM_BEAMED_CENTER_MAX = 0.80   # strokes joined to the stem: the head m
 
 
 def open_head_on_stem_enabled() -> bool:
-    """Only an explicit on-word is ON (default OFF, Sean 2026-10-14: tiles first)."""
-    return os.environ.get(OPEN_HEAD_ON_STEM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """DEFAULT ON (Sean, 2026-10-14: "Yes"); only an explicit off word turns it off."""
+    return os.environ.get(OPEN_HEAD_ON_STEM_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _min_center(ink_detail: Dict[str, Any]) -> Optional[float]:
@@ -3044,7 +3123,11 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
                    # never read as a hollow half, and one refused as a mark
                    # that is not a note (a tremolo slash, a meter sign) has no
                    # duration at all.
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                   # ROADMAP 2.128 (`OMR_DOT_POSITION_JOIN`): which head a dot
+                   # lengthens now also asks the dot's and the head's staff
+                   # positions (`_attached_dots`).
+                   Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -3091,7 +3174,8 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",

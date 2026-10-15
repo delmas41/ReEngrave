@@ -46,6 +46,110 @@ def aug_dot_join_enabled() -> bool:
         "0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.128 -- a dot carries its staff position, and the join may use it
+# ─────────────────────────────────────────────────────────────────────────────
+
+DOT_POSITION_JOIN_ENV = "OMR_DOT_POSITION_JOIN"
+_OFF_WORDS = ("0", "false", "no", "off")
+
+
+def dot_position_join_enabled() -> bool:
+    """`OMR_DOT_POSITION_JOIN`, DEFAULT ON (Sean, 2026-10-14: "Yes"; only an
+    explicit off word turns it off, back to the box-geometry window alone)."""
+    return os.environ.get(DOT_POSITION_JOIN_ENV, "").strip().lower() \
+        not in _OFF_WORDS
+
+
+#: A dot is read as ON A LINE only within `DOT_LINE_BAND` half-steps of a line
+#: centre, and as IN A SPACE only beyond `DOT_SPACE_BAND`; between, it has not
+#: told us (rule 8). CONVENTION CONFIRMED by Sean, 2026-10-14: *"Always in a
+#: space"* -- an augmentation dot never stands on a line. So a reading near a
+#: line is a measurement near the boundary or not a dot at all, and only a
+#: reading CLEARLY on the line may refuse one. Measured on Brahms 317803 p.0
+#: against Sean's labels: every one of 120 truth dots lies >= 0.31 steps from
+#: a line centre (the nearest, `0/0/3/1/6`, is a dotted quarter's dot Sean
+#: confirmed, standing 0.31 from the ledger line above its head); detected
+#: dot-class boxes lie as close as 0.004. A cut-off is a measurement: one score.
+DOT_LINE_BAND = 0.2
+DOT_SPACE_BAND = 0.3
+HEAD_MAX_RESIDUAL = 0.25
+#: A head standing further than this many half-steps off the five lines has a
+#: geometry position that is a long extrapolation (`Q.NOTEHEAD_POSITION`'s
+#: ledger-counted verdict owns it), so its step is not read here. Measured on
+#: Brahms 317803 p.0 against Sean's OnLine/InSpace labels: parity of the
+#: geometry position agrees 205/206 inside the staff, 137/138 up to 4 steps
+#: outside, 34/36 beyond 6.
+HEAD_MAX_OUTSIDE_STEPS = 4.0
+
+
+def expected_dot_steps(head_step: int) -> Tuple[int, ...]:
+    """The steps an augmentation dot may stand at after a head at `head_step`
+    (an even step is a LINE, an odd one a SPACE; 0 is the top line).
+
+    THE CONVENTION (`docs/page-facts.md`: *a dot sits a space higher on a line
+    note*; registered nowhere else): a dot stands in a SPACE, never on a line --
+    after a note in a space, in that SAME space; after a note on a line, in the
+    space ABOVE (`step - 1`, the usual) or, less often, BELOW (`step + 1`).
+    Measured against Sean's labels on Brahms 317803 p.0: line heads 41 above /
+    19 below / 1 two-above (of 61), space heads 54 of 56 in the same space.
+    """
+    return (head_step,) if head_step % 2 else (head_step - 1, head_step + 1)
+
+
+def _clean_step(pos: float, margin_floor: float) -> Optional[int]:
+    """A HEAD's step: the nearest integer, or None within `margin_floor` of the
+    line/space boundary."""
+    step = int(round(pos))
+    return step if 0.5 - abs(pos - step) >= margin_floor else None
+
+
+def _dot_cell(pos: float) -> Tuple[str, Optional[int]]:
+    """`("line", even step)`, `("space", odd step)` or `("unclear", None)`.
+
+    A space is the interval between two line centres, so a dot 0.31 steps off
+    the line above its head is IN the space above it (step -1), not "on" the
+    line: the nearest-integer step of 2.128's first cut read it as the line
+    (-2) and vetoed a real dotted quarter.
+    """
+    line = 2 * int(round(pos / 2.0))
+    off = abs(pos - line)
+    if off <= DOT_LINE_BAND:
+        return "line", line
+    if off >= DOT_SPACE_BAND:
+        return "space", line + (1 if pos > line else -1)
+    return "unclear", None
+
+
+def dot_head_compatible(dot_row: Optional[R.Observation],
+                        head_row: Optional[R.Observation],
+                        head_staff_key: Optional[str]) -> Optional[bool]:
+    """Is this dot where an augmentation dot of this head stands?
+
+    `True` / `False`, or `None` -- CANNOT TELL (rule 8: unknown is never
+    "compatible" and never "incompatible"). `None` when either position is
+    missing, the dot was measured against a staff other than the head's, the
+    head stands far off the five lines (its step there is a ledger reading
+    this fact does not own), or either reading sits on the line/space boundary.
+    """
+    if dot_row is None or head_row is None or not head_staff_key:
+        return None
+    dd = dot_row.detail or {}
+    if dd.get("staff") != head_staff_key:
+        return None
+    hp = head_row.value
+    if not isinstance(hp, (int, float)) or not \
+            -HEAD_MAX_OUTSIDE_STEPS <= float(hp) <= 8.0 + HEAD_MAX_OUTSIDE_STEPS:
+        return None
+    h = _clean_step(float(hp), 0.5 - HEAD_MAX_RESIDUAL)
+    kind, d = _dot_cell(float(dot_row.value))
+    if h is None or kind == "unclear":
+        return None
+    # on a line: never an augmentation dot (Sean: always in a space);
+    # in a space: only the head's own, or the one above/below its line
+    return kind == "space" and d in expected_dot_steps(h)
+
+
 #: A dot with no decided role counts as "beside" a head when its left edge is
 #: no more than this far right of the head's right edge, and no more than
 #: `UNRESOLVED_MAX_DY_SPACES` above or below its centre. CONVENTION ASSUMED /

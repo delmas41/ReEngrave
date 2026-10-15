@@ -1,4 +1,4 @@
-"""ROADMAP 2.130 -- dotted half notes read as a whole or a quarter (`OMR_OPEN_HEAD_ON_STEM`, default OFF until Sean's tiles).
+"""ROADMAP 2.130 -- dotted half notes read as a whole or a quarter (`OMR_OPEN_HEAD_ON_STEM`, default ON since 2026-10-14, Sean: "Yes").
 
 Sean's 2.127 tiles 9, 10, 13 (Brahms 317803 20261013-night): two heads the detector classed WHOLE with a stem read at their side stayed 4.0
 (`stem_value` skips a lone head), one hollow HALF-class head took a flag from the black eighth's stem beside it and became a quarter.
@@ -167,3 +167,27 @@ class TestAFlagOnAnOpenHeadIsNotItsValue(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestOnByDefault(unittest.TestCase):
+    """Landed ON (Sean, 2026-10-14: "Yes"): no env word means the rule runs; only an explicit off word turns it off."""
+
+    def test_RED_default_is_on_and_off_words_turn_it_off(self):
+        from tools.omr.staged.adjudicators import rhythm
+        with mock.patch.dict(os.environ, {}):
+            os.environ.pop("OMR_OPEN_HEAD_ON_STEM", None)
+            self.assertTrue(rhythm.open_head_on_stem_enabled())
+        for w in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {"OMR_OPEN_HEAD_ON_STEM": w}):
+                self.assertFalse(rhythm.open_head_on_stem_enabled(), w)
+
+    def test_RED_a_whole_class_stemmed_head_is_a_half_with_no_env(self):
+        log = Log()
+        g = _head(log, "noteheadWholeOnLine")
+        _ink(log, g)
+        with mock.patch.dict(os.environ, {}):
+            os.environ.pop("OMR_OPEN_HEAD_ON_STEM", None)
+            adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.reason, "whole_class_on_a_stem")
+        self.assertEqual(v.value["beats"], 2.0)

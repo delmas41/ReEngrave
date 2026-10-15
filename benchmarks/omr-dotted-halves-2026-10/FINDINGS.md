@@ -50,3 +50,12 @@ Real gather ON vs OFF (Brahms p0, Litolff 0-3): glyph sets identical (1776 / 534
 
 ## 5. Tests, tiles
 `tools/omr/tests/test_staged_open_head_on_stem_2_130.py` (13): RED first on the unchanged tree: the 5 flag-ON tests fail (whole -> half, right-side stem, filled narrows, one dark raster among hollow, flag on a half), the 8 controls pass on both (flag OFF old whole; real whole without a stem stays whole; stem through the middle; short stroke; half with a stem; black quarter; black eighth keeps its flag; ...). `out/print/2.130-review/values-review.png` (15: Sean's 3 tiles, 10 changed, 2 controls: a black head on a stem, a hollow chord head; hidden `_hidden/manifest.json`).
+
+## 6. Sean's 15 tiles, answered (2026-10-14) and landed ON
+Sean: "1-2. Dot half 3. Dot half and a quarter 4. Dot half's 5-8 dot half 9. Dot quarter 10. Flat Acc 11-14 dot half 15. Dot quarter", then "3 is just a quarter". Recorded in `out/print/2.130-review/answers.json`; scored against `_hidden/manifest.json` (flag ON output, the replay of this section's lane):
+
+- The rule never leaves a stemmed head a whole (no tile reads 4.0/6.0 any more).
+- Exact: 2, 5, 13 (dotted half 3.0), control 3 (quarter 1.0). Blue set including the truth: 6, 7 {2,3}, 8 {1,1.5,2,3}.
+- Still wrong, all for a MISSING DOT: 1, 11, 12, 14 decided plain half 2.0 (truth 3.0); 4 (control, a half written plain, truth dotted half 2.0 vs 3.0); 9 and 15 blue {1,2} without the dotted 1.5.
+- 10: not a note -- a flat accidental boxed as a head (follow-up).
+Landed ON with 2.128 (dot position join) already ON; the re-check of the missing dots follows in section 7.

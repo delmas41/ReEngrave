@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.130 LANDED ON (open heads on a stem are halves)
+STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default ON (`rhythm.open_head_on_stem_enabled`; explicit `0/false/no/off` disables). Sean: "Yes". His 15 tiles (answers in `out/print/2.130-review/answers.json`): no stemmed head is a whole any more; exact or blue-including-truth 2, 5, 13, 6, 7, 8; the rest are missing dots (1, 4, 11, 12, 14 plain 2.0; 9, 15 blue {1,2} without 1.5), tile 10 an accidental boxed as a head.
+
+## 2026-10-14 -- ROADMAP 2.128 LANDED ON (the dot-to-head join reads the dot's staff position)
+STAGED ADJUDICATE, `OMR_DOT_POSITION_JOIN` default ON (`aug_dot_join.dot_position_join_enabled`; explicit `0/false/no/off` disables). Sean: "Yes"; check 193 -> 192; his 12 tiles 9/9 admitted dots right after the tile-1 boundary fix, controls right. C50 index row corrected to "above by default, below for the lower voice/lower note of a second". Tests: OFF controls set the env explicitly; RED-first default-ON class added.
+
 ## 2026-10-14 -- ROADMAP 2.122 + 2.123 LANDED (export ledger balances; bar lists keyed by page/system/cell + ordinal)
 STAGED EXPORT bookkeeping, `tools/omr/staged/export.py` + `regather_report.py`; MusicXML/.ly unchanged. 2.122: the 92 uncounted Brahms boxes were 2.80b eighth rests written, now counted as reinstated refusals (ledger 3,407). 2.123: held-out/partial/unread bar lists carry bar_key (page, system, cell) + file ordinal; repeated printed numbers stay distinct; exporter raises if a list names a bar twice. Sean: "Yes". `benchmarks/omr-export-ledger-2026-10/FINDINGS.md`.
 
@@ -6164,3 +6170,6 @@ STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN` default ON (`aug_dot_join.reconcile_unjoin
 
 ## 2026-10-14 -- ROADMAP 2.130 built (dotted halves read as whole or quarter; flag OFF, tiles to Sean)
 STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default OFF (`rhythm.py`: `_stem_flush_to_head`, `_reads_filled`, block before the beam-conflict narrowings). A detector WHOLE-class head with a flush stem read is a half (decided; narrowed {quarter, half} where the ink reads filled); a flag on an OPEN-class head narrows half-first. Truth unchanged; Brahms pp 6/7/10: 16 whole-class heads -> half/dotted half, 2 black ones narrowed; 8 non-note boxes (clef/rest shapes) were already wrong. Open: black class on hollow cluster boxes (Litolff 2 of 50), stem-reader miss. FINDINGS `benchmarks/omr-dotted-halves-2026-10/`.
+
+## 2026-10-14 -- ROADMAP 2.128 built (a dot carries its staff position)
+STAGED GATHER: `Q.DOT_STAFF_POSITION` on every `Q.AUG_DOT` glyph, local at the dot's x (`_find_five_lines` over +-3 spaces; bar grid fallback says `cell_grid`), nearest staff, `off_staff`/`no_staff_geometry` abstentions with margin; `POSITION dot` left `capture.KNOWN_GAPS` (check 193 -> 192). STAGED ADJUDICATE behind `OMR_DOT_POSITION_JOIN` (default OFF): a dot on the wrong step is not a head's augmentation dot; a dot at exactly one head's dot step the box window missed is placed. Sean's Brahms p.0 labels: dots stand in a space (line head: 41 above / 19 below; space head: 54 of 56 same space), 3 of 120 on a line. Truth join 106 -> 110 right, unplaced 7 -> 2; Litolff no change. Awaiting tiles `out/print/2.128-review/`. FINDINGS text in the lane report (the Write tool refused the file).
