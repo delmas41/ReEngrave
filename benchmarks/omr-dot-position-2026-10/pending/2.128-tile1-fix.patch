@@ -1,0 +1,332 @@
+--- base/tools/omr/staged/adjudicators/aug_dot_join.py	2026-10-14 18:18:00
++++ tree/tools/omr/staged/adjudicators/aug_dot_join.py	2026-10-14 18:49:01
+@@ -62,14 +62,18 @@
+         in _ON_WORDS
+ 
+ 
+-#: A dot whose position lies closer than this (in half-steps) to the
+-#: line/space boundary has not told us which it is on; so has a head. CONVENTION
+-#: ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED -- a cut-off is a
+-#: measurement: on Brahms 317803 p.0 the two dots read "on a line" at a space
+-#: head had margins 0.01 and 0.00, i.e. noise, and a head's own residual runs
+-#: 0.02..0.18 (90th percentile) with parity agreeing with Sean's
+-#: OnLine/InSpace labels 406 of 410. One score, one publisher.
+-DOT_MIN_MARGIN = 0.1
++#: A dot is read as ON A LINE only within `DOT_LINE_BAND` half-steps of a line
++#: centre, and as IN A SPACE only beyond `DOT_SPACE_BAND`; between, it has not
++#: told us (rule 8). CONVENTION CONFIRMED by Sean, 2026-10-14: *"Always in a
++#: space"* -- an augmentation dot never stands on a line. So a reading near a
++#: line is a measurement near the boundary or not a dot at all, and only a
++#: reading CLEARLY on the line may refuse one. Measured on Brahms 317803 p.0
++#: against Sean's labels: every one of 120 truth dots lies >= 0.31 steps from
++#: a line centre (the nearest, `0/0/3/1/6`, is a dotted quarter's dot Sean
++#: confirmed, standing 0.31 from the ledger line above its head); detected
++#: dot-class boxes lie as close as 0.004. A cut-off is a measurement: one score.
++DOT_LINE_BAND = 0.2
++DOT_SPACE_BAND = 0.3
+ HEAD_MAX_RESIDUAL = 0.25
+ #: A head standing further than this many half-steps off the five lines has a
+ #: geometry position that is a long extrapolation (`Q.NOTEHEAD_POSITION`'s
+@@ -95,10 +99,29 @@
+ 
+ 
+ def _clean_step(pos: float, margin_floor: float) -> Optional[int]:
++    """A HEAD's step: the nearest integer, or None within `margin_floor` of the
++    line/space boundary."""
+     step = int(round(pos))
+     return step if 0.5 - abs(pos - step) >= margin_floor else None
+ 
+ 
++def _dot_cell(pos: float) -> Tuple[str, Optional[int]]:
++    """`("line", even step)`, `("space", odd step)` or `("unclear", None)`.
++
++    A space is the interval between two line centres, so a dot 0.31 steps off
++    the line above its head is IN the space above it (step -1), not "on" the
++    line: the nearest-integer step of 2.128's first cut read it as the line
++    (-2) and vetoed a real dotted quarter.
++    """
++    line = 2 * int(round(pos / 2.0))
++    off = abs(pos - line)
++    if off <= DOT_LINE_BAND:
++        return "line", line
++    if off >= DOT_SPACE_BAND:
++        return "space", line + (1 if pos > line else -1)
++    return "unclear", None
++
++
+ def dot_head_compatible(dot_row: Optional[R.Observation],
+                         head_row: Optional[R.Observation],
+                         head_staff_key: Optional[str]) -> Optional[bool]:
+@@ -120,10 +143,12 @@
+             -HEAD_MAX_OUTSIDE_STEPS <= float(hp) <= 8.0 + HEAD_MAX_OUTSIDE_STEPS:
+         return None
+     h = _clean_step(float(hp), 0.5 - HEAD_MAX_RESIDUAL)
+-    d = _clean_step(float(dot_row.value), DOT_MIN_MARGIN)
+-    if h is None or d is None:
++    kind, d = _dot_cell(float(dot_row.value))
++    if h is None or kind == "unclear":
+         return None
+-    return d in expected_dot_steps(h)
++    # on a line: never an augmentation dot (Sean: always in a space);
++    # in a space: only the head's own, or the one above/below its line
++    return kind == "space" and d in expected_dot_steps(h)
+ 
+ 
+ #: A dot with no decided role counts as "beside" a head when its left edge is
+--- base/tools/omr/tests/test_staged_dot_position_2_128.py	2026-10-14 18:18:00
++++ tree/tools/omr/tests/test_staged_dot_position_2_128.py	2026-10-14 18:49:17
+@@ -414,7 +414,7 @@
+         cases = {
+             "no position row": dict(pos=None),
+             "another staff": dict(pos=4.0, staff=R.staff(0, 0, 1)),
+-            "on the boundary": dict(pos=3.5),
++            "on the boundary": dict(pos=3.75),   # 0.25 from the line: unclear
+         }
+         for name, kw in cases.items():
+             with self.subTest(name):
+@@ -470,7 +470,50 @@
+             self.assertEqual(_role(log_off, 1).value,
+                              _role(log_none, 1).value, pos)
+ 
++
++
++class TestTile1AReadingNearTheLineIsNotAVeto(unittest.TestCase):
++    """Sean, 2026-10-14, tile 1 of `out/print/2.128-review`: the note in the red
++    corners (Brahms 317803 `glyph/0/0/3/1/1`, a top-line head, step -0.04) IS a
++    dotted quarter. Its dot (`glyph/0/0/3/1/6`) was measured at step -1.69 --
++    0.31 steps below the ledger line above the head, i.e. IN the space above
++    it -- and the first cut, which rounded that to the line at -2, vetoed it.
++    Sean, same day: a dot is *"Always in a space"*, so only a reading CLEARLY
++    on a line may refuse one."""
+ 
++    def _role(self, dot_pos, head_pos=-0.04):
++        log = _jlog()
++        head = _head(log, 0, head_pos)
++        _dot(log, 1, x=112, y=4, pos=dot_pos)
++        with mock.patch.dict(os.environ, FLAG):
++            adjudicate.run(log)
++        return _role(log, 1), head
+ 
++    def test_RED_tile_1_s_real_numbers_keep_the_dot(self):
++        role, head = self._role(-1.6886178861788677)
++        self.assertEqual(role.value, "augmentation")
++        self.assertEqual(role.detail["head"], head.to_key())
++
++    def test_a_reading_between_line_and_space_never_vetoes(self):
++        for pos in (-1.75, -1.72, -2.25, -2.28):
++            with self.subTest(pos):
++                role, _h = self._role(pos)
++                self.assertEqual(role.value, "augmentation")
++
++    def test_CONTROL_a_reading_clearly_on_the_line_still_vetoes(self):
++        for pos in (-2.0, -1.9, -2.15):
++            with self.subTest(pos):
++                role, _h = self._role(pos)
++                self.assertNotEqual(role.value, "augmentation")
++
++    def test_the_cell_classification(self):
++        from tools.omr.staged.adjudicators import aug_dot_join as AJ
++        self.assertEqual(AJ._dot_cell(-1.69), ("space", -1))
++        self.assertEqual(AJ._dot_cell(0.597), ("space", 1))
++        self.assertEqual(AJ._dot_cell(4.0), ("line", 4))
++        self.assertEqual(AJ._dot_cell(3.75)[0], "unclear")
++
++
++
+ if __name__ == "__main__":
+     unittest.main()
+--- base/benchmarks/omr-dot-position-2026-10/FINDINGS.md	2026-10-14 18:18:00
++++ tree/benchmarks/omr-dot-position-2026-10/FINDINGS.md	2026-10-14 18:53:01
+@@ -22,19 +22,37 @@
+   exactly one head's dot step that the old box window missed is placed on that head (the old window admits only the dot
+   ABOVE, so it misses below-line dots).
+ 
+-## Truth, Brahms p0, 131 dots, flag OFF -> ON
++## Truth, Brahms p0, 131 dots, flag OFF -> ON (after the tile-1 fix, section below)
+ | | OFF | ON |
+ |---|--:|--:|
+-| dot on the right head | 106 | 110 |
++| dot on the right head | 106 | 111 |
+ | dot on another head | 17 | 18 |
+-| unplaced | 7 | 2 |
++| unplaced | 7 | 1 |
+ | non-truth boxes decided augmentation | 4 | 4 |
+-10 dot-role verdicts change on Brahms pp.0-1 (9 admitted, 1 vetoed); all 10 crops viewed: the 9 admitted dots sit beside
+-the note they were given to; the veto is a mark above the upper head of a second (not an augmentation dot).
++9 dot-role verdicts change on Brahms pp.0-1, ALL admissions, none vetoed; the crops of the 9 sit beside the note they were given to.
+ Litolff pp.0-3: 0 changes (its truth page has no staccatos, so wrongly joined staccatos cannot be scored there).
+ 
++## Sean's tiles (2026-10-14: "3. No all the rest yes", then "1 is a dotted 4") -- `out/print/2.128-review/answers.json`
++All 9 ADMITTED tiles truly dotted; controls right (3 plain: no; 9 dotted: yes). **Tile 1, the VETOED one, is a dotted quarter.**
++* What happened (Brahms `glyph/0/0/3/1/6`, a dot above-right of the top-line head `.../1`, step -0.04, in a chord of seconds
++  whose lower head has its own dot `.../8`): the dot was measured at step -1.69, i.e. 0.31 steps below the ledger line above
++  its head -- IN the space above it -- and the first cut rounded it to the line at -2, margin 0.19 over the 0.1 floor, and
++  vetoed it. With the flag OFF it is decided augmentation naming `.../1`, whose duration is narrowed {dotted 8th/quarter}
++  (`beam_discounted_uncertain`). With the first cut ON the dot became unplaced and the head's narrowing lost its dotted
++  candidates to {plain, plain x2} then {plain + dotted} from 2.127's reconcile: a real dot written plain-or-unknown.
++* Fix (`aug_dot_join._dot_cell`, `DOT_LINE_BAND` 0.2 / `DOT_SPACE_BAND` 0.3): a space is the interval between two line
++  centres; a dot is ON a line only within 0.2 steps of a line centre, IN a space beyond 0.3, and unclear between (unknown,
++  never a veto, never an admission). Across the 120 truth dots the nearest to a line centre is this one, at 0.31; detected
++  dot-class boxes lie as close as 0.004, so the veto still has teeth. RED test `TestTile1AReadingNearTheLineIsNotAVeto`
++  from tile 1's real numbers; a control that a reading at 0.1 off the line still vetoes.
++* The convention: Sean, 2026-10-14, **"Always in a space"** -- CONFIRMED (general scope), registered in
++  `docs/engraving-conventions.md` and `docs/page-facts.md`. Above vs below a line note was NOT ruled on; kept as measured
++  (above 41, below 19, two-above 1 of 61 line heads) and allowed both. ⚠️ The existing registry entry said "NEVER below"; the
++  19 below-dots on his own labelled page contradict that half, so the entry now says "above or below" with this measurement
++  and flags it for Sean.
++
+ ## Tests
+-`tools/omr/tests/test_staged_dot_position_2_128.py`, 28 tests, RED first (stubbing the line finder or the flag turns 7
++`tools/omr/tests/test_staged_dot_position_2_128.py`, 32 tests, RED first (stubbing the line finder or the flag turns 7
+ red). Fast tier 7954 passed, 11 skipped, 2 xfailed. `judged score` not run.
+ 
+ ## Open
+--- base/docs/engraving-conventions.md	2026-10-14 18:18:00
++++ tree/docs/engraving-conventions.md	2026-10-14 18:53:01
+@@ -1515,17 +1515,17 @@
+ 
+ ## Articulations & ornaments
+ 
+-### An augmentation dot sits at the note's own space — half a space ABOVE for a note on a line — and NEVER below
++### An augmentation dot ALWAYS stands in a space — the note's own space, or the space above (or below) a line note's line
+ `[C50 + L31]`
+ 
+-- **Says:** a note in a space takes its dot in the same space; a note **ON a line** takes it in the space **above**.
++- **Says:** a note in a space takes its dot in the same space; a note **ON a line** takes it in the space **above**. ⚠️ **CONFIRMED by Sean, 2026-10-14 (general scope): "Always in a space"** — an augmentation dot never stands on a line (2.128; `OMR_DOT_POSITION_JOIN`, `aug_dot_join.dot_head_compatible`). ⚠️ **The ABOVE-vs-BELOW choice after a line note was NOT ruled on, and the old "NEVER below" is contradicted by his own labels**: Brahms 317803 p.0, 61 line-note dots — 41 in the space above, 19 in the space below, 1 two spaces up (`benchmarks/omr-dot-position-2026-10/FINDINGS.md`); both are allowed until he rules, which is also why the box window's 0.25 sp below misses them.
+ - **Predicts (mechanically):** ⚠️⚠️ **THE DOT-TO-NOTE WINDOW IS ASYMMETRIC, and it must be expressed in STAFF SPACES (the note's unit), not in the dot's own bounding box.** A dot is never level with an on-a-line notehead — it is **half a staff space above** it — so a dot reader keyed to the notehead's own y "will systematically miss the on-a-line case, **which is half of all notes**".
+ - **Numbers:** ✅ **the sources agree to the half-space.** Literature: vertical offset for an on-a-line note **+0.5 staff spaces**; Bravura `augmentationDot` **0.400 × 0.400**, bbox SW `[0.0, −0.2]` NE `[0.4, 0.2]` — symmetric about its own position, "under half a space square". Measured here over the **116 dots** of three works, the signed offsets are "**bimodal and nothing else: 52 at 0.00 spaces, 52 at +0.50, nothing between +0.57 and +3.75**". Shipped: `DOT_ABOVE_NOTE_MAX_SPACES = 0.75`, `DOT_BELOW_NOTE_MAX_SPACES = 0.25`.
+ - **Literature:** Wikipedia, *Dotted note*: "If dotted note is on a space, the dot is placed in that space. If the note is on a line, the dot is placed in the space above." Rigid for the single-voice case. ⚠️ Its stated exceptions: "The placement of dots need not follow this convention when space does not allow for it" — **dots on adjacent notes of a chord, and dots in multi-voice passages.** (⚠️ The literature files this entry under *Rests & bar filling*; it is filed here with the marks.)
+ - **Measured here:** the old gate was `max(dot.height, 12) * 1.2` — derived from the dot's own box, "which is small and mostly detector noise" — so the on-a-line case "landed within a few pixels of the threshold and went either way": **C Horn 1's dotted half read as a half in bars 1 and 5 and as a dotted half in bars 2, 3, 4 and 6.** ⚠️ **The asymmetry is forced by double stops**, which is precisely the literature's chord exception arriving as a measurement: Brahms's Viola plays two noteheads a space apart each with its own dot, "so the lower dot is equidistant from both noteheads, **a symmetric window ties**, and the upper note comes out double-dotted while the lower loses its dot".
+ - **Status:** MEASURED HERE
+ - **Rigid or publisher-dependent:** RIGID.
+-- **Would be falsified by:** a dot printed under its note; dots engraved level with on-a-line noteheads.
++- **Would be falsified by:** a dot standing ON a line (Sean: always in a space); dots engraved level with on-a-line noteheads. (A dot printed in the space under a line note is NOT a falsification: measured 19 of 61 on Brahms p.0.)
+ - **Known exceptions:** ⚠️ **the pool must include RESTS** — "dots after rests are rarer but real". Widening the staged reader to match the legacy `_pair_dots_to_targets` moved **ZERO verdicts** on Litolff (20 `aug_dot` rows over three pages) and, on the 656-dot Breitkopf record, attaches **exactly ONE dot to a rest and that one is FALSE** (width **0.180** staff spaces against a median of 0.490, rank 1 of 656; the crop shows a clean UNDOTTED whole rest). **Of 691 `aug_dot` rows across two publishers, exactly one attaches to a rest, and it is wrong.**
+ - **Code:** `tools/omr/rhythm.py:1118` / `:1133`, applied at `:1163-1164` inside `_pair_dots_to_targets` (`:1136`); staged `tools/omr/staged/adjudicators/rhythm.py:63-64`, applied at `:335-336`. ⚠️ **The two copies are DUPLICATED LITERALS, not a shared import** — every other measured constant in this area is imported specifically to prevent drift, **so this pair is the odd one out.** ⚠️ The old box-derived gate cost **193 edits**.
+ 
+--- base/docs/page-facts.md	2026-10-14 18:18:00
++++ tree/docs/page-facts.md	2026-10-14 18:53:01
+@@ -22,7 +22,8 @@
+ - A whole rest means the BAR whatever the meter; a lone quarter rest does
+   not. A lone dotless whole rest is the bar, sized to the `<time>` in force
+   (ROADMAP 2.98, print-confirmed 12 of 12, 2026-10-12).
+-- A dot sits a space higher on a line note; the window is asymmetric.
++- **An augmentation dot always stands in a SPACE, never on a line** (Sean, 2026-10-14: *"Always in a space"*; scope: general engraving; ROADMAP 2.128): in its note's own space, or after a note on a line in the space above or below that line. Measured on Brahms 317803 p.0 (his labels): line-note dots 41 above / 19 below / 1 two-up of 61. Above-vs-below was not separately ruled on; both are allowed. Registry: `docs/engraving-conventions.md` ("An augmentation dot ALWAYS stands in a space").
++- A dot sits a space higher on a line note (the usual case); the box window is asymmetric and misses the below-line dots (`OMR_DOT_POSITION_JOIN`).
+ - A beam runs from the first stem it joins to the last, and a stem stands at
+   the SIDE of its head -- so the outer note's centre is half a head past the
+   stroke. Stems: up -> right, down -> left; right-and-down does not exist
+--- base/docs/DECISIONS.md	2026-10-14 18:18:00
++++ tree/docs/DECISIONS.md	2026-10-14 18:53:01
+@@ -9,6 +9,9 @@
+ 
+ ---
+ 
++- 2026-10-14 · Sean · An augmentation dot is ALWAYS in a space, never on a line (general scope); a dot a measurement puts near a line is not refused; above-vs-below a line note not ruled, both allowed · because tile 1 of the 2.128 tiles (a dotted quarter) was vetoed by a dot read 0.31 steps off a line, and his labelled Brahms p.0 shows 19 of 61 line-note dots below · (benchmarks/omr-dot-position-2026-10/FINDINGS.md; docs/page-facts.md)
++- 2026-10-14 · Sean · 2.128 tiles: all 9 admitted dots are dotted, controls right, the vetoed tile 1 is a dotted quarter ("3. No all the rest yes", "1 is a dotted 4") · because the position join is right on 9 of 9 and wrong on the one veto, which the line/space bands fix · (out/print/2.128-review/answers.json)
++
+ - 2026-10-14 · Sean · Land 2.127 ON: a decided or ambiguous dot beside a note written plain makes the note GUESSED plain/dotted (blue), never silently plain; twin dot boxes merge; a dot inside a flag box is refused · because the dot-role ledger left real dotted notes written undotted, and Sean's 15 tiles confirmed every flagged case · (benchmarks/omr-aug-dots-2026-10/FINDINGS.md)
+ - 2026-10-14 · Sean · Land 2.122/2.123: export bar lists are keyed by (page, system, cell) + file ordinal, never the printed number, and reinstated refusals are counted; the exporter raises if a list names a bar twice · because the 2.118 report found 92 uncounted boxes and repeated bar numbers mixing ending bars · (benchmarks/omr-export-ledger-2026-10/FINDINGS.md)
+ - 2026-10-14 · Sean · Land 2.124/2.125 at check 193: the new dot family exposes POSITION dot has no staff-grid position fact (KNOWN_GAPS); 2.127 closes it · because the bookkeeping fixes and the 6/8 whole-rest fix are worth having now · (benchmarks/omr-dots-articulations-2026-10/FINDINGS.md)
+--- base/out/print/2.128-review/answers.json	1969-12-31 17:00:00
++++ tree/out/print/2.128-review/answers.json	2026-10-14 18:52:47
+@@ -0,0 +1,98 @@
++{
++ "tile_01": {
++  "dotted": true,
++  "answer": "dotted quarter",
++  "kind": "VETOED_by_dot_position",
++  "dot": "glyph/0/0/3/1/6",
++  "head": "glyph/0/0/3/1/1",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_02": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/1/1/6/6/3",
++  "head": "glyph/1/1/6/6/6",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_03": {
++  "dotted": false,
++  "answer": null,
++  "kind": "CONTROL_plain_note_no_dot_near",
++  "dot": null,
++  "head": "glyph/0/0/11/7/0",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_04": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/11/5/17",
++  "head": "glyph/0/0/11/5/8",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_05": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/4/6/1",
++  "head": "glyph/0/0/4/6/4",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_06": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/4/1/0",
++  "head": "glyph/0/0/4/1/3",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_07": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/11/0/16",
++  "head": "glyph/0/0/11/0/9",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_08": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/11/2/10",
++  "head": "glyph/0/0/11/2/2",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_09": {
++  "dotted": true,
++  "answer": null,
++  "kind": "CONTROL_dotted_already_placed",
++  "dot": "glyph/0/0/3/2/9",
++  "head": "glyph/0/0/3/2/7",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_10": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/1/0/2/6/9",
++  "head": "glyph/1/0/2/6/20",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_11": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/1/0/2/5/31",
++  "head": "glyph/1/0/2/5/9",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ },
++ "tile_12": {
++  "dotted": true,
++  "answer": null,
++  "kind": "ADMITTED_by_dot_position",
++  "dot": "glyph/0/0/11/0/8",
++  "head": "glyph/0/0/11/0/4",
++  "sean": "\"3. No all the rest yes\" ; \"1 is a dotted 4\""
++ }
++}
+\ No newline at end of file
