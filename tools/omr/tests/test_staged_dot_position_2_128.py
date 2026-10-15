@@ -425,13 +425,26 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
                     adjudicate.run(log)
                 self.assertEqual(_role(log, 1).value, "augmentation")
 
-    def test_a_head_off_the_five_lines_is_unknown(self):
+    def test_a_head_far_off_the_five_lines_is_unknown(self):
         log = _jlog()
-        _head(log, 0, -3.0)
-        _dot(log, 1, x=112, y=4, pos=-3.0)          # "on a line" at step -3?
+        _head(log, 0, -9.0)
+        _dot(log, 1, x=112, y=4, pos=-9.0)      # "on a line" at step -9
         with mock.patch.dict(os.environ, FLAG):
             adjudicate.run(log)
         self.assertEqual(_role(log, 1).value, "augmentation")
+
+    def test_a_ledger_line_head_is_read_like_any_line_head(self):
+        """A note on the first ledger line (step -2) takes its dot in the space
+        above (-3), never on the ledger line."""
+        def role(dot_pos):
+            log = _jlog()
+            _head(log, 0, -2.0)
+            _dot(log, 1, x=112, y=4, pos=dot_pos)
+            with mock.patch.dict(os.environ, FLAG):
+                adjudicate.run(log)
+            return _role(log, 1).value
+        self.assertEqual(role(-3.0), "augmentation")
+        self.assertNotEqual(role(-2.0), "augmentation")
 
     def test_two_heads_that_fit_leave_the_dot_unplaced(self):
         """A chord of seconds shares the space between its heads: the dot at

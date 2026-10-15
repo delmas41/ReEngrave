@@ -71,6 +71,13 @@ def dot_position_join_enabled() -> bool:
 #: OnLine/InSpace labels 406 of 410. One score, one publisher.
 DOT_MIN_MARGIN = 0.1
 HEAD_MAX_RESIDUAL = 0.25
+#: A head standing further than this many half-steps off the five lines has a
+#: geometry position that is a long extrapolation (`Q.NOTEHEAD_POSITION`'s
+#: ledger-counted verdict owns it), so its step is not read here. Measured on
+#: Brahms 317803 p.0 against Sean's OnLine/InSpace labels: parity of the
+#: geometry position agrees 205/206 inside the staff, 137/138 up to 4 steps
+#: outside, 34/36 beyond 6.
+HEAD_MAX_OUTSIDE_STEPS = 4.0
 
 
 def expected_dot_steps(head_step: int) -> Tuple[int, ...]:
@@ -100,8 +107,8 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
     `True` / `False`, or `None` -- CANNOT TELL (rule 8: unknown is never
     "compatible" and never "incompatible"). `None` when either position is
     missing, the dot was measured against a staff other than the head's, the
-    head stands off the five lines (its step there is a ledger reading this
-    fact does not own), or either reading sits on the line/space boundary.
+    head stands far off the five lines (its step there is a ledger reading
+    this fact does not own), or either reading sits on the line/space boundary.
     """
     if dot_row is None or head_row is None or not head_staff_key:
         return None
@@ -109,7 +116,8 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
     if dd.get("staff") != head_staff_key:
         return None
     hp = head_row.value
-    if not isinstance(hp, (int, float)) or not 0.0 <= float(hp) <= 8.0:
+    if not isinstance(hp, (int, float)) or not \
+            -HEAD_MAX_OUTSIDE_STEPS <= float(hp) <= 8.0 + HEAD_MAX_OUTSIDE_STEPS:
         return None
     h = _clean_step(float(hp), 0.5 - HEAD_MAX_RESIDUAL)
     d = _clean_step(float(dot_row.value), DOT_MIN_MARGIN)
