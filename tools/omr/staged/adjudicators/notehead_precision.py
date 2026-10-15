@@ -1624,6 +1624,10 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     signal: Dict[str, Any] = {
         "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
         "margin": margin, "candidates_at_slot": len(group_rows)}
+    if fdetail.get("near_miss") and not fdetail.get("second_head_by"):
+        # ROADMAP 2.129/2.106 -- a refusal says how close it came: the pair the
+        # fit considered and how far its ink was from two heads tall.
+        signal["near_miss"] = fdetail["near_miss"]
     detail["stacked_head_signal"] = signal
     if len(group_rows) <= 1:
         return None                 # the only box mapped to this slot

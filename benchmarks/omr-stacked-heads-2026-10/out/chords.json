@@ -1,0 +1,3465 @@
+[
+ {
+  "stem": "b4104",
+  "cell": "s0-st0-m1",
+  "a": "q30",
+  "b": "q35",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/1/3",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/1/8",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4105",
+  "cell": "s0-st0-m1",
+  "a": "q31",
+  "b": "q34",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/1/4",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/1/7",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4106",
+  "cell": "s0-st0-m1",
+  "a": "q33",
+  "b": "q42",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/1/6",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/1/15",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4101",
+  "cell": "s0-st0-m2",
+  "a": "q49",
+  "b": "q50",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/2/2",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/2/3",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4102",
+  "cell": "s0-st0-m2",
+  "a": "q51",
+  "b": "q52",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/2/4",
+    {
+     "fit": "[2,0,-6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/2/5",
+    {
+     "fit": "[2,1,-4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4096",
+  "cell": "s0-st0-m3",
+  "a": "q66",
+  "b": "q74",
+  "dist_sp": 1.13,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/3/2",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/3/10",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4099",
+  "cell": "s0-st0-m3",
+  "a": "q67",
+  "b": "q73",
+  "dist_sp": 1.13,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/3/3",
+    {
+     "fit": "[2,0,-7.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/3/9",
+    {
+     "fit": "[2,1,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4097",
+  "cell": "s0-st0-m3",
+  "a": "q68",
+  "b": "q75",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/3/4",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/3/11",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4098",
+  "cell": "s0-st0-m3",
+  "a": "q69",
+  "b": "q70",
+  "dist_sp": 1.08,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/3/5",
+    {
+     "fit": "[2,0,-6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/3/6",
+    {
+     "fit": "[2,1,-4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4095",
+  "cell": "s0-st0-m4",
+  "a": "q85",
+  "b": "q95",
+  "dist_sp": 1.1,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/4/1",
+    {
+     "fit": "[2,0,-7.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/4/11",
+    {
+     "fit": "[2,1,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4093",
+  "cell": "s0-st0-m4",
+  "a": "q86",
+  "b": "q93",
+  "dist_sp": 1.08,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/4/2",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: quarter (1 beat) | eighth (0.5 beats) -- beam certain not joined"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/4/9",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: quarter (1 beat) | eighth (0.5 beats) -- beam certain not joined"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4092",
+  "cell": "s0-st0-m4",
+  "a": "q88",
+  "b": "q98",
+  "dist_sp": 0.93,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/4/4",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/4/10",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/0/4/15",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4092",
+  "cell": "s0-st0-m4",
+  "a": "q98",
+  "b": "q94",
+  "dist_sp": 0.39,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/4/10",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/0/4/15",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/4/10",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/0/4/15",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4094",
+  "cell": "s0-st0-m4",
+  "a": "q90",
+  "b": "q92",
+  "dist_sp": 1.0,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/4/6",
+    {
+     "fit": "[2,0,-6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/4/8",
+    {
+     "fit": "[2,1,-4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4087",
+  "cell": "s0-st0-m5",
+  "a": "q109",
+  "b": "q117",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/5/3",
+    {
+     "fit": "[2,0,-8.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/5/11",
+    {
+     "fit": "[2,1,-6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4090",
+  "cell": "s0-st0-m5",
+  "a": "q110",
+  "b": "q118",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/5/4",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/5/12",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4089",
+  "cell": "s0-st0-m5",
+  "a": "q115",
+  "b": "q114",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/5/9",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/5/8",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4088",
+  "cell": "s0-st0-m5",
+  "a": "q116",
+  "b": "q119",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/5/10",
+    {
+     "fit": "[1,0,0.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/5/13",
+    {
+     "fit": "[1,0,0.0,null]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4084",
+  "cell": "s0-st0-m6",
+  "a": "q129",
+  "b": "q139",
+  "dist_sp": 1.13,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/6/3",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/6/13",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4083",
+  "cell": "s0-st0-m6",
+  "a": "q130",
+  "b": "q135",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/6/4",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/6/9",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4086",
+  "cell": "s0-st0-m6",
+  "a": "q132",
+  "b": "q134",
+  "dist_sp": 1.09,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/6/6",
+    {
+     "fit": "[2,0,-7.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/6/8",
+    {
+     "fit": "[2,1,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4085",
+  "cell": "s0-st0-m6",
+  "a": "q133",
+  "b": "q136",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/0/6/7",
+    {
+     "fit": "[2,0,-6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/0/6/10",
+    {
+     "fit": "[2,1,-4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4115",
+  "cell": "s0-st1-m1",
+  "a": "q187",
+  "b": "q197",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/1/2",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/1/13",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4114",
+  "cell": "s0-st1-m1",
+  "a": "q189",
+  "b": "q193",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/1/4",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/1/8",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4113",
+  "cell": "s0-st1-m1",
+  "a": "q190",
+  "b": "q191",
+  "dist_sp": 1.03,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/1/5",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/1/6",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4116",
+  "cell": "s0-st1-m2",
+  "a": "q204",
+  "b": "q206",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/2/1",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/2/3",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4117",
+  "cell": "s0-st1-m2",
+  "a": "q210",
+  "b": "q209",
+  "dist_sp": 0.96,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/2/7",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/2/6",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4103",
+  "cell": "s0-st1-m3",
+  "a": "q217",
+  "b": "q221",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/3/3",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/3/7",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4118",
+  "cell": "s0-st1-m3",
+  "a": "q218",
+  "b": "q220",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/3/4",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/3/6",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4120",
+  "cell": "s0-st1-m3",
+  "a": "q219",
+  "b": "q222",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/3/5",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/3/8",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4119",
+  "cell": "s0-st1-m3",
+  "a": "q226",
+  "b": "q224",
+  "dist_sp": 0.97,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/3/12",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/3/10",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4125",
+  "cell": "s0-st1-m4",
+  "a": "q231",
+  "b": "q239",
+  "dist_sp": 1.03,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/4/3",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/4/11",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4123",
+  "cell": "s0-st1-m4",
+  "a": "q232",
+  "b": "q237",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/4/4",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/4/9",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4124",
+  "cell": "s0-st1-m4",
+  "a": "q240",
+  "b": "q235",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/4/12",
+    {
+     "fit": "[2,0,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/4/7",
+    {
+     "fit": "[2,1,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4122",
+  "cell": "s0-st1-m4",
+  "a": "q236",
+  "b": "q238",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/4/8",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/4/10",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4126",
+  "cell": "s0-st1-m5",
+  "a": "q248",
+  "b": "q253",
+  "dist_sp": 1.0,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/5/1",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/5/6",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "q259",
+  "cell": "s0-st1-m5",
+  "a": "q249",
+  "b": "q255",
+  "dist_sp": 0.98,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/5/2",
+    {
+     "fit": "[2,0,-1.0,-0.0036]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/5/8",
+    {
+     "fit": "[2,1,1.0,-0.0036]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4127",
+  "cell": "s0-st1-m5",
+  "a": "q252",
+  "b": "q256",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/5/5",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/5/9",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4134",
+  "cell": "s0-st1-m6",
+  "a": "q264",
+  "b": "q272",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/6/2",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/6/12",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4133",
+  "cell": "s0-st1-m6",
+  "a": "q267",
+  "b": "q269",
+  "dist_sp": 0.95,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/1/6/6",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/1/6/8",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4138",
+  "cell": "s0-st2-m1",
+  "a": "q308",
+  "b": "q315",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/1/2",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/1/9",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4137",
+  "cell": "s0-st2-m1",
+  "a": "b4146",
+  "b": "q317",
+  "dist_sp": 1.18,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/1/5",
+    {
+     "fit": "[2,0,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/1/11",
+    {
+     "fit": "[2,1,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4136",
+  "cell": "s0-st2-m1",
+  "a": "b4145",
+  "b": "q318",
+  "dist_sp": 1.15,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/1/4",
+    {
+     "fit": "[2,0,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/1/12",
+    {
+     "fit": "[2,1,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4153",
+  "cell": "s0-st2-m2",
+  "a": "q327",
+  "b": "q331",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/2/1",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/2/5",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4154",
+  "cell": "s0-st2-m2",
+  "a": "q328",
+  "b": "q330",
+  "dist_sp": 1.08,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/2/2",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/2/4",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4150",
+  "cell": "s0-st2-m3",
+  "a": "q346",
+  "b": "q339",
+  "dist_sp": 1.05,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/3/9",
+    {
+     "fit": "[2,0,7.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/3/2",
+    {
+     "fit": "[2,1,9.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4151",
+  "cell": "s0-st2-m3",
+  "a": "q344",
+  "b": "q340",
+  "dist_sp": 1.05,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/3/7",
+    {
+     "fit": "[2,0,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/3/3",
+    {
+     "fit": "[2,1,8.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4149",
+  "cell": "s0-st2-m3",
+  "a": "q345",
+  "b": "q341",
+  "dist_sp": 1.02,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/3/8",
+    {
+     "fit": "[2,0,8.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/3/4",
+    {
+     "fit": "[2,1,10.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4148",
+  "cell": "s0-st2-m3",
+  "a": "q342",
+  "b": "q343",
+  "dist_sp": 0.99,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/3/5",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/3/6",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4157",
+  "cell": "s0-st2-m4",
+  "a": "q351",
+  "b": "q354",
+  "dist_sp": 0.99,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/4/0",
+    {
+     "fit": "[2,0,8.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/4/3",
+    {
+     "fit": "[2,1,10.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4160",
+  "cell": "s0-st2-m4",
+  "a": "q361",
+  "b": "q355",
+  "dist_sp": 1.06,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/4/10",
+    {
+     "fit": "[2,0,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/4/4",
+    {
+     "fit": "[2,1,8.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4159",
+  "cell": "s0-st2-m4",
+  "a": "q362",
+  "b": "q356",
+  "dist_sp": 1.07,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/4/12",
+    {
+     "fit": "[2,0,7.0,-0.0156]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/4/5",
+    {
+     "fit": "[2,1,9.0,-0.0156]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4158",
+  "cell": "s0-st2-m4",
+  "a": "q360",
+  "b": "q364",
+  "dist_sp": 0.95,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/4/9",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/4/14",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4165",
+  "cell": "s0-st2-m5",
+  "a": "q375",
+  "b": "q369",
+  "dist_sp": 1.07,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/5/7",
+    {
+     "fit": "[2,0,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/5/1",
+    {
+     "fit": "[2,1,5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4164",
+  "cell": "s0-st2-m5",
+  "a": "q376",
+  "b": "q370",
+  "dist_sp": 1.08,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/5/8",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/5/2",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4162",
+  "cell": "s0-st2-m5",
+  "a": "q379",
+  "b": "q371",
+  "dist_sp": 1.07,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/5/12",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/5/3",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4163",
+  "cell": "s0-st2-m5",
+  "a": "q377",
+  "b": "q374",
+  "dist_sp": 1.06,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/2/5/10",
+    {
+     "fit": "[2,0,5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/5/6",
+    {
+     "fit": "[2,1,7.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4167",
+  "cell": "s0-st2-m6",
+  "a": "q386",
+  "b": "q392",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/6/2",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/6/8",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "q402",
+  "cell": "s0-st2-m6",
+  "a": "q387",
+  "b": "q393",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/6/3",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/6/9",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "q404",
+  "cell": "s0-st2-m6",
+  "a": "q390",
+  "b": "q394",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/6/6",
+    {
+     "fit": "[2,0,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/6/10",
+    {
+     "fit": "[2,1,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4168",
+  "cell": "s0-st2-m6",
+  "a": "q395",
+  "b": "q391",
+  "dist_sp": 1.0,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/6/11",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/2/6/7",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4173",
+  "cell": "s0-st3-m0",
+  "a": "q412",
+  "b": "q419",
+  "dist_sp": 1.03,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/0/3",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/0/11",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4175",
+  "cell": "s0-st3-m1",
+  "a": "q430",
+  "b": "q434",
+  "dist_sp": 1.03,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/1/1",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/1/5",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4176",
+  "cell": "s0-st3-m1",
+  "a": "q432",
+  "b": "q431",
+  "dist_sp": 1.03,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/1/3",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/1/2",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4177",
+  "cell": "s0-st3-m1",
+  "a": "q440",
+  "b": "q438",
+  "dist_sp": 1.07,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/1/11",
+    {
+     "fit": "[2,0,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/1/9",
+    {
+     "fit": "[2,1,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4179",
+  "cell": "s0-st3-m2",
+  "a": "q446",
+  "b": "q447",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/2/0",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/2/1",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4180",
+  "cell": "s0-st3-m2",
+  "a": "q454",
+  "b": "q453",
+  "dist_sp": 0.92,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/2/8",
+    {
+     "fit": "[2,0,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/2/7",
+    {
+     "fit": "[2,1,5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4182",
+  "cell": "s0-st3-m3",
+  "a": "q458",
+  "b": "q460",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/3/1",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/3/3",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4181",
+  "cell": "s0-st3-m3",
+  "a": "q465",
+  "b": "q459",
+  "dist_sp": 1.06,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/3/3/8",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/3/2",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4183",
+  "cell": "s0-st3-m3",
+  "a": "q461",
+  "b": "q468",
+  "dist_sp": 0.97,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/3/4",
+    {
+     "fit": "[2,0,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/3/11",
+    {
+     "fit": "[2,1,5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4184",
+  "cell": "s0-st3-m3",
+  "a": "q462",
+  "b": "q466",
+  "dist_sp": 1.08,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/3/5",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/3/9",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4186",
+  "cell": "s0-st3-m4",
+  "a": "q476",
+  "b": "q480",
+  "dist_sp": 1.08,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/4/4",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/4/8",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4185",
+  "cell": "s0-st3-m4",
+  "a": "q484",
+  "b": "q477",
+  "dist_sp": 1.05,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/3/4/12",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/4/5",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4188",
+  "cell": "s0-st3-m4",
+  "a": "q479",
+  "b": "q478",
+  "dist_sp": 1.01,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/4/7",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/4/6",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4187",
+  "cell": "s0-st3-m4",
+  "a": "q486",
+  "b": "q482",
+  "dist_sp": 0.98,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/4/14",
+    {
+     "fit": "[2,0,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/4/10",
+    {
+     "fit": "[2,1,5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4352",
+  "cell": "s0-st3-m5",
+  "a": "q489",
+  "b": "q495",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/5/1",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/5/7",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4353",
+  "cell": "s0-st3-m5",
+  "a": "q492",
+  "b": "q490",
+  "dist_sp": 1.05,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/5/4",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/5/2",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4355",
+  "cell": "s0-st3-m5",
+  "a": "q493",
+  "b": "q491",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/5/5",
+    {
+     "fit": "[2,0,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/5/3",
+    {
+     "fit": "[2,1,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4354",
+  "cell": "s0-st3-m5",
+  "a": "q496",
+  "b": "q494",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/5/8",
+    {
+     "fit": "[2,0,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/5/6",
+    {
+     "fit": "[2,1,3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4358",
+  "cell": "s0-st3-m6",
+  "a": "q507",
+  "b": "q508",
+  "dist_sp": 1.01,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/6/5",
+    {
+     "fit": "[2,0,-2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/6/6",
+    {
+     "fit": "[2,1,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4357",
+  "cell": "s0-st3-m6",
+  "a": "b4192",
+  "b": "q510",
+  "dist_sp": 1.23,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/3/6/3",
+    {
+     "fit": "[2,0,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/6/8",
+    {
+     "fit": "[2,1,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4356",
+  "cell": "s0-st3-m6",
+  "a": "b4194",
+  "b": "q513",
+  "dist_sp": 1.24,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/2/6/5",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "given_away",
+     "why": [
+      "given to staff/0/0/3 (ledger note first); this copy is dropped"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/3/6/2",
+    {
+     "fit": "[2,0,-5.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/3/6/11",
+    {
+     "fit": "[2,1,-3.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "q709",
+  "cell": "s0-st5-m6",
+  "a": "q711",
+  "b": "q712",
+  "dist_sp": 0.41,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/5/6/12",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "3.0-beat (3 beats)"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/5/6/13",
+    {
+     "fit": "[1,0,16.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- head cut piece"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/5/6/12",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "3.0-beat (3 beats)"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/5/6/13",
+    {
+     "fit": "[1,0,16.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- head cut piece"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4008",
+  "cell": "s0-st6-m0",
+  "a": "q723",
+  "b": "q728",
+  "dist_sp": 1.01,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/6/0/7",
+    {
+     "fit": "[2,0,-1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/0/12",
+    {
+     "fit": "[2,1,1.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4013",
+  "cell": "s0-st6-m1",
+  "a": "q736",
+  "b": "q744",
+  "dist_sp": 0.56,
+  "side_a": "R",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/6/1/2",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/1/11",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4014",
+  "cell": "s0-st6-m1",
+  "a": "q739",
+  "b": "q738",
+  "dist_sp": 1.02,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/6/1/5",
+    {
+     "fit": "[2,0,0.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/1/4",
+    {
+     "fit": "[2,1,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4015",
+  "cell": "s0-st6-m1",
+  "a": "q741",
+  "b": "q750",
+  "dist_sp": 0.98,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/6/1/7",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": true,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- stacked head duplicate"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/1/17",
+    {
+     "fit": "[1,0,2.0,null]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "eighth (0.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4018",
+  "cell": "s0-st6-m2",
+  "a": "q756",
+  "b": "q831",
+  "dist_sp": 0.27,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/6/2/2",
+    {
+     "fit": "[2,1,10.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/7/2/1",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- clipped fragment"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/2/2",
+    {
+     "fit": "[2,1,10.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ],
+   [
+    "glyph/0/0/7/2/1",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "refused",
+     "why": [
+      "not a notehead -- clipped fragment"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4017",
+  "cell": "s0-st6-m2",
+  "a": "q759",
+  "b": "q757",
+  "dist_sp": 1.04,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/6/2/5",
+    {
+     "fit": "[2,0,2.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/2/3",
+    {
+     "fit": "[2,1,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "1.5-beat (1.5 beats)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4016",
+  "cell": "s0-st6-m3",
+  "a": "q771",
+  "b": "q770",
+  "dist_sp": 1.02,
+  "side_a": "L",
+  "side_b": "L",
+  "cands_a": [
+   [
+    "glyph/0/0/6/3/3",
+    {
+     "fit": "[2,0,4.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/6/3/2",
+    {
+     "fit": "[2,1,6.0,0.0]",
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "kept",
+     "why": [
+      "quarter (1 beat)"
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "stem": "b4310",
+  "cell": "s0-st11-m2",
+  "a": "q1322",
+  "b": "q1319",
+  "dist_sp": 1.06,
+  "side_a": "R",
+  "side_b": "R",
+  "cands_a": [
+   [
+    "glyph/0/0/11/2/7",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ],
+  "cands_b": [
+   [
+    "glyph/0/0/11/2/4",
+    {
+     "fit": null,
+     "fitabs": null,
+     "refused_dup": false,
+     "adj": "narrowed",
+     "why": [
+      "length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain"
+     ]
+    }
+   ]
+  ]
+ }
+]

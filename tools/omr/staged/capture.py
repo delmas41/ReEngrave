@@ -341,6 +341,18 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
     # BY NOTHING — every one is `position_declared_but_unread` below, which is
     # the honest state of a producer whose first consumer deliberately has not
     # landed. See `reach.KNOWN_GAPS`.
+    "DOT_STAFF_POSITION": (
+        STAFF_GRID_POSITION,
+        "ROADMAP 2.128 -- where a dot stands on the staff, in "
+        "`NOTEHEAD_STAFF_POSITION`'s unit (even = line, odd = space), "
+        "measured against the five lines re-found LOCALLY at the dot's own x "
+        "(`gather.gather_dot_positions`; `detail.basis` says whether the ink "
+        "or the bar's grid answered) and against the NEAREST staff, since a "
+        "dot cut into one strip may stand on the next. Closed the "
+        "`POSITION dot` gap that 2.125's dot family exposed. The convention "
+        "it serves: an augmentation dot sits in a SPACE (the space above a "
+        "line note, the same space as a space note), never on a line.",
+        "dot"),
     "REST_POSITION": (
         STAFF_GRID_POSITION,
         "WHICH SIDE OF WHICH LINE this rest hangs from. A whole rest and a "
@@ -1008,17 +1020,6 @@ KNOWN_GAPS: Dict[str, str] = {
     # `gather_ink`'s discipline, one day older. The table's `position` column
     # therefore still reads NONE for all eleven, and that grading is correct:
     # nothing has reached a decision.
-    # ⚠️ ROADMAP 2.125. The `dot` family is NEW as a row (it was the
-    # augmentation dots under `NOT_NOTATION` and the staccato boxes under
-    # `articulation`), so this gap is not new -- it was hidden by the claim.
-    "POSITION dot": (
-        "`Q.AUG_DOT` carries the dot's (x, y) in the CELL's canonical frame, "
-        "and `adjudicate_dot_role` reads its geometry against the head boxes "
-        "in that same frame -- there is no staff-grid position fact for a dot "
-        "(a staccato's side of the head is the staff-grid-free distinction "
-        "the role verdict makes). Sean 2026-09-17: no family is exempt from "
-        "carrying a position. Shown here rather than hidden under "
-        "`articulation`/`NOT_NOTATION`."),
     "UNREAD-POSITION Q.METER_GLYPH_POSITION": (
         "⚠️⚠️ THE MOTIVATING CASE, and the fact now exists. A time "
         "signature's placement is RIGID — numerator in the upper two spaces, "

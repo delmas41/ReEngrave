@@ -22,7 +22,8 @@ machine-readable form.
 - A whole rest means the BAR whatever the meter; a lone quarter rest does
   not. A lone dotless whole rest is the bar, sized to the `<time>` in force
   (ROADMAP 2.98, print-confirmed 12 of 12, 2026-10-12).
-- A dot sits a space higher on a line note; the window is asymmetric.
+- **An augmentation dot always stands in a SPACE, never on a line** (Sean, 2026-10-14: *"Always in a space"*; scope: general engraving; ROADMAP 2.128): in its note's own space; after a note on a line, in the space **above** by default, and **below** for the lower (stems-down) voice of two on one staff or the lower note of a second in a chord (Sean, same day, *"Yes"* to the researched rule; PROVISIONAL for 19th-c. German plates -- Brahms p.0 labels: 41 above, 15 apparent "below" are the lower chord partner's above-dot, 4 are a lower voice, 0 contradictions). Registry: `docs/engraving-conventions.md`.
+- A dot sits a space higher on a line note (the usual case); the box window is asymmetric and misses the below-line dots (`OMR_DOT_POSITION_JOIN`).
 - A beam runs from the first stem it joins to the last, and a stem stands at
   the SIDE of its head -- so the outer note's centre is half a head past the
   stroke. Stems: up -> right, down -> left; right-and-down does not exist

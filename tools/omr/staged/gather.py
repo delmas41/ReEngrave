@@ -3029,6 +3029,183 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
                             is_bracket=name.lower().endswith("bracket"))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A dot's STAFF POSITION -- ROADMAP 2.128
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The window of page columns the five lines are re-found in around a dot's own
+#: x, each side, in staff spaces (>= `CELL_LINE_MIN_WIDTH_SPACES` / 2 so the
+#: finder accepts it). A measurement scale, not a decision.
+DOT_LINE_WINDOW_SPACES = 3.0
+
+#: A dot more than this many half-steps clear of every staff is OFF the staff
+#: (abstains `off_staff` with the signed distance). CONVENTION ASSUMED / WHAT
+#: WOULD FALSIFY IT / NOT CONFIRMED: four spaces is more than any ledgered
+#: note's dot stands from its staff; it is a cut-off on our plates, so the
+#: abstention records the distance and a consumer may look at a nearer one.
+DOT_OFF_STAFF_STEPS = 8.0
+
+
+def dot_step_fields(cy: float, top_y: float, half_step: float
+                    ) -> Dict[str, Any]:
+    """The pure arithmetic: a dot's centre `cy` against a line grid.
+
+    `pos` is `NOTEHEAD_STAFF_POSITION`'s unit (half-steps below the top line);
+    an even rounded `step` is a LINE and an odd one a SPACE. `margin` is how
+    far `pos` lies from the line/space boundary, in steps (0.5 = dead centre
+    on a line or a space, 0 = on the boundary, which cannot be told). The
+    `outside` distance is signed (negative above the staff, positive below).
+    """
+    pos = (float(cy) - float(top_y)) / float(half_step)
+    step = int(round(pos))
+    residual = abs(pos - step)
+    outside = 0.0
+    if pos < 0.0:
+        outside = pos
+    elif pos > 8.0:
+        outside = pos - 8.0
+    return {"pos": pos, "step": step,
+            "on": "line" if step % 2 == 0 else "space",
+            "residual": residual, "margin": 0.5 - residual,
+            "steps_outside_staff": outside}
+
+
+def _local_staff_lines(binary: Any, line_ys: Sequence[float], spacing: float,
+                       cx: float) -> Optional[List[float]]:
+    """The five printed line rows IN THE COLUMNS AROUND `cx`, or `None`.
+
+    CLAUDE.md Sec.5: a scanned staff tilts and ~1 px decides a near-boundary
+    pitch, so the lines are re-found where the dot stands -- the SAME finder
+    (`measure_extractor._find_five_lines`) that localises a bar's grid, run on
+    a window of `DOT_LINE_WINDOW_SPACES` either side of the dot instead of the
+    whole bar. `None` where the finder cannot place all five (declined, never
+    defaulted: the caller then falls back to the bar's own grid and says so).
+    """
+    if binary is None or getattr(binary, "ndim", 0) != 2 or spacing <= 0 \
+            or len(line_ys) < 5:
+        return None
+    from .. import measure_extractor as ME
+    width = binary.shape[1]
+    lo = max(0, int(round(cx - DOT_LINE_WINDOW_SPACES * spacing)))
+    hi = min(width, int(round(cx + DOT_LINE_WINDOW_SPACES * spacing)))
+    if hi - lo < max(2.0, ME.CELL_LINE_MIN_WIDTH_SPACES * spacing):
+        return None
+    try:
+        rows = ME._find_five_lines(binary, [int(round(y)) for y in line_ys],
+                                   float(spacing), lo, hi)
+    except Exception:                                         # noqa: BLE001
+        return None
+    return [float(r) for r in rows] if rows and len(rows) == 5 else None
+
+
+def gather_dot_positions(log: Log, pws: Any, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """`Q.DOT_STAFF_POSITION` for every `Q.AUG_DOT` box. ROADMAP 2.128.
+
+    ⚠️ A MEASUREMENT, NEVER A ROLE. Where a dot stands on the staff is the
+    evidence `adjudicate_dot_role` weighs; the verdict stays its own. Filed on
+    the dot's glyph, scoreless, in the notehead's unit, so a dot and the head
+    it follows can be compared on one ruler.
+
+    ⚠️ WHICH STAFF. A dot cut into one strip may stand on the next staff's
+    lines (the foreign-cell dots of `benchmarks/omr-aug-dots-2026-10`), so the
+    row is measured against the NEAREST staff of the page and says which
+    (`detail.staff`, `detail.home`). Far from every staff, it abstains
+    `off_staff` with the signed distance.
+
+    ⚠️ LOCAL (CLAUDE.md Sec.5). The lines are re-found in the columns around the
+    dot's x (`_local_staff_lines`); where that cannot be done and the staff is
+    the cell's own, the bar's localised grid answers and `detail.basis` says
+    `cell_grid`; otherwise the row is an ABSTENTION (`no_staff_geometry`).
+    """
+    page = getattr(pws, "page", None)
+    binary = getattr(page, "binary", None)
+    staves = []
+    for st in getattr(pws, "staves", ()) or ():
+        key = local.get(st.staff_index)
+        ys = [float(y) for y in getattr(st, "line_ys", ()) or ()]
+        if key is None or len(ys) < 5:
+            continue
+        sp = _spacing(st)
+        if not sp:
+            continue
+        p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+        staves.append((st, R.staff(p, key[0], key[1]).to_key(), ys, float(sp)))
+    cell_by_key = {}
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        frame = frame_cell(sub.cell)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        home_key = sub.at(R.Kind.STAFF).to_key()
+        for gi, d in enumerate(dets):
+            name = d.smufl_name
+            if not (name == _DOT_CLASS or name in _STACCATO_CLASSES):
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            box = _page_box(c, d) if c is not None else None
+            if box is None or not staves:
+                log.abstain(g, Q.DOT_STAFF_POSITION, reader=READERS.GEOMETRY,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            why="no page box" if box is None else "no staves",
+                            detector_class=name)
+                continue
+            cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+            # the nearest staff by distance to its five-line band; the cell's
+            # own staff wins a tie
+            def _band_gap(t):
+                return max(min(t[2]) - cy, cy - max(t[2]), 0.0) / t[3]
+            best = min(staves, key=lambda t: (_band_gap(t),
+                                              0 if t[1] == home_key else 1))
+            st, skey, ys, sp = best
+            rows = _local_staff_lines(binary, ys, sp, cx)
+            basis = None
+            if rows is not None:
+                top_y, half = rows[0], (rows[-1] - rows[0]) / 8.0
+                basis = "local_ink"
+            elif skey == home_key and c is not None:
+                grid = _cell_grid(c)
+                up = getattr(c, "upscale_factor", None)
+                bb = getattr(c, "bbox_page_px", None)
+                if grid is not None and up and bb:
+                    top_y = bb[1] + grid[0] / up
+                    half = grid[1] / up
+                    basis = "cell_grid"
+            if basis is None or half <= 0:
+                log.abstain(g, Q.DOT_STAFF_POSITION, reader=READERS.GEOMETRY,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            why="the staff lines at the dot's x cannot be read",
+                            staff=skey, detector_class=name)
+                continue
+            f = dot_step_fields(cy, top_y, half)
+            if abs(f["steps_outside_staff"]) > DOT_OFF_STAFF_STEPS:
+                # ⚠️ A REFUSAL SAYS HOW CLOSE IT CAME: `margin` is the signed
+                # distance past the cut-off (always positive here), `side` which
+                # edge of the nearest staff the dot lies beyond.
+                log.abstain(g, Q.DOT_STAFF_POSITION, reader=READERS.GEOMETRY,
+                            frame=frame, reason=ABSTAIN.OFF_STAFF,
+                            margin=abs(f["steps_outside_staff"])
+                            - DOT_OFF_STAFF_STEPS,
+                            side=("above" if f["steps_outside_staff"] < 0
+                                  else "below"),
+                            staff=skey, detector_class=name)
+                continue
+            log.observe(g, Q.DOT_STAFF_POSITION, f["pos"],
+                        reader=READERS.GEOMETRY, frame=frame,
+                        step=f["step"], on=f["on"],
+                        residual=f["residual"], margin=f["margin"],
+                        basis=basis, staff=skey, home=(skey == home_key),
+                        x_page=cx,
+                        detector_role=("dot" if name == _DOT_CLASS
+                                       else "staccato"),
+                        detector_class=name)
+
+
 #: Which detected class belongs to which notation family.
 #:
 #: ⚠️ ROUTED BY CLASS, NOT BY THE DETECTOR'S `category`, and the hairpins are
@@ -5735,7 +5912,9 @@ def mark_shape(img: Any, box: Tuple[float, float, float, float],
     ih, iw = bot - top + 1, int(xs.max() - xs.min() + 1)
     thirds = np.array_split(np.arange(top, bot + 1), 3)
     wid = [int(ink[t].any(axis=0).sum()) if len(t) else 0 for t in thirds]
+    prof = [int(ink[r].sum()) for r in range(top, bot + 1)]   # row widths
     return {"hw": round(ih / float(iw), 4), "top": wid[0], "bot": wid[2],
+            "rows": prof,
             "h_spaces": round(ih / float(space), 4),
             "w_spaces": round(iw / float(space), 4),
             "fill": round(len(ys) / float(ih * iw), 4)}
@@ -8514,6 +8693,138 @@ STACKED_HEAD_MIN_SLOT_FILL = 0.4
 STACKED_HEAD_SEARCH_MARGIN_POSITIONS = 1
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.129 -- a second head the MEAN test turned away, kept where the INK
+# is two heads tall. `OMR_STACKED_SECOND_HEAD`, default ON (landed 2026-10-14).
+#
+# Brahms 20261013-night, pdf 0 (Sean's every-head truth): 5 of 5 notes lost to
+# `stacked_head_duplicate` were the second head of a chord of THIRDS on one side
+# of one stem (two heads one staff space apart, touching). The fit read k=1 for
+# all five: the slots scored 1.00 / 1.00 / 0.86 (the middle slot saturates on the
+# blob; the lower head's own slot loses its centre to staff-line removal), so the
+# pair's mean (0.93) fell 0.068 under the lone best score and the "adding it cost
+# explanatory power" gate (`STACKED_HEAD_FIT_MARGIN`) refused it. The mean is a
+# bad witness for two heads that TOUCH: a saturated blob scores the same wherever
+# the second slot goes. The ink height is not -- two touching heads are 2.0
+# spaces tall, one head 1.0-1.3.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Half width of the column band read for the blob's height, in staff spaces
+#: either side of the heads' x -- 0.2 of the standard head width, the middle of
+#: the head, clear of the stem (at the head's edge) and of an augmentation dot.
+STACKED_BLOB_HALF_WIDTH_SPACES = 0.28
+
+#: A row is blob ink where this fraction of the band's pixels are ink.
+STACKED_BLOB_ROW_FILL = 0.3
+
+#: A gap of this many spaces inside the blob is bridged (the tangent between two
+#: touching ellipses; a staff-line removal that cut a head across).
+STACKED_BLOB_BRIDGE_SPACES = 0.2
+
+#: The blob must reach this fraction of the height two heads at the pair's own
+#: spacing would have (`gap/2 + 1` spaces: 2.0 for a third, so 1.6). Measured IN
+#: THE CELL (the staff-line-removed raster the fit reads) on Brahms pdf 0: the 5
+#: twins read 1.74-2.23 spaces -- SHORTER than on the page raster (2.17-2.39),
+#: so a 1.8 cut calibrated on the page lost 3 of the 5 -- and the pairs that are
+#: not two heads read 0.6-1.3 on the page. A head with a ledger line or a slur
+#: touching it reads up to 1.76 in the cell (Brahms pdf 1), so the blob is the
+#: SECOND witness, never the first: see `STACKED_BOX_SPREAD_MIN_POSITIONS`.
+STACKED_BLOB_MIN_FRACTION = 0.8
+
+#: The detector's OWN boxes must stand at two heads' distance: the lowest and
+#: highest box of the group at least this many half-steps apart (a third is 2;
+#: the twins' boxes read 1.89-2.12 apart, the two false near-misses on Brahms
+#: pdf 1 -- one head boxed twice, plus a ledger line -- 0.38 and 0.40). The first
+#: witness: the fit never adds a head the detector did not box at a second
+#: head's place.
+STACKED_BOX_SPREAD_MIN_POSITIONS = 1.5
+
+#: Each of the pair's two slots must hold this much ink (the existing floor is
+#: 0.4 + margin; the twins' weaker slot reads 0.81-0.89, a head on blank paper
+#: or a neighbour's edge well under).
+STACKED_BLOB_MIN_SLOT_FILL = 0.75
+
+#: How far above and below the pair's midpoint the column is read (spaces).
+STACKED_BLOB_WINDOW_SPACES = 2.5
+
+
+def stacked_second_head_enabled() -> bool:
+    """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default ON** (landed
+    2026-10-14, Sean: "1 land"); an explicit `0/false/no/off` turns it off."""
+    return os.environ.get("OMR_STACKED_SECOND_HEAD", "1").strip().lower() \
+        not in ("0", "false", "no", "off")
+
+
+def stacked_blob_height_spaces(img: Any, cx: float, mid_y: float,
+                               spacing: float) -> Optional[float]:
+    """PURE -- the height, in staff spaces, of the one inked column that runs
+    through `mid_y` at the heads' own x. `img` is a cell raster (0 == ink),
+    `cx`/`mid_y` in that raster's frame, `spacing` its staff space.
+
+    The column is `STACKED_BLOB_HALF_WIDTH_SPACES` either side of `cx`; a row is
+    ink where `STACKED_BLOB_ROW_FILL` of it is; the run through `mid_y` bridges
+    gaps up to `STACKED_BLOB_BRIDGE_SPACES`. `None` where the band cannot be cut
+    from the raster (off it, or too thin) -- declined, never defaulted. 0.0 where
+    there is no ink at `mid_y` at all."""
+    if img is None or getattr(img, "ndim", 0) != 2 or spacing <= 0:
+        return None
+    H, W = img.shape
+    hw = STACKED_BLOB_HALF_WIDTH_SPACES * spacing
+    x0, x1 = int(round(cx - hw)), int(round(cx + hw))
+    y0 = int(round(mid_y - STACKED_BLOB_WINDOW_SPACES * spacing))
+    y1 = int(round(mid_y + STACKED_BLOB_WINDOW_SPACES * spacing))
+    if x0 < 0 or x1 > W or y0 < 0 or y1 > H or x1 - x0 < 2 or y1 - y0 < 2:
+        return None
+    rows = (img[y0:y1, x0:x1] == 0).mean(axis=1) >= STACKED_BLOB_ROW_FILL
+    bridge = max(1, int(round(STACKED_BLOB_BRIDGE_SPACES * spacing)))
+    n = len(rows)
+    ym = min(n - 1, max(0, int(round(mid_y)) - y0))
+    # the nearest ink row to the midpoint, within the bridge
+    start = None
+    for d in range(0, bridge + 1):
+        for yy in (ym - d, ym + d):
+            if 0 <= yy < n and rows[yy]:
+                start = yy
+                break
+        if start is not None:
+            break
+    if start is None:
+        return 0.0
+    top = bot = start
+    gap = 0
+    for yy in range(start - 1, -1, -1):
+        if rows[yy]:
+            top, gap = yy, 0
+        else:
+            gap += 1
+            if gap > bridge:
+                break
+    gap = 0
+    for yy in range(start + 1, n):
+        if rows[yy]:
+            bot, gap = yy, 0
+        else:
+            gap += 1
+            if gap > bridge:
+                break
+    return (bot - top + 1) / float(spacing)
+
+
+def _stacked_slots_have_boxes(positions: Sequence[int],
+                              observed: Sequence[float]) -> bool:
+    """The detector drew a box at each of the pair's two heads -- the group's
+    lowest box (smallest position) within one half-step of the lower slot, its
+    highest within one of the upper, and the two at least
+    `STACKED_BOX_SPREAD_MIN_POSITIONS` apart. One head boxed twice (spread
+    ~0.4) can never pass, whatever the ink says."""
+    if len(observed) < 2 or len(positions) != 2:
+        return False
+    lo, hi = min(observed), max(observed)
+    return (hi - lo >= STACKED_BOX_SPREAD_MIN_POSITIONS
+            and abs(lo - positions[0]) <= 1.0
+            and abs(hi - positions[1]) <= 1.0)
+
+
 def _stacked_stem_xywh(value: Any) -> Optional[Tuple[float, float, float, float]]:
     """`Q.STEM`'s own value shape, `[x, y, w, h]` -- restated (not imported)
     from `notehead_precision._stem_xywh` for the same reason that module
@@ -8612,7 +8923,8 @@ def _stacked_best_combo(scored: Dict[int, float], k: int,
 
 def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
                           top_y: float, half_step: float, spacing: float,
-                          n_boxes: int, observed: Sequence[float] = ()
+                          n_boxes: int, observed: Sequence[float] = (),
+                          blob_height_fn: Optional[Any] = None
                           ) -> Optional[Dict[str, Any]]:
     """PURE -- score a standard head-box template at every candidate
     position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
@@ -8695,6 +9007,8 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     margin: Optional[float] = None
     ambiguous = False
     prev_mean = best1
+    second_head_by: Optional[str] = None
+    near_miss: Optional[Dict[str, Any]] = None
     for k, n_needed in ((2, 2), (3, 3)):
         if ambiguous or n_boxes < n_needed or chosen_k != k - 1:
             break
@@ -8711,6 +9025,35 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
             chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
             margin = min(fill_gap, mean_gap if mean_gap < fill_gap else fill_gap)
             prev_mean = mean_k
+        elif (blob_height_fn is not None and k == 2
+              and fill_gap > STACKED_HEAD_FIT_MARGIN
+              and min_slot >= STACKED_BLOB_MIN_SLOT_FILL
+              and mean_gap <= -STACKED_HEAD_FIT_MARGIN
+              and positions_k[1] - positions_k[0] == STACKED_HEAD_MIN_GAP_POSITIONS
+              and _stacked_slots_have_boxes(positions_k, observed)):
+            # ⚠️ ROADMAP 2.129 -- the MEAN test refused a pair whose slots both
+            # hold real ink and whose boxes are the detector's own. Two heads a
+            # third apart TOUCH, so the mean is no witness (see the section
+            # comment above); the blob's height is.
+            blob = blob_height_fn(positions_k)
+            need = ((positions_k[1] - positions_k[0]) * 0.5 + 1.0) \
+                * STACKED_BLOB_MIN_FRACTION
+            if blob is not None and blob >= need:
+                chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
+                margin = min(fill_gap, blob - need)
+                second_head_by = "blob_height"
+                near_miss = {"blob_spaces": round(blob, 3),
+                             "needed_spaces": round(need, 3)}
+                prev_mean = mean_k
+            else:
+                # REFUSED, and says how close it came (ROADMAP 2.106).
+                near_miss = {"positions": list(positions_k),
+                             "blob_spaces": (round(blob, 3)
+                                             if blob is not None else None),
+                             "needed_spaces": round(need, 3),
+                             "mean_gap": round(mean_gap, 4),
+                             "fill_gap": round(fill_gap, 4)}
+                break
         elif (abs(fill_gap) <= STACKED_HEAD_FIT_MARGIN
               or (fill_gap > 0 and abs(mean_gap) <= STACKED_HEAD_FIT_MARGIN)):
             ambiguous = True
@@ -8721,6 +9064,7 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
         "scored": scored, "k": chosen_k,
         "positions": tuple(sorted(chosen_positions)),
         "mean": chosen_mean, "margin": margin, "ambiguous": ambiguous,
+        "second_head_by": second_head_by, "near_miss": near_miss,
     }
 
 
@@ -8809,9 +9153,23 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
             hi = int(math.ceil(max(positions_seen))) \
                 + STACKED_HEAD_SEARCH_MARGIN_POSITIONS
 
+            blob_fn = None
+            # ⚠️ ROADMAP 2.129 -- FILLED HEADS ONLY. The blob test reads a solid
+            # column through the heads' middle; a hollow head's middle is its
+            # hole, and a tremolo slash boxed beside a half note is no head at
+            # all (Litolff pdf 2: the first draft kept a slash as a second
+            # half note, 1.78 spaces of ink). Two black-class boxes or no test.
+            filled_group = all(str(dets[gi].smufl_name).startswith("noteheadBlack")
+                               for gi in members)
+            if stacked_second_head_enabled() and filled_group:
+                def blob_fn(pos, _img=img, _cx=cx, _top=top_y, _hs=half_step,
+                            _sp=spacing):
+                    return stacked_blob_height_spaces(
+                        _img, _cx, _top + (pos[0] + pos[1]) / 2.0 * _hs, _sp)
             fit = fit_stacked_head_count(
                 img, cx, list(range(lo, hi + 1)), top_y, half_step, spacing,
-                len(members), observed=positions_seen)
+                len(members), observed=positions_seen,
+                blob_height_fn=blob_fn)
             if fit is None:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
@@ -8823,6 +9181,20 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
 
             candidates_detail = {"scores": {str(p): round(v, 4)
                                             for p, v in fit["scored"].items()}}
+            if fit.get("second_head_by"):
+                candidates_detail["second_head_by"] = fit["second_head_by"]
+            if fit.get("near_miss"):
+                candidates_detail["near_miss"] = fit["near_miss"]
+            elif (stacked_second_head_enabled() and not filled_group
+                  and fit["k"] == 1 and len(members) >= 2):
+                # ⚠️ ROADMAP 2.129, Sean's tile 9: a hollow third IS two heads and
+                # is still refused. Not kept: a hollow "two holes" test passes the
+                # two halves of a bass clef on pdf 0 (both decisively hollow, 1.0
+                # space apart, truth: no head), so it cannot yet be told from
+                # a real pair. The refusal says so instead (2.106).
+                candidates_detail["near_miss"] = {
+                    "not_tested": "hollow-class group: the blob test is for filled heads",
+                    "boxes": len(members)}
             margin = fit["margin"]
             if fit["ambiguous"]:
                 for gi in members:
@@ -13214,6 +13586,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_accidental_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
+        gather_dot_positions(log, pws, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
         # search blanks the point detections out of the ink first) and BEFORE
