@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- manager close-out: START HERE block, 2.141 status
+Docs only. New START HERE block at the top of ROADMAP (today's landings 2.134/2.135/2.109/2.126/2.137/2.136, what is waiting on Sean, the ranked queue 2.141 -> 2.140 -> 2.138 -> 2.139, process lessons). Row 2.141 marked diagnosis done on branch `lane-2.141-litolff-w2` (189abd26). Fast tier on main f4ed3de1 rerun by the manager after the two landings: 8,099 passed, 0 failed.
+
 ## 2026-10-15 -- ROADMAP 2.137 landed ON (tremolo slash at the stem end)
 STAGED ADJUDICATE, `OMR_SLASH_AT_STEM_END` default ON (`notehead_precision.slash_at_stem_end_enabled`; explicit `0/false/no/off` disables): a non-oval box crossing a stem is refused as a slash without 2.49's position test. 49 slashes stood as heads (Brahms 37, Litolff 12). Sean's 10 tiles: 5/5 fixed, 3/3 controls, tile 9 (deformed half note) refused and accepted. Land merge 6643c70e. Reaches records at the next re-decide/re-gather.
 
