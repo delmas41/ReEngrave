@@ -40,6 +40,23 @@ def main() -> int:
         ids = {o["id"] for o in gone}
         rec["observations"] = [o for o in rec["observations"] if o["id"] not in ids]
         say(f"--break: dropped {len(ids)} beam strokes")
+    keep = None
+    if "--staves" in sys.argv:   # SMALL RUN: only the GLYPHS of the systems (page,system,staff) of the named cells; "p,s;p,s" (whole SYSTEMS: bar sums and meter reconciliation cross staves)
+        keep = {tuple(int(x) for x in t.split(",")) for t in sys.argv[sys.argv.index("--staves") + 1].split(";") if t}  # (page, system)
+
+        def on_keep(subject):
+            p = subject.split("/")
+            if len(p) >= 4 and p[0] == "glyph":
+                try:
+                    return tuple(int(x) for x in p[1:3]) in keep
+                except ValueError:
+                    return True
+            return True   # page/system/document-level rows stay
+        rec = dict(rec)
+        for k in ("observations", "abstentions"):
+            rec[k] = [o for o in rec.get(k) or () if on_keep(o["subject"])]
+        rec["verdicts"] = [v for v in rec["verdicts"] if on_keep(v["subject"])]
+        say(f"--staves: kept {len(keep)} staves, {len(rec['observations'])} observations")
     log, _ = RR.rebuild_gather(rec)
     say("gather rebuilt")
     res = RR.run_stages(log)

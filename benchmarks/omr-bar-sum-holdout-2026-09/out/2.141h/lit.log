@@ -1,0 +1,16 @@
+== lit base
+[ 1040.5s] 14397 duration verdicts
+CONTROL: 14357 of 14397 reproduced, 40 differ, 0 extra
+   glyph/3/1/0/8/1 ['narrowed', None, None, 'beams_ambiguous', 'adjudicate_duration', 2, {'beam_side': 'up'}] ['decided', 0.5, 1, 'the_bars_arithmetic_forces_this_length', 'infer:collapse_narrowed_by_bar', 2, {'rule': 'collapse_narrowed_by_bar'}]
+   glyph/3/1/0/8/4 ['narrowed', None, None, 'head_fill_from_ink', 'adjudicate_duration', 3, {}] ['decided', 1.0, 0, 'the_bars_arithmetic_forces_this_length', 'infer:collapse_narrowed_by_bar', 3, {'rule': 'collapse_narrowed_by_bar'}]
+   glyph/4/1/3/5/0 ['narrowed', None, None, 'beam_discounted_uncertain', 'adjudicate_duration', 2, {'beam_side': 'down'}] ['decided', 1.0, 0, 'the_bars_arithmetic_forces_this_length', 'infer:collapse_narrowed_by_bar', 2, {'rule': 'collapse_narrowed_by_bar'}]
+   glyph/4/1/3/5/3 ['narrowed', None, None, 'beam_discounted_uncertain', 'adjudicate_duration', 2, {'beam_side': 'down'}] ['decided', 1.0, 0, 'the_bars_arithmetic_forces_this_length', 'infer:collapse_narrowed_by_bar', 2, {'rule': 'collapse_narrowed_by_bar'}]
+   glyph/4/1/3/5/4 ['narrowed', None, None, 'beam_discounted_uncertain', 'adjudicate_duration', 2, {'beam_side': 'down'}] ['decided', 1.0, 0, 'the_bars_arithmetic_forces_this_length', 'infer:collapse_narrowed_by_bar', 2, {'rule': 'collapse_narrowed_by_bar'}]
+[ 1115.6s] wrote
+== lit f1
+[   29.3s] gather rebuilt
+[ 1021.6s] decided
+[ 1028.8s] 14397 duration verdicts
+[ 1109.0s] wrote
+== lit f2
+[   29.1s] gather rebuilt

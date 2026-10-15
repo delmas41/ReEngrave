@@ -36,8 +36,8 @@ def key_cells():
     """Sean-judged cells: {(mov, cell): (label, sean_beats or None)}."""
     out = {}
     k = json.load(open(OUTD / "2.136-step2" / "tiles-key.json"))
-    ans = json.load(open("/private/tmp/claude-501/answers/a2136.json"))["tiles"]
-    for t, a in zip(k["tiles"], ans):
+    ans = json.load(open(OUTD.parent.parent.parent / "out/print/2.136-step2-review/answers.json"))["tiles"]
+    for t, a in zip(k["tiles"], ans):  # answers.json lists tiles in key order
         out[(t["movement"], tuple(t["cell"]))] = (f"2.136 tile {t['n']}", a["sean"], a["agrees"])
     k = json.load(open(OUTD / "2.141" / "tiles-key.json"))
     for t in k["tiles"]:
