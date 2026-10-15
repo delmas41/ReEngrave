@@ -1,0 +1,19 @@
+lit OFF 0 bars, 0 notes; ON 19 bars, 40 notes
+  settled values {'4': 32, '8': 6, '16': 2} (value, beam levels) {('4', 0): 32, ('8', 1): 6, ('16', 2): 2}
+  notes freed, by what OFF declined them for {'heads_not_this_staffs_own': 40}
+brah OFF 0 bars, 0 notes; ON 196 bars, 419 notes
+  settled values {'dot4': 267, '8': 7, '4': 142, 'dot8': 1, '16': 2} (value, beam levels) {('dot4', 0): 267, ('8', 1): 7, ('4', 0): 142, ('dot8', 1): 1, ('16', 2): 2}
+  notes freed, by what OFF declined them for {'heads_not_this_staffs_own': 8, 'meter_not_from_the_print': 411}
+tile  1 (4, 0, 12, 3) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile  2 (21, 1, 6, 3) ON settled ['4', '4'] Sean ['4', '4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile  3 CONTROL (9, 1, 10, 4): narrowed-head row exists=False settled={} (Sean: ['8', '8'])
+tile  4 CONTROL (18, 1, 12, 7): narrowed-head row exists=False settled={} (Sean: ['16', '16'])
+tile  5 (9, 1, 12, 4) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile  6 (4, 1, 12, 6) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile  7 (3, 1, 12, 4) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile  8 (16, 1, 4, 0) ON settled [] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> DIFF (ON decline None)
+tile  9 (5, 0, 11, 1) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile 10 (16, 1, 13, 4) ON settled [] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> DIFF (ON decline None)
+tile 11 (13, 0, 0, 9) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+tile 12 (16, 1, 4, 5) ON settled ['4', 'dot4'] Sean ['4', 'dot4'] OFF declined meter_not_from_the_print -> MATCH (ON decline None)
+refused pairs matching Sean: 8 of 10

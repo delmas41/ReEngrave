@@ -1,0 +1,8 @@
+[   34.8s] log built: 173257 verdicts as written, frozen
+[   37.3s] 5377 cells
+[   54.0s] flag=0: done
+[   58.8s] flag=1: done
+[   58.8s] OFF {'cells_with_a_narrowed_head': 210, 'bars_with_a_settled_head': 0, 'bars_fully_released': 0, 'notes_settled': 0, 'declines': {'bar_does_not_add_up': 78, 'heads_not_this_staffs_own': 84, 'decided_neighbour_rests_on_the_narrowing': 9, 'simultaneous_heads_not_grouped': 8, None: 11, 'event_mixes_decided_and_narrowed': 10, 'event_members_admit_different_lengths': 3, 'chord_not_on_one_decided_stem': 5, 'bar_holds_tuplet_evidence': 1, 'tuplet_in_bar': 1}}
+[   58.8s] ON  {'cells_with_a_narrowed_head': 210, 'bars_with_a_settled_head': 19, 'bars_fully_released': 19, 'notes_settled': 40, 'declines': {'bar_does_not_add_up': 95, 'heads_not_this_staffs_own': 31, 'decided_neighbour_rests_on_the_narrowing': 11, 'simultaneous_heads_not_grouped': 8, None: 32, 'event_mixes_decided_and_narrowed': 17, 'event_members_admit_different_lengths': 3, 'chord_not_on_one_decided_stem': 11, 'bar_holds_tuplet_evidence': 1, 'tuplet_in_bar': 1}}
+[   58.8s] ON adds 40 notes in 19 bars; changed-from-OFF: 0
+[   69.4s] admitted 40 verdicts (skipped 0)
