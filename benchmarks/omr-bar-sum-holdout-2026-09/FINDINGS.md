@@ -3835,3 +3835,12 @@ count what the patched code would do on these two movements, one edition each; W
 (Litolff has one bar it would release). The 189 are the bars where the head's candidates land the bar; bars held for
 other reasons are untouched by both patches except as the clean-helper control counts. `judged score` run on the Brahms
 record for the items already answered: 70 right, 10 wrong, 18 narrowed (`out/2.136/judged-brah.txt`).
+
+### 2.136g. Sean's answers (2026-10-15)
+
+Recorded in `out/print/2.136-review/answers.json`. 10/10 refused bars hold exactly the notes the W1/W2 joint landing
+would write (each head takes its unbeamed candidate), including tiles 8 and 10, where the 2.80 missed-rest witness read
+'unexplained'. Control 3 is right (two eighths). Control 4 is a DECIDED error: Brahms p18 sys1 staff12 cell7, two
+eighths that are sixteenths, a missed second beam level. That is a wrong value written plain, so it goes to the
+beam-level readers (2.126's family). Caveat: these are pairs on Brahms only, with carried meters; n=10; pairs compared
+as multisets, order not compared.
