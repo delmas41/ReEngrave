@@ -8756,6 +8756,121 @@ def stacked_second_head_enabled() -> bool:
         not in ("0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.132 -- a HOLLOW second head a third apart. `OMR_STACKED_HOLLOW_PAIR`,
+# default OFF until Sean sees `out/print/2.132-review/`.
+#
+# 2.129's blob test reads a solid column, which a hollow head's hole is not, so
+# two half notes a third apart on one stem (Sean's 2.129 tile 9) were refused
+# `stacked_head_duplicate`. 19 such chords stand refused on Brahms. The two-holes
+# reading that would keep them ALSO passes the "8" of a printed 9/8 (two white
+# loops, 1.0 space apart, ring 0.71 / 0.62: Brahms glyph/0/0/11/7/1 -- the 2.129
+# FINDINGS called it a bass clef; it is the numeral, a crop settles it). What
+# tells the numeral from two heads is the STEM: a chord's stem runs 2.2-4.0
+# spaces PAST the pair (the engraving convention is 3.5 from the far head), and
+# the numeral's "stem" row is the numeral's own height (0.15 past). Two
+# witnesses, two sources: the PAGE RASTER (each slot a hollow head: an empty
+# interior inside an inked ring, the staff-line rows left out, 2.73/2.88) and
+# the STEM READER. Never the bar sum.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `rhythm.HEAD_FILL_HOLLOW_CENTER_MAX` / `HEAD_FILL_HOLLOW_RING_GAP_MIN` (2.23),
+#: restated (`rhythm` imports this module): a slot reads hollow where the
+#: interior is no denser than this and the ring stands this far above it.
+STACKED_HOLLOW_CENTER_MAX = 0.75
+STACKED_HOLLOW_RING_GAP_MIN = 0.10
+#: ... and the ring is real ink, not paper: the 19 pairs read 0.58-0.78 at their
+#: slots, a slot moved a half-step reads 0.2-0.5.
+STACKED_HOLLOW_RING_MIN = 0.55
+#: The stem must run at least this many spaces past the OUTER edge of the pair's
+#: slots (either end). Real chords 2.22-3.98 (Brahms, 19 pairs), the "8" 0.15,
+#: a bass clef 0.13.
+STACKED_HOLLOW_STEM_EXT_MIN_SPACES = 1.5
+#: The group's own boxes: lowest to highest at most this many half-steps apart
+#: (a third is 2; a chord of THREE heads is 4 and is not a pair).
+STACKED_HOLLOW_MAX_SPREAD_POSITIONS = 3.0
+#: Two placements of the pair that both read hollow must differ by this much in
+#: (ring - centre) to choose between them; otherwise the slots are ambiguous.
+STACKED_HOLLOW_SLOT_MARGIN = 0.10
+
+
+def stacked_hollow_pair_enabled() -> bool:
+    """`OMR_STACKED_HOLLOW_PAIR` -- ROADMAP 2.132. **Default OFF** (Sean has not
+    seen the tiles); `1/true/yes/on` turns it on."""
+    return os.environ.get("OMR_STACKED_HOLLOW_PAIR", "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def _stacked_hollow_slot_ok(win: Optional[Tuple[float, float]]) -> bool:
+    if win is None:
+        return False
+    center, ring = win
+    if center is None or ring is None:
+        return False
+    return (center <= STACKED_HOLLOW_CENTER_MAX
+            and ring - center >= STACKED_HOLLOW_RING_GAP_MIN
+            and ring >= STACKED_HOLLOW_RING_MIN)
+
+
+def fit_hollow_stacked_pair(slot_reader: Any, candidates: Sequence[int],
+                            stem_extension_fn: Any) -> Dict[str, Any]:
+    """PURE -- ROADMAP 2.132. Is this a pair of hollow heads a third apart?
+
+    `candidates` are the lower-slot positions `p` (the pair is `p`, `p+2`) the
+    detector's own boxes allow. `slot_reader(p)` returns `(centre, ring)` of the
+    standard head box at slot `p` read off the PAGE raster with the line rows
+    left out, or `None`. `stem_extension_fn(p)` the spaces the group's stem runs
+    past the pair's outer edge, or `None` (no stem / no unit).
+
+    Returns `{"accepted": bool, "positions": (p, p+2) | None, "margin": float |
+    None, "near_miss": {...}}` -- a refusal says how close it came (2.106)."""
+    scored = []
+    reads = {}
+    for p in candidates:
+        lo, hi = slot_reader(p), slot_reader(p + 2)
+        reads[p] = (lo, hi)
+        if _stacked_hollow_slot_ok(lo) and _stacked_hollow_slot_ok(hi):
+            scored.append((min(lo[1] - lo[0], hi[1] - hi[0]), p))
+    if not scored:
+        best = None
+        for p in candidates:
+            lo, hi = reads[p]
+            if lo is None or hi is None or lo[0] is None or hi[0] is None:
+                continue
+            g = min(lo[1] - lo[0], hi[1] - hi[0])
+            if best is None or g > best[0]:
+                best = (g, p, lo, hi)
+        nm: Dict[str, Any] = {"hollow_pair": "slots are not both hollow",
+                              "candidates": len(candidates)}
+        if best is not None:
+            nm["best_positions"] = [best[1], best[1] + 2]
+            nm["best_windows"] = [[round(v, 3) for v in best[2]],
+                                  [round(v, 3) for v in best[3]]]
+        return {"accepted": False, "positions": None, "margin": None,
+                "near_miss": nm}
+    scored.sort(reverse=True)
+    top_gap, top_p = scored[0]
+    if len(scored) > 1 and top_gap - scored[1][0] < STACKED_HOLLOW_SLOT_MARGIN:
+        return {"accepted": False, "positions": None, "margin": None,
+                "near_miss": {"hollow_pair": "slot placement ambiguous",
+                              "placements": [[p, p + 2] for _, p in scored[:2]],
+                              "gap_margin": round(top_gap - scored[1][0], 3)}}
+    ext = stem_extension_fn(top_p)
+    lo, hi = reads[top_p]
+    nm = {"hollow_pair": "both slots hollow", "positions": [top_p, top_p + 2],
+          "windows": [[round(v, 3) for v in lo], [round(v, 3) for v in hi]],
+          "stem_extension_spaces": (round(ext, 3) if ext is not None else None),
+          "stem_needed_spaces": STACKED_HOLLOW_STEM_EXT_MIN_SPACES}
+    if ext is None or ext < STACKED_HOLLOW_STEM_EXT_MIN_SPACES:
+        nm["hollow_pair"] = ("no stem stands at the pair's edge" if ext is None
+                             else "stem does not run past the pair")
+        return {"accepted": False, "positions": None, "margin": None,
+                "near_miss": nm}
+    return {"accepted": True, "positions": (top_p, top_p + 2),
+            "margin": round(min(top_gap, ext - STACKED_HOLLOW_STEM_EXT_MIN_SPACES), 4),
+            "near_miss": nm}
+
+
 def stacked_blob_height_spaces(img: Any, cx: float, mid_y: float,
                                spacing: float) -> Optional[float]:
     """PURE -- the height, in staff spaces, of the one inked column that runs
@@ -8925,7 +9040,8 @@ def _stacked_best_combo(scored: Dict[int, float], k: int,
 def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
                           top_y: float, half_step: float, spacing: float,
                           n_boxes: int, observed: Sequence[float] = (),
-                          blob_height_fn: Optional[Any] = None
+                          blob_height_fn: Optional[Any] = None,
+                          hollow_pair_fn: Optional[Any] = None
                           ) -> Optional[Dict[str, Any]]:
     """PURE -- score a standard head-box template at every candidate
     position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
@@ -9061,6 +9177,25 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
             margin = fill_gap
         else:
             break   # clearly not a real additional head -- stop at k-1
+    if (hollow_pair_fn is not None and chosen_k == 1 and not ambiguous
+            and near_miss is None and n_boxes >= 2 and len(observed) >= 2
+            and max(observed) - min(observed) <= STACKED_HOLLOW_MAX_SPREAD_POSITIONS):
+        # ⚠️ ROADMAP 2.132 -- HOLLOW groups. The mean test and the blob test are
+        # both for filled heads; this is its own pair test (see the section
+        # comment), run only where the fit read k=1 and nothing else spoke.
+        cands = [p for p in sorted(scored)
+                 if p + STACKED_HEAD_MIN_GAP_POSITIONS in scored
+                 and _stacked_slots_have_boxes(
+                     (p, p + STACKED_HEAD_MIN_GAP_POSITIONS), observed)]
+        hp = hollow_pair_fn(cands) if cands else {
+            "accepted": False, "near_miss": {
+                "hollow_pair": "no slot pair under the boxes"}}
+        near_miss = hp["near_miss"]
+        if hp["accepted"]:
+            chosen_k, chosen_positions = 2, tuple(hp["positions"])
+            chosen_mean = sum(scored[p] for p in chosen_positions) / 2.0
+            margin = hp["margin"]
+            second_head_by = "hollow_pair"
     return {
         "scored": scored, "k": chosen_k,
         "positions": tuple(sorted(chosen_positions)),
@@ -9069,9 +9204,90 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     }
 
 
+#: How far (staff spaces) a stem row's centre may stand from the head's edge on
+#: the stem's own side and still be THE pair's stem (a stem stands on the head's
+#: edge, half a head width from its centre).
+STACKED_HOLLOW_STEM_EDGE_TOL_SPACES = 0.5
+
+
+def _stacked_pair_stem(stems: Sequence[Tuple[float, float, float, float]],
+                       cx: float, spacing: float,
+                       outer_top: float, outer_bot: float
+                       ) -> Optional[Tuple[float, float, float, float]]:
+    """ROADMAP 2.132 -- the stem row that is THIS pair's: of the cell's own
+    `Q.STEM` rows, the ones that reach both heads (their y-range covers the middle
+    third of the pair's outer span) and stand nearest EITHER edge of the heads
+    (half a head width from the centre). `None` where none stands within
+    `STACKED_HOLLOW_STEM_EDGE_TOL_SPACES`: no stem, declined.
+
+    ⚠️ Not the group's first overlapping row, and not the group's `side`: on a busy
+    Litolff cell a wide box overlaps a NEIGHBOUR's stem first (Litolff p3
+    `glyph/3/0/1/5`: the first row is the next note's stem, 235 tall, and the
+    group's side is read off it; the pair's own, 521 tall, is its `rival`), and
+    the extension read off the wrong stem refused real pairs."""
+    half_w = STANDARD_HEAD_WIDTH_SPACES * spacing / 2.0
+    span = outer_bot - outer_top
+    lo, hi = outer_top + span / 3.0, outer_bot - span / 3.0
+    best = None
+    for st in stems:
+        if st[1] > lo or st[1] + st[3] < hi:
+            continue
+        mid = st[0] + st[2] / 2.0
+        d = min(abs(mid - (cx - half_w)), abs(mid - (cx + half_w)))
+        if d <= STACKED_HOLLOW_STEM_EDGE_TOL_SPACES * spacing \
+                and (best is None or d < best[0]):
+            best = (d, st)
+    return best[1] if best else None
+
+
+def _hollow_pair_from_page(pws: Any, cell: Any, cx: float, top_y: float,
+                           half_step: float, spacing: float,
+                           stems: Sequence[Tuple[float, float, float, float]],
+                           cands: Sequence[int]) -> Dict[str, Any]:
+    """ROADMAP 2.132 -- `fit_hollow_stacked_pair` wired to the PAGE raster and
+    this group's stem. Canonical cell frame in, page frame for the ink
+    (`bbox_page_px` + `upscale_factor`, the map `_page_box` uses); the stem
+    extension stays in the cell frame, where `Q.STEM` is filed. Declined (a
+    refusal that says so), never read from the cell, where the page raster or its
+    mapping is missing."""
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    bbox = getattr(cell, "bbox_page_px", None)
+    up = getattr(cell, "upscale_factor", None)
+    if (page_binary is None or getattr(page_binary, "ndim", 0) != 2
+            or not bbox or not up or spacing <= 0):
+        return {"accepted": False, "positions": None, "margin": None,
+                "near_miss": {"hollow_pair": "no page raster"}}
+    sp_page = spacing / float(up)
+
+    def reader(p: int) -> Optional[Tuple[float, float]]:
+        px = bbox[0] + cx / float(up)
+        py = bbox[1] + (top_y + p * half_step) / float(up)
+        bx = _standard_head_box(px, py, sp_page)
+        m = notehead_ink_off_line(
+            page_binary, (bx[0], bx[2], bx[1] - bx[0], bx[3] - bx[2]), sp_page)
+        if m is None:
+            return None
+        w = m["windows"]
+        if w.get("center") is None or w.get("ring") is None:
+            return None
+        return (w["center"], w["ring"])
+
+    def stem_ext(p: int) -> Optional[float]:
+        outer_top = top_y + p * half_step - 0.5 * STANDARD_HEAD_HEIGHT_SPACES * spacing
+        outer_bot = top_y + (p + 2) * half_step + 0.5 * STANDARD_HEAD_HEIGHT_SPACES * spacing
+        stem = _stacked_pair_stem(stems, cx, spacing, outer_top, outer_bot)
+        if stem is None:
+            return None
+        return max((outer_top - stem[1]) / spacing,
+                   (stem[1] + stem[3] - outer_bot) / spacing)
+
+    return fit_hollow_stacked_pair(reader, cands, stem_ext)
+
+
 def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                             local: Dict[int, Tuple[int, int]],
-                            detections: Dict[str, List[Any]]) -> None:
+                            detections: Dict[str, List[Any]],
+                            pws: Any = None) -> None:
     """`Q.STACKED_HEAD_FIT` -- ROADMAP 2.42. GATHER's half only: how many
     heads does a stem's own overlapping-box GROUP hold, and where -- never a
     keep/refuse decision (`notehead_precision._stacked_head_duplicate_
@@ -9120,6 +9336,12 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
         # reverse import would be a cycle -- `notehead_precision` already
         # imports THIS module inline).
         groups: Dict[Tuple[str, str], List[int]] = {}
+        stem_xywh_of: Dict[str, Tuple[float, float, float, float]] = {}
+        all_stems: List[Tuple[float, float, float, float]] = []
+        for _sr in stem_rows:
+            _row = _stacked_stem_xywh(_sr.value)
+            if _row is not None:
+                all_stems.append(_row)
         for gi in nh_idx:
             d = dets[gi]
             box_xywh = (float(d.x_canonical), float(d.y_canonical),
@@ -9135,6 +9357,7 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
             sr, srow = my_stem
             side = _stacked_side(srow, box_xywh)
             groups.setdefault((sr.id, side), []).append(gi)
+            stem_xywh_of[sr.id] = srow
 
         for (stem_id, side), members in groups.items():
             if len(members) < 2:
@@ -9167,10 +9390,20 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                             _sp=spacing):
                     return stacked_blob_height_spaces(
                         _img, _cx, _top + (pos[0] + pos[1]) / 2.0 * _hs, _sp)
+            hollow_fn = None
+            # ⚠️ ROADMAP 2.132 -- a HOLLOW group (a half/whole class among its
+            # boxes), flag `OMR_STACKED_HOLLOW_PAIR`, default OFF. Read off the
+            # PAGE raster (the cell's own raster is the page slice resized, and
+            # the page is the print), the stem from this cell's own `Q.STEM` row.
+            if (stacked_hollow_pair_enabled() and not filled_group):
+                def hollow_fn(cands, _c=c, _cx=cx, _top=top_y, _hs=half_step,
+                              _sp=spacing, _stems=list(all_stems), _pws=pws):
+                    return _hollow_pair_from_page(
+                        _pws, _c, _cx, _top, _hs, _sp, _stems, cands)
             fit = fit_stacked_head_count(
                 img, cx, list(range(lo, hi + 1)), top_y, half_step, spacing,
                 len(members), observed=positions_seen,
-                blob_height_fn=blob_fn)
+                blob_height_fn=blob_fn, hollow_pair_fn=hollow_fn)
             if fit is None:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
@@ -13641,7 +13874,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # quantity is filed at each box's OWN centre, never at a candidate
         # SLOT a stacked fit is testing, which is a different position this
         # rule must score for itself).
-        gather_stacked_head_fit(log, cells, local, detections)
+        gather_stacked_head_fit(log, cells, local, detections, pws=pws)
         # ⚠️ ROADMAP 2.49, BESIDE `gather_stacked_head_fit` for the same
         # reason it sits beside `gather_notehead_ink`: the sibling witness
         # for a tremolo slash boxed as a notehead, reading the SAME erased
