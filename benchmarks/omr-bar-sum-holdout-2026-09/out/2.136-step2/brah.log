@@ -1,0 +1,8 @@
+[  115.6s] log built: 419691 verdicts as written, frozen
+[  122.0s] 6685 cells
+[  125.7s] flag=0: done
+[  193.8s] flag=1: done
+[  193.8s] OFF {'cells_with_a_narrowed_head': 1168, 'bars_with_a_settled_head': 0, 'bars_fully_released': 0, 'notes_settled': 0, 'declines': {'heads_not_this_staffs_own': 10, 'simultaneous_heads_not_grouped': 64, 'bar_does_not_add_up': 2, 'meter_not_from_the_print': 656, 'chord_not_on_one_decided_stem': 1, 'no_decided_meter': 434, 'tuplet_in_bar': 1}}
+[  193.8s] ON  {'cells_with_a_narrowed_head': 1168, 'bars_with_a_settled_head': 196, 'bars_fully_released': 196, 'notes_settled': 419, 'declines': {None: 349, 'chord_not_on_one_decided_stem': 33, 'event_members_admit_different_lengths': 39, 'bar_does_not_add_up': 188, 'simultaneous_heads_not_grouped': 64, 'meter_not_from_the_print': 8, 'heads_not_this_staffs_own': 16, 'event_mixes_decided_and_narrowed': 25, 'decided_neighbour_rests_on_the_narrowing': 11, 'no_decided_meter': 434, 'tuplet_in_bar': 1}}
+[  193.8s] ON adds 419 notes in 196 bars; changed-from-OFF: 0
+[  413.8s] admitted 419 verdicts (skipped 0)

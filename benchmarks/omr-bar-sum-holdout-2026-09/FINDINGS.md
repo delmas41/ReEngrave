@@ -3844,3 +3844,93 @@ would write (each head takes its unbeamed candidate), including tiles 8 and 10, 
 eighths that are sixteenths, a missed second beam level. That is a wrong value written plain, so it goes to the
 beam-level readers (2.126's family). Caveat: these are pairs on Brahms only, with carried meters; n=10; pairs compared
 as multisets, order not compared.
+
+
+## 2.136 step 2 -- the two wiring connections, behind `OMR_INFER_CARRIED_METER_FIX` (default OFF) (2026-10-15)
+
+PATH: STAGED INFER (`inferences.solve_bare_stem_bar(any_reason=True)`, rule `collapse_narrowed_by_bar`, flag `OMR_NARROWED_BAR`, ON).
+`lane-2.136-step2` off `origin/main` with `lane-2.136-reconcile` merged (step 1, the probe, Sean's answers). Sean said yes to step 2 on
+2026-10-15 after 10 of 10 refused pairs held exactly the joint landing in which each head takes its UNBEAMED candidate (2.136g).
+
+### 2.136-2a. What was built (fenced by function name)
+
+One new flag `OMR_INFER_CARRIED_METER_FIX`, default OFF (allow-list: only 1/true/yes/on; a typo leaves it OFF), row in `docs/flags-2026-09.md`
+marked pending Sean's tiles. It switches two connections, nothing else:
+- **W1** `inferences._printed_meter_roots`: a CARRIED meter is compared with the segment in force at the END of the source system
+  (`segments[-1]`), not its opening segment. A carry that really changed still returns None (tested both ways, including the mirror case
+  that main wrongly ACCEPTS: a source that opens 6/8 and ends 9/8 carried as 6/8).
+- **W2** `consequences._bar_heads_are_clean`, new keyword `ledger_owner_aware` (default False; only INFER's rule passes it, from the flag): the
+  off-staff clause stands down for a head whose `Q.GLYPH_OWNER` is DECIDED and names THIS staff. The duplicate-box and another-staff-same-ink
+  clauses are untouched; an abstained, absent or other-staff owner still fails it (an other-staff owner takes the head out of the bar entirely).
+  `reconcile_duration` (EVALUATE) still calls the helper without the keyword, so its one-note bound and behaviour are unchanged; the fence said
+  not to edit consequences.py, and the helper is the one named function in it that had to change (the keyword is the whole edit, no
+  `reconcile_duration` line touched).
+Nothing else changed: GUESSED (an INFER collapse, blue, both candidates carried forward), the reader's own candidates only, no eighth without a
+flag or beam candidate (`_shortens_without_evidence`), no `support`, only where every landing agrees, 2.80 ink witness, 2.102 tuplet decline.
+
+Tests `tools/omr/tests/test_staged_carried_meter_fix_2_136.py` (19). With the two logic edits reverted and the flag constant kept, 5 fail
+(W1 settle, W1 default-OFF/typo, W1 changed-carry, W2 settle, a flagged eighth) and the other 14 pass (the OFF controls and the refusals, which
+is what they must do on main). Kept refused with the flag ON: the 2.80 Contrabass shape (unexplained ink plus a lengthening), 2.97's refused
+single (1 + 1.5 + x = 3 needs an eighth; the stem has no flag or beam), two different landings, a tuplet marker, a decided neighbour never
+overturned, an ABSTAINED / absent / other-staff owner, a head boxed twice, a head the neighbour staff also boxed.
+
+### 2.136-2b. What it settles on the saved records (in process, `probe/step2_2_136.py`)
+
+The 20261014-night records, loaded once each via `record_io.load_record`, GATHER rows rebuilt and the record's OWN verdicts inserted as written,
+frozen (step 1's way: not a re-decide, so no tree drift). For every cell the rule's own function ran with the flag OFF and with it ON; the ON
+proposals were then admitted through INFER's own `_admit` (419 + 40 admitted, 0 skipped). Every admitted verdict is `infer:collapse_narrowed_by_bar`,
+`inferred: true`, two candidates carried; each shorter-than-quarter value (Brahms 7 eighths, 1 dotted eighth and 2 sixteenths, Litolff 6 eighths and 2
+sixteenths) carries eighth evidence (`beam_levels_certain/possible`, `beam_joined_to_stem`, `flag_read_on_stem`); no bare stem was shortened.
+
+| | cells with a narrowed head | OFF: bars released / notes settled | ON: bars released / notes settled |
+|---|--:|--:|--:|
+| Litolff mvt 1 | 210 | 0 / 0 | **19 / 40** |
+| Brahms 1 mvt 1 | 1,168 | 0 / 0 | **196 / 419** |
+
+"Released" = every narrowed head of the bar settled (on both records every bar the rule settled at all was settled whole). OFF settles nothing:
+the record's tree already ran the rule and these bars are the ones it declined. Changed-from-OFF: 0 (the fix only adds).
+- Brahms values (value, beam levels): dotted quarter 267, quarter 142, eighth 7, dotted eighth 1, sixteenth 2. Freed from `meter_not_from_the_print`
+  411 notes (W1), from `heads_not_this_staffs_own` 8 (W2). The OFF decline `meter_not_from_the_print` falls from 656 bars to 8; `heads_not_this_staffs_own` 10 to 16.
+- Litolff values: quarter 32, eighth 6, sixteenth 2; all 40 freed from `heads_not_this_staffs_own` (W2 only, no carried segment change on that plate).
+  Sean has seen NO Litolff bar under W2: that is the unproven half (tiles 6, 9, 10 below).
+- This is wider than step 1's 46 Brahms bars: step 1 counted only the 179 evidenced N bars of 2.134; the rule also settles single-head bars and
+  every other narrowed bar the carried meter had hidden. A count of what the code writes, not a claim that it is right.
+
+Sean's 10 refused bars (`probe/summarise_step2_2_136.py`): **8 of 10 settle, each to exactly his values** (tiles 1, 2, 5, 6, 7, 9, 11, 12:
+`4`+`dot4` or `4`+`4`). Tiles 8 and 10 stay REFUSED with the flag ON (their missed-rest ink witness reads unexplained ink and the lengthening
+needs it clear); Sean's values on them agree with the unbeamed landing, so refusing them is safe and costs two settlements, not a wrong value.
+**Control tile 4** (Brahms p18, two decided eighths that are sixteenths) is NOT changed: its heads are DECIDED, not narrowed, so the rule has no
+member there (no row, 0 admitted verdicts on its glyphs); the wrong decided value is the beam-level readers' (2.126 family), not this rule's.
+Control tile 3 is likewise untouched.
+
+### 2.136-2c. `judged score ... --doc brahms`, OFF versus ON
+
+Run on a small stand-in record (`probe/judged_overlay_2_136.py`: the record's own observations and verdicts for every subject the judged index
+names, ON = plus the 7 admitted verdicts on judged subjects, each superseding its prior). Control: the OFF stand-in scores 70 right / 10 wrong /
+18 narrowed / 1 abstained, the same as step 1's score on the full 6.8 GB record (`out/2.136/judged-brah.txt`).
+
+| | right | wrong | narrowed | abstained |
+|---|--:|--:|--:|--:|
+| OFF | 70 | 10 | 18 | 1 |
+| ON | **75** | 10 | 13 | 1 |
+
+5 narrowed items become right (2.81-review control_2, tile_13, tile_17, tile_19, tile_28), 0 right lost, 0 new wrong. (Index not rebuilt: it
+does not yet hold step 1's 12 tiles.) Outputs `out/2.136-step2/` (`*.json`, `*.new_verdicts.json`, `summary.txt`, `judged-brah.{off,on}.txt`).
+
+### 2.136-2d. Blind tiles for Sean (`out/print/2.136-step2-review/`, 12 tiles, key hidden)
+
+Cut the 2.134/2.136 way (600 dpi, 900 px, big tile number, RED corners = the bar, BLUE corners = each note asked about, nothing of ours drawn),
+script `probe/tiles_step2_2_136.py`. 10 bars the flag settles that Sean has NOT seen (excluded: every cell of 2.136-review): 7 Brahms (4 freed by
+W1, 3 by W2) and 3 Litolff (W2), spread over pages; 2 controls (two decided eighths, two decided quarters, Brahms). Blue boxes are 1 to 3 notes
+a tile, so the question asks for each note left to right and allows a sixteenth. The key is `out/2.136-step2/tiles-key.json` (what the fix
+writes, which fault freed the bar, the controls' readings), NOT beside the tiles. Frame control as in 2.136 (staff lines >= 2x the gap ink AND
+the half-space-shifted test must fail): three candidates were refused by it and replaced. Shuffled (seed 21362). Not judged by the lane (rule 7).
+Two tiles carry sixteenths the fix would settle (Brahms tile 2, Litolff tile 6) and two carry an eighth with evidence (Brahms 1, Litolff 10): the
+evidence-backed shortening is the part step 1 could not test. Tiles 1 and 6 are crowded (a chord on ledger lines; a narrow Litolff bar).
+
+### 2.136-2e. Limits
+
+Brahms Breitkopf and Beethoven Litolff, mvt 1 each, one night's records; not a re-decide of the whole pipeline. W1 is evidenced on Brahms only (its
+carried 6/8 after a 9/8 system); W2 is evidenced on Brahms by step 1's 12 tiles but on Litolff by nothing the print has shown. The owner verdicts W2
+trusts are ADJUDICATE's, and `judged score` has no item on a ledger owner. The flag stays OFF until Sean has seen these tiles. Fast tier
+`pytest -m "not slow" tools/omr/tests`: 8069 passed, 12 skipped, 2 xfailed; `staged.check` TOTAL open = 192.

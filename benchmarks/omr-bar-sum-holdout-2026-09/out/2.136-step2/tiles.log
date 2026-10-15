@@ -1,0 +1,6 @@
+control pool eighths 66
+control pool quarters 71
+frame control REFUSED brah (1, 1, 10, 6) {'ratio': 0.17, 'passes': False} {'ratio': 4.83, 'passes': True}
+frame control REFUSED lit (16, 0, 1, 2) {'ratio': 0.16, 'passes': False} {'ratio': 8.92, 'passes': True}
+frame control REFUSED brah (6, 0, 3, 6) {'ratio': 0.96, 'passes': False} {'ratio': 1.51, 'passes': False}
+wrote 12 tiles; {'brah_W1': 4, 'brah_W2': 3, 'lit_any': 3, 'control': 2} -> out/print/2.136-step2-review key benchmarks/omr-bar-sum-holdout-2026-09/out/2.136-step2/tiles-key.json

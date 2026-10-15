@@ -1140,7 +1140,8 @@ def _bar_has_tuplet(log: Log, subject: Subject, notes=()) -> bool:
     return False
 
 
-def _bar_heads_are_clean(log: Log, subject: Subject, notes) -> bool:
+def _bar_heads_are_clean(log: Log, subject: Subject, notes,
+                         ledger_owner_aware: bool = False) -> bool:
     """Is every kept notehead of this bar ONE head on THIS staff's own lines?
     ROADMAP 2.97, found on the blind tiles: a bar summed from a head boxed
     twice, from a head another staff also boxed, or from a head standing
@@ -1148,8 +1149,16 @@ def _bar_heads_are_clean(log: Log, subject: Subject, notes) -> bool:
     exact landing through it is a confident wrong answer. False -- never
     "True by default" (rule 8) -- if any head fails; True where nothing is
     wrong OR where there is no geometry to ask (then nothing is claimed
-    either way, and the other conditions stand)."""
+    either way, and the other conditions stand).
+
+    ROADMAP 2.136 W2 (`ledger_owner_aware`, passed only by INFER's bar rule behind
+    `OMR_INFER_CARRIED_METER_FIX`, default OFF): a head beyond the staff whose
+    `Q.GLYPH_OWNER` is DECIDED and names THIS staff is this staff's own (the ledger
+    lines name the owner, CLAUDE.md section 5). Only the off-staff clause stands
+    down for it; the duplicate-box and another-staff-same-ink clauses are untouched,
+    and an abstained, narrowed or other-staff owner still fails it."""
     cell = subject.at(Kind.CELL)
+    own_staff = subject.at(Kind.STAFF).to_key()
     boxes = []
     for v in notes:
         if _is_rest(v):
@@ -1169,7 +1178,10 @@ def _bar_heads_are_clean(log: Log, subject: Subject, notes) -> bool:
             cy = (b[1] + b[3]) / 2.0
             if sp > 0 and (cy < ln[0] - CLEAN_HEAD_OFF_STAFF_SPACES * sp
                            or cy > ln[-1] + CLEAN_HEAD_OFF_STAFF_SPACES * sp):
-                return False            # not on this staff's own lines
+                own = log.verdict(Q.GLYPH_OWNER, s_) if ledger_owner_aware else None
+                if not (own is not None and own.outcome is Outcome.DECIDED
+                        and str(own.value) == own_staff):
+                    return False        # not on this staff's own lines
     if boxes:
         for r in log.rows(Q.GLYPH_BOX, subject.at(Kind.SYSTEM),
                           scope=Scope.SELF_AND_DESCENDANTS):

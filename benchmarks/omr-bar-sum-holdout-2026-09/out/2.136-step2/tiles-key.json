@@ -1,0 +1,661 @@
+{
+ "question_note": "hidden key; Sean's tiles carry no key",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "brah",
+   "cell": [
+    0,
+    0,
+    0,
+    4
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W2",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/0/0/0/4/2": [
+      0.5,
+      1
+     ],
+     "glyph/0/0/0/4/9": [
+      0.5,
+      1
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     3870.7,
+     1487.8,
+     3912.0,
+     1524.8
+    ],
+    [
+     3869.7,
+     1523.2,
+     3912.0,
+     1559.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 36.63,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3474,
+    1438,
+    4187,
+    1858
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "brah",
+   "cell": [
+    17,
+    1,
+    10,
+    1
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W1",
+    "cause_freed_by": "W1",
+    "was_declined_flag_off": "meter_not_from_the_print",
+    "settled_to_beats_beamlevels": {
+     "glyph/17/1/10/1/7": [
+      0.25,
+      2
+     ],
+     "glyph/17/1/10/1/11": [
+      0.25,
+      2
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     2115.0,
+     6404.3,
+     2152.5,
+     6436.7
+    ],
+    [
+     2281.0,
+     6380.8,
+     2318.2,
+     6414.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 4.36,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.31,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1664,
+    6152,
+    2602,
+    6512
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "brah",
+   "cell": [
+    23,
+    0,
+    9,
+    7
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W1",
+    "cause_freed_by": "W1",
+    "was_declined_flag_off": "meter_not_from_the_print",
+    "settled_to_beats_beamlevels": {
+     "glyph/23/0/9/7/8": [
+      1.0,
+      0
+     ],
+     "glyph/23/0/9/7/5": [
+      1.0,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     4115.1,
+     2875.0,
+     4152.7,
+     2901.7
+    ],
+    [
+     4372.6,
+     2799.3,
+     4409.1,
+     2833.6
+    ]
+   ],
+   "frame_control": {
+    "ratio": 9.25,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.09,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4001,
+    2721,
+    4680,
+    3075
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "brah",
+   "cell": [
+    9,
+    0,
+    6,
+    5
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W1",
+    "cause_freed_by": "W1",
+    "was_declined_flag_off": "meter_not_from_the_print",
+    "settled_to_beats_beamlevels": {
+     "glyph/9/0/6/5/6": [
+      1.0,
+      0
+     ],
+     "glyph/9/0/6/5/8": [
+      1.0,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     3324.8,
+     2008.3,
+     3364.0,
+     2035.1
+    ],
+    [
+     3325.1,
+     1978.6,
+     3364.5,
+     2010.3
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.14,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3215,
+    1858,
+    3941,
+    2215
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "cell": [
+    16,
+    0,
+    9,
+    6
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W1",
+    "cause_freed_by": "W1",
+    "was_declined_flag_off": "meter_not_from_the_print",
+    "settled_to_beats_beamlevels": {
+     "glyph/16/0/9/6/1": [
+      1.5,
+      0
+     ],
+     "glyph/16/0/9/6/0": [
+      1.5,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     3206.5,
+     2509.3,
+     3244.7,
+     2540.3
+    ],
+    [
+     3354.2,
+     2496.7,
+     3392.4,
+     2530.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 11.18,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.07,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3099,
+    2389,
+    3607,
+    2743
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "lit",
+   "cell": [
+    5,
+    0,
+    0,
+    6
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "any",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/5/0/0/6/1": [
+      0.25,
+      2
+     ],
+     "glyph/5/0/0/6/4": [
+      0.25,
+      2
+     ],
+     "glyph/5/0/0/6/0": [
+      1.0,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     1373.6,
+     427.8,
+     1395.2,
+     450.5
+    ],
+    [
+     1398.9,
+     426.7,
+     1419.2,
+     445.6
+    ],
+    [
+     1424.6,
+     427.6,
+     1447.5,
+     447.6
+    ]
+   ],
+   "frame_control": {
+    "ratio": 10.21,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1287,
+    395,
+    1511,
+    603
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "brah",
+   "cell": [
+    0,
+    0,
+    0,
+    2
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W2",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/0/0/0/2/4": [
+      1.5,
+      0
+     ],
+     "glyph/0/0/0/2/5": [
+      1.5,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     2877.1,
+     1470.3,
+     2922.9,
+     1505.8
+    ],
+    [
+     2878.4,
+     1503.6,
+     2919.6,
+     1541.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 14.77,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2591,
+    1438,
+    3181,
+    1858
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "brah",
+   "cell": [
+    5,
+    1,
+    3,
+    8
+   ],
+   "role": "control_decided_pair",
+   "key": {
+    "our_reading_beats_beamlevels_dots": [
+     0.5,
+     1,
+     0
+    ],
+    "what": "two decided eighths"
+   },
+   "blue_boxes_px": [
+    [
+     4604.6,
+     4694.8,
+     4644.1,
+     4726.6
+    ],
+    [
+     4813.3,
+     4709.5,
+     4853.7,
+     4741.9
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.5,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4505,
+    4605,
+    5082,
+    4959
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "lit",
+   "cell": [
+    7,
+    1,
+    9,
+    3
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "any",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/7/1/9/3/8": [
+      1.0,
+      0
+     ],
+     "glyph/7/1/9/3/3": [
+      1.0,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     865.7,
+     3345.6,
+     892.4,
+     3366.3
+    ],
+    [
+     917.0,
+     3362.4,
+     941.0,
+     3383.4
+    ]
+   ],
+   "frame_control": {
+    "ratio": 7.48,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    790,
+    3329,
+    1031,
+    3537
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "lit",
+   "cell": [
+    3,
+    1,
+    0,
+    8
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "any",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/3/1/0/8/4": [
+      1.0,
+      0
+     ],
+     "glyph/3/1/0/8/1": [
+      0.5,
+      1
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     1517.1,
+     2381.1,
+     1537.7,
+     2392.2
+    ],
+    [
+     1540.1,
+     2275.1,
+     1563.9,
+     2294.7
+    ]
+   ],
+   "frame_control": {
+    "ratio": 107268627.45,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1425,
+    2246,
+    1651,
+    2450
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "brah",
+   "cell": [
+    12,
+    0,
+    9,
+    11
+   ],
+   "role": "control_decided_pair",
+   "key": {
+    "our_reading_beats_beamlevels_dots": [
+     1.0,
+     0,
+     0
+    ],
+    "what": "two decided quarters"
+   },
+   "blue_boxes_px": [
+    [
+     4355.1,
+     2669.8,
+     4392.3,
+     2703.9
+    ],
+    [
+     4353.8,
+     2601.5,
+     4393.7,
+     2636.2
+    ]
+   ],
+   "frame_control": {
+    "ratio": 4.78,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4214,
+    2413,
+    4703,
+    2773
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "brah",
+   "cell": [
+    0,
+    0,
+    12,
+    3
+   ],
+   "role": "settled_bar",
+   "key": {
+    "slot": "W2",
+    "cause_freed_by": "W2",
+    "was_declined_flag_off": "heads_not_this_staffs_own",
+    "settled_to_beats_beamlevels": {
+     "glyph/0/0/12/3/1": [
+      1.0,
+      0
+     ],
+     "glyph/0/0/12/3/2": [
+      1.0,
+      0
+     ]
+    }
+   },
+   "blue_boxes_px": [
+    [
+     3143.2,
+     6324.2,
+     3184.2,
+     6361.6
+    ],
+    [
+     3321.8,
+     6311.0,
+     3364.4,
+     6349.1
+    ]
+   ],
+   "frame_control": {
+    "ratio": 16.68,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3021,
+    6248,
+    3634,
+    6664
+   ]
+  }
+ ]
+}

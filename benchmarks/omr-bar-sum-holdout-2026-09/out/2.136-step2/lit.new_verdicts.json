@@ -1,0 +1,2120 @@
+[
+ {
+  "id": "vrd:340917",
+  "subject": "glyph/3/1/0/8/4",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "head_fill": "black"
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:429399",
+  "candidates": [
+   {
+    "value": {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "half"
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "black"
+    },
+    "support": 1.0
+   },
+   {
+    "value": {
+     "beats": 4.0,
+     "written": 4.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "whole"
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340918",
+  "subject": "glyph/3/1/0/8/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:429397",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340919",
+  "subject": "glyph/4/1/3/5/3",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430327",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340920",
+  "subject": "glyph/4/1/3/5/7",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430329",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340921",
+  "subject": "glyph/4/1/3/5/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430326",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340922",
+  "subject": "glyph/4/1/3/5/4",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430328",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340923",
+  "subject": "glyph/5/0/0/1/8",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430709",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340924",
+  "subject": "glyph/5/0/0/1/9",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430710",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340925",
+  "subject": "glyph/5/0/0/1/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430706",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340926",
+  "subject": "glyph/5/0/0/6/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.25,
+   "written": 0.25,
+   "dots": 0,
+   "beam_levels": 2
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430726",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.25,
+     "written": 0.25,
+     "dots": 0,
+     "beam_levels": 2
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_certain",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340927",
+  "subject": "glyph/5/0/0/6/4",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.25,
+   "written": 0.25,
+   "dots": 0,
+   "beam_levels": 2
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430727",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.25,
+     "written": 0.25,
+     "dots": 0,
+     "beam_levels": 2
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_certain",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340928",
+  "subject": "glyph/5/0/0/6/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:430725",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   },
+   {
+    "value": {
+     "beats": 0.25,
+     "written": 0.25,
+     "dots": 0,
+     "beam_levels": 2
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 3,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": true,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340929",
+  "subject": "glyph/6/0/5/6/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:431555",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340930",
+  "subject": "glyph/6/0/5/6/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:431556",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340931",
+  "subject": "glyph/7/0/3/12/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:432602",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340932",
+  "subject": "glyph/7/0/3/12/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:432601",
+  "candidates": [
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": null,
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": [
+    "beam_joined_to_stem",
+    "beam_levels_possible"
+   ],
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340933",
+  "subject": "glyph/7/1/9/3/8",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:433311",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340934",
+  "subject": "glyph/7/1/9/3/3",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:433308",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340935",
+  "subject": "glyph/9/0/3/10/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:434358",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340936",
+  "subject": "glyph/9/0/3/10/6",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:434360",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340937",
+  "subject": "glyph/9/0/3/10/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:434357",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340938",
+  "subject": "glyph/9/0/3/10/4",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:434359",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340939",
+  "subject": "glyph/11/0/0/10/6",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:435823",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340940",
+  "subject": "glyph/11/0/0/16/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:435831",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340941",
+  "subject": "glyph/12/0/1/9/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:436447",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340942",
+  "subject": "glyph/12/0/1/9/8",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:436450",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340943",
+  "subject": "glyph/15/0/0/10/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:439744",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340944",
+  "subject": "glyph/15/0/0/10/3",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:439747",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340945",
+  "subject": "glyph/15/0/8/17/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440204",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340946",
+  "subject": "glyph/15/1/0/14/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440350",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340947",
+  "subject": "glyph/15/1/0/14/5",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440354",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340948",
+  "subject": "glyph/15/1/0/14/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440352",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340949",
+  "subject": "glyph/15/1/0/14/6",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440355",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 2,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340950",
+  "subject": "glyph/15/1/1/2/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440387",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340951",
+  "subject": "glyph/15/1/1/2/7",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440390",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340952",
+  "subject": "glyph/15/1/3/7/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440559",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340953",
+  "subject": "glyph/15/1/3/7/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:440560",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340954",
+  "subject": "glyph/16/0/1/2/2",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:441046",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340955",
+  "subject": "glyph/16/1/5/9/1",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:441783",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ },
+ {
+  "id": "vrd:340956",
+  "subject": "glyph/16/1/5/10/0",
+  "quantity": "duration",
+  "outcome": "decided",
+  "value": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "decider": "infer:collapse_narrowed_by_bar",
+  "reason": "the_bars_arithmetic_forces_this_length",
+  "margin": null,
+  "supersedes": "vrd:441786",
+  "candidates": [
+   {
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    },
+    "support": 2.0
+   },
+   {
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "support": 1.0
+   }
+  ],
+  "detail": {
+   "expected_beats": 2.0,
+   "bar_landings": 1,
+   "bar_unknown_events": 1,
+   "bare_stem_likelihood": "not_claimed",
+   "chosen_candidate_support": 1.0,
+   "was_readers_top_candidate": false,
+   "reads_meter": true,
+   "eighth_evidence": null,
+   "inferred": true,
+   "rule": "collapse_narrowed_by_bar",
+   "sideways": false,
+   "prior_outcome": "narrowed",
+   "n_witnesses": 0,
+   "n_independent_witnesses": 0
+  }
+ }
+]
