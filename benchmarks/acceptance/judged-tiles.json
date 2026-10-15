@@ -1,6 +1,6 @@
 {
- "n_items": 63,
- "n_tiles": 776,
+ "n_items": 64,
+ "n_tiles": 790,
  "tiles": [
   {
    "answer": "right",
@@ -6453,6 +6453,300 @@
    "subject_kind": "none",
    "subjects": null,
    "tile": "8",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 93, \"part\": \"P3\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 1, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    3602.0,
+    4370.0,
+    4224.0,
+    4727.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/5/1/2/6",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "1",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"eighth\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 102, \"part\": \"P14\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 0.5, \"system_meter\": \"decided\"}, \"n\": 10, \"role\": \"narrowed_head\", \"sean_answer\": \"eighth\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    3380.0,
+    3385.0,
+    4097.0,
+    3753.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/6/0/11/5",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "10",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 315, \"part\": \"P1\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 11, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    4989.0,
+    405.0,
+    5576.0,
+    762.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/16/0/0/11",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "11",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 81, \"part\": \"P11\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 12, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    1962.0,
+    2710.0,
+    2647.0,
+    3061.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/5/0/10/2",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "12",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 274, \"part\": \"P10\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 13, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    586.0,
+    5887.0,
+    1532.0,
+    6244.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/14/1/7/0",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "13",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 286, \"part\": \"P12\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 14, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    2469.0,
+    2663.0,
+    3120.0,
+    3017.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/15/0/9/3",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "14",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 288, \"our_reading\": \"quarter dots 1\", \"part\": \"P12\", \"what\": \"a dotted quarter, no beam over it\"}, \"n\": 2, \"our_reading\": \"dotted quarter\", \"role\": \"control_decided_head\", \"sean_answer\": \"dotted quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    3499.0,
+    2663.0,
+    4158.0,
+    3017.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/15/0/9/5",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "2",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 269, \"our_reading\": \"quarter dots 0\", \"part\": \"P2\", \"what\": \"a plain quarter, no beam over it\"}, \"n\": 3, \"our_reading\": \"quarter\", \"role\": \"control_decided_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    1487.0,
+    2305.0,
+    1839.0,
+    2509.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/9/1/1/6",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "3",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 506, \"part\": \"P10\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 4, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    2786.0,
+    5847.0,
+    3411.0,
+    6207.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/26/1/8/4",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "4",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 364, \"part\": \"P5\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 5, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    1264.0,
+    4989.0,
+    1823.0,
+    5346.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/19/1/4/1",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "5",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 286, \"our_reading\": \"eighth dots 0\", \"part\": \"P13\", \"what\": \"a beamed eighth the beam reader READ\"}, \"n\": 6, \"our_reading\": \"eighth\", \"role\": \"control_decided_head\", \"sean_answer\": \"eighth\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    2469.0,
+    2895.0,
+    3120.0,
+    3252.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/15/0/10/3",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "6",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 2.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 263, \"part\": \"P1\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 7, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    307.0,
+    2152.0,
+    726.0,
+    2356.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/9/1/0/0",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "7",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 395, \"part\": \"P2\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 8, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    3293.0,
+    690.0,
+    3974.0,
+    1050.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/21/0/1/5",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "8",
+   "value": null
+  },
+  {
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 330, \"part\": \"P7\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 9, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.134-review",
+   "page_box": [
+    4462.0,
+    1688.0,
+    5589.0,
+    2045.0
+   ],
+   "question_kind": "unknown",
+   "subject": "cell/17/0/6/5",
+   "subject_kind": "cell",
+   "subjects": null,
+   "tile": "9",
    "value": null
   },
   {
