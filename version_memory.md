@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-14 -- ROADMAP 2.128 LANDED ON (the dot-to-head join reads the dot's staff position)
+STAGED ADJUDICATE, `OMR_DOT_POSITION_JOIN` default ON (`aug_dot_join.dot_position_join_enabled`; explicit `0/false/no/off` disables). Sean: "Yes"; check 193 -> 192; his 12 tiles 9/9 admitted dots right after the tile-1 boundary fix, controls right. C50 index row corrected to "above by default, below for the lower voice/lower note of a second". Tests: OFF controls set the env explicitly; RED-first default-ON class added.
+
 ## 2026-10-14 -- ROADMAP 2.122 + 2.123 LANDED (export ledger balances; bar lists keyed by page/system/cell + ordinal)
 STAGED EXPORT bookkeeping, `tools/omr/staged/export.py` + `regather_report.py`; MusicXML/.ly unchanged. 2.122: the 92 uncounted Brahms boxes were 2.80b eighth rests written, now counted as reinstated refusals (ledger 3,407). 2.123: held-out/partial/unread bar lists carry bar_key (page, system, cell) + file ordinal; repeated printed numbers stay distinct; exporter raises if a list names a bar twice. Sean: "Yes". `benchmarks/omr-export-ledger-2026-10/FINDINGS.md`.
 

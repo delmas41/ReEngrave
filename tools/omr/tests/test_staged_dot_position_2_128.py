@@ -286,7 +286,7 @@ class TestTheCaptureGapIsClosed(unittest.TestCase):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ADJUDICATE: the join may use the position (`OMR_DOT_POSITION_JOIN`, OFF)
+# ADJUDICATE: the join may use the position (`OMR_DOT_POSITION_JOIN`, default ON since 2026-10-14)
 #
 # The convention (docs/page-facts.md: a dot sits a space higher on a line
 # note): an augmentation dot stands in a SPACE -- its note's own space, or the
@@ -296,6 +296,7 @@ class TestTheCaptureGapIsClosed(unittest.TestCase):
 JOIN_SPACE = 16           # one staff space in the synthetic cell's frame
 HOME = R.staff(0, 0, 0)
 FLAG = {"OMR_DOT_POSITION_JOIN": "1"}
+OFF = {"OMR_DOT_POSITION_JOIN": "0"}
 
 
 def _jlog():
@@ -365,7 +366,7 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
             with mock.patch.dict(os.environ, env):
                 adjudicate.run(log)
             return log, head
-        log, head = run({})
+        log, head = run(OFF)
         self.assertEqual(_role(log, 1).value, "augmentation")   # CONTROL: OFF
         log, head = run(FLAG)
         self.assertNotEqual(_role(log, 1).value, "augmentation")
@@ -382,8 +383,8 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
             with mock.patch.dict(os.environ, env):
                 adjudicate.run(log)
             return log, head
-        log, head = run({})
-        self.assertEqual(_role(log, 1).outcome, Outcome.ABSTAINED)  # CONTROL
+        log, head = run(OFF)
+        self.assertEqual(_role(log, 1).outcome, Outcome.ABSTAINED)  # CONTROL: OFF
         log, head = run(FLAG)
         role = _role(log, 1)
         self.assertEqual(role.value, "augmentation")
@@ -465,8 +466,9 @@ class TestTheJoinReadsTheDotPosition(unittest.TestCase):
                 _head(lg, 0, 4.0)
             _dot(log_off, 1, x=112, y=4, pos=pos)
             _dot(log_none, 1, x=112, y=4, pos=None)
-            adjudicate.run(log_off)
-            adjudicate.run(log_none)
+            with mock.patch.dict(os.environ, OFF):
+                adjudicate.run(log_off)
+                adjudicate.run(log_none)
             self.assertEqual(_role(log_off, 1).value,
                              _role(log_none, 1).value, pos)
 
@@ -517,3 +519,30 @@ class TestTile1AReadingNearTheLineIsNotAVeto(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheJoinIsOnByDefault(unittest.TestCase):
+    """Landed ON (Sean, 2026-10-14: "Yes"): no env word means the position
+    join runs; only an explicit off word turns it off."""
+
+    def test_RED_default_is_on_and_off_words_turn_it_off(self):
+        from tools.omr.staged.adjudicators import aug_dot_join as J
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("OMR_DOT_POSITION_JOIN", None)
+            self.assertTrue(J.dot_position_join_enabled())
+        for w in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {"OMR_DOT_POSITION_JOIN": w}):
+                self.assertFalse(J.dot_position_join_enabled(), w)
+        for w in ("1", "true", "on", ""):
+            with mock.patch.dict(os.environ, {"OMR_DOT_POSITION_JOIN": w}):
+                self.assertTrue(J.dot_position_join_enabled(), w)
+
+    def test_RED_a_dot_below_a_line_note_is_admitted_with_no_env(self):
+        log = _jlog()
+        head = _head(log, 0, 4.0)
+        _dot(log, 1, x=112, y=12, pos=5.0)
+        with mock.patch.dict(os.environ, {}):
+            os.environ.pop("OMR_DOT_POSITION_JOIN", None)
+            adjudicate.run(log)
+        self.assertEqual(_role(log, 1).value, "augmentation")
+        self.assertEqual(log.verdict(Q.DURATION, head).value["dots"], 1)

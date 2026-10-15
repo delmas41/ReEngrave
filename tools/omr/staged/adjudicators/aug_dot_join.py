@@ -51,15 +51,14 @@ def aug_dot_join_enabled() -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 
 DOT_POSITION_JOIN_ENV = "OMR_DOT_POSITION_JOIN"
-_ON_WORDS = ("1", "true", "yes", "on")
+_OFF_WORDS = ("0", "false", "no", "off")
 
 
 def dot_position_join_enabled() -> bool:
-    """`OMR_DOT_POSITION_JOIN`, DEFAULT OFF (an allow-list: only an explicit
-    on word turns it on). Until Sean's blind tiles decide it, the join is the
-    box-geometry window alone."""
+    """`OMR_DOT_POSITION_JOIN`, DEFAULT ON (Sean, 2026-10-14: "Yes"; only an
+    explicit off word turns it off, back to the box-geometry window alone)."""
     return os.environ.get(DOT_POSITION_JOIN_ENV, "").strip().lower() \
-        in _ON_WORDS
+        not in _OFF_WORDS
 
 
 #: A dot is read as ON A LINE only within `DOT_LINE_BAND` half-steps of a line

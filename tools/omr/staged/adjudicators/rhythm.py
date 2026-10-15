@@ -2424,7 +2424,7 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
     home_best, home_score = None, float("inf")
     stacked = bool(keep_foreign and ctx is not None and ctx["stacked"])
-    # ⚠️ ROADMAP 2.128 (`OMR_DOT_POSITION_JOIN`, default OFF): the dot's and
+    # ⚠️ ROADMAP 2.128 (`OMR_DOT_POSITION_JOIN`, default ON): the dot's and
     # each head's STAFF POSITION, where both are known. See `_pos_verdicts`.
     pos_of = _pos_verdicts(ev, cell, home, all_keys) \
         if _aug_join.dot_position_join_enabled() else None

@@ -2178,7 +2178,7 @@ instead, so the ledger still accounts for every id an entry carries.
 | C47 | A dynamic WORD is a run of adjacent letters (`f`+`f` = `ff`) | *(same title)* | L57 |
 | C48 | A hairpin runs quiet → loud and travels with a dynamic letter | *(same title)* | kept standalone |
 | C49 | An ACCENT is note-anchored; a HAIRPIN is span-anchored | *(same title)* | kept standalone |
-| C50 | An augmentation dot sits at the note's own space — half a space ABOVE for a note on a line — and NEVER below | *(same title)* | L31 |
+| C50 | An augmentation dot ALWAYS stands in a space — the note's own space; above by default for a note on a line, below for the lower voice or the lower note of a second | *(same title)* | L31 |
 | C51 | A staccato or accent is printed directly above or below its notehead, on the side its class names | *A staccato or accent is printed on the notehead side, opposite the stem, and CENTRED on the head in x* | L58, L61 |
 | C52 | A FERMATA hangs over whatever sounds beneath it — which is often a whole-bar rest, not a note | *(same title)* | L62 |
 | C53 | A TUPLET digit stands OUTSIDE the staff over its beam; a TIME-SIGNATURE digit stands INSIDE it; a FINGERING sits beside its notehead | *(same title)* | kept standalone |

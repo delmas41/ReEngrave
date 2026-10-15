@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-14 · Sean · Land 2.128 ON: every dot carries its staff position (measured locally); the dot-to-head join uses it (a dot always stands in a space; above by default, below for the lower voice or the lower note of a second; a boundary reading never vetoes) · because the old window missed below-the-note dots and a gap in check (POSITION dot) needed closing · (benchmarks/omr-dot-position-2026-10/FINDINGS.md)
 - 2026-10-14 · Sean · An augmentation dot is ALWAYS in a space, never on a line (general scope); after a line note it goes in the space ABOVE by default and BELOW for the lower (stems-down) voice of two or the lower note of a second ("Yes" to the researched rule, PROVISIONAL for 19th-c. German plates); a dot a measurement puts near a line is not refused · because tile 1 of the 2.128 tiles (a dotted quarter) was vetoed by a dot read 0.31 steps off a line, and on his labelled Brahms p.0 all 61 line-note dots fit the rule (41 above; 19 "below" = 15 the lower partner's above-dot + 4 lower-voice) · (benchmarks/omr-dot-position-2026-10/FINDINGS.md, RESEARCH-dot-above-below.md; docs/page-facts.md)
 - 2026-10-14 · Sean · 2.128 tiles: all 9 admitted dots are dotted, controls right, the vetoed tile 1 is a dotted quarter ("3. No all the rest yes", "1 is a dotted 4") · because the position join is right on 9 of 9 and wrong on the one veto, which the line/space bands fix · (out/print/2.128-review/answers.json)
 
