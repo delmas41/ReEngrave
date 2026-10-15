@@ -1,0 +1,99 @@
+{
+ "date": "2026-10-15",
+ "verbatim": "2.126 1. 8 2.8 3.8 4.4 5.8 6-9. 8",
+ "tally": "9/9 agree",
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "control",
+   "what": "flagged eighth (hooks counted)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/0/0/11/6/14": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 2,
+   "role": "case",
+   "what": "q86+q93 chord (beam_certain_not_joined)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/0/0/0/4/2": 0.5,
+    "glyph/0/0/0/4/9": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 3,
+   "role": "control",
+   "what": "beamed eighth (beam read, joined)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/0/0/3/3/1": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 4,
+   "role": "control",
+   "what": "plain quarter, no beam, no flag",
+   "sean": "quarter",
+   "record_says": {
+    "glyph/0/0/9/4/2": 1.0
+   },
+   "agrees": true
+  },
+  {
+   "tile": 5,
+   "role": "case",
+   "what": "q1009 (flag_ink_unread)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/0/0/9/3/3": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 6,
+   "role": "case",
+   "what": "p6 sys0 staff9 cell4 (unjudged side effect: quarter -> eighth)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/6/0/9/4/0": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 7,
+   "role": "case",
+   "what": "p6 sys0 staff10 cell5 (unjudged side effect: quarter -> eighth)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/6/0/10/5/1": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 8,
+   "role": "case",
+   "what": "q110+q118 chord (no stem found)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/0/0/0/5/4": 0.5,
+    "glyph/0/0/0/5/12": 0.5
+   },
+   "agrees": true
+  },
+  {
+   "tile": 9,
+   "role": "case",
+   "what": "p6 sys0 staff11 cell5 bar 102 (flag missed)",
+   "sean": "eighth",
+   "record_says": {
+    "glyph/6/0/11/5/0": 0.5
+   },
+   "agrees": true
+  }
+ ]
+}

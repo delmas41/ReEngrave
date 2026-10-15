@@ -159,3 +159,6 @@ pages once per arm (4 gathers of 4-6 minutes), one at a time. Arm env: `OMR_STEM
   **8,057 passed, 11 skipped, 833 deselected, 2 xfailed** in 12:50.
 * `python3 -m tools.omr.staged.check`: **TOTAL open = 192** (= main; the new flags are read, the new detail keys are filed through a dict spread).
 * Raw outputs: `raw-2.126/` (both score reports, `truthdur.json`, the two judged reports, `casecheck.py`, `durdiff.py`).
+
+### 7.6 Sean's answers (2026-10-15, recorded `out/print/2.126-review/answers.json`)
+Verbatim: "2.126 1. 8 2.8 3.8 4.4 5.8 6-9. 8" (tiles 1-3, 5-9 eighth; tile 4 quarter). **9/9 agree with the record.** The 6 repaired cases are right (q86+q93, q110+q118, q1009, p6 bar 102); the 2 unjudged page-6 side effects (quarter -> eighth) are right; the 3 controls are right. Caveat: the q110/q118 stem cut (0.7) and the q1009 hook margin (0.02) were measured on single Brahms cells. Per CLAUDE.md section 4 ("a cut-off is a measurement"), those two flags may only narrow until another publisher confirms them.
