@@ -1,0 +1,586 @@
+{
+ "dpi": 600,
+ "question": "In the bar inside the RED corners, look at the note inside the BLUE corners. What is its value: an eighth (beamed or flagged), a quarter, a dotted eighth, a dotted quarter, or something else? Say if you cannot tell.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "brah",
+   "cell": [
+    5,
+    1,
+    2,
+    6
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.0,
+    "measure": 93,
+    "part": "P3",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 7.16,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3602,
+    4370,
+    4224,
+    4727
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "brah",
+   "cell": [
+    15,
+    0,
+    9,
+    5
+   ],
+   "role": "control_decided_head",
+   "key": {
+    "what": "a dotted quarter, no beam over it",
+    "our_reading": "quarter dots 1",
+    "measure": 288,
+    "part": "P12"
+   },
+   "frame_control": {
+    "ratio": 6.46,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3499,
+    2663,
+    4158,
+    3017
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "cell": [
+    9,
+    1,
+    1,
+    6
+   ],
+   "role": "control_decided_head",
+   "key": {
+    "what": "a plain quarter, no beam over it",
+    "our_reading": "quarter dots 0",
+    "measure": 269,
+    "part": "P2"
+   },
+   "frame_control": {
+    "ratio": 4.29,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.21,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1487,
+    2305,
+    1839,
+    2509
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "brah",
+   "cell": [
+    26,
+    1,
+    8,
+    4
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.0,
+    "measure": 506,
+    "part": "P10",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 14.27,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2786,
+    5847,
+    3411,
+    6207
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "cell": [
+    19,
+    1,
+    4,
+    1
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.0,
+    "measure": 364,
+    "part": "P5",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 27.35,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.03,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1264,
+    4989,
+    1823,
+    5346
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "brah",
+   "cell": [
+    15,
+    0,
+    10,
+    3
+   ],
+   "role": "control_decided_head",
+   "key": {
+    "what": "a beamed eighth the beam reader READ",
+    "our_reading": "eighth dots 0",
+    "measure": 286,
+    "part": "P13"
+   },
+   "frame_control": {
+    "ratio": 8.2,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2469,
+    2895,
+    3120,
+    3252
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "lit",
+   "cell": [
+    9,
+    1,
+    0,
+    0
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 2.0,
+    "short_by": 1.0,
+    "measure": 263,
+    "part": "P1",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 4.75,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.19,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    307,
+    2152,
+    726,
+    2356
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "brah",
+   "cell": [
+    21,
+    0,
+    1,
+    5
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.5,
+    "measure": 395,
+    "part": "P2",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 6.27,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3293,
+    690,
+    3974,
+    1050
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "brah",
+   "cell": [
+    17,
+    0,
+    6,
+    5
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.5,
+    "measure": 330,
+    "part": "P7",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 7.52,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4462,
+    1688,
+    5589,
+    2045
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "brah",
+   "cell": [
+    6,
+    0,
+    11,
+    5
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 0.5,
+    "measure": 102,
+    "part": "P14",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 6.59,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3380,
+    3385,
+    4097,
+    3753
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "brah",
+   "cell": [
+    16,
+    0,
+    0,
+    11
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.0,
+    "measure": 315,
+    "part": "P1",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 18.84,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4989,
+    405,
+    5576,
+    762
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "brah",
+   "cell": [
+    5,
+    0,
+    10,
+    2
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.0,
+    "measure": 81,
+    "part": "P11",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 8.82,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1962,
+    2710,
+    2647,
+    3061
+   ]
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "movement": "brah",
+   "cell": [
+    14,
+    1,
+    7,
+    0
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.5,
+    "measure": 274,
+    "part": "P10",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 6.16,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    586,
+    5887,
+    1532,
+    6244
+   ]
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "movement": "brah",
+   "cell": [
+    15,
+    0,
+    9,
+    3
+   ],
+   "role": "narrowed_head",
+   "key": {
+    "reason": "beam_discounted_uncertain",
+    "candidates_beats_beamlevels": [
+     [
+      0.75,
+      1
+     ],
+     [
+      1.5,
+      0
+     ]
+    ],
+    "bar_quarters": 3.0,
+    "short_by": 1.5,
+    "measure": 286,
+    "part": "P12",
+    "system_meter": "decided"
+   },
+   "frame_control": {
+    "ratio": 8.68,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2469,
+    2663,
+    3120,
+    3017
+   ]
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+
+## lit held: 640 bars classified
+family of the minimal evidenced cause (ONE cause): {'arith_only/': 431, 'one/REST': 68, 'one/VALUE_DOUBT': 50, 'one/STRUCTURE': 26, 'evidenced compound/': 21, 'one/NOTE': 21, 'unexplained/': 21, 'one/DOT': 1, 'one/OTHER': 1}
+single tokens: {'B': 38, 'I:quarter': 25, 'I:eighth': 23, 'U:rest_has_a_stem': 17, 'G': 12, 'S': 11, 'N': 10, 'V': 9, 'K': 6, 'R:too_narrow': 4, 'A': 2, 'R:belongs_to_a_nearer_staff': 2, 'U:clipped_fragment': 2, 'R:rest_clipped_by_crop': 1, 'D': 1, 'F': 1, 'R:clipped_fragment': 1, 'U:too_narrow': 1, 'P': 1}
+NOTE shapes: {'N: 1 chord (2 heads)': 6, 'R:too_narrow: 0 columns': 4, 'N: 1 head': 3, 'U:clipped_fragment: 0 columns': 2, 'N: 1 chord (3 heads)': 1, 'R:belongs_to_a_nearer_staff: many': 1, 'R:clipped_fragment: 1 head': 1, 'U:too_narrow: 1 chord (2 heads)': 1, 'P: many': 1, 'R:belongs_to_a_nearer_staff: 0 columns': 1}
+NOTE lost by (token, refusal, duration outcome, reason):
+   18 ('N', 'duration_narrowed', 'narrowed', 'beam_discounted_uncertain')
+   4 ('R:belongs_to_a_nearer_staff', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   3 ('P', 'no_pitch', 'decided', 'head_and_marks')
+   2 ('U:too_narrow', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   1 ('R:clipped_fragment', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   1 ('P', 'no_pitch', 'narrowed', 'flag_ink_unread')
+   1 ('P', 'no_pitch', 'narrowed', 'head_fill_from_ink')
+N: shape x does the record's own candidates land the bar uniquely: {'1 chord (2 heads) / unique': 6, '1 head / unique': 3, '1 chord (3 heads) / unique': 1}
+NOTE meter verdict at the system: {"('N', 'decided', 'carried')": 10, "('R:too_narrow', 'decided', 'carried')": 4, "('R:belongs_to_a_nearer_staff', 'decided', 'carried')": 2, "('U:clipped_fragment', 'decided', 'carried')": 2, "('R:clipped_fragment', 'decided', 'carried')": 1, "('U:too_narrow', 'decided', 'carried')": 1, "('P', 'decided', 'carried')": 1}
+candidate signatures (n, [(beats, beam_levels)]): {'(2, ((0.5, 1), (1.0, 0)))': 18, '(2, ((0.25, 2), (0.5, 1)))': 1, '(3, ((1.0, 0), (2.0, 0), (4.0, 0)))': 1}
+
+## brah held: 975 bars classified
+family of the minimal evidenced cause (ONE cause): {'arith_only/': 520, 'one/NOTE': 198, 'evidenced compound/': 79, 'one/REST': 76, 'one/VALUE_DOUBT': 44, 'one/STRUCTURE': 30, 'one/DOT': 26, 'unexplained/': 2}
+single tokens: {'N': 179, 'I:eighth': 68, 'B': 39, 'D': 26, 'S': 19, 'V': 10, 'U:too_narrow': 7, 'R:too_narrow': 6, 'G': 5, 'Y': 4, 'I:quarter': 3, 'U:rest_has_a_stem': 2, 'R:rest_clipped_by_crop': 1, 'Q': 1, 'O': 1, 'E': 1, 'K': 1, 'U:rest_off_center': 1}
+NOTE shapes: {'N: 2 columns': 82, 'N: 1 chord (2 heads)': 36, 'N: 1 head': 30, 'N: many': 28, 'U:too_narrow: 0 columns': 3, 'Y: 1 chord (2 heads)': 2, 'R:too_narrow: 0 columns': 2, 'Y: 1 chord (3 heads)': 2, 'N: 1 chord (3 heads)': 2, 'U:too_narrow: 1 head': 2, 'Q: many': 1, 'U:too_narrow: 1 chord (3 heads)': 1, 'O: many': 1, 'R:too_narrow: 3 columns': 1, 'R:too_narrow: many': 1, 'R:too_narrow: 1 head': 1, 'R:too_narrow: 2 columns': 1, 'N: 3 columns': 1, 'U:too_narrow: 1 chord (2 heads)': 1}
+NOTE lost by (token, refusal, duration outcome, reason):
+   394 ('N', 'duration_narrowed', 'narrowed', 'beam_discounted_uncertain')
+   8 ('Y', 'chord_value_undecided', 'decided', 'head_and_marks')
+   7 ('R:too_narrow', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   5 ('U:too_narrow', 'duration_narrowed', 'narrowed', 'beam_discounted_uncertain')
+   5 ('R:too_narrow', 'duration_narrowed', 'narrowed', 'beam_discounted_uncertain')
+   4 ('O', 'owner_not_read', 'decided', 'head_and_marks')
+   3 ('N', 'duration_narrowed', 'narrowed', 'dot_seen_beside_a_plain_note')
+   3 ('N', 'duration_narrowed', 'narrowed', 'head_fill_from_ink')
+   3 ('R:too_narrow', 'chord_value_undecided', 'decided', 'head_and_marks')
+   2 ('N', 'duration_narrowed', 'narrowed', 'flag_ink_unread')
+   2 ('Q', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   2 ('Q', 'chord_value_undecided', 'decided', 'head_and_marks')
+   2 ('U:too_narrow', 'owned_by_another_staff', 'abstained', 'owned_by_another_staff')
+   2 ('N', 'duration_narrowed', 'narrowed', 'beams_ambiguous')
+N: shape x does the record's own candidates land the bar uniquely: {'2 columns / unique': 75, '1 chord (2 heads) / unique': 33, '1 head / unique': 30, 'many / unique': 25, '2 columns / 0 ways': 5, '1 chord (2 heads) / 0 ways': 3, 'many / 3 ways': 2, '2 columns / 2 ways': 2, '1 chord (3 heads) / unique': 2, 'many / 0 ways': 1, '3 columns / 3 ways': 1}
+NOTE meter verdict at the system: {"('N', 'decided', 'carried')": 89, "('N', 'abstained', 'carry_not_corroborated')": 38, "('N', 'decided', 'carried_uncontested')": 29, "('N', 'abstained', 'carry_outweighed_by_the_bars')": 20, "('N', 'decided', 'voted')": 3, "('R:too_narrow', 'decided', 'carried')": 3, "('U:too_narrow', 'decided', 'carried')": 2, "('U:too_narrow', 'abstained', 'carry_outweighed_by_the_bars')": 2}
+candidate signatures (n, [(beats, beam_levels)]): {'(2, ((0.5, 1), (1.0, 0)))': 218, '(2, ((0.75, 1), (1.5, 0)))': 191, '(2, ((0.25, 2), (0.5, 1)))': 3, '(4, ((0.5, 1), (0.75, 1), (1.0, 0), (1.5, 0)))': 3, '(3, ((1.0, 0), (2.0, 0), (4.0, 0)))': 3}
