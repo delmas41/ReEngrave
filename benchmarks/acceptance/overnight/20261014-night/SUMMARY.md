@@ -20,7 +20,7 @@ Duration-decision control (exit 3) did not fire.
 | bars held out | 861/5,022 -> **699/5,034** | 1,822/5,987 -> **975/6,073** |
 | bars marked unread (red) | 1,539 (-13) | 2,315 (-191) |
 | blue guessed (total) | 1,527 -> 1,818 | 1,034 -> 3,263 |
-| bars add up [control] | 4,521/4,521 | 4,673/4,673 (denominator shrank from 6,060 / 6,988: was the count of bars written; not investigated) |
+| bars add up [control] | 4,521/4,521 | 4,673/4,673 (denominator shrank from 6,060 / 6,988; not investigated) |
 | definition-of-done panel (parts, staves named/held out, meter, key, clef) | unchanged | unchanged |
 
 ## Biggest movers (the report's own table)
