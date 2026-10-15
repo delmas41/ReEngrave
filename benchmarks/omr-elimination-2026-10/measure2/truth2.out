@@ -1,0 +1,77 @@
+truth n 1566 overrides ['q751', 'q880']
+R1 (round-1 table, overrides applied)      survive all 1538/1566 (98.21%)  conv 1566/1566 | size all med 3 p90 9 mean 4.39 | common med 3 mean 4.39 | <=3: 784
+S  (+ Sean's answers only)                 survive all 1551/1566 (99.04%)  conv 1563/1566 | size all med 4 p90 10 mean 4.73 | common med 4 mean 4.30 | <=3: 731
+W  (+ measured widening only)              survive all 1550/1566 (98.98%)  conv 1566/1566 | size all med 4 p90 9 mean 4.47 | common med 4 mean 4.47 | <=3: 760
+R2 (S + W)                                 survive all 1563/1566 (99.81%)  conv 1563/1566 | size all med 4 p90 10 mean 4.83 | common med 4 mean 4.38 | <=3: 696
+R2D (+ detector-box widening)              survive all 1563/1566 (99.81%)  conv 1563/1566 | size all med 4 p90 10 mean 4.85 | common med 4 mean 4.40 | <=3: 696
+R2DL (+ Litolff head_half fill) = FINAL    survive all 1563/1566 (99.81%)  conv 1563/1566 | size all med 5 p90 10 mean 5.00 | common med 4 mean 4.55 | <=3: 522
+
+REMAINING FAILURES (R2):
+  b4230 brace -> brace w0.53 h6.48 fill0.68 IN BARTAIL xs128.7 edgeTrue | not at the system's left edge (xs 128.7 sp)
+  b4041 brace -> brace w0.21 h13.85 fill0.55 IN BARTAIL xs130.4 edgeTrue | not at the system's left edge (xs 130.4 sp)
+  b4023 brace -> brace w0.55 h14.14 fill0.59 IN BARTAIL xs130.6 edgeTrue | not at the system's left edge (xs 130.6 sp)
+
+FAILURES under R1 fixed by R2: ['q159', 'q299', 'b4161', 'q399', 'q405', 'b4171', 'q648', 'q660', 'q710', 'b4010', 'b4011', 'q871', 'b3991', 'q880', 'q922', 'b3979', 'b4309', 'b3027', 'b2967', 'b2962', 'b2893', 'b2889', 'b2879', 'b2794', 'b2789', 'b2686', 'b2683', 'b2595']
+NEW failures under R2 (survived R1): ['b4230', 'b4041', 'b4023']
+
+PER CLASS (R2): n surv | all med/p90/max | common med | R1 all med | top set
+ stem                   n 277 surv 277 | all med  1 p90  3 max  9 | common med  1 | R1 med  1 | stem x209
+ ledgerLine             n 248 surv 248 | all med  5 p90  8 max 12 | common med  5 | R1 med  5 | beam/ledger/rest_block/tenuto/tremolo x91
+ noteheadBlackInSpace   n 190 surv 190 | all med  4 p90  6 max 10 | common med  4 | R1 med  3 | beam/head_black/head_half/tremolo x123
+ noteheadBlackOnLine    n 187 surv 187 | all med  6 p90  9 max 10 | common med  6 | R1 med  6 | beam/head_black/head_half/head_whole/rest_hook/tremolo x73
+ augmentationDot        n 132 surv 132 | all med  2 p90  2 max  2 | common med  1 | R1 med  1 | dot/text x70
+ tie                    n  84 surv  84 | all med  7 p90 11 max 12 | common med  7 | R1 med  7 | accent/beam/dynamic_letter/fermata/hairpin/head_half/head_whole/slur/text/tie/tremolo x10
+ slur                   n  69 surv  69 | all med  5 p90  6 max 12 | common med  5 | R1 med  4 | dynamic_letter/hairpin/slur/text/tie x21
+ beam                   n  50 surv  50 | all med  3 p90  5 max  6 | common med  2 | R1 med  2 | beam x15
+ flag8thDown            n  38 surv  38 | all med 10 p90 10 max 10 | common med  7 | R1 med  8 | accidental/arpeggiato/beam/clef/dynamic_letter/flag/rest_hook/rest_quarter/slur/text x27
+ text                   n  32 surv  32 | all med  4 p90  6 max  7 | common med  4 | R1 med  4 | text x10
+ barlineSingle          n  28 surv  28 | all med  4 p90  4 max  6 | common med  2 | R1 med  3 | arpeggiato/barline/stem/text x15
+ keyFlat                n  26 surv  26 | all med  5 p90  6 max  6 | common med  4 | R1 med  3 | accidental/key_accidental/meter_digit/slur/text x20
+ timeSig8               n  25 surv  25 | all med 10 p90 13 max 13 | common med  8 | R1 med  8 | accidental/beam/dynamic_letter/flag/key_accidental/meter_digit/rest_hook/rest_quarter/text/tremolo x14
+ accidentalNatural      n  21 surv  21 | all med  9 p90 10 max 11 | common med  8 | R1 med  9 | accidental/arpeggiato/beam/dynamic_letter/flag/rest_hook/rest_quarter/slur/text x9
+ noteheadHalfInSpace    n  19 surv  19 | all med 10 p90 13 max 14 | common med  8 | R1 med  8 | beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo x7
+ dynamicF               n  16 surv  16 | all med  9 p90  9 max 10 | common med  9 | R1 med  7 | beam/clef/dynamic_letter/flag/hairpin/rest_hook/slur/text/tremolo x11
+ tremolo1               n  16 surv  16 | all med 12 p90 14 max 14 | common med 11 | R1 med 10 | beam/dynamic_letter/flag/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo x3
+ timeSig9               n  14 surv  14 | all med 10 p90 10 max 10 | common med  8 | R1 med  8 | accidental/beam/dynamic_letter/flag/key_accidental/meter_digit/rest_hook/rest_quarter/text/tremolo x13
+ noteheadHalfOnLine     n  14 surv  14 | all med 10 p90 10 max 16 | common med 10 | R1 med 10 | beam/dynamic_letter/flag/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit x6
+ timeSig6               n  11 surv  11 | all med 10 p90 11 max 11 | common med  8 | R1 med  8 | accidental/beam/dynamic_letter/flag/key_accidental/meter_digit/rest_hook/rest_quarter/text/tremolo x8
+ brace                  n  11 surv   8 | all med  2 p90  4 max  4 | common med  2 | R1 med  1 | brace/text x5
+ accidentalSharp        n  10 surv  10 | all med 11 p90 12 max 12 | common med  8 | R1 med  9 | accidental/arpeggiato/beam/clef/dynamic_letter/flag/key_accidental/meter_digit/rest_hook/rest_quarter/text x4
+ accidentalFlat         n  10 surv  10 | all med 10 p90 12 max 12 | common med  9 | R1 med 10 | accidental/arpeggiato/beam/dynamic_letter/flag/rest_hook/rest_quarter/slur/text/tremolo x4
+ clefG                  n   8 surv   8 | all med  3 p90  3 max  3 | common med  2 | R1 med  2 | clef/slur/text x8
+ restWhole              n   8 surv   8 | all med  6 p90  6 max  6 | common med  6 | R1 med  5 | beam/head_black/head_half/rest_block/tenuto/tremolo x8
+ clefF                  n   5 surv   5 | all med  4 p90  4 max  6 | common med  3 | R1 med  3 | clef/meter_digit/slur/text x3
+ rest8th                n   5 surv   5 | all med 11 p90 11 max 11 | common med  8 | R1 med  9 | accidental/beam/dynamic_letter/fermata/flag/rest_hook/rest_quarter/slur/text/tie/tremolo x2
+ flag8thUp              n   4 surv   4 | all med 10 p90 10 max 10 | common med  8 | R1 med  9 | accidental/arpeggiato/beam/clef/dynamic_letter/flag/rest_hook/rest_quarter/slur/text x2
+ barlineDouble          n   3 surv   3 | all med  4 p90  4 max  4 | common med  2 | R1 med  4 | arpeggiato/barline/stem/text x2
+ restQuarter            n   2 surv   2 | all med 10 p90  9 max 11 | common med  7 | R1 med  8 | accidental/arpeggiato/beam/clef/dynamic_letter/flag/key_accidental/meter_digit/rest_hook/rest_quarter/text x1
+ dynamicP               n   1 surv   1 | all med  6 p90  6 max  6 | common med  6 | R1 med  5 | beam/dynamic_letter/hairpin/slur/text/tie x1
+ clefCAlto              n   1 surv   1 | all med  3 p90  3 max  3 | common med  2 | R1 med  2 | clef/meter_digit/text x1
+ clefCTenor             n   1 surv   1 | all med  3 p90  3 max  3 | common med  2 | R1 med  2 | clef/meter_digit/text x1
+
+PER SYMBOL candidate-set mean size, marks of that true symbol: R1 -> S -> W -> R2 -> R2D -> R2DL(final)
+ head_black      n 377  4.95 -> 5.05 -> 4.95 -> 5.05 -> 5.06 -> 5.57
+ stem            n 277  1.36 -> 1.44 -> 1.36 -> 1.44 -> 1.44 -> 1.44
+ ledger          n 248  5.58 -> 5.58 -> 5.60 -> 5.60 -> 5.60 -> 5.75
+ dot             n 132  1.20 -> 1.53 -> 1.20 -> 1.53 -> 1.53 -> 1.53
+ tie             n  84  7.11 -> 7.49 -> 7.25 -> 7.73 -> 7.75 -> 7.75
+ slur            n  69  4.04 -> 4.13 -> 4.80 -> 4.94 -> 4.96 -> 4.96
+ meter_digit     n  50  8.50 -> 10.50 -> 8.50 -> 10.50 -> 10.50 -> 10.50
+ beam            n  50  2.16 -> 2.44 -> 2.50 -> 3.06 -> 3.06 -> 3.06
+ flag            n  42  7.76 -> 9.62 -> 7.79 -> 9.64 -> 9.67 -> 9.67
+ accidental      n  41  8.90 -> 9.93 -> 8.90 -> 9.93 -> 9.93 -> 9.93
+ head_half       n  33  9.21 -> 9.94 -> 9.21 -> 9.94 -> 10.15 -> 10.15
+ text            n  32  2.75 -> 3.06 -> 3.28 -> 3.59 -> 3.59 -> 3.59
+ barline         n  31  2.97 -> 3.42 -> 3.06 -> 3.52 -> 3.52 -> 3.52
+ key_accidental  n  26  3.23 -> 5.23 -> 3.23 -> 5.23 -> 5.23 -> 5.23
+ dynamic_letter  n  17  6.53 -> 6.53 -> 7.47 -> 7.47 -> 8.24 -> 8.24
+ tremolo         n  16  10.12 -> 11.12 -> 10.38 -> 11.38 -> 11.69 -> 11.69
+ clef            n  15  2.33 -> 3.40 -> 2.33 -> 3.40 -> 3.40 -> 3.40
+ brace           n  11  1.64 -> 2.55 -> 1.64 -> 2.55 -> 2.55 -> 2.55
+ rest_block      n   8  5.00 -> 5.00 -> 5.00 -> 5.00 -> 5.00 -> 6.00
+ rest_hook       n   5  8.60 -> 10.60 -> 8.60 -> 10.60 -> 10.60 -> 10.60
+ rest_quarter    n   2  8.00 -> 10.00 -> 8.00 -> 10.00 -> 10.00 -> 10.00
+
+symbol gained in how many marks' sets (R1->R2): {'text': 346, 'dynamic_letter': 266, 'head_half': 239, 'accidental': 26, 'tie': 24, 'flag': 20, 'rest_hook': 20, 'meter_digit': 12, 'brace': 6, 'barline': 3, 'beam': 1}
+symbol lost from how many marks' sets (R1->R2): {'brace': 10}
+marks whose set contains a RARE member: 409 / 1566

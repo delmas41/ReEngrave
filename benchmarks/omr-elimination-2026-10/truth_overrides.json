@@ -1,0 +1,6 @@
+{
+ "_what": "Sean's rulings on two truth labels of Brahms 317803 pdf 0, applied in the 2.120 MEASUREMENT only. data/hand-truth/ is NOT edited.",
+ "_source": "benchmarks/omr-elimination-2026-10/SEAN-ANSWERS-2026-10-14.md",
+ "q751": {"was": "noteheadBlackOnLine", "now": "augmentationDot", "sean": "aug dot", "date": "2026-10-14"},
+ "q880": {"was": "restQuarter", "now": "barlineSingle", "sean": "only barline", "date": "2026-10-14"}
+}

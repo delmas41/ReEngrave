@@ -1,0 +1,8 @@
+baseline (Sean only): survive 1551
+dynamic_letter  env1  -> 14.29   marks gaining 'dynamic_letter' in set:  104 | true marks recovered: 3
+tie             fill1 -> 0.83    marks gaining 'tie' in set:  320 | true marks recovered: 3
+tie             env3  -> 2.75    marks gaining 'tie' in set:   65 | true marks recovered: 1
+barline         fill0 -> 0.11    marks gaining 'barline' in set:    2 | true marks recovered: 2
+barline         env2  -> 1.22    marks gaining 'barline' in set:    1 | true marks recovered: 1
+flag            env1  -> 2.37    marks gaining 'flag' in set:   20 | true marks recovered: 1
+beam            env2  -> 0.2     marks gaining 'beam' in set:   42 | true marks recovered: 1

@@ -1,0 +1,78 @@
+0/0/0/4/15      stacked_head_duplicate       det noteheadBlackInSpace   w1.29 h0.82 fill0.95 NEAR BARHEAD | truth under: head_black                   | table set: beam/head_black/head_half/rest_block/tremolo
+0/0/0/4/16      too_narrow                   det noteheadBlackInSpace   w0.26 h0.83 fill0.82 IN   BODY    | truth under: NOTHING                      | table set: 
+0/0/0/5/13      stacked_head_duplicate       det noteheadBlackInSpace   w1.24 h0.95 fill0.98 IN   BODY    | truth under: head_black                   | table set: beam/head_black/head_half/rest_block/tremolo
+0/0/1/0/18      clipped_fragment             det noteheadBlackInSpace   w1.18 h0.52 fill0.70 NEAR BODY    | truth under: head_black                   | table set: beam/head_black/head_half/ledger/rest_block/tenuto/text/tie/tremolo
+0/0/1/0/24      is_a_time_signature_digit    det noteheadWholeInSpace   w1.51 h0.95 fill0.59 IN   HEADER  | truth under: NOTHING                      | table set: accent/beam/dynamic_letter/fermata/head_black/head_half/head_whole/meter_digit/rest_block/slur/text/tie/tremolo
+0/0/1/0/30      is_a_time_signature_digit    det noteheadWholeInSpace   w1.43 h0.94 fill0.62 IN   HEADER  | truth under: NOTHING                      | table set: beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_block/text/tremolo
+0/0/1/1/20      too_narrow                   det noteheadBlackInSpace   w0.24 h0.88 fill0.88 IN   BODY    | truth under: NOTHING                      | table set: 
+0/0/1/3/12      stacked_head_duplicate       det noteheadBlackInSpace   w1.33 h1.08 fill0.94 IN   BODY    | truth under: head_black                   | table set: beam/head_black/head_half/tremolo
+0/0/1/6/8       stacked_head_duplicate       det noteheadBlackInSpace   w1.31 h1.04 fill0.96 IN   BODY    | truth under: head_black                   | table set: beam/head_black/head_half/tremolo
+0/0/2/3/5       stacked_head_duplicate       det noteheadBlackInSpace   w1.34 h1.09 fill0.91 IN   BARHEAD | truth under: head_black                   | table set: beam/head_black/head_half/tremolo
+0/0/2/6/14      clipped_fragment             det noteheadBlackOnLine    w1.31 h0.53 fill0.70 NEAR BODY    | truth under: head_black,slur              | table set: beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/text/tie/tremolo
+0/0/3/5/13      too_narrow                   det noteheadBlackInSpace   w0.26 h0.97 fill0.98 IN   BODY    | truth under: barline                      | table set: 
+0/0/3/7/3       is_a_time_signature_digit    det noteheadWholeInSpace   w1.45 h0.96 fill0.60 IN   BARTAIL | truth under: meter_digit                  | table set: beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_block/text/tremolo
+0/0/4/3/1       too_narrow                   det noteheadBlackOnLine    w0.80 h0.78 fill0.81 IN   BARHEAD | truth under: tremolo                      | table set: beam/dot/rest_block/tremolo
+0/0/4/3/7       head_cut_piece               det noteheadHalfInSpace    w1.24 h0.77 fill0.71 NEAR BARHEAD | truth under: head_half,ledger             | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+0/0/4/4/4       too_narrow                   det noteheadBlackInSpace   w0.81 h0.65 fill0.92 IN   BARHEAD | truth under: tremolo                      | table set: beam/rest_block/tremolo
+0/0/4/4/7       tremolo_slash_crosses_stem   det noteheadBlackOnLine    w1.09 h0.81 fill0.75 IN   BARHEAD | truth under: tremolo                      | table set: beam/dynamic_letter/head_black/head_half/rest_block/text/tremolo
+0/0/4/4/9       notehead_is_a_duplicate_box  det noteheadHalfInSpace    w1.31 h1.03 fill0.65 NEAR BARHEAD | truth under: head_half,ledger             | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit
+0/0/4/6/0       too_narrow                   det noteheadBlackOnLine    w0.69 h0.67 fill0.80 IN   BARHEAD | truth under: tremolo                      | table set: beam/dot/tremolo
+0/0/4/7/3       is_a_time_signature_digit    det noteheadWholeInSpace   w1.38 h1.01 fill0.64 IN   BARTAIL | truth under: meter_digit                  | table set: beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo
+0/0/5/2/17      head_cut_piece               det noteheadHalfOnLine     w1.59 h0.88 fill0.71 NEAR BARHEAD | truth under: head_half,ledger,stem        | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+0/0/5/3/15      head_cut_piece               det noteheadHalfInSpace    w1.54 h0.72 fill0.71 NEAR BARHEAD | truth under: ledger                       | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+0/0/5/6/13      head_cut_piece               det noteheadHalfOnLine     w1.28 h0.84 fill0.72 NEAR BARHEAD | truth under: head_half,ledger             | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+0/0/5/7/1       notehead_is_a_duplicate_box  det noteheadWholeInSpace   w1.39 h0.78 fill0.68 IN   BARTAIL | truth under: meter_digit                  | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo
+0/0/6/0/16      too_narrow                   det noteheadBlackInSpace   w0.86 h0.63 fill0.98 NEAR KEYSLOT | truth under: brace                        | table set: 
+0/0/6/0/17      too_narrow                   det noteheadBlackInSpace   w0.83 h0.61 fill1.00 NEAR KEYSLOT | truth under: brace                        | table set: 
+0/0/6/1/7       stacked_head_duplicate       det noteheadBlackInSpace   w1.35 h1.21 fill0.93 IN   BODY    | truth under: head_black                   | table set: beam/head_black/head_half/tremolo
+0/0/6/1/18      too_narrow                   det noteheadBlackOnLine    w0.46 h0.43 fill0.75 IN   BODY    | truth under: dot                          | table set: dot/text
+0/0/6/2/8       clipped_fragment             det noteheadBlackInSpace   w1.29 h0.49 fill0.65 NEAR BARHEAD | truth under: head_half                    | table set: beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/text/tie/tremolo
+0/0/6/2/14      clipped_fragment             det noteheadHalfInSpace    w1.30 h0.49 fill0.66 NEAR BARHEAD | truth under: head_half                    | table set: beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/text/tie/tremolo
+0/0/6/3/7       clipped_fragment             det noteheadHalfInSpace    w1.18 h0.47 fill0.66 NEAR BARHEAD | truth under: head_half                    | table set: beam/head_black/head_half/ledger/rest_block/tenuto/text/tie/tremolo
+0/0/6/4/1       clipped_fragment             det noteheadHalfInSpace    w1.25 h0.59 fill0.57 NEAR BARHEAD | truth under: head_half                    | table set: accent/beam/head_black/head_half/head_whole/ledger/rest_block/slur/tenuto/text/tie/tremolo
+0/0/6/6/3       clipped_fragment             det noteheadHalfOnLine     w1.20 h0.34 fill0.62 NEAR BARHEAD | truth under: head_half                    | table set: beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/tie/tremolo
+0/0/7/0/19      too_narrow                   det noteheadBlackOnLine    w0.91 h0.73 fill0.99 IN   KEYSLOT | truth under: NOTHING                      | table set: 
+0/0/7/0/20      too_narrow                   det noteheadBlackInSpace   w0.88 h0.73 fill0.97 IN   KEYSLOT | truth under: NOTHING                      | table set: 
+0/0/7/0/22      too_narrow                   det noteheadBlackInSpace   w0.86 h0.58 fill0.99 NEAR KEYSLOT | truth under: NOTHING                      | table set: 
+0/0/7/0/23      too_narrow                   det noteheadBlackInSpace   w0.86 h0.65 fill0.98 NEAR KEYSLOT | truth under: brace                        | table set: 
+0/0/7/0/24      too_narrow                   det noteheadBlackInSpace   w0.84 h0.65 fill0.99 NEAR KEYSLOT | truth under: brace                        | table set: 
+0/0/7/2/1       clipped_fragment             det noteheadBlackOnLine    w1.82 h0.59 fill0.75 NEAR BODY    | truth under: head_black,ledger            | table set: beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/text/tremolo
+0/0/8/5/3       notehead_is_a_duplicate_box  det noteheadHalfOnLine     w0.81 h0.83 fill0.74 NEAR BARHEAD | truth under: tremolo                      | table set: beam/dynamic_letter/rest_block/text/tremolo/tuplet_digit
+0/0/8/5/4       tremolo_slash_crosses_stem   det noteheadBlackInSpace   w1.44 h1.12 fill0.66 IN   BARHEAD | truth under: stem,tremolo                 | table set: beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo
+0/0/10/1/15     too_narrow                   det noteheadBlackInSpace   w0.24 h0.92 fill0.80 IN   BODY    | truth under: NOTHING                      | table set: 
+0/0/10/1/16     is_a_beam_piece              det noteheadBlackOnLine    w3.24 h1.70 fill0.77 IN   BODY    | truth under: NOTHING                      | table set: beam/dynamic_letter/rest_multibar/text
+0/0/10/1/20     is_a_beam_piece              det noteheadBlackOnLine    w2.35 h1.65 fill0.82 IN   BODY    | truth under: NOTHING                      | table set: beam/rest_hook/tremolo
+0/0/10/1/21     too_narrow                   det noteheadBlackInSpace   w0.24 h1.03 fill0.80 IN   BODY    | truth under: NOTHING                      | table set: 
+0/0/11/3/19     clipped_fragment             det noteheadBlackOnLine    w1.19 h0.28 fill0.55 NEAR BODY    | truth under: head_black,slur              | table set: beam/ledger/rest_block/slur/tenuto/tie/tremolo
+0/0/11/3/21     clipped_fragment             det noteheadBlackOnLine    w1.18 h0.28 fill0.62 NEAR BODY    | truth under: head_black,slur              | table set: beam/ledger/rest_block/tenuto/tremolo
+0/0/11/6/30     too_narrow                   det noteheadBlackInSpace   w0.28 h0.59 fill0.97 NEAR BARHEAD | truth under: NOTHING                      | table set: dot
+0/0/11/7/1      stacked_head_duplicate       det noteheadWholeInSpace   w1.40 h0.86 fill0.61 IN   BARTAIL | truth under: meter_digit                  | table set: beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo
+0/0/12/0/27     too_narrow                   det noteheadBlackInSpace   w0.44 h0.42 fill0.96 NEAR KEYSLOT | truth under: NOTHING                      | table set: 
+0/0/12/0/29     too_narrow                   det noteheadBlackOnLine    w0.91 h1.74 fill0.93 IN   KEYSLOT | truth under: NOTHING                      | table set: 
+0/0/13/6/14     tremolo_slash_crosses_stem   det noteheadBlackInSpace   w1.10 h1.14 fill0.68 IN   BARHEAD | truth under: tremolo                      | table set: beam/dynamic_letter/head_black/head_half/meter_digit/rest_hook/text/tremolo
+
+('clipped_fragment', 'head under') 10
+('head_cut_piece', 'head under') 3
+('head_cut_piece', 'other: ledger') 1
+('is_a_beam_piece', 'nothing under') 2
+('is_a_time_signature_digit', 'nothing under') 2
+('is_a_time_signature_digit', 'other: meter_digit') 2
+('notehead_is_a_duplicate_box', 'head under') 1
+('notehead_is_a_duplicate_box', 'other: meter_digit') 1
+('notehead_is_a_duplicate_box', 'other: tremolo') 1
+('stacked_head_duplicate', 'head under') 6
+('stacked_head_duplicate', 'other: meter_digit') 1
+('too_narrow', 'nothing under') 10
+('too_narrow', 'other: barline') 1
+('too_narrow', 'other: brace') 4
+('too_narrow', 'other: dot') 1
+('too_narrow', 'other: tremolo') 3
+('tremolo_slash_crosses_stem', 'other: stem,tremolo') 1
+('tremolo_slash_crosses_stem', 'other: tremolo') 2
+
+SUMMARY -- refused notehead boxes whose truth-under has NO head (the refusal is right):
+ EMPTY set (nothing in the table fits: a piece or unlabeled ink) 14  [(('too_narrow', '-', 0), 9), (('too_narrow', 'brace', 0), 4), (('too_narrow', 'barline', 0), 1)]
+ true symbol in a set of >3                                     7  [(('is_a_time_signature_digit', 'meter_digit', 9), 2), (('too_narrow', 'tremolo', 4), 1), (('tremolo_slash_crosses_stem', 'tremolo', 7), 1), (('notehead_is_a_duplicate_box', 'tremolo', 6), 1), (('tremolo_slash_crosses_stem', 'stem/tremolo', 9), 1), (('tremolo_slash_crosses_stem', 'tremolo', 8), 1)]
+ no truth under, non-empty set                                  5  [(('is_a_time_signature_digit', '-', 13), 1), (('is_a_time_signature_digit', '-', 9), 1), (('is_a_beam_piece', '-', 4), 1), (('is_a_beam_piece', '-', 3), 1), (('too_narrow', '-', 1), 1)]
+ true symbol in a set of <=3                                    3  [(('too_narrow', 'tremolo', 3), 2), (('too_narrow', 'dot', 2), 1)]
+ true symbol NOT in set                                         3  [(('head_cut_piece', 'ledger', 9), 1), (('notehead_is_a_duplicate_box', 'meter_digit', 8), 1), (('stacked_head_duplicate', 'meter_digit', 8), 1)]

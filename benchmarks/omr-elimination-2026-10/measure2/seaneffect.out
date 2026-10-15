@@ -1,0 +1,6 @@
+gain (all): {'text': 346, 'dynamic_letter': 162, 'accidental': 26, 'brace': 6}
+gain (common = excluding rare allowances): {'accidental': 26, 'text': 10, 'brace': 6}
+lose: {'brace': 10}
+marks carrying each symbol ONLY as a rare allowance: {'text': 336, 'arpeggiato': 178, 'dynamic_letter': 162}
+true marks recovered by Sean's answers: [('b4171', 'brace'), ('b4011', 'brace'), ('b3991', 'brace'), ('b3979', 'brace'), ('b4309', 'brace'), ('b3027', 'brace'), ('b2967', 'text'), ('b2962', 'text'), ('b2893', 'text'), ('b2889', 'text'), ('b2879', 'text'), ('b2794', 'text'), ('b2789', 'text'), ('b2686', 'text'), ('b2683', 'text'), ('b2595', 'text')]
+true marks lost by Sean's answers: [('b4230', 'brace'), ('b4041', 'brace'), ('b4023', 'brace')]

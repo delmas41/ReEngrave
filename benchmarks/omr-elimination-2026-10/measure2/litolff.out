@@ -1,0 +1,26 @@
+truth hollow heads: 59 | in leaked cells: 9 | cells with no record glyph (cannot be mapped): ['litolffp1-p2-sys0-s8-m12']
+
+== CLEAN hollow TEST heads, Sean's tight boxes (n=49) ==
+  round-1 table      hollow head survives: 46/49 (93.9%) | set size median 6 max 9
+  R2D (Brahms-measured only) hollow head survives: 46/49 (93.9%) | set size median 9 max 9
+  R2DL FINAL (+Litolff head_half fill) hollow head survives: 49/49 (100.0%) | set size median 9 max 9
+  conventions only   hollow head survives: 49/49 (100.0%) | set size median 27 max 27
+  top sets: [('beam/dynamic_letter/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit', 16), ('beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo', 11), ('beam/dynamic_letter/head_black/head_half/meter_digit/rest_hook/text/tremolo', 6), ('beam/head_black/head_half/head_whole/rest_hook/tremolo', 5)]
+  truth head size sp: w 1.19-1.21 (med 1.21) h 0.38-1.02 (med 1.02) | fill 0.64-0.88 | centre-40% fill 0.16-1.00 | loc {'NEAR': 28, 'IN': 21} | zone {'BARHEAD': 49}
+
+== all 59 (incl. 9 leaked cells -- a table has no training, so leakage cannot inflate it; shown for completeness) (n=58) ==
+  round-1 table      hollow head survives: 53/58 (91.4%) | set size median 6 max 9
+  R2D (Brahms-measured only) hollow head survives: 53/58 (91.4%) | set size median 9 max 9
+  R2DL FINAL (+Litolff head_half fill) hollow head survives: 58/58 (100.0%) | set size median 9 max 9
+  conventions only   hollow head survives: 58/58 (100.0%) | set size median 27 max 27
+  top sets: [('beam/dynamic_letter/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit', 16), ('beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo', 11), ('beam/head_black/head_half/head_whole/rest_hook/tremolo', 8), ('beam/dynamic_letter/head_black/head_half/meter_digit/rest_hook/text/tremolo', 7)]
+  truth head size sp: w 1.19-1.21 (med 1.21) h 0.38-1.02 (med 1.02) | fill 0.64-0.88 | centre-40% fill 0.16-1.00 | loc {'NEAR': 32, 'IN': 26} | zone {'BARHEAD': 58}
+
+== detector side, the clean heads ==
+heads with a detector box at IoU >= 0.5 (canonical frame): 29/49 | none: 20
+ detector classes on them: Counter({'noteheadHalfInSpace': 21, 'noteheadHalfOnLine': 5, 'noteheadBlackInSpace': 1, 'noteheadBlackOnLine': 1, 'noteheadWholeOnLine': 1}) | status Counter({'kept': 28, 'refused': 1})
+ hollow-class detector boxes: 27; their class survives the table: 26; true head symbol in set: 26
+ BLACK-class boxes on true hollow heads (hollow called black): 2; table eliminates the black class: 0 (caught); true head symbol in set: 2
+   black-on-hollow litolffp1-p2-sys0-s3-m15 box w1.38 h1.25 fill0.68 cfill0.78 set beam/dynamic_letter/flag/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit
+   black-on-hollow litolffp1-p2-sys0-s9-m11 box w1.16 h0.89 fill0.75 cfill1.00 set beam/dynamic_letter/head_black/head_half/meter_digit/rest_block/text/tremolo
+ cfill (centre 40%) truth hollow heads: [0.16, 0.21, 0.22, 0.27, 0.29, 0.3, 0.31, 0.32, 0.32, 0.33, 0.34, 0.34, 0.34, 0.39, 0.41, 0.41, 0.43, 0.46, 0.48, 0.48, 0.54, 0.57, 0.62, 0.67, 0.68, 0.71, 0.77, 0.79, 0.8, 0.8, 0.8, 0.82, 0.82, 0.84, 0.84, 0.88, 0.89, 0.89, 0.89, 0.91, 0.93, 0.93, 0.93, 0.95, 0.96, 0.98, 0.98, 0.98, 1.0]

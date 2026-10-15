@@ -1,0 +1,61 @@
+detector boxes on p0: 1776 | status {'undecided': 292, 'kept': 1101, 'given_away': 91, 'refused': 225, 'narrowed': 66, 'abstained': 1}
+detector classes outside the table (symbol None): [('staff', 66)]
+
+IoU vs Sean's truth: strong >=0.5: 1269 | partial 0<IoU<0.5: 394 | no truth overlap: 113
+
+==== ROUND-1 table ====
+strong-matched with a table symbol on both sides: 1269 | detector class == truth: 1159 | detector class != truth (errors): 110
+ ERRORS CAUGHT (detector's class eliminated by the table): 33 / 110 (30%); and the true symbol survives in the set: 32 of those
+ by (detector -> truth), errors: [(('slur', 'tie'), 52), (('beam', 'slur'), 28), (('beam', 'tie'), 7), (('accidental', 'key_accidental'), 4), (('tie', 'slur'), 4), (('head_whole', 'meter_digit'), 3), (('head_black', 'tremolo'), 3), (('arpeggiato', 'stem'), 2), (('accidental', 'flag'), 2), (('head_black', 'dot'), 1), (('beam', 'rest_block'), 1), (('rest_quarter', 'barline'), 1)]
+ by (detector -> truth), CAUGHT: [(('beam', 'slur'), 24), (('accidental', 'key_accidental'), 4), (('beam', 'tie'), 2), (('head_black', 'dot'), 1), (('rest_quarter', 'barline'), 1), (('head_whole', 'meter_digit'), 1)]
+ CORRECT detections the table would ELIMINATE (harm): 13 / 1159 [('meter_digit', 3), ('flag', 3), ('tie', 3), ('beam', 3), ('rest_hook', 1)]
+   truth symbol absent from the set on detector boxes (strong): 15 / 1269
+ FALSE ALARMS (no truth overlap) with a table class: 111 | eliminated by the table: 18 (16%)
+   false alarms by class (n, eliminated): [('beam', 27, 0), ('tie', 26, 0), ('noteheadBlackInSpace', 9, 7), ('noteheadBlackOnLine', 9, 4), ('ledgerLine', 8, 3), ('noteheadWholeInSpace', 5, 0), ('slur', 5, 0), ('augmentationDot', 4, 0), ('timeSig8', 3, 3), ('dynamicP', 3, 0), ('timeSig6', 3, 0), ('flag8thDown', 2, 0)]
+ PARTIAL overlap boxes (0<IoU<0.5): 330 | class == overlapping truth: 66 | eliminated: 86
+
+==== ROUND-2 table ====
+strong-matched with a table symbol on both sides: 1269 | detector class == truth: 1159 | detector class != truth (errors): 110
+ ERRORS CAUGHT (detector's class eliminated by the table): 29 / 110 (26%); and the true symbol survives in the set: 29 of those
+ by (detector -> truth), errors: [(('slur', 'tie'), 52), (('beam', 'slur'), 28), (('beam', 'tie'), 7), (('accidental', 'key_accidental'), 4), (('tie', 'slur'), 4), (('head_whole', 'meter_digit'), 3), (('head_black', 'tremolo'), 3), (('arpeggiato', 'stem'), 2), (('accidental', 'flag'), 2), (('head_black', 'dot'), 1), (('beam', 'rest_block'), 1), (('rest_quarter', 'barline'), 1)]
+ by (detector -> truth), CAUGHT: [(('beam', 'slur'), 24), (('beam', 'tie'), 2), (('head_black', 'dot'), 1), (('rest_quarter', 'barline'), 1), (('head_whole', 'meter_digit'), 1)]
+ CORRECT detections the table would ELIMINATE (harm): 0 / 1159 []
+   truth symbol absent from the set on detector boxes (strong): 0 / 1269
+ FALSE ALARMS (no truth overlap) with a table class: 111 | eliminated by the table: 15 (14%)
+   false alarms by class (n, eliminated): [('beam', 27, 0), ('tie', 26, 0), ('noteheadBlackInSpace', 9, 7), ('noteheadBlackOnLine', 9, 4), ('ledgerLine', 8, 3), ('noteheadWholeInSpace', 5, 0), ('slur', 5, 0), ('augmentationDot', 4, 0), ('timeSig8', 3, 0), ('dynamicP', 3, 0), ('timeSig6', 3, 0), ('flag8thDown', 2, 0)]
+ PARTIAL overlap boxes (0<IoU<0.5): 330 | class == overlapping truth: 66 | eliminated: 71
+
+==== REFUSED boxes (adjudicate status 'refused') under the ROUND-2 table ====
+refused total 225 | matched truth strong: 25 | partial: 161 | none: 39
+arc_is_not_an_arc / ink_is_a_staff_line              n131 | truth strong  9: {'tie': 9} | true symbol in set 9 | set<=3: 0 | no-truth 23
+ledger_is_not_a_ledger / inside_the_staff            n 32 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 3
+notehead_is_not_a_notehead / too_narrow              n 19 | truth strong  1: {'dot': 1} | true symbol in set 1 | set<=3: 1 | no-truth 9
+notehead_is_not_a_notehead / clipped_fragment        n 10 | truth strong  2: {'head_black': 2} | true symbol in set 2 | set<=3: 0 | no-truth 0
+notehead_is_not_a_notehead / stacked_head_duplicate  n  7 | truth strong  6: {'head_black': 6} | true symbol in set 6 | set<=3: 0 | no-truth 0
+ledger_is_not_a_ledger / on_a_staff_line             n  5 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 0
+notehead_is_not_a_notehead / is_a_time_signature_digit n  4 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 2
+notehead_is_not_a_notehead / head_cut_piece          n  4 | truth strong  3: {'head_half': 3} | true symbol in set 3 | set<=3: 0 | no-truth 0
+notehead_is_not_a_notehead / tremolo_slash_crosses_stem n  3 | truth strong  1: {'tremolo': 1} | true symbol in set 1 | set<=3: 0 | no-truth 0
+notehead_is_not_a_notehead / notehead_is_a_duplicate_box n  3 | truth strong  1: {'head_half': 1} | true symbol in set 1 | set<=3: 0 | no-truth 0
+notehead_is_not_a_notehead / is_a_beam_piece         n  2 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 2
+rest_is_not_a_rest / rest_has_a_stem                 n  1 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 0
+rest_is_not_a_rest / rest_off_center                 n  1 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 0
+rest_is_not_a_rest / rest_is_a_duplicate_box         n  1 | truth strong  1: {'rest_hook': 1} | true symbol in set 1 | set<=3: 0 | no-truth 0
+articulation_is_not_an_articulation / ledger_between_staff_and_note n  1 | truth strong  1: {'ledger': 1} | true symbol in set 1 | set<=3: 0 | no-truth 0
+arc_is_not_an_arc / in_a_key_signature_slot          n  1 | truth strong  0: {} | true symbol in set 0 | set<=3: 0 | no-truth 0
+
+refused with strong truth: is the refusal RIGHT (truth is not what the family refuses) and can the table name what it is?
+  0/0/0/4/15     stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q98) set beam/head_black/head_half/rest_block/tremolo
+  0/0/0/5/13     stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q119) set beam/head_black/head_half/rest_block/tremolo
+  0/0/1/0/18     clipped_fragment           det noteheadBlackInSpace truth noteheadBlackOnLine(q169) set beam/head_black/head_half/ledger/rest_block/tenuto/text/tie/tremolo
+  0/0/1/3/12     stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q226) set beam/head_black/head_half/tremolo
+  0/0/1/6/8      stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q269) set beam/head_black/head_half/tremolo
+  0/0/2/3/5      stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q342) set beam/head_black/head_half/tremolo
+  0/0/4/3/7      head_cut_piece             det noteheadHalfInSpace  truth noteheadHalfOnLine(q568) set beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+  0/0/4/4/9      notehead_is_a_duplicate_box det noteheadHalfInSpace  truth noteheadHalfOnLine(q576) set beam/dynamic_letter/head_black/head_half/head_whole/rest_hook/text/tremolo/tuplet_digit
+  0/0/5/2/17     head_cut_piece             det noteheadHalfOnLine   truth noteheadHalfOnLine(q653) set beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+  0/0/5/6/13     head_cut_piece             det noteheadHalfOnLine   truth noteheadHalfOnLine(q712) set beam/dynamic_letter/head_black/head_half/head_whole/rest_block/text/tremolo/tuplet_digit
+  0/0/6/1/7      stacked_head_duplicate     det noteheadBlackInSpace truth noteheadBlackInSpace(q741) set beam/head_black/head_half/tremolo
+  0/0/6/1/18     too_narrow                 det noteheadBlackOnLine  truth augmentationDot   (q751) set dot/text
+  0/0/7/2/1      clipped_fragment           det noteheadBlackOnLine  truth noteheadBlackOnLine(q831) set beam/head_black/head_half/head_whole/ledger/rest_block/tenuto/text/tremolo
+  0/0/8/5/4      tremolo_slash_crosses_stem det noteheadBlackInSpace truth tremolo1          (b4001) set beam/dynamic_letter/head_black/head_half/head_whole/meter_digit/rest_hook/text/tremolo

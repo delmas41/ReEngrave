@@ -1,0 +1,46 @@
+group | counts
+A {'pairs': 24, 'resolved': 24, 'same candidate set': 8, 'missed twin: true head symbol in set': 24, 'twin: true head symbol in set': 24, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 24, "missed twin's box is REFUSED": 0}
+B {'pairs': 21, 'resolved': 21, 'same candidate set': 13, 'missed twin: true head symbol in set': 21, 'twin: true head symbol in set': 21, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 18, "missed twin's box is REFUSED": 1}
+C {'pairs': 8, 'resolved': 6, 'same candidate set': 1, 'missed twin: true head symbol in set': 6, 'twin: true head symbol in set': 6, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 0, "missed twin's box is REFUSED": 0, 'unresolved (no truth/descriptor)': 2}
+D {'pairs': 6, 'resolved': 6, 'same candidate set': 3, 'missed twin: true head symbol in set': 6, 'twin: true head symbol in set': 6, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 6, "missed twin's box is REFUSED": 0}
+E {'pairs': 5, 'resolved': 5, 'same candidate set': 5, 'missed twin: true head symbol in set': 5, 'twin: true head symbol in set': 5, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 5, "missed twin's box is REFUSED": 5}
+F {'pairs': 3, 'resolved': 2, 'same candidate set': 0, 'missed twin: true head symbol in set': 2, 'twin: true head symbol in set': 2, 'missed twin has a WRONG detector class': 1, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 1, "missed twin's box is REFUSED": 0, 'unresolved (no truth/descriptor)': 1}
+G {'pairs': 2, 'resolved': 2, 'same candidate set': 2, 'missed twin: true head symbol in set': 2, 'twin: true head symbol in set': 2, 'missed twin has a WRONG detector class': 0, '  ...and the table eliminates that class (caught)': 0, 'missed twin has a detector box (IoU>=.5)': 2, "missed twin's box is REFUSED": 0}
+
+sets that DIFFER between the twins (only-in-missed | only-in-twin):
+  ('brahms', 'A duration narrowed', 'q1007', 'head_whole/rest_hook', '-')
+  ('brahms', 'A duration narrowed', 'q1272', 'dynamic_letter/text', '-')
+  ('brahms', 'A duration narrowed', 'q93', '-', 'dynamic_letter/head_whole/rest_hook/text/tuplet_digit')
+  ('brahms', 'B bar-sum hold-out', 'q736', 'head_whole/rest_hook', '-')
+  ('brahms', 'A duration narrowed', 'q1504', '-', 'dynamic_letter/text/tuplet_digit')
+  ('brahms', 'D partial-bar gap', 'q1509', '-', 'dynamic_letter/text/tuplet_digit')
+  ('brahms', 'A duration narrowed', 'q52', '-', 'dynamic_letter/head_whole/rest_hook/text/tuplet_digit')
+  ('brahms', 'A duration narrowed', 'q110', '-', 'head_whole/rest_hook')
+  ('brahms', 'A duration narrowed', 'q1009', '-', 'head_whole/rest_hook')
+  ('brahms', 'D partial-bar gap', 'q95', '-', 'head_whole/rest_hook')
+  ('brahms', 'A duration narrowed', 'q974', '-', 'dynamic_letter/text/tuplet_digit')
+  ('brahms', 'A duration narrowed', 'q86', '-', 'head_whole/rest_hook')
+  ('brahms', 'D partial-bar gap', 'q90', 'head_whole/rest_hook', '-')
+  ('brahms', 'A duration narrowed', 'q1322', '-', 'head_whole/rest_hook')
+  ('brahms', 'A duration narrowed', 'q412', 'head_whole/rest_hook', '-')
+  ('brahms', 'A duration narrowed', 'q1409', 'dynamic_letter/flag/meter_digit/text', '-')
+  ('brahms', 'A duration narrowed', 'q1278', '-', 'dynamic_letter/text/tuplet_digit')
+  ('brahms', 'A duration narrowed', 'q419', '-', 'rest_block')
+  ('brahms', 'A duration narrowed', 'q1317', '-', 'dynamic_letter/text')
+  ('brahms', 'A duration narrowed', 'q118', '-', 'head_whole/rest_hook')
+  ('brahms', 'B bar-sum hold-out', 'q907', 'flag', '-')
+  ('brahms', 'B bar-sum hold-out', 'b4213', 'rest_hook', 'rest_block')
+  ('brahms', 'B bar-sum hold-out', 'q568', 'flag/rest_hook', 'rest_block')
+  ('brahms', 'B bar-sum hold-out', 'q529', 'head_whole/rest_hook', '-')
+  ('brahms', 'B bar-sum hold-out', 'q595', 'accent/fermata/slur/tie', '-')
+  ('brahms', 'B bar-sum hold-out', 'q533', 'dynamic_letter/text/tuplet_digit', '-')
+  ('brahms', 'B bar-sum hold-out', 'q532', 'flag', '-')
+  ('litolff', 'F detector: wrong class', 'litolffp1-p2-sys0-s3-m15#21', 'rest_hook', 'rest_block')
+  ('litolff', 'C detector: no box', 'litolffp1-p2-sys0-s11-m3#14', '-', 'rest_block')
+  ('litolff', 'C detector: no box', 'litolffp1-p2-sys0-s8-m13#32', '-', 'dynamic_letter/meter_digit/text')
+  ('litolff', 'F detector: wrong class', 'litolffp1-p2-sys0-s9-m3#43', '-', 'dynamic_letter/head_whole/rest_hook/text/tuplet_digit')
+  ('litolff', 'C detector: no box', 'litolffp1-p2-sys0-s9-m4#44', 'head_whole/rest_hook', '-')
+  ('litolff', 'C detector: no box', 'litolffp1-p2-sys0-s9-m13#41', 'meter_digit', 'head_whole/tuplet_digit')
+  ('litolff', 'C detector: no box', 'litolffp1-p2-sys0-s11-m1#13', '-', 'head_whole')
+
+post-identity splits (A,B,D,G) = 53 | identity splits (C,E,F) = 16
