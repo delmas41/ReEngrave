@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.136 landed, flag split (land merge dfba2439)
+Merged lane-2.136-step2 (head ffb82ac0), then split its one flag (Sean 2026-10-15). `OMR_INFER_CARRIED_METER_FIX` is default ON, W1 only (`infer.carried_meter_fix_enabled`, read in `inferences._printed_meter_roots`; deny-list). `OMR_INFER_LEDGER_OWNER_HEADS` is default OFF, W2 only (`infer.ledger_owner_heads_enabled`, read in `inferences.solve_bare_stem_bar`, passed to `consequences._bar_heads_are_clean`); held for 2.141 (Litolff tiles 6 and 10). Takes effect when records are re-decided and at the next re-gather; no gather run. Fast tier 8093 passed, check 192.
+
 ## 2026-10-15 -- ROADMAP 2.126 landed, two switches ON (land merge abb02244)
 Merged lane-2.126-beam-flag (head 6046e2fb). `OMR_BEAM_JOIN_LINE_BRIDGE` and `OMR_HOOKS_LINE_BRIDGE` now default ON (`gather.beam_join_line_bridge_enabled`, `gather.hooks_line_bridge_enabled`, deny-list like `OMR_TIP_UNBLOCKED`); Sean's 9 tiles 9/9. `thin_run_stack` and `pair_flag_curve` stay OFF. GATHER readers: they reach records only at the next re-gather. Tests: tools/omr/tests/test_staged_beam_flag_2_126.py (default ON, off-word restores).
 
