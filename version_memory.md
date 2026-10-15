@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.133 landed, switch OFF
+Merged lane-2.133-staccatissimo-tip into main with `OMR_MARK_SHAPE_LINE_REMOVED` default OFF (measurement-only reader; output unchanged with the flag off; OFF test in test_staged_mark_shape_line_removed_2_133.py). Sean: "After all our open lanes land"; tiles not yet judged.
+
 ## 2026-10-15 -- ROADMAP 2.132 landed, switch OFF
 Merged lane-2.132-hollow-stacked into main with `OMR_STACKED_HOLLOW_PAIR` default OFF (output unchanged with the flag off; OFF test in test_staged_stacked_hollow_pair_2_132.py). Sean: "After all our open lanes land"; tiles not yet judged, so the default waits for them.
 
