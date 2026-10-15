@@ -58,3 +58,12 @@ check / reach / readout / wiring test files: 65 passed. **The full fast tier did
   night's side uses that night's own export.
 
 Reports: `20261013-night/beethoven5-litolff.report.md|json`, `brahms1-breitkopf.report.md|json`, `check.txt`.
+
+## 2.135 -- the balance row counted only the exporter's drops (STAGED, report only)
+Section 9 row "refusal vs exporter drop" had `{"exporter dropped"}` as its only out, so a refused box that 2.80b then
+wrote as an eighth rest (2.122, `part_join.refusals_reinstated`) showed as an imbalance. 20261014-night Brahms
+`not_a_notehead:too_narrow`: record 3,407 = 3,315 dropped + 92 read as rests, printed IMBALANCE +92. The row now has
+"read as rest" as its own part, and the section-5 line (which already used `agrees`) prints dropped + read-as-rest and the
+same signed figure. Tests (`test_regather_report.py`): the Brahms-shaped facts failed before the fix (+92 printed); a box
+that truly goes nowhere (3,407 / 3,315 / 0) still reports an imbalance. Re-rendered from the saved facts + coverage (no
+gather): section 9 reads 77 of 77 rows balance. `check` open count unchanged at 192.

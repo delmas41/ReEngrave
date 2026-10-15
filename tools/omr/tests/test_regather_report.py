@@ -184,6 +184,31 @@ def test_the_refusal_crosscheck_counts_a_box_read_as_a_rest():
     assert not RR._refusal_crosscheck(facts, cov)[0]["agrees"]      # a control that can fail
 
 
+def _md_with_refusal(refused, dropped, reinstated):
+    facts = RR.extract_facts(_record())
+    rep = RR.build_report(facts, {"families": []}, None, "now")
+    rep["refusals_vs_export_drops"] = [{
+        "reason": "not_a_notehead:too_narrow", "record_refused": refused,
+        "export_dropped": dropped, "export_read_as_rest": reinstated,
+        "agrees": refused == dropped + reinstated}]
+    return RR.render_md(rep)
+
+
+def test_2_135_a_refusal_written_as_a_rest_is_not_an_imbalance():
+    # 20261014-night Brahms: 3,407 refused = 3,315 dropped + 92 read as eighth rests
+    md = _md_with_refusal(3407, 3315, 92)
+    assert "refusal vs exporter drop" not in md        # balanced rows are not listed
+    assert "IMBALANCE +92" not in md
+    assert not [l for l in md.splitlines() if "too_narrow" in l and "IMBALANCE" in l]
+
+
+def test_2_135_a_box_that_truly_goes_nowhere_is_still_an_imbalance():
+    md = _md_with_refusal(3407, 3315, 0)
+    lines = [l for l in md.splitlines() if "refusal vs exporter drop" in l]
+    assert lines and "IMBALANCE +92" in lines[0]
+    assert any("too_narrow" in l and "IMBALANCE -92" in l for l in md.splitlines())
+
+
 def test_the_overnight_compare_writes_the_report_as_a_last_harmless_step():
     from pathlib import Path
     sh = (Path(__file__).resolve().parents[3] / "benchmarks/acceptance/overnight/compare_20261009.sh").read_text()

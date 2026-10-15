@@ -1245,12 +1245,12 @@ def render_md(rep: Dict[str, Any], prev: Optional[Dict[str, Any]] = None) -> str
         for k, v in sorted(nwr.items(), key=lambda kv: -kv[1])[:12]:
             a(f"- {k}: {_d(v, pn.get(k) if P else None)}")
         a("")
-    rc_ = [r for r in rep["refusals_vs_export_drops"] if r["record_refused"] or r["export_dropped"]]
+    rc_ = [r for r in rep["refusals_vs_export_drops"] if r["record_refused"] or r["export_dropped"] or r.get("export_read_as_rest")]
     bad_r = [r for r in rc_ if not r["agrees"]]
     a(f"Two stages, one fact: the record's refusals (ADJUDICATE) against the exporter's drop reasons of the same name: "
       f"{len(rc_) - len(bad_r)} of {len(rc_)} reasons agree exactly.")
     for r in bad_r:
-        a(f"- {r['reason']}: record {r['record_refused']}, exporter {r['export_dropped']} -> **IMBALANCE {r['export_dropped'] - r['record_refused']:+}**")
+        a(f"- {r['reason']}: record {r['record_refused']}, exporter dropped {r['export_dropped']} + read as rest {r.get('export_read_as_rest', 0)} -> **IMBALANCE {r['export_dropped'] + r.get('export_read_as_rest', 0) - r['record_refused']:+}**")
     a("")
     xs = rep.get("glyph_verdict_crosscheck") or {}
     bad_x = [r for r in xs.values() if not r["balanced"]]
@@ -1388,9 +1388,12 @@ def render_md(rep: Dict[str, Any], prev: Optional[Dict[str, Any]] = None) -> str
     if rep.get("bar_balance"):
         bal_rows.append(rep["bar_balance"])
     for r in rep["refusals_vs_export_drops"]:
-        if r["record_refused"] or r["export_dropped"]:
+        if r["record_refused"] or r["export_dropped"] or r.get("export_read_as_rest"):
+            # ROADMAP 2.135: a refusal written as an eighth rest (2.122) is
+            # accounted for, so it is its own part of the row.
             bal_rows.append(_balance(f"refusal vs exporter drop: {r['reason']}", r["record_refused"],
-                                     {"exporter dropped": r["export_dropped"]}))
+                                     {"exporter dropped": r["export_dropped"],
+                                      "read as rest": r.get("export_read_as_rest", 0)}))
     for c in rep["bars"].get("states_checks") or []:
         bal_rows.append(_balance(c["name"], c["exporter"], {"file": c["file"]}, "file vs exporter"))
     bal_rows.append(_balance("red marks: empty + held out + partial = written",
