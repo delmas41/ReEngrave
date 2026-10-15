@@ -3943,3 +3943,94 @@ are W2. W1 is right on every tile where it fired (4/4 here, and 8 of Sean's earl
 landing on the WRONG combination: we settled 16, 16, 4 and Sean reads 8, 8, 8, so the sum inherits a misread elsewhere in the bar. Tile 10 counted a
 whole rest as a notehead and summed two voices as one: we settled quarter + eighth, Sean reads a whole rest and a quarter in different voices. The two
 Litolff failures say W2 should not ship ON until those causes are understood; W1 has no failure on the print so far (Brahms only).
+
+## 2.141 -- why W2 (`ledger_owner_aware`) failed on Litolff tiles 6 and 10 (2026-10-15, DIAGNOSIS ONLY)
+
+PATH: STAGED INFER (`inferences.solve_bare_stem_bar(any_reason=True)`) reading ADJUDICATE's verdicts. No product code, no flag, no gather.
+`lane-2.141-litolff-w2` off `lane-2.136-step2`. Records: the 20261014-night Litolff and Brahms records, loaded once via `record_io.load_record`,
+verdicts inserted as written (probes `probe/causes_2_141.py`, `geom_2_141.py`, `tiles_2_141.py`; outputs `out/2.141/`). Control: the probe's as-written W2
+settlements reproduce tiles 6 and 10 exactly, so the instrument sees the failures.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: ASSUMED that a whole rest printed under the staff in a bar whose notes stand above is the lower voice's
+bar rest (Litolff displaces it; 3 bars; Sean's tile 10 answer agrees), and that one beam over eighths is one level. FALSIFIED BY Sean reading those bars otherwise.
+NOT CONFIRMED: the fixes in 2.141d; nothing was built.
+
+### 2.141a. Tile 6 (Litolff p5 sys0 staff0 cell6)
+
+Human reading (600 dpi crop, nothing drawn): an eighth rest, then three beamed eighths, on one staff written as two voices in unison (stems up with the beam over
+the heads, stems down with a beam under them); the voices agree. Sean: 8, 8, 8.
+
+Record (cell 5/0/0/6): events rest8th (g6, decided 0.5), g1, g4 (g5 a refused duplicate box), g0; one voice. g1 and g4 narrowed {eighth 1 level, sixteenth 2 levels}
+`beams_ambiguous`; g0 narrowed {quarter 0, sixteenth 2} `beam_certain_not_joined`. The bar is 2.0 = 0.5 + 1.5 and **8,8,8 adds up as well as 16,16,4**: no missed event,
+no extra box, no dot, rest right, meter right. The rule landed on 16,16,4 only because g0 has NO eighth candidate, so the single landing is wrong. The error is in the
+candidates; the bar sum can only inherit it.
+
+Why the sixteenth candidates existed (beam-level reader, `rhythm.py` duration, the 2.75 per-voice path): g1/g4 `beam_voices` up [1,1] (the top beam) but **down [2,2]**.
+The down count is two strokes: the real bottom beam (stroke 079966, 0.65 space thick) AND stroke 079965, a long stroke that on the page is the LEDGER LINE the heads stand on
+(page x 1372-1452, y 448-454; its right end is the short tail past the third head), counted as a second level because strokes are counted by column. The thickness
+measure (`Q.BEAM_STROKE_INK`: top beam 0.59, bottom 0.65, the ledger stroke 0.82 merged with the heads) is read and never checked against the level count.
+g0 failed differently: `Q.HEAD_STEM_REACH` read `down` only (`up_ext` -0.02; the up stem stands at the head's right edge) while the CV head_stem verdict says a stem each way
+(`unison_two_voices`). `_own_stem_side` takes the ruler's single direction, so side=down, the top beam is "far side", the down strokes count: certain 2, two certain
+conflicts, candidates {0, 2}. Level 1, the truth, is not among them.
+
+For 2.140 (a double beam read as one): this is the mirror and the same missing check. Levels are a count of strokes by column; nothing asks whether a stroke is a beam
+(about one beam thick, a stem ends at it, not the ledger line under the head) or whether a thick stroke is two beams (about twice the thickness, 0.58-0.65 space for one here).
+
+### 2.141b. Tile 10 (Litolff p3 sys1 staff0 cell8): two causes in the sum's inputs
+
+Human reading: two quarters above the staff (stems up, a slur arriving on the first stem) and under the bottom line a whole rest, the lower voice's bar rest. Sean: whole rest, 4.
+
+Record: g2 DECIDED eighth (0.5, 1 level), g1 narrowed {quarter, eighth}, g4 narrowed {half, quarter, whole}, g9 `restWhole` ABSTAINED. Bar 2/4.
+1. **The whole rest stood as a notehead (cause W).** The detector boxed it twice: `restWhole` g9 and `noteheadBlackInSpace` g4, same ink. `notehead_is_a_whole_rest` on g4 is
+   DECIDED true (`shape_and_position_agree`, witness the neighbouring bar). EXPORT honours it (`ink_is_a_whole_rest` refuses the box) and `size_measure_rest` honours it, but only
+   when the bar's single decided rest has a decided twin; `consequences._left_the_bar` (`_LEAVES_THE_BAR` = not-a-notehead, not-a-rest) does not know it, so INFER's sum counts g4.
+   g9 is ABSTAINED (`rest_stands_where_no_rest_hangs`: the displaced position is on neither the whole nor the half convention), which also defeats the twin test.
+2. **A wrong DECIDED neighbour (cause S).** g2 is DECIDED an eighth from `yolo_kept 1, cv_beams 0`: the detector's `beam` box g7 is the slur's end (a thin arc);
+   `beam_stroke_ink` and `stem` were declined, no ink witness read it, and no decided arc covers it. g1's eighth candidate comes from the same box.
+The only landing is 0.5 + 1.0 (g4) + 0.5 (g1) = 2.0. "Two voices as one": `adjudicate_voices` says one voice (the second voice is a stemless rest it cannot see), and the sum never reads `Q.VOICES`.
+
+Why W2 exposed it: main declined this bar (`heads_not_this_staffs_own`) because g1/g2 stand above the staff. They ARE this staff's (ledger lines name the owner), so W2's
+stand-down was right, and the refusal had been hiding two older faults in the bar's other inputs. In-process what-if (`_left_the_bar` also taking a decided whole-rest-ink box out):
+tile 10 becomes `bar_does_not_add_up`, a refusal, the safe answer.
+
+### 2.141c. How many of W2's bars share each cause (record test, `out/2.141/causes-*.json`)
+
+W = a sum member with DECIDED `notehead_is_a_whole_rest` true. U = an ABSTAINED standing duration in the bar (an element nobody sized; the sum skips it as zero time).
+S = a DECIDED note whose only beam evidence is a detector box (`cv_beams 0`, `yolo_kept >= 1`). T6 = a member whose CV `head_stem` verdict says a stem each way and whose
+beam levels were counted one-sided, or per voice with unequal counts.
+
+| test | Litolff (19 W2 bars) | Brahms (4 W2 bars) | control: Sean's right bars (Brahms 1, 7, 12; Litolff 9) |
+|---|---|---|---|
+| W whole-rest ink counted | 1 (tile 10) | 0 | 0 of 4 flagged: passes |
+| U abstained element skipped | 3 (tile 10, p11 cells 0/0/10 and 0/0/16) | 0 | 0 of 4: passes |
+| T6 stem each way, levels one-sided or unequal | 3 (tile 6, p5 0/0/1, p7 0/3/12) | 0 | 0 of 4: passes |
+| S yolo-only decided beam | 1 (tile 10) | 2 | flags Brahms tile 12 (right): FAILS, dropped |
+| T6 first draft (reach ruler 'both', any stem each way) | 8 | 2 | flags Brahms 1 and 7 (right): FAILS, replaced by the CV head_stem condition |
+
+6 of Litolff's 19 bars share an accepted cause (tile 10 W+U, tile 6 T6, two more U, two more T6); 0 of Brahms' 4. No cause covers more than 3 of the 19. 13 Litolff and 4 Brahms
+bars are flagged by nothing; Sean saw one of those (Litolff 9, right). Crops: the two other U bars (p11 0/0/10, 0/0/16) print two quarters over the same displaced whole
+rest and the record settles quarter, quarter: right, by luck of the unbeamed candidate, so U alone does not predict failure. The two other T6 bars are tiles, unjudged.
+
+### 2.141d. Fixes of the CAUSE (proposed, not built; each general, none narrows W2 to a publisher)
+
+1. **Count a beam level only from a stroke that is a beam** (`rhythm.py` duration; evidence from the page raster and head/stem geometry, a different source from the strokes).
+   A stroke the head's own stem passes through, or lying under a ledger-line head and as thick as the ledger line, is not a level; a stroke about twice one beam is two.
+   Falsifier: any bar Sean has judged right whose value changes. Also gives 2.140 its direction.
+2. **`_own_stem_side` must not take the ruler's single direction when the CV head_stem verdict has a stem each way** (ADJUDICATE). Falsifier: a head with a CV stem each way
+   whose one-sided ruler reading was right on a printed page.
+3. **A decided `notehead_is_a_whole_rest` box leaves the bar for every consumer** (EVALUATE `_left_the_bar`, the verdict EXPORT already honours), and an ABSTAINED standing duration
+   makes INFER's sum decline (rule 8: "cannot tell" is not zero time). Falsifier: a decided-true whole-rest-ink box that is a real note (none seen; 30 Litolff twins in 2.98).
+   Cost: the two U bars above stop settling (they were right).
+4. **A detector `beam` box with no CV stroke and no ink reading may narrow to an eighth but not DECIDE one.** Its test fails its control (Brahms tile 12), so it needs tiles first.
+
+W2 itself stays OFF until 1-3 land: it is right in principle, and the refusal had been protecting these bars.
+
+### 2.141e. Blind tiles for Sean (`out/print/2.141-review/`, 6 tiles, key hidden at `out/2.141/tiles-key.json`)
+
+The 2.136 tile (RED corners = the bar, BLUE corners = each note W2 settles, nothing of ours drawn): 2 more T6 bars, 2 more U bars, 2 unflagged bars (stem each way by the ruler only) as
+controls. Only 4 other bars share an accepted cause, so 4 shared-cause tiles, not 6 to 8. Not judged by the lane. The question also asks what a second voice holds.
+
+### 2.141f. Limits
+
+Litolff mvt 1 and Brahms mvt 1, one night's records; n = 3 per cause. The ledger-line reading of stroke 079965 is box geometry mapped to page pixels, not an ink test. W is Litolff-only
+evidence. Every count is of what the record holds, not of what is right.

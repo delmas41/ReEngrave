@@ -1,0 +1,3700 @@
+[
+ {
+  "cell": [
+   3,
+   1,
+   0,
+   8
+  ],
+  "tag": "sean_tile10_wrong",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [
+   4
+  ],
+  "U": [
+   9
+  ],
+  "S": [
+   2
+  ],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "4": [
+     1.0,
+     0
+    ],
+    "1": [
+     0.5,
+     1
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": "bar_does_not_add_up",
+   "landings": 0,
+   "settled": {},
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     1540.0725,
+     2275.1325,
+     1563.855,
+     2294.6625
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "is_rest": false,
+    "beats": 0.5,
+    "beam_levels": 1,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 1,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     1481.955,
+     2250.72,
+     1502.2725,
+     2269.935
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "narrowed",
+    "reason": "head_fill_from_ink",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      2.0,
+      0
+     ],
+     [
+      1.0,
+      0
+     ],
+     [
+      4.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": true,
+    "reach": null,
+    "head_stem_reason": "no_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1517.0775,
+     2381.13,
+     1537.71,
+     2392.155
+    ]
+   },
+   {
+    "glyph": 9,
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1515.1875,
+     2380.815,
+     1537.71,
+     2391.9975
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   4,
+   1,
+   3,
+   5
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   7
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "3": [
+     1.0,
+     0
+    ],
+    "7": [
+     1.0,
+     0
+    ],
+    "0": [
+     1.0,
+     0
+    ],
+    "4": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "3": [
+     1.0,
+     0
+    ],
+    "7": [
+     1.0,
+     0
+    ],
+    "0": [
+     1.0,
+     0
+    ],
+    "4": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1261.4575,
+     2563.1,
+     1283.98,
+     2583.26
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1210.1125,
+     2540.105,
+     1231.8475,
+     2560.7375
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1261.4575,
+     2595.3875,
+     1284.61,
+     2612.7125
+    ]
+   },
+   {
+    "glyph": 7,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1202.5525,
+     2561.9975,
+     1232.635,
+     2579.795
+    ]
+   },
+   {
+    "glyph": 9,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1212.0025,
+     2561.21,
+     1232.635,
+     2579.9525
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   5,
+   0,
+   0,
+   1
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   2,
+   4,
+   8,
+   9
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "8": [
+     0.5,
+     1
+    ],
+    "9": [
+     0.5,
+     1
+    ],
+    "2": [
+     0.5,
+     1
+    ]
+   },
+   "ambiguous": 0,
+   "members": 3
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "8": [
+     0.5,
+     1
+    ],
+    "9": [
+     0.5,
+     1
+    ],
+    "2": [
+     0.5,
+     1
+    ]
+   },
+   "ambiguous": 0,
+   "members": 3
+  },
+  "elems": [
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 5,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      1,
+      1
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     785.44,
+     391.64,
+     809.92,
+     411.15999999999997
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "is_rest": false,
+    "beats": 0.5,
+    "beam_levels": 1,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "two_stems",
+    "cv_beams": 5,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      0,
+      0
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     665.6,
+     488.6,
+     687.52,
+     509.4
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     788.64,
+     615.64,
+     808.0,
+     627.0
+    ]
+   },
+   {
+    "glyph": 8,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "two_stems",
+    "cv_beams": 5,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      1,
+      1
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     738.4,
+     390.84,
+     761.92,
+     409.72
+    ]
+   },
+   {
+    "glyph": 9,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 5,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      1,
+      1
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     764.3199999999999,
+     394.84,
+     783.36,
+     409.4
+    ]
+   },
+   {
+    "glyph": 10,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     736.48,
+     616.92,
+     757.44,
+     627.0
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   5,
+   0,
+   0,
+   6
+  ],
+  "tag": "sean_tile6_wrong",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   0,
+   1,
+   4
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     0.25,
+     2
+    ],
+    "4": [
+     0.25,
+     2
+    ],
+    "0": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 3
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     0.25,
+     2
+    ],
+    "4": [
+     0.25,
+     2
+    ],
+    "0": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 3
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_certain_not_joined",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.25,
+      2
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 3,
+    "yolo_kept": 0,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 2,
+    "levels_possible": 2,
+    "certain_conflicts": 2,
+    "box": [
+     1424.64,
+     427.64,
+     1447.52,
+     447.64
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      0.25,
+      2
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 3,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      1,
+      1
+     ],
+     "down": [
+      2,
+      2
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "certain_conflicts": null,
+    "box": [
+     1373.6,
+     427.8,
+     1395.2,
+     450.52
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      0.25,
+      2
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 3,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      1,
+      1
+     ],
+     "down": [
+      2,
+      2
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "certain_conflicts": null,
+    "box": [
+     1398.88,
+     426.68,
+     1419.2,
+     445.56
+    ]
+   },
+   {
+    "glyph": 5,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      0.25,
+      2
+     ]
+    ],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 3,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      1,
+      1
+     ],
+     "down": [
+      2,
+      2
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "certain_conflicts": null,
+    "box": [
+     1398.88,
+     429.08,
+     1417.92,
+     449.56
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "decided",
+    "reason": "rest_class",
+    "is_rest": true,
+    "beats": 0.5,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1351.68,
+     485.08,
+     1378.72,
+     515.8
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   6,
+   0,
+   5,
+   6
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1461.8225,
+     1144.425,
+     1486.3925,
+     1166.6325
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1521.515,
+     1136.0775,
+     1544.3525,
+     1157.97
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   7,
+   0,
+   3,
+   12
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   1,
+   2
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     0.5,
+     1
+    ],
+    "1": [
+     0.5,
+     1
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     0.5,
+     1
+    ],
+    "1": [
+     0.5,
+     1
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 1,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      1,
+      1
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     1996.2,
+     799.84,
+     2017.0,
+     821.76
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      1.0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 1,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      1,
+      1
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "certain_conflicts": null,
+    "box": [
+     1969.48,
+     798.08,
+     1989.96,
+     817.12
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "decided",
+    "reason": "rest_class",
+    "is_rest": true,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1922.92,
+     850.08,
+     1940.2,
+     899.04
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   7,
+   1,
+   9,
+   3
+  ],
+  "tag": "sean_tile9_right",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "8": [
+     1.0,
+     0
+    ],
+    "3": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "8": [
+     1.0,
+     0
+    ],
+    "3": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 2,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     917.84,
+     3513.64,
+     939.6,
+     3529.0
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 4,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     917.04,
+     3362.44,
+     941.04,
+     3383.4
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     867.28,
+     3305.0,
+     892.4,
+     3319.56
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     864.72,
+     3494.76,
+     888.56,
+     3516.84
+    ]
+   },
+   {
+    "glyph": 8,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 4,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     865.68,
+     3345.64,
+     892.4,
+     3366.28
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   9,
+   0,
+   3,
+   10
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ],
+    "6": [
+     1.0,
+     0
+    ],
+    "1": [
+     1.0,
+     0
+    ],
+    "4": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ],
+    "6": [
+     1.0,
+     0
+    ],
+    "1": [
+     1.0,
+     0
+    ],
+    "4": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "elems": [
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1876.1125,
+     815.7925,
+     1900.84,
+     836.2675
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1812.64,
+     798.7825,
+     1838.47,
+     818.785
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1877.3725,
+     872.335,
+     1898.635,
+     891.55
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1812.7975,
+     855.955,
+     1837.6825,
+     875.0125
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   11,
+   0,
+   0,
+   10
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [
+   5
+  ],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "6": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "6": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1672.42,
+     417.5675,
+     1695.415,
+     438.6725
+    ]
+   },
+   {
+    "glyph": 5,
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1649.425,
+     505.925,
+     1672.42,
+     515.5325
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1620.13,
+     387.17,
+     1640.29,
+     404.65250000000003
+    ]
+   },
+   {
+    "glyph": 8,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1619.6575,
+     389.8475,
+     1641.235,
+     407.645
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   11,
+   0,
+   0,
+   16
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [
+   3
+  ],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 2,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     2393.6,
+     427.0175,
+     2414.8625,
+     446.39
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2437.5425,
+     401.8175,
+     2459.2775,
+     423.395
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2416.595,
+     507.185,
+     2438.015,
+     517.4225
+    ]
+   },
+   {
+    "glyph": 5,
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "rest_is_not_a_rest",
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2416.4375,
+     510.02,
+     2438.4875,
+     517.4225
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   12,
+   0,
+   1,
+   9
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   8,
+   9
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ],
+    "8": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ],
+    "8": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 2,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1710.325,
+     513.51,
+     1733.265,
+     535.675
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 2,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1635.305,
+     532.73,
+     1658.4,
+     555.05
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1630.81,
+     684.01,
+     1662.585,
+     693.0
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1706.76,
+     683.855,
+     1735.125,
+     693.0
+    ]
+   },
+   {
+    "glyph": 8,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 2,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1635.305,
+     555.825,
+     1658.865,
+     571.48
+    ]
+   },
+   {
+    "glyph": 9,
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 2,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1708.31,
+     550.865,
+     1737.76,
+     568.69
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   15,
+   0,
+   0,
+   10
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   0,
+   3
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "3": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "3": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      0,
+      0
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1526.7575,
+     345.32,
+     1548.8075,
+     368.63
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1526.7575,
+     509.5925,
+     1552.43,
+     524.87
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1558.5725,
+     508.805,
+     1584.7175,
+     524.87
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "unison_two_voices",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": {
+     "up": [
+      0,
+      0
+     ],
+     "down": [
+      0,
+      0
+     ]
+    },
+    "beam_side": null,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1557.47,
+     337.76,
+     1583.4575,
+     360.5975
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   15,
+   0,
+   8,
+   17
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2162.5375,
+     1707.3775,
+     2184.5875,
+     1728.325
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     2209.315,
+     1725.49,
+     2231.68,
+     1749.745
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   15,
+   1,
+   0,
+   14
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   5,
+   6
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "5": [
+     1.0,
+     0
+    ],
+    "2": [
+     1.0,
+     0
+    ],
+    "6": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "5": [
+     1.0,
+     0
+    ],
+    "2": [
+     1.0,
+     0
+    ],
+    "6": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 4
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1887.94,
+     2108.8825,
+     1910.62,
+     2131.2475
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1886.995,
+     2319.9325,
+     1910.4625,
+     2340.0925
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1915.5025,
+     2118.175,
+     1939.7575,
+     2137.5475
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [],
+    "left_the_bar": "glyph_owner",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "no_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1915.975,
+     2320.5625,
+     1941.3325,
+     2342.14
+    ]
+   },
+   {
+    "glyph": 5,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1888.255,
+     2127.625,
+     1910.1475,
+     2144.7925
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 2,
+    "yolo_kept": 0,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1915.5025,
+     2135.185,
+     1938.8125,
+     2156.605
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   15,
+   1,
+   1,
+   2
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ],
+    "7": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ],
+    "7": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 3,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     789.81,
+     2336.26,
+     812.0175,
+     2358.1525
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     756.735,
+     2327.5975,
+     783.3525,
+     2345.8675
+    ]
+   },
+   {
+    "glyph": 6,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     756.105,
+     2345.71,
+     782.4075,
+     2367.13
+    ]
+   },
+   {
+    "glyph": 7,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 3,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     789.6525,
+     2353.4275,
+     813.2775,
+     2373.2725
+    ]
+   },
+   {
+    "glyph": 13,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 3,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     756.8925,
+     2330.7475,
+     783.3525,
+     2356.105
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   15,
+   1,
+   3,
+   7
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [
+   1
+  ],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ],
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 2
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1243.4625,
+     2593.475,
+     1269.45,
+     2612.8475
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "both",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1244.88,
+     2611.5875,
+     1270.5525,
+     2632.535
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "rest_class",
+    "is_rest": true,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": null,
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1220.1525,
+     2637.7325,
+     1238.265,
+     2689.235
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   16,
+   0,
+   1,
+   2
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "2": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 2,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 3,
+    "beam_voices": null,
+    "beam_side": "down",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     729.12,
+     496.09,
+     754.005,
+     517.51
+    ]
+   },
+   {
+    "glyph": 3,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "down",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     783.1425,
+     484.435,
+     804.09,
+     504.4375
+    ]
+   },
+   {
+    "glyph": 4,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     782.8275,
+     529.6375,
+     805.665,
+     550.585
+    ]
+   },
+   {
+    "glyph": 10,
+    "outcome": "decided",
+    "reason": "rest_class",
+    "is_rest": true,
+    "beats": 4.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": "rest_is_not_a_rest",
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     728.9625,
+     542.5525,
+     753.06,
+     555.4675
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   16,
+   1,
+   5,
+   9
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "1": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1864.64,
+     2868.16,
+     1887.52,
+     2886.56
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1800.48,
+     2840.32,
+     1825.6,
+     2860.48
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1864.32,
+     2808.48,
+     1887.36,
+     2829.6
+    ]
+   },
+   {
+    "glyph": 8,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": "notehead_is_not_a_notehead",
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1798.24,
+     2844.16,
+     1828.48,
+     2854.72
+    ]
+   }
+  ]
+ },
+ {
+  "cell": [
+   16,
+   1,
+   5,
+   10
+  ],
+  "tag": "unseen",
+  "voices": {
+   "n": 1,
+   "why": "one_voice"
+  },
+  "W": [],
+  "U": [],
+  "S": [],
+  "T": [],
+  "w2_as_written": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "whatif_whole_rest_ink_out": {
+   "decline": null,
+   "landings": 1,
+   "settled": {
+    "0": [
+     1.0,
+     0
+    ]
+   },
+   "ambiguous": 0,
+   "members": 1
+  },
+  "elems": [
+   {
+    "glyph": 0,
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "is_rest": false,
+    "beats": null,
+    "beam_levels": null,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": 0,
+    "yolo_kept": 1,
+    "beam_voices": null,
+    "beam_side": "up",
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "certain_conflicts": null,
+    "box": [
+     1948.32,
+     2842.4,
+     1972.96,
+     2862.56
+    ]
+   },
+   {
+    "glyph": 1,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": "up",
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2009.76,
+     2868.16,
+     2032.48,
+     2888.48
+    ]
+   },
+   {
+    "glyph": 2,
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "is_rest": false,
+    "beats": 1.0,
+    "beam_levels": 0,
+    "cand": [
+     [
+      0.5,
+      1
+     ],
+     [
+      1.0,
+      0
+     ]
+    ],
+    "left_the_bar": null,
+    "whole_rest_ink": false,
+    "reach": null,
+    "head_stem_reason": "one_stem",
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     2006.88,
+     2808.64,
+     2030.56,
+     2829.92
+    ]
+   },
+   {
+    "glyph": 7,
+    "outcome": "decided",
+    "reason": "rest_class",
+    "is_rest": true,
+    "beats": 4.0,
+    "beam_levels": 0,
+    "cand": [],
+    "left_the_bar": "rest_is_not_a_rest",
+    "whole_rest_ink": null,
+    "reach": null,
+    "head_stem_reason": null,
+    "cv_beams": null,
+    "yolo_kept": null,
+    "beam_voices": null,
+    "beam_side": null,
+    "levels_certain": null,
+    "levels_possible": null,
+    "certain_conflicts": null,
+    "box": [
+     1946.4,
+     2788.32,
+     1970.08,
+     2803.52
+    ]
+   }
+  ]
+ }
+]
