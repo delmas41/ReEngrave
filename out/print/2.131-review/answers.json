@@ -1,0 +1,18 @@
+{
+ "_sean_2026-10-14": "1. And 12 Part of a flag - all the rest stacatissimo",
+ "_sean_on_the_round_control": "I can see why 12 was a surprise - it is very round for a triangle but it has a pointier rather than rounder tip",
+ "_note": "Tile numbers are the 2.131 sheet (scratch_tiles manifest). Sean's 'round-looking control' is tile 11 (CONTROL_round_staccato); tile 12 was a flag part.",
+ "tile_01": {"answer": "flag_part", "kind": "wedge_no_head_abstained", "ours": "wedge_without_a_head (was augmentation)", "right": true},
+ "tile_02": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_03": {"answer": "staccatissimo", "kind": "wedge_no_head_abstained", "ours": "wedge_without_a_head (dot_role_ambiguous before)", "right": "unread (no head in the centred window)"},
+ "tile_04": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_05": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_06": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_07": {"answer": "staccatissimo", "kind": "CONTROL_detector_staccatissimo", "right": true},
+ "tile_08": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_09": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_10": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true},
+ "tile_11": {"answer": "staccatissimo", "kind": "CONTROL_round_staccato", "ours": "staccato (cut missed it)", "right": false},
+ "tile_12": {"answer": "flag_part", "kind": "wedge_no_head_abstained", "ours": "wedge_without_a_head (was augmentation)", "right": true},
+ "tile_13": {"answer": "staccatissimo", "kind": "changed_staccato_to_staccatissimo", "right": true}
+}
