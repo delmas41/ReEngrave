@@ -46,6 +46,78 @@ def aug_dot_join_enabled() -> bool:
         "0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.128 -- a dot carries its staff position, and the join may use it
+# ─────────────────────────────────────────────────────────────────────────────
+
+DOT_POSITION_JOIN_ENV = "OMR_DOT_POSITION_JOIN"
+_ON_WORDS = ("1", "true", "yes", "on")
+
+
+def dot_position_join_enabled() -> bool:
+    """`OMR_DOT_POSITION_JOIN`, DEFAULT OFF (an allow-list: only an explicit
+    on word turns it on). Until Sean's blind tiles decide it, the join is the
+    box-geometry window alone."""
+    return os.environ.get(DOT_POSITION_JOIN_ENV, "").strip().lower() \
+        in _ON_WORDS
+
+
+#: A dot whose position lies closer than this (in half-steps) to the
+#: line/space boundary has not told us which it is on; so has a head. CONVENTION
+#: ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED -- a cut-off is a
+#: measurement: on Brahms 317803 p.0 the two dots read "on a line" at a space
+#: head had margins 0.01 and 0.00, i.e. noise, and a head's own residual runs
+#: 0.02..0.18 (90th percentile) with parity agreeing with Sean's
+#: OnLine/InSpace labels 406 of 410. One score, one publisher.
+DOT_MIN_MARGIN = 0.1
+HEAD_MAX_RESIDUAL = 0.25
+
+
+def expected_dot_steps(head_step: int) -> Tuple[int, ...]:
+    """The steps an augmentation dot may stand at after a head at `head_step`
+    (an even step is a LINE, an odd one a SPACE; 0 is the top line).
+
+    THE CONVENTION (`docs/page-facts.md`: *a dot sits a space higher on a line
+    note*; registered nowhere else): a dot stands in a SPACE, never on a line --
+    after a note in a space, in that SAME space; after a note on a line, in the
+    space ABOVE (`step - 1`, the usual) or, less often, BELOW (`step + 1`).
+    Measured against Sean's labels on Brahms 317803 p.0: line heads 41 above /
+    19 below / 1 two-above (of 61), space heads 54 of 56 in the same space.
+    """
+    return (head_step,) if head_step % 2 else (head_step - 1, head_step + 1)
+
+
+def _clean_step(pos: float, margin_floor: float) -> Optional[int]:
+    step = int(round(pos))
+    return step if 0.5 - abs(pos - step) >= margin_floor else None
+
+
+def dot_head_compatible(dot_row: Optional[R.Observation],
+                        head_row: Optional[R.Observation],
+                        head_staff_key: Optional[str]) -> Optional[bool]:
+    """Is this dot where an augmentation dot of this head stands?
+
+    `True` / `False`, or `None` -- CANNOT TELL (rule 8: unknown is never
+    "compatible" and never "incompatible"). `None` when either position is
+    missing, the dot was measured against a staff other than the head's, the
+    head stands off the five lines (its step there is a ledger reading this
+    fact does not own), or either reading sits on the line/space boundary.
+    """
+    if dot_row is None or head_row is None or not head_staff_key:
+        return None
+    dd = dot_row.detail or {}
+    if dd.get("staff") != head_staff_key:
+        return None
+    hp = head_row.value
+    if not isinstance(hp, (int, float)) or not 0.0 <= float(hp) <= 8.0:
+        return None
+    h = _clean_step(float(hp), 0.5 - HEAD_MAX_RESIDUAL)
+    d = _clean_step(float(dot_row.value), DOT_MIN_MARGIN)
+    if h is None or d is None:
+        return None
+    return d in expected_dot_steps(h)
+
+
 #: A dot with no decided role counts as "beside" a head when its left edge is
 #: no more than this far right of the head's right edge, and no more than
 #: `UNRESOLVED_MAX_DY_SPACES` above or below its centre. CONVENTION ASSUMED /

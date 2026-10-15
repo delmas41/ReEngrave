@@ -480,6 +480,20 @@ class Q(_Vocab):
     #: keeps the uncorrected reading beside it, so a consumer that disagrees
     #: with the anchor can re-derive without a re-gather.
     ACCIDENTAL_STAFF_POSITION = "accidental_staff_position"
+    #: ⚠️ ROADMAP 2.128 (Sean 2026-10-14: "open the dot item"). WHERE A DOT
+    #: STANDS ON THE STAFF, in `NOTEHEAD_STAFF_POSITION`'s exact unit (half-
+    #: steps from the top line, positive DOWN; an even integer is a LINE, an
+    #: odd one a SPACE), for every `Q.AUG_DOT` box -- augmentation and staccato
+    #: alike, because only this position says which role a dot plays. Filed on
+    #: the dot's own glyph by `gather.gather_dot_positions`, measured against
+    #: the five lines LOCALLY at the dot's own x (CLAUDE.md Sec.5), against the
+    #: nearest staff of the page (a dot cut into one strip may stand on the
+    #: next one). `detail`: `step` (rounded), `on` (line/space), `residual`,
+    #: `margin` (0.5 - residual: how far from the line/space boundary),
+    #: `basis` (`local_ink` | `cell_grid`), `staff`, `home`. An ABSTENTION
+    #: says why (`off_staff` with the signed steps outside, or
+    #: `no_staff_geometry`) -- never a default.
+    DOT_STAFF_POSITION = "dot_staff_position"
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
     #: ⚠️ ROADMAP 2.114 -- A SECOND DETECTOR'S HOLLOW-HEAD BOX, kept as a separate witness. Filed (flag `OMR_SECOND_HOLLOW_DETECTOR`, default
     #: OFF) by `gather.gather_second_hollow` on the glyph it overlaps (a production notehead box: `detail.relation` `agrees` / `disagrees`
@@ -2402,6 +2416,7 @@ CLAIMS: "dict[str, str]" = {
     #: the glyph is a flat rather than a sharp is a separate claim and rides
     #: on `Q.GLYPH_BOX`, where the detector's own argmax already carries it.
     "ACCIDENTAL_STAFF_POSITION": CLAIM.MEASUREMENT,
+    "DOT_STAFF_POSITION": CLAIM.MEASUREMENT,
     "REST_POSITION": CLAIM.MEASUREMENT,
     "ARC_POSITION": CLAIM.MEASUREMENT,
     "ARTICULATION_POSITION": CLAIM.MEASUREMENT,
