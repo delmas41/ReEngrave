@@ -1235,7 +1235,7 @@ TREMOLO_SLASH_SHIPS = True
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.137 -- a slash is never oval, so it need not stand away from the
-# stem's ends. `OMR_SLASH_AT_STEM_END`, STAGED, default OFF.
+# stem's ends. `OMR_SLASH_AT_STEM_END`, STAGED, default ON since 2026-10-15 (Sean: 5/5 fixed, 3/3 controls).
 #
 # Sean, 2026-10-15 (page-facts §1, general scope): *"They are never oval shaped
 # - always thick diagonal lines."* The 20261014-night records (FINDINGS 2.137)
@@ -1251,7 +1251,7 @@ TREMOLO_SLASH_SHIPS = True
 # diagonal, across both sides of one stem" is the convention and decides. The
 # numbers are 2.49's existing cut-offs (elongation, fill ceiling) plus two
 # measured on these two plates only (angle band, fill floor); they are filed as
-# margins, and the flag ships OFF until Sean has read the tiles.
+# margins; Sean read the tiles and landed it ON (tile 9, a deformed half note, is refused and accepted).
 SLASH_AT_STEM_END_ENV = "OMR_SLASH_AT_STEM_END"
 #: degrees off horizontal. A slash crosses a stem sideways: the confirmed ones
 #: read 10.3-34.8; a quarter rest's zigzag reads 64-67 and is not asked.
@@ -1263,9 +1263,9 @@ NOT_OVAL_MIN_FILL = 0.15
 
 
 def slash_at_stem_end_enabled() -> bool:
-    """Only an explicit on-word is ON."""
-    return os.environ.get(SLASH_AT_STEM_END_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Default ON (Sean 2026-10-15, ROADMAP 2.137): a deny-list -- only an explicit off-word restores the old reader."""
+    return os.environ.get(SLASH_AT_STEM_END_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 def _not_oval_slack(cross_detail: Dict[str, Any]

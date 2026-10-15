@@ -1,5 +1,5 @@
 """ROADMAP 2.137 -- a tremolo slash is never oval, so it need not stand away
-from the stem's ends (`OMR_SLASH_AT_STEM_END`, STAGED, default OFF).
+from the stem's ends (`OMR_SLASH_AT_STEM_END`, STAGED, default ON since 2026-10-15).
 
 Sean, 2026-10-15 (page-facts §1): *"They are never oval shaped - always thick
 diagonal lines."* The 20261014-night records keep print-confirmed slashes as
@@ -41,7 +41,7 @@ ENV = NP.SLASH_AT_STEM_END_ENV if hasattr(NP, "SLASH_AT_STEM_END_ENV") \
 
 
 def _flag(on):
-    return unittest.mock.patch.dict(os.environ, {ENV: "1" if on else ""})
+    return unittest.mock.patch.dict(os.environ, {ENV: "1" if on else "0"})
 
 
 def _slash_at_tip(*, angle=20.2, elong=2.63, fill=0.535, left=0.42,
@@ -74,15 +74,18 @@ def _verdict(log, g):
 
 class TestFlagDefault(unittest.TestCase):
 
-    def test_off_unless_an_on_word(self):
-        with _flag(False):
-            self.assertFalse(NP.slash_at_stem_end_enabled())
-        with unittest.mock.patch.dict(os.environ, {ENV: "off"}):
-            self.assertFalse(NP.slash_at_stem_end_enabled())
-        with _flag(True):
+    def test_default_ON_and_only_an_off_word_restores_the_old_reader(self):
+        env = {k: v for k, v in os.environ.items() if k != ENV}
+        with unittest.mock.patch.dict(os.environ, env, clear=True):
             self.assertTrue(NP.slash_at_stem_end_enabled())
+        for word in ("0", "", "false", "no", "off", "OFF"):
+            with unittest.mock.patch.dict(os.environ, {ENV: word}):
+                self.assertFalse(NP.slash_at_stem_end_enabled(), word)
+        for word in ("1", "on", "true", "typo"):
+            with unittest.mock.patch.dict(os.environ, {ENV: word}):
+                self.assertTrue(NP.slash_at_stem_end_enabled(), word)
 
-    def test_default_OFF_a_slash_at_the_stem_tip_is_still_kept_as_today(self):
+    def test_off_word_a_slash_at_the_stem_tip_is_still_kept_as_today(self):
         """The 2.49 behaviour is untouched with the flag off: position fails,
         the box stays a head (the residue this lane measured)."""
         log, g = _slash_at_tip()

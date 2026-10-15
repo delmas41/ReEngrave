@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- ROADMAP 2.137 landed ON (tremolo slash at the stem end)
+STAGED ADJUDICATE, `OMR_SLASH_AT_STEM_END` default ON (`notehead_precision.slash_at_stem_end_enabled`; explicit `0/false/no/off` disables): a non-oval box crossing a stem is refused as a slash without 2.49's position test. 49 slashes stood as heads (Brahms 37, Litolff 12). Sean's 10 tiles: 5/5 fixed, 3/3 controls, tile 9 (deformed half note) refused and accepted. Land merge 6643c70e. Reaches records at the next re-decide/re-gather.
+
 ## 2026-10-15 -- ROADMAP 2.126 landed, two switches ON (land merge abb02244)
 Merged lane-2.126-beam-flag (head 6046e2fb). `OMR_BEAM_JOIN_LINE_BRIDGE` and `OMR_HOOKS_LINE_BRIDGE` now default ON (`gather.beam_join_line_bridge_enabled`, `gather.hooks_line_bridge_enabled`, deny-list like `OMR_TIP_UNBLOCKED`); Sean's 9 tiles 9/9. `thin_run_stack` and `pair_flag_curve` stay OFF. GATHER readers: they reach records only at the next re-gather. Tests: tools/omr/tests/test_staged_beam_flag_2_126.py (default ON, off-word restores).
 
