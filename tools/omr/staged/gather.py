@@ -8451,10 +8451,27 @@ STACKED_BLOB_ROW_FILL = 0.3
 STACKED_BLOB_BRIDGE_SPACES = 0.2
 
 #: The blob must reach this fraction of the height two heads at the pair's own
-#: spacing would have (`gap/2 + 1` spaces: 2.0 for a third) -- measured on the
-#: 5 twins (2.17-2.25 spaces) against every close pair on the page that is NOT
-#: two heads (0.6-1.3): a wide gap either side of 1.8.
-STACKED_BLOB_MIN_FRACTION = 0.9
+#: spacing would have (`gap/2 + 1` spaces: 2.0 for a third, so 1.6). Measured IN
+#: THE CELL (the staff-line-removed raster the fit reads) on Brahms pdf 0: the 5
+#: twins read 1.74-2.23 spaces -- SHORTER than on the page raster (2.17-2.39),
+#: so a 1.8 cut calibrated on the page lost 3 of the 5 -- and the pairs that are
+#: not two heads read 0.6-1.3 on the page. A head with a ledger line or a slur
+#: touching it reads up to 1.76 in the cell (Brahms pdf 1), so the blob is the
+#: SECOND witness, never the first: see `STACKED_BOX_SPREAD_MIN_POSITIONS`.
+STACKED_BLOB_MIN_FRACTION = 0.8
+
+#: The detector's OWN boxes must stand at two heads' distance: the lowest and
+#: highest box of the group at least this many half-steps apart (a third is 2;
+#: the twins' boxes read 1.89-2.12 apart, the two false near-misses on Brahms
+#: pdf 1 -- one head boxed twice, plus a ledger line -- 0.38 and 0.40). The first
+#: witness: the fit never adds a head the detector did not box at a second
+#: head's place.
+STACKED_BOX_SPREAD_MIN_POSITIONS = 1.5
+
+#: Each of the pair's two slots must hold this much ink (the existing floor is
+#: 0.4 + margin; the twins' weaker slot reads 0.81-0.89, a head on blank paper
+#: or a neighbour's edge well under).
+STACKED_BLOB_MIN_SLOT_FILL = 0.75
 
 #: How far above and below the pair's midpoint the column is read (spaces).
 STACKED_BLOB_WINDOW_SPACES = 2.5
@@ -8524,11 +8541,17 @@ def stacked_blob_height_spaces(img: Any, cx: float, mid_y: float,
 
 def _stacked_slots_have_boxes(positions: Sequence[int],
                               observed: Sequence[float]) -> bool:
-    """Every fitted slot has a detector box within one half-step of it -- the
-    second head is the detector's own, never one the ink fit alone would add."""
-    if not observed:
+    """The detector drew a box at each of the pair's two heads -- the group's
+    lowest box (smallest position) within one half-step of the lower slot, its
+    highest within one of the upper, and the two at least
+    `STACKED_BOX_SPREAD_MIN_POSITIONS` apart. One head boxed twice (spread
+    ~0.4) can never pass, whatever the ink says."""
+    if len(observed) < 2 or len(positions) != 2:
         return False
-    return all(min(abs(o - p) for o in observed) <= 1.0 for p in positions)
+    lo, hi = min(observed), max(observed)
+    return (hi - lo >= STACKED_BOX_SPREAD_MIN_POSITIONS
+            and abs(lo - positions[0]) <= 1.0
+            and abs(hi - positions[1]) <= 1.0)
 
 
 def _stacked_stem_xywh(value: Any) -> Optional[Tuple[float, float, float, float]]:
@@ -8733,6 +8756,7 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
             prev_mean = mean_k
         elif (blob_height_fn is not None and k == 2
               and fill_gap > STACKED_HEAD_FIT_MARGIN
+              and min_slot >= STACKED_BLOB_MIN_SLOT_FILL
               and mean_gap <= -STACKED_HEAD_FIT_MARGIN
               and positions_k[1] - positions_k[0] == STACKED_HEAD_MIN_GAP_POSITIONS
               and _stacked_slots_have_boxes(positions_k, observed)):

@@ -51,6 +51,15 @@ def _twin_ink(positions=(-1.1, 1.02), cut=True, h=400, w=200):
     return img, cx
 
 
+def _split_twin_ink():
+    """The twin shape with the two heads pulled apart by a blank band between them (not one blob): both slots hold
+    ink, both boxes stand at two heads' distance, the ink column is one head tall."""
+    img, cx = _twin_ink()
+    y = int(TOP + (OBS_TWIN[0] + OBS_TWIN[1]) / 2.0 * HALF)
+    img[y - 7:y + 7, int(cx - 0.6 * SPACING):int(cx + 0.6 * SPACING)] = 255
+    return img, cx
+
+
 def _one_head_ink(p=0.0, h=400, w=200):
     img = _paper(h=h, w=w)
     cx = w / 2.0
@@ -115,17 +124,32 @@ class TestFitWithTheBlobWitness(unittest.TestCase):
         self.assertEqual(fit["k"], 1)
         self.assertIsNone(fit["second_head_by"])
 
-    def test_a_box_on_no_head_stays_refused_and_says_how_close_it_came(self):
-        """One head, a second box a space away over blank paper under the same stem: the pair's slots both hold
-        enough ink to be examined, the blob is one head tall, so k=1 AND the near-miss is recorded."""
+    def test_a_box_on_blank_paper_stays_refused(self):
+        """One head, a second box a space away over (nearly) blank paper: the slot is too weak to be examined."""
         img, cx = _one_head_ink(p=0.0)
         fit = self._fit(img, cx, [-1.0, 1.0])
+        self.assertEqual(fit["k"], 1)
+        self.assertIsNone(fit["second_head_by"])
+
+    def test_two_inked_slots_that_are_not_one_blob_stay_refused_and_say_how_close_it_came(self):
+        """Both slots hold ink, the boxes are a third apart, but the column is one head tall: refused, with the
+        pair, the blob height and the height it needed on the row (ROADMAP 2.106)."""
+        img, cx = _split_twin_ink()
+        fit = self._fit(img, cx, OBS_TWIN)
         self.assertEqual(fit["k"], 1)
         self.assertIsNone(fit["second_head_by"])
         nm = fit["near_miss"]
         self.assertIsNotNone(nm)
         self.assertLess(nm["blob_spaces"], nm["needed_spaces"])
         self.assertEqual(nm["positions"], [-1, 1])
+
+    def test_one_head_boxed_twice_over_a_two_head_blob_stays_one_head(self):
+        """The detector drew its two boxes ON ONE head (0.4 half-steps apart): the ink being two heads tall does not
+        add a head the detector never boxed. (Brahms pdf 1: a head with a ledger line, boxed twice, read 1.76.)"""
+        img, cx = _twin_ink()
+        fit = self._fit(img, cx, [-0.2, 0.2])
+        self.assertEqual(fit["k"], 1)
+        self.assertIsNone(fit["second_head_by"])
 
     def test_a_slot_with_no_detector_box_is_never_added(self):
         """The fit may not add a head the detector never boxed: both boxes sit at one slot."""
@@ -188,8 +212,8 @@ class TestGatherBehindTheFlag(unittest.TestCase):
 
 class TestTheRefusalRecordsTheNearMiss(unittest.TestCase):
     def test_a_refused_box_carries_the_near_miss_of_its_group(self):
-        img, cx = _one_head_ink(p=0.0)
-        dets = [_detection("noteheadBlackInSpace", cx, TOP + p * HALF) for p in (-1.0, 1.0)]
+        img, cx = _split_twin_ink()
+        dets = [_detection("noteheadBlackInSpace", cx, TOP + p * HALF) for p in OBS_TWIN]
         cell = _cell(img)
         sub = R.cell(0, 0, 0, 0)
         with mock.patch.dict(os.environ, {"OMR_STACKED_SECOND_HEAD": "1"}):
