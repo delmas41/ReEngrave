@@ -8422,6 +8422,115 @@ STACKED_HEAD_MIN_SLOT_FILL = 0.4
 STACKED_HEAD_SEARCH_MARGIN_POSITIONS = 1
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.129 -- a second head the MEAN test turned away, kept where the INK
+# is two heads tall. `OMR_STACKED_SECOND_HEAD`, default OFF.
+#
+# Brahms 20261013-night, pdf 0 (Sean's every-head truth): 5 of 5 notes lost to
+# `stacked_head_duplicate` were the second head of a chord of THIRDS on one side
+# of one stem (two heads one staff space apart, touching). The fit read k=1 for
+# all five: the slots scored 1.00 / 1.00 / 0.86 (the middle slot saturates on the
+# blob; the lower head's own slot loses its centre to staff-line removal), so the
+# pair's mean (0.93) fell 0.068 under the lone best score and the "adding it cost
+# explanatory power" gate (`STACKED_HEAD_FIT_MARGIN`) refused it. The mean is a
+# bad witness for two heads that TOUCH: a saturated blob scores the same wherever
+# the second slot goes. The ink height is not -- two touching heads are 2.0
+# spaces tall, one head 1.0-1.3.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Half width of the column band read for the blob's height, in staff spaces
+#: either side of the heads' x -- 0.2 of the standard head width, the middle of
+#: the head, clear of the stem (at the head's edge) and of an augmentation dot.
+STACKED_BLOB_HALF_WIDTH_SPACES = 0.28
+
+#: A row is blob ink where this fraction of the band's pixels are ink.
+STACKED_BLOB_ROW_FILL = 0.3
+
+#: A gap of this many spaces inside the blob is bridged (the tangent between two
+#: touching ellipses; a staff-line removal that cut a head across).
+STACKED_BLOB_BRIDGE_SPACES = 0.2
+
+#: The blob must reach this fraction of the height two heads at the pair's own
+#: spacing would have (`gap/2 + 1` spaces: 2.0 for a third) -- measured on the
+#: 5 twins (2.17-2.25 spaces) against every close pair on the page that is NOT
+#: two heads (0.6-1.3): a wide gap either side of 1.8.
+STACKED_BLOB_MIN_FRACTION = 0.9
+
+#: How far above and below the pair's midpoint the column is read (spaces).
+STACKED_BLOB_WINDOW_SPACES = 2.5
+
+
+def stacked_second_head_enabled() -> bool:
+    """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default OFF** until Sean
+    has seen the 2.129 tiles; `OMR_STACKED_SECOND_HEAD=1` turns it on."""
+    return os.environ.get("OMR_STACKED_SECOND_HEAD", "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def stacked_blob_height_spaces(img: Any, cx: float, mid_y: float,
+                               spacing: float) -> Optional[float]:
+    """PURE -- the height, in staff spaces, of the one inked column that runs
+    through `mid_y` at the heads' own x. `img` is a cell raster (0 == ink),
+    `cx`/`mid_y` in that raster's frame, `spacing` its staff space.
+
+    The column is `STACKED_BLOB_HALF_WIDTH_SPACES` either side of `cx`; a row is
+    ink where `STACKED_BLOB_ROW_FILL` of it is; the run through `mid_y` bridges
+    gaps up to `STACKED_BLOB_BRIDGE_SPACES`. `None` where the band cannot be cut
+    from the raster (off it, or too thin) -- declined, never defaulted. 0.0 where
+    there is no ink at `mid_y` at all."""
+    if img is None or getattr(img, "ndim", 0) != 2 or spacing <= 0:
+        return None
+    H, W = img.shape
+    hw = STACKED_BLOB_HALF_WIDTH_SPACES * spacing
+    x0, x1 = int(round(cx - hw)), int(round(cx + hw))
+    y0 = int(round(mid_y - STACKED_BLOB_WINDOW_SPACES * spacing))
+    y1 = int(round(mid_y + STACKED_BLOB_WINDOW_SPACES * spacing))
+    if x0 < 0 or x1 > W or y0 < 0 or y1 > H or x1 - x0 < 2 or y1 - y0 < 2:
+        return None
+    rows = (img[y0:y1, x0:x1] == 0).mean(axis=1) >= STACKED_BLOB_ROW_FILL
+    bridge = max(1, int(round(STACKED_BLOB_BRIDGE_SPACES * spacing)))
+    n = len(rows)
+    ym = min(n - 1, max(0, int(round(mid_y)) - y0))
+    # the nearest ink row to the midpoint, within the bridge
+    start = None
+    for d in range(0, bridge + 1):
+        for yy in (ym - d, ym + d):
+            if 0 <= yy < n and rows[yy]:
+                start = yy
+                break
+        if start is not None:
+            break
+    if start is None:
+        return 0.0
+    top = bot = start
+    gap = 0
+    for yy in range(start - 1, -1, -1):
+        if rows[yy]:
+            top, gap = yy, 0
+        else:
+            gap += 1
+            if gap > bridge:
+                break
+    gap = 0
+    for yy in range(start + 1, n):
+        if rows[yy]:
+            bot, gap = yy, 0
+        else:
+            gap += 1
+            if gap > bridge:
+                break
+    return (bot - top + 1) / float(spacing)
+
+
+def _stacked_slots_have_boxes(positions: Sequence[int],
+                              observed: Sequence[float]) -> bool:
+    """Every fitted slot has a detector box within one half-step of it -- the
+    second head is the detector's own, never one the ink fit alone would add."""
+    if not observed:
+        return False
+    return all(min(abs(o - p) for o in observed) <= 1.0 for p in positions)
+
+
 def _stacked_stem_xywh(value: Any) -> Optional[Tuple[float, float, float, float]]:
     """`Q.STEM`'s own value shape, `[x, y, w, h]` -- restated (not imported)
     from `notehead_precision._stem_xywh` for the same reason that module
@@ -8520,7 +8629,8 @@ def _stacked_best_combo(scored: Dict[int, float], k: int,
 
 def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
                           top_y: float, half_step: float, spacing: float,
-                          n_boxes: int, observed: Sequence[float] = ()
+                          n_boxes: int, observed: Sequence[float] = (),
+                          blob_height_fn: Optional[Any] = None
                           ) -> Optional[Dict[str, Any]]:
     """PURE -- score a standard head-box template at every candidate
     position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
@@ -8603,6 +8713,8 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     margin: Optional[float] = None
     ambiguous = False
     prev_mean = best1
+    second_head_by: Optional[str] = None
+    near_miss: Optional[Dict[str, Any]] = None
     for k, n_needed in ((2, 2), (3, 3)):
         if ambiguous or n_boxes < n_needed or chosen_k != k - 1:
             break
@@ -8619,6 +8731,34 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
             chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
             margin = min(fill_gap, mean_gap if mean_gap < fill_gap else fill_gap)
             prev_mean = mean_k
+        elif (blob_height_fn is not None and k == 2
+              and fill_gap > STACKED_HEAD_FIT_MARGIN
+              and mean_gap <= -STACKED_HEAD_FIT_MARGIN
+              and positions_k[1] - positions_k[0] == STACKED_HEAD_MIN_GAP_POSITIONS
+              and _stacked_slots_have_boxes(positions_k, observed)):
+            # ⚠️ ROADMAP 2.129 -- the MEAN test refused a pair whose slots both
+            # hold real ink and whose boxes are the detector's own. Two heads a
+            # third apart TOUCH, so the mean is no witness (see the section
+            # comment above); the blob's height is.
+            blob = blob_height_fn(positions_k)
+            need = ((positions_k[1] - positions_k[0]) * 0.5 + 1.0) \
+                * STACKED_BLOB_MIN_FRACTION
+            if blob is not None and blob >= need:
+                chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
+                margin = min(fill_gap, blob - need)
+                second_head_by = "blob_height"
+                near_miss = {"blob_spaces": round(blob, 3),
+                             "needed_spaces": round(need, 3)}
+                prev_mean = mean_k
+            else:
+                # REFUSED, and says how close it came (ROADMAP 2.106).
+                near_miss = {"positions": list(positions_k),
+                             "blob_spaces": (round(blob, 3)
+                                             if blob is not None else None),
+                             "needed_spaces": round(need, 3),
+                             "mean_gap": round(mean_gap, 4),
+                             "fill_gap": round(fill_gap, 4)}
+                break
         elif (abs(fill_gap) <= STACKED_HEAD_FIT_MARGIN
               or (fill_gap > 0 and abs(mean_gap) <= STACKED_HEAD_FIT_MARGIN)):
             ambiguous = True
@@ -8629,6 +8769,7 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
         "scored": scored, "k": chosen_k,
         "positions": tuple(sorted(chosen_positions)),
         "mean": chosen_mean, "margin": margin, "ambiguous": ambiguous,
+        "second_head_by": second_head_by, "near_miss": near_miss,
     }
 
 
@@ -8717,9 +8858,16 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
             hi = int(math.ceil(max(positions_seen))) \
                 + STACKED_HEAD_SEARCH_MARGIN_POSITIONS
 
+            blob_fn = None
+            if stacked_second_head_enabled():
+                def blob_fn(pos, _img=img, _cx=cx, _top=top_y, _hs=half_step,
+                            _sp=spacing):
+                    return stacked_blob_height_spaces(
+                        _img, _cx, _top + (pos[0] + pos[1]) / 2.0 * _hs, _sp)
             fit = fit_stacked_head_count(
                 img, cx, list(range(lo, hi + 1)), top_y, half_step, spacing,
-                len(members), observed=positions_seen)
+                len(members), observed=positions_seen,
+                blob_height_fn=blob_fn)
             if fit is None:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
@@ -8731,6 +8879,10 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
 
             candidates_detail = {"scores": {str(p): round(v, 4)
                                             for p, v in fit["scored"].items()}}
+            if fit.get("second_head_by"):
+                candidates_detail["second_head_by"] = fit["second_head_by"]
+            if fit.get("near_miss"):
+                candidates_detail["near_miss"] = fit["near_miss"]
             margin = fit["margin"]
             if fit["ambiguous"]:
                 for gi in members:
