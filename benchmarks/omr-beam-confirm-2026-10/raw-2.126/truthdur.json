@@ -1,0 +1,65 @@
+{
+ "totals": {
+  "base": {
+   "no_truth_stem": 36,
+   "narrowed": 57,
+   "right": 280,
+   "abstained": 2,
+   "wrong": 3
+  },
+  "arm": {
+   "no_truth_stem": 36,
+   "narrowed": 52,
+   "right": 285,
+   "abstained": 2,
+   "wrong": 3
+  }
+ },
+ "changed": [
+  {
+   "truth": "q86",
+   "class": "beamed",
+   "subject": "glyph/0/0/0/4/2",
+   "base": "narrowed",
+   "arm": "right",
+   "base_reason": "beam_certain_not_joined",
+   "arm_reason": "head_and_marks"
+  },
+  {
+   "truth": "q93",
+   "class": "beamed",
+   "subject": "glyph/0/0/0/4/9",
+   "base": "narrowed",
+   "arm": "right",
+   "base_reason": "beam_certain_not_joined",
+   "arm_reason": "head_and_marks"
+  },
+  {
+   "truth": "q110",
+   "class": "beamed",
+   "subject": "glyph/0/0/0/5/4",
+   "base": "narrowed",
+   "arm": "right",
+   "base_reason": "beams_ambiguous",
+   "arm_reason": "head_and_marks"
+  },
+  {
+   "truth": "q118",
+   "class": "beamed",
+   "subject": "glyph/0/0/0/5/12",
+   "base": "narrowed",
+   "arm": "right",
+   "base_reason": "beams_ambiguous",
+   "arm_reason": "head_and_marks"
+  },
+  {
+   "truth": "q1009",
+   "class": "flagged",
+   "subject": "glyph/0/0/9/3/3",
+   "base": "narrowed",
+   "arm": "right",
+   "base_reason": "flag_ink_unread",
+   "arm_reason": "hooks_counted"
+  }
+ ]
+}
