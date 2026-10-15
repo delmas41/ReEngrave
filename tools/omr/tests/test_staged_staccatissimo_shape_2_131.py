@@ -183,7 +183,8 @@ class TestMarkShapeGather(unittest.TestCase):
         self.assertIsNone(gather.mark_shape(self._img(), (1, 1, 5, 5), 16.0))   # no ink
         self.assertIsNone(gather.mark_shape(self._img(), (1, 1, 5, 5), 0.0))
 
-    def test_flag_off_by_default(self):
+    @mock.patch.dict(os.environ, {"OMR_STACCATISSIMO_SHAPE": "off"})
+    def test_flag_off_when_asked(self):
         self.assertFalse(gather.mark_shape_enabled())
 
 
