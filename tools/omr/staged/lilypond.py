@@ -281,9 +281,16 @@ def _head_mark_count(ev: Dict[str, Any]) -> int:
                for h in (ev.get("noteheads") or ()))
 
 
-def _dyn_token(word: str, guessed: bool = False) -> Optional[str]:
-    """LilyPond for one dynamic word, or None where it cannot be spelled."""
-    if word in _legacy._DYNAMIC_ELEMENTS:
+def _dyn_token(word: str, guessed: bool = False,
+               script_ok: bool = True) -> Optional[str]:
+    """LilyPond for one dynamic word, or None where it cannot be spelled.
+
+    ⚠️ `script_ok` False once the event already carries a dynamic SCRIPT: two
+    on one moment make LilyPond warn `conflict with event:
+    absolute-dynamic-event` and DISCARD one (Brahms: 14 pairs, 28 warnings),
+    so the later ones are written as a `\\dynamic` markup -- the same letters,
+    not discarded."""
+    if script_ok and word in _legacy._DYNAMIC_ELEMENTS:
         return ("-\\tweak color #guessedColor " if guessed else "") + "\\" + word
     if word and set(word) <= _DYN_LETTERS:
         inner = "\\dynamic " + word
@@ -305,6 +312,7 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
     """
     out: List[str] = []
     led = "dynamics_"
+    scripts = 0
 
     def drop(reason: str, n: int = 1) -> None:
         counters[led + "dropped:" + reason] += n
@@ -326,7 +334,9 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
                 out.append('_\\markup { \\with-color #guessedColor '
                            '\\italic "dyn." }')
             else:
-                tok = _dyn_token(shown, guessed=True)
+                tok = _dyn_token(shown, guessed=True, script_ok=scripts == 0)
+                if tok is not None and tok.startswith(("\\", "-\\tweak")):
+                    scripts += 1
                 if tok is None:
                     drop("dynamic_text_not_spellable")
                     counters["guessed_dynamics_not_renderable"] += 1
@@ -361,7 +371,9 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
             if not writable:
                 drop(why_not)
                 continue
-            tok = _dyn_token(str(text))
+            tok = _dyn_token(str(text), script_ok=scripts == 0)
+            if tok is not None and tok.startswith("\\"):
+                scripts += 1
             if tok is None:
                 drop("dynamic_text_not_spellable")
                 continue

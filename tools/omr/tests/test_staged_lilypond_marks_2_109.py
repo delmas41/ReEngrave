@@ -137,6 +137,27 @@ class TestDynamics(unittest.TestCase):
         self.assertNotIn("warning", out.stderr.lower(), out.stderr)
 
 
+class TestTwoDynamicsInOneBar(unittest.TestCase):
+    def _page2(self):
+        page = _page()
+        v = _vrd(7000, CELL, Q.DYNAMIC, ["p", "f"], reason="spelled")
+        v["decider"] = "adjudicate_dynamic"
+        v["detail"] = {"words": [{"text": "p", "spelled": True, "x_page": 10.0},
+                                 {"text": "f", "spelled": True, "x_page": 90.0}]}
+        page["record"]["verdicts"].append(v)
+        return page
+
+    def test_the_second_is_a_markup_not_a_conflicting_script(self):
+        text, rep = LY.to_lilypond(self._page2())
+        self.assertIn("c'4\\p-\\markup { \\dynamic f }", text)
+        self.assertEqual(rep["marks_ledger"]["dynamics"]["written"], 2)
+
+    @unittest.skipUnless(_HAS_LILYPOND, "lilypond not installed")
+    def test_no_dynamic_is_discarded_by_lilypond(self):
+        text, _ = LY.to_lilypond(self._page2())
+        self.assertNotIn("absolute-dynamic-event", _compile(text).stderr)
+
+
 class TestNothingIsInvented(unittest.TestCase):
     def test_no_marks_adds_nothing_CONTROL(self):
         text, rep = LY.to_lilypond(_page())
