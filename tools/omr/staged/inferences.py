@@ -1801,10 +1801,12 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
                                _shortens_without_evidence, _eighth_evidence)
     out = BarOutcome(proposals=[])
     notes = []
+    abstained_elements = []
     for v in _standing(log, cell, Q.DURATION):
-        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
-            continue
         if _left_the_bar(log, v.subject) is not None:
+            continue
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            abstained_elements.append(v)
             continue
         notes.append(v)
     # ⚠️ ROADMAP 2.97 (`any_reason`): the SAME bar arithmetic over every
@@ -1820,6 +1822,13 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
                and _is_member(v)]
     out.members = len(members)
     if not members:
+        return out
+    # ⚠️ ROADMAP 2.141h fix 3 (flag `OMR_WHOLE_REST_INK_LEAVES_BAR`, default OFF), RULE 8: a standing duration nobody sized
+    # (ABSTAINED) is an element of the bar whose time we CANNOT TELL, and the sum below skips it as if it held none.
+    # "Cannot tell" is never zero time: the bar's sum declines.
+    from .consequences import whole_rest_ink_leaves_bar_enabled
+    if abstained_elements and whole_rest_ink_leaves_bar_enabled():
+        out.decline = "abstained_element_in_bar"
         return out
     # ROADMAP 2.102 (a): a bar that prints a tuplet is not a sum this
     # arithmetic can speak for.

@@ -1441,8 +1441,66 @@ def _stems_ending_in(box, stems, separation: float) -> int:
     return distinct
 
 
+BEAM_STROKE_IS_A_BEAM_ENV = "OMR_BEAM_LEVEL_STROKE_IS_A_BEAM"
+
+
+def beam_level_stroke_is_a_beam_enabled() -> bool:
+    """ROADMAP 2.141h fix 1, default OFF: a stroke counts as a beam LEVEL of a head only if the head's own stem ENDS at it
+    (within the stack a beam can occupy), so a ledger line merged with the heads is not a level. Only an explicit on-word."""
+    import os
+    return os.environ.get(BEAM_STROKE_IS_A_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: ROADMAP 2.141h fix 1. How far (staff spaces) a head's OWN stem may run past a stroke on the stem's side for the stroke to
+#: still be one of its beam levels. Beams stack at the stem's far tip: a level is a beam (~0.6 space) plus a gap (~0.3), so the
+#: 2nd level starts ~0.9 space from the tip, the 3rd ~1.8, the 4th ~2.7. A stroke the stem runs past by more than this is at
+#: the 5th level or deeper, i.e. not a beam of this stem. DERIVED from the stacking geometry (a convention), not fitted; the
+#: one measured case is Litolff p5 tile 6 (the ledger line the heads stand on: its near edge 3.0 spaces from the stem tip).
+#: NOT CONFIRMED on a second publisher; the refusal is only made with a second witness (`_stroke_touches_a_head`).
+BEAM_STEM_RUNS_PAST_MAX_SPACES = 2.5
+
+
+def _stroke_touches_a_head(box, head_boxes) -> bool:
+    """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
+    from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
+    bx, by, bw, bh = box
+    for hx, hy, hw, hh in head_boxes:
+        if min(bx + bw, hx + hw) - max(bx, hx) > 0 and min(by + bh, hy + hh) - max(by, hy) > 0:
+            return True
+    return False
+
+
+def _stem_runs_past_the_stroke(b, own_stems, head_box, head_boxes, space: float) -> bool:
+    """ROADMAP 2.141h fix 1 (flag `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM`): is this stroke NOT a beam level of the head whose own
+    stems are `own_stems`? True only when ALL of (rule 8: anything unread keeps the stroke):
+      - the stroke lies on a side of the head where the head has a CV stem whose x-range overlaps the stroke's x-range;
+      - EVERY such stem runs on past the stroke (away from the head) by more than `BEAM_STEM_RUNS_PAST_MAX_SPACES` -- the
+        stem's tip is not at this stroke, so it is not the beam these stems end in, nor one level of that stack -- measured
+        LOCALLY, at the stem, not by the stroke's box alone (CLAUDE.md §5);
+      - the stroke is merged with a detector-boxed head (`_stroke_touches_a_head`): the ledger line the heads stand on.
+    """
+    box = _xywh(b)
+    if box is None or head_box is None or not own_stems or space <= 0:
+        return False
+    hyc = head_box[1] + head_box[3] / 2.0
+    side = "up" if (box[1] + box[3] / 2.0) < hyc else "down"
+    tips = []
+    for st in _voice_stems(own_stems, head_box)[side]:
+        sb = _xywh(st)
+        if sb is None or sb[0] + sb[2] < box[0] or sb[0] > box[0] + box[2]:
+            continue
+        # the tip is the stem's end away from the head
+        tips.append((box[1] - sb[1]) if side == "up" else ((sb[1] + sb[3]) - (box[1] + box[3])))
+    if not tips:
+        return False
+    if not all(t > BEAM_STEM_RUNS_PAST_MAX_SPACES * space for t in tips):
+        return False
+    return bool(head_boxes) and _stroke_touches_a_head(box, head_boxes)
+
+
 def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
-                       head_x: Optional[float] = None):
+                       head_x: Optional[float] = None,
+                       own_stems=None, head_box=None):
     """`(kept, {stroke id: reason}, ink rows read)`. ROADMAP 2.74.
 
     `head_x` (ROADMAP 2.82): the centre of the head being judged, canonical x. A stroke
@@ -1497,6 +1555,13 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
             if box is not None and _covered_fraction(box, head_boxes) \
                     >= BEAM_THROUGH_HEADS_MIN:
                 why[b.id] = "through_heads"
+    # ⚠️ ROADMAP 2.141h fix 1 (flag, default OFF): a stroke merged with a head that this head's OWN stem runs far past is the
+    # ledger line the heads stand on, not a level (Litolff p5 tile 6: counted as a second down-voice level, 8,8,8 read 16,16,4).
+    if own_stems and head_box is not None and head_boxes and beam_level_stroke_is_a_beam_enabled():
+        _sp = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
+        for b in beams:
+            if b.id not in why and _stem_runs_past_the_stroke(b, own_stems, head_box, head_boxes, _sp):
+                why[b.id] = "stem_runs_past"
     if not ink and not why:
         return list(beams), {}, ()
     anchors = []                      # strokes that PASS all three, read
@@ -2811,7 +2876,27 @@ def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
 REACH_STEM_MIN_SPACES = 2.0
 
 
-def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
+UNISON_BOTH_STEMS_ENV = "OMR_OWN_STEM_UNISON_BOTH"
+
+
+def unison_both_stems_enabled() -> bool:
+    """ROADMAP 2.141h fix 2, default OFF: a head the CV `head_stem` verdict reads as a unison of two voices (a stem each way) does
+    not take the reach ruler's single direction; its beam levels are counted on BOTH stems (2.75's per-voice path)."""
+    import os
+    return os.environ.get(UNISON_BOTH_STEMS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _unison_two_voices(ev: Evidence, own_stems, head_box):
+    """The CV `Q.HEAD_STEM` verdict that says THIS head carries a stem each way (`unison_two_voices`), when the head's own
+    stems really stand on both sides (so the per-voice count has two stems to count on); else None. ROADMAP 2.141h fix 2."""
+    v = ev.verdict(Q.HEAD_STEM)
+    if v is None or v.reason != "unison_two_voices" or head_box is None:
+        return None
+    vs = _voice_stems(own_stems, head_box)
+    return v if (vs["up"] and vs["down"]) else None
+
+
+def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any]:
     """The way THIS head's own stem points, or `(None, None)`.
 
     ⚠️ ONLY `stem_projection` -- the direction read off a stem attached to
@@ -2837,6 +2922,11 @@ def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
     # across the head's own bottom counted as its own. `both` and `none`
     # claim nothing and leave the column test exactly as it was.
     reach = ev.rows(Q.HEAD_STEM_REACH)
+    if unison is not None:
+        # ⚠️ ROADMAP 2.141h fix 2: the CV stem finder found a stem EACH WAY; the ruler's single direction (it reads the longer
+        # run, or the right-hand one) is one voice's stem, and taking it called the OTHER voice's beam "far side" (Litolff p5
+        # tile 6 g0: a quarter and a sixteenth, never the eighth). No single side: the per-voice count takes over.
+        return None, None
     if reach and reach[-1].value in ("up", "down"):
         d = reach[-1].detail or {}
         ext = d.get("up_ext" if reach[-1].value == "up" else "down_ext")
@@ -3214,6 +3304,8 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
                    # and the physical-mark group that says the owner holds a
                    # twin of a contest's losing copy.
                    Q.HEAD_STEM_REACH, Q.MARK_GROUP,
+                   # ROADMAP 2.141h fix 2: a stem each way (`unison_two_voices`).
+                   Q.HEAD_STEM,
                    # ROADMAP 2.87 (`head_contact`): which strokes count as STEMS
                    # in the beam-joins-N-stems tests.
                    Q.STEM_HEAD_CONTACT,
@@ -3271,7 +3363,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT, Q.HEAD_STEM,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
@@ -3470,7 +3562,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
-    side, side_verdict = _own_stem_side(ev)
+    unison = _unison_two_voices(ev, own_stems, head_box) if unison_both_stems_enabled() else None
+    side, side_verdict = _own_stem_side(ev, unison)
+    if unison is not None:
+        used.append(unison.id)
     # ⚠️ ROADMAP 2.77b: a stem the RULER read where the CV rung attached none.
     # Such a head HAS a stem whose tip nothing examined (two stacked heads fuse
     # into one too-wide component and the CV finds no stem at all), so a mark
@@ -3499,7 +3594,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # not one the ink "removed".
     pre_ink = list(kept)
     kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-        ev, cell, kept, stems, tol, head_x=x_center)
+        ev, cell, kept, stems, tol, head_x=x_center, own_stems=own_stems, head_box=head_box)
     joined, attached = _stem_joined(kept, stems, head_box)
     # ⚠️ ROADMAP 2.43: THIS HEAD'S OWN STEM'S PADDED X-SPAN, gating
     # `_beam_levels`'s merely-POSSIBLE column match (`None` where this head
@@ -3528,7 +3623,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         kept, beyond, beyond_guarded = kept_all, [], True
         pre_ink = list(kept)
         kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-            ev, cell, kept, stems, tol, head_x=x_center)
+            ev, cell, kept, stems, tol, head_x=x_center, own_stems=own_stems, head_box=head_box)
         joined, attached = _stem_joined(kept, stems, head_box)
         join_witness, join_used = _beam_join_witness(ev, cell, kept,
                                                       own_stems, side)

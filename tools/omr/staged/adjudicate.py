@@ -1083,14 +1083,16 @@ ORDER: Tuple[str, ...] = (
     # kinship: `size_unboxed_rest` (EVALUATE) writes the duration it implies.
     Q.UNBOXED_INK_IS_A_REST,
     Q.TUPLET_RATIO,
+    # ⚠️ ROADMAP 2.141h fix 2, BEFORE `Q.DURATION`. The join reads GATHER rows and two verdicts that stand earlier
+    # (`Q.STEM_DIRECTION`, `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`), never a duration, so it moves up without changing a verdict;
+    # `adjudicate_duration` reads it (`unison_two_voices`: a stem each way) behind `OMR_OWN_STEM_UNISON_BOTH`.
+    Q.HEAD_STEM,
     Q.DURATION,
-    # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads
-    # GATHER rows only, so it could stand anywhere; the VALUE reads every
+    # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The VALUE reads every
     # head's DURATION verdict (and `Q.STEM_DIRECTION`, `Q.GLYPH_OWNER`, the two
     # notehead refusals), so it must stand after all of them, and it stands
     # before the events so a later consumer of "one chord, one value" finds it
-    # already decided rather than having to move it.
-    Q.HEAD_STEM,
+    # already decided rather than having to move it. (The join, `Q.HEAD_STEM`, moved up: see above.)
     Q.STEM_VALUE,
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar
     # is summed over EVENTS, not over noteheads -- a chord's members sound
