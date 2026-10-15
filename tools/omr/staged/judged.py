@@ -187,9 +187,12 @@ def _verb(v: Any) -> Tuple[str, Dict[str, Any]]:
     if isinstance(v, str):
         return v, {}
     if isinstance(v, dict):
-        for k in ("sean", "values", "answer"):
+        for k in ("sean_raw", "sean", "values", "answer"):
             if isinstance(v.get(k), str):
                 return v[k], {x: y for x, y in v.items() if x != k}
+            if (isinstance(v.get(k), list) and v[k]
+                    and all(isinstance(x, str) for x in v[k])):
+                return ", ".join(v[k]), {x: y for x, y in v.items() if x != k}
         return json.dumps(v, sort_keys=True), dict(v)
     return json.dumps(v), {}
 
@@ -213,8 +216,8 @@ def answer_cells(d: Any) -> Tuple[Dict[str, Any], Dict[str, Tuple[str, Dict[str,
                 cells[str(k)] = _verb(v)
         elif isinstance(src, list):
             for e in src:
-                if isinstance(e, dict) and "n" in e:
-                    cells[str(e["n"])] = _verb(e)
+                if isinstance(e, dict) and ("n" in e or "tile" in e):
+                    cells[str(e["n"] if "n" in e else e["tile"])] = _verb(e)
 
     if isinstance(d.get("answers"), (dict, list)):
         take(d["answers"])

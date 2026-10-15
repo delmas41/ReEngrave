@@ -1171,7 +1171,7 @@ def _bar_heads_are_clean(log: Log, subject: Subject, notes,
     either way, and the other conditions stand).
 
     ROADMAP 2.136 W2 (`ledger_owner_aware`, passed only by INFER's bar rule behind
-    `OMR_INFER_CARRIED_METER_FIX`, default OFF): a head beyond the staff whose
+    `OMR_INFER_LEDGER_OWNER_HEADS`, default OFF): a head beyond the staff whose
     `Q.GLYPH_OWNER` is DECIDED and names THIS staff is this staff's own (the ledger
     lines name the owner, CLAUDE.md section 5). Only the off-staff clause stands
     down for it; the duplicate-box and another-staff-same-ink clauses are untouched,

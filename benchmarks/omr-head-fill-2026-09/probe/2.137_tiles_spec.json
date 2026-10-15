@@ -1,0 +1,12 @@
+[
+ {"doc": "brahms",  "subject": "glyph/0/0/4/1/6",     "kind": "fixed"},
+ {"doc": "litolff", "subject": "glyph/13/0/5/8/5",    "kind": "control: real half head under a slash (kept before and after; the slash above it is glyph/13/0/5/8/4)"},
+ {"doc": "brahms",  "subject": "glyph/12/0/11/6/5",   "kind": "fixed"},
+ {"doc": "brahms",  "subject": "glyph/14/1/7/0/4",    "kind": "control: dotted quarter head over ledger lines (2.134 tile 13's bar), kept before and after"},
+ {"doc": "litolff", "subject": "glyph/13/0/5/8/4",    "kind": "fixed"},
+ {"doc": "brahms",  "subject": "glyph/15/1/7/5/9",    "kind": "other: a quarter rest zigzag refused under the slash label (outcome right, label wrong)"},
+ {"doc": "brahms",  "subject": "glyph/15/1/9/4/17",   "kind": "fixed"},
+ {"doc": "litolff", "subject": "glyph/12/0/2/8/7",    "kind": "control: real half head a Q.STEM_SLASH stroke was read under, kept before and after"},
+ {"doc": "litolff", "subject": "glyph/11/0/2/11/1",   "kind": "other: a bass-clef curl beside a barline refused under the slash label (outcome right, label wrong)"},
+ {"doc": "brahms",  "subject": "glyph/0/0/8/5/5",     "kind": "fixed: the stroke path (ink split 0.16/0.84, a stroke read across both sides)"}
+]

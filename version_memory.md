@@ -9,6 +9,18 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- manager close-out: START HERE block, 2.141 status
+Docs only. New START HERE block at the top of ROADMAP (today's landings 2.134/2.135/2.109/2.126/2.137/2.136, what is waiting on Sean, the ranked queue 2.141 -> 2.140 -> 2.138 -> 2.139, process lessons). Row 2.141 marked diagnosis done on branch `lane-2.141-litolff-w2` (189abd26). Fast tier on main f4ed3de1 rerun by the manager after the two landings: 8,099 passed, 0 failed.
+
+## 2026-10-15 -- ROADMAP 2.137 landed ON (tremolo slash at the stem end)
+STAGED ADJUDICATE, `OMR_SLASH_AT_STEM_END` default ON (`notehead_precision.slash_at_stem_end_enabled`; explicit `0/false/no/off` disables): a non-oval box crossing a stem is refused as a slash without 2.49's position test. 49 slashes stood as heads (Brahms 37, Litolff 12). Sean's 10 tiles: 5/5 fixed, 3/3 controls, tile 9 (deformed half note) refused and accepted. Land merge 6643c70e. Reaches records at the next re-decide/re-gather.
+
+## 2026-10-15 -- ROADMAP 2.136 landed, flag split (land merge dfba2439)
+Merged lane-2.136-step2 (head ffb82ac0), then split its one flag (Sean 2026-10-15). `OMR_INFER_CARRIED_METER_FIX` is default ON, W1 only (`infer.carried_meter_fix_enabled`, read in `inferences._printed_meter_roots`; deny-list). `OMR_INFER_LEDGER_OWNER_HEADS` is default OFF, W2 only (`infer.ledger_owner_heads_enabled`, read in `inferences.solve_bare_stem_bar`, passed to `consequences._bar_heads_are_clean`); held for 2.141 (Litolff tiles 6 and 10). Takes effect when records are re-decided and at the next re-gather; no gather run. Fast tier 8093 passed, check 192.
+
+## 2026-10-15 -- ROADMAP 2.126 landed, two switches ON (land merge abb02244)
+Merged lane-2.126-beam-flag (head 6046e2fb). `OMR_BEAM_JOIN_LINE_BRIDGE` and `OMR_HOOKS_LINE_BRIDGE` now default ON (`gather.beam_join_line_bridge_enabled`, `gather.hooks_line_bridge_enabled`, deny-list like `OMR_TIP_UNBLOCKED`); Sean's 9 tiles 9/9. `thin_run_stack` and `pair_flag_curve` stay OFF. GATHER readers: they reach records only at the next re-gather. Tests: tools/omr/tests/test_staged_beam_flag_2_126.py (default ON, off-word restores).
+
 ## 2026-10-15 -- ROADMAP 2.109 landed (land merge 6dbf600c)
 Merged lane-2.109-lily-marks (head 84a25e57): the STAGED LilyPond writer (`tools/omr/staged/lilypond.py`) writes staccato/staccatissimo/tenuto/accent/marcato and dynamics (read plain, guessed blue `dyn.`) with a marks ledger of what is not written; no flag; tests in test_staged_lilypond_marks_2_109.py; FINDINGS in benchmarks/omr-lily-export-2026-10. Sean "Yes land"; his 6 crops (out/print/2.109-review/answers.json) found every placed mark right; misses go to 2.138, the marc. word read as a dyn. to 2.139.
 
@@ -6196,3 +6208,6 @@ STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default OFF (`rhythm.py`
 
 ## 2026-10-14 -- ROADMAP 2.128 built (a dot carries its staff position)
 STAGED GATHER: `Q.DOT_STAFF_POSITION` on every `Q.AUG_DOT` glyph, local at the dot's x (`_find_five_lines` over +-3 spaces; bar grid fallback says `cell_grid`), nearest staff, `off_staff`/`no_staff_geometry` abstentions with margin; `POSITION dot` left `capture.KNOWN_GAPS` (check 193 -> 192). STAGED ADJUDICATE behind `OMR_DOT_POSITION_JOIN` (default OFF): a dot on the wrong step is not a head's augmentation dot; a dot at exactly one head's dot step the box window missed is placed. Sean's Brahms p.0 labels: dots stand in a space (line head: 41 above / 19 below; space head: 54 of 56 same space), 3 of 120 on a line. Truth join 106 -> 110 right, unplaced 7 -> 2; Litolff no change. Awaiting tiles `out/print/2.128-review/`. FINDINGS text in the lane report (the Write tool refused the file).
+
+## 2026-10-15 -- ROADMAP 2.141 diagnosis landed; Sean's tiles 6/6 agree with W2
+STAGED INFER, no product code. `lane-2.141-litolff-w2` merged: FINDINGS 2.141 (causes of W2's Litolff tile 6 and 10 failures, fixes 2.141d proposed), probes, 6 blind tiles. Sean: tiles 1-4 quarters, 5-6 eighths, matching W2's settlements on all 6 (2 U, 2 T6, 2 controls) -- the shared causes did not make those bars wrong. W2 stays OFF until fixes 2.141d 1-3 land and pass tiles on both publishers. Answers in `out/print/2.141-review/answers.json`, indexed in `benchmarks/acceptance/judged-tiles.json`.

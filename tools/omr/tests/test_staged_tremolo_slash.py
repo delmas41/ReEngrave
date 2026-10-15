@@ -60,6 +60,8 @@ the re-measured firing count on real data.
 from __future__ import annotations
 
 import math
+import contextlib
+import os
 import unittest
 import unittest.mock
 
@@ -297,7 +299,12 @@ class TestTremoloSlashCrossesStemShipped(unittest.TestCase):
     `TestTremoloSlashHeldBack` below for the real default)."""
 
     def _ship(self):
-        return unittest.mock.patch.object(NP, "TREMOLO_SLASH_SHIPS", True)
+        # 2.49's own position test is pinned here with 2.137's flag OFF
+        # (default ON since 2026-10-15 would refuse a non-oval box at the tip).
+        stack = contextlib.ExitStack()
+        stack.enter_context(unittest.mock.patch.object(NP, "TREMOLO_SLASH_SHIPS", True))
+        stack.enter_context(unittest.mock.patch.dict(os.environ, {"OMR_SLASH_AT_STEM_END": "0"}))
+        return stack
 
     def test_all_three_tests_passing_is_refused(self):
         log = Log()
