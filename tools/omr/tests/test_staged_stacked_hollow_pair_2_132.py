@@ -147,7 +147,7 @@ def _stems_of(f):
     return [tuple(float(v) for v in r) for r in rows]
 
 
-def _witness(name, dets_override=None, top_shift_half=0.0):
+def _witness(name, dets_override=None, top_shift_half=0.0, stems_override=None):
     """`gather._hollow_pair_from_page` alone, on the real page raster and stem, candidates from the boxes."""
     f = _load(name)
     raster = f["raster"]
@@ -162,7 +162,7 @@ def _witness(name, dets_override=None, top_shift_half=0.0):
     cands = [p for p in range(int(min(observed)) - 2, int(max(observed)) + 3)
              if gather._stacked_slots_have_boxes((p, p + 2), observed)]
     return gather._hollow_pair_from_page(pws, cell, cx, top_y, half, sp,
-                                         _stems_of(f), cands)
+                                         stems_override if stems_override is not None else _stems_of(f), cands)
 
 
 class TestRealPages(unittest.TestCase):
@@ -209,6 +209,15 @@ class TestRealPages(unittest.TestCase):
         fit = _witness("litolff_pair_two_stems")
         self.assertTrue(fit["accepted"], fit["near_miss"])
         self.assertGreater(fit["near_miss"]["stem_extension_spaces"], 1.5)
+
+    def test_litolff_two_stems_at_the_two_edges_either_order(self):
+        """`glyph/3/1/2/15`: the pair's own stem on the left, the next voice's shorter stem on the right, both
+        within half a head of an edge. The nearer-to-an-edge stem is the short one; the pair is real."""
+        f = _load("litolff_pair_kept")
+        rows = [tuple(float(v) for v in r) for r in f["stems"]]
+        for order in (rows, rows[::-1]):
+            fit = _witness("litolff_pair_kept", stems_override=order)
+            self.assertTrue(fit["accepted"], fit["near_miss"])
 
     def test_litolff_second_pair_end_to_end(self):
         rows = _run("litolff_pair_kept", "1")

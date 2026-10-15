@@ -9210,34 +9210,35 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
 STACKED_HOLLOW_STEM_EDGE_TOL_SPACES = 0.5
 
 
-def _stacked_pair_stem(stems: Sequence[Tuple[float, float, float, float]],
-                       cx: float, spacing: float,
-                       outer_top: float, outer_bot: float
-                       ) -> Optional[Tuple[float, float, float, float]]:
-    """ROADMAP 2.132 -- the stem row that is THIS pair's: of the cell's own
-    `Q.STEM` rows, the ones that reach both heads (their y-range covers the middle
-    third of the pair's outer span) and stand nearest EITHER edge of the heads
-    (half a head width from the centre). `None` where none stands within
-    `STACKED_HOLLOW_STEM_EDGE_TOL_SPACES`: no stem, declined.
+def _stacked_pair_stems(stems: Sequence[Tuple[float, float, float, float]],
+                        cx: float, spacing: float,
+                        outer_top: float, outer_bot: float
+                        ) -> List[Tuple[float, float, float, float]]:
+    """ROADMAP 2.132 -- the stem rows that can be THIS pair's: of the cell's own
+    `Q.STEM` rows, those that reach both heads (their y-range covers the middle
+    third of the pair's outer span) and stand at EITHER edge of the heads (half a
+    head width from the centre, within `STACKED_HOLLOW_STEM_EDGE_TOL_SPACES`).
 
-    ⚠️ Not the group's first overlapping row, and not the group's `side`: on a busy
-    Litolff cell a wide box overlaps a NEIGHBOUR's stem first (Litolff p3
+    ⚠️ Not the group's first overlapping row, and not the group's `side`: on a
+    busy Litolff cell a wide box overlaps a NEIGHBOUR's stem first (Litolff p3
     `glyph/3/0/1/5`: the first row is the next note's stem, 235 tall, and the
     group's side is read off it; the pair's own, 521 tall, is its `rival`), and
-    the extension read off the wrong stem refused real pairs."""
+    two stems can stand at the two edges (`glyph/3/1/2/15`: the pair's own on the
+    left, the next voice's on the right). The extension read off the nearer or
+    first of them refused real pairs, so the caller takes the longest reach of the
+    stems that touch the pair at an edge."""
     half_w = STANDARD_HEAD_WIDTH_SPACES * spacing / 2.0
     span = outer_bot - outer_top
     lo, hi = outer_top + span / 3.0, outer_bot - span / 3.0
-    best = None
+    out = []
     for st in stems:
         if st[1] > lo or st[1] + st[3] < hi:
             continue
         mid = st[0] + st[2] / 2.0
         d = min(abs(mid - (cx - half_w)), abs(mid - (cx + half_w)))
-        if d <= STACKED_HOLLOW_STEM_EDGE_TOL_SPACES * spacing \
-                and (best is None or d < best[0]):
-            best = (d, st)
-    return best[1] if best else None
+        if d <= STACKED_HOLLOW_STEM_EDGE_TOL_SPACES * spacing:
+            out.append(st)
+    return out
 
 
 def _hollow_pair_from_page(pws: Any, cell: Any, cx: float, top_y: float,
@@ -9275,11 +9276,11 @@ def _hollow_pair_from_page(pws: Any, cell: Any, cx: float, top_y: float,
     def stem_ext(p: int) -> Optional[float]:
         outer_top = top_y + p * half_step - 0.5 * STANDARD_HEAD_HEIGHT_SPACES * spacing
         outer_bot = top_y + (p + 2) * half_step + 0.5 * STANDARD_HEAD_HEIGHT_SPACES * spacing
-        stem = _stacked_pair_stem(stems, cx, spacing, outer_top, outer_bot)
-        if stem is None:
+        near = _stacked_pair_stems(stems, cx, spacing, outer_top, outer_bot)
+        if not near:
             return None
-        return max((outer_top - stem[1]) / spacing,
-                   (stem[1] + stem[3] - outer_bot) / spacing)
+        return max(max((outer_top - st[1]) / spacing,
+                       (st[1] + st[3] - outer_bot) / spacing) for st in near)
 
     return fit_hollow_stacked_pair(reader, cands, stem_ext)
 
