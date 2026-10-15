@@ -1,0 +1,7 @@
+compare 20261014-night vs 20261013-night, tree 8b9eb97ce22ee8f5e8b91f3d9103d0fde83df7ac start 2026-10-15T13:31:52Z
+beethoven5-litolff: readout diff exit 1
+brahms1-breitkopf: readout diff exit 1
+acceptance exit 2 (see /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/overnight-20261014-night/compare/acceptance.log)
+done 2026-10-15T13:54:02Z
+
+NOTE (agent): commands: `TAG=20261014-night THROUGH=infer REF=origin/main bash regather_20260930.sh` (main 8b9eb97c; Litolff exit 0 wall 65 min, Brahms exit 0 wall 230 min; the exit-3 control did not fire); then `TAG=20261014-night BASE=20261013-night bash compare_20261009.sh`. The compare's own README lines above are verbatim: readout diff exit 1 (tool exits 1 when records differ, as 20261013-night); acceptance exit 2 = refused to write current.json on a dirty tree (as 20261013-night). Export exit 0 for both movements this night (20261013-night: exit 1, Unbalanced); LilyPond compiled for both. Re-ran `python3 -m tools.omr.acceptance --manifest <temp manifest> --force` -> exit 0 and wrote current.json; all-stages-vs-20261013-night.txt is that current.json against 20261013-night/current.json (origin/overnight-20261013-night-summary) with the compare script's walker. The 2.118 report was then re-run (`regather_report night --tag 20261014-night --base 20261013-night`, exit 0) so it sees current.json; the report .md files are copied here. Records are NEW files beside the old ones; not adopted into manifest.json or current.json.

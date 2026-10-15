@@ -1,0 +1,27 @@
+all stages: NEW tree 8b9eb97ce22ee8f5e8b91f3d9103d0fde83df7ac (2026-10-15T13:56:10Z)  vs  OLD tree ca46eae46c630707ae597b9db8a14c9cdb5fba75 (2026-10-14T11:29:23Z)
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          6361 ->         6595
+  notes_reaching_file.fraction                                           0.5580314062637074 -> 0.5785595227651549
+  bars_held_out_sum.n                                                             861 ->          699
+  bars_held_out_sum.of                                                           5022 ->         5034
+  bars_held_out_sum.fraction                                             0.17144563918757466 -> 0.13885578069129917
+  bars_held_out_sum.noteheads_and_rests                                          1973 ->         1662
+  bars_held_out_sum.named_in_the_export_report                                    802 ->          640
+  bars_add_up_control.exact                                                      6060 ->         4521
+  bars_add_up_control.n                                                          6060 ->         4521
+  bars_add_up_control.of                                                         6060 ->         4521
+  unread_bars.empty_bars_padded                                                   691 ->          679
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          9148 ->        10918
+  notes_reaching_file.fraction                                           0.37708161582852434 -> 0.4500412201154163
+  bars_held_out_sum.n                                                            1822 ->          975
+  bars_held_out_sum.of                                                           5987 ->         6073
+  bars_held_out_sum.fraction                                             0.3043260397527977 -> 0.16054668203523795
+  bars_held_out_sum.noteheads_and_rests                                          6192 ->         4098
+  bars_held_out_sum.named_in_the_export_report                                   1822 ->          975
+  bars_add_up_control.exact                                                      6988 ->         4673
+  bars_add_up_control.n                                                          6988 ->         4673
+  bars_add_up_control.of                                                         6988 ->         4673
+  unread_bars.empty_bars_padded                                                   684 ->          598
