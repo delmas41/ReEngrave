@@ -26,14 +26,6 @@ def say(m):
     print(f"[{time.time() - T0:7.1f}s] {m}", flush=True)
 
 
-def standing(log):
-    from tools.omr.staged.record import Q
-    out = {}
-    for v in log.verdicts() if hasattr(log, "verdicts") else ():
-        pass
-    return out
-
-
 def main() -> int:
     rec_path, out_dir = sys.argv[1], Path(sys.argv[2])
     control = "--control" in sys.argv
@@ -43,11 +35,13 @@ def main() -> int:
     from tools.omr.staged.review import rerun as RR
     doc = load_record(rec_path)
     rec = doc["record"] if "record" in doc else doc
+    if "--break" in sys.argv:   # the control must be able to FAIL: drop the first 40 beam strokes; durations must then differ
+        gone = [o for o in rec["observations"] if o["quantity"] == Q.BEAM_STROKE][:40]
+        ids = {o["id"] for o in gone}
+        rec["observations"] = [o for o in rec["observations"] if o["id"] not in ids]
+        say(f"--break: dropped {len(ids)} beam strokes")
     log, _ = RR.rebuild_gather(rec)
     say("gather rebuilt")
-    if "--break" in sys.argv:
-        for o in log.to_json()["observations"]:
-            pass
     res = RR.run_stages(log)
     say("decided")
 
@@ -58,7 +52,10 @@ def main() -> int:
             if v["quantity"] == Q.DURATION:
                 val = v.get("value") if isinstance(v.get("value"), dict) else {}
                 m[v["subject"]] = [v["outcome"], val.get("beats"), val.get("beam_levels"), v["reason"],
-                                   v["decider"], len(v.get("candidates") or ())]
+                                   v["decider"], len(v.get("candidates") or ()),
+                                   {k: (v.get("detail") or {}).get(k) for k in
+                                    ("beams_not_by_ink_why", "beams_double_thick", "beam_voices", "beam_side", "rule")
+                                    if (v.get("detail") or {}).get(k) not in (None, {}, 0)}]
         return m
 
     new = log.to_json()

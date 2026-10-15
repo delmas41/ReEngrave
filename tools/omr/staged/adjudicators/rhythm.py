@@ -1460,6 +1460,38 @@ def beam_level_stroke_is_a_beam_enabled() -> bool:
 BEAM_STEM_RUNS_PAST_MAX_SPACES = 2.5
 
 
+#: ROADMAP 2.141h fix 1. A stroke at least this many times as thick as ANOTHER kept stroke of the same cell (measured at the strokes'
+#: own columns, `Q.BEAM_STROKE_INK` `thickness_px`) may be two beams drawn fused (2.140). "About twice one beam", with room for a
+#: scan's ink gain: 1.8. A convention-free cut, so it only NARROWS (it raises the head's POSSIBLE level count by one).
+BEAM_DOUBLE_THICKNESS_RATIO_MIN = 1.8
+
+
+def _fused_double_beams(ev: Evidence, cell, kept, x_center) -> int:
+    """How many kept strokes over this head's column are ~twice as thick as another kept stroke of the cell: each MAY be two
+    beams read as one (`BEAM_DOUBLE_THICKNESS_RATIO_MIN`). Needs a second stroke to measure one beam against; none -> 0 (cannot
+    tell is not 'one'). Used only to widen `possible`, never `certain`. ROADMAP 2.141h fix 1."""
+    ink = _beam_ink_rows(ev, cell)
+    th = {}
+    for b in kept:
+        r = ink.get(b.id)
+        t = (r.detail or {}).get("thickness_px") if r is not None else None
+        if isinstance(t, (int, float)) and t > 0:
+            th[b.id] = float(t)
+    if len(th) < 2 or x_center is None:
+        return 0
+    n = 0
+    for b in kept:
+        if b.id not in th:
+            continue
+        x0, x1 = b.detail.get("x0", 0), b.detail.get("x1", 0)
+        if not (x0 <= x_center <= x1):
+            continue
+        others = [t for i, t in th.items() if i != b.id]
+        if th[b.id] >= BEAM_DOUBLE_THICKNESS_RATIO_MIN * min(others):
+            n += 1
+    return n
+
+
 def _stroke_touches_a_head(box, head_boxes) -> bool:
     """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
     from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
@@ -2887,13 +2919,24 @@ def unison_both_stems_enabled() -> bool:
 
 
 def _unison_two_voices(ev: Evidence, own_stems, head_box):
-    """The CV `Q.HEAD_STEM` verdict that says THIS head carries a stem each way (`unison_two_voices`), when the head's own
-    stems really stand on both sides (so the per-voice count has two stems to count on); else None. ROADMAP 2.141h fix 2."""
-    v = ev.verdict(Q.HEAD_STEM)
-    if v is None or v.reason != "unison_two_voices" or head_box is None:
+    """The CV head-to-stem ruling that says THIS head carries a stem each way (`unison_two_voices`), when the head's own stems
+    really stand on both sides (so the per-voice count has two stems to count on); else None. ROADMAP 2.141h fix 2.
+
+    ⚠️ THE RULING, NOT THE STORED VERDICT: `Q.HEAD_STEM` stands AFTER `Q.DURATION` in `adjudicate.ORDER` (its value reads every
+    duration; test_staged_stem_value pins it), so the verdict does not exist yet when a duration is decided. The ruling is a pure
+    function of GATHER rows and two earlier verdicts, all declared by this decision, so calling it here returns exactly what
+    `adjudicate_head_stem` will file."""
+    if head_box is None:
+        return None
+    from .stem_value import adjudicate_head_stem
+    try:
+        ruling = adjudicate_head_stem(ev)
+    except Exception:           # an unread input keeps today's behaviour (rule 8)
+        return None
+    if getattr(ruling, "reason", None) != "unison_two_voices":
         return None
     vs = _voice_stems(own_stems, head_box)
-    return v if (vs["up"] and vs["down"]) else None
+    return ruling if (vs["up"] and vs["down"]) else None
 
 
 def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any]:
@@ -3304,8 +3347,6 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
                    # and the physical-mark group that says the owner holds a
                    # twin of a contest's losing copy.
                    Q.HEAD_STEM_REACH, Q.MARK_GROUP,
-                   # ROADMAP 2.141h fix 2: a stem each way (`unison_two_voices`).
-                   Q.HEAD_STEM,
                    # ROADMAP 2.87 (`head_contact`): which strokes count as STEMS
                    # in the beam-joins-N-stems tests.
                    Q.STEM_HEAD_CONTACT,
@@ -3363,7 +3404,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT, Q.HEAD_STEM,
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
     reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
@@ -3565,7 +3606,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     unison = _unison_two_voices(ev, own_stems, head_box) if unison_both_stems_enabled() else None
     side, side_verdict = _own_stem_side(ev, unison)
     if unison is not None:
-        used.append(unison.id)
+        used.extend(getattr(unison, "used", ()) or ())
     # ⚠️ ROADMAP 2.77b: a stem the RULER read where the CV rung attached none.
     # Such a head HAS a stem whose tip nothing examined (two stacked heads fuse
     # into one too-wide component and the CV finds no stem at all), so a mark
@@ -3678,6 +3719,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # zeroed them. A hollow-reading head whose stem a beam is joined to is the
     # 2.23 false positive (a black head read hollow), so the bare-stem rule
     # must see the strokes the override hid.
+    # ⚠️ ROADMAP 2.141h fix 1 (flag): a stroke ~twice as thick as another of the cell MAY be two beams fused -- widen the range,
+    # never the certain count (one witness: the ink's thickness).
+    double_thick = 0
+    if beam_level_stroke_is_a_beam_enabled() and kept and certain:
+        double_thick = _fused_double_beams(ev, cell, kept, x_center)
+        possible += double_thick
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -3787,6 +3834,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beams_decided_arc": len(arc_dropped),
               # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
               "beam_voices": voice_levels,
+              "beams_double_thick": double_thick,
               "beams_not_by_ink": len(ink_dropped),
               "beams_not_by_ink_why": {
                   w: sum(1 for v in ink_dropped.values() if v == w)

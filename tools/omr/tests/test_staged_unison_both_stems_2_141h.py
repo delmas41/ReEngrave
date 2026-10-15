@@ -49,6 +49,14 @@ def _unison(log, down_beams=2, up_beams=1, with_up_stem=True):
 
 class TestAHeadWithAStemEachWayIsCountedOnBoth(unittest.TestCase):
 
+    def setUp(self):
+        # the unison ruling needs the staged stem-finder default (`one_stem_per_head`); another test may have left
+        # `OMR_STEM_FINDER` set in the process, so this class runs with it unset
+        p = mock.patch.dict(os.environ)
+        p.start()
+        self.addCleanup(p.stop)
+        os.environ.pop("OMR_STEM_FINDER", None)
+
     def _dur(self, on, **kw):
         log = Log()
         g = _unison(log, **kw)

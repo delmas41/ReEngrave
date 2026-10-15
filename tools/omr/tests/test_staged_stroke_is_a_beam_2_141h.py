@@ -105,5 +105,57 @@ class TestAStrokeTheStemRunsPastIsNotItsLevel(unittest.TestCase):
             self.assertFalse(rhythm.beam_level_stroke_is_a_beam_enabled())
 
 
+def _thick_ink(log, stroke, thickness_px):
+    from tools.omr.staged.record import READERS
+    from tools.omr.tests.test_staged_rhythm_leftovers import CELL
+    return log.observe(CELL, Q.BEAM_STROKE_INK, thickness_px / 100.0, reader=READERS.CV_BEAM_SHAPE, frame="cell:0",
+                       beam_row_id=stroke.id, thickness_px=float(thickness_px), line_px=28.0,
+                       thickness_ratio=thickness_px / 28.0, thickness_spaces=thickness_px / 100.0, sagitta_spaces=0.01,
+                       end_stems=[{"found": True, "x": 250.0}, {"found": True, "x": 590.0}], columns=350, cover=1.0,
+                       band=[0.0, 1.0])
+
+
+class TestAStrokeAboutTwiceAsThickAsAnotherMayBeTwoBeams(unittest.TestCase):
+    """The mirror (2.140): two beams drawn fused read as ONE stroke. One witness (the ink's thickness), so it only WIDENS the
+    range: certain stays, possible +1 -- the head is narrowed, never decided short."""
+
+    def _dur(self, on, second_px):
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (235, 355, 135, 142))
+        for x in (244, 400, 563):
+            _real_stem(log, (x, 383, 31, 820 - 383))
+        _thick_ink(log, _stroke(log, (251, 757, 350, 62)), 62)
+        _thick_ink(log, _stroke(log, (251, 690, 350, second_px)), second_px)
+        with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
+            adjudicate.run(log)
+        return log.verdict(Q.DURATION, g)
+
+    def test_flag_OFF_two_strokes_are_two_levels_as_on_main(self):
+        v = self._dur(False, 125)
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 2))
+
+    def test_flag_ON_a_stroke_twice_the_other_widens_the_range_RED(self):
+        v = self._dur(True, 125)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(sorted(c.value["beam_levels"] for c in v.candidates), [2, 3])
+        self.assertEqual(v.detail["beams_double_thick"], 1)
+
+    def test_CONTROL_flag_ON_a_stroke_of_the_same_thickness_is_a_plain_second_level(self):
+        v = self._dur(True, 62)
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 2))
+
+    def test_CONTROL_flag_ON_a_lone_stroke_has_no_beam_to_be_measured_against(self):
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (235, 355, 135, 142))
+        _real_stem(log, (244, 383, 31, 820 - 383))
+        _thick_ink(log, _stroke(log, (251, 757, 350, 130)), 130)
+        with mock.patch.dict(os.environ, {FLAG: "1"}):
+            adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 1))
+
+
 if __name__ == "__main__":
     unittest.main()
