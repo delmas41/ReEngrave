@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- evening session: 2.151 + 2.150b landed ON; 2.152 study parked; 2.153 parked OFF; 2.154 opened
+
+- 2.151 (`OMR_DOT_BOXED_AS_A_HEAD` ON, 95685746): a dot the detector boxed as a small notehead counts as the head's augmentation dot; tiles recut to one set (31) after a 38-vs-20 mismatch.
+- 2.150 / 2.150b (989dba7f): rest ink test `OMR_REST_STROKE_INTO_HEAD` ON (GATHER `Q.REST_INK_CONTACT` + ADJUDICATE refusal `rest_stroke_into_a_head`); width floor `OMR_REST_WIDTH_FLOOR` OFF/parked.
+- 2.152 (f949248f, study): gather by zoom layers -- parked by Sean; findings in benchmarks/gather-zoom-layers-2026-10/.
+- 2.153 (merged OFF): attribution of 31 judged value errors; `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` OFF after Sean's tiles (bar sum picked from its narrowing) -> 2.154 opened.
+
 ## 2026-10-16 -- day session: 2.145, 2.146, 2.148 landed ON; 2.143/2.144 parked; reading-order rule; 2.149 audit; 2.150/2.151 opened
 - 2.145 `OMR_HEAD_INK_IS_A_REST` ON (merge 50451189 / flip 1088dbe3). 2.143 landed OFF with a review-index use (4fe6f169, a9005bba). 2.144 parked OFF on its branch.
 - 2.146 beams globally: research FINDINGS omr-beam-confirm §9 (f93ed7eb); `OMR_STEM_TIP_DECIDES_BEAM` ON (4d207dd2).
