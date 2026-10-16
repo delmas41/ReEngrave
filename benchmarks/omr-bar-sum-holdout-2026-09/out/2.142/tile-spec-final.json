@@ -1,0 +1,314 @@
+[
+ {
+  "movement": "lit",
+  "cell": [
+   16,
+   1,
+   8,
+   13
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/16/1/8/13/11"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   16,
+   0,
+   5,
+   8
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/16/0/5/8/15"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackInSpace"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   15,
+   0,
+   5,
+   8
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/15/0/5/8/8"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackInSpace"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   15,
+   1,
+   7,
+   15
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/15/1/7/15/7"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackInSpace"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   5,
+   0,
+   2,
+   7
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/5/0/2/7/4"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   2,
+   0,
+   10,
+   4
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/2/0/10/4/5"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   2,
+   1,
+   2,
+   9
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/2/1/2/9/7"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   12,
+   0,
+   11,
+   6
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/12/0/11/6/5"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   15,
+   1,
+   8,
+   16
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/15/1/8/16/8"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   13,
+   0,
+   6,
+   5
+  ],
+  "role": "changed",
+  "blue": [
+   "glyph/13/0/6/5/7"
+  ],
+  "info": {
+   "off": [
+    "notehead"
+   ],
+   "dur_off": [
+    [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ]
+   ],
+   "rest_twin_class": [
+    "noteheadBlackOnLine"
+   ]
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   14,
+   0,
+   7,
+   7
+  ],
+  "role": "control",
+  "blue": [
+   "glyph/14/0/7/7/3"
+  ],
+  "info": {
+   "cls": "noteheadBlackOnLine"
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   15,
+   0,
+   3,
+   9
+  ],
+  "role": "control",
+  "blue": [
+   "glyph/15/0/3/9/4"
+  ],
+  "info": {
+   "cls": "noteheadBlackOnLine"
+  }
+ }
+]
