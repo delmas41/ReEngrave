@@ -4344,3 +4344,42 @@ Kept controls: 5 real quarter rests right; **3 stems missed** in the 0.74-0.93 b
 his own hand-truth `restQuarter` label there is the error; the refusal is right. Width alone is not enough: next is the
 ink test (proposal 2/3: a rest box swallowing a stroke that runs on to a head is a stem; a real rest stands free).
 `OMR_REST_WIDTH_FLOOR` stays OFF until Sean rules.
+
+### 2.150b -- ink test (2026-10-16, STAGED GATHER+ADJUDICATE; flag `OMR_REST_STROKE_INTO_HEAD`, default OFF)
+
+**CONVENTION ASSUMED:** a rest stands free; a rest box whose ink is one thin stroke running into a notehead is a note's stem
+(Sean 2026-10-16: "a rest box whose stroke runs on into a notehead is a stem; a real rest stands free"). **WHAT WOULD FALSIFY
+IT:** a print-confirmed rest whose box shows the thin stroke AND a head's ink in contact. **NOT CONFIRMED:** by Sean beyond the
+2.150 tiles; **the three cuts were read off those same 21 tiles, so the 19/21 below is IN-SAMPLE, not a test.** The test is the
+20 new blind tiles `out/print/2.150b-review/` (hidden key `out/2.150b/tiles-key.json`, not committed).
+
+* **Built.** `tools/omr/staged/rest_ink.py` (pure `measure`), GATHER `gather_rest_ink_contact` -> `Q.REST_INK_CONTACT` (staff-erased
+  raster `image_no_staff`, NOT `Q.STEM`, which `refuse_owned` empties inside a rest box; files nothing while the flag is OFF),
+  ADJUDICATE `family_precision._rest_stroke_into_head_refusal`, reason `rest_stroke_into_a_head`, checked LAST, any rest class
+  (measured here: restQuarter, rest8th). Refuse iff `thin_run >= 1.0 sp` AND (`blob >= 0.9 sp` OR `head_ink >= 0.4 sp2`); `thin_run` =
+  longest row-stretch where the dominant ink piece is never wider than 0.45 sp, `blob` = longest stretch >= 0.7 sp wide, `head_ink`
+  = piece ink inside a standing head box and outside the (0.2 sp grown) rest box. Signed margin = binding of the two over its cut
+  (`value/cut - 1`, refusal side positive), filed on every measured box; 2.106 registry `margins.PARTIAL`. No row (no raster / staff
+  space / no ink): declines. Tests `test_staged_rest_stroke_into_head_2_150b.py` 23 (controls: free rest beside a twin head box with no
+  ink contact kept; narrow free rest kept; thin stroke without head kept; head without thin stroke kept; flag off / off-word / no row
+  keep; `TestTheTestsCanFail` breaks each cut and the verdict flips). Written after the prototype, not RED-first.
+* **Measured on the 21 tiles** (`probe/score_2_150b.py`, page raster + the production staff-line removal): stems thin 1.46-2.94, real
+  quarter rests 0.40-0.70; stems' blob 0.84-1.48 or head ink 0.86-1.68, real rests' blob <= 0.70, head ink 0.0. Scored against Sean's
+  answers: **19 right, 2 wrong**. The 15 stems are all refused, including the 3 the width floor missed (tiles 4, 9, 19; tile 19 margin
+  only +0.32, tile 8 +0.39); 5 real rests kept (tile 12 the closest, -0.30). Wrong: **tile 11** (Sean "quarter rest"; ink reads a stem
+  into a head, margin +1.96; the lane's look at the print agrees with the ink and not with the answer -- re-asked as new tile 20) and
+  **tile 21** (Sean "barline": a thin stroke with no head, margin -1.00, KEPT; this rule does not claim barlines, the width floor /
+  `rest_is_a_barline` do). Width floor on the same 21: 17 right, 4 wrong.
+* **Replay** (`probe/replay_2_150b.py`, same named systems as 2.150, flag OFF vs ON, rows injected from the raster by the same `measure`):
+  Brahms 27 refusals (all restQuarter; 20 shared with the width floor, 7 ink-only, 5 floor-only), Litolff 28 (23 shared, 5 ink-only, 2
+  floor-only). The lane's look at the 12 ink-only boxes (`out/2.150b/sheet-diff.png`): 12 of 12 stems/flag stems with their head, 0
+  real rests. The 7 floor-only boxes (ink test kept): barlines, a stem beside `pp`, stems whose head the piece does not reach.
+  Brahms: 9 other verdicts changed (as 2.150: durations settled by the bar's arithmetic, 2 quarters shortened to eighths by
+  `meter_reconciliation` -- Sean's rule at stake, not this lane's code), bars held out 143 -> 129, MusicXML notes 1863 -> 1935, rests 550
+  -> 555. Litolff: 0 other verdicts, rests 120 -> 98.
+* **Limits.** Litolff real rests sit close to the cut (a thick print: 289 of 350 sampled Litolff quarter/eighth rests have margin within
+  -0.45; tile 12 -0.30), so a Litolff cut is a measurement on one score. The ink test and the width floor are complementary, not nested
+  (barlines, stems with no reached head only the floor catches; 7+5 flag/stem boxes only the ink test catches). Floor stays OFF.
+  Eighth-rest ink (blob plus a thin diagonal) was not seen refused on 3 near controls, but only 4 rest8th were looked at.
+* **Tiles `out/print/2.150b-review/` (20, blind):** 11 boxes the ink test refuses that the width floor kept (6 Litolff, 5 Brahms; two are
+  boxes on the `piu` letters), 5 near-margin kept (closest below the cut: 3 quarter, 2 eighth), 3 clear kept, 1 re-ask of 2.150 tile 11.

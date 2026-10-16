@@ -543,6 +543,9 @@ NOT_A_STAGE = frozenset({
     # `letter_look_report.py` READS a saved record to count and show what the
     # look did, and runs no stage.
     "letter_look.py", "letter_look_report.py",
+    # ROADMAP 2.150b. `rest_ink.py` is PURE (a staff-erased ink mask and boxes in, numbers out: no log, no cell, no
+    # quantity named) -- `gather.gather_rest_ink_contact` is its stage; `family_precision` reads only its flag.
+    "rest_ink.py",
 })
 
 
