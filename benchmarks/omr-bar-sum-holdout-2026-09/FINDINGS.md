@@ -4316,3 +4316,10 @@ mark in the blue box?"
 The floor reaches only restQuarter; flags (0.8-0.95), the 'p', eighth-for-quarter and wedge-as-eighth are proposals 3-6.
 The stem the false box deleted is NOT restored (proposal 2), so a refused stem-box leaves its head stemless. Widths are
 the detector's box, not the ink. Two plates; a third publisher not checked.
+
+### 2.150 -- Sean's 21 tile answers (2026-10-16, `out/print/2.150-review/answers.json`)
+Refused by the width floor: 11 stems right, **1 WRONG** (tile 11, glyph/15/1/9/2/5, a real quarter rest boxed 0.47 sp wide).
+Kept controls: 5 real quarter rests right; **3 stems missed** in the 0.74-0.93 band (as predicted). Tile 21: Sean "barline" --
+his own hand-truth `restQuarter` label there is the error; the refusal is right. Width alone is not enough: next is the
+ink test (proposal 2/3: a rest box swallowing a stroke that runs on to a head is a stem; a real rest stands free).
+`OMR_REST_WIDTH_FLOOR` stays OFF until Sean rules.
