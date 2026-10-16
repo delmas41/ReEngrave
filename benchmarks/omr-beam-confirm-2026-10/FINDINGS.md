@@ -246,3 +246,58 @@ decided level now needs every witness well clear; none exists in the 14 cells.
 
 ### 8.9 Landed ON (2026-10-16)
 `OMR_BEAM_STEM_LEVELS` default ON in `gather.beam_stem_levels_gather_enabled` and `rhythm.beam_stem_levels_enabled` (explicit `0/false/no/off` disables). Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix. Caveat: cut-offs fitted to Sean's tiles; a third publisher not yet checked. The GATHER reader files `Q.BEAM_STEM_LEVELS` rows only at the next re-gather; on a record without them `_stem_tip_strokes` returns None and ADJUDICATE duration is unchanged from flag-off (no raise).
+
+## 9. ROADMAP 2.146 -- beams, globally (2026-10-16; research, no product code)
+
+Sean 2026-10-16: *"Let's spend the day tackling the biggest issues - one at a time. Let's start with beams. I want to think globally
+about beams."* His two hypotheses: (a) a beam's thickness is measured against THAT score's staff, never as an absolute width;
+(b) *"the connection to the end of stems is the most important factor - more important than width."*
+
+### 9.1 How big the beam problem is (20261014-night re-gather reports, section 7)
+* Brahms: **2,173** heads narrowed `beam_discounted_uncertain` (4th reason on the movement); Litolff **244**. 2.121 §1 showed on
+  Brahms p0 that 51 of 52 such narrowings are BARE stems beside a refused slur/tie box -- the reader asks "is the detector's box
+  near this stem a beam?" and, when it refuses the box, leaves the note uncertain instead of reading the stem's own tip.
+
+### 9.2 Engraving rules that help find a beam (Gould *Behind Bars* ch. "Beams"; Ross; SMuFL engraving defaults; standard practice)
+| rule | evidence it gives | STAGED today |
+|---|---|---|
+| A beam joins its stems AT THEIR ENDS; the stem stops at the beam's outer edge | a thick run leaves the stem TIP | GATHER `beam_runs_at_stem_end` (`Q.BEAM_STEM_LEVELS`, 2.140) reads it, but only COUNTS levels after a beam box is accepted |
+| Every stem of a group touches the primary beam (>= 2 stems) | >= 2 tips on one stroke | core-stroke "stem at each end" (2.82) -- ends only, from the box's side |
+| Thickness 0.5 sp (SMuFL `beamThickness` 0.5); gap 0.25 sp (`beamSpacing`), so levels 0.75 sp apart | thickness and level pitch in STAFF SPACES | thickness as a ratio to the LOCAL staff-LINE thickness (1.75), plus 0.36 sp in the tip reader |
+| Number of beams = value (1 eighth, 2 sixteenth, 3 32nd) | level count at the tip | 2.140 (ON) |
+| A beam is STRAIGHT (never an arc); slant at most ~1-2 sp over the group | sagitta ~0 | `BEAM_SAGITTA_MAX_SPACES` 0.40 |
+| Slurs/ties are curved, tapered (thin ends, ~0.2 sp at the middle), and end at NOTEHEADS (a stem-side slur clears the tips by ~0.5 sp) | no tip contact; thin | arc refusal, `too_thin`, 2.121 INFER collapse (guessed blue) |
+| A flag hangs from the tip on the RIGHT, curls back within ~1 sp | short run at the tip | flag/tip-window readers |
+| A beam stays on its stem side; stems of a beamed group usually all point one way (mixed groups exist) | side of the run | `side` in rhythm |
+| Inside the staff a beam end sits, straddles or hangs on a line (no thin white wedge) | beam y quantised to 0.25 sp against the lines | not read |
+| Groups follow the beat (6/8: 3 eighths; 2/4: 2 or 4) and do not cross a barline | group length | not read; the bar may only CONFIRM (CLAUDE.md §4) |
+| Fractional beam (beamlet) ~ one notehead wide, on the dotted/short note's side, at the secondary level | short second run at the tip, on the primary's side | `BEAM_BEAMLET_GAP_SPACES` |
+| EXCEPTIONS: two-note tremolo beams between half notes do NOT touch the stems; grace/cue beams are ~0.6 size; cross-staff beams (rare in orchestral scores) | falsifiers of the tip rule | tremolo readers (2.71/2.137) |
+
+### 9.3 Sean's hypotheses tested on his own boxes (Brahms 317803 pdf 0 hand truth: 50 beams, 69 slurs, 84 ties, 276 stems with a tip; raster = the PDF at 600 dpi, ink < 180; `probe/beam_vs_arc_2_146.py`, `probe/tip_probe.py`)
+* **(b) stem-tip contact.** Truth stems whose tip touches the stroke's ink: **beams 50/50 have >= 2; slurs 58/69 none, 7 one,
+  4 >= 2; ties 82/84 none.** Read FROM THE STEM (every truth stem: does a run >= 0.36 sp thick leave its tip and run >= 1.5 sp?):
+  **beamed 127/129 yes; flagged 1/36 yes (35 stop within 1 sp); bare 1/111 yes.** The two beamed misses read no run at all
+  (not yet cropped). Read this way the detector's beam box is not needed to tell beamed from bare.
+* **(a) thickness against the staff.** Median thickness: beams 0.61 sp (p10 0.38) = 2.86 lines; slurs 0.28 sp (p90 0.32) =
+  1.33 lines; ties 0.22 sp. On ONE page staff space (31-33 px) and line (6-8 px) are both constant, so the two rulers separate
+  equally (tip reader: 0.36 sp, 0.40 sp and 1.75 lines give 127/1/1, 125/1/0, 127/0/1 beamed/flag/bare). Which ruler is safer
+  ACROSS plates is NOT measured here: the staff space is what the engraver set the beam by (0.5 sp); the line thickness is
+  what the printing/scanning weight changes. Needs a second plate's truth (Litolff has none for beams).
+* Thickness alone overlaps (thinnest beams 0.22-0.38 sp vs thickest slurs 0.32-0.34 sp); tip contact plus a reach past
+  1.5 sp does not. **Sean's (b) holds on his page: the connection to the stem end is the stronger witness.**
+
+### 9.4 Proposed changes, ranked (for Sean; none built)
+1. **The stem tip decides "beamed or not".** Where a stem's tip is read (`Q.BEAM_STEM_LEVELS` row on its own stem): a beam run
+   at the tip => beamed with that many levels; a tip reading clean (no run, no flag ink) => NOT beamed, written plain (READ),
+   whatever detector beam boxes stand nearby. Detector boxes become a second source only where no tip is read. Targets the
+   2,173 Brahms / 244 Litolff `beam_discounted_uncertain`. STAGED ADJUDICATE `rhythm.adjudicate_duration`. Measure on the
+   hand-truth page first (truth per stem exists), then named pages.
+2. **One ruler: staff spaces.** Express the beam thickness cut in the local staff space (0.36 sp, the tip reader's own) and
+   keep the line ratio only as a guard; verify on a third publisher (2.101's held-out plates) before trusting either.
+3. **More stems.** The tip rule is only as good as the stem finder (CV stems 0.76 recall on this page, 1.7-stems). A beam run
+   found from a HEAD's expected stem column can also witness the stem (a beam is where the stem ends).
+4. Later: tremolo exception (beam not touching half-note stems), beam y snapped to sit/straddle/hang.
+
+Limits: one page, one publisher, truth stems (our own stem finder will do worse); the 0.36 sp / 1.5 sp cuts were set before
+this test (2.140), not fitted to it.
