@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import os
 from typing import Any, Dict, List, NamedTuple, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
@@ -253,6 +254,35 @@ def _identity_of_ink(group: Sequence[Any]) -> Tuple[Optional[str], str, Tuple[st
             fits or letters)
 
 
+#: ROADMAP 2.139 (Sean 2026-10-15, Brahms p24, the plate prints *marc.*, we wrote a
+#: blue `dyn.`). DEFAULT OFF. A dynamic LETTER that lies inside a word the OCR read
+#: AND the lexicon accepted, in a token that is not a dynamic, and that stands with no
+#: letter ink beside it, is dropped as the WORD's letter when it is a letter that is
+#: no dynamic on its own (`m`, `r`, `s`, `z`): a lone `p` is piano and a lone `f` is
+#: forte (Sean 2026-10-09), nothing else is. The word itself is written by
+#: `adjudicate_direction` (a text direction), unchanged. Written out on its own line so
+#: the AST scan in `test_flag_default_direction.py` sees this flag's own
+#: `os.environ.get`.
+DYNAMIC_LEXICON_WORD_ENV = "OMR_DYNAMIC_LEXICON_WORD"
+
+
+def dynamic_lexicon_word_enabled() -> bool:
+    """Only an explicit on-word is ON (default OFF)."""
+    return os.environ.get(DYNAMIC_LEXICON_WORD_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+#: the single letters that are a whole dynamic on their own
+_LONE_DYNAMIC_LETTERS = frozenset({"p", "f"})
+
+
+def _lone_letter_of_a_lexicon_word(row: Any) -> bool:
+    """Is this letter one that cannot be a dynamic by itself (so, standing alone
+    inside a known word's non-dynamic token, it belongs to the word)?"""
+    letter = _letter_of(row)
+    return bool(letter) and letter.lower() not in _LONE_DYNAMIC_LETTERS
+
+
 def _letter_of(row: Any) -> Optional[str]:
     letter = row.detail.get("letter")
     if letter:
@@ -475,6 +505,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
     inside_alone = inside_unmeasured = in_a_dynamic_token = 0
+    of_lexicon_word = 0
     # ROADMAP 2.68 (twins): one printed letter boxed twice is ONE letter.
     ink_groups = _same_ink_groups(rows)
     seen_ink: set = set()
@@ -601,6 +632,13 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                 continue
             else:
                 inside_alone += 1
+                if (dynamic_lexicon_word_enabled()
+                        and _lone_letter_of_a_lexicon_word(row)):
+                    # ⚠️ ROADMAP 2.139: a word the lexicon knows is a TEXT
+                    # direction (`adjudicate_direction` writes it); its own
+                    # letter is not also a dynamic. Counted, never silent.
+                    of_lexicon_word += 1
+                    continue
         elif _inside_a_read_word(row, word_boxes):
             # inside a read word's box, but the word's own text puts the spot
             # at its dynamic (`f espr.`, `P dolce`), or two readings disagree
@@ -665,6 +703,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             empty_detail["letters_refused_as_not_a_dynamic"] = not_a_letter
         if inside_word:
             empty_detail["letters_inside_a_read_word"] = inside_word
+        if of_lexicon_word:
+            empty_detail["letters_of_a_lexicon_word"] = of_lexicon_word
         return Ruling(value=[], reason="no_letters", detail=empty_detail)
 
     kept.sort()
@@ -710,6 +750,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         "letters_alone_inside_a_word_box": inside_alone,
         "letters_inside_a_word_box_unmeasured": inside_unmeasured,
         "letters_at_a_words_dynamic_token": in_a_dynamic_token,
+        # ⚠️ ROADMAP 2.139 (flag `OMR_DYNAMIC_LEXICON_WORD`): letters dropped as
+        # the letter of a lexicon word, standing alone and no dynamic by themselves.
+        "letters_of_a_lexicon_word": of_lexicon_word,
         # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
         # owner` moved onto this staff (or off it) because they sit
         # between the two staves of a decided brace pair -- zero on every

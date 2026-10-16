@@ -300,6 +300,11 @@ def _dyn_token(word: str, guessed: bool = False,
     return None
 
 
+def _lexicon_word_text_enabled() -> bool:
+    from .adjudicators import text as _text
+    return _text.dynamic_lexicon_word_enabled()
+
+
 def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
                       counters: Dict[str, int], writable: bool,
                       why_not: str = "") -> str:
@@ -320,6 +325,19 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
 
     for _x, kind, text in directions:
         if kind == "words":
+            # ⚠️ ROADMAP 2.139 (flag `OMR_DYNAMIC_LEXICON_WORD`, default OFF): the
+            # text direction the lexicon accepted -- `marc.`, `dolce` -- is
+            # written as an italic markup, the SAME word MusicXML's `<words>`
+            # carries, instead of being counted and dropped. A bar this file
+            # does not write as music drops it, counted, as a dynamic does.
+            if _lexicon_word_text_enabled():
+                if not writable:
+                    counters["direction_words_not_renderable"] += 1
+                    continue
+                out.append('_\\markup { \\italic "%s" }' % _ly_escape(str(text)))
+                counters["direction_words"] += 1
+                counters["direction_words_written_2_139"] += 1
+                continue
             counters["direction_words_not_renderable"] += 1
             continue
         if kind == "dynamics_guess":
