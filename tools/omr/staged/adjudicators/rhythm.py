@@ -2188,6 +2188,15 @@ def _foreign_staccato_owner(dot_box, foreign_targets, space):
 NOT_A_NOTE_REFUSALS = ("tremolo_slash_crosses_stem", "on_a_dynamic_letter")
 
 
+REFUSED_HEAD_NO_DURATION_ENV = "OMR_REFUSED_HEAD_NO_DURATION"
+
+
+def refused_head_no_duration_enabled() -> bool:
+    """ROADMAP 2.143, default OFF: a head refused as not-a-notehead decides no duration. Only an explicit on-word is ON."""
+    import os
+    return os.environ.get(REFUSED_HEAD_NO_DURATION_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _not_a_note_mark(ev: Evidence, refusal) -> Optional[str]:
     """Why a head `adjudicate_notehead_is_not_a_notehead` refused is NOT A NOTE
     AT ALL (and so has no duration), else None.
@@ -3513,7 +3522,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
-             "owned_by_another_staff", "not_a_note_mark"),
+             "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -3598,6 +3607,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         why = _not_a_note_mark(ev, refusal)
         if why is not None:
             return Ruling.abstain("not_a_note_mark", why=why, head=str(head))
+        # ⚠️ ROADMAP 2.143 (flag `OMR_REFUSED_HEAD_NO_DURATION`, default OFF), RULE 8: a head ADJUDICATE refused as not a notehead
+        # for ANY other reason (too_narrow, is_a_beam_piece, a duplicate box, a clef...) is out of its bar, so it has no
+        # duration either -- the verdict stays on the record only as "not a note", never as a value a tile, a report or a
+        # chord-mate rule (`reconcile_chord_duration`) can read. Filed `refused_as_a_notehead`; decides nothing.
+        if refused_head_no_duration_enabled():
+            return Ruling.abstain("refused_as_a_notehead", why=str(refusal.reason), head=str(head))
 
     base = None
     for name, beats in _HEAD_BEATS.items():
