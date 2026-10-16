@@ -167,6 +167,21 @@ class TestTheLateRuleDefers(unittest.TestCase):
         self.assertTrue(v.detail["head_is_open"])
 
 
+class TestOnlyAHeadSizedBox(unittest.TestCase):
+    """Sean's 2.148 tiles: a box that is not one head's size (chord, beam piece, clef, key flat) is not read at step 1."""
+
+    def test_a_box_three_heads_tall_is_not_read(self):
+        log = Log()
+        g = _head(log, share=0.6)
+        from tools.omr.staged.record import Q as _Q
+        log.observe(g, _Q.GLYPH_BOX, ("noteheadBlack", 100, 70, 20, 50), reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                    bbox_page_px=[1100, 970, 1120, 1020])
+        _run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertTrue((v.detail.get("head_fill_first") or {}).get("not_head_sized"))
+        self.assertNotEqual((v.value or {}).get("written"), 2.0)
+
+
 class TestTheFlag(unittest.TestCase):
 
     def test_default_off(self):

@@ -4195,3 +4195,25 @@ Verbatim: "1.4rest 2.8rest 3-4.8rest 5. meter number 6 6-7.8rest 8.2 9.4rest 10.
 * The refused head's own DURATION verdict stays decided (the 2.143 problem); INFER's bar sum may still count it. 2.143 owns that.
 * The displaced window is one point. A rest drawn more than one space off the middle line, a rest beside an accidental (head_beside_it) and any rest the 2.99 windows miss are not reached.
 * Clusters exist only where GATHER's window found them (width 0.5-2.4, height 1.2-3.8 spaces, centre on the staff); a rest-sized ink merged with a neighbour is not a cluster.
+
+## 2.148 -- read the notehead first: black or hollow, then the stem, then the stem's marks (2026-10-16; STAGED GATHER + ADJUDICATE; branch `lane-2.148-head-fill-first`)
+Sean 2026-10-16: "The notehead should be determined first as either black or hollow (containing white) THEN determine if it
+has a stem and then if there is anything on the stem." / "The rule should be applied at the first step." / "notehead reading
+and identification is one of the things we do best so it should not be able to be overturned without significant proof."
+* **Why the old rule missed** (held-bar diagnosis): Litolff's largest held group, 272 bars in 2/4 one quarter short with one
+  note; in a 44-head sample about half are halves read as quarters. 2.23's centred window read their ink 0.9-1.0 (a Litolff
+  half's white is a thin diagonal slit), and it ran only after beams/flags/tip came back empty (2.149 audit #1-2).
+* **Built:** GATHER `head_interior_white` (in `Q.NOTEHEAD_INK.detail.interior_white`, on the detector's own box): share of the
+  head's middle rows holding white between ink, and an enclosed-hole share. ADJUDICATE `adjudicate_duration`, first step,
+  flag `OMR_HEAD_FILL_FIRST`: a BLACK-classed head in a HEAD-SIZED box (0.9-1.8 sp tall, 1.1-1.9 sp wide) reading
+  rows_share >= 0.18 on its own stem is a half before any stroke/flag is read; one reading <= 0.06 is solid and the late 2.23
+  window may not turn it hollow (Sean: "amend the previous application"); between, or not head-sized -> today's path.
+* **Sean's Brahms pdf 0 hand truth** (small re-gather p0-1 on this tree): 359 filled / 39 hollow decided right with the flag
+  off AND on; cell-raster rows_share filled max 0.11, so the 0.18 cut sits clear.
+* **Sean's 30 Litolff tiles** (first build, no size gate; `out/print/2.148-review/answers.json`): 17 right, 4 wrong (tiles 4,
+  24 quarters and 29 an eighth made halves; 5 a half the amendment made a quarter), 9 boxes not a note (beam, barline, C-clef
+  part, clef x2, natural, key flat, part of an 8, whole rest). Every wrong and non-note box was not one head's size (3.8 sp
+  tall, 2.3/2.7 sp wide, 0.88 sp tall, ...). **With the head-sized gate, replayed: 14 right changes stand, 0 wrong, 0
+  non-notes touched, nothing new; Brahms truth unchanged.** Lost by the gate: tiles 23 (1.99 sp wide), 26 (box 3 sp), 14.
+* Not measured: Brahms beyond p0-1; a third publisher. The head-size cut-offs are the existing `HEAD_BOX_*` plus a 1.1 sp
+  minimum width set on these tiles (narrows only what the first step reads; the old path stays).

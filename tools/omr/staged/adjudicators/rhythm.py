@@ -3168,6 +3168,9 @@ HEAD_FILL_FIRST_ENV = "OMR_HEAD_FILL_FIRST"
 #: head between the two populations is NOT decided (rule 8; a cut-off measured on our plates only narrows).
 HEAD_INTERIOR_WHITE_HOLLOW_MIN = 0.18
 HEAD_INTERIOR_WHITE_FILLED_MAX = 0.06
+#: The narrowest box read as ONE head at the first step (staff spaces). Sean's 2.148 tiles: a key flat (1.06) and a C-clef
+#: piece (1.01) were boxed as heads; Litolff halves measure 1.43-1.99 wide, Brahms heads ~1.3.
+HEAD_FIRST_MIN_WIDTH_SPACES = 1.1
 
 
 def head_fill_first_enabled() -> bool:
@@ -3736,6 +3739,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     head_first = None
     if head_fill_first_enabled() and base == _HEAD_BEATS["noteheadBlack"]:
         head_first = _head_reads_hollow_first(ev)
+        # Sean's 2.148 tiles (2026-10-16): every wrong change and every non-note sat in a box that is not ONE head's size
+        # (a chord/head+stem 3.8 sp tall, a beam piece 2.7 sp wide, a head clipped to 0.9 sp, a clef, a key flat). The head
+        # is read only in a head-sized box; any other box keeps today's path.
+        _sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        _sp = float(_sp_rows[-1].value) if _sp_rows else 0.0
+        if head_first is not None and not (head_box is not None and _sp > 0
+                                           and HEAD_BOX_MIN_SPACES <= head_box[3] / _sp <= HEAD_BOX_MAX_SPACES
+                                           and HEAD_FIRST_MIN_WIDTH_SPACES <= head_box[2] / _sp <= HEAD_BOX_MAX_WIDTH_SPACES):
+            head_first = {**head_first, "fill": None, "not_head_sized": True}
         if head_first is not None and head_first["fill"] == "hollow" and own_stems:
             base = _HEAD_BEATS["noteheadHalf"]
             hollow = True
