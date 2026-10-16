@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-16 · Sean · ROADMAP 2.145 answers recorded; `OMR_HEAD_INK_IS_A_REST` stays OFF until Sean says otherwise · Sean 2026-10-16 on the 21 tiles: "1.4rest 2.8rest 3-4.8rest 5. meter number 6 6-7.8rest 8.2 9.4rest 10.8rest. 11.4rest  12.8rest.  13-20.8rest 21.4rest"; scored: reinstated 12/12 right, 0 wrong; the 4 declined (2,9,16,20) and the 3 stem controls (1,11,21; quarter rests) are all rests the gate still leaves as notes (7 missed); tiles 5 and 8 are meter digits (8 NOT CONFIRMED), not rests; no real note in the set · (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.145)
 - 2026-10-16 · Sean · ROADMAP 2.140 lands with `OMR_BEAM_STEM_LEVELS` ON (a second beam level at a stem's tip decides only on page count AND detector stack box; one witness narrows) · Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix; cut-offs fitted to Sean's tiles; a third publisher not yet checked · (`benchmarks/omr-beam-confirm-2026-10/FINDINGS.md` §8.9)
 
 - 2026-10-16 · Sean · Switch OMR_OWN_STEM_UNISON_BOTH (2.141h fix 2) default ON; fix 3 (OMR_WHOLE_REST_INK_LEAVES_BAR) stays OFF · Litolff tiles fix one wrong half and make 0 wrong; the Brahms all-on arm changed 6 verdicts, none of Sean's 9 judged bars, and its one changed value is a C clef boxed as a note (wrong in base too, ROADMAP 2.144) · (benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md 2.141h)

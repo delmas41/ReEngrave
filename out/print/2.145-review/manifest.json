@@ -1,0 +1,615 @@
+{
+ "dpi": 600,
+ "question": "What is the mark inside the BLUE corners (a note -- which value -- or a rest -- which kind -- or something else)? The RED corners are only the bar it is in.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "document": "brahms",
+   "glyph": "glyph/5/1/0/2/10",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "quarter",
+    "step_free": "quarter",
+    "step": 3.92,
+    "width_spaces": 1.27,
+    "height_spaces": 3.12
+   },
+   "frame_control": {
+    "ratio": 8.22,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    1736,
+    3927,
+    2339,
+    4284
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "document": "brahms",
+   "glyph": "glyph/15/0/10/5/14",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.91,
+    "width_spaces": 1.23,
+    "height_spaces": 2.33
+   },
+   "frame_control": {
+    "ratio": 8.94,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    3499,
+    2895,
+    4158,
+    3252
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "document": "litolff",
+   "glyph": "glyph/2/0/2/1/16",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.93,
+    "width_spaces": 1.46,
+    "height_spaces": 2.29
+   },
+   "frame_control": {
+    "ratio": 3.13,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.38,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.35,
+   "page_box_600dpi": [
+    578,
+    597,
+    813,
+    801
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "document": "litolff",
+   "glyph": "glyph/11/1/10/4/4",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.99,
+    "width_spaces": 1.52,
+    "height_spaces": 2.35
+   },
+   "frame_control": {
+    "ratio": 3.56,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.23,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.15,
+   "page_box_600dpi": [
+    930,
+    3464,
+    1156,
+    3668
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "document": "brahms",
+   "glyph": "glyph/1/0/0/1/15",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "abstain:shape_cannot_tell",
+    "step_free": "abstain:shape_cannot_tell",
+    "step": 6.412,
+    "width_spaces": 1.576,
+    "height_spaces": 1.941
+   },
+   "frame_control": {
+    "ratio": 5.34,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1762,
+    439,
+    2556,
+    793
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "document": "brahms",
+   "glyph": "glyph/6/0/3/5/13",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 4.0,
+    "width_spaces": 1.406,
+    "height_spaces": 2.292
+   },
+   "frame_control": {
+    "ratio": 4.5,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.25,
+   "page_box_600dpi": [
+    3383,
+    1257,
+    4094,
+    1608
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "document": "brahms",
+   "glyph": "glyph/10/1/13/1/8",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.989,
+    "width_spaces": 1.206,
+    "height_spaces": 2.254
+   },
+   "frame_control": {
+    "ratio": 7.9,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.1,
+   "page_box_600dpi": [
+    1483,
+    6900,
+    2214,
+    7257
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "document": "litolff",
+   "glyph": "glyph/11/1/3/0/15",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "abstain:in_the_header",
+    "step_free": "abstain:in_the_header",
+    "step": 3.1,
+    "width_spaces": 0.83,
+    "height_spaces": 1.46
+   },
+   "frame_control": {
+    "ratio": 4.95,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    302,
+    2294,
+    690,
+    2498
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "document": "litolff",
+   "glyph": "glyph/11/1/10/12/2",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "quarter",
+    "step_free": "quarter",
+    "step": 5.02,
+    "width_spaces": 1.27,
+    "height_spaces": 3.36
+   },
+   "frame_control": {
+    "ratio": 255000000.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.0,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1972,
+    3464,
+    2191,
+    3668
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "document": "litolff",
+   "glyph": "glyph/9/0/7/3/6",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.54,
+    "width_spaces": 1.42,
+    "height_spaces": 2.0
+   },
+   "frame_control": {
+    "ratio": 8.48,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.09,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    869,
+    1327,
+    1131,
+    1528
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "document": "litolff",
+   "glyph": "glyph/5/0/2/5/2",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "quarter",
+    "step_free": "quarter",
+    "step": 4.31,
+    "width_spaces": 1.33,
+    "height_spaces": 2.93
+   },
+   "frame_control": {
+    "ratio": 4.33,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.22,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1180,
+    748,
+    1399,
+    952
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "document": "litolff",
+   "glyph": "glyph/1/0/9/0/10",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.549,
+    "width_spaces": 1.407,
+    "height_spaces": 1.901
+   },
+   "frame_control": {
+    "ratio": 3.43,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.25,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    607,
+    2667,
+    1039,
+    2871
+   ]
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "document": "litolff",
+   "glyph": "glyph/4/0/10/1/5",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.49,
+    "width_spaces": 1.46,
+    "height_spaces": 1.97
+   },
+   "frame_control": {
+    "ratio": 3.78,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.21,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.4,
+   "page_box_600dpi": [
+    553,
+    1823,
+    803,
+    2027
+   ]
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "document": "brahms",
+   "glyph": "glyph/8/0/1/2/19",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 4.03,
+    "width_spaces": 1.2,
+    "height_spaces": 2.21
+   },
+   "frame_control": {
+    "ratio": 5.95,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.25,
+   "page_box_600dpi": [
+    1515,
+    784,
+    2061,
+    1155
+   ]
+  },
+  {
+   "n": 15,
+   "file": "tile_15.png",
+   "document": "litolff",
+   "glyph": "glyph/6/1/2/5/8",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "abstain:shape_cannot_tell",
+    "step_free": "eighth",
+    "step": 5.96,
+    "width_spaces": 1.46,
+    "height_spaces": 2.28
+   },
+   "frame_control": {
+    "ratio": 3.71,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.25,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    1386,
+    2207,
+    1649,
+    2411
+   ]
+  },
+  {
+   "n": 16,
+   "file": "tile_16.png",
+   "document": "litolff",
+   "glyph": "glyph/6/0/7/9/3",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.49,
+    "width_spaces": 1.46,
+    "height_spaces": 1.97
+   },
+   "frame_control": {
+    "ratio": 4.91,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.2,
+   "page_box_600dpi": [
+    1901,
+    1375,
+    2140,
+    1579
+   ]
+  },
+  {
+   "n": 17,
+   "file": "tile_17.png",
+   "document": "litolff",
+   "glyph": "glyph/16/1/9/7/4",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.93,
+    "width_spaces": 1.39,
+    "height_spaces": 2.29
+   },
+   "frame_control": {
+    "ratio": 4.84,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    1399,
+    3319,
+    1667,
+    3523
+   ]
+  },
+  {
+   "n": 18,
+   "file": "tile_18.png",
+   "document": "brahms",
+   "glyph": "glyph/15/0/2/2/8",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.97,
+    "width_spaces": 1.176,
+    "height_spaces": 2.342
+   },
+   "frame_control": {
+    "ratio": 4.73,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.1,
+   "page_box_600dpi": [
+    1908,
+    872,
+    2605,
+    1226
+   ]
+  },
+  {
+   "n": 19,
+   "file": "tile_19.png",
+   "document": "brahms",
+   "glyph": "glyph/23/1/5/8/6",
+   "our_reading": {
+    "class": "noteheadWholeInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.99,
+    "width_spaces": 1.19,
+    "height_spaces": 2.27
+   },
+   "frame_control": {
+    "ratio": 9.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.1,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.15,
+   "page_box_600dpi": [
+    4495,
+    5102,
+    5174,
+    5462
+   ]
+  },
+  {
+   "n": 20,
+   "file": "tile_20.png",
+   "document": "brahms",
+   "glyph": "glyph/13/0/1/9/17",
+   "our_reading": {
+    "class": "noteheadBlackInSpace",
+    "strict": "eighth",
+    "step_free": "eighth",
+    "step": 3.64,
+    "width_spaces": 1.23,
+    "height_spaces": 1.96
+   },
+   "frame_control": {
+    "ratio": 4.92,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.15,
+   "page_box_600dpi": [
+    4266,
+    675,
+    4821,
+    1032
+   ]
+  },
+  {
+   "n": 21,
+   "file": "tile_21.png",
+   "document": "litolff",
+   "glyph": "glyph/7/0/1/5/2",
+   "our_reading": {
+    "class": "noteheadBlackOnLine",
+    "strict": "quarter",
+    "step_free": "quarter",
+    "step": 4.94,
+    "width_spaces": 1.27,
+    "height_spaces": 3.3
+   },
+   "frame_control": {
+    "ratio": 255000000.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.0,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.4,
+   "page_box_600dpi": [
+    1071,
+    504,
+    1290,
+    708
+   ]
+  }
+ ]
+}
