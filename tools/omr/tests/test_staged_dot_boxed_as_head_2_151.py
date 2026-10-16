@@ -1,5 +1,5 @@
 """ROADMAP 2.151 -- a dot is a dot whatever class the detector gave it
-(STAGED ADJUDICATE, `OMR_DOT_BOXED_AS_A_HEAD`, default OFF).
+(STAGED ADJUDICATE, `OMR_DOT_BOXED_AS_A_HEAD`, default ON).
 
 Real numbers (canonical cell frame, Brahms 317803 small re-gather pp.0-1 on
 this tree): Sean's 2.146 tile 23 is `glyph/1/0/2/1/15`, a dotted quarter on
@@ -287,11 +287,16 @@ class TestOneInkCountsOnce(unittest.TestCase):
         self.assertEqual(n, 1)
 
 
-class TestDefaultOff(unittest.TestCase):
-    def test_default_off(self):
+class TestDefaultOn(unittest.TestCase):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_DOT_BOXED_AS_A_HEAD", None)
-            self.assertFalse(J.dot_boxed_as_a_head_enabled())
+            self.assertTrue(J.dot_boxed_as_a_head_enabled())
+
+    def test_off_words_disable(self):
+        for w in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {"OMR_DOT_BOXED_AS_A_HEAD": w}):
+                self.assertFalse(J.dot_boxed_as_a_head_enabled())
 
 
 if __name__ == "__main__":

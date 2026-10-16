@@ -176,7 +176,7 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
 # (<= `notehead_precision.DOT_SIZED_MAX_SPACES` both sides) notehead-class box
 # the gate refused, at a head's dot step, is that head's augmentation dot;
 # falsified by Sean's tiles showing such a box is ink of something else (a
-# tie end, a letter tip, a staccato of the next staff). Default OFF.
+# tie end, a letter tip, a staccato of the next staff). Default ON (Sean 2026-10-16).
 DOT_BOXED_AS_A_HEAD_ENV = "OMR_DOT_BOXED_AS_A_HEAD"
 
 #: The notehead gate's refusals that say "this box is dot-shaped ink".
@@ -192,10 +192,10 @@ TWIN_DOT_MAX_SPACES = 0.3
 
 
 def dot_boxed_as_a_head_enabled() -> bool:
-    """`OMR_DOT_BOXED_AS_A_HEAD`, DEFAULT OFF (ROADMAP 2.151): on only for an
-    explicit `1`/`true`/`yes`/`on`."""
-    return os.environ.get(DOT_BOXED_AS_A_HEAD_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_DOT_BOXED_AS_A_HEAD`, default ON since 2026-10-16 (ROADMAP 2.151;
+    Sean: "Land 2.151 ON."); only an explicit off-word disables."""
+    return os.environ.get(DOT_BOXED_AS_A_HEAD_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 def head_box_is_dot_shaped(refusal: Optional[R.Verdict], w: float, h: float,

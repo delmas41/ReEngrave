@@ -1,6 +1,6 @@
 {
  "answered": "2026-10-16",
- "verbatim": "1.8 2.dot 2 3-4. dot 4 5.dot 8 6. dot 2 7. dot 8. dot 2 9. 4 10.dot2 11. part of an 8rest 12. part of an SFdyn 13.dot 2 14. trem slash 15. f dyn 16.4 17.dot 4 18. dot 2 19. trem slash 20.4 21. dot 4 22. dot 2 23-28. dot 4 29.dot 2 30.clef 31.dot 4",
+ "verbatim": "1.8 2.dot 2 3-4. dot 4 5.dot 8 6. dot 2 7. dot 8. dot 2 9. 4 10.dot2 11. part of an 8rest 12. part of an SFdyn 13.dot 2 14. trem slash 15. f dyn 16.4 17.dot 4 18. dot 2 19. trem slash 20.4 21. dot 4 22. dot 2 23-28. dot 4 29.dot 2 30.clef 31.dot 4 | tile7 is dot 8",
  "question": "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?",
  "scoring": "decided value == Sean's value -> right; narrowed containing it -> narrowed_right; a non-note answer -> not_a_note",
  "tiles": [
@@ -131,7 +131,7 @@
    "n": 7,
    "glyph": "glyph/3/0/0/2/2",
    "role": "changed",
-   "sean": "dot",
+   "sean": "dot 8",
    "base": [
     "decided",
     0.125,
@@ -144,8 +144,8 @@
     1,
     []
    ],
-   "base_verdict": "unclear",
-   "arm_verdict": "unclear"
+   "base_verdict": "wrong",
+   "arm_verdict": "wrong"
   },
   {
    "n": 8,
