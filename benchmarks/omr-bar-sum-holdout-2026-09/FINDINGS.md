@@ -4222,3 +4222,97 @@ yet (each line names the reason string to count). Manager spot-checked #3 and #4
 Respects the order: `_head_is_open` first; class-hollow zeroes beams; `whole_class_on_a_stem`; `stem_value` base from heads,
 then tip beams, then dots; 2.130/2.43; `collapse_arc_ink_not_beam`.
 Proposed fix order: 2.148 (1-2) -> bar arithmetic (3) -> shared stem (4) -> the rest.
+
+## 2.150 -- RESTS, globally (2026-10-16, STAGED GATHER+ADJUDICATE; flag `OMR_REST_WIDTH_FLOOR`, default OFF)
+
+**CONVENTION ASSUMED:** a rest is a fixed glyph printed at a fixed size in staff spaces (SMuFL Bravura: restQuarter
+1.08 wide x 2.8 tall, rest8th 0.99 x 2, restWhole/restHalf 1.13 x 0.5); a stem is ~0.1-0.15 space thick. So a
+`restQuarter` box far narrower than a quarter rest (under 0.7 spaces) is not a quarter rest. **WHAT WOULD FALSIFY IT:**
+a print-confirmed quarter rest whose detector box is under 0.7 spaces wide (none in 116 boxes the lane looked at, the
+narrowest real quarter rest seen was 0.87). **NOT CONFIRMED:** by Sean; 21 blind tiles `out/print/2.150-review/` (hidden
+key `out/2.150/tiles-key.json`, not committed) are the test; the 0.7 is a cut on two plates.
+
+### 2.150-1. The rule set (engraving convention; Gould *Behind Bars* "Rests", Ross, Read; SMuFL) vs STAGED today
+| rule | evidence it gives | STAGED reads it today |
+|---|---|---|
+| R1 a rest's SHAPE and SIZE are fixed per value (quarter = zigzag ~1 x 3 spaces; eighth = blob + stroke ~1 x 2; 16th ~1.3 x 3) | width/height in staff spaces tells a rest from a stem/flag/letter, and quarter from eighth | only for refused NOTEHEAD boxes (2.80b `narrow_rest`, 2.99 `unboxed_rest`, 2.145 `head_rest_shape`); a box CLASSED rest is never size-checked (this lane adds width for restQuarter) |
+| R2 a rest stands FREE: never on a stem, a flag or a beam, never touching a notehead | a stroke from a head, a flag hook, a head box at the box's end = not a rest | `rest_has_a_stem` for restWhole/restHalf ONLY (2.33b: a quarter rest's own stroke reads as `Q.STEM`); `rest_overlaps_a_notehead` only where the boxes are one mark (IoU + same centre). AND GATHER's `refuse_owned` (stem finder, default ON) DELETES any stroke >= 0.8 inside a rest box before `Q.STEM` exists, so a stem boxed `restQuarter` loses its stem and protects the false rest (finding below) |
+| R3 fixed vertical place: whole hangs from line 4, half sits on line 3, quarter/eighth/16th centred on the middle of the staff; displaced by whole spaces for a second voice | position on the staff | whole/half: `rhythm._rest_slot` (2.12b-cal bands); all classes: `rest_outside_its_staff` (per-class window); quarter/eighth centring is NOT read |
+| R4 a whole rest is the BAR whatever the meter, centred in the bar | the bar's length, never a beat | `size_measure_rest` (2.98), `rest_off_center` (2.33) |
+| R5 a multi-bar rest (H-bar + number) names no single value | count of bars | `restHBar` abstains `unreadable_rest` |
+| R6 a dotted rest: the dot in the third space, right of the rest | +half value | `_attached_dots` (2.151's fence) |
+| R7 rests under beams: a beam may pass OVER a rest; the rest never joins the beam | nothing new for the rest | not read; harmless |
+| R8 a rest stands at its onset, aligned with the other staves' events at that beat | horizontal slot | designed, not built (FINDINGS §20) |
+
+### 2.150-2. Measured (record 20261014-night, ijson-streamed rows, `probe/cache_2_150.py` -> `census_2_150.py`)
+* **Hand truth** (Brahms 317803 pdf 0, `probe/truth_2_150.py`): 21 record rest boxes; 16 of Sean's 16 rest boxes kept;
+  2 kept that Sean did not box (a restWhole at cell 7/3, a restHBar); 3 refused (2 tremolo slashes boxed restWhole, 1
+  duplicate eighth). The page is clean for rests: the stem-as-rest fault does not show on it. One Sean label conflicts
+  with the print: his `restQuarter` in s0-st8-m1 is an 8-px box at the cell's left edge on the barline (tile 21 asks).
+* **Kept rest boxes, whole movements** (Brahms 6,321 kept of 8,129; Litolff 2,275): kept `restQuarter` widths are
+  BIMODAL on both plates -- Brahms 1,319 kept, median 1.14 spaces, 126 under 0.7; Litolff 812, median 1.16, 58 under 0.7.
+  Of the 126 Brahms: 92 have a standing head box at an END of the box, 52 a `Q.STEM` row in it, 27 a flag box, 14 none.
+  Of Litolff's 58: 48 / 23 / 1 / 6.
+* **What they are (the lane's look at the print, contact sheets `out/2.150/sheet-*.png`, not committed):** restQuarter
+  under 0.7: 66 of 66 viewed are NOT rests (note stems with their head, flag stems, barlines, a natural); 0.7-0.95:
+  Brahms 32 viewed = 14 stems/flags, 8 quarter rests (all >= 0.87), 5 eighth rests boxed restQuarter (value wrong),
+  1 'p' of pizz.; Litolff 32 under 0.95 = 32 stems (to 0.86). A random 32 of the 1,099 Brahms quarter rests with no
+  stem/head/flag beside them: 27 quarter rests, 2 eighth rests boxed quarter, 1 natural, 2 lower-voice rests (real).
+  Narrow `rest8th` (Brahms 13 under 0.7): 2 real eighth rests, 10 wedges above notes, 1 stem+flag -- width does NOT
+  separate eighths.
+* Manager's named cells: stems `glyph/21/0/6/8/11` (0.57), `glyph/11/1/1/9/8` (0.35), `glyph/9/1/3/8/9` (0.48) are under
+  the floor; flags `glyph/4/1/13/0/25` (0.91, head at its end + flag box), `glyph/5/0/7/1/16` (0.81, nothing beside it)
+  and the 'p' `glyph/22/1/7/9/4` (0.82, a text box overlaps) are not.
+
+### 2.150-3. Ranked proposal (each: rule, evidence source, reach, risk)
+1. **Width floor for restQuarter** (R1; detector box width vs the convention's glyph width, staff space from the
+   staff-line reader): Brahms 126 + Litolff 58 phantom quarter rests; risk low (0 real of 66 viewed). BUILT below.
+2. **A rest box may not own a stroke unless it is rest-sized** (R1+R2, GATHER `gather._owner_marks_for_cell` /
+   `line_detection` `refuse_owned`): restores the stem those boxes delete, so the head reads its stem and value. Reach
+   the same 184 boxes, plus more where the stroke is wholly inside a wider box; risk medium (every stem-reading consumer
+   moves). OUTSIDE the fence (stem finder): not built, proposed.
+3. **A rest on a note's stem** (R2: a standing notehead box at the rest box's top/bottom end AND a stroke through it,
+   any rest class): reaches the 0.7-0.9 band (Brahms 30, 11 with a head at the end; Litolff 19, 14) and the flag cases;
+   risk medium: 10 of 32 viewed real quarter rests ALSO had a head box at an end (twin heads), so it needs the stroke
+   to run INTO the head (ink), not just box contact.
+4. **Eighth boxed as quarter** (R1 height: an "restQuarter" ~2 spaces tall with the eighth's blob): NARROW quarter|eighth
+   (never pick by the bar). ~90 Brahms boxes h < 2.5 of which about a third are eighths; the rest are clipped quarters, so
+   height alone is not enough -- needs 2.80b's shape reader called on the box.
+5. **Wedges boxed rest8th above the staff** (R3: an eighth rest is centred on the staff; 10 of 13 narrow rest8th sit a
+   space above the top line over a note): tighten `rest_outside_its_staff` for eighths only where no second voice.
+6. **Letter in a direction word boxed as a rest** (the 'p' of pizz.): `letter_cover` (2.107) covers dynamics only; extend
+   to OCR'd direction words.
+
+### 2.150-4. Built: `OMR_REST_WIDTH_FLOOR` (default OFF; only `1/true/yes/on` enables)
+STAGED ADJUDICATE `family_precision.adjudicate_rest_is_not_a_rest`, new `_rest_narrower_than_its_class_refusal`, reason
+`rest_narrower_than_its_class`, checked LAST (every earlier refusal keeps its reason); `REST_MIN_WIDTH_SPACES =
+{"restQuarter": 0.7}`; reads only the box's canonical width and `Q.CELL_STAFF_SPACE`; files `width_floor` (width, floor,
+signed margin) on every restQuarter it measures and the 2.106 margin on a refusal (`margins.PARTIAL`). No cell space:
+declines. Tests `tools/omr/tests/test_staged_rest_width_floor_2_150.py` (8; RED first: 3 failed on main's behaviour;
+CONTROLS: a 1.1-space box kept, 0.72 kept, flag unset and an off-word keep the narrow box, rest8th has no floor, no staff
+space declines). Fast tier 8,229 passed, 0 failed (serial). `python3 -m tools.omr.staged.check`: open=192 base and flag ON.
+
+### 2.150-5. Base vs arm (replay of named systems, ADJUDICATE..EXPORT, flag OFF vs ON; `probe/replay_2_150.py`)
+| | Brahms (p0s0, p1s0, p1s1, p15s0, p21s0, p11s1, p9s1) | Litolff (p14s1, p14s0, p5s1) |
+|---|--:|--:|
+| rest boxes refused `rest_narrower_than_its_class` | 25 | 25 |
+| of those, the lane's look at the print: real rests | 0 of 25 | 0 of 25 (all second-voice down stems) |
+| other verdicts changed | 8 (6 durations settled, 1 measure rest sized, 1 dynamic anchor) | 0 |
+| bars held out (sum) | 143 -> 128 of 731 | not judged (no meter in the slice) |
+| MusicXML bars changed | 17: 16 held bars now written, 1 written bar now held (P10 b44) | 19: a phantom quarter rest gone from each |
+Of the 6 durations: 4 narrowed heads settled by INFER's bar arithmetic (`the_bars_arithmetic_forces_this_length`, 1.5 /
+1.0) and **2 quarters SHORTENED to eighths by EVALUATE `meter_reconciliation`** (`glyph/1/0/8/0/3`, `glyph/1/1/8/2/11`) --
+existing mechanism, now reached because the phantom rest no longer fills the bar; Sean's rule (the bar never supplies an
+eighth) is at stake there and it is not this lane's code. Litolff: bars such as P3 b27-31 go from three quarters in 2/4 to
+two; P2 b37 / P6 b39 lose their only "rest" (the second voice's note stays unread: nothing invented).
+Hand-truth page: the arm refuses 1 of Sean's 16 labelled rests -- the 8-px barline box above (tile 21).
+
+### 2.150-6. Tiles: `out/print/2.150-review/` (21, blind)
+Blue corners on the box, nothing else of ours. 12 boxes the arm refuses (7 Brahms incl. the 3 named stems, 5 Litolff),
+5 near-floor controls kept (0.73-0.93), 3 wide controls kept, tile 21 the hand-truth conflict. Question: "What is the
+mark in the blue box?"
+
+### 2.150-7. Limits
+The floor reaches only restQuarter; flags (0.8-0.95), the 'p', eighth-for-quarter and wedge-as-eighth are proposals 3-6.
+The stem the false box deleted is NOT restored (proposal 2), so a refused stem-box leaves its head stemless. Widths are
+the detector's box, not the ink. Two plates; a third publisher not checked.
