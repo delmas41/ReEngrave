@@ -1,0 +1,448 @@
+{
+ "answered": "2026-10-16",
+ "verbatim": "1.8 2.4 3.8 4.8 5.4 6.16 7.8 8.4 9.dot 4 10. dot 4 11-12. 8 13.dot 4 14.8 15.8 16.8 17.4 18. dot 4",
+ "question": "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "glyph": "glyph/15/1/7/17/5",
+   "role": "plain_control",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "wrong"
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/15/1/3/12/1",
+   "role": "changed",
+   "sean": "4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/7/3/2",
+   "role": "changed",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "right",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "glyph": "glyph/2/1/7/12/2",
+   "role": "changed",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "meter_reconciliation",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "wrong"
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "glyph": "glyph/5/0/10/3/0",
+   "role": "changed",
+   "sean": "4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 6,
+   "doc": "brahms",
+   "glyph": "glyph/2/0/10/3/0",
+   "role": "joined_control",
+   "sean": "16",
+   "base": {
+    "outcome": "decided",
+    "written": 0.25,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 0.25,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "right"
+  },
+  {
+   "n": 7,
+   "doc": "brahms",
+   "glyph": "glyph/13/0/7/6/0",
+   "role": "joined_control",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "right"
+  },
+  {
+   "n": 8,
+   "doc": "brahms",
+   "glyph": "glyph/5/0/9/3/5",
+   "role": "changed",
+   "sean": "4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 9,
+   "doc": "brahms",
+   "glyph": "glyph/15/1/9/9/0",
+   "role": "changed",
+   "sean": "dot 4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.75,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.5,
+     0.75
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 10,
+   "doc": "brahms",
+   "glyph": "glyph/15/1/12/5/5",
+   "role": "changed",
+   "sean": "dot 4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_wrong"
+  },
+  {
+   "n": 11,
+   "doc": "litolff",
+   "glyph": "glyph/6/1/10/3/0",
+   "role": "joined_control",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "right"
+  },
+  {
+   "n": 12,
+   "doc": "litolff",
+   "glyph": "glyph/16/1/7/7/7",
+   "role": "changed",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.0,
+     0.5
+    ]
+   },
+   "base_verdict": "right",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 13,
+   "doc": "brahms",
+   "glyph": "glyph/13/0/1/2/3",
+   "role": "changed",
+   "sean": "dot 4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.75,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.5,
+     0.75
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  },
+  {
+   "n": 14,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/8/2/0",
+   "role": "changed",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "meter_reconciliation",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "wrong"
+  },
+  {
+   "n": 15,
+   "doc": "litolff",
+   "glyph": "glyph/2/1/9/4/1",
+   "role": "joined_control",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.25,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 0.25,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "wrong"
+  },
+  {
+   "n": 16,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/6/3/2",
+   "role": "changed",
+   "sean": "8",
+   "base": {
+    "outcome": "decided",
+    "written": 0.5,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "meter_reconciliation",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "wrong"
+  },
+  {
+   "n": 17,
+   "doc": "brahms",
+   "glyph": "glyph/15/1/9/0/2",
+   "role": "plain_control",
+   "sean": "4",
+   "base": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "decided",
+    "written": 1.0,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "base_verdict": "right",
+   "arm_verdict": "right"
+  },
+  {
+   "n": 18,
+   "doc": "brahms",
+   "glyph": "glyph/13/0/1/2/1",
+   "role": "changed",
+   "sean": "dot 4",
+   "base": {
+    "outcome": "decided",
+    "written": 0.75,
+    "reason": "head_and_marks",
+    "is_rest": null,
+    "cands": null
+   },
+   "arm": {
+    "outcome": "narrowed",
+    "written": null,
+    "reason": "beams_ambiguous",
+    "is_rest": null,
+    "cands": [
+     1.5,
+     0.75
+    ]
+   },
+   "base_verdict": "wrong",
+   "arm_verdict": "narrowed_right"
+  }
+ ]
+}

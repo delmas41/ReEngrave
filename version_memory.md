@@ -6237,3 +6237,6 @@ STAGED GATHER, `OMR_WEDGE_RESCUE` default ON (`gather.wedge_rescue_enabled`; exp
 
 ## 2026-10-16 -- ROADMAP 2.142 landed ON (stemless head on a rest box's ink leaves the bar)
 STAGED ADJUDICATE, `OMR_HEAD_IS_A_REST_TWIN` default ON (`notehead_precision.head_is_a_rest_twin_enabled`; explicit `0/false/no/off` disables). Sean's 12 tiles agree 12/12 (10 rests taken out, 2 real-note controls kept). Beam cases were already refused; stale DURATION on refused boxes is ROADMAP 2.143. Reaches records at the next re-gather.
+
+## 2026-10-16 -- ROADMAP 2.153 (cell-level head value and beam count): attribution, reach, one fix built OFF
+STAGED ADJUDICATE, `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` default OFF (`rhythm._beam_levels(..., unjoined_possible=True)`): a beam stroke no stem reaches and the ink-join reader never read joined is a POSSIBLE level, not a certain one (narrows `beams_ambiguous`, equal support). Of Sean's 31 judged value errors 13 are right under main's defaults, 8 more become right at the next re-gather through 2.148 (its `interior_white` row is absent from the night records), 10 stay wrong. Found: slice replays through `review.rerun.rebuild_gather` leave `detail` ids dangling (use `probe/replay_util_2_153.py`). 18 blind tiles `out/print/2.153-review/`, not answered. Detail: holdout FINDINGS 2.153.

@@ -1492,6 +1492,18 @@ def _fused_double_beams(ev: Evidence, cell, kept, x_center) -> int:
     return n
 
 
+BEAM_LEVEL_NEEDS_A_JOINED_STEM_ENV = "OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM"
+
+
+def beam_level_needs_a_joined_stem_enabled() -> bool:
+    """ROADMAP 2.153, default OFF (allow-list: only 1/true/yes/on enables). A beam level belongs to a STEM (Sean 2026-10-16: notehead,
+    stem, THEN beam or flag; a later step never overturns an earlier one). A stroke that only COVERS the head's centre column --
+    no stem box reaches it and the ink-join reader did not read it joined -- is POSSIBLE, never CERTAIN: the note narrows over the
+    levels left open instead of deciding one."""
+    import os
+    return os.environ.get(BEAM_LEVEL_NEEDS_A_JOINED_STEM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 BEAM_STEM_LEVELS_ENV = "OMR_BEAM_STEM_LEVELS"
 
 
@@ -2950,7 +2962,7 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
 
 
 def _beam_levels(beams, x_center, width, joined=(), join_witness=None,
-                 stem_x=None):
+                 stem_x=None, unjoined_possible=False):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
@@ -3026,6 +3038,13 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None,
         x0 = b.detail.get("x0", 0)
         x1 = b.detail.get("x1", 0)
         if b.id in joined_ids or x0 <= x_center <= x1:
+            # ⚠️ ROADMAP 2.153 (flag `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM`, caller-supplied): a stroke that only COVERS the head's
+            # centre column -- no stem box reaches it, the ink-join reader never read it -- is a box overlap and nothing else.
+            # A beam belongs to a stem (Sean's reading order: stem, then beam), so it is POSSIBLE, not CERTAIN.
+            if (unjoined_possible and b.id not in joined_ids
+                    and (join_witness or {}).get(b.id) is None):
+                possible += 1
+                continue
             certain += 1
             possible += 1
             if (join_witness or {}).get(b.id) is False:
@@ -3055,6 +3074,17 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None,
             else:
                 possible += 1
     return (certain, possible, tuple(certain_conflicts))
+
+
+def _unjoined_column_strokes(beams, x_center, joined, join_witness) -> int:
+    """ROADMAP 2.153: how many strokes only COVER the head's centre column (no stem box reaches them, the ink-join reader never
+    read them) -- the ones `_beam_levels(..., unjoined_possible=True)` turns from certain to possible."""
+    if x_center is None:
+        return 0
+    joined_ids = {b.id for b in joined}
+    return sum(1 for b in beams
+               if b.id not in joined_ids and b.detail.get("x0", 0) <= x_center <= b.detail.get("x1", 0)
+               and (join_witness or {}).get(b.id) is None)
 
 
 def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
@@ -3929,8 +3959,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     join_witness, join_used = _beam_join_witness(ev, cell, kept, own_stems,
                                                  side)
     used.extend(r.id for r in join_used)
+    needs_join = beam_level_needs_a_joined_stem_enabled()
     certain, possible, certain_conflicts = _beam_levels(
-        kept, x_center, head_width, joined, join_witness, stem_x=stem_x)
+        kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
     # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
     # Where the strokes past the tip were the ONLY thing over this head, and
     # its stem carries no beam and no flag once they go, the note would fall
@@ -3951,7 +3982,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                                       own_stems, side)
         used.extend(r.id for r in join_used)
         certain, possible, certain_conflicts = _beam_levels(
-            kept, x_center, head_width, joined, join_witness, stem_x=stem_x)
+            kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
     # ⚠️⚠️ ROADMAP 2.75 (Sean, 2026-10-09: rhythm-leftovers tiles 8 and 9,
     # printed EIGHTHS read 16th and 32nd): ONE PRINTED HEAD SHARED BY TWO
     # VOICES carries a stem each way and each stem has its OWN beam -- the
@@ -3979,7 +4010,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 used.extend(r.id for r in v_used)
                 c, pz, cc = _beam_levels(
                     near, x_center, head_width, v_joined, v_wit,
-                    stem_x=_own_stem_x_span(vs[vside], tol))
+                    stem_x=_own_stem_x_span(vs[vside], tol), unjoined_possible=needs_join)
                 voice_levels[vside] = [c, pz]
                 v_kept.extend(b for b in near if b not in v_kept)
                 v_conf.extend(cc)
@@ -4065,7 +4096,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         pre_witness, _ = _beam_join_witness(ev, cell, pre_ink, own_stems, side)
         _pc, pre_possible, _pk = _beam_levels(
             pre_ink, x_center, head_width, pre_joined, pre_witness,
-            stem_x=stem_x)
+            stem_x=stem_x, unjoined_possible=needs_join)
     ink_removed_all_marks = bool(ink_dropped) and pre_possible > 0 \
         and not possible
     used.extend(s.id for s in attached)
@@ -4348,7 +4379,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 # the note outranks one that merely might, and the ORDER is
                 # the whole claim. These numbers are in this function's own
                 # units and must never be normalised.
-                support=2.0 if level == certain else 1.0))
+                # ⚠️ ROADMAP 2.153: where the range comes from strokes only a box overlap put over the column and nothing is joined,
+                # "the certain level outranks" would be a claim no witness makes: equal support, the bar settles it.
+                support=2.0 if level == certain and not (
+                    needs_join and certain == 0 and _unjoined_column_strokes(kept, x_center, joined, join_witness)) else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
                              **shared)
 
