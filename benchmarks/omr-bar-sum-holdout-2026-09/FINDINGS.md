@@ -4089,3 +4089,9 @@ W2's settlements on the 4 shared-cause bars (2 U, 2 T6) were right, so the share
 ### Sean's fix-1 tiles (2026-10-15)
 
 `out/print/2.141-fixes-review/answers.json`, scored against the hidden key `out/2.141h/tiles-fix1-key.json`. Wrong -> right: 11 values (tiles 1 x3, 3 x3, 10 x3, 11, and tile 6 narrowed -> right). Right -> narrowed: 3 (tiles 1, 4, 7: one eighth each now blue). Controls 2, 5, 8 right. Tiles 9, 12, 13 hold NO NOTE (a beam on a staff line boxed as a notehead): wrong in base too, still wrong under fix 1 (roadmap 2.142). Right -> wrong: 0. Fix 1 landed default ON; fixes 2 and 3 stay OFF pending `out/print/2.141-fix23-review/`.
+
+### 2.141h. Sean's fix 2/3 tiles (2026-10-15)
+
+`out/print/2.141-fix23-review/answers.json`, key `out/2.141h/tiles-fix23-key.json`. Raw: "1. 8,8,8,8 2. 2 3. 8 rest 4. whole rest 5. 4,4". Controls 1 and 5 right. Tile 2: a half; base quarter WRONG, fix 2 and fix 3 half RIGHT. Tile 3: an eighth REST boxed as a note (Litolff p6 sys1 st2 c5); base quarter, fix 3 eighth: a note where the page has a rest, wrong both. Tile 4: a whole REST boxed as a note (p2 sys0 st0 c16); base half, fix 3 whole: wrong both, fix 3 did not take it out of the bar.
+
+**Decision (Sean 2026-10-15).** Fix 2 (`OMR_OWN_STEM_UNISON_BOTH`) is to be switched ON after the Brahms all-on arm shows no damage (NOT now). Fix 3 stays OFF: it fixes nothing fix 2 does not, costs Sean's two right 2.141 bars, and does not remove the rest-as-head boxes. The rest-as-head case moves to roadmap 2.142.

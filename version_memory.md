@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-15 -- Land 2.139 ON; record 2.141 fix-2/3 tiles
+
+STAGED ADJUDICATE + LilyPond: `OMR_DYNAMIC_LEXICON_WORD` default ON (`text.dynamic_lexicon_word_enabled`; explicit `0/false/no/off` disables), Sean's tiles 8/8 (`out/print/2.139-review/answers.json`). 2.141 fix-2/3 tiles recorded (`out/print/2.141-fix23-review/answers.json`): fix 2 to be switched ON after the Brahms all-on arm shows no damage, fix 3 stays OFF; rests boxed as heads added to ROADMAP 2.142. Flags rows, FINDINGS, ROADMAP, DECISIONS updated.
+
 ## 2026-10-15 -- manager close-out: START HERE block, 2.141 status
 Docs only. New START HERE block at the top of ROADMAP (today's landings 2.134/2.135/2.109/2.126/2.137/2.136, what is waiting on Sean, the ranked queue 2.141 -> 2.140 -> 2.138 -> 2.139, process lessons). Row 2.141 marked diagnosis done on branch `lane-2.141-litolff-w2` (189abd26). Fast tier on main f4ed3de1 rerun by the manager after the two landings: 8,099 passed, 0 failed.
 

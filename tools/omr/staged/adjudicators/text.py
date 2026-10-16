@@ -267,9 +267,9 @@ DYNAMIC_LEXICON_WORD_ENV = "OMR_DYNAMIC_LEXICON_WORD"
 
 
 def dynamic_lexicon_word_enabled() -> bool:
-    """Only an explicit on-word is ON (default OFF)."""
-    return os.environ.get(DYNAMIC_LEXICON_WORD_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Default ON (Sean 2026-10-15, ROADMAP 2.139, tiles 8/8); only an explicit off-word disables."""
+    return os.environ.get(DYNAMIC_LEXICON_WORD_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 #: the single letters that are a whole dynamic on their own

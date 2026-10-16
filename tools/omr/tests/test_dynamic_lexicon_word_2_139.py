@@ -3,7 +3,7 @@
 Brahms p24: the plate prints *marc.*; the detector boxed the word as two low-score
 `m` dynamic letters with no letter ink beside either, `adjudicate_dynamic` kept them
 (`letters_alone_inside_a_word_box`) and the file got a blue `dyn.` next to the text
-direction `marc.`. Flag `OMR_DYNAMIC_LEXICON_WORD`, default OFF.
+direction `marc.`. Flag `OMR_DYNAMIC_LEXICON_WORD`, default ON since 2026-10-15 (Sean, tiles 8/8).
 """
 from __future__ import annotations
 
@@ -33,8 +33,17 @@ def _verdict_reason(letters, words, neighbours):
     return holder["v"]
 
 
-def test_flag_off_marc_is_the_unspellable_dyn(monkeypatch):
+def test_flag_default_is_on(monkeypatch):
+    from tools.omr.staged.adjudicators import text as T
     monkeypatch.delenv(FLAG, raising=False)
+    assert T.dynamic_lexicon_word_enabled()
+    for off in ("0", "false", "no", "off", ""):
+        monkeypatch.setenv(FLAG, off)
+        assert not T.dynamic_lexicon_word_enabled()
+
+
+def test_flag_off_marc_is_the_unspellable_dyn(monkeypatch):
+    monkeypatch.setenv(FLAG, "0")
     v = _verdict_reason(MARC_LETTERS, MARC, {0: ALONE, 1: ALONE})
     assert v.reason == "unspellable"
 
@@ -74,7 +83,7 @@ def _ly(counters_flag, monkeypatch, writable=True):
     if counters_flag:
         monkeypatch.setenv(FLAG, "1")
     else:
-        monkeypatch.delenv(FLAG, raising=False)
+        monkeypatch.setenv(FLAG, "0")
     c = Counter()
     return LY._direction_suffix([(1734.0, "words", "marc.")], c, writable, "x"), c
 

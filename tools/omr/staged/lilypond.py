@@ -325,7 +325,7 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
 
     for _x, kind, text in directions:
         if kind == "words":
-            # ⚠️ ROADMAP 2.139 (flag `OMR_DYNAMIC_LEXICON_WORD`, default OFF): the
+            # ⚠️ ROADMAP 2.139 (flag `OMR_DYNAMIC_LEXICON_WORD`, default ON since 2026-10-15): the
             # text direction the lexicon accepted -- `marc.`, `dolce` -- is
             # written as an italic markup, the SAME word MusicXML's `<words>`
             # carries, instead of being counted and dropped. A bar this file
