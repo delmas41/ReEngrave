@@ -87,8 +87,10 @@
    "glyph": "glyph/15/1/9/2/5",
    "role": "refused",
    "width_spaces": 0.47,
-   "sean": "quarter rest",
-   "verdict": "WRONG"
+   "sean": "quarter stem",
+   "verdict": "WRONG",
+   "sean_reasked": "stems of quarter notes (2026-10-16, asked again as 2.150b tile 20; Sean settled the conflict: 'stems of quarter notes')",
+   "verdict_after_reask": "right"
   },
   {
    "n": 12,
