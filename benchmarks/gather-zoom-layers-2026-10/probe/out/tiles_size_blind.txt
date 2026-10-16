@@ -1,0 +1,24 @@
+status census: [(('litolff', 'right'), 67), (('brahms', 'right'), 57), (('brahms', 'narrowed'), 30), (('brahms_p0p3', 'value_error'), 16), (('litolff', 'right_refused'), 13), (('litolff', 'twin_refused'), 11), (('litolff', 'no_box'), 8), (('brahms_p0p3', 'phantom_head'), 6), (('brahms', 'box_not_head_or_rest'), 6), (('brahms_p0p3', 'right'), 5), (('litolff', 'narrowed'), 5), (('brahms_p0p3', 'narrowed'), 4), (('litolff', 'box_not_head_or_rest'), 4), (('brahms', 'phantom_head'), 4), (('brahms', 'no_box'), 4), (('brahms', 'right_refused'), 3), (('brahms', 'lost_rest'), 3), (('litolff', 'phantom_head'), 2), (('brahms', 'lost_note'), 2), (('brahms', 'twin_refused'), 2), (('litolff', 'value_error'), 1), (('brahms', 'rest_as_head'), 1), (('brahms', 'value_error'), 1), (('litolff', 'abstained'), 1)]
+group	n	P1p3	P1p4	P1p5	P1doc4	S1v	S1h	S1n	S1any	S2a1	S2a1.5	S2a3	S2b	F148	F150	ANYstrict	ANYloose
+all ERR:all	36	21/36	17/36	16/36	16/36	8/36	2/36	6/36	9/36	2/36	1/36	0/36	1/36	15/36	0/0 (n/a 36)	18/36	22/36
+all ERR:lost_note	2	2/2	2/2	2/2	2/2	1/2	0/2	1/2	1/2	0/2	0/2	0/2	0/2	2/2	0/0 (n/a 2)	2/2	2/2
+all ERR:lost_rest	3	3/3	3/3	3/3	3/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	3/3	0/0 (n/a 3)	3/3	3/3
+all ERR:phantom_head	12	11/12	8/12	7/12	7/12	2/12	2/12	2/12	3/12	2/12	1/12	0/12	1/12	6/12	0/0 (n/a 12)	9/12	9/12
+all ERR:rest_as_head	1	1/1	1/1	1/1	1/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	1/1	0/0 (n/a 1)	1/1	1/1
+all ERR:value_error	18	4/18	3/18	3/18	3/18	5/18	0/18	3/18	5/18	0/18	0/18	0/18	0/18	3/18	0/0 (n/a 18)	3/18	7/18
+all RIGHT	129	17/126 (n/a 3)	3/126 (n/a 3)	1/126 (n/a 3)	2/129	16/129	0/129	4/129	16/129	4/129	4/129	1/129	0/129	1/126 (n/a 3)	0/0 (n/a 129)	3/129	22/129
+brahms ERR:all	11	10/11	9/11	8/11	9/11	1/11	0/11	1/11	1/11	0/11	0/11	0/11	0/11	8/11	0/0 (n/a 11)	9/11	9/11
+brahms ERR:lost_note	2	2/2	2/2	2/2	2/2	1/2	0/2	1/2	1/2	0/2	0/2	0/2	0/2	2/2	0/0 (n/a 2)	2/2	2/2
+brahms ERR:lost_rest	3	3/3	3/3	3/3	3/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	3/3	0/0 (n/a 3)	3/3	3/3
+brahms ERR:phantom_head	4	4/4	3/4	2/4	3/4	0/4	0/4	0/4	0/4	0/4	0/4	0/4	0/4	2/4	0/0 (n/a 4)	3/4	3/4
+brahms ERR:rest_as_head	1	1/1	1/1	1/1	1/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	1/1	0/0 (n/a 1)	1/1	1/1
+brahms ERR:value_error	1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/0 (n/a 1)	0/1	0/1
+brahms RIGHT	57	5/56 (n/a 1)	0/56 (n/a 1)	0/56 (n/a 1)	0/57	10/57	0/57	1/57	10/57	0/57	0/57	0/57	0/57	0/55 (n/a 2)	0/0 (n/a 57)	0/57	10/57
+brahms_p0p3 ERR:all	22	8/22	7/22	7/22	6/22	7/22	2/22	5/22	8/22	1/22	1/22	0/22	1/22	6/22	0/0 (n/a 22)	8/22	12/22
+brahms_p0p3 ERR:phantom_head	6	5/6	5/6	5/6	4/6	2/6	2/6	2/6	3/6	1/6	1/6	0/6	1/6	4/6	0/0 (n/a 6)	6/6	6/6
+brahms_p0p3 ERR:value_error	16	3/16	2/16	2/16	2/16	5/16	0/16	3/16	5/16	0/16	0/16	0/16	0/16	2/16	0/0 (n/a 16)	2/16	6/16
+brahms_p0p3 RIGHT	5	0/4 (n/a 1)	0/4 (n/a 1)	0/4 (n/a 1)	0/5	1/5	0/5	1/5	1/5	0/5	0/5	0/5	0/5	0/5	0/0 (n/a 5)	0/5	1/5
+litolff ERR:all	3	3/3	1/3	1/3	1/3	0/3	0/3	0/3	0/3	1/3	0/3	0/3	0/3	1/3	0/0 (n/a 3)	1/3	1/3
+litolff ERR:phantom_head	2	2/2	0/2	0/2	0/2	0/2	0/2	0/2	0/2	1/2	0/2	0/2	0/2	0/2	0/0 (n/a 2)	0/2	0/2
+litolff ERR:value_error	1	1/1	1/1	1/1	1/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	1/1	0/0 (n/a 1)	1/1	1/1
+litolff RIGHT	67	12/66 (n/a 1)	3/66 (n/a 1)	1/66 (n/a 1)	2/67	5/67	0/67	2/67	5/67	4/67	4/67	1/67	0/67	1/66 (n/a 1)	0/0 (n/a 67)	3/67	11/67

@@ -1,0 +1,4 @@
+head:black   pages_used 16/16 n/page med 354 | page-median w: min 1.37 med 1.44 max 1.49 (sd 0.030) | within-page w MAD 0.089 | doc w med 1.45 MAD 0.089 | page-median h: min 1.27 max 1.35 (sd 0.020) within h MAD 0.082 doc h MAD 0.089
+head:half    pages_used 13/16 n/page med 19 | page-median w: min 1.57 med 1.62 max 1.68 (sd 0.034) | within-page w MAD 0.074 | doc w med 1.62 MAD 0.074 | page-median h: min 1.33 max 1.51 (sd 0.056) within h MAD 0.133 doc h MAD 0.133
+restQuarter  pages_used 13/16 n/page med 56 | page-median w: min 1.07 med 1.17 max 1.20 (sd 0.036) | within-page w MAD 0.089 | doc w med 1.16 MAD 0.089 | page-median h: min 3.04 max 3.17 (sd 0.045) within h MAD 0.119 doc h MAD 0.119
+rest8th      pages_used  4/15 n/page med 19 | page-median w: min 1.38 med 1.41 max 1.41 (sd 0.013) | within-page w MAD 0.063 | doc w med 1.40 MAD 0.074 | page-median h: min 1.85 max 1.91 (sd 0.025) within h MAD 0.089 doc h MAD 0.104
