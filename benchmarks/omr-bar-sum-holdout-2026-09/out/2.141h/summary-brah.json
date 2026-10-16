@@ -1,0 +1,799 @@
+{
+ "mov": "brah",
+ "arms": {
+  "all": {
+   "n_standing": 32839,
+   "n_changed_state": 6,
+   "n_decided_value_changed": 2,
+   "transitions": {
+    "decided->narrowed": 4,
+    "decided->decided (0.25->0.25)": 10,
+    "decided->decided (1.5->1.5)": 1,
+    "decided->decided (0.25->0.5)": 1,
+    "decided->decided (4.0->3.0)": 1,
+    "decided->decided (0.5->0.5)": 1,
+    "narrowed->narrowed": 1
+   },
+   "changed_cells": {
+    "12,0,10,8": [
+     [
+      "glyph/12/0/10/8/7",
+      [
+       "decided",
+       2.0
+      ],
+      [
+       "narrowed",
+       null
+      ],
+      "adjudicate_duration",
+      [
+       3,
+       {
+        "beams_not_by_ink_why": {
+         "too_thin": 2
+        },
+        "beam_side": "up"
+       }
+      ]
+     ]
+    ],
+    "25,0,11,3": [
+     [
+      "glyph/25/0/11/3/1",
+      [
+       "decided",
+       0.5
+      ],
+      [
+       "narrowed",
+       null
+      ],
+      "adjudicate_duration",
+      [
+       2,
+       {
+        "beams_not_by_ink_why": {
+         "stem_runs_past": 1
+        },
+        "beam_side": "down"
+       }
+      ]
+     ]
+    ],
+    "3,0,12,8": [
+     [
+      "glyph/3/0/12/8/14",
+      [
+       "decided",
+       0.25
+      ],
+      [
+       "decided",
+       0.5
+      ],
+      "adjudicate_duration",
+      [
+       0,
+       {
+        "beams_not_by_ink_why": {
+         "stem_runs_past": 1
+        },
+        "beam_side": "up"
+       }
+      ]
+     ]
+    ],
+    "5,0,0,0": [
+     [
+      "glyph/5/0/0/0/2",
+      [
+       "decided",
+       1.5
+      ],
+      [
+       "narrowed",
+       null
+      ],
+      "adjudicate_duration",
+      [
+       2,
+       {
+        "beams_not_by_ink_why": {
+         "stem_runs_past": 1
+        },
+        "beam_voices": {
+         "up": [
+          0,
+          0
+         ],
+         "down": [
+          0,
+          0
+         ]
+        }
+       }
+      ]
+     ]
+    ],
+    "25,0,9,0": [
+     [
+      "glyph/25/0/9/0/5",
+      [
+       "decided",
+       0.125
+      ],
+      [
+       "narrowed",
+       null
+      ],
+      "adjudicate_duration",
+      [
+       3,
+       {
+        "beams_double_thick": 2,
+        "beam_side": "down"
+       }
+      ]
+     ]
+    ],
+    "21,1,9,9": [
+     [
+      "glyph/21/1/9/9/1",
+      [
+       "decided",
+       4.0
+      ],
+      [
+       "decided",
+       3.0
+      ],
+      "size_measure_rest",
+      [
+       0,
+       {}
+      ]
+     ]
+    ]
+   }
+  }
+ },
+ "key": {
+  "0,0,0,4": {
+   "label": "2.136 tile 1",
+   "sean": [
+    0.5,
+    0.5
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "1": [
+     "decided",
+     0.5
+    ],
+    "10": [
+     "decided",
+     1.5
+    ],
+    "11": [
+     "decided",
+     0.5
+    ],
+    "15": [
+     "decided",
+     1.5
+    ],
+    "16": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     1.5
+    ],
+    "6": [
+     "decided",
+     0.5
+    ],
+    "8": [
+     "decided",
+     0.5
+    ],
+    "9": [
+     "decided",
+     0.5
+    ]
+   },
+   "all": {
+    "1": [
+     "decided",
+     0.5
+    ],
+    "10": [
+     "decided",
+     1.5
+    ],
+    "11": [
+     "decided",
+     0.5
+    ],
+    "15": [
+     "decided",
+     1.5
+    ],
+    "16": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     1.5
+    ],
+    "6": [
+     "decided",
+     0.5
+    ],
+    "8": [
+     "decided",
+     0.5
+    ],
+    "9": [
+     "decided",
+     0.5
+    ]
+   }
+  },
+  "17,1,10,1": {
+   "label": "2.136 tile 2",
+   "sean": [
+    0.25,
+    0.25
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "0": [
+     "decided",
+     0.25
+    ],
+    "10": [
+     "decided",
+     0.25
+    ],
+    "11": [
+     "decided",
+     0.25
+    ],
+    "12": [
+     "decided",
+     0.25
+    ],
+    "13": [
+     "abstained",
+     null
+    ],
+    "14": [
+     "decided",
+     0.25
+    ],
+    "15": [
+     "abstained",
+     null
+    ],
+    "16": [
+     "decided",
+     0.25
+    ],
+    "17": [
+     "decided",
+     0.25
+    ],
+    "18": [
+     "abstained",
+     null
+    ],
+    "19": [
+     "abstained",
+     null
+    ],
+    "2": [
+     "abstained",
+     null
+    ],
+    "20": [
+     "decided",
+     0.25
+    ],
+    "21": [
+     "decided",
+     0.25
+    ],
+    "22": [
+     "abstained",
+     null
+    ],
+    "23": [
+     "abstained",
+     null
+    ],
+    "26": [
+     "abstained",
+     null
+    ],
+    "4": [
+     "decided",
+     0.25
+    ],
+    "6": [
+     "decided",
+     0.25
+    ],
+    "7": [
+     "decided",
+     0.25
+    ],
+    "8": [
+     "abstained",
+     null
+    ]
+   },
+   "all": {
+    "0": [
+     "decided",
+     0.25
+    ],
+    "10": [
+     "decided",
+     0.25
+    ],
+    "11": [
+     "decided",
+     0.25
+    ],
+    "12": [
+     "decided",
+     0.25
+    ],
+    "13": [
+     "abstained",
+     null
+    ],
+    "14": [
+     "decided",
+     0.25
+    ],
+    "15": [
+     "abstained",
+     null
+    ],
+    "16": [
+     "decided",
+     0.25
+    ],
+    "17": [
+     "decided",
+     0.25
+    ],
+    "18": [
+     "abstained",
+     null
+    ],
+    "19": [
+     "abstained",
+     null
+    ],
+    "2": [
+     "abstained",
+     null
+    ],
+    "20": [
+     "decided",
+     0.25
+    ],
+    "21": [
+     "decided",
+     0.25
+    ],
+    "22": [
+     "abstained",
+     null
+    ],
+    "23": [
+     "abstained",
+     null
+    ],
+    "26": [
+     "abstained",
+     null
+    ],
+    "4": [
+     "decided",
+     0.25
+    ],
+    "6": [
+     "decided",
+     0.25
+    ],
+    "7": [
+     "decided",
+     0.25
+    ],
+    "8": [
+     "abstained",
+     null
+    ]
+   }
+  },
+  "23,0,9,7": {
+   "label": "2.136 tile 3",
+   "sean": [
+    1,
+    1
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "10": [
+     "abstained",
+     null
+    ],
+    "14": [
+     "decided",
+     4.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "5": [
+     "decided",
+     1.0
+    ],
+    "6": [
+     "decided",
+     0.5
+    ],
+    "8": [
+     "decided",
+     1.0
+    ]
+   },
+   "all": {
+    "10": [
+     "abstained",
+     null
+    ],
+    "14": [
+     "decided",
+     4.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "5": [
+     "decided",
+     1.0
+    ],
+    "6": [
+     "decided",
+     0.5
+    ],
+    "8": [
+     "decided",
+     1.0
+    ]
+   }
+  },
+  "9,0,6,5": {
+   "label": "2.136 tile 4",
+   "sean": [
+    1,
+    1
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "1": [
+     "decided",
+     1.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     0.5
+    ],
+    "5": [
+     "decided",
+     0.5
+    ],
+    "6": [
+     "decided",
+     1.0
+    ],
+    "8": [
+     "decided",
+     1.0
+    ]
+   },
+   "all": {
+    "1": [
+     "decided",
+     1.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     0.5
+    ],
+    "5": [
+     "decided",
+     0.5
+    ],
+    "6": [
+     "decided",
+     1.0
+    ],
+    "8": [
+     "decided",
+     1.0
+    ]
+   }
+  },
+  "16,0,9,6": {
+   "label": "2.136 tile 5",
+   "sean": [
+    1.5,
+    1.5
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "0": [
+     "decided",
+     1.5
+    ],
+    "1": [
+     "decided",
+     1.5
+    ],
+    "3": [
+     "abstained",
+     null
+    ]
+   },
+   "all": {
+    "0": [
+     "decided",
+     1.5
+    ],
+    "1": [
+     "decided",
+     1.5
+    ],
+    "3": [
+     "abstained",
+     null
+    ]
+   }
+  },
+  "0,0,0,2": {
+   "label": "2.136 tile 7",
+   "sean": [
+    1.5,
+    1.5
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "2": [
+     "decided",
+     1.5
+    ],
+    "3": [
+     "decided",
+     1.5
+    ],
+    "4": [
+     "decided",
+     1.5
+    ],
+    "5": [
+     "decided",
+     1.5
+    ]
+   },
+   "all": {
+    "2": [
+     "decided",
+     1.5
+    ],
+    "3": [
+     "decided",
+     1.5
+    ],
+    "4": [
+     "decided",
+     1.5
+    ],
+    "5": [
+     "decided",
+     1.5
+    ]
+   }
+  },
+  "5,1,3,8": {
+   "label": "2.136 tile 8",
+   "sean": [
+    0.5,
+    0.5
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "0": [
+     "decided",
+     0.5
+    ],
+    "10": [
+     "decided",
+     0.5
+    ],
+    "12": [
+     "decided",
+     1.0
+    ],
+    "13": [
+     "decided",
+     0.5
+    ],
+    "14": [
+     "decided",
+     0.5
+    ],
+    "2": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     0.5
+    ],
+    "7": [
+     "decided",
+     0.5
+    ]
+   },
+   "all": {
+    "0": [
+     "decided",
+     0.5
+    ],
+    "10": [
+     "decided",
+     0.5
+    ],
+    "12": [
+     "decided",
+     1.0
+    ],
+    "13": [
+     "decided",
+     0.5
+    ],
+    "14": [
+     "decided",
+     0.5
+    ],
+    "2": [
+     "decided",
+     0.5
+    ],
+    "4": [
+     "decided",
+     0.5
+    ],
+    "7": [
+     "decided",
+     0.5
+    ]
+   }
+  },
+  "12,0,9,11": {
+   "label": "2.136 tile 11",
+   "sean": [
+    1,
+    1
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "0": [
+     "decided",
+     1.0
+    ],
+    "1": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     1.0
+    ],
+    "4": [
+     "decided",
+     0.5
+    ]
+   },
+   "all": {
+    "0": [
+     "decided",
+     1.0
+    ],
+    "1": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     1.0
+    ],
+    "4": [
+     "decided",
+     0.5
+    ]
+   }
+  },
+  "0,0,12,3": {
+   "label": "2.136 tile 12",
+   "sean": [
+    1,
+    1
+   ],
+   "agrees_under_W2": true,
+   "base": {
+    "1": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     1.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "6": [
+     "decided",
+     0.5
+    ]
+   },
+   "all": {
+    "1": [
+     "decided",
+     1.0
+    ],
+    "2": [
+     "decided",
+     1.0
+    ],
+    "3": [
+     "decided",
+     0.5
+    ],
+    "6": [
+     "decided",
+     0.5
+    ]
+   }
+  }
+ }
+}

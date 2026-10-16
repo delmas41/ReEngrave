@@ -1,0 +1,46 @@
+{
+ "question_note": "hidden key; Sean's tiles carry no key",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "brah",
+   "cell": [
+    3,
+    0,
+    12,
+    8
+   ],
+   "role": "changed 0.25->0.5 (all-on)",
+   "info": {
+    "base": 0.25,
+    "all": 0.5
+   },
+   "blue": [
+    "glyph/3/0/12/8/14"
+   ],
+   "blue_boxes_px": [
+    [
+     4770.4,
+     3463.2,
+     4808.9,
+     3484.7
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.38,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4456,
+    3287,
+    5105,
+    3644
+   ]
+  }
+ ]
+}

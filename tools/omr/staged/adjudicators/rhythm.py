@@ -2912,10 +2912,10 @@ UNISON_BOTH_STEMS_ENV = "OMR_OWN_STEM_UNISON_BOTH"
 
 
 def unison_both_stems_enabled() -> bool:
-    """ROADMAP 2.141h fix 2, default OFF: a head the CV `head_stem` verdict reads as a unison of two voices (a stem each way) does
+    """ROADMAP 2.141h fix 2, default ON (Sean 2026-10-16; only an explicit off-word disables): a head the CV `head_stem` verdict reads as a unison of two voices (a stem each way) does
     not take the reach ruler's single direction; its beam levels are counted on BOTH stems (2.75's per-voice path)."""
     import os
-    return os.environ.get(UNISON_BOTH_STEMS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(UNISON_BOTH_STEMS_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _unison_two_voices(ev: Evidence, own_stems, head_box):

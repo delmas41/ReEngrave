@@ -1,0 +1,2 @@
+[{"movement":"brah","cell":[3,0,12,8],"role":"changed 0.25->0.5 (all-on)","blue":["glyph/3/0/12/8/14"],"info":{"base":0.25,"all":0.5}},
+ {"movement":"brah","cell":[21,1,9,9],"role":"rest 4.0->3.0 (all-on)","blue":["glyph/21/1/9/9/1"],"info":{"base":4.0,"all":3.0}}]

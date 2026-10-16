@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- ROADMAP 2.141 fix 2 landed ON (OMR_OWN_STEM_UNISON_BOTH)
+STAGED ADJUDICATE, `rhythm.unison_both_stems_enabled` default ON (explicit `0/false/no/off` disables). Brahms all-on arm: 6 verdicts changed, none of Sean's 9 judged bars; the one changed value is a C clef boxed as a note (Sean: "Tile fix is a c clef"), opened as ROADMAP 2.144. Fix 3 stays OFF, W2 OFF. Reaches records at the next re-gather.
+
 ## 2026-10-15 -- Land 2.139 ON; record 2.141 fix-2/3 tiles
 
 STAGED ADJUDICATE + LilyPond: `OMR_DYNAMIC_LEXICON_WORD` default ON (`text.dynamic_lexicon_word_enabled`; explicit `0/false/no/off` disables), Sean's tiles 8/8 (`out/print/2.139-review/answers.json`). 2.141 fix-2/3 tiles recorded (`out/print/2.141-fix23-review/answers.json`): fix 2 to be switched ON after the Brahms all-on arm shows no damage, fix 3 stays OFF; rests boxed as heads added to ROADMAP 2.142. Flags rows, FINDINGS, ROADMAP, DECISIONS updated.

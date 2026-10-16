@@ -1,0 +1,14 @@
+{
+ "date": "2026-10-16",
+ "who": "Sean",
+ "raw_answer": "Tile fix is a c clef",
+ "tiles": [
+  {
+   "n": 1,
+   "sean": "C clef",
+   "role": "changed 0.25->0.5 under all-on",
+   "agrees": false,
+   "note": "a clef boxed as a notehead; a phantom note in base and under the fixes"
+  }
+ ]
+}

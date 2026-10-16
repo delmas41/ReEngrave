@@ -92,13 +92,13 @@ class TestAHeadWithAStemEachWayIsCountedOnBoth(unittest.TestCase):
         # no up stem was found: not a unison, the ruler's direction stands exactly as before
         self.assertEqual(v.detail["beam_side"], "down")
 
-    def test_the_default_is_OFF_and_a_typo_leaves_it_off(self):
-        for word, on in (("", False), ("yess", False), ("0", False), ("1", True), ("true", True)):
+    def test_the_default_is_ON_and_only_an_off_word_disables(self):
+        for word, on in (("", False), ("yess", True), ("0", False), ("off", False), ("1", True), ("true", True)):
             with mock.patch.dict(os.environ, {FLAG: word}):
                 self.assertEqual(rhythm.unison_both_stems_enabled(), on, word)
         env = {k: v for k, v in os.environ.items() if k != FLAG}
         with mock.patch.dict(os.environ, env, clear=True):
-            self.assertFalse(rhythm.unison_both_stems_enabled())
+            self.assertTrue(rhythm.unison_both_stems_enabled())
 
 
 if __name__ == "__main__":
