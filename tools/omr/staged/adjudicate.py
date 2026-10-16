@@ -1082,6 +1082,9 @@ ORDER: Tuple[str, ...] = (
     # GATHER's `Q.UNBOXED_REST_SHAPE` rows only (no verdict), so its place is
     # kinship: `size_unboxed_rest` (EVALUATE) writes the duration it implies.
     Q.UNBOXED_INK_IS_A_REST,
+    # ⚠️ ROADMAP 2.145, AFTER `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` (it speaks only where
+    # that verdict is `is_a_rest_shape`) and BEFORE `Q.DURATION`, like its sibling.
+    Q.HEAD_INK_IS_A_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads

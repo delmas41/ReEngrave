@@ -94,6 +94,10 @@ class Consequence(str, Enum):
     #: (`Q.UNBOXED_INK_IS_A_REST`), takes that value's length. Cause is that
     #: verdict and nothing about the bar.
     SIZE_UNBOXED_REST = "size_unboxed_rest"
+    #: ROADMAP 2.145. The ink a stemless notehead box stood on, read as an eighth or
+    #: a quarter rest (`Q.HEAD_INK_IS_A_REST`), takes that value's length. Cause is
+    #: that verdict and nothing about the bar.
+    SIZE_HEAD_INK_REST = "size_head_ink_rest"
 
 
 @dataclass(frozen=True)
@@ -180,6 +184,8 @@ DOWNHILL: Tuple[str, ...] = (
     # ⚠️ ROADMAP 2.99, BESIDE IT FOR THE SAME REASON: a rest read off its own
     # ink is in the bar before any meter-caused rule sums it.
     Q.UNBOXED_INK_IS_A_REST,
+    # ⚠️ ROADMAP 2.145, BESIDE ITS SIBLING FOR THE SAME REASON.
+    Q.HEAD_INK_IS_A_REST,
     Q.METER,
     Q.DURATION,
     # ⚠️ ROADMAP 2.45. Downhill of `Q.DURATION` on purpose: the rule that

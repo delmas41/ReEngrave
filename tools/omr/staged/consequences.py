@@ -767,6 +767,39 @@ def size_unboxed_rest(log: Log, subject: Subject,
     return [log.record(out)]
 
 
+@rule(consequence=Consequence.SIZE_HEAD_INK_REST,
+      cause=Q.HEAD_INK_IS_A_REST, effect=Q.DURATION, scope=Kind.GLYPH,
+      bound="Fires only on a cluster-of-ink subject whose `Q.HEAD_INK_IS_A_REST` is "
+            "DECIDED `\"eighth\"` or `\"quarter\"`. Writes ONE duration -- 0.5 or 1.0 "
+            "quarters, no dots, `is_rest` (and `unboxed_rest`, so EXPORT's rest loop "
+            "writes it). Reads no bar, no meter and no other glyph; adds, deletes and "
+            "re-pitches nothing that ADJUDICATE did not already read as a rest.")
+def size_head_ink_rest(log: Log, subject: Subject,
+                       verdict: Verdict) -> List[Verdict]:
+    """The ink a stemless head box stood on, read as a rest, takes its own value's length.
+
+    ROADMAP 2.145. THE LENGTH FOLLOWS FROM THE CLASS, NOT FROM THE BAR (as
+    `size_unboxed_rest`): an eighth rest is half a quarter whatever the meter.
+    """
+    if verdict.outcome is not Outcome.DECIDED or verdict.value not in (
+            "eighth", "quarter"):
+        return []
+    prior = log.verdict(Q.DURATION, subject)
+    if prior is not None and prior.decider == "size_head_ink_rest":
+        return []                           # already written
+    beats = 0.5 if verdict.value == "eighth" else 1.0
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={"beats": beats, "written": beats, "dots": 0, "beam_levels": 0,
+               "is_rest": True, "unboxed_rest": True, "head_ink_rest": True,
+               "rest_value": verdict.value},
+        decider="size_head_ink_rest", reason=f"{verdict.value}_rest_shape",
+        considered=(verdict.id,), basis=(verdict.id,),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.80: a bar short by a MISSED REST looks exactly like a note one beam
 # too short.
