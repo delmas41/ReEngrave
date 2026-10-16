@@ -17,6 +17,13 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-16 night (day manager on Opus, lanes on Sonnet; main ≥ the commit naming this block)
+
+**Landed 10-15 → 10-16, each judged by Sean on blind tiles, all switched ON:** 2.141 diagnosis (6/6) + fix 1 `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM` (11 wrong made right, 0 made wrong) + fix 2 `OMR_OWN_STEM_UNISON_BOTH` (Brahms all-on arm: no damage); fix 3 `OMR_WHOLE_REST_INK_LEAVES_BAR` stays OFF (fixes nothing fix 2 does not, costs two right bars); W2 `OMR_INFER_LEDGER_OWNER_HEADS` still OFF. 2.138 `OMR_WEDGE_RESCUE` (10/10). 2.139 `OMR_DYNAMIC_LEXICON_WORD` (8/8). 2.142 `OMR_HEAD_IS_A_REST_TWIN` (12/12). 2.140 `OMR_BEAM_STEM_LEVELS` (14 tiles: 27 right, 5 narrowed, 0 wrong; cut-offs FITTED to those tiles, a third publisher not checked; its GATHER rows exist only after a re-gather). 2.106 judged index now reads tile-keyed answer files (908 tiles).
+**No record carries these switches yet:** the next overnight re-gather (Sean runs it) is their first whole-movement measure. Watch 2.140 there.
+**Next, ranked (rows todo):** 2.143 (a refused head still carries a DECIDED duration that INFER's sum reads -- 1,020 on Litolff; the 2.141 "no note" tiles 9/12/13 were this), 2.144 (a mid-bar clef boxed as a note), the lone eighth rest with no rest box (2.142, unfixed), W2 (re-measure after the overnight).
+**Process lessons:** a lane brief names BARS/PAGES, never "the records" -- a 10-arm whole-movement run was briefed by accident (Sean caught it). A Brahms re-decide arm = ~2.6 h and ~50 GB; one at a time, `library/_shared-records/.record-load.lock` (mkdir) before any whole-record load. Check what the EXPORT writes before tiling a verdict: three "phantom" tiles showed stale verdicts on boxes EXPORT already drops.
+
 ## START HERE — after 2026-10-15 evening (day manager on Opus, lanes on Sonnet; main ≥ the commit naming this block)
 
 **Landed today, each judged by Sean on tiles:** 2.134 bar cascade sized (diagnosis; 11/11 bar-unique heads); 2.135 report balance row counts refusals read as rests (the +92 was a report bug); 2.109 the STAGED LilyPond PDF carries articulations and dynamics (every placed mark right on 6 crops); 2.126 beam join + hook count past a staff line **ON**, thin_run_stack / pair_flag_curve OFF (single-cell cut-offs); 2.137 tremolo slash at the stem end **ON** (`OMR_SLASH_AT_STEM_END`; tile 9 deformed half refused, accepted as rare); 2.136 carried meter compared with the source system's last segment **ON** (`OMR_INFER_CARRIED_METER_FIX`), ledger-owner heads **OFF** (`OMR_INFER_LEDGER_OWNER_HEADS`, Litolff 1/3).
