@@ -1,5 +1,5 @@
 """ROADMAP 2.142 -- a stemless notehead box on a non-whole rest box's ink is the rest (STAGED ADJUDICATE,
-`adjudicate_notehead_is_not_a_notehead`, flag `OMR_HEAD_IS_A_REST_TWIN`, default OFF).
+`adjudicate_notehead_is_not_a_notehead`, flag `OMR_HEAD_IS_A_REST_TWIN`, default ON since 2026-10-16).
 
 Sean 2026-10-15 (`out/print/2.141-fix23-review` tile 3): an eighth REST boxed as a black head was written as a note.
 Geometry is a 22 x 17 px box (staff space 100 canonical, a head ~1.2 sp wide) on an eighth-rest box of the same ink.
@@ -64,9 +64,18 @@ class TestRestTwin(unittest.TestCase):
         self.assertTrue(v.value is True and v.reason == "is_a_rest_twin", (v.value, v.reason))
         self.assertGreaterEqual(v.margin, 0.0)
 
+    def test_flag_is_on_by_default(self):
+        from tools.omr.staged.adjudicators import notehead_precision as npz
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(npz.REST_TWIN_ENV, None)
+            self.assertTrue(npz.head_is_a_rest_twin_enabled())
+        for off in ("0", "false", "no", "off", ""):
+            with mock.patch.dict(os.environ, {npz.REST_TWIN_ENV: off}):
+                self.assertFalse(npz.head_is_a_rest_twin_enabled())
+
     def test_CONTROL_flag_off_the_head_stands(self):
         log, h = _fixture()
-        with mock.patch.dict(os.environ, {"OMR_HEAD_IS_A_REST_TWIN": ""}):
+        with mock.patch.dict(os.environ, {"OMR_HEAD_IS_A_REST_TWIN": "off"}):
             v = _nn(log, h)
         self.assertFalse(v.value)
 

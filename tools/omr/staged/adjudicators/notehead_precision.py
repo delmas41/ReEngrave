@@ -768,7 +768,7 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.142 (flag `OMR_HEAD_IS_A_REST_TWIN`, default OFF) -- a stemless
+# ROADMAP 2.142 (flag `OMR_HEAD_IS_A_REST_TWIN`, default ON since 2026-10-16) -- a stemless
 # notehead box lying on a non-whole REST box's ink is that rest's ink.
 #
 # Sean (2026-10-15, `out/print/2.141-fix23-review` tile 3): an eighth REST boxed
@@ -801,7 +801,8 @@ REST_TWIN_CLASSES = ("restQuarter", "rest8th", "rest16th", "rest32nd", "rest64th
 
 
 def head_is_a_rest_twin_enabled() -> bool:
-    return os.environ.get(REST_TWIN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_HEAD_IS_A_REST_TWIN`, default ON (Sean 2026-10-16, ROADMAP 2.142, tiles 12/12); only an explicit off-word disables."""
+    return os.environ.get(REST_TWIN_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _box_cover(a, b) -> float:

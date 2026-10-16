@@ -6222,3 +6222,6 @@ STAGED ADJUDICATE, `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM` default ON (`rhythm.beam_le
 ## 2026-10-15 -- ROADMAP 2.138 landed ON (sub-floor staccatissimo wedge rescue)
 STAGED GATHER, `OMR_WEDGE_RESCUE` default ON (`gather.wedge_rescue_enabled`; explicit `0/false/no/off` disables): the detector re-run at floor 0.03 on head-bearing cells keeps a mark-class box that is a wedge (2.131 cut) with a head on its point's side, reader `yolo_rescue_wedge`. Sean's 10 tiles 10/10 (3 rescued misses, 4 new wedges, 2 controls); crop 6 (wedge on a staff line) stays unread. Reaches records at the next re-gather.
 
+
+## 2026-10-16 -- ROADMAP 2.142 landed ON (stemless head on a rest box's ink leaves the bar)
+STAGED ADJUDICATE, `OMR_HEAD_IS_A_REST_TWIN` default ON (`notehead_precision.head_is_a_rest_twin_enabled`; explicit `0/false/no/off` disables). Sean's 12 tiles agree 12/12 (10 rests taken out, 2 real-note controls kept). Beam cases were already refused; stale DURATION on refused boxes is ROADMAP 2.143. Reaches records at the next re-gather.

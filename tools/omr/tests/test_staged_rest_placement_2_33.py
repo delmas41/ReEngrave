@@ -390,7 +390,9 @@ class TestRestOverlapsNotehead(unittest.TestCase):
         # mark, two class readings -- so `_rest_box_iou` reads IoU 1.0
         # without a second, redundant `Q.GLYPH_BOX` observation.
         _notehead(log, 1, "noteheadBlack", page_box=_page_box_at_step(4.0))
-        _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
+        # 2.142: this stemless head on a rest twin is now refused by default; the legacy overlap path is pinned with the flag off.
+        with __import__('unittest.mock').mock.patch.dict(__import__('os').environ, {'OMR_HEAD_IS_A_REST_TWIN': 'off'}):
+            _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
         v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertIs(v.value, True)
