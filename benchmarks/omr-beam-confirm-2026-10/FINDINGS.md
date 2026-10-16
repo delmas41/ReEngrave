@@ -301,3 +301,18 @@ about beams."* His two hypotheses: (a) a beam's thickness is measured against TH
 
 Limits: one page, one publisher, truth stems (our own stem finder will do worse); the 0.36 sp / 1.5 sp cuts were set before
 this test (2.140), not fitted to it.
+
+### 9.5 Change 1 built (Sean 2026-10-16: "Yes, build change 1 here"), flag `OMR_STEM_TIP_DECIDES_BEAM`, default OFF (branch `lane-2.146-stem-tip-beam`)
+STAGED ADJUDICATE `rhythm.adjudicate_duration` (new `_stem_tip_beam_verdict`): where every stroke over a stemmed head was
+refused (the branch that narrowed `beam_discounted_uncertain`), the head's OWN stem tip decides -- `Q.BEAM_STEM_LEVELS` (2.140)
+reads no beam run and `Q.STEM_TIP_INK` reads no hook -> no beam (`stem_tip_reads_no_beam`); n runs -> n levels
+(`stem_tip_reads_a_beam`). No row, flag window unread/disputed, or a hook -> the narrowing unchanged (rule 8). 10 tests
+(`test_staged_stem_tip_decides_beam_2_146.py`), each positive with a flag-off control.
+* **Sean's hand-truth page (Brahms pdf 0)**, small re-gather p0-1 on this tree (`acceptance_quick`, through ADJUDICATE),
+  re-decided off/on (`probe/replay_score_2_146.py`): 62 `beam_discounted_uncertain` heads; **41 decided no beam, all 41
+  right** (37 on truth bare stems; 4 chord heads on a plain down stem, cropped: dotted quarters); 0 wrong; 21 stay narrowed.
+* Brahms p1 (no truth): 19 no beam, 1 one beam, 60 stay narrowed. Litolff p1-3 (small re-gather): 14 no beam, 35 stay.
+* Why heads stay narrowed (Brahms p0-1, 81): 48 the rule is never reached (no own CV stem -- the stem finder, §9.4 item 3);
+  26 the tip reads clean but the flag window never read that end (`Q.STEM_TIP_INK` absent: kept narrowed on purpose -- a
+  flag the detector missed would become a quarter); 7 no tip row.
+* 34 blind tiles `out/print/2.146-review/` (Brahms p1 20, Litolff p2-3 14, every changed note; hidden key `out/2.146/`).
