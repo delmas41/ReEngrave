@@ -1,0 +1,373 @@
+[
+ {
+  "cell": "cell/2/0/8/9",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/0/6",
+  "drop": [],
+  "keep": [
+   "f",
+   "m",
+   "r",
+   "s",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/1/9",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/2/6",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "f",
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/7/8",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "s",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/8/8",
+  "drop": [],
+  "keep": [
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/2/1/9/5",
+  "drop": [],
+  "keep": [
+   "s",
+   "s",
+   "f",
+   "f",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/3/0/0/0",
+  "drop": [],
+  "keep": [
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/3/0/3/10",
+  "drop": [],
+  "keep": [
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/5/0/6/16",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/5/0/7/13",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "f",
+   "f",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/6/0/8/0",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "f",
+   "z",
+   "z"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/6/1/5/0",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p",
+   "p",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/7/0/0/4",
+  "drop": [],
+  "keep": [
+   "p",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/1/12",
+  "drop": [],
+  "keep": [
+   "m",
+   "p",
+   "p",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/2/12",
+  "drop": [],
+  "keep": [
+   "m",
+   "p",
+   "p",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/3/11",
+  "drop": [],
+  "keep": [
+   "m",
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/5/4",
+  "drop": [],
+  "keep": [
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/6/12",
+  "drop": [],
+  "keep": [
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/7/12",
+  "drop": [],
+  "keep": [
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/8/0/8/4",
+  "drop": [],
+  "keep": [
+   "m",
+   "m",
+   "m"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/9/0/9/7",
+  "drop": [],
+  "keep": [
+   "p",
+   "p",
+   "p",
+   "p",
+   "z"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/10/0/0/11",
+  "drop": [],
+  "keep": [
+   "f",
+   "m",
+   "r",
+   "s",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/10/0/4/0",
+  "drop": [],
+  "keep": [
+   "p",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/10/0/8/13",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "s",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/10/0/9/10",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/10/0/9/11",
+  "drop": [],
+  "keep": [
+   "f",
+   "f",
+   "f",
+   "f",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/11/0/2/3",
+  "drop": [],
+  "keep": [
+   "f",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/11/0/3/4",
+  "drop": [],
+  "keep": [
+   "p",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/11/0/6/4",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/13/1/4/5",
+  "drop": [],
+  "keep": [
+   "p",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/15/1/7/4",
+  "drop": [],
+  "keep": [
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/15/1/8/4",
+  "drop": [],
+  "keep": [
+   "f",
+   "s",
+   "s"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/16/0/7/12",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p",
+   "f",
+   "p",
+   "p",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ },
+ {
+  "cell": "cell/16/1/0/1",
+  "drop": [],
+  "keep": [
+   "p",
+   "f",
+   "p",
+   "f"
+  ],
+  "kind": "unchanged"
+ }
+]

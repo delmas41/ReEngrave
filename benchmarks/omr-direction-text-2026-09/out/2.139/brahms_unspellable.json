@@ -1,0 +1,2284 @@
+[
+ {
+  "cell": "cell/1/0/9/3",
+  "outcome": "abstained",
+  "run": [
+   "z"
+  ],
+  "completions": [],
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicZ"
+  ],
+  "ocr": [
+   [
+    "espr.",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 0,
+  "bbox": [
+   3272.7925,
+   2891.4175,
+   3305.325,
+   2925.48
+  ]
+ },
+ {
+  "cell": "cell/1/1/2/0",
+  "outcome": "abstained",
+  "run": [
+   "z"
+  ],
+  "completions": [],
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1059.90869140625,
+   4849.51220703125,
+   1086.4736328125,
+   4890.7900390625
+  ]
+ },
+ {
+  "cell": "cell/2/1/9/5",
+  "outcome": "narrowed",
+  "run": [
+   "?p"
+  ],
+  "completions": null,
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3588.9,
+   6207.7,
+   3692.575,
+   6271.95
+  ]
+ },
+ {
+  "cell": "cell/3/0/3/8",
+  "outcome": "abstained",
+  "run": [
+   "?pmf"
+  ],
+  "completions": [],
+  "n_letters": 13,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4725.85,
+   1387.925,
+   4896.1275,
+   1459.685
+  ]
+ },
+ {
+  "cell": "cell/3/0/9/8",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4685.2275,
+   2741.31,
+   4865.6025,
+   2813.1325
+  ]
+ },
+ {
+  "cell": "cell/3/0/11/8",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4647.475,
+   3286.025,
+   4831.175,
+   3356.825
+  ]
+ },
+ {
+  "cell": "cell/4/0/0/4",
+  "outcome": "abstained",
+  "run": [
+   "p?ff"
+  ],
+  "completions": [],
+  "n_letters": 12,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2505.8625,
+   647.1625,
+   2686.2375,
+   721.4775
+  ]
+ },
+ {
+  "cell": "cell/4/0/1/4",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2509.47,
+   881.85,
+   2697.615,
+   951.975
+  ]
+ },
+ {
+  "cell": "cell/4/0/2/4",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2541.25,
+   1145.575,
+   2724.95,
+   1216.61
+  ]
+ },
+ {
+  "cell": "cell/4/0/10/1",
+  "outcome": "abstained",
+  "run": [
+   "ppf"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1242.2,
+   3067.48,
+   1349.48,
+   3166.6
+  ]
+ },
+ {
+  "cell": "cell/4/0/13/4",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicM",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2508.8,
+   3788.45,
+   2696.35,
+   3856.375
+  ]
+ },
+ {
+  "cell": "cell/4/1/10/3",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "Cresc.",
+    "dynamic",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2537.025,
+   6469.875,
+   2567.275,
+   6505.075
+  ]
+ },
+ {
+  "cell": "cell/4/1/10/8",
+  "outcome": "abstained",
+  "run": [
+   "z"
+  ],
+  "completions": [],
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   5132.75,
+   6491.325,
+   5173.175,
+   6517.725
+  ]
+ },
+ {
+  "cell": "cell/5/0/12/4",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3326.06640625,
+   3466.03125,
+   3403.1171875,
+   3534.0
+  ]
+ },
+ {
+  "cell": "cell/6/0/5/4",
+  "outcome": "narrowed",
+  "run": [
+   "?p"
+  ],
+  "completions": null,
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2929.2675,
+   2062.775,
+   3033.775,
+   2117.5
+  ]
+ },
+ {
+  "cell": "cell/6/1/6/5",
+  "outcome": "narrowed",
+  "run": [
+   "?p"
+  ],
+  "completions": null,
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3848.1575,
+   5970.3525,
+   3952.75,
+   6025.5175
+  ]
+ },
+ {
+  "cell": "cell/7/0/4/2",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2041.42578125,
+   1856.3600000000001,
+   2099.873046875,
+   1907.619140625
+  ]
+ },
+ {
+  "cell": "cell/7/1/1/6",
+  "outcome": "abstained",
+  "run": [
+   "mpp"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3635.825,
+   4421.025,
+   3753.25,
+   4469.7
+  ]
+ },
+ {
+  "cell": "cell/8/0/2/12",
+  "outcome": "abstained",
+  "run": [
+   "pm"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "p espr",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 5,
+  "bbox": [
+   5256.275,
+   1330.65,
+   5373.425,
+   1397.475
+  ]
+ },
+ {
+  "cell": "cell/8/0/3/6",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "dim",
+    "dynamic",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 0,
+  "bbox": [
+   3463.9925,
+   1694.875,
+   3518.3825,
+   1729.5625
+  ]
+ },
+ {
+  "cell": "cell/8/1/6/11",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   5177.65,
+   5876.7225,
+   5234.1225,
+   5911.4
+  ]
+ },
+ {
+  "cell": "cell/9/1/5/7",
+  "outcome": "abstained",
+  "run": [
+   "ffmmp"
+  ],
+  "completions": [],
+  "n_letters": 12,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicM",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4532.8974609375,
+   5250.0830078125,
+   4773.8896484375,
+   5323.5966796875
+  ]
+ },
+ {
+  "cell": "cell/9/1/6/7",
+  "outcome": "abstained",
+  "run": [
+   "ffm"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "SF Marc.",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 0,
+  "at_dyn_token": 1,
+  "bbox": [
+   4556.388671875,
+   5478.359375,
+   4708.1142578125,
+   5547.1748046875
+  ]
+ },
+ {
+  "cell": "cell/9/1/9/7",
+  "outcome": "abstained",
+  "run": [
+   "ffmp"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicP"
+  ],
+  "ocr": [
+   [
+    "f agitato",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 2,
+  "bbox": [
+   4563.2978515625,
+   6344.2177734375,
+   4732.4345703125,
+   6414.138671875
+  ]
+ },
+ {
+  "cell": "cell/10/0/0/6",
+  "outcome": "abstained",
+  "run": [
+   "ffp"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3976.5,
+   583.425,
+   4126.6275,
+   672.225
+  ]
+ },
+ {
+  "cell": "cell/10/0/1/3",
+  "outcome": "abstained",
+  "run": [
+   "mpp"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2604.185,
+   862.985,
+   2736.83,
+   899.06
+  ]
+ },
+ {
+  "cell": "cell/10/0/1/6",
+  "outcome": "abstained",
+  "run": [
+   "ffz"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3953.4675,
+   818.3075,
+   4070.5725,
+   892.6775
+  ]
+ },
+ {
+  "cell": "cell/10/1/8/0",
+  "outcome": "narrowed",
+  "run": [
+   "s"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1534.810546875,
+   5936.54443359375,
+   1551.0,
+   5974.76953125
+  ]
+ },
+ {
+  "cell": "cell/12/0/0/1",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1446.785,
+   650.505,
+   1513.6625,
+   692.9625
+  ]
+ },
+ {
+  "cell": "cell/12/0/11/8",
+  "outcome": "abstained",
+  "run": [
+   "fzp"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicZ",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3327.065,
+   3169.1025,
+   3455.5475,
+   3221.4075
+  ]
+ },
+ {
+  "cell": "cell/12/0/11/10",
+  "outcome": "abstained",
+  "run": [
+   "pmmpz"
+  ],
+  "completions": [],
+  "n_letters": 10,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3941.9275,
+   3143.985,
+   4170.5875,
+   3197.13
+  ]
+ },
+ {
+  "cell": "cell/13/0/2/1",
+  "outcome": "abstained",
+  "run": [
+   "ffz"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1476.875,
+   1132.45,
+   1598.975,
+   1203.575
+  ]
+ },
+ {
+  "cell": "cell/13/1/1/1",
+  "outcome": "narrowed",
+  "run": [
+   "s"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1496.66,
+   4413.675,
+   1526.3625,
+   4458.365
+  ]
+ },
+ {
+  "cell": "cell/14/0/10/6",
+  "outcome": "abstained",
+  "run": [
+   "ffmf"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3700.0,
+   3079.0,
+   3815.54,
+   3161.0025
+  ]
+ },
+ {
+  "cell": "cell/14/0/10/8",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [
+   [
+    "p dim.",
+    "dynamic",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 3,
+  "bbox": [
+   4668.165,
+   3090.1725,
+   4801.69,
+   3151.2125
+  ]
+ },
+ {
+  "cell": "cell/14/0/11/8",
+  "outcome": "abstained",
+  "run": [
+   "p?"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ"
+  ],
+  "ocr": [
+   [
+    "p dim.",
+    "dynamic",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 2,
+  "at_dyn_token": 4,
+  "bbox": [
+   4677.1575,
+   3308.7225,
+   4783.9775,
+   3372.4875
+  ]
+ },
+ {
+  "cell": "cell/14/1/2/2",
+  "outcome": "abstained",
+  "run": [
+   "p?"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "p dolce",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 2,
+  "bbox": [
+   2213.33,
+   4814.65,
+   2324.875,
+   4883.4
+  ]
+ },
+ {
+  "cell": "cell/14/1/7/0",
+  "outcome": "abstained",
+  "run": [
+   "p?"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1210.4794921875,
+   6122.85546875,
+   1331.900390625,
+   6185.345703125
+  ]
+ },
+ {
+  "cell": "cell/14/1/7/1",
+  "outcome": "abstained",
+  "run": [
+   "mpf"
+  ],
+  "completions": [],
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1541.6625,
+   6138.8175,
+   1702.165,
+   6194.425
+  ]
+ },
+ {
+  "cell": "cell/14/1/8/0",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1214.4345703125,
+   6355.1337890625,
+   1344.1611328125,
+   6416.0419921875
+  ]
+ },
+ {
+  "cell": "cell/15/0/7/5",
+  "outcome": "abstained",
+  "run": [
+   "pmpp"
+  ],
+  "completions": [],
+  "n_letters": 10,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3903.81,
+   2427.575,
+   4059.68,
+   2478.2975
+  ]
+ },
+ {
+  "cell": "cell/15/0/7/6",
+  "outcome": "narrowed",
+  "run": [
+   "?p"
+  ],
+  "completions": null,
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicF",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [
+   [
+    "piu p",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 4,
+  "bbox": [
+   4178.55,
+   2413.275,
+   4280.205,
+   2484.565
+  ]
+ },
+ {
+  "cell": "cell/15/0/8/6",
+  "outcome": "abstained",
+  "run": [
+   "pzmp"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicZ",
+   "dynamicM",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4104.715,
+   2694.985,
+   4291.65,
+   2759.84
+  ]
+ },
+ {
+  "cell": "cell/15/0/9/5",
+  "outcome": "abstained",
+  "run": [
+   "mppff"
+  ],
+  "completions": [],
+  "n_letters": 10,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3923.43,
+   2909.0,
+   4089.775,
+   2982.15
+  ]
+ },
+ {
+  "cell": "cell/15/0/9/6",
+  "outcome": "abstained",
+  "run": [
+   "pmp"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4099.5375,
+   2916.975,
+   4287.835,
+   2985.1975
+  ]
+ },
+ {
+  "cell": "cell/15/0/10/5",
+  "outcome": "abstained",
+  "run": [
+   "mpz"
+  ],
+  "completions": [],
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3928.9,
+   3170.8,
+   4073.55,
+   3220.85
+  ]
+ },
+ {
+  "cell": "cell/15/0/10/6",
+  "outcome": "abstained",
+  "run": [
+   "pmp"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4103.75,
+   3163.65,
+   4291.85,
+   3223.875
+  ]
+ },
+ {
+  "cell": "cell/15/1/3/4",
+  "outcome": "abstained",
+  "run": [
+   "mfp"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2311.07,
+   4734.16,
+   2410.7,
+   4781.95
+  ]
+ },
+ {
+  "cell": "cell/15/1/8/3",
+  "outcome": "abstained",
+  "run": [
+   "p?"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2087.225,
+   6046.45,
+   2190.625,
+   6101.175
+  ]
+ },
+ {
+  "cell": "cell/15/1/9/1",
+  "outcome": "abstained",
+  "run": [
+   "pfp"
+  ],
+  "completions": [],
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1397.475,
+   6302.75,
+   1501.7,
+   6357.475
+  ]
+ },
+ {
+  "cell": "cell/16/0/1/6",
+  "outcome": "abstained",
+  "run": [
+   "mfpp"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3292.985,
+   847.3975,
+   3492.365,
+   923.155
+  ]
+ },
+ {
+  "cell": "cell/17/1/4/3",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicS",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3372.5390625,
+   5013.1171875,
+   3448.3505859375,
+   5085.6181640625
+  ]
+ },
+ {
+  "cell": "cell/17/1/7/3",
+  "outcome": "abstained",
+  "run": [
+   "mfz"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3354.3310546875,
+   5733.92578125,
+   3435.7705078125,
+   5839.787109375
+  ]
+ },
+ {
+  "cell": "cell/17/1/8/3",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicS",
+   "dynamicM",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3361.283203125,
+   5957.642578125,
+   3438.087890625,
+   6027.763671875
+  ]
+ },
+ {
+  "cell": "cell/17/1/11/4",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicS",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4032.0,
+   6635.26708984375,
+   4103.818359375,
+   6706.8486328125
+  ]
+ },
+ {
+  "cell": "cell/18/1/10/4",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3308.748046875,
+   6362.9296875,
+   3499.36328125,
+   6436.119140625
+  ]
+ },
+ {
+  "cell": "cell/19/0/10/9",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4998.14,
+   2971.725,
+   5094.8775,
+   3051.84
+  ]
+ },
+ {
+  "cell": "cell/19/1/0/2",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1981.4475,
+   4239.32,
+   2162.66,
+   4321.07
+  ]
+ },
+ {
+  "cell": "cell/19/1/1/2",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1980.33,
+   4484.4325,
+   2167.8375,
+   4556.465
+  ]
+ },
+ {
+  "cell": "cell/19/1/2/2",
+  "outcome": "abstained",
+  "run": [
+   "pff"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1996.38,
+   4737.1175,
+   2197.0575,
+   4807.34
+  ]
+ },
+ {
+  "cell": "cell/19/1/4/2",
+  "outcome": "abstained",
+  "run": [
+   "pff"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1991.225,
+   5188.075,
+   2224.7,
+   5296.975
+  ]
+ },
+ {
+  "cell": "cell/19/1/4/3",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2334.075,
+   5235.425,
+   2484.225,
+   5285.75
+  ]
+ },
+ {
+  "cell": "cell/19/1/8/2",
+  "outcome": "abstained",
+  "run": [
+   "pff"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1999.16,
+   6081.95,
+   2213.7,
+   6162.475
+  ]
+ },
+ {
+  "cell": "cell/19/1/9/2",
+  "outcome": "abstained",
+  "run": [
+   "ppmf"
+  ],
+  "completions": [],
+  "n_letters": 8,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1982.2649999999999,
+   6325.7025,
+   2176.83,
+   6440.6
+  ]
+ },
+ {
+  "cell": "cell/19/1/10/2",
+  "outcome": "abstained",
+  "run": [
+   "pmf"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicM",
+   "dynamicF"
+  ],
+  "ocr": [
+   [
+    "piu",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 0,
+  "bbox": [
+   1995.075,
+   6559.125,
+   2180.7,
+   6633.925
+  ]
+ },
+ {
+  "cell": "cell/20/0/12/2",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2243.235,
+   3815.9825,
+   2301.43,
+   3869.8
+  ]
+ },
+ {
+  "cell": "cell/21/0/2/3",
+  "outcome": "abstained",
+  "run": [
+   "pm"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "Pp espr.",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 2,
+  "at_dyn_token": 3,
+  "bbox": [
+   2571.655,
+   1244.1,
+   2707.0875,
+   1294.9825
+  ]
+ },
+ {
+  "cell": "cell/21/1/6/0",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1155.908203125,
+   6032.119140625,
+   1239.470703125,
+   6082.853515625
+  ]
+ },
+ {
+  "cell": "cell/21/1/7/0",
+  "outcome": "abstained",
+  "run": [
+   "mpz"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1102.5625,
+   6357.158203125,
+   1237.60546875,
+   6408.896484375
+  ]
+ },
+ {
+  "cell": "cell/22/0/6/1",
+  "outcome": "abstained",
+  "run": [
+   "mmpppp"
+  ],
+  "completions": [],
+  "n_letters": 11,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicM",
+   "dynamicP",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1289.4,
+   2512.08,
+   1551.56,
+   2569.01
+  ]
+ },
+ {
+  "cell": "cell/22/0/7/1",
+  "outcome": "abstained",
+  "run": [
+   "mpppp"
+  ],
+  "completions": [],
+  "n_letters": 12,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1325.615,
+   2836.29,
+   1548.32,
+   2895.44
+  ]
+ },
+ {
+  "cell": "cell/22/1/3/11",
+  "outcome": "narrowed",
+  "run": [
+   "??"
+  ],
+  "completions": null,
+  "n_letters": 8,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4642.215,
+   5086.2775,
+   4751.9025,
+   5142.0025
+  ]
+ },
+ {
+  "cell": "cell/22/1/10/11",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4646.3775,
+   7151.5175,
+   4702.155,
+   7186.205
+  ]
+ },
+ {
+  "cell": "cell/23/1/5/6",
+  "outcome": "abstained",
+  "run": [
+   "ffm"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "Sf marc",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 2,
+  "at_dyn_token": 3,
+  "bbox": [
+   3764.72,
+   5363.2525,
+   3909.2975,
+   5433.16
+  ]
+ },
+ {
+  "cell": "cell/23/1/8/6",
+  "outcome": "abstained",
+  "run": [
+   "ffmp"
+  ],
+  "completions": [],
+  "n_letters": 7,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   3682.025,
+   6179.5325,
+   3861.845,
+   6249.34
+  ]
+ },
+ {
+  "cell": "cell/23/1/9/6",
+  "outcome": "abstained",
+  "run": [
+   "ffmp"
+  ],
+  "completions": [],
+  "n_letters": 8,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicM",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [
+   [
+    "F agitato",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 1,
+  "at_dyn_token": 2,
+  "bbox": [
+   3753.3525,
+   6424.72,
+   3937.6025,
+   6496.055
+  ]
+ },
+ {
+  "cell": "cell/24/0/0/1",
+  "outcome": "abstained",
+  "run": [
+   "mm"
+  ],
+  "completions": [],
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "marc.",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1731.2,
+   635.92,
+   1975.92,
+   672.04
+  ]
+ },
+ {
+  "cell": "cell/25/0/0/8",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "poco a poco cresc.",
+    "dynamic",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 0,
+  "bbox": [
+   4815.125,
+   640.325,
+   4853.075,
+   675.25
+  ]
+ },
+ {
+  "cell": "cell/25/0/2/8",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "poco a poco cresc.",
+    "dynamic",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 0,
+  "bbox": [
+   4813.75,
+   1230.975,
+   4851.7,
+   1268.65
+  ]
+ },
+ {
+  "cell": "cell/25/0/10/6",
+  "outcome": "abstained",
+  "run": [
+   "pm"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "p espr",
+    "expression",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 3,
+  "at_dyn_token": 2,
+  "bbox": [
+   3873.85,
+   3236.295,
+   3999.835,
+   3288.375
+  ]
+ },
+ {
+  "cell": "cell/25/1/5/4",
+  "outcome": "abstained",
+  "run": [
+   "pf"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [
+   [
+    "poco f",
+    "expression",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 0,
+  "at_dyn_token": 2,
+  "bbox": [
+   2814.555,
+   5760.5725,
+   2926.11,
+   5833.0
+  ]
+ },
+ {
+  "cell": "cell/26/0/10/1",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1672.275,
+   3010.425,
+   1709.4,
+   3042.05
+  ]
+ },
+ {
+  "cell": "cell/26/0/11/1",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [
+   [
+    "dim.",
+    "dynamic",
+    "tesseract"
+   ]
+  ],
+  "inside_read_word": 2,
+  "at_dyn_token": 0,
+  "bbox": [
+   1616.835,
+   3292.555,
+   1677.885,
+   3326.1325
+  ]
+ },
+ {
+  "cell": "cell/26/1/7/0",
+  "outcome": "abstained",
+  "run": [
+   "pmp"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicM",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1178.7158203125,
+   5810.14306640625,
+   1330.8642578125,
+   5865.337890625
+  ]
+ },
+ {
+  "cell": "cell/26/1/7/1",
+  "outcome": "abstained",
+  "run": [
+   "mfp"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1436.7,
+   5806.0,
+   1612.705,
+   5847.9025
+  ]
+ },
+ {
+  "cell": "cell/26/1/11/7",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   4293.07,
+   6957.8375,
+   4336.67,
+   6980.7275
+  ]
+ }
+]

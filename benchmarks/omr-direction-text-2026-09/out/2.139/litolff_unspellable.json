@@ -1,0 +1,834 @@
+[
+ {
+  "cell": "cell/2/0/8/9",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1547.72,
+   1683.24,
+   1584.52,
+   1715.92
+  ]
+ },
+ {
+  "cell": "cell/2/1/0/6",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicM",
+   "dynamicR",
+   "dynamicS",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1376.0175,
+   2150.485,
+   1416.6525,
+   2198.8375
+  ]
+ },
+ {
+  "cell": "cell/2/1/1/9",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1793.96,
+   2343.2,
+   1837.16,
+   2392.16
+  ]
+ },
+ {
+  "cell": "cell/2/1/2/6",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 6,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1375.44,
+   2482.24,
+   1417.68,
+   2531.91
+  ]
+ },
+ {
+  "cell": "cell/2/1/7/8",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicS",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1654.2075,
+   3186.9025,
+   1697.52,
+   3233.995
+  ]
+ },
+ {
+  "cell": "cell/2/1/8/8",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1652.0025,
+   3335.8525,
+   1701.7725,
+   3382.0
+  ]
+ },
+ {
+  "cell": "cell/2/1/9/5",
+  "outcome": "abstained",
+  "run": [
+   "sff"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicS",
+   "dynamicS",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1211.825,
+   3462.6,
+   1263.16,
+   3520.04
+  ]
+ },
+ {
+  "cell": "cell/3/0/0/0",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   369.195,
+   383.815,
+   412.13,
+   418.845
+  ]
+ },
+ {
+  "cell": "cell/3/0/3/10",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2062.92,
+   973.68,
+   2081.8,
+   997.52
+  ]
+ },
+ {
+  "cell": "cell/5/0/6/16",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2489.835,
+   1680.9,
+   2523.935,
+   1714.845
+  ]
+ },
+ {
+  "cell": "cell/5/0/7/13",
+  "outcome": "abstained",
+  "run": [
+   "fffff"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2103.325,
+   1801.15,
+   2192.14,
+   1905.56
+  ]
+ },
+ {
+  "cell": "cell/6/0/8/0",
+  "outcome": "abstained",
+  "run": [
+   "pfz"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicF",
+   "dynamicZ",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   553.5087890625,
+   1684.72265625,
+   634.0537109375,
+   1725.21875
+  ]
+ },
+ {
+  "cell": "cell/6/1/5/0",
+  "outcome": "narrowed",
+  "run": [
+   "?p"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   448.825,
+   2842.3425,
+   508.36,
+   2877.715
+  ]
+ },
+ {
+  "cell": "cell/7/0/0/4",
+  "outcome": "abstained",
+  "run": [
+   "ppf"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1045.95,
+   494.295,
+   1133.0475000000001,
+   557.2950000000001
+  ]
+ },
+ {
+  "cell": "cell/8/0/1/12",
+  "outcome": "abstained",
+  "run": [
+   "mpp"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1597.6075,
+   655.78,
+   1667.38,
+   685.8325
+  ]
+ },
+ {
+  "cell": "cell/8/0/2/12",
+  "outcome": "abstained",
+  "run": [
+   "mpp"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1599.655,
+   786.9775,
+   1669.7425,
+   816.2775
+  ]
+ },
+ {
+  "cell": "cell/8/0/3/11",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1548.0875,
+   946.3725,
+   1574.8625,
+   967.95
+  ]
+ },
+ {
+  "cell": "cell/8/0/5/4",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   889.5975,
+   1262.38,
+   924.8775,
+   1286.635
+  ]
+ },
+ {
+  "cell": "cell/8/0/6/12",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1650.8425,
+   1445.3025,
+   1669.9,
+   1467.0375
+  ]
+ },
+ {
+  "cell": "cell/8/0/7/12",
+  "outcome": "narrowed",
+  "run": [
+   "m"
+  ],
+  "completions": null,
+  "n_letters": 1,
+  "letter_cls": [
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1652.7325,
+   1573.8225,
+   1678.8775,
+   1596.03
+  ]
+ },
+ {
+  "cell": "cell/8/0/8/4",
+  "outcome": "abstained",
+  "run": [
+   "mm"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicM",
+   "dynamicM",
+   "dynamicM"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   877.47,
+   1689.97,
+   920.625,
+   1719.1075
+  ]
+ },
+ {
+  "cell": "cell/9/0/9/7",
+  "outcome": "abstained",
+  "run": [
+   "ppz"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicZ"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1397.505,
+   1723.875,
+   1452.63,
+   1795.96
+  ]
+ },
+ {
+  "cell": "cell/10/0/0/11",
+  "outcome": "narrowed",
+  "run": [
+   "?f"
+  ],
+  "completions": null,
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicM",
+   "dynamicR",
+   "dynamicS",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2205.955,
+   415.3425,
+   2248.3225,
+   462.12
+  ]
+ },
+ {
+  "cell": "cell/10/0/4/0",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [
+   [
+    "P cresc.",
+    "dynamic",
+    "surya"
+   ]
+  ],
+  "inside_read_word": 0,
+  "at_dyn_token": 1,
+  "bbox": [
+   508.84000000000003,
+   1097.16,
+   541.1275,
+   1130.0775
+  ]
+ },
+ {
+  "cell": "cell/10/0/8/13",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicS",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2483.08,
+   1631.8125,
+   2525.4475,
+   1679.85
+  ]
+ },
+ {
+  "cell": "cell/10/0/9/10",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2060.025,
+   1780.8525,
+   2104.9125,
+   1828.8325
+  ]
+ },
+ {
+  "cell": "cell/10/0/9/11",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 5,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicF",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2203.9075,
+   1776.6,
+   2247.3775,
+   1824.9525
+  ]
+ },
+ {
+  "cell": "cell/11/0/2/3",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 2,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   858.065,
+   807.3325,
+   916.1825,
+   855.5275
+  ]
+ },
+ {
+  "cell": "cell/11/0/3/4",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   932.4425,
+   987.075,
+   972.29,
+   1020.7625
+  ]
+ },
+ {
+  "cell": "cell/11/0/6/4",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   943.4675,
+   1387.99,
+   976.5425,
+   1421.3375
+  ]
+ },
+ {
+  "cell": "cell/13/1/4/5",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   1150.2,
+   2795.8675,
+   1180.125,
+   2829.5725
+  ]
+ },
+ {
+  "cell": "cell/15/1/7/4",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   937.2775,
+   3229.2775,
+   981.535,
+   3275.425
+  ]
+ },
+ {
+  "cell": "cell/15/1/8/4",
+  "outcome": "abstained",
+  "run": [
+   "fs"
+  ],
+  "completions": [],
+  "n_letters": 3,
+  "letter_cls": [
+   "dynamicF",
+   "dynamicS",
+   "dynamicS"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   937.75,
+   3367.8,
+   985.36,
+   3415.0
+  ]
+ },
+ {
+  "cell": "cell/16/0/7/12",
+  "outcome": "narrowed",
+  "run": [
+   "??"
+  ],
+  "completions": null,
+  "n_letters": 8,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicP",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   2018.9875,
+   1452.8675,
+   2074.9,
+   1488.305
+  ]
+ },
+ {
+  "cell": "cell/16/1/0/1",
+  "outcome": "narrowed",
+  "run": [
+   "?"
+  ],
+  "completions": null,
+  "n_letters": 4,
+  "letter_cls": [
+   "dynamicP",
+   "dynamicF",
+   "dynamicP",
+   "dynamicF"
+  ],
+  "ocr": [],
+  "inside_read_word": 0,
+  "at_dyn_token": 0,
+  "bbox": [
+   728.375,
+   2148.785,
+   760.19,
+   2182.3575
+  ]
+ }
+]
