@@ -150,6 +150,79 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
     return kind == "space" and d in expected_dot_steps(h)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.151 -- a dot is a dot whatever class the detector gave it
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# THE RULE (engraving convention, docs/page-facts.md: a dot stands to the RIGHT
+# of its head, in a SPACE -- the head's own, or the one above/below its line).
+# The detector boxes some printed dots as NOTEHEADS (Brahms: 39 held cells of
+# the 20261014-night record, 15 of 16 crops a real augmentation dot; Sean's
+# 2.146 tiles 23 and 34). The notehead gate already says so -- it refuses the
+# box `too_narrow` / `is_a_dot` -- and NOTHING READ IT AS A DOT ("the value
+# existed and nothing read it"). With the flag on:
+#   * `rhythm._attached_dots` counts such a box as THIS head's dot where it
+#     stands right of the head, in its augmentation window, the head is the
+#     box's best kept head, and its staff position is the head's dot step
+#     (`mark_head_compatible` True) -- the same position evidence 2.128 admits
+#     a dot-class box on;
+#   * a box the gate refused never OWNS a dot (`_attached_dots`): a refused
+#     duplicate of a head (`head_cut_piece`) took Brahms p0 `0/0/4/3/0`'s dot
+#     from the real head, which was then written plain;
+#   * `reconcile_unjoined_dots` narrows a decided-plain head {as read, dotted}
+#     beside such a box whose position cannot tell (rule 8) -- never where the
+#     position says it is NOT this head's dot step.
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a dot-sized
+# (<= `notehead_precision.DOT_SIZED_MAX_SPACES` both sides) notehead-class box
+# the gate refused, at a head's dot step, is that head's augmentation dot;
+# falsified by Sean's tiles showing such a box is ink of something else (a
+# tie end, a letter tip, a staccato of the next staff). Default OFF.
+DOT_BOXED_AS_A_HEAD_ENV = "OMR_DOT_BOXED_AS_A_HEAD"
+
+#: The notehead gate's refusals that say "this box is dot-shaped ink".
+DOT_SHAPED_REFUSALS = ("too_narrow", "is_a_dot")
+#: A refused box no larger than this on BOTH sides, in staff spaces, is
+#: dot-sized (`notehead_precision.DOT_SIZED_MAX_SPACES`; restated as a literal
+#: so this light module does not import the notehead adjudicator, and pinned
+#: equal to it by a test, `test_staged_dot_boxed_as_head_2_151`).
+DOT_SHAPED_MAX_SPACES = 0.75
+
+
+def dot_boxed_as_a_head_enabled() -> bool:
+    """`OMR_DOT_BOXED_AS_A_HEAD`, DEFAULT OFF (ROADMAP 2.151): on only for an
+    explicit `1`/`true`/`yes`/`on`."""
+    return os.environ.get(DOT_BOXED_AS_A_HEAD_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def head_box_is_dot_shaped(refusal: Optional[R.Verdict], w: float, h: float,
+                           space: Optional[float]) -> bool:
+    """A notehead-class box the gate REFUSED as dot-shaped ink, dot-sized on
+    both sides (w, h and space in one unit)."""
+    if refusal is None or refusal.outcome is not Outcome.DECIDED \
+            or refusal.value is not True \
+            or refusal.reason not in DOT_SHAPED_REFUSALS or not space:
+        return False
+    return w / space <= DOT_SHAPED_MAX_SPACES and h / space <= DOT_SHAPED_MAX_SPACES
+
+
+def mark_head_compatible(mark_pos: Any, head_pos: Any) -> Optional[bool]:
+    """`dot_head_compatible` for a mark measured as a NOTEHEAD (its
+    `Q.NOTEHEAD_STAFF_POSITION`, the head's unit, against the same staff):
+    True / False, or None where either reading cannot tell."""
+    if not isinstance(mark_pos, (int, float)) \
+            or not isinstance(head_pos, (int, float)):
+        return None
+    for p in (mark_pos, head_pos):
+        if not -HEAD_MAX_OUTSIDE_STEPS <= float(p) <= 8.0 + HEAD_MAX_OUTSIDE_STEPS:
+            return None
+    h = _clean_step(float(head_pos), 0.5 - HEAD_MAX_RESIDUAL)
+    kind, d = _dot_cell(float(mark_pos))
+    if h is None or kind == "unclear":
+        return None
+    return kind == "space" and d in expected_dot_steps(h)
+
+
 #: A dot with no decided role counts as "beside" a head when its left edge is
 #: no more than this far right of the head's right edge, and no more than
 #: `UNRESOLVED_MAX_DY_SPACES` above or below its centre. CONVENTION ASSUMED /
@@ -230,6 +303,10 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
     heads: Dict[Tuple[int, int], List[Tuple[str, Tuple[float, ...]]]] = \
         defaultdict(list)
     dots: List[Tuple[R.Subject, R.Verdict]] = []
+    # ROADMAP 2.151 (`OMR_DOT_BOXED_AS_A_HEAD`): notehead boxes the gate refused
+    # as dot-shaped ink -- (subject, refusal verdict, `_box` tuple)
+    as_head = dot_boxed_as_a_head_enabled()
+    marks: List[Tuple[R.Subject, R.Verdict, Any]] = []
     for sub in log.subjects(Kind.GLYPH):
         role = log.verdict(Q.DOT_ROLE, sub)
         if role is not None:
@@ -244,6 +321,8 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
             refused = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
             if refused is not None and refused.outcome is Outcome.DECIDED \
                     and refused.value is True:
+                if as_head and refused.reason in DOT_SHAPED_REFUSALS:
+                    marks.append((sub, refused, b))
                 continue
             heads[(sub.page, sub.system)].append((sub.to_key(), bb))
 
@@ -306,6 +385,52 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
                 continue
             target = best
         claims.setdefault(target, (dsub, role, kind))
+
+    for msub, refusal, mb in marks:
+        _c, mval, mpb, _mrow = mb
+        if not mval[3]:
+            continue
+        sp = log.rows(Q.CELL_STAFF_SPACE, msub.at(Kind.CELL),
+                      scope=Scope.SELF_AND_ANCESTORS)
+        if not sp:
+            continue
+        space = float(sp[-1].value) * (mpb[2] - mpb[0]) / float(mval[3])
+        if not head_box_is_dot_shaped(refusal, mpb[2] - mpb[0],
+                                      mpb[3] - mpb[1], space):
+            continue
+        cx, cy = (mpb[0] + mpb[2]) / 2.0, (mpb[1] + mpb[3]) / 2.0
+        if any(f[0] <= cx <= f[2] and f[1] <= cy <= f[3]
+               for f in flags[(msub.page, msub.system)]):
+            census["dot_boxed_as_a_head_is_a_flag_tip"] += 1
+            continue
+        if any(abs(cx - (hb[0] + hb[2]) / 2.0) <= STACCATO_CENTRED_MAX_SPACES
+               * space and STACCATO_OFFSET_MIN_SPACES * space
+               <= abs((hb[1] + hb[3]) / 2.0 - cy) <= STACCATO_MAX_GAP_SPACES
+               * space for _k, hb in heads[(msub.page, msub.system)]):
+            census["dot_boxed_as_a_head_staccato_like"] += 1
+            continue
+        mpos = log.rows(Q.NOTEHEAD_STAFF_POSITION, msub)
+        best, best_score = None, float("inf")
+        for key, hb in heads[(msub.page, msub.system)]:
+            gap = (mpb[0] - hb[2]) / space
+            dy = ((hb[1] + hb[3]) / 2.0 - cy) / space
+            if gap < UNRESOLVED_MIN_GAP_SPACES \
+                    or gap > UNRESOLVED_MAX_GAP_SPACES \
+                    or abs(dy) > UNRESOLVED_MAX_DY_SPACES:
+                continue
+            hsub = R.Subject.from_key(key)
+            if hsub.staff == msub.staff and hsub.cell == msub.cell:
+                hpos = log.rows(Q.NOTEHEAD_STAFF_POSITION, hsub)
+                if mpos and hpos and mark_head_compatible(
+                        mpos[-1].value, hpos[-1].value) is False:
+                    continue        # the position says: not this head's dot
+            score = gap + 2.0 * abs(dy)
+            if score < best_score:
+                best, best_score = key, score
+        if best is None:
+            census["dot_boxed_as_a_head_beside_no_head"] += 1
+            continue
+        claims.setdefault(best, (msub, refusal, "narrowed_dot_boxed_as_a_head"))
 
     for head_key, (dsub, role, kind) in claims.items():
         hsub = R.Subject.from_key(head_key)

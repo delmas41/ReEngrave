@@ -2089,6 +2089,46 @@ def _right_of_within_reach(dot_box, head_box):
     return dot_x_left - (hx + hw) <= max(dot_w, 12) * 5
 
 
+
+def _dots_boxed_as_heads(ev: Evidence, cell, mine, head_box, heads,
+                         foreign_keys, marks, max_above, max_below):
+    """ROADMAP 2.151: the dot-shaped boxes the notehead gate refused that are
+    THIS head's augmentation dots (their `Q.GLYPH_BOX` rows).
+
+    A mark counts only where ALL of: it stands in this head's augmentation
+    window (right of it, 0.75 sp above .. 0.25 sp below its centre) or, at its
+    dot step, right of it within reach; its staff position is THIS head's dot
+    step (`mark_head_compatible` True -- unknown is never enough to lengthen
+    a note; `reconcile_unjoined_dots` narrows those instead); and this head is
+    the best of the cell's KEPT heads for it (reciprocal, as for a dot box).
+    """
+    if head_box is None:
+        return []
+    pos = {r.subject.to_key(): r.value for r in ev.rows(
+        Q.NOTEHEAD_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS,
+        subject=cell)}
+    out = []
+    for key, mb, box_row in marks:
+        if _aug_join.mark_head_compatible(pos.get(key), pos.get(mine)) is not True:
+            continue
+        best, best_score = None, float("inf")
+        for hk, hb in heads:
+            if hk in foreign_keys:
+                continue
+            if not (_in_augmentation_window(mb, hb, max_above, max_below)
+                    or (hk == mine and _right_of_within_reach(mb, hb))):
+                continue
+            if hk != mine and _aug_join.mark_head_compatible(
+                    pos.get(key), pos.get(hk)) is False:
+                continue
+            sc = (mb[0] - (hb[0] + hb[2])
+                  + abs(hb[1] + hb[3] / 2.0 - (mb[1] + mb[3] / 2.0)) * 2)
+            if sc < best_score:
+                best_score, best = sc, hk
+        if best == mine:
+            out.append(box_row)
+    return out
+
 def _pos_verdicts(ev: Evidence, cell, home: str, head_keys):
     """`pos_of(head_key) -> True | False | None` for THE DOT `ev` is about
     (`None` = cannot tell). ROADMAP 2.128. A callable that is `None`-valued
@@ -2391,6 +2431,12 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     # never turn a staccato into an augmentation.
     keep_foreign = _own.dot_follows_note_enabled()
     foreign_keys = set()
+    # ⚠️ ROADMAP 2.151 (`OMR_DOT_BOXED_AS_A_HEAD`, default OFF): a box the
+    # notehead gate REFUSED is not a head -- it never owns a dot (a refused
+    # `head_cut_piece` twin took Brahms p0 `0/0/4/3/0` from the real half) --
+    # and one it refused as dot-shaped ink may BE a dot (`marks`, below).
+    as_head = _aug_join.dot_boxed_as_a_head_enabled()
+    marks = []                      # (key, box, GLYPH_BOX row): dot-shaped refused boxes
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
             foreign = (r.subject.to_key() != mine_key
@@ -2399,6 +2445,14 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
                 continue
             box_row = boxes.get(r.subject.to_key())
             b = _xywh_head(box_row.value) if box_row else None
+            if as_head and q == Q.NOTEHEAD_CLASS \
+                    and r.subject.to_key() != mine_key \
+                    and _refused_as_a_notehead(ev, r.subject):
+                if b is not None and not foreign and _aug_join.head_box_is_dot_shaped(
+                        ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=r.subject),
+                        b[2], b[3], space):
+                    marks.append((r.subject.to_key(), b, box_row))
+                continue
             if b is not None:
                 heads.append((r.subject.to_key(), b))
                 if foreign:
@@ -2461,6 +2515,10 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
                 best_score, best = score, key
         if best == mine:
             out.append(d)
+    if marks:
+        out.extend(_dots_boxed_as_heads(ev, cell, mine, head_box, heads,
+                                        foreign_keys, marks, max_above,
+                                        max_below))
     # ⚠️ ROADMAP 2.127 (`OMR_AUG_DOT_JOIN`): ONE PHYSICAL DOT BOXED TWICE IS
     # ONE DOT. Brahms 317803 `0/0/11/0/15` and `0/0/11/0/24` are two detector
     # boxes on the same upper dot of a chord of seconds (page boxes 2 px
