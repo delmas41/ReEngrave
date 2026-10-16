@@ -4051,7 +4051,7 @@ OMR_INFER_CARRIED_METER_FIX=1 and OMR_INFER_LEDGER_OWNER_HEADS=1 (W2).
 **The control, and why it shows 40.** Litolff `base` (W2 only, `--control`): 14,357 of 14,397 standing duration verdicts
 reproduce the record, 40 differ, 0 extra; all 40 are `narrowed` in the record and `decided` in the replay by
 `infer:collapse_narrowed_by_bar`. The record's provenance has no W2 flag (`env_overrides` = Surya keep-alive only; both
-flags default OFF, `docs/flags-2026-09.md`), and §2.136 step 2 above counts exactly 40 Litolff values freed by W2 alone.
+flags were OFF when the record was made; main has since turned CARRIED_METER_FIX ON by default), and §2.136 step 2 above counts exactly 40 Litolff values freed by W2 alone.
 So the 40 are W2 itself, not harness drift. A W2-OFF whole-record control (expected 14,397/14,397) is NOT run.
 (1 GB arm records kept in library/_shared-records/2.141h-arms/, not in git. Source: `out/2.141h/lit.log`, `arms/lit-base/durations.json`.)
 
