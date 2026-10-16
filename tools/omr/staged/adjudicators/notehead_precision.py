@@ -924,7 +924,7 @@ def _inside_a_clef_box_refusal(ev: Evidence, box_row, spacing: float,
     detail["clef_box"] = {"box": r.id, "class": r.value[0], "head_inside": round(inside, 3),
                           "height_spaces": round(float(r.value[4]) / spacing, 2)}
     return _margins.attach(
-        Ruling(value=True, reason=CLEF_BOX_REASON, used=(box_row.id, r.id), detail=detail),
+        Ruling(value=True, reason="inside_a_clef_box", used=(box_row.id, r.id), detail=detail),
         margin=inside - CLEF_BOX_HEAD_INSIDE_MIN, axis="head_inside_clef_box_fraction",
         unit="fraction of the head box inside the clef box", band=None, would_choose=(True,))
 
