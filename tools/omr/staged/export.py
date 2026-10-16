@@ -5337,7 +5337,7 @@ _NOT_A_GAP_REASONS = frozenset({
     "not_a_notehead:is_a_meter_digit", "not_a_rest:rest_is_a_meter_digit",
     "not_a_notehead:is_a_clef", "not_a_notehead:is_a_dot",
     "not_a_notehead:is_a_beam_piece", "not_a_notehead:on_a_barline",
-    "not_a_notehead:is_a_rest_twin",
+    "not_a_notehead:is_a_rest_twin", "not_a_notehead:inside_a_clef_box",
     "not_a_rest:rest_is_a_barline",
     "not_a_notehead:tremolo_slash_crosses_stem",
     "not_a_notehead:on_a_dynamic_letter", "not_a_rest:rest_has_a_stem",

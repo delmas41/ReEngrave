@@ -146,6 +146,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "is_a_beam_piece": THRESHOLD,
         # ROADMAP 2.142: share of the smaller box a rest box covers
         "is_a_rest_twin": THRESHOLD,
+        # ROADMAP 2.144: share of the head box inside a clef-sized clef box
+        "inside_a_clef_box": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },

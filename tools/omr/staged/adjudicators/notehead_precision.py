@@ -849,6 +849,86 @@ def _rest_twin_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optiona
         unit="fraction of the smaller box shared", band=None, would_choose=(True,))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.144 (flag `OMR_HEAD_INSIDE_A_CLEF_BOX`, default OFF) -- a stemless notehead
+# box lying wholly inside a detector CLEF box is that clef's ink (the ball of an F clef,
+# a lobe of a C clef), not a note.
+#
+# Sean (2026-10-16, `out/print/2.141-brahms-review` tile 1, Brahms 317803 p3 sys0 staff12
+# cell8): "a C clef". STAGED ADJUDICATE. Count (20261014-night, streamed rows): 17 Litolff
+# and 14 Brahms head boxes stand wholly or mostly inside a detector clef box and nothing
+# refuses them (benchmarks/omr-bar-sum-holdout-2026-09 FINDINGS 2.144).
+#
+# CONVENTION ASSUMED: a clef is one glyph, so a head box inside a clef-class box with no
+# stem touching it is the clef boxed under a second name (a real head carries its chord's
+# stem, except a whole note). WHAT WOULD FALSIFY IT: a print-confirmed stemless real head
+# wholly inside a clef box (the detector also draws clef-class boxes on tie curves and
+# clutter, so the box must also be CLEF-SIZED). NOT CONFIRMED with Sean; blind tiles
+# out/print/2.144-review.
+# TWO SOURCES: the detector's clef-class box (clef-sized) AND the stem finder's silence.
+# Sean's own case has NO clef box (both lobes were refused for other reasons,
+# `too_narrow` and `is_a_beam_piece`): this rule does not reach it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+CLEF_BOX_ENV = "OMR_HEAD_INSIDE_A_CLEF_BOX"
+CLEF_BOX_REASON = "inside_a_clef_box"
+#: Share of the HEAD box that must lie inside the clef box (the head is the smaller box here).
+#: Measured on the 20261014-night rows: balls and lobes sit at 0.92-1.0; a half-covered box
+#: (0.41-0.79) is left alone.
+CLEF_BOX_HEAD_INSIDE_MIN = 0.8
+#: A clef box shorter than this many staff spaces is not a clef: the detector's short wide
+#: clef-class boxes (0.5-1.1 sp) lie on arcs and clutter. The clef boxes the 20261014-night
+#: rows hold with a head on them are 2.0-7.3 sp tall apart from those.
+CLEF_BOX_MIN_HEIGHT_SPACES = 2.0
+
+
+def head_inside_a_clef_box_enabled() -> bool:
+    """`OMR_HEAD_INSIDE_A_CLEF_BOX`, default OFF (ROADMAP 2.144, awaiting Sean's tiles); only an explicit on-word enables."""
+    return os.environ.get(CLEF_BOX_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _inside_a_clef_box_refusal(ev: Evidence, box_row, spacing: float,
+                               detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`Ruling(True, "inside_a_clef_box")` where a clef-sized clef-class box holds this stemless head box, else None."""
+    if not head_inside_a_clef_box_enabled():
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or box_row is None or not spacing or spacing <= 0:
+        return None
+    v = box_row.value
+    head = (float(v[1]), float(v[2]), float(v[3]), float(v[4]))
+    if head[2] <= 0 or head[3] <= 0:
+        return None
+    for st in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        sv = st.value
+        if isinstance(sv, (list, tuple)) and len(sv) >= 4 and _geom.stem_touches_head(
+                tuple(float(x) for x in sv[:4]), head):
+            return None                      # a stem stands on it: a note (rule 8: no refusal on a guess)
+    best = None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        rv = r.value
+        if r.id == box_row.id or not isinstance(rv, (list, tuple)) or len(rv) != 5 \
+                or not str(rv[0]).startswith("clef"):
+            continue
+        cb = (float(rv[1]), float(rv[2]), float(rv[3]), float(rv[4]))
+        if cb[3] / spacing < CLEF_BOX_MIN_HEIGHT_SPACES:
+            continue
+        iw = min(head[0] + head[2], cb[0] + cb[2]) - max(head[0], cb[0])
+        ih = min(head[1] + head[3], cb[1] + cb[3]) - max(head[1], cb[1])
+        inside = iw * ih / (head[2] * head[3]) if iw > 0 and ih > 0 else 0.0
+        if inside >= CLEF_BOX_HEAD_INSIDE_MIN and (best is None or inside > best[0]):
+            best = (inside, r)
+    if best is None:
+        return None
+    inside, r = best
+    detail["clef_box"] = {"box": r.id, "class": r.value[0], "head_inside": round(inside, 3),
+                          "height_spaces": round(float(r.value[4]) / spacing, 2)}
+    return _margins.attach(
+        Ruling(value=True, reason=CLEF_BOX_REASON, used=(box_row.id, r.id), detail=detail),
+        margin=inside - CLEF_BOX_HEAD_INSIDE_MIN, axis="head_inside_clef_box_fraction",
+        unit="fraction of the head box inside the clef box", band=None, would_choose=(True,))
+
+
 #: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
 #: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
 #: imported: `family_precision` imports FROM this module
@@ -3211,6 +3291,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
+                                     CLEF_BOX_REASON,
                                      OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -3471,6 +3552,10 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     rest_twin = _rest_twin_refusal(ev, box_row, detail)
     if rest_twin is not None:
         return rest_twin
+    # ROADMAP 2.144 (default OFF): a stemless head box wholly inside a clef-sized clef box is that clef's ink.
+    in_clef = _inside_a_clef_box_refusal(ev, box_row, spacing, detail)
+    if in_clef is not None:
+        return in_clef
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
