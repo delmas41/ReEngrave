@@ -72,8 +72,8 @@ _MIDDLE_STEP = (_u.EIGHTH_STEP[0] + _u.EIGHTH_STEP[1]) / 2.0
 
 
 def enabled() -> bool:
-    """`OMR_HEAD_INK_IS_A_REST`, default OFF; only an explicit on-word enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_HEAD_INK_IS_A_REST`, default ON (Sean 2026-10-16, ROADMAP 2.145); only an explicit off-word disables."""
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 @dataclass(frozen=True)

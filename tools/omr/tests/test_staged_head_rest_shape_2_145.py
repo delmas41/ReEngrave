@@ -1,6 +1,6 @@
 """ROADMAP 2.145 -- a lone rest the detector boxed as a notehead (no rest box beside it) is read from its INK
 (STAGED ADJUDICATE `adjudicate_notehead_is_not_a_notehead` -> `is_a_rest_shape`, `adjudicate_head_ink_is_a_rest`;
-EVALUATE `size_head_ink_rest`; EXPORT; flag `OMR_HEAD_INK_IS_A_REST`, default OFF).
+EVALUATE `size_head_ink_rest`; EXPORT; flag `OMR_HEAD_INK_IS_A_REST`, default ON since 2026-10-16).
 
 Sean 2026-10-15, tile 3: Litolff p6 sys1 st2 c5, *"an eighth rest"*, boxed `noteheadBlackOnLine` and written as a note.
 Every CONTROL_ test is green with the rule absent or present, so a rule that refuses everything cannot pass; the
@@ -142,10 +142,10 @@ class TestTheGate(unittest.TestCase):
         self.assertFalse(log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, h).value)
         self.assertNotEqual(log.verdict(Q.HEAD_INK_IS_A_REST, CL).outcome, Outcome.DECIDED)
 
-    def test_the_flag_defaults_OFF(self):
+    def test_the_flag_defaults_ON(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(H.ENV, None)
-            self.assertFalse(H.enabled())
+            self.assertTrue(H.enabled())
         for on in ("1", "true", "yes", "on"):
             with mock.patch.dict(os.environ, {H.ENV: on}):
                 self.assertTrue(H.enabled())
