@@ -1510,6 +1510,9 @@ def beam_stem_levels_enabled() -> bool:
 #: detector box's width), so only what is left counts. One measured case (Brahms p18 sys1 staff12 cell7: 0.77; a neighbour
 #: single-beam group 0.1-0.3, see FINDINGS 2.140). NOT CONFIRMED on a second publisher: it only narrows unless the page count agrees.
 BEAM_STACK_BOX_EXCESS_MIN = 0.6
+#: ROADMAP 2.140 round 2 (CLAUDE.md section 4: a cut-off tuned on our plates may only NARROW; a refusal says how close it came). A box
+#: witness within this of its cut is a near-miss and cannot decide: Litolff (6,1,7,0) glyph 5 cleared the cut by 0.016 and Sean read an eighth.
+BEAM_STACK_BOX_NEAR_MISS = 0.05
 
 
 def stack_box_excess_beams(cv_strokes, yolo_boxes, x):
@@ -3845,10 +3848,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             _yolo = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b))
                      for b in _kept_beams(ev, cell)[2] if _xywh(b) is not None]
             _ex, _how = stack_box_excess_beams(_cv_all, _yolo, _stem_x) if _stem_x is not None else (None, None)
-            _box_agrees = _ex is not None and _ex >= BEAM_STACK_BOX_EXCESS_MIN
+            _box_agrees = _ex is not None and _ex >= BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS
             stem_levels = {"page_count": tip["count"], "side": tip["side"], "runs": tip["runs"], "unit_spaces": tip["unit_spaces"],
                            "box_excess_beams": None if _ex is None else round(_ex, 3), "box": _how,
                            "box_margin": None if _ex is None else round(_ex - BEAM_STACK_BOX_EXCESS_MIN, 3),
+                           "box_near_miss": _ex is not None and BEAM_STACK_BOX_EXCESS_MIN <= _ex < BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS,
                            "settled": None}
             if _box_agrees and tip["count"] == certain + 1:
                 certain = possible = tip["count"]

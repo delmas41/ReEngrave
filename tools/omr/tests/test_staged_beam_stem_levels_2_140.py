@@ -195,6 +195,15 @@ class TestTheDecision(unittest.TestCase):
         v = _dur(True, page_runs=2, runs=[(757, 777, 0.6, 3.0), (700, 720, 0.5, 3.0)])   # control: 0.5 sp is 0.93 of a beam
         self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 2))
 
+    def test_flag_ON_a_box_that_clears_its_cut_by_less_than_the_near_miss_only_NARROWS(self):
+        # round 2, Litolff (6,1,7,0) glyph 5: box excess 0.616 against 0.6, Sean read an eighth
+        # tile box_h 113 -> 0.774 (margin 0.174, decides); the box that is 0.6x0.54+... is built by trimming its height to excess ~0.62
+        v = _dur(True, box_h=105)
+        d = v.detail["beam_stem_levels"]
+        self.assertTrue(rhythm.BEAM_STACK_BOX_EXCESS_MIN <= d["box_excess_beams"] < rhythm.BEAM_STACK_BOX_EXCESS_MIN + rhythm.BEAM_STACK_BOX_NEAR_MISS, d)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertTrue(d["box_near_miss"])
+
     def test_the_flag_defaults_OFF_and_only_an_on_word_enables(self):
         for word, on in (("", False), ("0", False), ("off", False), ("yess", False), ("1", True), ("true", True), ("on", True)):
             with mock.patch.dict(os.environ, {FLAG: word}):

@@ -46,6 +46,7 @@ null,
 "expected_h": 255.9
 },
 "box_margin": 0.614,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -97,6 +98,7 @@ null,
 "expected_h": 255.9
 },
 "box_margin": 0.614,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -148,6 +150,7 @@ null,
 "expected_h": 255.9
 },
 "box_margin": 0.614,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -199,6 +202,7 @@ null,
 "expected_h": 135.5
 },
 "box_margin": 1.099,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -250,6 +254,7 @@ null,
 "expected_h": 135.5
 },
 "box_margin": 1.099,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -301,6 +306,7 @@ null,
 "expected_h": 135.5
 },
 "box_margin": 1.099,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -352,6 +358,7 @@ null,
 "expected_h": 137.2
 },
 "box_margin": -1.653,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -403,6 +410,7 @@ null,
 "expected_h": 139.0
 },
 "box_margin": -0.087,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -454,6 +462,7 @@ null,
 "expected_h": 139.0
 },
 "box_margin": -0.087,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -505,6 +514,7 @@ null,
 "expected_h": 136.8
 },
 "box_margin": 0.278,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -550,6 +560,7 @@ null,
 "expected_h": 136.8
 },
 "box_margin": 0.278,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -601,6 +612,7 @@ null,
 "expected_h": 136.8
 },
 "box_margin": 0.278,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -658,6 +670,7 @@ null,
 "expected_h": 255.7
 },
 "box_margin": -1.891,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -709,6 +722,7 @@ null,
 "expected_h": 114.2
 },
 "box_margin": -1.026,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -766,6 +780,7 @@ null,
 "expected_h": 255.7
 },
 "box_margin": -1.891,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -823,6 +838,7 @@ null,
 "expected_h": 106.5
 },
 "box_margin": 0.295,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -874,6 +890,7 @@ null,
 "expected_h": 106.5
 },
 "box_margin": 0.295,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -919,6 +936,7 @@ null,
 "expected_h": 106.5
 },
 "box_margin": 0.295,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -970,6 +988,7 @@ null,
 "expected_h": 129.0
 },
 "box_margin": 1.291,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -1021,6 +1040,7 @@ null,
 "expected_h": 129.0
 },
 "box_margin": 1.291,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -1072,6 +1092,7 @@ null,
 "expected_h": 129.0
 },
 "box_margin": 1.291,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -1117,6 +1138,7 @@ null,
 "expected_h": 133.9
 },
 "box_margin": -0.893,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -1168,6 +1190,7 @@ null,
 "expected_h": 133.9
 },
 "box_margin": -0.893,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -1219,6 +1242,7 @@ null,
 "expected_h": 133.9
 },
 "box_margin": -0.893,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 },
@@ -1270,6 +1294,7 @@ null,
 "expected_h": 71.2
 },
 "box_margin": 0.174,
+"box_near_miss": false,
 "settled": "decided_two_witnesses"
 }
 },
@@ -1313,6 +1338,7 @@ null,
 "box_excess_beams": null,
 "box": null,
 "box_margin": null,
+"box_near_miss": false,
 "settled": "narrowed_one_witness"
 }
 }
