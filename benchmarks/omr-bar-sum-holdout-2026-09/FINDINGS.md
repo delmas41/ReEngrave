@@ -4128,3 +4128,28 @@ Second replay (`out/2.142/replay-lit2.json`, also storing `rest_is_not_a_rest`):
 
 ### 2.141h Brahms all-on arm + fix 2 ON (2026-10-16)
 `out/2.141h/arms/brah-{base,all}`, `out/2.141h/summary-brah.json` (all three fixes on vs base, 32,839 standing verdicts, saved 20261014-night records re-decided). Six verdicts change state: 4 decided -> narrowed, a whole rest 4.0 -> 3.0 (fix 3, `OMR_WHOLE_REST_INK_LEAVES_BAR`, stays OFF), and one value 0.25 -> 0.5 at `glyph/3/0/12/8/14`. Sean (2026-10-16, `out/print/2.141-brahms-review/`, tile 1, key in `out/2.141h/brah-tiles/`): "Tile fix is a c clef" -- a clef boxed as a notehead, a phantom note in base and under the fixes, so the change is not damage (roadmap 2.144). None of Sean's 9 judged Brahms bars changed. Fix 2 (`OMR_OWN_STEM_UNISON_BOTH`) default ON; fix 3 OFF; W2 OFF.
+
+## 2.144 -- a clef boxed as a notehead (2026-10-16, STAGED ADJUDICATE; Brahms + Litolff, record 20261014-night)
+
+**CONVENTION ASSUMED:** a clef is one glyph; a stemless head box lying wholly inside a clef-sized detector clef box is that clef's ink (F-clef ball, C-clef lobe), not a note. **WHAT WOULD FALSIFY IT:** a print-confirmed stemless real head wholly inside a clef box (the detector also draws clef-class boxes on tie curves and clutter: Litolff p15 sys0 st9 c21 is a candidate, tile 14). **NOT CONFIRMED:** with Sean; blind tiles `out/print/2.144-review/` (14, hidden key `out/2.144/tiles-key.json`) are the test.
+
+### Finding 1: Sean's own case is NOT a standing head, and the gate cannot reach it
+Brahms p3 sys0 st12 c8: the C clef is two head boxes (`glyph/3/0/12/8/13` upper lobe, `/14` lower lobe, 38 x 21 px each, no clef box in the cell). Both are ALREADY refused in the 20261014-night record (13 `too_narrow`, 14 `is_a_beam_piece`; right outcome, wrong names) and EXPORT drops them. What Sean saw is a standing DURATION 0.25 on a refused box -- the 2.143 mechanism (a refused head's DECIDED duration still enters INFER's bar sum), not a head gate. No row in the record names the ink a clef (`Q.CLEF_LOCATED` is per staff header; mid-bar clefs get no locator run), so no gate here reaches him: nothing was built for the no-clef-box case.
+
+### Finding 2: the count (streamed rows, `probe/cache_2_144.py`, `count_2_144.py`, `dims_2_144.py`; cover >= 0.3 of the smaller box)
+| record | head boxes | clef boxes | head boxes overlapping a clef box | stand (not refused) |
+|---|---|---|---|---|
+| Litolff | 11,399 | 513 | 22 | 17 |
+| Brahms | 24,260 | 1,102 | 23 | 14 |
+Viewed (`out/2.144/sheet-*.png`): the standing ones are the F-clef ball (Brahms, most Litolff) or a C-clef lobe (Litolff): real clef ink. Two kinds of clef-class box are NOT clefs: short wide ones (0.5-1.1 spaces tall, on clutter or arcs) and one on a tie curve (Litolff p15 sys0 st9 c21, 2.3 sp tall, a real-looking head inside it). A real F clef truncated to its ball and dots (Brahms p18 sys1 st0 c7, 0.94 sp tall) is missed by the height floor: counted, not fixed. Many are in cell 0 (a system's opening clef).
+
+### The gate: `OMR_HEAD_INSIDE_A_CLEF_BOX` (default OFF) -- `notehead_precision._inside_a_clef_box_refusal`, reason `inside_a_clef_box`
+Head box >= 0.8 of its own area inside a clef-class box in the same cell (witness 1, detector) AND that box >= 2.0 staff spaces tall AND no `Q.STEM` touches the head (witness 2, the stem finder's silence). Margin = inside - 0.8. A head so refused leaves the bar like the rest twin (`not_a_notehead:inside_a_clef_box` in EXPORT `_NOT_A_GAP_REASONS`; margins `PARTIAL`); never converts to a value (rule 8).
+Tests `tools/omr/tests/test_staged_clef_box_head_2_144.py` (9): fires on a ball and on a C-clef lobe; controls that must keep the head: flag off, a real head beside the clef, a head only half inside, a touching stem, a short clef box, a non-clef box.
+
+### Base vs arm (`probe/replay_2_144.py`, `diff_2_144.py`: whole systems re-decided ADJUDICATE..INFER, flag off vs on, same replay)
+Brahms 9 systems (3,0;3,1;2,0;2,1;1,1;6,0;6,1;5,1;25,0; 12,138 verdicts): 9 head boxes change `notehead` -> `inside_a_clef_box`, 0 other verdicts change. Litolff 6 systems (6,0;9,0;11,0;14,0;16,1;15,0; 5,473 verdicts): 8 change (6 `notehead`, 1 `belongs_to_a_nearer_staff`, 1 duplicate box: reason only, already refused). The named page, Brahms p3 sys0 st12 c8: NO change (its lobes were already refused). DURATION verdicts of the refused boxes stay (2.143's mechanism: the sum still sees them). Missed by the gate: 11/0/2/11/4, 14/0/3/12/1, 3/1/12/2/7 (ball only 0.5-0.6 inside the clef box), 13/0/10/13/1, 15/0/2/1/1 (C-clef lobes 0.4-0.5 inside).
+`staged.check` TOTAL 193, identical flag off and on (flag OFF by default; no new open finding).
+
+### Tiles
+`out/print/2.144-review/` (14, nothing of ours drawn; RED = the bar, BLUE = the one box; key hidden): 9 boxes the gate refuses and 5 controls (real-looking heads that stand, mostly in cells that also hold a refusal). Tile 14 is the falsifier candidate; tile 1's control sits on a beam and may not be a head. One refusal tile (Litolff p9 sys0 st3 c11) failed its frame control and was left out.
