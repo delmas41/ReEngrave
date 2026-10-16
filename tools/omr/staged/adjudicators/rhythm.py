@@ -1589,6 +1589,35 @@ def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
     return best
 
 
+#: ROADMAP 2.146 (Sean 2026-10-16: *"the connection to the end of stems is the most important factor - more important than
+#: width"*; "the stem tip decides beamed or not"). Default OFF; only an explicit on-word is ON.
+STEM_TIP_DECIDES_BEAM_ENV = "OMR_STEM_TIP_DECIDES_BEAM"
+
+
+def stem_tip_decides_beam_enabled() -> bool:
+    """ROADMAP 2.146, default OFF: where every candidate stroke over a stemmed head was refused (the
+    `beam_discounted_uncertain` population), the head's OWN stem tip decides: a clean tip (no beam run, no flag ink) is no
+    beam; beam runs at the tip are that many beams."""
+    return os.environ.get(STEM_TIP_DECIDES_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _stem_tip_beam_verdict(ev: Evidence, cell, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.146. What THIS head's own stem tip says about a beam, read FROM THE STEM (`Q.BEAM_STEM_LEVELS`, the 2.140
+    tip reader: runs >= `BEAM_STEM_RUN_MIN_SPACES` staff spaces thick reaching >= `BEAM_STEM_RUN_REACH_MIN_SPACES` sideways)
+    and the flag window at the same tip (`Q.STEM_TIP_INK`). `{"levels": n, "rows": [...], ...}` or `None` -- cannot tell:
+    no tip row for the stem, the flag window unread or disputed, or a hook at the tip (a flag is not a beam; 2.69 owns it).
+    Measured on Sean's Brahms 317803 pdf 0 hand truth from TRUTH stems (FINDINGS omr-beam-confirm-2026-10 §9.3): a run
+    leaving the tip separates beamed 127/129 from bare 1/111 and flagged 1/36."""
+    tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
+    if tip is None:
+        return None
+    flag_ink, flag_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+    if flag_ink is None or flag_ink:
+        return None
+    return {"levels": int(tip["count"]), "rows": [tip["row"]] + [r.id for r in flag_rows],
+            "side": tip["side"], "runs": tip["runs"]}
+
+
 def _stroke_touches_a_head(box, head_boxes) -> bool:
     """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
     from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
@@ -3522,7 +3551,8 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
-             "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead"),
+             "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead",
+             "stem_tip_reads_no_beam", "stem_tip_reads_a_beam"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -4207,6 +4237,26 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
             and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
         tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
+    # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default OFF; Sean 2026-10-16 "the stem tip decides beamed or not"):
+    # every stroke over this head was refused, so instead of narrowing between the head value and one beam level, ask the
+    # head's OWN stem tip. Clean tip -> no beam (the head's value); n beam runs at the tip -> n levels. Cannot tell -> the
+    # narrowing below, unchanged (rule 8).
+    if (stem_tip_decides_beam_enabled()
+            and ((discount_removed_all_marks and own_stems) or ink_removed_all_marks or far_removed_all_marks)
+            and beam_evidence == "none_over_this_note"
+            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems):
+        tipv = _stem_tip_beam_verdict(ev, cell, own_stems, head_box, side)
+        if tipv is not None:
+            used.extend(tipv["rows"])
+            level = tipv["levels"]
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            return Ruling(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
+                          reason="stem_tip_reads_a_beam" if level else "stem_tip_reads_no_beam", used=tuple(used),
+                          detail={**shared, "stem_tip": {"levels": level, "side": tipv["side"], "runs": tipv["runs"]}})
     if (((discount_removed_all_marks and (own_stems or reach_stem))
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
