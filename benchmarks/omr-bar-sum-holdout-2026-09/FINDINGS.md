@@ -4035,6 +4035,45 @@ controls. Only 4 other bars share an accepted cause, so 4 shared-cause tiles, no
 Litolff mvt 1 and Brahms mvt 1, one night's records; n = 3 per cause. The ledger-line reading of stroke 079965 is box geometry mapped to page pixels, not an ink test. W is Litolff-only
 evidence. Every count is of what the record holds, not of what is right.
 
+## 2.141h -- the three cause fixes, measured PARTIALLY (crash recovery, 2026-10-15)
+
+CONVENTION ASSUMED: a beam level is a stroke at the stem's beam position (fix 1); both unison heads on one stem take the
+stem's side (fix 2); whole-rest ink beside a bar's heads means the head left the bar (fix 3) -- Sean's 2.136 answers
+(`out/print/2.136-step2-review/answers.json`, tile 6 = 8,8,8; tile 10 = whole rest + quarter). WHAT WOULD FALSIFY IT: a
+judged-right bar that turns wrong under a flag, or a blind tile where Sean reads a changed note differently.
+NOT CONFIRMED: fixes 2 and 3 and the all-ON arm are NOT measured; Brahms is NOT measured; no tiles were cut; the
+coordinator stopped the whole-movement runs (Sean's rule: small runs by day, big runs overnight).
+
+PATH: STAGED (ADJUDICATE rhythm / EVALUATE / INFER), saved 20261014-night records re-decided by
+`probe/arm_2_141h.py` (GATHER rows are the record's; a GATHER change is invisible). Every arm has
+OMR_INFER_CARRIED_METER_FIX=1 and OMR_INFER_LEDGER_OWNER_HEADS=1 (W2).
+
+**The control, and why it shows 40.** Litolff `base` (W2 only, `--control`): 14,357 of 14,397 standing duration verdicts
+reproduce the record, 40 differ, 0 extra; all 40 are `narrowed` in the record and `decided` in the replay by
+`infer:collapse_narrowed_by_bar`. The record's provenance has no W2 flag (`env_overrides` = Surya keep-alive only; both
+flags were OFF when the record was made; main has since turned CARRIED_METER_FIX ON by default), and §2.136 step 2 above counts exactly 40 Litolff values freed by W2 alone.
+So the 40 are W2 itself, not harness drift. A W2-OFF whole-record control (expected 14,397/14,397) is NOT run.
+(1 GB arm records kept in library/_shared-records/2.141h-arms/, not in git. Source: `out/2.141h/lit.log`, `arms/lit-base/durations.json`.)
+
+**A restricted re-decide does not work.** `arm_2_141h.py --staves` (keep the glyph rows of the named systems only) fails
+the control: 343 of 6,404 differ with W2 ON, 335 with W2 OFF (whole-record control: 40). ADJUDICATE reads document-wide
+calibration from the glyph rows of other systems, so the small run is not the large run and no small-run number can be
+trusted. The flag is left in the probe, labelled; it is not a valid shortcut. A valid small run needs `pipeline.decide`
+to decide only chosen systems over the FULL gather, which is a code change.
+
+**Fix 1 (`OMR_BEAM_LEVEL_STROKE_IS_A_BEAM`), Litolff, whole movement, vs base:** 13 cells, 22 standing verdicts change
+state, 15 DECIDED values change (10 sixteenth->eighth, 3 eighth->quarter, 1 thirty-second->eighth, 1 quarter->eighth),
+4 decided->narrowed, 3 narrowed->decided. Key bars: 2.136 tile 6 (5,0,0,6) goes from 16,16,4 to 0.5 on every note =
+Sean's 8,8,8 (right). 2.136 tile 10, tile 9, and Sean's 2.141 tiles 1-6 are unchanged (so no judged-right bar moves).
+`judged score` base vs f1 (litolff): identical totals (109/11/3/1/13/99), so no judged bar changes either way. The 12
+other changed cells are not judged and no blind tile has been cut for them: 4,1,7,5 and 4,1,8,11 and 7,0,7,8 are
+sixteenth->eighth and are the first to show Sean; 13,0,10,5, 14,0,10,0 and 14,1,8,4 are eighth->quarter.
+(Source: `out/2.141h/summary-lit.json`, `judged-lit-*.txt`.)
+
+Not run: fix 2, fix 3, all-ON (Litolff); every Brahms arm. Tile 10 and the expected fix-3 refusals (Litolff p11 cells
+0/0/10 and 0/0/16) are therefore unmeasured. Run at the next overnight: `out/2.141h/run_arms.sh` (resumable, skips
+finished arms), then `probe/summarise_2_141h.py` and `probe/tiles_2_141h.py`.
+
 ### 2.141g. Sean's answers (2026-10-15) -- 6/6 agree with W2
 
 Raw: "1-4 quarter notes 5 and 6 8th notes". Key (`out/2.141/tiles-key.json`, `settled_beats_beamlevels`): W2 settled every note in tiles 1-4 as quarters and in tiles 5-6 as eighths.

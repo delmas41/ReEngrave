@@ -347,6 +347,16 @@ def _reinstated_rest(log: Log, glyph: Subject) -> bool:
             and v.value is True)
 
 
+WHOLE_REST_INK_LEAVES_BAR_ENV = "OMR_WHOLE_REST_INK_LEAVES_BAR"
+
+
+def whole_rest_ink_leaves_bar_enabled() -> bool:
+    """ROADMAP 2.141h fix 3, default OFF: a decided whole-rest-ink box leaves the bar for every consumer, and INFER's sum
+    declines on an abstained standing duration. Only an explicit on-word is ON."""
+    import os
+    return os.environ.get(WHOLE_REST_INK_LEAVES_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     """The DECIDED verdict that took this glyph out of its bar, else None."""
     reinstated = _reinstated_rest(log, glyph)
@@ -363,6 +373,15 @@ def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
         from .adjudicate import is_relocated_copy
         if is_relocated_copy(glyph, owner.value):
             return owner
+    # ROADMAP 2.141h fix 3 (default OFF): a DECIDED `Q.NOTEHEAD_IS_A_WHOLE_REST` on a box that is not itself a rest leaves the bar
+    # for EVERY consumer, as EXPORT already refuses it (`ink_is_a_whole_rest`). Without it INFER's sum counted that ink as a note.
+    if whole_rest_ink_leaves_bar_enabled():
+        wr = log.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, glyph)
+        if wr is not None and wr.outcome is Outcome.DECIDED and wr.value is True:
+            from .export import whole_rest_ink_enabled
+            dur = log.verdict(Q.DURATION, glyph)
+            if whole_rest_ink_enabled() and not (dur is not None and _is_rest(dur)):
+                return wr
     return None
 
 

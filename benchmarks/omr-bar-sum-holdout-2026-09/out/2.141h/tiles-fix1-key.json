@@ -1,0 +1,893 @@
+{
+ "question_note": "hidden key; Sean's tiles carry no key",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "lit",
+   "cell": [
+    7,
+    0,
+    7,
+    8
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/7/0/7/8/0": [
+      "decided",
+      0.25
+     ],
+     "glyph/7/0/7/8/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/7/0/7/8/2": [
+      "decided",
+      0.25
+     ],
+     "glyph/7/0/7/8/5": [
+      "decided",
+      0.25
+     ]
+    },
+    "fix1": {
+     "glyph/7/0/7/8/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/7/0/7/8/1": [
+      "narrowed",
+      null
+     ],
+     "glyph/7/0/7/8/2": [
+      "decided",
+      0.5
+     ],
+     "glyph/7/0/7/8/5": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/7/0/7/8/0",
+    "glyph/7/0/7/8/1",
+    "glyph/7/0/7/8/2",
+    "glyph/7/0/7/8/5"
+   ],
+   "blue_boxes_px": [
+    [
+     1607.0,
+     1392.7,
+     1628.2,
+     1411.6
+    ],
+    [
+     1529.7,
+     1392.9,
+     1552.4,
+     1414.0
+    ],
+    [
+     1557.4,
+     1392.7,
+     1579.2,
+     1413.2
+    ],
+    [
+     1582.6,
+     1391.8,
+     1603.0,
+     1410.5
+    ]
+   ],
+   "frame_control": {
+    "ratio": 4.24,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.29,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1460,
+    1361,
+    1682,
+    1578
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "lit",
+   "cell": [
+    11,
+    1,
+    5,
+    0
+   ],
+   "role": "control",
+   "info": {
+    "base": {
+     "glyph/11/1/5/0/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/11/1/5/0/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/11/1/5/0/2": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/11/1/5/0/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/11/1/5/0/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/11/1/5/0/2": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/11/1/5/0/0",
+    "glyph/11/1/5/0/1",
+    "glyph/11/1/5/0/2"
+   ],
+   "blue_boxes_px": [
+    [
+     554.9,
+     2738.2,
+     576.8,
+     2758.5
+    ],
+    [
+     581.5,
+     2736.4,
+     602.6,
+     2758.5
+    ],
+    [
+     610.3,
+     2736.6,
+     633.0,
+     2758.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.51,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    302,
+    2613,
+    690,
+    2817
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "cell": [
+    4,
+    1,
+    7,
+    5
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/4/1/7/5/13": [
+      "decided",
+      0.25
+     ],
+     "glyph/4/1/7/5/6": [
+      "decided",
+      0.25
+     ],
+     "glyph/4/1/7/5/7": [
+      "decided",
+      0.25
+     ]
+    },
+    "fix1": {
+     "glyph/4/1/7/5/13": [
+      "decided",
+      0.5
+     ],
+     "glyph/4/1/7/5/6": [
+      "decided",
+      0.5
+     ],
+     "glyph/4/1/7/5/7": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/4/1/7/5/13",
+    "glyph/4/1/7/5/6",
+    "glyph/4/1/7/5/7"
+   ],
+   "blue_boxes_px": [
+    [
+     1258.6,
+     3090.5,
+     1280.0,
+     3112.0
+    ],
+    [
+     1233.3,
+     3079.5,
+     1261.0,
+     3100.8
+    ],
+    [
+     1206.6,
+     3089.6,
+     1229.0,
+     3112.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 12.07,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1152,
+    3049,
+    1379,
+    3263
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "lit",
+   "cell": [
+    6,
+    0,
+    8,
+    12
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/6/0/8/12/0": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/6/0/8/12/0": [
+      "narrowed",
+      null
+     ]
+    }
+   },
+   "blue": [
+    "glyph/6/0/8/12/0"
+   ],
+   "blue_boxes_px": [
+    [
+     2568.3,
+     1559.1,
+     2592.5,
+     1580.6
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.06,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.36,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2399,
+    1522,
+    2658,
+    1726
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "lit",
+   "cell": [
+    12,
+    0,
+    7,
+    10
+   ],
+   "role": "control",
+   "info": {
+    "base": {
+     "glyph/12/0/7/10/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/6": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/7": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/12/0/7/10/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/6": [
+      "decided",
+      0.5
+     ],
+     "glyph/12/0/7/10/7": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/12/0/7/10/0",
+    "glyph/12/0/7/10/1",
+    "glyph/12/0/7/10/6",
+    "glyph/12/0/7/10/7"
+   ],
+   "blue_boxes_px": [
+    [
+     1803.0,
+     1376.4,
+     1826.3,
+     1396.4
+    ],
+    [
+     1867.6,
+     1390.8,
+     1891.0,
+     1411.9
+    ],
+    [
+     1898.5,
+     1400.4,
+     1920.7,
+     1417.3
+    ],
+    [
+     1846.2,
+     1386.3,
+     1869.5,
+     1402.8
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.32,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.37,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1738,
+    1313,
+    1977,
+    1521
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "lit",
+   "cell": [
+    8,
+    1,
+    0,
+    0
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/8/1/0/0/5": [
+      "narrowed",
+      null
+     ]
+    },
+    "fix1": {
+     "glyph/8/1/0/0/5": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/8/1/0/0/5"
+   ],
+   "blue_boxes_px": [
+    [
+     639.4,
+     1883.2,
+     661.1,
+     1905.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.24,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.18,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    299,
+    1853,
+    715,
+    2068
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "lit",
+   "cell": [
+    10,
+    1,
+    7,
+    1
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/10/1/7/1/2": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/10/1/7/1/2": [
+      "narrowed",
+      null
+     ]
+    }
+   },
+   "blue": [
+    "glyph/10/1/7/1/2"
+   ],
+   "blue_boxes_px": [
+    [
+     659.2,
+     3061.6,
+     686.0,
+     3084.3
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.37,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.24,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    597,
+    3031,
+    816,
+    3239
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "lit",
+   "cell": [
+    10,
+    0,
+    9,
+    0
+   ],
+   "role": "control",
+   "info": {
+    "base": {
+     "glyph/10/0/9/0/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/10/0/9/0/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/10/0/9/0/5": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/10/0/9/0/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/10/0/9/0/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/10/0/9/0/5": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/10/0/9/0/0",
+    "glyph/10/0/9/0/1",
+    "glyph/10/0/9/0/5"
+   ],
+   "blue_boxes_px": [
+    [
+     612.9,
+     1769.0,
+     638.8,
+     1791.2
+    ],
+    [
+     564.0,
+     1770.5,
+     587.7,
+     1793.3
+    ],
+    [
+     588.9,
+     1768.4,
+     610.9,
+     1790.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.89,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.25,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    301,
+    1630,
+    689,
+    1834
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "lit",
+   "cell": [
+    14,
+    0,
+    10,
+    0
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/14/0/10/0/8": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/14/0/10/0/8": [
+      "decided",
+      1.0
+     ]
+    }
+   },
+   "blue": [
+    "glyph/14/0/10/0/8"
+   ],
+   "blue_boxes_px": [
+    [
+     584.4,
+     1842.9,
+     596.9,
+     1854.4
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.75,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.28,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    302,
+    1729,
+    689,
+    1937
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "lit",
+   "cell": [
+    5,
+    0,
+    0,
+    6
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/5/0/0/6/0": [
+      "decided",
+      1.0
+     ],
+     "glyph/5/0/0/6/1": [
+      "decided",
+      0.25
+     ],
+     "glyph/5/0/0/6/4": [
+      "decided",
+      0.25
+     ],
+     "glyph/5/0/0/6/5": [
+      "narrowed",
+      null
+     ]
+    },
+    "fix1": {
+     "glyph/5/0/0/6/0": [
+      "decided",
+      0.5
+     ],
+     "glyph/5/0/0/6/1": [
+      "decided",
+      0.5
+     ],
+     "glyph/5/0/0/6/4": [
+      "decided",
+      0.5
+     ],
+     "glyph/5/0/0/6/5": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/5/0/0/6/0",
+    "glyph/5/0/0/6/1",
+    "glyph/5/0/0/6/4",
+    "glyph/5/0/0/6/5"
+   ],
+   "blue_boxes_px": [
+    [
+     1424.6,
+     427.6,
+     1447.5,
+     447.6
+    ],
+    [
+     1373.6,
+     427.8,
+     1395.2,
+     450.5
+    ],
+    [
+     1398.9,
+     426.7,
+     1419.2,
+     445.6
+    ],
+    [
+     1398.9,
+     429.1,
+     1417.9,
+     449.6
+    ]
+   ],
+   "frame_control": {
+    "ratio": 10.21,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1287,
+    395,
+    1511,
+    603
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "lit",
+   "cell": [
+    9,
+    0,
+    8,
+    0
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/9/0/8/0/8": [
+      "decided",
+      0.125
+     ]
+    },
+    "fix1": {
+     "glyph/9/0/8/0/8": [
+      "decided",
+      0.5
+     ]
+    }
+   },
+   "blue": [
+    "glyph/9/0/8/0/8"
+   ],
+   "blue_boxes_px": [
+    [
+     614.0,
+     1549.6,
+     636.1,
+     1569.4
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.89,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.27,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    311,
+    1453,
+    711,
+    1654
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "lit",
+   "cell": [
+    13,
+    0,
+    10,
+    5
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/13/0/10/5/6": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/13/0/10/5/6": [
+      "decided",
+      1.0
+     ]
+    }
+   },
+   "blue": [
+    "glyph/13/0/10/5/6"
+   ],
+   "blue_boxes_px": [
+    [
+     1300.4,
+     1837.1,
+     1315.5,
+     1847.2
+    ]
+   ],
+   "frame_control": {
+    "ratio": 4.75,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.26,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1184,
+    1760,
+    1416,
+    1961
+   ]
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "movement": "lit",
+   "cell": [
+    14,
+    1,
+    8,
+    4
+   ],
+   "role": "changed",
+   "info": {
+    "base": {
+     "glyph/14/1/8/4/6": [
+      "decided",
+      0.5
+     ]
+    },
+    "fix1": {
+     "glyph/14/1/8/4/6": [
+      "decided",
+      1.0
+     ]
+    }
+   },
+   "blue": [
+    "glyph/14/1/8/4/6"
+   ],
+   "blue_boxes_px": [
+    [
+     1103.2,
+     3289.5,
+     1129.8,
+     3301.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.02,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.32,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1025,
+    3227,
+    1245,
+    3431
+   ]
+  }
+ ]
+}
