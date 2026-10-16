@@ -1,0 +1,582 @@
+[
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   1,
+   12,
+   7
+  ],
+  "role": "changed (2.136 tile 4)",
+  "blue": [
+   "glyph/18/1/12/7/5",
+   "glyph/18/1/12/7/11"
+  ],
+  "info": {
+   "glyph/18/1/12/7/5": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.774,
+    "page_count": 2
+   },
+   "glyph/18/1/12/7/11": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "box_excess": null,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   13,
+   1
+  ],
+  "role": "changed 2->3 levels",
+  "blue": [
+   "glyph/18/0/13/1/8"
+  ],
+  "info": {
+   "glyph/18/0/13/1/8": {
+    "off": [
+     "decided",
+     0.25,
+     2
+    ],
+    "on": [
+     "decided",
+     0.125,
+     3
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.778,
+    "page_count": 3
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   4,
+   1
+  ],
+  "role": "changed 2->3 levels",
+  "blue": [
+   "glyph/18/0/4/1/9"
+  ],
+  "info": {
+   "glyph/18/0/4/1/9": {
+    "off": [
+     "decided",
+     0.25,
+     2
+    ],
+    "on": [
+     "decided",
+     0.125,
+     3
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.718,
+    "page_count": 3
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   13,
+   2
+  ],
+  "role": "changed decided",
+  "blue": [
+   "glyph/18/0/13/2/4",
+   "glyph/18/0/13/2/9",
+   "glyph/18/0/13/2/14"
+  ],
+  "info": {
+   "glyph/18/0/13/2/4": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.891,
+    "page_count": 2
+   },
+   "glyph/18/0/13/2/9": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.891,
+    "page_count": 2
+   },
+   "glyph/18/0/13/2/14": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.891,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   11,
+   0
+  ],
+  "role": "changed narrowed",
+  "blue": [
+   "glyph/18/0/11/0/6",
+   "glyph/18/0/11/0/8",
+   "glyph/18/0/11/0/27"
+  ],
+  "info": {
+   "glyph/18/0/11/0/6": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "box_excess": -1.053,
+    "page_count": 2
+   },
+   "glyph/18/0/11/0/8": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "box_excess": 0.513,
+    "page_count": 2
+   },
+   "glyph/18/0/11/0/27": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "box_excess": 0.513,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   13,
+   0
+  ],
+  "role": "changed mixed",
+  "blue": [
+   "glyph/18/0/13/0/7",
+   "glyph/18/0/13/0/8",
+   "glyph/18/0/13/0/10"
+  ],
+  "info": {
+   "glyph/18/0/13/0/7": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "box_excess": 0.895,
+    "page_count": 3
+   },
+   "glyph/18/0/13/0/8": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.895,
+    "page_count": 2
+   },
+   "glyph/18/0/13/0/10": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.895,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   4,
+   2
+  ],
+  "role": "changed decided",
+  "blue": [
+   "glyph/18/0/4/2/3",
+   "glyph/18/0/4/2/9",
+   "glyph/18/0/4/2/28"
+  ],
+  "info": {
+   "glyph/18/0/4/2/3": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 2.81,
+    "page_count": 2
+   },
+   "glyph/18/0/4/2/9": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 2.81,
+    "page_count": 2
+   },
+   "glyph/18/0/4/2/28": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 2.81,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   6,
+   1,
+   10,
+   9
+  ],
+  "role": "changed decided (A and B)",
+  "blue": [
+   "glyph/6/1/10/9/2",
+   "glyph/6/1/10/9/5",
+   "glyph/6/1/10/9/6"
+  ],
+  "info": {
+   "glyph/6/1/10/9/2": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.659,
+    "page_count": 2
+   },
+   "glyph/6/1/10/9/5": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.659,
+    "page_count": 2
+   },
+   "glyph/6/1/10/9/6": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 0.659,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   4,
+   0,
+   8,
+   10
+  ],
+  "role": "changed decided (A and B)",
+  "blue": [
+   "glyph/4/0/8/10/6"
+  ],
+  "info": {
+   "glyph/4/0/8/10/6": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "decided",
+     0.25,
+     2
+    ],
+    "rule": "decided_two_witnesses",
+    "box_excess": 1.069,
+    "page_count": 2
+   }
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   4,
+   0,
+   10,
+   5
+  ],
+  "role": "control unchanged",
+  "blue": [
+   "glyph/4/0/10/5/2",
+   "glyph/4/0/10/5/3",
+   "glyph/4/0/10/5/5"
+  ],
+  "info": {
+   "glyph/4/0/10/5/2": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged"
+   },
+   "glyph/4/0/10/5/3": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged"
+   },
+   "glyph/4/0/10/5/5": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged"
+   }
+  }
+ },
+ {
+  "movement": "lit",
+  "cell": [
+   6,
+   1,
+   8,
+   10
+  ],
+  "role": "changed narrowed (page only)",
+  "blue": [
+   "glyph/6/1/8/10/3",
+   "glyph/6/1/8/10/13"
+  ],
+  "info": {
+   "glyph/6/1/8/10/3": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "page_count": 2,
+    "box_excess": null
+   },
+   "glyph/6/1/8/10/13": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": [
+     "narrowed",
+     null,
+     null
+    ],
+    "rule": "narrowed_one_witness",
+    "page_count": 2,
+    "box_excess": null
+   }
+  }
+ },
+ {
+  "movement": "brah",
+  "cell": [
+   18,
+   0,
+   10,
+   3
+  ],
+  "role": "control unchanged (page count 1, box witness says taller)",
+  "blue": [
+   "glyph/18/0/10/3/5",
+   "glyph/18/0/10/3/6",
+   "glyph/18/0/10/3/7"
+  ],
+  "info": {
+   "glyph/18/0/10/3/5": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged",
+    "page_runs": 1,
+    "box_excess": 1.302
+   },
+   "glyph/18/0/10/3/6": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged",
+    "page_runs": 1,
+    "box_excess": 1.302
+   },
+   "glyph/18/0/10/3/7": {
+    "off": [
+     "decided",
+     0.5,
+     1
+    ],
+    "on": "unchanged",
+    "page_runs": 1,
+    "box_excess": 1.302
+   }
+  }
+ }
+]

@@ -101,7 +101,7 @@ class TestTheStackBoxWitness(unittest.TestCase):
 def _stem_levels_row(log, stem_row, top=(), bottom=(), unit=None):
     ends = {"top": {"left": [list(r) for r in top], "right": []}, "bottom": {"left": [], "right": [list(r) for r in bottom]}}
     return log.observe(CELL, Q.BEAM_STEM_LEVELS, max(len(top), len(bottom)), reader=READERS.CV_BEAM_LEVELS, frame="cell:0",
-                       stem_row_id=stem_row.id, ends=ends, space_px=SP)
+                       stem_row_id=stem_row.id, ends=ends)
 
 
 def _thick(log, stroke, thickness_px):

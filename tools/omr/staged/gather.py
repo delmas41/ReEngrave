@@ -11352,7 +11352,7 @@ def gather_beam_stem_levels(log: Log, cells: Sequence[Any], local: Dict[int, Tup
                 ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
             best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
             log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
-                        stem_row_id=r.id, ends=ends, space_px=round(float(space), 2))
+                        stem_row_id=r.id, ends=ends)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
