@@ -1,0 +1,108 @@
+{
+ "tiles": [
+  {
+   "n": 1,
+   "page": 4,
+   "box": [
+    2537,
+    6470,
+    2707,
+    6506
+   ],
+   "kind": "word",
+   "ours": "Cresc.  (blue dyn. today: m)",
+   "cell": "cell/4/1/10/3"
+  },
+  {
+   "n": 2,
+   "page": 6,
+   "box": [
+    5230,
+    1279,
+    5335,
+    1333
+   ],
+   "kind": "dynamic",
+   "ours": "pp (read dynamic, control)",
+   "cell": null
+  },
+  {
+   "n": 3,
+   "page": 26,
+   "box": [
+    1614,
+    3277,
+    1756,
+    3328
+   ],
+   "kind": "word",
+   "ours": "dim.  (blue dyn. today: m)",
+   "cell": "cell/26/0/11/1"
+  },
+  {
+   "n": 4,
+   "page": 25,
+   "box": [
+    4646,
+    639,
+    5212,
+    688
+   ],
+   "kind": "word",
+   "ours": "poco a poco cresc.  (blue dyn. today: m)",
+   "cell": "cell/25/0/0/8"
+  },
+  {
+   "n": 5,
+   "page": 8,
+   "box": [
+    3394,
+    1680,
+    3517,
+    1731
+   ],
+   "kind": "word",
+   "ours": "dim  (blue dyn. today: m)",
+   "cell": "cell/8/0/3/6"
+  },
+  {
+   "n": 6,
+   "page": 24,
+   "box": [
+    1734,
+    636,
+    1912,
+    676
+   ],
+   "kind": "word",
+   "ours": "marc.  (blue dyn. today: mm unspellable)",
+   "cell": null
+  },
+  {
+   "n": 7,
+   "page": 3,
+   "box": [
+    1156,
+    634,
+    1245,
+    705
+   ],
+   "kind": "dynamic",
+   "ours": "ff (read dynamic, control)",
+   "cell": null
+  },
+  {
+   "n": 8,
+   "page": 6,
+   "box": [
+    2815,
+    979,
+    2876,
+    1031
+   ],
+   "kind": "dynamic",
+   "ours": "p (read dynamic, control)",
+   "cell": null
+  }
+ ]
+}
