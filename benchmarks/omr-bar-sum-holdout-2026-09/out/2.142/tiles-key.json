@@ -1,0 +1,605 @@
+{
+ "question_note": "hidden key; Sean's tiles carry no key",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "lit",
+   "cell": [
+    15,
+    0,
+    5,
+    8
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackInSpace"
+    ]
+   },
+   "blue": [
+    "glyph/15/0/5/8/8"
+   ],
+   "blue_boxes_px": [
+    [
+     1382.6,
+     1195.6,
+     1402.7,
+     1245.2
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.65,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.3,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1263,
+    1128,
+    1475,
+    1326
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "lit",
+   "cell": [
+    16,
+    0,
+    5,
+    8
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackInSpace"
+    ]
+   },
+   "blue": [
+    "glyph/16/0/5/8/15"
+   ],
+   "blue_boxes_px": [
+    [
+     1465.5,
+     1113.2,
+     1488.4,
+     1130.4
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.53,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1406,
+    1025,
+    1684,
+    1233
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "cell": [
+    16,
+    1,
+    8,
+    13
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/16/1/8/13/11"
+   ],
+   "blue_boxes_px": [
+    [
+     2450.4,
+     3240.9,
+     2470.4,
+     3292.9
+    ]
+   ],
+   "frame_control": {
+    "ratio": 4.03,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.28,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2319,
+    3169,
+    2538,
+    3373
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "lit",
+   "cell": [
+    14,
+    0,
+    7,
+    7
+   ],
+   "role": "control",
+   "info": {
+    "cls": "noteheadBlackOnLine"
+   },
+   "blue": [
+    "glyph/14/0/7/7/3"
+   ],
+   "blue_boxes_px": [
+    [
+     1493.6,
+     1373.3,
+     1521.2,
+     1394.6
+    ]
+   ],
+   "frame_control": {
+    "ratio": 5.46,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.2,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1382,
+    1333,
+    1602,
+    1537
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "lit",
+   "cell": [
+    13,
+    0,
+    6,
+    5
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/13/0/6/5/7"
+   ],
+   "blue_boxes_px": [
+    [
+     1242.0,
+     1344.3,
+     1266.6,
+     1377.4
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.57,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.4,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1183,
+    1253,
+    1417,
+    1457
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "lit",
+   "cell": [
+    15,
+    1,
+    8,
+    16
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/15/1/8/16/8"
+   ],
+   "blue_boxes_px": [
+    [
+     2136.2,
+     3285.6,
+     2168.2,
+     3334.5
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.96,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.41,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2005,
+    3215,
+    2229,
+    3423
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "lit",
+   "cell": [
+    15,
+    1,
+    7,
+    15
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackInSpace"
+    ]
+   },
+   "blue": [
+    "glyph/15/1/7/15/7"
+   ],
+   "blue_boxes_px": [
+    [
+     2022.7,
+     3149.6,
+     2055.1,
+     3192.1
+    ]
+   ],
+   "frame_control": {
+    "ratio": 2.3,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.45,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1900,
+    3080,
+    2119,
+    3284
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "lit",
+   "cell": [
+    12,
+    0,
+    11,
+    6
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/12/0/11/6/5"
+   ],
+   "blue_boxes_px": [
+    [
+     1270.8,
+     1912.6,
+     1291.6,
+     1963.5
+    ]
+   ],
+   "frame_control": {
+    "ratio": 12.55,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1191,
+    1841,
+    1411,
+    2045
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "lit",
+   "cell": [
+    2,
+    0,
+    10,
+    4
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/2/0/10/4/5"
+   ],
+   "blue_boxes_px": [
+    [
+     1046.1,
+     1881.9,
+     1077.8,
+     1932.9
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.85,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.26,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    920,
+    1809,
+    1140,
+    2013
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "lit",
+   "cell": [
+    5,
+    0,
+    2,
+    7
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/5/0/2/7/4"
+   ],
+   "blue_boxes_px": [
+    [
+     1515.2,
+     822.2,
+     1533.3,
+     842.5
+    ]
+   ],
+   "frame_control": {
+    "ratio": 12.19,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.07,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1401,
+    748,
+    1621,
+    952
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "lit",
+   "cell": [
+    2,
+    1,
+    2,
+    9
+   ],
+   "role": "changed",
+   "info": {
+    "off": [
+     "notehead"
+    ],
+    "dur_off": [
+     [
+      "decided",
+      1.0,
+      "head_and_marks"
+     ]
+    ],
+    "rest_twin_class": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "blue": [
+    "glyph/2/1/2/9/7"
+   ],
+   "blue_boxes_px": [
+    [
+     1871.7,
+     2427.5,
+     1894.8,
+     2459.0
+    ]
+   ],
+   "frame_control": {
+    "ratio": 3.56,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.27,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1733,
+    2340,
+    1975,
+    2548
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "lit",
+   "cell": [
+    15,
+    0,
+    3,
+    9
+   ],
+   "role": "control",
+   "info": {
+    "cls": "noteheadBlackOnLine"
+   },
+   "blue": [
+    "glyph/15/0/3/9/4"
+   ],
+   "blue_boxes_px": [
+    [
+     1437.5,
+     838.1,
+     1460.2,
+     857.2
+    ]
+   ],
+   "frame_control": {
+    "ratio": 8.73,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.09,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1359,
+    798,
+    1578,
+    1002
+   ]
+  }
+ ]
+}
