@@ -9,6 +9,8 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-16 · Sean · ROADMAP 2.143 (`OMR_REFUSED_HEAD_NO_DURATION`) PARKED, landed default OFF in production: "park it in production but make sure it can help us with review tiles - even if that is just a note for our review process" · when cutting or reading review tiles, a head refused as not-a-notehead is not a note: read its refusal reason, never its duration (the record still carries a stale DECIDED duration on ~1,020 Litolff refused heads); set `OMR_REFUSED_HEAD_NO_DURATION=1` for a tile/replay run to see them as ABSTAINED; `judged._duration` now shows the refusal regardless of the flag · (benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md 2.143)
+
 - 2026-10-16 · Sean · ROADMAP 2.140 lands with `OMR_BEAM_STEM_LEVELS` ON (a second beam level at a stem's tip decides only on page count AND detector stack box; one witness narrows) · Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix; cut-offs fitted to Sean's tiles; a third publisher not yet checked · (`benchmarks/omr-beam-confirm-2026-10/FINDINGS.md` §8.9)
 
 - 2026-10-16 · Sean · Switch OMR_OWN_STEM_UNISON_BOTH (2.141h fix 2) default ON; fix 3 (OMR_WHOLE_REST_INK_LEAVES_BAR) stays OFF · Litolff tiles fix one wrong half and make 0 wrong; the Brahms all-on arm changed 6 verdicts, none of Sean's 9 judged bars, and its one changed value is a C clef boxed as a note (wrong in base too, ROADMAP 2.144) · (benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md 2.141h)

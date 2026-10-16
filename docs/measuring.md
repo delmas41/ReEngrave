@@ -82,6 +82,7 @@ on 2026-10-13 (`docs/claude-md-migration-2026-10-13.md`).
   for Sean: nothing of ours drawn, big numbers baked on for his phone; he
   answers "N. 4/8/16", "Dot 4" = dotted quarter; answers go in that
   directory's `answers.json` and a DECISIONS line.
+  **Refused heads (2.143, parked OFF):** a head refused as not-a-notehead is not a note -- read its refusal reason, never its duration (the record still carries a stale DECIDED duration on ~1,020 Litolff refused heads). Set `OMR_REFUSED_HEAD_NO_DURATION=1` for a tile/replay run to see them as ABSTAINED.
 - **Reach before accuracy.** An arm prints its population first and exits
   non-zero declaring itself DEAD at zero; a change that moves nothing
   because it is inert and one that moves nothing because the page holds

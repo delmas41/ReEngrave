@@ -549,10 +549,13 @@ def _near(a: float, b: float) -> bool:
 
 def _duration(sub: str, want: float, S: Dict) -> Tuple[str, str]:
     v = S.get((sub, "duration"))
+    # Review reading (2.143 parked OFF, Sean 2026-10-16): a head refused as
+    # not-a-notehead is not a note even if the record still carries a stale
+    # DECIDED duration -- show the refusal, never the value. Index only.
+    n = S.get((sub, "notehead_is_not_a_notehead"))
+    if n and n["outcome"] == "decided" and n["value"] is True:
+        return "wrong", "refused as not a note (%s)" % n["reason"]
     if v is None:
-        n = S.get((sub, "notehead_is_not_a_notehead"))
-        if n and n["outcome"] == "decided" and n["value"] is True:
-            return "wrong", "refused as not a note (%s)" % n["reason"]
         return "not_found", "no duration verdict at this key"
     b = _beats_of(v.get("value"))
     if v["outcome"] == "decided" and b is not None:
