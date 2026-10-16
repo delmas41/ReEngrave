@@ -56,13 +56,19 @@ for arm, env in (("off", ""), ("on", "1")):
     except Exception as e:  # noqa: BLE001
         xml, report, pl, rf = "", {}, {}, {}
         print("EXPORT FAILED", repr(e))
+    allv = {}
+    for v in d["verdicts"]:
+        allv["%s|%s" % (v["subject"], v["quantity"])] = [v["outcome"], json.dumps(v["value"], sort_keys=True, default=str)[:90],
+                                                         v.get("reason")]
     out = {}
     for h in HEADS:
         out[h] = {"nn": vs.get(h, {}).get(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD), "duration": vs.get(h, {}).get(Q.DURATION),
                   "placed": pl.get(h), "not_written": rf.get(h)}
     out["_notes"] = xml.count("<note")
     out["_rests"] = xml.count("<rest")
-    out["_report"] = {k: report.get(k) for k in ("notes_not_written_total", "notes_not_written")}
+    out["_report"] = {k: report.get(k) for k in ("notes_not_written_total", "notes_not_written", "bars_held_out_sum")}
+    open(OUT.replace(".json", "-%s.musicxml" % arm), "w").write(xml)
+    out["_verdicts"] = allv
     res[arm] = out
     print(arm, out["_notes"], out["_rests"], flush=True)
 json.dump(res, open(OUT, "w"), indent=1, default=str)
