@@ -223,6 +223,70 @@ class TestARefusedHeadNeverOwnsADot(unittest.TestCase):
         self.assertEqual(got, [])
 
 
+class TestOneInkCountsOnce(unittest.TestCase):
+    """Brahms p0 `0/0/6/1`: the dot `/19` of the space note `/11` is ALSO
+    boxed as a notehead `/18` (refused `too_narrow`); the first cut gave that
+    twin to the line note `/2` beside it, which went out double-dotted."""
+
+    def _case(self, with_dot_box=True):
+        log = Log()
+        cell = R.cell(0, 0, 6, 1)
+        log.observe(cell, Q.CELL_STAFF_SPACE, 100.0, reader=READERS.GEOMETRY,
+                    frame="cell:1")
+
+        def g(gi, cls, box, page, pos=None, head=True):
+            s = R.glyph(0, 0, 6, 1, gi)
+            if head:
+                log.observe(s, Q.NOTEHEAD_CLASS, cls, reader=READERS.DETECTOR,
+                            frame="cell:1", score=0.6)
+            log.observe(s, Q.GLYPH_BOX, (cls,) + box, reader=READERS.DETECTOR,
+                        frame="cell:1", score=0.6, bbox_page_px=page)
+            if pos is not None and head:
+                log.observe(s, Q.NOTEHEAD_STAFF_POSITION, pos,
+                            reader=READERS.GEOMETRY, frame="cell:1")
+            return s
+        line = g(2, "noteheadBlackOnLine", (368, 543, 130, 116),
+                 [2229.76, 3937.76, 2271.36, 3974.88], 0.02)
+        space = g(11, "noteheadBlackInSpace", (253, 606, 121, 103),
+                  [2192.96, 3957.92, 2231.68, 3990.88], 1.14)
+        g(18, "noteheadBlackOnLine", (531, 633, 46, 43),
+          [2281.92, 3966.56, 2296.64, 3980.32], 1.08)
+        if with_dot_box:
+            d = g(19, "augmentationDot", (531, 630, 45, 45),
+                  [2281.92, 3965.6, 2296.32, 3980.0], head=False)
+            log.observe(d, Q.AUG_DOT, (553, 652), reader=READERS.DETECTOR,
+                        frame="cell:1", score=0.38, detector_role="dot",
+                        detector_class="augmentationDot")
+            log.observe(d, Q.DOT_STAFF_POSITION, 0.67, reader=READERS.GEOMETRY,
+                        frame="cell:1", step=1, on="space", residual=0.33,
+                        margin=0.17, basis="local_ink",
+                        staff=R.staff(0, 0, 6).to_key(), home=True)
+        return log, line, space
+
+    def test_the_twin_of_a_dot_box_adds_no_dot(self):
+        log, line, space = self._case()
+        _run(log, ON)
+        self.assertEqual(log.verdict(Q.DURATION, line).value["dots"], 0)
+        self.assertEqual(log.verdict(Q.DURATION, space).value["dots"], 1)
+
+    def test_CONTROL_the_same_in_the_base(self):
+        log, line, space = self._case()
+        _run(log, OFF)
+        self.assertEqual(log.verdict(Q.DURATION, line).value["dots"], 0)
+        self.assertEqual(log.verdict(Q.DURATION, space).value["dots"], 1)
+
+    def test_CONTROL_without_the_dot_box_the_mark_is_read(self):
+        # the twin rule has teeth only because the dot box is there: alone,
+        # the mark is somebody's dot (exactly one head takes it)
+        log, line, space = self._case(with_dot_box=False)
+        _run(log, ON)
+        got = [log.verdict(Q.DURATION, s) for s in (line, space)]
+        n = sum((v.value or {}).get("dots", 0) for v in got
+                if v.outcome is Outcome.DECIDED)
+        n += sum(1 for v in got if v.outcome is Outcome.NARROWED)
+        self.assertEqual(n, 1)
+
+
 class TestDefaultOff(unittest.TestCase):
     def test_default_off(self):
         with mock.patch.dict(os.environ, {}, clear=False):

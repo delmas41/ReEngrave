@@ -55,8 +55,10 @@ log, _ = RR.rebuild_gather(rec)
 del rec
 RR.run_stages(log)
 d = log.to_json()
-boxes, cls = {}, {}
+boxes, cls, all_boxes = {}, {}, {}
 for o in d["observations"]:
+    if o["quantity"] == Q.GLYPH_BOX and (o.get("detail") or {}).get("bbox_page_px"):
+        all_boxes[o["subject"]] = o["detail"]["bbox_page_px"]
     if o["quantity"] == Q.GLYPH_BOX and o["subject"].startswith("glyph/%d/" % PAGE):
         bb = (o.get("detail") or {}).get("bbox_page_px")
         if bb:
@@ -140,7 +142,15 @@ for hid, (o, oh, ds) in dotted_heads.items():
                       reason=v.get("reason"), decider=v.get("decider"), value=v.get("value")))
 res = dict(env={k: os.environ.get(k) for k in sorted(os.environ) if k.startswith("OMR_")},
            dots=dict(c_dot), dotted_heads=dict(c_head), undotted_heads_given_a_dot=dict(false_dot),
-           false_rows=false_rows, rows=rows, heads=heads)
+           false_rows=false_rows, rows=rows, heads=heads,
+           # every page's live duration, for the base/arm diff (`diff_2_151.py`)
+           durations={s: [v["outcome"], (v["value"] or {}).get("written") if isinstance(v["value"], dict) else None,
+                          (v["value"] or {}).get("dots") if isinstance(v["value"], dict) else None, v["reason"],
+                          v.get("decider"),
+                          sorted({(c.get("value") or {}).get("written") for c in v.get("candidates") or []
+                                  if isinstance(c.get("value"), dict)}, key=str)]
+                      for (s, q), v in live.items() if q == Q.DURATION and s.startswith("glyph/")},
+           page_boxes={s: b for s, b in all_boxes.items()})
 json.dump(res, open(OUT, "w"), indent=0, default=str)
 print("truth dots", len(tdots), dict(c_dot))
 print("dotted heads", len(dotted_heads), dict(c_head))

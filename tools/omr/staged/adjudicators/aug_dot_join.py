@@ -186,6 +186,9 @@ DOT_SHAPED_REFUSALS = ("too_narrow", "is_a_dot")
 #: so this light module does not import the notehead adjudicator, and pinned
 #: equal to it by a test, `test_staged_dot_boxed_as_head_2_151`).
 DOT_SHAPED_MAX_SPACES = 0.75
+#: A dot-shaped refused box whose centre lies within this of a dot-class box's
+#: is the same ink boxed twice (`rhythm.DOT_TWIN_MAX_SPACES`, 2.127).
+TWIN_DOT_MAX_SPACES = 0.3
 
 
 def dot_boxed_as_a_head_enabled() -> bool:
@@ -307,6 +310,8 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
     # as dot-shaped ink -- (subject, refusal verdict, `_box` tuple)
     as_head = dot_boxed_as_a_head_enabled()
     marks: List[Tuple[R.Subject, R.Verdict, Any]] = []
+    dot_centres: Dict[Tuple[int, int], List[Tuple[float, float]]] = \
+        defaultdict(list)
     for sub in log.subjects(Kind.GLYPH):
         role = log.verdict(Q.DOT_ROLE, sub)
         if role is not None:
@@ -315,6 +320,9 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
         if b is None:
             continue
         cls, _v, bb, _r = b
+        if role is not None:
+            dot_centres[(sub.page, sub.system)].append(
+                ((bb[0] + bb[2]) / 2.0, (bb[1] + bb[3]) / 2.0))
         if cls.startswith(FLAG_CLASS_PREFIX):
             flags[(sub.page, sub.system)].append(bb)
         elif cls.startswith("notehead"):
@@ -402,6 +410,12 @@ def reconcile_unjoined_dots(log: R.Log) -> Dict[str, int]:
         if any(f[0] <= cx <= f[2] and f[1] <= cy <= f[3]
                for f in flags[(msub.page, msub.system)]):
             census["dot_boxed_as_a_head_is_a_flag_tip"] += 1
+            continue
+        # the same ink as a dot-class box: that box's role speaks for it
+        if any(abs(cx - x) <= TWIN_DOT_MAX_SPACES * space
+               and abs(cy - y) <= TWIN_DOT_MAX_SPACES * space
+               for x, y in dot_centres[(msub.page, msub.system)]):
+            census["dot_boxed_as_a_head_twin_of_a_dot_box"] += 1
             continue
         if any(abs(cx - (hb[0] + hb[2]) / 2.0) <= STACCATO_CENTRED_MAX_SPACES
                * space and STACCATO_OFFSET_MIN_SPACES * space

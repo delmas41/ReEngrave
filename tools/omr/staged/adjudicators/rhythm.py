@@ -2090,7 +2090,7 @@ def _right_of_within_reach(dot_box, head_box):
 
 
 
-def _dots_boxed_as_heads(ev: Evidence, cell, mine, head_box, heads,
+def _dots_boxed_as_heads(ev: Evidence, cell, mine, head_box, heads, space,
                          foreign_keys, marks, max_above, max_below):
     """ROADMAP 2.151: the dot-shaped boxes the notehead gate refused that are
     THIS head's augmentation dots (their `Q.GLYPH_BOX` rows).
@@ -2107,16 +2107,35 @@ def _dots_boxed_as_heads(ev: Evidence, cell, mine, head_box, heads,
     pos = {r.subject.to_key(): r.value for r in ev.rows(
         Q.NOTEHEAD_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS,
         subject=cell)}
+    # the dot-class boxes of the cell: a mark on the SAME ink as one of them is
+    # that dot boxed twice (Brahms p0 `0/0/6/1/18` under dot `/19`), and the
+    # dot box's own role verdict speaks for it -- one source counts once
+    boxes = _cell_boxes(ev, cell)
+    dot_boxes = []
+    for d in ev.rows(Q.AUG_DOT, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        br = boxes.get(d.subject.to_key())
+        db = _xywh_head(br.value) if br else None
+        if db is not None:
+            dot_boxes.append(db)
     out = []
     for key, mb, box_row in marks:
+        mcx, mcy = mb[0] + mb[2] / 2.0, mb[1] + mb[3] / 2.0
+        if any(abs(mcx - (db[0] + db[2] / 2.0)) <= DOT_TWIN_MAX_SPACES * space
+               and abs(mcy - (db[1] + db[3] / 2.0)) <= DOT_TWIN_MAX_SPACES * space
+               for db in dot_boxes):
+            continue
         if _aug_join.mark_head_compatible(pos.get(key), pos.get(mine)) is not True:
             continue
         best, best_score = None, float("inf")
         for hk, hb in heads:
             if hk in foreign_keys:
                 continue
+            # the same admission for every head: the box window, or right of
+            # it within reach AT ITS DOT STEP (a below-line dot, 2.128)
             if not (_in_augmentation_window(mb, hb, max_above, max_below)
-                    or (hk == mine and _right_of_within_reach(mb, hb))):
+                    or (_right_of_within_reach(mb, hb)
+                        and _aug_join.mark_head_compatible(
+                            pos.get(key), pos.get(hk)) is True)):
                 continue
             if hk != mine and _aug_join.mark_head_compatible(
                     pos.get(key), pos.get(hk)) is False:
@@ -2516,7 +2535,7 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
         if best == mine:
             out.append(d)
     if marks:
-        out.extend(_dots_boxed_as_heads(ev, cell, mine, head_box, heads,
+        out.extend(_dots_boxed_as_heads(ev, cell, mine, head_box, heads, space,
                                         foreign_keys, marks, max_above,
                                         max_below))
     # ⚠️ ROADMAP 2.127 (`OMR_AUG_DOT_JOIN`): ONE PHYSICAL DOT BOXED TWICE IS
