@@ -6212,6 +6212,9 @@ STAGED GATHER: `Q.DOT_STAFF_POSITION` on every `Q.AUG_DOT` glyph, local at the d
 ## 2026-10-15 -- ROADMAP 2.141 diagnosis landed; Sean's tiles 6/6 agree with W2
 STAGED INFER, no product code. `lane-2.141-litolff-w2` merged: FINDINGS 2.141 (causes of W2's Litolff tile 6 and 10 failures, fixes 2.141d proposed), probes, 6 blind tiles. Sean: tiles 1-4 quarters, 5-6 eighths, matching W2's settlements on all 6 (2 U, 2 T6, 2 controls) -- the shared causes did not make those bars wrong. W2 stays OFF until fixes 2.141d 1-3 land and pass tiles on both publishers. Answers in `out/print/2.141-review/answers.json`, indexed in `benchmarks/acceptance/judged-tiles.json`.
 
+## 2026-10-15 -- ROADMAP 2.141 fix 1 landed ON (beam-level stroke test)
+STAGED ADJUDICATE, `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM` default ON (`rhythm.beam_level_stroke_is_a_beam_enabled`; explicit `0/false/no/off` disables). A stroke the head's own stem runs past by more than 2.5 spaces is not a beam level. Sean's 13 tiles: 11 wrong values made right, 3 eighths narrowed (blue), 0 right made wrong; tiles 9/12/13 (a beam boxed as a head) are 2.142. Fixes 2 and 3 stay OFF pending `out/print/2.141-fix23-review/`. Reaches records at the next re-gather.
+
 ## 2026-10-15 -- ROADMAP 2.138 landed ON (sub-floor staccatissimo wedge rescue)
 STAGED GATHER, `OMR_WEDGE_RESCUE` default ON (`gather.wedge_rescue_enabled`; explicit `0/false/no/off` disables): the detector re-run at floor 0.03 on head-bearing cells keeps a mark-class box that is a wedge (2.131 cut) with a head on its point's side, reader `yolo_rescue_wedge`. Sean's 10 tiles 10/10 (3 rescued misses, 4 new wedges, 2 controls); crop 6 (wedge on a staff line) stays unread. Reaches records at the next re-gather.
 

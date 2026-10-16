@@ -1,5 +1,5 @@
 """ROADMAP 2.141h fix 1 (STAGED ADJUDICATE `rhythm.adjudicate_duration` / `_not_a_beam_by_ink`), flag
-`OMR_BEAM_LEVEL_STROKE_IS_A_BEAM`, default OFF.
+`OMR_BEAM_LEVEL_STROKE_IS_A_BEAM`, default ON (Sean 2026-10-15).
 
 Litolff p5 tile 6: a long stroke that is the LEDGER LINE the heads stand on (merged with the heads' ink, 0.82 space thick, a stem
 found at one end) was counted as a second down-voice level, so printed eighths read as sixteenths (Sean: 8, 8, 8). It passes every
@@ -96,13 +96,13 @@ class TestAStrokeTheStemRunsPastIsNotItsLevel(unittest.TestCase):
         va, vb = a.verdict(Q.DURATION, ga), b.verdict(Q.DURATION, gb)
         self.assertEqual((va.outcome, va.reason), (vb.outcome, vb.reason))
 
-    def test_the_default_is_OFF_and_a_typo_leaves_it_off(self):
-        for word, on in (("", False), ("yess", False), ("0", False), ("1", True), ("true", True)):
+    def test_the_default_is_ON_and_only_an_off_word_disables(self):
+        for word, on in (("", False), ("yess", True), ("0", False), ("off", False), ("no", False), ("1", True), ("true", True)):
             with mock.patch.dict(os.environ, {FLAG: word}):
                 self.assertEqual(rhythm.beam_level_stroke_is_a_beam_enabled(), on, word)
         env = {k: v for k, v in os.environ.items() if k != FLAG}
         with mock.patch.dict(os.environ, env, clear=True):
-            self.assertFalse(rhythm.beam_level_stroke_is_a_beam_enabled())
+            self.assertTrue(rhythm.beam_level_stroke_is_a_beam_enabled())
 
 
 def _thick_ink(log, stroke, thickness_px):

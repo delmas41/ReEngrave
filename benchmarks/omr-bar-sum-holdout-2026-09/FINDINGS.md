@@ -4085,3 +4085,7 @@ Raw: "1-4 quarter notes 5 and 6 8th notes". Key (`out/2.141/tiles-key.json`, `se
 | 2, 4 | unflagged controls | quarters | quarters | 2/2 |
 
 W2's settlements on the 4 shared-cause bars (2 U, 2 T6) were right, so the shared causes did not make these bars wrong; the controls also agree. Only 2.136 tiles 6 and 10 are known wrong. n = 4 shared-cause bars, one publisher (Litolff), so this does not show the causes harmless in general. W2 stays OFF until fixes 1-3 of 2.141d land and pass tiles on both publishers. Recorded in `out/print/2.141-review/answers.json` and `benchmarks/acceptance/judged-tiles.json`.
+
+### Sean's fix-1 tiles (2026-10-15)
+
+`out/print/2.141-fixes-review/answers.json`, scored against the hidden key `out/2.141h/tiles-fix1-key.json`. Wrong -> right: 11 values (tiles 1 x3, 3 x3, 10 x3, 11, and tile 6 narrowed -> right). Right -> narrowed: 3 (tiles 1, 4, 7: one eighth each now blue). Controls 2, 5, 8 right. Tiles 9, 12, 13 hold NO NOTE (a beam on a staff line boxed as a notehead): wrong in base too, still wrong under fix 1 (roadmap 2.142). Right -> wrong: 0. Fix 1 landed default ON; fixes 2 and 3 stay OFF pending `out/print/2.141-fix23-review/`.

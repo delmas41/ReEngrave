@@ -1445,10 +1445,10 @@ BEAM_STROKE_IS_A_BEAM_ENV = "OMR_BEAM_LEVEL_STROKE_IS_A_BEAM"
 
 
 def beam_level_stroke_is_a_beam_enabled() -> bool:
-    """ROADMAP 2.141h fix 1, default OFF: a stroke counts as a beam LEVEL of a head only if the head's own stem ENDS at it
-    (within the stack a beam can occupy), so a ledger line merged with the heads is not a level. Only an explicit on-word."""
+    """ROADMAP 2.141h fix 1, default ON (Sean 2026-10-15, tiles: 11 wrong values made right, 0 made wrong): a stroke counts as a beam LEVEL of a head only if the head's own stem ENDS at it
+    (within the stack a beam can occupy), so a ledger line merged with the heads is not a level. Only an explicit off-word disables."""
     import os
-    return os.environ.get(BEAM_STROKE_IS_A_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAM_STROKE_IS_A_BEAM_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 #: ROADMAP 2.141h fix 1. How far (staff spaces) a head's OWN stem may run past a stroke on the stem's side for the stroke to
