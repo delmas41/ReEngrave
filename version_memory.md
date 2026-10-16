@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- day session: 2.145, 2.146, 2.148 landed ON; 2.143/2.144 parked; reading-order rule; 2.149 audit; 2.150/2.151 opened
+- 2.145 `OMR_HEAD_INK_IS_A_REST` ON (merge 50451189 / flip 1088dbe3). 2.143 landed OFF with a review-index use (4fe6f169, a9005bba). 2.144 parked OFF on its branch.
+- 2.146 beams globally: research FINDINGS omr-beam-confirm §9 (f93ed7eb); `OMR_STEM_TIP_DECIDES_BEAM` ON (4d207dd2).
+- 2.148 notehead first: GATHER `head_interior_white` + ADJUDICATE `OMR_HEAD_FILL_FIRST` ON (b32387a1).
+- Sean's reading order for every note decision (98a2c442); 2.149 audit (b062eee8); 2.150 rests / 2.151 aug dots claimed (6753c4d2).
+
 ## 2026-10-16 -- ROADMAP 2.140 landed ON (OMR_BEAM_STEM_LEVELS)
 STAGED GATHER + ADJUDICATE, `OMR_BEAM_STEM_LEVELS` default ON (`gather.beam_stem_levels_gather_enabled`, `rhythm.beam_stem_levels_enabled`; explicit `0/false/no/off` disables). Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix; cut-offs fitted to Sean's tiles; a third publisher not yet checked. `Q.BEAM_STEM_LEVELS` rows exist only after a re-gather; without them ADJUDICATE is unchanged from off. Merged `lane-2.140-second-beam` over 2.141/2.142 (only `docs/flags-2026-09.md` conflicted).
 
