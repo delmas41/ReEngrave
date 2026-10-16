@@ -7380,6 +7380,69 @@ def gather_narrow_box_shape(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Does a rest box's ink run on into a head? -- ROADMAP 2.150b
+# ─────────────────────────────────────────────────────────────────────────────
+
+_REST_CLASS_PREFIX = "rest"
+
+
+def gather_rest_ink_contact(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.REST_INK_CONTACT` on every rest-classed box, off the staff-erased raster (`rest_ink.measure`).
+
+    Sean, 2026-10-16: "a rest box whose stroke runs on into a notehead is a stem; a real rest stands free". This
+    only MEASURES (thin stroke length, solid blob length, ink of the dominant piece in a standing head's box outside
+    the rest box); `family_precision._rest_stroke_into_head_refusal` weighs it. Filed only while the flag is ON.
+    ⚠️ It reads `image_no_staff`, NOT `Q.STEM`: `refuse_owned` deletes the strokes inside a rest box before
+    `Q.STEM` exists, so a stem boxed as a rest has no stem row.
+    ⚠️ DECLINED, NOT DEFAULTED: no raster, staff unit or page frame is an abstention, never "no contact".
+    """
+    from . import rest_ink
+    if not rest_ink.enabled():
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        rests = [gi for gi, d in enumerate(dets) if str(d.smufl_name).lower().startswith(_REST_CLASS_PREFIX)]
+        if not rests:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid and grid[1] else None
+        img = getattr(c, "image_no_staff", None)
+        for gi in rests:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if img is None or getattr(img, "ndim", 0) != 2:
+                log.abstain(g, Q.REST_INK_CONTACT, reader=READERS.CV_REST_INK_CONTACT, frame=frame,
+                            reason=ABSTAIN.NO_MASK, note="cell carries no image_no_staff")
+                continue
+            if not space:
+                log.abstain(g, Q.REST_INK_CONTACT, reader=READERS.CV_REST_INK_CONTACT, frame=frame,
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY)
+                continue
+            d = dets[gi]
+            box = (float(d.x_canonical), float(d.y_canonical),
+                   float(d.x_canonical) + float(d.width_canonical), float(d.y_canonical) + float(d.height_canonical))
+            heads = [(oi, str(od.smufl_name), float(od.x_canonical), float(od.y_canonical),
+                      float(od.x_canonical) + float(od.width_canonical),
+                      float(od.y_canonical) + float(od.height_canonical))
+                     for oi, od in enumerate(dets)
+                     if oi != gi and str(od.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+            got = rest_ink.measure(img == 0, box, heads, space)
+            if got is None:
+                log.abstain(g, Q.REST_INK_CONTACT, reader=READERS.CV_REST_INK_CONTACT, frame=frame,
+                            reason=ABSTAIN.NO_MASK, note="no ink under the box, or the box is off the raster")
+                continue
+            log.observe(g, Q.REST_INK_CONTACT, got["thin_run_sp"], reader=READERS.CV_REST_INK_CONTACT, frame=frame,
+                        **{k: v for k, v in got.items()})
+            if progress:
+                print(f"  gather rest ink contact {g.to_key()}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Rest-sized ink the detector never boxed -- ROADMAP 2.99
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -14551,6 +14614,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                                 progress=progress)
         # ⚠️ ROADMAP 2.99: reads `detections` and the erased raster only.
         gather_unboxed_rest_ink(log, cells, local, detections,
+                                progress=progress)
+        # ⚠️ ROADMAP 2.150b (flag OMR_REST_STROKE_INTO_HEAD, default OFF): same raster, rest-classed boxes only.
+        gather_rest_ink_contact(log, cells, local, detections,
                                 progress=progress)
         # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME
         # erased raster (and says so: `READERS.CV_INK`). The second witness

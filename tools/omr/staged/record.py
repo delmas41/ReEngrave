@@ -846,6 +846,13 @@ class Q(_Vocab):
     #: reading).
     NARROW_BOX_SHAPE = "narrow_box_shape"
 
+    #: ROADMAP 2.150b (flag `OMR_REST_STROKE_INTO_HEAD`, default OFF; filed only while it is ON). One row per
+    #: rest-classed glyph box: does the ink under the box run on as one thin stroke into a notehead's ink? The
+    #: shape numbers of `rest_ink.measure` (thin stroke length, solid-blob length, ink of the dominant piece that
+    #: lies in a standing head box outside the rest box), off the staff-erased raster. GATHER measures and names
+    #: nothing; `family_precision._rest_stroke_into_head_refusal` weighs it.
+    REST_INK_CONTACT = "rest_ink_contact"
+
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
     #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
@@ -2327,6 +2334,7 @@ CLAIMS: "dict[str, str]" = {
     "INK": CLAIM.MEASUREMENT,
     "CELL_INK_PIECES": CLAIM.MEASUREMENT,
     "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
+    "REST_INK_CONTACT": CLAIM.MEASUREMENT,
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
@@ -2854,6 +2862,9 @@ class READERS(_Vocab):
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
+    #: `gather.gather_rest_ink_contact` -- ROADMAP 2.150b. The same erased raster (one crop, one signal) asked
+    #: whether a rest box's ink is one stroke running into a head.
+    CV_REST_INK_CONTACT = "cv_rest_ink_contact"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

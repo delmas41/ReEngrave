@@ -147,6 +147,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
 from .. import margins as _margins
+from .. import rest_ink as _rest_ink
 from . import key_slots as _key_slots
 from . import letter_cover as _letter_cover
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
@@ -1110,6 +1111,45 @@ def _rest_narrower_than_its_class_refusal(ev: Evidence, this_row, detail: Dict[s
         margin=margin, axis="width_spaces", unit="staff spaces", band=None, would_choose=(True,))
 
 
+# §REST-STROKE -- ROADMAP 2.150b (Sean 2026-10-16: "a rest box whose stroke runs on into a notehead is a stem; a real
+# rest stands free"). Flag `OMR_REST_STROKE_INTO_HEAD`, default OFF (only `1/true/yes/on` enables).
+#
+# CONVENTION ASSUMED: a rest is a free-standing glyph; a thin stroke of a few spaces that ends in a solid head is a
+# note's stem. WHAT WOULD FALSIFY IT: a print-confirmed rest whose box shows the thin stroke AND a head's ink in
+# contact (a rest printed touching a note). NOT CONFIRMED by Sean beyond the 21 tiles of 2.150 (cuts below are read off
+# them: stems 1.45-2.98 thin, real quarter rests 0.40-0.70; stems' solid blob 0.84-1.48 or head-box ink 0.86-1.68,
+# real rests' blob <= 0.70 and head-box ink 0.0) -- a cut on two plates, so it sits behind its flag.
+#
+# READS `Q.REST_INK_CONTACT` (GATHER, off the staff-erased raster) and NOT `Q.STEM`: `refuse_owned` deletes the strokes
+# inside a rest box before `Q.STEM` exists. Declines (None) where GATHER filed no row (no raster / staff space).
+REST_STROKE_MIN_SP = 1.0        # a thin stroke at least this long (spaces)
+REST_HEAD_BLOB_MIN_SP = 0.9     # ... and a solid blob at least this long in the piece, OR
+REST_HEAD_INK_MIN_SP2 = 0.4     # ... this much of the piece's ink in a standing head box outside the rest box
+
+
+def _rest_stroke_into_head_refusal(ev: Evidence, this_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """The box's own ink is one thin stroke that runs into a head: a stem, not a rest. Files the signed margin on
+    every box it measures (2.106): the binding one of {stroke, head evidence} over its cut, as `value / cut - 1`;
+    positive = refusal side. No row: declines, never refuses (rule 8)."""
+    rows = [r for r in ev.rows(Q.REST_INK_CONTACT) if isinstance(r.detail, dict) and "thin_run_sp" in r.detail]
+    if not rows:
+        return None
+    d = rows[-1].detail
+    m_stroke = float(d["thin_run_sp"]) / REST_STROKE_MIN_SP - 1.0
+    m_blob = float(d.get("blob_sp") or 0.0) / REST_HEAD_BLOB_MIN_SP - 1.0
+    m_ink = float(d.get("head_ink_sp2") or 0.0) / REST_HEAD_INK_MIN_SP2 - 1.0
+    margin = round(min(m_stroke, max(m_blob, m_ink)), 3)
+    detail["stroke_into_head"] = {k: d.get(k) for k in ("thin_run_sp", "thin_beyond_sp", "blob_sp", "head_ink_sp2",
+                                                        "head")}
+    detail["stroke_into_head"].update({"margin": margin, "stroke_margin": round(m_stroke, 3),
+                                       "head_margin": round(max(m_blob, m_ink), 3)})
+    if margin < 0:
+        return None
+    return _margins.attach(
+        Ruling(value=True, reason="rest_stroke_into_a_head", used=(this_row.id, rows[-1].id), detail=detail),
+        margin=margin, axis="stroke_and_head_over_cut", unit="ratio to the cut", band=None, would_choose=(True,))
+
+
 def _rest_overlaps_notehead_refusal(ev: Evidence, this_row,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
@@ -1733,13 +1773,14 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
-                   Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER),
+                   Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER,
+                   Q.REST_INK_CONTACT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
-           Q.LETTER_LOOK_COVER),
+           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_on_a_dynamic_letter",
@@ -1754,7 +1795,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
-                                     "rest_narrower_than_its_class"),
+                                     "rest_narrower_than_its_class",
+                                     "rest_stroke_into_a_head"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
@@ -1879,6 +1921,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             narrow = _rest_narrower_than_its_class_refusal(ev, box_row, detail)
             if narrow is not None:
                 return narrow
+        # ROADMAP 2.150b, LAST of all (flag-gated; GATHER files its row only while the flag is ON).
+        if _rest_ink.enabled():
+            stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
+            if stroke_head is not None:
+                return stroke_head
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 
