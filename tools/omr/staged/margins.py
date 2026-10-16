@@ -159,6 +159,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
     },
     "adjudicate_rest_is_not_a_rest": {
         "rest_is_a_barline": THRESHOLD,
+        # ROADMAP 2.150: the class's width floor minus the box's width, in staff spaces
+        "rest_narrower_than_its_class": THRESHOLD,
     },
     "adjudicate_duration": {
         "hollow_head_bare_stem": THRESHOLD, "head_fill_from_ink": THRESHOLD,

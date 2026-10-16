@@ -1058,6 +1058,58 @@ def _rest_is_a_barline_refusal(ev: Evidence, this_row,
     return None
 
 
+# §REST-WIDTH -- ROADMAP 2.150 (Sean 2026-10-16: "if the issue is a rest is not seen as a rest or confused with
+# something else then make sure we are dealing with global rules about rests"). Flag `OMR_REST_WIDTH_FLOOR`,
+# default OFF (only `1/true/yes/on` enables).
+#
+# CONVENTION ASSUMED: a rest is a fixed glyph, printed at a fixed width in staff spaces (SMuFL Bravura: restQuarter
+# 1.08, rest8th 0.99, rest16th 1.28, restWhole/restHalf 1.13 spaces); a stem is a thin stroke (~0.1-0.15 space).
+# So a box far narrower than its class's glyph is not that rest's ink -- on these plates it is a STEM, a barline, a
+# flag's stem, a natural sign. WHAT WOULD FALSIFY IT: a print-confirmed quarter rest whose box is under the floor.
+# NOT CONFIRMED by Sean (tiles `out/print/2.150-review/`).
+#
+# MEASURED (FINDINGS 2.150, record 20261014-night, rows streamed): kept `restQuarter` widths are bimodal on both
+# plates -- Brahms 1,319 kept, 131 under 0.7 spaces, median 1.14; Litolff 812 kept, ~65 under 0.7, median 1.16. Of
+# 66 boxes under 0.7 the lane LOOKED at (both plates), 0 were quarter rests (stems with their head, barlines,
+# flag stems, one natural); the narrowest real quarter rest seen was 0.87. The floor is a CUT on two plates: it
+# sits behind its flag until Sean's tiles and a third publisher. ONLY `restQuarter` has a floor: 2 of 13 narrow
+# Brahms `rest8th` boxes are real (Breitkopf prints narrow eighths), so width does not separate eighths, and the
+# block rests have `rest_has_a_stem` / `rest_touches_two_staff_lines`.
+REST_WIDTH_FLOOR_ENV = "OMR_REST_WIDTH_FLOOR"
+REST_MIN_WIDTH_SPACES = {"restQuarter": 0.7}
+
+
+def rest_width_floor_enabled() -> bool:
+    """`OMR_REST_WIDTH_FLOOR`, default OFF (ROADMAP 2.150); only an explicit `1/true/yes/on` enables."""
+    import os
+    return os.environ.get(REST_WIDTH_FLOOR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _rest_narrower_than_its_class_refusal(ev: Evidence, this_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """The box is far narrower than its class's printed glyph: not that rest's ink. Reads the box's own canonical
+    width and the cell's staff space (both GATHER rows, one frame). Records the signed margin on every box it
+    measures, refused or kept (2.106). No staff space: declines, never refuses (rule 8)."""
+    cls = str(detail.get("class") or "")
+    floor = REST_MIN_WIDTH_SPACES.get(cls)
+    val = this_row.value
+    if floor is None or not isinstance(val, (list, tuple)) or len(val) != 5:
+        return None
+    space = _cell_staff_space(ev)
+    if space is None:
+        return None
+    try:
+        w_sp = float(val[3]) / space
+    except (TypeError, ValueError):
+        return None
+    margin = round(floor - w_sp, 3)
+    detail["width_floor"] = {"width_spaces": round(w_sp, 3), "floor_spaces": floor, "margin": margin}
+    if w_sp >= floor:
+        return None
+    return _margins.attach(
+        Ruling(value=True, reason="rest_narrower_than_its_class", used=(this_row.id,), detail=detail),
+        margin=margin, axis="width_spaces", unit="staff spaces", band=None, would_choose=(True,))
+
+
 def _rest_overlaps_notehead_refusal(ev: Evidence, this_row,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
@@ -1701,7 +1753,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_off_center",
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
-                                     "rest_is_a_barline"),
+                                     "rest_is_a_barline",
+                                     "rest_narrower_than_its_class"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
@@ -1821,6 +1874,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         barline = _rest_is_a_barline_refusal(ev, box_row, detail)
         if barline is not None:
             return barline
+        # ROADMAP 2.150, LAST again: only adds the narrow box no earlier rule named (a note's stem, a flag's stem).
+        if rest_width_floor_enabled():
+            narrow = _rest_narrower_than_its_class_refusal(ev, box_row, detail)
+            if narrow is not None:
+                return narrow
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 
