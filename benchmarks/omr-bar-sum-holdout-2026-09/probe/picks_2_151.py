@@ -65,7 +65,7 @@ seen, uniq = set(), []
 for p in picks:
     if p["glyph"] not in seen:
         seen.add(p["glyph"]); uniq.append(p)
-n_ctrl = max(3, len(uniq) // 3)
+n_ctrl = 5
 uniq += rng.sample(plain, min(n_ctrl, len(plain))) + rng.sample(dotted, min(n_ctrl, len(dotted)))
 json.dump(uniq, open(OUT, "w"), indent=0)
 import collections
