@@ -1,0 +1,43 @@
+== head-class boxes, all galleries   errors 69, right readings 129
+   P1 page z>4          errors 34/68   right 4/128
+   P1 doc z>4           errors 32/69   right 3/129
+   fixed 2.148 window   errors 28/69   right 2/129
+   head-class errors with both: P1 only 8, fixed only 1, both 26, neither 33
+== head-class boxes, size-blind selection (sel=other)   errors 36, right readings 126
+   P1 page z>4          errors 17/36   right 3/125
+   P1 doc z>4           errors 16/36   right 2/126
+   fixed 2.148 window   errors 15/36   right 1/126
+   head-class errors with both: P1 only 2, fixed only 0, both 15, neither 19
+== head-class, Litolff   errors 27, right readings 69
+   P1 page z>4          errors 10/27   right 4/69
+   P1 doc z>4           errors 10/27   right 3/69
+   fixed 2.148 window   errors 10/27   right 2/69
+   head-class errors with both: P1 only 1, fixed only 1, both 9, neither 16
+== head-class, Brahms (night+p0p3)   errors 42, right readings 60
+   P1 page z>4          errors 24/41   right 0/59
+   P1 doc z>4           errors 22/42   right 0/60
+   fixed 2.148 window   errors 18/42   right 0/60
+   head-class errors with both: P1 only 7, fixed only 0, both 17, neither 17
+
+2.150 width ladder (Sean's word; z = page-census robust z of the width)
+  w=0.26 sp  h=1.43  barline        brahms    z_w=None  F150(<0.7)=True
+  w=0.35 sp  h=3.11  stem           brahms    z_w=10.86  F150(<0.7)=True
+  w=0.47 sp  h=3.29  quarter rest   brahms    z_w=8.77  F150(<0.7)=True
+  w=0.48 sp  h=1.80  stem           brahms    z_w=13.04  F150(<0.7)=True
+  w=0.55 sp  h=3.12  stem           brahms    z_w=10.29  F150(<0.7)=True
+  w=0.55 sp  h=2.74  stem           brahms    z_w=7.48  F150(<0.7)=True
+  w=0.57 sp  h=3.40  stem           brahms    z_w=4.63  F150(<0.7)=True
+  w=0.59 sp  h=3.23  stem           litolff   z_w=None  F150(<0.7)=True
+  w=0.60 sp  h=3.44  stem           brahms    z_w=9.44  F150(<0.7)=True
+  w=0.61 sp  h=3.41  stem           litolff   z_w=5.73  F150(<0.7)=True
+  w=0.62 sp  h=3.72  stem           litolff   z_w=2.4  F150(<0.7)=True
+  w=0.65 sp  h=3.62  stem           litolff   z_w=7.93  F150(<0.7)=True
+  w=0.69 sp  h=3.26  stem           litolff   z_w=2.02  F150(<0.7)=True
+  w=0.73 sp  h=3.83  stem           litolff   z_w=5.4  F150(<0.7)=False
+  w=0.74 sp  h=4.18  stem           litolff   z_w=1.75  F150(<0.7)=False
+  w=0.77 sp  h=3.33  stem           brahms    z_w=6.61  F150(<0.7)=False
+  w=0.87 sp  h=2.39  quarter rest   brahms    z_w=1.94  F150(<0.7)=False
+  w=0.93 sp  h=2.87  quarter rest   brahms    z_w=1.54  F150(<0.7)=False
+  w=1.06 sp  h=2.98  quarter rest   brahms    z_w=1.42  F150(<0.7)=False
+  w=1.18 sp  h=3.05  quarter rest   litolff   z_w=0.12  F150(<0.7)=False
+  w=1.19 sp  h=2.70  quarter rest   brahms    z_w=0.34  F150(<0.7)=False

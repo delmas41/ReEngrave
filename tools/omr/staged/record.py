@@ -846,7 +846,7 @@ class Q(_Vocab):
     #: reading).
     NARROW_BOX_SHAPE = "narrow_box_shape"
 
-    #: ROADMAP 2.150b (flag `OMR_REST_STROKE_INTO_HEAD`, default OFF; filed only while it is ON). One row per
+    #: ROADMAP 2.150b (flag `OMR_REST_STROKE_INTO_HEAD`, default ON since 2026-10-16; filed only while it is ON). One row per
     #: rest-classed glyph box: does the ink under the box run on as one thin stroke into a notehead's ink? The
     #: shape numbers of `rest_ink.measure` (thin stroke length, solid-blob length, ink of the dominant piece that
     #: lies in a standing head box outside the rest box), off the staff-erased raster. GATHER measures and names

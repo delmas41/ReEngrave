@@ -1,0 +1,112 @@
+status census: [(('litolff', 'right'), 71), (('brahms', 'right'), 62), (('brahms', 'narrowed'), 30), (('litolff', 'right_refused'), 20), (('litolff', 'twin_refused'), 17), (('brahms_p0p3', 'value_error'), 16), (('litolff', 'rest_as_head'), 12), (('litolff', 'value_error'), 11), (('brahms', 'rest_as_head'), 9), (('brahms', 'phantom_rest'), 8), (('litolff', 'no_box'), 8), (('litolff', 'phantom_rest'), 7), (('litolff', 'narrowed'), 6), (('brahms_p0p3', 'phantom_head'), 6), (('brahms', 'box_not_head_or_rest'), 6), (('brahms', 'phantom_head'), 5), (('brahms_p0p3', 'right'), 5), (('litolff', 'phantom_head'), 4), (('brahms_p0p3', 'narrowed'), 4), (('litolff', 'box_not_head_or_rest'), 4), (('brahms', 'no_box'), 4), (('brahms', 'right_refused'), 3), (('brahms', 'lost_rest'), 3), (('brahms', 'lost_note'), 2), (('brahms', 'twin_refused'), 2), (('brahms', 'value_error'), 1), (('litolff', 'abstained'), 1)]
+group	n	P1p3	P1p4	P1p5	P1doc4	S1v	S1h	S1n	S1any	S2a1	S2a1.5	S2a3	S2b	F148	F150	ANYstrict	ANYloose
+all ERR:all	84	54/81 (n/a 3)	46/81 (n/a 3)	41/81 (n/a 3)	47/84	9/84	2/84	6/84	10/84	4/84	3/84	1/84	2/84	28/69 (n/a 15)	12/15 (n/a 69)	48/84	53/84
+all ERR:lost_note	2	2/2	2/2	2/2	2/2	1/2	0/2	1/2	1/2	0/2	0/2	0/2	0/2	2/2	0/0 (n/a 2)	2/2	2/2
+all ERR:lost_rest	3	3/3	3/3	3/3	3/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	3/3	0/0 (n/a 3)	3/3	3/3
+all ERR:phantom_head	15	13/15	9/15	8/15	9/15	2/15	2/15	2/15	3/15	3/15	2/15	1/15	2/15	8/15	0/0 (n/a 15)	11/15	11/15
+all ERR:phantom_rest	15	12/13 (n/a 2)	12/13 (n/a 2)	11/13 (n/a 2)	15/15	0/15	0/15	0/15	0/15	1/15	1/15	0/15	0/15	0/0 (n/a 15)	12/15	12/15	13/15
+all ERR:rest_as_head	21	16/20 (n/a 1)	16/20 (n/a 1)	13/20 (n/a 1)	14/21	0/21	0/21	0/21	0/21	0/21	0/21	0/21	0/21	11/21	0/0 (n/a 21)	16/21	16/21
+all ERR:value_error	28	8/28	4/28	4/28	4/28	6/28	0/28	3/28	6/28	0/28	0/28	0/28	0/28	4/28	0/0 (n/a 28)	4/28	8/28
+all RIGHT	138	19/135 (n/a 3)	5/135 (n/a 3)	3/135 (n/a 3)	5/138	16/138	0/138	4/138	16/138	4/138	4/138	1/138	0/138	2/129 (n/a 9)	1/6 (n/a 132)	5/138	24/138
+brahms ERR:all	28	25/26 (n/a 2)	24/26 (n/a 2)	20/26 (n/a 2)	24/28	1/28	0/28	1/28	1/28	1/28	1/28	0/28	0/28	12/20 (n/a 8)	7/8 (n/a 20)	24/28	25/28
+brahms ERR:lost_note	2	2/2	2/2	2/2	2/2	1/2	0/2	1/2	1/2	0/2	0/2	0/2	0/2	2/2	0/0 (n/a 2)	2/2	2/2
+brahms ERR:lost_rest	3	3/3	3/3	3/3	3/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	0/3	3/3	0/0 (n/a 3)	3/3	3/3
+brahms ERR:phantom_head	5	5/5	4/5	3/5	4/5	0/5	0/5	0/5	0/5	0/5	0/5	0/5	0/5	3/5	0/0 (n/a 5)	4/5	4/5
+brahms ERR:phantom_rest	8	7/7 (n/a 1)	7/7 (n/a 1)	6/7 (n/a 1)	8/8	0/8	0/8	0/8	0/8	1/8	1/8	0/8	0/8	0/0 (n/a 8)	7/8	7/8	8/8
+brahms ERR:rest_as_head	9	8/8 (n/a 1)	8/8 (n/a 1)	6/8 (n/a 1)	7/9	0/9	0/9	0/9	0/9	0/9	0/9	0/9	0/9	4/9	0/0 (n/a 9)	8/9	8/9
+brahms ERR:value_error	1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/1	0/0 (n/a 1)	0/1	0/1
+brahms RIGHT	62	6/61 (n/a 1)	1/61 (n/a 1)	1/61 (n/a 1)	2/62	10/62	0/62	1/62	10/62	0/62	0/62	0/62	0/62	0/55 (n/a 7)	1/5 (n/a 57)	1/62	11/62
+brahms_p0p3 ERR:all	22	8/22	7/22	7/22	6/22	7/22	2/22	5/22	8/22	1/22	1/22	0/22	1/22	6/22	0/0 (n/a 22)	8/22	12/22
+brahms_p0p3 ERR:phantom_head	6	5/6	5/6	5/6	4/6	2/6	2/6	2/6	3/6	1/6	1/6	0/6	1/6	4/6	0/0 (n/a 6)	6/6	6/6
+brahms_p0p3 ERR:value_error	16	3/16	2/16	2/16	2/16	5/16	0/16	3/16	5/16	0/16	0/16	0/16	0/16	2/16	0/0 (n/a 16)	2/16	6/16
+brahms_p0p3 RIGHT	5	0/4 (n/a 1)	0/4 (n/a 1)	0/4 (n/a 1)	0/5	1/5	0/5	1/5	1/5	0/5	0/5	0/5	0/5	0/5	0/0 (n/a 5)	0/5	1/5
+litolff ERR:all	34	21/33 (n/a 1)	15/33 (n/a 1)	14/33 (n/a 1)	17/34	1/34	0/34	0/34	1/34	2/34	1/34	1/34	1/34	10/27 (n/a 7)	5/7 (n/a 27)	16/34	16/34
+litolff ERR:phantom_head	4	3/4	0/4	0/4	1/4	0/4	0/4	0/4	0/4	2/4	1/4	1/4	1/4	1/4	0/0 (n/a 4)	1/4	1/4
+litolff ERR:phantom_rest	7	5/6 (n/a 1)	5/6 (n/a 1)	5/6 (n/a 1)	7/7	0/7	0/7	0/7	0/7	0/7	0/7	0/7	0/7	0/0 (n/a 7)	5/7	5/7	5/7
+litolff ERR:rest_as_head	12	8/12	8/12	7/12	7/12	0/12	0/12	0/12	0/12	0/12	0/12	0/12	0/12	7/12	0/0 (n/a 12)	8/12	8/12
+litolff ERR:value_error	11	5/11	2/11	2/11	2/11	1/11	0/11	0/11	1/11	0/11	0/11	0/11	0/11	2/11	0/0 (n/a 11)	2/11	2/11
+litolff RIGHT	71	13/70 (n/a 1)	4/70 (n/a 1)	2/70 (n/a 1)	3/71	5/71	0/71	2/71	5/71	4/71	4/71	1/71	0/71	2/69 (n/a 2)	0/1 (n/a 70)	4/71	12/71
+brahms 2.145 1 glyph/5/1/0/2/10 rest_as_head sean= 4 rest noteheadBlackInSpace w,h= 1.11 1.65 vd 0.0 p1 {'w': [1.11, 5.96], 'h': [1.65, 6.65]} s1 [False, False, False] s2 False False 12 0
+brahms 2.145 2 glyph/15/0/10/5/14 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.14 1.6 vd 0.0 p1 {'w': [1.14, 4.89], 'h': [1.6, 6.24]} s1 [False, False, False] s2 False False 2 0
+litolff 2.145 3 glyph/2/0/2/1/16 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.43 2.01 vd 0.0 p1 {'w': [1.43, 0.13], 'h': [2.01, 7.76]} s1 [False, False, False] s2 False False 7 0
+litolff 2.145 4 glyph/11/1/10/4/4 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.41 1.15 vd 0.0 p1 {'w': [1.41, 0.45], 'h': [1.15, 2.87]} s1 [False, False, False] s2 False False 4 0
+brahms 2.145 5 glyph/1/0/0/1/15 phantom_head sean= meter number 6 noteheadBlackOnLine w,h= 1.58 1.95 vd 0.0 p1 {'w': [1.58, 2.77], 'h': [1.95, 12.04]} s1 [False, False, False] s2 False False 8 0
+brahms 2.145 6 glyph/6/0/3/5/13 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.2 0.97 vd 0.0 p1 {'w': [1.2, 4.27], 'h': [0.97, 3.77]} s1 [False, False, False] s2 False False 6 0
+brahms 2.145 7 glyph/10/1/13/1/8 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.02 1.41 vd 0.0 p1 {'w': [1.02, 6.71], 'h': [1.41, 4.13]} s1 [False, False, False] s2 False False 7 0
+litolff 2.145 8 glyph/11/1/3/0/15 phantom_head sean= 2 noteheadBlackInSpace w,h= 1.4 1.43 vd 0.0 p1 {'w': [1.4, 0.56], 'h': [1.43, 1.85]} s1 [False, False, False] s2 False False 4 0
+litolff 2.145 9 glyph/11/1/10/12/2 rest_as_head sean= 4 rest noteheadBlackOnLine w,h= 1.87 2.82 vd 0.0 p1 {'w': [1.87, 4.72], 'h': [2.82, 25.29]} s1 [False, False, False] s2 False False 4 0
+litolff 2.145 10 glyph/9/0/7/3/6 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.55 2.15 vd 0.0 p1 {'w': [1.55, 1.62], 'h': [2.15, 11.33]} s1 [False, False, False] s2 False False 9 0
+litolff 2.145 11 glyph/5/0/2/5/2 rest_as_head sean= 4 rest noteheadBlackInSpace w,h= 2.51 3.13 vd 0.0 p1 {'w': [2.51, 10.41], 'h': [3.13, 20.57]} s1 [False, False, False] s2 False False 2 0
+litolff 2.145 12 glyph/1/0/9/0/10 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.16 0.8 vd 0.0 p1 {'w': [1.16, 2.8], 'h': [0.8, 6.73]} s1 [False, False, False] s2 False False 3 0
+litolff 2.145 13 glyph/4/0/10/1/5 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.5 0.98 vd 0.0 p1 {'w': [1.5, 0.11], 'h': [0.98, 4.86]} s1 [False, False, False] s2 False False 9 0
+brahms 2.145 14 glyph/8/0/1/2/19 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.12 0.91 vd 0.0 p1 {'w': [1.12, 5.18], 'h': [0.91, 2.79]} s1 [False, False, False] s2 False False 3 0
+litolff 2.145 15 glyph/6/1/2/5/8 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.4 1.11 vd 0.0 p1 {'w': [1.4, 1.01], 'h': [1.11, 2.7]} s1 [False, False, False] s2 False False 10 0
+litolff 2.145 16 glyph/6/0/7/9/3 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.69 1.27 vd 0.0 p1 {'w': [1.69, 2.25], 'h': [1.27, 0.9]} s1 [False, False, False] s2 False False 8 0
+litolff 2.145 17 glyph/16/1/9/7/4 rest_as_head sean= 8 rest noteheadBlackOnLine w,h= 1.45 1.03 vd 0.0 p1 {'w': [1.45, 0.27], 'h': [1.03, 2.7]} s1 [False, False, False] s2 False False 4 0
+brahms 2.145 18 glyph/15/0/2/2/8 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.13 0.87 vd 0.0 p1 {'w': [1.13, 5.13], 'h': [0.87, 5.99]} s1 [False, False, False] s2 False False 1 0
+brahms 2.145 19 glyph/23/1/5/8/6 rest_as_head sean= 8 rest noteheadWholeInSpace w,h= 1.16 0.82 vd 0.0 p1 None s1 [False, False, False] s2 False False 8 0
+brahms 2.145 20 glyph/13/0/1/9/17 rest_as_head sean= 8 rest noteheadBlackInSpace w,h= 1.2 1.5 vd 0.0 p1 {'w': [1.2, 4.2], 'h': [1.5, 4.54]} s1 [False, False, False] s2 False False 4 0
+litolff 2.145 21 glyph/7/0/1/5/2 rest_as_head sean= 4 rest noteheadBlackOnLine w,h= 2.24 2.95 vd 0.0 p1 {'w': [2.24, 9.22], 'h': [2.95, 22.26]} s1 [False, False, False] s2 False False 7 0
+litolff 2.146 15 glyph/2/0/7/10/3 value_error sean= 2 noteheadBlackOnLine w,h= 3.03 2.81 vd 0.0 p1 {'w': [3.03, 21.45], 'h': [2.81, 16.75]} s1 [False, False, False] s2 False False 1 0
+litolff 2.148 2 glyph/2/0/9/6/1 value_error sean= 2 noteheadBlackInSpace w,h= 1.64 1.15 vd 0.0 p1 {'w': [1.64, 2.7], 'h': [1.15, 1.91]} s1 [False, False, False] s2 False False 8 0
+litolff 2.148 7 glyph/1/0/3/8/5 value_error sean= 2 noteheadBlackInSpace w,h= 1.62 1.31 vd 1.3 p1 {'w': [1.62, 3.36], 'h': [1.31, 0.13]} s1 [False, False, False] s2 False False 4 0
+litolff 2.148 9 glyph/1/0/3/14/0 value_error sean= 2 noteheadBlackInSpace w,h= 1.41 1.3 vd 1.31 p1 {'w': [1.41, 0.53], 'h': [1.3, 0.0]} s1 [False, False, False] s2 False False 4 0
+litolff 2.148 10 glyph/1/0/9/3/5 value_error sean= 2 noteheadBlackOnLine w,h= 1.66 1.59 vd 1.0 p1 {'w': [1.66, 3.9], 'h': [1.59, 3.91]} s1 [False, False, False] s2 False False 6 0
+litolff 2.148 12 glyph/2/0/10/0/4 value_error sean= 2 noteheadBlackOnLine w,h= 1.58 1.48 vd 1.0 p1 {'w': [1.58, 1.89], 'h': [1.48, 1.8]} s1 [False, False, False] s2 False False 5 0
+litolff 2.148 17 glyph/3/0/9/1/5 value_error sean= 2 noteheadBlackInSpace w,h= 1.59 1.12 vd 0.2 p1 {'w': [1.59, 1.96], 'h': [1.12, 1.54]} s1 [False, False, False] s2 False False 8 0
+litolff 2.148 18 glyph/2/0/10/0/3 value_error sean= 2 noteheadBlackOnLine w,h= 1.51 1.39 vd 0.74 p1 {'w': [1.51, 0.94], 'h': [1.39, 0.79]} s1 [False, False, False] s2 False False 5 0
+litolff 2.148 20 glyph/2/0/9/7/6 value_error sean= 2 noteheadBlackInSpace w,h= 1.62 1.59 vd 0.0 p1 {'w': [1.62, 2.43], 'h': [1.59, 3.04]} s1 [False, False, False] s2 False False 6 0
+litolff 2.148 22 glyph/1/0/2/0/8 phantom_head sean= key flat noteheadBlackOnLine w,h= 1.08 1.23 vd 0.0 p1 {'w': [1.08, 3.98], 'h': [1.23, 0.96]} s1 [False, False, False] s2 True True 0 8
+litolff 2.148 23 glyph/2/1/0/12/8 value_error sean= 2 noteheadBlackInSpace w,h= 2.02 1.1 vd 3.84 p1 {'w': [2.02, 7.82], 'h': [1.1, 2.47]} s1 [True, False, False] s2 False False 8 0
+litolff 2.148 27 glyph/1/0/3/15/1 value_error sean= 2 noteheadBlackInSpace w,h= 1.38 1.25 vd 0.6 p1 {'w': [1.38, 0.12], 'h': [1.25, 0.67]} s1 [False, False, False] s2 False False 4 0
+litolff 2.148 30 glyph/3/1/0/8/4 rest_as_head sean= whole rest noteheadBlackInSpace w,h= 1.31 0.7 vd 0.42 p1 {'w': [1.31, 1.47], 'h': [0.7, 5.59]} s1 [False, False, False] s2 False False 1 0
+brahms_p0p3 2.151 1 glyph/3/1/0/9/5 value_error sean= 8 noteheadBlackInSpace w,h= 1.43 1.1 vd 1.47 p1 {'w': [1.43, 0.67], 'h': [1.1, 1.08]} s1 [False, False, False] s2 False False 13 0
+brahms_p0p3 2.151 2 glyph/2/0/4/5/0 value_error sean= dot 2 noteheadHalfOnLine w,h= 1.62 1.18 vd 0.0 p1 {'w': [1.62, 0.36], 'h': [1.18, 0.27]} s1 [False, False, False] s2 False False 13 0
+brahms_p0p3 2.151 5 glyph/3/0/3/2/3 value_error sean= dot 8 noteheadBlackInSpace w,h= 1.35 0.98 vd 0.0 p1 {'w': [1.35, 0.67], 'h': [0.98, 2.7]} s1 [False, False, False] s2 False False 7 0
+brahms_p0p3 2.151 6 glyph/0/0/4/4/2 value_error sean= dot 2 noteheadHalfInSpace w,h= 1.23 0.92 vd 2.19 p1 {'w': [1.23, 2.45], 'h': [0.92, 1.14]} s1 [True, False, False] s2 False False 12 0
+brahms_p0p3 2.151 7 glyph/3/0/0/2/2 value_error sean= dot 8 noteheadBlackInSpace w,h= 1.41 1.29 vd 3.17 p1 {'w': [1.41, 0.34], 'h': [1.29, 1.48]} s1 [True, False, True] s2 False False 7 0
+brahms_p0p3 2.151 8 glyph/0/0/4/4/4 value_error sean= dot 2 noteheadBlackInSpace w,h= 0.81 0.65 vd 0.0 p1 {'w': [0.81, 9.73], 'h': [0.65, 9.8]} s1 [False, False, False] s2 False False 12 0
+brahms_p0p3 2.151 11 glyph/1/0/13/5/11 phantom_head sean= part of an 8 rest noteheadBlackInSpace w,h= 0.66 0.63 vd 0.0 p1 {'w': [0.66, 11.29], 'h': [0.63, 7.19]} s1 [False, False, False] s2 False False 7 0
+brahms_p0p3 2.151 12 glyph/2/1/13/0/10 phantom_head sean= part of an sf dynamic noteheadBlackOnLine w,h= 1.09 0.68 vd 2.69 p1 {'w': [1.09, 5.87], 'h': [0.68, 5.93]} s1 [True, False, True] s2 False False 13 0
+brahms_p0p3 2.151 13 glyph/3/0/10/6/1 value_error sean= dot 2 noteheadHalfOnLine w,h= 1.56 1.02 vd 0.65 p1 {'w': [1.56, 0.0], 'h': [1.02, 1.36]} s1 [False, False, False] s2 False False 5 0
+brahms_p0p3 2.151 14 glyph/2/0/8/1/12 phantom_head sean= tremolo slash noteheadBlackOnLine w,h= 1.14 0.94 vd 0.0 p1 {'w': [1.14, 5.07], 'h': [0.94, 2.94]} s1 [False, False, False] s2 False False 10 0
+brahms_p0p3 2.151 15 glyph/3/0/5/0/16 phantom_head sean= f dynamic noteheadBlackOnLine w,h= 1.39 1.07 vd 3.46 p1 {'w': [1.39, 0.07], 'h': [1.07, 1.42]} s1 [True, True, True] s2 True False 0 6
+brahms_p0p3 2.151 16 glyph/2/0/2/3/25 value_error sean= 4 noteheadBlackInSpace w,h= 1.69 0.67 vd 3.66 p1 {'w': [1.69, 4.66], 'h': [0.67, 6.07]} s1 [True, False, True] s2 False False 10 0
+brahms_p0p3 2.151 17 glyph/3/0/13/8/11 value_error sean= dot 4 noteheadBlackInSpace w,h= 1.4 1.13 vd 0.0 p1 {'w': [1.4, 0.17], 'h': [1.13, 0.67]} s1 [False, False, False] s2 False False 9 0
+brahms_p0p3 2.151 19 glyph/0/0/4/4/7 phantom_head sean= tremolo slash noteheadBlackOnLine w,h= 1.09 0.81 vd 0.0 p1 {'w': [1.09, 4.13], 'h': [0.81, 6.6]} s1 [False, False, False] s2 False False 12 0
+brahms_p0p3 2.151 20 glyph/3/1/0/7/12 value_error sean= 4 noteheadBlackOnLine w,h= 1.38 1.2 vd 1.01 p1 {'w': [1.38, 0.17], 'h': [1.2, 0.27]} s1 [False, False, False] s2 False False 9 0
+brahms_p0p3 2.151 22 glyph/3/0/1/2/12 value_error sean= dot 2 noteheadHalfOnLine w,h= 1.61 1.2 vd 0.04 p1 {'w': [1.61, 1.0], 'h': [1.2, 0.93]} s1 [False, False, False] s2 False False 7 0
+brahms_p0p3 2.151 24 glyph/2/0/0/5/6 value_error sean= dot 4 noteheadBlackOnLine w,h= 1.51 1.2 vd 2.3 p1 {'w': [1.51, 1.55], 'h': [1.2, 0.12]} s1 [True, False, False] s2 False False 13 0
+brahms_p0p3 2.151 25 glyph/3/1/12/0/12 value_error sean= dot 4 noteheadBlackOnLine w,h= 1.36 0.93 vd 3.53 p1 {'w': [1.36, 0.52], 'h': [0.93, 3.38]} s1 [True, False, True] s2 False False 11 0
+brahms_p0p3 2.151 26 glyph/1/0/2/1/15 value_error sean= dot 4 noteheadBlackOnLine w,h= 1.4 1.18 vd 0.0 p1 {'w': [1.4, 0.19], 'h': [1.18, 0.1]} s1 [False, False, False] s2 False False 13 0
+brahms_p0p3 2.151 27 glyph/3/1/1/7/1 value_error sean= dot 4 noteheadBlackOnLine w,h= 1.48 1.21 vd 0.0 p1 {'w': [1.48, 1.52], 'h': [1.21, 0.4]} s1 [False, False, False] s2 False False 8 0
+brahms_p0p3 2.151 30 glyph/2/0/8/0/24 phantom_head sean= clef noteheadBlackOnLine w,h= 2.0 1.52 vd 0.0 p1 {'w': [2.0, 10.14], 'h': [1.52, 3.84]} s1 [False, True, False] s2 False True 2 12
+brahms_p0p3 2.151 31 glyph/3/1/5/2/2 value_error sean= dot 4 noteheadBlackOnLine w,h= 1.41 1.21 vd 0.0 p1 {'w': [1.41, 0.4], 'h': [1.21, 0.47]} s1 [False, False, False] s2 False False 11 0
+brahms 2.150 1 glyph/16/1/5/4/6 phantom_rest sean= stem restQuarter w,h= 0.55 3.12 vd 0.0 p1 {'w': [0.55, 10.29], 'h': [3.12, 0.93]} s1 [False, False, False] s2 False False 12 0
+litolff 2.150 2 glyph/16/1/9/11/6 phantom_rest sean= stem restQuarter w,h= 0.65 3.62 vd 0.0 p1 {'w': [0.65, 7.93], 'h': [3.62, 5.59]} s1 [False, False, False] s2 False False 9 0
+litolff 2.150 3 glyph/14/0/2/12/4 phantom_rest sean= stem restQuarter w,h= 0.69 3.26 vd 0.0 p1 {'w': [0.69, 2.02], 'h': [3.26, 1.48]} s1 [False, False, False] s2 False False 6 0
+litolff 2.150 4 glyph/7/1/0/7/15 phantom_rest sean= stem restQuarter w,h= 0.73 3.83 vd 0.0 p1 {'w': [0.73, 5.4], 'h': [3.83, 5.88]} s1 [False, False, False] s2 False False 3 0
+litolff 2.150 5 glyph/5/1/6/14/5 phantom_rest sean= stem restQuarter w,h= 0.61 3.41 vd 0.0 p1 {'w': [0.61, 5.73], 'h': [3.41, 1.62]} s1 [False, False, False] s2 False False 3 0
+brahms 2.150 6 glyph/21/0/6/8/11 phantom_rest sean= stem restQuarter w,h= 0.57 3.4 vd 0.0 p1 {'w': [0.57, 4.63], 'h': [3.4, 2.2]} s1 [False, False, False] s2 False False 2 0
+brahms 2.150 7 glyph/23/0/8/3/14 phantom_rest sean= stem restQuarter w,h= 0.55 2.74 vd 0.0 p1 {'w': [0.55, 7.48], 'h': [2.74, 1.42]} s1 [False, False, False] s2 False False 10 0
+litolff 2.150 8 glyph/14/0/9/9/4 phantom_rest sean= stem restQuarter w,h= 0.62 3.72 vd 0.0 p1 {'w': [0.62, 2.4], 'h': [3.72, 5.35]} s1 [False, False, False] s2 False False 5 0
+brahms 2.150 9 glyph/1/0/10/4/34 phantom_rest sean= stem restQuarter w,h= 0.77 3.33 vd 0.0 p1 {'w': [0.77, 6.61], 'h': [3.33, 2.68]} s1 [False, False, False] s2 False False 6 0
+brahms 2.150 10 glyph/16/0/5/5/12 phantom_rest sean= stem restQuarter w,h= 0.6 3.44 vd 0.0 p1 {'w': [0.6, 9.44], 'h': [3.44, 3.63]} s1 [False, False, False] s2 False False 1 0
+brahms 2.150 15 glyph/11/1/1/9/8 phantom_rest sean= stem restQuarter w,h= 0.35 3.11 vd 0.0 p1 {'w': [0.35, 10.86], 'h': [3.11, 0.58]} s1 [False, False, False] s2 False False 6 0
+litolff 2.150 18 glyph/11/0/7/15/0 phantom_rest sean= stem restQuarter w,h= 0.59 3.23 vd 0.0 p1 None s1 [False, False, False] s2 False False 3 0
+litolff 2.150 19 glyph/14/0/10/13/5 phantom_rest sean= stem restQuarter w,h= 0.74 4.18 vd 0.0 p1 {'w': [0.74, 1.75], 'h': [4.18, 9.23]} s1 [False, False, False] s2 False False 7 0
+brahms 2.150 20 glyph/9/1/3/8/9 phantom_rest sean= stem restQuarter w,h= 0.48 1.8 vd 0.0 p1 {'w': [0.48, 13.04], 'h': [1.8, 13.8]} s1 [False, False, False] s2 False False 12 0
+brahms 2.150 21 glyph/0/0/8/1/7 phantom_rest sean= barline restQuarter w,h= 0.26 1.43 vd 0.0 p1 None s1 [False, False, False] s2 True False 0 0
+brahms 2.137-review 1 glyph/0/0/4/1/6 phantom_head sean= slash noteheadBlackInSpace w,h= 1.51 0.83 vd 0.0 p1 {'w': [1.51, 4.2], 'h': [0.83, 6.2]} s1 [False, False, False] s2 False False 12 0
+brahms 2.137-review 10 glyph/0/0/8/5/5 phantom_head sean= slash noteheadHalfOnLine w,h= 1.04 1.01 vd 0.59 p1 {'w': [1.04, 5.4], 'h': [1.01, 2.53]} s1 [False, False, False] s2 False False 11 0
+brahms 2.137-review 3 glyph/12/0/11/6/5 phantom_head sean= slash noteheadBlackInSpace w,h= 1.38 0.9 vd 0.0 p1 {'w': [1.38, 0.34], 'h': [0.9, 4.32]} s1 [False, False, False] s2 False False 9 0
+litolff 2.137-review 5 glyph/13/0/5/8/4 phantom_head sean= slash noteheadBlackInSpace w,h= 1.76 1.2 vd 1.01 p1 {'w': [1.76, 3.71], 'h': [1.2, 1.12]} s1 [False, False, False] s2 False False 10 0
+brahms 2.137-review 7 glyph/15/1/9/4/17 phantom_head sean= slashes noteheadBlackOnLine w,h= 1.61 1.05 vd 0.0 p1 {'w': [1.61, 3.04], 'h': [1.05, 3.04]} s1 [False, False, False] s2 False False 6 0
+brahms 2.80-review-2 2 glyph/1/1/12/4/4 lost_rest sean= 8 rest noteheadBlackOnLine w,h= 0.75 0.72 vd 0.0 p1 {'w': [0.75, 11.66], 'h': [0.72, 7.65]} s1 [False, False, False] s2 False False 6 0
+brahms 2.80-review-2 4 glyph/1/0/13/5/11 lost_rest sean= 8 rest noteheadBlackInSpace w,h= 0.66 0.63 vd 0.0 p1 {'w': [0.66, 13.26], 'h': [0.63, 9.15]} s1 [False, False, False] s2 False False 7 0
+brahms 2.80-review-2 5 glyph/1/0/8/1/20 lost_rest sean= 8 rest noteheadBlackInSpace w,h= 0.77 0.61 vd 0.0 p1 {'w': [0.77, 11.37], 'h': [0.61, 9.52]} s1 [False, False, False] s2 False False 10 0
+brahms 2.81-review tile_07 glyph/7/0/0/2/10 rest_as_head sean= eighth rest noteheadBlackInSpace w,h= 1.0 0.91 vd 0.0 p1 {'w': [1.0, 6.58], 'h': [0.91, 4.89]} s1 [False, False, False] s2 False False 8 0
+brahms 2.81-review tile_18 glyph/23/1/12/4/0 value_error sean= dotted quarter noteheadBlackOnLine w,h= 1.33 1.23 vd 0.0 p1 {'w': [1.33, 0.36], 'h': [1.23, 0.4]} s1 [False, False, False] s2 False False 10 0
+brahms 2.83-review control_4 glyph/0/0/7/2/1 lost_note sean= Dot 4 noteheadBlackOnLine w,h= 1.81 0.59 vd 5.69 p1 {'w': [1.81, 10.2], 'h': [0.59, 11.0]} s1 [True, False, True] s2 False False 9 0
+brahms 2.83-review tile_06 glyph/11/1/10/3/10 lost_note sean= Dot 4 noteheadBlackInSpace w,h= 0.87 0.83 vd 0.0 p1 {'w': [0.87, 9.98], 'h': [0.83, 5.43]} s1 [False, False, False] s2 False False 6 0
+litolff 2.88-review tile_05 glyph/11/0/2/15/5 phantom_head sean= alto clef noteheadBlackInSpace w,h= 1.62 1.55 vd 0.0 p1 {'w': [1.62, 1.91], 'h': [1.55, 3.88]} s1 [False, False, False] s2 False False 2 0

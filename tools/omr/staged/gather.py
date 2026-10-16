@@ -14615,7 +14615,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.99: reads `detections` and the erased raster only.
         gather_unboxed_rest_ink(log, cells, local, detections,
                                 progress=progress)
-        # ⚠️ ROADMAP 2.150b (flag OMR_REST_STROKE_INTO_HEAD, default OFF): same raster, rest-classed boxes only.
+        # ⚠️ ROADMAP 2.150b (flag OMR_REST_STROKE_INTO_HEAD, default ON): same raster, rest-classed boxes only.
         gather_rest_ink_contact(log, cells, local, detections,
                                 progress=progress)
         # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME

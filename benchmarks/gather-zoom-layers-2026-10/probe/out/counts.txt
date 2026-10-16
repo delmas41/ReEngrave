@@ -1,0 +1,15 @@
+source, doc -> status counts (ERROR = ['lost_note', 'lost_rest', 'phantom_head', 'phantom_rest', 'rest_as_head', 'rest_for_note', 'value_error'])
+('2.145', 'brahms') {'ERROR': 9}
+('2.145', 'litolff') {'ERROR': 12}
+('2.146', 'brahms') {'right': 8, 'narrowed': 12}
+('2.146', 'litolff') {'right': 13, 'ERROR': 1}
+('2.148', 'litolff') {'twin_refused': 6, 'ERROR': 12, 'right_refused': 7, 'right': 3, 'narrowed': 1}
+('2.150', 'brahms') {'ERROR': 8, 'right': 5}
+('2.150', 'litolff') {'ERROR': 7, 'right': 1}
+('2.151', 'brahms_p0p3') {'ERROR': 22, 'right': 5, 'narrowed': 4}
+('older index galleries', 'brahms') {'right_refused': 3, 'box_not_head_or_rest': 6, 'right': 49, 'ERROR': 11, 'narrowed': 18, 'twin_refused': 2, 'no_box': 4}
+('older index galleries', 'litolff') {'box_not_head_or_rest': 4, 'right_refused': 13, 'right': 54, 'narrowed': 5, 'ERROR': 2, 'twin_refused': 11, 'no_box': 8, 'abstained': 1}
+TOTAL {'ERROR': 84, 'right': 138, 'narrowed': 40, 'twin_refused': 19, 'right_refused': 23, 'box_not_head_or_rest': 10, 'no_box': 12, 'abstained': 1} rows 327
+by doc {'litolff': 34, 'brahms': 28, 'brahms_p0p3': 22}
+errors by kind {'rest_as_head': 21, 'phantom_head': 15, 'value_error': 28, 'phantom_rest': 15, 'lost_rest': 3, 'lost_note': 2}
+older-index errors [('2.137-review', '1', 'brahms', 'phantom_head'), ('2.137-review', '10', 'brahms', 'phantom_head'), ('2.137-review', '3', 'brahms', 'phantom_head'), ('2.137-review', '5', 'litolff', 'phantom_head'), ('2.137-review', '7', 'brahms', 'phantom_head'), ('2.80-review-2', '2', 'brahms', 'lost_rest'), ('2.80-review-2', '4', 'brahms', 'lost_rest'), ('2.80-review-2', '5', 'brahms', 'lost_rest'), ('2.81-review', 'tile_07', 'brahms', 'rest_as_head'), ('2.81-review', 'tile_18', 'brahms', 'value_error'), ('2.83-review', 'control_4', 'brahms', 'lost_note'), ('2.83-review', 'tile_06', 'brahms', 'lost_note'), ('2.88-review', 'tile_05', 'litolff', 'phantom_head')]

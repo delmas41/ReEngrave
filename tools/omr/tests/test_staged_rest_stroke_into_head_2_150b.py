@@ -2,7 +2,7 @@
 
 STAGED. GATHER `gather.gather_rest_ink_contact` (Q.REST_INK_CONTACT, off the staff-erased raster, via the pure
 `rest_ink.measure`) and ADJUDICATE `family_precision.adjudicate_rest_is_not_a_rest` (reason `rest_stroke_into_a_head`),
-flag `OMR_REST_STROKE_INTO_HEAD` (default OFF; only `1/true/yes/on` enables).
+flag `OMR_REST_STROKE_INTO_HEAD` (default ON since 2026-10-16; only `0/false/no/off` disables).
 
 CONVENTION ASSUMED: a rest is a free-standing glyph (Gould, Behind Bars); a thin stroke of a few spaces ending in a
 solid head is a stem. WHAT WOULD FALSIFY IT: a print-confirmed rest whose box shows the thin stroke AND a head's ink
@@ -164,8 +164,15 @@ class TestRestStrokeIntoHead(unittest.TestCase):
         v = _decide("restQuarter", row, ON)
         self.assertIs(v.value, False)
 
-    def test_CONTROL_flag_off_keeps_everything(self):
+    def test_default_is_ON_and_refuses_the_stem(self):
+        """Sean 2026-10-16: 'Land the 2.150b ink test ... ON': no env var at all means ON."""
         v = _decide("restQuarter", STEM, {})
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "rest_stroke_into_a_head")
+        self.assertTrue(rest_ink.enabled())
+
+    def test_CONTROL_flag_off_keeps_everything(self):
+        v = _decide("restQuarter", STEM, {"OMR_REST_STROKE_INTO_HEAD": "0"})
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "rest")
 
@@ -256,7 +263,7 @@ class TestGather(unittest.TestCase):
     def test_CONTROL_flag_off_files_nothing(self):
         m = _blank()
         box = _stem_and_head(m)
-        log = self._run(m, [_det("restQuarter", *box)], env={})
+        log = self._run(m, [_det("restQuarter", *box)], env={"OMR_REST_STROKE_INTO_HEAD": "0"})
         self.assertEqual(_rows(log), [])
 
     def test_CONTROL_no_raster_abstains_never_defaults(self):

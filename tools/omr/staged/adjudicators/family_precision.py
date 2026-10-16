@@ -1061,7 +1061,7 @@ def _rest_is_a_barline_refusal(ev: Evidence, this_row,
 
 # §REST-WIDTH -- ROADMAP 2.150 (Sean 2026-10-16: "if the issue is a rest is not seen as a rest or confused with
 # something else then make sure we are dealing with global rules about rests"). Flag `OMR_REST_WIDTH_FLOOR`,
-# default OFF (only `1/true/yes/on` enables).
+# default ON since 2026-10-16 (only `0/false/no/off` disables).
 #
 # CONVENTION ASSUMED: a rest is a fixed glyph, printed at a fixed width in staff spaces (SMuFL Bravura: restQuarter
 # 1.08, rest8th 0.99, rest16th 1.28, restWhole/restHalf 1.13 spaces); a stem is a thin stroke (~0.1-0.15 space).
@@ -1112,7 +1112,7 @@ def _rest_narrower_than_its_class_refusal(ev: Evidence, this_row, detail: Dict[s
 
 
 # §REST-STROKE -- ROADMAP 2.150b (Sean 2026-10-16: "a rest box whose stroke runs on into a notehead is a stem; a real
-# rest stands free"). Flag `OMR_REST_STROKE_INTO_HEAD`, default OFF (only `1/true/yes/on` enables).
+# rest stands free"). Flag `OMR_REST_STROKE_INTO_HEAD`, default ON since 2026-10-16 (only `0/false/no/off` disables).
 #
 # CONVENTION ASSUMED: a rest is a free-standing glyph; a thin stroke of a few spaces that ends in a solid head is a
 # note's stem. WHAT WOULD FALSIFY IT: a print-confirmed rest whose box shows the thin stroke AND a head's ink in

@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
@@ -121,6 +122,24 @@ def build_record() -> dict:
 def _sidecar(*actions, reader=READERS.SESSION_TEST) -> dict:
     return {"record": "fixture", "staff": "staff/0/0/0", "reader": reader,
             "actions": list(actions)}
+
+
+_DOT_FLAG_WAS = None
+
+
+def setUpModule() -> None:
+    """These tests pin the review sidecar, not dots: the 2.151 flag (default ON
+    since 2026-10-16) adds `duration` basis rows to the fixture, so hold it off."""
+    global _DOT_FLAG_WAS
+    _DOT_FLAG_WAS = os.environ.get("OMR_DOT_BOXED_AS_A_HEAD")
+    os.environ["OMR_DOT_BOXED_AS_A_HEAD"] = "0"
+
+
+def tearDownModule() -> None:
+    if _DOT_FLAG_WAS is None:
+        os.environ.pop("OMR_DOT_BOXED_AS_A_HEAD", None)
+    else:
+        os.environ["OMR_DOT_BOXED_AS_A_HEAD"] = _DOT_FLAG_WAS
 
 
 class _Case(unittest.TestCase):

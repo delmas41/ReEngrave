@@ -28,8 +28,9 @@ ENV = "OMR_REST_STROKE_INTO_HEAD"
 
 
 def enabled() -> bool:
-    """`OMR_REST_STROKE_INTO_HEAD`, default OFF (ROADMAP 2.150b); only an explicit `1/true/yes/on` enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_REST_STROKE_INTO_HEAD`, default ON since 2026-10-16 (ROADMAP 2.150b; Sean: "Land the 2.150b ink test ... ON");
+    only an explicit off-word disables."""
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 CLOSE_SP = 0.25          # vertical closing, spaces: bridges erased-staff-line gaps in a stem
