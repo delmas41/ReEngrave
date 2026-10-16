@@ -99,6 +99,7 @@ from ..record import ABSTAIN, Kind, Q, Scope
 # a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is.
 from . import ownership as _ledger
 from . import key_slots as _key_slots
+from . import head_rest_shape as _head_rest_shape
 from . import letter_cover as _letter_cover
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
@@ -3195,7 +3196,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
-          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST),
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
+          Q.UNBOXED_REST_SHAPE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3211,6 +3213,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
+                                     "is_a_rest_shape",
                                      OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -3471,6 +3474,11 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     rest_twin = _rest_twin_refusal(ev, box_row, detail)
     if rest_twin is not None:
         return rest_twin
+    # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
+    # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).
+    rest_shape = _head_rest_shape.head_rest_refusal(ev, box_row, detail)
+    if rest_shape is not None:
+        return rest_shape
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same

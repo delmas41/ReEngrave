@@ -122,6 +122,12 @@ COVERED: Dict[str, Dict[str, str]] = {
         "no_ink_reading": "GATHER filed no ink measurement: nothing to measure",
         "no_shape_reading": "GATHER filed no shape row: nothing to measure",
     },
+    "adjudicate_head_ink_is_a_rest": {
+        "rest8th_head_ink": THRESHOLD, "rest8th_head_ink_displaced": THRESHOLD,
+        "restQuarter_head_ink": THRESHOLD,
+        "no_head_refused_on_the_ink": "no covering head box was refused "
+                                      "`is_a_rest_shape`: the rule does not apply",
+    },
     "adjudicate_narrow_box_is_an_eighth_rest": {
         "rest8th_shape": THRESHOLD, "not_rest_shaped": THRESHOLD,
         "shape_cannot_tell": THRESHOLD,
@@ -146,6 +152,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "is_a_beam_piece": THRESHOLD,
         # ROADMAP 2.142: share of the smaller box a rest box covers
         "is_a_rest_twin": THRESHOLD,
+        # ROADMAP 2.145: the tightest of 2.99's shape slacks over the head's ink
+        "is_a_rest_shape": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },
