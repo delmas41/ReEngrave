@@ -23,7 +23,7 @@ stem make a rest-sized cluster: 14 Litolff `quarter` readings), so the shape ALO
 
 ## Two decisions, one reading
 
-* `adjudicate_notehead_is_not_a_notehead` calls `head_rest_refusal` (reason `is_a_rest_shape`): the HEAD
+* `adjudicate_notehead_is_not_a_notehead` calls `read_head_ink` (reason `is_a_rest_shape`): the HEAD
   leaves the bar, as every other refused head does.
 * `adjudicate_head_ink_is_a_rest` (here, `Q.HEAD_INK_IS_A_REST`, on the CLUSTER's subject) says which rest:
   `"eighth"` / `"quarter"`. EVALUATE's `size_head_ink_rest` gives it its length (class, never the bar);
@@ -117,10 +117,11 @@ def _read_ink(row, step: Optional[float] = None) -> Ruling:
     return _u.adjudicate_unboxed_ink_is_a_rest(stub)
 
 
-def read_head_ink(ev: Evidence, cell, head_row) -> Optional[HeadInk]:
+def read_head_ink(ev: Evidence, cell, head_row, clusters) -> Optional[HeadInk]:
     """The rest this notehead box's ink reads as, or None.
 
-    `ev` must declare `Q.UNBOXED_REST_SHAPE`, `Q.STEM`, `Q.GLYPH_BOX` and `Q.REST`. None for: a box
+    `clusters` is the cell's `Q.UNBOXED_REST_SHAPE` rows, read by the CALLER (the decision that declares the
+    quantity reads it in its own body). `ev` must declare `Q.STEM`, `Q.GLYPH_BOX` and `Q.REST`. None for: a box
     that is not a notehead; no cluster of ink on it; a cover that is not the head's alone; ANY stem
     touching the head or the ink (a rest owns none: rule 8); a rest box already on it (2.142's);
     two head boxes on one ink (a chord, or a box boxed twice); a shape that is not a rest's.
@@ -129,7 +130,7 @@ def read_head_ink(ev: Evidence, cell, head_row) -> Optional[HeadInk]:
     if head is None or cell is None:
         return None
     best = None
-    for r in ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+    for r in clusters:
         d = r.detail or {}
         box = d.get("bbox_canonical")
         if not box or len(box) != 4 or "width_spaces" not in d:
@@ -184,22 +185,9 @@ def read_head_ink(ev: Evidence, cell, head_row) -> Optional[HeadInk]:
     return None
 
 
-def head_rest_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
-    """`Ruling(True, "is_a_rest_shape")` where a stemless head box's ink reads as a rest, else None.
-
-    Called from `adjudicate_notehead_is_not_a_notehead`, whose `wants` carry what `read_head_ink` reads.
-    """
-    if not enabled() or box_row is None:
-        return None
-    cell = ev.subject.at(Kind.CELL)
-    got = read_head_ink(ev, cell, box_row)
-    if got is None:
-        return None
-    detail["rest_shape"] = {"value": got.value, "displaced": got.displaced, "cluster": got.cluster.subject.to_key()}
-    return _margins.attach(
-        Ruling(value=True, reason="is_a_rest_shape", used=(box_row.id, got.cluster.id), detail=detail),
-        margin=got.margin, axis=got.axis or "rest_shape", unit="mixed (spaces, steps, column share)",
-        band=None, would_choose=(True,))
+def rest_shape_detail(got: HeadInk) -> Dict[str, Any]:
+    """What a refused head's verdict records of the reading (the caller builds the `Ruling`)."""
+    return {"value": got.value, "displaced": got.displaced, "cluster": got.cluster.subject.to_key()}
 
 
 @decision(
@@ -237,7 +225,7 @@ def adjudicate_head_ink_is_a_rest(ev: Evidence) -> Ruling:
         if (v is None or v.outcome is not Outcome.DECIDED or v.value is not True
                 or v.reason != REASON):
             continue
-        got = read_head_ink(ev, cell, g)
+        got = read_head_ink(ev, cell, g, ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
         if got is None or got.cluster.id != mine.id:
             continue
         d = {"head": g.subject.to_key(), "displaced": got.displaced,

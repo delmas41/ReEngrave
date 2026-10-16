@@ -3476,9 +3476,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         return rest_twin
     # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
     # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).
-    rest_shape = _head_rest_shape.head_rest_refusal(ev, box_row, detail)
-    if rest_shape is not None:
-        return rest_shape
+    if _head_rest_shape.enabled():
+        _cell = ev.subject.at(Kind.CELL)
+        got = _head_rest_shape.read_head_ink(
+            ev, _cell, box_row,
+            ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=_cell)
+            if _cell is not None else ())
+        if got is not None:
+            detail["rest_shape"] = _head_rest_shape.rest_shape_detail(got)
+            return _margins.attach(
+                Ruling(value=True, reason="is_a_rest_shape",
+                       used=(box_row.id, got.cluster.id), detail=detail),
+                margin=got.margin, axis=got.axis or "rest_shape",
+                unit="mixed (spaces, steps, column share)", band=None,
+                would_choose=(True,))
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same

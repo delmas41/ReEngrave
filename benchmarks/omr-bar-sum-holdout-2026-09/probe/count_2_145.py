@@ -55,6 +55,7 @@ def main(path, out=None):
             bycell["/".join(s.split("/")[:5])].append(s)
     tab = collections.Counter()
     hits = []
+    ctrl = {"stemmed_reads_rest": [], "stemless_not_rest_shaped": []}
     for row in d["shape"]:
         by = [b for b in (row.get("covered_by") or []) if b != "ledgerLine"]
         if not by or not all(b.startswith("notehead") for b in by) or (row.get("coverage") or 0) < 0.3:
@@ -75,6 +76,12 @@ def main(path, out=None):
                strict.split(":")[0] if strict in ("eighth", "quarter") else "-",
                free.split(":")[0] if free in ("eighth", "quarter") else "-")
         tab[key] += 1
+        rec_ = {"head": h, "class": B[h][0], "page_bbox": B[h][2], "score": B[h][1], "strict": strict, "free": free,
+                "step": row["staff_step"], "w": row["width_spaces"], "h": row["height_spaces"]}
+        if not refused and not stemless and strict in ("eighth", "quarter"):
+            ctrl["stemmed_reads_rest"].append(rec_)
+        if not refused and stemless and free not in ("eighth", "quarter"):
+            ctrl["stemless_not_rest_shaped"].append(rec_)
         if free in ("eighth", "quarter") and not refused and stemless:
             hits.append({"head": h, "cluster": row["subject"], "class": B[h][0], "strict": strict, "free": free,
                          "step": row["staff_step"], "w": row["width_spaces"], "h": row["height_spaces"],
@@ -87,8 +94,10 @@ def main(path, out=None):
     print("CANDIDATES (standing, stemless head box; ink read a rest step-free):", len(hits))
     print("  of which strict (shipped windows) reads a rest:", sum(1 for x in hits if x["strict"] in ("eighth", "quarter")))
     print("  with a DECIDED duration:", sum(1 for x in hits if x["dur"] and x["dur"][0] == "decided"))
+    print("controls: stemmed heads whose ink reads a rest by shape alone:", len(ctrl["stemmed_reads_rest"]),
+          "| stemless heads not rest-shaped:", len(ctrl["stemless_not_rest_shaped"]))
     if out:
-        json.dump(hits, open(out, "w"), indent=1)
+        json.dump({"hits": hits, "controls": ctrl}, open(out, "w"), indent=1)
 
 
 main(*sys.argv[1:])
