@@ -1,5 +1,5 @@
 """ROADMAP 2.148 (STAGED GATHER `gather.head_interior_white` + ADJUDICATE `rhythm.adjudicate_duration`), flag
-`OMR_HEAD_FILL_FIRST`, default OFF.
+`OMR_HEAD_FILL_FIRST`, default ON since 2026-10-16 (Sean).
 
 Sean 2026-10-16: "The notehead should be determined first as either black or hollow (containing white) THEN determine if it
 has a stem and then if there is anything on the stem." / "The rule should be applied at the first step." A BLACK-classed head
@@ -77,7 +77,7 @@ def _head(log, *, share, stem=True, rows_read=20, with_reading=True, beam=False)
 
 
 def _run(log, on=True):
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else ""}):
+    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
         adjudicate.run(log)
 
 
@@ -184,10 +184,15 @@ class TestOnlyAHeadSizedBox(unittest.TestCase):
 
 class TestTheFlag(unittest.TestCase):
 
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(rhythm.head_fill_first_enabled())
+            self.assertTrue(rhythm.head_fill_first_enabled())
+
+    def test_off_word_disables(self):
+        for w in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: w}):
+                self.assertFalse(rhythm.head_fill_first_enabled())
 
 
 if __name__ == "__main__":

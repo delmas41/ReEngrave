@@ -12,6 +12,22 @@ Second of the per-stage sequence documents; GATHER is
 
 ---
 
+## 0. Reading order for a note (Sean 2026-10-16) -- a RULE, not a description
+
+"We also need to make sure that anything regarding deciding what a note is follows this rule.  Notehead first, stem second, beam or flag third, chords or notes sharing a stem determined forth, then trem slash or anything else."
+
+Every decision about what a note is reads in this order, and a later step reads the earlier steps' answers and never
+overturns them:
+
+1. **The notehead** -- black or hollow (holding white). ROADMAP 2.148.
+2. **The stem** -- does this head have one, which way.
+3. **Beam or flag** -- what is at the stem's tip (2.146: the tip decides "no beam").
+4. **Chords / notes sharing a stem** -- one stem, one value (2.78).
+5. **Tremolo slash, or anything else.**
+
+Where the code asks these out of order today is ROADMAP 2.149's audit (each violation listed with its function and fixed
+one at a time, each with Sean's tiles).
+
 ## 1. What happens around the stage (`pipeline.decide`)
 
 1. GATHER has frozen the log. `adjudicate.run` freezes it again if a caller

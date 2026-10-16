@@ -4217,3 +4217,29 @@ and identification is one of the things we do best so it should not be able to b
   non-notes touched, nothing new; Brahms truth unchanged.** Lost by the gate: tiles 23 (1.99 sp wide), 26 (box 3 sp), 14.
 * Not measured: Brahms beyond p0-1; a third publisher. The head-size cut-offs are the existing `HEAD_BOX_*` plus a 1.1 sp
   minimum width set on these tiles (narrows only what the first step reads; the old path stays).
+## 2.149 -- audit: where note decisions break Sean's reading order (2026-10-16; read from main 98a2c442, no code changed)
+Rule (Sean 2026-10-16): notehead first, stem second, beam or flag third, chords / shared stem fourth, tremolo slash or
+anything else fifth; a later step never decides or overturns an earlier one. All STAGED. Read from code; no record counts
+yet (each line names the reason string to count). Manager spot-checked #3 and #4 against the tree.
+1. `rhythm.adjudicate_duration` ~4403-4565: a BLACK-classed head's hollow ink is asked only after beams/flags/tip came back
+   empty (`not flag_levels and not tip_ink`, `strokes_before_hollow == (0,0,0)`); beam/flag branches return first
+   (`beam_discounted_uncertain`, `hooks_counted`, `flag_ink_unread`, `stem_tip_reads_no_beam`). -> 2.148.
+2. Same function ~3660/3908: an ink-hollow head zeroes beam levels, but strokes then block the hollow answer (step 3
+   reopens step 1). -> 2.148.
+3. Bar arithmetic picks head fill: `consequences.reconcile_duration` (`meter_reconciliation`) and
+   `inferences.solve_bare_stem_bar` (`the_bars_arithmetic_forces_this_length`) choose among black/half/whole candidates by
+   the bar; `consequences._admitted` lets a DECIDED note move its beam level +/-1 on arithmetic alone (also against "the bar
+   sum may only confirm").
+4. Shared stem overwrites a head's own fill: `stem_value.adjudicate_stem_value` + `consequences.share_stem_value`
+   (`stem_value_follows`) write the stem's value AND `head_fill` over a mate that read differently.
+5. A flag or beam reopens an open head: `open_head_flag_contradiction`, `second_hollow_contradicted_by_marks`,
+   `hollow_head_on_a_beamed_stem` (likely low volume).
+6. `reconcile_chord_duration` (`chord_mate_shares_the_stem`) copies a mate's beam level into a narrowed note (beam count
+   only; medium-low).
+7-8. Beam levels computed where no stem direction was decided (`side is None`); `head_and_marks` can return a value with no
+   stem read (`stems_attached == 0`).
+9-10. Tremolo slash refuses a head box (`tremolo_slash_crosses_stem`); `_not_a_slash` drops stroke ink before beams are
+   counted (rule-8 safe, low).
+Respects the order: `_head_is_open` first; class-hollow zeroes beams; `whole_class_on_a_stem`; `stem_value` base from heads,
+then tip beams, then dots; 2.130/2.43; `collapse_arc_ink_not_beam`.
+Proposed fix order: 2.148 (1-2) -> bar arithmetic (3) -> shared stem (4) -> the rest.

@@ -3161,7 +3161,7 @@ def _head_class(ev: Evidence) -> Optional[str]:
 
 #: ROADMAP 2.148 (Sean 2026-10-16: "The notehead should be determined first as either black or hollow (containing white)
 #: THEN determine if it has a stem and then if there is anything on the stem"; "The rule should be applied at the first
-#: step"). Default OFF; only an explicit on-word is ON.
+#: step"). Default ON since 2026-10-16 (Sean: "Land 2.148 ON."); an explicit off-word disables.
 HEAD_FILL_FIRST_ENV = "OMR_HEAD_FILL_FIRST"
 #: A BLACK-classed head whose middle rows hold white between ink on at least this share is HOLLOW. ⚠️ MEASURED on ONE plate
 #: (Sean's Brahms pdf 0 hand truth): filled <= 0.06, hollow >= 0.18 -- the cut is the hollow population's own minimum, so a
@@ -3174,7 +3174,8 @@ HEAD_FIRST_MIN_WIDTH_SPACES = 1.1
 
 
 def head_fill_first_enabled() -> bool:
-    return os.environ.get(HEAD_FILL_FIRST_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.148, default ON since 2026-10-16 (Sean: "Land 2.148 ON."); only an explicit off-word disables."""
+    return os.environ.get(HEAD_FILL_FIRST_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
