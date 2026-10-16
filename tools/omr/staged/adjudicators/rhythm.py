@@ -3236,6 +3236,41 @@ def _head_class(ev: Evidence) -> Optional[str]:
     return max(rows, key=lambda r: (r.score or 0.0)).value
 
 
+#: ROADMAP 2.148 (Sean 2026-10-16: "The notehead should be determined first as either black or hollow (containing white)
+#: THEN determine if it has a stem and then if there is anything on the stem"; "The rule should be applied at the first
+#: step"). Default ON since 2026-10-16 (Sean: "Land 2.148 ON."); an explicit off-word disables.
+HEAD_FILL_FIRST_ENV = "OMR_HEAD_FILL_FIRST"
+#: A BLACK-classed head whose middle rows hold white between ink on at least this share is HOLLOW. ⚠️ MEASURED on ONE plate
+#: (Sean's Brahms pdf 0 hand truth): filled <= 0.06, hollow >= 0.18 -- the cut is the hollow population's own minimum, so a
+#: head between the two populations is NOT decided (rule 8; a cut-off measured on our plates only narrows).
+HEAD_INTERIOR_WHITE_HOLLOW_MIN = 0.18
+HEAD_INTERIOR_WHITE_FILLED_MAX = 0.06
+#: The narrowest box read as ONE head at the first step (staff spaces). Sean's 2.148 tiles: a key flat (1.06) and a C-clef
+#: piece (1.01) were boxed as heads; Litolff halves measure 1.43-1.99 wide, Brahms heads ~1.3.
+HEAD_FIRST_MIN_WIDTH_SPACES = 1.1
+
+
+def head_fill_first_enabled() -> bool:
+    """ROADMAP 2.148, default ON since 2026-10-16 (Sean: "Land 2.148 ON."); only an explicit off-word disables."""
+    return os.environ.get(HEAD_FILL_FIRST_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.148: the head's own interior-white reading (`Q.NOTEHEAD_INK.detail.interior_white`, GATHER
+    `head_interior_white`), asked FIRST. `{"fill": "hollow"|"black"|None, ...}`; None where no reading (older records)."""
+    rows = ev.rows(Q.NOTEHEAD_INK)
+    if not rows:
+        return None
+    iw = (rows[-1].detail or {}).get("interior_white")
+    if not isinstance(iw, dict) or not iw.get("rows_read"):
+        return None
+    share = float(iw.get("rows_share") or 0.0)
+    fill = ("hollow" if share >= HEAD_INTERIOR_WHITE_HOLLOW_MIN
+            else "black" if share <= HEAD_INTERIOR_WHITE_FILLED_MAX else None)
+    return {"fill": fill, "rows_share": share, "hole_share": iw.get("hole_share"), "row": rows[-1].id,
+            "margin": round(share - HEAD_INTERIOR_WHITE_HOLLOW_MIN, 4)}
+
+
 def _head_is_open(base: Optional[float], ev: Evidence) -> bool:
     """Is THIS glyph's own notehead OPEN (hollow)? ROADMAP 2.43, DECISIONS
     2026-09-30 (Sean): *"Correct, open noteheads are never beamed except
@@ -3775,6 +3810,33 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # it touches) needs this head's attached stems before any filtering,
     # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
     own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    # ⚠️ ROADMAP 2.148 (flag `OMR_HEAD_FILL_FIRST`): THE HEAD FIRST (Sean 2026-10-16). A BLACK-classed head whose own ink holds
+    # white inside it is HOLLOW; with a stem of its own it is a half -- decided here, before any stroke, flag or tip is read,
+    # so nothing below can make it a quarter or beam it (2.43: an open head is never beamed). No stem -> not decided here
+    # (a whole or a half, the next step's question). Between the populations -> unchanged (rule 8), the margin recorded.
+    head_first = None
+    if head_fill_first_enabled() and base == _HEAD_BEATS["noteheadBlack"]:
+        head_first = _head_reads_hollow_first(ev)
+        # Sean's 2.148 tiles (2026-10-16): every wrong change and every non-note sat in a box that is not ONE head's size
+        # (a chord/head+stem 3.8 sp tall, a beam piece 2.7 sp wide, a head clipped to 0.9 sp, a clef, a key flat). The head
+        # is read only in a head-sized box; any other box keeps today's path.
+        _sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        _sp = float(_sp_rows[-1].value) if _sp_rows else 0.0
+        if head_first is not None and not (head_box is not None and _sp > 0
+                                           and HEAD_BOX_MIN_SPACES <= head_box[3] / _sp <= HEAD_BOX_MAX_SPACES
+                                           and HEAD_FIRST_MIN_WIDTH_SPACES <= head_box[2] / _sp <= HEAD_BOX_MAX_WIDTH_SPACES):
+            head_first = {**head_first, "fill": None, "not_head_sized": True}
+        if head_first is not None and head_first["fill"] == "hollow" and own_stems:
+            base = _HEAD_BEATS["noteheadHalf"]
+            hollow = True
+            open_by_class = True
+            used.append(head_first["row"])
+            head_first["settled"] = "half_on_a_stem"
+        elif head_first is not None and head_first["fill"] == "black":
+            # The head was read SOLID at the first step: the late centred-window reading (2.23, `_head_is_open`'s ink half)
+            # may not turn it hollow afterwards (Sean 2026-10-16: "will you also amend the previous application of the rule?").
+            hollow = False
+            head_first["settled"] = "black"
     # ⚠️ ROADMAP 2.25, FIRST: a stroke standing where a `ledgerLine` glyph is
     # boxed in THIS cell is that ledger line, not a beam -- dropped before
     # side/tolerance filtering ever sees it, so those steps (which reason
@@ -4075,7 +4137,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
-    shared = {"head": str(head), "head_is_open": hollow,
+    shared = {"head": str(head), "head_is_open": hollow, **({"head_fill_first": head_first} if head_first else {}),
               "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
@@ -4495,6 +4557,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             fill_row = ink_rows[-1]
     ink_hollow = (fill_row is not None
                   and _ink_reads_decisively_hollow(fill_row.detail or {}))
+    if head_first is not None and head_first.get("settled") == "black":
+        ink_hollow = False   # 2.148: the first step read the head solid; the late window does not overrule it
 
     # ⚠️⚠️ ROADMAP 2.70 (Sean, DECISIONS 2026-10-09): *"A hollow note with
     # nothing on the stem is always a half note."* CONVENTION CONFIRMED. The

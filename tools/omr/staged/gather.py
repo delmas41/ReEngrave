@@ -8805,6 +8805,59 @@ def gather_head_line_cut(log: Log, cells: Sequence[Any],
 NOTEHEAD_INK_CENTER_SHRINK = 0.30
 
 
+def head_interior_white(img: Any, box: Tuple[float, float, float, float]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.148 (Sean 2026-10-16: the notehead is determined FIRST as black or hollow -- "containing white"). Does the
+    head hold white INSIDE its ink, wherever and however thin? `img` is a cell raster with 0 = ink, `box` the detector's own
+    `(x, y, w, h)` in that frame. Two readings, scale-free (fractions of the box), never collapsed:
+      `rows_share`  of the box's middle rows (20-80% of its height) holding ink, the share with a white run strictly between
+                    two ink pixels inside the middle columns (12-88% of its width) -- a half's slit counts even where it
+                    opens out of a broken rim (Litolff's thin diagonal slit, which 2.23's centred window reads as ink);
+      `hole_share`  the largest white component enclosed by ink, centred in the box's middle half, as a share of the box.
+    Measured before the build on Sean's Brahms 317803 pdf 0 hand truth (page raster, 600 dpi): filled heads rows_share
+    <= 0.06 (378), hollow >= 0.18 (33); hole_share 0 on every filled head, > 0 on every hollow one. `None` off the raster."""
+    if img is None:
+        return None
+    import numpy as _np
+    x, y, w, h = (float(v) for v in box)
+    H, W = img.shape[:2]
+    x0, y0, x1, y1 = int(round(x)), int(round(y)), int(round(x + w)), int(round(y + h))
+    if x0 < 0 or y0 < 0 or x1 > W or y1 > H or x1 - x0 < 4 or y1 - y0 < 4:
+        return None
+    ink = _np.asarray(img[y0:y1, x0:x1]) == 0
+    hh, ww = ink.shape
+    a, b = int(0.12 * ww), max(int(0.12 * ww) + 1, int(0.88 * ww))
+    minrun = max(1, int(round(0.05 * ww)))
+    n = hit = 0
+    for yy in range(int(0.2 * hh), max(int(0.2 * hh) + 1, int(0.8 * hh))):
+        r = ink[yy, a:b]
+        xs = _np.nonzero(r)[0]
+        if len(xs) == 0:
+            continue
+        n += 1
+        seg = r[xs[0]:xs[-1] + 1]
+        run = best = 0
+        for v in seg:
+            run = run + 1 if not v else 0
+            best = max(best, run)
+        hit += best >= minrun
+    rows_share = hit / n if n else 0.0
+    from scipy import ndimage as _nd
+    lab, k = _nd.label(~ink)
+    hole = 0.0
+    if k:
+        border = set(_np.unique(_np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
+        for i in range(1, k + 1):
+            if i in border:
+                continue
+            ys, xs = _np.nonzero(lab == i)
+            if len(ys) < 3:
+                continue
+            cy, cx = ys.mean() / hh, xs.mean() / ww
+            if 0.25 <= cy <= 0.75 and 0.25 <= cx <= 0.75:
+                hole = max(hole, len(ys) / float(ink.size))
+    return {"rows_share": round(rows_share, 4), "hole_share": round(hole, 4), "rows_read": n, "box": [x0, y0, x1 - x0, y1 - y0]}
+
+
 def notehead_ink_under(img: Any, box: Tuple[float, float, float, float]
                        ) -> Optional[Dict[str, Any]]:
     """The ink fraction inside a notehead's OWN detected box, two ways.
@@ -9034,6 +9087,7 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
             d = dets[gi]
             box = (d.x_canonical, d.y_canonical,
                   d.width_canonical, d.height_canonical)
+            interior = head_interior_white(raw_img, box) if raw_img is not None else None   # 2.148: the DETECTOR's own box
             if space_canonical and is_regular_notehead(str(d.smufl_name)):
                 recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
                 if recentred:
@@ -9116,6 +9170,8 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 extra["ink_frame"] = "page"
             if part_boxed is not None and part_boxed["reason"] != "box_head_sized":
                 extra["part_boxed"] = part_boxed
+            if interior is not None:
+                extra["interior_white"] = interior
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
