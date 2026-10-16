@@ -767,6 +767,87 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
     return None
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.142 (flag `OMR_HEAD_IS_A_REST_TWIN`, default OFF) -- a stemless
+# notehead box lying on a non-whole REST box's ink is that rest's ink.
+#
+# Sean (2026-10-15, `out/print/2.141-fix23-review` tile 3): an eighth REST boxed
+# `noteheadBlackOnLine` was written as a note. 27 Litolff boxes (20261014-night
+# record, streamed) are head boxes whose ink the detector ALSO boxed as a quarter/
+# eighth/sixteenth/32nd rest (>= 0.8 of the smaller box shared) and that nothing
+# refused; 20 of those rests were refused `rest_overlaps_a_notehead` / duplicate by
+# the HEAD'S presence, so the pair resolved to the wrong ink.
+#
+# TWO WITNESSES FROM TWO SOURCES: the detector's rest-class box (a second CLASS on
+# the same ink counts once -- it alone is NOT enough: 29 head boxes under a `beam`
+# box are slur-starts and real heads, benchmarks/omr-bar-sum-holdout-2026-09
+# FINDINGS 2.142) AND the stem finder's silence (a rest owns no stem; a stem touching
+# the box, any stem, declines the rule: rule 8).
+# CONVENTION ASSUMED: a black head with no stem touching it, on exactly a rest box's
+# ink, is the rest (a chord head carries its chord's stem). WHAT WOULD FALSIFY IT: a
+# print-confirmed stemless head with a rest box on it. NOT CONFIRMED with Sean beyond
+# his two tiles; blind tiles out/print/2.142-review.
+# ─────────────────────────────────────────────────────────────────────────────
+
+REST_TWIN_ENV = "OMR_HEAD_IS_A_REST_TWIN"
+REST_TWIN_REASON = "is_a_rest_twin"
+#: Share of the SMALLER box the two boxes must share: the floor `consequences.TWIN_BOX_MIN_OVERLAP`
+#: (2.98) measured on 30 Litolff pairs at 0.93-1.0. Restated, with its source, because
+#: `consequences` imports this package.
+REST_TWIN_COVER_MIN = 0.8
+#: Rest classes whose ink is a rest and nothing else. restWhole/restHalf are not here:
+#: `adjudicate_notehead_is_a_whole_rest` owns the whole rest.
+REST_TWIN_CLASSES = ("restQuarter", "rest8th", "rest16th", "rest32nd", "rest64th")
+
+
+def head_is_a_rest_twin_enabled() -> bool:
+    return os.environ.get(REST_TWIN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _box_cover(a, b) -> float:
+    """Share of the SMALLER of two `(x, y, w, h)` boxes that both cover."""
+    iw = min(a[0] + a[2], b[0] + b[2]) - max(a[0], b[0])
+    ih = min(a[1] + a[3], b[1] + b[3]) - max(a[1], b[1])
+    small = min(a[2] * a[3], b[2] * b[3])
+    if iw <= 0 or ih <= 0 or small <= 0:
+        return 0.0
+    return iw * ih / small
+
+
+def _rest_twin_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`Ruling(True, "is_a_rest_twin")` where a non-whole rest box covers this stemless head box, else None."""
+    if not head_is_a_rest_twin_enabled():
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or box_row is None:
+        return None
+    v = box_row.value
+    head = (float(v[1]), float(v[2]), float(v[3]), float(v[4]))
+    for st in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        sv = st.value
+        if isinstance(sv, (list, tuple)) and len(sv) >= 4 and _geom.stem_touches_head(
+                tuple(float(x) for x in sv[:4]), head):
+            return None                      # a stem stands on it: not a rest (rule 8: no refusal on a guess)
+    rest_subjects = {r.subject for r in ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    best = None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        rv = r.value
+        if r.subject not in rest_subjects or not isinstance(rv, (list, tuple)) or len(rv) != 5 \
+                or rv[0] not in REST_TWIN_CLASSES:
+            continue
+        cover = _box_cover(head, (float(rv[1]), float(rv[2]), float(rv[3]), float(rv[4])))
+        if cover >= REST_TWIN_COVER_MIN and (best is None or cover > best[0]):
+            best = (cover, r)
+    if best is None:
+        return None
+    cover, r = best
+    detail["rest_twin"] = {"box": r.id, "class": r.value[0], "cover": round(cover, 3)}
+    return _margins.attach(
+        Ruling(value=True, reason="is_a_rest_twin", used=(box_row.id, r.id), detail=detail),
+        margin=cover - REST_TWIN_COVER_MIN, axis="rest_box_cover_fraction",
+        unit="fraction of the smaller box shared", band=None, would_choose=(True,))
+
+
 #: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
 #: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
 #: imported: `family_precision` imports FROM this module
@@ -3113,7 +3194,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
-          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER),
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3128,6 +3209,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
+                                     REST_TWIN_REASON,
                                      OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -3384,6 +3466,10 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     beam_piece = _beam_piece_refusal(ev, box_row, spacing, detail)
     if beam_piece is not None:
         return beam_piece
+    # ROADMAP 2.142 (default OFF): a stemless head box on a non-whole rest box's ink is the rest.
+    rest_twin = _rest_twin_refusal(ev, box_row, detail)
+    if rest_twin is not None:
+        return rest_twin
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
