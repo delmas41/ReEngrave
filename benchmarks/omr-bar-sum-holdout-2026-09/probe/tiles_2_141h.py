@@ -76,7 +76,7 @@ def geometry(label, cells):
 
 geos = {m: geometry(m, {tuple(s["cell"]) for s in SPEC if s["movement"] == m}) for m in ("lit", "brah")}
 items = list(SPEC)
-rnd = random.Random(21412)
+rnd = random.Random(int(__import__("os").environ.get("TILE_SEED", 21412)))
 rnd.shuffle(items)
 font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 110)
 public = {"dpi": 600, "question": (

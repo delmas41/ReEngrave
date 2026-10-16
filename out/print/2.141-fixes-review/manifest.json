@@ -1,0 +1,71 @@
+{
+ "dpi": 600,
+ "question": "In the bar inside the RED corners, the notes inside the BLUE corners: reading left to right, what is the value of each: an eighth (beamed or flagged), a sixteenth, a quarter, a dotted eighth, a dotted quarter, or something else? Say if you cannot tell. If the bar has a second voice, say what that voice has.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "blue_notes": 4
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "blue_notes": 3
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "blue_notes": 3
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "blue_notes": 4
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "blue_notes": 3
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "blue_notes": 4
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "blue_notes": 1
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "blue_notes": 1
+  }
+ ]
+}
