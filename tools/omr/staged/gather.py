@@ -811,7 +811,7 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                   f"candidate(s), {len(witnesses)} witness(es)")
 
 
-#: ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF). Sean's four misses on the 2.109 crops of Brahms p24 (a staccatissimo wedge printed over
+#: ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default ON since 2026-10-15). Sean's four misses on the 2.109 crops of Brahms p24 (a staccatissimo wedge printed over
 #: a head, never written) are not a reading fault: the production detector DID draw a box on each, at confidence 0.138-0.165 (one at
 #: 0.05, as `augmentationDot`), under the 0.25 floor every reader trusts (`benchmarks/omr-staccatissimo-2026-10/FINDINGS.md` Sec.9).
 #: This is the 2.53 pattern for marks: the SAME detector re-run on the cell at a lower floor, a box kept only where it is guided -- its
@@ -827,9 +827,9 @@ WEDGE_RESCUE_SAME_MARK_IOU = 0.2
 
 
 def wedge_rescue_enabled() -> bool:
-    """`OMR_WEDGE_RESCUE`, default OFF; `1/true/yes/on` enables."""
-    return os.environ.get(WEDGE_RESCUE_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_WEDGE_RESCUE`, default ON (Sean 2026-10-15, ROADMAP 2.138, tiles 10/10); only an explicit off-word disables."""
+    return os.environ.get(WEDGE_RESCUE_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 def _is_mark_class(name: str) -> bool:
@@ -14247,7 +14247,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_lowconf_rescue(log, cells, local, detections,
                               detector=detector, imgsz=imgsz,
                               progress=progress)
-        # ⚠️ ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF): AFTER the 2.53 rescue (a rescued head can be the witness) and BEFORE every
+        # ⚠️ ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default ON since 2026-10-15): AFTER the 2.53 rescue (a rescued head can be the witness) and BEFORE every
         # `detections` walker, for the same reason: a rescued wedge is appended in place so the dot-role / articulation readers see it.
         if wedge_rescue_enabled():
             gather_wedge_rescue(log, cells, local, detections,

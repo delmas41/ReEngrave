@@ -2851,7 +2851,7 @@ class READERS(_Vocab):
     #: False) can filter on this name alone, and a crop or a test can tell
     #: the two passes apart without reading `score`.
     RESCUE_LOWCONF = "yolo_rescue_lowconf"   # gather: low-conf rerun of an empty bar
-    #: `gather.gather_wedge_rescue` -- ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF). The SAME detector re-run on a cell at a lower floor,
+    #: `gather.gather_wedge_rescue` -- ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default ON since 2026-10-15). The SAME detector re-run on a cell at a lower floor,
     #: dot / staccato / staccatissimo classes only, a box kept ONLY where its ink is wedge-shaped AND a head stands on the side its
     #: point faces. Its own reader name so a crop, a test or a consumer can tell it from the production pass and from the 2.53 rescue.
     RESCUE_WEDGE = "yolo_rescue_wedge"       # gather: sub-floor wedge box, guided by a head and the ink's shape

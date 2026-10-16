@@ -86,3 +86,6 @@ All four are absent from the MusicXML too: no glyph row existed, and EXPORT writ
 
 ### 9.5 For Sean
 `out/print/2.138-review/` (10 tiles, 600 dpi, RED corners on the NOTE only, nothing of ours drawn; hidden key `benchmarks/omr-staccatissimo-2026-10/out/tiles_key.json`): your four misses (tile 3 is the one the fix leaves unread), 4 other newly read wedges, 2 controls with a plain staccato dot. Question: *above or below the note in the red corners, is there a wedge (staccatissimo), a dot (staccato), or nothing?* Decides: should `OMR_WEDGE_RESCUE` go ON (and the 0.03 floor stand), and whether a wedge sitting on a staff line (crop 6) is worth the 2.133 line-removed measure.
+
+### 9.6 Sean's tiles (2026-10-15)
+"1-7. stacatissimo 8. stacatto 9. Stacatissimo 10. stacatto": 10/10 agree with the key (`out/print/2.138-review/answers.json`). The 3 rescued misses (tiles 4, 5, 7) are right, the 4 new wedges (1, 2, 6, 9) are right, both staccato controls (8, 10) are right. Tile 3 (crop 6, the wedge on a staff line) is a staccatissimo per Sean and stays UNREAD, a known miss rather than a wrong value. Landed with `OMR_WEDGE_RESCUE` default ON (`gather.wedge_rescue_enabled`; explicit `0/false/no/off` disables); it reaches records at the next re-gather.

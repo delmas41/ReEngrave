@@ -1,4 +1,4 @@
-"""ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF): a staccatissimo wedge the production detector boxed BELOW the 0.25 floor.
+"""ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default ON since 2026-10-15): a staccatissimo wedge the production detector boxed BELOW the 0.25 floor.
 
 STAGED GATHER only. `gather.gather_wedge_rescue` re-runs the same detector at `WEDGE_RESCUE_FLOOR`, mark classes only, and keeps a
 box only where (a) production has no box on that mark, (b) its staff-free ink is a wedge by 2.131's cut, (c) a production head
@@ -82,10 +82,13 @@ def _wedge_rows(log):
 
 
 class TestWedgeRescue(unittest.TestCase):
-    def test_flag_is_off_by_default(self):
+    def test_flag_is_on_by_default(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(gather.WEDGE_RESCUE_ENV, None)
-            self.assertFalse(gather.wedge_rescue_enabled())
+            self.assertTrue(gather.wedge_rescue_enabled())
+        for off in ("0", "false", "no", "off", ""):
+            with mock.patch.dict(os.environ, {gather.WEDGE_RESCUE_ENV: off}):
+                self.assertFalse(gather.wedge_rescue_enabled())
         with mock.patch.dict(os.environ, {gather.WEDGE_RESCUE_ENV: "1"}):
             self.assertTrue(gather.wedge_rescue_enabled())
 

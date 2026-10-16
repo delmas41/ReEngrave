@@ -1,0 +1,78 @@
+{
+ "date": "2026-10-15",
+ "who": "Sean",
+ "raw_answer": "1-7. stacatissimo 8. stacatto 9. Stacatissimo 10. stacatto",
+ "tally": {
+  "agree": "10/10",
+  "rescued_misses_right": "3 (tiles 4, 5, 7)",
+  "new_wedges_right": "4 (tiles 1, 2, 6, 9)",
+  "staccato_controls_right": "2 (tiles 8, 10)",
+  "tile_3": "Sean says staccatissimo; stays UNREAD (known miss, not a wrong value)"
+ },
+ "tiles": [
+  {
+   "n": 1,
+   "role": "new_wedge",
+   "sean": "staccatissimo",
+   "agrees": true
+  },
+  {
+   "n": 2,
+   "role": "new_wedge",
+   "sean": "staccatissimo",
+   "agrees": true
+  },
+  {
+   "n": 3,
+   "role": "miss_crop6_second_eighth_NOT_RESCUED",
+   "sean": "staccatissimo",
+   "agrees": true,
+   "note": "on a staff line; stays UNREAD (known miss, no wrong value written)"
+  },
+  {
+   "n": 4,
+   "role": "miss_crop2_last_eighth",
+   "sean": "staccatissimo",
+   "agrees": true,
+   "note": "rescued miss, right"
+  },
+  {
+   "n": 5,
+   "role": "miss_crop3_second_eighth",
+   "sean": "staccatissimo",
+   "agrees": true,
+   "note": "rescued miss, right"
+  },
+  {
+   "n": 6,
+   "role": "new_wedge",
+   "sean": "staccatissimo",
+   "agrees": true
+  },
+  {
+   "n": 7,
+   "role": "miss_crop3_third_eighth",
+   "sean": "staccatissimo",
+   "agrees": true,
+   "note": "rescued miss, right"
+  },
+  {
+   "n": 8,
+   "role": "control_plain_staccato",
+   "sean": "staccato",
+   "agrees": true
+  },
+  {
+   "n": 9,
+   "role": "new_wedge",
+   "sean": "staccatissimo",
+   "agrees": true
+  },
+  {
+   "n": 10,
+   "role": "control_plain_staccato",
+   "sean": "staccato",
+   "agrees": true
+  }
+ ]
+}
