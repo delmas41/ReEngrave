@@ -1513,27 +1513,42 @@ BEAM_STACK_BOX_EXCESS_MIN = 0.6
 
 
 def stack_box_excess_beams(cv_strokes, yolo_boxes, x):
-    """`(excess, how)`: the largest `(box height - the height one beam would give a box that wide) / one beam's thickness` over the
-    detector boxes that cover canonical x. `cv_strokes`: `[(x0, x1, (bx, by, bw, bh), thickness_px)]` (the CV strokes; the one
-    covering `x` is the ruler); `yolo_boxes`: `[(x0, x1, (bx, by, bw, bh))]`. `(None, None)` where no detector box covers `x` or no
-    CV stroke with a measured thickness does (cannot tell is not 'one'). Pure. ROADMAP 2.140."""
+    """`(excess, how)`: the largest `(box height - the height the CV strokes ALREADY COUNTED over x would give a box that wide) / one
+    beam's thickness` over the detector boxes covering canonical x. `cv_strokes`: `[(x0, x1, (bx, by, bw, bh), thickness_px)]`;
+    `yolo_boxes`: `[(x0, x1, (bx, by, bw, bh))]`. Every CV stroke over `x` with a measured thickness is counted (2.140 tiles 1 and 4:
+    a box over TWO counted beams stands ~1.7 beams tall against one stroke and read as a third level; against both it is ~0.3).
+    Expected height = their summed thickness plus the slope rise of their combined box, scaled to the detector box's width.
+    `(None, None)` where no detector box covers `x` or no CV stroke with a measured thickness does. Pure. ROADMAP 2.140."""
     best = (None, None)
+    over = [(cx0, cx1, bx, th) for cx0, cx1, bx, th in cv_strokes if cx0 <= x <= cx1 and th and th > 0 and bx[2] > 0]
+    if not over:
+        return best
+    T = sum(t for _a, _b, _bx, t in over)
+    top = min(bx[1] for _a, _b, bx, _t in over)
+    bot = max(bx[1] + bx[3] for _a, _b, bx, _t in over)
+    cw = max(bx[2] for _a, _b, bx, _t in over)
+    mean_th = T / len(over)
     for ax0, ax1, (_ax, _ay, aw, ah) in yolo_boxes:
         if not (ax0 <= x <= ax1):
             continue
-        for cx0, cx1, (_bx, _by, cw, ch), th in cv_strokes:
-            if not (cx0 <= x <= cx1) or not th or th <= 0 or cw <= 0:
-                continue
-            exp_h = th + max(0.0, ch - th) * (aw / cw)
-            ex = (ah - exp_h) / th
-            if best[0] is None or ex > best[0]:
-                best = (ex, {"yolo_h": ah, "yolo_w": aw, "cv_h": ch, "cv_w": cw, "thickness_px": th, "expected_h": round(exp_h, 1)})
+        exp_h = T + max(0.0, (bot - top) - T) * (aw / cw)
+        ex = (ah - exp_h) / mean_th
+        if best[0] is None or ex > best[0]:
+            best = (ex, {"yolo_h": ah, "yolo_w": aw, "cv_h": bot - top, "cv_w": cw, "thickness_px": mean_th, "counted_strokes": len(over),
+                         "expected_h": round(exp_h, 1)})
     return best
 
 
 #: ROADMAP 2.140. A stroke at least this many times one beam's thickness counts as that many beams fused (the gap between two beams
 #: fills in on a scan). Same cut as the CV-thickness widening above (`BEAM_DOUBLE_THICKNESS_RATIO_MIN`).
 BEAM_STEM_RUN_DOUBLE_RATIO = BEAM_DOUBLE_THICKNESS_RATIO_MIN
+
+
+#: ROADMAP 2.140. A page stroke counts only if it is at least this fraction of ONE beam's thickness (the cell's CV strokes' median
+#: `thickness_spaces`): a clearly thinner run is a staff line plus a sliver of ink, not a level. MEASURED on Brahms p18 + Litolff p4/p6
+#: replay (tiles 1 and 4, Sean: sixteenths): the extra runs read 0.51-0.65 of a beam, every stroke on a cell Sean called right reads
+#: 0.76 or more; 0.7 sits in the empty interval. Only ever REMOVES a count (a safe direction); NOT CONFIRMED on a second publisher.
+BEAM_STEM_RUN_UNIT_RATIO_MIN = 0.7
 
 
 def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
@@ -1564,6 +1579,8 @@ def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
             n = 0
             for run in runs:
                 t = float(run[2])
+                if unit and t < BEAM_STEM_RUN_UNIT_RATIO_MIN * unit:
+                    continue
                 n += max(1, int(round(t / unit))) if (unit and t >= BEAM_STEM_RUN_DOUBLE_RATIO * unit) else 1
             if best is None or n > best["count"]:
                 best = {"count": n, "side": sd, "runs": runs, "unit_spaces": unit, "row": r.id}

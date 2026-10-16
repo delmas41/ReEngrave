@@ -11229,6 +11229,10 @@ BEAM_STEM_WINDOW_OUT_SPACES = 0.3
 BEAM_STEM_RUN_MIN_SPACES = 0.36
 #: ...and its ink continues sideways, away from the stem, at least this far (a notehead is ~1.2 wide).
 BEAM_STEM_RUN_REACH_MIN_SPACES = 1.6
+#: ...and at least this many staff-line thicknesses (measured locally, `local_line_thickness`): the existing convention that a beam is
+#: thicker than a line (`rhythm.BEAM_THICKNESS_RATIO_MIN`, 1.75, Sean 2026-10-09, measured on both plates). 2.140 tiles 3 and 5
+#: (Litolff): the "second stroke" was 0.38 sp = one staff line (Sean: eighths). Skipped where no line thickness was measurable.
+BEAM_STEM_RUN_LINE_RATIO_MIN = 1.75
 
 
 def beam_stem_levels_gather_enabled() -> bool:
@@ -11283,6 +11287,8 @@ def beam_runs_at_stem_end(ink: Any, stem_x: float, tip_y: float, end: str, space
         for a, b in _ink_runs(col):
             th = (b - a) / space
             if th < BEAM_STEM_RUN_MIN_SPACES:
+                continue
+            if line_px and line_px > 0 and (b - a) < BEAM_STEM_RUN_LINE_RATIO_MIN * line_px:
                 continue
             # how far the ink goes on sideways from the column, along the run's middle row (away from the stem)
             ym = y0 + (a + b) // 2

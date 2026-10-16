@@ -14,7 +14,7 @@ sys.path.insert(0, ".")
 from tools.omr.staged import judged as J
 from tools.omr.staged.record import Q, Log
 from tools.omr.staged.review import rerun as RR
-from tools.omr.staged.gather import beam_runs_at_stem_end
+from tools.omr.staged.gather import beam_runs_at_stem_end, local_line_thickness
 from tools.omr.preprocessing import render_page
 LIB = "/Users/seanjohnson/Desktop/ReEngrave/library/"
 PDF = {"brah": LIB + "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
@@ -59,6 +59,7 @@ def stem_rows(obs, page):
 
 
 added = []
+lpx = {}
 nxt = 10 ** 9
 for page in sorted(pages):
     img = (np.asarray(Image.fromarray(render_page(PDF[mov], page, dpi=600).rgb).convert("L")) < 128)
@@ -71,8 +72,11 @@ for page in sorted(pages):
         px, py, pw, ph = sc[1] + x * sc[0], sc[2] + y * sc[0], w * sc[0], h * sc[0]
         sp = float(np.mean(np.diff(st)))
         ends = {}
+        lk = (page, cell[:3], int(px) // 800)
+        if lk not in lpx:
+            x0s = int(sc[1]); lpx[lk] = local_line_thickness(img, list(st), max(0, int(px) - 600), int(px) + 600, sp) or 0.0
         for end, tip in (("top", py), ("bottom", py + ph)):
-            ends[end] = beam_runs_at_stem_end(img, px + pw / 2.0, tip, end, sp, list(st), 0.0)
+            ends[end] = beam_runs_at_stem_end(img, px + pw / 2.0, tip, end, sp, list(st), lpx[lk])
         best = max(len(e[s]) for e in ends.values() for s in ("left", "right"))
         nxt += 1
         added.append({"id": "obs:%d" % nxt, "subject": o["subject"], "quantity": Q.BEAM_STEM_LEVELS, "value": best, "reader": "cv_beam_levels",

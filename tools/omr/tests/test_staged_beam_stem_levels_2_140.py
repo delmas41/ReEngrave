@@ -73,6 +73,13 @@ class TestGatherReadsTheStrokesAtAStemTip(unittest.TestCase):
         r = self._runs(img)
         self.assertEqual(r["right"], [])
 
+    def test_a_run_thinner_than_1_75_staff_lines_is_not_a_stroke(self):
+        # 2.140 tiles 3 and 5 (Litolff; Sean: eighths): the second "stroke" was one staff line thick
+        img = _raster(); _stem(img, 300, 300, 700); _beam(img, 300, 700, 640, 60); _beam(img, 300, 700, 550, 40)
+        self.assertEqual(len(self._runs(img, line_px=0.0)["right"]), 2)          # no line measured: both read
+        self.assertEqual(len(self._runs(img, line_px=30.0)["right"]), 1)         # 40 px < 1.75 x 30: a line, not a beam
+        self.assertEqual(len(self._runs(img, line_px=20.0)["right"]), 2)         # 40 px >= 35: a beam
+
     def test_the_top_end_reads_down_from_the_tip(self):
         img = _raster(); _stem(img, 300, 100, 500); _beam(img, 300, 700, 100, 60); _beam(img, 300, 700, 190, 60)
         self.assertEqual(len(self._runs(img, end="top", tip=100)["right"]), 2)
@@ -91,6 +98,15 @@ class TestTheStackBoxWitness(unittest.TestCase):
         cv = [(1289, 1653, (1289, 535, 364, 63), 54.0)]
         ex, _ = rhythm.stack_box_excess_beams(cv, [(946, 1642, (946, 553, 696, 72))], 1300)
         self.assertLess(ex, rhythm.BEAM_STACK_BOX_EXCESS_MIN)
+
+    def test_CONTROL_a_box_over_TWO_counted_beams_is_not_a_third_level(self):
+        # 2.140 tiles 1 and 4 (Brahms; Sean: sixteenths): two CV strokes already counted, the box spans both
+        cv = [(100, 900, (100, 600, 800, 63), 62.0), (100, 900, (100, 700, 800, 63), 62.0)]
+        ex, how = rhythm.stack_box_excess_beams(cv, [(50, 950, (50, 590, 900, 175))], 300)
+        self.assertLess(ex, rhythm.BEAM_STACK_BOX_EXCESS_MIN)
+        self.assertEqual(how["counted_strokes"], 2)
+        ex1, _ = rhythm.stack_box_excess_beams(cv[:1], [(50, 950, (50, 590, 900, 175))], 300)
+        self.assertGreater(ex1, rhythm.BEAM_STACK_BOX_EXCESS_MIN)     # the same box against ONE stroke reads a level more
 
     def test_no_measured_thickness_or_no_box_is_cannot_tell_not_one(self):
         self.assertEqual(rhythm.stack_box_excess_beams([(1289, 1653, (1289, 535, 364, 63), None)], self.TILE4[1], 1300)[0], None)
@@ -168,6 +184,15 @@ class TestTheDecision(unittest.TestCase):
 
     def test_flag_ON_a_stroke_twice_one_beam_thick_counts_as_two(self):
         v = _dur(True, page_runs=1, runs=[(700, 820, 1.2, 3.0)])      # 1.2 sp against a 0.54 sp beam: two fused
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 2))
+
+    def test_flag_ON_a_third_run_thinner_than_0_7_of_a_beam_is_not_a_level_and_changes_nothing(self):
+        # 2.140 tiles 1 and 4 (Brahms; Sean: sixteenths, we made 32nds): the third run read 0.62 of one beam (a staff line and a sliver)
+        v = _dur(True, page_runs=1, runs=[(700, 745, 0.25, 3.0)])      # 0.25 sp vs a 0.54 sp beam: no stroke
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 1))
+        v = _dur(True, page_runs=2, runs=[(757, 777, 0.6, 3.0), (700, 710, 0.3, 3.0)])
+        self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 1))
+        v = _dur(True, page_runs=2, runs=[(757, 777, 0.6, 3.0), (700, 720, 0.5, 3.0)])   # control: 0.5 sp is 0.93 of a beam
         self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 2))
 
     def test_the_flag_defaults_OFF_and_only_an_on_word_enables(self):

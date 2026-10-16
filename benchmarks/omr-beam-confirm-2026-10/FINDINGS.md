@@ -223,3 +223,14 @@ refused by the frame control (staff lines do not sit where the page says), so no
   proposed only on both witnesses and only behind a flag until Sean's tiles.
 * A head whose stem box does not touch it (glyph 17), a stem past the detector box, and Litolff's fused staff lines are named misses, not handled.
 * The tile 4 middle note is an example of an own-stem gap that is 2.142-adjacent (not edited here).
+
+### 8.7 Sean's answers to the 11 tiles (2026-10-15, `out/print/2.140-review/answers.json`) and the causes found
+Raw: "1.16 2.16,16,16 3.8. 4.16. 5.8,8,8 6.16,16,16. 7.16,16,16 8.16,16. 9.8,8,8. 10.8,8,8. 11.16,16,16". As built (8.2) it made 9 wrong values right, 5 wrong values narrowed, both controls right, and **6 right values wrong**:
+tiles 1 and 4 (Brahms, 16 made 32) and 3 and 5 (Litolff, 8 made 16). Causes, each measured locally at the stem (page replay, `probe/replay_2_140.py`, `score_2_140.py`):
+* **(a) Brahms tiles 1/4, the third level.** The stem-tip runs were 0.86/0.96/0.62 and 0.83/0.79/0.65 of one beam; the third is a staff line (page y 3611 on staff 13 of system 0; the run 3603-3616 is centred on it) plus a sliver of ink, bridged into
+  a "stroke" by the band rule. And the box witness was not independent of the count it was judging: the box was measured against ONE counted CV stroke although two were already counted, so a box that spans two beams read 1.7 beams tall; measured
+  against both strokes' span it reads 0.91 / -3.1. Fixes: `stack_box_excess_beams` now expects the height of ALL CV strokes already counted over x; a page stroke under 0.7 of one beam (`BEAM_STEM_RUN_UNIT_RATIO_MIN`; the thin extras read 0.51-0.65, every stroke on a cell Sean called right reads >= 0.76) is not counted.
+* **(b) Litolff tiles 3/5, the second level.** The "second stroke" was 0.38-0.52 of a beam, 0.38 sp = one staff line of that plate (6 px): a staff line. Page count and box were NOT two readings of one ink here (box = detector, count = raster)
+  and the box clearing its cut (0.659 vs 0.6, tile 5) was a near-miss that the count's false stroke then promoted. Fix: a page stroke must be at least 1.75 staff-line thicknesses, measured locally (`BEAM_STEM_RUN_LINE_RATIO_MIN`, the existing beam-thicker-than-a-line convention, Sean 2026-10-09).
+**After the fixes, replay on all 11 cells: 22 notes right, 4 narrowed (tile 7 x3, tile 8 glyph 11), 0 wrong** (the 9 right ones stay right; tiles 1, 3, 4, 5 back to Sean's values). Honest limits: the cuts 0.7 and 1.75 were chosen after seeing these tiles (a fit to 11 cells, not a held-out test), so
+the second set of tiles is the test. Other cells whose value now changes (decided, outside the 11): Brahms (18,0,1,6) x2, (18,0,11,1) x3 (8 -> 16, crops look like double beams to me) and Litolff (6,1,7,0) x1 (box excess 0.616 vs 0.6, the thinnest margin; the tile's bar bracket is unclean): blind tiles `out/print/2.140-review-2/`, key `out/2.140/tiles2-key.json`.
