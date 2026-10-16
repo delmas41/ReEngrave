@@ -4383,3 +4383,9 @@ IT:** a print-confirmed rest whose box shows the thin stroke AND a head's ink in
   Eighth-rest ink (blob plus a thin diagonal) was not seen refused on 3 near controls, but only 4 rest8th were looked at.
 * **Tiles `out/print/2.150b-review/` (20, blind):** 11 boxes the ink test refuses that the width floor kept (6 Litolff, 5 Brahms; two are
   boxes on the `piu` letters), 5 near-margin kept (closest below the cut: 3 quarter, 2 eighth), 3 clear kept, 1 re-ask of 2.150 tile 11.
+### 2.150b -- Sean's 20 tile answers (2026-10-16, `out/print/2.150b-review/answers.json`)
+* **Refused by the ink test (11):** 10 right -- 7 stems (eighth stems with flags, a beamed eighth stem, quarter / dotted-quarter stems) and 2 the letter *u* of *più* (tiles 7, 9; Sean: "a really hard one ... could only be determined by its connection to the P and i", refused for the right answer but not by the rule's reason: a letter, not a stem). **1 WRONG: tile 4** (Litolff `glyph/2/0/4/2/2`, a clear quarter rest, margin +0.14 -- near the cut; an *f* tail runs up to the box's lower corner and a stem stands at its upper left; not yet diagnosed which ink the test read).
+* **Kept (8):** 8 of 8 right -- 5 quarter rests, 3 eighth rests (the near-cut controls hold on Litolff 3/17/19).
+* **Tile 20 = 2.150 tile 11 asked again** (Brahms `glyph/15/1/9/2/5`, 0.47 sp): Sean "4 note stem" now, "quarter rest" on 2.150. His two answers DISAGREE; asked again, not picked.
+* Ink test vs width floor on Sean's answers: the ink test makes 1 wrong of 31 answered boxes (2.150 + 2.150b, tile 20 / 11 open); the floor made 1 wrong and missed 3 stems on 2.150. `OMR_REST_STROKE_INTO_HEAD` stays OFF until Sean rules.
+

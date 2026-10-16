@@ -1,0 +1,228 @@
+{
+ "answered": "2026-10-16",
+ "verbatim": "1. 8th note stem with a flag 2. 8 rest 3.4 rest 4. 4 rest 5. Stem for a dotted 4 6. 8 stem with flag 7. U with accent above it from Piu. This is a really hard one and could only be determined by its connection to the P and i - otherwise it barely looks like a U and the accent makes it even more difficult. The fact that a cleaner version is in the system above it helps. 8. 8 note stem with flag 9. U of piu again 10. 8 note stem connected to a beam 11. 8 note stem with flag 12-13. 8 note rest 14. Stem of a quarter not 15-17. 4 rest 18. 8 note stem with flag 19. 4 rest 20. 4 note stem",
+ "question": "What is the mark in the blue box?",
+ "note": "tile 20 is 2.150 tile 11 asked again: Sean said 'quarter rest' there, 'quarter stem' here -- the two answers disagree; ask Sean, do not pick",
+ "tiles": [
+  {
+   "n": 1,
+   "glyph": "glyph/24/0/8/7/18",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.2,
+   "sean": "eighth stem with flag",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 2,
+   "glyph": "glyph/6/1/10/0/2",
+   "document": "brahms",
+   "cls": "rest8th",
+   "role": "near",
+   "margin": -0.103,
+   "sean": "eighth rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 3,
+   "glyph": "glyph/13/1/4/14/0",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "near",
+   "margin": -0.048,
+   "sean": "quarter rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 4,
+   "glyph": "glyph/2/0/4/2/2",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.143,
+   "sean": "quarter rest",
+   "arm_refuses": true,
+   "verdict": "wrong"
+  },
+  {
+   "n": 5,
+   "glyph": "glyph/11/1/0/9/15",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.578,
+   "sean": "stem of a dotted quarter",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 6,
+   "glyph": "glyph/5/0/11/7/15",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.345,
+   "sean": "eighth stem with flag",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 7,
+   "glyph": "glyph/7/0/0/4/2",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.968,
+   "sean": "u (with accent) of piu",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 8,
+   "glyph": "glyph/13/0/0/0/23",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.27,
+   "sean": "eighth stem with flag",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 9,
+   "glyph": "glyph/7/0/5/4/4",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.806,
+   "sean": "u of piu",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 10,
+   "glyph": "glyph/14/0/8/9/6",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 2.0,
+   "sean": "eighth stem connected to a beam",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 11,
+   "glyph": "glyph/1/0/13/1/17",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.309,
+   "sean": "eighth stem with flag",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 12,
+   "glyph": "glyph/6/1/3/1/5",
+   "document": "brahms",
+   "cls": "rest8th",
+   "role": "near",
+   "margin": -0.062,
+   "sean": "eighth rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 13,
+   "glyph": "glyph/5/1/1/5/1",
+   "document": "brahms",
+   "cls": "rest8th",
+   "role": "clear",
+   "margin": -0.47,
+   "sean": "eighth rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 14,
+   "glyph": "glyph/5/1/5/13/8",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.613,
+   "sean": "stem of a quarter",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 15,
+   "glyph": "glyph/3/1/13/9/1",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "clear",
+   "margin": -0.76,
+   "sean": "quarter rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 16,
+   "glyph": "glyph/24/1/4/4/3",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "clear",
+   "margin": -0.68,
+   "sean": "quarter rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 17,
+   "glyph": "glyph/4/1/1/2/1",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "near",
+   "margin": -0.083,
+   "sean": "quarter rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 18,
+   "glyph": "glyph/25/1/7/3/13",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "refused",
+   "margin": 0.73,
+   "sean": "eighth stem with flag",
+   "arm_refuses": true,
+   "verdict": "right"
+  },
+  {
+   "n": 19,
+   "glyph": "glyph/12/1/5/6/1",
+   "document": "litolff",
+   "cls": "restQuarter",
+   "role": "near",
+   "margin": -0.098,
+   "sean": "quarter rest",
+   "arm_refuses": false,
+   "verdict": "right"
+  },
+  {
+   "n": 20,
+   "glyph": "glyph/15/1/9/2/5",
+   "document": "brahms",
+   "cls": "restQuarter",
+   "role": "re_ask_2_150_tile_11",
+   "margin": null,
+   "sean": "quarter stem",
+   "arm_refuses": true,
+   "verdict": "right"
+  }
+ ]
+}
