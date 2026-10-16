@@ -54,6 +54,9 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
             # quarter rest on its own shape, takes its length -- the same
             # cause class and place as its sibling
             "size_unboxed_rest",
+            # ROADMAP 2.145: the ink a refused stemless head box stood on, read
+            # as a rest, takes its length -- beside its sibling
+            "size_head_ink_rest",
             "size_measure_rest",
             "reconcile_chord_duration", "reconcile_duration",
             "reinstate_rest_between_staves",

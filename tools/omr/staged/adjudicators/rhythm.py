@@ -1590,15 +1590,15 @@ def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
 
 
 #: ROADMAP 2.146 (Sean 2026-10-16: *"the connection to the end of stems is the most important factor - more important than
-#: width"*; "the stem tip decides beamed or not"). Default OFF; only an explicit on-word is ON.
+#: width"*; "the stem tip decides beamed or not"). Default ON since 2026-10-16; an explicit off-word disables.
 STEM_TIP_DECIDES_BEAM_ENV = "OMR_STEM_TIP_DECIDES_BEAM"
 
 
 def stem_tip_decides_beam_enabled() -> bool:
-    """ROADMAP 2.146, default OFF: where every candidate stroke over a stemmed head was refused (the
-    `beam_discounted_uncertain` population), the head's OWN stem tip decides: a clean tip (no beam run, no flag ink) is no
-    beam; beam runs at the tip are that many beams."""
-    return os.environ.get(STEM_TIP_DECIDES_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.146, default ON since 2026-10-16 (Sean: "Land 2.146 ON. Clean tip means no beam."; 33/33 tiles, 41/41 hand
+    truth; only an explicit off-word disables): where every candidate stroke over a stemmed head was refused (the
+    `beam_discounted_uncertain` population), a CLEAN own stem tip (no beam run, no flag ink) decides no beam."""
+    return os.environ.get(STEM_TIP_DECIDES_BEAM_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _stem_tip_beam_verdict(ev: Evidence, cell, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
@@ -4237,7 +4237,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
             and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
         tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
-    # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default OFF; Sean 2026-10-16 "the stem tip decides beamed or not"):
+    # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default ON since 2026-10-16; Sean 2026-10-16 "the stem tip decides beamed or not"):
     # every stroke over this head was refused, so instead of narrowing between the head value and one beam level, ask the
     # head's OWN stem tip. Clean tip -> no beam (the head's value); n beam runs at the tip -> n levels. Cannot tell -> the
     # narrowing below, unchanged (rule 8).

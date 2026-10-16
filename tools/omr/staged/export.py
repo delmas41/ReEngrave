@@ -1502,6 +1502,10 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         v = rec.verdict(Q.UNBOXED_INK_IS_A_REST, sub)
         if (v is None or v["outcome"] != "decided"
                 or v["value"] not in ("eighth", "quarter")):
+            # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`): ink a refused stemless head box stood on
+            v = rec.verdict(Q.HEAD_INK_IS_A_REST, sub)
+        if (v is None or v["outcome"] != "decided"
+                or v["value"] not in ("eighth", "quarter")):
             continue
         s = _parse_subject(sub)
         dur_v = rec.verdict(Q.DURATION, sub)
@@ -5337,7 +5341,7 @@ _NOT_A_GAP_REASONS = frozenset({
     "not_a_notehead:is_a_meter_digit", "not_a_rest:rest_is_a_meter_digit",
     "not_a_notehead:is_a_clef", "not_a_notehead:is_a_dot",
     "not_a_notehead:is_a_beam_piece", "not_a_notehead:on_a_barline",
-    "not_a_notehead:is_a_rest_twin",
+    "not_a_notehead:is_a_rest_twin", "not_a_notehead:is_a_rest_shape",
     "not_a_rest:rest_is_a_barline",
     "not_a_notehead:tremolo_slash_crosses_stem",
     "not_a_notehead:on_a_dynamic_letter", "not_a_rest:rest_has_a_stem",

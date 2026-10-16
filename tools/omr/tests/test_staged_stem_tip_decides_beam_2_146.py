@@ -1,4 +1,4 @@
-"""ROADMAP 2.146 (STAGED ADJUDICATE `rhythm.adjudicate_duration`), flag `OMR_STEM_TIP_DECIDES_BEAM`, default OFF.
+"""ROADMAP 2.146 (STAGED ADJUDICATE `rhythm.adjudicate_duration`), flag `OMR_STEM_TIP_DECIDES_BEAM`, default ON since 2026-10-16 (Sean).
 
 Sean 2026-10-16: "the connection to the end of stems is the most important factor - more important than width"; "the stem
 tip decides beamed or not". Where every stroke over a stemmed head was refused (`beam_discounted_uncertain`), the head's OWN
@@ -40,7 +40,7 @@ def _discounted(log, *, tip_found=False, runs=(), levels_row=True, end="top"):
 
 
 def _run(log, on=True):
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else ""}):
+    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
         adjudicate.run(log)
 
 
@@ -110,14 +110,15 @@ class TestCannotTellLeavesTheNarrowing(unittest.TestCase):
 
 class TestTheFlag(unittest.TestCase):
 
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(rhythm.stem_tip_decides_beam_enabled())
+            self.assertTrue(rhythm.stem_tip_decides_beam_enabled())
 
-    def test_typo_is_off(self):
-        with mock.patch.dict(os.environ, {FLAG: "onn"}):
-            self.assertFalse(rhythm.stem_tip_decides_beam_enabled())
+    def test_off_word_disables(self):
+        for w in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: w}):
+                self.assertFalse(rhythm.stem_tip_decides_beam_enabled())
 
 
 if __name__ == "__main__":

@@ -1684,6 +1684,14 @@ class Q(_Vocab):
     #: else; abstains where the shape cannot tell. EVALUATE's
     #: `size_unboxed_rest` gives it its length; EXPORT writes it as a rest.
     UNBOXED_INK_IS_A_REST = "unboxed_ink_is_a_rest"
+
+    #: ⚠️ ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF) -- IS THE INK A
+    #: NOTEHEAD BOX STANDS ON A REST? On the `Q.UNBOXED_REST_SHAPE` cluster's subject
+    #: (so EXPORT writes the rest at the ink's own box): `"eighth"` / `"quarter"` only
+    #: where ADJUDICATE refused the covering head box `is_a_rest_shape` (no stem
+    #: touches it; its ink reads, by 2.99's windows, as a rest). EVALUATE's
+    #: `size_head_ink_rest` gives it its length; EXPORT writes it as a rest.
+    HEAD_INK_IS_A_REST = "head_ink_is_a_rest"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2322,6 +2330,7 @@ CLAIMS: "dict[str, str]" = {
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
+    "HEAD_INK_IS_A_REST": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND

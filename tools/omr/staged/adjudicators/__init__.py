@@ -23,3 +23,4 @@ from . import stem_value          # noqa: F401
 from . import repeats             # noqa: F401  ROADMAP 2.85
 from . import narrow_rest         # noqa: F401  ROADMAP 2.80b
 from . import unboxed_rest        # noqa: F401  ROADMAP 2.99
+from . import head_rest_shape     # noqa: F401  ROADMAP 2.145
