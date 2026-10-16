@@ -811,6 +811,169 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                   f"candidate(s), {len(witnesses)} witness(es)")
 
 
+#: ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF). Sean's four misses on the 2.109 crops of Brahms p24 (a staccatissimo wedge printed over
+#: a head, never written) are not a reading fault: the production detector DID draw a box on each, at confidence 0.138-0.165 (one at
+#: 0.05, as `augmentationDot`), under the 0.25 floor every reader trusts (`benchmarks/omr-staccatissimo-2026-10/FINDINGS.md` Sec.9).
+#: This is the 2.53 pattern for marks: the SAME detector re-run on the cell at a lower floor, a box kept only where it is guided -- its
+#: ink is a wedge by 2.131's own measurement and a head stands on the side its point faces (the head the mark would own).
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a staccatissimo is a wedge whose point faces its head (Sean 2026-10-14,
+#: 8 of 8 tiles); falsified by a Sean-read crop of a rescued box that is not a wedge over a head. The floor is a MEASUREMENT on one
+#: score (Brahms p24), so it only NARROWS (flag OFF) until Sean's tiles.
+WEDGE_RESCUE_ENV = "OMR_WEDGE_RESCUE"
+WEDGE_RESCUE_FLOOR = 0.03
+#: two boxes on one mark: centres within this many staff spaces, or boxes overlapping by this IoU
+WEDGE_RESCUE_SAME_MARK_SPACES = 0.35
+WEDGE_RESCUE_SAME_MARK_IOU = 0.2
+
+
+def wedge_rescue_enabled() -> bool:
+    """`OMR_WEDGE_RESCUE`, default OFF; `1/true/yes/on` enables."""
+    return os.environ.get(WEDGE_RESCUE_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _is_mark_class(name: str) -> bool:
+    n = str(name)
+    return (n.startswith("augmentationDot") or n in _STACCATO_CLASSES
+            or n.startswith("articStaccatissimo"))
+
+
+def _wedge_of_shape(m: Optional[Dict[str, Any]]) -> Tuple[bool, Dict[str, Any]]:
+    """2.131's wedge test (the adjudicator's own constants) on a `mark_shape_of_ink` dict -> (is_wedge, detail with the tip side)."""
+    if not m:
+        return False, {}
+    from .adjudicators import rhythm as _rh
+    top, bot = float(m["top"]), float(m["bot"])
+    base = max(top, bot)
+    taper = (min(top, bot) / base) if base else 1.0
+    det = {"mark_hw": round(float(m["hw"]), 3), "mark_taper": round(taper, 3),
+           "mark_tip": "bottom" if bot < top else "top",
+           "mark_h_spaces": round(float(m["h_spaces"]), 3)}
+    ok = (float(m["hw"]) >= _rh.WEDGE_MIN_HW and taper <= _rh.WEDGE_MAX_TAPER
+          and _rh.WEDGE_MIN_HEIGHT_SPACES <= float(m["h_spaces"])
+          <= _rh.WEDGE_MAX_HEIGHT_SPACES)
+    return ok, det
+
+
+def _canon_box(d: Any) -> Tuple[float, float, float, float]:
+    return (float(d.x_canonical), float(d.y_canonical),
+            float(d.x_canonical + d.width_canonical),
+            float(d.y_canonical + d.height_canonical))
+
+
+def _same_mark(a: Tuple[float, ...], b: Tuple[float, ...], space: float) -> bool:
+    acx, acy = (a[0] + a[2]) / 2.0, (a[1] + a[3]) / 2.0
+    bcx, bcy = (b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0
+    if max(abs(acx - bcx), abs(acy - bcy)) <= WEDGE_RESCUE_SAME_MARK_SPACES * space:
+        return True
+    return _iou(a, b) >= WEDGE_RESCUE_SAME_MARK_IOU
+
+
+def gather_wedge_rescue(log: Log, cells: Sequence[Any],
+                        local: Dict[int, Tuple[int, int]],
+                        detections: Dict[str, List[Any]], *,
+                        detector: Any = None, imgsz: Optional[int] = None,
+                        progress: bool = False) -> None:
+    """ROADMAP 2.138, flag `OMR_WEDGE_RESCUE` (the caller gates). STAGED GATHER; decides nothing.
+
+    For every cell holding a production notehead, re-run the SAME detector at `WEDGE_RESCUE_FLOOR` and keep a mark-class box (dot,
+    staccato, staccatissimo) only if (a) it is not a second box on a mark production already boxed, (b) the ink in it is a wedge by
+    2.131's cut, measured on the cell's staff-free raster, and (c) a production notehead stands in its staccato window on the side the
+    point faces. A kept box is APPENDED to the cell's `detections` (the 2.53 pattern: every later reader walking by index sees it)
+    under `READERS.RESCUE_WEDGE`, with the witness head's glyph index and the shape numbers; a refused one is an abstention carrying its
+    score, class and the numbers that refused it (so a near-miss can be shown to Sean). Two kept boxes on one mark keep the higher score.
+    """
+    if detector is None:
+        return
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        cell_key = cell_sub.to_key()
+        existing = detections.get(cell_key)
+        if not existing:
+            continue
+        heads = [(gi, d) for gi, d in enumerate(existing)
+                 if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not heads:
+            continue
+        grid = _cell_grid(c)
+        img = getattr(c, "image_no_staff", None)
+        if grid is None or img is None:
+            continue
+        space = grid[1] * 2.0
+        frame = frame_cell(c.measure_index)
+        prod_marks = [_canon_box(d) for d in existing if _is_mark_class(d.smufl_name)]
+        from .adjudicators import rhythm as _rh
+        rerun = detector.detect(c, conf_threshold=WEDGE_RESCUE_FLOOR, imgsz=imgsz)
+        kept: List[Tuple[Any, Dict[str, Any]]] = []
+        for d in sorted((x for x in rerun if _is_mark_class(x.smufl_name)),
+                        key=lambda x: -float(x.confidence)):
+            box = _canon_box(d)
+            if float(d.confidence) >= 0.25 or any(
+                    _same_mark(box, pm, space) for pm in prod_marks):
+                continue            # production already has this mark (or it is above the floor and was judged there)
+            if any(_same_mark(box, _canon_box(k), space) for k, _ in kept):
+                continue            # the same mark boxed twice below the floor: the higher score came first
+            xywh = (box[0], box[1], box[2] - box[0], box[3] - box[1])
+            m = mark_shape(img, xywh, space)
+            is_wedge, wdet = _wedge_of_shape(m)
+            refuse = None
+            witness = None
+            if not is_wedge:
+                refuse = "not_a_wedge"
+            else:
+                tip_below = wdet["mark_tip"] == "bottom"
+                mcy = (box[1] + box[3]) / 2.0
+                best = None
+                for gi, hd in heads:
+                    hb = (float(hd.x_canonical), float(hd.y_canonical),
+                          float(hd.width_canonical), float(hd.height_canonical))
+                    if not _rh._in_staccato_window(xywh, hb, space):
+                        continue
+                    hcy = hb[1] + hb[3] / 2.0
+                    if (hcy > mcy) != tip_below:
+                        continue
+                    dist = (hb[0] + hb[2] / 2.0 - (box[0] + box[2]) / 2.0) ** 2 + (hcy - mcy) ** 2
+                    if best is None or dist < best[0]:
+                        best = (dist, gi)
+                if best is None:
+                    refuse = "no_head_on_the_points_side"
+                else:
+                    witness = best[1]
+            if refuse is not None:
+                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_WEDGE,
+                            frame=frame, reason=ABSTAIN.RESCUE_UNGUIDED,
+                            why=refuse, smufl_name=d.smufl_name,
+                            score=float(d.confidence), **wdet)
+                continue
+            kept.append((d, {"witness_head": witness, **wdet}))
+        n_existing = len(existing)
+        for k, (d, info) in enumerate(kept):
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, n_existing + k)
+            page_box = _page_box(c, d)
+            box_detail: Dict[str, Any] = {"category": d.category, **info}
+            if page_box is not None:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0,
+                                  y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX,
+                        (d.smufl_name, d.x_canonical, d.y_canonical,
+                         d.width_canonical, d.height_canonical),
+                        reader=READERS.RESCUE_WEDGE, frame=frame,
+                        score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence),
+                        reader=READERS.RESCUE_WEDGE, frame=frame,
+                        score=float(d.confidence))
+            existing.append(d)
+        if progress and kept:
+            print(f"  gather wedge rescue {cell_key}: {len(kept)} box(es)")
+
+
 def gather_second_hollow(log: Log, cells: Sequence[Any],
                          local: Dict[int, Tuple[int, int]],
                          detections: Dict[str, List[Any]], *,
@@ -14084,6 +14247,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_lowconf_rescue(log, cells, local, detections,
                               detector=detector, imgsz=imgsz,
                               progress=progress)
+        # ⚠️ ROADMAP 2.138 (`OMR_WEDGE_RESCUE`, default OFF): AFTER the 2.53 rescue (a rescued head can be the witness) and BEFORE every
+        # `detections` walker, for the same reason: a rescued wedge is appended in place so the dot-role / articulation readers see it.
+        if wedge_rescue_enabled():
+            gather_wedge_rescue(log, cells, local, detections,
+                                detector=detector, imgsz=imgsz, progress=progress)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
