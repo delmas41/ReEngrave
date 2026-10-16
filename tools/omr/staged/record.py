@@ -673,6 +673,12 @@ class Q(_Vocab):
     #: median above is taken over every column of the stroke's BOX, and a box
     #: wider than its beam reads the bare staff line beside it.
     BEAM_STROKE_INK = "beam_stroke_ink"
+    #: ROADMAP 2.140 (Sean 2026-10-15, 2.136 control tile 4: three sixteenths under a double beam decided plain eighths). Filed
+    #: on a CELL, one row per `Q.STEM` row (CV), keyed by `detail["stem_row_id"]`: how many strokes stand at the stem's tip,
+    #: read down a column just beside the stem on the UNERASED raster (value = the larger of the two ends' best-side counts).
+    #: `detail.ends[top|bottom][left|right]` lists each stroke `[y0, y1, spaces thick, reach_spaces]` outermost first; which end
+    #: is the tip is the consumer's question. A ruler, never a naming. Only filed under `OMR_BEAM_STEM_LEVELS`.
+    BEAM_STEM_LEVELS = "beam_stem_levels"
     #: ROADMAP 2.71 (Sean, 2026-10-09: *"The slash crosses both sides of the
     #: stem with a thick line at an angle ... slashes never [connect to other
     #: notes]"*). Filed on a CELL, one row per `Q.STEM` row the stem-slash
@@ -2346,6 +2352,8 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 2.74: thickness, straightness and end-stem rulers over one beam
     #: stroke's own ink -- same reason as `DOT_STROKE_INK`.
     "BEAM_STROKE_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.140: a ruler over the ink beside one stem's tip -- same reason as `BEAM_STROKE_INK`.
+    "BEAM_STEM_LEVELS": CLAIM.MEASUREMENT,
     #: ROADMAP 2.71: a tracked-stroke ruler over one stem's own ink -- same
     #: reason as `BEAM_STROKE_INK`.
     "STEM_SLASH": CLAIM.MEASUREMENT,
@@ -2727,6 +2735,9 @@ class READERS(_Vocab):
     #: line. Its own reader name: it measures the ink UNDER a stroke some
     #: other reader (`CV_LINES`, `DETECTOR`) named.
     CV_BEAM_SHAPE = "cv_beam_shape"          # gather: thickness/bow/end stems
+    #: `gather.gather_beam_stem_levels` -- ROADMAP 2.140. Reads the SAME unerased `cell.image` `CV_BEAM_SHAPE` reads (one crop,
+    #: one signal), asks a different question: how many strokes stand at a STEM's tip, whatever `CV_LINES` made of them.
+    CV_BEAM_LEVELS = "cv_beam_levels"        # gather: strokes at a stem's tip
     #: `gather._observe_stem_slashes` -- ROADMAP 2.71. Reads the staff-ERASED
     #: cell raster and follows each stroke that touches a stem outward on both
     #: sides; the ONE place a tremolo slash is named, read by the beam, hook,

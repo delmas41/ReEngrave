@@ -590,6 +590,13 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "`Q.BEAM_STROKE` row and the paper under it; scoreless, same "
         "reason as `STEM_TIP_INK`.",
         None),
+    "BEAM_STEM_LEVELS": (
+        RELATION,
+        "ROADMAP 2.140 (Sean 2026-10-15, 2.136 control tile 4: a double beam read as one): how many strokes of beam thickness "
+        "stand at a stem's tip, down a column just beside the stem on the UNERASED cell raster, a staff line never counted; "
+        "each stroke's thickness and sideways reach are filed. A relation between a located `Q.STEM` row and the paper beside "
+        "it; scoreless, same reason as `STEM_TIP_INK`.",
+        None),
     "STEM_SLASH": (
         RELATION,
         "ROADMAP 2.71 (Sean, 2026-10-09: a tremolo slash is a thick angled "
@@ -829,6 +836,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.74. Also `staged/gather.py`; reads the UNERASED
     # `cell.image` (the staff-erase thins a beam where it crosses a line).
     "CV_BEAM_SHAPE": ("staged/gather.py", "gather_beam_stroke_ink"),
+    # ⚠️ ROADMAP 2.140. Also `staged/gather.py`; reads the UNERASED `cell.image`, as `CV_BEAM_SHAPE` does.
+    "CV_BEAM_LEVELS": ("staged/gather.py", "gather_beam_stem_levels"),
     # ⚠️ ROADMAP 2.71. Also `staged/gather.py`; reads `image_no_staff`.
     "CV_STEM_SLASH": ("staged/gather.py", "_observe_stem_slashes"),
     # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half

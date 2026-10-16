@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- ROADMAP 2.140 landed ON (OMR_BEAM_STEM_LEVELS)
+STAGED GATHER + ADJUDICATE, `OMR_BEAM_STEM_LEVELS` default ON (`gather.beam_stem_levels_gather_enabled`, `rhythm.beam_stem_levels_enabled`; explicit `0/false/no/off` disables). Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix; cut-offs fitted to Sean's tiles; a third publisher not yet checked. `Q.BEAM_STEM_LEVELS` rows exist only after a re-gather; without them ADJUDICATE is unchanged from off. Merged `lane-2.140-second-beam` over 2.141/2.142 (only `docs/flags-2026-09.md` conflicted).
+
 ## 2026-10-16 -- ROADMAP 2.141 fix 2 landed ON (OMR_OWN_STEM_UNISON_BOTH)
 STAGED ADJUDICATE, `rhythm.unison_both_stems_enabled` default ON (explicit `0/false/no/off` disables). Brahms all-on arm: 6 verdicts changed, none of Sean's 9 judged bars; the one changed value is a C clef boxed as a note (Sean: "Tile fix is a c clef"), opened as ROADMAP 2.144. Fix 3 stays OFF, W2 OFF. Reaches records at the next re-gather.
 

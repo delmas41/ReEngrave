@@ -1492,6 +1492,103 @@ def _fused_double_beams(ev: Evidence, cell, kept, x_center) -> int:
     return n
 
 
+BEAM_STEM_LEVELS_ENV = "OMR_BEAM_STEM_LEVELS"
+
+
+def beam_stem_levels_enabled() -> bool:
+    """ROADMAP 2.140, default ON since 2026-10-16 (Sean: 14 tiles, 27 right, 5 narrowed, 0 wrong; only an explicit off-word disables; no `Q.BEAM_STEM_LEVELS` rows -> `_stem_tip_strokes` is None -> unchanged from off): a second beam stroke at
+    a stem's tip is counted from the page (`Q.BEAM_STEM_LEVELS`, one witness) and from the detector's stack box (a second, different
+    source). Both -> a level decides; either alone -> the note narrows (eighth/sixteenth), never a plain eighth. The same word turns the GATHER reader on."""
+    import os
+    return os.environ.get(BEAM_STEM_LEVELS_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+#: ROADMAP 2.140. How much taller (in one-beam thicknesses, CV stroke `thickness_px`) the detector's `beam` box over a stem is than a
+#: single beam over a box that wide would be: the box bounds the STACK, so two levels stand ~one more beam taller. A single sloped
+#: beam's box grows with its slope; that rise is taken from the CV stroke's own box (its height minus its thickness, scaled to the
+#: detector box's width), so only what is left counts. One measured case (Brahms p18 sys1 staff12 cell7: 0.77; a neighbour
+#: single-beam group 0.1-0.3, see FINDINGS 2.140). NOT CONFIRMED on a second publisher: it only narrows unless the page count agrees.
+BEAM_STACK_BOX_EXCESS_MIN = 0.6
+#: ROADMAP 2.140 round 2 (CLAUDE.md section 4: a cut-off tuned on our plates may only NARROW; a refusal says how close it came). A box
+#: witness within this of its cut is a near-miss and cannot decide: Litolff (6,1,7,0) glyph 5 cleared the cut by 0.016 and Sean read an eighth.
+BEAM_STACK_BOX_NEAR_MISS = 0.05
+
+
+def stack_box_excess_beams(cv_strokes, yolo_boxes, x):
+    """`(excess, how)`: the largest `(box height - the height the CV strokes ALREADY COUNTED over x would give a box that wide) / one
+    beam's thickness` over the detector boxes covering canonical x. `cv_strokes`: `[(x0, x1, (bx, by, bw, bh), thickness_px)]`;
+    `yolo_boxes`: `[(x0, x1, (bx, by, bw, bh))]`. Every CV stroke over `x` with a measured thickness is counted (2.140 tiles 1 and 4:
+    a box over TWO counted beams stands ~1.7 beams tall against one stroke and read as a third level; against both it is ~0.3).
+    Expected height = their summed thickness plus the slope rise of their combined box, scaled to the detector box's width.
+    `(None, None)` where no detector box covers `x` or no CV stroke with a measured thickness does. Pure. ROADMAP 2.140."""
+    best = (None, None)
+    over = [(cx0, cx1, bx, th) for cx0, cx1, bx, th in cv_strokes if cx0 <= x <= cx1 and th and th > 0 and bx[2] > 0]
+    if not over:
+        return best
+    T = sum(t for _a, _b, _bx, t in over)
+    top = min(bx[1] for _a, _b, bx, _t in over)
+    bot = max(bx[1] + bx[3] for _a, _b, bx, _t in over)
+    cw = max(bx[2] for _a, _b, bx, _t in over)
+    mean_th = T / len(over)
+    for ax0, ax1, (_ax, _ay, aw, ah) in yolo_boxes:
+        if not (ax0 <= x <= ax1):
+            continue
+        exp_h = T + max(0.0, (bot - top) - T) * (aw / cw)
+        ex = (ah - exp_h) / mean_th
+        if best[0] is None or ex > best[0]:
+            best = (ex, {"yolo_h": ah, "yolo_w": aw, "cv_h": bot - top, "cv_w": cw, "thickness_px": mean_th, "counted_strokes": len(over),
+                         "expected_h": round(exp_h, 1)})
+    return best
+
+
+#: ROADMAP 2.140. A stroke at least this many times one beam's thickness counts as that many beams fused (the gap between two beams
+#: fills in on a scan). Same cut as the CV-thickness widening above (`BEAM_DOUBLE_THICKNESS_RATIO_MIN`).
+BEAM_STEM_RUN_DOUBLE_RATIO = BEAM_DOUBLE_THICKNESS_RATIO_MIN
+
+
+#: ROADMAP 2.140. A page stroke counts only if it is at least this fraction of ONE beam's thickness (the cell's CV strokes' median
+#: `thickness_spaces`): a clearly thinner run is a staff line plus a sliver of ink, not a level. MEASURED on Brahms p18 + Litolff p4/p6
+#: replay (tiles 1 and 4, Sean: sixteenths): the extra runs read 0.51-0.65 of a beam, every stroke on a cell Sean called right reads
+#: 0.76 or more; 0.7 sits in the empty interval. Only ever REMOVES a count (a safe direction); NOT CONFIRMED on a second publisher.
+BEAM_STEM_RUN_UNIT_RATIO_MIN = 0.7
+
+
+def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
+    """ROADMAP 2.140 (flag `OMR_BEAM_STEM_LEVELS`). What the page shows at the TIP of this head's own stem, from the
+    `Q.BEAM_STEM_LEVELS` row(s) of that stem: `{"count": strokes on the better side (a stroke that is >= `BEAM_STEM_RUN_DOUBLE_RATIO`
+    one beam's thickness counts as that many), "side": "left"/"right", "runs": [...], "unit_spaces": one beam's thickness, "row": id}`.
+    `None` where cannot tell (no row for the stem, no tip end named, no beam thickness to count a thick run by -> the plain run
+    count is used only when the cell measured none either way: a thick run then counts once, never twice). Rule 8: unread is not 'one'."""
+    if side not in ("up", "down") or not own_stems or head_box is None:
+        return None
+    stems = _voice_stems(own_stems, head_box)[side]
+    ids = {st.id for st in stems}
+    rows = [r for r in ev.rows(Q.BEAM_STEM_LEVELS, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+            if (r.detail or {}).get("stem_row_id") in ids]
+    if not rows:
+        return None
+    ink = _beam_ink_rows(ev, cell)
+    ths = sorted(float((ink[b.id].detail or {}).get("thickness_spaces")) for b in kept_cv
+                 if b.id in ink and isinstance((ink[b.id].detail or {}).get("thickness_spaces"), (int, float))
+                 and (ink[b.id].detail or {}).get("thickness_spaces") > 0)
+    unit = ths[len(ths) // 2] if ths else None
+    end = "top" if side == "up" else "bottom"
+    best = None
+    for r in rows:
+        e = ((r.detail or {}).get("ends") or {}).get(end) or {}
+        for sd in ("left", "right"):
+            runs = e.get(sd) or []
+            n = 0
+            for run in runs:
+                t = float(run[2])
+                if unit and t < BEAM_STEM_RUN_UNIT_RATIO_MIN * unit:
+                    continue
+                n += max(1, int(round(t / unit))) if (unit and t >= BEAM_STEM_RUN_DOUBLE_RATIO * unit) else 1
+            if best is None or n > best["count"]:
+                best = {"count": n, "side": sd, "runs": runs, "unit_spaces": unit, "row": r.id}
+    return best
+
+
 def _stroke_touches_a_head(box, head_boxes) -> bool:
     """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
     from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
@@ -3340,7 +3437,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
                    Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
+                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
                    # ⚠️ ROADMAP 2.77b: the head's own stem direction where no
                    # CV stem is attached (`_own_stem_side`), so the beams that
                    # can be its own, and with them the value, depend on it;
@@ -3403,7 +3500,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
+           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
@@ -3725,6 +3822,43 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if beam_level_stroke_is_a_beam_enabled() and kept and certain:
         double_thick = _fused_double_beams(ev, cell, kept, x_center)
         possible += double_thick
+    # ⚠️ ROADMAP 2.140 (flag `OMR_BEAM_STEM_LEVELS`, default ON since 2026-10-16), Brahms p18 sys1 staff12 cell7 = 2.136 control tile 4: three
+    # sixteenths under a double beam decided plain eighths (one CV stroke over them; the detector's stack box dropped by
+    # `_kept_beams`). The page, read at each stem's tip, shows two strokes. TWO witnesses from DIFFERENT sources: the page count at
+    # the tip (`Q.BEAM_STEM_LEVELS`) and the detector's box standing a beam taller than one beam would (`stack_box_excess_beams`).
+    # Both -> one more level DECIDES; the page count alone -> NARROW eighth/sixteenth (a level seen by one witness is never
+    # written plain). The box alone does nothing (measured: it fires on ~950 single-beam eighths of Brahms).
+    stem_levels = None
+    if beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None:
+        _cv_kept = [b for b in kept if b.reader == READERS.CV_LINES]
+        tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, _cv_kept)
+        if tip is not None and tip["count"] > certain:
+            used.append(tip["row"])
+            _ink = _beam_ink_rows(ev, cell)
+            _stem_x = None
+            for _st in _voice_stems(own_stems, head_box)[side]:
+                _b = _xywh(_st)
+                if _b is not None:
+                    _stem_x = _b[0] + _b[2] / 2.0
+                    break
+            _cv_all = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b),
+                        (_ink[b.id].detail or {}).get("thickness_px") if b.id in _ink else None)
+                       for b in _kept_beams(ev, cell)[1] if _xywh(b) is not None]
+            _yolo = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b))
+                     for b in _kept_beams(ev, cell)[2] if _xywh(b) is not None]
+            _ex, _how = stack_box_excess_beams(_cv_all, _yolo, _stem_x) if _stem_x is not None else (None, None)
+            _box_agrees = _ex is not None and _ex >= BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS
+            stem_levels = {"page_count": tip["count"], "side": tip["side"], "runs": tip["runs"], "unit_spaces": tip["unit_spaces"],
+                           "box_excess_beams": None if _ex is None else round(_ex, 3), "box": _how,
+                           "box_margin": None if _ex is None else round(_ex - BEAM_STACK_BOX_EXCESS_MIN, 3),
+                           "box_near_miss": _ex is not None and BEAM_STACK_BOX_EXCESS_MIN <= _ex < BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS,
+                           "settled": None}
+            if _box_agrees and tip["count"] == certain + 1:
+                certain = possible = tip["count"]
+                stem_levels["settled"] = "decided_two_witnesses"
+            else:
+                possible = max(possible, tip["count"])
+                stem_levels["settled"] = "narrowed_one_witness"
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -3835,6 +3969,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
+              **({"beam_stem_levels": stem_levels} if stem_levels else {}),
               "beams_not_by_ink": len(ink_dropped),
               "beams_not_by_ink_why": {
                   w: sum(1 for v in ink_dropped.values() if v == w)

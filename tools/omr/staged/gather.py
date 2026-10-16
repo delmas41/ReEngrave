@@ -11200,6 +11200,168 @@ def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.140 -- how many beam strokes stand AT A STEM'S TIP (flag `OMR_BEAM_STEM_LEVELS`, default ON since 2026-10-16)
+#
+# Brahms p18 sys1 staff12 cell7 (2.136 control tile 4, Sean: "16,16"): three sixteenths under a double beam were decided
+# plain eighths. STAGED GATHER found one `cv_lines` stroke over them (a staff line at the gap between the two beams ate the
+# second one in the staff-erased image) and `rhythm._kept_beams` dropped the detector's box (it bounds the stack) because the
+# CV stroke overlaps it in x; `levels_certain` = `levels_possible` = 1. The page shows two strokes at each stem.
+#
+# This reads them where a musician does: down a column just BESIDE each stem, at the stem's tip, on the UNERASED cell raster.
+# A stroke = a vertical ink run at least `BEAM_STEM_RUN_MIN_SPACES` thick whose ink continues sideways at least
+# `BEAM_STEM_RUN_REACH_MIN_SPACES` (a beam runs on to the next stem; a notehead is about a space and a quarter wide). A staff
+# line is erased from the column unless ink stands outside it and runs unbroken across it, so a lone line is never a stroke
+# and a beam crossing a line is one. Both ends of the stem and both sides are filed (which end is the tip is a later stage's
+# question, as in `Q.BEAM_STEM_JOIN`); each run carries its thickness in staff spaces so the consumer counts a run that is
+# twice one beam as two (the gap between two beams can fill in on a scan: this plate's does).
+# CONVENTION ASSUMED: a beam level is a full-width stroke at the stem's tip and further levels lie inward of it; WHAT WOULD
+# FALSIFY IT: a head, a slur end, a hairpin or a stem of another voice that passes the 0.45 space column and has the reach
+# (the reach test is what keeps a head out); NOT CONFIRMED beyond one Brahms cell and a Litolff sample (FINDINGS 2.140).
+# ─────────────────────────────────────────────────────────────────────────────
+
+BEAM_STEM_LEVELS_ENV = "OMR_BEAM_STEM_LEVELS"
+#: Distance of the read column from the stem's centre line, staff spaces (clear of the stem's own width, inside a beam).
+BEAM_STEM_COLUMN_OFFSET_SPACES = 0.45
+#: The tip window, staff spaces: this far from the tip toward the head, and this far past it.
+BEAM_STEM_WINDOW_IN_SPACES = 2.4
+BEAM_STEM_WINDOW_OUT_SPACES = 0.3
+#: A stroke is at least this thick (a staff line is ~0.2; a beam ~0.5-0.7 on the plates measured).
+BEAM_STEM_RUN_MIN_SPACES = 0.36
+#: ...and its ink continues sideways, away from the stem, at least this far (a notehead is ~1.2 wide).
+BEAM_STEM_RUN_REACH_MIN_SPACES = 1.6
+#: ...and at least this many staff-line thicknesses (measured locally, `local_line_thickness`): the existing convention that a beam is
+#: thicker than a line (`rhythm.BEAM_THICKNESS_RATIO_MIN`, 1.75, Sean 2026-10-09, measured on both plates). 2.140 tiles 3 and 5
+#: (Litolff): the "second stroke" was 0.38 sp = one staff line (Sean: eighths). Skipped where no line thickness was measurable.
+BEAM_STEM_RUN_LINE_RATIO_MIN = 1.75
+
+
+def beam_stem_levels_gather_enabled() -> bool:
+    import os
+    return os.environ.get(BEAM_STEM_LEVELS_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+def _column_ink_without_lines(ink: Any, x: int, y0: int, y1: int, line_ys: Sequence[float], half: int) -> Any:
+    """Bool ink down column `x` (3 px wide, majority), rows `y0..y1`, each staff-line BAND (line +- `half` px) kept as ink only
+    where ink stands outside the band on a side and the raw ink is unbroken from that side across the band."""
+    import numpy as np
+    W = ink.shape[1]
+    xa, xb = max(0, x - 1), min(W, x + 2)
+    if xb <= xa or y1 <= y0:
+        return np.zeros(max(0, y1 - y0), bool)
+    raw = ink[y0:y1, xa:xb].mean(axis=1) >= 0.5
+    col = raw.copy()
+    n = len(col)
+    for ly in line_ys:
+        i = int(round(float(ly))) - y0
+        lo, hi = i - half, i + half
+        if hi < 0 or lo >= n:
+            continue
+        above = lo - 1 >= 0 and bool(raw[lo - 1])
+        below = hi + 1 < n and bool(raw[hi + 1])
+        for r in range(max(lo, 0), min(hi, n - 1) + 1):
+            col[r] = bool((above and raw[max(lo, 0):r + 1].all()) or (below and raw[r:min(hi, n - 1) + 1].all()))
+    return col
+
+
+def beam_runs_at_stem_end(ink: Any, stem_x: float, tip_y: float, end: str, space: float,
+                          line_ys: Sequence[float], line_px: float) -> Dict[str, Any]:
+    """`{"left": [[y0, y1, spaces, reach_spaces], ...], "right": [...], "x": {"left": x, "right": x}}`: the strokes down the column
+    `BEAM_STEM_COLUMN_OFFSET_SPACES` beside the stem on each side at the `end` ("top"/"bottom") of the stem, outermost (at the
+    tip) first. Pure: `ink` is a bool raster (cell canonical px), geometry in the same px. ROADMAP 2.140."""
+    H, W = ink.shape
+    half = max(1, int(round(line_px / 2.0)) + 1) if line_px and line_px > 0 else max(1, int(round(0.12 * space)) + 1)
+    if end == "top":
+        y0, y1 = int(tip_y - BEAM_STEM_WINDOW_OUT_SPACES * space), int(tip_y + BEAM_STEM_WINDOW_IN_SPACES * space)
+    else:
+        y0, y1 = int(tip_y - BEAM_STEM_WINDOW_IN_SPACES * space), int(tip_y + BEAM_STEM_WINDOW_OUT_SPACES * space)
+    y0, y1 = max(0, y0), min(H, y1)
+    out: Dict[str, Any] = {"x": {}}
+    for name, sgn in (("left", -1), ("right", 1)):
+        x = int(round(stem_x + sgn * BEAM_STEM_COLUMN_OFFSET_SPACES * space))
+        out["x"][name] = x
+        if not (0 <= x < W) or y1 - y0 < 4:
+            out[name] = []
+            continue
+        col = _column_ink_without_lines(ink, x, y0, y1, line_ys, half)
+        runs = []
+        for a, b in _ink_runs(col):
+            th = (b - a) / space
+            if th < BEAM_STEM_RUN_MIN_SPACES:
+                continue
+            if line_px and line_px > 0 and (b - a) < BEAM_STEM_RUN_LINE_RATIO_MIN * line_px:
+                continue
+            # how far the ink goes on sideways from the column, along the run's middle row (away from the stem)
+            ym = y0 + (a + b) // 2
+            reach, xx = 0, x
+            while 0 <= xx + sgn < W and ink[ym - 1:ym + 2, xx + sgn].any() and reach < 3 * space:
+                xx += sgn
+                reach += 1
+            if reach / space >= BEAM_STEM_RUN_REACH_MIN_SPACES:
+                runs.append([y0 + a, y0 + b, round(th, 3), round(reach / space, 2)])
+        runs.sort(key=lambda r: r[0] if end == "top" else -r[1])
+        out[name] = runs
+    return out
+
+
+def gather_beam_stem_levels(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]]) -> None:
+    """`Q.BEAM_STEM_LEVELS` -- one row per `Q.STEM` row (CV) of each cell, keyed by `stem_row_id`: value = the larger of the two
+    ends' best-side stroke counts (a stroke counted once however thick); `detail.ends` = `{top, bottom}` each with the strokes
+    on its left and right (`beam_runs_at_stem_end`). A ruler: how much ink in how many strokes stands at a stem's tip; it names
+    neither a level nor a beam. Off unless `OMR_BEAM_STEM_LEVELS` (ROADMAP 2.140). Abstains where the cell has no raster or
+    unit. AFTER `gather_cv_lines` (it reads the stems)."""
+    if not beam_stem_levels_gather_enabled():
+        return
+    import numpy as np
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        stems = [r for r in log.rows(Q.STEM, sub) if r.reader == READERS.CV_LINES]
+        if not stems:
+            continue
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image", None)
+        gray = None
+        if img is not None and getattr(img, "ndim", 0) >= 2:
+            if img.ndim == 3:
+                import cv2
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            else:
+                gray = img
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid is not None else None
+        line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        if gray is None or not space or space <= 0:
+            for r in stems:
+                log.abstain(sub, Q.BEAM_STEM_LEVELS, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                            reason=ABSTAIN.NO_MASK if gray is None else ABSTAIN.NO_STAFF_GEOMETRY,
+                            stem_row_id=r.id, note="no cell raster" if gray is None else "no cell staff-space unit")
+            continue
+        ink = np.asarray(gray < BEAM_INK_THRESHOLD)
+        line_px = None
+        try:
+            line_px = local_line_thickness(ink, line_ys, 0, ink.shape[1], space)
+        except Exception:
+            line_px = None
+        for r in stems:
+            v = r.value
+            if not isinstance(v, (list, tuple)) or len(v) < 4:
+                continue
+            x, y, w, h = [float(t) for t in v[:4]]
+            ends = {}
+            for end, tip in (("top", y), ("bottom", y + h)):
+                ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
+            best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
+            log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                        stem_row_id=r.id, ends=ends)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The clef -- every reader, and BOTH crops
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -14383,6 +14545,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
         # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.
         gather_beam_stroke_ink(log, cells, local)
+        # ⚠️ ROADMAP 2.140 (flag, default OFF): beam strokes AT each stem's tip, read beside the stem.
+        gather_beam_stem_levels(log, cells, local)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)

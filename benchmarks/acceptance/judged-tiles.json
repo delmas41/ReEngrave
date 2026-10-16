@@ -1,6 +1,6 @@
 {
- "n_items": 76,
- "n_tiles": 894,
+ "n_items": 78,
+ "n_tiles": 908,
  "tiles": [
   {
    "answer": "right",
@@ -7966,6 +7966,268 @@
    "subjects": null,
    "tile": "all",
    "value": null
+  },
+  {
+   "answer": "16",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": 0.25
+  },
+  {
+   "answer": "8,8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "10",
+   "value": [
+    0.5,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "16,16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "11",
+   "value": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "16,16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": 0.5
+  },
+  {
+   "answer": "16",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "4",
+   "value": 0.25
+  },
+  {
+   "answer": "8,8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "5",
+   "value": [
+    0.5,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "16,16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "6",
+   "value": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "16,16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "7",
+   "value": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "8",
+   "value": [
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "8,8,8",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-15",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "9",
+   "value": [
+    0.5,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "answer": "16,16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-16",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review-2",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "16,16",
+   "answer_kind": "duration_multi",
+   "control": false,
+   "date": "2026-10-16",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review-2",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": [
+    0.25,
+    0.25
+   ]
+  },
+  {
+   "answer": "8",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-16",
+   "doc": null,
+   "followup": false,
+   "item": "2.140-review-2",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": 0.5
   },
   {
    "answer": "C clef",

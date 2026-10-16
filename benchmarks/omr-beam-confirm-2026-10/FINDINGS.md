@@ -162,3 +162,87 @@ pages once per arm (4 gathers of 4-6 minutes), one at a time. Arm env: `OMR_STEM
 
 ### 7.6 Sean's answers (2026-10-15, recorded `out/print/2.126-review/answers.json`)
 Verbatim: "2.126 1. 8 2.8 3.8 4.4 5.8 6-9. 8" (tiles 1-3, 5-9 eighth; tile 4 quarter). **9/9 agree with the record.** The 6 repaired cases are right (q86+q93, q110+q118, q1009, p6 bar 102); the 2 unjudged page-6 side effects (quarter -> eighth) are right; the 3 controls are right. Caveat: the q110/q118 stem cut (0.7) and the q1009 hook margin (0.02) were measured on single Brahms cells. Per CLAUDE.md section 4 ("a cut-off is a measurement"), those two flags may only narrow until another publisher confirms them.
+
+## 8. ROADMAP 2.140 -- a beamed note decided an eighth that is a sixteenth (2026-10-15; STAGED GATHER + ADJUDICATE; landed ON 2026-10-16, see 8.9)
+
+**CONVENTION ASSUMED:** the strokes at a stem's tip are the beam levels of that stem (the outermost at the tip, each further level inward of it, 2.141h's stacking geometry), and
+a staff line is not a stroke. **WHAT WOULD FALSIFY IT:** a notehead, slur end, hairpin or another voice's stem beside a stem that passes the 0.45-space column and the 1.6-space sideways
+reach test and is counted as a stroke; a double beam whose gap is filled in so no white shows and whose thickness is under the cut. **NOT CONFIRMED:** every number below is one
+reader's reading of the page, none is Sean's; only the 9/9 and 7/9 eye checks and tile 4's "16,16" (Sean 2026-10-15, 2.136 answers) are human evidence. Sean's answers to the
+11 tiles in `out/print/2.140-review/` are what confirm or refute it.
+
+### 8.1 The case and the reader that stopped at one level (Brahms p18 sys1 staff12 cell7 = 2.136 control tile 4; records `20261014-night`, streamed, never loaded whole)
+Three sixteenths (glyphs 5, 17, 11) under a double beam; verdicts 5, 11, 17 are DECIDED 0.5 / beam_levels 1 (`head_and_marks`), detail `cv_beams 1, yolo_kept 0, levels_certain 1,
+levels_possible 1`. STAGED GATHER `cv_lines` filed ONE stroke over them (`[1289,535,364,63]` canonical, ink thickness 54 px = 0.637 sp, one beam): the staff line at page y 6832 lies
+in the 2-px gap between the two beams (page runs 6811-6829 and 6831-6850, 0.66 and 0.66 sp), so the second beam fused with the erased line and was lost. The detector's `beam` box over
+the stack (`[946,553,696,113]`) was dropped by `rhythm._kept_beams`, which keeps a detector box only if no CV stroke overlaps it in x. Fix 1's own widening
+(`_fused_double_beams`, a stroke twice another's thickness) cannot fire: there is no second stroke to measure against (cannot tell is not "one"). **The reader: `cv_lines`
+(GATHER) + `_kept_beams` dedup (ADJUDICATE); margin: the box stands 0.774 beams taller than one beam would for its width, cut 0.6 (+0.174); the page shows 2 strokes of 0.66 sp.**
+Glyph 17 (the middle head) has no own stem attached (its stem box starts 0.7 sp below the head box): no rule here reaches it, it stays a decided eighth (named, not fixed).
+
+### 8.2 What was built (all default OFF, one flag `OMR_BEAM_STEM_LEVELS`; row in `docs/flags-2026-09.md`)
+* GATHER `gather.beam_runs_at_stem_end` / `gather_beam_stem_levels` (new `Q.BEAM_STEM_LEVELS`, reader `cv_beam_levels`): per CV stem and per end, the strokes down a column 0.45 sp
+  beside the stem on each side, unerased raster, each staff-line band erased unless ink stands outside it and runs unbroken across it; a stroke is >= 0.36 sp thick and its ink goes on
+  sideways >= 1.6 sp (a head is ~1.2 wide). Files nothing unless the flag is set at gather time.
+* ADJUDICATE `rhythm.adjudicate_duration` (after the existing fused-thickness widening): a beamed head with `certain >= 1` whose page count at its tip (a stroke >= 1.8 x one beam counts
+  as that many) is above `certain`: with the detector's stack box also taller than one beam (`stack_box_excess_beams` >= 0.6) and the page count `certain + 1` the level DECIDES; the
+  page count alone NARROWS (`beams_ambiguous`, eighth/sixteenth, never plain); the box alone does nothing. Detail `beam_stem_levels` carries both witnesses and the box margin.
+* Tests `tools/omr/tests/test_staged_beam_stem_levels_2_140.py`, 17, each RED case beside a control that can fail (a staff line alone is 0 strokes, and counted if the erasure is
+  removed; a head beside the stem is not a stroke; the box alone changes nothing).
+
+### 8.3 Count: DECIDED eighths (0.5, beam_levels 1) whose stem tip shows a second stroke on the page raster (`probe/count_2_140.py`, the product reader on the 600 dpi page, locally per stem)
+Sources: Litolff `20261014-night` rows + `out/2.141h/arms/lit-f1/durations.json` (fix 1 ON); Brahms `20261014-night` standing duration verdicts (`out/2.140/brah-durations.json`).
+| movement | decided eighths | no own stem read | >= 2 strokes at the tip (page witness) | ...and the detector stack box agrees (both witnesses) | page only |
+|---|---|---|---|---|---|
+| Brahms | 6,741 | 140 | **88** | **35** | 53 |
+| Litolff | 3,703 | 208 | **181** | **8** | 173 |
+The box alone (A < 2 strokes, box excess >= 0.6) fires on 954 Brahms and 154 Litolff eighths; a sample of 9 Brahms shows single beams (my eye): it is not a witness by itself, so it moves nothing.
+**Who says it is right:** not a reference. My eye on the page crops (`probe/sheet_2_140.py`, not Sean): Brahms both-witness sample 9 of 9 show two beams with a white sliver; Brahms page-only random
+9, about 7 show two; **Litolff page-only: I cannot tell on this blobbed plate (staff lines 6-10 px thick fuse with beams), likely many false**, which is why the page alone only narrows.
+
+### 8.4 Page replay, flag OFF vs ON (`probe/replay_2_140.py`: the record's pages streamed, the reader's rows built from the page raster, `pipeline.decide`; `out/2.140/replay-*.json`)
+**Control, and it does not fully pass:** the OFF replay reproduces the record's own standing durations on 1,381 of 1,434 Brahms p18 glyphs and 2,018 of 2,114 Litolff p4+p6 (the rest differ because
+fix 1 is now ON in the code and the saved records pre-date it, plus the known document-wide calibration of a restricted re-decide, 2.141h); so every figure is ON vs the OFF replay, not vs the record.
+The reader ran on the PAGE raster, not the canonical cell raster: its rows exist in a record only after a re-gather with the flag set.
+| pages | verdicts changed | eighth -> sixteenth DECIDED | sixteenth -> thirty-second DECIDED | decided -> narrowed | follows a changed stem |
+|---|---|---|---|---|---|
+| Brahms p18 | 28 | 14 | 2 | 12 | 0 |
+| Litolff p4, p6 | 53 | 7 | 0 | 45 | 1 (`stem_value_follows`) |
+Named cell: Brahms (18,1,12,7) tile 4: glyph 5 eighth -> sixteenth DECIDED (page 2 strokes, box 0.774), glyph 11 -> NARROWED (the box does not reach its stem: `x` 1647 past the box's end 1642), glyph 17 unchanged.
+I looked at the 14 Brahms eighth -> sixteenth crops (all show two beams with a white sliver, two of them only faintly) and 9 of the 12 narrowed (all show a double or heavier beam); the 3 other narrowed and the two thirty-second crops I did not view as crops (my eye only). The two thirty-second cases (tiles 1 and 4) are the weakest
+claim (a third stroke next to two) and are the first thing Sean's tiles test.
+
+### 8.5 Tiles for Sean (`out/print/2.140-review/`, 600 dpi, RED = the bar, BLUE = the changed notes, nothing of ours drawn, hidden key `out/2.140/tiles-key.json`, same question as 2.141)
+11 tiles: Brahms 1 (2->3 levels), 2 (mixed), 4 (2->3), 6, 7 (narrowed), 8 (= 2.136 tile 4), 11; Litolff 3, 5 (both-witness, a scan I cannot judge); controls 9 (Litolff, plain beamed eighths,
+unchanged) and 10 (Brahms, plain eighths under one beam where the box witness alone says taller). A control that disagrees with Sean is the blind spot. Litolff narrowed-only cells were
+refused by the frame control (staff lines do not sit where the page says), so no Litolff page-only tile exists.
+
+### 8.6 Limits
+* The ON numbers are a replay with page-raster rows; the real GATHER rows (canonical cell raster) are unmeasured until a re-gather.
+* The box threshold (0.6) and the 1.6 sp reach rest on one Brahms cell and a Litolff sample: by CLAUDE.md section 4 they may only narrow until another publisher confirms them; the DECIDE path is
+  proposed only on both witnesses and only behind a flag until Sean's tiles.
+* A head whose stem box does not touch it (glyph 17), a stem past the detector box, and Litolff's fused staff lines are named misses, not handled.
+* The tile 4 middle note is an example of an own-stem gap that is 2.142-adjacent (not edited here).
+
+### 8.7 Sean's answers to the 11 tiles (2026-10-15, `out/print/2.140-review/answers.json`) and the causes found
+Raw: "1.16 2.16,16,16 3.8. 4.16. 5.8,8,8 6.16,16,16. 7.16,16,16 8.16,16. 9.8,8,8. 10.8,8,8. 11.16,16,16". As built (8.2) it made 9 wrong values right, 5 wrong values narrowed, both controls right, and **6 right values wrong**:
+tiles 1 and 4 (Brahms, 16 made 32) and 3 and 5 (Litolff, 8 made 16). Causes, each measured locally at the stem (page replay, `probe/replay_2_140.py`, `score_2_140.py`):
+* **(a) Brahms tiles 1/4, the third level.** The stem-tip runs were 0.86/0.96/0.62 and 0.83/0.79/0.65 of one beam; the third is a staff line (page y 3611 on staff 13 of system 0; the run 3603-3616 is centred on it) plus a sliver of ink, bridged into
+  a "stroke" by the band rule. And the box witness was not independent of the count it was judging: the box was measured against ONE counted CV stroke although two were already counted, so a box that spans two beams read 1.7 beams tall; measured
+  against both strokes' span it reads 0.91 / -3.1. Fixes: `stack_box_excess_beams` now expects the height of ALL CV strokes already counted over x; a page stroke under 0.7 of one beam (`BEAM_STEM_RUN_UNIT_RATIO_MIN`; the thin extras read 0.51-0.65, every stroke on a cell Sean called right reads >= 0.76) is not counted.
+* **(b) Litolff tiles 3/5, the second level.** The "second stroke" was 0.38-0.52 of a beam, 0.38 sp = one staff line of that plate (6 px): a staff line. Page count and box were NOT two readings of one ink here (box = detector, count = raster)
+  and the box clearing its cut (0.659 vs 0.6, tile 5) was a near-miss that the count's false stroke then promoted. Fix: a page stroke must be at least 1.75 staff-line thicknesses, measured locally (`BEAM_STEM_RUN_LINE_RATIO_MIN`, the existing beam-thicker-than-a-line convention, Sean 2026-10-09).
+**After the fixes, replay on all 11 cells: 22 notes right, 4 narrowed (tile 7 x3, tile 8 glyph 11), 0 wrong** (the 9 right ones stay right; tiles 1, 3, 4, 5 back to Sean's values). Honest limits: the cuts 0.7 and 1.75 were chosen after seeing these tiles (a fit to 11 cells, not a held-out test), so
+the second set of tiles is the test. Other cells whose value now changes (decided, outside the 11): Brahms (18,0,1,6) x2, (18,0,11,1) x3 (8 -> 16, crops look like double beams to me) and Litolff (6,1,7,0) x1 (box excess 0.616 vs 0.6, the thinnest margin; the tile's bar bracket is unclean): blind tiles `out/print/2.140-review-2/`, key `out/2.140/tiles2-key.json`.
+
+### 8.8 Round 2 (Sean 2026-10-16, `out/print/2.140-review-2/answers.json`): Brahms tiles 1, 2 right (5 notes); Litolff (6,1,7,0) glyph 5 WRONG (we 16, Sean 8)
+**Why a "0.571 run" passed the 0.7 rule: it is not a bug in the rule.** 0.571 is the run's thickness in staff SPACES; the 0.7 cut is on that run over one beam (unit 0.75 sp on this cell): 0.571 / 0.75 = **0.76**, above 0.7 (the key printed the
+raw spaces; the first run was 1.27 sp = 1.69 beams, counted once). The run is a staff line of that plate (0.38 sp) plus a sliver, not a stroke, and it cleared both stroke cuts by a small margin (0.76 vs 0.7; 9 px against 1.75 lines of ~5 px);
+the box witness cleared its cut by **0.016** (0.616 vs 0.6). Two near-misses together decided a value. **Fix (CLAUDE.md section 4: a cut tuned on our plates may only narrow; a refusal says how close it came):** a box witness within
+`BEAM_STACK_BOX_NEAR_MISS` = 0.05 of its cut cannot decide; it narrows (eighth/sixteenth, blue) and `detail.beam_stem_levels.box_near_miss` records it. Test: a box at ~0.62 narrows, one at 0.774 still decides.
+**Replay of all 14 tiles' cells (round 1 + round 2; `probe/score_2_140.py`, replay2-*.json): 27 notes right, 5 narrowed, 0 wrong**; the Litolff cell is now narrowed. No other cell's value changes against the previous rule (Brahms p18 still 26 changed: 15 decided, 11 narrowed;
+Litolff p4/p6 now 7 changed, all narrowed, none decided), so no new tiles. Limits unchanged: the 0.05 margin is a convention-free guard, not a measurement; the stroke cuts (0.7, 1.75 lines) still have only 0.06-0.1 of clearance on this cell, so a Litolff
+decided level now needs every witness well clear; none exists in the 14 cells.
+
+### 8.9 Landed ON (2026-10-16)
+`OMR_BEAM_STEM_LEVELS` default ON in `gather.beam_stem_levels_gather_enabled` and `rhythm.beam_stem_levels_enabled` (explicit `0/false/no/off` disables). Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix. Caveat: cut-offs fitted to Sean's tiles; a third publisher not yet checked. The GATHER reader files `Q.BEAM_STEM_LEVELS` rows only at the next re-gather; on a record without them `_stem_tip_strokes` returns None and ADJUDICATE duration is unchanged from flag-off (no raise).
