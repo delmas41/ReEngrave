@@ -2450,7 +2450,7 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     # never turn a staccato into an augmentation.
     keep_foreign = _own.dot_follows_note_enabled()
     foreign_keys = set()
-    # ⚠️ ROADMAP 2.151 (`OMR_DOT_BOXED_AS_A_HEAD`, default OFF): a box the
+    # ⚠️ ROADMAP 2.151 (`OMR_DOT_BOXED_AS_A_HEAD`, default ON since 2026-10-16): a box the
     # notehead gate REFUSED is not a head -- it never owns a dot (a refused
     # `head_cut_piece` twin took Brahms p0 `0/0/4/3/0` from the real half) --
     # and one it refused as dot-shaped ink may BE a dot (`marks`, below).
