@@ -3552,7 +3552,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead",
-             "stem_tip_reads_no_beam", "stem_tip_reads_a_beam"),
+             "stem_tip_reads_no_beam"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -4246,7 +4246,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             and beam_evidence == "none_over_this_note"
             and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems):
         tipv = _stem_tip_beam_verdict(ev, cell, own_stems, head_box, side)
-        if tipv is not None:
+        # ⚠️ Sean's 2.146 tiles (2026-10-16): the clean-tip half 33/33 right on the beam question (+ 41/41 on his hand-truth
+        # page); the one "a beam at the tip" decision (tile 13, Brahms p1 sys0 st2 c1 g11) WRONG -- "definitely a quarter". So
+        # only a CLEAN tip decides; beam runs at the tip leave the narrowing below as it was.
+        if tipv is not None and tipv["levels"] == 0:
             used.extend(tipv["rows"])
             level = tipv["levels"]
             b = base / (2 ** level) if level else base
@@ -4255,7 +4258,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 add /= 2.0
                 t += add
             return Ruling(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
-                          reason="stem_tip_reads_a_beam" if level else "stem_tip_reads_no_beam", used=tuple(used),
+                          reason="stem_tip_reads_no_beam", used=tuple(used),
                           detail={**shared, "stem_tip": {"levels": level, "side": tipv["side"], "runs": tipv["runs"]}})
     if (((discount_removed_all_marks and (own_stems or reach_stem))
          or ink_removed_all_marks or far_removed_all_marks)

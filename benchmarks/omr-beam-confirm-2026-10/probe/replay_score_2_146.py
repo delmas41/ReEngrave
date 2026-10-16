@@ -56,8 +56,9 @@ for arm, env in (("off", ""), ("on", "1")):
     for v in d["verdicts"]:
         if v["quantity"] == Q.DURATION and v["subject"].startswith("glyph/%d/" % PAGE) and v.get("decider", "").endswith("adjudicate_duration"):
             val = v["value"]
+            full = val if isinstance(val, dict) else None
             if isinstance(val, dict): val = val.get("beam_levels")
-            adj[v["subject"]] = [v["outcome"], val, v["reason"]]
+            adj[v["subject"]] = [v["outcome"], val, v["reason"], None if full is None else [full.get("written"), full.get("dots")]]
     res[arm] = adj
     print(arm, len(adj), flush=True)
 

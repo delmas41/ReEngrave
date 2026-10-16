@@ -316,3 +316,11 @@ reads no beam run and `Q.STEM_TIP_INK` reads no hook -> no beam (`stem_tip_reads
   26 the tip reads clean but the flag window never read that end (`Q.STEM_TIP_INK` absent: kept narrowed on purpose -- a
   flag the detector missed would become a quarter); 7 no tip row.
 * 34 blind tiles `out/print/2.146-review/` (Brahms p1 20, Litolff p2-3 14, every changed note; hidden key `out/2.146/`).
+
+### 9.6 Sean's answers to the 34 tiles (2026-10-16, `out/print/2.146-review/answers.json`)
+* **Beam question: clean tip -> no beam 33/33 right; beam runs at the tip -> one beam 0/1 (tile 13, Brahms p1 sys0 st2 c1 g11,
+  "definitely a quarter").** With the hand-truth page: clean-tip decisions 74/74 right. The "a beam at the tip" branch is
+  REMOVED (runs at the tip leave the narrowing); only a clean tip decides.
+* Written value 30/34: besides tile 13, three clean-tip decisions carry another reader's error into a PLAIN note -- tile 15
+  a half read as a filled head (written quarter; "15 is a half note"), tiles 23 and 34 a dotted quarter whose dot was not read
+  (written quarter). Before the rule those three were narrowed. Not a beam error; a cost of deciding (open question for Sean).

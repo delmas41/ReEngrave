@@ -64,23 +64,15 @@ class TestTheTipDecides(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "beam_discounted_uncertain")
 
-    def test_one_run_at_the_tip_decides_one_beam(self):
-        log = Log()
-        g = _discounted(log, tip_found=False, runs=[(70, 80, 0.5, 2.0)])
-        _run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.reason, "stem_tip_reads_a_beam")
-        self.assertEqual(v.value["beam_levels"], 1)
-        self.assertEqual(v.value["beats"], 0.5)
-
-    def test_two_runs_at_the_tip_decide_two_beams(self):
-        log = Log()
-        g = _discounted(log, tip_found=False, runs=[(70, 80, 0.5, 2.0), (82, 92, 0.5, 2.0)])
-        _run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.value["beam_levels"], 2)
-        self.assertEqual(v.value["beats"], 0.25)
+    def test_beam_runs_at_the_tip_do_not_decide(self):
+        """Sean 2026-10-16 tile 13: the one 'a beam at the tip' decision was a quarter. Runs at the tip leave the narrowing."""
+        for runs in ([(70, 80, 0.5, 2.0)], [(70, 80, 0.5, 2.0), (82, 92, 0.5, 2.0)]):
+            log = Log()
+            g = _discounted(log, tip_found=False, runs=runs)
+            _run(log)
+            v = log.verdict(Q.DURATION, g)
+            self.assertEqual(v.outcome, Outcome.NARROWED)
+            self.assertEqual(v.reason, "beam_discounted_uncertain")
 
 
 class TestCannotTellLeavesTheNarrowing(unittest.TestCase):
@@ -88,7 +80,7 @@ class TestCannotTellLeavesTheNarrowing(unittest.TestCase):
     def _assert_narrowed(self, log, g):
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertNotIn(v.reason, ("stem_tip_reads_no_beam", "stem_tip_reads_a_beam"))
+        self.assertNotIn(v.reason, ("stem_tip_reads_no_beam",))
 
     def test_no_tip_levels_row(self):
         log = Log()
@@ -113,7 +105,7 @@ class TestCannotTellLeavesTheNarrowing(unittest.TestCase):
         g = _discounted(log, tip_found=True, runs=())
         _run(log)
         v = log.verdict(Q.DURATION, g)
-        self.assertNotIn(v.reason, ("stem_tip_reads_no_beam", "stem_tip_reads_a_beam"))
+        self.assertNotIn(v.reason, ("stem_tip_reads_no_beam",))
 
 
 class TestTheFlag(unittest.TestCase):
