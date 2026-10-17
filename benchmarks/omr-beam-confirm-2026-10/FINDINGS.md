@@ -503,5 +503,5 @@ narrowed); 1 and 19 (quarters) narrowed {8, 4} -> decided quarter, right; 14 (a 
   a stroke 2.2 spaces under the real beam).
 
 Across both galleries (40 tiles, shipped defaults) the tightened arm makes 7 notes right that base had wrong or narrowed and
-makes 3 a decided wrong from a narrowing (grace notes 6/11: 2.156; tile 10: head fill; tile 13: the beam guard) -- and one of
-those three, tile 13, is this lane's own doing.
+makes 4 a decided wrong from a narrowing (grace notes 6/11: 2.156; tile 10: head fill; tile 13: the beam guard) -- and one of
+those four, tile 13, is this lane's own doing.
