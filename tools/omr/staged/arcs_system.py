@@ -62,6 +62,11 @@ ON_LINE_SHARE = 0.6
 EXT_MAX_SLOPE = 1.0
 #: A column bridged on the RAW page costs this much of a gap column (`GAP_MAX_SPACES`): at most ~3 sp along a line.
 RAW_BRIDGE_COST = 0.25
+#: A trace at least this long (spaces) that stays within `STRAIGHT_SPACES` of a straight line is not an arc.
+STRAIGHT_MIN_SPACES = 2.0
+STRAIGHT_SPACES = 0.15
+#: A traced column is erased only where its run is at most this many times the trace's median stroke (+1 px).
+THICK_FACTOR = 1.6
 #: How many seed columns a trace tries (the best coverage wins).
 SEED_COLUMNS = 3
 #: The trace may cross this many spaces of columns with no stroke (a barline, a removed staff line, a stem).
@@ -366,6 +371,17 @@ def _finish(pts: Dict[int, Tuple[int, int]], coverage: float) -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # One curve from its pieces
 # ─────────────────────────────────────────────────────────────────────────────
+
+def is_straight(pts: Dict[int, Tuple[int, int]], sp: float) -> bool:
+    """A trace at least `STRAIGHT_MIN_SPACES` long whose centres never leave a straight line by `STRAIGHT_SPACES`: a
+    beam or a line. An arc curves (a tie three spaces long rises ~0.4 sp in the middle)."""
+    xs = np.asarray(sorted(pts), float)
+    if len(xs) < 3 or (xs[-1] - xs[0]) < STRAIGHT_MIN_SPACES * sp:
+        return False
+    ys = np.asarray([(pts[int(x)][0] + pts[int(x)][1]) / 2.0 for x in xs])
+    k, c = np.polyfit(xs, ys, 1)
+    return float(np.max(np.abs(ys - (k * xs + c)))) < STRAIGHT_SPACES * sp
+
 
 def on_a_staff_line(pts: Dict[int, Tuple[int, int]], line_ys: Sequence[float], sp: float) -> bool:
     """A flat trace whose columns mostly sit on a staff line's rows: a line's residue, not an arc."""
@@ -684,6 +700,12 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 summary["abstained"] += 1
                 summary["on_a_staff_line"] = summary.get("on_a_staff_line", 0) + 1
                 continue
+            if t is not None and t["points"] and is_straight(t["points"], sp):
+                log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
+                            reason=ABSTAIN.BELOW_THRESHOLD, note="the trace is straight: a beam or a line, not an arc")
+                summary["abstained"] += 1
+                summary["straight"] = summary.get("straight", 0) + 1
+                continue
             if t is None or t["coverage"] < MIN_COVER or not t["points"]:
                 log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
                             reason=ABSTAIN.BELOW_THRESHOLD,
@@ -754,8 +776,11 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             pad = ERASE_BOX_PAD_SPACES * sp_staff
             zones = [(b[0] - pad, b[1] - pad, b[2] + pad, b[3] + pad) for b in (m["piece"]["box"] for m in members)]
             zones += [hb for hg, hname, hb in marks_by_staff.get((pg, sy, st), []) if hg in stroke_only]
+            # and never a column whose run is much thicker than the stroke's own (a beam the trace ran onto)
+            thick_cap = THICK_FACTOR * float(np.median([b - a + 1 for a, b in pts.values()])) + 1.0
             pts_erase = {x: r for x, r in pts.items()
-                         if any(z[0] <= x <= z[2] and r[1] >= z[1] and r[0] <= z[3] for z in zones)}
+                         if (r[1] - r[0] + 1) <= thick_cap
+                         and any(z[0] <= x <= z[2] and r[1] >= z[1] and r[0] <= z[3] for z in zones)}
             erase_plan.append((pts_erase, sp_staff))
             if progress:
                 print(f"  gather system arc {first['glyph'].to_key()} {anc['shape']} cells={cells_in}")
