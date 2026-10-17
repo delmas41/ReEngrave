@@ -1614,3 +1614,18 @@ its PNG at the key offset); `answers.json` `{}`. Far fewer than ~20: the flag ch
 
 Fast tier (serial, at `lane-2.161-box-stem-halves` after the replay commit): 8404 passed, 12 skipped, 2 xfailed.
 `python3 -m tools.omr.staged.check`: open=192, status ok (not up). Branch not merged; no DECISIONS line; flag OFF.
+
+### 17.7 Sean's answers (2026-10-17) and a found disagreement
+
+Sean, verbatim: "Set G 1.2 2.2 3.1 4.2 5.2". Recorded in `out/print/2.161-review/answers.json` (manifest names each glyph;
+`benchmarks/acceptance/judged-tiles.json` rebuilt, 1180 tiles). **The 3 changed Litolff heads (tiles 2, 4, 5) are halves:
+3 / 3 right.** Control tile 1 (Litolff `glyph/4/0/3/3/8`, a half) right.
+
+**Control tile 3 (Brahms `glyph/5/0/2/3/2`): Sean says 1 (a whole); we write a QUARTER**, decided by ADJUDICATE
+(`stem_tip_reads_no_beam`) on the night record and in both replay arms (the flag does not touch it). Every reader calls the
+head black: detector class `noteheadBlackInSpace` (0.80), 2.148 slit `rows_share` 0.00 (hole 0.00), 2.23 centre window 1.00
+raw and 1.00 with the line rows out; box 1.41 x 1.20 sp, head-sized. **Sean judged the same glyph before: 2.154-review tile 4,
+answer "4"** (a quarter; that tile's base was decided 1.0 by `collapse_bare_stem_by_bar`). Crop of both tiles side by side:
+`out/print/2.161-diagnosis/11-brahms-5-0-2-3-2-tile4-of-2.154-vs-tile3-of-2.161.png` -- the same head both times, a filled
+head below the staff on the stem it shares with the head above (our look, not evidence). Not fixed here and not counted
+as our error: his two answers disagree, so the index now holds both (2.154 "4", 2.161 "1") until he says which stands.
