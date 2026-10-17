@@ -2083,8 +2083,11 @@ def lone_event_decline(log: Log, cell: Subject) -> Tuple[Optional[str], Optional
     what a DECIDED verdict took out of the bar; the meter at the bar is DECIDED and reaches the print (read, or a decided
     carry of a reading: never a meter the bars chose); no tuplet is seen; and exactly ONE of the event's OWN candidates (per
     head, and common to every head) fills the bar. Else `(why, None)`. A second event of any kind (a rest, an abstained
-    element standing alone, a decided note) refuses: it is the busy bar Sean left confirm-only."""
-    from .consequences import (_bar_beats_at, _bar_has_tuplet, _is_rest, _left_the_bar, _on_one_stem, _standing)
+    element standing alone, a decided note) refuses: it is the busy bar Sean left confirm-only. ROADMAP 2.160
+    (`OMR_LONE_EVENT_HEAD_INK_GUARD`, default OFF): and, under that flag, no head's staff-line-erased ink is below
+    `LONE_EVENT_MIN_HEAD_INK_NET` -- a fitted cut, so it may only take a guess away, never make one."""
+    from .consequences import (_bar_beats_at, _bar_has_tuplet, _is_rest, _left_the_bar, _on_one_stem, _standing,
+                               LONE_EVENT_MIN_HEAD_INK_NET, lone_event_head_ink_guard_enabled)
     standing = [v for v in _standing(log, cell, Q.DURATION) if _left_the_bar(log, v.subject) is None]
     if not standing:
         return "empty_bar", None
@@ -2125,7 +2128,28 @@ def lone_event_decline(log: Log, cell: Subject) -> Tuple[Optional[str], Optional
             return "not_exactly_one_candidate_fills", None
         if fills is None:
             fills = target
+    if lone_event_head_ink_guard_enabled():
+        # ROADMAP 2.160 (OFF): a head with too little head-shaped ink off the staff lines is not guessed (narrow-only).
+        for m in narrowed:
+            net = _head_ink_net(log, m.subject)
+            if net is not None and net < LONE_EVENT_MIN_HEAD_INK_NET:
+                return "head_ink_below_cut:%.3f<%.2f" % (net, LONE_EVENT_MIN_HEAD_INK_NET), None
     return None, float(fills)
+
+
+def _head_ink_net(log: Log, subject: Subject) -> Optional[float]:
+    """ROADMAP 2.160: `Q.NOTEHEAD_INK.detail.ink_net.best` (the staff-line-ERASED reading) on this glyph, or `None` where
+    the record has none -- read, never re-measured (rule 6); `None` never declines (no reading is not "too little")."""
+    rows = log.rows(Q.NOTEHEAD_INK, subject)
+    if not rows:
+        return None
+    net = (rows[-1].detail or {}).get("ink_net")
+    if not isinstance(net, dict) or net.get("best") is None:
+        return None
+    try:
+        return float(net["best"])
+    except (TypeError, ValueError):
+        return None
 
 
 def _lone_event_guesses(log: Log, cell: Subject, props: List[Proposal], kept: List[Proposal]) -> List[Proposal]:
@@ -2198,7 +2222,7 @@ def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     inference=Inference.COLLAPSE_NARROWED_BY_BAR,
     target=Q.DURATION,
     reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_INK),
     scope=Kind.CELL,
     sideways=False,
     switch=NARROWED_BAR_SWITCH,

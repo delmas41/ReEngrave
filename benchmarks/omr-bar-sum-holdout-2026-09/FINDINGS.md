@@ -4638,3 +4638,52 @@ Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's
 ### 2.158 -- LANDED ON (Sean 2026-10-17)
 
 Asked "Land 2.158 ON?", Sean answered "2.258 on" (a typo for 2.158). `OMR_LONE_EVENT_FILLS_BAR` is default ON; an explicit `0/false/no/off` (or empty) disables it. The tile-14 guard is ROADMAP 2.160.
+
+## 2.160 -- a lone head with too little notehead ink (lane-2.160-low-ink-lone-head; STAGED INFER guard + GATHER count; 2026-10-17)
+
+Sean 2026-10-17: *"Let's explore the top little note head idea"*; *"Yes to both"*. No page gathers: the night records (`library/_shared-records/*-mvt1-whole-20261016-night.record.json`) read and replayed.
+
+**CONVENTION ASSUMED:** a notehead is a solid or ringed blob of its own ink; a tie/slur tail is a thin stroke, and on a staff line most of its pixels ARE the line. **WHAT WOULD FALSIFY IT:** a head Sean values that reads as little erased ink as a tail. **NOT CONFIRMED:** only one non-head (tile 14) sits where the guard acts; the cut is fitted on it.
+
+### 2.160-1. What separates real heads from non-heads (`probe/heads_2_160.py`, `probe/join_2_160.py`)
+One row per notehead-classed box (Litolff 11,399; Brahms 24,260). Sean's judged glyph tiles joined by key, checked against the tile's page box (centre inside or IoU >= 0.3); "real" = Sean gave a value (Litolff 105, Brahms 84), "non" = not a note (Litolff 9 incl. tile 14, Brahms 7), "rest" = Sean called it a rest (Litolff 11, Brahms 12); 29 non/rest tiles are not notehead boxes in the night record (key accidentals, barlines, ...) and cannot reach the rule. Plus the 20 lone-event guesses (Litolff 18 right + tile 14, Brahms 1).
+
+| measure | real heads (Litolff / Brahms) | non-heads | separates? |
+|---|---|---|---|
+| `notehead_ink` value (max of raw, net) | min 0.631 / 0.722 | 0.616 - 1.000; tile 14 0.700 | **no**: 5 Litolff heads Sean valued are at or below 0.700 (0.631, 0.686, 0.686, 0.688, 0.690); a cut at 0.70 takes 5 right heads to catch 3 non-heads |
+| detector confidence | min 0.105 / 0.325 | 0.264 - 0.504 | **no**: every non-head lies inside the real range |
+| box within 0.5 sp of an arc box | 16 of 105 / 51 of 84 | 2 of 16 | **no**: a tie runs INTO its real note |
+| staff-erased ink (`ink_net`) | min **0.486** / 0.697 | tile 14 **0.218**; the other 15 at 0.615 - 1.000 | **only tile 14**: a gap 0.218 -> 0.486 with no real head in it, but one non-head below it; rests Sean named reach 0.371 |
+| head box's gap from the bar's left edge | min 0.69 sp (all 208) | tile 14 0.09 sp; others >= 1.48 | only tile 14 (one example) |
+
+Honest reading: **no value separates non-heads as a class from real heads.** The staff-erased ink separates the one non-head the rule guessed (a tail on a staff line, whose raw ink was the line) from all 208 heads Sean valued, with a wide gap; it does not touch the other non-heads (dynamics, slashes, clef and accidental parts), which have real ink. The lone-event guesses themselves: right ones net 0.557 - 0.956 (Brahms 0.737), tile 14 0.218.
+
+### 2.160-2. The guard, built OFF (`OMR_LONE_EVENT_HEAD_INK_GUARD`)
+`inferences.lone_event_decline`: under the flag, if any head of the lone event has `Q.NOTEHEAD_INK.detail.ink_net.best` below `consequences.LONE_EVENT_MIN_HEAD_INK_NET` = 0.35 (midpoint of the one gap), the bar is declined (`head_ink_below_cut:<net><0.35`); the head stays NARROWED with its candidates (unread, red), never another value. A missing reading never declines. NARROW-ONLY by construction (CLAUDE §4: a cut fitted on our plates). `Q.NOTEHEAD_INK` added to the rule's `reads`. Tests `tools/omr/tests/test_staged_lone_event_head_ink_2_160.py` (8): flag parse; tile 14's values (0.700 / 0.218) declined and narrowed; it reads net not value; one low head in a chord declines the event; controls: the lowest real head (0.688 / 0.486) still guessed, no ink row still guessed, flag off still guessed. Guard removed (mutation): 3 fail.
+
+Reach (`probe/replay_2_160.py`, review.rerun, guard OFF vs ON, 2.158 at its default ON in both):
+
+| | Litolff (whole) | Brahms |
+|---|--:|--:|
+| notes changed | **1**: `glyph/5/1/4/2/1` (tile 14) guessed half -> narrowed `head_fill_from_ink` {1, 2, 4} | **0** (static: its one lone-event guess, 12/0/2/6/9, has net 0.737; no replay of the 7 GB record) |
+| control: OFF arm vs stored record | 14,385 agree; 19 differ = exactly the 19 2.158 guesses (the stored record predates 2.158 ON) | -- |
+
+Judged tiles: the one changed glyph is tile 14 (parsed `other`), so no judged right value is lost; every judged real head sits at net >= 0.486, above the cut, and the guard acts only on lone-event guesses.
+
+### 2.160-3. Tie/slur tails at a bar's left edge boxed as heads -- a GATHER fault, counted, not fixed (`probe/tails_2_160.py`)
+Geometry: a notehead box starting within 0.5 sp of its cell's left edge, with a tie/slur box from an EARLIER cell of the same staff ending within -0.25..0.5 sp of it and overlapping it vertically.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| notehead boxes at a bar's left edge | 229 | 983 |
+| of those, an arc from the previous bar ends on the box | **20** (tie 11, slur 9) | **206** (tie 172, slur 34) |
+| of those, erased ink < 0.6 (cut into the sheet) | 10 | 15 |
+| erased ink < 0.35 | 5 | 3 |
+
+The geometric count is an upper bound: a tie runs INTO its real tied-to note, so most of Brahms's 206 (median erased ink 1.00) are real notes. On the 25 crops (ink < 0.6), by the manager's eye only (NOT evidence, Sean has not looked), nearly all are an arc's end or a sliver on the barline, not a head, including boxes at erased ink 0.36 - 0.56 -- **above the guard's cut**, so the guard does not catch every tail. Examples: Litolff `glyph/3/1/5/15/2` (tie end, bottom line), `glyph/3/1/5/3/1` (slur end), Brahms `glyph/26/1/3/6/16` (tie end). Crop sheet (not blind; blue = our notehead box; caption = doc, glyph, the arc, erased ink): `out/print/2.160-tie-tails/` (`sheet_1..3.png`, `crop_NN.png`, `index.json`). The fix belongs upstream (the detector box / a GATHER tail test); no lone-event guess other than tile 14 sits on one.
+
+### 2.160-4. Blind tiles: none cut
+The guard declines exactly one head on both plates, tile 14, which Sean has already judged (2.158). Re-asking it would test nothing, and two controls alone ask nothing, so `out/print/2.160-review` was not cut.
+
+### 2.160-5. Limits
+One non-head example below the cut; the cut is a midpoint, not a measurement. Tails with more erased ink than 0.35 (seen on the crops) pass the guard. Flag OFF; no DECISIONS line from this lane.

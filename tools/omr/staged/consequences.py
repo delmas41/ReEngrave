@@ -396,6 +396,25 @@ def lone_event_fills_bar_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
+#: ROADMAP 2.160 (Sean 2026-10-17, "Let's explore the [too] little note head idea"; "Yes to both"), default OFF: the lone-event
+#: rule (2.158) DECLINES a head whose staff-line-ERASED ink (`Q.NOTEHEAD_INK.detail.ink_net.best`) is below
+#: `LONE_EVENT_MIN_HEAD_INK_NET`; the head stays NARROWED (unread), never guessed. NARROW-ONLY: it can only take a guess away.
+#: Why the erased reading and not `Q.NOTEHEAD_INK.value`: the value is max(raw, net), so a staff line under a box lifts it
+#: (2.158 tile 14, a tie's tail on the bottom line: value 0.700, net 0.218). Unset / any off word = OFF; `1/true/yes/on` = ON.
+LONE_EVENT_HEAD_INK_GUARD_ENV = "OMR_LONE_EVENT_HEAD_INK_GUARD"
+
+#: ⚠️ A CUT FITTED ON OUR PLATES (CLAUDE.md §4: it may only NARROW). The midpoint of the one gap measured: the one non-head
+#: the rule guessed (Litolff 5/1/4/2/1, net 0.218) and the lowest of 208 heads Sean gave a value on both plates (Litolff
+#: 4/0/7/7/10, net 0.486). One non-head example; `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §2.160.
+LONE_EVENT_MIN_HEAD_INK_NET = 0.35
+
+
+def lone_event_head_ink_guard_enabled() -> bool:
+    import os
+    raw = os.environ.get(LONE_EVENT_HEAD_INK_GUARD_ENV)
+    return raw is not None and raw.strip().lower() in ("1", "true", "yes", "on")
+
+
 def bare_stem_confirmable(note: Verdict) -> bool:
     """ROADMAP 2.154, Sean 2026-10-16 on the bare-stem question: *"it can confirm"*. The ONE narrowing the bar may still settle
     under `OMR_BAR_SUM_CONFIRM_ONLY` (both arms): a bare stem -- `beam_discounted_uncertain` with no beam read over the note

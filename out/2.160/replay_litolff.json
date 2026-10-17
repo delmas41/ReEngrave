@@ -1,0 +1,580 @@
+{
+"src": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261016-night.record.json",
+"glyphs": 14404,
+"control": {
+"agree": 14385,
+"differ": 19
+},
+"control_rows": [
+{
+"glyph": "glyph/1/0/9/11/1",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/3/1/2/17/6",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "whole_class_filled_on_a_stem",
+"cands": [
+1.0,
+2.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0
+]
+}
+},
+{
+"glyph": "glyph/5/1/4/2/1",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/5/1/6/5/2",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "open_head_flag_contradiction",
+"cands": [
+0.5,
+2.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+0.5,
+2.0
+]
+}
+},
+{
+"glyph": "glyph/7/0/3/2/2",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/9/0/4/2/8",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/9/1/7/1/3",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "reconcile_unjoined_dots",
+"reason": "dot_seen_beside_a_plain_note",
+"cands": [
+2.0,
+3.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+2.0,
+3.0
+]
+}
+},
+{
+"glyph": "glyph/10/0/3/2/1",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/10/1/1/8/8",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/10/1/10/5/4",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/11/0/1/9/2",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/11/0/1/10/7",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "reconcile_unjoined_dots",
+"reason": "dot_seen_beside_a_plain_note",
+"cands": [
+2.0,
+3.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+2.0,
+3.0
+]
+}
+},
+{
+"glyph": "glyph/11/0/2/8/3",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "whole_class_filled_on_a_stem",
+"cands": [
+1.0,
+2.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0
+]
+}
+},
+{
+"glyph": "glyph/11/0/2/12/2",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/11/1/7/8/2",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/14/0/3/3/6",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/14/0/3/5/0",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "open_head_flag_contradiction",
+"cands": [
+1.0,
+2.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0
+]
+}
+},
+{
+"glyph": "glyph/14/1/3/11/4",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+},
+{
+"glyph": "glyph/14/1/3/12/1",
+"stored": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+}
+],
+"changed": {
+"glyph/5/1/4/2/1": {
+"off": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"decider": "infer:collapse_narrowed_by_bar",
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"on": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"decider": "adjudicate_duration",
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+}
+}
+},
+"seconds": 1823
+}

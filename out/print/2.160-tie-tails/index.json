@@ -1,0 +1,456 @@
+{
+ "max_net": 0.6,
+ "what": "ROADMAP 2.160 part 3: notehead boxes at a bar's left edge sitting on the end of a tie/slur from the previous bar (candidates, NOT blind). Blue = our notehead box. Caption: doc, glyph id, the arc, the head box's staff-erased ink.",
+ "crops": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "glyph": "glyph/5/1/4/2/1",
+   "box": [
+    798.42,
+    3187.41,
+    824.88,
+    3207.41
+   ],
+   "arc": "glyph/5/1/4/1/1",
+   "kind": "tie",
+   "gap_sp": 0.231,
+   "left_gap_sp": 0.09,
+   "ink": 0.6998,
+   "ink_net": 0.2185,
+   "conf": 0.2805
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/3/1/5/15/2",
+   "box": [
+    2249.83,
+    3203.85,
+    2290.85,
+    3231.45
+   ],
+   "arc": "glyph/3/1/5/14/1",
+   "kind": "tie",
+   "gap_sp": 0.383,
+   "left_gap_sp": 0.12,
+   "ink": 0.5017,
+   "ink_net": 0.2577,
+   "conf": 0.2865
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/3/1/5/3/1",
+   "box": [
+    871.29,
+    3224.29,
+    904.23,
+    3248.23
+   ],
+   "arc": "glyph/3/1/5/2/0",
+   "kind": "slur",
+   "gap_sp": 0.152,
+   "left_gap_sp": 0.15,
+   "ink": 0.6822,
+   "ink_net": 0.269,
+   "conf": 0.3698
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "glyph": "glyph/3/1/5/3/3",
+   "box": [
+    870.98,
+    3224.14,
+    904.38,
+    3248.38
+   ],
+   "arc": "glyph/3/1/5/2/0",
+   "kind": "slur",
+   "gap_sp": 0.132,
+   "left_gap_sp": 0.13,
+   "ink": 0.6787,
+   "ink_net": 0.2751,
+   "conf": 0.2845
+  },
+  {
+   "n": 5,
+   "doc": "litolff",
+   "glyph": "glyph/4/0/5/12/14",
+   "box": [
+    2144.41,
+    1176.93,
+    2185.36,
+    1193.94
+   ],
+   "arc": "glyph/4/0/5/11/10",
+   "kind": "tie",
+   "gap_sp": 0.494,
+   "left_gap_sp": 0.28,
+   "ink": 0.6416,
+   "ink_net": 0.2808,
+   "conf": 0.2902
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "glyph": "glyph/2/0/7/10/3",
+   "box": [
+    1654.04,
+    1476.44,
+    1702.52,
+    1521.4
+   ],
+   "arc": "glyph/2/0/7/9/0",
+   "kind": "slur",
+   "gap_sp": 0.275,
+   "left_gap_sp": 0.19,
+   "ink": 0.5583,
+   "ink_net": 0.3688,
+   "conf": 0.2634
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "glyph": "glyph/2/1/2/13/1",
+   "box": [
+    2326.0,
+    2414.4,
+    2331.44,
+    2426.88
+   ],
+   "arc": "glyph/2/1/2/12/1",
+   "kind": "tie",
+   "gap_sp": 0.153,
+   "left_gap_sp": 0.0,
+   "ink": 0.9375,
+   "ink_net": 0.4518,
+   "conf": 0.2515
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/14/1/2/11/5",
+   "box": [
+    2050.89,
+    2501.19,
+    2098.61,
+    2537.57
+   ],
+   "arc": "glyph/14/1/2/10/2",
+   "kind": "tie",
+   "gap_sp": 0.138,
+   "left_gap_sp": 0.12,
+   "ink": 0.559,
+   "ink_net": 0.4783,
+   "conf": 0.3103
+  },
+  {
+   "n": 9,
+   "doc": "litolff",
+   "glyph": "glyph/12/1/10/11/4",
+   "box": [
+    2248.0,
+    3599.6,
+    2283.2,
+    3621.36
+   ],
+   "arc": "glyph/12/1/10/10/5",
+   "kind": "tie",
+   "gap_sp": 0.062,
+   "left_gap_sp": 0.0,
+   "ink": 0.6968,
+   "ink_net": 0.5667,
+   "conf": 0.2859
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "glyph": "glyph/13/0/1/10/9",
+   "box": [
+    1896.15,
+    608.54,
+    1908.24,
+    620.94
+   ],
+   "arc": "glyph/13/0/1/9/4",
+   "kind": "tie",
+   "gap_sp": 0.366,
+   "left_gap_sp": 0.01,
+   "ink": 0.7686,
+   "ink_net": 0.5811,
+   "conf": 0.3142
+  },
+  {
+   "n": 11,
+   "doc": "brahms",
+   "glyph": "glyph/26/1/3/6/16",
+   "box": [
+    3828.66,
+    4811.63,
+    3875.84,
+    4835.77
+   ],
+   "arc": "glyph/26/1/3/5/8",
+   "kind": "tie",
+   "gap_sp": 0.277,
+   "left_gap_sp": 0.24,
+   "ink": 0.6282,
+   "ink_net": 0.263,
+   "conf": 0.3786
+  },
+  {
+   "n": 12,
+   "doc": "brahms",
+   "glyph": "glyph/26/1/1/6/17",
+   "box": [
+    3829.15,
+    4199.27,
+    3878.38,
+    4223.75
+   ],
+   "arc": "glyph/26/1/1/5/13",
+   "kind": "slur",
+   "gap_sp": 0.265,
+   "left_gap_sp": 0.26,
+   "ink": 0.5166,
+   "ink_net": 0.3203,
+   "conf": 0.2937
+  },
+  {
+   "n": 13,
+   "doc": "brahms",
+   "glyph": "glyph/14/1/9/4/15",
+   "box": [
+    2995.97,
+    6522.27,
+    3057.57,
+    6560.5
+   ],
+   "arc": "glyph/14/1/9/3/13",
+   "kind": "tie",
+   "gap_sp": 0.296,
+   "left_gap_sp": 0.29,
+   "ink": 0.5487,
+   "ink_net": 0.3422,
+   "conf": 0.2859
+  },
+  {
+   "n": 14,
+   "doc": "brahms",
+   "glyph": "glyph/26/1/2/6/21",
+   "box": [
+    3823.09,
+    4505.38,
+    3878.14,
+    4530.45
+   ],
+   "arc": "glyph/26/1/2/5/11",
+   "kind": "tie",
+   "gap_sp": 0.075,
+   "left_gap_sp": 0.04,
+   "ink": 0.6,
+   "ink_net": 0.3535,
+   "conf": 0.2727
+  },
+  {
+   "n": 15,
+   "doc": "brahms",
+   "glyph": "glyph/7/0/8/3/5",
+   "box": [
+    2336.0,
+    2787.9,
+    2343.97,
+    2819.8
+   ],
+   "arc": "glyph/7/0/8/2/4",
+   "kind": "tie",
+   "gap_sp": 0.005,
+   "left_gap_sp": 0.0,
+   "ink": 0.8281,
+   "ink_net": 0.3616,
+   "conf": 0.4213
+  },
+  {
+   "n": 16,
+   "doc": "brahms",
+   "glyph": "glyph/13/1/5/3/10",
+   "box": [
+    2061.0,
+    5189.68,
+    2069.25,
+    5211.95
+   ],
+   "arc": "glyph/13/1/5/2/12",
+   "kind": "tie",
+   "gap_sp": 0.003,
+   "left_gap_sp": 0.0,
+   "ink": 0.724,
+   "ink_net": 0.3787,
+   "conf": 0.4981
+  },
+  {
+   "n": 17,
+   "doc": "brahms",
+   "glyph": "glyph/5/0/3/2/13",
+   "box": [
+    2029.0,
+    1353.66,
+    2037.45,
+    1386.36
+   ],
+   "arc": "glyph/5/0/3/1/21",
+   "kind": "tie",
+   "gap_sp": 0.042,
+   "left_gap_sp": 0.0,
+   "ink": 0.8646,
+   "ink_net": 0.3812,
+   "conf": 0.2771
+  },
+  {
+   "n": 18,
+   "doc": "brahms",
+   "glyph": "glyph/3/1/5/2/9",
+   "box": [
+    1972.0,
+    5163.43,
+    1978.99,
+    5182.57
+   ],
+   "arc": "glyph/3/1/5/1/13",
+   "kind": "tie",
+   "gap_sp": 0.004,
+   "left_gap_sp": 0.0,
+   "ink": 0.9077,
+   "ink_net": 0.3927,
+   "conf": 0.4549
+  },
+  {
+   "n": 19,
+   "doc": "brahms",
+   "glyph": "glyph/11/0/6/2/7",
+   "box": [
+    1729.55,
+    1875.3,
+    1781.25,
+    1905.55
+   ],
+   "arc": "glyph/11/0/6/1/6",
+   "kind": "tie",
+   "gap_sp": 0.285,
+   "left_gap_sp": 0.02,
+   "ink": 0.4982,
+   "ink_net": 0.4982,
+   "conf": 0.5024
+  },
+  {
+   "n": 20,
+   "doc": "brahms",
+   "glyph": "glyph/13/1/12/10/25",
+   "box": [
+    4646.36,
+    6872.38,
+    4712.85,
+    6894.18
+   ],
+   "arc": "glyph/13/1/12/9/11",
+   "kind": "tie",
+   "gap_sp": 0.165,
+   "left_gap_sp": 0.16,
+   "ink": 0.7988,
+   "ink_net": 0.5054,
+   "conf": 0.2656
+  },
+  {
+   "n": 21,
+   "doc": "brahms",
+   "glyph": "glyph/25/0/2/9/14",
+   "box": [
+    5055.1,
+    1144.35,
+    5071.88,
+    1166.62
+   ],
+   "arc": "glyph/25/0/2/8/14",
+   "kind": "tie",
+   "gap_sp": 0.076,
+   "left_gap_sp": 0.04,
+   "ink": 0.7891,
+   "ink_net": 0.5164,
+   "conf": 0.3455
+  },
+  {
+   "n": 22,
+   "doc": "brahms",
+   "glyph": "glyph/5/1/13/3/11",
+   "box": [
+    2271.55,
+    6932.0,
+    2332.32,
+    6966.1
+   ],
+   "arc": "glyph/5/1/13/2/0",
+   "kind": "slur",
+   "gap_sp": 0.052,
+   "left_gap_sp": 0.02,
+   "ink": 0.5184,
+   "ink_net": 0.5184,
+   "conf": 0.3965
+  },
+  {
+   "n": 23,
+   "doc": "brahms",
+   "glyph": "glyph/21/0/1/6/12",
+   "box": [
+    3914.16,
+    872.72,
+    3962.16,
+    898.81
+   ],
+   "arc": "glyph/21/0/1/5/7",
+   "kind": "tie",
+   "gap_sp": 0.398,
+   "left_gap_sp": 0.33,
+   "ink": 0.5385,
+   "ink_net": 0.5214,
+   "conf": 0.2702
+  },
+  {
+   "n": 24,
+   "doc": "brahms",
+   "glyph": "glyph/25/1/2/3/8",
+   "box": [
+    2339.82,
+    4983.07,
+    2356.47,
+    5003.61
+   ],
+   "arc": "glyph/25/1/2/2/11",
+   "kind": "tie",
+   "gap_sp": 0.427,
+   "left_gap_sp": 0.39,
+   "ink": 0.5863,
+   "ink_net": 0.5278,
+   "conf": 0.3873
+  },
+  {
+   "n": 25,
+   "doc": "brahms",
+   "glyph": "glyph/21/0/3/6/18",
+   "box": [
+    3913.25,
+    1402.5,
+    3950.65,
+    1427.53
+   ],
+   "arc": "glyph/21/0/3/5/9",
+   "kind": "tie",
+   "gap_sp": 0.305,
+   "left_gap_sp": 0.3,
+   "ink": 0.5621,
+   "ink_net": 0.5621,
+   "conf": 0.3481
+  }
+ ]
+}
