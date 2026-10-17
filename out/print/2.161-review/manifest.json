@@ -1,0 +1,6 @@
+{
+ "question": "What is the written value of the note in the blue box (1, 2, 4, 8 ..., dot, or not a note)?",
+ "tiles": 5,
+ "blue": "the note asked about",
+ "nothing else drawn": true
+}
