@@ -237,8 +237,51 @@ def stem_finder_repairs(default: frozenset = frozenset()) -> frozenset:
 
 
 def staged_stem_finder() -> frozenset:
-    """The repairs the STAGED path runs: `OMR_STEM_FINDER`, else the staged default."""
-    return stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
+    """The repairs the STAGED path runs: `OMR_STEM_FINDER`, else the staged default; plus `edge_head` under
+    `OMR_STEM_AT_BAR_EDGE` (ROADMAP 2.155, default OFF)."""
+    out = stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
+    if stem_at_bar_edge_enabled():
+        out = out | {"edge_head"}
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.155 -- a stem at the bar's edge is still a stem when it ends at its head
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# CONVENTION ASSUMED: a stem ends at its notehead; a barline carries no head (nothing is printed across a barline, and a head stands
+# clear of it). The edge filter below (`RUN_AT_CELL_EDGE`, 0.8 space) exists for barlines, so a run it refuses whose END stands in a
+# detected notehead's box, inside that head's own columns, is that head's stem. Found on 2.153 tiles 4/14/16 (Litolff p2/p1/p10, Sean
+# 2026-10-16: *"the stem clearly connects to the beam ... there is no gap"*): the last beamed eighth of a bar stands 0.26-0.74 space
+# from the cell's right edge, its up-stem is a full 4-5 space run, refused at the edge, so no `Q.STEM` row, no `Q.BEAM_STEM_JOIN`
+# row, and the 2.153 beam rule narrowed a clear eighth. The barline is a SEPARATE run at the very edge in all three.
+# WHAT WOULD FALSIFY IT: a barline (or a bracket) whose end lies in a head box's own columns -- a head printed across a barline; or
+# Sean reading a rescued stem's note as unstemmed. NOT CONFIRMED beyond the three tiles; the end slack below is a box tolerance.
+STEM_AT_BAR_EDGE_ENV = "OMR_STEM_AT_BAR_EDGE"
+#: Slack (staff spaces) on the head box's vertical extent for the run's end: the stem's own end lies inside its head, the head box
+#: is the detector's (or the standard) box, and on the three tiles the run ends 0.0-0.1 space past it.
+STEM_AT_BAR_EDGE_END_SLACK_SPACES = 0.25
+
+
+def stem_at_bar_edge_enabled() -> bool:
+    """`OMR_STEM_AT_BAR_EDGE` -- default OFF; only `1/true/yes/on` enables (ROADMAP 2.155)."""
+    import os
+    return os.environ.get(STEM_AT_BAR_EDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _run_ends_at_a_head(x, y, w, h, heads, line_spacing) -> bool:
+    """ROADMAP 2.155: does one END of this vertical run stand in a notehead box, inside that head's own columns? `heads` are
+    canonical `(x, y, w, h)` boxes (the caller's detector heads); `None` or empty -> False (no head, no rescue: never a guess)."""
+    if not heads:
+        return False
+    slack = STEM_AT_BAR_EDGE_END_SLACK_SPACES * line_spacing
+    for hx, hy, hw, hh in heads:
+        if not (x < hx + hw and x + w > hx):
+            continue
+        for end in (y, y + h):
+            if hy - slack <= end <= hy + hh + slack:
+                return True
+    return False
 
 
 #: The empty interval (staff spaces) between the stem's columns and the heads'
@@ -944,9 +987,13 @@ def detect_stems(
                             confidence=1.0))
             continue
         # Edge filter — barlines live at the cell boundaries.
+        # ROADMAP 2.155 (`edge_head`, `OMR_STEM_AT_BAR_EDGE`, default OFF): a run whose end stands in a head's box is that head's
+        # stem, not a barline -- it goes on to the remaining filters like any other run.
         if x < edge_margin or x + w > cell_w - edge_margin:
-            _note(x, y, w, h, area, RUN_AT_CELL_EDGE)
-            continue
+            if not ("edge_head" in stem_finder
+                    and _run_ends_at_a_head(x, y, w, h, noteheads, line_spacing)):
+                _note(x, y, w, h, area, RUN_AT_CELL_EDGE)
+                continue
         if area < max(4, line_spacing * 0.5):
             _note(x, y, w, h, area, RUN_TOO_LITTLE_AREA)
             continue
