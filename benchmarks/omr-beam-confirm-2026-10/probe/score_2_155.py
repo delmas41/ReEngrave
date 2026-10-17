@@ -55,30 +55,31 @@ def verdict(sean, rd):
     return "refused"
 
 
-ans = json.load(open("out/print/2.155-review/answers.json"))
-sets = {"defaults": {d: (load("out/2.155/tiles_%s_base.record.json" % d), load("out/2.155/tiles_%s_edge.record.json" % d))
-                     for d in ("litolff", "brahms")},
-        "rule_2153_on": {"litolff": (load("out/2.155/litolff_p1_2_10_base.record.json"),
-                                     load("out/2.155/litolff_p1_2_10_edge.record.json"))}}
-counts = {}
-for t in ans["tiles"]:
-    for name, recs in sets.items():
-        if t["doc"] not in recs:
-            continue
-        b, e = recs[t["doc"]]
-        if not any(o["subject"] == t["glyph"] for o in b["observations"] if o["quantity"] == "glyph_box"):
-            continue
-        rb, re_ = reading(b, t["glyph"]), reading(e, t["glyph"])
-        vb, ve = verdict(t["sean"], rb), verdict(t["sean"], re_)
-        t.setdefault("scored", {})[name] = dict(base=rb, arm=re_, base_verdict=vb, arm_verdict=ve)
-        for arm, v in (("base", vb), ("arm", ve)):
-            counts.setdefault(name, {}).setdefault(arm, {}).setdefault(v, 0)
-            counts[name][arm][v] += 1
-        print("%-12s %2d %-7s %-16s sean %-16s | base %-9s %-28s %-5s -> %-14s | arm %-9s %-28s %-5s -> %s" % (
-            name, t["n"], t["doc"], t["role"], t["sean"], rb["outcome"], rb.get("reason"), rb.get("written"), vb,
-            re_["outcome"], re_.get("reason"), re_.get("written"), ve))
-ans["scoring"] = ("score_2_155.py: decided = Sean -> right; narrowing holding Sean's value -> narrowed_right; no duration -> "
-                  "refused (right only for the flat); grace notes scored by written value (no reader marks a grace note)")
-ans["counts"] = counts
-json.dump(ans, open("out/print/2.155-review/answers.json", "w"), indent=1)
-print(json.dumps(counts, indent=1))
+if __name__ == "__main__":
+    ans = json.load(open("out/print/2.155-review/answers.json"))
+    sets = {"defaults": {d: (load("out/2.155/tiles_%s_base.record.json" % d), load("out/2.155/tiles_%s_edge.record.json" % d))
+                         for d in ("litolff", "brahms")},
+            "rule_2153_on": {"litolff": (load("out/2.155/litolff_p1_2_10_base.record.json"),
+                                         load("out/2.155/litolff_p1_2_10_edge.record.json"))}}
+    counts = {}
+    for t in ans["tiles"]:
+        for name, recs in sets.items():
+            if t["doc"] not in recs:
+                continue
+            b, e = recs[t["doc"]]
+            if not any(o["subject"] == t["glyph"] for o in b["observations"] if o["quantity"] == "glyph_box"):
+                continue
+            rb, re_ = reading(b, t["glyph"]), reading(e, t["glyph"])
+            vb, ve = verdict(t["sean"], rb), verdict(t["sean"], re_)
+            t.setdefault("scored", {})[name] = dict(base=rb, arm=re_, base_verdict=vb, arm_verdict=ve)
+            for arm, v in (("base", vb), ("arm", ve)):
+                counts.setdefault(name, {}).setdefault(arm, {}).setdefault(v, 0)
+                counts[name][arm][v] += 1
+            print("%-12s %2d %-7s %-16s sean %-16s | base %-9s %-28s %-5s -> %-14s | arm %-9s %-28s %-5s -> %s" % (
+                name, t["n"], t["doc"], t["role"], t["sean"], rb["outcome"], rb.get("reason"), rb.get("written"), vb,
+                re_["outcome"], re_.get("reason"), re_.get("written"), ve))
+    ans["scoring"] = ("score_2_155.py: decided = Sean -> right; narrowing holding Sean's value -> narrowed_right; no duration -> "
+                      "refused (right only for the flat); grace notes scored by written value (no reader marks a grace note)")
+    ans["counts"] = counts
+    json.dump(ans, open("out/print/2.155-review/answers.json", "w"), indent=1)
+    print(json.dumps(counts, indent=1))

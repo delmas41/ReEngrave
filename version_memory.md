@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- 2.155 tightened (Sean "Tighten"): a rescued edge stem touches no other head and anchors no new beam (branch, OFF)
+
+Merged main (2.154 arm a ON). `line_detection`: `_run_ends_at_a_head` refuses a run overlapping a second head box (tile 9);
+`detect_lines` keeps rescued stems out of `detect_beams`' anchors (tile 4). Sean's 20 tiles, shipped defaults: base 12 right / 3
+wrong, tightened 14 / 4 (grace notes and a flat); 2.153 rule ON (Litolff 14): 4 / 1 -> 11 / 0. Reach Litolff 158 stems, Brahms 6,
+no beam stroke changed. Brahms 2.153-rule gathers cut by Sean. 20 tiles `out/print/2.155b-review/`. Beam FINDINGS 10.9-10.10.
+
 ## 2026-10-16 -- ROADMAP 2.154 LANDED: OMR_BAR_SUM_CONFIRM_ONLY arm a ON, arm b OFF (Sean)
 STAGED EVALUATE + INFER. Lane branch merged with main; `consequences.bar_sum_confirm_only()` now returns `narrowed` when the env is unset (explicit `0/off/false/no/""` turns it off; `all` = arm b, opt-in). Tests assert the new default and the off-words; six older modules that assert the pre-2.154 bar picks (2.81, 2.97, 2.136, candidates, reconcile-what-is-in-the-bar, stem-tip hooks) now pin the flag `off` in `setUpModule`; flag docs read "default ON (arm a), Sean 2026-10-16". ROADMAP 2.154 LANDED; DECISIONS line; holdout FINDINGS 2.154.
 

@@ -428,3 +428,53 @@ What the flag changes under shipped defaults (all else is the same in both arms)
 Verdict for the manager (not a DECIDED line): on these tiles the flag is even under shipped defaults (2 better, 2 worse, grace notes
 wrong either way) and clearly better only where the 2.153 rule needs a stem. The two worse cases are both "the rescued run is not
 only this head's stem" (it feeds a false beam; it spans two heads).
+
+### 10.9 Tightened (Sean 2026-10-16: *"Tighten and open grace notes"*; grace notes are 2.156, not here)
+Two reader guards in `line_detection` (STAGED, both inside `OMR_STEM_AT_BAR_EDGE`; no bar sum, no new number):
+* **The run is THIS head's stem alone** (`_run_ends_at_a_head`): the head its end stands in is the owner, and the run may overlap
+  no OTHER head box (columns and rows) anywhere along its length. Tile 9: the run ended in head /2 and passed through head /8's
+  standard box (x 615-755 vs the run's 749-787) at its top. A chord stem at the bar's edge is refused with it (cannot tell).
+* **A rescued stem never anchors a new beam stroke** (`detect_lines`): `detect_stems(rescued_out=)` names the stems it rescued and
+  the beam pass is handed the others only. Tile 4: the rescued stem (x 1869) was the second anchor `detect_beams` needed
+  (`min_attached_stems` 2) for a stroke under the real beam (x 1639-1914, y 532); the head's own stem then joined it and a false
+  second level read CERTAIN. A rescued stem still JOINS a stroke the other stems make (`Q.BEAM_STEM_JOIN`, unchanged).
+Tests: 3 more in `test_stem_at_bar_edge_2_155.py` (13 pass). Mutation: guard 1 removed -> the through-a-head test fails; guard 2
+removed -> the new-beam test fails; each control can fail (a head beside the run is rescued; two stems handed to the beam pass DO
+make that stroke; a beam three stems make is found in both arms).
+
+**Base of every number below.** Tightened arm: merged tree `205d007c` (main `af69f06c`: 2.154 arm a ON, 2.156 row) + guards.
+Base under shipped defaults: the 10.8 records (`0d1da8a9`); main's merge changed only `consequences.py`/`inferences.py`
+(EVALUATE/INFER) and these runs stop at ADJUDICATE, so they are what the merged tree writes. Base with the 2.153 rule ON: Litolff
+re-gathered on `205d007c`. **Brahms under the 2.153 rule was not measured, by Sean's call (2026-10-16, "Cut those").** All
+`--through adjudicate`; one page gather at a time.
+
+| Sean's 20 tiles | base | first arm (10.8) | tightened |
+|---|---|---|---|
+| shipped defaults, 20 tiles: right / wrong / narrowed-right / narrowed-wrong | 12 / 3 / 2 / 3 | 12 / 5 / 2 / 1 | **14 / 4 / 2 / 0** |
+| 2.153 rule ON, 14 Litolff tiles | 4 / 1 / 9 / 0 | (8 tiles on p1/2/10: 6 / 1 / 0 / 1) | **11 / 0 / 3 / 0** |
+
+* Tiles 4 and 9 no longer get worse: defaults right in base and tightened (tile 4 0.5; tile 9 0.5 -- the run is refused, so the
+  base reading stands); 2.153 rule ON: tile 4 right, tile 9 narrowed-right (as in base).
+* Better than base under defaults: tile 1 (Brahms 16th, narrowed -> right), tile 12 (Litolff 8th, quarter -> right). With the
+  2.153 rule ON: 3, 5, 8, 10, 12, 17, 19 move narrowed/wrong -> right.
+* Still worse than base under defaults: the grace notes 6 and 11 (narrowed, a 16th not among the candidates -> decided quarter: a
+  blue wrong becomes an unmarked wrong); 13 quarter -> eighth (wrong both). The rescued "stem" is the grace note's own stem; 2.156.
+* The flag (18) is a half in every arm. 2.153 tiles 4/14/16 (Sean: 8 8 8): decided 0.5 by the tightened arm in both conditions
+  (base with the 2.153 rule: narrowed) -- judged already, not re-tiled.
+
+**Reach, whole movement** (night records, no re-gather; `probe/reach_2_155.py` on the tightened code; OFF still equals the stored
+stems in 5,377 / 5,377 Litolff and 6,685 / 6,685 Brahms cells):
+
+| plate | stems rescued (first arm) | joined / not joined / abstained / no stroke | cells whose beam strokes change |
+|---|--:|---|--:|
+| Litolff | **158** (190) | 61 / 16 / 34 / 47 (70 / 19 / 45 / 56) | **0** (27) |
+| Brahms | **6** (6) | 1 / 3 / 0 / 2 (2 / 3 / 0 / 1) | **0** (1) |
+
+On the 11 re-gathered pages the tightened arm changes 53 head readings across the two conditions (base vs tightened).
+
+### 10.10 Blind tiles 2.155b: `out/print/2.155b-review/`, 20 tiles (answers.json `{}`)
+The notes the tightened arm changes on the re-gathered pages that Sean has not judged (53 changed, 37 unjudged after excluding
+every glyph any answers.json or the judged index names): 18 picked round-robin by change kind (narrowed -> eighth under the 2.153
+rule; narrowed -> quarter; quarter -> eighth; quarter -> half), 19 Litolff, 1 Brahms; plus 2 unchanged beamed-eighth controls. Same
+question as 2.155. Hidden key `out/2.155/tiles-2.155b-key.json` (uncommitted; copy in the session notes folder); cut and keyed in
+one run (seed 21552), asserted one key row per PNG, same numbering, no judged glyph; tiles viewed: every blue box on a notehead.
