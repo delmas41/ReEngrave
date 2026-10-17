@@ -226,6 +226,20 @@ class TestLaterStepsOnlyWiden(_On):
         self.assertIs(got, refusal)
         self.assertEqual(self.log.near_misses()[0]["why"], "bar_length_unknown")
 
+    def test_a_majority_guess_keeps_an_agreeing_heads_fill_even_with_other_beams(self):
+        """An agreeing head (same fill) whose own beams differ from the stem's tip is still guessed, not refused."""
+        prior = _rec(self.log, G, Q.DURATION, Outcome.DECIDED, _dur(0.25, 0, 2))
+        got = _rec(self.log, G, Q.DURATION, Outcome.DECIDED, _eighth(), decider="share_stem_value",
+                   reason="stem_majority_guessed", supersedes=prior.id, single=True, detail={"guessed": True},
+                   candidates=(Candidate(_eighth(), 2.0), Candidate(_dur(2.0), 1.0)))
+        self.assertIsNot(got, prior)
+        bad = R.glyph(0, 0, 0, 0, 3)
+        p2 = _rec(self.log, bad, Q.DURATION, Outcome.DECIDED, _dur(4.0))
+        got2 = _rec(self.log, bad, Q.DURATION, Outcome.DECIDED, _eighth(), decider="share_stem_value",
+                    reason="stem_majority_guessed", supersedes=p2.id, single=True, detail={"guessed": True},
+                    candidates=(Candidate(_eighth(), 2.0), Candidate(_dur(2.0), 1.0)))
+        self.assertIs(got2, p2)
+
     def test_export_rows_refuse(self):
         self.assertFalse(OC.export_may("chord_value", (OC.A, "shared_stem")).allowed)
         self.assertFalse(OC.export_may("carried_meter", (OC.A, "bar_sum")).allowed)

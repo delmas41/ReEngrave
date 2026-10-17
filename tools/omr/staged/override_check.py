@@ -241,8 +241,13 @@ def r_shared_stem_guess(new, prior, log) -> Optional[str]:
     and the dissent marked. Allowed only as a labelled guess that keeps the head's own reading among its candidates."""
     if not (new.detail or {}).get("guessed"):
         return "a_shared_stem_guess_must_be_labelled"
-    admitted = _admits(prior) or []
-    if admitted and not set(admitted) & set(_cands(new)):
+    # The head's own READING is its fill (step 1); its beams and dots are the stem's (tip rule, as `r_shared_stem`).
+    from .record import Outcome
+    if prior.outcome is Outcome.DECIDED:
+        own = {_base(prior.value)}
+    else:
+        own = {_base(c.value) for c in (prior.candidates or ())}
+    if own and None not in own and not own & {_base(c.value) for c in (new.candidates or ())}:
         return "a_shared_stem_guess_drops_the_heads_own_reading"
     return None
 
