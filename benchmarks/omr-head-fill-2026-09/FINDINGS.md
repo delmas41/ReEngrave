@@ -1535,13 +1535,14 @@ width of head-tall columns) is measured on these two plates only; tiles out, una
 | already refused by a shipped ADJUDICATE rule on the night record | 6 (`too_narrow` 5, `belongs_to_a_nearer_staff` 1) | 192 (`too_narrow` 180, `clipped_fragment` 7, nearer staff 2, dynamic letter 1, tremolo slash 1, dot 1) |
 | **stand as notes** | **14** | **14** |
 | of those, by the lane's eye (NOT evidence; `probe/look_2_164.py`): an arc's tail | 8 | 12 |
-| of those, the box holds a real head | 6 | 2 |
+| of those, the box holds a real head (Brahms: tremolo slashes, corrected by Sean's tile 8, Sec.17.8) | 6 | 0 (2 are tremolo slashes) |
 
 **The Brahms split asked for.** 2.160 read Brahms's median erased ink 1.00 as "most are real tied-to notes". They are
 not: **180 of the 206 are barline slivers** (boxes 0.24-0.45 sp wide, every one starting at the cell's left edge, full
 ink because staff-line erasure does not touch a barline), already refused `too_narrow`; 12 more are refused by other
-rules. Of the 14 that stand, **12 are tie/slur tails** and **2 are real tied-to notes** (`16/0/11/3/7`, `16/0/11/5/3`,
-black heads a tie runs into). Sean's 25: 15 stand (13 tails, plus #6 `2/0/7/10/3` and #8 `14/1/2/11/5`, large boxes
+rules. Of the 14 that stand, **12 are tie/slur tails** and the other 2 (`16/0/11/3/7`, `16/0/11/5/3`) are **tremolo
+slashes on a stem**, not tied-to notes (the lane's eye first called them real heads; Sean answered tile 8 "Trem
+slashes", and the crop of the second shows the same figure). **No real tied-to note is among the 206.** Sean's 25: 15 stand (13 tails, plus #6 `2/0/7/10/3` and #8 `14/1/2/11/5`, large boxes
 around a real half and the tie -- his "very large box around a note and other things"); the other 10 (#7, #15-18, #21
 `too_narrow`, #19 and #22 nearer staff, #20 dynamic letter, #24 dot) were already refused and never reach the score.
 
@@ -1581,8 +1582,8 @@ barline sliver, already refused; 6 the control, a box holding a real head).
   box's rows (+-0.5 sp); and the oval width is under 0.625 sp (half a standard head). Margin filed. Any missing
   witness (no row, a system's first bar, no arc) keeps the box.
 * **Separation** (`probe/oval_sweep_2_164.py`, swept head-tall 0.5-0.7 sp and slack 0.1-0.25 sp; chosen 0.5 / 0.25):
-  the 20 eye-tails 0.25-0.59 except one at 1.14 (Litolff `13/1/4/2/2`, kept: an error only toward keeping); the 8
-  boxes on real heads 1.42-1.78; **Sean's 189 valued heads >= 0.688**; his non-heads and rests reach down to 0.33 /
+  the 20 eye-tails 0.25-0.59 except one at 1.14 (Litolff `13/1/4/2/2`, kept: an error only toward keeping); the 6
+  Litolff boxes on real heads 1.42-1.78 (the 2 Brahms "real" boxes, 1.42 / 1.53, are thick tremolo slashes); **Sean's 189 valued heads >= 0.688**; his non-heads and rests reach down to 0.33 /
   0.56 (outside the rule's domain). The gap under the real heads is thin (0.59 -> 0.688): a narrow cut, which is why
   the cut arc and the left edge are also required. Known blind spot (synthetic test): a hollow head in a space whose
   outline thickens the two lines by only 1-2 px reads thin; none among Sean's 189.
@@ -1601,9 +1602,9 @@ barline sliver, already refused; 6 the control, a box holding a real head).
 | control: OFF arm vs stored | 14,385 agree; 19 differ = exactly the 2.158 guesses (the record predates 2.158 ON) | not faithful on a system slice (no carry from other systems); OFF vs ON only |
 | **boxes refused `is_an_arc_tail`** | **7** (`3/1/5/3/1`, `3/1/5/3/3`, `3/1/5/15/2`, `4/0/5/12/14`, `5/1/4/2/1`, `12/1/10/11/4`, `13/0/1/10/9`) | **12** (all 12 eye-tails) |
 | other glyphs changed | 0 | 2: the stem mates of `18/1/3/5/19` lose the tail's dotted half (`stem_value_follows` -> narrowed `beam_discounted_uncertain`) |
-| real tied-to heads in the domain, kept | 13 (oval 1.14-2.48) | 4 (1.42-1.53) |
+| boxes in the domain standing as notes, kept | 13 (oval 1.14-2.48; real heads by eye, one slur tail) | 4 (1.42-1.53): 1 real tied-to head (`19/0/0/6/5`), 3 tremolo slashes (`12/0/9/5/1`, `16/0/11/3/7` Sean tile 8, `16/0/11/5/3`) |
 
-Every refused box is one the lane's eye calls a tail; every box holding a head is kept.
+Every refused box is one the lane's eye calls a tail (Sean: 18 of 18 tiled ones "Tie", Sec.17.8); every box holding a head is kept.
 **2.158 tile 14** (`glyph/5/1/4/2/1`): OFF a `lone_event_fills_bar` half at E-flat 4; ON refused `is_an_arc_tail`, so
 the bar holds no head and makes no lone-event guess (the real half was never boxed: the bar goes unread, not invented).
 
@@ -1627,3 +1628,20 @@ Flag OFF; no DECISIONS line from this lane. Brahms was replayed on a system slic
 it is not refused by this rule (the Brahms barline slivers are already `too_narrow`). A refused box still carries its
 stale duration row on the record (unchanged behaviour); it leaves the bar. Litolff `13/1/4/2/2` (a slur tail by eye) is
 kept: its box reaches the next head's ink.
+
+### 17.8 Sean's 20 tile answers (2026-10-17, `out/print/2.164-review/answers.json`; `probe/record_answers_2_164.py`)
+
+Verbatim: "1. Tie 2.2 3.tie 4-7.Tie 8. Trem slashes 9-20. Tie". Scored against the key (`out/2.164/tiles-key.json`,
+committed now): **refusals 18 of 18 right** (every refused box "Tie": Litolff 6, Brahms 12), **0 wrong**. The two
+CONTROLS were tile 2 and tile 8, both KEPT by the rule (neither refused):
+
+* **Tile 2** (Litolff `2/1/1/14/3`, a real tied-to half at the bar's start): "2" -- the control is right; the rule
+  keeps it (oval 1.44). No refusal took a real note, so no tightening was needed and Litolff was not re-replayed.
+* **Tile 8** (Brahms `16/0/11/3/7`): "Trem slashes" -- the lane's eye was wrong: the box sits on the tremolo slashes
+  across the stem, not on a head. Not a refusal error (the rule keeps it: thick slashes read as head-tall, oval 1.42),
+  but a non-note left standing: **2.137's slash test missed it** (decided `notehead`), as it missed `16/0/11/5/3` and
+  `12/0/9/5/1` beside it (same figure, crops by eye). The fix is not the place for it (a slash is not an arc's tail);
+  it belongs with the slash readers.
+
+Judged index rebuilt (`benchmarks/acceptance/judged-tiles.json`, +20 rows: 18 `arc`/tie, 1 duration 2, 1
+`not_a_note` tremolo). Flag stays OFF; no DECISIONS line from this lane.
