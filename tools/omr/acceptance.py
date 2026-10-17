@@ -144,6 +144,17 @@ def _git(args: List[str]) -> str:
     return proc.stdout.strip()
 
 
+def _dirty_before_run(manifest_path: Path) -> bool:
+    """True when the checkout holds uncommitted changes other than the
+    manifest this run was handed (an untracked temporary manifest is input)."""
+    try:
+        own = str(Path(manifest_path).resolve().relative_to(REPO))
+    except ValueError:
+        own = None
+    lines = [ln for ln in _git(["status", "--porcelain"]).splitlines() if ln.strip()]
+    return any(ln[3:].strip() != own for ln in lines)
+
+
 def _md5(path: Path) -> str:
     h = hashlib.md5()
     with open(path, "rb") as fh:
@@ -1033,17 +1044,23 @@ def run(manifest_path: Path = MANIFEST_PATH, doc_ids: Optional[List[str]] = None
             "REFUSED — one or more record receipts do not match:\n  "
             + "\n  ".join(m for m in messages if "MISMATCH" in m))
 
+    # ⚠️ The tree is judged BEFORE any document is processed: processing
+    # rewrites the tracked exports under benchmarks/acceptance/out/, so a
+    # status taken afterwards called every run DIRTY and the overnight
+    # compare's numbers were refused (20261016-night). The manifest this run
+    # was handed is its own input, not a code change, so it is left out.
+    head = _git(["rev-parse", "HEAD"])
+    dirty = _dirty_before_run(manifest_path)
+
     t0 = time.time()
     documents: Dict[str, Any] = {}
     for doc in docs:
         documents[doc["id"]] = process_document(doc, step_timeout_s=step_timeout_s)
     wall_time_s = round(time.time() - t0, 3)
 
-    head = _git(["rev-parse", "HEAD"])
-    status = _git(["status", "--porcelain"])
     current = {
         "tree": head,
-        "dirty": bool(status),
+        "dirty": dirty,
         "date": _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "manifest_md5": hashlib.md5(
             json.dumps(manifest, sort_keys=True).encode()).hexdigest(),

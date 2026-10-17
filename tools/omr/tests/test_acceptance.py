@@ -452,3 +452,43 @@ class TestSummaryAndTable(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ── the tree is judged before processing, not after ──────────────────────
+
+class TestDirtyIsJudgedBeforeProcessing(unittest.TestCase):
+    """20261016-night: processing rewrote tracked exports, so a status taken
+    after it refused every overnight compare. The tree must be judged first."""
+
+    def _run(self, status_before, status_after, manifest_rel="benchmarks/acceptance/manifest-x.json"):
+        calls = {"processed": False}
+        def fake_git(args):
+            if args[0] == "rev-parse":
+                return "deadbeef00"
+            return status_after if calls["processed"] else status_before
+        def fake_process(doc, step_timeout_s):
+            calls["processed"] = True
+            return {"status": "ok"}
+        manifest = {"documents": [{"id": "d"}]}
+        with mock.patch.object(A, "_git", side_effect=fake_git), \
+             mock.patch.object(A, "load_manifest", return_value=manifest), \
+             mock.patch.object(A, "select_documents", return_value=manifest["documents"]), \
+             mock.patch.object(A, "verify_receipts", return_value=(True, [], False)), \
+             mock.patch.object(A, "process_document", side_effect=fake_process), \
+             mock.patch.object(A, "build_summary", return_value={}):
+            current, _, _ = A.run(A.REPO / manifest_rel)
+        return current
+
+    def test_exports_written_during_the_run_do_not_make_it_dirty(self):
+        cur = self._run("", " M benchmarks/acceptance/out/x/x.musicxml")
+        self.assertFalse(cur["dirty"])
+
+    def test_a_code_change_before_the_run_is_dirty(self):
+        cur = self._run(" M tools/omr/staged/gather.py", "")
+        self.assertTrue(cur["dirty"])
+
+    def test_the_runs_own_untracked_manifest_is_not_dirt(self):
+        cur = self._run("?? benchmarks/acceptance/manifest-x.json", "")
+        self.assertFalse(cur["dirty"])
+        cur = self._run("?? benchmarks/acceptance/manifest-x.json\n?? other.txt", "")
+        self.assertTrue(cur["dirty"])
