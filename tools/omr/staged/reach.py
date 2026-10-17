@@ -551,6 +551,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.150b. `rest_ink.py` is PURE (a staff-erased ink mask and boxes in, numbers out: no log, no cell, no
     # quantity named) -- `gather.gather_rest_ink_contact` is its stage; `family_precision` reads only its flag.
     "rest_ink.py",
+    # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
+    # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
+    "head_oval.py",
 })
 
 

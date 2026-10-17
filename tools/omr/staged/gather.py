@@ -7443,6 +7443,59 @@ def gather_rest_ink_contact(log: Log, cells: Sequence[Any], local: Dict[int, Tup
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Does a head box at a bar's left edge hold a head-shaped oval? -- ROADMAP 2.164
+# ─────────────────────────────────────────────────────────────────────────────
+
+def gather_head_oval(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                     detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.HEAD_OVAL` on every notehead-classed box that starts within `head_oval.LEFT_EDGE_SPACES` of its bar's left
+    edge, off the PAGE raster (`pws.page.binary`, staff lines in; `head_oval.oval_width` leaves bare line rows out).
+
+    Sean, 2026-10-17 (ROADMAP 2.164): head boxes at a bar's left edge are "almost entirely tie ends ... or a bar
+    line". The detector reads one bar's crop at a time, so a tie crossing the barline is cut there and its tail is
+    boxed as a head. This only MEASURES whether the box holds head-tall ink across a head's width;
+    `notehead_precision._arc_tail_refusal` weighs it with the arc the previous bar's crop cut. Filed only while the
+    flag is ON. ⚠️ The PAGE raster, not the cell's: the tail runs to the crop edge, and the box may sit on it.
+    ⚠️ DECLINED, NOT DEFAULTED: no raster, staff unit or page frame is an abstention, never "no oval".
+    """
+    from . import head_oval
+    if not head_oval.enabled():
+        return
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        heads = [gi for gi, d in enumerate(dets) if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not heads:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        space_page = (grid[1] * 2.0 / float(up)) if grid and grid[1] and up else None
+        for gi in heads:
+            page_box = _page_box(c, dets[gi])
+            if page_box is None or not cell_box or len(cell_box) != 4 or not space_page:
+                continue
+            if not head_oval.box_at_left_edge(page_box, cell_box, space_page):
+                continue
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            got = head_oval.oval_width(page_binary, page_box, space_page) if page_binary is not None else None
+            if got is None:
+                log.abstain(g, Q.HEAD_OVAL, reader=READERS.CV_HEAD_OVAL, frame=frame, reason=ABSTAIN.NO_MASK,
+                            note="no page raster, or the box is off it")
+                continue
+            log.observe(g, Q.HEAD_OVAL, got["oval_width_sp"], reader=READERS.CV_HEAD_OVAL, frame=frame,
+                        left_gap_sp=round((float(page_box[0]) - float(cell_box[0])) / space_page, 3),
+                        space_page_px=round(space_page, 3), **{k: v for k, v in got.items()})
+            if progress:
+                print(f"  gather head oval {g.to_key()}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Rest-sized ink the detector never boxed -- ROADMAP 2.99
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -9104,6 +9157,77 @@ def notehead_ink_off_line(img: Any, box: Tuple[float, float, float, float],
             "line_rows_left_out": lost}
 
 
+#: ROADMAP 2.161: a head with its ink bridge to a stem stays one head wide -- 2.148's own head-sized width ceiling
+#: (`rhythm.HEAD_BOX_MAX_WIDTH_SPACES`), restated here and pinned equal by a test, not a new number.
+STEM_BRIDGE_MAX_HEAD_WIDTH_SPACES = 1.9
+#: Detector boxes that, lying in the gap between a head box and a stem, make the ink there someone else's.
+_STEM_BRIDGE_BLOCKERS = ("notehead", "accidental", "flag", "rest")
+
+
+def head_stem_bridge(ink: Any, head_box: Tuple[float, float, float, float], stems: Sequence[Any], space: float,
+                     others: Sequence[Tuple[str, Tuple[float, float, float, float]]] = ()) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.161 (Sean 2026-10-17: "I'm not sure why it doesn't see simple half notes"). Does THIS head's own ink reach a
+    stem that stands beside its detector box without touching it?
+
+    CONVENTION (CLAUDE.md §5, page-facts): a stem stands flush with its head's edge (up -> right, down -> left), so the
+    head's ink runs into the stem. MEASURED on the 20261016-night records: 9 of the 32 Litolff real-note heads the fill
+    reader left unread with no stem had a stem the stem finder FOUND standing 0.13-0.27 sp beside a detector box that
+    stops short of the head's stem side (the slanted Litolff half's thin tip), so `stem_touches_head` (box overlap) saw
+    no stem.
+
+    `ink`: the cell's ERASED raster as a stem-finder mask (255/True = ink: `line_detection._binary_ink(image_no_staff)`,
+    the raster the stems were read on, so an erased staff line cannot bridge); `head_box`, `stems` (x, y, w, h) canonical
+    cell boxes; `others`: `(name, box)` of the cell's OTHER detections. A stem qualifies when it does not touch the box,
+    its rows overlap the box's rows, and the head with the gap stays one head wide (`STEM_BRIDGE_MAX_HEAD_WIDTH_SPACES`);
+    the gap is BRIDGED when, on at least one row of the box, every pixel between the box edge and the stem's near edge is
+    ink, and no other notehead / accidental / flag / rest box lies in the gap. The nearest bridged stem is returned with
+    the box extended to it (`bridged_box`); `None` when no stem qualifies. A ruler reading: whether it is the head's own
+    stem is ADJUDICATE's."""
+    import numpy as _np
+    if ink is None or getattr(ink, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    from .geometry import stem_touches_head
+    hx, hy, hw, hh = (float(v) for v in head_box)
+    if hw <= 0 or hh <= 0:
+        return None
+    H, W = ink.shape
+    best = None
+    for st in stems:
+        sx, sy, sw, sh = (float(v) for v in st)
+        if stem_touches_head((sx, sy, sw, sh), (hx, hy, hw, hh)):
+            continue
+        if not (sy < hy + hh and sy + sh > hy):
+            continue
+        if sx + sw / 2.0 < hx + hw / 2.0:
+            side, g0, g1 = "left", sx + sw, hx
+        else:
+            side, g0, g1 = "right", hx + hw, sx
+        gap = g1 - g0
+        if gap <= 0 or hw + gap > STEM_BRIDGE_MAX_HEAD_WIDTH_SPACES * space:
+            continue
+        if any(str(n).lower().startswith(_STEM_BRIDGE_BLOCKERS)
+               and b[0] < g1 and b[0] + b[2] > g0 and b[1] < hy + hh and b[1] + b[3] > hy for n, b in others):
+            continue
+        c0, c1 = int(_np.floor(g0)), int(_np.ceil(g1))
+        r0, r1 = int(round(hy)), int(round(hy + hh))
+        if c0 < 0 or c1 > W or r0 < 0 or r1 > H or c1 <= c0 or r1 <= r0:
+            continue
+        strip = _np.asarray(ink[r0:r1, c0:c1]) > 0
+        rows = int(strip.all(axis=1).sum())
+        if rows < 1:
+            continue
+        stem_below = sy + sh > hy + hh
+        stem_above = sy < hy
+        cand = {"side": side, "gap_sp": round(gap / space, 3), "bridge_rows": rows, "rows_read": r1 - r0,
+                "stem_box": [round(sx, 2), round(sy, 2), round(sw, 2), round(sh, 2)],
+                "stem_below": bool(stem_below), "stem_above": bool(stem_above),
+                "bridged_box": ([round(g0, 2), round(hy, 2), round(hx + hw - g0, 2), round(hh, 2)] if side == "left"
+                                else [round(hx, 2), round(hy, 2), round(g1 - hx, 2), round(hh, 2)])}
+        if best is None or gap < best["gap_sp"] * space:
+            best = cand
+    return best
+
+
 def gather_notehead_ink(log: Log, cells: Sequence[Any],
                         local: Dict[int, Tuple[int, int]],
                         detections: Dict[str, List[Any]],
@@ -9167,11 +9291,31 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
         net_img = getattr(c, "image_no_staff", None)
         grid = _cell_grid(c)
         space_canonical = grid[1] * 2.0 if grid and grid[1] else None
+        # ROADMAP 2.161: the cell's stems (`gather_cv_lines` ran earlier in this pass) and its erased raster as the stem
+        # finder's own mask, for `head_stem_bridge`; built once per cell, only where a head has no stem touching its box.
+        bridge_stems = [tuple(float(v) for v in r.value) for r in log.rows(Q.STEM, sub)
+                        if isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+        bridge_ink = None
+        bridge_space = space_canonical      # = `Q.CELL_STAFF_SPACE` (half_step x 2), the unit ADJUDICATE reads
         for gi in idx:
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
             d = dets[gi]
             box = (d.x_canonical, d.y_canonical,
                   d.width_canonical, d.height_canonical)
+            stem_bridge = None
+            if bridge_stems and net_img is not None and bridge_space:
+                from .geometry import stem_touches_head as _touches
+                det_box = tuple(float(v) for v in box)
+                if not any(_touches(st, det_box) for st in bridge_stems):
+                    if bridge_ink is None:
+                        from ..line_detection import _binary_ink
+                        bridge_ink = _binary_ink(net_img)
+                    others = [(str(o.smufl_name), (float(o.x_canonical), float(o.y_canonical), float(o.width_canonical),
+                                                   float(o.height_canonical))) for oi, o in enumerate(dets) if oi != gi]
+                    stem_bridge = head_stem_bridge(bridge_ink, det_box, bridge_stems, bridge_space, others)
+                    if stem_bridge is not None:
+                        stem_bridge["interior_white_bridged"] = head_interior_white(raw_img, stem_bridge["bridged_box"]) \
+                            if raw_img is not None else None
             interior = head_interior_white(raw_img, box) if raw_img is not None else None   # 2.148: the DETECTOR's own box
             located_by = None   # 2.159: the earlier reader that LOCATED the head, so the window below is not the detector's
             if space_canonical and is_regular_notehead(str(d.smufl_name)):
@@ -9265,6 +9409,8 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 located = head_interior_white_located(c, box, page_binary, located_by)
                 if located is not None:
                     extra["interior_white_located"] = located
+            if stem_bridge is not None:
+                extra["stem_bridge"] = stem_bridge
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
@@ -14678,6 +14824,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # raster and this cell's own `Q.STEM` rows, already filed by
         # `gather_cv_lines` above.
         gather_notehead_stem_cross_ink(log, cells, local, detections)
+        # ROADMAP 2.164 (flag OMR_ARC_TAIL_NOT_A_HEAD, default ON): head boxes at a bar's left edge, page raster.
+        gather_head_oval(log, pws, cells, local, detections)
         # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
         # one whose GEOMETRY position lies outside the first space -- it reads
         # that row) and after the ownership evidence, which does not feed it.
