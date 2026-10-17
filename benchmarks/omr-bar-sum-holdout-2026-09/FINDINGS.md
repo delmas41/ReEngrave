@@ -4522,3 +4522,17 @@ With `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` ON (the 2.153 arm), both arms turn **2
 
 ### 2.154-7. Limits
 Slice replays reproduce no meter carried from systems outside the slice. Arm a's cost is real and judged: every right bar pick becomes an unread gap, and on the judged evidence the bar's picks were right 18 of 18 (2 of 5 on the 2.153 rule's new narrowings). The distinction the judged tiles draw -- bar CONFIRMS the unbeamed value where no beam/flag is read (16/16 right), vs bar PICKS where a stroke is seen (2.153: 2 right, 3 wrong) -- is not built as an arm; it is the question for Sean.
+
+### 2.154 -- Sean's 23 tile answers (2026-10-16, `out/print/2.154-review/answers.json`; `probe/score_2_154.py`)
+Verbatim: "1.4 2.dot4 3.8 4.4 5.16 6.dot 4 7.8  8.8 9.4. 10.4 11.8 12.2 13.dot4 14.8 15.dot 4 16.dot4 17. dot 4 18.4 19.4 20.4 21.2 22.4 23.4". Scored against the hidden key; manifest now names each tile's glyph so the judged index carries the subject (index 1,106 tiles).
+
+| tile kind | n | base (the bar's value) | arm a | arm b |
+|---|--:|---|---|---|
+| picked from a narrowing, BARE STEM (bar chose the unbeamed value) | 11 | 11 right | 7 narrowed-holding, 4 right (decided by `collapse_arc_ink_not_beam`) | same as a |
+| picked from a narrowing, other (2 `beams_ambiguous`/`flag`, 1 head fill) | 3 | 2 right (7: an 8 from {16, 8}; 23: a 4 from {8, 4}), 1 wrong (12: 4 picked from {4, 2}, Sean 2) | 3 narrowed-holding | same as a |
+| moved a DECIDED value (`_admitted` +/-1) | 7 | 3 right (3, 8, 11), 4 wrong (13, 14, 16, 21) | = base: 3 right, 4 wrong | 4 wrong -> right, 3 right -> wrong |
+| plain control | 2 | 1 right (5), 1 wrong (1: Litolff, read a 16th, Sean 4 -- a reader error, no bar involved) | same | same |
+
+* **Picks: 13 of 14 right** (bare stems 11 of 11; others 2 of 3). Confirm-only turns 10 right picks into unread narrowings (4 more stay right through a non-bar rule) and the 1 wrong pick into a narrowing that holds Sean's half. Neither arm makes a pick-tile wrong.
+* **Moves: 3 of 7 right** -- the bar's +/-1 on a decided note is no better than the reader it overrides. Arm b swaps 3 right for 4 right (net +1 on 7 tiles); on volume, moves are 78 Litolff / 104 Brahms in the night records.
+* With the 2.153 tiles (bar picks from that rule's narrowings: 2 right, 3 wrong) and the 18 previously judged picks (18 right): bar picks total **33 right / 4 wrong** on judged tiles; bare-stem quarters alone **27 of 27 right** (16 + 11). Sean has not ruled whether the bar may confirm a bare stem's unbeamed value; no DECISIONS line is added and the flag stays OFF.
