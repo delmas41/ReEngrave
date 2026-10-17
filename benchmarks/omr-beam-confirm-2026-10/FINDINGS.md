@@ -478,3 +478,30 @@ every glyph any answers.json or the judged index names): 18 picked round-robin b
 rule; narrowed -> quarter; quarter -> eighth; quarter -> half), 19 Litolff, 1 Brahms; plus 2 unchanged beamed-eighth controls. Same
 question as 2.155. Hidden key `out/2.155/tiles-2.155b-key.json` (uncommitted; copy in the session notes folder); cut and keyed in
 one run (seed 21552), asserted one key row per PNG, same numbering, no judged glyph; tiles viewed: every blue box on a notehead.
+
+### 10.11 Sean's 2.155b answers (2026-10-16, `out/print/2.155b-review/answers.json`)
+Verbatim: *"1.4 2-9.8 10.2  11-13.8 14.2 15-18.8 19.4 20.8"*. Same records and bases as 10.9 (tightened arm on `205d007c` +
+guards; defaults base ADJUDICATE-identical; 2.153-rule base Litolff on `205d007c`; tile 12, the only Brahms tile, has no 2.153-rule
+run, by Sean's cut). Counts, right / wrong / narrowed-right / narrowed-wrong:
+
+| condition | base | tightened arm |
+|---|---|---|
+| shipped defaults, 20 tiles | 13 / 2 / 4 / 1 | **18 / 2 / 0 / 0** |
+| 2.153 rule ON, 19 Litolff tiles | 1 / 2 / 15 / 1 | **17 / 2 / 0 / 0** |
+
+Both controls (3, 12) right in every arm. Per tile under defaults: 15 eighths decided right (8 was a quarter in base, 15 was
+narrowed); 1 and 19 (quarters) narrowed {8, 4} -> decided quarter, right; 14 (a half) quarter -> HALF, right.
+* **Tile 10 (a half): narrowed {8, 4} -> decided quarter, wrong both, now unmarked.** The rescued stem is the half note's real stem
+  (x 394, 7 spaces); it removes the only beam doubt, and the head is classed BLACK (`noteheadBlackOnLine`): the head-fill error
+  (2.148's near-miss zone, FINDINGS 2.153 rank 1) decides the value, not the stem.
+* **Tile 13 (an eighth): narrowed {8, 4} (holding it) -> decided quarter, wrong. This is the 2.155 tightening.** The rescued stem
+  (x 971-1009, tip y 598) stands at the end of a sloping beam. The CV beam stroke the other stems make stops at x 871; the detector's
+  box over the whole beam (x 214-1054) is dropped by `_kept_beams` because it overlaps that stroke in x; the join reader reads the
+  stroke NOT reaching the rescued stem, so the note has a stem and no beam. In the FIRST arm (10.8, no beam guard) the rescued stem
+  anchored the beam's end piece (x 763-1017, y 597, abutting the kept stroke) and the note decided 0.5 -- right. The tile-4 guard
+  ("a rescued stem never anchors a new stroke") blocks a real continuation of the same level as well as a false new level (tile 4:
+  a stroke 2.2 spaces under the real beam).
+
+Across both galleries (40 tiles, shipped defaults) the tightened arm makes 7 notes right that base had wrong or narrowed and
+makes 3 a decided wrong from a narrowing (grace notes 6/11: 2.156; tile 10: head fill; tile 13: the beam guard) -- and one of
+those three, tile 13, is this lane's own doing.
