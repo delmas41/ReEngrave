@@ -4589,3 +4589,48 @@ At HEAD (this branch = main `d9353217` + the fix), all 137 judged tiles: old har
 
 ### 2.157-5. Limits
 Verdict VALUES also carry GATHER ids (glyph-owner stems, word letters ...; 787 values on `slice_litolff.json`), so comparing a stored verdict's value with a slice replay's needs `remap_row_ids(stored, id_map)`; `diff_records` (the CLI control, whole records, identity map) does not do it and was not changed. A slice replay still has no meter carried from systems outside the slice (2.154-limits).
+
+## 2.153b -- re-tile of `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` after 2.154 + 2.155 (lane-2.153-retile; STAGED ADJUDICATE, with its EVALUATE/INFER consequences; 2026-10-17)
+
+Sean 2026-10-17: *"Cut the tiles"*. Both causes of the first tiles' three wrong eighths are on main: the bar sum is confirm-only (2.154, arm a ON) and a stem at a bar's edge is a stem (2.155 ON). The flag stays OFF; no DECISIONS line from this lane.
+
+**CONVENTION ASSUMED** (unchanged from 2.153): a beam level belongs to a STEM; a stroke no stem of this head reaches is a box overlap. **WHAT WOULD FALSIFY IT:** Sean reads the narrowed notes below (tiles) as the eighth / sixteenth / dotted eighth the shipped reader writes. **NOT CONFIRMED:** the 25 tiles are not answered.
+
+### 2.153b-1. How it was replayed (no gather; `probe/{pages,replay_whole,sum}_2_153b.py`)
+The 20261016-night records (made at main `1d42c4aa`; branch at main `e75bc907`, no `tools/` change since) cut into per-page row files in one streamed pass, then the WHOLE record's GATHER rows replayed through INFER with the fixed `review.rerun` (2.157), flag OFF vs ON, everything else shipped. A per-page replay (one page of context) was tried first and is NOT faithful past ADJUDICATE: Litolff p11 then differs from the stored record on 170 glyphs (160 whole rests sized by a meter not carried in, 10 bar decisions), every first ADJUDICATE verdict agreeing; with all preceding pages, 0. **Control, whole replay OFF vs the stored live duration verdict: 14,404 / 14,404 Litolff and 32,844 / 32,844 Brahms agree.** Cost: Litolff 30 min (7.2 GB), Brahms 2.5 h (33.6 GB peak), one at a time.
+
+### 2.153b-2. What changes (written value; a narrowed note is DROPPED by EXPORT, marked unread)
+| | Litolff | Brahms |
+|---|--:|--:|
+| glyphs whose live duration differs | 108 | 328 |
+| whole rests resized by the meter in force (not notes) | 0 | 114 |
+| same written value, another decider | 1 | 11 |
+| **notes whose written value changes** | **107** (14 pages) | **203** (23 pages) |
+| decided -> narrowed | 101 (98 eighths -> {8, 4}; 3 sixteenths) | 153 |
+| decided -> another value | 5 (all 8 -> 4) | 21 (19 longer, 2 shorter) |
+| narrowed -> decided | 0 | 25 |
+| narrowed -> wider narrowing | 1 | 4 |
+| reached through a bar or chord decider (EVALUATE/INFER), not the rule itself | 5 | 90 |
+
+Litolff is the rule itself: 101 notes a stroke no stem reaches no longer decides. The 5 eighth -> quarter are bar MOVES withdrawn (`meter_reconciliation` had shortened the reader's quarter; with a narrowing now in the bar, 2.154 refuses the bar and the reader's quarter stands). Brahms carries more knock-on: chord mates (`chord_mate_shares_the_stem`, 26), bar moves withdrawn (19, the reader's value written: 15 eighth -> quarter) and 25 narrowed -> decided (18 `meter_reconciliation`, 4 chord mates, 3 INFER by-bar), i.e. the bar now confirming a narrowing it refused before.
+
+**The meter moves too (Brahms only).** 114 whole rests change length: 88 go 3 -> 4 beats (pages 2, 3, 5, 24) and 26 go 4 -> 3 (page 19). A whole rest is the bar, so this is the meter in force for those bars: the narrowings change the bar sums that `OMR_METER_FROM_BARS` / the carry weigh. The dossier (`data/dossiers/brahms-sym1-mvt1.json`, a catalog source) gives 6/8 throughout (one 9/8 bar), i.e. 3 beats: by that witness the flag makes 88 bars' meter wrong and 26 right. Not tiled (a meter question, not a note value).
+
+### 2.153b-3. Sean's judged notes (`probe/sean_2_153b.py`: judged index glyph rows + every answers.json tile that names a glyph; 138 Litolff, 113 Brahms)
+On the changed notes:
+| | Litolff | Brahms |
+|---|---|---|
+| right -> wrong | 1 (2.154 tile 8: a right bar move withdrawn, the reader's quarter written) | 1 (2.154 tile 3: same mechanism) |
+| wrong -> right | 0 | 1 (2.154 tile 13: a wrong bar move withdrawn, the reader's dotted quarter) |
+| right -> narrowed holding his value | 2 (2.155 tile 9; 2.153 tile 12) | 3 (2.154 tiles 15, 17; 2.82 tile_05) |
+| wrong -> narrowed holding his value | 2 (2.154 tile 1; 2.153 tile 2) | 5 (2.153 tiles 5, 8, 9, 13, 18) |
+| wrong -> narrowed, his value NOT among the candidates | 0 | 1 (2.153 tile 10: dotted quarter, {8, 4}; the dot is missing too) |
+| narrowed holding -> right | 0 | 1 (2.81 tile_14: a bare stem the bar now confirms) |
+
+All judged glyphs, OFF -> ON: Litolff right 120 / wrong 8 / narrowed-holding 9 -> 117 / 7 / 13; Brahms 90 / 9 / 12 (+1 narrowed-not) -> 88 / 3 / 19 (+2). **2.153 tiles 4, 14 and 16 (the three right Litolff eighths the first arm made wrong) are now right in BOTH arms** (decided 0.5, `head_and_marks`; the flag no longer touches them, 2.155's stem reaches the beam). The two new wrongs are not the rule's reading: each is a right bar move that 2.154 withdraws once the rule leaves a narrowing in the bar (moves were 3 right / 4 wrong on the 2.154 tiles; here 2 right lost, 1 wrong fixed).
+
+### 2.153b-4. Blind tiles: `out/print/2.153b-review/`, 25 (answers.json `{}`)
+`probe/tiles_2_153b.py 11 12` (seed 21532), cut and keyed in ONE run: 23 changed notes Sean has not judged (11 Litolff, 12 Brahms; picked round-robin by (OFF value, ON value); whole rests and same-value changes excluded; head-sized boxes only) + 2 joined-beam controls that can fail (an eighth the reader decided with one beam level its stem reaches, `beams_by_stem` >= 1, no flag, unchanged by the flag; one per plate; source `probe/controls_2_153b.py`). One blue box (#1F6FEB) on the note, "Tile N", nothing else of ours; question: "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?". Hidden key `out/2.153b/tiles-key.json` (uncommitted; OFF and ON verdict per tile). Checked in the cutting run: one key row per PNG, same numbering, and in every PNG the bounding box of the blue pixels equals the key row's box (+-3 px); every box viewed on a notehead.
+
+### 2.153b-5. Limits
+Sean's judged glyph keys come from older gathers and are matched by key, as `judged score` does (no page-box check for the answers.json rows). The replay's EVALUATE is whole-record faithful (control 100%), but it is one night's GATHER: what the next gather writes may differ. Reach counts include the knock-on through the bar, the chord and the meter; the rule's own reach is the decided -> narrowed `beams_ambiguous` rows (Litolff 101, Brahms 117). Tests: fast tier 8,350 passed, 0 failed (serial); `staged.check` open=192 (main 192). No `tools/` change.
