@@ -55,6 +55,7 @@ from . import structure as _structure
 # `notehead_precision`, so this is not a new circular-import risk.
 from . import ownership as _own
 from . import aug_dot_join as _aug_join
+from .. import bar_length as _BL
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -5873,53 +5874,17 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         if any(_sub(gi) in whole_rests
                for e in events for gi in (e.get("glyphs") or [])):
             continue
-        total = 0.0
-        # ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`, default OFF): a staff's bar holding a NARROWED note has no known
-        # length -- only a RANGE, the sum at every narrowing's shortest candidate to the sum at its longest. Recorded as a
-        # (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter whose length lies inside it and never refute one.
-        unknown = narrowed_bar_length_unknown()
-        lo_total = hi_total = 0.0
-        ranged = False
-        for event in events:
-            beats = []
-            lo_hi = []
-            for gi in event.get("glyphs") or []:
-                got = ev.verdict(Q.DURATION, subject=_sub(gi))
-                if got is None:
-                    continue
-                if unknown and got.outcome is not Outcome.DECIDED and got.candidates:
-                    cb = [float(c.value.get("beats") or 0.0) for c in got.candidates
-                          if isinstance(c.value, dict) and c.value.get("beats") is not None]
-                    if cb:
-                        lo_hi.append((min(cb), max(cb)))
-                        ranged = True
-                        continue
-                val = (got.value if got.outcome is Outcome.DECIDED
-                       else (got.candidates[0].value if got.candidates else None))
-                if val:
-                    beats.append(float(val.get("beats") or 0.0))
-                    lo_hi.append((beats[-1], beats[-1]))
-            if beats:
-                total += Counter(beats).most_common(1)[0][0]
-            if lo_hi:
-                # ⚠️ An event holding a narrowed head spans EVERY length any of its heads admits (a chord is one value,
-                # and which head is right is exactly what is undecided).
-                lo_total += min(a for a, _ in lo_hi)
-                hi_total += max(b for _, b in lo_hi)
-        if unknown and ranged:
-            lo_r, hi_r = round(lo_total, 4), round(hi_total, 4)
-            if hi_r > 0:
-                bars.setdefault(cell.cell, []).append(lo_r if lo_r == hi_r else (lo_r, hi_r))
+        # ⚠️ ROADMAP 2.162 / 2.165: THE ONE BAR-LENGTH HELPER (`staged.bar_length`). Flag off it is the old sum (a narrowing
+        # at its first candidate); under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a staff bar holding a NARROWED note is a RANGE,
+        # recorded as a (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter inside it and never refute one.
+        got = _BL.length_of_events(
+            ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])] for event in events),
+            missing="skip")
+        if got.unknown or got.hi <= 0:
             continue
-        if total > 0:
-            bars.setdefault(cell.cell, []).append(round(total, 4))
+        lo_r, hi_r = round(got.lo, 4), round(got.hi, 4)
+        bars.setdefault(cell.cell, []).append((lo_r, hi_r) if got.ranged and lo_r != hi_r else lo_r)
     return bars
-
-
-def narrowed_bar_length_unknown() -> bool:
-    """ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`), the one switch, defined in `consequences`."""
-    from ..consequences import narrowed_bar_length_unknown as _on
-    return _on()
 
 
 def _resolve_lengths(lengths, expected: float) -> list:

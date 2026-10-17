@@ -402,51 +402,7 @@ def lone_event_fills_bar_enabled() -> bool:
 #: lies inside it (`rhythm._resolve_lengths`) -- and never refutes: it casts no vote against a meter, cannot outweigh a carry,
 #: and the bar's arithmetic moves a DECIDED note only where the bar is over or short under EVERY candidate
 #: (`reconcile_duration`). `reinstate_rest_between_staves` does not sum such a bar at all. Only `1/true/yes/on` enables it.
-NARROWED_BAR_LENGTH_UNKNOWN_ENV = "OMR_NARROWED_BAR_LENGTH_UNKNOWN"
-
-
-def narrowed_bar_length_unknown() -> bool:
-    import os
-    from . import override_check      # ROADMAP 2.165: the one shared check sums no bar but through this helper
-    return (os.environ.get(NARROWED_BAR_LENGTH_UNKNOWN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
-            or override_check.enabled())
-
-
-def _beats_range(v: Verdict) -> Optional[Tuple[float, float]]:
-    """ROADMAP 2.162: (shortest, longest) beats a standing duration admits -- its own value if DECIDED, else over its OWN
-    candidates; None where it admits none."""
-    if v.outcome is Outcome.DECIDED:
-        b = (v.value or {}).get("beats") if isinstance(v.value, dict) else None
-        return None if b is None else (float(b), float(b))
-    cb = [float(c.value.get("beats")) for c in (v.candidates or ())
-          if isinstance(c.value, dict) and c.value.get("beats") is not None]
-    return (min(cb), max(cb)) if cb else None
-
-
-def _event_range(log: Log, subject: Subject, notes) -> Optional[Tuple[float, float]]:
-    """ROADMAP 2.162: the bar's length as a RANGE, counting each EVENT once (`_event_totals`' grouping): an event spans the
-    shortest to the longest length any of its heads admits. None where the grouping is undecided or a note admits nothing."""
-    grouping = log.verdict(Q.EVENT, subject)
-    if grouping is None or grouping.outcome is not Outcome.DECIDED:
-        return None
-    rng = {v.id: _beats_range(v) for v in notes}
-    if any(r is None for r in rng.values()):
-        return None
-    by_glyph = {v.subject.glyph: v for v in notes}
-    lo = hi = 0.0
-    seen = set()
-    for event in (grouping.value or {}).get("events", ()):
-        members = [by_glyph[g] for g in event.get("glyphs", ()) if g in by_glyph]
-        if not members:
-            continue
-        lo += min(rng[m.id][0] for m in members)
-        hi += max(rng[m.id][1] for m in members)
-        seen.update(m.id for m in members)
-    for v in notes:
-        if v.id not in seen:
-            lo += rng[v.id][0]
-            hi += rng[v.id][1]
-    return lo, hi
+from .bar_length import NARROWED_BAR_LENGTH_UNKNOWN_ENV, bar_length, narrowed_bar_length_unknown  # noqa: E402,F401
 
 
 def bare_stem_confirmable(note: Verdict) -> bool:
@@ -552,35 +508,26 @@ def _size_measure_rest_also_reads(log: Log, subject: Subject,
 
 
 def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]:
-    """The bar's length, counting each EVENT once, or None if unknowable.
+    """The bar's length, counting each EVENT once, or None if unknowable -- `notes` valued as `current` gives them.
 
-    One event contributes ONE duration. Where a chord's members disagree about
-    their value the MODE is taken -- which is `voicing.group_chords_in_measure`'s
-    own definition of an event's duration, so the record and the exporter
-    answer this question the same way.
+    ⚠️ ROADMAP 2.162 / 2.165: a thin reading of THE one helper (`bar_length.length_of_events`), for callers that hold
+    their own valuation of each note; every bar sum in this module goes through that helper. One event contributes ONE
+    duration, the MODE of its members (`voicing.group_chords_in_measure`'s definition); a duration the grouping does not
+    mention is still time in the bar.
     """
-    grouping = log.verdict(Q.EVENT, subject)
-    if grouping is None or grouping.outcome is not Outcome.DECIDED:
-        return None
-    by_glyph = {v.subject.glyph: v for v in notes}
-    total = 0.0
-    seen = set()
-    for event in (grouping.value or {}).get("events", ()):
-        members = [by_glyph[g] for g in event.get("glyphs", ())
-                   if g in by_glyph]
-        if not members:
-            continue
-        beats = Counter(float(current[m.id].get("beats") or 0.0)
-                        for m in members)
-        total += beats.most_common(1)[0][0]
-        seen.update(m.id for m in members)
-    # ⚠️ A duration the grouping does not mention is still time in the bar.
-    # Dropping it would understate the total as silently as the double-count
-    # overstated it.
-    for v in notes:
-        if v.id not in seen:
-            total += float(current[v.id].get("beats") or 0.0)
-    return total
+    from .bar_length import bar_length as _len
+    valued = [_Valued(v, current[v.id]) for v in notes]
+    got = _len(log, subject, valued, first_candidate=True)
+    return got.value
+
+
+class _Valued:
+    """A standing duration seen through a caller's valuation (`current`): DECIDED at that value."""
+    __slots__ = ("id", "subject", "value", "outcome", "candidates")
+
+    def __init__(self, v: Verdict, value):
+        self.id, self.subject, self.value = v.id, v.subject, value
+        self.outcome, self.candidates = Outcome.DECIDED, ()
 
 
 def _stem_ids_used(log: Log, v: Verdict) -> "set":
@@ -1179,10 +1126,13 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # per-notehead sum. A bar whose grouping is unknown is a bar whose sum is
     # unknown, and repairing against a total that may be inflated is exactly
     # the laundered guess `bound` exists to prevent.
-    grouped = _event_totals(log, subject, notes, current)
-    if grouped is None:
+    # ⚠️ ROADMAP 2.162 / 2.165: THE one helper. Here every narrowing left in the bar is either 2.154's bare stem (whose
+    # confirm the 2.162 brief keeps as it was: the total at the stem's first candidate, every landing re-tested below) or,
+    # with 2.154 off and 2.162 off, the pre-2.162 reading -- so the total is asked at the first candidate explicitly.
+    grouped = bar_length(log, subject, notes, first_candidate=True)
+    if grouped.unknown:
         return []
-    total = grouped
+    total = grouped.value
     fits = abs(total - expected) < 1e-6
     if fits and not any(n.outcome is Outcome.NARROWED and not _is_rest(n)
                         for n in notes):
@@ -1328,11 +1278,11 @@ def _move_beside_unknown(log: Log, subject: Subject, meter: Verdict, expected: f
     The narrowed notes themselves are never landed (2.154 arm a); the bare-stem confirm (every narrowing a bare stem) and
     INFER's lone-event guess are untouched. Every other bound of `reconcile_duration` holds: no rest is re-read, no tuplet
     member, the 2.80 missed-rest witness gates a lengthening, a DECIDED note's own level is not a re-reading."""
-    rng = _event_range(log, subject, notes)
-    if rng is None:
+    rng = bar_length(log, subject, notes)
+    if rng.unknown:
         return []
-    lo, hi = rng
-    if lo - 1e-6 <= expected <= hi + 1e-6:
+    lo, hi = rng.lo, rng.hi
+    if rng.contains(expected):
         return []                        # the bar may already fit: unknown length cannot refute a reading
     landings = []
     for note in notes:
@@ -1345,7 +1295,7 @@ def _move_beside_unknown(log: Log, subject: Subject, meter: Verdict, expected: f
             if option.get("beam_levels") == now.get("beam_levels"):
                 continue
             delta = float(option.get("beats") or 0.0) - float(now.get("beats") or 0.0)
-            if lo + delta - 1e-6 <= expected <= hi + delta + 1e-6:
+            if rng.shifted(delta).contains(expected):
                 landings.append((note, option, delta))
     if len(landings) != 1:
         return []
@@ -2130,20 +2080,9 @@ def _bar_total_excluding(log: Log, cell_subject: Subject,
         notes.append(v)
     if not notes:
         return None
-    # ROADMAP 2.162: a bar holding a narrowed note has no known length, so it can neither show the shortfall a group fills
-    # nor rule a staff out of taking it.
-    if narrowed_bar_length_unknown() and any(v.outcome is not Outcome.DECIDED for v in notes):
-        return None
-
-    def _current(v: Verdict):
-        if v.outcome is Outcome.DECIDED:
-            return v.value
-        return v.candidates[0].value if v.candidates else None
-
-    current = {v.id: _current(v) for v in notes}
-    if any(c is None for c in current.values()):
-        return None
-    return _event_totals(log, cell_subject, notes, current)
+    # ROADMAP 2.162 / 2.165: THE one helper. Under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a bar holding a narrowed note has only
+    # a RANGE, so it can neither show the shortfall a group fills nor rule a staff out of taking it: no total.
+    return bar_length(log, cell_subject, notes).value
 
 
 def _contest_group(log: Log, cell_subject: Subject, partner_key: str

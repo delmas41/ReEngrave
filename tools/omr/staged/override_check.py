@@ -312,25 +312,25 @@ def r_bar_sum_confirm(new, prior, log) -> Optional[str]:
 def r_bar_sum_known_length(new, prior, log) -> Optional[str]:
     """A rest reinstated because the bar is short (E6, audit violation 7) -- only where the bar HAS a length: 2.162's
     helper (`consequences._event_range`) must give one exact length, never a range."""
-    from .consequences import _event_range, _standing, _is_rest
+    from .bar_length import bar_length
+    from .consequences import _standing, _is_rest
     from .record import Kind, Q
     try:
         cell = new.subject.at(Kind.CELL)
     except Exception:                                  # noqa: BLE001 -- a subject with no cell has no bar
         return "bar_length_unknown"
+    if cell is None:
+        return "bar_length_unknown"
     notes = [v for v in _standing(log, cell, Q.DURATION) if not _is_rest(v)]
     if not notes:
         return None                                    # an empty bar: its length is the rests', all decided
-    rng = _event_range(log, cell, notes)
-    if rng is None or abs(rng[0] - rng[1]) > 1e-6:
-        return "bar_length_unknown"
-    return None
+    return None if bar_length(log, cell, notes, first_candidate=False).known else "bar_length_unknown"
 
 
 def r_meter_bars_known_length(new, prior, log) -> Optional[str]:
     """The bars may refuse a carried meter, or name one (A9, audit violation 2), only from bars of KNOWN length:
     2.162's helper must be the one that summed them (a narrowed bar is a range that may confirm, never refute)."""
-    from .consequences import narrowed_bar_length_unknown
+    from .bar_length import narrowed_bar_length_unknown
     if not narrowed_bar_length_unknown():
         raise RuntimeError("OMR_ONE_OVERRIDE_CHECK is on but 2.162's bar-length helper is off -- the meter's bars "
                            "would be summed at a narrowing's first candidate")
