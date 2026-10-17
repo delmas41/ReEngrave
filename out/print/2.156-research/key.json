@@ -1,0 +1,77 @@
+[
+ {
+  "n": 1,
+  "file": "01-brahms-p1-staff09.png",
+  "doc": "brahms1-breitkopf",
+  "pdf_page_index": 1,
+  "staff": 9,
+  "box_page_px_600dpi": [
+   1725,
+   2630,
+   1825,
+   2770
+  ],
+  "blue_box": "the small notes in question",
+  "heads": 2,
+  "slashed": false,
+  "beams": 2,
+  "stem": "up",
+  "small_accidental": "natural before the first grace",
+  "follows_trill": true,
+  "before_barline": true,
+  "nachschlag": true,
+  "slur": "arc ABOVE from the trilled note to the grace beam",
+  "tile_2_155": 11,
+  "music": "Un poco sostenuto intro, last bar before the 6/8 Allegro; trilled dotted note then two 16th graces"
+ },
+ {
+  "n": 2,
+  "file": "02-brahms-p1-staff10.png",
+  "doc": "brahms1-breitkopf",
+  "pdf_page_index": 1,
+  "staff": 10,
+  "box_page_px_600dpi": [
+   1725,
+   2950,
+   1825,
+   3090
+  ],
+  "blue_box": "the small notes in question",
+  "heads": 2,
+  "slashed": false,
+  "beams": 2,
+  "stem": "up",
+  "small_accidental": "natural before the first grace",
+  "follows_trill": true,
+  "before_barline": true,
+  "nachschlag": true,
+  "slur": "arc BELOW from the trilled note to the first grace head",
+  "tile_2_155": 13,
+  "music": "Un poco sostenuto intro, last bar before the 6/8 Allegro; trilled dotted note then two 16th graces"
+ },
+ {
+  "n": 3,
+  "file": "03-brahms-p1-staff12.png",
+  "doc": "brahms1-breitkopf",
+  "pdf_page_index": 1,
+  "staff": 12,
+  "box_page_px_600dpi": [
+   1730,
+   3465,
+   1828,
+   3603
+  ],
+  "blue_box": "the small notes in question",
+  "heads": 2,
+  "slashed": false,
+  "beams": 2,
+  "stem": "up",
+  "small_accidental": "natural before the first grace",
+  "follows_trill": true,
+  "before_barline": true,
+  "nachschlag": true,
+  "slur": "arc ABOVE from the trilled note to the grace beam",
+  "tile_2_155": 6,
+  "music": "Un poco sostenuto intro, last bar before the 6/8 Allegro; trilled dotted note then two 16th graces"
+ }
+]
