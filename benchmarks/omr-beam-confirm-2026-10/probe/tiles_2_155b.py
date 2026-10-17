@@ -46,7 +46,10 @@ COND = {"defaults": ("tiles_{d}_base", "t2_{d}_tight_def"), "rule_2153_on": ("t2
 recs = {}
 for d in PDFS:
     for c, (b, a) in COND.items():
-        recs[(d, c)] = (load(D + b.format(d=d) + ".record.json"), load(D + a.format(d=d) + ".record.json"))
+        pb, pa = (Path(D + x.format(d=d) + ".record.json") for x in (b, a))
+        if pb.exists() and pa.exists():         # Brahms under the 2.153 rule was not gathered (Sean 2026-10-16: "Cut those")
+            recs[(d, c)] = (load(str(pb)), load(str(pa)))
+print("conditions read:", sorted(recs))
 
 
 def key_of(rd):
@@ -55,9 +58,8 @@ def key_of(rd):
 
 changed, same = {}, collections.defaultdict(int)
 boxes = {}
-for d in PDFS:
-    for c in COND:
-        b, a = recs[(d, c)]
+for (d, c), (b, a) in sorted(recs.items()):
+    if True:
         for o in b["observations"]:
             if o["quantity"] == "glyph_box" and (o.get("detail") or {}).get("category") == "notehead":
                 boxes[o["subject"]] = (d, o["detail"]["bbox_page_px"])
@@ -84,7 +86,7 @@ while len(picks) < N_CHANGED and any(by_kind.values()):
         if by_kind[k] and len(picks) < N_CHANGED:
             g = by_kind[k].pop()
             picks.append(dict(doc=boxes[g][0], role="changed", glyph=g, bbox=boxes[g][1], readings=changed[g]))
-ctl = [g for g, n in same.items() if n == 2 and g not in judged and g not in changed and g in boxes]
+ctl = [g for g, n in same.items() if n == sum(1 for (d, _c) in recs if d == boxes.get(g, ("",))[0]) and g not in judged and g not in changed and g in boxes]
 rnd.shuffle(ctl)
 for g in ctl[:N_CONTROL]:
     picks.append(dict(doc=boxes[g][0], role="joined_control", glyph=g, bbox=boxes[g][1], readings="same eighth in both arms"))
