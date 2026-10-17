@@ -393,3 +393,38 @@ Reach replays the stem finder only; what each rescue does to the verdicts is mea
 are the standard boxes without the 2.39b re-centre (log=None). The slack (0.25 space) is a box tolerance fitted on three notes.
 Not done: the unboxed heads of 10.6 (a detector reach fault), the 45 Litolff rescues the join reader abstains on (mid-length
 crossings, `_beam_stem_beyond_tip`).
+
+### 10.8 Sean's 20 tile answers (2026-10-16, recorded in `out/print/2.155-review/answers.json`; scored by `probe/score_2_155.py`)
+Verbatim: *"1.16 2.8 3.8 4.8 5.8 6. 16th grace note 7. 16 8.8 9.8 10.8 11. 16th grace note 12.8 13.16th grace note 14.4 15.8 16.8
+17.8 18.flat accidental 19.8 20.4"*.
+
+**Base of every number here:** branch commit `721adf7c` = main `0d1da8a9` + this lane (before 2.154 landed at `11d85f53`); every
+tile page re-gathered `--through adjudicate` (Litolff p1/2/3/6/10/15/16, Brahms p1/3/9/11), base vs `OMR_STEM_AT_BAR_EDGE=1`, all
+else at shipped defaults (2.153 rule OFF). ADJUDICATE only, so 2.154's EVALUATE change cannot move them. The second set (changed +
+control tiles, Litolff p1/2/10) is section 10.3's re-gather with the 2.153 rule ON in both arms, same base commit.
+
+| set | base: right / wrong / narrowed-right / narrowed-wrong | arm: right / wrong / narrowed-right / narrowed-wrong |
+|---|---|---|
+| shipped defaults, 20 tiles | 12 / 3 / 2 / 3 | 12 / 5 / 2 / 1 |
+| 2.153 rule ON, 8 tiles on p1/2/10 | 3 / 1 / 4 / 0 | 6 / 1 / 0 / 1 |
+
+What the flag changes under shipped defaults (all else is the same in both arms):
+* **Better, 2:** tile 1 (Brahms 16th: narrowed without it -> decided 16th) and tile 12 (Litolff 8th: quarter -> 8th).
+* **Worse, 2:** tile 4 (Litolff 8th -> narrowed {16th, 32nd}): the rescued stem (x 1869) lets the CV beam reader build a NEW stroke
+  (x 1639-1914, y 532, under the real beam) that the head's own stem then joins, so a second level reads CERTAIN -- a rescued stem
+  feeding `detect_beams` makes a false beam. Tile 9 (Litolff 8th -> quarter): the rescued run (x 749, y 725-1150) ends in this head
+  AND passes through head /8 at its top; `stem_projection` reads it as a DOWN stem carrying 5 heads, so the beam above falls on
+  the far side and the note drops to its head value. The rule's "an END stands in a head" is met at both ends by two heads.
+* **The three grace notes (tiles 6, 11, 13, one Brahms passage on three staves):** wrong in both arms. Base: 6 and 11 narrowed
+  (no 16th among the candidates), 13 decided a quarter. Arm: 6 and 11 decided a QUARTER, 13 an EIGHTH. The rescued "stem" is the
+  grace note's own short stem (~1.2 spaces, flags read NOT joined to the stroke beside it), so the note gains a stem and drops to
+  its head value. New: no STAGED reader marks a grace note (small head, slashed or flagged at the bar's edge) at all; a grace note
+  takes no bar time, so whatever value we write also corrupts the bar sum. Nothing in this lane targets that.
+* **Tile 18 is a flat accidental boxed as a head:** both arms decide a HALF (2.0) for it. The rescue adds the flat's own vertical
+  stroke as its stem; the non-note was already written as a note in the base (a notehead-gate fault, as 2.151 saw).
+* The 2.153-rule-ON set confirms 10.3: the arm decides 3 right eighths that base only narrowed (3, 8, 17) and fixes 12; it makes
+  tile 4 narrowed-wrong and tile 9 wrong, as above.
+
+Verdict for the manager (not a DECIDED line): on these tiles the flag is even under shipped defaults (2 better, 2 worse, grace notes
+wrong either way) and clearly better only where the 2.153 rule needs a stem. The two worse cases are both "the rescued run is not
+only this head's stem" (it feeds a false beam; it spans two heads).
