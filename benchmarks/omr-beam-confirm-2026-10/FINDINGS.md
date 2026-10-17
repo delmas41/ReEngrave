@@ -505,3 +505,35 @@ narrowed); 1 and 19 (quarters) narrowed {8, 4} -> decided quarter, right; 14 (a 
 Across both galleries (40 tiles, shipped defaults) the tightened arm makes 7 notes right that base had wrong or narrowed and
 makes 4 a decided wrong from a narrowing (grace notes 6/11: 2.156; tile 10: head fill; tile 13: the beam guard) -- and one of
 those four, tile 13, is this lane's own doing.
+
+### 10.12 A found stem may CONTINUE a beam level, never START one (Sean 2026-10-16: "Yes")
+`line_detection.detect_lines`, inside `OMR_STEM_AT_BAR_EDGE`: the beam pass runs without the rescued stems (10.9); then once more
+with them, and a stroke only that second run finds is kept ONLY where it continues a stroke the others make -- it shares that
+stroke's columns and stands within one staff-line thickness of it vertically (`_same_stroke_gap`: the join reader's own "a break
+one line wide is the same stroke") -- and it is MERGED into that stroke (one stroke, one level, the box widened). Anything else is
+a new level and is refused. First built as a separate box: the tile-13 replay then read the neighbour eighth (glyph /1, its stem
+crossing both boxes) as a 16th, so the piece is merged, not added. Tests (16 pass): continue -> one widened stroke; a stroke 2.2
+spaces under -> refused; flag off -> the beam pass runs once as shipped. Mutation: admission removed -> the continue test fails;
+admission unconditional -> both never-start tests fail.
+
+**No page gather** (Sean / manager). `probe/cells_2_155c.py`: each of the 40 answered tiles' cells prepared as the gather does
+(no detector; boxes from the tightened record), `detect_lines` at this code: flag OFF reproduces the base record's CV rows in 40
+of 40; flag ON reproduces the TIGHTENED record's CV rows in 39 of 40, among them 2.155 tile 4 (only the real beam; the stroke 2.2
+spaces under stays refused), so their readings are 10.9/10.11's unchanged. The 40th is 2.155b tile 13: its stroke (274-871) becomes
+(274-1017, y 445-623). `probe/inject_2_155c.py` replaces that cell's CV stroke rows with the gather's own rows at this code (join and
+ink rows rebuilt by `gather_cv_lines`/`gather_beam_stroke_ink`, stems mapped to the record's own) in a system slice of the tightened
+record and replays it; the un-injected replay matches the stored readings for every glyph of the cell (control). **Tile 13: decided
+0.5, right, in both conditions; its four neighbours unchanged (0.5, 0.5, 0.5, the rest).** Base: `205d007c` + guards + this rule.
+
+| Sean's 40 tiles | base | tightened (10.9/10.11) | + continue a level |
+|---|---|---|---|
+| shipped defaults, 40: right / wrong / narrowed-right / narrowed-wrong | 25 / 5 / 6 / 4 | 32 / 6 / 2 / 0 | **33 / 5 / 2 / 0** |
+| 2.153 rule ON, 33 Litolff: same | 5 / 3 / 24 / 1 | 28 / 2 / 3 / 0 | **29 / 1 / 3 / 0** |
+
+The 5 still wrong under defaults: three grace notes and a flat (2.155 tiles 6/11/13/18: 2.156 and the notehead gate) and 2.155b
+tile 10 (a half read black: head fill). Under the 2.153 rule: tile 10 only.
+
+Reach at this code (night records, no re-gather; OFF still equals the stored stems in 5,377 / 5,377 Litolff and 6,685 / 6,685
+Brahms cells): Litolff 158 stems rescued, joined / not joined / abstained / no stroke 62 / 15 / 34 / 47 (10.9: 61 / 16 / 34 / 47),
+**1 cell in the movement gains a continued stroke** (0 before; no new level anywhere); Brahms 6 stems, 1 / 3 / 0 / 2, unchanged.
+Fast tier 8,340 passed; `staged.check` open=192 (main 192).

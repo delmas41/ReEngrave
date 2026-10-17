@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- 2.155: a found stem may continue a beam level, never start one (Sean "Yes"; branch, flag still OFF for the landing agent)
+
+`line_detection.detect_lines`: a stroke only the rescued stems anchor is kept only where it continues a stroke the other stems make
+(shared columns, within one staff-line thickness) and is merged into it. Checked with no page gather: 39 of Sean's 40 tiles' cells
+unchanged (tile 4 blocked); 2.155b tile 13 replayed -> 0.5, right, neighbours unchanged. 40 tiles, defaults: base 25/5/10 -> 33/5/2.
+Reach: 1 Litolff cell gains a continued stroke. Fast tier 8,340 passed, check 192. Beam FINDINGS 10.12.
+
 ## 2026-10-16 -- 2.155 tightened (Sean "Tighten"): a rescued edge stem touches no other head and anchors no new beam (branch, OFF)
 
 Merged main (2.154 arm a ON). `line_detection`: `_run_ends_at_a_head` refuses a run overlapping a second head box (tile 9);
