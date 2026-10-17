@@ -4561,3 +4561,31 @@ Earlier judged tiles: of the 18 bar picks, the 16 bare stems stay right in both 
 
 ### 2.154 -- landed (Sean 2026-10-16: "Land 2.154 with arm a ON?" -- "Yes")
 `OMR_BAR_SUM_CONFIRM_ONLY` defaults to arm a (`narrowed`) when unset; arm b (`all`) stays opt-in; an explicit off-word (`0/off/false/no/""`) disables it. Including DOTTED bare stems in the confirm exemption was the lane's call (same mechanism), not Sean's words.
+
+## 2.157 -- the replay harness leaves dangling ids (lane-2.157-rerun-dangling-ids; tooling, STAGED review harness; 2026-10-16)
+
+No pipeline output changes: `review.rerun.rebuild_gather` and a row-id grammar in `record.py`; no page gathered (the 2.153 slices on disk, `out/2.153/`, uncommitted).
+
+### 2.157-1. Cause
+`rebuild_gather` re-creates every GATHER row through `Log.observe` / `Log.abstain`, which number densely, and re-pointed only `basis` (and DROPPED any `basis` id it could not find). A whole record's GATHER ids are already dense, so the map is the identity; a SLICE of named systems is sparse, so every id a row carries in `detail` named another row or none. Scanned on `slice_litolff.json` (`id`-shaped strings anywhere in a GATHER row): `detail.stem_row_id` (4,011), `detail.beam_row_id` (1,880), `detail.stem` (846), `detail.box_source` (2), `detail.from_head_cut` (2); `value` and `basis` carry none there; `detail.cell_frame` = `cell:0` has the same shape and is a FRAME, not an id. One more kind lives in human rows: `Q.HUMAN_VERDICT_STANCE.detail.verdict_id` names a VERDICT of the parent record (found by `test_stage_review_evidence`, 6 tests red on the first fix).
+
+### 2.157-2. Fix (no key list)
+`record.ROW_ID_PREFIXES = ("obs", "abs", "vrd")` and `record.is_row_id`: `Log._next_id` now refuses any other prefix, so the grammar is the log's own. `rerun.remap_row_ids` walks `detail`, `value` and `basis` at any depth (values and dict keys) and re-points every string spelled as a row id; an id it cannot resolve RAISES `rerun.DanglingRowId` (a row cut out of the slice, a verdict the record does not hold, a `basis` naming a verdict, a later row). The one exception is a verdict id the record itself holds, kept verbatim in `detail` (a human stance names the verdict he was shown in the parent; verdicts are not replayed). `basis` is no longer dropped silently.
+
+### 2.157-3. Before / after (`probe/harness_2_157.py`, folded by `probe/sum_2_157.py`; Brahms tiles cut from `slice_brahms_all.json` into 4 system groups by `probe/cut_groups_2_157.py`, streamed)
+Control first: at the records' own commit `8b9eb97c` (tools archived, this `rerun.py` + the grammar block dropped in), the FIRST `adjudicate_duration` verdict of every glyph against the record's stored one.
+
+| | glyphs whose first duration verdict differs from stored | judged tiles (112) whose live reading differs from stored |
+|---|---|---|
+| old harness | 1,828 of 17,175 | 32 (30 of them a right / narrowed-holding reading made wrong or narrowed) |
+| fixed harness | **0** of 17,175 | **0** |
+
+Litolff `glyph/13/0/2/3/0` (2.153's example) is among the 32. The 2.153 lane's "16" came from its first, smaller cuts; on these cuts the same fault moves 32 tiles (Litolff 7, Brahms 25; the p0-p3 slice is dense and the old harness moves none there). The fixed harness builds verdict lists byte-identical to 2.153's probe harness (`replay_util_2_153.rebuild`) on all 11 slice runs (night and HEAD).
+
+At HEAD (this branch = main `d9353217` + the fix), all 137 judged tiles: old harness differs from stored on 55 tiles, fixed on 25; old vs fixed 34. The 25 are real code changes since the records (17 on the older p0-p3 record), and the old harness HID one of them (Litolff `glyph/11/1/8/16/3`: stored right, fixed narrowed-holding, old right). Nothing the faithful replay shows is lost: fixed == the 2.153 probe on every verdict.
+
+### 2.157-4. Tests and checks
+`tools/omr/tests/test_rerun_dangling_ids_2_157.py` (11): the 2.146 tip fixture with one earlier row of another system cut out decides `stem_tip_reads_no_beam` after the rebuild, as the whole fixture does; every id carried names the same row after the rebuild; a cut-out id, a cut-out `basis` id and an unknown verdict id raise; a parent verdict id is kept, never as a basis; `cell:0` is untouched; ids are found nested and as keys; an unknown prefix is refused at the write. Run RED on origin/main's `rerun.py`: 6 of 11 fail (the slice case NARROWS). Fast tier and `check` in the commit message.
+
+### 2.157-5. Limits
+Verdict VALUES also carry GATHER ids (glyph-owner stems, word letters ...; 787 values on `slice_litolff.json`), so comparing a stored verdict's value with a slice replay's needs `remap_row_ids(stored, id_map)`; `diff_records` (the CLI control, whole records, identity map) does not do it and was not changed. A slice replay still has no meter carried from systems outside the slice (2.154-limits).

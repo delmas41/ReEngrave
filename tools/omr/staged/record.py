@@ -3394,6 +3394,25 @@ class UphillConsequence(RuntimeError):
     """
 
 
+#: ROADMAP 2.157. Every row id a `Log` hands out is `<prefix>:<counter>`, and
+#: these are the ONLY prefixes: an Observation, an Abstention, a Verdict.
+#: `Log._next_id` refuses any other, so the grammar below cannot drift from the
+#: ids the log writes. It exists for code that must find the ids a row CARRIES
+#: (in `detail`, in `value`) without a hand-kept list of key names: a replay
+#: that renumbers rows (`review.rerun.rebuild_gather`) has to re-point every
+#: one, and a key list missed `stem_row_id`/`beam_row_id` once already.
+#: ⚠️ A FRAME IS NOT AN ID: `cell:0` has the same shape and another prefix.
+ROW_ID_PREFIXES = ("obs", "abs", "vrd")
+
+
+def is_row_id(x: Any) -> bool:
+    """True when `x` is spelled as a row id this module's `Log` writes."""
+    if not isinstance(x, str):
+        return False
+    prefix, sep, n = x.partition(":")
+    return bool(sep) and prefix in ROW_ID_PREFIXES and n.isdigit()
+
+
 class Log:
     """Append-only. There is no `update`, no `set`, and no `del`.
 
@@ -3480,6 +3499,9 @@ class Log:
     # ── writing ─────────────────────────────────────────────────────────────
 
     def _next_id(self, prefix: str) -> str:
+        if prefix not in ROW_ID_PREFIXES:
+            raise ValueError(f"row id prefix {prefix!r} is not one of "
+                             f"ROW_ID_PREFIXES {ROW_ID_PREFIXES}")
         self._n += 1
         return f"{prefix}:{self._n:06d}"
 
