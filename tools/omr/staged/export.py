@@ -67,6 +67,7 @@ from . import adjudicate as A
 from .adjudicators import ownership as _ownership_rules
 _OWNER_NOT_READ_REASONS = _ownership_rules.OWNER_NOT_READ_REASONS
 from .adjudicators.rhythm import (METER_RETURN_NOT_READ_REASON)
+from . import override_check as _OC
 from .record import Q, meter_at
 
 
@@ -338,6 +339,11 @@ def _guess_in_chain(rec: "Record", v: Optional[Dict[str, Any]]
                 guess = {"stage": "INFER", "rule": d[len("infer:"):]}
             elif d in EVALUATE_GUESSERS:
                 guess = {"stage": "EVALUATE", "rule": d}
+            elif d == "share_stem_value" and (v.get("detail") or {}).get("guessed"):
+                # ROADMAP 2.165 (Sean 2026-10-17): the stem guessed to its heads' majority; the dissent is named.
+                guess = {"stage": "EVALUATE", "rule": "share_stem_value_majority"}
+                if (v.get("detail") or {}).get("likely_misreading"):
+                    guess["likely_misreading"] = True
         if guess is not None and not cands:
             cands = _guess_candidates(v)
         if guess is not None and cands:
@@ -1303,6 +1309,15 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                   + (dur_v["outcome"] if dur_v else "absent"), s)
             continue
 
+        # ⚠️ ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`, audit violation 4): heads on one stem whose own fills disagree
+        # (`stem_heads_disagree`, Sean 2026-10-17: "it can't be decided") are HELD OUT and counted -- `_events` would
+        # otherwise write the chord at the MODE of its heads, an argmax EXPORT never takes.
+        if not is_rest and _OC.enabled():
+            sv = rec.verdict(Q.STEM_VALUE, sub)
+            if (sv is not None and sv["outcome"] == "narrowed" and sv.get("reason") == "stem_heads_disagree"
+                    and not _OC.export_may("chord_value", (_OC.A, "shared_stem")).allowed):
+                _drop("stem_heads_disagree", s)
+                continue
         owner = rec.value(Q.GLYPH_OWNER, sub)
         plan = None
         if (relocate and not is_rest
@@ -4066,6 +4081,16 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
         # (`_meter_return_marker`'s own `run.staff == 0` gate) and on every
         # system whose meter was not abstained this exact way.
         meter_return_cell = _meter_return_marker(rec, run)
+        # ⚠️ ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`, audit violation 5): where ADJUDICATE's bars REFUSED the carried
+        # meter on this system (2.162: only bars of known length may), the bars are written as read and NOT held,
+        # partialled or sized by the meter the file carries -- the refusal is not converted back into an answer
+        # (rule 8). Counted as `bars_meter_unread_carry_refused`.
+        carry_refused = False
+        if _OC.enabled():
+            _mv = rec.verdict(Q.METER, f"system/{run.page}/{run.system}")
+            if (_mv is not None and _mv["outcome"] == "abstained"
+                    and _mv.get("reason") in _OC.METER_BAR_SUM_REASONS):
+                carry_refused = not _OC.export_may("carried_meter", (_OC.A, "bar_sum")).allowed
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -4126,9 +4151,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
             # meter the FILE has in force (`judged`), meter verdict or not.
             # See `_lone_whole_rest_is_the_bar` for why this is EXPORT's.
+            _carried = None if carry_refused else in_force
             if events:
                 _sized = _lone_whole_rest_is_the_bar(
-                    events, meter if meter is not None else in_force)
+                    events, meter if meter is not None else _carried)
                 if _sized is not None:
                     events = _sized
                     counters["measure_rests_sized_by_the_file_meter"] += 1
@@ -4152,7 +4178,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # filed — see `in_force` above. `meter` is still what gets WRITTEN
             # and what sizes a held-out bar's rest; this is only what the bar
             # is JUDGED against.
-            judged = meter if meter is not None else in_force
+            judged = meter if meter is not None else _carried
+            if carry_refused and meter is None and events:
+                counters["bars_meter_unread_carry_refused"] += 1
             held = (_bar_holds_out(events, split[0], divisions, judged)
                     if events else None)
             # ⚠️⚠️ ROADMAP 2.4c, AND IT IS TESTED ONLY WHERE `held` IS NONE.

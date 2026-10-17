@@ -82,10 +82,12 @@ nothing to decide.
 """
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision, is_relocated_copy
 from ..record import Candidate, Kind, Outcome, Q, Scope, Subject
+from ..override_check import enabled as one_override_check_enabled
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants -- each one a convention or a measurement, never a tuning knob
@@ -756,7 +758,9 @@ def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
     reasons=("stem_agrees", "stem_value_from_evidence",
              "hollow_head_on_a_beamed_stem", "stem_levels_unread",
              "stem_dots_disagree", "stem_values_open", "stem_unread",
-             "lone_head", "not_a_member", "ambiguous_stem", "no_stem"),
+             "lone_head", "not_a_member", "ambiguous_stem", "no_stem",
+             # ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`, Sean 2026-10-17)
+             "stem_heads_disagree", "stem_heads_one_dissent"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX),
 )
@@ -812,6 +816,41 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
                            "filled": [m.key for m in filled],
                            "narrowed": [m.key for m in narrowed],
                            "direction": direction}
+
+    # ── ROADMAP 2.165: HEADS WHOSE OWN FILLS DISAGREE (Sean 2026-10-17) ────────
+    # *"for 2 heads sharing the same stem - if there are 2 and they disagree then it can't be decided - if there are
+    # more than 2 notes and all agree except one it should be able to guess that the one is wrong"*. The heads' OWN
+    # readings are their DECIDED fills (step 1 of the reading order); the beams and dots stay the stem's (they hang at
+    # its tip, Sean's 2.78 tiles 1 and 13). Two decided fills that disagree: the stem's value is UNDECIDED, never
+    # picked, and no head's fill is overwritten (`share_stem_value` fires nothing on a narrowing). Three or more where
+    # all but one agree: GUESSED to the majority (blue, candidates kept) and the dissent named as the likely misreading.
+    dissent: Optional[_Member] = None
+    if one_override_check_enabled():
+        voters = hollow + filled
+        bases = Counter(m.options[0][0] for m in voters)
+        if len(bases) > 1:
+            (top, n_top), = bases.most_common(1)
+            if len(voters) >= 3 and len(bases) == 2 and len(voters) - n_top == 1:
+                dissent = next(m for m in voters if m.options[0][0] != top)
+                hollow = [m for m in hollow if m is not dissent]
+                filled = [m for m in filled if m is not dissent]
+                strong = [m for m in strong if m is not dissent]
+                why["dissent"] = dissent.key
+            else:
+                seen: List[Tuple[float, int, int]] = []
+                for m in voters:
+                    if m.options[0] not in seen:
+                        seen.append(m.options[0])
+                own_set0 = set(_options(me.verdict))
+                cands0 = tuple(Candidate(value=_value(b, lv, d, scale, stem_id),
+                                         support=2.0 if (b, lv, d) in own_set0 else 1.0)
+                               for b, lv, d in seen)
+                why["fills"] = {m.key: m.options[0][0] for m in voters}
+                return Ruling.narrow(cands0, "stem_heads_disagree", used=used, stem=stem_id,
+                                     members=[m.key for m in members],
+                                     head_reading={"outcome": me.outcome,
+                                                   "values": [list(o) for o in _options(me.verdict)]},
+                                     evidence=why)
 
     # ── BASE ────────────────────────────────────────────────────────────────
     base_opts: List[float]
@@ -915,6 +954,13 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
         # ⚠️ LITERAL REASONS AT EVERY RETURN, NOT A COMPUTED ONE: `brakes.
         # vocabulary_gap` resolves a decision's reasons by reading the string
         # literals in its `Ruling(...)` calls.
+        if dissent is not None:
+            # ROADMAP 2.165: GUESSED to the majority; the dissent's own value is the other candidate.
+            dv = _value(*dissent.options[0], scale, stem_id)
+            detail.update({"guessed": True, "likely_misreading": dissent.key, "dissent_value": dv})
+            return Ruling(value=value, reason="stem_heads_one_dissent", used=used,
+                          candidates=(Candidate(value=value, support=2.0), Candidate(value=dv, support=1.0)),
+                          detail=detail)
         if agrees:
             return Ruling(value=value, reason="stem_agrees", used=used,
                           detail=detail)

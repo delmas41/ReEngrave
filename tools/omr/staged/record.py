@@ -3427,7 +3427,7 @@ class Log:
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
                  "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
-                 "_subject_keys")
+                 "_subject_keys", "_near_misses")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -3495,6 +3495,9 @@ class Log:
         self._subjects_cache: dict[str, tuple] = {}
         #: every subject key any row is filed under (see `_index`).
         self._subject_keys: set = set()
+        #: ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`): every change the one shared override check refused, kept so it
+        #: can be counted per guard row (`override_check.near_miss`). Empty, and not serialised, with the flag off.
+        self._near_misses: list = []
 
     # ── writing ─────────────────────────────────────────────────────────────
 
@@ -3585,8 +3588,22 @@ class Log:
         return row
 
     def record(self, verdict: Verdict) -> Verdict:
-        """Append a verdict. Enforces the single-pass regime."""
+        """Append a verdict. Enforces the single-pass regime.
+
+        ⚠️ ROADMAP 2.165: with `OMR_ONE_OVERRIDE_CHECK` on, the ONE shared override check asks first whether this
+        step may change the verdict it supersedes (or the earlier step its reason overturns). A refused change is
+        not appended: the prior stands and is RETURNED, and the attempt is kept as a near miss with the row's
+        reason (`near_misses()`); a refused first verdict is replaced by the one the row says stands."""
         prior = self.verdict(verdict.quantity, verdict.subject)
+        from . import override_check as _oc
+        if _oc.enabled() and (prior is None or verdict.supersedes == prior.id):
+            decision = _oc.check(self, verdict, prior if verdict.supersedes is not None else None)
+            if not decision.allowed:
+                self._near_misses.append(_oc.near_miss(verdict, prior, decision))
+                if decision.record_instead is not None:
+                    verdict = decision.record_instead
+                elif prior is not None:
+                    return prior
         if prior is not None and verdict.supersedes != prior.id:
             raise AlreadyAdjudicated(
                 f"{verdict.quantity} on {verdict.subject.to_key()} is already "
@@ -3626,6 +3643,10 @@ class Log:
         self._vrd[verdict.id] = verdict
         self._index(verdict.quantity, verdict.subject, verdict.id)
         return verdict
+
+    def near_misses(self) -> list:
+        """ROADMAP 2.165: the changes the one shared override check refused, in the order they were attempted."""
+        return list(self._near_misses)
 
     def freeze(self) -> None:
         """End GATHER. After this no measurement may be added, so every
@@ -3846,7 +3867,7 @@ class Log:
     # ── serialisation ───────────────────────────────────────────────────────
 
     def to_json(self) -> dict:
-        return {
+        out = {
             "observations": [o.to_json() for o in self._obs.values()],
             "abstentions": [a.to_json() for a in self._abs.values()],
             "verdicts": [v.to_json() for v in self._vrd.values()],
@@ -3854,6 +3875,11 @@ class Log:
                        "abstentions": len(self._abs),
                        "verdicts": len(self._vrd)},
         }
+        # ROADMAP 2.165: only when the one shared override check refused something (never with its flag off).
+        if self._near_misses:
+            out["near_misses"] = list(self._near_misses)
+            out["counts"]["near_misses"] = len(self._near_misses)
+        return out
 
     def summary(self) -> dict:
         """Per-quantity counts, for a human skimming a run.

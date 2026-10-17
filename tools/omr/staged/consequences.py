@@ -407,7 +407,9 @@ NARROWED_BAR_LENGTH_UNKNOWN_ENV = "OMR_NARROWED_BAR_LENGTH_UNKNOWN"
 
 def narrowed_bar_length_unknown() -> bool:
     import os
-    return os.environ.get(NARROWED_BAR_LENGTH_UNKNOWN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    from . import override_check      # ROADMAP 2.165: the one shared check sums no bar but through this helper
+    return (os.environ.get(NARROWED_BAR_LENGTH_UNKNOWN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+            or override_check.enabled())
 
 
 def _beats_range(v: Verdict) -> Optional[Tuple[float, float]]:
@@ -687,7 +689,14 @@ def share_stem_value(log: Log, subject: Subject,
     own = log.verdict(Q.DURATION, subject)
     if own is None or own.outcome is Outcome.ABSTAINED or _is_rest(own):
         return []
-    if own.outcome is Outcome.DECIDED and _same_value(own.value, value):
+    # ⚠️ ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`, Sean 2026-10-17): a stem GUESSED to its heads' majority
+    # (`stem_heads_one_dissent`) is written GUESSED on EVERY head of the stem -- the chord's value is the guess -- and
+    # the dissenting head carries `likely_misreading`. Its candidates (the majority and the dissent) travel with it.
+    from .override_check import enabled as _one_check
+    guessed = bool(_one_check() and (stem_value.detail or {}).get("guessed"))
+    if not guessed and own.outcome is Outcome.DECIDED and _same_value(own.value, value):
+        return []
+    if guessed and own.decider == "share_stem_value" and (own.detail or {}).get("guessed"):
         return []
     base = dict(own.value) if (own.outcome is Outcome.DECIDED
                                and isinstance(own.value, dict)) else {}
@@ -702,14 +711,21 @@ def share_stem_value(log: Log, subject: Subject,
            if own.outcome is Outcome.DECIDED and isinstance(own.value, dict)
            else {"outcome": own.outcome.value,
                  "candidates": [c.value for c in own.candidates]})
+    detail = {"was": was, "stem": value.get("stem"), "stem_value_reason": stem_value.reason}
+    candidates = ()
+    if guessed:
+        sd = stem_value.detail or {}
+        detail.update({"guessed": True,
+                       "likely_misreading": sd.get("likely_misreading") == subject.to_key()})
+        candidates = tuple(stem_value.candidates)
     out = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
         outcome=Outcome.DECIDED, value=new_value,
-        decider="share_stem_value", reason="stem_value_follows",
+        decider="share_stem_value",
+        reason="stem_majority_guessed" if guessed else "stem_value_follows",
         considered=(own.id, stem_value.id), used=(own.id, stem_value.id),
-        basis=(own.id, stem_value.id),
-        detail={"was": was, "stem": value.get("stem"),
-                "stem_value_reason": stem_value.reason},
+        basis=(own.id, stem_value.id), candidates=candidates,
+        detail=detail,
         supersedes=own.id, single_pass_revision=True)
     return [log.record(out)]
 
