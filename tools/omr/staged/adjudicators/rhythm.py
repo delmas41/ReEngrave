@@ -3348,6 +3348,67 @@ def _head_reads_hollow_on_located_box(ev: Evidence, head_box, refusal=None) -> O
             "located_box": True}
 
 
+#: ROADMAP 2.161 (Sean 2026-10-17, "Yes to both": go after the box and stem readers). Default OFF. MEASURED on the
+#: 20261016-night records (2.159's real-note `head_fill_from_ink` heads, Litolff 47): 32 have no stem touching the detector
+#: box; the biggest single cause (9, + 1 Brahms) is a stem the stem finder FOUND standing 0.13-0.27 sp beside a box that
+#: stops short of the head's stem side -- the slanted Litolff half's thin tip. GATHER now reads whether the head's own ink
+#: bridges that gap (`Q.NOTEHEAD_INK.detail.stem_bridge`, `gather.head_stem_bridge`). With this flag, at 2.148's first step
+#: only, a bridged stem standing on the convention side (left -> it runs below the head, right -> above: stems up -> right,
+#: down -> left) is the head's own stem; and a box too NARROW to be one head whose box extended to that stem is head-sized
+#: is read on the extended box (the slit at 2.148's own cut, hollow only, with 2.159's guards).
+HEAD_STEM_BRIDGE_ENV = "OMR_HEAD_STEM_BRIDGE"
+
+
+def head_stem_bridge_enabled() -> bool:
+    """ROADMAP 2.161, default OFF; only an explicit on-word enables."""
+    return os.environ.get(HEAD_STEM_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _bridged_stem(ev: Evidence, stems, head_box) -> Optional[Tuple[Any, Dict[str, Any]]]:
+    """ROADMAP 2.161: `(stem row, reading)` where GATHER read this head's ink running into a stem beside its box
+    (`Q.NOTEHEAD_INK.detail.stem_bridge`) and that stem stands on the convention side (a stem LEFT of the head runs below it,
+    one RIGHT of it runs above it); None otherwise (no reading, older records, a stem no longer on the record, the wrong
+    side)."""
+    rows = ev.rows(Q.NOTEHEAD_INK)
+    if not rows or head_box is None:
+        return None
+    sb = (rows[-1].detail or {}).get("stem_bridge")
+    if not isinstance(sb, dict) or not sb.get("bridge_rows") or not sb.get("stem_box"):
+        return None
+    if not ((sb.get("side") == "left" and sb.get("stem_below")) or (sb.get("side") == "right" and sb.get("stem_above"))):
+        return None
+    want = [float(v) for v in sb["stem_box"]]
+    for s in stems:
+        b = _xywh(s)
+        if b is not None and all(abs(a - w) <= 0.5 for a, w in zip(b, want)):
+            return s, sb
+    return None
+
+
+def _head_reads_hollow_on_bridged_box(ev: Evidence, sb: Dict[str, Any], space: float, refusal=None
+                                      ) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.161: a box not one head's size whose box EXTENDED to its bridged stem is (2.148's own gates): the slit on
+    the extended box at 2.148's cut, hollow only, the 2.23 window also hollow, and 2.159's two guards (a head on a dynamic
+    letter, ink straddling a stem). None otherwise."""
+    bb, iw = sb.get("bridged_box"), sb.get("interior_white_bridged")
+    if not bb or not isinstance(iw, dict) or not iw.get("rows_read") or not space or space <= 0:
+        return None
+    w, h = float(bb[2]) / space, float(bb[3]) / space
+    if not (HEAD_BOX_MIN_SPACES <= h <= HEAD_BOX_MAX_SPACES and HEAD_FIRST_MIN_WIDTH_SPACES <= w <= HEAD_BOX_MAX_WIDTH_SPACES):
+        return None
+    share = float(iw.get("rows_share") or 0.0)
+    rows = ev.rows(Q.NOTEHEAD_INK)
+    if share < HEAD_INTERIOR_WHITE_HOLLOW_MIN or not rows or not _ink_reads_decisively_hollow(rows[-1].detail or {}):
+        return None
+    if ev.rows(Q.NOTEHEAD_LETTER_INK):
+        return None
+    sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
+    if sig.get("crossing_ok") or sig.get("read_by") == "stem_slash":
+        return None
+    return {"fill": "hollow", "rows_share": share, "hole_share": iw.get("hole_share"), "row": rows[-1].id,
+            "margin": round(share - HEAD_INTERIOR_WHITE_HOLLOW_MIN, 4), "bridged_box": True}
+
+
 def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.148: the head's own interior-white reading (`Q.NOTEHEAD_INK.detail.interior_white`, GATHER
     `head_interior_white`), asked FIRST. `{"fill": "hollow"|"black"|None, ...}`; None where no reading (older records)."""
@@ -3927,7 +3988,26 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 located = _head_reads_hollow_on_located_box(ev, head_box, refusal)
                 if located is not None:
                     head_first = {**located, "not_head_sized": True, "detector_box_rows_share": head_first["rows_share"]}
-        if head_first is not None and head_first["fill"] == "hollow" and own_stems:
+        # ROADMAP 2.161 (flag `OMR_HEAD_STEM_BRIDGE`, default OFF): no stem box touches the detector box, but the head's own
+        # ink runs into a stem standing beside it (the box stops short of the head's stem side). That stem is the head's own
+        # stem HERE, at the first step only; and a box too narrow for one head is read on the box extended to that stem.
+        first_stems = own_stems
+        if head_stem_bridge_enabled() and head_first is not None and not own_stems and not refused:
+            bridged = _bridged_stem(ev, stems, head_box)
+            if bridged is not None:
+                b_row, b_read = bridged
+                if head_first.get("fill") is None and head_first.get("not_head_sized"):
+                    on_bridged = _head_reads_hollow_on_bridged_box(ev, b_read, _sp, refusal)
+                    if on_bridged is not None:
+                        head_first = {**on_bridged, "not_head_sized": True,
+                                      "detector_box_rows_share": head_first.get("rows_share")}
+                if head_first.get("fill") == "hollow":
+                    first_stems = [b_row]
+                    head_first = {**head_first, "stem_bridge": {k: b_read.get(k) for k in
+                                                                ("side", "gap_sp", "bridge_rows", "stem_box")},
+                                  "stem_bridge_row": b_row.id}
+                    used.append(b_row.id)
+        if head_first is not None and head_first["fill"] == "hollow" and first_stems:
             base = _HEAD_BEATS["noteheadHalf"]
             hollow = True
             open_by_class = True

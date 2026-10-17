@@ -1515,3 +1515,115 @@ a one-side-of-the-stem control; both tile tests fail with the guard removed (run
 0.** Tiles 1 and 4 (and the Brahms whole-rest box) now unchanged; Litolff tiles 2, 6, 7, 8 still decided halves; no other
 judged head changes. The rule is now right 4 / 4 on Sean's tiles but reaches one plate only and 4 of its 47 real-note
 `head_fill_from_ink` heads; the flag stays OFF.
+
+## Sec.17. ROADMAP 2.161 -- the box and stem readers miss simple Litolff halves (2026-10-17; STAGED GATHER + ADJUDICATE; branch `lane-2.161-box-stem-halves`)
+
+Sean 2026-10-17: "I'm not sure why it doesn't see simple half notes", then "Yes to both" (land 2.159; go after the box and
+stem readers). Population: 2.159's real-note `head_fill_from_ink` heads on the 20261016-night records (not refused as a
+notehead / rest: Litolff 47, Brahms 15). Every one fails 2.148's head-sized box gate (Litolff 29 / Brahms 12) or has no stem
+box touching its detector box (32 / 10). No page gathered: the cells were re-cut exactly as production cuts them
+(`pipeline.prepare_pages`: render, staves, cells, staff-line removal; no detector) and the SHIPPED `line_detection.
+detect_lines` re-run on each head's cell with the record's own detector boxes, every vertical run collected with the filter
+that refused it (`probe/stems_2_161.py`). CONTROL: the re-run reproduces the record's `Q.STEM` rows box for box on **62 / 62**
+cells.
+
+**CONVENTION ASSUMED:** a stem stands flush with its head's edge (stems up -> right, down -> left), so a head's own ink runs
+into its stem. **WHAT WOULD FALSIFY IT:** a changed head Sean reads as not a half (another note's stem bridged by a slur,
+tie or a neighbouring head). **NOT CONFIRMED:** Brahms has no head the rule changes, so the second plate neither confirms nor
+refutes it.
+
+### 17.1 Why no stem touches the box (one cause per head, first match; `probe/causes_2_161.py`)
+
+| stem cause | Litolff | Brahms | crops (litolff-unread-35) |
+|---|---|---|---|
+| S1 the stem finder FOUND the stem; it stands 0.13-0.27 sp beside a box that stops short of the head's stem side (the slanted Litolff half's thin tip) | **9** | 1 | 6, 19, 20, 21, 22 |
+| S1v the same, the stem 0.35 sp above a box holding only the head's lower part | 1 | 0 | |
+| refused PAIRED: two parallel verticals dropped as an accidental's two strokes (one may be the stem) | 9 | 0 | 15 |
+| refused TALL (> 8 sp): a chord stem through ledger notes, or the stem run on into a barline / another stem | 5 | 2 | 3 |
+| refused WIDE (fused with heads / ledger ink) | 2 | 4 | |
+| refused SHORT (< 2 sp) | 2 | 2 | |
+| refused EDGE (the 0.8 sp barline filter) | 1 | 0 | |
+| a run the opening never produced (a tie boxed as a head) | 1 | 0 | |
+| no vertical ink beside the box at all | 2 | 1 | |
+
+By eye (ours, not evidence): **9 of the 10 Brahms heads are not notes** (two F clefs, four key-signature flats/naturals, a
+hairpin and a slur piece, the `c` of *cresc.*); their stem refusals are right. The one Brahms note (S1) is a flagged note.
+On Litolff, S1 is 9 of 32 (10 with S1v) and PAIRED 9. S1 was built: it holds 5 of the 14 crop heads (PAIRED 1); its stem is
+already on the record, so the fix is a reader rule beside the head, while PAIRED is the shared stem finder's accidental
+guard that every stem and beam reads.
+
+**Box causes** (not head-sized, Litolff 29 / Brahms 12): too SHORT (a part box) 11 / 4 -- 9 / 3 of them LOCATED by an earlier
+reader (2.115 part-boxed 5 / 2, 2.73 line cut 1 / 0, 2.39b re-centre 3 / 1) and 2 / 1 not (2.115 declined
+`already_reads_hollow` / `centred_enough`). The 2.115 re-centre moves the window the INK is read in, never `Q.GLYPH_BOX`,
+so the 2.148 size gate still measured the detector's part box; 2.159 (landed ON) now reads the located box. Too TALL 9 / 3
+and too WIDE 6 / 5: the box holds another head (Litolff 5 tall + 3 wide), a beam, an arpeggio, a time signature or a tie
+(nothing to re-box from). Too NARROW 3 / 0: 2 of the 3 are the S1 pattern sideways -- the box stops short of the stem
+side. Crops, one per cause: `out/print/2.161-diagnosis/` (`index.json`; RED detector box, GREEN a stem the
+finder accepted, BLUE a run it refused).
+
+### 17.2 Built (flag `OMR_HEAD_STEM_BRIDGE`, default OFF)
+
+* GATHER `gather.head_stem_bridge` (pure ruler), filed by `gather_notehead_ink` as `Q.NOTEHEAD_INK.detail.stem_bridge` for a
+  head no `Q.STEM` row touches: a stem whose rows overlap the box, the head plus the gap still one head wide (2.148's
+  1.9 sp ceiling, restated and pinned equal by a test), no other notehead / accidental / flag / rest box in the gap, and on
+  at least one box row every pixel between the box edge and the stem is ink on the ERASED cell raster (the stem finder's
+  own mask, so an erased staff line cannot bridge). Also the 2.148 slit on the box extended to that stem. Decides nothing.
+* ADJUDICATE `rhythm.adjudicate_duration`, 2.148's first step only, flag ON, not refused as a notehead: a bridged stem on the
+  convention side (left -> it runs below the head, right -> above) is the head's own stem there; a box too narrow for one
+  head whose box extended to the stem is head-sized is read on that box (hollow only, 2.148's cut, the 2.23 window also
+  hollow, 2.159's letter / slash guards).
+* Tests `tools/omr/tests/test_staged_head_stem_bridge_2_161.py` (20): the ruler on a drawn head (bridge / white gap /
+  touching / blocker in the gap / too wide), the REAL Litolff pair (`data_head_stem_bridge_2_161.npz`: crop 22, and a black
+  head on the same page with a stem the same 0.25 sp away across white), the GATHER wiring, and the ADJUDICATE positive with
+  controls (flag off, no reading, black head, wrong side, stem not on the record, narrow box, solid extended box, 2.23
+  solid). RED: with the ADJUDICATE rule disabled 2 fail (both positives); with the ruler stubbed 3 fail.
+* Population (every notehead box of both plates with no stem touching it, `probe/bridge_2_161.py`): Litolff 2,633 -> 29
+  bridged, Brahms 7,475 -> 20; most are black heads, which the first step never makes halves.
+
+### 17.3 Replay (`review.rerun`, 2.157 harness, per page, flag OFF vs ON, everything else shipped incl. 2.159 ON)
+
+`probe/replay_pages_2_161.py` on every page holding a bridged head (the flag reads nothing else); 2.159's located reading
+and this lane's bridge reading injected (the night records predate both). CONTROL: the OFF arm's first ADJUDICATE duration
+verdict equals the stored one on **12,975 / 12,978** Litolff (the 3 are 2.159's located heads on p10, now halves on main)
+and **17,465 / 17,465** Brahms glyphs.
+
+* **Reach: Litolff 8, Brahms 0.** All 8 `head_fill_from_ink` narrowed {half, quarter, whole} -> decided half
+  (`head_and_marks`), live verdict the same; nothing written shorter; no other glyph moved. They are exactly the 8 bridged
+  S1 heads.
+* **Of the 14 crop halves, 4 become decided halves** (crops 6, 20, 21, 22). With 2.159 on main (crops 1, 10, 11/12, 13),
+  8 of 14. Left: 3 and 15 (stem refused TALL / PAIRED), 8 and 17 (box holds two things), 18 (part box nothing located),
+  19 (located slit between, stem 2.0 sp).
+* **Sean's judged tiles: no right value lost.** 5 judged heads change (2.145-review 8; 2.158-review 1, 5, 6, 21): Sean
+  said 2 on all five, OFF narrowed, ON decided 2. Every other judged glyph unchanged.
+
+### 17.4 Tiles for Sean
+
+`out/print/2.161-review/` -- 5 tiles: the 3 changed heads he has not judged (all Litolff; Brahms changes none) plus 2
+controls that can fail (a Litolff black-classed head he judged a half, a Brahms one he judged a quarter, drawn at random,
+not an earlier control), shuffled, one blue box, "Tile N" only; key `out/2.161/tiles-key.json` (each blue box re-found in
+its PNG at the key offset); `answers.json` `{}`. Far fewer than ~20: the flag changes 8 heads and Sean has judged 5.
+
+### 17.5 Not done / next
+
+* PAIRED (9 Litolff): the accidental pair rule in the shared stem finder drops a stem standing beside another vertical.
+  A fix there moves every stem and beam; it needs its own lane and its own tiles.
+* TALL (5 / 2): chord stems through ledger notes longer than 8 sp.
+* The flag stays OFF; Brahms has no head it changes.
+
+### 17.6 Checks
+
+Fast tier (serial, at `lane-2.161-box-stem-halves` after the replay commit): 8404 passed, 12 skipped, 2 xfailed.
+`python3 -m tools.omr.staged.check`: open=192, status ok (not up). Branch not merged; no DECISIONS line; flag OFF.
+
+### 17.7 Sean's answers (2026-10-17) and a found disagreement
+
+Sean, verbatim: "Set G 1.2 2.2 3.1 4.2 5.2". Recorded in `out/print/2.161-review/answers.json` (manifest names each glyph;
+`benchmarks/acceptance/judged-tiles.json` rebuilt, 1180 tiles). **The 3 changed Litolff heads (tiles 2, 4, 5) are halves:
+3 / 3 right.** Control tile 1 (Litolff `glyph/4/0/3/3/8`, a half) right.
+
+**Control tile 3 (Brahms `glyph/5/0/2/3/2`): right.** Sean first wrote 1 (a whole) on this tile, against his own "4" on
+the same head at 2.154-review tile 4; asked, he settled it (2026-10-17): "That is a quarter note". Recorded as "4" (the "1"
+kept in answers.json as superseded); the index holds one answer for the head, 4. We write a quarter (decided,
+`stem_tip_reads_no_beam`, both replay arms; the flag does not touch it): detector `noteheadBlackInSpace` (0.80), 2.148 slit
+0.00, 2.23 centre window 1.00 -- right. Crop: `out/print/2.161-diagnosis/11-brahms-5-0-2-3-2-tile4-of-2.154-vs-tile3-of-2.161.png`.
+Both controls right; no error found.
