@@ -4634,3 +4634,28 @@ All judged glyphs, OFF -> ON: Litolff right 120 / wrong 8 / narrowed-holding 9 -
 
 ### 2.153b-5. Limits
 Sean's judged glyph keys come from older gathers and are matched by key, as `judged score` does (no page-box check for the answers.json rows). The replay's EVALUATE is whole-record faithful (control 100%), but it is one night's GATHER: what the next gather writes may differ. Reach counts include the knock-on through the bar, the chord and the meter; the rule's own reach is the decided -> narrowed `beams_ambiguous` rows (Litolff 101, Brahms 117). Tests: fast tier 8,350 passed, 0 failed (serial); `staged.check` open=192 (main 192). No `tools/` change.
+
+### 2.153b -- Sean's 25 tile answers (2026-10-17, `out/print/2.153b-review/answers.json`; `probe/score_2_153b.py`)
+Verbatim: *"Set F - 1.8 2.8 3.dot 4 4.8 5.dot 8 6.8 7.8  8-10.8 11.16 12-15.8 16.dot 8 17.8 18.dot 4 19-20.8 21.4 22-23.8 24.4 25.dot 4"*. The manifest now names each tile's glyph; the judged index is rebuilt (1,171 tiles; 25 new duration rows with glyph subjects). OFF -> ON against his value:
+
+| plate, kind | n | OFF -> ON |
+|---|--:|---|
+| Litolff, decided eighth -> {8, 4} | 9 | 9 right -> narrowed holding his eighth |
+| Litolff, value moved | 2 | 2 right -> wrong (tiles 8, 15: the bar had moved the reader's quarter to his eighth; with a narrowing in the bar 2.154 withdraws the move and the reader's quarter is written) |
+| Brahms, decided -> narrowed | 8 | 4 right -> narrowed holding (3, 9, 12, 21); 1 wrong -> narrowed holding (25: dotted quarter); 3 wrong -> narrowed WITHOUT his value (16: dotted 8 read 16, now {16, 8, 4}; 18: dotted 4 read dotted 8, now {8, 4}; 19: 8 read 32nd, now {32, 16}) |
+| Brahms, value moved | 4 | 2 wrong -> right (14: a bar move now made, 4 -> his 8; 24: 8 -> his 4, `stem_tip_reads_no_beam`); 2 right -> wrong (5: his dotted 8 -> 3/16, `head_and_marks`; 11: his 16 -> 8, `head_and_marks`) |
+| narrowed -> decided | 0 | none drawn by the cutter |
+| controls (joined-beam eighths, tiles 1, 2) | 2 | right in both arms |
+
+Totals over the 23 changed: OFF right 17 / wrong 6; ON right 2 / wrong 4 / narrowed holding 14 / narrowed without 3. The rule itself (decided -> narrowed, 17 tiles) never makes a right note wrong: 13 right notes become unread blue-marked candidates holding his value, 1 wrong becomes narrowed holding, 3 wrongs stay wrong as narrowings. Every decided wrong it adds (4) comes from a knock-on value move, 2 per plate; the knock-ons also fix 2 Brahms notes.
+
+### 2.153b -- why the flag moves the Brahms meter (`probe/meter_2_153b.py`; pages 0-5 replayed OFF vs ON, control: all 75 changed whole rests on pages 2/3/5 equal the whole replay's values in both arms)
+**The meter does not move to 4 beats. The meter verdict ABSTAINS, and the whole rest then keeps its own glyph value (4 beats, `adjudicate_duration/rest_class`) because `size_measure_rest` sizes nothing without a meter.** What makes the meter abstain is the bar sum: STAGED ADJUDICATE `adjudicate_meter` -> `_carry_meter` carries 6/8 from `system/1/0` as one term (`carried_from_read_meter`) and adds one term per assessable bar from `_bar_lengths_for` / `_score_bars` (the sum of each staff's durations in that bar; +fits, -contradicts); below `METER_CARRY_FLOOR` 2.0 the carry is refused. `_bar_lengths_for` counts a NARROWED note at its FIRST candidate (`got.candidates[0].value`), so the rule's new narrowings change bar sums, and the bars then outweigh (or fail to corroborate) the carry. **So yes: the bar sum is deciding whether the meter holds -- it vetoes the carry -- and it does so reading an argmax of narrowings.**
+
+| system (meter verdict) | OFF | ON | example whole rest (OFF -> ON) |
+|---|---|---|---|
+| `system/2/0` (`vrd:267566`) | decided 6/8 `carried`, support 3.0, bars agree 2 / disagree 0 | abstained `carry_not_corroborated`: 1 assessable bar agrees, too few to corroborate | `glyph/2/0/0/0/5`: `vrd:284613` 3.0 `whole_rest_means_the_bar` -> `vrd:249454` 4.0 `rest_class` |
+| `system/3/1` (`vrd:267569`) | decided 6/8 `carried`, support 2.0 (= floor), bars 2 agree / 1 disagree (lengths 3.0 x2, 4.0) | abstained `carry_outweighed_by_the_bars`, support 1.0: bars 2 agree / 2 disagree (3.0 x2, 1.75, 4.0) | `glyph/3/1/0/10/1`: `vrd:284746` 3.0 -> `vrd:251198` 4.0 (46 rests on this system) |
+| `system/5/0` (`vrd:267572`) | decided 6/8 `carried`, support 2.0, bars 2 agree / 1 disagree | abstained `carry_outweighed_by_the_bars`, support 1.0: 1 agree / 1 disagree | `glyph/5/0/0/4/3`: `vrd:284849` 3.0 -> `vrd:253375` 4.0 |
+
+Both outweighed systems sat exactly at the floor (support 2.0) in the shipped run, so one bar changing its sum flips the meter. The 26 page-19 rests going 4 -> 3 are the same mechanism in reverse (a carry the bars had outweighed is now corroborated) by the reason strings in the whole replay (`rest_class` -> `whole_rest_means_the_bar`); that system's meter verdict was not dumped (it would need pages 0-19 replayed, ~2 h per arm). Bar ids in the table are the OFF/ON replay's own verdict ids (`out/2.153b/meter_p05.json`, uncommitted), not the stored record's.

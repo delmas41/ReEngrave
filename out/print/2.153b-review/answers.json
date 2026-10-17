@@ -1,1 +1,784 @@
-{}
+{
+ "answered": "2026-10-17",
+ "verbatim": "Set F - 1.8 2.8 3.dot 4 4.8 5.dot 8 6.8 7.8  8-10.8 11.16 12-15.8 16.dot 8 17.8 18.dot 4 19-20.8 21.4 22-23.8 24.4 25.dot 4",
+ "question": "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "brahms",
+   "glyph": "glyph/7/1/8/4/5",
+   "role": "joined_control",
+   "kind": "control",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "right"
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/14/0/10/4/5",
+   "role": "joined_control",
+   "kind": "control",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "right"
+  },
+  {
+   "n": 3,
+   "doc": "brahms",
+   "glyph": "glyph/3/1/3/2/13",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "dot 4",
+   "value": 1.5,
+   "off": {
+    "outcome": "decided",
+    "written": 1.5,
+    "dots": 1,
+    "beats": 1.5,
+    "decider": "reconcile_chord_duration",
+    "reason": "chord_mate_shares_the_stem",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beam_discounted_uncertain",
+    "cands": [
+     0.75,
+     1.5
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "glyph": "glyph/6/1/9/10/2",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "glyph": "glyph/3/1/4/2/2",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "dot 8",
+   "value": 0.75,
+   "off": {
+    "outcome": "decided",
+    "written": 0.75,
+    "dots": 1,
+    "beats": 0.75,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 0.375,
+    "dots": 1,
+    "beats": 0.375,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "wrong"
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "glyph": "glyph/8/1/8/0/5",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "glyph": "glyph/4/1/2/4/0",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/12/1/3/9/1",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 1.0,
+    "dots": 0,
+    "beats": 1.0,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "wrong"
+  },
+  {
+   "n": 9,
+   "doc": "brahms",
+   "glyph": "glyph/23/0/8/1/1",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.25,
+     0.5
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "glyph": "glyph/7/0/3/6/1",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 11,
+   "doc": "brahms",
+   "glyph": "glyph/17/1/9/0/4",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "16",
+   "value": 0.25,
+   "off": {
+    "outcome": "decided",
+    "written": 0.25,
+    "dots": 0,
+    "beats": 0.25,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "wrong"
+  },
+  {
+   "n": 12,
+   "doc": "brahms",
+   "glyph": "glyph/19/1/10/7/15",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 13,
+   "doc": "litolff",
+   "glyph": "glyph/8/1/8/0/11",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 14,
+   "doc": "brahms",
+   "glyph": "glyph/19/0/13/1/3",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 1.0,
+    "dots": 0,
+    "beats": 1.0,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "right"
+  },
+  {
+   "n": 15,
+   "doc": "litolff",
+   "glyph": "glyph/13/0/2/2/2",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 1.0,
+    "dots": 0,
+    "beats": 1.0,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "off_verdict": "right",
+   "on_verdict": "wrong"
+  },
+  {
+   "n": 16,
+   "doc": "brahms",
+   "glyph": "glyph/19/0/12/0/21",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "dot 8",
+   "value": 0.75,
+   "off": {
+    "outcome": "decided",
+    "written": 0.25,
+    "dots": 0,
+    "beats": 0.25,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "narrowed-not"
+  },
+  {
+   "n": 17,
+   "doc": "litolff",
+   "glyph": "glyph/12/0/7/11/1",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 18,
+   "doc": "brahms",
+   "glyph": "glyph/13/0/1/2/6",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "dot 4",
+   "value": 1.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.75,
+    "dots": 1,
+    "beats": 0.75,
+    "decider": "share_stem_value",
+    "reason": "stem_value_follows",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "narrowed-not"
+  },
+  {
+   "n": 19,
+   "doc": "brahms",
+   "glyph": "glyph/25/0/9/0/11",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.125,
+    "dots": 0,
+    "beats": 0.125,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.125,
+     0.25
+    ]
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "narrowed-not"
+  },
+  {
+   "n": 20,
+   "doc": "litolff",
+   "glyph": "glyph/12/1/8/4/3",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 21,
+   "doc": "brahms",
+   "glyph": "glyph/2/0/6/3/0",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "4",
+   "value": 1.0,
+   "off": {
+    "outcome": "decided",
+    "written": 1.0,
+    "dots": 0,
+    "beats": 1.0,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beam_discounted_uncertain",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 22,
+   "doc": "litolff",
+   "glyph": "glyph/7/0/2/7/1",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 23,
+   "doc": "litolff",
+   "glyph": "glyph/13/0/2/7/11",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "8",
+   "value": 0.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.5,
+     1.0
+    ]
+   },
+   "off_verdict": "right",
+   "on_verdict": "narrowed-holding"
+  },
+  {
+   "n": 24,
+   "doc": "brahms",
+   "glyph": "glyph/3/1/10/5/2",
+   "role": "changed",
+   "kind": "value moved",
+   "sean": "4",
+   "value": 1.0,
+   "off": {
+    "outcome": "decided",
+    "written": 0.5,
+    "dots": 0,
+    "beats": 0.5,
+    "decider": "reconcile_duration",
+    "reason": "meter_reconciliation",
+    "cands": null
+   },
+   "on": {
+    "outcome": "decided",
+    "written": 1.0,
+    "dots": 0,
+    "beats": 1.0,
+    "decider": "adjudicate_duration",
+    "reason": "stem_tip_reads_no_beam",
+    "cands": null
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "right"
+  },
+  {
+   "n": 25,
+   "doc": "brahms",
+   "glyph": "glyph/13/0/0/2/10",
+   "role": "changed",
+   "kind": "decided -> narrowed",
+   "sean": "dot 4",
+   "value": 1.5,
+   "off": {
+    "outcome": "decided",
+    "written": 0.75,
+    "dots": 1,
+    "beats": 0.75,
+    "decider": "adjudicate_duration",
+    "reason": "head_and_marks",
+    "cands": null
+   },
+   "on": {
+    "outcome": "narrowed",
+    "written": null,
+    "dots": null,
+    "beats": null,
+    "decider": "adjudicate_duration",
+    "reason": "beams_ambiguous",
+    "cands": [
+     0.75,
+     1.5
+    ]
+   },
+   "off_verdict": "wrong",
+   "on_verdict": "narrowed-holding"
+  }
+ ]
+}
