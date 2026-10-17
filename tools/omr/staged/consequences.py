@@ -396,6 +396,57 @@ def lone_event_fills_bar_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
+#: ROADMAP 2.162, default OFF (Sean 2026-10-17, DECISIONS: "a bar holding an undecided note has no known length"). Under it a
+#: bar holding a NARROWED note is never summed at that note's first candidate: its length is UNKNOWN, known only as a RANGE
+#: (the sum at every narrowing's shortest candidate .. at its longest). The range may CONFIRM -- a meter or a carry whose length
+#: lies inside it (`rhythm._resolve_lengths`) -- and never refutes: it casts no vote against a meter, cannot outweigh a carry,
+#: and the bar's arithmetic moves a DECIDED note only where the bar is over or short under EVERY candidate
+#: (`reconcile_duration`). `reinstate_rest_between_staves` does not sum such a bar at all. Only `1/true/yes/on` enables it.
+NARROWED_BAR_LENGTH_UNKNOWN_ENV = "OMR_NARROWED_BAR_LENGTH_UNKNOWN"
+
+
+def narrowed_bar_length_unknown() -> bool:
+    import os
+    return os.environ.get(NARROWED_BAR_LENGTH_UNKNOWN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _beats_range(v: Verdict) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.162: (shortest, longest) beats a standing duration admits -- its own value if DECIDED, else over its OWN
+    candidates; None where it admits none."""
+    if v.outcome is Outcome.DECIDED:
+        b = (v.value or {}).get("beats") if isinstance(v.value, dict) else None
+        return None if b is None else (float(b), float(b))
+    cb = [float(c.value.get("beats")) for c in (v.candidates or ())
+          if isinstance(c.value, dict) and c.value.get("beats") is not None]
+    return (min(cb), max(cb)) if cb else None
+
+
+def _event_range(log: Log, subject: Subject, notes) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.162: the bar's length as a RANGE, counting each EVENT once (`_event_totals`' grouping): an event spans the
+    shortest to the longest length any of its heads admits. None where the grouping is undecided or a note admits nothing."""
+    grouping = log.verdict(Q.EVENT, subject)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return None
+    rng = {v.id: _beats_range(v) for v in notes}
+    if any(r is None for r in rng.values()):
+        return None
+    by_glyph = {v.subject.glyph: v for v in notes}
+    lo = hi = 0.0
+    seen = set()
+    for event in (grouping.value or {}).get("events", ()):
+        members = [by_glyph[g] for g in event.get("glyphs", ()) if g in by_glyph]
+        if not members:
+            continue
+        lo += min(rng[m.id][0] for m in members)
+        hi += max(rng[m.id][1] for m in members)
+        seen.update(m.id for m in members)
+    for v in notes:
+        if v.id not in seen:
+            lo += rng[v.id][0]
+            hi += rng[v.id][1]
+    return lo, hi
+
+
 def bare_stem_confirmable(note: Verdict) -> bool:
     """ROADMAP 2.154, Sean 2026-10-16 on the bare-stem question: *"it can confirm"*. The ONE narrowing the bar may still settle
     under `OMR_BAR_SUM_CONFIRM_ONLY` (both arms): a bare stem -- `beam_discounted_uncertain` with no beam read over the note
@@ -1070,14 +1121,19 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # every narrowed note of the bar is a bare stem (`bare_stem_confirmable`), the bar may land one of them on its UNBEAMED
     # value -- and only that: no decided neighbour moves, no eighth is landed.
     confirm_bare_only = False
+    narrowed_here = [n for n in notes if n.outcome is Outcome.NARROWED]
     if confirm_only:
-        narrowed_here = [n for n in notes if n.outcome is Outcome.NARROWED]
         if narrowed_here:
             if not all(bare_stem_confirmable(n) for n in narrowed_here):
+                if confirm_only == "narrowed" and narrowed_bar_length_unknown():
+                    return _move_beside_unknown(log, subject, meter, expected, notes, set_aside, cleared_by)
                 return []
             confirm_bare_only = True
         elif confirm_only == "all":
             return []
+    elif narrowed_here and narrowed_bar_length_unknown():
+        # 2.162 with 2.154 off: the bar still never sums a narrowing at its first candidate
+        return _move_beside_unknown(log, subject, meter, expected, notes, set_aside, cleared_by)
 
     # A narrowed note contributes its BEST-SUPPORTED reading to the running
     # total. ⚠️ That is NOT what the exporter does with it (2.22): EXPORT
@@ -1239,6 +1295,63 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             # declare would be the guard disabled by a typo.
             single_pass_revision=True)))
     return verdicts
+
+
+def _move_beside_unknown(log: Log, subject: Subject, meter: Verdict, expected: float, notes, set_aside,
+                         cleared_by) -> List[Verdict]:
+    """ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`): a bar holding a narrowed note, under 2.154 arm a. Its length is a
+    RANGE, so:
+
+    * where the meter's length lies INSIDE the range the bar may already fit -- it refutes nothing, and no DECIDED note is
+      moved (the bar cannot say the reading is wrong);
+    * where it lies OUTSIDE, the bar is over (or short) under EVERY candidate of every narrowing: the reading as it stands
+      is refuted exactly as an all-decided bar that does not add up is, and `_admitted`'s +/-1 on ONE decided note is
+      searched as before -- a move lands where the meter's length lies inside the MOVED range, and only a UNIQUE landing
+      is written (two moves that could each fit, at some candidates, refuse).
+
+    The narrowed notes themselves are never landed (2.154 arm a); the bare-stem confirm (every narrowing a bare stem) and
+    INFER's lone-event guess are untouched. Every other bound of `reconcile_duration` holds: no rest is re-read, no tuplet
+    member, the 2.80 missed-rest witness gates a lengthening, a DECIDED note's own level is not a re-reading."""
+    rng = _event_range(log, subject, notes)
+    if rng is None:
+        return []
+    lo, hi = rng
+    if lo - 1e-6 <= expected <= hi + 1e-6:
+        return []                        # the bar may already fit: unknown length cannot refute a reading
+    landings = []
+    for note in notes:
+        if note.outcome is not Outcome.DECIDED or _is_rest(note):
+            continue
+        now = note.value
+        if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
+            continue                     # a tuplet member
+        for option in _admitted(note):
+            if option.get("beam_levels") == now.get("beam_levels"):
+                continue
+            delta = float(option.get("beats") or 0.0) - float(now.get("beats") or 0.0)
+            if lo + delta - 1e-6 <= expected <= hi + delta + 1e-6:
+                landings.append((note, option, delta))
+    if len(landings) != 1:
+        return []
+    note, option, delta = landings[0]
+    detail = {"bar_length_range": [round(lo, 6), round(hi, 6)], "bar_length_unknown": True}
+    if delta > 1e-9:
+        answer, _left = _missed_rest_witness(log, subject)
+        if answer != WITNESS_CLEAR:
+            return []
+        detail["missed_rest_refuted_by_ink"] = True
+    if set_aside:
+        detail["set_aside"] = set_aside
+    return [log.record(Verdict(
+        id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={**option, "reconciled": True},
+        decider="reconcile_duration", reason="meter_reconciliation",
+        considered=(note.id, meter.id, *cleared_by),
+        basis=(note.id, meter.id, *cleared_by),
+        detail=detail,
+        supersedes=note.id,
+        single_pass_revision=True))]
 
 
 #: How far (staff spaces) beyond its outer line a head may stand and still be
@@ -2000,6 +2113,10 @@ def _bar_total_excluding(log: Log, cell_subject: Subject,
             continue
         notes.append(v)
     if not notes:
+        return None
+    # ROADMAP 2.162: a bar holding a narrowed note has no known length, so it can neither show the shortfall a group fills
+    # nor rule a staff out of taking it.
+    if narrowed_bar_length_unknown() and any(v.outcome is not Outcome.DECIDED for v in notes):
         return None
 
     def _current(v: Verdict):

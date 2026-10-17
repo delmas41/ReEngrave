@@ -5791,21 +5791,67 @@ def _bar_lengths_for(ev: Evidence) -> dict:
                for e in events for gi in (e.get("glyphs") or [])):
             continue
         total = 0.0
+        # ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`, default OFF): a staff's bar holding a NARROWED note has no known
+        # length -- only a RANGE, the sum at every narrowing's shortest candidate to the sum at its longest. Recorded as a
+        # (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter whose length lies inside it and never refute one.
+        unknown = narrowed_bar_length_unknown()
+        lo_total = hi_total = 0.0
+        ranged = False
         for event in events:
             beats = []
+            lo_hi = []
             for gi in event.get("glyphs") or []:
                 got = ev.verdict(Q.DURATION, subject=_sub(gi))
                 if got is None:
                     continue
+                if unknown and got.outcome is not Outcome.DECIDED and got.candidates:
+                    cb = [float(c.value.get("beats") or 0.0) for c in got.candidates
+                          if isinstance(c.value, dict) and c.value.get("beats") is not None]
+                    if cb:
+                        lo_hi.append((min(cb), max(cb)))
+                        ranged = True
+                        continue
                 val = (got.value if got.outcome is Outcome.DECIDED
                        else (got.candidates[0].value if got.candidates else None))
                 if val:
                     beats.append(float(val.get("beats") or 0.0))
+                    lo_hi.append((beats[-1], beats[-1]))
             if beats:
                 total += Counter(beats).most_common(1)[0][0]
+            if lo_hi:
+                # ⚠️ An event holding a narrowed head spans EVERY length any of its heads admits (a chord is one value,
+                # and which head is right is exactly what is undecided).
+                lo_total += min(a for a, _ in lo_hi)
+                hi_total += max(b for _, b in lo_hi)
+        if unknown and ranged:
+            lo_r, hi_r = round(lo_total, 4), round(hi_total, 4)
+            if hi_r > 0:
+                bars.setdefault(cell.cell, []).append(lo_r if lo_r == hi_r else (lo_r, hi_r))
+            continue
         if total > 0:
             bars.setdefault(cell.cell, []).append(round(total, 4))
     return bars
+
+
+def narrowed_bar_length_unknown() -> bool:
+    """ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`), the one switch, defined in `consequences`."""
+    from ..consequences import narrowed_bar_length_unknown as _on
+    return _on()
+
+
+def _resolve_lengths(lengths, expected: float) -> list:
+    """ROADMAP 2.162: one bar's per-staff lengths, judged against ONE candidate length. An exact length stands as read; a
+    RANGE (a staff bar holding a narrowed note) that contains `expected` CONFIRMS it (counts as `expected`); a range that
+    does not is UNKNOWN and is dropped -- it may not vote against the meter (Sean 2026-10-17). Flag off: no range exists
+    and this returns `lengths` unchanged."""
+    out = []
+    for x in lengths:
+        if isinstance(x, tuple):
+            if x[0] - 1e-6 <= expected <= x[1] + 1e-6:
+                out.append(expected)
+        else:
+            out.append(x)
+    return out
 
 
 def _score_bars(bars: dict, expected: float) -> dict:
@@ -5814,6 +5860,7 @@ def _score_bars(bars: dict, expected: float) -> dict:
     agree = disagree = 0
     observed = Counter()
     for cell_index, lengths in sorted(bars.items()):
+        lengths = _resolve_lengths(lengths, expected)      # 2.162: a range confirms or is silent
         if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
@@ -6363,6 +6410,7 @@ def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
     """(bars that FIT, bars that do NOT) from `from_cell` onward."""
     fits = misses = 0
     for cell_index, lengths in sorted(bars.items()):
+        lengths = _resolve_lengths(lengths, expected)      # 2.162: a range confirms or is silent
         if cell_index < from_cell or len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
@@ -7463,6 +7511,9 @@ def _bars_opinion(ev: Evidence) -> dict:
     bars = _bar_lengths_for(ev)
     voted = []
     for cell_index, lengths in sorted(bars.items()):
+        # ⚠️ ROADMAP 2.162: a RANGE names no length, so it never stands for election; it may still confirm the length
+        # the exact bars elect (`_score_bars` below resolves it against that length).
+        lengths = [x for x in lengths if not isinstance(x, tuple)]
         if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
