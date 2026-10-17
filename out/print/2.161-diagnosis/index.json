@@ -1,0 +1,92 @@
+[
+ {
+  "file": "1-stem-beside-box-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/14/1/3/12/1",
+  "cause": "S1 stem_beside_box",
+  "litolff": 9,
+  "brahms": 1,
+  "shows": "the stem was FOUND (green) 0.25 sp left of the box; the box stops short of the head's left tip, so no contact"
+ },
+ {
+  "file": "2-stem-refused-paired-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/11/0/1/9/2",
+  "cause": "S2 refused:PAIRED",
+  "litolff": 9,
+  "brahms": 0,
+  "shows": "two stems close together (two voices / a second) are dropped as an accidental's two strokes"
+ },
+ {
+  "file": "3-stem-refused-tall-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/6/1/7/10/10",
+  "cause": "S2 refused:TALL",
+  "litolff": 5,
+  "brahms": 2,
+  "shows": "the stem runs on into other vertical ink (> 8 sp) and is refused as a barline"
+ },
+ {
+  "file": "4-stem-refused-wide-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/5/1/0/12/6",
+  "cause": "S2 refused:WIDE",
+  "litolff": 2,
+  "brahms": 4,
+  "shows": "the stem is fused with heads / ledger ink into one run wider than 0.6 sp"
+ },
+ {
+  "file": "5-stem-refused-short-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/5/0/7/0/7",
+  "cause": "S2 refused:SHORT",
+  "litolff": 2,
+  "brahms": 2,
+  "shows": "the run beside the head is shorter than 2 sp"
+ },
+ {
+  "file": "6-stem-refused-edge-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/6/1/4/8/9",
+  "cause": "S2 refused:EDGE",
+  "litolff": 1,
+  "brahms": 0,
+  "shows": "the stem stands within 0.8 sp of the cell edge (the barline filter)"
+ },
+ {
+  "file": "7-stem-off-box-vertically-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/15/0/0/2/2",
+  "cause": "S1v stem_off_box_vertically",
+  "litolff": 1,
+  "brahms": 0,
+  "shows": "the stem stands 0.35 sp above a box that holds only the lower part of the head"
+ },
+ {
+  "file": "8-no-stem-ink-litolff.png",
+  "doc": "litolff",
+  "subject": "glyph/6/0/0/9/1",
+  "cause": "S3 no_stem_ink",
+  "litolff": 2,
+  "brahms": 1,
+  "shows": "no vertical ink beside the box at all (by eye not a half note)"
+ },
+ {
+  "file": "9-brahms-key-accidental-wide.png",
+  "doc": "brahms",
+  "subject": "glyph/6/0/3/5/17",
+  "cause": "S2 refused:WIDE",
+  "litolff": 2,
+  "brahms": 4,
+  "shows": "Brahms: the 'notes' without a stem are mostly not notes (here a key-signature flat boxed as a head)"
+ },
+ {
+  "file": "10-stem-beside-box-brahms.png",
+  "doc": "brahms",
+  "subject": "glyph/2/0/13/3/1",
+  "cause": "S1 stem_beside_box",
+  "litolff": 9,
+  "brahms": 1,
+  "shows": "Brahms: the one real note -- the stem found 0.14 sp right of the box (a flagged note, not a half)"
+ }
+]
