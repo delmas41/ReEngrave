@@ -1488,3 +1488,30 @@ plus 2 controls that can fail (a Litolff head he judged a half, a Brahms head he
   located head at all (chords, head + accidental). Reading the stem against the located head box would add at most 3
   (Litolff `14/0/3/3/6` = crop 20, `15/0/0/2/2`; Brahms `18/1/0/4/10`); not built (step 2, the stem reader).
 * 283 of the 345 `head_fill_from_ink` boxes are non-notes with a stale duration (2.143, parked OFF).
+
+### 16.8 Sean's answers (2026-10-17) and the not-a-head guard
+
+Sean, verbatim: "1. Ff 2. 2 3.2 4.trem slashes 5.4 6.2 7-8.2". Recorded in `out/print/2.159-review/answers.json` (the
+manifest now names each tile's glyph; `benchmarks/acceptance/judged-tiles.json` rebuilt, 1154 tiles). **The 4 Litolff
+changes (tiles 2, 6, 7, 8) are halves: 4 / 4 right. Both Brahms changes are NOT notes** (tile 1 part of an `ff`, tile 4
+tremolo slashes). Both controls right (3 half, 5 quarter).
+
+**Why tiles 1 and 4 got through** (their stored readings, `probe/why_kept_2_159.py`): the existing readers SAW both and
+fell short only of REFUSING the box.
+* Tile 1 (Brahms `glyph/18/1/9/6/15`): GATHER filed `Q.NOTEHEAD_LETTER_INK` -- the head lies on a `dynamicF` box -- but only
+  0.264 of the head is inside it (the `f`'s hook pokes above the detector's `f` box), under the dynamic-letter refusal's
+  0.4 cut, so `notehead_is_not_a_notehead` kept it. (The 2.139 lexicon word works on the text reading of the letters and
+  says nothing about this head box.)
+* Tile 4 (`glyph/16/1/10/0/7`): the 2.49 / 2.137 slash test read the ink CROSSING the stem (35 % / 65 % either side) and
+  in position; it failed only the 10-degree angle floor (8.8 degrees), so no refusal.
+
+**Guard (in the located-box rule only, no new number):** the rule does not read a head that GATHER filed as lying on a
+dynamic letter (`Q.NOTEHEAD_LETTER_INK` present) or whose ink the slash test read as straddling a stem (`crossing_ok`, or
+the 2.71 stroke witness). A refusal needs the readers' cuts; a half decided from a substitute box does not get to ignore
+their readings. The 4 Litolff halves carry neither reading. Tests: two built on tiles 1 and 4 (their own row values) plus
+a one-side-of-the-stem control; both tile tests fail with the guard removed (run RED).
+
+**Replay (all pages, same records, no gathers):** control 14,272 / 14,272 and 32,389 / 32,389. **Reach: Litolff 4, Brahms
+0.** Tiles 1 and 4 (and the Brahms whole-rest box) now unchanged; Litolff tiles 2, 6, 7, 8 still decided halves; no other
+judged head changes. The rule is now right 4 / 4 on Sean's tiles but reaches one plate only and 4 of its 47 real-note
+`head_fill_from_ink` heads; the flag stays OFF.

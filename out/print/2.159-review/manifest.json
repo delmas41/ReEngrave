@@ -1,6 +1,55 @@
 {
  "question": "What is the written value of the note in the blue box (1, 2, 4, 8 ..., dot, or not a note)?",
- "tiles": 8,
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "brahms",
+   "glyph": "glyph/18/1/9/6/15",
+   "control": false
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/10/0/3/2/1",
+   "control": false
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/4/8/7",
+   "control": true
+  },
+  {
+   "n": 4,
+   "doc": "brahms",
+   "glyph": "glyph/16/1/10/0/7",
+   "control": false
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "glyph": "glyph/0/0/0/1/4",
+   "control": true
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/10/5/4",
+   "control": false
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/9/11/1",
+   "control": false
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/1/8/8",
+   "control": false
+  }
+ ],
  "blue": "the note asked about",
  "nothing else drawn": true
 }

@@ -3304,7 +3304,7 @@ def head_fill_located_enabled() -> bool:
     return os.environ.get(HEAD_FILL_LOCATED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-def _head_reads_hollow_on_located_box(ev: Evidence, head_box) -> Optional[Dict[str, Any]]:
+def _head_reads_hollow_on_located_box(ev: Evidence, head_box, refusal=None) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.159: the 2.148 slit reading on the box an earlier GATHER reader LOCATED the head in
     (`Q.NOTEHEAD_INK.detail.interior_white_located`). `{"fill": "hollow", ...}` only where it holds white at the 2.148 cut
     AND the located box still holds the detector box's own centre; None otherwise (no reading, a black or between reading,
@@ -3326,6 +3326,19 @@ def _head_reads_hollow_on_located_box(ev: Evidence, head_box) -> Optional[Dict[s
     # boxed as a head (`glyph/16/1/2/3/7`) for halves -- both DECIDED values the 2.23 window had read solid. With it the
     # rule only settles heads the reader already narrowed as possibly hollow (`head_fill_from_ink` and its kin).
     if not _ink_reads_decisively_hollow(rows[-1].detail or {}):
+        return None
+    # Sean's 2.159 tiles (2026-10-17): tile 1 "Ff" (Brahms `glyph/18/1/9/6/15`, the hook of an `f` poking above the
+    # detector's `dynamicF` box) and tile 4 "trem slashes" (`glyph/16/1/10/0/7`, a Brahms slash at 8.8 degrees) were
+    # decided halves. The existing readers SAW both and only fell short of REFUSING the box: the dynamic-letter reader
+    # (`notehead_precision._on_a_dynamic_letter_refusal`, GATHER `Q.NOTEHEAD_LETTER_INK`)
+    # filed the head ON a dynamic letter (head_in_letter 0.26, under its 0.4 refusal cut) and 2.49/2.137's slash test
+    # read the ink CROSSING the stem on both sides (failing only the 10-degree angle floor). A refusal needs those
+    # cuts; a half decided from a substitute box does not get to ignore the readings: a head lying on a dynamic letter,
+    # or whose ink straddles a stem (a head's ink stands to ONE side of its stem), is not read here.
+    if ev.rows(Q.NOTEHEAD_LETTER_INK):
+        return None
+    sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
+    if sig.get("crossing_ok") or sig.get("read_by") == "stem_slash":
         return None
     return {"fill": "hollow", "rows_share": share, "hole_share": loc.get("hole_share"), "row": rows[-1].id,
             "margin": round(share - HEAD_INTERIOR_WHITE_HOLLOW_MIN, 4), "located_by": loc.get("located_by"),
@@ -3730,7 +3743,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
-           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK),
     reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -3908,7 +3921,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             # Not on a box ADJUDICATE already refused as not a notehead (2.143's stale-duration population: 67 of the 114
             # Litolff and 216 of the 231 Brahms `head_fill_from_ink` boxes, mostly quarter rests boxed `too_narrow`).
             if head_fill_located_enabled() and not refused:
-                located = _head_reads_hollow_on_located_box(ev, head_box)
+                located = _head_reads_hollow_on_located_box(ev, head_box, refusal)
                 if located is not None:
                     head_first = {**located, "not_head_sized": True, "detector_box_rows_share": head_first["rows_share"]}
         if head_first is not None and head_first["fill"] == "hollow" and own_stems:

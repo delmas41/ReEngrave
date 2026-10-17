@@ -18,7 +18,7 @@ from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged.adjudicators import rhythm
 from tools.omr.staged.gather import head_interior_white_located
 from tools.omr.staged.record import READERS, Log, Outcome, Q
-from tools.omr.tests.test_staged_bare_stem_2_81 import _stem, _two_staff
+from tools.omr.tests.test_staged_bare_stem_2_81 import CELL, _stem, _two_staff
 from tools.omr.tests.test_staged_head_fill_first_2_148 import _raster, _run
 
 FLAG = rhythm.HEAD_FILL_LOCATED_ENV
@@ -130,6 +130,46 @@ class TestTheLocatedHeadIsRead(unittest.TestCase):
         g2 = _part_boxed(off, located_share=None)
         v1, v2 = _decide(on, g1), _decide(off, g2, located_on=False)
         self.assertEqual((v1.outcome, v1.reason, v1.value), (v2.outcome, v2.reason, v2.value))
+
+
+class TestNeverOnInkThatIsNotAHead(unittest.TestCase):
+    """Sean's 2.159 tiles (2026-10-17): tile 1 "Ff" and tile 4 "trem slashes" were decided halves. Their own readings from
+    the Brahms night record are reproduced; the existing readers saw both but did not refuse the box."""
+
+    def test_tile_1_a_head_lying_on_a_dynamic_letter_is_not_read(self):
+        log = Log()
+        g = _part_boxed(log, located_share=0.4)
+        # Brahms glyph/18/1/9/6/15: the hook of an `f` above the detector's dynamicF box (on 0.264 < the 0.4 refusal cut)
+        log.observe(g, Q.NOTEHEAD_LETTER_INK, 0.683, reader=READERS.CV_NOTEHEAD_INK, frame="cell:0",
+                    letter_ink_share=0.0, head_in_letter=0.264, letter="glyph/0/0/0/0/9", letter_class="dynamicF",
+                    letter_w_spaces=2.367, letter_h_spaces=2.024)
+        v = _decide(log, g)
+        self.assertNotEqual(_written(v), 2.0)
+        refusal = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
+        self.assertNotEqual(getattr(refusal, "value", None), True)   # the box is still a head to the refusal reader
+
+    def test_tile_4_ink_that_straddles_the_stem_is_not_read(self):
+        log = Log()
+        g = _part_boxed(log, located_share=0.4)
+        stem = log.rows(Q.STEM, CELL)[-1]
+        # Brahms glyph/16/1/10/0/7: a slash at 8.8 degrees (under 2.137's 10-degree floor), ink on both sides of the stem
+        log.observe(g, Q.NOTEHEAD_STEM_CROSS_INK, [0.9416, 0.7143], reader="cv_notehead_stem_cross_ink", frame="cell:0",
+                    stem=stem.id, left=0.9416, right=0.7143, left_share=0.3525, right_share=0.6475, total_ink_px=3248,
+                    angle_deg=8.8, elongation=1.76, fill=0.5767, ink_px=3248)
+        v = _decide(log, g)
+        sig = (log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g).detail or {}).get("tremolo_slash_signal") or {}
+        self.assertTrue(sig.get("crossing_ok"))
+        self.assertNotEqual(_written(v), 2.0)
+
+    def test_control_crossing_ink_on_one_side_only_still_reads(self):
+        log = Log()
+        g = _part_boxed(log, located_share=0.4)
+        stem = log.rows(Q.STEM, CELL)[-1]
+        log.observe(g, Q.NOTEHEAD_STEM_CROSS_INK, [0.9, 0.02], reader="cv_notehead_stem_cross_ink", frame="cell:0",
+                    stem=stem.id, left=0.9, right=0.02, left_share=0.98, right_share=0.02, total_ink_px=3000,
+                    angle_deg=30.0, elongation=1.3, fill=0.6, ink_px=3000)
+        v = _decide(log, g)
+        self.assertEqual(_written(v), 2.0)
 
 
 class _Cell:
