@@ -1609,3 +1609,8 @@ its PNG at the key offset); `answers.json` `{}`. Far fewer than ~20: the flag ch
   A fix there moves every stem and beam; it needs its own lane and its own tiles.
 * TALL (5 / 2): chord stems through ledger notes longer than 8 sp.
 * The flag stays OFF; Brahms has no head it changes.
+
+### 17.6 Checks
+
+Fast tier (serial, at `lane-2.161-box-stem-halves` after the replay commit): 8404 passed, 12 skipped, 2 xfailed.
+`python3 -m tools.omr.staged.check`: open=192, status ok (not up). Branch not merged; no DECISIONS line; flag OFF.
