@@ -19,7 +19,7 @@ import os
 import unittest
 from unittest import mock
 
-from tools.omr.staged import adjudicate, consequences
+from tools.omr.staged import adjudicate, bar_length, consequences
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
 from tools.omr.staged.adjudicate import Candidate
@@ -45,6 +45,48 @@ class TestTheWord(unittest.TestCase):
                            ("nope", False)):
             with mock.patch.dict(os.environ, {ENV: word}, clear=False):
                 self.assertEqual(consequences.narrowed_bar_length_unknown(), want, word)
+
+
+class TestTheOneHelper(unittest.TestCase):
+    """`staged.bar_length` -- the helper every consumer above calls (2.165 imports it)."""
+
+    def _bar(self):
+        b = _EvalBar(2, 4)
+        n = b.narrowed()                      # {0.5, 1.0}
+        b.decided(1.0)
+        log, _m = b.build()
+        notes = consequences._standing(log, CELL, Q.DURATION)
+        return log, notes
+
+    def test_CONTROL_off_a_narrowing_counts_at_its_first_candidate(self):
+        log, notes = self._bar()
+        with _env(False):
+            got = bar_length.bar_length(log, CELL, notes)
+        self.assertTrue(got.known)
+        self.assertEqual(got.value, 1.5)
+
+    def test_on_a_narrowing_makes_a_range_RED(self):
+        log, notes = self._bar()
+        with _env(True):
+            got = bar_length.bar_length(log, CELL, notes)
+        self.assertFalse(got.known)
+        self.assertIsNone(got.value)
+        self.assertEqual((got.lo, got.hi), (1.5, 2.0))
+        self.assertTrue(got.contains(2.0) and not got.contains(2.5))
+
+    def test_all_decided_is_known_either_way(self):
+        b = _EvalBar(2, 4)
+        b.decided(1.0)
+        b.decided(1.0)
+        log, _m = b.build()
+        notes = consequences._standing(log, CELL, Q.DURATION)
+        for on in (False, True):
+            with _env(on):
+                self.assertEqual(bar_length.bar_length(log, CELL, notes).value, 2.0)
+
+    def test_no_decided_grouping_is_unknown(self):
+        log = Log()
+        self.assertTrue(bar_length.bar_length(log, CELL, []).unknown)
 
 
 # ── the meter: carry corroborated by the bars ─────────────────────────────────────────────────────────────────────────

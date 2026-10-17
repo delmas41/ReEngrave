@@ -35,6 +35,8 @@ def is_seed(src):
 seeds = {n for n, s in srcs.items() if is_seed(s)}
 # `_event_totals` is handed `current` (the values) and does the adding for its callers: a seed by the same test minus the read
 seeds |= {n for n, s in srcs.items() if "total +=" in s and "beats" in s and "current[" in s}
+# 2.162/2.165: THE helper (`staged.bar_length`) and whatever calls it are seeds too, so the list survives the refactor
+seeds |= {"length_of_events", "bar_length"} | {n for n, cs in calls.items() if cs & {"length_of_events", "bar_length"}}
 consumers = set(seeds) | {"<bars>"}
 grew = True
 while grew:
