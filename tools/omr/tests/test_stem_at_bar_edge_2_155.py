@@ -87,6 +87,16 @@ def test_control_a_head_the_run_never_reaches_is_no_rescue():
     assert _at_edge(detect_stems(_cell(_edge_stem), stem_finder=ON, noteheads=[far])) == []
 
 
+def test_control_a_head_box_cut_by_the_cell_edge_rescues_nothing():
+    # Litolff: a sliver box at x=0 (a head our crop cut, or the barline boxed as a head), widened across the barline
+    def paint(img):
+        _rect(img, 0, 100, 8, 760)          # the barline at the cell's left edge, 6.6 spaces
+    cut = (-45, 600, 120, 200)              # its lower end (760) in the box's rows and columns, but the box crosses x=0
+    assert detect_stems(_cell(paint), stem_finder=ON, noteheads=[cut]) == []
+    inside = (0, 600, 120, 200)             # the same box inside the cell: the rule would take it (the control can fail)
+    assert _xs(detect_stems(_cell(paint), stem_finder=ON, noteheads=[inside])) == [(0, 8)]
+
+
 def test_left_edge_down_stem_ending_in_its_head():
     def paint(img):
         _rect(img, 52, 450, 60, 800)        # down-stem on the head's left, its top end in the head (410-510)

@@ -269,13 +269,19 @@ def stem_at_bar_edge_enabled() -> bool:
     return os.environ.get(STEM_AT_BAR_EDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-def _run_ends_at_a_head(x, y, w, h, heads, line_spacing) -> bool:
+def _run_ends_at_a_head(x, y, w, h, heads, line_spacing, cell_w=None) -> bool:
     """ROADMAP 2.155: does one END of this vertical run stand in a notehead box, inside that head's own columns? `heads` are
-    canonical `(x, y, w, h)` boxes (the caller's detector heads); `None` or empty -> False (no head, no rescue: never a guess)."""
+    canonical `(x, y, w, h)` boxes (the caller's detector heads); `None` or empty -> False (no head, no rescue: never a guess).
+
+    ⚠️ A head box that crosses the cell's own edge (`cell_w` given) rescues nothing: OUR crop cut that head (Litolff: a 0.3-space
+    sliver box at x=0, widened by the standard head box across the barline -- 3 of 18 sampled rescues were barlines this way), so
+    whose head it is cannot be told here, and the shipped refusal stands (rule 8)."""
     if not heads:
         return False
     slack = STEM_AT_BAR_EDGE_END_SLACK_SPACES * line_spacing
     for hx, hy, hw, hh in heads:
+        if cell_w is not None and (hx < 0 or hx + hw > cell_w):
+            continue
         if not (x < hx + hw and x + w > hx):
             continue
         for end in (y, y + h):
@@ -991,7 +997,7 @@ def detect_stems(
         # stem, not a barline -- it goes on to the remaining filters like any other run.
         if x < edge_margin or x + w > cell_w - edge_margin:
             if not ("edge_head" in stem_finder
-                    and _run_ends_at_a_head(x, y, w, h, noteheads, line_spacing)):
+                    and _run_ends_at_a_head(x, y, w, h, noteheads, line_spacing, cell_w)):
                 _note(x, y, w, h, area, RUN_AT_CELL_EDGE)
                 continue
         if area < max(4, line_spacing * 0.5):
