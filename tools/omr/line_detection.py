@@ -1581,10 +1581,17 @@ def detect_lines(cell, *, candidates_out: list | None = None,
         # it vertically (the join reader's own "a break one line wide is the same stroke" tolerance) -- never as a new level.
         # Tile 13: the end of a sloping beam, 6 px under the kept stroke -> kept; tile 4: a stroke 2.2 spaces under the real
         # beam -> refused.
+        # It is MERGED into the stroke it continues (one stroke, one level, its box widened to cover both): kept as a separate
+        # box, a stem whose column crosses both reads two levels (2.155b tile 13's neighbour, an eighth, read a 16th).
         tol = _same_stroke_gap(cell)
         old = {_box(b) for b in beams}
-        beams = beams + [b for b in detect_beams(cell, stems=stems, rescue_tall=rescue_tall_beams)
-                         if _box(b) not in old and any(_continues_stroke(b, k, tol) for k in beams)]
+        for b in detect_beams(cell, stems=stems, rescue_tall=rescue_tall_beams):
+            if _box(b) in old:
+                continue
+            for i, k in enumerate(beams):
+                if _continues_stroke(b, k, tol):
+                    beams[i] = _merged(k, b)
+                    break
     return {
         "stems": stems,
         "beams": beams,
@@ -1606,6 +1613,15 @@ def _same_stroke_gap(cell) -> float:
     if t and t > 0:
         return float(t)
     return SAME_STROKE_DEFAULT_THICKNESS_SPACES * _staff_line_spacing(cell)
+
+
+def _merged(a, b):
+    """One stroke covering both boxes (ROADMAP 2.155: a level continued by a found stem)."""
+    x0, y0 = min(a.x_canonical, b.x_canonical), min(a.y_canonical, b.y_canonical)
+    x1 = max(a.x_canonical + a.width_canonical, b.x_canonical + b.width_canonical)
+    y1 = max(a.y_canonical + a.height_canonical, b.y_canonical + b.height_canonical)
+    return LineDetection(smufl_name=a.smufl_name, category=a.category, x_canonical=int(x0), y_canonical=int(y0),
+                         width_canonical=int(x1 - x0), height_canonical=int(y1 - y0), confidence=a.confidence)
 
 
 def _continues_stroke(new, kept, tol: float) -> bool:

@@ -195,7 +195,8 @@ def test_continue_a_rescued_stem_may_extend_the_level_the_others_make(monkeypatc
     A = _stub_beam_pass(monkeypatch, _piece(174))          # 4 px under A: the same stroke, broken by the scan (tile 13)
     out = LD.detect_lines(_cell(_edge_stem), noteheads=[HEAD], stem_finder=ON)
     assert (840, 848) in _xs(out["stems"])
-    assert [LD._box(b) for b in out["beams"]] == [LD._box(A), (700, 174, 148, 26)]
+    # one stroke, one level: A widened over the piece (kept apart, a stem crossing both would read two levels)
+    assert [LD._box(b) for b in out["beams"]] == [(360, 120, 488, 80)]
 
 
 def test_continue_a_rescued_stem_never_starts_a_new_level(monkeypatch):
