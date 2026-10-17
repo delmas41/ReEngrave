@@ -357,6 +357,27 @@ def whole_rest_ink_leaves_bar_enabled() -> bool:
     return os.environ.get(WHOLE_REST_INK_LEAVES_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.154, default OFF (Sean's standing rule, DECISIONS 2026-10-12/13: "Bar arithmetic may CONFIRM a value the page
+#: already supports; it never SUPPLIES one"). Two arms, measured apart:
+#:   `narrowed` (arm a) -- the bar never chooses among a NARROWED note's candidates: EVALUATE `reconcile_duration` refuses any
+#:     bar holding a narrowed note (its sum would rest on an assumed candidate), and INFER `collapse_bare_stem_by_bar` /
+#:     `collapse_narrowed_by_bar` propose nothing. The note stays narrowed (EXPORT drops it and marks the gap).
+#:   `all` (arm b; also `1/true/yes/on`) -- arm a, and the bar never changes a DECIDED value either (`_admitted`'s +/-1):
+#:     `reconcile_duration` writes nothing; the bar that does not add up keeps its held-out mark.
+BAR_SUM_CONFIRM_ONLY_ENV = "OMR_BAR_SUM_CONFIRM_ONLY"
+
+
+def bar_sum_confirm_only() -> str:
+    """ROADMAP 2.154: `""` (off, the default), `"narrowed"` (arm a) or `"all"` (arm b). Anything unrecognised is OFF."""
+    import os
+    word = os.environ.get(BAR_SUM_CONFIRM_ONLY_ENV, "").strip().lower()
+    if word in ("narrowed", "a"):
+        return "narrowed"
+    if word in ("all", "b", "1", "true", "yes", "on"):
+        return "all"
+    return ""
+
+
 def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     """The DECIDED verdict that took this glyph out of its bar, else None."""
     reinstated = _reinstated_rest(log, glyph)
@@ -980,6 +1001,11 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     expected = _bar_beats_at(meter, subject)
     if expected is None:
         return []
+    # ⚠️ ROADMAP 2.154 arm b (`OMR_BAR_SUM_CONFIRM_ONLY=all`): every verdict this rule writes is a value the bar SUPPLIED --
+    # a candidate picked from a narrowing or a decided value moved +/-1 -- so under confirm-only it writes nothing.
+    confirm_only = bar_sum_confirm_only()
+    if confirm_only == "all":
+        return []
 
     # ⚠️⚠️ ROADMAP 2.22: "THE BAR" MEANS WHAT IS STILL IN IT -- 2.19's fault,
     # found again in the second EVALUATE rule that sums a cell. `_standing`
@@ -1001,6 +1027,11 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             set_aside.append(v.subject.to_key())
             cleared_by.append(why.id)
     if not notes:
+        return []
+    # ⚠️ ROADMAP 2.154 arm a (`OMR_BAR_SUM_CONFIRM_ONLY=narrowed`): a bar holding a NARROWED note has no known sum -- the
+    # total below would take that note's best candidate, so any landing (on it or on a decided neighbour) would be the bar
+    # choosing its candidate. Refuse; the note stays narrowed.
+    if confirm_only == "narrowed" and any(n.outcome is Outcome.NARROWED for n in notes):
         return []
 
     # A narrowed note contributes its BEST-SUPPORTED reading to the running

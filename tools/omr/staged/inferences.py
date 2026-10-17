@@ -2097,6 +2097,9 @@ def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     is lower ... send it on to the other stages with a high likelihood of
     being a quarter note and make sure the bar math adds up"*.
     """
+    from .consequences import bar_sum_confirm_only
+    if bar_sum_confirm_only():
+        return []                   # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm)
     return solve_bare_stem_bar(log, cell).proposals or []
 
 
@@ -2140,6 +2143,9 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     is merely BEST -- so it is INFER's, labelled, gated, and bounded to the
     reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
     """
+    from .consequences import bar_sum_confirm_only
+    if bar_sum_confirm_only():
+        return []                   # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm)
     return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
 
 
