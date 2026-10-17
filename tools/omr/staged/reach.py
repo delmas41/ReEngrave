@@ -510,6 +510,11 @@ NOT_A_STAGE = frozenset({
     # fast tier's `test_brakes.py::test_reach_accounts_for_this_module` and
     # `check` both went red), which is that guard doing its job.
     "record_io.py",
+    # ⚠️ ROADMAP 2.165. `override_check.py` is the one shared "may this step change that verdict?" guard that
+    # `record.Log.record` consults (behind `OMR_ONE_OVERRIDE_CHECK`). It produces no quantity and reads none through
+    # the log's readers: it compares a verdict about to be recorded with the one it supersedes. Like `record.py`
+    # itself, it belongs to no stage.
+    "override_check.py",
     # ⚠️ ROADMAP 0.5 / 3.4b-check. `producers.py` DECLARES the out-of-pipeline
     # producers (`review/human_evidence.py` today) and reads none of `record.Q`
     # at run time itself -- it walks THEIR AST for a literal `Q.X` argument,
