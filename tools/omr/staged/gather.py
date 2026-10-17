@@ -8921,6 +8921,28 @@ def head_interior_white(img: Any, box: Tuple[float, float, float, float]) -> Opt
     return {"rows_share": round(rows_share, 4), "hole_share": round(hole, 4), "rows_read": n, "box": [x0, y0, x1 - x0, y1 - y0]}
 
 
+def head_interior_white_located(cell: Any, box_cell: Tuple[float, float, float, float], page_binary: Any,
+                                located_by: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.159. `head_interior_white` on the head box an earlier GATHER reader LOCATED (`box_cell`, canonical cell
+    frame: the 2.39b re-centred / 2.73 line-cut / 2.115 part-boxed standard head box), read off the PAGE raster at that
+    box's page position (the cell raster is the page resized, and there a part-boxed head merges with its stem and the
+    next line: Sean 2026-10-14, 2.115 round 2). Measured on the 20261016-night records: the detector box of 95/114
+    Litolff and 223/231 Brahms `head_fill_from_ink` heads is not one head's size, most often only PART of the head, so its
+    own reading is of a rim. Returns the reading plus `box_cell` (the located box, for the same-head check ADJUDICATE
+    makes) and `located_by`; `None` where the page raster or the canonical->page map is missing (declined, never read
+    from the cell)."""
+    bbox = getattr(cell, "bbox_page_px", None)
+    up = getattr(cell, "upscale_factor", None)
+    if page_binary is None or getattr(page_binary, "ndim", 0) != 2 or not bbox or not up:
+        return None
+    x, y, w, h = (float(v) for v in box_cell)
+    r = head_interior_white(page_binary, (bbox[0] + x / up, bbox[1] + y / up, w / up, h / up))
+    if r is None:
+        return None
+    return {**r, "frame": "page", "box_cell": [round(x, 2), round(y, 2), round(w, 2), round(h, 2)],
+            "located_by": located_by}
+
+
 def notehead_ink_under(img: Any, box: Tuple[float, float, float, float]
                        ) -> Optional[Dict[str, Any]]:
     """The ink fraction inside a notehead's OWN detected box, two ways.
@@ -9151,9 +9173,11 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
             box = (d.x_canonical, d.y_canonical,
                   d.width_canonical, d.height_canonical)
             interior = head_interior_white(raw_img, box) if raw_img is not None else None   # 2.148: the DETECTOR's own box
+            located_by = None   # 2.159: the earlier reader that LOCATED the head, so the window below is not the detector's
             if space_canonical and is_regular_notehead(str(d.smufl_name)):
                 recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
                 if recentred:
+                    located_by = "notehead_recentre"
                     dx_sp, dy_sp = recentred[-1].value
                     ncx = float(d.x_center) + dx_sp * space_canonical
                     ncy = float(d.y_center) + dy_sp * space_canonical
@@ -9172,6 +9196,7 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 if isinstance(cv, (list, tuple)) and len(cv) == 4:
                     box = tuple(float(v) for v in cv)
                     box_source = cut_rows[-1].id
+                    located_by = "head_line_cut"
             # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default ON): a
             # box that is only PART of its head (2.39b's search declined it or
             # never ran: it is not under 0.7) is moved vertically onto its
@@ -9204,6 +9229,7 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                         ncx, ncy, space_canonical)
                     box = (bx0, by0, bx1 - bx0, by1 - by0)
                     box_source = "part_boxed_recentre"
+                    located_by = "part_boxed_recentre"
                     page_reads = part_boxed.pop("_page_reads")
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
@@ -9235,6 +9261,10 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 extra["part_boxed"] = part_boxed
             if interior is not None:
                 extra["interior_white"] = interior
+            if located_by is not None:
+                located = head_interior_white_located(c, box, page_binary, located_by)
+                if located is not None:
+                    extra["interior_white_located"] = located
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
