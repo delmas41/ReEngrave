@@ -169,3 +169,45 @@ def test_tighten_a_rescued_stem_may_join_a_beam_the_others_make():
     on = LD.detect_lines(c, noteheads=heads, rescue_tall_beams=True, stem_finder=ON)
     off = LD.detect_lines(c, noteheads=heads, rescue_tall_beams=True, stem_finder=OFF)
     assert _beams(on) == _beams(off) != []
+
+
+# ── 2.155 (Sean 2026-10-16 "Yes"): a found stem may CONTINUE a beam level, never START one (2.155b tile 13 / 2.155 tile 4) ──
+
+def _stub_beam_pass(monkeypatch, extra):
+    """The beam pass returns stroke A from the other stems alone, and A + `extra` when the rescued stem is among the anchors."""
+    A = LD.LineDetection(smufl_name="beam", category="structural", x_canonical=360, y_canonical=120,
+                         width_canonical=488, height_canonical=50)
+    real = LD.detect_beams
+
+    def fake(cell, stems=None, rescue_tall=False):
+        real(cell, stems=stems, rescue_tall=rescue_tall)
+        return [A] + ([extra] if any(s.x_canonical == 840 for s in stems or ()) else [])
+    monkeypatch.setattr(LD, "detect_beams", fake)
+    return A
+
+
+def _piece(y):
+    return LD.LineDetection(smufl_name="beam", category="structural", x_canonical=700, y_canonical=y,
+                            width_canonical=148, height_canonical=26)
+
+
+def test_continue_a_rescued_stem_may_extend_the_level_the_others_make(monkeypatch):
+    A = _stub_beam_pass(monkeypatch, _piece(174))          # 4 px under A: the same stroke, broken by the scan (tile 13)
+    out = LD.detect_lines(_cell(_edge_stem), noteheads=[HEAD], stem_finder=ON)
+    assert (840, 848) in _xs(out["stems"])
+    assert [LD._box(b) for b in out["beams"]] == [LD._box(A), (700, 174, 148, 26)]
+
+
+def test_continue_a_rescued_stem_never_starts_a_new_level(monkeypatch):
+    A = _stub_beam_pass(monkeypatch, _piece(390))          # 2.2 spaces under A: another level (tile 4)
+    out = LD.detect_lines(_cell(_edge_stem), noteheads=[HEAD], stem_finder=ON)
+    assert [LD._box(b) for b in out["beams"]] == [LD._box(A)]
+
+
+def test_continue_off_the_beam_pass_runs_once_as_shipped(monkeypatch):
+    calls = []
+    real = LD.detect_beams
+    monkeypatch.setattr(LD, "detect_beams", lambda cell, stems=None, rescue_tall=False: calls.append(1) or real(
+        cell, stems=stems, rescue_tall=rescue_tall))
+    LD.detect_lines(_cell(_edge_stem), noteheads=[HEAD], stem_finder=OFF)
+    assert calls == [1]

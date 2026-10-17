@@ -1573,8 +1573,46 @@ def detect_lines(cell, *, candidates_out: list | None = None,
     # tile 4 it anchored a stroke under the real beam and a false second level read CERTAIN. Empty without the repair, so the
     # beam pass sees exactly the stems it always saw.
     beam_stems = [s for s in stems if not any(s is r for r in rescued)] if rescued else stems
+    beams = detect_beams(cell, stems=beam_stems, rescue_tall=rescue_tall_beams)
+    if rescued:
+        # ⚠️ ROADMAP 2.155 (Sean 2026-10-16 "Yes": "a found stem may continue a beam level but never start one"; 2.155b tile 13):
+        # the beam pass run WITH the rescued stems may find a stroke the others alone do not. It is kept only where it CONTINUES a
+        # stroke the other stems already make -- it overlaps that stroke's columns and stands within one staff-line thickness of
+        # it vertically (the join reader's own "a break one line wide is the same stroke" tolerance) -- never as a new level.
+        # Tile 13: the end of a sloping beam, 6 px under the kept stroke -> kept; tile 4: a stroke 2.2 spaces under the real
+        # beam -> refused.
+        tol = _same_stroke_gap(cell)
+        old = {_box(b) for b in beams}
+        beams = beams + [b for b in detect_beams(cell, stems=stems, rescue_tall=rescue_tall_beams)
+                         if _box(b) not in old and any(_continues_stroke(b, k, tol) for k in beams)]
     return {
         "stems": stems,
-        "beams": detect_beams(cell, stems=beam_stems,
-                              rescue_tall=rescue_tall_beams),
+        "beams": beams,
     }
+
+
+#: Where a cell's own staff-line thickness was never traced (mirrors `gather.BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES`).
+SAME_STROKE_DEFAULT_THICKNESS_SPACES = 0.09
+
+
+def _box(d) -> tuple:
+    return (d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical)
+
+
+def _same_stroke_gap(cell) -> float:
+    """One staff-line thickness in the cell's canonical pixels: the widest break a shattering plate puts in one continuous
+    stroke (the tolerance `gather._observe_beam_stem_join` uses). ROADMAP 2.155."""
+    t = getattr(cell, "staff_line_thickness_canonical", None)
+    if t and t > 0:
+        return float(t)
+    return SAME_STROKE_DEFAULT_THICKNESS_SPACES * _staff_line_spacing(cell)
+
+
+def _continues_stroke(new, kept, tol: float) -> bool:
+    """ROADMAP 2.155: does stroke `new` continue stroke `kept` -- sharing columns, and no more than `tol` apart vertically?"""
+    nx0, ny0, nw, nh = _box(new)
+    kx0, ky0, kw, kh = _box(kept)
+    if not (nx0 < kx0 + kw and nx0 + nw > kx0):
+        return False
+    gap = max(ky0 - (ny0 + nh), ny0 - (ky0 + kh), 0)
+    return gap <= tol
