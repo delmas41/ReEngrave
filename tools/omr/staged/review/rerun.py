@@ -50,7 +50,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from .. import evaluate, export as EXPORT, infer
 from .. import adjudicators, consequences, inferences      # noqa: F401
-from ..record import (Log, Q, Subject)
+from ..record import (Log, Q, Subject, is_row_id)
 from ..record_io import load_record
 from . import human_evidence as HE
 
@@ -66,6 +66,55 @@ def _row_no(row_id: str) -> int:
         return 0
 
 
+class DanglingRowId(ValueError):
+    """A replayed row names a row id the replay cannot re-point (ROADMAP 2.157).
+
+    Raised, never skipped: an id left as it was points at whatever row the
+    rebuilt log happens to number that way, or at nothing, and a reader that
+    joins on it then reads nothing -- a silent difference that a replay A/B
+    reports as a regression (2.153: 16 judged tiles)."""
+
+
+def remap_row_ids(x, id_map: Dict[str, str], *, where: str = "",
+                  parent_verdicts: frozenset = frozenset()):
+    """`x` with every row id it carries re-pointed through `id_map`.
+
+    ⚠️ THE FIELDS ARE NOT LISTED, THEY ARE FOUND. Every string spelled as a
+    row id (`record.is_row_id`, the grammar `Log._next_id` enforces) is an id,
+    at any depth, as a value or as a dict KEY; nothing else is touched (a
+    frame such as `cell:0` has another prefix).
+
+    ⚠️ ONE KIND OF ID IS KEPT VERBATIM: a VERDICT of the parent record
+    (`parent_verdicts`). Verdicts are not replayed, so it cannot be
+    re-pointed, and the one row that names one -- a human's
+    `Q.HUMAN_VERDICT_STANCE`, `detail.verdict_id` -- means "the verdict he was
+    SHOWN, in the parent", which `feedback.py` reports by that id. Any other id
+    the map does not hold raises `DanglingRowId`: a row outside the slice, a
+    verdict the record does not hold, or a row written after this one
+    (impossible in an append-only log).
+    """
+    def again(v):
+        return remap_row_ids(v, id_map, where=where,
+                             parent_verdicts=parent_verdicts)
+    if isinstance(x, str):
+        if not is_row_id(x) or x in parent_verdicts:
+            return x
+        try:
+            return id_map[x]
+        except KeyError:
+            raise DanglingRowId(
+                f"{where or 'a replayed row'} names {x!r}, which this replay "
+                f"cannot re-point (neither an earlier GATHER row nor a "
+                f"verdict of the record being rebuilt)") from None
+    if isinstance(x, dict):
+        return {again(k): again(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [again(v) for v in x]
+    if isinstance(x, tuple):
+        return tuple(again(v) for v in x)
+    return x
+
+
 def rebuild_gather(rec: dict) -> Tuple[Log, Dict[str, str]]:
     """One `Log` holding exactly this record's GATHER rows, in emission order.
 
@@ -78,19 +127,36 @@ def rebuild_gather(rec: dict) -> Tuple[Log, Dict[str, str]]:
     filter see two independent witnesses where there is one person and one
     click — the exact double-counting `Observation`'s own docstring records
     paying for in 2026-09-07.
+
+    ⚠️⚠️ SO IS EVERY ID IN `detail` AND `value` (ROADMAP 2.157). `Log.observe`
+    numbers densely, so a record whose GATHER ids are sparse -- a SLICE of
+    named systems, or human rows numbered after the verdicts -- is renumbered,
+    and a row that names another (`stem_row_id`, `beam_row_id`, `stem`,
+    `box_source`, `from_head_cut`, ...) must name it by its NEW id or the
+    reader that joins on it (`_stem_tip_flag_ink`, `_beam_join_witness`)
+    reads nothing. Found by 2.153: 16 judged tiles a slice replay "broke"
+    that the record's own commit reproduced. `remap_row_ids` finds the ids by
+    their spelling, and an id it cannot re-point RAISES -- a `basis` entry
+    included, which this function used to drop silently.
     """
     log = Log()
     rows = [(r, "obs") for r in rec.get("observations") or ()]
     rows += [(r, "abs") for r in rec.get("abstentions") or ()]
     rows.sort(key=lambda t: _row_no(t[0]["id"]))
     id_map: Dict[str, str] = {}
+    shown = frozenset(v["id"] for v in rec.get("verdicts") or ())
     for r, kind in rows:
         sub = Subject.from_key(r["subject"])
-        detail = dict(r.get("detail") or {})
+        where = f"row {r['id']} ({r['quantity']})"
+        detail = remap_row_ids(dict(r.get("detail") or {}), id_map,
+                               where=where, parent_verdicts=shown)
         if kind == "obs":
-            basis = tuple(id_map[b] for b in (r.get("basis") or ())
-                          if b in id_map)
-            new = log.observe(sub, r["quantity"], r["value"],
+            # `basis` names GATHER rows only: a verdict there is dangling.
+            basis = remap_row_ids(tuple(r.get("basis") or ()), id_map,
+                                  where=where + " basis")
+            new = log.observe(sub, r["quantity"],
+                              remap_row_ids(r["value"], id_map, where=where,
+                                            parent_verdicts=shown),
                               reader=r["reader"], frame=r["frame"],
                               score=r.get("score"), derived_from=basis,
                               **detail)

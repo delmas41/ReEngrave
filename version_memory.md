@@ -25,6 +25,8 @@ Merged main (2.154 arm a ON). `line_detection`: `_run_ends_at_a_head` refuses a 
 `detect_lines` keeps rescued stems out of `detect_beams`' anchors (tile 4). Sean's 20 tiles, shipped defaults: base 12 right / 3
 wrong, tightened 14 / 4 (grace notes and a flat); 2.153 rule ON (Litolff 14): 4 / 1 -> 11 / 0. Reach Litolff 158 stems, Brahms 6,
 no beam stroke changed. Brahms 2.153-rule gathers cut by Sean. 20 tiles `out/print/2.155b-review/`. Beam FINDINGS 10.9-10.10.
+## 2026-10-16 -- ROADMAP 2.157 LANDED: replay harness dangling ids fixed (tooling, Sean)
+STAGED review harness, no pipeline output change. `review.rerun.remap_row_ids` re-points every row id a rebuilt GATHER row carries (raises `DanglingRowId` on an id it cannot map); `record.ROW_ID_PREFIXES` / `is_row_id`, and `Log._next_id` refuses any other prefix. Old harness moved 32 judged tiles and 1,828 of 17,175 first duration verdicts on replay at the records' own commit; fixed harness 0. Test `tests/test_rerun_dangling_ids_2_157.py`. Known gap: `diff_records` does not remap ids. ROADMAP 2.157 LANDED; DECISIONS line; holdout FINDINGS 2.157.
 
 ## 2026-10-16 -- ROADMAP 2.154 LANDED: OMR_BAR_SUM_CONFIRM_ONLY arm a ON, arm b OFF (Sean)
 STAGED EVALUATE + INFER. Lane branch merged with main; `consequences.bar_sum_confirm_only()` now returns `narrowed` when the env is unset (explicit `0/off/false/no/""` turns it off; `all` = arm b, opt-in). Tests assert the new default and the off-words; six older modules that assert the pre-2.154 bar picks (2.81, 2.97, 2.136, candidates, reconcile-what-is-in-the-bar, stem-tip hooks) now pin the flag `off` in `setUpModule`; flag docs read "default ON (arm a), Sean 2026-10-16". ROADMAP 2.154 LANDED; DECISIONS line; holdout FINDINGS 2.154.
