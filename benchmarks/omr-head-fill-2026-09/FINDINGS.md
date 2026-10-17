@@ -1621,11 +1621,9 @@ Sean, verbatim: "Set G 1.2 2.2 3.1 4.2 5.2". Recorded in `out/print/2.161-review
 `benchmarks/acceptance/judged-tiles.json` rebuilt, 1180 tiles). **The 3 changed Litolff heads (tiles 2, 4, 5) are halves:
 3 / 3 right.** Control tile 1 (Litolff `glyph/4/0/3/3/8`, a half) right.
 
-**Control tile 3 (Brahms `glyph/5/0/2/3/2`): Sean says 1 (a whole); we write a QUARTER**, decided by ADJUDICATE
-(`stem_tip_reads_no_beam`) on the night record and in both replay arms (the flag does not touch it). Every reader calls the
-head black: detector class `noteheadBlackInSpace` (0.80), 2.148 slit `rows_share` 0.00 (hole 0.00), 2.23 centre window 1.00
-raw and 1.00 with the line rows out; box 1.41 x 1.20 sp, head-sized. **Sean judged the same glyph before: 2.154-review tile 4,
-answer "4"** (a quarter; that tile's base was decided 1.0 by `collapse_bare_stem_by_bar`). Crop of both tiles side by side:
-`out/print/2.161-diagnosis/11-brahms-5-0-2-3-2-tile4-of-2.154-vs-tile3-of-2.161.png` -- the same head both times, a filled
-head below the staff on the stem it shares with the head above (our look, not evidence). Not fixed here and not counted
-as our error: his two answers disagree, so the index now holds both (2.154 "4", 2.161 "1") until he says which stands.
+**Control tile 3 (Brahms `glyph/5/0/2/3/2`): right.** Sean first wrote 1 (a whole) on this tile, against his own "4" on
+the same head at 2.154-review tile 4; asked, he settled it (2026-10-17): "That is a quarter note". Recorded as "4" (the "1"
+kept in answers.json as superseded); the index holds one answer for the head, 4. We write a quarter (decided,
+`stem_tip_reads_no_beam`, both replay arms; the flag does not touch it): detector `noteheadBlackInSpace` (0.80), 2.148 slit
+0.00, 2.23 centre window 1.00 -- right. Crop: `out/print/2.161-diagnosis/11-brahms-5-0-2-3-2-tile4-of-2.154-vs-tile3-of-2.161.png`.
+Both controls right; no error found.

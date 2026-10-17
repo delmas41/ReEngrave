@@ -13466,7 +13466,7 @@
    "value": 2.0
   },
   {
-   "answer": "1",
+   "answer": "4",
    "answer_kind": "duration",
    "control": true,
    "date": "2026-10-17",
@@ -13479,7 +13479,7 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "3",
-   "value": 4.0
+   "value": 1.0
   },
   {
    "answer": "2",

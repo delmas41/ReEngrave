@@ -27,11 +27,15 @@
    "n": 3,
    "doc": "brahms",
    "glyph": "glyph/5/0/2/3/2",
-   "sean": "1",
+   "sean": "4",
    "off": "unchanged",
    "on": "unchanged",
    "control": true,
-   "verdict": "control CONFLICT: we write a quarter (decided, stem_tip_reads_no_beam, both arms); Sean said 4 on the same head at 2.154-review tile 4 and 1 here"
+   "verdict": "control right",
+   "supersedes": {
+    "sean": "1",
+    "note": "Sean 2026-10-17, settling his 2.154 \"4\" vs Set G \"1\" on this head: \"That is a quarter note\""
+   }
   },
   {
    "n": 4,
@@ -52,6 +56,15 @@
    "on": "2.0",
    "control": false,
    "verdict": "right"
+  }
+ ],
+ "corrections": [
+  {
+   "tile": 3,
+   "from": "1",
+   "to": "4",
+   "sean": "That is a quarter note",
+   "date": "2026-10-17"
   }
  ]
 }
