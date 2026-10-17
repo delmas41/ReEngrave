@@ -349,3 +349,24 @@ class TestWhatStaysRefusedWithTheFlagOn(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+_BAR_SUM_CONFIRM_ONLY_WAS = None
+
+
+def setUpModule():
+    """These tests pin the bar-sum deciders as shipped BEFORE ROADMAP 2.154 (the bar may choose among a narrowing's
+    candidates); `OMR_BAR_SUM_CONFIRM_ONLY` went default ON at arm a 2026-10-16 (Sean), so this module runs with it off.
+    The arm-a behaviour is tested in `test_staged_bar_sum_confirm_only_2_154.py`."""
+    import os
+    global _BAR_SUM_CONFIRM_ONLY_WAS
+    _BAR_SUM_CONFIRM_ONLY_WAS = os.environ.get("OMR_BAR_SUM_CONFIRM_ONLY")
+    os.environ["OMR_BAR_SUM_CONFIRM_ONLY"] = "off"
+
+
+def tearDownModule():
+    import os
+    if _BAR_SUM_CONFIRM_ONLY_WAS is None:
+        os.environ.pop("OMR_BAR_SUM_CONFIRM_ONLY", None)
+    else:
+        os.environ["OMR_BAR_SUM_CONFIRM_ONLY"] = _BAR_SUM_CONFIRM_ONLY_WAS

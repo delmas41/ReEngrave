@@ -357,7 +357,8 @@ def whole_rest_ink_leaves_bar_enabled() -> bool:
     return os.environ.get(WHOLE_REST_INK_LEAVES_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-#: ROADMAP 2.154, default OFF (Sean's standing rule, DECISIONS 2026-10-12/13: "Bar arithmetic may CONFIRM a value the page
+#: ROADMAP 2.154, default ON at arm a (Sean 2026-10-16, "Land 2.154 with arm a ON?" -- "Yes"; unset = `narrowed`; an explicit
+#: off-word `0/false/no/off/""` disables it) (Sean's standing rule, DECISIONS 2026-10-12/13: "Bar arithmetic may CONFIRM a value the page
 #: already supports; it never SUPPLIES one"). Two arms, measured apart:
 #:   `narrowed` (arm a) -- the bar never chooses among a NARROWED note's candidates: EVALUATE `reconcile_duration` refuses any
 #:     bar holding a narrowed note (its sum would rest on an assumed candidate), and INFER `collapse_bare_stem_by_bar` /
@@ -368,9 +369,10 @@ BAR_SUM_CONFIRM_ONLY_ENV = "OMR_BAR_SUM_CONFIRM_ONLY"
 
 
 def bar_sum_confirm_only() -> str:
-    """ROADMAP 2.154: `""` (off, the default), `"narrowed"` (arm a) or `"all"` (arm b). Anything unrecognised is OFF."""
+    """ROADMAP 2.154: `"narrowed"` (arm a, the default when unset -- Sean 2026-10-16), `"all"` (arm b) or `""` (off: an
+    explicit off-word, or anything unrecognised)."""
     import os
-    word = os.environ.get(BAR_SUM_CONFIRM_ONLY_ENV, "").strip().lower()
+    word = os.environ.get(BAR_SUM_CONFIRM_ONLY_ENV, "narrowed").strip().lower()
     if word in ("narrowed", "a"):
         return "narrowed"
     if word in ("all", "b", "1", "true", "yes", "on"):

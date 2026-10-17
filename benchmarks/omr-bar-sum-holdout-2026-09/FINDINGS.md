@@ -4558,3 +4558,6 @@ Sean's 23 tiles, per arm:
 | control | 2 | 1 right, 1 wrong | same | same |
 
 Earlier judged tiles: of the 18 bar picks, the 16 bare stems stay right in both arms; the 2 others (Litolff `2.83-fix-review` tile_08, `tip_readers_disagree`; `rhythm-leftovers-3` 4, `beam_certain_not_joined`) become narrowed-holding. With `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` ON (2.153), both arms still turn 2.153 tiles 4/14/16 from wrong into narrowed-holding and Brahms 5/8 from right into narrowed-holding (`beams_ambiguous`, not bare stems). **Every judged tile, arm a: 0 right made wrong; right -> narrowed 6 (2.154: 7, 23; earlier 2; 2.153: 5, 8 -- the last two only under 2.153's flag); wrong -> narrowed 4 (2.154: 12; 2.153: 4, 14, 16). Arm b adds the moves: 4 wrong -> right, 3 right -> wrong (2.154 tiles 3, 8, 11).** Flag stays OFF; no DECISIONS line from this lane.
+
+### 2.154 -- landed (Sean 2026-10-16: "Land 2.154 with arm a ON?" -- "Yes")
+`OMR_BAR_SUM_CONFIRM_ONLY` defaults to arm a (`narrowed`) when unset; arm b (`all`) stays opt-in; an explicit off-word (`0/off/false/no/""`) disables it. Including DOTTED bare stems in the confirm exemption was the lane's call (same mechanism), not Sean's words.

@@ -1,8 +1,9 @@
-"""ROADMAP 2.154 -- the bar sum never picks: `OMR_BAR_SUM_CONFIRM_ONLY`, default OFF (STAGED EVALUATE + INFER).
+"""ROADMAP 2.154 -- the bar sum never picks: `OMR_BAR_SUM_CONFIRM_ONLY`, default ON at arm a (Sean 2026-10-16)
+(STAGED EVALUATE + INFER).
 
 Sean's standing rule (DECISIONS 2026-10-12/13): bar arithmetic may CONFIRM a value the page already supports; it never
 SUPPLIES one. Arm a (`narrowed`): the bar never chooses among a NARROWED note's candidates. Arm b (`all`): it also never
-moves a DECIDED value. Every positive has its control: flag off decides exactly as before.
+moves a DECIDED value. Every positive has its control: flag explicitly off (`off`) decides exactly as before.
 """
 from __future__ import annotations
 
@@ -51,10 +52,16 @@ def _decided_bar():
 
 class TestTheWord(unittest.TestCase):
 
-    def test_default_is_off(self):
+    def test_default_is_arm_a(self):
+        # Sean 2026-10-16, "Land 2.154 with arm a ON?" -- "Yes": unset means arm a; arm b stays opt-in.
         with _with(None):
             os.environ.pop(ENV, None)
-            self.assertEqual(consequences.bar_sum_confirm_only(), "")
+            self.assertEqual(consequences.bar_sum_confirm_only(), "narrowed")
+
+    def test_an_explicit_off_word_still_disables_it(self):
+        for word in ("0", "off", "false", "no", ""):
+            with _with(word):
+                self.assertEqual(consequences.bar_sum_confirm_only(), "", word)
 
     def test_words(self):
         for word, want in (("narrowed", "narrowed"), ("a", "narrowed"), ("all", "all"), ("b", "all"), ("1", "all"),
@@ -67,7 +74,7 @@ class TestReconcileDurationPicks(unittest.TestCase):
 
     def test_CONTROL_flag_off_the_bar_picks_the_narrowed_note(self):
         b, n = _narrowed_bar()
-        log, out = _reconcile(b, None)
+        log, out = _reconcile(b, "off")
         self.assertEqual(len(out), 1)
         v = log.verdict(Q.DURATION, n)
         self.assertEqual(v.outcome, Outcome.DECIDED)
@@ -92,7 +99,7 @@ class TestReconcileDurationPicks(unittest.TestCase):
         n = b.narrowed()
         d = b.decided(1.0)
         b.decided(1.0, rest=True)
-        log, _ = _reconcile(b, None)
+        log, _ = _reconcile(b, "off")
         self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 0.5)        # CONTROL
         b = _EvalBar(2, 4)
         n = b.narrowed()
@@ -108,7 +115,7 @@ class TestReconcileDurationMovesADecidedValue(unittest.TestCase):
 
     def test_CONTROL_flag_off_moves_the_decided_note(self):
         b, d = _decided_bar()
-        log, out = _reconcile(b, None)
+        log, out = _reconcile(b, "off")
         self.assertTrue(out)
         self.assertTrue(any(v.reason == "meter_reconciliation" for v in out))
 
@@ -150,7 +157,7 @@ class TestInferCollapses(unittest.TestCase):
 
     def test_CONTROL_flag_off_the_bare_stem_is_settled(self):
         log, g = self._bare_bar()
-        rep = _infer(log, None)
+        rep = _infer(log, "off")
         fired = _fired(rep, infer.Inference.COLLAPSE_BARE_STEM_BY_BAR) \
             + _fired(rep, infer.Inference.COLLAPSE_NARROWED_BY_BAR)
         self.assertEqual(len(fired), 1)
@@ -174,7 +181,7 @@ class TestInferCollapses(unittest.TestCase):
 
     def test_CONTROL_flag_off_a_beams_ambiguous_head_is_settled(self):
         log, g = self._chord_bar()
-        rep = _infer(log, None, bare=False)
+        rep = _infer(log, "off", bare=False)
         self.assertEqual(len(_fired(rep, infer.Inference.COLLAPSE_NARROWED_BY_BAR)), 1)
 
     def test_either_arm_leaves_a_beams_ambiguous_head_narrowed_RED(self):
