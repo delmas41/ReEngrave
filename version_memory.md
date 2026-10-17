@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-17 -- ROADMAP 2.158 LANDED: OMR_LONE_EVENT_FILLS_BAR default ON (Sean "2.258 on", a typo for 2.158)
+STAGED INFER `collapse_narrowed_by_bar` (`inferences.lone_event_decline`). Lane branch merged with main; `consequences.lone_event_fills_bar_enabled()` returns True when the env is unset (explicit `0/false/no/off/""` turns it off); the 2.158 flag test asserts the new default and the off-words. Sean's 21 tiles: 18 of 19 guesses right (17 Litolff halves, 1 Brahms dotted half in 6/8), both controls right; tile 14 wrong from a GATHER fault (a tie's tail boxed as a head) -- the narrow-only low-ink guard is 2.160. Flag docs, ROADMAP, DECISIONS, FINDINGS §2.158 updated.
+
 ## 2026-10-16 -- ROADMAP 2.155 LANDED: OMR_STEM_AT_BAR_EDGE default ON (Sean "Yes")
 STAGED GATHER `line_detection.detect_stems`. Lane branch merged with main (2.154, 2.156 park); `stem_at_bar_edge_enabled()` now returns True when the env is unset (explicit `0/false/no/off/""` turns it off). The 2.155 flag test asserts the new default and the off-words. Sean's 40 tiles: 25/5/10 -> 33/5/2 (right/wrong/narrowed); with 2.153 on, 33 Litolff: 5/3/25 -> 29/1/3. 2.153 stays OFF. Flag docs, ROADMAP 2.155, DECISIONS line. FINDINGS section 10.
 

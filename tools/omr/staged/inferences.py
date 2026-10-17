@@ -2240,7 +2240,7 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
         # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
         # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
         kept = _bare_stem_confirmations(log, props)
-        # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default OFF): and a bar holding ONE event under a known meter may
+        # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
         # still be guessed to the one candidate that fills it (Sean 2026-10-17).
         props = kept + _lone_event_guesses(log, cell, props, kept)
     return props

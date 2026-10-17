@@ -4634,3 +4634,7 @@ Cheap guards from existing readers, measured on the 20 changed notes (`probe/gua
 | `notehead_ink` below a cut | yes (0.700, the lowest; next 0.735) | 0 here, but the cut is fitted to one example, so by CLAUDE §4 it may only narrow |
 
 Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's left edge, the real head never boxed); the rule only took the one head the bar held.
+
+### 2.158 -- LANDED ON (Sean 2026-10-17)
+
+Asked "Land 2.158 ON?", Sean answered "2.258 on" (a typo for 2.158). `OMR_LONE_EVENT_FILLS_BAR` is default ON; an explicit `0/false/no/off` (or empty) disables it. The tile-14 guard is ROADMAP 2.160.

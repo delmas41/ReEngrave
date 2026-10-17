@@ -1,4 +1,4 @@
-"""ROADMAP 2.158 -- a lone event in a known meter may be guessed from the bar: `OMR_LONE_EVENT_FILLS_BAR`, default OFF
+"""ROADMAP 2.158 -- a lone event in a known meter may be guessed from the bar: `OMR_LONE_EVENT_FILLS_BAR`, default ON (Sean 2026-10-17)
 (STAGED INFER `collapse_narrowed_by_bar`, beside 2.154's bare-stem confirm).
 
 Sean 2026-10-17: *"when there is just one note head type in the measure, and we know the meter, then I'm totally okay with it
@@ -72,9 +72,9 @@ def _lone_half():
 
 class TestTheFlag(unittest.TestCase):
 
-    def test_default_off_only_an_on_word_enables(self):
-        for word, on in ((None, False), ("", False), ("0", False), ("off", False), ("nope", False), ("1", True),
-                         ("on", True), ("yes", True), ("true", True)):
+    def test_default_on_only_an_off_word_disables(self):
+        for word, on in ((None, True), ("", False), ("0", False), ("off", False), ("no", False), ("false", False),
+                         ("nope", True), ("1", True), ("on", True), ("yes", True), ("true", True)):
             with mock.patch.dict(os.environ, {}, clear=False):
                 os.environ.pop(LONE, None)
                 if word is not None:
