@@ -4638,3 +4638,12 @@ Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's
 ### 2.158 -- LANDED ON (Sean 2026-10-17)
 
 Asked "Land 2.158 ON?", Sean answered "2.258 on" (a typo for 2.158). `OMR_LONE_EVENT_FILLS_BAR` is default ON; an explicit `0/false/no/off` (or empty) disables it. The tile-14 guard is ROADMAP 2.160.
+
+## 2.163 -- audit: who may override whom (2026-10-17; read from main 2320c2ea, no code changed)
+Extends the 2.149 audit above to every stage: every `supersedes=` site (18), every consumer of a bar's length or sum,
+every value copied between notes, and the meter's dependence on durations, each marked against CLAUDE §3/§4, the
+2026-10-16 reading order and the 2026-10-17 bar-length ruling. The map, the cycles and the ranked violations are in
+`docs/override-map-2026-10-17.md` (not restated here). The ranking's reach came from the 20261016-night facts and
+report, and from §2.154-2 above for the `reconcile_duration` pick/move split; the top new find is §10 rank 1: `_admitted`
+offers a DECIDED note one beam MORE without `_shortens_without_evidence`, so the bar can still make a bare quarter an
+eighth (the same mechanism 2.150-5 saw shorten two quarters).

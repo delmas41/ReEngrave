@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-17 -- ROADMAP 2.163 audit done: docs/override-map-2026-10-17.md (read-only)
+Every STAGED override / supersede site, bar-length consumer and note-to-note copy mapped per stage against CLAUDE §3/§4, the
+reading order and the 2026-10-17 ruling; 5 dependency cycles; 10 ranked violations (top: `_admitted` lets the bar shorten a
+DECIDED quarter to an eighth with no flag or beam seen -- 126 / 283 `reconcile_duration` guesses last night are its upper
+bound; the meter vote counting a narrowed note is 2.162's). §11: one shared "may this step change that verdict?" guard in
+`Log.record` plus one `bar_length(cell)` helper, instead of per-rule guards. No code changed; no DECISIONS line.
+
 ## 2026-10-17 -- ROADMAP 2.159 LANDED: OMR_HEAD_FILL_LOCATED_BOX default ON (Sean "Yes to both")
 STAGED GATHER `head_interior_white_located` + ADJUDICATE `rhythm.adjudicate_duration` first step: the 2.148 slit is also read on the head box an earlier reader located; a half only where that box holds the detector centre, the 2.23 window agrees, the box is not refused, the head has its own stem, and it does not lie on a dynamic letter or under slash ink; never calls a head black. Lane branch merged with main (2.158 ON); `rhythm.head_fill_located_enabled()` returns True when unset (explicit `0/false/no/off/""` disables); flag test asserts the new default and off-words; no older module needed setUpModule. Sean's 8 tiles: 4/4 Litolff halves right, 2 Brahms changes were non-notes (ff, tremolo slashes) now guarded, both controls right; reach Litolff 4 / Brahms 0. Slit share separates hollow/black with 0 errors on judged heads; 2.23 centre ink only at ~0.93; whole-head ink % worst (16 Litolff errors). Remaining misses = box-size gate / no stem touching box -> 2.161. Fast tier 8,384 passed; staged.check 192. judged-tiles.json rebuilt (1,175 tiles).
 
