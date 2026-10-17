@@ -156,7 +156,8 @@ class TestInferCollapses(unittest.TestCase):
         self.assertEqual(len(fired), 1)
         self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome, Outcome.DECIDED)
 
-    def test_either_arm_leaves_the_bare_stem_narrowed_RED(self):
+    def test_either_arm_leaves_a_stem_whose_beam_reading_is_not_on_file_narrowed_RED(self):
+        # `_Bar.bare` carries no `beam_evidence`: not a seen-bare stem, so not the confirm case
         for word in ("narrowed", "all"):
             log, g = self._bare_bar()
             rep = _infer(log, word)
@@ -182,6 +183,118 @@ class TestInferCollapses(unittest.TestCase):
             rep = _infer(log, word, bare=False)
             self.assertEqual(_fired(rep, infer.Inference.COLLAPSE_NARROWED_BY_BAR), [], word)
             self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome, Outcome.NARROWED, word)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Sean 2026-10-16, "it can confirm": a bare stem (no beam, no flag seen) may be CONFIRMED at its unbeamed value
+# ─────────────────────────────────────────────────────────────────────────────
+
+BARE_DETAIL = {"beam_evidence": "none_over_this_note", "flag_levels": 0, "flags_attached": 0,
+               "bare_stem_tip_window_clean": True, "bare_stem_likelihood": "not_claimed"}
+
+
+def _bare_eval(b, detail=BARE_DETAIL):
+    """A bare-stem narrowing {eighth (support 2), quarter (support 1)} in an `_EvalBar`."""
+    from tools.omr.staged.record import Candidate, Verdict
+    from tools.omr.tests.test_staged_narrowed_bar_2_97 import _dv
+    s = b._sub()
+    b.log.record(Verdict(id=b.log._next_id("vrd"), subject=s, quantity=Q.DURATION, outcome=Outcome.NARROWED, value=None,
+                         decider="adjudicate_duration", reason="beam_discounted_uncertain",
+                         candidates=(Candidate(_dv(0.5, 1), support=2.0), Candidate(_dv(1.0, 0), support=1.0)),
+                         detail=dict(detail)))
+    b.events.append([s.glyph])
+    return s
+
+
+class TestEvaluateConfirmsABareStemQuarter(unittest.TestCase):
+
+    def _quarter_bar(self, detail=BARE_DETAIL):
+        b = _EvalBar(2, 4)            # bare stem + a decided quarter: only the QUARTER lands 2/4
+        n = _bare_eval(b, detail)
+        b.decided(1.0)
+        return b, n
+
+    def test_both_arms_confirm_the_quarter_RED(self):
+        for word in ("narrowed", "all"):
+            b, n = self._quarter_bar()
+            log, out = _reconcile(b, word)
+            v = log.verdict(Q.DURATION, n)
+            self.assertEqual((v.outcome, v.value["beats"], v.reason), (Outcome.DECIDED, 1.0, "meter_reconciliation"), word)
+
+    def test_a_flag_on_the_stem_is_not_the_confirm_case(self):
+        for word in ("narrowed", "all"):
+            b, n = self._quarter_bar(dict(BARE_DETAIL, flags_attached=1))
+            log, out = _reconcile(b, word)
+            self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED, word)
+
+    def test_a_beam_read_over_the_note_is_not_the_confirm_case(self):
+        b, n = self._quarter_bar(dict(BARE_DETAIL, beam_evidence="strokes_over_this_note"))
+        log, out = _reconcile(b, "narrowed")
+        self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED)
+
+    def test_the_bar_never_lands_the_bare_stems_eighth(self):
+        for word in ("narrowed", "all"):
+            b = _EvalBar(2, 4)        # bare stem + quarter + eighth: only the EIGHTH lands 2/4
+            n = _bare_eval(b)
+            b.decided(1.0)
+            b.decided(0.5)
+            log, out = _reconcile(b, word)
+            self.assertEqual(out, [], word)
+            self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED, word)
+
+    def test_no_decided_neighbour_moves_beside_a_bare_stem(self):
+        # flag off, the 2.97 shape moves the decided quarter; under either arm the bar may only confirm the bare stem
+        for word in ("narrowed", "all"):
+            b = _EvalBar(2, 4)
+            n = _bare_eval(b)
+            d = b.decided(1.0)
+            b.decided(1.0, rest=True)
+            log, out = _reconcile(b, word)
+            self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 1.0, word)
+
+
+class _SeenBareBar(_Bar):
+    def bare_seen(self, detail=BARE_DETAIL):
+        from tools.omr.staged.record import Candidate, Verdict
+        g = self.g
+        self.g += 1
+        v = self.log.record(Verdict(
+            id=self._id(), subject=_sub(0, g, self.cell_idx), quantity=Q.DURATION, outcome=Outcome.NARROWED, value=None,
+            decider="adjudicate_duration", reason="beam_discounted_uncertain",
+            candidates=(Candidate({"beats": 0.5, "written": 0.5, "beam_levels": 1}, support=2.0),
+                        Candidate({"beats": 1.0, "written": 1.0, "beam_levels": 0}, support=1.0)),
+            detail=dict(detail)))
+        self.events.append([g])
+        self.members.append(v)
+        return g
+
+
+class TestInferConfirmsABareStemQuarter(unittest.TestCase):
+
+    def _bar(self, beats_before=(1.0, 1.0, 1.0), detail=BARE_DETAIL):
+        b = _SeenBareBar()
+        for x in beats_before:
+            b.decided(x)
+        g = b.bare_seen(detail)
+        return b.finish(), g
+
+    def test_both_arms_confirm_the_quarter_RED(self):
+        for word in ("narrowed", "all"):
+            log, g = self._bar()
+            _infer(log, word)
+            v = log.verdict(Q.DURATION, _sub(0, g))
+            self.assertEqual((v.outcome, v.value["beats"]), (Outcome.DECIDED, 1.0), word)
+
+    def test_never_the_eighth(self):
+        for word in ("narrowed", "all"):
+            log, g = self._bar(beats_before=(1.0, 1.0, 1.0, 0.5))   # 4/4: only the eighth lands
+            _infer(log, word)
+            self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome, Outcome.NARROWED, word)
+
+    def test_a_flag_on_the_stem_is_not_the_confirm_case(self):
+        log, g = self._bar(detail=dict(BARE_DETAIL, flag_levels=1))
+        _infer(log, "narrowed")
+        self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome, Outcome.NARROWED)
 
 
 if __name__ == "__main__":
