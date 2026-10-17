@@ -139,7 +139,7 @@ for n, p in enumerate(picks, 1):
     key.append(dict(n=n, **p))
 json.dump(dict(question="What is the written value of the note in the blue box (4, dotted 4, 8 ...)?", tiles=len(picks),
                blue="the note asked about", nothing_else_drawn=True), open(OUT / "manifest.json", "w"), indent=1)
-json.dump(dict(answered=None, verbatim=None, tiles=[dict(n=k["n"], sean=None) for k in key]),
+json.dump(dict(answered=None, verbatim=None, question="What is the written value of the note in the blue box (4, dotted 4, 8 ...)?", tiles=[]),  # blank: no rows enter the judged index
           open(OUT / "answers.json", "w"), indent=1)
 json.dump(key, open(KEY, "w"), indent=1)
 pngs = sorted(OUT.glob("tile_*.png"))
