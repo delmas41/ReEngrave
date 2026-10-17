@@ -101,7 +101,9 @@ adjudicators, the derived checks: `docs/staged-internals.md`.
 - **A note is an eighth only on evidence** — a flag or beam read on its
   stem, or a value shared from it. Bar arithmetic may CONFIRM a value the
   page already supports; it never SUPPLIES one, and never shortens a note
-  with no flag and no beam seen.
+  with no flag and no beam seen. One exception (Sean, 2026-10-17): a bar
+  holding ONE event (one head, or one chord on one stem) under a known
+  meter may take the value that fills it, written GUESSED (blue).
 - **The written value comes from the shape; a tuplet exists only where its
   marking is seen.** A bar that adds up only under an unmarked tuplet
   confirms nothing.
