@@ -3300,8 +3300,11 @@ HEAD_FILL_LOCATED_ENV = "OMR_HEAD_FILL_LOCATED_BOX"
 
 
 def head_fill_located_enabled() -> bool:
-    """ROADMAP 2.159, default OFF; only an explicit on-word enables."""
-    return os.environ.get(HEAD_FILL_LOCATED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.159, default ON (Sean 2026-10-17, "Yes to both"); an explicit 0/false/no/off (or empty) disables."""
+    raw = os.environ.get(HEAD_FILL_LOCATED_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
 def _head_reads_hollow_on_located_box(ev: Evidence, head_box, refusal=None) -> Optional[Dict[str, Any]]:
@@ -3916,7 +3919,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                            and HEAD_BOX_MIN_SPACES <= head_box[3] / _sp <= HEAD_BOX_MAX_SPACES
                                            and HEAD_FIRST_MIN_WIDTH_SPACES <= head_box[2] / _sp <= HEAD_BOX_MAX_WIDTH_SPACES):
             head_first = {**head_first, "fill": None, "not_head_sized": True}
-            # ROADMAP 2.159 (flag `OMR_HEAD_FILL_LOCATED_BOX`, default OFF): the box is not one head's size, but an
+            # ROADMAP 2.159 (flag `OMR_HEAD_FILL_LOCATED_BOX`, default ON): the box is not one head's size, but an
             # earlier reader located the head; its slit reading on that head box may say HOLLOW (never black).
             # Not on a box ADJUDICATE already refused as not a notehead (2.143's stale-duration population: 67 of the 114
             # Litolff and 216 of the 231 Brahms `head_fill_from_ink` boxes, mostly quarter rests boxed `too_narrow`).

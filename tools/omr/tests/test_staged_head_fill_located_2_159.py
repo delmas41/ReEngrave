@@ -1,5 +1,5 @@
 """ROADMAP 2.159 (STAGED GATHER `gather.head_interior_white_located` + ADJUDICATE `rhythm.adjudicate_duration` first step),
-flag `OMR_HEAD_FILL_LOCATED_BOX`, default OFF.
+flag `OMR_HEAD_FILL_LOCATED_BOX`, default ON (Sean 2026-10-17).
 
 Sean 2026-10-17: "I'm not sure why it doesn't see simple half notes". Measured on the 20261016-night records: the heads left
 narrowed by `head_fill_from_ink` sat, 95/114 (Litolff) and 223/231 (Brahms), in a detector box that is not one head's size --
@@ -210,16 +210,20 @@ class TestTheGatherReading(unittest.TestCase):
 
 class TestTheFlag(unittest.TestCase):
 
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(rhythm.head_fill_located_enabled())
+            self.assertTrue(rhythm.head_fill_located_enabled())
 
     def test_on_word_enables(self):
         for w in ("1", "true", "yes", "on"):
             with mock.patch.dict(os.environ, {FLAG: w}):
                 self.assertTrue(rhythm.head_fill_located_enabled())
 
+    def test_off_word_or_empty_disables(self):
+        for w in ("0", "false", "no", "off", "", " OFF "):
+            with mock.patch.dict(os.environ, {FLAG: w}):
+                self.assertFalse(rhythm.head_fill_located_enabled())
 
 if __name__ == "__main__":
     unittest.main()
