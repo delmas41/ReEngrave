@@ -9,6 +9,15 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-17 -- ROADMAP 2.161 + 2.164 LANDED: OMR_HEAD_STEM_BRIDGE and OMR_ARC_TAIL_NOT_A_HEAD default ON (Sean "Yes both on")
+Lane branches `lane-2.161-box-stem-halves` then `lane-2.164-tie-ends-as-heads` merged with main (gather.py kept both; ROADMAP,
+FINDINGS kept both sides, 2.164 renumbered omr-head-fill Sec.18; judged-tiles.json rebuilt, 1,200 tiles). STAGED GATHER +
+ADJUDICATE: 2.161 makes a stem the head's own at 2.148's first step when the head's ink runs into it on the engraving side
+(Set G 3/3 halves, both controls right; reach Litolff 8 / Brahms 0); 2.164 refuses a left-edge head box on a tie/slur the
+previous bar's crop cut that holds < half a head of head-tall ink (Set H 18/18 tie ends; reach Litolff 7 / Brahms 12).
+`rhythm.head_stem_bridge_enabled()` and `head_oval.enabled()` return True when unset (explicit `0/false/no/off/""` turns
+each off); both flag tests assert the new default and the off-words; flags doc rows "default ON, Sean 2026-10-17".
+
 ## 2026-10-17 -- ROADMAP 2.163 audit done: docs/override-map-2026-10-17.md (read-only)
 Every STAGED override / supersede site, bar-length consumer and note-to-note copy mapped per stage against CLAUDE §3/§4, the
 reading order and the 2026-10-17 ruling; 5 dependency cycles; 10 ranked violations (top: `_admitted` lets the bar shorten a

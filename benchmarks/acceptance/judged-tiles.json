@@ -1,6 +1,6 @@
 {
- "n_items": 91,
- "n_tiles": 1180,
+ "n_items": 92,
+ "n_tiles": 1200,
  "tiles": [
   {
    "answer": "right",
@@ -13512,6 +13512,426 @@
    "subjects": null,
    "tile": "5",
    "value": 2.0
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2378.2775,
+    6309.465,
+    2407.415,
+    6328.89
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/26/1/9/3/20",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2249.83,
+    3203.8525,
+    2290.8525,
+    3231.455
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/3/1/5/15/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3913.25,
+    1402.5,
+    3950.65,
+    1427.525
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/21/0/3/6/18",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3823.09,
+    4505.38,
+    3878.135,
+    4530.45
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/26/1/2/6/21",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2536.20703125,
+    5172.765625,
+    2561.86328125,
+    5184.7919921875
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/17/1/5/2/21",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "13",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    871.2875,
+    3224.2875,
+    904.2275,
+    3248.23
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/3/1/5/3/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "14",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3829.15,
+    4199.275,
+    3878.375,
+    4223.75
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/26/1/1/6/17",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "15",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2248.0,
+    3599.6,
+    2283.2,
+    3621.36
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/12/1/10/11/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "16",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2333.8,
+    3559.925,
+    2391.275,
+    3591.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/14/0/13/3/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "17",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    870.9825,
+    3224.135,
+    904.38,
+    3248.3825
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/3/1/5/3/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "18",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2855.0,
+    6308.355,
+    2878.865,
+    6330.555
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/26/1/9/4/18",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "19",
+   "value": "tie"
+  },
+  {
+   "answer": "2",
+   "answer_kind": "duration",
+   "control": true,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2459.24,
+    2262.88,
+    2479.4,
+    2278.4
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/1/14/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": 2.0
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3559.05078125,
+    1728.3046875,
+    3589.00390625,
+    1754.375
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/18/0/5/4/13",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "20",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3828.66,
+    4811.63,
+    3875.835,
+    4835.7725
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/26/1/3/6/16",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3706.7,
+    4768.575,
+    3741.35,
+    4790.025
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/18/1/3/5/19",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2144.41,
+    1176.9325,
+    2185.36,
+    1193.9425
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/4/0/5/12/14",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    1896.155,
+    608.54,
+    1908.245,
+    620.94
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/13/0/1/10/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": "tie"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    3914.1575,
+    872.72,
+    3962.165,
+    898.8050000000001
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/21/0/1/6/12",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": "tie"
+  },
+  {
+   "answer": "Trem slashes",
+   "answer_kind": "not_a_note",
+   "control": true,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2138.45,
+    3047.025,
+    2173.925,
+    3076.725
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/16/0/11/3/7",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": "tremolo"
+  },
+  {
+   "answer": "Tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-10-17",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.164-review",
+   "page_box": [
+    2995.975,
+    6522.275,
+    3057.575,
+    6560.5
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/14/1/9/4/15",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": "tie"
   },
   {
    "answer": "8th note on first ledger line",

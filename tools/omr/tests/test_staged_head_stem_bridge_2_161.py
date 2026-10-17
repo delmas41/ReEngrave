@@ -1,5 +1,5 @@
 """ROADMAP 2.161 (STAGED GATHER `gather.head_stem_bridge` + ADJUDICATE `rhythm.adjudicate_duration` first step), flag
-`OMR_HEAD_STEM_BRIDGE`, default OFF.
+`OMR_HEAD_STEM_BRIDGE`, default ON since Sean 2026-10-17 ("Yes both on").
 
 Sean 2026-10-17: "I'm not sure why it doesn't see simple half notes" / "Yes to both" (go after the box and stem readers).
 Measured on the 20261016-night records: of 2.159's real-note Litolff heads with no stem touching the detector box, the
@@ -240,6 +240,21 @@ class TestTheNarrowBoxExtendedToItsStem(unittest.TestCase):
         log = Log()
         g = _bridged(log, narrow=True, share=0.0, window_hollow=False)
         self.assertNotEqual(_written(_decide(log, g)), 2.0)
+
+
+class TestFlagDefault(unittest.TestCase):
+
+    def test_flag_is_on_by_default(self):
+        """Default ON since the landing (Sean 2026-10-17); an explicit off-word or empty disables."""
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(FLAG, None)
+            self.assertTrue(rhythm.head_stem_bridge_enabled())
+        for on in ("1", "true", "yes", "on"):
+            with mock.patch.dict(os.environ, {FLAG: on}):
+                self.assertTrue(rhythm.head_stem_bridge_enabled())
+        for off in ("0", "false", "no", "off", ""):
+            with mock.patch.dict(os.environ, {FLAG: off}):
+                self.assertFalse(rhythm.head_stem_bridge_enabled())
 
 
 if __name__ == "__main__":

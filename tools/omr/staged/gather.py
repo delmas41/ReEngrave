@@ -7443,6 +7443,59 @@ def gather_rest_ink_contact(log: Log, cells: Sequence[Any], local: Dict[int, Tup
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Does a head box at a bar's left edge hold a head-shaped oval? -- ROADMAP 2.164
+# ─────────────────────────────────────────────────────────────────────────────
+
+def gather_head_oval(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                     detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.HEAD_OVAL` on every notehead-classed box that starts within `head_oval.LEFT_EDGE_SPACES` of its bar's left
+    edge, off the PAGE raster (`pws.page.binary`, staff lines in; `head_oval.oval_width` leaves bare line rows out).
+
+    Sean, 2026-10-17 (ROADMAP 2.164): head boxes at a bar's left edge are "almost entirely tie ends ... or a bar
+    line". The detector reads one bar's crop at a time, so a tie crossing the barline is cut there and its tail is
+    boxed as a head. This only MEASURES whether the box holds head-tall ink across a head's width;
+    `notehead_precision._arc_tail_refusal` weighs it with the arc the previous bar's crop cut. Filed only while the
+    flag is ON. ⚠️ The PAGE raster, not the cell's: the tail runs to the crop edge, and the box may sit on it.
+    ⚠️ DECLINED, NOT DEFAULTED: no raster, staff unit or page frame is an abstention, never "no oval".
+    """
+    from . import head_oval
+    if not head_oval.enabled():
+        return
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        heads = [gi for gi, d in enumerate(dets) if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not heads:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        space_page = (grid[1] * 2.0 / float(up)) if grid and grid[1] and up else None
+        for gi in heads:
+            page_box = _page_box(c, dets[gi])
+            if page_box is None or not cell_box or len(cell_box) != 4 or not space_page:
+                continue
+            if not head_oval.box_at_left_edge(page_box, cell_box, space_page):
+                continue
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            got = head_oval.oval_width(page_binary, page_box, space_page) if page_binary is not None else None
+            if got is None:
+                log.abstain(g, Q.HEAD_OVAL, reader=READERS.CV_HEAD_OVAL, frame=frame, reason=ABSTAIN.NO_MASK,
+                            note="no page raster, or the box is off it")
+                continue
+            log.observe(g, Q.HEAD_OVAL, got["oval_width_sp"], reader=READERS.CV_HEAD_OVAL, frame=frame,
+                        left_gap_sp=round((float(page_box[0]) - float(cell_box[0])) / space_page, 3),
+                        space_page_px=round(space_page, 3), **{k: v for k, v in got.items()})
+            if progress:
+                print(f"  gather head oval {g.to_key()}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Rest-sized ink the detector never boxed -- ROADMAP 2.99
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -14771,6 +14824,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # raster and this cell's own `Q.STEM` rows, already filed by
         # `gather_cv_lines` above.
         gather_notehead_stem_cross_ink(log, cells, local, detections)
+        # ROADMAP 2.164 (flag OMR_ARC_TAIL_NOT_A_HEAD, default ON): head boxes at a bar's left edge, page raster.
+        gather_head_oval(log, pws, cells, local, detections)
         # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
         # one whose GEOMETRY position lies outside the first space -- it reads
         # that row) and after the ownership evidence, which does not feed it.

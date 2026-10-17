@@ -1,0 +1,10617 @@
+{
+"edge": 0.5,
+"gap": 0.5,
+"hits": [
+{
+"glyph": "glyph/1/0/9/4/30",
+"arc_glyph": "glyph/1/0/9/3/10",
+"kind": "slur",
+"arc_conf": 0.628,
+"gap_sp": 0.007,
+"cls": "noteheadBlackOnLine",
+"box": [
+3582.0,
+2736.29,
+3591.94,
+2768.51
+],
+"conf": 0.2772,
+"ink": 0.925,
+"ink_raw": 0.925,
+"ink_net": 0.7804,
+"ink_off": 0.925,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3582.0,
+2629.0,
+4284.0,
+2956.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/9/4/13",
+"tie",
+0.71,
+0.803
+]
+},
+{
+"glyph": "glyph/1/0/12/2/6",
+"arc_glyph": "glyph/1/0/12/1/20",
+"kind": "tie",
+"arc_conf": 0.273,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2488.0,
+3735.57,
+2497.81,
+3751.64
+],
+"conf": 0.5221,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2488.0,
+3435.0,
+3024.0,
+3762.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/12/1/20",
+"tie",
+0.273,
+0.0319
+]
+},
+{
+"glyph": "glyph/1/0/12/2/11",
+"arc_glyph": "glyph/1/0/12/1/20",
+"kind": "tie",
+"arc_conf": 0.273,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+2488.0,
+3742.11,
+2498.08,
+3762.0
+],
+"conf": 0.3596,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2488.0,
+3435.0,
+3024.0,
+3762.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/12/1/20",
+"tie",
+0.273,
+0.0319
+]
+},
+{
+"glyph": "glyph/1/0/13/2/4",
+"arc_glyph": "glyph/1/0/13/1/9",
+"kind": "tie",
+"arc_conf": 0.59,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+2488.0,
+3645.0,
+2495.97,
+3665.35
+],
+"conf": 0.4723,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+3645.0,
+3024.0,
+4030.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/13/1/9",
+"tie",
+0.59,
+0.0927
+]
+},
+{
+"glyph": "glyph/1/0/13/2/10",
+"arc_glyph": "glyph/1/0/13/1/10",
+"kind": "tie",
+"arc_conf": 0.589,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2488.0,
+3724.47,
+2497.07,
+3743.45
+],
+"conf": 0.3396,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+3645.0,
+3024.0,
+4030.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/13/1/10",
+"tie",
+0.589,
+0.0334
+]
+},
+{
+"glyph": "glyph/2/1/7/7/0",
+"arc_glyph": "glyph/2/1/7/6/1",
+"kind": "tie",
+"arc_conf": 0.566,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+4618.0,
+5789.92,
+4626.45,
+5803.0
+],
+"conf": 0.5248,
+"ink": 0.9922,
+"ink_raw": 0.9922,
+"ink_net": 0.9922,
+"ink_off": 0.9922,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4618.0,
+5476.0,
+5043.0,
+5803.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/2/1/7/6/1",
+"tie",
+0.566,
+0.0229
+]
+},
+{
+"glyph": "glyph/2/1/9/2/0",
+"arc_glyph": "glyph/2/1/9/1/1",
+"kind": "tie",
+"arc_conf": 0.365,
+"gap_sp": 0.019,
+"cls": "noteheadBlackOnLine",
+"box": [
+1989.0,
+6300.65,
+1998.9,
+6321.0
+],
+"conf": 0.6771,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1989.0,
+5936.0,
+2488.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.019,
+"glyph/2/1/9/1/1",
+"tie",
+0.365,
+0.0076
+]
+},
+{
+"glyph": "glyph/2/1/9/6/5",
+"arc_glyph": "glyph/2/1/9/5/6",
+"kind": "tie",
+"arc_conf": 0.421,
+"gap_sp": 0.027,
+"cls": "noteheadBlackInSpace",
+"box": [
+4094.0,
+6127.68,
+4102.25,
+6146.38
+],
+"conf": 0.351,
+"ink": 0.9131,
+"ink_raw": 0.9131,
+"ink_net": 0.9118,
+"ink_off": 0.9131,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4094.0,
+5936.0,
+4618.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/2/1/9/5/10",
+"tie",
+0.322,
+0.128
+]
+},
+{
+"glyph": "glyph/2/1/9/6/6",
+"arc_glyph": "glyph/2/1/9/5/4",
+"kind": "slur",
+"arc_conf": 0.586,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+4094.0,
+6104.57,
+4101.98,
+6124.38
+],
+"conf": 0.3352,
+"ink": 0.971,
+"ink_raw": 0.971,
+"ink_net": 0.9293,
+"ink_off": 0.971,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4094.0,
+5936.0,
+4618.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/2/1/9/5/4",
+"slur",
+0.586,
+0.9736
+]
+},
+{
+"glyph": "glyph/2/1/9/6/8",
+"arc_glyph": "glyph/2/1/9/5/4",
+"kind": "slur",
+"arc_conf": 0.586,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+4094.0,
+6103.48,
+4102.25,
+6132.62
+],
+"conf": 0.3002,
+"ink": 0.9626,
+"ink_raw": 0.9626,
+"ink_net": 0.9492,
+"ink_off": 0.9626,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4094.0,
+5936.0,
+4618.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/2/1/9/5/4",
+"slur",
+0.586,
+0.9736
+]
+},
+{
+"glyph": "glyph/2/1/9/6/9",
+"arc_glyph": "glyph/2/1/9/5/7",
+"kind": "tie",
+"arc_conf": 0.388,
+"gap_sp": 0.007,
+"cls": "noteheadBlackOnLine",
+"box": [
+4094.0,
+6151.88,
+4102.8,
+6179.1
+],
+"conf": 0.2695,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4094.0,
+5936.0,
+4618.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/2/1/9/5/7",
+"tie",
+0.388,
+0.0219
+]
+},
+{
+"glyph": "glyph/2/1/9/6/10",
+"arc_glyph": "glyph/2/1/9/5/7",
+"kind": "tie",
+"arc_conf": 0.388,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+4094.0,
+6177.45,
+4103.07,
+6204.95
+],
+"conf": 0.2505,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4094.0,
+5936.0,
+4618.0,
+6321.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/9/6/7",
+"tie",
+0.304,
+0.042
+]
+},
+{
+"glyph": "glyph/2/1/10/4/0",
+"arc_glyph": "glyph/2/1/10/3/2",
+"kind": "tie",
+"arc_conf": 0.522,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+3023.0,
+6201.0,
+3030.7,
+6220.25
+],
+"conf": 0.7231,
+"ink": 0.9028,
+"ink_raw": 0.9028,
+"ink_net": 0.9028,
+"ink_off": 0.9028,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3023.0,
+6201.0,
+3579.0,
+6531.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/2/1/10/3/2",
+"tie",
+0.522,
+0.0187
+]
+},
+{
+"glyph": "glyph/2/1/11/2/4",
+"arc_glyph": "glyph/2/1/11/1/3",
+"kind": "tie",
+"arc_conf": 0.384,
+"gap_sp": 0.009,
+"cls": "noteheadBlackInSpace",
+"box": [
+1989.0,
+6591.38,
+1998.9,
+6615.02
+],
+"conf": 0.3623,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1989.0,
+6480.0,
+2488.0,
+6810.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/11/2/2",
+"tie",
+0.448,
+0.1084
+]
+},
+{
+"glyph": "glyph/2/1/11/4/6",
+"arc_glyph": "glyph/2/1/11/3/1",
+"kind": "tie",
+"arc_conf": 0.546,
+"gap_sp": 0.065,
+"cls": "noteheadBlackOnLine",
+"box": [
+3023.0,
+6578.18,
+3029.88,
+6594.95
+],
+"conf": 0.2521,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3023.0,
+6480.0,
+3579.0,
+6810.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.065,
+"glyph/2/1/11/3/1",
+"tie",
+0.546,
+0.015
+]
+},
+{
+"glyph": "glyph/2/1/11/7/13",
+"arc_glyph": "glyph/2/1/11/6/5",
+"kind": "tie",
+"arc_conf": 0.367,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4618.0,
+6575.98,
+4626.25,
+6602.38
+],
+"conf": 0.2571,
+"ink": 0.9626,
+"ink_raw": 0.9626,
+"ink_net": 0.9626,
+"ink_off": 0.9626,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4618.0,
+6480.0,
+5043.0,
+6810.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/11/7/5",
+"tie",
+0.44,
+0.6897
+]
+},
+{
+"glyph": "glyph/2/1/11/8/6",
+"arc_glyph": "glyph/2/1/11/7/0",
+"kind": "slur",
+"arc_conf": 0.671,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+5043.0,
+6584.5,
+5052.07,
+6622.18
+],
+"conf": 0.2771,
+"ink": 0.9672,
+"ink_raw": 0.9672,
+"ink_net": 0.9672,
+"ink_off": 0.9672,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5043.0,
+6480.0,
+5503.0,
+6810.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/2/1/11/7/11",
+"tie",
+0.29,
+0.1749
+]
+},
+{
+"glyph": "glyph/2/1/13/3/11",
+"arc_glyph": "glyph/2/1/13/2/2",
+"kind": "tie",
+"arc_conf": 0.364,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+2488.0,
+7016.1,
+2496.8,
+7037.82
+],
+"conf": 0.2687,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+6905.0,
+3023.0,
+7290.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/13/3/1",
+"tie",
+0.575,
+0.0187
+]
+},
+{
+"glyph": "glyph/3/1/1/1/16",
+"arc_glyph": "glyph/3/1/1/0/14",
+"kind": "tie",
+"arc_conf": 0.578,
+"gap_sp": 0.014,
+"cls": "noteheadBlackOnLine",
+"box": [
+1423.0,
+4377.73,
+1431.53,
+4402.2
+],
+"conf": 0.3891,
+"ink": 0.7807,
+"ink_raw": 0.7807,
+"ink_net": 0.7807,
+"ink_off": 0.7807,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1423.0,
+4202.0,
+1972.0,
+4532.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.014,
+"glyph/3/1/1/0/14",
+"tie",
+0.578,
+0.9276
+]
+},
+{
+"glyph": "glyph/3/1/5/1/21",
+"arc_glyph": "glyph/3/1/5/0/17",
+"kind": "tie",
+"arc_conf": 0.427,
+"gap_sp": 0.042,
+"cls": "noteheadBlackOnLine",
+"box": [
+1423.0,
+5189.27,
+1430.7,
+5214.3
+],
+"conf": 0.2571,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1423.0,
+5079.0,
+1972.0,
+5409.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.042,
+"glyph/3/1/5/0/17",
+"tie",
+0.427,
+0.0968
+]
+},
+{
+"glyph": "glyph/3/1/5/2/7",
+"arc_glyph": "glyph/3/1/5/1/12",
+"kind": "tie",
+"arc_conf": 0.487,
+"gap_sp": 0.004,
+"cls": "noteheadBlackInSpace",
+"box": [
+1972.0,
+5244.52,
+1981.11,
+5270.03
+],
+"conf": 0.4811,
+"ink": 0.9902,
+"ink_raw": 0.9902,
+"ink_net": 0.9902,
+"ink_off": 0.9902,
+"box_source": null,
+"sp": 27.49,
+"cell_box": [
+1972.0,
+5079.0,
+2594.0,
+5409.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.004,
+"glyph/3/1/5/1/14",
+"tie",
+0.345,
+0.1439
+]
+},
+{
+"glyph": "glyph/3/1/5/2/9",
+"arc_glyph": "glyph/3/1/5/1/13",
+"kind": "tie",
+"arc_conf": 0.391,
+"gap_sp": 0.004,
+"cls": "noteheadBlackInSpace",
+"box": [
+1972.0,
+5163.43,
+1978.99,
+5182.57
+],
+"conf": 0.4549,
+"ink": 0.9077,
+"ink_raw": 0.9077,
+"ink_net": 0.3927,
+"ink_off": 0.88,
+"box_source": "part_boxed_recentre",
+"sp": 27.49,
+"cell_box": [
+1972.0,
+5079.0,
+2594.0,
+5409.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/3/1/5/2/14",
+"tie",
+0.3,
+0.6538
+]
+},
+{
+"glyph": "glyph/3/1/5/2/10",
+"arc_glyph": "glyph/3/1/5/1/13",
+"kind": "tie",
+"arc_conf": 0.391,
+"gap_sp": 0.004,
+"cls": "noteheadBlackOnLine",
+"box": [
+1972.0,
+5189.25,
+1979.29,
+5212.63
+],
+"conf": 0.4132,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.49,
+"cell_box": [
+1972.0,
+5079.0,
+2594.0,
+5409.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/3/1/5/2/14",
+"tie",
+0.3,
+0.6538
+]
+},
+{
+"glyph": "glyph/3/1/5/2/11",
+"arc_glyph": "glyph/3/1/5/1/14",
+"kind": "tie",
+"arc_conf": 0.345,
+"gap_sp": 0.004,
+"cls": "noteheadBlackInSpace",
+"box": [
+1972.0,
+5300.1,
+1979.59,
+5320.15
+],
+"conf": 0.411,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.49,
+"cell_box": [
+1972.0,
+5079.0,
+2594.0,
+5409.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.004,
+"glyph/3/1/5/1/18",
+"tie",
+0.297,
+0.0797
+]
+},
+{
+"glyph": "glyph/4/1/3/7/27",
+"arc_glyph": "glyph/4/1/3/6/19",
+"kind": "tie",
+"arc_conf": 0.44,
+"gap_sp": 0.01,
+"cls": "noteheadBlackOnLine",
+"box": [
+4434.0,
+5041.07,
+4441.36,
+5069.95
+],
+"conf": 0.2665,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4434.0,
+4689.0,
+4954.0,
+5070.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/4/1/3/7/20",
+"tie",
+0.468,
+0.1
+]
+},
+{
+"glyph": "glyph/5/0/0/2/15",
+"arc_glyph": "glyph/5/0/0/1/24",
+"kind": "tie",
+"arc_conf": 0.261,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2029.0,
+557.39,
+2038.81,
+583.82
+],
+"conf": 0.3183,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2029.0,
+368.0,
+2580.0,
+749.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/0/1/24",
+"tie",
+0.261,
+0.8458
+]
+},
+{
+"glyph": "glyph/5/0/1/1/16",
+"arc_glyph": "glyph/5/0/1/0/14",
+"kind": "tie",
+"arc_conf": 0.403,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+1442.0,
+769.84,
+1454.9,
+801.08
+],
+"conf": 0.2713,
+"ink": 0.9921,
+"ink_raw": 0.9921,
+"ink_net": 0.9921,
+"ink_off": 0.9921,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+1442.0,
+640.0,
+2029.0,
+970.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/1/0/14",
+"tie",
+0.403,
+0.2637
+]
+},
+{
+"glyph": "glyph/5/0/1/1/19",
+"arc_glyph": "glyph/5/0/1/0/14",
+"kind": "tie",
+"arc_conf": 0.403,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+1442.0,
+746.34,
+1454.32,
+770.13
+],
+"conf": 0.259,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+1442.0,
+640.0,
+2029.0,
+970.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/1/0/14",
+"tie",
+0.403,
+0.2637
+]
+},
+{
+"glyph": "glyph/5/0/2/1/17",
+"arc_glyph": "glyph/5/0/2/0/21",
+"kind": "tie",
+"arc_conf": 0.406,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+1442.0,
+1011.2,
+1452.6,
+1034.13
+],
+"conf": 0.4391,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.3,
+"cell_box": [
+1442.0,
+902.0,
+2029.0,
+1229.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/2/0/21",
+"tie",
+0.406,
+0.2474
+]
+},
+{
+"glyph": "glyph/5/0/2/4/25",
+"arc_glyph": "glyph/5/0/2/3/14",
+"kind": "tie",
+"arc_conf": 0.48,
+"gap_sp": 0.024,
+"cls": "noteheadBlackOnLine",
+"box": [
+3133.0,
+984.91,
+3139.74,
+1005.12
+],
+"conf": 0.3435,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3133.0,
+902.0,
+3733.0,
+1229.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.024,
+"glyph/5/0/2/3/14",
+"tie",
+0.48,
+0.147
+]
+},
+{
+"glyph": "glyph/5/0/3/2/11",
+"arc_glyph": "glyph/5/0/3/1/15",
+"kind": "tie",
+"arc_conf": 0.426,
+"gap_sp": 0.042,
+"cls": "noteheadBlackInSpace",
+"box": [
+2029.0,
+1328.32,
+2037.17,
+1357.2
+],
+"conf": 0.2834,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2029.0,
+1167.0,
+2580.0,
+1494.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/3/2/12",
+"tie",
+0.278,
+0.2105
+]
+},
+{
+"glyph": "glyph/5/0/3/2/13",
+"arc_glyph": "glyph/5/0/3/1/21",
+"kind": "tie",
+"arc_conf": 0.349,
+"gap_sp": 0.042,
+"cls": "noteheadBlackInSpace",
+"box": [
+2029.0,
+1353.66,
+2037.45,
+1386.36
+],
+"conf": 0.2771,
+"ink": 0.8646,
+"ink_raw": 0.8646,
+"ink_net": 0.3812,
+"ink_off": 0.7969,
+"box_source": "part_boxed_recentre",
+"sp": 27.25,
+"cell_box": [
+2029.0,
+1167.0,
+2580.0,
+1494.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/3/2/12",
+"tie",
+0.278,
+0.2105
+]
+},
+{
+"glyph": "glyph/5/0/3/3/18",
+"arc_glyph": "glyph/5/0/3/2/12",
+"kind": "tie",
+"arc_conf": 0.278,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+2580.0,
+1336.49,
+2586.81,
+1360.47
+],
+"conf": 0.3881,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2580.0,
+1167.0,
+3133.0,
+1494.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/3/2/12",
+"tie",
+0.278,
+0.2105
+]
+},
+{
+"glyph": "glyph/5/0/4/1/4",
+"arc_glyph": "glyph/5/0/4/0/6",
+"kind": "tie",
+"arc_conf": 0.583,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1442.0,
+1487.06,
+1450.6,
+1523.18
+],
+"conf": 0.3757,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+1442.0,
+1377.0,
+2029.0,
+1707.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/4/0/6",
+"tie",
+0.583,
+0.0861
+]
+},
+{
+"glyph": "glyph/5/0/4/5/13",
+"arc_glyph": "glyph/5/0/4/4/13",
+"kind": "tie",
+"arc_conf": 0.315,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3733.0,
+1377.59,
+3741.92,
+1399.9
+],
+"conf": 0.2619,
+"ink": 0.9902,
+"ink_raw": 0.9902,
+"ink_net": 0.9902,
+"ink_off": 0.9902,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+3733.0,
+1377.0,
+4342.0,
+1707.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/4/4/13",
+"tie",
+0.315,
+0.192
+]
+},
+{
+"glyph": "glyph/5/0/4/6/2",
+"arc_glyph": "glyph/5/0/4/5/7",
+"kind": "tie",
+"arc_conf": 0.38,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+4342.0,
+1683.95,
+4349.82,
+1706.85
+],
+"conf": 0.4839,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+4342.0,
+1377.0,
+4914.0,
+1707.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/4/5/7",
+"tie",
+0.38,
+0.0533
+]
+},
+{
+"glyph": "glyph/5/0/5/1/9",
+"arc_glyph": "glyph/5/0/5/0/14",
+"kind": "tie",
+"arc_conf": 0.47,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1442.0,
+1684.5,
+1449.17,
+1712.58
+],
+"conf": 0.4091,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+1442.0,
+1573.0,
+2029.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/0/14",
+"tie",
+0.47,
+0.1399
+]
+},
+{
+"glyph": "glyph/5/0/5/2/15",
+"arc_glyph": "glyph/5/0/5/1/8",
+"kind": "tie",
+"arc_conf": 0.557,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+2029.0,
+1656.88,
+2035.88,
+1673.1
+],
+"conf": 0.3889,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2029.0,
+1573.0,
+2580.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/1/8",
+"tie",
+0.557,
+0.1109
+]
+},
+{
+"glyph": "glyph/5/0/5/2/17",
+"arc_glyph": "glyph/5/0/5/1/8",
+"kind": "tie",
+"arc_conf": 0.557,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2029.0,
+1679.15,
+2035.88,
+1707.75
+],
+"conf": 0.3148,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2029.0,
+1573.0,
+2580.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/1/8",
+"tie",
+0.557,
+0.1109
+]
+},
+{
+"glyph": "glyph/5/0/5/4/21",
+"arc_glyph": "glyph/5/0/5/3/13",
+"kind": "tie",
+"arc_conf": 0.381,
+"gap_sp": 0.009,
+"cls": "noteheadBlackInSpace",
+"box": [
+3133.0,
+1573.29,
+3141.5,
+1598.78
+],
+"conf": 0.3063,
+"ink": 0.8849,
+"ink_raw": 0.8849,
+"ink_net": 0.8849,
+"ink_off": 0.8849,
+"box_source": null,
+"sp": 27.54,
+"cell_box": [
+3133.0,
+1573.0,
+3733.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/4/17",
+"tie",
+0.351,
+0.7933
+]
+},
+{
+"glyph": "glyph/5/0/5/6/18",
+"arc_glyph": "glyph/5/0/5/5/4",
+"kind": "tie",
+"arc_conf": 0.687,
+"gap_sp": 0.054,
+"cls": "noteheadBlackOnLine",
+"box": [
+4342.0,
+1848.67,
+4349.26,
+1898.1
+],
+"conf": 0.3033,
+"ink": 0.8257,
+"ink_raw": 0.8257,
+"ink_net": 0.8257,
+"ink_off": 0.8257,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+4342.0,
+1573.0,
+4914.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/6/15",
+"tie",
+0.359,
+0.9649
+]
+},
+{
+"glyph": "glyph/5/0/5/6/22",
+"arc_glyph": "glyph/5/0/5/5/12",
+"kind": "tie",
+"arc_conf": 0.57,
+"gap_sp": 0.097,
+"cls": "noteheadBlackOnLine",
+"box": [
+4342.0,
+1670.47,
+4354.29,
+1706.5
+],
+"conf": 0.2527,
+"ink": 0.942,
+"ink_raw": 0.942,
+"ink_net": 0.942,
+"ink_off": 0.942,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+4342.0,
+1573.0,
+4914.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/5/19",
+"tie",
+0.298,
+0.4647
+]
+},
+{
+"glyph": "glyph/5/0/6/6/6",
+"arc_glyph": "glyph/5/0/6/5/11",
+"kind": "tie",
+"arc_conf": 0.405,
+"gap_sp": 0.235,
+"cls": "noteheadBlackOnLine",
+"box": [
+4348.42,
+1784.64,
+4365.46,
+1800.0
+],
+"conf": 0.4622,
+"ink": 0.766,
+"ink_raw": 0.766,
+"ink_net": 0.766,
+"ink_off": 0.766,
+"box_source": null,
+"sp": 27.3,
+"cell_box": [
+4342.0,
+1769.0,
+4914.0,
+2096.0
+],
+"left_gap_sp": 0.235,
+"arc": [
+0.0,
+"glyph/5/0/6/6/14",
+"slur",
+0.303,
+0.1393
+]
+},
+{
+"glyph": "glyph/5/0/6/6/19",
+"arc_glyph": "glyph/5/0/6/5/2",
+"kind": "tie",
+"arc_conf": 0.787,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+4342.0,
+1830.45,
+4349.26,
+1850.0
+],
+"conf": 0.2503,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.3,
+"cell_box": [
+4342.0,
+1769.0,
+4914.0,
+2096.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/6/5/2",
+"tie",
+0.787,
+0.98
+]
+},
+{
+"glyph": "glyph/5/1/4/7/7",
+"arc_glyph": "glyph/5/1/4/6/12",
+"kind": "slur",
+"arc_conf": 0.294,
+"gap_sp": 0.025,
+"cls": "noteheadBlackInSpace",
+"box": [
+4156.0,
+5110.2,
+4162.54,
+5131.18
+],
+"conf": 0.3098,
+"ink": 0.8722,
+"ink_raw": 0.8722,
+"ink_net": 0.8722,
+"ink_off": 0.8722,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4156.0,
+4805.0,
+4573.0,
+5132.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/1/4/7/8",
+"tie",
+0.259,
+0.125
+]
+},
+{
+"glyph": "glyph/5/1/4/8/7",
+"arc_glyph": "glyph/5/1/4/7/4",
+"kind": "tie",
+"arc_conf": 0.4,
+"gap_sp": 0.043,
+"cls": "noteheadBlackInSpace",
+"box": [
+4573.0,
+4894.38,
+4580.36,
+4914.0
+],
+"conf": 0.2914,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4573.0,
+4805.0,
+5014.0,
+5132.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.043,
+"glyph/5/1/4/7/4",
+"tie",
+0.4,
+0.0313
+]
+},
+{
+"glyph": "glyph/5/1/6/9/7",
+"arc_glyph": "glyph/5/1/6/8/11",
+"kind": "tie",
+"arc_conf": 0.333,
+"gap_sp": 0.093,
+"cls": "noteheadBlackOnLine",
+"box": [
+5014.0,
+5338.55,
+5021.9,
+5362.8
+],
+"conf": 0.4423,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+5014.0,
+5229.0,
+5505.0,
+5556.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.053,
+"glyph/5/1/6/8/16",
+"tie",
+0.262,
+0.142
+]
+},
+{
+"glyph": "glyph/5/1/13/3/11",
+"arc_glyph": "glyph/5/1/13/2/0",
+"kind": "slur",
+"arc_conf": 0.874,
+"gap_sp": 0.052,
+"cls": "noteheadBlackOnLine",
+"box": [
+2271.55,
+6932.0,
+2332.32,
+6966.1
+],
+"conf": 0.3965,
+"ink": 0.5184,
+"ink_raw": 0.5184,
+"ink_net": 0.5184,
+"ink_off": 0.5184,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2271.0,
+6932.0,
+2758.0,
+7317.0
+],
+"left_gap_sp": 0.02,
+"arc": [
+0.052,
+"glyph/5/1/13/2/0",
+"slur",
+0.874,
+0.977
+]
+},
+{
+"glyph": "glyph/6/0/2/5/23",
+"arc_glyph": "glyph/6/0/2/4/14",
+"kind": "tie",
+"arc_conf": 0.444,
+"gap_sp": 0.007,
+"cls": "noteheadBlackOnLine",
+"box": [
+3450.0,
+1136.57,
+3459.58,
+1156.01
+],
+"conf": 0.2787,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.77,
+"cell_box": [
+3450.0,
+1025.0,
+4027.0,
+1346.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/6/0/2/4/14",
+"tie",
+0.444,
+0.1228
+]
+},
+{
+"glyph": "glyph/6/0/3/8/6",
+"arc_glyph": "glyph/6/0/3/7/18",
+"kind": "slur",
+"arc_conf": 0.438,
+"gap_sp": 0.081,
+"cls": "noteheadBlackInSpace",
+"box": [
+4985.0,
+1390.34,
+4993.91,
+1412.48
+],
+"conf": 0.5953,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.0,
+"cell_box": [
+4985.0,
+1271.0,
+5522.0,
+1595.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.01,
+"glyph/6/0/3/8/11",
+"tie",
+0.482,
+1.0
+]
+},
+{
+"glyph": "glyph/6/0/3/8/16",
+"arc_glyph": "glyph/6/0/3/7/18",
+"kind": "slur",
+"arc_conf": 0.438,
+"gap_sp": 0.081,
+"cls": "noteheadBlackInSpace",
+"box": [
+4985.0,
+1396.28,
+4994.18,
+1418.69
+],
+"conf": 0.2899,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.0,
+"cell_box": [
+4985.0,
+1271.0,
+5522.0,
+1595.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.04,
+"glyph/6/0/3/8/12",
+"tie",
+0.457,
+1.0
+]
+},
+{
+"glyph": "glyph/6/0/3/8/19",
+"arc_glyph": "glyph/6/0/3/7/18",
+"kind": "slur",
+"arc_conf": 0.438,
+"gap_sp": 0.081,
+"cls": "noteheadBlackInSpace",
+"box": [
+4985.0,
+1369.55,
+4993.1,
+1385.21
+],
+"conf": 0.2506,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.0,
+"cell_box": [
+4985.0,
+1271.0,
+5522.0,
+1595.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.04,
+"glyph/6/0/3/8/11",
+"tie",
+0.482,
+1.0
+]
+},
+{
+"glyph": "glyph/6/0/4/4/2",
+"arc_glyph": "glyph/6/0/4/3/5",
+"kind": "tie",
+"arc_conf": 0.297,
+"gap_sp": 0.001,
+"cls": "noteheadBlackOnLine",
+"box": [
+2929.0,
+1672.55,
+2937.25,
+1697.3
+],
+"conf": 0.3781,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2929.0,
+1507.0,
+3450.0,
+1837.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.001,
+"glyph/6/0/4/3/5",
+"tie",
+0.297,
+0.021
+]
+},
+{
+"glyph": "glyph/6/0/4/4/6",
+"arc_glyph": "glyph/6/0/4/3/5",
+"kind": "tie",
+"arc_conf": 0.297,
+"gap_sp": 0.001,
+"cls": "noteheadBlackInSpace",
+"box": [
+2929.0,
+1641.75,
+2937.8,
+1664.3
+],
+"conf": 0.2584,
+"ink": 0.947,
+"ink_raw": 0.947,
+"ink_net": 0.947,
+"ink_off": 0.947,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2929.0,
+1507.0,
+3450.0,
+1837.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.001,
+"glyph/6/0/4/3/5",
+"tie",
+0.297,
+0.021
+]
+},
+{
+"glyph": "glyph/6/0/5/6/6",
+"arc_glyph": "glyph/6/0/5/5/0",
+"kind": "tie",
+"arc_conf": 0.634,
+"gap_sp": 0.021,
+"cls": "noteheadBlackOnLine",
+"box": [
+4027.0,
+1898.28,
+4034.49,
+1914.06
+],
+"conf": 0.3303,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.75,
+"cell_box": [
+4027.0,
+1745.0,
+4540.0,
+2119.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/0/5/5/7",
+"tie",
+0.379,
+0.0589
+]
+},
+{
+"glyph": "glyph/6/1/2/4/5",
+"arc_glyph": "glyph/6/1/2/3/16",
+"kind": "tie",
+"arc_conf": 0.251,
+"gap_sp": 0.031,
+"cls": "noteheadBlackInSpace",
+"box": [
+3237.0,
+4632.87,
+3246.09,
+4651.6
+],
+"conf": 0.4801,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.75,
+"cell_box": [
+3237.0,
+4524.0,
+3712.0,
+4845.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.031,
+"glyph/6/1/2/3/16",
+"tie",
+0.251,
+0.3004
+]
+},
+{
+"glyph": "glyph/6/1/2/6/15",
+"arc_glyph": "glyph/6/1/2/5/28",
+"kind": "tie",
+"arc_conf": 0.259,
+"gap_sp": 0.035,
+"cls": "noteheadBlackOnLine",
+"box": [
+4222.0,
+4633.41,
+4232.16,
+4655.07
+],
+"conf": 0.3335,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.75,
+"cell_box": [
+4222.0,
+4524.0,
+4693.0,
+4845.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/2/6/18",
+"tie",
+0.279,
+0.2144
+]
+},
+{
+"glyph": "glyph/6/1/4/2/12",
+"arc_glyph": "glyph/6/1/4/1/13",
+"kind": "slur",
+"arc_conf": 0.28,
+"gap_sp": 0.055,
+"cls": "noteheadBlackOnLine",
+"box": [
+2042.0,
+5165.8,
+2049.7,
+5189.22
+],
+"conf": 0.4977,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2042.0,
+5025.0,
+2673.0,
+5410.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.055,
+"glyph/6/1/4/1/13",
+"slur",
+0.28,
+0.9774
+]
+},
+{
+"glyph": "glyph/6/1/4/6/11",
+"arc_glyph": "glyph/6/1/4/5/19",
+"kind": "tie",
+"arc_conf": 0.322,
+"gap_sp": 0.005,
+"cls": "noteheadBlackInSpace",
+"box": [
+4222.0,
+5194.95,
+4229.98,
+5217.5
+],
+"conf": 0.4328,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4222.0,
+5025.0,
+4693.0,
+5410.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/4/6/14",
+"tie",
+0.304,
+0.2687
+]
+},
+{
+"glyph": "glyph/6/1/4/8/0",
+"arc_glyph": "glyph/6/1/4/7/4",
+"kind": "slur",
+"arc_conf": 0.533,
+"gap_sp": 0.142,
+"cls": "noteheadBlackOnLine",
+"box": [
+5083.0,
+5186.43,
+5090.43,
+5207.6
+],
+"conf": 0.4573,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5083.0,
+5025.0,
+5505.0,
+5410.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.142,
+"glyph/6/1/4/7/4",
+"slur",
+0.533,
+0.7196
+]
+},
+{
+"glyph": "glyph/7/0/8/3/5",
+"arc_glyph": "glyph/7/0/8/2/4",
+"kind": "tie",
+"arc_conf": 0.474,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+2336.0,
+2787.9,
+2343.97,
+2819.8
+],
+"conf": 0.4213,
+"ink": 0.8281,
+"ink_raw": 0.8281,
+"ink_net": 0.3616,
+"ink_off": 0.7422,
+"box_source": "part_boxed_recentre",
+"sp": 27.5,
+"cell_box": [
+2336.0,
+2679.0,
+2865.0,
+3009.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/7/0/8/3/10",
+"tie",
+0.275,
+0.0492
+]
+},
+{
+"glyph": "glyph/7/0/10/3/6",
+"arc_glyph": "glyph/7/0/10/2/6",
+"kind": "tie",
+"arc_conf": 0.448,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+2336.0,
+3308.84,
+2345.52,
+3336.28
+],
+"conf": 0.3109,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+2336.0,
+3210.0,
+2865.0,
+3602.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/7/0/10/2/6",
+"tie",
+0.448,
+0.0395
+]
+},
+{
+"glyph": "glyph/8/0/1/2/17",
+"arc_glyph": "glyph/8/0/1/1/15",
+"kind": "tie",
+"arc_conf": 0.459,
+"gap_sp": 0.159,
+"cls": "noteheadBlackOnLine",
+"box": [
+1586.0,
+971.14,
+1595.12,
+1014.75
+],
+"conf": 0.3065,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.5,
+"cell_box": [
+1586.0,
+742.0,
+1990.0,
+1141.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.159,
+"glyph/8/0/1/1/15",
+"tie",
+0.459,
+0.2979
+]
+},
+{
+"glyph": "glyph/8/1/1/9/1",
+"arc_glyph": "glyph/8/1/1/8/1",
+"kind": "tie",
+"arc_conf": 0.325,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+4028.0,
+4430.75,
+4036.05,
+4458.77
+],
+"conf": 0.4284,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4028.0,
+4234.0,
+4438.0,
+4567.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/8/1/1/8/1",
+"tie",
+0.325,
+0.0338
+]
+},
+{
+"glyph": "glyph/9/0/0/3/10",
+"arc_glyph": "glyph/9/0/0/2/7",
+"kind": "tie",
+"arc_conf": 0.761,
+"gap_sp": 0.01,
+"cls": "noteheadBlackOnLine",
+"box": [
+2414.0,
+676.13,
+2423.26,
+715.38
+],
+"conf": 0.3273,
+"ink": 0.9211,
+"ink_raw": 0.9211,
+"ink_net": 0.9211,
+"ink_off": 0.9211,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2414.0,
+402.0,
+2923.0,
+783.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.01,
+"glyph/9/0/0/2/15",
+"tie",
+0.325,
+0.0236
+]
+},
+{
+"glyph": "glyph/9/0/5/6/7",
+"arc_glyph": "glyph/9/0/5/5/5",
+"kind": "tie",
+"arc_conf": 0.407,
+"gap_sp": 0.041,
+"cls": "noteheadBlackOnLine",
+"box": [
+3873.0,
+1977.16,
+3883.92,
+1991.44
+],
+"conf": 0.5336,
+"ink": 0.8793,
+"ink_raw": 0.8793,
+"ink_net": 0.8793,
+"ink_off": 0.8793,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+3873.0,
+1656.0,
+4305.0,
+1992.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/9/0/5/6/6",
+"tie",
+0.534,
+0.1531
+]
+},
+{
+"glyph": "glyph/9/1/1/2/16",
+"arc_glyph": "glyph/9/1/1/1/4",
+"kind": "tie",
+"arc_conf": 0.774,
+"gap_sp": 0.006,
+"cls": "noteheadBlackOnLine",
+"box": [
+1819.0,
+4061.78,
+1826.15,
+4089.28
+],
+"conf": 0.2504,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1819.0,
+3979.0,
+2349.0,
+4309.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/9/1/1/2/12",
+"slur",
+0.385,
+0.9219
+]
+},
+{
+"glyph": "glyph/10/0/1/5/20",
+"arc_glyph": "glyph/10/0/1/4/16",
+"kind": "tie",
+"arc_conf": 0.379,
+"gap_sp": 0.002,
+"cls": "noteheadBlackInSpace",
+"box": [
+3419.0,
+732.0,
+3430.1,
+760.87
+],
+"conf": 0.2924,
+"ink": 0.9077,
+"ink_raw": 0.9077,
+"ink_net": 0.9077,
+"ink_off": 0.9077,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3419.0,
+626.0,
+3810.0,
+959.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.002,
+"glyph/10/0/1/4/16",
+"tie",
+0.379,
+0.2776
+]
+},
+{
+"glyph": "glyph/10/1/1/2/18",
+"arc_glyph": "glyph/10/1/1/1/11",
+"kind": "tie",
+"arc_conf": 0.665,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2146.0,
+3975.0,
+2155.07,
+3995.35
+],
+"conf": 0.3025,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2146.0,
+3975.0,
+2584.0,
+4305.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/10/1/1/1/11",
+"tie",
+0.665,
+1.0
+]
+},
+{
+"glyph": "glyph/10/1/2/2/23",
+"arc_glyph": "glyph/10/1/2/1/11",
+"kind": "slur",
+"arc_conf": 0.681,
+"gap_sp": 0.042,
+"cls": "noteheadBlackInSpace",
+"box": [
+2146.0,
+4288.43,
+2154.8,
+4318.4
+],
+"conf": 0.3292,
+"ink": 0.8308,
+"ink_raw": 0.8308,
+"ink_net": 0.8308,
+"ink_off": 0.8308,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2146.0,
+4204.0,
+2584.0,
+4589.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/10/1/2/1/18",
+"tie",
+0.329,
+0.1684
+]
+},
+{
+"glyph": "glyph/10/1/7/2/6",
+"arc_glyph": "glyph/10/1/7/1/14",
+"kind": "tie",
+"arc_conf": 0.363,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+2146.0,
+5748.02,
+2152.94,
+5763.0
+],
+"conf": 0.2666,
+"ink": 0.6281,
+"ink_raw": 0.6281,
+"ink_net": 0.6281,
+"ink_off": 0.6281,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2146.0,
+5430.0,
+2584.0,
+5763.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/10/1/7/1/14",
+"tie",
+0.363,
+0.0943
+]
+},
+{
+"glyph": "glyph/10/1/7/3/10",
+"arc_glyph": "glyph/10/1/7/2/4",
+"kind": "tie",
+"arc_conf": 0.411,
+"gap_sp": 0.17,
+"cls": "noteheadBlackInSpace",
+"box": [
+2588.61,
+5568.25,
+2609.14,
+5590.88
+],
+"conf": 0.2745,
+"ink": 0.9809,
+"ink_raw": 0.9809,
+"ink_net": 0.9809,
+"ink_off": 0.9809,
+"box_source": null,
+"sp": 27.76,
+"cell_box": [
+2584.0,
+5430.0,
+3442.0,
+5763.0
+],
+"left_gap_sp": 0.166,
+"arc": [
+0.17,
+"glyph/10/1/7/2/4",
+"tie",
+0.411,
+0.0365
+]
+},
+{
+"glyph": "glyph/11/0/0/1/26",
+"arc_glyph": "glyph/11/0/0/0/16",
+"kind": "tie",
+"arc_conf": 0.686,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1337.0,
+775.82,
+1345.05,
+812.45
+],
+"conf": 0.2581,
+"ink": 0.9484,
+"ink_raw": 0.9484,
+"ink_net": 0.9484,
+"ink_off": 0.9484,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1337.0,
+427.0,
+1729.0,
+815.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/0/0/0/16",
+"tie",
+0.686,
+0.9483
+]
+},
+{
+"glyph": "glyph/11/0/2/1/18",
+"arc_glyph": "glyph/11/0/2/0/26",
+"kind": "tie",
+"arc_conf": 0.377,
+"gap_sp": 0.195,
+"cls": "noteheadBlackInSpace",
+"box": [
+1337.0,
+1028.83,
+1343.88,
+1053.03
+],
+"conf": 0.2688,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1337.0,
+918.0,
+1729.0,
+1248.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.195,
+"glyph/11/0/2/0/26",
+"tie",
+0.377,
+0.4699
+]
+},
+{
+"glyph": "glyph/11/0/3/8/12",
+"arc_glyph": "glyph/11/0/3/7/6",
+"kind": "slur",
+"arc_conf": 0.45,
+"gap_sp": 0.175,
+"cls": "noteheadBlackOnLine",
+"box": [
+4346.0,
+1231.42,
+4352.88,
+1254.8
+],
+"conf": 0.2564,
+"ink": 0.8395,
+"ink_raw": 0.8395,
+"ink_net": 0.8395,
+"ink_off": 0.8395,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4346.0,
+1180.0,
+4842.0,
+1510.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.175,
+"glyph/11/0/3/7/6",
+"slur",
+0.45,
+1.0
+]
+},
+{
+"glyph": "glyph/11/0/5/4/4",
+"arc_glyph": "glyph/11/0/5/3/0",
+"kind": "tie",
+"arc_conf": 0.572,
+"gap_sp": 0.002,
+"cls": "noteheadBlackOnLine",
+"box": [
+2763.0,
+1740.92,
+2769.88,
+1757.15
+],
+"conf": 0.3423,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2763.0,
+1640.0,
+3234.0,
+1970.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.002,
+"glyph/11/0/5/3/0",
+"tie",
+0.572,
+0.0129
+]
+},
+{
+"glyph": "glyph/11/0/6/2/7",
+"arc_glyph": "glyph/11/0/6/1/6",
+"kind": "tie",
+"arc_conf": 0.63,
+"gap_sp": 0.285,
+"cls": "noteheadBlackOnLine",
+"box": [
+1729.55,
+1875.3,
+1781.25,
+1905.55
+],
+"conf": 0.5024,
+"ink": 0.4982,
+"ink_raw": 0.4982,
+"ink_net": 0.4982,
+"ink_off": 0.5347,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1729.0,
+1872.0,
+2219.0,
+2202.0
+],
+"left_gap_sp": 0.02,
+"arc": [
+0.285,
+"glyph/11/0/6/1/6",
+"tie",
+0.63,
+1.0
+]
+},
+{
+"glyph": "glyph/11/0/13/6/11",
+"arc_glyph": "glyph/11/0/13/5/5",
+"kind": "tie",
+"arc_conf": 0.597,
+"gap_sp": 0.171,
+"cls": "noteheadBlackOnLine",
+"box": [
+3528.0,
+3608.93,
+3537.07,
+3639.72
+],
+"conf": 0.2547,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3528.0,
+3497.0,
+4067.0,
+3882.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/0/13/6/4",
+"tie",
+0.516,
+0.0186
+]
+},
+{
+"glyph": "glyph/11/1/2/3/6",
+"arc_glyph": "glyph/11/1/2/2/7",
+"kind": "tie",
+"arc_conf": 0.291,
+"gap_sp": 0.165,
+"cls": "noteheadBlackInSpace",
+"box": [
+2207.0,
+4594.37,
+2214.53,
+4612.32
+],
+"conf": 0.3816,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.3,
+"cell_box": [
+2207.0,
+4480.0,
+2800.0,
+4819.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.092,
+"glyph/11/1/2/3/8",
+"tie",
+0.293,
+0.0911
+]
+},
+{
+"glyph": "glyph/11/1/11/8/13",
+"arc_glyph": "glyph/11/1/11/7/7",
+"kind": "slur",
+"arc_conf": 0.683,
+"gap_sp": 0.046,
+"cls": "noteheadBlackOnLine",
+"box": [
+4430.0,
+6771.86,
+4438.6,
+6795.44
+],
+"conf": 0.3304,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4430.0,
+6463.0,
+4856.0,
+6796.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.036,
+"glyph/11/1/11/7/12",
+"tie",
+0.28,
+0.9903
+]
+},
+{
+"glyph": "glyph/11/1/11/8/16",
+"arc_glyph": "glyph/11/1/11/7/6",
+"kind": "slur",
+"arc_conf": 0.691,
+"gap_sp": 0.006,
+"cls": "noteheadBlackOnLine",
+"box": [
+4430.0,
+6734.95,
+4436.66,
+6751.88
+],
+"conf": 0.3015,
+"ink": 0.739,
+"ink_raw": 0.739,
+"ink_net": 0.739,
+"ink_off": 0.739,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4430.0,
+6463.0,
+4856.0,
+6796.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.006,
+"glyph/11/1/11/7/6",
+"slur",
+0.691,
+0.986
+]
+},
+{
+"glyph": "glyph/11/1/13/8/5",
+"arc_glyph": "glyph/11/1/13/7/8",
+"kind": "tie",
+"arc_conf": 0.626,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+4430.0,
+6885.0,
+4437.7,
+6906.18
+],
+"conf": 0.4403,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4430.0,
+6885.0,
+4856.0,
+7270.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/1/13/7/8",
+"tie",
+0.626,
+0.0945
+]
+},
+{
+"glyph": "glyph/11/1/13/8/11",
+"arc_glyph": "glyph/11/1/13/7/10",
+"kind": "tie",
+"arc_conf": 0.434,
+"gap_sp": 0.05,
+"cls": "noteheadBlackInSpace",
+"box": [
+4430.0,
+6945.23,
+4437.15,
+6967.5
+],
+"conf": 0.2583,
+"ink": 0.8833,
+"ink_raw": 0.8833,
+"ink_net": 0.6047,
+"ink_off": 0.8833,
+"box_source": "part_boxed_recentre",
+"sp": 27.5,
+"cell_box": [
+4430.0,
+6885.0,
+4856.0,
+7270.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.05,
+"glyph/11/1/13/7/10",
+"tie",
+0.434,
+1.0
+]
+},
+{
+"glyph": "glyph/12/0/10/10/10",
+"arc_glyph": "glyph/12/0/10/9/3",
+"kind": "tie",
+"arc_conf": 0.397,
+"gap_sp": 0.02,
+"cls": "noteheadBlackOnLine",
+"box": [
+3925.0,
+2803.5,
+3937.21,
+2836.24
+],
+"conf": 0.3142,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3925.0,
+2637.0,
+4283.0,
+2970.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.02,
+"glyph/12/0/10/9/6",
+"tie",
+0.269,
+0.2158
+]
+},
+{
+"glyph": "glyph/12/1/10/8/9",
+"arc_glyph": "glyph/12/1/10/7/14",
+"kind": "tie",
+"arc_conf": 0.326,
+"gap_sp": 0.108,
+"cls": "noteheadBlackOnLine",
+"box": [
+4492.0,
+6250.02,
+4499.9,
+6271.82
+],
+"conf": 0.2648,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4492.0,
+6162.0,
+5005.0,
+6489.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.008,
+"glyph/12/1/10/7/18",
+"tie",
+0.265,
+0.2796
+]
+},
+{
+"glyph": "glyph/13/1/4/2/12",
+"arc_glyph": "glyph/13/1/4/1/10",
+"kind": "tie",
+"arc_conf": 0.447,
+"gap_sp": 0.015,
+"cls": "noteheadBlackOnLine",
+"box": [
+1685.0,
+4940.62,
+1694.08,
+4967.57
+],
+"conf": 0.2807,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1685.0,
+4843.0,
+2061.0,
+5173.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/13/1/4/2/10",
+"tie",
+0.35,
+0.0507
+]
+},
+{
+"glyph": "glyph/13/1/4/3/11",
+"arc_glyph": "glyph/13/1/4/2/10",
+"kind": "tie",
+"arc_conf": 0.35,
+"gap_sp": 0.003,
+"cls": "noteheadBlackOnLine",
+"box": [
+2061.0,
+4953.55,
+2068.97,
+4978.3
+],
+"conf": 0.2954,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2061.0,
+4843.0,
+2435.0,
+5173.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.003,
+"glyph/13/1/4/2/10",
+"tie",
+0.35,
+0.0507
+]
+},
+{
+"glyph": "glyph/13/1/5/3/10",
+"arc_glyph": "glyph/13/1/5/2/12",
+"kind": "tie",
+"arc_conf": 0.29,
+"gap_sp": 0.003,
+"cls": "noteheadBlackOnLine",
+"box": [
+2061.0,
+5189.68,
+2069.25,
+5211.95
+],
+"conf": 0.4981,
+"ink": 0.724,
+"ink_raw": 0.724,
+"ink_net": 0.3787,
+"ink_off": 0.675,
+"box_source": "part_boxed_recentre",
+"sp": 27.5,
+"cell_box": [
+2061.0,
+5075.0,
+2435.0,
+5405.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/13/1/5/3/15",
+"tie",
+0.33,
+0.2781
+]
+},
+{
+"glyph": "glyph/13/1/5/3/18",
+"arc_glyph": "glyph/13/1/5/2/13",
+"kind": "tie",
+"arc_conf": 0.268,
+"gap_sp": 0.003,
+"cls": "noteheadBlackInSpace",
+"box": [
+2061.0,
+5147.32,
+2067.6,
+5163.27
+],
+"conf": 0.2538,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2061.0,
+5075.0,
+2435.0,
+5405.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.003,
+"glyph/13/1/5/2/13",
+"tie",
+0.268,
+0.1596
+]
+},
+{
+"glyph": "glyph/13/1/5/8/8",
+"arc_glyph": "glyph/13/1/5/7/16",
+"kind": "tie",
+"arc_conf": 0.291,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3892.0,
+5163.55,
+3898.6,
+5177.57
+],
+"conf": 0.2814,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3892.0,
+5075.0,
+4268.0,
+5405.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/13/1/5/7/16",
+"tie",
+0.291,
+0.1866
+]
+},
+{
+"glyph": "glyph/13/1/12/10/25",
+"arc_glyph": "glyph/13/1/12/9/11",
+"kind": "tie",
+"arc_conf": 0.279,
+"gap_sp": 0.165,
+"cls": "noteheadBlackOnLine",
+"box": [
+4646.36,
+6872.38,
+4712.85,
+6894.18
+],
+"conf": 0.2656,
+"ink": 0.7988,
+"ink_raw": 0.7988,
+"ink_net": 0.5054,
+"ink_off": 0.4634,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4642.0,
+6668.0,
+5047.0,
+6995.0
+],
+"left_gap_sp": 0.16,
+"arc": [
+0.165,
+"glyph/13/1/12/9/11",
+"tie",
+0.279,
+0.3968
+]
+},
+{
+"glyph": "glyph/14/0/10/7/11",
+"arc_glyph": "glyph/14/0/10/6/8",
+"kind": "tie",
+"arc_conf": 0.517,
+"gap_sp": 0.015,
+"cls": "noteheadBlackInSpace",
+"box": [
+4192.0,
+3029.11,
+4199.09,
+3055.0
+],
+"conf": 0.3431,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4192.0,
+2837.0,
+4648.0,
+3164.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/0/10/7/13",
+"tie",
+0.255,
+0.1366
+]
+},
+{
+"glyph": "glyph/14/0/11/9/12",
+"arc_glyph": "glyph/14/0/11/8/0",
+"kind": "slur",
+"arc_conf": 0.848,
+"gap_sp": 0.017,
+"cls": "noteheadBlackInSpace",
+"box": [
+5100.0,
+3080.36,
+5107.09,
+3102.16
+],
+"conf": 0.3275,
+"ink": 0.8449,
+"ink_raw": 0.8449,
+"ink_net": 0.8449,
+"ink_off": 0.8449,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+5100.0,
+3079.0,
+5505.0,
+3406.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.017,
+"glyph/14/0/11/8/0",
+"slur",
+0.848,
+0.9615
+]
+},
+{
+"glyph": "glyph/14/0/13/1/1",
+"arc_glyph": "glyph/14/0/13/0/10",
+"kind": "tie",
+"arc_conf": 0.278,
+"gap_sp": 0.042,
+"cls": "noteheadBlackInSpace",
+"box": [
+1430.0,
+3686.15,
+1439.9,
+3712.55
+],
+"conf": 0.3911,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1430.0,
+3547.0,
+1868.0,
+3932.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.042,
+"glyph/14/0/13/0/10",
+"tie",
+0.278,
+0.0
+]
+},
+{
+"glyph": "glyph/14/0/13/3/4",
+"arc_glyph": "glyph/14/0/13/2/1",
+"kind": "slur",
+"arc_conf": 0.903,
+"gap_sp": 0.328,
+"cls": "noteheadBlackOnLine",
+"box": [
+2333.8,
+3559.93,
+2391.28,
+3591.0
+],
+"conf": 0.5826,
+"ink": 0.6292,
+"ink_raw": 0.6292,
+"ink_net": 0.6292,
+"ink_off": 0.6292,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2325.0,
+3547.0,
+2747.0,
+3932.0
+],
+"left_gap_sp": 0.32,
+"arc": [
+0.328,
+"glyph/14/0/13/2/1",
+"slur",
+0.903,
+0.9944
+]
+},
+{
+"glyph": "glyph/14/0/13/7/11",
+"arc_glyph": "glyph/14/0/13/6/4",
+"kind": "slur",
+"arc_conf": 0.805,
+"gap_sp": 0.031,
+"cls": "noteheadBlackOnLine",
+"box": [
+4192.0,
+3548.93,
+4200.8,
+3587.43
+],
+"conf": 0.2979,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4192.0,
+3547.0,
+4648.0,
+3932.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.031,
+"glyph/14/0/13/6/4",
+"slur",
+0.805,
+1.0
+]
+},
+{
+"glyph": "glyph/14/0/13/9/10",
+"arc_glyph": "glyph/14/0/13/8/3",
+"kind": "slur",
+"arc_conf": 0.84,
+"gap_sp": 0.026,
+"cls": "noteheadBlackInSpace",
+"box": [
+5100.0,
+3547.0,
+5107.15,
+3569.28
+],
+"conf": 0.3357,
+"ink": 0.7861,
+"ink_raw": 0.7861,
+"ink_net": 0.7861,
+"ink_off": 0.7861,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5100.0,
+3547.0,
+5505.0,
+3932.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.026,
+"glyph/14/0/13/8/3",
+"slur",
+0.84,
+1.0
+]
+},
+{
+"glyph": "glyph/14/0/13/9/11",
+"arc_glyph": "glyph/14/0/13/8/3",
+"kind": "slur",
+"arc_conf": 0.84,
+"gap_sp": 0.026,
+"cls": "noteheadBlackOnLine",
+"box": [
+5100.0,
+3583.3,
+5107.15,
+3602.55
+],
+"conf": 0.2604,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5100.0,
+3547.0,
+5505.0,
+3932.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.026,
+"glyph/14/0/13/8/3",
+"slur",
+0.84,
+1.0
+]
+},
+{
+"glyph": "glyph/14/1/7/4/7",
+"arc_glyph": "glyph/14/1/7/3/7",
+"kind": "tie",
+"arc_conf": 0.475,
+"gap_sp": 0.046,
+"cls": "noteheadBlackInSpace",
+"box": [
+2988.0,
+6007.7,
+2994.88,
+6033.55
+],
+"conf": 0.4866,
+"ink": 0.7666,
+"ink_raw": 0.7666,
+"ink_net": 0.7173,
+"ink_off": 0.7666,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2988.0,
+5846.0,
+3490.0,
+6231.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.046,
+"glyph/14/1/7/3/7",
+"tie",
+0.475,
+0.0663
+]
+},
+{
+"glyph": "glyph/14/1/7/8/16",
+"arc_glyph": "glyph/14/1/7/7/7",
+"kind": "tie",
+"arc_conf": 0.365,
+"gap_sp": 0.008,
+"cls": "noteheadBlackInSpace",
+"box": [
+4994.0,
+6003.57,
+5000.88,
+6033.82
+],
+"conf": 0.3413,
+"ink": 0.9148,
+"ink_raw": 0.9148,
+"ink_net": 0.8125,
+"ink_off": 0.9148,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4994.0,
+5846.0,
+5504.0,
+6231.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/7/8/17",
+"tie",
+0.322,
+0.1893
+]
+},
+{
+"glyph": "glyph/14/1/8/3/11",
+"arc_glyph": "glyph/14/1/8/2/3",
+"kind": "tie",
+"arc_conf": 0.58,
+"gap_sp": 0.015,
+"cls": "noteheadBlackOnLine",
+"box": [
+2459.0,
+6233.38,
+2465.81,
+6262.81
+],
+"conf": 0.3317,
+"ink": 0.8509,
+"ink_raw": 0.8509,
+"ink_net": 0.8509,
+"ink_off": 0.8509,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2459.0,
+6138.0,
+2988.0,
+6465.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/8/3/6",
+"tie",
+0.527,
+0.4792
+]
+},
+{
+"glyph": "glyph/14/1/9/4/15",
+"arc_glyph": "glyph/14/1/9/3/13",
+"kind": "tie",
+"arc_conf": 0.289,
+"gap_sp": 0.296,
+"cls": "noteheadBlackOnLine",
+"box": [
+2995.97,
+6522.27,
+3057.57,
+6560.5
+],
+"conf": 0.2859,
+"ink": 0.5487,
+"ink_raw": 0.5487,
+"ink_net": 0.3422,
+"ink_off": 0.4446,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2988.0,
+6390.0,
+3490.0,
+6720.0
+],
+"left_gap_sp": 0.29,
+"arc": [
+0.296,
+"glyph/14/1/9/3/13",
+"tie",
+0.289,
+0.7164
+]
+},
+{
+"glyph": "glyph/15/0/9/5/21",
+"arc_glyph": "glyph/15/0/9/4/7",
+"kind": "tie",
+"arc_conf": 0.32,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+3567.0,
+2806.71,
+3575.45,
+2828.78
+],
+"conf": 0.3153,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3567.0,
+2677.0,
+4090.0,
+3004.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/15/0/9/4/7",
+"tie",
+0.32,
+0.0738
+]
+},
+{
+"glyph": "glyph/15/0/9/7/9",
+"arc_glyph": "glyph/15/0/9/6/18",
+"kind": "tie",
+"arc_conf": 0.282,
+"gap_sp": 0.036,
+"cls": "noteheadBlackOnLine",
+"box": [
+4606.0,
+2847.04,
+4613.36,
+2870.47
+],
+"conf": 0.294,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4606.0,
+2677.0,
+5072.0,
+3004.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.036,
+"glyph/15/0/9/6/18",
+"tie",
+0.282,
+0.3456
+]
+},
+{
+"glyph": "glyph/15/1/8/10/8",
+"arc_glyph": "glyph/15/1/8/9/1",
+"kind": "tie",
+"arc_conf": 0.794,
+"gap_sp": 0.014,
+"cls": "noteheadBlackOnLine",
+"box": [
+4649.0,
+6003.07,
+4658.62,
+6030.02
+],
+"conf": 0.2636,
+"ink": 0.9713,
+"ink_raw": 0.9713,
+"ink_net": 0.9713,
+"ink_off": 0.9713,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4649.0,
+5686.0,
+5127.0,
+6071.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/8/10/7",
+"tie",
+0.297,
+1.0
+]
+},
+{
+"glyph": "glyph/15/1/9/4/13",
+"arc_glyph": "glyph/15/1/9/3/25",
+"kind": "tie",
+"arc_conf": 0.252,
+"gap_sp": 0.025,
+"cls": "noteheadBlackOnLine",
+"box": [
+2273.0,
+6168.82,
+2281.25,
+6189.18
+],
+"conf": 0.449,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2273.0,
+6003.0,
+2628.0,
+6333.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.025,
+"glyph/15/1/9/3/25",
+"tie",
+0.252,
+0.0
+]
+},
+{
+"glyph": "glyph/15/1/9/10/21",
+"arc_glyph": "glyph/15/1/9/9/11",
+"kind": "tie",
+"arc_conf": 0.534,
+"gap_sp": 0.004,
+"cls": "noteheadBlackOnLine",
+"box": [
+4649.0,
+6194.95,
+4658.07,
+6224.1
+],
+"conf": 0.2564,
+"ink": 0.9545,
+"ink_raw": 0.9545,
+"ink_net": 0.9545,
+"ink_off": 0.9545,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4649.0,
+6003.0,
+5127.0,
+6333.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/9/10/17",
+"tie",
+0.296,
+0.1748
+]
+},
+{
+"glyph": "glyph/15/1/10/1/14",
+"arc_glyph": "glyph/15/1/10/0/14",
+"kind": "tie",
+"arc_conf": 0.32,
+"gap_sp": 0.031,
+"cls": "noteheadBlackInSpace",
+"box": [
+1219.0,
+6267.82,
+1226.7,
+6291.75
+],
+"conf": 0.3899,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1219.0,
+6267.0,
+1549.0,
+6597.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.031,
+"glyph/15/1/10/0/14",
+"tie",
+0.32,
+1.0
+]
+},
+{
+"glyph": "glyph/15/1/10/8/12",
+"arc_glyph": "glyph/15/1/10/7/15",
+"kind": "tie",
+"arc_conf": 0.265,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+3835.0,
+6378.1,
+3844.07,
+6398.73
+],
+"conf": 0.4652,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3835.0,
+6267.0,
+4210.0,
+6597.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/10/8/10",
+"tie",
+0.539,
+0.0588
+]
+},
+{
+"glyph": "glyph/15/1/10/8/16",
+"arc_glyph": "glyph/15/1/10/7/15",
+"kind": "tie",
+"arc_conf": 0.265,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+3835.0,
+6354.45,
+3844.07,
+6371.77
+],
+"conf": 0.2917,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3835.0,
+6267.0,
+4210.0,
+6597.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/10/8/10",
+"tie",
+0.539,
+0.0588
+]
+},
+{
+"glyph": "glyph/15/1/11/11/6",
+"arc_glyph": "glyph/15/1/11/10/11",
+"kind": "tie",
+"arc_conf": 0.307,
+"gap_sp": 0.005,
+"cls": "noteheadBlackInSpace",
+"box": [
+5127.0,
+6711.87,
+5135.88,
+6737.96
+],
+"conf": 0.4358,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+5127.0,
+6529.0,
+5503.0,
+6862.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/11/11/10",
+"tie",
+0.274,
+0.4037
+]
+},
+{
+"glyph": "glyph/15/1/11/11/9",
+"arc_glyph": "glyph/15/1/11/10/8",
+"kind": "slur",
+"arc_conf": 0.412,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+5127.0,
+6728.24,
+5135.6,
+6754.89
+],
+"conf": 0.2828,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+5127.0,
+6529.0,
+5503.0,
+6862.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/11/11/10",
+"tie",
+0.274,
+0.4037
+]
+},
+{
+"glyph": "glyph/16/0/0/11/18",
+"arc_glyph": "glyph/16/0/0/10/5",
+"kind": "slur",
+"arc_conf": 0.817,
+"gap_sp": 0.038,
+"cls": "noteheadBlackInSpace",
+"box": [
+5057.0,
+714.9,
+5064.98,
+738.83
+],
+"conf": 0.258,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5057.0,
+364.0,
+5508.0,
+749.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/0/11/14",
+"tie",
+0.372,
+0.1518
+]
+},
+{
+"glyph": "glyph/16/0/0/11/19",
+"arc_glyph": "glyph/16/0/0/10/5",
+"kind": "slur",
+"arc_conf": 0.817,
+"gap_sp": 0.038,
+"cls": "noteheadBlackOnLine",
+"box": [
+5057.0,
+702.8,
+5064.98,
+726.17
+],
+"conf": 0.2506,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5057.0,
+364.0,
+5508.0,
+749.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.03,
+"glyph/16/0/0/11/14",
+"tie",
+0.372,
+0.1518
+]
+},
+{
+"glyph": "glyph/16/0/1/11/12",
+"arc_glyph": "glyph/16/0/1/10/6",
+"kind": "slur",
+"arc_conf": 0.829,
+"gap_sp": 0.042,
+"cls": "noteheadBlackOnLine",
+"box": [
+5057.0,
+704.49,
+5065.05,
+726.13
+],
+"conf": 0.3356,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+5057.0,
+634.0,
+5508.0,
+967.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.042,
+"glyph/16/0/1/10/6",
+"slur",
+0.829,
+0.9951
+]
+},
+{
+"glyph": "glyph/16/0/1/11/14",
+"arc_glyph": "glyph/16/0/1/10/6",
+"kind": "slur",
+"arc_conf": 0.829,
+"gap_sp": 0.042,
+"cls": "noteheadBlackInSpace",
+"box": [
+5057.0,
+715.59,
+5064.77,
+736.95
+],
+"conf": 0.2805,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+5057.0,
+634.0,
+5508.0,
+967.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.034,
+"glyph/16/0/1/10/24",
+"tie",
+0.254,
+0.1531
+]
+},
+{
+"glyph": "glyph/16/0/2/8/24",
+"arc_glyph": "glyph/16/0/2/7/5",
+"kind": "tie",
+"arc_conf": 0.762,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+3869.0,
+929.22,
+3876.9,
+946.65
+],
+"conf": 0.3083,
+"ink": 0.9874,
+"ink_raw": 0.9874,
+"ink_net": 0.9874,
+"ink_off": 0.9874,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3869.0,
+860.0,
+4241.0,
+1187.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/2/7/5",
+"tie",
+0.762,
+0.9875
+]
+},
+{
+"glyph": "glyph/16/0/2/8/27",
+"arc_glyph": "glyph/16/0/2/7/6",
+"kind": "tie",
+"arc_conf": 0.751,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3869.0,
+1145.31,
+3876.36,
+1176.37
+],
+"conf": 0.2505,
+"ink": 0.9251,
+"ink_raw": 0.9251,
+"ink_net": 0.9251,
+"ink_off": 0.9251,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3869.0,
+860.0,
+4241.0,
+1187.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/2/7/6",
+"tie",
+0.751,
+0.9753
+]
+},
+{
+"glyph": "glyph/16/0/3/9/11",
+"arc_glyph": "glyph/16/0/3/8/9",
+"kind": "tie",
+"arc_conf": 0.522,
+"gap_sp": 0.017,
+"cls": "noteheadBlackOnLine",
+"box": [
+4241.0,
+1292.12,
+4248.98,
+1322.92
+],
+"conf": 0.5392,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4241.0,
+1090.0,
+4611.0,
+1420.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/16/0/3/8/11",
+"tie",
+0.48,
+0.1162
+]
+},
+{
+"glyph": "glyph/16/0/4/10/9",
+"arc_glyph": "glyph/16/0/4/9/8",
+"kind": "tie",
+"arc_conf": 0.265,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4611.0,
+1521.85,
+4619.25,
+1552.1
+],
+"conf": 0.4113,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4611.0,
+1320.0,
+5057.0,
+1650.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/16/0/4/9/9",
+"tie",
+0.26,
+0.1382
+]
+},
+{
+"glyph": "glyph/16/0/4/10/15",
+"arc_glyph": "glyph/16/0/4/9/8",
+"kind": "tie",
+"arc_conf": 0.265,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4611.0,
+1514.15,
+4619.25,
+1545.22
+],
+"conf": 0.2948,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4611.0,
+1320.0,
+5057.0,
+1650.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/16/0/4/9/9",
+"tie",
+0.26,
+0.1382
+]
+},
+{
+"glyph": "glyph/16/0/6/6/8",
+"arc_glyph": "glyph/16/0/6/5/1",
+"kind": "tie",
+"arc_conf": 0.36,
+"gap_sp": 0.002,
+"cls": "noteheadBlackInSpace",
+"box": [
+3167.0,
+1731.45,
+3175.45,
+1749.71
+],
+"conf": 0.3064,
+"ink": 0.8329,
+"ink_raw": 0.8329,
+"ink_net": 0.8329,
+"ink_off": 0.8329,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3167.0,
+1726.0,
+3539.0,
+2053.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/6/6/9",
+"tie",
+0.257,
+0.0538
+]
+},
+{
+"glyph": "glyph/16/0/11/3/4",
+"arc_glyph": "glyph/16/0/11/2/16",
+"kind": "tie",
+"arc_conf": 0.331,
+"gap_sp": 0.395,
+"cls": "noteheadBlackInSpace",
+"box": [
+2137.35,
+3073.15,
+2161.82,
+3100.65
+],
+"conf": 0.5585,
+"ink": 0.8961,
+"ink_raw": 0.8961,
+"ink_net": 0.8961,
+"ink_off": 0.8424,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2128.0,
+2857.0,
+2448.0,
+3187.0
+],
+"left_gap_sp": 0.34,
+"arc": [
+0.395,
+"glyph/16/0/11/2/16",
+"tie",
+0.331,
+0.3756
+]
+},
+{
+"glyph": "glyph/16/0/11/3/7",
+"arc_glyph": "glyph/16/0/11/2/16",
+"kind": "tie",
+"arc_conf": 0.331,
+"gap_sp": 0.435,
+"cls": "noteheadBlackInSpace",
+"box": [
+2138.45,
+3047.03,
+2173.93,
+3076.72
+],
+"conf": 0.5034,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 0.8886,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2128.0,
+2857.0,
+2448.0,
+3187.0
+],
+"left_gap_sp": 0.38,
+"arc": [
+0.435,
+"glyph/16/0/11/2/16",
+"tie",
+0.331,
+0.3756
+]
+},
+{
+"glyph": "glyph/16/0/11/5/3",
+"arc_glyph": "glyph/16/0/11/4/14",
+"kind": "tie",
+"arc_conf": 0.311,
+"gap_sp": 0.433,
+"cls": "noteheadBlackInSpace",
+"box": [
+2790.72,
+3051.15,
+2834.18,
+3072.88
+],
+"conf": 0.6531,
+"ink": 0.8654,
+"ink_raw": 0.8654,
+"ink_net": 0.8654,
+"ink_off": 0.8654,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2780.0,
+2857.0,
+3167.0,
+3187.0
+],
+"left_gap_sp": 0.39,
+"arc": [
+0.433,
+"glyph/16/0/11/4/14",
+"tie",
+0.311,
+0.2135
+]
+},
+{
+"glyph": "glyph/16/0/11/9/4",
+"arc_glyph": "glyph/16/0/11/8/12",
+"kind": "tie",
+"arc_conf": 0.274,
+"gap_sp": 0.407,
+"cls": "noteheadBlackInSpace",
+"box": [
+4250.9,
+2962.6,
+4290.23,
+2988.18
+],
+"conf": 0.7413,
+"ink": 0.85,
+"ink_raw": 0.85,
+"ink_net": 0.7877,
+"ink_off": 0.7429,
+"box_source": "part_boxed_recentre",
+"sp": 27.5,
+"cell_box": [
+4241.0,
+2857.0,
+4611.0,
+3187.0
+],
+"left_gap_sp": 0.36,
+"arc": [
+0.407,
+"glyph/16/0/11/8/12",
+"tie",
+0.274,
+0.3235
+]
+},
+{
+"glyph": "glyph/16/0/12/3/8",
+"arc_glyph": "glyph/16/0/12/2/18",
+"kind": "tie",
+"arc_conf": 0.35,
+"gap_sp": 0.354,
+"cls": "noteheadBlackInSpace",
+"box": [
+2137.62,
+3076.28,
+2160.18,
+3100.47
+],
+"conf": 0.5776,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2128.0,
+3076.0,
+2448.0,
+3406.0
+],
+"left_gap_sp": 0.35,
+"arc": [
+0.355,
+"glyph/16/0/12/2/18",
+"tie",
+0.35,
+0.0
+]
+},
+{
+"glyph": "glyph/16/1/1/4/15",
+"arc_glyph": "glyph/16/1/1/3/14",
+"kind": "slur",
+"arc_conf": 0.402,
+"gap_sp": 0.006,
+"cls": "noteheadBlackInSpace",
+"box": [
+2871.0,
+4409.64,
+2879.68,
+4434.0
+],
+"conf": 0.3175,
+"ink": 0.9876,
+"ink_raw": 0.9876,
+"ink_net": 0.9876,
+"ink_off": 0.9876,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+2871.0,
+4098.0,
+3366.0,
+4434.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.006,
+"glyph/16/1/1/3/14",
+"slur",
+0.402,
+0.9912
+]
+},
+{
+"glyph": "glyph/16/1/13/1/7",
+"arc_glyph": "glyph/16/1/13/0/17",
+"kind": "tie",
+"arc_conf": 0.369,
+"gap_sp": 0.028,
+"cls": "noteheadBlackInSpace",
+"box": [
+1421.0,
+6937.9,
+1427.88,
+6955.77
+],
+"conf": 0.3504,
+"ink": 0.75,
+"ink_raw": 0.75,
+"ink_net": 0.75,
+"ink_off": 0.75,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1421.0,
+6851.0,
+1873.0,
+7236.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.028,
+"glyph/16/1/13/0/17",
+"tie",
+0.369,
+0.2329
+]
+},
+{
+"glyph": "glyph/16/1/13/1/8",
+"arc_glyph": "glyph/16/1/13/0/17",
+"kind": "tie",
+"arc_conf": 0.369,
+"gap_sp": 0.028,
+"cls": "noteheadBlackInSpace",
+"box": [
+1421.0,
+6931.02,
+1428.15,
+6953.3
+],
+"conf": 0.3331,
+"ink": 0.7861,
+"ink_raw": 0.7861,
+"ink_net": 0.7861,
+"ink_off": 0.7861,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1421.0,
+6851.0,
+1873.0,
+7236.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.028,
+"glyph/16/1/13/0/17",
+"tie",
+0.369,
+0.2329
+]
+},
+{
+"glyph": "glyph/17/0/2/3/19",
+"arc_glyph": "glyph/17/0/2/2/30",
+"kind": "tie",
+"arc_conf": 0.292,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3028.0,
+923.99,
+3034.66,
+939.41
+],
+"conf": 0.4811,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.29,
+"cell_box": [
+3028.0,
+843.0,
+3746.0,
+1158.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/17/0/2/2/30",
+"tie",
+0.292,
+0.3656
+]
+},
+{
+"glyph": "glyph/17/1/4/5/27",
+"arc_glyph": "glyph/17/1/4/4/18",
+"kind": "tie",
+"arc_conf": 0.389,
+"gap_sp": 0.026,
+"cls": "noteheadBlackOnLine",
+"box": [
+4753.0,
+4893.71,
+4761.5,
+4930.31
+],
+"conf": 0.2562,
+"ink": 0.9697,
+"ink_raw": 0.9697,
+"ink_net": 0.9231,
+"ink_off": 0.9697,
+"box_source": null,
+"sp": 27.44,
+"cell_box": [
+4753.0,
+4788.0,
+5510.0,
+5118.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/17/1/4/4/19",
+"tie",
+0.345,
+0.1742
+]
+},
+{
+"glyph": "glyph/17/1/5/2/21",
+"arc_glyph": "glyph/17/1/5/1/7",
+"kind": "tie",
+"arc_conf": 0.585,
+"gap_sp": 0.132,
+"cls": "noteheadWholeOnLine",
+"box": [
+2536.21,
+5172.77,
+2561.86,
+5184.79
+],
+"conf": 0.2728,
+"ink": 0.859,
+"ink_raw": 0.859,
+"ink_net": 0.859,
+"ink_off": 0.859,
+"box_source": null,
+"sp": 27.26,
+"cell_box": [
+2533.0,
+5006.0,
+3354.0,
+5333.0
+],
+"left_gap_sp": 0.118,
+"arc": [
+0.0,
+"glyph/17/1/5/2/16",
+"tie",
+0.413,
+0.154
+]
+},
+{
+"glyph": "glyph/18/0/5/4/13",
+"arc_glyph": "glyph/18/0/5/3/9",
+"kind": "slur",
+"arc_conf": 0.629,
+"gap_sp": 0.317,
+"cls": "noteheadHalfOnLine",
+"box": [
+3559.05,
+1728.3,
+3589.0,
+1754.38
+],
+"conf": 0.3429,
+"ink": 0.8206,
+"ink_raw": 0.8206,
+"ink_net": 0.7356,
+"ink_off": 0.8206,
+"box_source": null,
+"sp": 27.46,
+"cell_box": [
+3556.0,
+1568.0,
+4124.0,
+1898.0
+],
+"left_gap_sp": 0.111,
+"arc": [
+0.176,
+"glyph/18/0/5/3/11",
+"tie",
+0.492,
+0.0172
+]
+},
+{
+"glyph": "glyph/18/0/10/1/21",
+"arc_glyph": "glyph/18/0/10/0/22",
+"kind": "tie",
+"arc_conf": 0.363,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1584.0,
+3028.42,
+1593.23,
+3042.97
+],
+"conf": 0.4613,
+"ink": 0.956,
+"ink_raw": 0.956,
+"ink_net": 0.956,
+"ink_off": 0.956,
+"box_source": null,
+"sp": 27.69,
+"cell_box": [
+1584.0,
+2710.0,
+2311.0,
+3043.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/18/0/10/0/22",
+"tie",
+0.363,
+0.3674
+]
+},
+{
+"glyph": "glyph/18/1/1/5/18",
+"arc_glyph": "glyph/18/1/1/4/15",
+"kind": "tie",
+"arc_conf": 0.474,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3699.0,
+4199.0,
+3705.6,
+4220.18
+],
+"conf": 0.474,
+"ink": 0.8196,
+"ink_raw": 0.8196,
+"ink_net": 0.8196,
+"ink_off": 0.8196,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3699.0,
+4111.0,
+4222.0,
+4441.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/18/1/1/4/15",
+"tie",
+0.474,
+0.0854
+]
+},
+{
+"glyph": "glyph/18/1/3/5/19",
+"arc_glyph": "glyph/18/1/3/4/13",
+"kind": "tie",
+"arc_conf": 0.475,
+"gap_sp": 0.375,
+"cls": "noteheadHalfInSpace",
+"box": [
+3706.7,
+4768.57,
+3741.35,
+4790.02
+],
+"conf": 0.3115,
+"ink": 0.7675,
+"ink_raw": 0.7675,
+"ink_net": 0.7675,
+"ink_off": 0.7675,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3699.0,
+4567.0,
+4222.0,
+4897.0
+],
+"left_gap_sp": 0.28,
+"arc": [
+0.0,
+"glyph/18/1/3/5/16",
+"tie",
+0.382,
+0.3372
+]
+},
+{
+"glyph": "glyph/18/1/4/5/14",
+"arc_glyph": "glyph/18/1/4/4/13",
+"kind": "tie",
+"arc_conf": 0.389,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+3699.0,
+5093.65,
+3707.45,
+5113.0
+],
+"conf": 0.4643,
+"ink": 0.9723,
+"ink_raw": 0.9723,
+"ink_net": 0.9723,
+"ink_off": 0.9723,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3699.0,
+4786.0,
+4222.0,
+5113.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/18/1/4/4/13",
+"tie",
+0.389,
+0.2517
+]
+},
+{
+"glyph": "glyph/18/1/11/2/15",
+"arc_glyph": "glyph/18/1/11/1/8",
+"kind": "tie",
+"arc_conf": 0.505,
+"gap_sp": 0.099,
+"cls": "noteheadBlackInSpace",
+"box": [
+2000.0,
+6579.7,
+2007.45,
+6594.6
+],
+"conf": 0.3181,
+"ink": 0.8613,
+"ink_raw": 0.8613,
+"ink_net": 0.8552,
+"ink_off": 0.8613,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+2000.0,
+6359.0,
+2587.0,
+6689.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/18/1/11/2/16",
+"tie",
+0.287,
+0.0187
+]
+},
+{
+"glyph": "glyph/19/0/8/5/4",
+"arc_glyph": "glyph/19/0/8/4/3",
+"kind": "tie",
+"arc_conf": 0.361,
+"gap_sp": 0.009,
+"cls": "noteheadBlackInSpace",
+"box": [
+3095.0,
+2351.54,
+3102.09,
+2367.35
+],
+"conf": 0.4508,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3095.0,
+2239.0,
+3519.0,
+2566.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/0/8/5/1",
+"tie",
+0.546,
+0.026
+]
+},
+{
+"glyph": "glyph/19/0/9/4/14",
+"arc_glyph": "glyph/19/0/9/3/3",
+"kind": "tie",
+"arc_conf": 0.539,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+2701.0,
+2634.95,
+2709.25,
+2677.03
+],
+"conf": 0.2921,
+"ink": 0.9799,
+"ink_raw": 0.9799,
+"ink_net": 0.9412,
+"ink_off": 0.9799,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2701.0,
+2520.0,
+3095.0,
+2850.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/19/0/9/3/3",
+"tie",
+0.539,
+1.0
+]
+},
+{
+"glyph": "glyph/19/0/10/3/9",
+"arc_glyph": "glyph/19/0/10/2/7",
+"kind": "tie",
+"arc_conf": 0.461,
+"gap_sp": 0.003,
+"cls": "noteheadBlackInSpace",
+"box": [
+2312.0,
+3052.84,
+2319.63,
+3073.55
+],
+"conf": 0.2649,
+"ink": 0.9877,
+"ink_raw": 0.9877,
+"ink_net": 0.9877,
+"ink_off": 0.9877,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2312.0,
+2749.0,
+2701.0,
+3076.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.003,
+"glyph/19/0/10/2/7",
+"tie",
+0.461,
+1.0
+]
+},
+{
+"glyph": "glyph/19/0/11/2/5",
+"arc_glyph": "glyph/19/0/11/1/13",
+"kind": "tie",
+"arc_conf": 0.568,
+"gap_sp": 0.28,
+"cls": "noteheadBlackInSpace",
+"box": [
+1980.0,
+3275.56,
+1986.81,
+3295.45
+],
+"conf": 0.5632,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+1980.0,
+2969.0,
+2312.0,
+3296.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.28,
+"glyph/19/0/11/1/13",
+"tie",
+0.568,
+0.9565
+]
+},
+{
+"glyph": "glyph/19/1/8/3/7",
+"arc_glyph": "glyph/19/1/8/2/17",
+"kind": "tie",
+"arc_conf": 0.351,
+"gap_sp": 0.077,
+"cls": "noteheadBlackOnLine",
+"box": [
+2248.0,
+6176.55,
+2254.88,
+6198.0
+],
+"conf": 0.6238,
+"ink": 0.8681,
+"ink_raw": 0.8681,
+"ink_net": 0.8681,
+"ink_off": 0.8681,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2248.0,
+5868.0,
+2777.0,
+6198.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/1/8/3/18",
+"tie",
+0.467,
+0.0662
+]
+},
+{
+"glyph": "glyph/19/1/8/7/17",
+"arc_glyph": "glyph/19/1/8/6/13",
+"kind": "tie",
+"arc_conf": 0.377,
+"gap_sp": 0.061,
+"cls": "noteheadBlackOnLine",
+"box": [
+4385.0,
+6054.73,
+4396.0,
+6082.77
+],
+"conf": 0.424,
+"ink": 0.9818,
+"ink_raw": 0.9818,
+"ink_net": 0.9818,
+"ink_off": 0.9818,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4385.0,
+5868.0,
+4904.0,
+6198.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/1/8/7/26",
+"tie",
+0.266,
+0.6714
+]
+},
+{
+"glyph": "glyph/19/1/8/7/23",
+"arc_glyph": "glyph/19/1/8/6/17",
+"kind": "tie",
+"arc_conf": 0.271,
+"gap_sp": 0.001,
+"cls": "noteheadBlackInSpace",
+"box": [
+4385.0,
+5975.25,
+4396.0,
+6009.07
+],
+"conf": 0.2961,
+"ink": 0.7926,
+"ink_raw": 0.7926,
+"ink_net": 0.676,
+"ink_off": 0.7926,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4385.0,
+5868.0,
+4904.0,
+6198.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/1/8/7/25",
+"tie",
+0.275,
+0.2379
+]
+},
+{
+"glyph": "glyph/19/1/11/8/9",
+"arc_glyph": "glyph/19/1/11/7/4",
+"kind": "tie",
+"arc_conf": 0.295,
+"gap_sp": 0.006,
+"cls": "noteheadBlackOnLine",
+"box": [
+4904.0,
+6823.13,
+4911.91,
+6849.2
+],
+"conf": 0.4651,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4904.0,
+6616.0,
+5504.0,
+6943.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.006,
+"glyph/19/1/11/7/4",
+"tie",
+0.295,
+0.1734
+]
+},
+{
+"glyph": "glyph/20/0/5/6/5",
+"arc_glyph": "glyph/20/0/5/5/6",
+"kind": "tie",
+"arc_conf": 0.354,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+3907.0,
+1801.12,
+3915.25,
+1829.17
+],
+"conf": 0.3805,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3907.0,
+1698.0,
+4458.0,
+2028.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/20/0/5/5/6",
+"tie",
+0.354,
+0.0386
+]
+},
+{
+"glyph": "glyph/21/0/0/8/5",
+"arc_glyph": "glyph/21/0/0/7/3",
+"kind": "tie",
+"arc_conf": 0.453,
+"gap_sp": 0.009,
+"cls": "noteheadBlackInSpace",
+"box": [
+4948.0,
+617.16,
+4955.77,
+634.09
+],
+"conf": 0.3659,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4948.0,
+391.0,
+5510.0,
+779.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/21/0/0/7/3",
+"tie",
+0.453,
+0.0206
+]
+},
+{
+"glyph": "glyph/21/0/0/8/6",
+"arc_glyph": "glyph/21/0/0/7/3",
+"kind": "tie",
+"arc_conf": 0.453,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+4948.0,
+593.3,
+4956.6,
+616.88
+],
+"conf": 0.3522,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4948.0,
+391.0,
+5510.0,
+779.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/21/0/0/7/3",
+"tie",
+0.453,
+0.0206
+]
+},
+{
+"glyph": "glyph/21/0/1/6/12",
+"arc_glyph": "glyph/21/0/1/5/7",
+"kind": "tie",
+"arc_conf": 0.566,
+"gap_sp": 0.398,
+"cls": "noteheadHalfOnLine",
+"box": [
+3914.16,
+872.72,
+3962.16,
+898.81
+],
+"conf": 0.2702,
+"ink": 0.5385,
+"ink_raw": 0.5385,
+"ink_net": 0.5214,
+"ink_off": 0.5385,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3905.0,
+704.0,
+4413.0,
+1037.0
+],
+"left_gap_sp": 0.33,
+"arc": [
+0.338,
+"glyph/21/0/1/5/15",
+"tie",
+0.389,
+0.9425
+]
+},
+{
+"glyph": "glyph/21/0/2/2/4",
+"arc_glyph": "glyph/21/0/2/1/9",
+"kind": "tie",
+"arc_conf": 0.418,
+"gap_sp": 0.006,
+"cls": "noteheadBlackOnLine",
+"box": [
+1892.0,
+1084.88,
+1900.45,
+1105.87
+],
+"conf": 0.4652,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+1892.0,
+947.0,
+2376.0,
+1328.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/0/2/2/0",
+"tie",
+0.628,
+0.0
+]
+},
+{
+"glyph": "glyph/21/0/2/2/5",
+"arc_glyph": "glyph/21/0/2/1/10",
+"kind": "tie",
+"arc_conf": 0.382,
+"gap_sp": 0.036,
+"cls": "noteheadBlackOnLine",
+"box": [
+1892.0,
+1109.68,
+1900.72,
+1136.39
+],
+"conf": 0.4447,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+1892.0,
+947.0,
+2376.0,
+1328.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/0/2/2/0",
+"tie",
+0.628,
+0.0
+]
+},
+{
+"glyph": "glyph/21/0/3/6/18",
+"arc_glyph": "glyph/21/0/3/5/9",
+"kind": "tie",
+"arc_conf": 0.541,
+"gap_sp": 0.305,
+"cls": "noteheadHalfOnLine",
+"box": [
+3913.25,
+1402.5,
+3950.65,
+1427.53
+],
+"conf": 0.3481,
+"ink": 0.5621,
+"ink_raw": 0.5621,
+"ink_net": 0.5621,
+"ink_off": 0.5621,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3905.0,
+1210.0,
+4413.0,
+1595.0
+],
+"left_gap_sp": 0.3,
+"arc": [
+0.305,
+"glyph/21/0/3/5/9",
+"tie",
+0.541,
+0.4219
+]
+},
+{
+"glyph": "glyph/21/1/0/4/5",
+"arc_glyph": "glyph/21/1/0/3/6",
+"kind": "tie",
+"arc_conf": 0.567,
+"gap_sp": 0.067,
+"cls": "noteheadBlackOnLine",
+"box": [
+2767.0,
+4116.25,
+2776.16,
+4133.73
+],
+"conf": 0.3321,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2767.0,
+3864.0,
+3154.0,
+4252.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.067,
+"glyph/21/1/0/3/6",
+"tie",
+0.567,
+0.0228
+]
+},
+{
+"glyph": "glyph/21/1/1/6/9",
+"arc_glyph": "glyph/21/1/1/5/16",
+"kind": "tie",
+"arc_conf": 0.32,
+"gap_sp": 0.174,
+"cls": "noteheadBlackOnLine",
+"box": [
+3626.0,
+4346.05,
+3636.45,
+4371.62
+],
+"conf": 0.3252,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3626.0,
+4208.0,
+3983.0,
+4538.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.174,
+"glyph/21/1/1/5/16",
+"tie",
+0.32,
+0.1806
+]
+},
+{
+"glyph": "glyph/21/1/2/1/7",
+"arc_glyph": "glyph/21/1/2/0/11",
+"kind": "slur",
+"arc_conf": 0.403,
+"gap_sp": 0.053,
+"cls": "noteheadBlackOnLine",
+"box": [
+1401.0,
+4595.2,
+1408.84,
+4632.16
+],
+"conf": 0.3561,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+1401.0,
+4486.0,
+1773.0,
+4822.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/2/1/10",
+"tie",
+0.257,
+0.5088
+]
+},
+{
+"glyph": "glyph/21/1/2/9/12",
+"arc_glyph": "glyph/21/1/2/8/8",
+"kind": "tie",
+"arc_conf": 0.543,
+"gap_sp": 0.137,
+"cls": "noteheadBlackInSpace",
+"box": [
+4813.0,
+4679.48,
+4820.56,
+4704.96
+],
+"conf": 0.4321,
+"ink": 0.758,
+"ink_raw": 0.758,
+"ink_net": 0.6898,
+"ink_off": 0.758,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4813.0,
+4486.0,
+5175.0,
+4822.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.037,
+"glyph/21/1/2/8/11",
+"tie",
+0.347,
+0.8423
+]
+},
+{
+"glyph": "glyph/21/1/6/7/1",
+"arc_glyph": "glyph/21/1/6/6/6",
+"kind": "tie",
+"arc_conf": 0.276,
+"gap_sp": 0.025,
+"cls": "noteheadBlackOnLine",
+"box": [
+3983.0,
+5841.51,
+3989.94,
+5857.05
+],
+"conf": 0.4342,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3983.0,
+5685.0,
+4369.0,
+6073.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.025,
+"glyph/21/1/6/6/6",
+"tie",
+0.276,
+0.0311
+]
+},
+{
+"glyph": "glyph/22/0/4/5/9",
+"arc_glyph": "glyph/22/0/4/4/10",
+"kind": "tie",
+"arc_conf": 0.334,
+"gap_sp": 0.039,
+"cls": "noteheadBlackInSpace",
+"box": [
+3025.0,
+1748.77,
+3033.18,
+1771.93
+],
+"conf": 0.2848,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3025.0,
+1585.0,
+3448.0,
+1966.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.039,
+"glyph/22/0/4/4/10",
+"tie",
+0.334,
+0.0408
+]
+},
+{
+"glyph": "glyph/22/1/1/1/3",
+"arc_glyph": "glyph/22/1/1/0/5",
+"kind": "tie",
+"arc_conf": 0.46,
+"gap_sp": 0.068,
+"cls": "noteheadBlackInSpace",
+"box": [
+1279.0,
+4466.18,
+1288.9,
+4489.82
+],
+"conf": 0.3342,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1279.0,
+4269.0,
+1637.0,
+4599.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/22/1/1/1/1",
+"tie",
+0.416,
+0.0335
+]
+},
+{
+"glyph": "glyph/22/1/1/2/1",
+"arc_glyph": "glyph/22/1/1/1/1",
+"kind": "tie",
+"arc_conf": 0.416,
+"gap_sp": 0.008,
+"cls": "noteheadBlackInSpace",
+"box": [
+1637.0,
+4468.65,
+1647.17,
+4487.9
+],
+"conf": 0.4634,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1637.0,
+4269.0,
+1998.0,
+4599.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/22/1/1/2/3",
+"tie",
+0.345,
+0.0333
+]
+},
+{
+"glyph": "glyph/22/1/1/3/1",
+"arc_glyph": "glyph/22/1/1/2/2",
+"kind": "tie",
+"arc_conf": 0.353,
+"gap_sp": 0.007,
+"cls": "noteheadBlackInSpace",
+"box": [
+1998.0,
+4383.68,
+2009.28,
+4401.0
+],
+"conf": 0.4534,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1998.0,
+4269.0,
+2356.0,
+4599.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.007,
+"glyph/22/1/1/2/2",
+"tie",
+0.353,
+0.0333
+]
+},
+{
+"glyph": "glyph/22/1/4/1/13",
+"arc_glyph": "glyph/22/1/4/0/3",
+"kind": "tie",
+"arc_conf": 0.403,
+"gap_sp": 0.034,
+"cls": "noteheadBlackInSpace",
+"box": [
+1279.0,
+5256.89,
+1287.33,
+5283.25
+],
+"conf": 0.2546,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1279.0,
+5089.0,
+1637.0,
+5422.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/22/1/4/0/5",
+"tie",
+0.295,
+0.1263
+]
+},
+{
+"glyph": "glyph/23/0/3/5/24",
+"arc_glyph": "glyph/23/0/3/4/7",
+"kind": "slur",
+"arc_conf": 0.693,
+"gap_sp": 0.006,
+"cls": "noteheadBlackInSpace",
+"box": [
+3145.0,
+1477.68,
+3155.08,
+1490.0
+],
+"conf": 0.2603,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+3145.0,
+1154.0,
+3714.0,
+1490.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.006,
+"glyph/23/0/3/4/7",
+"slur",
+0.693,
+0.9903
+]
+},
+{
+"glyph": "glyph/23/0/3/9/18",
+"arc_glyph": "glyph/23/0/3/8/21",
+"kind": "tie",
+"arc_conf": 0.306,
+"gap_sp": 0.036,
+"cls": "noteheadBlackOnLine",
+"box": [
+5068.0,
+1362.88,
+5076.96,
+1393.12
+],
+"conf": 0.2565,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+5068.0,
+1154.0,
+5508.0,
+1490.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.036,
+"glyph/23/0/3/8/21",
+"tie",
+0.306,
+0.0071
+]
+},
+{
+"glyph": "glyph/23/0/5/3/10",
+"arc_glyph": "glyph/23/0/5/2/6",
+"kind": "tie",
+"arc_conf": 0.599,
+"gap_sp": 0.017,
+"cls": "noteheadBlackOnLine",
+"box": [
+2292.28,
+1832.18,
+2310.59,
+1861.04
+],
+"conf": 0.3235,
+"ink": 0.8007,
+"ink_raw": 0.8007,
+"ink_net": 0.8007,
+"ink_off": 0.8007,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2292.0,
+1679.0,
+2780.0,
+2012.0
+],
+"left_gap_sp": 0.01,
+"arc": [
+0.017,
+"glyph/23/0/5/2/6",
+"tie",
+0.599,
+1.0
+]
+},
+{
+"glyph": "glyph/23/1/0/1/13",
+"arc_glyph": "glyph/23/1/0/0/12",
+"kind": "tie",
+"arc_conf": 0.672,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+1325.0,
+4123.48,
+1333.8,
+4152.07
+],
+"conf": 0.5227,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1325.0,
+3769.0,
+1800.0,
+4154.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/0/0/12",
+"tie",
+0.672,
+1.0
+]
+},
+{
+"glyph": "glyph/23/1/0/9/13",
+"arc_glyph": "glyph/23/1/0/8/15",
+"kind": "tie",
+"arc_conf": 0.269,
+"gap_sp": 0.043,
+"cls": "noteheadBlackInSpace",
+"box": [
+5105.0,
+3964.53,
+5113.52,
+3984.88
+],
+"conf": 0.3131,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5105.0,
+3769.0,
+5508.0,
+4154.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.043,
+"glyph/23/1/0/8/15",
+"tie",
+0.269,
+0.1185
+]
+},
+{
+"glyph": "glyph/23/1/1/1/11",
+"arc_glyph": "glyph/23/1/1/0/8",
+"kind": "slur",
+"arc_conf": 0.594,
+"gap_sp": 0.0,
+"cls": "noteheadBlackInSpace",
+"box": [
+1325.0,
+4368.84,
+1333.4,
+4387.88
+],
+"conf": 0.2836,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+1325.0,
+4053.0,
+1800.0,
+4389.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/1/0/8",
+"slur",
+0.594,
+1.0
+]
+},
+{
+"glyph": "glyph/23/1/1/2/22",
+"arc_glyph": "glyph/23/1/1/1/12",
+"kind": "tie",
+"arc_conf": 0.257,
+"gap_sp": 0.064,
+"cls": "noteheadBlackOnLine",
+"box": [
+1800.0,
+4191.32,
+1809.8,
+4216.24
+],
+"conf": 0.2756,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+1800.0,
+4053.0,
+2163.0,
+4389.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.064,
+"glyph/23/1/1/1/12",
+"tie",
+0.257,
+0.2304
+]
+},
+{
+"glyph": "glyph/23/1/1/6/10",
+"arc_glyph": "glyph/23/1/1/5/13",
+"kind": "tie",
+"arc_conf": 0.43,
+"gap_sp": 0.003,
+"cls": "noteheadBlackInSpace",
+"box": [
+3596.0,
+4166.96,
+3604.68,
+4192.72
+],
+"conf": 0.4171,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+3596.0,
+4053.0,
+4077.0,
+4389.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.003,
+"glyph/23/1/1/5/13",
+"tie",
+0.43,
+0.1862
+]
+},
+{
+"glyph": "glyph/23/1/2/5/19",
+"arc_glyph": "glyph/23/1/2/4/13",
+"kind": "tie",
+"arc_conf": 0.553,
+"gap_sp": 0.01,
+"cls": "noteheadBlackOnLine",
+"box": [
+3074.0,
+4495.03,
+3087.04,
+4525.28
+],
+"conf": 0.2528,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3074.0,
+4308.0,
+3596.0,
+4641.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.01,
+"glyph/23/1/2/4/20",
+"tie",
+0.299,
+0.0667
+]
+},
+{
+"glyph": "glyph/23/1/2/8/9",
+"arc_glyph": "glyph/23/1/2/7/12",
+"kind": "tie",
+"arc_conf": 0.277,
+"gap_sp": 0.01,
+"cls": "noteheadBlackOnLine",
+"box": [
+4564.0,
+4423.16,
+4572.6,
+4445.64
+],
+"conf": 0.2773,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4564.0,
+4308.0,
+5105.0,
+4641.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/2/8/10",
+"tie",
+0.277,
+0.129
+]
+},
+{
+"glyph": "glyph/23/1/4/1/21",
+"arc_glyph": "glyph/23/1/4/0/28",
+"kind": "tie",
+"arc_conf": 0.328,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1325.0,
+4958.88,
+1332.28,
+4982.12
+],
+"conf": 0.3712,
+"ink": 0.9545,
+"ink_raw": 0.9545,
+"ink_net": 0.9545,
+"ink_off": 0.9545,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+1325.0,
+4827.0,
+1800.0,
+5219.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/4/0/28",
+"tie",
+0.328,
+0.9775
+]
+},
+{
+"glyph": "glyph/23/1/4/7/13",
+"arc_glyph": "glyph/23/1/4/6/8",
+"kind": "tie",
+"arc_conf": 0.458,
+"gap_sp": 0.009,
+"cls": "noteheadBlackOnLine",
+"box": [
+4077.0,
+4991.92,
+4084.84,
+5025.24
+],
+"conf": 0.3052,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4077.0,
+4827.0,
+4564.0,
+5219.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.009,
+"glyph/23/1/4/6/8",
+"tie",
+0.458,
+0.1192
+]
+},
+{
+"glyph": "glyph/24/0/5/3/10",
+"arc_glyph": "glyph/24/0/5/2/10",
+"kind": "tie",
+"arc_conf": 0.366,
+"gap_sp": 0.041,
+"cls": "noteheadBlackInSpace",
+"box": [
+2526.0,
+1750.6,
+2536.45,
+1774.25
+],
+"conf": 0.4709,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2526.0,
+1612.0,
+2929.0,
+1942.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.041,
+"glyph/24/0/5/2/10",
+"tie",
+0.366,
+0.2251
+]
+},
+{
+"glyph": "glyph/24/0/5/3/12",
+"arc_glyph": "glyph/24/0/5/2/12",
+"kind": "tie",
+"arc_conf": 0.276,
+"gap_sp": 0.041,
+"cls": "noteheadBlackInSpace",
+"box": [
+2526.0,
+1806.7,
+2535.9,
+1830.9
+],
+"conf": 0.4343,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2526.0,
+1612.0,
+2929.0,
+1942.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.041,
+"glyph/24/0/5/2/12",
+"tie",
+0.276,
+0.2234
+]
+},
+{
+"glyph": "glyph/24/1/6/1/15",
+"arc_glyph": "glyph/24/1/6/0/6",
+"kind": "tie",
+"arc_conf": 0.506,
+"gap_sp": 0.057,
+"cls": "noteheadBlackOnLine",
+"box": [
+1452.0,
+5502.29,
+1459.21,
+5520.33
+],
+"conf": 0.2507,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1452.0,
+5406.0,
+1976.0,
+5739.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.014,
+"glyph/24/1/6/0/13",
+"tie",
+0.29,
+0.1148
+]
+},
+{
+"glyph": "glyph/25/0/0/8/24",
+"arc_glyph": "glyph/25/0/0/7/14",
+"kind": "tie",
+"arc_conf": 0.295,
+"gap_sp": 0.001,
+"cls": "noteheadBlackInSpace",
+"box": [
+4613.0,
+499.8,
+4626.48,
+604.3
+],
+"conf": 0.2717,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4613.0,
+337.0,
+5054.0,
+722.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/0/0/8/25",
+"tie",
+0.253,
+0.041
+]
+},
+{
+"glyph": "glyph/25/0/2/9/14",
+"arc_glyph": "glyph/25/0/2/8/14",
+"kind": "tie",
+"arc_conf": 0.552,
+"gap_sp": 0.076,
+"cls": "noteheadBlackOnLine",
+"box": [
+5055.1,
+1144.35,
+5071.88,
+1166.62
+],
+"conf": 0.3455,
+"ink": 0.7891,
+"ink_raw": 0.7891,
+"ink_net": 0.5164,
+"ink_off": 0.7891,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5054.0,
+937.0,
+5518.0,
+1322.0
+],
+"left_gap_sp": 0.04,
+"arc": [
+0.076,
+"glyph/25/0/2/8/14",
+"tie",
+0.552,
+0.5714
+]
+},
+{
+"glyph": "glyph/25/0/4/7/0",
+"arc_glyph": "glyph/25/0/4/6/2",
+"kind": "tie",
+"arc_conf": 0.409,
+"gap_sp": 0.002,
+"cls": "noteheadBlackOnLine",
+"box": [
+4165.0,
+1614.12,
+4173.05,
+1636.04
+],
+"conf": 0.4459,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+4165.0,
+1512.0,
+4613.0,
+1845.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.002,
+"glyph/25/0/4/6/2",
+"tie",
+0.409,
+0.0273
+]
+},
+{
+"glyph": "glyph/25/0/5/4/2",
+"arc_glyph": "glyph/25/0/5/3/1",
+"kind": "tie",
+"arc_conf": 0.323,
+"gap_sp": 0.002,
+"cls": "noteheadBlackOnLine",
+"box": [
+2767.0,
+1861.38,
+2775.99,
+1885.36
+],
+"conf": 0.5165,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2767.0,
+1766.0,
+3226.0,
+2093.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.002,
+"glyph/25/0/5/3/1",
+"tie",
+0.323,
+0.125
+]
+},
+{
+"glyph": "glyph/25/0/5/7/1",
+"arc_glyph": "glyph/25/0/5/6/2",
+"kind": "tie",
+"arc_conf": 0.309,
+"gap_sp": 0.003,
+"cls": "noteheadBlackOnLine",
+"box": [
+4165.0,
+1897.07,
+4173.99,
+1917.24
+],
+"conf": 0.5049,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4165.0,
+1766.0,
+4613.0,
+2093.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/0/5/7/3",
+"tie",
+0.342,
+0.1208
+]
+},
+{
+"glyph": "glyph/25/1/1/7/15",
+"arc_glyph": "glyph/25/1/1/6/11",
+"kind": "tie",
+"arc_conf": 0.319,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4132.0,
+4733.43,
+4139.7,
+4755.15
+],
+"conf": 0.284,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4132.0,
+4594.0,
+4588.0,
+4924.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/1/7/12",
+"tie",
+0.4,
+0.2851
+]
+},
+{
+"glyph": "glyph/25/1/1/7/18",
+"arc_glyph": "glyph/25/1/1/6/14",
+"kind": "tie",
+"arc_conf": 0.268,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4132.0,
+4794.75,
+4139.98,
+4820.32
+],
+"conf": 0.2622,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4132.0,
+4594.0,
+4588.0,
+4924.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/1/7/12",
+"tie",
+0.4,
+0.2851
+]
+},
+{
+"glyph": "glyph/25/1/1/7/19",
+"arc_glyph": "glyph/25/1/1/6/11",
+"kind": "tie",
+"arc_conf": 0.319,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+4132.0,
+4736.73,
+4140.25,
+4759.55
+],
+"conf": 0.258,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4132.0,
+4594.0,
+4588.0,
+4924.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/1/7/12",
+"tie",
+0.4,
+0.2851
+]
+},
+{
+"glyph": "glyph/25/1/2/3/8",
+"arc_glyph": "glyph/25/1/2/2/11",
+"kind": "tie",
+"arc_conf": 0.513,
+"gap_sp": 0.427,
+"cls": "noteheadHalfOnLine",
+"box": [
+2339.82,
+4983.07,
+2356.47,
+5003.61
+],
+"conf": 0.3873,
+"ink": 0.5863,
+"ink_raw": 0.5863,
+"ink_net": 0.5278,
+"ink_off": 0.5863,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2329.0,
+4836.0,
+2814.0,
+5169.0
+],
+"left_gap_sp": 0.39,
+"arc": [
+0.0,
+"glyph/25/1/2/3/10",
+"tie",
+0.36,
+0.2676
+]
+},
+{
+"glyph": "glyph/25/1/3/3/7",
+"arc_glyph": "glyph/25/1/3/2/15",
+"kind": "tie",
+"arc_conf": 0.482,
+"gap_sp": 0.054,
+"cls": "noteheadBlackOnLine",
+"box": [
+2329.0,
+5401.05,
+2337.8,
+5417.0
+],
+"conf": 0.426,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2329.0,
+5087.0,
+2814.0,
+5417.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/3/3/8",
+"tie",
+0.364,
+0.101
+]
+},
+{
+"glyph": "glyph/25/1/4/2/0",
+"arc_glyph": "glyph/25/1/4/1/8",
+"kind": "tie",
+"arc_conf": 0.269,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+1912.0,
+5272.0,
+1920.88,
+5290.04
+],
+"conf": 0.5141,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1912.0,
+5272.0,
+2329.0,
+5605.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/4/2/5",
+"tie",
+0.289,
+0.2254
+]
+},
+{
+"glyph": "glyph/25/1/4/3/6",
+"arc_glyph": "glyph/25/1/4/2/8",
+"kind": "tie",
+"arc_conf": 0.282,
+"gap_sp": 0.017,
+"cls": "noteheadBlackInSpace",
+"box": [
+2329.0,
+5305.58,
+2336.22,
+5322.23
+],
+"conf": 0.2782,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2329.0,
+5272.0,
+2814.0,
+5605.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.017,
+"glyph/25/1/4/2/8",
+"tie",
+0.282,
+0.1055
+]
+},
+{
+"glyph": "glyph/25/1/5/6/10",
+"arc_glyph": "glyph/25/1/5/5/9",
+"kind": "tie",
+"arc_conf": 0.543,
+"gap_sp": 0.002,
+"cls": "noteheadBlackOnLine",
+"box": [
+3699.0,
+5484.0,
+3706.49,
+5504.26
+],
+"conf": 0.3739,
+"ink": 0.9896,
+"ink_raw": 0.9896,
+"ink_net": 0.9896,
+"ink_off": 0.9896,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3699.0,
+5484.0,
+4132.0,
+5817.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/5/6/7",
+"tie",
+0.458,
+0.0277
+]
+},
+{
+"glyph": "glyph/26/0/2/1/13",
+"arc_glyph": "glyph/26/0/2/0/2",
+"kind": "slur",
+"arc_conf": 0.675,
+"gap_sp": 0.0,
+"cls": "noteheadBlackOnLine",
+"box": [
+1452.0,
+929.5,
+1460.53,
+956.73
+],
+"conf": 0.3222,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1452.0,
+836.0,
+1973.0,
+1166.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/0/2/0/2",
+"slur",
+0.675,
+0.9856
+]
+},
+{
+"glyph": "glyph/26/0/3/6/10",
+"arc_glyph": "glyph/26/0/3/5/15",
+"kind": "tie",
+"arc_conf": 0.292,
+"gap_sp": 0.023,
+"cls": "noteheadBlackInSpace",
+"box": [
+3989.0,
+1262.38,
+3996.43,
+1289.33
+],
+"conf": 0.3157,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3989.0,
+1096.0,
+4462.0,
+1426.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/0/3/6/7",
+"tie",
+0.35,
+0.0681
+]
+},
+{
+"glyph": "glyph/26/0/4/2/3",
+"arc_glyph": "glyph/26/0/4/1/0",
+"kind": "slur",
+"arc_conf": 0.708,
+"gap_sp": 0.045,
+"cls": "noteheadBlackInSpace",
+"box": [
+1973.0,
+1648.97,
+1980.97,
+1663.0
+],
+"conf": 0.3592,
+"ink": 0.9756,
+"ink_raw": 0.9756,
+"ink_net": 0.9756,
+"ink_off": 0.9756,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1973.0,
+1333.0,
+2429.0,
+1663.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.045,
+"glyph/26/0/4/1/0",
+"slur",
+0.708,
+0.9816
+]
+},
+{
+"glyph": "glyph/26/0/5/2/15",
+"arc_glyph": "glyph/26/0/5/1/2",
+"kind": "slur",
+"arc_conf": 0.719,
+"gap_sp": 0.045,
+"cls": "noteheadBlackOnLine",
+"box": [
+1973.0,
+1653.41,
+1981.88,
+1692.54
+],
+"conf": 0.2936,
+"ink": 0.8598,
+"ink_raw": 0.8598,
+"ink_net": 0.8598,
+"ink_off": 0.8598,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1973.0,
+1561.0,
+2429.0,
+1894.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/0/5/2/10",
+"tie",
+0.369,
+0.2914
+]
+},
+{
+"glyph": "glyph/26/1/1/3/17",
+"arc_glyph": "glyph/26/1/1/2/1",
+"kind": "tie",
+"arc_conf": 0.579,
+"gap_sp": 0.005,
+"cls": "noteheadBlackInSpace",
+"box": [
+2378.0,
+4167.65,
+2387.9,
+4188.0
+],
+"conf": 0.4891,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2378.0,
+4056.0,
+2855.0,
+4386.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/26/1/1/2/1",
+"tie",
+0.579,
+0.023
+]
+},
+{
+"glyph": "glyph/26/1/1/3/21",
+"arc_glyph": "glyph/26/1/1/2/2",
+"kind": "tie",
+"arc_conf": 0.496,
+"gap_sp": 0.005,
+"cls": "noteheadBlackOnLine",
+"box": [
+2378.0,
+4221.82,
+2387.9,
+4241.07
+],
+"conf": 0.3031,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2378.0,
+4056.0,
+2855.0,
+4386.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/26/1/1/2/2",
+"tie",
+0.496,
+0.023
+]
+},
+{
+"glyph": "glyph/26/1/1/6/17",
+"arc_glyph": "glyph/26/1/1/5/13",
+"kind": "slur",
+"arc_conf": 0.47,
+"gap_sp": 0.265,
+"cls": "noteheadHalfOnLine",
+"box": [
+3829.15,
+4199.27,
+3878.38,
+4223.75
+],
+"conf": 0.2937,
+"ink": 0.5166,
+"ink_raw": 0.5166,
+"ink_net": 0.3203,
+"ink_off": 0.4946,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3822.0,
+4056.0,
+4268.0,
+4386.0
+],
+"left_gap_sp": 0.26,
+"arc": [
+0.265,
+"glyph/26/1/1/5/16",
+"tie",
+0.374,
+0.0815
+]
+},
+{
+"glyph": "glyph/26/1/1/10/9",
+"arc_glyph": "glyph/26/1/1/9/3",
+"kind": "tie",
+"arc_conf": 0.715,
+"gap_sp": 0.009,
+"cls": "noteheadBlackInSpace",
+"box": [
+5099.0,
+4138.77,
+5107.8,
+4161.05
+],
+"conf": 0.4171,
+"ink": 0.9333,
+"ink_raw": 0.9333,
+"ink_net": 0.6437,
+"ink_off": 0.9333,
+"box_source": "part_boxed_recentre",
+"sp": 27.5,
+"cell_box": [
+5099.0,
+4056.0,
+5517.0,
+4386.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/1/10/7",
+"tie",
+0.485,
+0.9231
+]
+},
+{
+"glyph": "glyph/26/1/2/1/7",
+"arc_glyph": "glyph/26/1/2/0/24",
+"kind": "tie",
+"arc_conf": 0.278,
+"gap_sp": 0.028,
+"cls": "noteheadBlackOnLine",
+"box": [
+1429.0,
+4418.18,
+1436.63,
+4439.44
+],
+"conf": 0.2522,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+1429.0,
+4307.0,
+1898.0,
+4688.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/2/1/3",
+"tie",
+0.422,
+0.0128
+]
+},
+{
+"glyph": "glyph/26/1/2/6/21",
+"arc_glyph": "glyph/26/1/2/5/11",
+"kind": "tie",
+"arc_conf": 0.577,
+"gap_sp": 0.075,
+"cls": "noteheadHalfOnLine",
+"box": [
+3823.09,
+4505.38,
+3878.14,
+4530.45
+],
+"conf": 0.2727,
+"ink": 0.6,
+"ink_raw": 0.6,
+"ink_net": 0.3535,
+"ink_off": null,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3822.0,
+4307.0,
+4268.0,
+4688.0
+],
+"left_gap_sp": 0.04,
+"arc": [
+0.0,
+"glyph/26/1/2/6/18",
+"tie",
+0.327,
+0.6842
+]
+},
+{
+"glyph": "glyph/26/1/3/6/16",
+"arc_glyph": "glyph/26/1/3/5/8",
+"kind": "tie",
+"arc_conf": 0.618,
+"gap_sp": 0.277,
+"cls": "noteheadHalfOnLine",
+"box": [
+3828.66,
+4811.63,
+3875.84,
+4835.77
+],
+"conf": 0.3786,
+"ink": 0.6282,
+"ink_raw": 0.6282,
+"ink_net": 0.263,
+"ink_off": 0.6282,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3822.0,
+4553.0,
+4268.0,
+4941.0
+],
+"left_gap_sp": 0.24,
+"arc": [
+0.0,
+"glyph/26/1/3/6/12",
+"tie",
+0.494,
+0.8163
+]
+},
+{
+"glyph": "glyph/26/1/4/3/10",
+"arc_glyph": "glyph/26/1/4/2/10",
+"kind": "tie",
+"arc_conf": 0.493,
+"gap_sp": 0.005,
+"cls": "noteheadBlackInSpace",
+"box": [
+2378.0,
+4992.27,
+2385.15,
+5016.75
+],
+"conf": 0.2606,
+"ink": 0.9893,
+"ink_raw": 0.9893,
+"ink_net": 0.9893,
+"ink_off": 0.9893,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2378.0,
+4827.0,
+2855.0,
+5157.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.005,
+"glyph/26/1/4/2/18",
+"tie",
+0.261,
+0.0628
+]
+},
+{
+"glyph": "glyph/26/1/9/3/20",
+"arc_glyph": "glyph/26/1/9/2/9",
+"kind": "tie",
+"arc_conf": 0.685,
+"gap_sp": 0.077,
+"cls": "noteheadHalfOnLine",
+"box": [
+2378.28,
+6309.47,
+2407.41,
+6328.89
+],
+"conf": 0.4499,
+"ink": 0.7857,
+"ink_raw": 0.7857,
+"ink_net": 0.7857,
+"ink_off": 0.7857,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2378.0,
+6108.0,
+2855.0,
+6496.0
+],
+"left_gap_sp": 0.01,
+"arc": [
+0.017,
+"glyph/26/1/9/2/23",
+"tie",
+0.316,
+0.3528
+]
+},
+{
+"glyph": "glyph/26/1/9/4/18",
+"arc_glyph": "glyph/26/1/9/3/15",
+"kind": "tie",
+"arc_conf": 0.567,
+"gap_sp": 0.039,
+"cls": "noteheadHalfOnLine",
+"box": [
+2855.0,
+6308.35,
+2878.86,
+6330.56
+],
+"conf": 0.4525,
+"ink": 0.727,
+"ink_raw": 0.727,
+"ink_net": 0.727,
+"ink_off": 0.727,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2855.0,
+6108.0,
+3342.0,
+6496.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.022,
+"glyph/26/1/9/3/34",
+"tie",
+0.271,
+0.2563
+]
+}
+],
+"same_cell": [
+{
+"glyph": "glyph/1/0/5/0/25",
+"arc_glyph": "glyph/1/0/5/0/24",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+627.94,
+1756.44,
+648.54,
+1779.97
+],
+"conf": 0.3305,
+"ink": 0.9375,
+"ink_raw": 0.9375,
+"ink_net": 0.804,
+"ink_off": 0.9375,
+"box_source": "part_boxed_recentre",
+"sp": 27.51,
+"cell_box": [
+625.0,
+1647.0,
+1830.0,
+2032.0
+],
+"left_gap_sp": 0.107,
+"arc": [
+0.0,
+"glyph/1/0/5/0/24",
+"tie",
+0.333,
+0.6272
+]
+},
+{
+"glyph": "glyph/1/0/5/0/27",
+"arc_glyph": "glyph/1/0/5/0/24",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+627.94,
+1739.96,
+646.77,
+1762.32
+],
+"conf": 0.2788,
+"ink": 0.9744,
+"ink_raw": 0.9744,
+"ink_net": 0.7949,
+"ink_off": 0.9744,
+"box_source": "part_boxed_recentre",
+"sp": 27.51,
+"cell_box": [
+625.0,
+1647.0,
+1830.0,
+2032.0
+],
+"left_gap_sp": 0.107,
+"arc": [
+0.0,
+"glyph/1/0/5/0/24",
+"tie",
+0.333,
+0.6272
+]
+},
+{
+"glyph": "glyph/1/0/13/2/5",
+"arc_glyph": "glyph/1/0/13/2/3",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2488.0,
+3785.53,
+2497.35,
+3803.4
+],
+"conf": 0.4578,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+3645.0,
+3024.0,
+4030.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/1/0/13/2/3",
+"tie",
+0.55,
+0.0224
+]
+},
+{
+"glyph": "glyph/2/0/8/0/14",
+"arc_glyph": "glyph/2/0/8/0/12",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+641.06,
+2347.3,
+660.45,
+2368.22
+],
+"conf": 0.3536,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.55,
+"cell_box": [
+638.0,
+2183.0,
+1683.0,
+2568.0
+],
+"left_gap_sp": 0.111,
+"arc": [
+0.0,
+"glyph/2/0/8/0/12",
+"tie",
+0.365,
+0.4903
+]
+},
+{
+"glyph": "glyph/2/0/8/0/20",
+"arc_glyph": "glyph/2/0/8/0/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+640.55,
+2300.87,
+670.66,
+2327.4
+],
+"conf": 0.2982,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.55,
+"cell_box": [
+638.0,
+2183.0,
+1683.0,
+2568.0
+],
+"left_gap_sp": 0.093,
+"arc": [
+0.0,
+"glyph/2/0/8/0/12",
+"tie",
+0.365,
+0.4903
+]
+},
+{
+"glyph": "glyph/2/0/8/0/21",
+"arc_glyph": "glyph/2/0/8/0/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+641.06,
+2361.08,
+674.74,
+2384.55
+],
+"conf": 0.2888,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.55,
+"cell_box": [
+638.0,
+2183.0,
+1683.0,
+2568.0
+],
+"left_gap_sp": 0.111,
+"arc": [
+0.0,
+"glyph/2/0/8/0/12",
+"tie",
+0.365,
+0.4903
+]
+},
+{
+"glyph": "glyph/2/0/8/0/26",
+"arc_glyph": "glyph/2/0/8/0/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+640.55,
+2278.42,
+661.47,
+2298.32
+],
+"conf": 0.2606,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.55,
+"cell_box": [
+638.0,
+2183.0,
+1683.0,
+2568.0
+],
+"left_gap_sp": 0.093,
+"arc": [
+0.0,
+"glyph/2/0/8/0/12",
+"tie",
+0.365,
+0.4903
+]
+},
+{
+"glyph": "glyph/2/0/8/0/31",
+"arc_glyph": "glyph/2/0/8/0/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+640.55,
+2373.32,
+675.76,
+2404.45
+],
+"conf": 0.2505,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.55,
+"cell_box": [
+638.0,
+2183.0,
+1683.0,
+2568.0
+],
+"left_gap_sp": 0.093,
+"arc": [
+0.0,
+"glyph/2/0/8/0/12",
+"tie",
+0.365,
+0.4903
+]
+},
+{
+"glyph": "glyph/2/0/10/2/18",
+"arc_glyph": "glyph/2/0/10/2/13",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2682.0,
+2885.33,
+2690.52,
+2913.92
+],
+"conf": 0.3089,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.45,
+"cell_box": [
+2682.0,
+2753.0,
+3305.0,
+3083.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/0/10/2/13",
+"tie",
+0.44,
+0.1145
+]
+},
+{
+"glyph": "glyph/2/1/10/3/5",
+"arc_glyph": "glyph/2/1/10/3/2",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2488.0,
+6201.0,
+2494.6,
+6219.43
+],
+"conf": 0.2867,
+"ink": 0.925,
+"ink_raw": 0.925,
+"ink_net": 0.925,
+"ink_off": 0.925,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+6201.0,
+3023.0,
+6531.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/10/3/2",
+"tie",
+0.522,
+0.0187
+]
+},
+{
+"glyph": "glyph/2/1/13/3/10",
+"arc_glyph": "glyph/2/1/13/3/4",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2488.0,
+6920.95,
+2495.7,
+6943.5
+],
+"conf": 0.2762,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2488.0,
+6905.0,
+3023.0,
+7290.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/2/1/13/3/4",
+"tie",
+0.391,
+0.0263
+]
+},
+{
+"glyph": "glyph/3/0/0/3/14",
+"arc_glyph": "glyph/3/0/0/3/15",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2204.0,
+554.58,
+2213.71,
+577.89
+],
+"conf": 0.2878,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2204.0,
+357.0,
+2660.0,
+745.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/3/0/0/3/15",
+"tie",
+0.281,
+0.0526
+]
+},
+{
+"glyph": "glyph/4/1/3/6/14",
+"arc_glyph": "glyph/4/1/3/6/21",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3904.0,
+5046.25,
+3912.72,
+5069.95
+],
+"conf": 0.5259,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3904.0,
+4689.0,
+4434.0,
+5070.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/4/1/3/6/21",
+"tie",
+0.421,
+0.7713
+]
+},
+{
+"glyph": "glyph/5/0/2/3/13",
+"arc_glyph": "glyph/5/0/2/3/14",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2580.0,
+1011.54,
+2588.99,
+1037.43
+],
+"conf": 0.4819,
+"ink": 0.9975,
+"ink_raw": 0.9975,
+"ink_net": 0.9975,
+"ink_off": 0.9975,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2580.0,
+902.0,
+3133.0,
+1229.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/2/3/14",
+"tie",
+0.48,
+0.147
+]
+},
+{
+"glyph": "glyph/5/0/4/1/6",
+"arc_glyph": "glyph/5/0/4/1/8",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1442.0,
+1686.55,
+1449.17,
+1706.04
+],
+"conf": 0.3036,
+"ink": 0.9369,
+"ink_raw": 0.9369,
+"ink_net": 0.9369,
+"ink_off": 0.9369,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+1442.0,
+1377.0,
+2029.0,
+1707.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/4/1/8",
+"tie",
+0.282,
+0.1075
+]
+},
+{
+"glyph": "glyph/5/0/5/4/19",
+"arc_glyph": "glyph/5/0/5/4/18",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3133.0,
+1662.65,
+3139.74,
+1682.57
+],
+"conf": 0.3291,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.54,
+"cell_box": [
+3133.0,
+1573.0,
+3733.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/4/18",
+"tie",
+0.347,
+0.182
+]
+},
+{
+"glyph": "glyph/5/0/5/4/20",
+"arc_glyph": "glyph/5/0/5/4/18",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3133.0,
+1655.91,
+3139.74,
+1673.49
+],
+"conf": 0.3167,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.54,
+"cell_box": [
+3133.0,
+1573.0,
+3733.0,
+1903.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/5/4/18",
+"tie",
+0.347,
+0.182
+]
+},
+{
+"glyph": "glyph/5/0/6/6/10",
+"arc_glyph": "glyph/5/0/6/6/14",
+"kind": "slur",
+"cls": "noteheadBlackInSpace",
+"box": [
+4342.0,
+1769.0,
+4349.26,
+1781.01
+],
+"conf": 0.4026,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.3,
+"cell_box": [
+4342.0,
+1769.0,
+4914.0,
+2096.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/6/6/14",
+"slur",
+0.303,
+0.1393
+]
+},
+{
+"glyph": "glyph/5/0/7/6/20",
+"arc_glyph": "glyph/5/0/7/6/25",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4342.0,
+2091.37,
+4349.26,
+2125.16
+],
+"conf": 0.303,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+4342.0,
+1952.0,
+4914.0,
+2282.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/0/7/6/25",
+"tie",
+0.254,
+0.296
+]
+},
+{
+"glyph": "glyph/5/1/6/7/7",
+"arc_glyph": "glyph/5/1/6/7/8",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4156.0,
+5341.0,
+4163.09,
+5364.43
+],
+"conf": 0.2905,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4156.0,
+5229.0,
+4573.0,
+5556.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/5/1/6/7/8",
+"tie",
+0.276,
+0.0241
+]
+},
+{
+"glyph": "glyph/6/1/3/2/12",
+"arc_glyph": "glyph/6/1/3/2/34",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2042.0,
+4902.23,
+2050.94,
+4921.33
+],
+"conf": 0.5228,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.27,
+"cell_box": [
+2042.0,
+4791.0,
+2673.0,
+5172.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/3/2/34",
+"tie",
+0.258,
+0.0455
+]
+},
+{
+"glyph": "glyph/6/1/3/4/8",
+"arc_glyph": "glyph/6/1/3/4/7",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3237.0,
+4901.09,
+3245.99,
+4927.52
+],
+"conf": 0.3296,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3237.0,
+4791.0,
+3712.0,
+5172.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/3/4/7",
+"tie",
+0.36,
+0.0295
+]
+},
+{
+"glyph": "glyph/6/1/3/6/12",
+"arc_glyph": "glyph/6/1/3/6/13",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4222.0,
+4957.5,
+4230.72,
+4980.39
+],
+"conf": 0.4393,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4222.0,
+4791.0,
+4693.0,
+5172.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/3/6/13",
+"tie",
+0.378,
+0.1303
+]
+},
+{
+"glyph": "glyph/6/1/3/6/15",
+"arc_glyph": "glyph/6/1/3/6/16",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4222.0,
+4877.38,
+4230.72,
+4899.18
+],
+"conf": 0.3672,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4222.0,
+4791.0,
+4693.0,
+5172.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/3/6/16",
+"tie",
+0.338,
+0.2409
+]
+},
+{
+"glyph": "glyph/6/1/3/6/21",
+"arc_glyph": "glyph/6/1/3/6/16",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4222.0,
+4905.99,
+4231.54,
+4928.34
+],
+"conf": 0.2767,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4222.0,
+4791.0,
+4693.0,
+5172.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/6/1/3/6/16",
+"tie",
+0.338,
+0.2409
+]
+},
+{
+"glyph": "glyph/6/1/4/0/12",
+"arc_glyph": "glyph/6/1/4/0/11",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+622.36,
+5175.63,
+641.46,
+5194.3
+],
+"conf": 0.368,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.47,
+"cell_box": [
+616.0,
+5025.0,
+1485.0,
+5410.0
+],
+"left_gap_sp": 0.232,
+"arc": [
+0.0,
+"glyph/6/1/4/0/11",
+"tie",
+0.387,
+0.0836
+]
+},
+{
+"glyph": "glyph/8/1/2/9/3",
+"arc_glyph": "glyph/8/1/2/9/1",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4028.0,
+4571.08,
+4035.28,
+4592.92
+],
+"conf": 0.3203,
+"ink": 0.9599,
+"ink_raw": 0.9599,
+"ink_net": 0.9599,
+"ink_off": 0.9599,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4028.0,
+4484.0,
+4438.0,
+4820.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/8/1/2/9/1",
+"tie",
+0.382,
+0.0277
+]
+},
+{
+"glyph": "glyph/8/1/2/9/5",
+"arc_glyph": "glyph/8/1/2/9/2",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4028.0,
+4623.16,
+4037.8,
+4650.88
+],
+"conf": 0.2628,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4028.0,
+4484.0,
+4438.0,
+4820.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/8/1/2/9/2",
+"tie",
+0.36,
+0.1178
+]
+},
+{
+"glyph": "glyph/8/1/2/9/6",
+"arc_glyph": "glyph/8/1/2/9/1",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4028.0,
+4592.36,
+4036.12,
+4611.12
+],
+"conf": 0.2585,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4028.0,
+4484.0,
+4438.0,
+4820.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/8/1/2/9/1",
+"tie",
+0.382,
+0.0277
+]
+},
+{
+"glyph": "glyph/8/1/8/0/18",
+"arc_glyph": "glyph/8/1/8/0/22",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+635.51,
+6428.57,
+656.82,
+6450.83
+],
+"conf": 0.3737,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": "part_boxed_recentre",
+"sp": 27.51,
+"cell_box": [
+633.0,
+6206.0,
+1275.0,
+6591.0
+],
+"left_gap_sp": 0.091,
+"arc": [
+0.0,
+"glyph/8/1/8/0/22",
+"tie",
+0.254,
+0.3683
+]
+},
+{
+"glyph": "glyph/8/1/8/0/19",
+"arc_glyph": "glyph/8/1/8/0/22",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+635.82,
+6422.61,
+656.2,
+6447.06
+],
+"conf": 0.3442,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.51,
+"cell_box": [
+633.0,
+6206.0,
+1275.0,
+6591.0
+],
+"left_gap_sp": 0.103,
+"arc": [
+0.0,
+"glyph/8/1/8/0/22",
+"tie",
+0.254,
+0.3683
+]
+},
+{
+"glyph": "glyph/10/1/11/3/20",
+"arc_glyph": "glyph/10/1/11/3/25",
+"kind": "slur",
+"cls": "noteheadBlackInSpace",
+"box": [
+2591.54,
+6467.14,
+2607.04,
+6482.64
+],
+"conf": 0.4366,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.23,
+"cell_box": [
+2584.0,
+6380.0,
+3442.0,
+6707.0
+],
+"left_gap_sp": 0.277,
+"arc": [
+0.0,
+"glyph/10/1/11/3/25",
+"slur",
+0.345,
+0.3846
+]
+},
+{
+"glyph": "glyph/11/0/0/2/35",
+"arc_glyph": "glyph/11/0/0/2/19",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1729.0,
+791.91,
+1735.94,
+814.67
+],
+"conf": 0.2803,
+"ink": 0.7908,
+"ink_raw": 0.7908,
+"ink_net": 0.7908,
+"ink_off": 0.7908,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1729.0,
+427.0,
+2219.0,
+815.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/0/0/2/19",
+"tie",
+0.458,
+0.3673
+]
+},
+{
+"glyph": "glyph/11/0/13/2/12",
+"arc_glyph": "glyph/11/0/13/2/10",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1729.0,
+3663.93,
+1735.88,
+3686.75
+],
+"conf": 0.2521,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1729.0,
+3497.0,
+2219.0,
+3882.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/0/13/2/10",
+"tie",
+0.265,
+0.0
+]
+},
+{
+"glyph": "glyph/11/1/2/3/1",
+"arc_glyph": "glyph/11/1/2/3/8",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2207.0,
+4604.22,
+2214.82,
+4633.17
+],
+"conf": 0.483,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.3,
+"cell_box": [
+2207.0,
+4480.0,
+2800.0,
+4819.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/1/2/3/8",
+"tie",
+0.293,
+0.0911
+]
+},
+{
+"glyph": "glyph/11/1/7/8/14",
+"arc_glyph": "glyph/11/1/7/8/13",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4430.0,
+5849.57,
+4437.43,
+5878.45
+],
+"conf": 0.3088,
+"ink": 0.9647,
+"ink_raw": 0.9647,
+"ink_net": 0.9647,
+"ink_off": 0.9647,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4430.0,
+5549.0,
+4856.0,
+5879.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/11/1/7/8/13",
+"tie",
+0.34,
+0.3262
+]
+},
+{
+"glyph": "glyph/12/0/9/4/1",
+"arc_glyph": "glyph/12/0/9/4/6",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2137.6,
+2621.25,
+2178.11,
+2652.61
+],
+"conf": 0.6844,
+"ink": 0.9586,
+"ink_raw": 0.9586,
+"ink_net": 0.9011,
+"ink_off": 0.9586,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2124.0,
+2427.0,
+2425.0,
+2760.0
+],
+"left_gap_sp": 0.49,
+"arc": [
+0.0,
+"glyph/12/0/9/4/6",
+"tie",
+0.517,
+0.1418
+]
+},
+{
+"glyph": "glyph/13/1/4/5/10",
+"arc_glyph": "glyph/13/1/4/5/11",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2819.0,
+5043.75,
+2826.43,
+5068.23
+],
+"conf": 0.423,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2819.0,
+4843.0,
+3183.0,
+5173.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/13/1/4/5/11",
+"tie",
+0.401,
+0.2881
+]
+},
+{
+"glyph": "glyph/14/0/10/4/13",
+"arc_glyph": "glyph/14/0/10/4/17",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2747.0,
+2928.56,
+2754.09,
+2951.18
+],
+"conf": 0.4166,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+2747.0,
+2837.0,
+3271.0,
+3164.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/0/10/4/17",
+"tie",
+0.293,
+0.3359
+]
+},
+{
+"glyph": "glyph/14/0/12/9/10",
+"arc_glyph": "glyph/14/0/12/9/8",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+5100.0,
+3396.74,
+5107.09,
+3417.18
+],
+"conf": 0.2565,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+5100.0,
+3303.0,
+5505.0,
+3630.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/0/12/9/8",
+"tie",
+0.552,
+0.035
+]
+},
+{
+"glyph": "glyph/14/0/13/3/10",
+"arc_glyph": "glyph/14/0/13/3/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2325.0,
+3684.78,
+2334.62,
+3709.25
+],
+"conf": 0.3686,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2325.0,
+3547.0,
+2747.0,
+3932.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/0/13/3/12",
+"tie",
+0.256,
+0.0641
+]
+},
+{
+"glyph": "glyph/14/1/8/5/11",
+"arc_glyph": "glyph/14/1/8/5/9",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3490.0,
+6297.14,
+3499.26,
+6325.48
+],
+"conf": 0.3823,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3490.0,
+6138.0,
+3968.0,
+6465.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/8/5/9",
+"tie",
+0.465,
+0.3243
+]
+},
+{
+"glyph": "glyph/14/1/8/5/14",
+"arc_glyph": "glyph/14/1/8/5/10",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3490.0,
+6324.94,
+3498.45,
+6348.37
+],
+"conf": 0.287,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3490.0,
+6138.0,
+3968.0,
+6465.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/8/5/10",
+"tie",
+0.385,
+0.0608
+]
+},
+{
+"glyph": "glyph/14/1/9/5/13",
+"arc_glyph": "glyph/14/1/9/5/17",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3490.0,
+6500.82,
+3499.35,
+6528.32
+],
+"conf": 0.3518,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3490.0,
+6390.0,
+3968.0,
+6720.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/9/5/17",
+"tie",
+0.252,
+0.1845
+]
+},
+{
+"glyph": "glyph/14/1/9/5/14",
+"arc_glyph": "glyph/14/1/9/5/17",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3490.0,
+6471.68,
+3499.35,
+6500.82
+],
+"conf": 0.2895,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3490.0,
+6390.0,
+3968.0,
+6720.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/9/5/17",
+"tie",
+0.252,
+0.1845
+]
+},
+{
+"glyph": "glyph/14/1/9/5/15",
+"arc_glyph": "glyph/14/1/9/5/17",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3490.0,
+6515.95,
+3501.0,
+6556.1
+],
+"conf": 0.2791,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3490.0,
+6390.0,
+3968.0,
+6720.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/9/5/17",
+"tie",
+0.252,
+0.1845
+]
+},
+{
+"glyph": "glyph/14/1/9/8/9",
+"arc_glyph": "glyph/14/1/9/8/13",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4994.0,
+6499.45,
+5002.8,
+6521.18
+],
+"conf": 0.5081,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4994.0,
+6390.0,
+5504.0,
+6720.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/14/1/9/8/13",
+"tie",
+0.406,
+0.2349
+]
+},
+{
+"glyph": "glyph/15/0/10/2/9",
+"arc_glyph": "glyph/15/0/10/2/8",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1976.0,
+2992.32,
+1982.88,
+3006.9
+],
+"conf": 0.2875,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1976.0,
+2909.0,
+2537.0,
+3239.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/0/10/2/8",
+"tie",
+0.322,
+0.0232
+]
+},
+{
+"glyph": "glyph/15/1/9/10/8",
+"arc_glyph": "glyph/15/1/9/10/20",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4649.0,
+6120.15,
+4658.9,
+6144.35
+],
+"conf": 0.5049,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4649.0,
+6003.0,
+5127.0,
+6333.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/9/10/20",
+"tie",
+0.263,
+0.0766
+]
+},
+{
+"glyph": "glyph/15/1/9/10/13",
+"arc_glyph": "glyph/15/1/9/10/16",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4649.0,
+6141.6,
+4657.8,
+6173.23
+],
+"conf": 0.4505,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4649.0,
+6003.0,
+5127.0,
+6333.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/15/1/9/10/16",
+"tie",
+0.372,
+0.1555
+]
+},
+{
+"glyph": "glyph/16/0/1/8/14",
+"arc_glyph": "glyph/16/0/1/8/15",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3869.0,
+748.61,
+3877.05,
+772.75
+],
+"conf": 0.3279,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3869.0,
+634.0,
+4241.0,
+967.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/1/8/15",
+"tie",
+0.325,
+0.1509
+]
+},
+{
+"glyph": "glyph/16/0/4/6/11",
+"arc_glyph": "glyph/16/0/4/6/13",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3167.0,
+1623.88,
+3175.25,
+1650.0
+],
+"conf": 0.3806,
+"ink": 0.9827,
+"ink_raw": 0.9827,
+"ink_net": 0.9827,
+"ink_off": 0.9827,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3167.0,
+1320.0,
+3539.0,
+1650.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/4/6/13",
+"tie",
+0.374,
+0.1263
+]
+},
+{
+"glyph": "glyph/16/0/4/9/7",
+"arc_glyph": "glyph/16/0/4/9/8",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4241.0,
+1456.12,
+4249.25,
+1488.85
+],
+"conf": 0.3197,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4241.0,
+1320.0,
+4611.0,
+1650.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/4/9/8",
+"tie",
+0.265,
+0.3207
+]
+},
+{
+"glyph": "glyph/16/0/5/7/1",
+"arc_glyph": "glyph/16/0/5/7/2",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3539.0,
+1821.58,
+3547.18,
+1844.47
+],
+"conf": 0.3108,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3539.0,
+1533.0,
+3869.0,
+1860.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/5/7/2",
+"tie",
+0.261,
+0.0244
+]
+},
+{
+"glyph": "glyph/16/0/5/8/0",
+"arc_glyph": "glyph/16/0/5/8/4",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3869.0,
+1533.0,
+3876.9,
+1551.53
+],
+"conf": 0.6039,
+"ink": 0.9889,
+"ink_raw": 0.9889,
+"ink_net": 0.9889,
+"ink_off": 0.9889,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3869.0,
+1533.0,
+4241.0,
+1860.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/0/5/8/4",
+"tie",
+0.306,
+0.3369
+]
+},
+{
+"glyph": "glyph/16/0/11/2/6",
+"arc_glyph": "glyph/16/0/11/2/10",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1698.88,
+3022.28,
+1734.35,
+3053.35
+],
+"conf": 0.4491,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": null,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1692.0,
+2857.0,
+2128.0,
+3187.0
+],
+"left_gap_sp": 0.25,
+"arc": [
+0.0,
+"glyph/16/0/11/2/10",
+"tie",
+0.408,
+0.338
+]
+},
+{
+"glyph": "glyph/16/0/11/2/17",
+"arc_glyph": "glyph/16/0/11/2/9",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1696.67,
+2988.45,
+1734.35,
+3016.22
+],
+"conf": 0.2954,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 0.9131,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1692.0,
+2857.0,
+2128.0,
+3187.0
+],
+"left_gap_sp": 0.17,
+"arc": [
+0.0,
+"glyph/16/0/11/2/9",
+"tie",
+0.421,
+0.1959
+]
+},
+{
+"glyph": "glyph/16/1/1/2/15",
+"arc_glyph": "glyph/16/1/1/2/17",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1873.0,
+4406.84,
+1880.56,
+4434.0
+],
+"conf": 0.4212,
+"ink": 0.9251,
+"ink_raw": 0.9251,
+"ink_net": 0.9251,
+"ink_off": 0.9251,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+1873.0,
+4098.0,
+2373.0,
+4434.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/1/1/2/17",
+"tie",
+0.349,
+0.1964
+]
+},
+{
+"glyph": "glyph/16/1/13/7/9",
+"arc_glyph": "glyph/16/1/13/7/3",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4404.0,
+6960.45,
+4410.6,
+6993.45
+],
+"conf": 0.3385,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4404.0,
+6851.0,
+4943.0,
+7236.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/16/1/13/7/3",
+"tie",
+0.544,
+0.0204
+]
+},
+{
+"glyph": "glyph/17/0/5/3/16",
+"arc_glyph": "glyph/17/0/5/3/15",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3028.0,
+1646.14,
+3036.76,
+1705.74
+],
+"conf": 0.3071,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.52,
+"cell_box": [
+3028.0,
+1474.0,
+3746.0,
+1804.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/17/0/5/3/15",
+"tie",
+0.315,
+0.0905
+]
+},
+{
+"glyph": "glyph/19/0/7/5/8",
+"arc_glyph": "glyph/19/0/7/5/6",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3095.0,
+2354.85,
+3102.15,
+2372.45
+],
+"conf": 0.3129,
+"ink": 0.9216,
+"ink_raw": 0.9216,
+"ink_net": 0.9216,
+"ink_off": 0.9216,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3095.0,
+2043.0,
+3519.0,
+2373.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/0/7/5/6",
+"tie",
+0.386,
+0.019
+]
+},
+{
+"glyph": "glyph/19/0/11/5/11",
+"arc_glyph": "glyph/19/0/11/5/15",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3095.0,
+3135.22,
+3102.36,
+3158.66
+],
+"conf": 0.4021,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3095.0,
+2969.0,
+3519.0,
+3296.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/0/11/5/15",
+"tie",
+0.251,
+0.0731
+]
+},
+{
+"glyph": "glyph/19/1/6/3/2",
+"arc_glyph": "glyph/19/1/6/3/6",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2248.0,
+5748.88,
+2256.8,
+5764.0
+],
+"conf": 0.4694,
+"ink": 0.9673,
+"ink_raw": 0.9673,
+"ink_net": 0.9673,
+"ink_off": 0.9673,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2248.0,
+5434.0,
+2777.0,
+5764.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/1/6/3/6",
+"tie",
+0.317,
+0.104
+]
+},
+{
+"glyph": "glyph/19/1/8/1/12",
+"arc_glyph": "glyph/19/1/8/1/9",
+"kind": "tie",
+"cls": "noteheadHalfOnLine",
+"box": [
+1336.67,
+5953.25,
+1371.05,
+6026.95
+],
+"conf": 0.3027,
+"ink": 0.674,
+"ink_raw": 0.674,
+"ink_net": 0.4906,
+"ink_off": 0.6621,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1332.0,
+5868.0,
+1755.0,
+6198.0
+],
+"left_gap_sp": 0.17,
+"arc": [
+0.0,
+"glyph/19/1/8/1/9",
+"tie",
+0.408,
+0.2494
+]
+},
+{
+"glyph": "glyph/19/1/8/1/13",
+"arc_glyph": "glyph/19/1/8/1/9",
+"kind": "tie",
+"cls": "noteheadHalfOnLine",
+"box": [
+1337.78,
+5981.3,
+1371.33,
+6026.95
+],
+"conf": 0.2962,
+"ink": 0.7074,
+"ink_raw": 0.7074,
+"ink_net": 0.5805,
+"ink_off": 0.6056,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1332.0,
+5868.0,
+1755.0,
+6198.0
+],
+"left_gap_sp": 0.21,
+"arc": [
+0.0,
+"glyph/19/1/8/1/9",
+"tie",
+0.408,
+0.2494
+]
+},
+{
+"glyph": "glyph/19/1/9/7/18",
+"arc_glyph": "glyph/19/1/9/7/22",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4385.0,
+6078.0,
+4392.9,
+6101.71
+],
+"conf": 0.4576,
+"ink": 0.975,
+"ink_raw": 0.975,
+"ink_net": 0.975,
+"ink_off": 0.975,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+4385.0,
+6078.0,
+4904.0,
+6405.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/19/1/9/7/22",
+"tie",
+0.368,
+0.3276
+]
+},
+{
+"glyph": "glyph/20/1/4/6/7",
+"arc_glyph": "glyph/20/1/4/6/6",
+"kind": "slur",
+"cls": "noteheadBlackInSpace",
+"box": [
+4135.0,
+5430.35,
+4142.15,
+5449.6
+],
+"conf": 0.2913,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4135.0,
+5333.0,
+4586.0,
+5663.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/20/1/4/6/6",
+"slur",
+0.3,
+0.3911
+]
+},
+{
+"glyph": "glyph/20/1/4/6/8",
+"arc_glyph": "glyph/20/1/4/6/6",
+"kind": "slur",
+"cls": "noteheadBlackInSpace",
+"box": [
+4135.0,
+5453.45,
+4142.7,
+5478.2
+],
+"conf": 0.2807,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4135.0,
+5333.0,
+4586.0,
+5663.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/20/1/4/6/6",
+"slur",
+0.3,
+0.3911
+]
+},
+{
+"glyph": "glyph/21/0/2/5/24",
+"arc_glyph": "glyph/21/0/2/5/14",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3362.0,
+1053.28,
+3369.9,
+1079.71
+],
+"conf": 0.3111,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3362.0,
+947.0,
+3905.0,
+1328.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/0/2/5/14",
+"tie",
+0.451,
+0.0313
+]
+},
+{
+"glyph": "glyph/21/0/3/4/26",
+"arc_glyph": "glyph/21/0/3/4/22",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+2878.0,
+1456.67,
+2885.7,
+1486.65
+],
+"conf": 0.2806,
+"ink": 0.9457,
+"ink_raw": 0.9457,
+"ink_net": 0.9091,
+"ink_off": 0.9457,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2878.0,
+1210.0,
+3362.0,
+1595.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/0/3/4/22",
+"tie",
+0.32,
+0.0537
+]
+},
+{
+"glyph": "glyph/21/0/10/0/8",
+"arc_glyph": "glyph/21/0/10/0/13",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+640.86,
+3412.12,
+657.66,
+3436.78
+],
+"conf": 0.3758,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.99,
+"cell_box": [
+638.0,
+3262.0,
+1370.0,
+3640.0
+],
+"left_gap_sp": 0.106,
+"arc": [
+0.0,
+"glyph/21/0/10/0/13",
+"tie",
+0.319,
+0.4075
+]
+},
+{
+"glyph": "glyph/21/0/10/0/9",
+"arc_glyph": "glyph/21/0/10/0/13",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+640.86,
+3418.91,
+657.66,
+3441.07
+],
+"conf": 0.3638,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.99,
+"cell_box": [
+638.0,
+3262.0,
+1370.0,
+3640.0
+],
+"left_gap_sp": 0.106,
+"arc": [
+0.0,
+"glyph/21/0/10/0/13",
+"tie",
+0.319,
+0.4075
+]
+},
+{
+"glyph": "glyph/21/0/10/0/15",
+"arc_glyph": "glyph/21/0/10/0/13",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+640.86,
+3381.02,
+657.66,
+3404.97
+],
+"conf": 0.3022,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 26.99,
+"cell_box": [
+638.0,
+3262.0,
+1370.0,
+3640.0
+],
+"left_gap_sp": 0.106,
+"arc": [
+0.0,
+"glyph/21/0/10/0/13",
+"tie",
+0.319,
+0.4075
+]
+},
+{
+"glyph": "glyph/21/1/2/3/9",
+"arc_glyph": "glyph/21/1/2/3/6",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2282.0,
+4599.96,
+2291.24,
+4623.2
+],
+"conf": 0.3324,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+2282.0,
+4486.0,
+2767.0,
+4822.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/2/3/6",
+"tie",
+0.595,
+0.0187
+]
+},
+{
+"glyph": "glyph/21/1/3/8/14",
+"arc_glyph": "glyph/21/1/3/8/22",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4369.0,
+4912.32,
+4379.18,
+4937.35
+],
+"conf": 0.4411,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4369.0,
+4774.0,
+4813.0,
+5159.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/3/8/22",
+"tie",
+0.284,
+0.1554
+]
+},
+{
+"glyph": "glyph/21/1/5/3/8",
+"arc_glyph": "glyph/21/1/5/3/3",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2282.0,
+5464.0,
+2288.6,
+5479.12
+],
+"conf": 0.3414,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+2282.0,
+5321.0,
+2767.0,
+5761.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/5/3/3",
+"tie",
+0.577,
+0.0227
+]
+},
+{
+"glyph": "glyph/21/1/5/8/3",
+"arc_glyph": "glyph/21/1/5/8/2",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4369.0,
+5514.6,
+4376.43,
+5536.88
+],
+"conf": 0.4327,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4369.0,
+5321.0,
+4813.0,
+5761.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/5/8/2",
+"tie",
+0.565,
+0.0248
+]
+},
+{
+"glyph": "glyph/21/1/5/8/4",
+"arc_glyph": "glyph/21/1/5/8/2",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+4369.0,
+5489.02,
+4375.88,
+5504.7
+],
+"conf": 0.3563,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4369.0,
+5321.0,
+4813.0,
+5761.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/21/1/5/8/2",
+"tie",
+0.565,
+0.0248
+]
+},
+{
+"glyph": "glyph/22/0/3/7/16",
+"arc_glyph": "glyph/22/0/3/7/14",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3806.0,
+1456.65,
+3815.62,
+1481.12
+],
+"conf": 0.3027,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3806.0,
+1290.0,
+4136.0,
+1730.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/22/0/3/7/14",
+"tie",
+0.362,
+0.5413
+]
+},
+{
+"glyph": "glyph/22/0/4/5/7",
+"arc_glyph": "glyph/22/0/4/5/10",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3025.0,
+1785.83,
+3032.9,
+1816.35
+],
+"conf": 0.4197,
+"ink": 0.976,
+"ink_raw": 0.976,
+"ink_net": 0.9293,
+"ink_off": 0.976,
+"box_source": null,
+"sp": 27.25,
+"cell_box": [
+3025.0,
+1585.0,
+3448.0,
+1966.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/22/0/4/5/10",
+"tie",
+0.264,
+0.0238
+]
+},
+{
+"glyph": "glyph/22/1/8/0/24",
+"arc_glyph": "glyph/22/1/8/0/16",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+640.19,
+6414.0,
+658.34,
+6443.43
+],
+"conf": 0.2638,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.54,
+"cell_box": [
+638.0,
+6291.0,
+1279.0,
+6676.0
+],
+"left_gap_sp": 0.08,
+"arc": [
+0.0,
+"glyph/22/1/8/0/16",
+"tie",
+0.355,
+0.3386
+]
+},
+{
+"glyph": "glyph/23/0/0/7/19",
+"arc_glyph": "glyph/23/0/0/7/11",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4069.0,
+550.88,
+4079.72,
+585.25
+],
+"conf": 0.2769,
+"ink": 0.9653,
+"ink_raw": 0.9653,
+"ink_net": 0.9653,
+"ink_off": 0.9653,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+4069.0,
+390.0,
+4612.0,
+775.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/0/0/7/11",
+"tie",
+0.412,
+0.1033
+]
+},
+{
+"glyph": "glyph/23/0/5/3/14",
+"arc_glyph": "glyph/23/0/5/3/9",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+2292.0,
+1788.89,
+2300.88,
+1816.09
+],
+"conf": 0.2508,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+2292.0,
+1679.0,
+2780.0,
+2012.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/0/5/3/9",
+"tie",
+0.348,
+0.1766
+]
+},
+{
+"glyph": "glyph/23/1/1/8/6",
+"arc_glyph": "glyph/23/1/1/8/9",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4564.0,
+4246.48,
+4574.08,
+4275.6
+],
+"conf": 0.4195,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4564.0,
+4053.0,
+5105.0,
+4389.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/1/8/9",
+"tie",
+0.337,
+0.0611
+]
+},
+{
+"glyph": "glyph/23/1/1/8/14",
+"arc_glyph": "glyph/23/1/1/8/13",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+4564.0,
+4223.24,
+4574.36,
+4249.0
+],
+"conf": 0.2746,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 28.0,
+"cell_box": [
+4564.0,
+4053.0,
+5105.0,
+4389.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/1/8/13",
+"tie",
+0.302,
+0.0685
+]
+},
+{
+"glyph": "glyph/23/1/2/1/17",
+"arc_glyph": "glyph/23/1/2/1/16",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1325.0,
+4420.94,
+1333.88,
+4440.09
+],
+"conf": 0.2503,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1325.0,
+4308.0,
+1800.0,
+4641.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/23/1/2/1/16",
+"tie",
+0.252,
+0.2147
+]
+},
+{
+"glyph": "glyph/24/1/6/2/14",
+"arc_glyph": "glyph/24/1/6/2/11",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1976.0,
+5515.34,
+1983.77,
+5540.31
+],
+"conf": 0.3828,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1976.0,
+5406.0,
+2504.0,
+5739.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/24/1/6/2/11",
+"tie",
+0.441,
+0.1556
+]
+},
+{
+"glyph": "glyph/24/1/6/2/16",
+"arc_glyph": "glyph/24/1/6/2/11",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1976.0,
+5498.41,
+1983.21,
+5523.38
+],
+"conf": 0.3325,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1976.0,
+5406.0,
+2504.0,
+5739.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/24/1/6/2/11",
+"tie",
+0.441,
+0.1556
+]
+},
+{
+"glyph": "glyph/24/1/6/2/19",
+"arc_glyph": "glyph/24/1/6/2/11",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1976.0,
+5495.63,
+1982.66,
+5512.84
+],
+"conf": 0.2579,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1976.0,
+5406.0,
+2504.0,
+5739.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/24/1/6/2/11",
+"tie",
+0.441,
+0.1556
+]
+},
+{
+"glyph": "glyph/25/0/4/6/1",
+"arc_glyph": "glyph/25/0/4/6/2",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+3724.0,
+1625.22,
+3732.6,
+1650.47
+],
+"conf": 0.5314,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3724.0,
+1512.0,
+4165.0,
+1845.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/0/4/6/2",
+"tie",
+0.409,
+0.0273
+]
+},
+{
+"glyph": "glyph/25/1/0/1/25",
+"arc_glyph": "glyph/25/1/0/1/12",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1439.0,
+4485.62,
+1446.97,
+4514.77
+],
+"conf": 0.2652,
+"ink": 0.8889,
+"ink_raw": 0.8889,
+"ink_net": 0.8889,
+"ink_off": 0.8889,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1439.0,
+4322.0,
+1912.0,
+4707.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/0/1/12",
+"tie",
+0.457,
+0.053
+]
+},
+{
+"glyph": "glyph/25/1/4/1/5",
+"arc_glyph": "glyph/25/1/4/1/9",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1439.0,
+5587.52,
+1448.99,
+5605.0
+],
+"conf": 0.5247,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1439.0,
+5272.0,
+1912.0,
+5605.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/4/1/9",
+"tie",
+0.254,
+0.0127
+]
+},
+{
+"glyph": "glyph/25/1/4/5/1",
+"arc_glyph": "glyph/25/1/4/5/5",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3268.0,
+5588.07,
+3275.49,
+5605.0
+],
+"conf": 0.5261,
+"ink": 0.9536,
+"ink_raw": 0.9536,
+"ink_net": 0.9536,
+"ink_off": 0.9536,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3268.0,
+5272.0,
+3699.0,
+5605.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/4/5/5",
+"tie",
+0.379,
+0.1192
+]
+},
+{
+"glyph": "glyph/25/1/5/2/3",
+"arc_glyph": "glyph/25/1/5/2/5",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1912.0,
+5484.0,
+1918.38,
+5503.15
+],
+"conf": 0.4226,
+"ink": 0.8977,
+"ink_raw": 0.8977,
+"ink_net": 0.8977,
+"ink_off": 0.8977,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1912.0,
+5484.0,
+2329.0,
+5817.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/5/2/5",
+"tie",
+0.272,
+0.0986
+]
+},
+{
+"glyph": "glyph/25/1/5/5/10",
+"arc_glyph": "glyph/25/1/5/5/9",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3268.0,
+5484.0,
+3276.6,
+5507.03
+],
+"conf": 0.4744,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3268.0,
+5484.0,
+3699.0,
+5817.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/5/5/9",
+"tie",
+0.543,
+0.0278
+]
+},
+{
+"glyph": "glyph/25/1/5/5/18",
+"arc_glyph": "glyph/25/1/5/5/19",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3268.0,
+5622.47,
+3277.71,
+5656.05
+],
+"conf": 0.2532,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+3268.0,
+5484.0,
+3699.0,
+5817.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/25/1/5/5/19",
+"tie",
+0.25,
+0.2691
+]
+},
+{
+"glyph": "glyph/26/0/1/6/9",
+"arc_glyph": "glyph/26/0/1/6/15",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3989.0,
+787.3,
+3997.25,
+811.77
+],
+"conf": 0.366,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3989.0,
+619.0,
+4462.0,
+949.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/0/1/6/15",
+"tie",
+0.259,
+0.125
+]
+},
+{
+"glyph": "glyph/26/0/3/6/5",
+"arc_glyph": "glyph/26/0/3/6/7",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+3989.0,
+1230.47,
+3996.97,
+1261.55
+],
+"conf": 0.3758,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+3989.0,
+1096.0,
+4462.0,
+1426.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/0/3/6/7",
+"tie",
+0.35,
+0.0681
+]
+},
+{
+"glyph": "glyph/26/1/1/1/13",
+"arc_glyph": "glyph/26/1/1/1/5",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1429.0,
+4194.6,
+1439.45,
+4213.85
+],
+"conf": 0.2606,
+"ink": 0.9916,
+"ink_raw": 0.9916,
+"ink_net": 0.9916,
+"ink_off": 0.9916,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+1429.0,
+4056.0,
+1898.0,
+4386.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/1/1/5",
+"tie",
+0.535,
+0.0687
+]
+},
+{
+"glyph": "glyph/26/1/3/1/2",
+"arc_glyph": "glyph/26/1/3/1/6",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1429.0,
+4925.13,
+1436.21,
+4940.67
+],
+"conf": 0.4737,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1429.0,
+4553.0,
+1898.0,
+4941.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/3/1/6",
+"tie",
+0.324,
+0.0192
+]
+},
+{
+"glyph": "glyph/26/1/3/1/3",
+"arc_glyph": "glyph/26/1/3/1/5",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+1429.0,
+4720.06,
+1437.33,
+4742.26
+],
+"conf": 0.4126,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1429.0,
+4553.0,
+1898.0,
+4941.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/3/1/5",
+"tie",
+0.357,
+0.0117
+]
+},
+{
+"glyph": "glyph/26/1/3/1/4",
+"arc_glyph": "glyph/26/1/3/1/6",
+"kind": "tie",
+"cls": "noteheadBlackInSpace",
+"box": [
+1429.0,
+4906.53,
+1436.21,
+4928.46
+],
+"conf": 0.4018,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.75,
+"cell_box": [
+1429.0,
+4553.0,
+1898.0,
+4941.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/3/1/6",
+"tie",
+0.324,
+0.0192
+]
+},
+{
+"glyph": "glyph/26/1/4/10/6",
+"arc_glyph": "glyph/26/1/4/10/4",
+"kind": "tie",
+"cls": "noteheadBlackOnLine",
+"box": [
+5099.0,
+4940.02,
+5106.7,
+4958.73
+],
+"conf": 0.3523,
+"ink": 1.0,
+"ink_raw": 1.0,
+"ink_net": 1.0,
+"ink_off": 1.0,
+"box_source": null,
+"sp": 27.5,
+"cell_box": [
+5099.0,
+4827.0,
+5517.0,
+5157.0
+],
+"left_gap_sp": 0.0,
+"arc": [
+0.0,
+"glyph/26/1/4/10/4",
+"tie",
+0.358,
+0.1063
+]
+}
+]
+}

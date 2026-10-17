@@ -3360,8 +3360,11 @@ HEAD_STEM_BRIDGE_ENV = "OMR_HEAD_STEM_BRIDGE"
 
 
 def head_stem_bridge_enabled() -> bool:
-    """ROADMAP 2.161, default OFF; only an explicit on-word enables."""
-    return os.environ.get(HEAD_STEM_BRIDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.161, default ON (Sean 2026-10-17); an explicit `0/false/no/off` (or empty) disables."""
+    raw = os.environ.get(HEAD_STEM_BRIDGE_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
 def _bridged_stem(ev: Evidence, stems, head_box) -> Optional[Tuple[Any, Dict[str, Any]]]:
@@ -3988,7 +3991,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 located = _head_reads_hollow_on_located_box(ev, head_box, refusal)
                 if located is not None:
                     head_first = {**located, "not_head_sized": True, "detector_box_rows_share": head_first["rows_share"]}
-        # ROADMAP 2.161 (flag `OMR_HEAD_STEM_BRIDGE`, default OFF): no stem box touches the detector box, but the head's own
+        # ROADMAP 2.161 (flag `OMR_HEAD_STEM_BRIDGE`, default ON): no stem box touches the detector box, but the head's own
         # ink runs into a stem standing beside it (the box stops short of the head's stem side). That stem is the head's own
         # stem HERE, at the first step only; and a box too narrow for one head is read on the box extended to that stem.
         first_stems = own_stems
