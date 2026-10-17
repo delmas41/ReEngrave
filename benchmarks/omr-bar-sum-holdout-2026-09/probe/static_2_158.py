@@ -12,6 +12,8 @@ import ijson
 REC, OUT = sys.argv[1:3]
 dur = collections.defaultdict(dict)       # cell -> glyph -> chain
 ev, met = {}, {}
+gone = collections.defaultdict(list)    # glyph -> verdicts that may set it aside (`_left_the_bar`, approximated)
+LEAVE = ("notehead_is_not_a_notehead", "rest_is_not_a_rest", "glyph_owner", "notehead_is_an_eighth_rest")
 
 
 def live(ch):
@@ -26,6 +28,8 @@ with open(REC, "rb") as fh:
         if q == "duration" and s.startswith("glyph/"):
             p = s.split("/")
             dur["cell/" + "/".join(p[1:5])].setdefault(int(p[5]), []).append(v)
+        elif q in LEAVE and s.startswith("glyph/"):
+            gone[s].append(v)
         elif q == "event" and s.startswith("cell/"):
             ev.setdefault(s, []).append(v)
         elif q == "meter" and s.startswith("system/"):
@@ -41,10 +45,24 @@ def at(mv, cell):
     return cur
 
 
+def left(c, g):
+    rows = collections.defaultdict(list)
+    for v in gone.get("glyph/%s/%d" % (c[5:], g), ()):
+        rows[v["quantity"]].append(v)
+    lv = {q: live(ch) for q, ch in rows.items()}
+    reinst = lv.get("notehead_is_an_eighth_rest", {}).get("value") is True
+    for q in ("notehead_is_not_a_notehead", "rest_is_not_a_rest"):
+        if q in lv and lv[q]["outcome"] == "decided" and lv[q]["value"] is True and not (reinst and q.startswith("notehead")):
+            return True
+    o = lv.get("glyph_owner")
+    staff = "staff/" + "/".join(c.split("/")[1:4])
+    return bool(o and o["outcome"] == "decided" and isinstance(o["value"], str) and o["value"] != staff)
+
+
 hits, why = [], collections.Counter()
 for c, by in dur.items():
     p = c.split("/")
-    lv = {g: live(ch) for g, ch in by.items()}
+    lv = {g: live(ch) for g, ch in by.items() if not left(c, g)}
     members = {g: v for g, v in lv.items() if v["outcome"] in ("decided", "narrowed")}
     if not any(v["outcome"] == "narrowed" for v in members.values()):
         continue
