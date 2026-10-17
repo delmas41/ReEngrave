@@ -4529,7 +4529,7 @@ Verbatim: "1.4 2.dot4 3.8 4.4 5.16 6.dot 4 7.8  8.8 9.4. 10.4 11.8 12.2 13.dot4 
 | tile kind | n | base (the bar's value) | arm a | arm b |
 |---|--:|---|---|---|
 | picked from a narrowing, BARE STEM (bar chose the unbeamed value) | 11 | 11 right | 7 narrowed-holding, 4 right (decided by `collapse_arc_ink_not_beam`) | same as a |
-| picked from a narrowing, other (2 `beams_ambiguous`/`flag`, 1 head fill) | 3 | 2 right (7: an 8 from {16, 8}; 23: a 4 from {8, 4}), 1 wrong (12: 4 picked from {4, 2}, Sean 2) | 3 narrowed-holding | same as a |
+| picked from a narrowing, other (7 `flag_ink_unread`, 23 `beams_ambiguous`, 12 `open_head_flag_contradiction`) | 3 | 2 right (7: an 8 from {16, 8}; 23: a 4 from {8, 4}), 1 wrong (12: 4 picked from {4, 2}, Sean 2) | 3 narrowed-holding | same as a |
 | moved a DECIDED value (`_admitted` +/-1) | 7 | 3 right (3, 8, 11), 4 wrong (13, 14, 16, 21) | = base: 3 right, 4 wrong | 4 wrong -> right, 3 right -> wrong |
 | plain control | 2 | 1 right (5), 1 wrong (1: Litolff, read a 16th, Sean 4 -- a reader error, no bar involved) | same | same |
 
