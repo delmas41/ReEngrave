@@ -1,1 +1,38 @@
-no new current.json: [Errno 2] No such file or directory: '/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/start-here-go-cbd2bc/benchmarks/acceptance/overnight/20261016-night/current.json'
+all stages: NEW tree 3984f67b11173bffdb0e1da6a2b5008c97fa765e (2026-10-17T14:41:35Z)  vs  OLD tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          4480 ->         6731
+  notes_reaching_file.of                                                        11644 ->        11399
+  notes_reaching_file.fraction                                           0.38474750944692543 -> 0.5904903938942012
+  bars_held_out_sum.n                                                            1732 ->          584
+  bars_held_out_sum.of                                                           4465 ->         5014
+  bars_held_out_sum.fraction                                             0.38790593505039195 -> 0.11647387315516554
+  bars_held_out_sum.noteheads_and_rests                                          4192 ->         1406
+  bars_held_out_sum.bars_on_a_doubled_staff                                        85 ->           56
+  bars_held_out_sum.named_in_the_export_report                                   1647 ->          528
+  bars_add_up_control.exact                                                      5886 ->         4603
+  bars_add_up_control.n                                                          5886 ->         4603
+  bars_add_up_control.of                                                         5886 ->         4603
+  held_out.staff_not_identified                                                   213 ->            0
+  held_out.of_noteheads_in_log                                                  11644 ->        11399
+  held_out.fraction                                                      0.018292682926829267 ->          0.0
+  unread_bars.empty_bars_padded                                                   951 ->          699
+  unread_bars.tacet_bars_not_padded_without_meter                                  90 ->            0
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5225 ->        12152
+  notes_reaching_file.of                                                        24533 ->        24260
+  notes_reaching_file.fraction                                           0.21297843720702728 -> 0.5009068425391591
+  bars_held_out_sum.n                                                            4283 ->          844
+  bars_held_out_sum.of                                                           6061 ->         6278
+  bars_held_out_sum.fraction                                             0.7066490678105923 -> 0.13443771901879578
+  bars_held_out_sum.noteheads_and_rests                                         12927 ->         3549
+  bars_held_out_sum.named_in_the_export_report                                   4283 ->          844
+  bars_add_up_control.exact                                                      6882 ->         5250
+  bars_add_up_control.n                                                          6882 ->         5250
+  bars_add_up_control.of                                                         6882 ->         5250
+  held_out.staff_not_identified                                                    63 ->            0
+  held_out.of_noteheads_in_log                                                  24533 ->        24260
+  held_out.fraction                                                      0.0025679696735009987 ->          0.0
+  unread_bars.empty_bars_padded                                                   613 ->          393
+  unread_bars.tacet_bars_not_padded_without_meter                                 328 ->          123

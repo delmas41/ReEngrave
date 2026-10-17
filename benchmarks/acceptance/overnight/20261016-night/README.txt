@@ -3,3 +3,4 @@ beethoven5-litolff: readout diff exit 1
 brahms1-breitkopf: readout diff exit 1
 acceptance exit 2 (see /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/overnight-20261016-night/compare/acceptance.log)
 done 2026-10-17T11:44:30Z
+acceptance re-run at 3984f67b (clean tree; the first run was refused as dirty by its own exports) 2026-10-17T14:41:43Z
