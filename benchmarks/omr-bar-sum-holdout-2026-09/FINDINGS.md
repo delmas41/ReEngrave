@@ -4619,3 +4619,18 @@ Right 113 -> 114, wrong 26 -> 26, narrowed 9 -> 8: **one narrowed-holding -> rig
 
 ### 2.158-6. Limits
 The reach is small by construction (Litolff 19 notes, Brahms 1) and mostly the bars 2.154 took back. The solver's own head-cleanliness guard declines 2 admitted lone bars (Litolff crop 7, Brahms 0/0/4/2); that guard is unchanged. Flag OFF; no DECISIONS line from this lane.
+
+### 2.158 -- Sean's 21 tile answers (2026-10-17, `out/print/2.158-review/answers.json`; `probe/record_answers_2_158.py`)
+Verbatim: "1-9.2 10.4 11-13.2 14. Box is off on a part of a slur but the measure has a 2 in it. Not sure if that is bad box placement  or meant to be where it is. 15-21. 2"; correction "Sorry 1$ is dotted half" (read by the manager as tile 17, the Brahms 6/8 bar). Scored against the key (`out/2.158/tiles-key.json`, now committed): **lone-event guesses 18 of 19 right** (17 Litolff halves + the Brahms dotted half), **both controls right**, tile 14 is the one not right. Judged index rebuilt (`benchmarks/acceptance/judged-tiles.json`, +21 rows, tile 14 parses as `other`).
+
+**Tile 14 (Litolff `glyph/5/1/4/2/1`, p5 sys1 staff4) is a GATHER fault, not a value fault.** The only head box in the bar (`noteheadBlackOnLine`, conf 0.28, page px [798, 3187, 825, 3207]) sits on the END of the tie arc coming in from the previous bar, just right of the barline on the bottom line; the previous bar's arc box (`glyph/5/1/4/1/1`, tie, x 695-795) stops at the barline, so the tail inside this bar is boxed as a head. The real half-note head (second space, stem up, page px ~[816, 3163, 838, 3182]) has **no detector box of any class** (`probe/boxes_near_2_158.py`). So we write E-flat 4 (`position_and_clef`, bottom line) where the print has A-flat 4: the value fills the bar, the pitch is invented. Crop: `out/print/2.158-tile14/box_vs_head.png` (blue = our box, orange = the real head, hand-placed).
+
+Cheap guards from existing readers, measured on the 20 changed notes (`probe/guard_2_158.py`) -- none is clean:
+
+| guard | catches tile 14 | costs (Sean-right guesses refused) |
+|---|---|---|
+| box overlaps a decided arc's `arc_box` | no (the tie box ends at the barline) | 5 |
+| no own stem seen (`head_stem` abstained `no_stem`) -- a half has a stem | yes | 6 of 18 (our stem finder misses those stems) |
+| `notehead_ink` below a cut | yes (0.700, the lowest; next 0.735) | 0 here, but the cut is fitted to one example, so by CLAUDE §4 it may only narrow |
+
+Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's left edge, the real head never boxed); the rule only took the one head the bar held.
