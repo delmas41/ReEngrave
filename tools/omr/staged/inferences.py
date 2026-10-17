@@ -2061,6 +2061,17 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
     return out
 
 
+def _bare_stem_confirmations(log: Log, props: List[Proposal]) -> List[Proposal]:
+    """ROADMAP 2.154: of a bar's proposals, only those landing a bare stem on its UNBEAMED value (`confirms_bare_stem`)."""
+    from .consequences import confirms_bare_stem
+    keep = []
+    for p in props:
+        prior = log.verdict(Q.DURATION, p.subject)
+        if prior is not None and confirms_bare_stem(prior, p.value):
+            keep.append(p)
+    return keep
+
+
 @rule(
     inference=Inference.COLLAPSE_BARE_STEM_BY_BAR,
     target=Q.DURATION,
@@ -2097,7 +2108,13 @@ def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     is lower ... send it on to the other stages with a high likelihood of
     being a quarter note and make sure the bar math adds up"*.
     """
-    return solve_bare_stem_bar(log, cell).proposals or []
+    from .consequences import bar_sum_confirm_only
+    props = solve_bare_stem_bar(log, cell).proposals or []
+    if bar_sum_confirm_only():
+        # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
+        # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
+        props = _bare_stem_confirmations(log, props)
+    return props
 
 
 @rule(
@@ -2140,7 +2157,13 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     is merely BEST -- so it is INFER's, labelled, gated, and bounded to the
     reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
     """
-    return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
+    from .consequences import bar_sum_confirm_only
+    props = solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
+    if bar_sum_confirm_only():
+        # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
+        # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
+        props = _bare_stem_confirmations(log, props)
+    return props
 
 
 # ─────────────────────────────────────────────────────────────────────────────

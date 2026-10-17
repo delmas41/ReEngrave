@@ -9,6 +9,11 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- ROADMAP 2.154 LANDED: OMR_BAR_SUM_CONFIRM_ONLY arm a ON, arm b OFF (Sean)
+STAGED EVALUATE + INFER. Lane branch merged with main; `consequences.bar_sum_confirm_only()` now returns `narrowed` when the env is unset (explicit `0/off/false/no/""` turns it off; `all` = arm b, opt-in). Tests assert the new default and the off-words; six older modules that assert the pre-2.154 bar picks (2.81, 2.97, 2.136, candidates, reconcile-what-is-in-the-bar, stem-tip hooks) now pin the flag `off` in `setUpModule`; flag docs read "default ON (arm a), Sean 2026-10-16". ROADMAP 2.154 LANDED; DECISIONS line; holdout FINDINGS 2.154.
+
+## 2026-10-16 -- ROADMAP 2.154 built OFF on its branch (OMR_BAR_SUM_CONFIRM_ONLY)
+STAGED EVALUATE + INFER, default OFF: `narrowed` (arm a) stops `reconcile_duration` and both INFER `*_by_bar` rules choosing among a narrowing's candidates; `all` (arm b) also stops `reconcile_duration` moving a decided value. Judged tiles: 18 bar picks, 18 right, all -> narrowed in both arms, 0 made wrong; 23 blind tiles out (`out/print/2.154-review/`). Not merged; holdout FINDINGS 2.154.
 ## 2026-10-16 -- 2.155: a stem at the bar's edge that ends in its head is a stem (`OMR_STEM_AT_BAR_EDGE`, default OFF; lane branch, not landed)
 
 STAGED GATHER `line_detection.detect_stems` repair `edge_head`: the 2.153 tiles 4/14/16 notes had no stem because the barline filter
