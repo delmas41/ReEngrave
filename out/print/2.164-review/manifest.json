@@ -1,0 +1,26 @@
+{
+ "question": "Is the mark in the blue box a note, or not a note?",
+ "colours": "blue box = the mark we are asking about",
+ "tiles": [
+  "tile_01.png",
+  "tile_02.png",
+  "tile_03.png",
+  "tile_04.png",
+  "tile_05.png",
+  "tile_06.png",
+  "tile_07.png",
+  "tile_08.png",
+  "tile_09.png",
+  "tile_10.png",
+  "tile_11.png",
+  "tile_12.png",
+  "tile_13.png",
+  "tile_14.png",
+  "tile_15.png",
+  "tile_16.png",
+  "tile_17.png",
+  "tile_18.png",
+  "tile_19.png",
+  "tile_20.png"
+ ]
+}

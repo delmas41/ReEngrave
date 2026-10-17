@@ -1,0 +1,2988 @@
+{
+ "record": "out/2.164/brahms.off.record.json",
+ "doc": "brahms",
+ "totals": {
+  "doc_unresolved": 629,
+  "other_doc": 279,
+  "unscored": 144,
+  "not_found": 108,
+  "right": 8,
+  "narrowed": 4,
+  "wrong": 1
+ },
+ "per_item": {
+  "1.7-far-notes-review": {
+   "doc_unresolved": 92
+  },
+  "2.100-review": {
+   "other_doc": 10,
+   "unscored": 3
+  },
+  "2.100-review-2": {
+   "other_doc": 5,
+   "unscored": 3,
+   "not_found": 3
+  },
+  "2.101-review": {
+   "other_doc": 17
+  },
+  "2.102-review": {
+   "other_doc": 10,
+   "doc_unresolved": 1
+  },
+  "2.104-review": {
+   "other_doc": 5,
+   "unscored": 9
+  },
+  "2.105-review": {
+   "doc_unresolved": 12
+  },
+  "2.107-review": {
+   "unscored": 3,
+   "other_doc": 8
+  },
+  "2.108-review": {
+   "doc_unresolved": 10
+  },
+  "2.109-review": {
+   "doc_unresolved": 6
+  },
+  "2.114-round2": {
+   "doc_unresolved": 13
+  },
+  "2.114-second-detector": {
+   "doc_unresolved": 17
+  },
+  "2.115-round2": {
+   "doc_unresolved": 6
+  },
+  "2.121-review": {
+   "doc_unresolved": 15
+  },
+  "2.126-review": {
+   "doc_unresolved": 9
+  },
+  "2.127-review": {
+   "doc_unresolved": 15
+  },
+  "2.128-review": {
+   "doc_unresolved": 12
+  },
+  "2.129-review": {
+   "doc_unresolved": 15
+  },
+  "2.12f-r2-review": {
+   "doc_unresolved": 9,
+   "unscored": 3
+  },
+  "2.12f-review": {
+   "unscored": 1,
+   "doc_unresolved": 11
+  },
+  "2.12m-review": {
+   "doc_unresolved": 9
+  },
+  "2.130-review": {
+   "doc_unresolved": 15
+  },
+  "2.131-review": {
+   "doc_unresolved": 13
+  },
+  "2.133-review": {
+   "doc_unresolved": 8
+  },
+  "2.134-review": {
+   "unscored": 12,
+   "other_doc": 2
+  },
+  "2.136-review": {
+   "unscored": 12
+  },
+  "2.136-step2-review": {
+   "doc_unresolved": 12
+  },
+  "2.137-review": {
+   "not_found": 3,
+   "other_doc": 4,
+   "right": 1,
+   "narrowed": 1,
+   "unscored": 1
+  },
+  "2.138-review": {
+   "doc_unresolved": 10
+  },
+  "2.139-review": {
+   "doc_unresolved": 8
+  },
+  "2.13b-bar-number": {
+   "doc_unresolved": 1
+  },
+  "2.140-review": {
+   "doc_unresolved": 11
+  },
+  "2.140-review-2": {
+   "doc_unresolved": 3
+  },
+  "2.141-brahms-review": {
+   "doc_unresolved": 1
+  },
+  "2.141-fix23-review": {
+   "doc_unresolved": 5
+  },
+  "2.141-fixes-review": {
+   "doc_unresolved": 13
+  },
+  "2.141-review": {
+   "doc_unresolved": 6
+  },
+  "2.142-review": {
+   "doc_unresolved": 12
+  },
+  "2.145-review": {
+   "not_found": 9,
+   "other_doc": 12
+  },
+  "2.146-review": {
+   "doc_unresolved": 34
+  },
+  "2.148-review": {
+   "doc_unresolved": 30
+  },
+  "2.150-review": {
+   "unscored": 13,
+   "other_doc": 8
+  },
+  "2.150b-review": {
+   "unscored": 11,
+   "other_doc": 9
+  },
+  "2.151-review": {
+   "doc_unresolved": 31
+  },
+  "2.153-review": {
+   "doc_unresolved": 18
+  },
+  "2.154-review": {
+   "other_doc": 12,
+   "not_found": 11
+  },
+  "2.155-review": {
+   "doc_unresolved": 20
+  },
+  "2.155b-review": {
+   "doc_unresolved": 20
+  },
+  "2.158-review": {
+   "other_doc": 20,
+   "narrowed": 1
+  },
+  "2.159-review": {
+   "wrong": 1,
+   "other_doc": 5,
+   "not_found": 2
+  },
+  "2.65": {
+   "doc_unresolved": 22
+  },
+  "2.65-headfill": {
+   "doc_unresolved": 6
+  },
+  "2.65-held": {
+   "doc_unresolved": 8
+  },
+  "2.68-dynamic-owner-review": {
+   "other_doc": 7,
+   "unscored": 3
+  },
+  "2.68-dynamics-back": {
+   "other_doc": 2,
+   "unscored": 8
+  },
+  "2.68-twins-review": {
+   "unscored": 5,
+   "other_doc": 5
+  },
+  "2.69-review": {
+   "doc_unresolved": 2
+  },
+  "2.70-review": {
+   "other_doc": 8
+  },
+  "2.71-review": {
+   "doc_unresolved": 9
+  },
+  "2.73-review": {
+   "other_doc": 8,
+   "not_found": 2
+  },
+  "2.74-review": {
+   "not_found": 9,
+   "other_doc": 1
+  },
+  "2.75-chords": {
+   "other_doc": 3,
+   "doc_unresolved": 2
+  },
+  "2.75-review": {
+   "not_found": 4,
+   "other_doc": 6
+  },
+  "2.78-phase2-review": {
+   "doc_unresolved": 12
+  },
+  "2.78-review": {
+   "doc_unresolved": 14
+  },
+  "2.79-review": {
+   "doc_unresolved": 7
+  },
+  "2.80-review-2": {
+   "unscored": 7,
+   "not_found": 3
+  },
+  "2.81-phase2-review": {
+   "not_found": 8,
+   "other_doc": 6
+  },
+  "2.81-review": {
+   "not_found": 20,
+   "other_doc": 10,
+   "right": 2,
+   "narrowed": 2
+  },
+  "2.82-review": {
+   "right": 4,
+   "not_found": 1,
+   "other_doc": 5
+  },
+  "2.83-fix-review": {
+   "not_found": 4,
+   "other_doc": 5,
+   "right": 1
+  },
+  "2.83-review": {
+   "not_found": 9,
+   "other_doc": 5
+  },
+  "2.84-review": {
+   "unscored": 9,
+   "other_doc": 2,
+   "not_found": 1
+  },
+  "2.85-review": {
+   "doc_unresolved": 5
+  },
+  "2.88-review": {
+   "other_doc": 12,
+   "not_found": 2
+  },
+  "2.88-review-2": {
+   "other_doc": 9
+  },
+  "2.89-review": {
+   "other_doc": 6,
+   "unscored": 5
+  },
+  "2.90-review": {
+   "unscored": 7,
+   "other_doc": 3
+  },
+  "2.96-review": {
+   "unscored": 9,
+   "other_doc": 6
+  },
+  "2.97-misses": {
+   "unscored": 2
+  },
+  "2.97-review": {
+   "other_doc": 8,
+   "unscored": 4
+  },
+  "2.97-review-3": {
+   "unscored": 5,
+   "other_doc": 1
+  },
+  "2.98-review": {
+   "other_doc": 4,
+   "unscored": 8
+  },
+  "2.99-review": {
+   "other_doc": 8,
+   "not_found": 4
+  },
+  "dynamic-not-a-head-review": {
+   "other_doc": 8,
+   "unscored": 1
+  },
+  "rhythm-leftovers-2": {
+   "not_found": 5,
+   "other_doc": 5
+  },
+  "rhythm-leftovers-3": {
+   "not_found": 3,
+   "other_doc": 4
+  },
+  "rhythm-leftovers-review": {
+   "not_found": 5,
+   "other_doc": 5
+  },
+  "stem-finder": {
+   "doc_unresolved": 10
+  },
+  "stem-finder/round2": {
+   "doc_unresolved": 9
+  }
+ },
+ "tiles": [
+  {
+   "item": "2.100-review",
+   "tile": "3",
+   "subject": "glyph/1/0/3/0/55",
+   "answer": "time signature",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "6",
+   "subject": "glyph/1/1/4/0/18",
+   "answer": "key accidental",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review",
+   "tile": "9",
+   "subject": "glyph/1/0/13/0/12",
+   "answer": "key accidental",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_02",
+   "subject": "glyph/1/0/3/0/55",
+   "answer": "2. 9 meter (verbatim '2.9 meter'; a 9 time-signature digit, per coordinator)",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_03",
+   "subject": "glyph/0/0/12/0/28",
+   "answer": "3. Staff line under the accidentals",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_05",
+   "subject": "glyph/1/0/1/0/55",
+   "answer": "5. Key Flat (Eb)",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_06",
+   "subject": "glyph/0/0/6/0/9",
+   "answer": "6. 8 rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_08",
+   "subject": "glyph/1/1/0/0/7",
+   "answer": "8. 8 rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.100-review-2",
+   "tile": "tile_11",
+   "subject": "glyph/1/1/3/0/27",
+   "answer": "11. Flat key accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_03",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_04",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_05",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_06",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_07",
+   "subject": null,
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_08",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_09",
+   "subject": null,
+   "answer": "8 rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_12",
+   "subject": null,
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.104-review",
+   "tile": "tile_14",
+   "subject": null,
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "1",
+   "subject": null,
+   "answer": "8 rest",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "7",
+   "subject": null,
+   "answer": "8 rest",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.107-review",
+   "tile": "8",
+   "subject": null,
+   "answer": "ff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.12f-r2-review",
+   "tile": "3",
+   "subject": "glyph/17/1/7/5/9",
+   "answer": "Connected to note below",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.12f-r2-review",
+   "tile": "4",
+   "subject": "glyph/18/1/12/5/17",
+   "answer": "Ledger line",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.12f-r2-review",
+   "tile": "5",
+   "subject": "glyph/19/0/3/6/15",
+   "answer": "Connected to note above",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.12f-review",
+   "tile": "1",
+   "subject": "glyph/18/0/2/0/7",
+   "answer": "the accent belongs to the note beneath it",
+   "status": "unscored",
+   "note": "question kind owner has no comparator",
+   "margin": null,
+   "doc_by": "page_box"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "1",
+   "subject": "cell/5/1/2/6",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 93, \"part\": \"P3\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 1, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "10",
+   "subject": "cell/6/0/11/5",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"eighth\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 102, \"part\": \"P14\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 0.5, \"system_meter\": \"decided\"}, \"n\": 10, \"role\": \"narrowed_head\", \"sean_answer\": \"eighth\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "11",
+   "subject": "cell/16/0/0/11",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 315, \"part\": \"P1\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 11, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "12",
+   "subject": "cell/5/0/10/2",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 81, \"part\": \"P11\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 12, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "13",
+   "subject": "cell/14/1/7/0",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 274, \"part\": \"P10\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 13, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "14",
+   "subject": "cell/15/0/9/3",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 286, \"part\": \"P12\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 14, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "2",
+   "subject": "cell/15/0/9/5",
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 288, \"our_reading\": \"quarter dots 1\", \"part\": \"P12\", \"what\": \"a dotted quarter, no beam over it\"}, \"n\": 2, \"our_reading\": \"dotted quarter\", \"role\": \"control_decided_head\", \"sean_answer\": \"dotted quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "4",
+   "subject": "cell/26/1/8/4",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 506, \"part\": \"P10\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 4, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "5",
+   "subject": "cell/19/1/4/1",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.5, 1], [1.0, 0]], \"measure\": 364, \"part\": \"P5\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.0, \"system_meter\": \"decided\"}, \"n\": 5, \"role\": \"narrowed_head\", \"sean_answer\": \"quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "6",
+   "subject": "cell/15/0/10/3",
+   "answer": "{\"agrees\": true, \"key\": {\"measure\": 286, \"our_reading\": \"eighth dots 0\", \"part\": \"P13\", \"what\": \"a beamed eighth the beam reader READ\"}, \"n\": 6, \"our_reading\": \"eighth\", \"role\": \"control_decided_head\", \"sean_answer\": \"eighth\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "8",
+   "subject": "cell/21/0/1/5",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 395, \"part\": \"P2\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 8, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.134-review",
+   "tile": "9",
+   "subject": "cell/17/0/6/5",
+   "answer": "{\"agrees\": true, \"bar_lands_on\": \"dotted quarter\", \"key\": {\"bar_quarters\": 3.0, \"candidates_beats_beamlevels\": [[0.75, 1], [1.5, 0]], \"measure\": 330, \"part\": \"P7\", \"reason\": \"beam_discounted_uncertain\", \"short_by\": 1.5, \"system_meter\": \"decided\"}, \"n\": 9, \"role\": \"narrowed_head\", \"sean_answer\": \"dotted quarter\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "1",
+   "subject": "cell/4/0/12/3",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "10",
+   "subject": "cell/16/1/13/4",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "11",
+   "subject": "cell/13/0/0/9",
+   "answer": "dot4, 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "12",
+   "subject": "cell/16/1/4/5",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "2",
+   "subject": "cell/21/1/6/3",
+   "answer": "4, 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "3",
+   "subject": "cell/9/1/10/4",
+   "answer": "8, 8",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "4",
+   "subject": "cell/18/1/12/7",
+   "answer": "16, 16",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "5",
+   "subject": "cell/9/1/12/4",
+   "answer": "dot4, 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "6",
+   "subject": "cell/4/1/12/6",
+   "answer": "dot4, 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "7",
+   "subject": "cell/3/1/12/4",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "8",
+   "subject": "cell/16/1/4/0",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.136-review",
+   "tile": "9",
+   "subject": "cell/5/0/11/1",
+   "answer": "4, dot4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "1",
+   "subject": "glyph/0/0/4/1/6",
+   "answer": "slash",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "10",
+   "subject": "glyph/0/0/8/5/5",
+   "answer": "slash",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "3",
+   "subject": "glyph/12/0/11/6/5",
+   "answer": "slash",
+   "status": "right",
+   "note": "refused as not a note (tremolo_slash_crosses_stem)",
+   "margin": 0.09,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "4",
+   "subject": "glyph/14/1/7/0/4",
+   "answer": "dot 4",
+   "status": "narrowed",
+   "note": "narrowed [0.75, 1.5], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "6",
+   "subject": "glyph/15/1/7/5/9",
+   "answer": "part of a quarter rest",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.137-review",
+   "tile": "7",
+   "subject": "glyph/15/1/9/4/17",
+   "answer": "slashes",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "1",
+   "subject": "glyph/5/1/0/2/10",
+   "answer": "4 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "14",
+   "subject": "glyph/8/0/1/2/19",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "18",
+   "subject": "glyph/15/0/2/2/8",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "19",
+   "subject": "glyph/23/1/5/8/6",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "2",
+   "subject": "glyph/15/0/10/5/14",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "20",
+   "subject": "glyph/13/0/1/9/17",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "5",
+   "subject": "glyph/1/0/0/1/15",
+   "answer": "meter number 6",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "6",
+   "subject": "glyph/6/0/3/5/13",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.145-review",
+   "tile": "7",
+   "subject": "glyph/10/1/13/1/8",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "1",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "10",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "11",
+   "subject": null,
+   "answer": "quarter stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "13",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "14",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "15",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "16",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "17",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "20",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "21",
+   "subject": null,
+   "answer": "barline",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "6",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "7",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150-review",
+   "tile": "9",
+   "subject": null,
+   "answer": "stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "1",
+   "subject": null,
+   "answer": "eighth stem with flag",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "11",
+   "subject": null,
+   "answer": "eighth stem with flag",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "12",
+   "subject": null,
+   "answer": "eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "13",
+   "subject": null,
+   "answer": "eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "15",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "16",
+   "subject": null,
+   "answer": "quarter rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "18",
+   "subject": null,
+   "answer": "eighth stem with flag",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "2",
+   "subject": null,
+   "answer": "eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "20",
+   "subject": null,
+   "answer": "quarter stem",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "5",
+   "subject": null,
+   "answer": "stem of a dotted quarter",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.150b-review",
+   "tile": "6",
+   "subject": null,
+   "answer": "eighth stem with flag",
+   "status": "unscored",
+   "note": "no glyph subject (none)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "10",
+   "subject": "glyph/0/0/0/1/4",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "13",
+   "subject": "glyph/5/0/1/7/9",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "15",
+   "subject": "glyph/5/0/0/2/2",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "16",
+   "subject": "glyph/5/0/3/6/0",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "17",
+   "subject": "glyph/5/0/1/2/0",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "19",
+   "subject": "glyph/0/0/10/3/3",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "2",
+   "subject": "glyph/13/0/2/2/5",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "3",
+   "subject": "glyph/5/0/11/5/0",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "4",
+   "subject": "glyph/5/0/2/3/2",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "5",
+   "subject": "glyph/5/0/1/5/12",
+   "answer": "16",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.154-review",
+   "tile": "6",
+   "subject": "glyph/5/0/13/6/1",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.158-review",
+   "tile": "17",
+   "subject": "glyph/12/0/2/6/9",
+   "answer": "dotted half",
+   "status": "narrowed",
+   "note": "narrowed [2.0, 3.0], answer in set (dot_seen_beside_a_plain_note)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.159-review",
+   "tile": "1",
+   "subject": "glyph/18/1/9/6/15",
+   "answer": "ff",
+   "status": "wrong",
+   "note": "kept as a notehead",
+   "margin": -1.0,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.159-review",
+   "tile": "4",
+   "subject": "glyph/16/1/10/0/7",
+   "answer": "trem slashes",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.159-review",
+   "tile": "5",
+   "subject": "glyph/0/0/0/1/4",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "39",
+   "subject": "cell/0/0/6/0",
+   "answer": "f",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "40",
+   "subject": "cell/0/0/10/0",
+   "answer": "f below; espr. e legato are expression markings that also belong to that blue staff",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamic-owner-review",
+   "tile": "41",
+   "subject": "cell/1/0/2/1",
+   "answer": "f in this bar; a p cut off at the crop edge is in the next bar (Sean not sure from the crop whether expression or dynamic)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "10",
+   "subject": "cell/1/0/10/3",
+   "answer": "None -- only espr.",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "3",
+   "subject": "cell/0/0/1/0",
+   "answer": "f legato underneath belongs to the staff in blue",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "4",
+   "subject": "cell/0/0/9/0",
+   "answer": "f espr. e legato underneath belongs to the staff in blue",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "5",
+   "subject": "cell/0/0/12/0",
+   "answer": "f espr. e legato underneath (same as 4)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "6",
+   "subject": "cell/0/0/12/1",
+   "answer": "A legato that crosses a barline. No dynamic markings",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "7",
+   "subject": "cell/0/0/13/0",
+   "answer": "f pesante; a larger marking underneath, Un poco sostenuto (expression/tempo, owner unclear without page context), not a dynamic",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "8",
+   "subject": "cell/0/0/13/1",
+   "answer": "None",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-dynamics-back",
+   "tile": "9",
+   "subject": "cell/1/0/9/1",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "1",
+   "subject": "cell/1/0/1/5",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "2",
+   "subject": "cell/1/0/0/3",
+   "answer": "p",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "5",
+   "subject": "cell/1/0/3/1",
+   "answer": "f on beat 1 and p on beat 2 -- both, but not together",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "6",
+   "subject": "cell/1/0/2/5",
+   "answer": "p on the first beat, and another p by itself in the second half of the bar (maybe for the 2 voices)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.68-twins-review",
+   "tile": "7",
+   "subject": "cell/1/1/0/6",
+   "answer": "pp",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "7",
+   "subject": "glyph/1/0/2/0/11",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.73-review",
+   "tile": "8",
+   "subject": "glyph/1/0/2/0/35",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_01",
+   "subject": "glyph/0/0/10/2/5",
+   "answer": "8th note",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_02",
+   "subject": "glyph/0/0/9/2/3",
+   "answer": "8th note",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_03",
+   "subject": "glyph/1/0/1/0/11",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_04",
+   "subject": "glyph/1/0/13/4/7",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_05",
+   "subject": "glyph/1/0/0/0/10",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_06",
+   "subject": "glyph/1/0/12/0/8",
+   "answer": "16th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_07",
+   "subject": "glyph/1/0/11/0/12",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_08",
+   "subject": "glyph/1/0/9/0/11",
+   "answer": "16th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.74-review",
+   "tile": "brahms_09",
+   "subject": "glyph/0/0/0/3/11",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "brahms_01",
+   "subject": "glyph/1/1/9/3/13",
+   "answer": "Slur (looks like two slur markings; the upper one seems unnecessary -- typo or an unfamiliar convention for rhythmic grouping)",
+   "status": "not_found",
+   "note": "no arc_kind verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "brahms_02",
+   "subject": "glyph/1/1/10/3/17",
+   "answer": "Slur (same as brahms_01: a doubled slur)",
+   "status": "not_found",
+   "note": "no arc_kind verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "brahms_03",
+   "subject": "glyph/1/0/1/2/1",
+   "answer": "Tie",
+   "status": "not_found",
+   "note": "no arc_kind verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.75-review",
+   "tile": "brahms_04",
+   "subject": "glyph/1/0/2/5/8",
+   "answer": "Tie",
+   "status": "not_found",
+   "note": "no arc_kind verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "1",
+   "subject": "glyph/1/0/13/5/8",
+   "answer": "(tile 1 judged earlier: It is an 8th note rest)",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "10",
+   "subject": "glyph/1/0/9/0/43",
+   "answer": "Tr with squiggly trill line",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "2",
+   "subject": "glyph/1/1/12/4/4",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "3",
+   "subject": "glyph/1/0/10/0/17",
+   "answer": "Dot quarter slur to 2 16th grave notes",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "4",
+   "subject": "glyph/1/0/13/5/11",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "5",
+   "subject": "glyph/1/0/8/1/20",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "6",
+   "subject": "glyph/1/0/10/3/12",
+   "answer": "Stray ink",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "7",
+   "subject": "glyph/1/0/5/0/3",
+   "answer": "Aug dot",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "8",
+   "subject": "glyph/1/0/8/3/8",
+   "answer": "Text arco",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.80-review-2",
+   "tile": "9",
+   "subject": "glyph/0/0/4/6/0",
+   "answer": "Dot 2 with a trem slash",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_01",
+   "subject": "glyph/1/0/0/6/5",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_02",
+   "subject": "glyph/1/0/3/6/0",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_05",
+   "subject": "glyph/1/0/10/3/4",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_06",
+   "subject": "glyph/0/0/0/1/8",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_07",
+   "subject": "glyph/1/0/9/0/8",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_11",
+   "subject": "glyph/0/0/10/3/4",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_12",
+   "subject": "glyph/0/0/9/3/3",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-phase2-review",
+   "tile": "tile_14",
+   "subject": "glyph/0/0/0/1/3",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "control_1",
+   "subject": "glyph/0/0/10/2/2",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "control_2",
+   "subject": "glyph/0/0/0/4/9",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "control_3",
+   "subject": "glyph/0/0/11/2/7",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "control_4",
+   "subject": "glyph/0/0/1/5/2",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_01",
+   "subject": "glyph/11/0/3/2/0",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_03",
+   "subject": "glyph/15/1/8/8/0",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_04",
+   "subject": "glyph/20/0/11/2/3",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_05",
+   "subject": "glyph/16/1/2/1/3",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_06",
+   "subject": "glyph/1/0/2/6/3",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_07",
+   "subject": "glyph/7/0/0/2/10",
+   "answer": "eighth rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_08",
+   "subject": "glyph/23/1/2/5/4",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_09",
+   "subject": "glyph/25/0/12/1/0",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_11",
+   "subject": "glyph/2/0/9/2/4",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_12",
+   "subject": "glyph/26/1/3/4/6",
+   "answer": "quarter",
+   "status": "right",
+   "note": "decided 1 beats (refused_strokes_are_slurs_or_too_thin_for_a_beam)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_13",
+   "subject": "glyph/2/0/9/4/1",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_14",
+   "subject": "glyph/19/0/4/9/1",
+   "answer": "dotted quarter",
+   "status": "narrowed",
+   "note": "narrowed [0.75, 1.5], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_15",
+   "subject": "glyph/21/1/2/9/7",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_17",
+   "subject": "glyph/9/1/12/4/3",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_18",
+   "subject": "glyph/23/1/12/4/0",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_19",
+   "subject": "glyph/16/0/4/1/1",
+   "answer": "dotted quarter",
+   "status": "right",
+   "note": "decided 1.5 beats (stem_tip_reads_no_beam)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_26",
+   "subject": "glyph/3/0/2/1/3",
+   "answer": "dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_27",
+   "subject": "glyph/24/1/12/7/3",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_28",
+   "subject": "glyph/26/1/11/4/2",
+   "answer": "dotted quarter",
+   "status": "narrowed",
+   "note": "narrowed [0.75, 1.5], answer in set (beam_discounted_uncertain)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.81-review",
+   "tile": "tile_30",
+   "subject": "glyph/4/1/3/1/3",
+   "answer": "quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_01",
+   "subject": "glyph/18/1/3/2/8",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_02",
+   "subject": "glyph/0/0/0/3/3",
+   "answer": "eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_03",
+   "subject": "glyph/18/0/5/2/8",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_05",
+   "subject": "glyph/18/0/5/2/11",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.82-review",
+   "tile": "tile_06",
+   "subject": "glyph/18/0/5/2/4",
+   "answer": "eighth",
+   "status": "right",
+   "note": "decided 0.5 beats (head_and_marks)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "control_1",
+   "subject": "glyph/0/0/9/4/4",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "control_2",
+   "subject": "glyph/0/0/11/3/12",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_03",
+   "subject": "glyph/11/0/2/0/16",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_04",
+   "subject": "glyph/11/0/2/0/22",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-fix-review",
+   "tile": "tile_07",
+   "subject": "glyph/19/0/9/0/15",
+   "answer": "part of an accidental",
+   "status": "right",
+   "note": "refused as not a note (belongs_to_a_nearer_staff)",
+   "margin": -0.0305,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "control_1",
+   "subject": "glyph/0/0/0/2/2",
+   "answer": "Dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "control_2",
+   "subject": "glyph/0/0/2/6/3",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "control_3",
+   "subject": "glyph/0/0/9/3/3",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "control_4",
+   "subject": "glyph/0/0/7/2/1",
+   "answer": "Dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_01",
+   "subject": "glyph/21/1/3/8/20",
+   "answer": "Dot 2",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_02",
+   "subject": "glyph/16/1/10/6/5",
+   "answer": "Dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_05",
+   "subject": "glyph/19/1/0/8/0",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_06",
+   "subject": "glyph/11/1/10/3/10",
+   "answer": "Dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.83-review",
+   "tile": "tile_09",
+   "subject": "glyph/20/1/7/0/6",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "1",
+   "subject": "glyph/17/0/6/2/17",
+   "answer": "L",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "10",
+   "subject": "glyph/17/0/10/5/34",
+   "answer": "L",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "11",
+   "subject": "glyph/12/1/9/6/10",
+   "answer": "N -- part of a slur",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "12",
+   "subject": "glyph/17/0/8/0/21",
+   "answer": "mirror: 'It is a ledger line with notes under it - not a tenuto'",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "2",
+   "subject": "glyph/7/1/2/6/16",
+   "answer": "N -- the E of 'espr.'",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "4",
+   "subject": "glyph/24/1/3/2/15",
+   "answer": "L",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "5",
+   "subject": "glyph/10/0/10/4/27",
+   "answer": "N -- part of a beam",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "6",
+   "subject": "glyph/24/1/2/7/20",
+   "answer": "N -- box in a weird place: a notehead on a ledger with an accent above it",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "8",
+   "subject": "glyph/11/0/5/2/16",
+   "answer": "L",
+   "status": "unscored",
+   "note": "no comparator for other answer (unknown)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.84-review",
+   "tile": "9",
+   "subject": "glyph/25/1/9/8/7",
+   "answer": "N -- a p dynamic",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_09",
+   "subject": "glyph/11/1/10/3/10",
+   "answer": "trem slashes",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.88-review",
+   "tile": "tile_11",
+   "subject": "glyph/0/0/11/3/12",
+   "answer": "dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "10",
+   "subject": "cell/1/0/2/5",
+   "answer": "{\"is_one_chord\": false, \"note\": \"\", \"voices\": 2}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "11",
+   "subject": "cell/1/0/3/2",
+   "answer": "{\"is_one_chord\": false, \"note\": \"\", \"voices\": 2}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "7",
+   "subject": "cell/0/0/11/5",
+   "answer": "{\"is_one_chord\": false, \"note\": \"\", \"voices\": 2}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "8",
+   "subject": "cell/0/0/13/1",
+   "answer": "{\"is_one_chord\": true, \"note\": \"\", \"voices\": 1}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.89-review",
+   "tile": "9",
+   "subject": "cell/1/0/0/3",
+   "answer": "{\"is_one_chord\": false, \"note\": \"\", \"voices\": 2}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "1",
+   "subject": "cell/1/0/2/3",
+   "answer": "eighth, eighth",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "2",
+   "subject": "cell/1/1/2/0",
+   "answer": "eighth, eighth",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "3",
+   "subject": "cell/7/1/2/4",
+   "answer": "dotted half, dotted half",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "4",
+   "subject": "cell/7/1/2/5",
+   "answer": "dotted half, dotted half",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "5",
+   "subject": "cell/7/1/3/11",
+   "answer": "dotted half, dotted half",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "6",
+   "subject": "cell/1/0/2/6",
+   "answer": "{\"bottom_voice\": \"dotted half\", \"top_voice\": \"eighth, quarter, dotted quarter (as given)\"}",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.90-review",
+   "tile": "7",
+   "subject": "cell/7/1/2/1",
+   "answer": "dotted quarter, dotted quarter",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "1",
+   "subject": "cell/7/1/9/0",
+   "answer": "dotted quarter, quarter",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "10",
+   "subject": "cell/6/0/11/3",
+   "answer": "staccato mark belonging to the staff above",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "11",
+   "subject": "cell/14/1/4/3",
+   "answer": "aug dot",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "12",
+   "subject": "cell/22/1/4/6",
+   "answer": "aug dots",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "2",
+   "subject": "cell/19/0/5/10",
+   "answer": "quarter",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "4",
+   "subject": "cell/8/0/10/12",
+   "answer": "whole note rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "5",
+   "subject": "cell/22/0/2/8",
+   "answer": "whole note rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "7",
+   "subject": "cell/10/0/10/8",
+   "answer": "1st blue box a flat; 2nd an eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.96-review",
+   "tile": "8",
+   "subject": "cell/24/0/5/4",
+   "answer": "eighth rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-misses",
+   "tile": "1",
+   "subject": "cell/0/0/6/2",
+   "answer": "dot 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-misses",
+   "tile": "2",
+   "subject": "cell/0/0/9/3",
+   "answer": "4 and 8 (with an 8 and 4 in between them, not in blue)",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "2",
+   "subject": "cell/26/1/1/6",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "4",
+   "subject": "cell/21/1/6/0",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "6",
+   "subject": "cell/19/0/5/9",
+   "answer": "dot 4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review",
+   "tile": "7",
+   "subject": "cell/16/0/5/6",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_01",
+   "subject": "cell/4/0/9/10",
+   "answer": "Dot 8",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_03",
+   "subject": "cell/25/0/3/1",
+   "answer": "8",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_04",
+   "subject": "cell/21/1/6/0",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_05",
+   "subject": "cell/20/1/10/1",
+   "answer": "8 rest",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.97-review-3",
+   "tile": "tile_06",
+   "subject": "cell/18/0/11/0",
+   "answer": "4",
+   "status": "unscored",
+   "note": "no glyph subject (cell)",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "10",
+   "subject": "cell/15/0/5/3",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "11",
+   "subject": "cell/22/0/2/8",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "12",
+   "subject": "cell/23/1/6/2",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "5",
+   "subject": "cell/1/0/5/2",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "6",
+   "subject": "cell/1/0/8/2",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "7",
+   "subject": "cell/5/0/6/0",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "8",
+   "subject": "cell/8/0/10/12",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.98-review",
+   "tile": "9",
+   "subject": "cell/11/1/8/1",
+   "answer": "whole rest",
+   "status": "unscored",
+   "note": "question kind meter has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "10",
+   "subject": "glyph/1/1/3/6/350002",
+   "answer": "end of slur",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "2",
+   "subject": "glyph/1/0/4/1/350003",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "5",
+   "subject": "glyph/1/0/9/6/350001",
+   "answer": "8 rest",
+   "status": "not_found",
+   "note": "no rest verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "2.99-review",
+   "tile": "8",
+   "subject": "glyph/1/0/2/0/350002",
+   "answer": "nat accidental",
+   "status": "not_found",
+   "note": "no note-or-not verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "dynamic-not-a-head-review",
+   "tile": "2",
+   "subject": "glyph/1/0/7/1/9",
+   "answer": "Dynamic f (single)",
+   "status": "unscored",
+   "note": "question kind dynamic has no comparator",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "1",
+   "subject": "glyph/1/0/11/0/21",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "2",
+   "subject": "glyph/1/0/0/4/42",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "3",
+   "subject": "glyph/1/0/6/0/13",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "4",
+   "subject": "glyph/1/0/11/0/13",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-2",
+   "tile": "5",
+   "subject": "glyph/1/0/3/3/0",
+   "answer": "8th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "1",
+   "subject": "glyph/0/0/0/6/6",
+   "answer": "8",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "5",
+   "subject": "glyph/0/0/0/1/3",
+   "answer": "Dot 4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-3",
+   "tile": "7",
+   "subject": "glyph/0/0/0/6/7",
+   "answer": "4",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "1",
+   "subject": "glyph/0/0/9/6/5",
+   "answer": "16th",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "2",
+   "subject": "glyph/0/0/2/4/3",
+   "answer": "Dotted quarter",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "3",
+   "subject": "glyph/0/0/9/6/9",
+   "answer": "Eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "4",
+   "subject": "glyph/1/0/0/4/15",
+   "answer": "Eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  },
+  {
+   "item": "rhythm-leftovers-review",
+   "tile": "5",
+   "subject": "glyph/1/0/3/4/19",
+   "answer": "Eighth",
+   "status": "not_found",
+   "note": "no duration verdict at this key",
+   "margin": null,
+   "doc_by": "manifest"
+  }
+ ]
+}

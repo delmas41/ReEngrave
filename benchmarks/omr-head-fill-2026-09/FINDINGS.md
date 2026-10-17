@@ -1515,3 +1515,115 @@ a one-side-of-the-stem control; both tile tests fail with the guard removed (run
 0.** Tiles 1 and 4 (and the Brahms whole-rest box) now unchanged; Litolff tiles 2, 6, 7, 8 still decided halves; no other
 judged head changes. The rule is now right 4 / 4 on Sean's tiles but reaches one plate only and 4 of its 47 real-note
 `head_fill_from_ink` heads; the flag stays OFF.
+
+## Sec.17. ROADMAP 2.164 -- tie ends and barline ink boxed as heads at a bar's left edge (2026-10-17; STAGED GATHER + ADJUDICATE; branch `lane-2.164-tie-ends-as-heads`)
+
+Sean 2026-10-17, on the 2.160 sheets of the 25 lowest-ink left-edge head boxes: *"almost entirely tie ends ... or a bar
+line"*; then *"Yes run that fix. Make sure to find out why it was calling those notes"*. No gathers: the 20261016-night
+records (main `1d42c4aa`), the PDF pages at 600 dpi, `review.rerun`. Probes `probe/*_2_164.py`; outputs `out/2.164/`.
+
+**CONVENTION ASSUMED:** a notehead is an oval about one space tall and 1.25 wide (filled, or an outline whose top and
+bottom edges stand a space apart); a tie's end is one thin stroke; a barline is a hair wide. **WHAT WOULD FALSIFY IT:**
+a head Sean values whose columns read as thin as a tie's stroke. **NOT CONFIRMED:** the refusal cut (half a head's
+width of head-tall columns) is measured on these two plates only; tiles out, unanswered.
+
+### 17.1 Who the 226 candidates are (2.160's geometry; `probe/extract_2_164.py`, `probe/why_2_164.py`)
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| 2.160 candidates (a left-edge head box with an arc from an earlier bar ending on it) | 20 | 206 |
+| already refused by a shipped ADJUDICATE rule on the night record | 6 (`too_narrow` 5, `belongs_to_a_nearer_staff` 1) | 192 (`too_narrow` 180, `clipped_fragment` 7, nearer staff 2, dynamic letter 1, tremolo slash 1, dot 1) |
+| **stand as notes** | **14** | **14** |
+| of those, by the lane's eye (NOT evidence; `probe/look_2_164.py`): an arc's tail | 8 | 12 |
+| of those, the box holds a real head | 6 | 2 |
+
+**The Brahms split asked for.** 2.160 read Brahms's median erased ink 1.00 as "most are real tied-to notes". They are
+not: **180 of the 206 are barline slivers** (boxes 0.24-0.45 sp wide, every one starting at the cell's left edge, full
+ink because staff-line erasure does not touch a barline), already refused `too_narrow`; 12 more are refused by other
+rules. Of the 14 that stand, **12 are tie/slur tails** and **2 are real tied-to notes** (`16/0/11/3/7`, `16/0/11/5/3`,
+black heads a tie runs into). Sean's 25: 15 stand (13 tails, plus #6 `2/0/7/10/3` and #8 `14/1/2/11/5`, large boxes
+around a real half and the tie -- his "very large box around a note and other things"); the other 10 (#7, #15-18, #21
+`too_narrow`, #19 and #22 nearer staff, #20 dynamic letter, #24 dot) were already refused and never reach the score.
+
+### 17.2 Why the 20 standing tails were called notes (one row = one mechanism, measured on its own rows)
+
+| mechanism | count (of 20) | what the record says |
+|---|--:|---|
+| GATHER: the bar's crop CUT the arc at the barline | 20 | the detector runs once per measure cell (`gather.py`, `detector.detect(c, ...)`) and a measure cell has no horizontal padding; the previous bar's arc box ends 0.002-0.357 sp from its own cell's right edge (all 226 candidates <= 0.357), and this bar's crop sees a short stroke at its left edge with no context |
+| detector: a head class at low confidence, on a line | 20 | `noteheadHalfOnLine` 11, `noteheadBlackOnLine` 6, `noteheadHalfInSpace` 2, `noteheadWholeOnLine` 1 (18 of 20 "on a line": the tail lies along a staff line); conf 0.27-0.58, inside the real heads' range (2.160) |
+| `too_narrow` never met | 20 | the floor is for `noteheadBlack*` only: 14 are hollow/whole classes; the 6 black boxes are 1.68-2.24 sp wide |
+| dot rule (2.59) and `on_a_barline` never met | 20 | boxes 0.78-2.69 x 0.44-1.81 sp, none <= 0.75 on both sides; `on_a_barline` is asked only inside the dot rule |
+| slash (2.49/2.137) never asked | 19 | no `Q.NOTEHEAD_STEM_CROSS_INK` row: no stem crosses the box (17 have no stem at all) |
+| rest twin (2.142), rest shape (2.145) | 20 | no rest box under any; none rest-shaped. The 2.150b stroke test reads rest boxes only |
+| re-centre (2.115) never moved the box | 20 | declined `box_already_head_sized` 16, `below_threshold` 3, no row 1 |
+| no ink cut separates them | 20 | staff-erased ink 0.22-0.86 (2.160: real heads reach down to 0.486) |
+
+**Then later readers used them as notes:** pitch `position_and_clef` 20 of 20 (an invented pitch); duration decided
+from the class (`head_and_marks`) 16 (12 halves, 3 quarters, 1 whole), `stem_value_follows` 1 (a half-classed tail on
+a real stem, Brahms `18/1/3/5/19`, gave its two real stem mates a dotted half), narrowed 3; alone in the bar 2 -- one
+is 2.158 tile 14 (`5/1/4/2/1`), guessed a half by `OMR_LONE_EVENT_FILLS_BAR`.
+
+Crops, one per mechanism (blue = our head box, orange = the previous bar's arc box): `out/print/2.164-why/` (1 the tie
+cut at the barline; 2 hollow class so no width floor; 3 black class wider than the floor; 4 written as a half; 5 a
+barline sliver, already refused; 6 the control, a box holding a real head).
+
+### 17.3 The fix, built OFF: `OMR_ARC_TAIL_NOT_A_HEAD`
+
+* **GATHER** `gather.gather_head_oval` (a new function; its single call line in `gather()`, after
+  `gather_notehead_stem_cross_ink`, is the one edit outside new functions in `gather.py`) files `Q.HEAD_OVAL` on every
+  notehead box starting within 0.5 sp of its bar's left edge, from the pure `head_oval.oval_width` on the PAGE raster:
+  per pixel column, a run of ink lying wholly on a staff/ledger line's rows is left out (a line THICKENED by a head's
+  outline is kept); a column is head-tall when its ink spans >= 0.5 sp; the value is the widest run of head-tall
+  columns, in staff spaces.
+* **ADJUDICATE** `notehead_precision._arc_tail_refusal`, reason `is_an_arc_tail` (after the shape rules, before the
+  same-mark rules), refuses only when ALL THREE hold: the box starts within 0.5 sp of the bar's left edge; a tie/slur
+  box in the PREVIOUS cell of the staff ends within 0.4 sp of that cell's right edge (the crop cut it) and overlaps the
+  box's rows (+-0.5 sp); and the oval width is under 0.625 sp (half a standard head). Margin filed. Any missing
+  witness (no row, a system's first bar, no arc) keeps the box.
+* **Separation** (`probe/oval_sweep_2_164.py`, swept head-tall 0.5-0.7 sp and slack 0.1-0.25 sp; chosen 0.5 / 0.25):
+  the 20 eye-tails 0.25-0.59 except one at 1.14 (Litolff `13/1/4/2/2`, kept: an error only toward keeping); the 8
+  boxes on real heads 1.42-1.78; **Sean's 189 valued heads >= 0.688**; his non-heads and rests reach down to 0.33 /
+  0.56 (outside the rule's domain). The gap under the real heads is thin (0.59 -> 0.688): a narrow cut, which is why
+  the cut arc and the left edge are also required. Known blind spot (synthetic test): a hollow head in a space whose
+  outline thickens the two lines by only 1-2 px reads thin; none among Sean's 189.
+* Tests `tools/omr/tests/test_staged_arc_tail_2_164.py` (18): the measure (filled head on a line, hollow head merged
+  into the lines, a tail crossing a line, a tail on a barline, declines, flag default); GATHER files only for a
+  left-edge head and only while ON; ADJUDICATE refuses the tail and keeps the controls (a real tied-to head at 1.44,
+  flag off, no arc, an arc ending inside its bar, an arc on other rows, a head inside the bar, no oval row, a system's
+  first bar). Mutations: rule removed -> the refusal test fails; the oval cut opened -> the real-tied-note control and
+  the hollow-head test fail. Fast tier 8402 passed, 0 failed; `staged.check` 192.
+
+### 17.4 Reach (`probe/scan_2_164.py` static domain; `probe/replay_2_164.py` review.rerun OFF vs ON, `Q.HEAD_OVAL` injected in the ON arm from the same function on the same page raster)
+
+| | Litolff (whole movement) | Brahms (slice: the 10 systems holding every domain head that stands as a note) |
+|---|--:|--:|
+| rule domain (left-edge head + cut arc in the previous bar) | 29 (20 stand as notes) | 241 (16 stand) |
+| control: OFF arm vs stored | 14,385 agree; 19 differ = exactly the 2.158 guesses (the record predates 2.158 ON) | not faithful on a system slice (no carry from other systems); OFF vs ON only |
+| **boxes refused `is_an_arc_tail`** | **7** (`3/1/5/3/1`, `3/1/5/3/3`, `3/1/5/15/2`, `4/0/5/12/14`, `5/1/4/2/1`, `12/1/10/11/4`, `13/0/1/10/9`) | **12** (all 12 eye-tails) |
+| other glyphs changed | 0 | 2: the stem mates of `18/1/3/5/19` lose the tail's dotted half (`stem_value_follows` -> narrowed `beam_discounted_uncertain`) |
+| real tied-to heads in the domain, kept | 13 (oval 1.14-2.48) | 4 (1.42-1.53) |
+
+Every refused box is one the lane's eye calls a tail; every box holding a head is kept.
+**2.158 tile 14** (`glyph/5/1/4/2/1`): OFF a `lone_event_fills_bar` half at E-flat 4; ON refused `is_an_arc_tail`, so
+the bar holds no head and makes no lone-event guess (the real half was never boxed: the bar goes unread, not invented).
+
+### 17.5 Sean's judged heads (`python3 -m tools.omr.staged.judged score` on the replay mini records)
+
+Litolff whole: right 138 / wrong 26 / narrowed 8 / abstained 1, **identical OFF and ON, no tile changes**; Brahms slice
+identical too. Of the 19 refused boxes only tile 14 is judged (2.158, parsed `other`). **No real note is lost.**
+
+### 17.6 Blind tiles: `out/print/2.164-review/`, 20, answers `{}`
+
+`probe/tiles_2_164.py`, seed 2164: the 18 refused boxes Sean has not judged (Litolff 6, Brahms 12; tile 14 left out as
+judged) and 2 CONTROLS, real tied-to notes at a bar's start the rule keeps (Litolff `2/1/1/14/3`, Brahms
+`16/0/11/3/7`). One blue box, "Tile N", nothing else ours. Question: "Is the mark in the blue box a note, or not a
+note?". Key `out/2.164/tiles-key.json`, apart from the tiles. Litolff `3/1/5/3/1` and `3/1/5/3/3` are two boxes on one
+tail.
+
+### 17.7 Limits
+
+Flag OFF; no DECISIONS line from this lane. Brahms was replayed on a system slice, not whole (a whole Brahms replay is
+~7 GB); the static scan says the slice holds every standing head the rule can reach. Barline ink with no cut arc beside
+it is not refused by this rule (the Brahms barline slivers are already `too_narrow`). A refused box still carries its
+stale duration row on the record (unchanged behaviour); it leaves the bar. Litolff `13/1/4/2/2` (a slur tail by eye) is
+kept: its box reaches the next head's ink.

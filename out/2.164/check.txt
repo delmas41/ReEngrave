@@ -1,0 +1,6 @@
+accuracy_record          open=0     status=ok
+staged.producers         open=0     status=ok
+staged.margins           open=0     status=ok  (26 threshold reasons over 6 deciders carry a margin; 5 families deliberately not covered (margins.NOT_COVERED))
+source_text_tests        open=46    status=ok  (46 of 429 test files under tools/omr/tests/ (allowlist: ['test_flag_default_direction.py', 'test_flag_docs_match_predicates.py', 'test_flag_triage.py']))
+mutation_batteries_live  open=0     status=ok
+TOTAL                    open=192   status=ok

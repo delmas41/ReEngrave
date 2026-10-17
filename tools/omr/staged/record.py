@@ -853,6 +853,13 @@ class Q(_Vocab):
     #: nothing; `family_precision._rest_stroke_into_head_refusal` weighs it.
     REST_INK_CONTACT = "rest_ink_contact"
 
+    #: ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default OFF; filed only while it is ON). One row per notehead-classed
+    #: box that starts within `head_oval.LEFT_EDGE_SPACES` of its bar's left edge: does the box hold a head-shaped
+    #: OVAL of ink? `head_oval.ring_cover` (inked / readable sectors of a head-sized ring at its best placement, staff
+    #: line rows left out) off the PAGE raster. GATHER measures and names nothing;
+    #: `notehead_precision._arc_tail_refusal` weighs it with the arc cut at the barline.
+    HEAD_OVAL = "head_oval"
+
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
     #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
@@ -2335,6 +2342,7 @@ CLAIMS: "dict[str, str]" = {
     "CELL_INK_PIECES": CLAIM.MEASUREMENT,
     "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
     "REST_INK_CONTACT": CLAIM.MEASUREMENT,
+    "HEAD_OVAL": CLAIM.MEASUREMENT,
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
@@ -2865,6 +2873,9 @@ class READERS(_Vocab):
     #: `gather.gather_rest_ink_contact` -- ROADMAP 2.150b. The same erased raster (one crop, one signal) asked
     #: whether a rest box's ink is one stroke running into a head.
     CV_REST_INK_CONTACT = "cv_rest_ink_contact"
+    #: `gather.gather_head_oval` -- ROADMAP 2.164. The PAGE raster (staff lines in, their rows left out) asked
+    #: whether a head box at a bar's left edge holds a head-shaped oval.
+    CV_HEAD_OVAL = "cv_head_oval"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"
