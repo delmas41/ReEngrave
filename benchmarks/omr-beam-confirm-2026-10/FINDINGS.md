@@ -324,3 +324,72 @@ reads no beam run and `Q.STEM_TIP_INK` reads no hook -> no beam (`stem_tip_reads
 * Written value 30/34: besides tile 13, three clean-tip decisions carry another reader's error into a PLAIN note -- tile 15
   a half read as a filled head (written quarter; "15 is a half note"), tiles 23 and 34 a dotted quarter whose dot was not read
   (written quarter). Before the rule those three were narrowed. Not a beam error; a cost of deciding (open question for Sean).
+
+## 10. ROADMAP 2.155 -- the stem-to-beam join reader misses clear joins (2026-10-16; STAGED GATHER; default OFF `OMR_STEM_AT_BAR_EDGE`)
+
+Sean 2026-10-16 on 2.153 tiles 4/14/16 (Litolff, clear beamed eighths the 2.153 rule narrowed): *"the stem clearly connects to the
+beam so the reader must need to be adjusted. there is no gap"*. Probes: `probe/{crops,runs,reach,diff,sheet,barsum,tiles}_2_155.py`.
+
+**CONVENTION ASSUMED:** a stem ends at its notehead; a barline carries no head (a head stands clear of a barline). **WHAT WOULD
+FALSIFY IT:** a barline (or a flat's stroke, tile 18) whose end stands in a head box inside the cell, read here as that head's stem;
+Sean reading a rescued-stem note (tiles below) as unstemmed or with a different value. **NOT CONFIRMED:** tiles out, none answered.
+
+### 10.1 The cause, measured (not one of the four candidates as named: the stem WAS found, then refused)
+On all three notes the record holds no `Q.STEM` row at the head (`stems_attached` 0, `head_stem` `no_stem`), so `Q.BEAM_STEM_JOIN`
+had no (stem, stroke) pair to read. Re-running `detect_stems` on the cell as the gather prepares it (`probe/runs_2_155.py`,
+`candidates_out`): the up-stem IS a vertical run of full beam-to-head length (tile 4: x 698-730, 4.95 spaces; tile 14: x 730-755,
+4.38; tile 16: x 762-794, 4.12), refused **`RUN_AT_CELL_EDGE`** -- the barline filter refuses any run within 0.8 space of the cell
+edge, and the last note of the bar stands 0.26 / 0.74 / 0.65 space from the cell's right edge. The barline is a SEPARATE run at the
+very edge in all three (refused too tall or at the edge). Not a staff-line cut, not a beam-box offset, not a missing join row as such.
+
+### 10.2 The fix (STAGED GATHER, default OFF)
+`line_detection.detect_stems`, repair token `edge_head` (added by `staged_stem_finder()` under `OMR_STEM_AT_BAR_EDGE`; LEGACY's empty
+default never carries it): a run refused only for the edge is kept when one END stands in a detected notehead box (rows +- 0.25
+space), inside that head's own columns, and the head box does not cross the cell's edge; it then meets the area/aspect filters.
+The last clause came from my own review of 18 sampled rescues: 3 were BARLINES at x=0 whose end fell in a 0.3-space SLIVER head box
+(a head our crop cut, widened by the standard head box across the barline); a box the cell edge cuts says nothing about whose head
+it is, so the shipped refusal stands. Tests `tools/omr/tests/test_stem_at_bar_edge_2_155.py`, 10 pass: off = shipped; the edge stem
+kept; controls that stay refused -- the barline beside a head, no heads, a head the run never reaches, a head box cut by the cell
+edge; interior stems unchanged; flag parsing. The two barline controls FAIL when the column test is removed (mutation run).
+
+### 10.3 Faithful check on the three notes (Litolff pages 1, 2, 10 re-gathered `--through adjudicate`, 2.153 rule ON in both arms)
+Base: all three `narrowed beams_ambiguous` (as in 2.153's arm). Arm: all three **decided 0.5 (eighth), `head_and_marks`,
+`stems_attached` 1, `beams_by_stem` 1, `head_stem` one_stem** -- Sean's value, by ADJUDICATE, before any bar sum. On those three
+pages: `Q.STEM` 1,225 -> 1,273, `Q.BEAM_STEM_JOIN` joined 319 -> 344 (not joined 432 -> 465); 38 of 2,081 duration verdicts change:
+31 narrowed -> eighth, 3 quarter -> eighth, 2 narrowed -> quarter, 2 eighth -> narrowed (tiles 3/4/8/9/12/17 sample all four kinds).
+
+### 10.4 Reach, whole movement (20261014-night records, no re-gather; `probe/reach_2_155.py`)
+Each cell prepared as the gather prepares it, heads/marks from the record's own boxes. CONTROL: the OFF arm's stems equal the
+record's stored `Q.STEM` rows in **5,377 of 5,377 Litolff cells and 6,685 of 6,685 Brahms cells**.
+
+| plate | stems rescued (cells) | join reader on them: joined / not joined / abstained / no stroke in cell | runs whose head had no stem before | cells whose beam strokes change |
+|---|--:|---|--:|--:|
+| Litolff | 190 (188) | 70 / 19 / 45 / 56 | 145 of 190 | 27 |
+| Brahms | 6 (6) | 2 / 3 / 0 / 1 | 6 of 6 | 1 |
+
+Litolff is where it bites: its bars end tight against the barline (right side 135, left 55: first note after a barline with a
+down-stem on its left). Breitkopf leaves room. So the joins it changes are ~70 Litolff + 2 Brahms. The 45 Litolff runs whose head already
+"had" a stem: 12 of 12 sampled were real stems at the barline (`out/2.155/sheet_litolff_had_stem.png`, ours drawn, not a tile).
+
+### 10.5 Blind tiles: `out/print/2.155-review/`, 20 tiles (answers.json blank)
+Same question as 2.153 so the answers compare: *"What is the written value of the note in the blue box (4, dotted 4, 8 ...)?"*
+Blue box on the note only (#1F6FEB), nothing else of ours. Cut and keyed in ONE run (seed 2155), asserted one key row per PNG, same
+numbering; hidden key `out/2.155/tiles-key.json` (uncommitted). Roles: 6 changed on the re-gathered pages (all four change kinds),
+5 rescued and read JOINED (3 Litolff, 2 Brahms), 7 rescued and NOT joined / no stroke (the real unjoined cases: 3 Litolff, 4
+Brahms -- all of Brahms's 6 rescues are in the set; tiles 6/11/13 are one flagged-sixteenth passage on three staves), 2 interior
+joined-beam controls. Tile 18's box sits on what looks like a flat boxed as a head: its "stem" may be the flat's stroke -- a control
+that can fail. The three answered 2.153 tiles are not re-asked.
+
+### 10.6 What else let the bar sum pick a quarter (for 2.154; not fixed here)
+Faithful slice replay with the 2.153 rule ON (`probe/barsum_2_155.py`) reproduces `reconcile_duration`/`meter_reconciliation`
+deciding 1.0 on all three. In every bar another head of the SAME beam group was never boxed by the detector, so the bar was exactly
+one eighth short and the narrowed note's quarter filled it: tile 4 (stem x 375-407 under the beam, its head unboxed), tile 14 (stem
+x 381-413, its head fused with the next head's box -- Litolff merges), tile 16 (stem x 559-591; `stem_head_contact`
+`some_touch_no_head`). A beamed stem with no head at its foot is page evidence the bar is incomplete; `stem_head_contact` caught it
+in 1 of 3. Hand-over note in the session notes folder (`2.155-to-2.154-barsum-trace.md`).
+
+### 10.7 Limits
+Reach replays the stem finder only; what each rescue does to the verdicts is measured on 3 pages, not the movement. The reach heads
+are the standard boxes without the 2.39b re-centre (log=None). The slack (0.25 space) is a box tolerance fitted on three notes.
+Not done: the unboxed heads of 10.6 (a detector reach fault), the 45 Litolff rescues the join reader abstains on (mid-length
+crossings, `_beam_stem_beyond_tip`).

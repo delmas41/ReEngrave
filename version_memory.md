@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- 2.155: a stem at the bar's edge that ends in its head is a stem (`OMR_STEM_AT_BAR_EDGE`, default OFF; lane branch, not landed)
+
+STAGED GATHER `line_detection.detect_stems` repair `edge_head`: the 2.153 tiles 4/14/16 notes had no stem because the barline filter
+(`RUN_AT_CELL_EDGE`, 0.8 space) refused their full-length up-stems; a run whose end stands in a head box inside the cell is now kept
+when the flag is on. Re-gather of Litolff p1/p2/p10 with the 2.153 rule ON: the three decide eighths by ADJUDICATE. Reach (no
+re-gather, OFF faithful on every cell): Litolff 190 stems / 70 new joins, Brahms 6 / 2. 20 blind tiles `out/print/2.155-review/`
+unanswered. Bar-sum trace for 2.154: an unboxed beamed head in each bar. benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 10.
+
 ## 2026-10-16 -- evening session: 2.151 + 2.150b landed ON; 2.152 study parked; 2.153 parked OFF; 2.154 opened
 
 - 2.151 (`OMR_DOT_BOXED_AS_A_HEAD` ON, 95685746): a dot the detector boxed as a small notehead counts as the head's augmentation dot; tiles recut to one set (31) after a 38-vs-20 mismatch.
