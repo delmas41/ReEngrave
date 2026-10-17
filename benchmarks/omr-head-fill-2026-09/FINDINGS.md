@@ -1349,3 +1349,169 @@ quarter-rest piece refused under the slash reason), 1 wrong (tile 9, a real head
 * **The anchor case named in ROADMAP 2.137** (Brahms p14 sys1 staff7 cell0, 2.134 tile 13) is ledger lines, not slashes, as the lane found. The
   manager misread that crop.
 * **Still open at landing:** the flag still lacks rows in `docs/flags-2026-09.md` (the 2 fast-tier failures in 15.5), to be added at landing.
+
+## Sec.16. ROADMAP 2.159 -- the head reader does not see simple Litolff halves (2026-10-17; STAGED GATHER + ADJUDICATE; branch `lane-2.159-head-reader-halves`)
+
+Sean 2026-10-17: "We should also figure out the head reader - I'm not sure why it doesn't see simple half notes". Read off
+the 20261016-night records (main `1d42c4aa`) through the per-page slices of their GATHER rows and duration verdicts, the
+whole records (streamed) for the refusal verdicts, and the PDF pages; nothing gathered. Probes `probe/*_2_159.py`, outputs
+`out/2.159/` (not committed but the tile key).
+
+### 16.1 What the tree says about "20 halves narrowed by head_fill_from_ink" (rule 10)
+
+* Crops 1-22 of `litolff-unread-35` are 21 heads (11 and 12 are one condensed-staff head). **14 of them** are narrowed
+  `head_fill_from_ink`. The other 7 are not a head-reader problem: the detector classed them half/whole and a later step
+  narrowed them (crops 2, 14 `whole_class_filled_on_a_stem`; 4, 7 `open_head_flag_contradiction`; 9, 16 decided half, then
+  `dot_seen_beside_a_plain_note`), or the note is not a half (5, `beam_discounted_uncertain`, "partial q." on 10-14).
+* `head_fill_from_ink` on the night records: Litolff **114**, Brahms **231** (the overnight summary; no 236 found).
+* **Most of them are not notes.** ADJUDICATE already REFUSES the box as not a notehead (or as a whole rest) on 67 of the
+  114 Litolff and **216 of the 231 Brahms** boxes (`too_narrow` 32 / 160 -- on Brahms nearly all quarter rests boxed as
+  heads, seen on the round-2 tiles -- `clipped_fragment` 9 / 40, `stacked_head_duplicate` 12 / 2, ...): 2.143's stale
+  durations. **Real notes: Litolff 47, Brahms 15.** Nothing later overturned any of the 14 crop heads: the live verdict is
+  the ADJUDICATE narrowing itself.
+
+### 16.2 Why each was not decided a half (the first 2.148 gate it failed, measured on its own rows)
+
+`head_fill_from_ink` is reached only where the 2.23 centre window ALREADY reads the head hollow; what fails is 2.148's first
+step, which decides a half only for (a) a head-sized DETECTOR box (0.9-1.8 sp tall, 1.1-1.9 wide) (b) whose slit share is
+>= 0.18 (c) with a stem box touching that box.
+
+| cause (first gate failed) | Litolff notes (all boxes) | Brahms notes (all boxes) |
+|---|---|---|
+| box too SHORT (< 0.9 sp): the detector boxed only part of the head; its slit reading is of a rim | 11 (45) | 4 (176) |
+| box too TALL (> 1.8 sp): head + accidental / neighbour / chord in one box | 9 (23) | 3 (6) |
+| box too WIDE (> 1.9 sp) | 6 (13) | 5 (7) |
+| box too NARROW (< 1.1 sp, the key-flat guard) | 3 (14) | 0 (34) |
+| head-sized, slit reads hollow, but NO STEM box touches the head box | 16 (16) | 2 (4) |
+| head-sized, slit between 0.06 and 0.18 | 2 (3) | 1 (4) |
+
+Counted independently on the notes: box not head-sized Litolff 29 / Brahms 12, no own stem 32 / 10, and **every one of
+the 62 fails at least one of the two** (none is head-sized with a stem). A staff line or ledger through the head was not a
+separate cause here (the slit share already counts white between ink row by row); no late step overturned a reading.
+
+The 14 crop heads (sp = staff spaces; `rows_share` = 2.148 slit on the detector box; centre ink = 2.23 window raw / line
+rows out; located = the slit on the head box an earlier reader located, 16.4):
+
+| crop | glyph | detector box w x h, head-sized | own stem | rows_share | hole | 2.23 centre ink | cause | located rows_share |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1/0/9/11/1 | 1.16 x 0.89 no | yes | 0.00 | 0 | 0.68 / 0.25 | short | 0.40 (part-boxed) |
+| 3 | 5/1/4/2/1 | 1.68 x 1.27 yes | no | 0.08 | 0 | 0.70 / 0.41 | between | - |
+| 6 | 7/0/3/2/2 | 1.12 x 1.46 yes | no | 0.43 | 0 | 0.53 / 0.49 | no stem | - |
+| 8 | 9/0/4/2/8 | 1.91 x 1.66 no | yes | 0.60 | 0.09 | 0.67 / 0.50 | wide | - |
+| 10 | 10/0/3/2/1 | 1.35 x 0.89 no | yes | 0.37 | 0 | 0.43 / 0.33 | short | 0.70 (part-boxed) |
+| 11,12 | 10/1/10/5/4 | 1.13 x 0.67 no | yes | 0.05 | 0 | 0.83 / 0.61 | short | 0.64 (line cut) |
+| 13 | 10/1/1/8/8 | 1.43 x 0.37 no | yes | 1.00 | 0 | 0.57 / 0.57 | short | 0.64 (re-centre) |
+| 15 | 11/0/1/9/2 | 1.29 x 0.95 yes | no | 0.11 | 0 | 0.82 / 0.58 | between | - |
+| 17 | 11/0/2/12/2 | 1.40 x 2.07 no | yes | 0.44 | 0.11 | 0.69 / 0.46 | tall | - |
+| 18 | 11/1/7/8/2 | 1.68 x 0.83 no | yes | 0.82 | 0 | 0.63 / 0.62 | short | - |
+| 19 | 12/0/7/8/13 | 1.14 x 0.77 no | no | 0.00 | 0 | 0.71 / 0.33 | short | 0.10 (part-boxed) |
+| 20 | 14/0/3/3/6 | 1.09 x 0.88 no | no | 0.13 | 0 | 0.47 / 0.29 | short | 0.64 (part-boxed) |
+| 21 | 14/1/3/11/4 | 1.06 x 1.41 no | no | 0.14 | 0 | 0.69 / 0.61 | narrow | - |
+| 22 | 14/1/3/12/1 | 1.16 x 1.34 yes | no | 0.31 | 0 | 0.60 / 0.48 | no stem | - |
+
+Crops, one per cause (red = detector box, green = located head box, right = the binarized pixels inside the red box x10,
+the measures printed): `out/print/2.159-diagnosis/` (`index.json`).
+
+### 16.3 Sean's question (2026-10-17): "Are we still using the split rule for hollow heads? I thought we found that the ink percentage was a better rule?"
+
+Both run on main: 2.148's slit share first (>= 0.18 hollow, <= 0.06 solid, head-sized box only), then 2.23's centre window
+as the fallback (centre ink <= **0.75** and ring - centre >= 0.10). Each stored measure ALONE, best single cut and errors
+at it, on every BLACK-classed head Sean judged a duration for (Litolff 79, 26 of them hollow; Brahms 83, 1 hollow;
+`probe/separate_2_159.py`) and on his Brahms pdf 0 hand-truth page (387 black-classed boxes, 1 hollow;
+`probe/truth_p0_2_159.py`):
+
+| measure | Litolff judged, all boxes | Litolff judged, head-sized boxes | Brahms judged | Brahms hand truth p0 |
+|---|---|---|---|---|
+| slit `rows_share` (2.148) | cut 0.19: **0 errors** (hollow 0.35-1.00, black 0-0.03) | 0 | 0 | 0 (black <= 0.11, the hollow 0.67) |
+| enclosed hole share (2.148) | 4 (4 halves read 0: the Litolff slit opens out of the rim) | 4 | 0 | 1 |
+| 2.23 centre-window ink fraction | cut 0.93: 3 (blacks in loose boxes read 0.44) | cut 0.93: **0** (black all 1.00, hollow 0.35-0.85) | 0 | 0 |
+| whole-head ink percentage, lines erased (ink / head area) | cut 0.70: **16** (13 halves missed) | 13 | 1 | 1 |
+| whole-head ink percentage, raw | 26 | 23 | 0 | 0 |
+
+On his own judged heads the split (slit) rule separates hollow from black with the widest gap, and the whole-head ink
+percentage is the WORST measure (a thin-slit Litolff half is 60-85 % ink, as dark as a black head in a loose box). The
+centre-window ink fraction also separates, but only at a cut near 0.9 (2.23's 0.75 misses the slit halves, why 2.148 was
+built), a cut fitted on these two plates. Caveats: 1 hollow black-classed head on Brahms in either set (Brahms halves are
+mostly classed half by the detector); the judged set is the heads earlier lanes chose to ask about. **None of this is why
+the 14 were missed: the measures read most of them hollow; the boxes and the stems stopped the decision (16.2).**
+
+### 16.4 Built (flag `OMR_HEAD_FILL_LOCATED_BOX`, default OFF)
+
+The top cause is the detector box that is not one head's size. Where an earlier GATHER reader LOCATED the head (2.39b
+`notehead_recentre`, 2.73 `head_line_cut`, 2.115 part-boxed re-centre) the 2.23 windows were already read on that standard
+head box; the slit was not.
+* GATHER `gather.head_interior_white_located`: the same `head_interior_white` on the located head box, off the PAGE raster
+  (Sean 2026-10-14, 2.115 round 2), filed beside the detector-box reading as `Q.NOTEHEAD_INK.detail.interior_white_located`
+  (`box_cell`, `located_by`). Decides nothing.
+* ADJUDICATE `rhythm.adjudicate_duration` first step, flag ON: a black-classed head whose detector box is NOT head-sized,
+  not refused as a notehead, whose located box still holds the detector box's own centre (moved within one head, not onto
+  a neighbour: Brahms `glyph/11/1/10/3/10`, a judged dotted quarter whose re-centre jumped 0.75 sp onto the head above),
+  whose located slit share is >= 0.18 (2.148's cut, not re-fitted) AND whose 2.23 window on that same box reads hollow, on
+  its own stem, is a half. It only ever says HOLLOW: a solid located reading changes nothing.
+* Rejected on the way. Round 1 (no 2.23 or refusal guard): 24 Litolff changes, 14 of them flips of DECIDED values -- white
+  specks in a beamed cluster (an eighth, `glyph/16/0/0/4/8`) and in an `ff` boxed as a head (`glyph/16/1/2/3/7`, whose stem
+  mates the shared-stem rule then also made halves). Round 2 (2.23 guard): 10 Litolff / 24 Brahms changes, 6 and 22 of them
+  boxes the record refuses as not a notehead (the Brahms ones quarter rests). Final: + not refused.
+* Tests `tools/omr/tests/test_staged_head_fill_located_2_159.py` (15): positive + flag-off, solid, between, 2.23-solid,
+  moved-box, no-stem, head-sized and older-record controls; the GATHER reading on a ring vs a filled head and its two
+  declines. The positive fails with the located read removed (run RED).
+
+### 16.5 Replay (fixed harness `review.rerun`, 2.157, per page; the GATHER reading injected from the page raster)
+
+`probe/replay_pages_2_159.py`, flag OFF vs ON, everything else shipped. CONTROL: the OFF arm's first ADJUDICATE duration
+verdict equals the stored one on **14,272 / 14,272** Litolff and **32,389 / 32,389** Brahms glyphs (all pages, round 2;
+the final guard re-run on the pages that had changes: 4,649 / 4,649 and 6,184 / 6,184). Probe control: the page-raster
+slit on the detector box agrees with the stored cell-raster one on 49/51 Litolff and 202/203 Brahms heads (same side of
+0.18). A per-page replay is faithful for ADJUDICATE; the live verdict was compared OFF vs ON only.
+
+* **Reach (final): Litolff 4 heads, Brahms 3** (one a box the record calls a whole rest), every one `head_fill_from_ink`
+  narrowed {half, quarter, whole} -> decided half; nothing written shorter, no decided value moved.
+* **Of the 14 crop heads, 4 become decided halves** (crops 1, 10, 11/12, 13: 5 of the 22 crops). The other 10 have no
+  located head (8, 17, 21, and 18 short with no re-centre), no stem attached (3, 6, 15, 19, 20, 21, 22) or a between
+  reading (3, 15, 19).
+* **Sean's judged tiles: 0 judged glyphs change** on either plate (duration or otherwise): no hollow head he judged is now
+  called black and no black one hollow.
+* Our own look (not evidence): the 4 Litolff heads look like halves; of the 2 Brahms notes, one is part of an `ff` boxed
+  as a head with a stroke for a stem, one looks like a black head crossed by a line. Brahms does not confirm; it stays OFF.
+
+### 16.6 Tiles for Sean
+
+`out/print/2.159-review/` -- 8 tiles: every changed head that is a note and that he has not judged (Litolff 4, Brahms 2)
+plus 2 controls that can fail (a Litolff head he judged a half, a Brahms head he judged a quarter), shuffled, one blue box,
+"Tile N" only; key `out/2.159/tiles-key.json` (each tile's blue box re-found in the PNG at its key offset); `answers.json`
+`{}`. Fewer than the ~20 asked for: the flag changes only 6 notes.
+
+### 16.7 Not done / next
+
+* What remains is the stem and the box, not the fill: 32 Litolff / 10 Brahms real-note heads have no stem box touching the
+  DETECTOR box (crop 22: the stem stands just left of the box), and 20 Litolff / 9 Brahms not-head-sized boxes have no
+  located head at all (chords, head + accidental). Reading the stem against the located head box would add at most 3
+  (Litolff `14/0/3/3/6` = crop 20, `15/0/0/2/2`; Brahms `18/1/0/4/10`); not built (step 2, the stem reader).
+* 283 of the 345 `head_fill_from_ink` boxes are non-notes with a stale duration (2.143, parked OFF).
+
+### 16.8 Sean's answers (2026-10-17) and the not-a-head guard
+
+Sean, verbatim: "1. Ff 2. 2 3.2 4.trem slashes 5.4 6.2 7-8.2". Recorded in `out/print/2.159-review/answers.json` (the
+manifest now names each tile's glyph; `benchmarks/acceptance/judged-tiles.json` rebuilt, 1154 tiles). **The 4 Litolff
+changes (tiles 2, 6, 7, 8) are halves: 4 / 4 right. Both Brahms changes are NOT notes** (tile 1 part of an `ff`, tile 4
+tremolo slashes). Both controls right (3 half, 5 quarter).
+
+**Why tiles 1 and 4 got through** (their stored readings, `probe/why_kept_2_159.py`): the existing readers SAW both and
+fell short only of REFUSING the box.
+* Tile 1 (Brahms `glyph/18/1/9/6/15`): GATHER filed `Q.NOTEHEAD_LETTER_INK` -- the head lies on a `dynamicF` box -- but only
+  0.264 of the head is inside it (the `f`'s hook pokes above the detector's `f` box), under the dynamic-letter refusal's
+  0.4 cut, so `notehead_is_not_a_notehead` kept it. (The 2.139 lexicon word works on the text reading of the letters and
+  says nothing about this head box.)
+* Tile 4 (`glyph/16/1/10/0/7`): the 2.49 / 2.137 slash test read the ink CROSSING the stem (35 % / 65 % either side) and
+  in position; it failed only the 10-degree angle floor (8.8 degrees), so no refusal.
+
+**Guard (in the located-box rule only, no new number):** the rule does not read a head that GATHER filed as lying on a
+dynamic letter (`Q.NOTEHEAD_LETTER_INK` present) or whose ink the slash test read as straddling a stem (`crossing_ok`, or
+the 2.71 stroke witness). A refusal needs the readers' cuts; a half decided from a substitute box does not get to ignore
+their readings. The 4 Litolff halves carry neither reading. Tests: two built on tiles 1 and 4 (their own row values) plus
+a one-side-of-the-stem control; both tile tests fail with the guard removed (run RED).
+
+**Replay (all pages, same records, no gathers):** control 14,272 / 14,272 and 32,389 / 32,389. **Reach: Litolff 4, Brahms
+0.** Tiles 1 and 4 (and the Brahms whole-rest box) now unchanged; Litolff tiles 2, 6, 7, 8 still decided halves; no other
+judged head changes. The rule is now right 4 / 4 on Sean's tiles but reaches one plate only and 4 of its 47 real-note
+`head_fill_from_ink` heads; the flag stays OFF.

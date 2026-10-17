@@ -3285,6 +3285,69 @@ def head_fill_first_enabled() -> bool:
     return os.environ.get(HEAD_FILL_FIRST_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
+#: ROADMAP 2.159 (Sean 2026-10-17: "I'm not sure why it doesn't see simple half notes"). Default OFF.
+#: MEASURED on the 20261016-night records: of the heads left narrowed by `head_fill_from_ink`, 95/114 (Litolff) and 223/231
+#: (Brahms) sat in a detector box that is NOT one head's size, so 2.148's first step never read them -- most often a box
+#: holding only PART of its head (under 0.9 sp tall: 45 and 176), whose own slit reading is of a rim, not of the head.
+#: Where an earlier GATHER reader LOCATED the head (2.39b re-centre, 2.73 line cut, 2.115 part-boxed re-centre), GATHER
+#: now also reads the slit on that standard head box (`interior_white_located`). With this flag, a not-head-sized box
+#: whose located reading holds white (the SAME 2.148 cut, not re-fitted) on the head's own stem is a half at the first
+#: step. Only the HOLLOW answer is taken from the located box (it may add a half on seen white; it never settles a head
+#: black, so it can never overrule the 2.23 window), and only where the located box still holds the detector box's own
+#: centre (it moved within one head, not onto a neighbour: Brahms `glyph/11/1/10/3/10`, a dotted quarter whose
+#: re-centre jumped 0.75 sp onto the head above).
+HEAD_FILL_LOCATED_ENV = "OMR_HEAD_FILL_LOCATED_BOX"
+
+
+def head_fill_located_enabled() -> bool:
+    """ROADMAP 2.159, default ON (Sean 2026-10-17, "Yes to both"); an explicit 0/false/no/off (or empty) disables."""
+    raw = os.environ.get(HEAD_FILL_LOCATED_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _head_reads_hollow_on_located_box(ev: Evidence, head_box, refusal=None) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.159: the 2.148 slit reading on the box an earlier GATHER reader LOCATED the head in
+    (`Q.NOTEHEAD_INK.detail.interior_white_located`). `{"fill": "hollow", ...}` only where it holds white at the 2.148 cut
+    AND the located box still holds the detector box's own centre; None otherwise (no reading, a black or between reading,
+    or a box that moved onto another head) -- the first step then stands as 2.148 left it."""
+    rows = ev.rows(Q.NOTEHEAD_INK)
+    if not rows or head_box is None:
+        return None
+    loc = (rows[-1].detail or {}).get("interior_white_located")
+    if not isinstance(loc, dict) or not loc.get("rows_read") or not loc.get("box_cell"):
+        return None
+    lx, ly, lw, lh = (float(v) for v in loc["box_cell"])
+    cx, cy = head_box[0] + head_box[2] / 2.0, head_box[1] + head_box[3] / 2.0
+    same_head = lx <= cx <= lx + lw and ly <= cy <= ly + lh
+    share = float(loc.get("rows_share") or 0.0)
+    if not same_head or share < HEAD_INTERIOR_WHITE_HOLLOW_MIN:
+        return None
+    # The 2.23 window on the same located box must ALSO read the head hollow (its own, unchanged cut): the first
+    # Litolff replay without this took white specks in a beamed cluster (an eighth, `glyph/16/0/0/4/8`) and in an `ff`
+    # boxed as a head (`glyph/16/1/2/3/7`) for halves -- both DECIDED values the 2.23 window had read solid. With it the
+    # rule only settles heads the reader already narrowed as possibly hollow (`head_fill_from_ink` and its kin).
+    if not _ink_reads_decisively_hollow(rows[-1].detail or {}):
+        return None
+    # Sean's 2.159 tiles (2026-10-17): tile 1 "Ff" (Brahms `glyph/18/1/9/6/15`, the hook of an `f` poking above the
+    # detector's `dynamicF` box) and tile 4 "trem slashes" (`glyph/16/1/10/0/7`, a Brahms slash at 8.8 degrees) were
+    # decided halves. The existing readers SAW both and only fell short of REFUSING the box: the dynamic-letter reader
+    # (`notehead_precision._on_a_dynamic_letter_refusal`, GATHER `Q.NOTEHEAD_LETTER_INK`)
+    # filed the head ON a dynamic letter (head_in_letter 0.26, under its 0.4 refusal cut) and 2.49/2.137's slash test
+    # read the ink CROSSING the stem on both sides (failing only the 10-degree angle floor). A refusal needs those
+    # cuts; a half decided from a substitute box does not get to ignore the readings: a head lying on a dynamic letter,
+    # or whose ink straddles a stem (a head's ink stands to ONE side of its stem), is not read here.
+    if ev.rows(Q.NOTEHEAD_LETTER_INK):
+        return None
+    sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
+    if sig.get("crossing_ok") or sig.get("read_by") == "stem_slash":
+        return None
+    return {"fill": "hollow", "rows_share": share, "hole_share": loc.get("hole_share"), "row": rows[-1].id,
+            "margin": round(share - HEAD_INTERIOR_WHITE_HOLLOW_MIN, 4), "located_by": loc.get("located_by"),
+            "located_box": True}
+
+
 def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.148: the head's own interior-white reading (`Q.NOTEHEAD_INK.detail.interior_white`, GATHER
     `head_interior_white`), asked FIRST. `{"fill": "hollow"|"black"|None, ...}`; None where no reading (older records)."""
@@ -3683,7 +3746,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
-           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION),
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK),
     reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -3856,6 +3919,14 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                            and HEAD_BOX_MIN_SPACES <= head_box[3] / _sp <= HEAD_BOX_MAX_SPACES
                                            and HEAD_FIRST_MIN_WIDTH_SPACES <= head_box[2] / _sp <= HEAD_BOX_MAX_WIDTH_SPACES):
             head_first = {**head_first, "fill": None, "not_head_sized": True}
+            # ROADMAP 2.159 (flag `OMR_HEAD_FILL_LOCATED_BOX`, default ON): the box is not one head's size, but an
+            # earlier reader located the head; its slit reading on that head box may say HOLLOW (never black).
+            # Not on a box ADJUDICATE already refused as not a notehead (2.143's stale-duration population: 67 of the 114
+            # Litolff and 216 of the 231 Brahms `head_fill_from_ink` boxes, mostly quarter rests boxed `too_narrow`).
+            if head_fill_located_enabled() and not refused:
+                located = _head_reads_hollow_on_located_box(ev, head_box, refusal)
+                if located is not None:
+                    head_first = {**located, "not_head_sized": True, "detector_box_rows_share": head_first["rows_share"]}
         if head_first is not None and head_first["fill"] == "hollow" and own_stems:
             base = _HEAD_BEATS["noteheadHalf"]
             hollow = True
