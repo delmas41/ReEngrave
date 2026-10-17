@@ -9238,11 +9238,31 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
         net_img = getattr(c, "image_no_staff", None)
         grid = _cell_grid(c)
         space_canonical = grid[1] * 2.0 if grid and grid[1] else None
+        # ROADMAP 2.161: the cell's stems (`gather_cv_lines` ran earlier in this pass) and its erased raster as the stem
+        # finder's own mask, for `head_stem_bridge`; built once per cell, only where a head has no stem touching its box.
+        bridge_stems = [tuple(float(v) for v in r.value) for r in log.rows(Q.STEM, sub)
+                        if isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+        bridge_ink = None
+        bridge_space = space_canonical      # = `Q.CELL_STAFF_SPACE` (half_step x 2), the unit ADJUDICATE reads
         for gi in idx:
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
             d = dets[gi]
             box = (d.x_canonical, d.y_canonical,
                   d.width_canonical, d.height_canonical)
+            stem_bridge = None
+            if bridge_stems and net_img is not None and bridge_space:
+                from .geometry import stem_touches_head as _touches
+                det_box = tuple(float(v) for v in box)
+                if not any(_touches(st, det_box) for st in bridge_stems):
+                    if bridge_ink is None:
+                        from ..line_detection import _binary_ink
+                        bridge_ink = _binary_ink(net_img)
+                    others = [(str(o.smufl_name), (float(o.x_canonical), float(o.y_canonical), float(o.width_canonical),
+                                                   float(o.height_canonical))) for oi, o in enumerate(dets) if oi != gi]
+                    stem_bridge = head_stem_bridge(bridge_ink, det_box, bridge_stems, bridge_space, others)
+                    if stem_bridge is not None:
+                        stem_bridge["interior_white_bridged"] = head_interior_white(raw_img, stem_bridge["bridged_box"]) \
+                            if raw_img is not None else None
             interior = head_interior_white(raw_img, box) if raw_img is not None else None   # 2.148: the DETECTOR's own box
             located_by = None   # 2.159: the earlier reader that LOCATED the head, so the window below is not the detector's
             if space_canonical and is_regular_notehead(str(d.smufl_name)):
@@ -9336,6 +9356,8 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                 located = head_interior_white_located(c, box, page_binary, located_by)
                 if located is not None:
                     extra["interior_white_located"] = located
+            if stem_bridge is not None:
+                extra["stem_bridge"] = stem_bridge
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
                        ink_raw=m_raw, ink_net=m_net, **extra)
