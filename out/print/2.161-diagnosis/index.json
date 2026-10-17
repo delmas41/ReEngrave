@@ -15,7 +15,7 @@
   "cause": "S2 refused:PAIRED",
   "litolff": 9,
   "brahms": 0,
-  "shows": "two stems close together (two voices / a second) are dropped as an accidental's two strokes"
+  "shows": "two parallel verticals beside the head are dropped as an accidental's two strokes (the pair rule); one of them may be the stem"
  },
  {
   "file": "3-stem-refused-tall-litolff.png",
