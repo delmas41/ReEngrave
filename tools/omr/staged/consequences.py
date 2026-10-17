@@ -380,6 +380,19 @@ def bar_sum_confirm_only() -> str:
     return ""
 
 
+#: ROADMAP 2.158, default OFF (Sean 2026-10-17, DECISIONS): under `OMR_BAR_SUM_CONFIRM_ONLY` a bar holding exactly ONE event
+#: (one head, or one chord on one stem) under a meter that reaches the print may still settle that event's narrowing, where
+#: exactly one of its OWN candidates fills the bar -- GUESSED (blue, candidates kept), reason `lone_event_fills_bar`. Lives in
+#: INFER `collapse_narrowed_by_bar` (`inferences.lone_event_decline`); EVALUATE `reconcile_duration` still refuses the bar, so
+#: the guess is always INFER's and labelled. Only an explicit on-word enables it.
+LONE_EVENT_FILLS_BAR_ENV = "OMR_LONE_EVENT_FILLS_BAR"
+
+
+def lone_event_fills_bar_enabled() -> bool:
+    import os
+    return os.environ.get(LONE_EVENT_FILLS_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def bare_stem_confirmable(note: Verdict) -> bool:
     """ROADMAP 2.154, Sean 2026-10-16 on the bare-stem question: *"it can confirm"*. The ONE narrowing the bar may still settle
     under `OMR_BAR_SUM_CONFIRM_ONLY` (both arms): a bare stem -- `beam_discounted_uncertain` with no beam read over the note
