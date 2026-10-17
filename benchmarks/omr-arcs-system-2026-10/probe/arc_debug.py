@@ -103,6 +103,9 @@ def draw(pws, cells, local, detections, summary, traces, region, out):
             else:
                 continue
             cv2.rectangle(img, (int(b[0]) - x0, int(b[1]) - y0), (int(b[2]) - x0, int(b[3]) - y0), col, 1)
+    k = int(os.environ.get("DBG_SCALE", "1"))
+    if k > 1:
+        img = cv2.resize(img, None, fx=k, fy=k, interpolation=cv2.INTER_NEAREST)
     cv2.imwrite(out, img)
 
 

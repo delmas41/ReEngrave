@@ -51,6 +51,15 @@ ENV = "OMR_SYSTEM_ARCS"
 #: A column's ink run no taller than this is a candidate for an arc's stroke. A tie's middle is 0.3-0.46 sp thick on Litolff; a
 #: notehead is ~1 sp tall and a beam ~0.5 sp, so neither is followed.
 STROKE_MAX_SPACES = 0.6
+#: On the RAW page (staff lines in) a stroke's run may be this much taller than `STROKE_MAX_SPACES` (the stroke
+#: crossing a staff line). A stem or barline the staff-line removal cut into short pieces is far taller there.
+RAW_LINE_ALLOWANCE_SPACES = 0.35
+#: A trace this flat (spaces of y range over its whole length) whose columns mostly sit on staff-line rows is the
+#: residue of a staff line, not an arc (2.60's fakes): abstained, never erased.
+FLAT_SPACES = 0.35
+ON_LINE_SHARE = 0.6
+#: Past its own box a trace may not climb steeper than this (dy/dx).
+EXT_MAX_SLOPE = 1.0
 #: The trace may cross this many spaces of columns with no stroke (a barline, a removed staff line, a stem).
 GAP_MAX_SPACES = 0.75
 #: How far past a box edge the CROP CUT (the box ends within `CUT_EDGE_SPACES` of its cell's edge) the trace may run.
@@ -95,6 +104,19 @@ PROTECTED_PREFIXES = ("notehead", "accidental", "stem", "flag", "rest", "augment
                       "keySig", "key", "dynamic", "artic", "fermata", "ornament", "tuplet", "grace", "ledgerLine",
                       "beam", "tremolo", "repeat", "fingering", "brace", "bracket", "barline")
 BEAM_TWIN_IOU = 0.6
+#: A beam box can hold nothing but the stroke only where this share of it lies inside one of the arc's own boxes.
+BEAM_TWIN_OVERLAP = 0.5
+#: The erase is confined to the arc's own boxes padded by this (plus boxes holding nothing but its stroke).
+ERASE_BOX_PAD_SPACES = 0.25
+
+
+def _overlap_share(a: Sequence[float], b: Sequence[float]) -> float:
+    """Share of box `a`'s area inside box `b`."""
+    ix0, iy0, ix1, iy1 = max(a[0], b[0]), max(a[1], b[1]), min(a[2], b[2]), min(a[3], b[3])
+    if ix1 <= ix0 or iy1 <= iy0:
+        return 0.0
+    area = (a[2] - a[0]) * (a[3] - a[1])
+    return (ix1 - ix0) * (iy1 - iy0) / area if area > 0 else 0.0
 #: Only these classes can be found to hold nothing but the stroke (the crop cut the arc and the detector boxed its tail
 #: as a head -- 2.164 -- or as a beam). A dot, an articulation, an accidental or a ledger line the trace runs through
 #: stays protected whatever its residual: a dot is as short as a stroke and is never the arc's own ink.
@@ -174,11 +196,27 @@ def _runs(col: np.ndarray) -> List[Tuple[int, int]]:
     return list(zip(s.tolist(), e.tolist()))
 
 
+def _raw_run_len(raw: np.ndarray, x: int, r: Tuple[int, int]) -> int:
+    """The length of the RAW page run (staff lines IN) holding the composite run `r` at column `x`: a stem or barline
+    that staff-line removal cut into short pieces is one long run here."""
+    col = raw[:, x]
+    a, b = r
+    if not col[a:b + 1].any():
+        return b - a + 1
+    while a > 0 and col[a - 1]:
+        a -= 1
+    while b < len(col) - 1 and col[b + 1]:
+        b += 1
+    return b - a + 1
+
+
 class _Columns:
     """Thin runs per page column inside a row window, cached."""
 
-    def __init__(self, ink: np.ndarray, r0: int, r1: int, max_len: float):
+    def __init__(self, ink: np.ndarray, r0: int, r1: int, max_len: float,
+                 raw: Optional[np.ndarray] = None, raw_max: float = 0.0):
         self.ink, self.r0, self.r1, self.max_len = ink, r0, r1, max_len
+        self.raw, self.raw_max = raw, raw_max
         self._cache: Dict[int, List[Tuple[int, int]]] = {}
 
     def thin(self, x: int) -> List[Tuple[int, int]]:
@@ -189,12 +227,14 @@ class _Columns:
             else:
                 got = [(a + self.r0, b + self.r0) for a, b in _runs(self.ink[self.r0:self.r1, x])
                        if (b - a + 1) <= self.max_len]
+                if self.raw is not None:
+                    got = [r for r in got if _raw_run_len(self.raw, x, r) <= self.raw_max]
             self._cache[x] = got
         return got
 
 
 def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float,
-            pts: Dict[int, Tuple[int, int]]) -> None:
+            pts: Dict[int, Tuple[int, int]], box_x: Tuple[int, int] = (-1 << 30, 1 << 30)) -> None:
     """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y."""
     hist: List[Tuple[int, float]] = [(x, yc)]
     gap = 0
@@ -211,6 +251,10 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
                 break
         slope = (ly - k[1]) / float(lx - k[0]) if lx != k[0] else 0.0
         slope = max(-2.0, min(2.0, slope))
+        # past its own box the trace is a TAIL the crop cut: a tie's or slur's end runs shallow into its head; a steep
+        # climb there is the outline of a head or a stem, not the arc
+        if not (box_x[0] <= xx <= box_x[1]) and abs(slope) > EXT_MAX_SLOPE:
+            return
         dx = xx - lx
         pred = ly + slope * dx
         tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
@@ -233,7 +277,8 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         xx += step
 
 
-def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float, x_max: float
+def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float, x_max: float,
+              raw: Optional[np.ndarray] = None
               ) -> Optional[Dict[str, Any]]:
     """Follow the thin stroke inside `box` (page px) out to `x_min..x_max`. `None` off the raster / no unit.
 
@@ -247,7 +292,7 @@ def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float,
         return None
     pad = int(round(ROW_PAD_SPACES * sp))
     r0, r1 = max(0, by0 - pad), min(H, by1 + pad + 1)
-    cols = _Columns(ink, r0, r1, STROKE_MAX_SPACES * sp)
+    cols = _Columns(ink, r0, r1, STROKE_MAX_SPACES * sp, raw, (STROKE_MAX_SPACES + RAW_LINE_ALLOWANCE_SPACES) * sp)
     lo, hi = max(0, int(round(x_min))), min(W - 1, int(round(x_max)))
     mid = (bx0 + bx1) // 2
     half = max(2, int(round(0.3 * sp)))
@@ -262,8 +307,8 @@ def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float,
     for x, a, b in seeds:
         pts: Dict[int, Tuple[int, int]] = {x: (a, b)}
         yc = (a + b) / 2.0
-        _follow(cols, x, yc, +1, hi, sp, pts)
-        _follow(cols, x, yc, -1, lo, sp, pts)
+        _follow(cols, x, yc, +1, hi, sp, pts, (bx0, bx1))
+        _follow(cols, x, yc, -1, lo, sp, pts, (bx0, bx1))
         inside = sum(1 for xx in pts if bx0 <= xx <= bx1)
         cov = inside / width
         if best is None or cov > best["coverage"]:
@@ -284,6 +329,18 @@ def _finish(pts: Dict[int, Tuple[int, int]], coverage: float) -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # One curve from its pieces
 # ─────────────────────────────────────────────────────────────────────────────
+
+def on_a_staff_line(pts: Dict[int, Tuple[int, int]], line_ys: Sequence[float], sp: float) -> bool:
+    """A flat trace whose columns mostly sit on a staff line's rows: a line's residue, not an arc."""
+    if not pts or not line_ys:
+        return False
+    cs = [(a + b) / 2.0 for a, b in pts.values()]
+    if max(cs) - min(cs) > FLAT_SPACES * sp:
+        return False
+    ys = np.asarray(line_ys)
+    near = sum(1 for c in cs if np.min(np.abs(ys - c)) <= 0.2 * sp)
+    return near >= ON_LINE_SHARE * len(cs)
+
 
 def same_curve(a: Dict[str, Any], b: Dict[str, Any], sp: float) -> bool:
     """Two traces are one curve: they share columns at one y, or one ends where the other begins."""
@@ -552,6 +609,8 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
         return summary
 
     ink = composite_ink(binary, [c for c, _ in staffed])
+    raw = binary < 128
+    line_ys = sorted(float(y) for st in (getattr(pws, "staves", None) or ()) for y in st.line_ys)
     # the system's own x extent per (page, system): a trace never leaves its system
     sys_x: Dict[Tuple[int, int], Tuple[float, float]] = {}
     for c, key in staffed:
@@ -580,7 +639,14 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             cut_right = (float(cb[2]) - bx1) <= CUT_EDGE_SPACES * sp
             x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if cut_left else FREE_EXTEND_SPACES) * sp)
             x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if cut_right else FREE_EXTEND_SPACES) * sp)
-            t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max)
+            t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max, raw=raw)
+            if t is not None and t["points"] and on_a_staff_line(
+                    {x: r for x, r in t["points"].items() if bx0 <= x <= bx1}, line_ys, sp):
+                log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
+                            reason=ABSTAIN.BELOW_THRESHOLD, note="the trace lies flat along a staff line")
+                summary["abstained"] += 1
+                summary["on_a_staff_line"] = summary.get("on_a_staff_line", 0) + 1
+                continue
             if t is None or t["coverage"] < MIN_COVER or not t["points"]:
                 log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
                             reason=ABSTAIN.BELOW_THRESHOLD,
@@ -611,7 +677,10 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 if sh is None:
                     continue
                 only = (sh["residual_spaces2"] < STROKE_ONLY_RESIDUAL_SPACES2
-                        and str(hname).startswith(STROKE_ONLY_CLASSES))
+                        and str(hname).startswith(STROKE_ONLY_CLASSES)
+                        # a beam box is the arc's twin only where it overlaps one of the arc's own boxes
+                        and (not str(hname).startswith("beam")
+                             or any(_overlap_share(hb, m["piece"]["box"]) >= BEAM_TWIN_OVERLAP for m in members)))
                 through.append({"glyph": hg, "class": hname, "residual_spaces2": sh["residual_spaces2"],
                                 "stroke_only": only})
                 if only:
@@ -643,7 +712,14 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             if len(cells_in) > 1:
                 summary["joined_across_barline"] += 1
             summary["arcs_detail"].append(dict(subject=first["glyph"].to_key(), shape=anc["shape"], **detail))
-            erase_plan.append((pts, sp_staff))
+            # ERASE only where the detector itself boxed this arc (its pieces' boxes, padded) or where a box holds
+            # nothing but its stroke: the trace past that is evidence for the join and the anchors, not ink to remove
+            pad = ERASE_BOX_PAD_SPACES * sp_staff
+            zones = [(b[0] - pad, b[1] - pad, b[2] + pad, b[3] + pad) for b in (m["piece"]["box"] for m in members)]
+            zones += [hb for hg, hname, hb in marks_by_staff.get((pg, sy, st), []) if hg in stroke_only]
+            pts_erase = {x: r for x, r in pts.items()
+                         if any(z[0] <= x <= z[2] and r[1] >= z[1] and r[0] <= z[3] for z in zones)}
+            erase_plan.append((pts_erase, sp_staff))
             if progress:
                 print(f"  gather system arc {first['glyph'].to_key()} {anc['shape']} cells={cells_in}")
 

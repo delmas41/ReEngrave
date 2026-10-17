@@ -73,6 +73,8 @@ for arm in ("off", "on"):
     res = pipeline.run_staged_on(prepared, detector=det, pdf_path=pdf, surya_fallback=False, ocr_fallback=False,
                                  input_domain_classification=cls, through="adjudicate")
     rec = res["record"]
+    if os.environ.get("AB_RECORDS"):
+        json.dump({"record": rec}, open("%s.%s.record.json" % (OUT[:-5], arm), "w"), default=str)
     arms[arm] = dict(verdicts=live(rec["verdicts"]),
                      sysarc=[o for o in rec["observations"] if o["quantity"] == "system_arc"],
                      sysarc_abst=[a for a in rec.get("abstentions", []) if a.get("quantity") == "system_arc"],
