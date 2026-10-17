@@ -60,6 +60,10 @@ FLAT_SPACES = 0.35
 ON_LINE_SHARE = 0.6
 #: Past its own box a trace may not climb steeper than this (dy/dx).
 EXT_MAX_SLOPE = 1.0
+#: A column bridged on the RAW page costs this much of a gap column (`GAP_MAX_SPACES`): at most ~3 sp along a line.
+RAW_BRIDGE_COST = 0.25
+#: How many seed columns a trace tries (the best coverage wins).
+SEED_COLUMNS = 3
 #: The trace may cross this many spaces of columns with no stroke (a barline, a removed staff line, a stem).
 GAP_MAX_SPACES = 0.75
 #: How far past a box edge the CROP CUT (the box ends within `CUT_EDGE_SPACES` of its cell's edge) the trace may run.
@@ -232,9 +236,18 @@ class _Columns:
             self._cache[x] = got
         return got
 
+    def raw_thin(self, x: int) -> List[Tuple[int, int]]:
+        """Fallback where the composite has no stroke: the RAW page's short runs (an arc lying ALONG a staff line
+        merges with it, and the staff-line removal took it with the line)."""
+        if self.raw is None or x < 0 or x >= self.raw.shape[1]:
+            return []
+        return [(a + self.r0, b + self.r0) for a, b in _runs(self.raw[self.r0:self.r1, x])
+                if (b - a + 1) <= self.raw_max]
+
 
 def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float,
-            pts: Dict[int, Tuple[int, int]], box_x: Tuple[int, int] = (-1 << 30, 1 << 30)) -> None:
+            pts: Dict[int, Tuple[int, int]], box_x: Tuple[int, int] = (-1 << 30, 1 << 30),
+            raw_pts: Optional[set] = None) -> None:
     """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y."""
     hist: List[Tuple[int, float]] = [(x, yc)]
     gap = 0
@@ -259,17 +272,28 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         pred = ly + slope * dx
         tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
         best = None
-        for a, b in cols.thin(xx):
-            c = (a + b) / 2.0
-            d = abs(c - pred)
-            if d <= tol and (best is None or d < best[0]):
-                best = (d, a, b, c)
+        from_raw = False
+        for source in (cols.thin, cols.raw_thin):
+            for a, b in source(xx):
+                c = (a + b) / 2.0
+                d = abs(c - pred)
+                if d <= tol and (best is None or d < best[0]):
+                    best = (d, a, b, c)
+            if best is not None:
+                break
+            from_raw = True
         if best is None:
             gap += 1
             if gap > gap_max:
                 return
         else:
-            gap = 0
+            # a run found only on the RAW page (the stroke merged with a staff line) BRIDGES, at a quarter of a gap's
+            # cost, so a trace can never ride a staff line far; such points are trimmed off the trace's two ends
+            gap = gap + RAW_BRIDGE_COST if from_raw else 0
+            if gap > gap_max:
+                return
+            if from_raw and raw_pts is not None:
+                raw_pts.add(xx)
             pts[xx] = (best[1], best[2])
             hist.append((xx, best[3]))
             if len(hist) > 4 * look:
@@ -296,19 +320,32 @@ def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float,
     lo, hi = max(0, int(round(x_min))), min(W - 1, int(round(x_max)))
     mid = (bx0 + bx1) // 2
     half = max(2, int(round(0.3 * sp)))
+    # seed columns: nearest the box's middle first, anywhere in the box (an arc lying along a staff line loses its
+    # middle to the staff-line removal); up to SEED_COLUMNS columns at least `half` apart
     seeds: List[Tuple[int, int, int]] = []
-    for x in sorted(range(mid - half, mid + half + 1), key=lambda v: abs(v - mid)):
+    used: List[int] = []
+    for x in sorted(range(bx0, bx1 + 1), key=lambda v: abs(v - mid)):
+        if len(used) >= SEED_COLUMNS:
+            break
+        if any(abs(x - u) < half for u in used):
+            continue
         rs = [(a, b) for a, b in cols.thin(x) if a >= by0 - 2 and b <= by1 + 2]
         if rs:
-            seeds = [(x, a, b) for a, b in rs]
-            break
+            used.append(x)
+            seeds += [(x, a, b) for a, b in rs]
     best = None
     width = float(bx1 - bx0 + 1)
     for x, a, b in seeds:
         pts: Dict[int, Tuple[int, int]] = {x: (a, b)}
         yc = (a + b) / 2.0
-        _follow(cols, x, yc, +1, hi, sp, pts, (bx0, bx1))
-        _follow(cols, x, yc, -1, lo, sp, pts, (bx0, bx1))
+        raw_pts: set = set()
+        _follow(cols, x, yc, +1, hi, sp, pts, (bx0, bx1), raw_pts)
+        _follow(cols, x, yc, -1, lo, sp, pts, (bx0, bx1), raw_pts)
+        for order in (sorted(pts), sorted(pts, reverse=True)):     # trim raw-only points off both ends
+            for xx in order:
+                if xx not in raw_pts:
+                    break
+                del pts[xx]
         inside = sum(1 for xx in pts if bx0 <= xx <= bx1)
         cov = inside / width
         if best is None or cov > best["coverage"]:
