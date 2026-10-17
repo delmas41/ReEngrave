@@ -2072,6 +2072,83 @@ def _bare_stem_confirmations(log: Log, props: List[Proposal]) -> List[Proposal]:
     return keep
 
 
+#: ROADMAP 2.158 (Sean 2026-10-17): the reason a lone event's narrowing is guessed from the bar.
+LONE_EVENT_REASON = "lone_event_fills_bar"
+
+
+def lone_event_decline(log: Log, cell: Subject) -> Tuple[Optional[str], Optional[Any]]:
+    """ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, Sean 2026-10-17: *"when there is just one note head type in the measure,
+    and we know the meter, then I'm totally okay with it guessing"*). `(None, beats)` where this staff's bar holds exactly
+    ONE event -- one head, or one chord on one decided stem -- every head of it NARROWED and none a rest, after setting aside
+    what a DECIDED verdict took out of the bar; the meter at the bar is DECIDED and reaches the print (read, or a decided
+    carry of a reading: never a meter the bars chose); no tuplet is seen; and exactly ONE of the event's OWN candidates (per
+    head, and common to every head) fills the bar. Else `(why, None)`. A second event of any kind (a rest, an abstained
+    element standing alone, a decided note) refuses: it is the busy bar Sean left confirm-only."""
+    from .consequences import (_bar_beats_at, _bar_has_tuplet, _is_rest, _left_the_bar, _on_one_stem, _standing)
+    standing = [v for v in _standing(log, cell, Q.DURATION) if _left_the_bar(log, v.subject) is None]
+    if not standing:
+        return "empty_bar", None
+    if any(_is_rest(v) for v in standing):
+        return "a_rest_in_the_bar", None
+    grouping = log.verdict(Q.EVENT, cell)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return "no_event_grouping", None
+    glyphs = {v.subject.glyph for v in standing}
+    events = [set(ev.get("glyphs", ())) & glyphs for ev in (grouping.value or {}).get("events", ())]
+    events = [e for e in events if e]
+    if len(events) != 1:
+        return "not_one_event", None
+    if glyphs - events[0]:
+        return "a_glyph_outside_every_event", None
+    members = [v for v in standing if v.outcome in (Outcome.DECIDED, Outcome.NARROWED)]
+    narrowed = [v for v in members if v.outcome is Outcome.NARROWED]
+    if not narrowed or len(narrowed) != len(members):
+        return "event_not_wholly_narrowed", None
+    if len(narrowed) >= 2 and not _on_one_stem(log, narrowed):
+        return "chord_not_on_one_decided_stem", None
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter is None or meter.outcome is not Outcome.DECIDED:
+        return "meter_not_decided", None
+    if _printed_meter_roots(log, meter, cell) is None:
+        return "meter_not_from_the_print", None
+    expected = _bar_beats_at(meter, cell)
+    if expected is None:
+        return "no_meter_in_force", None
+    if bar_has_tuplet(log, cell) or _bar_has_tuplet(log, cell, narrowed):
+        return "tuplet_in_bar", None
+    target = _frac(expected)
+    fills = None
+    for m in narrowed:
+        lengths = [_frac(c.value.get("beats")) for c in (m.candidates or ())
+                   if isinstance(c.value, dict) and c.value.get("beats") is not None]
+        if sum(1 for b in lengths if b == target) != 1:
+            return "not_exactly_one_candidate_fills", None
+        if fills is None:
+            fills = target
+    return None, float(fills)
+
+
+def _lone_event_guesses(log: Log, cell: Subject, props: List[Proposal], kept: List[Proposal]) -> List[Proposal]:
+    """ROADMAP 2.158: the bar's proposals the 2.154 filter dropped that `lone_event_decline` admits, re-labelled
+    `lone_event_fills_bar` (GUESSED; the harness carries the reader's candidates forward)."""
+    import dataclasses
+    from .consequences import lone_event_fills_bar_enabled
+    if not lone_event_fills_bar_enabled():
+        return []
+    why, beats = lone_event_decline(log, cell)
+    if why is not None:
+        return []
+    have = {id(p) for p in kept}
+    out = []
+    for p in props:
+        if id(p) in have or not isinstance(p.value, dict) or _frac(p.value.get("beats")) != _frac(beats):
+            continue
+        out.append(dataclasses.replace(p, reason=LONE_EVENT_REASON,
+                                       detail={**dict(p.detail or {}), "lone_event": True,
+                                               "expected_beats": float(beats)}))
+    return out
+
+
 @rule(
     inference=Inference.COLLAPSE_BARE_STEM_BY_BAR,
     target=Q.DURATION,
@@ -2162,7 +2239,10 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     if bar_sum_confirm_only():
         # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
         # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
-        props = _bare_stem_confirmations(log, props)
+        kept = _bare_stem_confirmations(log, props)
+        # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
+        # still be guessed to the one candidate that fills it (Sean 2026-10-17).
+        props = kept + _lone_event_guesses(log, cell, props, kept)
     return props
 
 

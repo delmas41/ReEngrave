@@ -4589,3 +4589,52 @@ At HEAD (this branch = main `d9353217` + the fix), all 137 judged tiles: old har
 
 ### 2.157-5. Limits
 Verdict VALUES also carry GATHER ids (glyph-owner stems, word letters ...; 787 values on `slice_litolff.json`), so comparing a stored verdict's value with a slice replay's needs `remap_row_ids(stored, id_map)`; `diff_records` (the CLI control, whole records, identity map) does not do it and was not changed. A slice replay still has no meter carried from systems outside the slice (2.154-limits).
+
+## 2.158 -- a lone event in a known meter may be guessed from the bar (lane-2.158-lone-event; STAGED INFER; 2026-10-17)
+
+Sean 2026-10-17 (DECISIONS): *"when there is just one note head type in the measure, and we know the meter, then I'm totally okay with it guessing."* Built behind `OMR_LONE_EVENT_FILLS_BAR`, **default OFF**.
+
+**CONVENTION ASSUMED:** Sean's ruling, as built: one event, a printed meter, exactly one own candidate filling the bar. **WHAT WOULD FALSIFY IT:** Sean reads a guessed note on the 2.158 tiles as another value. **NOT CONFIRMED:** tiles not answered.
+
+### 2.158-1. The rule (where it sits)
+INFER `collapse_narrowed_by_bar`, beside 2.154's bare-stem confirm: under `OMR_BAR_SUM_CONFIRM_ONLY`, a proposal the 2.154 filter drops is kept, re-labelled `lone_event_fills_bar`, where `inferences.lone_event_decline` admits the bar: after setting aside what a DECIDED verdict removed (`_left_the_bar`), every standing glyph is in ONE event (one head, or a chord on one decided stem), every head NARROWED, none a rest; the meter DECIDED and reaching the print (`_printed_meter_roots`: voted, or a decided carry of a reading -- never a meter the bars chose); no tuplet seen; and per head exactly one candidate fills the bar. Every guard of the existing solver still applies (`solve_bare_stem_bar(any_reason=True)`: clean heads, ink witness for a lengthening, never shortening without evidence), so the value is always one of the reader's own and the INFER harness carries the candidates forward (GUESSED, blue). EVALUATE `reconcile_duration` is unchanged: it still refuses the bar, so the guess is always INFER's and labelled. Tests `tools/omr/tests/test_staged_lone_event_fills_bar_2_158.py` (12): a lone half in 2/4 and two heads in thirds on one stem are guessed; two events, a rest beside, an undecided meter, a meter the bars chose, two candidates that both fill, none that fills, a tuplet marker each refuse; each refusal test goes RED with its guard removed from `lone_event_decline` (7 of 7, mutation run), the flag-off control likewise. Fast tier 8365 passed, 0 failed; `staged.check` 192.
+
+### 2.158-2. Reach (review.rerun on the 20261016-night records, `probe/replay_2_158.py`; flag OFF vs ON; control = OFF vs the stored record)
+| | Litolff (whole movement) | Brahms (slice p0-p11 + 12/0, so the carry reaches 12/0) |
+|---|--:|--:|
+| control: OFF arm == stored, every glyph | 14,404 / 14,404 | 14,754 / 14,754 |
+| notes changed | 19 (13 `head_fill_from_ink`, 2 `dot_seen_beside_a_plain_note`, 2 `whole_class_filled_on_a_stem`, 2 `open_head_flag_contradiction`) | 1 (`dot_seen_beside_a_plain_note`) |
+| bars changed | 19 | 1 |
+| value written | half, all 19 (narrowed -> GUESSED) | dotted half in 6/8 (`glyph/12/0/2/6/9`, {2, 3}) |
+Every change is narrowed -> `lone_event_fills_bar`; nothing else moved. Brahms was chosen by a static scan of the whole record (`probe/static_2_158.py`, stored verdicts, `_left_the_bar` approximated: Litolff 20 candidate bars vs 19 replayed, Brahms 2): the other Brahms bar (0/0/4/2) is admitted by the lone-event test and declined by the solver (`heads_not_this_staffs_own`; `probe/why_2_158.py`). The rest of Brahms was not replayed (a whole replay is ~7 GB); the scan says nothing else qualifies.
+
+### 2.158-3. The 35 Litolff crops (`out/print/litolff-unread-35`, `probe/sum_2_158.py`)
+**20 of 35 come back, every one a half** -- 19 of the 22 bar-sum bars (all but 5, 7, 19) plus crop 31 (14/0/3/5, `open_head_flag_contradiction` {2, 1}, 1014 "held out"). Crop 7 (7/1/3/13, a lone {2, 8}) is admitted by the lone-event test and declined by the solver (`heads_not_this_staffs_own`, slice p0-p7); 5 (two events) and 19 (two events) are refused as busy bars. Crops 2, 13, 15 come back because their chord mates were set aside by DECIDED verdicts (`stacked_head_duplicate`, `clipped_fragment`, `notehead_is_a_duplicate_box`). None of the 13 non-bar-sum crops (rests, 2.142/2.137/2.126 causes) changes, as expected.
+
+### 2.158-4. Sean's judged tiles (`python3 -m tools.omr.staged.judged score`, Litolff mini records OFF / ON)
+Right 113 -> 114, wrong 26 -> 26, narrowed 9 -> 8: **one narrowed-holding -> right** (2.114 tile_13, `glyph/1/0/9/11/1`, Sean 2, now a guessed half), **0 right -> wrong, 0 wrong -> right**. Brahms: the one changed glyph is not judged, so no judged tile moves.
+
+### 2.158-5. Blind tiles: `out/print/2.158-review/`, 21, answers blank
+`probe/tiles_2_158.py`, seed 2158: one tile per changed bar not judged by Sean (18 Litolff + 1 Brahms; Litolff 1/0/9/11 excluded as judged), plus 2 plain controls (Litolff `head_and_marks` decided notes the flag does not touch: one half, one quarter; can fail). One blue box on the note, "Tile N", nothing else ours; question "What is the written value of the note in the blue box?". Key `out/2.158/tiles-key.json` (uncommitted), checked in the cutting run: one key row per PNG, same numbering, every box the key's glyph box, no judged glyph.
+
+### 2.158-6. Limits
+The reach is small by construction (Litolff 19 notes, Brahms 1) and mostly the bars 2.154 took back. The solver's own head-cleanliness guard declines 2 admitted lone bars (Litolff crop 7, Brahms 0/0/4/2); that guard is unchanged. Flag OFF; no DECISIONS line from this lane.
+
+### 2.158 -- Sean's 21 tile answers (2026-10-17, `out/print/2.158-review/answers.json`; `probe/record_answers_2_158.py`)
+Verbatim: "1-9.2 10.4 11-13.2 14. Box is off on a part of a slur but the measure has a 2 in it. Not sure if that is bad box placement  or meant to be where it is. 15-21. 2"; correction "Sorry 1$ is dotted half" (read by the manager as tile 17, the Brahms 6/8 bar). Scored against the key (`out/2.158/tiles-key.json`, now committed): **lone-event guesses 18 of 19 right** (17 Litolff halves + the Brahms dotted half), **both controls right**, tile 14 is the one not right. Judged index rebuilt (`benchmarks/acceptance/judged-tiles.json`, +21 rows, tile 14 parses as `other`).
+
+**Tile 14 (Litolff `glyph/5/1/4/2/1`, p5 sys1 staff4) is a GATHER fault, not a value fault.** The only head box in the bar (`noteheadBlackOnLine`, conf 0.28, page px [798, 3187, 825, 3207]) sits on the END of the tie arc coming in from the previous bar, just right of the barline on the bottom line; the previous bar's arc box (`glyph/5/1/4/1/1`, tie, x 695-795) stops at the barline, so the tail inside this bar is boxed as a head. The real half-note head (second space, stem up, page px ~[816, 3163, 838, 3182]) has **no detector box of any class** (`probe/boxes_near_2_158.py`). So we write E-flat 4 (`position_and_clef`, bottom line) where the print has A-flat 4: the value fills the bar, the pitch is invented. Crop: `out/print/2.158-tile14/box_vs_head.png` (blue = our box, orange = the real head, hand-placed).
+
+Cheap guards from existing readers, measured on the 20 changed notes (`probe/guard_2_158.py`) -- none is clean:
+
+| guard | catches tile 14 | costs (Sean-right guesses refused) |
+|---|---|---|
+| box overlaps a decided arc's `arc_box` | no (the tie box ends at the barline) | 5 |
+| no own stem seen (`head_stem` abstained `no_stem`) -- a half has a stem | yes | 6 of 18 (our stem finder misses those stems) |
+| `notehead_ink` below a cut | yes (0.700, the lowest; next 0.735) | 0 here, but the cut is fitted to one example, so by CLAUDE §4 it may only narrow |
+
+Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's left edge, the real head never boxed); the rule only took the one head the bar held.
+
+### 2.158 -- LANDED ON (Sean 2026-10-17)
+
+Asked "Land 2.158 ON?", Sean answered "2.258 on" (a typo for 2.158). `OMR_LONE_EVENT_FILLS_BAR` is default ON; an explicit `0/false/no/off` (or empty) disables it. The tile-14 guard is ROADMAP 2.160.
