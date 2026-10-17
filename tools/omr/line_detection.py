@@ -238,7 +238,7 @@ def stem_finder_repairs(default: frozenset = frozenset()) -> frozenset:
 
 def staged_stem_finder() -> frozenset:
     """The repairs the STAGED path runs: `OMR_STEM_FINDER`, else the staged default; plus `edge_head` under
-    `OMR_STEM_AT_BAR_EDGE` (ROADMAP 2.155, default OFF)."""
+    `OMR_STEM_AT_BAR_EDGE` (ROADMAP 2.155, default ON, Sean 2026-10-16)."""
     out = stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
     if stem_at_bar_edge_enabled():
         out = out | {"edge_head"}
@@ -264,9 +264,13 @@ STEM_AT_BAR_EDGE_END_SLACK_SPACES = 0.25
 
 
 def stem_at_bar_edge_enabled() -> bool:
-    """`OMR_STEM_AT_BAR_EDGE` -- default OFF; only `1/true/yes/on` enables (ROADMAP 2.155)."""
+    """`OMR_STEM_AT_BAR_EDGE` -- default ON (ROADMAP 2.155, Sean 2026-10-16 "Yes"); an explicit `0/false/no/off` (or an
+    empty value) disables it; any other value keeps the default."""
     import os
-    return os.environ.get(STEM_AT_BAR_EDGE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    raw = os.environ.get(STEM_AT_BAR_EDGE_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
 def _run_ends_at_a_head(x, y, w, h, heads, line_spacing, cell_w=None) -> bool:
@@ -1008,7 +1012,7 @@ def detect_stems(
                             confidence=1.0))
             continue
         # Edge filter — barlines live at the cell boundaries.
-        # ROADMAP 2.155 (`edge_head`, `OMR_STEM_AT_BAR_EDGE`, default OFF): a run whose end stands in a head's box is that head's
+        # ROADMAP 2.155 (`edge_head`, `OMR_STEM_AT_BAR_EDGE`, default ON, Sean 2026-10-16): a run whose end stands in a head's box is that head's
         # stem, not a barline -- it goes on to the remaining filters like any other run.
         if x < edge_margin or x + w > cell_w - edge_margin:
             if not ("edge_head" in stem_finder

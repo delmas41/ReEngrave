@@ -113,16 +113,19 @@ def test_interior_stems_are_unchanged_by_the_flag():
         _xs(detect_stems(_cell(paint), stem_finder=ON, noteheads=[head]))
 
 
-def test_flag_default_off_and_staged_only(monkeypatch):
+def test_flag_default_on_and_staged_only(monkeypatch):
+    # default ON since 2026-10-16 (Sean "Yes"); an explicit off-word disables it
     monkeypatch.delenv(LD.STEM_AT_BAR_EDGE_ENV, raising=False)
     monkeypatch.delenv(LD.STEM_FINDER_ENV, raising=False)
-    assert not LD.stem_at_bar_edge_enabled()
-    assert "edge_head" not in LD.staged_stem_finder()
-    for v in ("0", "", "off", "no", "maybe"):
-        monkeypatch.setenv(LD.STEM_AT_BAR_EDGE_ENV, v)
-        assert "edge_head" not in LD.staged_stem_finder()
-    monkeypatch.setenv(LD.STEM_AT_BAR_EDGE_ENV, "1")
+    assert LD.stem_at_bar_edge_enabled()
     assert LD.staged_stem_finder() == LD.STEM_FINDER_STAGED_DEFAULT | {"edge_head"}
+    for v in ("0", "", "off", "no", "false", " OFF "):
+        monkeypatch.setenv(LD.STEM_AT_BAR_EDGE_ENV, v)
+        assert not LD.stem_at_bar_edge_enabled()
+        assert "edge_head" not in LD.staged_stem_finder()
+    for v in ("1", "on", "true", "yes"):
+        monkeypatch.setenv(LD.STEM_AT_BAR_EDGE_ENV, v)
+        assert LD.staged_stem_finder() == LD.STEM_FINDER_STAGED_DEFAULT | {"edge_head"}
     assert "edge_head" not in LD.stem_finder_repairs()      # LEGACY's default stays empty
 
 

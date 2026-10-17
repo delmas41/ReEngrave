@@ -54,3 +54,24 @@ def test_detect_lines_forwards_stem_finder(monkeypatch):
     except Exception:
         pass
     assert seen.get("stem_finder") == frozenset({"thin_run"})
+
+
+_STEM_AT_BAR_EDGE_WAS = None
+
+
+def setUpModule():
+    """These tests pin the `OMR_STEM_FINDER` set as shipped BEFORE ROADMAP 2.155; `OMR_STEM_AT_BAR_EDGE` (which adds
+    `edge_head` to `staged_stem_finder()`) went default ON 2026-10-16 (Sean), so this module runs with it off.
+    The 2.155 default is tested in `test_stem_at_bar_edge_2_155.py`."""
+    import os
+    global _STEM_AT_BAR_EDGE_WAS
+    _STEM_AT_BAR_EDGE_WAS = os.environ.get("OMR_STEM_AT_BAR_EDGE")
+    os.environ["OMR_STEM_AT_BAR_EDGE"] = "off"
+
+
+def tearDownModule():
+    import os
+    if _STEM_AT_BAR_EDGE_WAS is None:
+        os.environ.pop("OMR_STEM_AT_BAR_EDGE", None)
+    else:
+        os.environ["OMR_STEM_AT_BAR_EDGE"] = _STEM_AT_BAR_EDGE_WAS
