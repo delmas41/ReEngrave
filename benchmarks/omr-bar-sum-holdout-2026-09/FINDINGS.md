@@ -4476,3 +4476,49 @@ Two plates, one publisher each; tile evidence for the rule is 2 wrong + 1 right 
 * **12 changed notes:** 6 improved (wrong decided -> a narrowing that holds Sean's value: tiles 2, 5, 8, 9, 13, 18); 2 right -> narrowed (3, 12: blue, value still among the candidates); 1 wrong -> wrong narrowing (10: dotted quarter, candidates 4/8 -- the dot is missing too). **3 right eighths made WRONG** (Litolff tiles 4, 14, 16): the arm only narrows them to {4, 8}, then EVALUATE `meter_reconciliation` DECIDES the quarter by the bar sum. That is the bar arithmetic SUPPLYING a value from a narrowing -- against Sean's rule ("bar arithmetic may CONFIRM a value the page already supports; it never SUPPLIES one") and 2.149 audit item #3. The attribution above found bar arithmetic right on the judged errors; it fails as soon as a rule feeds it new narrowings.
 * **6 controls:** 4 right in both arms; 2 wrong in both arms (tile 1: Sean eighth, we read a quarter; tile 15: Sean eighth, we read a sixteenth) -- base errors, not this rule.
 * **Verdict:** `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` stays OFF. Next: stop `meter_reconciliation` (and every bar-sum decider) from choosing among candidates a beam/flag narrowing left -- it may confirm a decided value, never pick -- then re-tile this rule.
+
+## 2.154 -- the bar sum never picks (lane-2-154-bar-sum-confirm-only; STAGED EVALUATE + INFER; 2026-10-16)
+
+Sean's standing rule (DECISIONS 2026-10-12/13): *"Bar arithmetic may CONFIRM a value the page already supports; it never SUPPLIES one."* Found on 2.153 tiles 4/14/16 (a beam rule narrowed right Litolff eighths to {4, 8}; EVALUATE `meter_reconciliation` then DECIDED the quarter from the bar).
+
+**CONVENTION ASSUMED:** the bar sum is the weakest witness (it inherits every error in the bar) and may confirm only. **WHAT WOULD FALSIFY IT:** Sean reads the bar-set values on the 2.154 tiles right far more often than the narrowing they fall back to is worth (a narrowed note is DROPPED by EXPORT and its place marked unread -- it is not written blue). **NOT CONFIRMED:** the tiles are not answered.
+
+### 2.154-1. Every decider that sets a value from the bar (grep for `_bar_beats_at`, `Q.METER` readers, `the_bars_arithmetic`)
+| decider (stage) | what the bar does | default |
+|---|---|---|
+| `consequences.reconcile_duration` / `meter_reconciliation` (EVALUATE) | PICK: chooses one candidate of a NARROWED note (or a narrowed chord) that lands the bar; MOVE: shifts a DECIDED note +/-1 beam level (`_admitted`) | always on; exported GUESSED (blue, `EVALUATE_GUESSERS`) |
+| `inferences.collapse_bare_stem_by_bar` / `the_bars_arithmetic_forces_this_length` (INFER, 2.81) | PICK among a bare stem's {unbeamed, one beam} | `OMR_BARE_STEM_BAR` ON |
+| `inferences.collapse_narrowed_by_bar` / same reason (INFER, 2.97) | PICK among any narrowing's candidates | `OMR_NARROWED_BAR` ON |
+Reads the bar but sets no note value: `size_measure_rest` (a lone whole rest IS the bar -- a convention), `reinstate_rest_between_staves` (a rest's presence; 0 verdicts in the night records), the meter readers (`rhythm._bar_lengths_for`: the meter, not a value), `adjudicate_voices`.
+
+### 2.154-2. Volume, 20261014-night records (live verdicts; `probe/count_2_154.py`)
+| | Litolff | Brahms |
+|---|--:|--:|
+| `reconcile_duration` PICK from a narrowing | 147 (73 longer than the top-support candidate, 55 = top, 19 shorter) | 241 (214 / 8 / 19) |
+| `reconcile_duration` MOVE of a decided value | 78 (70 shorter, 8 longer) | 104 (88 / 16) |
+| INFER `collapse_bare_stem_by_bar` | 102 | 29 |
+| INFER `collapse_narrowed_by_bar` | 68 | 1 |
+| arm a reach (every PICK) / arm b reach (+ every MOVE) | 317 / 395 | 271 / 375 |
+
+### 2.154-3. Before building: Sean's judged tiles (static undo over the stored records; `probe/judged_2_154.py`)
+18 judged duration tiles carry a bar verdict (Litolff 12, Brahms 6; the p0-p3 record 0). **All 18 are right, all 18 are PICKs, and confirm-only turns all 18 into a narrowing that holds Sean's value** (none made wrong). No judged tile covers a MOVE. 16 of the 18 are bare stems narrowed {8, 4} (or {dotted 8, dotted 4}) where the bar chose the UNBEAMED value -- the value the page shows when no beam or flag is read (CLAUDE.md §4: "never shortens a note with no flag and no beam seen"). The other 2: Litolff 2.114 tile_13 (a head-fill narrowing {1, 2, 4} -> the half) and `rhythm-leftovers-3` 4 (`beam_certain_not_joined` {8, 4} -> the eighth). Who loses: these 18 right blue notes become unread gaps.
+
+### 2.154-4. Built (default OFF): `OMR_BAR_SUM_CONFIRM_ONLY`
+`narrowed` (arm a): INFER `collapse_bare_stem_by_bar` / `collapse_narrowed_by_bar` propose nothing; `reconcile_duration` refuses any bar holding a NARROWED duration (its sum would rest on an assumed candidate, so even a move of a decided neighbour would be the bar choosing that candidate). `all` (arm b; also `1/true/yes/on`): `reconcile_duration` writes nothing at all. Anything else is off. The optional "candidate ordering the bar favours" was NOT built (it would need a new non-deciding verdict that other rules read). Tests `tools/omr/tests/test_staged_bar_sum_confirm_only_2_154.py`, 13 pass, each RED beside a flag-off control that fires. Fast tier 8314 passed, 0 failed; `staged.check` 192 open, same as origin/main 0d1da8a9.
+
+### 2.154-5. Base vs arms, faithful slice replay (`replay_record_2_153.py` + 2.148 row injected; Litolff 12 systems, Brahms 5; `probe/arms_2_154.py`)
+| | Litolff a | Litolff b | Brahms a | Brahms b |
+|---|--:|--:|--:|--:|
+| notes changed | 172 | 194 | 100 | 103 |
+| -> narrowed, holding the bar's value (EXPORT drops it: unread) | 132 | 132 | 49 | 49 |
+| -> decided, SAME value by a non-bar rule (`collapse_arc_ink_not_beam`) | 37 | 37 | 51 | 51 |
+| -> decided, another value (a bar MOVE undone) | 3 | 25 | 0 | 3 |
+| judged: right -> narrowed-holding / right -> right / made wrong | 9 / 2 / 0 | same | 2 / 3 / 0 | same |
+
+With `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` ON (the 2.153 arm), both arms turn **2.153 tiles 4, 14, 16 from wrong into a narrowing holding Sean's eighth** (Litolff, 207 / 225 changed), and turn **2.153 tiles 5 and 8 (Brahms) from right quarters into narrowings** -- the bar's quarter pick on that rule's narrowings was right 2 times and wrong 3. Arm b's extra moves (22 Litolff, 3 Brahms in the slices) touch no judged tile.
+
+### 2.154-6. Blind tiles: `out/print/2.154-review/`, 23, answers blank
+`probe/tiles_2_154.py`, seed 2154, head-sized boxes, no glyph Sean has already judged: 14 `bar_pick` (7 per plate: the bar picked this value from a narrowing; arm a/b leave it narrowed or another rule decides), 7 `bar_move` (Litolff 4, Brahms 3: the bar moved a decided value; arm b restores the reader's), 2 plain controls (can fail). Blue box on the note only; question "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?". Hidden key `out/2.154/tiles-key.json` (uncommitted; base / arm a / arm b per tile). Checked in the cutting run (one key row per PNG, same numbering and box) and again against the replayed records (0 of 69 tile x arm values differ).
+
+### 2.154-7. Limits
+Slice replays reproduce no meter carried from systems outside the slice. Arm a's cost is real and judged: every right bar pick becomes an unread gap, and on the judged evidence the bar's picks were right 18 of 18 (2 of 5 on the 2.153 rule's new narrowings). The distinction the judged tiles draw -- bar CONFIRMS the unbeamed value where no beam/flag is read (16/16 right), vs bar PICKS where a stroke is seen (2.153: 2 right, 3 wrong) -- is not built as an arm; it is the question for Sean.

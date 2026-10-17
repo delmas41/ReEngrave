@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-16 -- ROADMAP 2.154 built OFF on its branch (OMR_BAR_SUM_CONFIRM_ONLY)
+STAGED EVALUATE + INFER, default OFF: `narrowed` (arm a) stops `reconcile_duration` and both INFER `*_by_bar` rules choosing among a narrowing's candidates; `all` (arm b) also stops `reconcile_duration` moving a decided value. Judged tiles: 18 bar picks, 18 right, all -> narrowed in both arms, 0 made wrong; 23 blind tiles out (`out/print/2.154-review/`). Not merged; holdout FINDINGS 2.154.
+
 ## 2026-10-16 -- evening session: 2.151 + 2.150b landed ON; 2.152 study parked; 2.153 parked OFF; 2.154 opened
 
 - 2.151 (`OMR_DOT_BOXED_AS_A_HEAD` ON, 95685746): a dot the detector boxed as a small notehead counts as the head's augmentation dot; tiles recut to one set (31) after a 38-vs-20 mismatch.
