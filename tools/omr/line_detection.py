@@ -279,15 +279,25 @@ def _run_ends_at_a_head(x, y, w, h, heads, line_spacing, cell_w=None) -> bool:
     if not heads:
         return False
     slack = STEM_AT_BAR_EDGE_END_SLACK_SPACES * line_spacing
-    for hx, hy, hw, hh in heads:
+    owner = None
+    for k, (hx, hy, hw, hh) in enumerate(heads):
         if cell_w is not None and (hx < 0 or hx + hw > cell_w):
             continue
         if not (x < hx + hw and x + w > hx):
             continue
-        for end in (y, y + h):
-            if hy - slack <= end <= hy + hh + slack:
-                return True
-    return False
+        if any(hy - slack <= end <= hy + hh + slack for end in (y, y + h)):
+            owner = k
+            break
+    if owner is None:
+        return False
+    # ⚠️ ROADMAP 2.155 (Sean 2026-10-16 "Tighten"; 2.155 tile 9): the run must be THIS head's stem alone -- it may touch no
+    # OTHER head box anywhere along its length (columns and rows overlapping). On tile 9 the run ended in one head and passed
+    # through a second at its top; `stem_projection` then read a down-stem carrying five heads and the note lost its beam.
+    # A chord stem at the bar's edge is refused with it: cannot tell, so the shipped refusal stands.
+    for k, (hx, hy, hw, hh) in enumerate(heads):
+        if k != owner and x < hx + hw and x + w > hx and y < hy + hh and y + h > hy:
+            return False
+    return True
 
 
 #: The empty interval (staff spaces) between the stem's columns and the heads'
@@ -837,8 +847,12 @@ def detect_stems(
     candidates_out: list | None = None,
     stem_finder: frozenset | None = None,
     marks: Sequence | None = None,
+    rescued_out: list | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
+
+    `rescued_out`, when given, is extended with the RETURNED stems the 2.155 `edge_head` repair kept at the cell edge (empty
+    without the repair), so `detect_lines` can keep them out of the beam pass.
 
     Algorithm:
       1. Pick the cleanest source image — staff-removed if available.
@@ -963,6 +977,7 @@ def detect_stems(
                 x=int(x), y=int(y), w=int(w), h=int(h), area=int(area),
                 outcome=outcome, line_spacing=float(line_spacing)))
 
+    rescued_boxes: set = set()     # ROADMAP 2.155: runs the `edge_head` repair kept at the cell edge
     for i in range(1, num):  # skip background (label 0)
         x, y, w, h, area = stats[i]
         # Range filters
@@ -1000,6 +1015,7 @@ def detect_stems(
                     and _run_ends_at_a_head(x, y, w, h, noteheads, line_spacing, cell_w)):
                 _note(x, y, w, h, area, RUN_AT_CELL_EDGE)
                 continue
+            rescued_boxes.add((int(x), int(y), int(w), int(h)))
         if area < max(4, line_spacing * 0.5):
             _note(x, y, w, h, area, RUN_TOO_LITTLE_AREA)
             continue
@@ -1096,6 +1112,9 @@ def detect_stems(
             if any(_boxes_overlap(band, s) for s in out):
                 continue
             out.append(band)
+    if rescued_out is not None and rescued_boxes:
+        rescued_out.extend(s for s in out if (s.x_canonical, s.y_canonical, s.width_canonical, s.height_canonical)
+                           in rescued_boxes)
     return out
 
 
@@ -1545,11 +1564,17 @@ def detect_lines(cell, *, candidates_out: list | None = None,
     takes the stem set as its input: so the gate can change which beams are
     read, and any beam delta on a gated arm is this and not a beam change.
     """
+    rescued: list = []
     stems = detect_stems(cell, candidates_out=candidates_out,
                          noteheads=noteheads, marks=marks,
-                         stem_finder=stem_finder)
+                         stem_finder=stem_finder, rescued_out=rescued)
+    # ⚠️ ROADMAP 2.155 (Sean 2026-10-16 "Tighten"; 2.155 tile 4): a stem the `edge_head` repair kept may JOIN a beam the other
+    # stems already make (`Q.BEAM_STEM_JOIN` reads it), but it is never an anchor the beam pass builds a NEW stroke from -- on
+    # tile 4 it anchored a stroke under the real beam and a false second level read CERTAIN. Empty without the repair, so the
+    # beam pass sees exactly the stems it always saw.
+    beam_stems = [s for s in stems if not any(s is r for r in rescued)] if rescued else stems
     return {
         "stems": stems,
-        "beams": detect_beams(cell, stems=stems,
+        "beams": detect_beams(cell, stems=beam_stems,
                               rescue_tall=rescue_tall_beams),
     }

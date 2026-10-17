@@ -124,3 +124,48 @@ def test_flag_default_off_and_staged_only(monkeypatch):
     monkeypatch.setenv(LD.STEM_AT_BAR_EDGE_ENV, "1")
     assert LD.staged_stem_finder() == LD.STEM_FINDER_STAGED_DEFAULT | {"edge_head"}
     assert "edge_head" not in LD.stem_finder_repairs()      # LEGACY's default stays empty
+
+
+# ── 2.155 tighten (Sean 2026-10-16 "Tighten"): tile 9 and tile 4 ─────────────────────────────────────────────────────────
+
+def test_tighten_a_run_through_another_head_is_not_rescued():
+    # tile 9: the run ends in its head (bottom) and passes through a second head at its top
+    other = (760, 110, 130, 100)            # overlaps the run's columns (840-848) and rows (120-470)
+    assert _at_edge(detect_stems(_cell(_edge_stem), stem_finder=ON, noteheads=[HEAD, other])) == []
+    # control: the same head away from the run's columns -> rescued as before
+    beside = (600, 110, 130, 100)
+    assert _at_edge(detect_stems(_cell(_edge_stem), stem_finder=ON, noteheads=[HEAD, beside])) == [(840, 848)]
+
+
+def _beamed(n_interior):
+    xs = (360, 600)[:n_interior]
+
+    def paint(img):
+        for x in xs + (840,):
+            _rect(img, x, 120, x + 8, 470)
+        _rect(img, xs[0], 120, 848, 170)    # one beam from the first interior stem to the edge stem
+        for x in xs + (840,):
+            _rect(img, x - 100, 410, x + 8, 510)
+    heads = [(x - 100, 410, 108, 100) for x in xs] + [(740, 410, 108, 100)]
+    return _cell(paint), heads
+
+
+def _beams(out):
+    return [(b.x_canonical, b.width_canonical) for b in out["beams"]]
+
+
+def test_tighten_a_rescued_stem_never_anchors_a_new_beam():
+    # tile 4: with only one other stem, the beam stands only if the rescued stem anchors it -> no stroke
+    c, heads = _beamed(1)
+    out = LD.detect_lines(c, noteheads=heads, rescue_tall_beams=True, stem_finder=ON)
+    assert (840, 8) in [(s.x_canonical, s.width_canonical) for s in out["stems"]]     # the stem itself is still kept
+    assert _beams(out) == []
+    # control (can fail): the same two stems handed to the beam pass DO anchor that stroke
+    assert LD.detect_beams(c, stems=out["stems"], rescue_tall=True) != []
+
+
+def test_tighten_a_rescued_stem_may_join_a_beam_the_others_make():
+    c, heads = _beamed(2)
+    on = LD.detect_lines(c, noteheads=heads, rescue_tall_beams=True, stem_finder=ON)
+    off = LD.detect_lines(c, noteheads=heads, rescue_tall_beams=True, stem_finder=OFF)
+    assert _beams(on) == _beams(off) != []
