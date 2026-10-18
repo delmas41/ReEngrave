@@ -4720,8 +4720,10 @@ eighth (the same mechanism 2.150-5 saw shorten two quarters).
 | Sean's judged tiles right / wrong / narrowed | 157/29/11 -> same | 118/24/15 -> 127/23/7 |
 
 * **Litolff: nothing changes.** Set J tiles 2/4/9/10/14 (the 5 range-gated moves that were right -> wrong) stay at their base value, which Sean judged right: the split removes them by construction.
-* **Brahms, judged tiles (12 of the 84 are judged):** 9 narrowed/wrong -> right (2.162 tiles 6, 8, 11, 13, 17, 22; 2.81 tile_08, tile_14; 2.153b 14; tile 1 wrong -> right), 1 right -> wrong: **2.162 tile 20** (glyph/23/1/4/2/2, Sean quarter, decided 1.0 -> 0.5 by `meter_reconciliation`). 2.162 tile 3 right -> right.
+* **Brahms, judged tiles (12 of the 84 are judged):** 10 narrowed/wrong -> right (2.162 tiles 6, 8, 11, 13, 17, 22 and 2.81 tile_08, tile_14 were narrowed; 2.162 tile 1 and 2.153b 14 were wrong), 1 right -> wrong: **2.162 tile 20** (glyph/23/1/4/2/2, Sean quarter, decided 1.0 -> 0.5 by `meter_reconciliation`). 2.162 tile 3 right -> right.
 * **Every one of the 13 decided -> another value is a `meter_reconciliation` move under the restored meter** (EVALUATE, not the range rule): an existing mechanism now firing because those systems have a meter again. It is the bar moving a decided note (CLAUDE §4: the bar never moves a DECIDED note except lengthening a two-option note) and is outside this lane; 2.165's guard owns it. Judged: 2 wrong -> right, 1 right -> wrong, 3 right -> right.
 * Limits: one night's GATHER, two plates, GATHER+ADJUDICATE+EVALUATE+INFER only. Whole-rest sizes are against the dossier, not Sean's print.
+
+Fast tier on this tip: 8,440 passed, 12 skipped, 2 xfailed, 0 failed.
 
 Blind tiles for the 72 changed notes Sean has not judged: `out/print/2.162-review-b/` (10: 8 decided-moved + 1 chord-share, + 1 control; Brahms only, seed 21622; `probe/tiles_2_162b.py`, one run; key `out/2.162/tiles-key-b.json`; one key row per PNG, blue box == key box +-3 px), `answers.json {}`. Not answered.
