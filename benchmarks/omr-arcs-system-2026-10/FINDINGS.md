@@ -1,0 +1,121 @@
+# ROADMAP 2.166 -- arcs read once per system, then only their stroke erased (2026-10-17; STAGED GATHER; branch `lane-2.166-system-arcs`)
+
+Sean 2026-10-17: *"Can we treat arcs the way we treat hairpins - taking into account the system or page view and then
+erasing them?"* / *"Open the system level arc"*. Flag `OMR_SYSTEM_ARCS`, **default OFF**. No DECISIONS line from this lane.
+
+**CONVENTION ASSUMED:** an arc's stroke is one thin run per page column, smooth from column to column, and it curves;
+a head, stem, barline or beam is taller, straighter or thicker than the stroke where the arc meets it; a tie joins two
+adjacent heads at one staff position, across barlines too (page-facts §1, DECISIONS 2026-10-01). **WHAT WOULD FALSIFY
+IT:** a head, rest, dot or accidental Sean values losing ink to the erase; a blue line Sean reads as two arcs or as not
+an arc. **NOT CONFIRMED:** every cut-off is set on Litolff 984073 and Brahms 317803 only; 25 tiles out, unanswered.
+
+## 1. What existed (brief from the tree)
+
+* **No arc tracer had ever been built** (`docs/symbol-dossiers/arcs.md` §2). Round 7 (`omr-queue-arcs-2026-09/
+  ROUND7_FINDINGS.md`) recommended one after Sean judged 260 of 268 teacher arc candidates fake; production arc
+  precision 0.232 -- the detector OVER-produces arcs.
+* **Arcs are read per measure cell** (`gather.gather_detections`, one crop per bar, no horizontal pad): a curve across
+  a barline arrives as two `slur`/`tie` boxes, or one box plus a tail boxed as a head or a beam (2.164 Sec.17: 20
+  Litolff / 12 Brahms tails standing as notes). `Q.ARC_BOX` per piece (capture).
+* **ADJUDICATE reads boxes, not ink**: `adjudicate_arc_kind` (detector class decides; Sean's two-note rule 2.75 via
+  `_flank_search`), `adjudicate_tie_pair` (heads outside the box's ends, one staff position, adjacency, one barline
+  either side on the owner staff, never across a system; "a tie cut in two ... each half names the SAME pair"),
+  `adjudicate_arc_owner`. The only ink reading of an arc was 2.60's `Q.ARC_INK_SHAPE` -> `Q.ARC_IS_NOT_AN_ARC`.
+* **Hairpins/dynamics are read on the page**: `gather_wedge_boxes` -> `hairpin_detection` over `pws.page.binary`;
+  dynamic letters carry page-pixel staff bands (2.68, DECISIONS 2026-10-09). **Box-erase trap**
+  (`omr-hairpin-cv-2026-09` §5): blanking slur/tie/beam boxes wiped the hairpins under them.
+* **2.164** (`OMR_ARC_TAIL_NOT_A_HEAD`, OFF, branch only) refuses one symptom (a left-edge head box on a cut arc's
+  tail with no head-wide oval); Sean 18/18 "Tie" on its tiles.
+
+## 2. What was built (`tools/omr/staged/arcs_system.py`; one hook line in `gather.gather()` after the last detector call)
+
+1. **Page ink without staff lines** (`composite_ink`): every cell's `image_no_staff` scaled back to page pixels,
+   AND-ed where cells overlap; the raw page where no cell reaches.
+2. **One trace per detector `slur`/`tie` box** (`trace_arc`): a greedy thin-stroke follower over page columns (runs
+   <= 0.6 sp on the composite and <= 0.95 sp on the RAW page, so a stem cut into pieces by the staff-line removal is
+   never followed), crossing gaps <= 0.75 sp (barlines, stems), bridging an arc that lies ALONG a staff line on the
+   raw page at a quarter of a gap's cost (raw-only points trimmed off both ends), up to 3 sp past a box edge the crop
+   CUT (box within 0.4 sp of its cell's edge), no steeper than 1:1 past its own box. Abstains (no erase) when the trace
+   inks < 50% of its box's columns, lies flat on a staff line, or is STRAIGHT (>= 2 sp within 0.15 sp of a line: a
+   beam or a line). Up to 3 seed columns.
+3. **Join** (`join_traces`): traces on one (page, system, staff) sharing columns at one y, or end-to-start within a
+   gap, are one curve.
+4. **Anchor** (`anchor_ends`): the head beside each end (centre <= 1.6 sp beyond / 0.8 sp inside the end, <= 2.5 sp
+   in y); shape `two_heads_one_position_adjacent` (<= 0.25 sp apart, no head between: a tie's shape),
+   `one_position_heads_between`, `two_positions`, `end_unanchored`, `one_head_both_ends`. Filed as `Q.SYSTEM_ARC`
+   (MEASUREMENT, `READERS.CV_SYSTEM_ARC`) on the curve's leftmost piece with its pieces, cells, ends, anchors and the
+   boxes the stroke runs through. `Q.ARC_KIND` / `Q.TIE_PAIR` are NOT changed (`reach.KNOWN_GAPS`: producer only).
+5. **Erase** (`erase_in_cell`), on each cell's `image_no_staff` only (original kept on
+   `cell.image_no_staff_with_arcs`; `cell.image` and `pws.page.binary` never touched): only traced runs, only inside
+   the arc's own boxes (+0.25 sp) or a box holding nothing but its stroke, never a column > 1.6x the arc's median
+   stroke, never a canonical run reaching past the stroke's rows, never inside a protected box (heads, stems,
+   accidentals, dots, articulations, ledger lines, beams, hairpins, ...). Exempt: a NOTEHEAD box whose ink off the
+   stroke is < 0.06 sp^2 (2.164's tail), and a BEAM box doing the same that lies >= 50% inside one of the arc's own
+   boxes (the detector's twin read).
+6. ⚠️ `gather_empty_bar_rest_search` runs before the hook (it must precede the rescue, which must precede this) and
+   still reads the un-erased raster.
+
+Tests `tools/omr/tests/test_staged_system_arcs_2_166.py` (17), each guard with a MUTATION twin that goes red without
+it: a tie cut at a barline read as ONE arc (two without the join); the tail boxed as a head erased (kept with every
+head protected); a touched hollow head keeps every pixel (loses ink unprotected); an unboxed filled head keeps every
+pixel (loses ink under a box erase); a hairpin inside the arc's box keeps its ink, boxed or not (wiped by a box
+erase); flag off files and erases nothing; the detector's image and the page raster are never touched.
+
+## 3. Measures
+
+Page A/Bs (`probe/page_ab.py`): GATHER+ADJUDICATE, flag OFF vs ON, the detector run ONCE per page and cached so both
+arms see identical boxes (`same_detector_boxes` true on all 8), one page at a time. Pages: Litolff pdf 2, 3, 4, 5, 13;
+Brahms pdf 1, 18, 26. Outputs `out/2.166/ab_*.json`; summary `out/2.166/summary.json` (`probe/summarize.py`).
+
+| | Litolff (5 pages) | Brahms (3 pages) |
+|---|--:|--:|
+| detector arc pieces | 1,127 | 1,989 |
+| traced (read) / abstained | 833 / 294 | 856 / 1,133 |
+| arcs after joining | 649 | 666 |
+| **arcs read WHOLE across a barline (were 2+ pieces)** | **70** | **44** |
+| shape: two heads, one position, adjacent (a tie's shape) | 143 | 190 |
+| shape: one position, heads between | 46 | 74 |
+| shape: two positions | 113 | 73 |
+| shape: an end with no head beside it | 347 | 329 |
+| head boxes holding nothing but the stroke (tails boxed as heads), erased | 10 | 10 |
+| beam boxes doubling an arc, holding nothing but its stroke | 75 | 78 |
+| `tie_pair` / `arc_kind` verdict tallies changed | 0 / 0 | 0 / 0 |
+| glyphs with any verdict changed OFF -> ON | 3 | 25 |
+
+* **Abstentions are mostly the detector's fakes**: Brahms's 1,133 abstained pieces (57%) sit with round 7's precision
+  (0.23); about half the arcs have an end with no head beside it -- fakes, plus arcs whose head was never boxed. Not
+  judged.
+* **2.164's tails**: of the 6 tiled tails on these pages, 2 (Litolff `3/1/5/3/1`, `3/1/5/3/3`, two boxes on one tail)
+  are read as the end of the cut tie and erased; `3/1/5/3/1` moves `decided quarter -> narrowed head_fill_from_ink`:
+  the head gate sees an empty box, but no rule refuses an inkless head box -- **the erase alone does not retire 2.164**.
+  The other 4 are tails lying ALONG a staff line (e.g. `13/0/1/10/9`: the bounded raw-line bridge stops before the
+  tail, by design) or whose previous-bar piece abstained.
+* **Downstream changes** (all in `out/2.166/ab_*.json`): Litolff 3 (the tail above; one eighth-rest gate; one narrowing changes its reason). Brahms 25,
+  mostly pdf 1: **8 heads in one cell (`1/0/0/0`) go from 1 beam level to 2 and a 9th to narrowed** -- the CV beam-stroke reader
+  (`Q.BEAM_STROKE`) finds two long new strokes once a long slur near the beams is erased (NOT resolved; likely
+  wrong); 8 heads go `narrowed -> decided` (`stem_tip_reads_no_beam` / `head_and_marks`) once slur ink leaves the
+  stem tips; 4 eighth-rest gates flip; one tremolo-slash refusal is undone (`18/1/3/6/5`, now a dotted eighth).
+* **Sean's judged tiles on these pages** (138 glyphs): 3 verdicts change; **0 heads, rests, dots or accidentals lost**
+  (no notehead, rest or accidental verdict on a judged glyph changes). `1/0/0/6/5` (Sean "4"): narrowed -> quarter,
+  RIGHT. `1/0/11/0/13` (Sean "8th"): narrowed -> quarter, WRONG (the beam-stem join OFF made through the slur's ink is
+  lost ON). `1/0/10/0/17`: an eighth-rest gate decided -> abstained, no duration change.
+* Ink inside protected head boxes: none by construction in the canonical frame; the tile cutter's page-pixel overlay
+  shows 1-10 px at box borders (rounding of the canonical -> page map), not an erase inside a box.
+
+## 4. Blind tiles: `out/print/2.166-review/`, 25, `answers.json` `{}`
+
+`probe/tiles.py`, seed 2166, Litolff pdf 3, 13 and Brahms pdf 1, 18; glyphs already in the judged index or 2.164's
+tiles are never asked again. 13 ARC tiles (12 arcs read differently from the per-bar reading -- joined across a
+barline, or run through a box holding only its stroke -- and 1 control, a tie read whole inside one bar): the traced
+line drawn thin in blue, its two ends as two blue dots; *"Is the blue line one tie, one slur, or something else?
+Which two notes does it join?"* 12 HEAD tiles (11 head boxes with erased ink inside or within half a space, 1
+control: a head beside an arc, kept whole): one blue box; *"Is the mark in the blue box a note, or not a note?"* Key
+`out/2.166/tiles-key.json`, apart from the tiles.
+
+## 5. Limits / next
+
+Flag OFF. The joined curve is not yet READ by `adjudicate_tie_pair` / `adjudicate_arc_kind` (the consumer, once the
+tiles say the joins are right). The erase perturbs the CV beam reader on Brahms pdf 1 (one cell, 9 heads) and makes
+one judged eighth a quarter: until that is understood the ERASE should stay off even if the READING is kept. Arcs
+lying along a staff line are bridged only ~3 sp. Single pages only; no whole-movement replay (a GATHER change needs a
+gather, not `review.rerun`).

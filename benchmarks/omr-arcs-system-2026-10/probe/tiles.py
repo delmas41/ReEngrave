@@ -30,6 +30,16 @@ SCALE = 3
 N_ARC, N_HEAD = 12, 11
 
 rng = random.Random(2166)
+# glyphs Sean has already answered (the judged index, and 2.164's tiles, not yet on main) are never asked again
+SEEN = set()
+for _t in json.load(open("benchmarks/acceptance/judged-tiles.json"))["tiles"]:
+    for _g in [_t.get("subject")] + list(_t.get("subjects") or []):
+        if _g:
+            SEEN.add(str(_g))
+try:
+    SEEN |= {_t.get("glyph") for _t in json.load(open("out/2.166/key164.json")).get("tiles", [])}
+except (OSError, ValueError):
+    pass
 cands_arc, cands_head, ctl_arc, ctl_head = [], [], [], []
 pages = {}
 for dp in sys.argv[1:]:
@@ -76,6 +86,8 @@ for dp in sys.argv[1:]:
         item = dict(doc=doc, page=pg, kind="arc", subject=a["subject"], shape=a["shape"], cells=a["cells"],
                     pieces=a["pieces"], anchors=[a["anchor_left"], a["anchor_right"]], sp=a["space_page_px"],
                     pts=pts, stroke_only=[t["glyph"] for t in a["through_boxes"] if t["stroke_only"]])
+        if a["subject"] in SEEN or any(g in SEEN for g in item["stroke_only"]):
+            continue
         if len(a["cells"]) > 1 or item["stroke_only"]:
             cands_arc.append(item)
         elif a["shape"] == "two_heads_one_position_adjacent" and not a["cut_at_barline"]:
@@ -92,7 +104,7 @@ for dp in sys.argv[1:]:
         x0, y0, x1, y1 = (int(round(v)) for v in b)
         near = int(er[max(0, y0 - m):y1 + m, max(0, x0 - m):x1 + m].sum())
         inside = int(er[max(0, y0):y1, max(0, x0):x1].sum())
-        if near == 0:
+        if near == 0 or g in SEEN:
             continue
         item = dict(doc=doc, page=pg, kind="head", subject=g, cls=name, box=[x0, y0, x1, y1], sp=sp,
                     erased_inside=inside, erased_near=near, stroke_only=g in summary["stroke_only_heads"])

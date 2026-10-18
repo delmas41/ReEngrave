@@ -1,0 +1,708 @@
+{
+ "seed": 2166,
+ "tiles": [
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/1/10/2/16",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    2
+   ],
+   "pieces": [
+    "glyph/1/1/10/2/16"
+   ],
+   "anchors": [
+    "glyph/1/1/10/1/3",
+    "glyph/1/1/10/2/2"
+   ],
+   "sp": 27.75,
+   "stroke_only": [
+    "glyph/1/1/10/2/14"
+   ],
+   "role": "arc",
+   "n": 1,
+   "file": "tile_01.png",
+   "page_crop": [
+    1969,
+    6518,
+    2339,
+    6826
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/0/2/3/26",
+   "shape": "end_unanchored",
+   "cells": [
+    3
+   ],
+   "pieces": [
+    "glyph/1/0/2/3/26"
+   ],
+   "anchors": [
+    null,
+    null
+   ],
+   "sp": 27.496,
+   "stroke_only": [
+    "glyph/1/0/2/3/17"
+   ],
+   "role": "arc",
+   "n": 2,
+   "file": "tile_02.png",
+   "page_crop": [
+    3378,
+    1073,
+    3772,
+    1388
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 3,
+   "kind": "head",
+   "subject": "glyph/3/1/2/2/9",
+   "cls": "noteheadHalfInSpace",
+   "box": [
+    786,
+    2627,
+    809,
+    2652
+   ],
+   "sp": 15.5,
+   "erased_inside": 8,
+   "erased_near": 90,
+   "stroke_only": false,
+   "role": "head",
+   "n": 3,
+   "file": "tile_03.png",
+   "page_crop": [
+    724,
+    2549,
+    871,
+    2729
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "head",
+   "subject": "glyph/1/0/4/5/9",
+   "cls": "noteheadBlackInSpace",
+   "box": [
+    4884,
+    1455,
+    4896,
+    1474
+   ],
+   "sp": 27.25,
+   "erased_inside": 5,
+   "erased_near": 149,
+   "stroke_only": true,
+   "role": "head",
+   "n": 4,
+   "file": "tile_04.png",
+   "page_crop": [
+    4775,
+    1318,
+    5005,
+    1610
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 18,
+   "kind": "head",
+   "subject": "glyph/18/1/12/0/2",
+   "cls": "noteheadBlackOnLine",
+   "box": [
+    1226,
+    6708,
+    1266,
+    6741
+   ],
+   "sp": 27.477,
+   "erased_inside": 0,
+   "erased_near": 114,
+   "stroke_only": false,
+   "role": "control_head",
+   "n": 5,
+   "file": "tile_05.png",
+   "page_crop": [
+    1116,
+    6570,
+    1375,
+    6878
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 3,
+   "kind": "arc",
+   "subject": "glyph/3/0/5/4/0",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    4
+   ],
+   "pieces": [
+    "glyph/3/0/5/4/0"
+   ],
+   "anchors": [
+    "glyph/3/0/5/4/5",
+    "glyph/3/0/5/5/4"
+   ],
+   "sp": 15.75,
+   "stroke_only": [
+    "glyph/3/0/5/4/2"
+   ],
+   "role": "arc",
+   "n": 6,
+   "file": "tile_06.png",
+   "page_crop": [
+    1139,
+    1161,
+    1419,
+    1347
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/1/10/1/21",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    1
+   ],
+   "pieces": [
+    "glyph/1/1/10/1/21"
+   ],
+   "anchors": [
+    "glyph/1/1/10/0/8",
+    "glyph/1/1/10/1/4"
+   ],
+   "sp": 27.75,
+   "stroke_only": [
+    "glyph/1/1/10/1/30"
+   ],
+   "role": "arc",
+   "n": 7,
+   "file": "tile_07.png",
+   "page_crop": [
+    1290,
+    6529,
+    1659,
+    6844
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 18,
+   "kind": "head",
+   "subject": "glyph/18/0/5/4/11",
+   "cls": "noteheadHalfOnLine",
+   "box": [
+    3603,
+    1890,
+    3633,
+    1898
+   ],
+   "sp": 27.477,
+   "erased_inside": 2,
+   "erased_near": 5,
+   "stroke_only": true,
+   "role": "head",
+   "n": 8,
+   "file": "tile_08.png",
+   "page_crop": [
+    3493,
+    1752,
+    3742,
+    2035
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 18,
+   "kind": "head",
+   "subject": "glyph/18/0/1/6/0",
+   "cls": "noteheadBlackInSpace",
+   "box": [
+    4912,
+    721,
+    4950,
+    755
+   ],
+   "sp": 27.477,
+   "erased_inside": 8,
+   "erased_near": 107,
+   "stroke_only": false,
+   "role": "head",
+   "n": 9,
+   "file": "tile_09.png",
+   "page_crop": [
+    4802,
+    583,
+    5059,
+    892
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 3,
+   "kind": "arc",
+   "subject": "glyph/3/1/6/14/0",
+   "shape": "two_positions",
+   "cells": [
+    14,
+    15
+   ],
+   "pieces": [
+    "glyph/3/1/6/14/0",
+    "glyph/3/1/6/14/1",
+    "glyph/3/1/6/15/2"
+   ],
+   "anchors": [
+    "glyph/3/1/6/14/2",
+    "glyph/3/1/6/15/1"
+   ],
+   "sp": 15.75,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 10,
+   "file": "tile_10.png",
+   "page_crop": [
+    2128,
+    3206,
+    2352,
+    3390
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/1/11/1/21",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    1
+   ],
+   "pieces": [
+    "glyph/1/1/11/1/21"
+   ],
+   "anchors": [
+    "glyph/1/1/11/0/7",
+    "glyph/1/1/11/1/23"
+   ],
+   "sp": 27.198,
+   "stroke_only": [
+    "glyph/1/1/11/1/15"
+   ],
+   "role": "arc",
+   "n": 11,
+   "file": "tile_11.png",
+   "page_crop": [
+    1291,
+    6532,
+    1656,
+    6841
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "arc",
+   "subject": "glyph/13/1/1/1/6",
+   "shape": "end_unanchored",
+   "cells": [
+    1,
+    2
+   ],
+   "pieces": [
+    "glyph/13/1/1/1/6",
+    "glyph/13/1/1/2/3"
+   ],
+   "anchors": [
+    null,
+    null
+   ],
+   "sp": 15.75,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 12,
+   "file": "tile_12.png",
+   "page_crop": [
+    672,
+    2326,
+    864,
+    2502
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "head",
+   "subject": "glyph/13/0/8/10/8",
+   "cls": "noteheadHalfOnLine",
+   "box": [
+    1929,
+    1582,
+    1953,
+    1604
+   ],
+   "sp": 15.75,
+   "erased_inside": 9,
+   "erased_near": 47,
+   "stroke_only": false,
+   "role": "head",
+   "n": 13,
+   "file": "tile_13.png",
+   "page_crop": [
+    1866,
+    1503,
+    2016,
+    1682
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/0/2/2/25",
+   "shape": "one_position_heads_between",
+   "cells": [
+    2
+   ],
+   "pieces": [
+    "glyph/1/0/2/2/25",
+    "glyph/1/0/2/2/26"
+   ],
+   "anchors": [
+    "glyph/1/0/2/2/3",
+    "glyph/1/0/2/3/9"
+   ],
+   "sp": 27.496,
+   "stroke_only": [
+    "glyph/1/0/2/2/6"
+   ],
+   "role": "arc",
+   "n": 14,
+   "file": "tile_14.png",
+   "page_crop": [
+    2696,
+    1009,
+    3207,
+    1322
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 18,
+   "kind": "head",
+   "subject": "glyph/18/0/0/6/9",
+   "cls": "noteheadBlackOnLine",
+   "box": [
+    5160,
+    405,
+    5206,
+    441
+   ],
+   "sp": 27.477,
+   "erased_inside": 3,
+   "erased_near": 137,
+   "stroke_only": false,
+   "role": "head",
+   "n": 15,
+   "file": "tile_15.png",
+   "page_crop": [
+    5050,
+    267,
+    5315,
+    578
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/0/11/0/23",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    0
+   ],
+   "pieces": [
+    "glyph/1/0/11/0/23"
+   ],
+   "anchors": [
+    "glyph/1/0/11/0/19",
+    "glyph/1/0/11/0/20"
+   ],
+   "sp": 27.507,
+   "stroke_only": [],
+   "role": "control_arc",
+   "n": 16,
+   "file": "tile_16.png",
+   "page_crop": [
+    1399,
+    3065,
+    1703,
+    3358
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "head",
+   "subject": "glyph/13/1/0/2/3",
+   "cls": "noteheadBlackInSpace",
+   "box": [
+    800,
+    2275,
+    820,
+    2280
+   ],
+   "sp": 15.75,
+   "erased_inside": 0,
+   "erased_near": 18,
+   "stroke_only": true,
+   "role": "head",
+   "n": 17,
+   "file": "tile_17.png",
+   "page_crop": [
+    737,
+    2196,
+    883,
+    2358
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "arc",
+   "subject": "glyph/13/1/3/2/5",
+   "shape": "end_unanchored",
+   "cells": [
+    2,
+    3
+   ],
+   "pieces": [
+    "glyph/13/1/3/2/5",
+    "glyph/13/1/3/2/7",
+    "glyph/13/1/3/3/2"
+   ],
+   "anchors": [
+    "glyph/13/1/3/2/6",
+    null
+   ],
+   "sp": 15.5,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 18,
+   "file": "tile_18.png",
+   "page_crop": [
+    757,
+    2541,
+    933,
+    2712
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 3,
+   "kind": "arc",
+   "subject": "glyph/3/1/2/16/0",
+   "shape": "end_unanchored",
+   "cells": [
+    16,
+    17
+   ],
+   "pieces": [
+    "glyph/3/1/2/16/0",
+    "glyph/3/1/2/17/0"
+   ],
+   "anchors": [
+    "glyph/3/1/2/16/3",
+    null
+   ],
+   "sp": 15.5,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 19,
+   "file": "tile_19.png",
+   "page_crop": [
+    2316,
+    2508,
+    2579,
+    2706
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "head",
+   "subject": "glyph/13/0/0/0/25",
+   "cls": "noteheadBlackOnLine",
+   "box": [
+    486,
+    440,
+    529,
+    452
+   ],
+   "sp": 15.75,
+   "erased_inside": 208,
+   "erased_near": 208,
+   "stroke_only": true,
+   "role": "head",
+   "n": 20,
+   "file": "tile_20.png",
+   "page_crop": [
+    423,
+    361,
+    592,
+    530
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "head",
+   "subject": "glyph/1/0/3/1/31",
+   "cls": "noteheadBlackInSpace",
+   "box": [
+    2479,
+    1461,
+    2488,
+    1485
+   ],
+   "sp": 27.25,
+   "erased_inside": 10,
+   "erased_near": 166,
+   "stroke_only": true,
+   "role": "head",
+   "n": 21,
+   "file": "tile_21.png",
+   "page_crop": [
+    2370,
+    1324,
+    2597,
+    1621
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "head",
+   "subject": "glyph/13/1/1/2/1",
+   "cls": "noteheadBlackOnLine",
+   "box": [
+    796,
+    2275,
+    826,
+    2299
+   ],
+   "sp": 15.75,
+   "erased_inside": 1,
+   "erased_near": 67,
+   "stroke_only": false,
+   "role": "head",
+   "n": 22,
+   "file": "tile_22.png",
+   "page_crop": [
+    733,
+    2196,
+    889,
+    2377
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "arc",
+   "subject": "glyph/1/0/2/5/11",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    5,
+    6
+   ],
+   "pieces": [
+    "glyph/1/0/2/5/11",
+    "glyph/1/0/2/6/4"
+   ],
+   "anchors": [
+    "glyph/1/0/2/5/16",
+    "glyph/1/0/2/6/18"
+   ],
+   "sp": 27.496,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 23,
+   "file": "tile_23.png",
+   "page_crop": [
+    4644,
+    1114,
+    5091,
+    1435
+   ]
+  },
+  {
+   "doc": "brahms",
+   "page": 1,
+   "kind": "head",
+   "subject": "glyph/1/1/9/3/9",
+   "cls": "noteheadBlackOnLine",
+   "box": [
+    3009,
+    6321,
+    3045,
+    6355
+   ],
+   "sp": 27.25,
+   "erased_inside": 5,
+   "erased_near": 192,
+   "stroke_only": false,
+   "role": "head",
+   "n": 24,
+   "file": "tile_24.png",
+   "page_crop": [
+    2900,
+    6184,
+    3154,
+    6491
+   ]
+  },
+  {
+   "doc": "litolff",
+   "page": 13,
+   "kind": "arc",
+   "subject": "glyph/13/0/5/13/0",
+   "shape": "two_heads_one_position_adjacent",
+   "cells": [
+    13,
+    14
+   ],
+   "pieces": [
+    "glyph/13/0/5/13/0",
+    "glyph/13/0/5/14/5"
+   ],
+   "anchors": [
+    "glyph/13/0/5/13/1",
+    "glyph/13/0/5/14/6"
+   ],
+   "sp": 15.75,
+   "stroke_only": [],
+   "role": "arc",
+   "n": 25,
+   "file": "tile_25.png",
+   "page_crop": [
+    2268,
+    1200,
+    2452,
+    1373
+   ]
+  }
+ ]
+}

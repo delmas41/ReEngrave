@@ -1,0 +1,130 @@
+{
+ "colours": "blue line + two blue dots = the curve we read and its two ends; blue box = the mark we ask about. Nothing else on the tile is ours.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 15,
+   "file": "tile_15.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 16,
+   "file": "tile_16.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 17,
+   "file": "tile_17.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 18,
+   "file": "tile_18.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 19,
+   "file": "tile_19.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 20,
+   "file": "tile_20.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 21,
+   "file": "tile_21.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 22,
+   "file": "tile_22.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 23,
+   "file": "tile_23.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  },
+  {
+   "n": 24,
+   "file": "tile_24.png",
+   "question": "Is the mark in the blue box a note, or not a note?"
+  },
+  {
+   "n": 25,
+   "file": "tile_25.png",
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+  }
+ ]
+}
