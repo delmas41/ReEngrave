@@ -85,3 +85,62 @@ out/2.165/tiles-key.json (uncommitted).
 - A head's own reading on a shared stem is its fill (beams and dots are the tip's, tiles 1 and 13). Falsified if Sean
   says heads that differ only in beams or a dot also can't be decided.
 - Every bar move of a DECIDED value is refused, lengthenings included. This costs the 3 right moves above.
+
+## 9. Sean's answers to the 25 tiles (2026-10-17)
+
+Verbatim: "K- 1.trem slash 2.2 3.flag 4.2 half notes a third apart in one box 5.2 6.8 7.8 8.8 9.dot 4 10.2 11. Trem
+slash 12.8 13.dot4 14.8 15.4 16.part of a c clef 17. Flag 18. Trem slash 19.2 20.2 21.trem slash 22.4 23.8 24.8  25. Dot 4"
+
+Recorded in `out/print/2.165-review/answers.json`; the manifest now names each tile's glyph; the judged index is
+rebuilt (1225 tiles). Scoring: `probe/answers_2_165.py`.
+
+How each arm is scored (the standing duration in each whole-record replay at 49af4d6a):
+* right: a value is written and it is Sean's.
+* wrong: a value is written that is not Sean's, or any value is written on a non-note.
+* narrowed_holding / narrowed_missing: nothing is written, and the candidates do / do not hold Sean's value.
+* held out: nothing is written (abstained, or a `stem_heads_disagree` hold-out).
+
+7 of the 25 tiles are not notes: tremolo slashes (1, 11, 18, 21), flags (3, 17) and part of a C clef (16). Tile 4 is
+two halves a third apart in one box, a box-size problem.
+
+### By cause (base -> on)
+
+| cause | tiles | result |
+|---|---|---|
+| `stem_heads_disagree` | 4, 5, 16, 18 | 2 right halves -> held out (4, 5); 2 non-notes wrong -> held out (16 C clef, 18 slash). Better on non-notes, worse on notes |
+| `stem_heads_one_dissent` | 2, 11, 19 | 2 right -> right (now blue); 11 slash wrong in both |
+| `stem_value_over_a_head` | 1, 10, 21 | 1 slash wrong -> held out (better); 10 right half -> wrong (the refused stem value was right); 21 slash wrong in both |
+| `stem_value_over_a_step3_head` | 12 | right eighth -> narrowed, missing it (worse) |
+| `flag_never_reopens_an_open_head` | 3, 6, 17 | **worse on all 3.** 3 and 17 are flags boxed as heads: base held them out, on writes a half (wrong). 6 is a real eighth: right -> narrowed, missing it |
+| `bar_sum_confirms_only` | 7, 8, 20, 24 | 2 wrong -> right (7, 20); 2 right -> wrong (8, 24) |
+| `bar_sum_confirms_only_stem` | 15 | narrowed holding -> right |
+| downstream (2.162's helper restores the carried 6/8) | 9, 13, 22, 25 | 3 narrowed holding -> right; 9 narrowed (missing it) -> wrong (Sean dot 4) |
+| plain controls | 14, 23 | right in both |
+
+### Totals
+
+* **Notes (18):** base right 11 / wrong 2 / narrowed holding 4 / narrowed missing 1 -> on right 10 / wrong 4 /
+  held out 2 / narrowed missing 2.
+* **Non-notes (7):** a value written on 5 in base, on 4 with the flag on. Better on 3 (1, 16, 18: now held out), worse
+  on 2 (3, 17: the flag row writes a half on a flag), wrong in both arms on 2 (11, 21: slashes).
+
+### The open question: may the bar lengthen (or move) a DECIDED note?
+
+4 of the 25 tiles depend on `bar_sum_confirms_only` (7, 8, 20, 24); 2 go right and 2 go wrong.
+
+* **Tile 7:** the bar LENGTHENED an eighth to a quarter. Wrong; the guard keeps the eighth (right).
+* **Tile 20:** the bar shortened a half to a quarter. Wrong; the guard keeps the half (right).
+* **Tiles 8 and 24:** the bar shortened a quarter to an eighth. Both right (Sean 8); the guard keeps the quarter (wrong).
+
+So on these tiles the one lengthening was wrong, and the two right moves were shortenings: a quarter with no flag or
+beam made an eighth, which CLAUDE §4 forbids. The judged tiles in §5 split the same way (3 right moves lost, 3 wrong
+moves stopped).
+
+### What the tiles say about the rows
+
+* `flag_never_reopens_an_open_head` (violation 6) is wrong on 3 of 3. The "open head carrying a flag" is a flag boxed
+  as a head, or a real eighth. Keeping the open value writes a note that is not there. It should not be kept as built:
+  the old narrowing (held out) was the better answer.
+* Stem rows: Sean's halves on tiles 4 and 5 are held out, and the C-clef box and slash are held out too. The rule
+  trades two right notes for two removed non-notes on these tiles.
+* `flag` and the tile 4 answer parse as `other` in the judged index (`judged.py` maps no "flag" to `not_a_note`).
