@@ -4698,3 +4698,12 @@ Verbatim: *"J - 1.8 2.8 3.dot 4 4.4 5.2 6.dot 4 7.8 8.dot4 9.2 10.2 11.dot4 12.8
 * **The meter half holds up:** every note the restored carry settled is right (6 of 6; 7 of 7 with 2.153), and the 154 / 216 whole rests it re-sizes go to the dossier's 3 beats.
 * **The range-gated move does not:** 2 of 7 right on these tiles; with the judged ones it admitted earlier (Set F 8, 15, 2.154 tile 8: all right) **5 of 10**. Two of the wrong ones (9, 10) shorten a decided half to a quarter with no flag or beam -- the 2.154 "moves" problem (3 of 7) in a new place, and CLAUDE §4's "never shortens a note with no flag and no beam seen". The bar sum moving a decided note beside a narrowing is still the bar choosing.
 Flag OFF; no DECISIONS line from this lane.
+
+## 2.163 -- audit: who may override whom (2026-10-17; read from main 2320c2ea, no code changed)
+Extends the 2.149 audit above to every stage: every `supersedes=` site (18), every consumer of a bar's length or sum,
+every value copied between notes, and the meter's dependence on durations, each marked against CLAUDE §3/§4, the
+2026-10-16 reading order and the 2026-10-17 bar-length ruling. The map, the cycles and the ranked violations are in
+`docs/override-map-2026-10-17.md` (not restated here). The ranking's reach came from the 20261016-night facts and
+report, and from §2.154-2 above for the `reconcile_duration` pick/move split; the top new find is §10 rank 1: `_admitted`
+offers a DECIDED note one beam MORE without `_shortens_without_evidence`, so the bar can still make a bare quarter an
+eighth (the same mechanism 2.150-5 saw shorten two quarters).

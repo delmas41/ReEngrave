@@ -1,0 +1,254 @@
+{
+"src": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261016-night.record.json",
+"control": {
+"agree": 14385,
+"differ": 19
+},
+"control_reasons": {
+"lone_event_fills_bar": 19
+},
+"changed": {
+"glyph/12/1/10/11/4": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 1.0,
+"dots": 0,
+"beats": 1.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "F2"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 1.0,
+"dots": 0,
+"beats": 1.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "F2"
+}
+},
+"glyph/13/0/1/10/9": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "G4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "G4"
+}
+},
+"glyph/3/1/5/15/2": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "E4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "E4"
+}
+},
+"glyph/3/1/5/3/1": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 1.0,
+"dots": 0,
+"beats": 1.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "D4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 1.0,
+"dots": 0,
+"beats": 1.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "D4"
+}
+},
+"glyph/3/1/5/3/3": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "D4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "D4"
+}
+},
+"glyph/4/0/5/12/14": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "A4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "head_and_marks",
+"cands": null
+},
+"pitch": "A4"
+}
+},
+"glyph/5/1/4/2/1": {
+"off": {
+"nn": [
+false,
+"notehead"
+],
+"dur": {
+"outcome": "decided",
+"written": 2.0,
+"dots": 0,
+"beats": 2.0,
+"reason": "lone_event_fills_bar",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"pitch": "E4"
+},
+"on": {
+"nn": [
+true,
+"is_an_arc_tail"
+],
+"dur": {
+"outcome": "narrowed",
+"written": null,
+"dots": null,
+"beats": null,
+"reason": "head_fill_from_ink",
+"cands": [
+1.0,
+2.0,
+4.0
+]
+},
+"pitch": "E4"
+}
+}
+},
+"refused": [
+"glyph/12/1/10/11/4",
+"glyph/13/0/1/10/9",
+"glyph/3/1/5/15/2",
+"glyph/3/1/5/3/1",
+"glyph/3/1/5/3/3",
+"glyph/4/0/5/12/14",
+"glyph/5/1/4/2/1"
+],
+"seconds": 1953
+}
