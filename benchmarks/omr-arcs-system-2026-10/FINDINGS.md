@@ -153,7 +153,36 @@ ONE fact that `Q.SYSTEM_ARC` is produced and read by nothing -- counted once by 
 keeps it from failing, not from counting) and once by `staged.gather_coverage` ("UNREAD -- produced, and NOTHING
 anywhere reads it", 10 -> 11). Both close the day an adjudicator reads the joined curve.
 
-## 6. Limits / next
+## 6. Sean's 12 box answers (2026-10-17)
+
+Shown in the order of our tiles 3, 4, 5, 8, 9, 13, 15, 17, 20, 21, 22, 24. Verbatim: *"1. A large box that has 2 half
+notes in it. 2. Barline 3. Dot 4 4. Tio of a dot 4 - box is too small 5. Dot 4 6. 2 7. Dot 4 8.Tip of a half note -
+box is too small 9. Tie 10. Barline 11.2 12.8"*. Recorded in `out/print/2.166-review/answers.json`, judged index
+rebuilt; scored by `probe/record_box_answers_2_166.py` -> `out/2.166/box_answers_scored.json` against both arms of the
+page A/B records (`notehead_is_not_a_notehead`, `duration`).
+
+**The erase arm equals base on all 12** -- no note dropped, no non-note dropped or kept differently by the erase:
+
+| tile | Sean | base = erase arm |
+|---|---|---|
+| 5, 9, 24 | dotted quarter, dotted quarter, eighth | kept, value right |
+| 13 | half | kept, half |
+| 15 | dotted quarter | kept, read a dotted eighth (value wrong, both arms) |
+| 22 | half | REFUSED as a note (wrong, both arms) |
+| 4, 21 | barline | refused (right) |
+| 20 | tie | kept as a note, duration narrowed (wrong, both arms; Litolff `13/0/0/0/25`) |
+| 3 | a box holding 2 half notes | kept, a half (box-size problem) |
+| 8 | tip of a dotted quarter, box too small | refused (box-size problem) |
+| 17 | tip of a half, box too small | refused (box-size problem) |
+
+T3, T8 and T17 are box-size problems for the detector or the re-centre stage, not this lane. ⚠️ But T8 and T17 are
+real notes' partial boxes that this lane classed **stroke-only** (their ink off the traced stroke is under 0.06 sp^2)
+and so erased inside: a small box on a note's edge can look like a tail. It changed no verdict here (base already
+refuses them), but the stroke-only exemption is not safe on its own: it should also require the box to sit where the
+crop CUT the arc (2.164's left-edge test), or be dropped. T20 (a tie kept as a note) is the case the exemption exists
+for; the erase emptied it, yet the head gate still keeps it (narrowed, `head_fill_from_ink`).
+
+## 7. Limits / next
 
 Flag OFF. The joined curve is not yet READ by `adjudicate_tie_pair` / `adjudicate_arc_kind` (the consumer, once the
 tiles say the joins are right). The erase perturbs the CV beam reader on Brahms pdf 1 (one cell, 9 heads) and makes

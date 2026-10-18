@@ -24,17 +24,29 @@
   {
    "n": 3,
    "file": "tile_03.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "litolff",
+   "glyph": "glyph/3/1/2/2/9",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 4,
    "file": "tile_04.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/4/5/9",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 5,
    "file": "tile_05.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/18/1/12/0/2",
+   "control": true,
+   "kind": "head"
   },
   {
    "n": 6,
@@ -59,12 +71,20 @@
   {
    "n": 8,
    "file": "tile_08.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/18/0/5/4/11",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 9,
    "file": "tile_09.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/18/0/1/6/0",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 10,
@@ -99,7 +119,11 @@
   {
    "n": 13,
    "file": "tile_13.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "litolff",
+   "glyph": "glyph/13/0/8/10/8",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 14,
@@ -114,7 +138,11 @@
   {
    "n": 15,
    "file": "tile_15.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/18/0/0/6/9",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 16,
@@ -129,7 +157,11 @@
   {
    "n": 17,
    "file": "tile_17.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "litolff",
+   "glyph": "glyph/13/1/0/2/3",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 18,
@@ -154,17 +186,29 @@
   {
    "n": 20,
    "file": "tile_20.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "litolff",
+   "glyph": "glyph/13/0/0/0/25",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 21,
    "file": "tile_21.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/3/1/31",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 22,
    "file": "tile_22.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "litolff",
+   "glyph": "glyph/13/1/1/2/1",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 23,
@@ -179,7 +223,11 @@
   {
    "n": 24,
    "file": "tile_24.png",
-   "question": "Is the mark in the blue box a note, or not a note?"
+   "question": "Is the mark in the blue box a note, or not a note?",
+   "doc": "brahms",
+   "glyph": "glyph/1/1/9/3/9",
+   "control": false,
+   "kind": "head"
   },
   {
    "n": 25,
