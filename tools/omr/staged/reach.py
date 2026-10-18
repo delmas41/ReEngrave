@@ -68,14 +68,6 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
-    Q.SYSTEM_ARC: (
-        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.166 "
-        "(flag OMR_SYSTEM_ARCS, default OFF) reads each tie/slur once per "
-        "system and erases its stroke from the cells' staff-erased raster; the "
-        "row records the joined curve and its anchored ends for Sean's tiles. "
-        "Its consumer (`adjudicate_tie_pair` / `adjudicate_arc_kind` reading "
-        "the joined curve) is the next item once the tiles are answered. The "
-        "entry LEAVES this list the day an adjudicator reads it."),
     Q.DYNAMIC_ANCHOR: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
         "(Sean 2026-10-09: a dynamic is anchored to ONE note) is GATHER+"

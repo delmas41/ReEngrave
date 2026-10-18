@@ -708,6 +708,30 @@ def _space_page(cell: Any) -> Optional[float]:
     return (sum(gaps) / len(gaps)) / float(up)
 
 
+def _is_arc_tail_box(hg: str, hb: Sequence[float], binary: Any, cell_of: Dict[Tuple[int, int, int, int], Any],
+                     sp: float) -> bool:
+    """2.164's left-edge test on a notehead box: at its bar's left edge AND fewer than half a head's width of head-tall
+    columns (`head_oval`, page raster). Off (`OMR_ARC_TAIL_NOT_A_HEAD` disabled), missing cell or raster: False -- the
+    box is kept whole (a fallback never converts "cannot tell" into "erase it")."""
+    from . import head_oval
+    from . import record as R
+    from .adjudicators.notehead_precision import ARC_TAIL_OVAL_MAX_SPACES
+    if not head_oval.enabled() or binary is None:
+        return False
+    try:
+        sub = R.Subject.from_key(hg)
+    except Exception:
+        return False
+    c = cell_of.get((sub.page, sub.system, sub.staff, sub.cell))
+    cell_box = getattr(c, "bbox_page_px", None) if c is not None else None
+    if not cell_box or len(cell_box) != 4 or not sp:
+        return False
+    if not head_oval.box_at_left_edge(hb, cell_box, sp):
+        return False
+    got = head_oval.oval_width(binary, hb, sp)
+    return got is not None and float(got["oval_width_sp"]) < ARC_TAIL_OVAL_MAX_SPACES
+
+
 def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> Dict[str, Any]:
     """`Q.SYSTEM_ARC` per joined arc, then the traced strokes erased from every cell's `image_no_staff`.
@@ -837,6 +861,10 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                     continue
                 only = (sh["residual_spaces2"] < STROKE_ONLY_RESIDUAL_SPACES2
                         and str(hname).startswith(STROKE_ONLY_CLASSES)
+                        # a NOTEHEAD box is exempt only where 2.164's test holds: it starts at its bar's left edge and
+                        # holds no head-tall oval (a real note's partial box is never an arc's tail)
+                        and (not str(hname).lower().startswith(_NOTEHEAD_PREFIX)
+                             or _is_arc_tail_box(hg, hb, binary, cell_of, sp_staff))
                         # a beam box is the arc's twin only where it overlaps one of the arc's own boxes
                         and (not str(hname).startswith("beam")
                              or any(_overlap_share(hb, m["piece"]["box"]) >= BEAM_TWIN_OVERLAP for m in members)))
