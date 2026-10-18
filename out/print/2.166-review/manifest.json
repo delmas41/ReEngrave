@@ -4,12 +4,22 @@
   {
    "n": 1,
    "file": "tile_01.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/1/10/2/16",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 2,
    "file": "tile_02.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/2/3/26",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 3,
@@ -29,12 +39,22 @@
   {
    "n": 6,
    "file": "tile_06.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/3/0/5/4/0",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 7,
    "file": "tile_07.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/1/10/1/21",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 8,
@@ -49,17 +69,32 @@
   {
    "n": 10,
    "file": "tile_10.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/3/1/6/14/0",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 11,
    "file": "tile_11.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/1/11/1/21",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 12,
    "file": "tile_12.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/13/1/1/1/6",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 13,
@@ -69,7 +104,12 @@
   {
    "n": 14,
    "file": "tile_14.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/2/2/25",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 15,
@@ -79,7 +119,12 @@
   {
    "n": 16,
    "file": "tile_16.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/11/0/23",
+   "control": true,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 17,
@@ -89,12 +134,22 @@
   {
    "n": 18,
    "file": "tile_18.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/13/1/3/2/5",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 19,
    "file": "tile_19.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/3/1/2/16/0",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 20,
@@ -114,7 +169,12 @@
   {
    "n": 23,
    "file": "tile_23.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "brahms",
+   "glyph": "glyph/1/0/2/5/11",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   },
   {
    "n": 24,
@@ -124,7 +184,12 @@
   {
    "n": 25,
    "file": "tile_25.png",
-   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?"
+   "question": "Is the blue line one tie, one slur, or something else? Which two notes does it join?",
+   "doc": "litolff",
+   "glyph": "glyph/13/0/5/13/0",
+   "control": false,
+   "kind": "arc",
+   "question_kind": "arc_kind"
   }
  ]
 }

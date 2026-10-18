@@ -67,6 +67,9 @@ STRAIGHT_MIN_SPACES = 2.0
 STRAIGHT_SPACES = 0.15
 #: A traced column is erased only where its run is at most this many times the trace's median stroke (+1 px).
 THICK_FACTOR = 1.6
+#: Along a trace, a run thicker than this many times the stroke's recent median (+2 px) is the stroke merged with
+#: something else, and bridges as a gap (tile 11).
+THICK_CONTINUE_FACTOR = 1.6
 #: How many seed columns a trace tries (the best coverage wins).
 SEED_COLUMNS = 3
 #: The trace may cross this many spaces of columns with no stroke (a barline, a removed staff line, a stem).
@@ -89,6 +92,10 @@ SAME_Y_SPACES = 0.12
 SAME_MIN_COLS = 2
 #: One ends where the other begins: an x gap no wider than `GAP_MAX_SPACES` and the ends this close in y.
 END_JOIN_Y_SPACES = 0.35
+#: Over the columns two traces share, at least this share must agree in y for them to be one curve.
+SAME_SHARE = 0.6
+#: End-to-start: the two end tangents (dy/dx) may differ by at most this.
+END_JOIN_SLOPE = 0.35
 #: Erase: a canonical ink run taller than this is not the stroke (a head, stem or barline it touches) and is kept.
 ERASE_RUN_MAX_SPACES = 0.75
 #: A notehead box whose ink OFF the traced stroke is under this (square spaces) holds nothing but the stroke -- a tail
@@ -255,6 +262,8 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
             raw_pts: Optional[set] = None) -> None:
     """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y."""
     hist: List[Tuple[int, float]] = [(x, yc)]
+    seed = pts.get(x)
+    thick: List[int] = [seed[1] - seed[0] + 1] if seed else []
     gap = 0
     gap_max = max(2, int(round(GAP_MAX_SPACES * sp)))
     tol0 = max(2.0, TOL_SPACES * sp)
@@ -278,8 +287,15 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
         best = None
         from_raw = False
+        # THE STROKE CONTINUES (Sean's tile 11, 2026-10-17: our trace left a tie at the barline and carried on along
+        # the slur beside it). A run much thicker than the stroke so far is the stroke MERGED with something -- a
+        # barline, or the other arc where the two touch -- and its centre is not the stroke's height: it bridges as
+        # a gap, so the prediction keeps the stroke's own height and slope across it.
+        thick_max = THICK_CONTINUE_FACTOR * float(np.median(thick[-look:])) + 2.0 if thick else float("inf")
         for source in (cols.thin, cols.raw_thin):
             for a, b in source(xx):
+                if (b - a + 1) > thick_max:
+                    continue
                 c = (a + b) / 2.0
                 d = abs(c - pred)
                 if d <= tol and (best is None or d < best[0]):
@@ -301,6 +317,7 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
                 raw_pts.add(xx)
             pts[xx] = (best[1], best[2])
             hist.append((xx, best[3]))
+            thick.append(best[2] - best[1] + 1)
             if len(hist) > 4 * look:
                 hist = hist[-2 * look:]
         xx += step
@@ -395,8 +412,37 @@ def on_a_staff_line(pts: Dict[int, Tuple[int, int]], line_ys: Sequence[float], s
     return near >= ON_LINE_SHARE * len(cs)
 
 
+def _end_slope(pts: Dict[int, Tuple[int, int]], side: str, sp: float) -> float:
+    """dy/dx over the last half space of the trace at `side` ("left" / "right")."""
+    xs = sorted(pts)
+    n = max(2, int(round(0.5 * sp)))
+    sel = xs[:n] if side == "left" else xs[-n:]
+    if len(sel) < 2 or sel[-1] == sel[0]:
+        return 0.0
+    ys = [(pts[x][0] + pts[x][1]) / 2.0 for x in sel]
+    return float(np.polyfit(np.asarray(sel, float), np.asarray(ys), 1)[0])
+
+
+def end_join_cost(left: Dict[str, Any], right: Dict[str, Any], sp: float) -> Optional[float]:
+    """How well `left`'s right end continues into `right`'s left end, or None where it does not: the gap is short,
+    the HEIGHT continues (the left end's tangent carried across the gap lands on the right start) and the TANGENTS
+    agree. Sean's tile 11 (2026-10-17): a tie on one side of a barline and a slur on the other meet at a barline at
+    nearly one height but turn opposite ways."""
+    gap = right["x0"] - left["x1"]
+    if not (0 < gap <= GAP_MAX_SPACES * sp):
+        return None
+    sl, sr = _end_slope(left["points"], "right", sp), _end_slope(right["points"], "left", sp)
+    if abs(sl - sr) > END_JOIN_SLOPE:
+        return None
+    dy = abs(left["y_right"] + sl * gap - right["y_left"])
+    if dy > END_JOIN_Y_SPACES * sp:
+        return None
+    return dy / sp + abs(sl - sr)
+
+
 def same_curve(a: Dict[str, Any], b: Dict[str, Any], sp: float) -> bool:
-    """Two traces are one curve: they share columns at one y, or one ends where the other begins."""
+    """Two traces are one curve: they agree at one y over most of the columns they share, or one ends where the other
+    begins and continues it (`end_join_cost`)."""
     pa, pb = a["points"], b["points"]
     if not pa or not pb:
         return False
@@ -404,14 +450,14 @@ def same_curve(a: Dict[str, Any], b: Dict[str, Any], sp: float) -> bool:
     shared = [x for x in pa if x in pb]
     if shared:
         n = sum(1 for x in shared if abs(sum(pa[x]) / 2.0 - sum(pb[x]) / 2.0) <= tol)
-        return n >= min(SAME_MIN_COLS, len(shared))
+        return n >= min(SAME_MIN_COLS, len(shared)) and n >= SAME_SHARE * len(shared)
     left, right = (a, b) if a["x1"] < b["x0"] else (b, a)
-    gap = right["x0"] - left["x1"]
-    return 0 < gap <= GAP_MAX_SPACES * sp and abs(left["y_right"] - right["y_left"]) <= END_JOIN_Y_SPACES * sp
+    return end_join_cost(left, right, sp) is not None
 
 
 def join_traces(traces: Sequence[Dict[str, Any]], sp: float) -> List[List[int]]:
-    """Groups of indices into `traces` that are one curve (union-find over `same_curve`), left to right."""
+    """Groups of indices into `traces` that are one curve, left to right: union-find over the shared-column agreements
+    and, for end-to-start meetings, each end joined only to the ONE piece that continues it best."""
     parent = list(range(len(traces)))
 
     def find(i: int) -> int:
@@ -419,10 +465,26 @@ def join_traces(traces: Sequence[Dict[str, Any]], sp: float) -> List[List[int]]:
             parent[i] = parent[parent[i]]
             i = parent[i]
         return i
+    ends: List[Tuple[float, int, int]] = []
     for i in range(len(traces)):
-        for j in range(i + 1, len(traces)):
-            if same_curve(traces[i], traces[j], sp):
-                parent[find(i)] = find(j)
+        for j in range(len(traces)):
+            if i == j or not traces[i]["points"] or not traces[j]["points"]:
+                continue
+            if any(x in traces[j]["points"] for x in traces[i]["points"]):
+                if i < j and same_curve(traces[i], traces[j], sp):
+                    parent[find(i)] = find(j)
+                continue
+            if traces[i]["x1"] < traces[j]["x0"]:
+                c = end_join_cost(traces[i], traces[j], sp)
+                if c is not None:
+                    ends.append((c, i, j))
+    used_right, used_left = set(), set()
+    for c, i, j in sorted(ends):                 # best continuation first; each end takes one partner
+        if i in used_right or j in used_left:
+            continue
+        used_right.add(i)
+        used_left.add(j)
+        parent[find(i)] = find(j)
     groups: Dict[int, List[int]] = {}
     for i in range(len(traces)):
         groups.setdefault(find(i), []).append(i)

@@ -332,3 +332,81 @@ class TestPureHelpers(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ── Sean's tile 11 (2026-10-17): "Tie on one side of the barline and a slur on the other. The blue line swaps arcs." ──
+
+_T11 = os.path.join(os.path.dirname(__file__), "data", "system_arc_tile11.npz")
+
+
+def _tile11():
+    z = np.load(_T11)
+    shape = tuple(int(v) for v in z["shape"])
+    n = shape[0] * shape[1]
+    ink = np.unpackbits(z["composite"])[:n].reshape(shape).astype(bool)
+    raw = np.unpackbits(z["raw"])[:n].reshape(shape).astype(bool)
+    sp = float(z["sp"])
+    box = [float(v) for v in z["arcs"][0][:4]]
+    return ink, raw, sp, box
+
+
+def _trace11():
+    ink, raw, sp, box = _tile11()
+    return AS.trace_arc(ink, box, sp, x_min=box[0] - AS.CUT_EXTEND_SPACES * sp,
+                        x_max=box[2] + AS.FREE_EXTEND_SPACES * sp, raw=raw)
+
+
+def _y_at(t, x):
+    near = min(t["points"], key=lambda v: abs(v - x))
+    return sum(t["points"][near]) / 2.0
+
+
+class TestTile11TheStrokeContinues(unittest.TestCase):
+    """Brahms 317803 pdf 1, `glyph/1/1/11/1/21`: the tie in bar 1 is cut at the barline (crop x 187); in bar 0 its
+    other half (y ~157 at x 175) runs just above the SLUR (y ~170) and the two touch near the barline. Our trace
+    took the touching blob's centre and walked on along the slur."""
+
+    def test_the_trace_stays_on_the_tie_past_the_barline(self):
+        t = _trace11()
+        self.assertLess(t["x0"], 150)                      # it does cross the barline into bar 0
+        self.assertLess(_y_at(t, 175), 162, t["x0"])       # ... on the tie (~157), not the slur (~170)
+        self.assertLess(_y_at(t, 140), 155)                # and keeps rising toward the tied head
+
+    def test_MUTATION_without_the_thickness_guard_the_trace_swaps_onto_the_slur(self):
+        with mock.patch.object(AS, "THICK_CONTINUE_FACTOR", 100.0):
+            t = _trace11()
+        self.assertGreater(_y_at(t, 175), 165)
+
+
+def _piece(x0, x1, y_at_x0, slope, t=4):
+    pts = {x: (int(round(y_at_x0 + slope * (x - x0))), int(round(y_at_x0 + slope * (x - x0))) + t)
+           for x in range(x0, x1 + 1)}
+    return AS._finish(pts, 1.0)
+
+
+class TestEndJoinNeedsTheTangentToContinue(unittest.TestCase):
+
+    def test_a_falling_end_does_not_join_a_rising_start_at_one_height(self):
+        left = _piece(0, 60, 70, +0.5)                 # ends at ~100, still falling
+        right = _piece(70, 130, 101, -0.5)             # starts at ~101, rising: a different arc turning away
+        self.assertIsNone(AS.end_join_cost(left, right, SP))
+        self.assertEqual(len(AS.join_traces([left, right], SP)), 2)
+
+    def test_MUTATION_without_the_tangent_test_they_join(self):
+        left = _piece(0, 60, 70, +0.5)
+        right = _piece(70, 130, 101, -0.5)
+        with mock.patch.object(AS, "END_JOIN_SLOPE", 10.0), mock.patch.object(AS, "END_JOIN_Y_SPACES", 10.0):
+            self.assertEqual(len(AS.join_traces([left, right], SP)), 1)
+
+    def test_CONTROL_a_continuing_end_joins(self):
+        left = _piece(0, 60, 70, +0.2)
+        right = _piece(68, 130, 70 + 0.2 * 68, +0.2)
+        self.assertEqual(len(AS.join_traces([left, right], SP)), 1)
+
+    def test_each_end_takes_only_the_piece_that_continues_it_best(self):
+        left = _piece(0, 60, 70, 0.0)
+        good = _piece(68, 130, 70, 0.0)
+        worse = _piece(66, 120, 75, 0.1)                # also within tolerance, but continues it less well
+        groups = AS.join_traces([left, good, worse], SP)
+        self.assertIn(sorted([0, 1]), [sorted(g) for g in groups])
+        self.assertIn([2], groups)

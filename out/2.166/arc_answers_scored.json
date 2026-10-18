@@ -1,0 +1,294 @@
+[
+ {
+  "n": 1,
+  "redraw_n": 1,
+  "doc": "brahms",
+  "glyph": "glyph/1/1/10/2/16",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/1/1/10/1/3",
+   "glyph/1/1/10/2/2"
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   2
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "right"
+ },
+ {
+  "n": 2,
+  "redraw_n": 2,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/2/3/26",
+  "role": "arc",
+  "sean": "Slur",
+  "sean_kind": "slur",
+  "our_shape": "end_unanchored",
+  "our_call": null,
+  "anchors": [
+   null,
+   null
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   3
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "unanchored"
+ },
+ {
+  "n": 6,
+  "redraw_n": 3,
+  "doc": "litolff",
+  "glyph": "glyph/3/0/5/4/0",
+  "role": "arc",
+  "sean": "tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/3/0/5/4/5",
+   "glyph/3/0/5/5/4"
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   4
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "right"
+ },
+ {
+  "n": 7,
+  "redraw_n": 4,
+  "doc": "brahms",
+  "glyph": "glyph/1/1/10/1/21",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/1/1/10/0/8",
+   "glyph/1/1/10/1/4"
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   1
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "right"
+ },
+ {
+  "n": 10,
+  "redraw_n": 5,
+  "doc": "litolff",
+  "glyph": "glyph/3/1/6/14/0",
+  "role": "arc",
+  "sean": "Slur",
+  "sean_kind": "slur",
+  "our_shape": "two_positions",
+  "our_call": "slur",
+  "anchors": [
+   "glyph/3/1/6/14/2",
+   "glyph/3/1/6/15/1"
+  ],
+  "joined_across_barline": true,
+  "pieces": 3,
+  "cells": [
+   14,
+   15
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "right"
+ },
+ {
+  "n": 11,
+  "redraw_n": 6,
+  "doc": "brahms",
+  "glyph": "glyph/1/1/11/1/21",
+  "role": "arc",
+  "sean": "Tie on one side of the barline and a slur on the other. The blue line swaps arcs.",
+  "sean_kind": "tie|slur (swapped at barline)",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/1/1/11/0/7",
+   "glyph/1/1/11/1/23"
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   1
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "wrong_curve"
+ },
+ {
+  "n": 12,
+  "redraw_n": 7,
+  "doc": "litolff",
+  "glyph": "glyph/13/1/1/1/6",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "end_unanchored",
+  "our_call": null,
+  "anchors": [
+   null,
+   null
+  ],
+  "joined_across_barline": true,
+  "pieces": 2,
+  "cells": [
+   1,
+   2
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "unanchored"
+ },
+ {
+  "n": 14,
+  "redraw_n": 8,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/2/2/25",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "one_position_heads_between",
+  "our_call": "slur",
+  "anchors": [
+   "glyph/1/0/2/2/3",
+   "glyph/1/0/2/3/9"
+  ],
+  "joined_across_barline": false,
+  "pieces": 2,
+  "cells": [
+   2
+  ],
+  "ran_through_stroke_only_box": true,
+  "score": "wrong"
+ },
+ {
+  "n": 16,
+  "redraw_n": 9,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/11/0/23",
+  "role": "control_arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/1/0/11/0/19",
+   "glyph/1/0/11/0/20"
+  ],
+  "joined_across_barline": false,
+  "pieces": 1,
+  "cells": [
+   0
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "right"
+ },
+ {
+  "n": 18,
+  "redraw_n": 10,
+  "doc": "litolff",
+  "glyph": "glyph/13/1/3/2/5",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "end_unanchored",
+  "our_call": null,
+  "anchors": [
+   "glyph/13/1/3/2/6",
+   null
+  ],
+  "joined_across_barline": true,
+  "pieces": 3,
+  "cells": [
+   2,
+   3
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "unanchored"
+ },
+ {
+  "n": 19,
+  "redraw_n": 11,
+  "doc": "litolff",
+  "glyph": "glyph/3/1/2/16/0",
+  "role": "arc",
+  "sean": "slur",
+  "sean_kind": "slur",
+  "our_shape": "end_unanchored",
+  "our_call": null,
+  "anchors": [
+   "glyph/3/1/2/16/3",
+   null
+  ],
+  "joined_across_barline": true,
+  "pieces": 2,
+  "cells": [
+   16,
+   17
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "unanchored"
+ },
+ {
+  "n": 23,
+  "redraw_n": 12,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/2/5/11",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/1/0/2/5/16",
+   "glyph/1/0/2/6/18"
+  ],
+  "joined_across_barline": true,
+  "pieces": 2,
+  "cells": [
+   5,
+   6
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "right"
+ },
+ {
+  "n": 25,
+  "redraw_n": 13,
+  "doc": "litolff",
+  "glyph": "glyph/13/0/5/13/0",
+  "role": "arc",
+  "sean": "Tie",
+  "sean_kind": "tie",
+  "our_shape": "two_heads_one_position_adjacent",
+  "our_call": "tie",
+  "anchors": [
+   "glyph/13/0/5/13/1",
+   "glyph/13/0/5/14/6"
+  ],
+  "joined_across_barline": true,
+  "pieces": 2,
+  "cells": [
+   13,
+   14
+  ],
+  "ran_through_stroke_only_box": false,
+  "score": "right"
+ }
+]
