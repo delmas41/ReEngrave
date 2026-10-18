@@ -55,6 +55,7 @@ STEPS = {
     "shared_stem_guess": 4,
     "other": 5,           # dots, slashes, anything else
     "bar_sum": 6,
+    "bar_sum_lengthen": 6,    # Sean 2026-10-17: the bar's ONE lengthening (`consequences._longer_fills_the_bar`)
     "carried_meter": 7,
 }
 
@@ -122,6 +123,8 @@ def key_of(v: Any) -> Optional[Tuple[str, str]]:
         return (I, "bar_sum" if d[len("infer:"):] in INFER_BAR_RULES else "collapse")
     if d == "share_stem_value" and (v.detail or {}).get("guessed"):
         return (E, "shared_stem_guess")
+    if d == "reconcile_duration" and v.reason == "longer_fills_the_bar":
+        return (E, "bar_sum_lengthen")
     if d in DECIDER_KEY:
         return DECIDER_KEY[d]
     if d.startswith("adjudicate_"):
@@ -318,6 +321,34 @@ def r_bar_sum_confirm(new, prior, log) -> Optional[str]:
     return "bar_sum_supplies_what_was_not_read"
 
 
+def r_bar_sum_lengthen(new, prior, log) -> Optional[str]:
+    """Sean 2026-10-17 (CLAUDE §4), the bar's ONE lengthening: every other note in the bar DECIDED, this note NARROWED to
+    exactly two lengths, and the LONGER fills the bar exactly (2.162's `bar_length`, per event). Written GUESSED."""
+    from .record import Outcome, Kind, Q, Verdict
+    from .bar_length import bar_length
+    from .consequences import _standing, _left_the_bar
+    if prior.outcome is not Outcome.NARROWED or new.outcome is not Outcome.DECIDED:
+        return "lengthen_needs_a_two_way_narrowing"
+    beats = sorted({round(float(c.value["beats"]), 6) for c in prior.candidates
+                    if isinstance(c.value, dict) and c.value.get("beats") is not None})
+    if len(beats) != 2:
+        return "lengthen_needs_exactly_two_lengths"
+    if abs(float((new.value or {}).get("beats") or -1) - beats[1]) > 1e-6:
+        return "lengthen_writes_only_the_longer"
+    cell = new.subject.at(Kind.CELL)
+    others = [v for v in _standing(log, cell, Q.DURATION)
+              if v.id != prior.id and v.outcome is not Outcome.ABSTAINED and _left_the_bar(log, v.subject) is None]
+    if any(v.outcome is not Outcome.DECIDED for v in others):
+        return "lengthen_needs_every_other_note_decided"
+    trial = Verdict(id=prior.id, subject=prior.subject, quantity=Q.DURATION, outcome=Outcome.DECIDED,
+                    value=dict(new.value), decider=prior.decider, reason=prior.reason)
+    got = bar_length(log, cell, others + [trial], first_candidate=False)
+    want = (new.detail or {}).get("bar_beats")
+    if want is None or not got.known or abs(got.value - float(want)) > 1e-6:
+        return "lengthen_must_fill_the_bar_exactly"
+    return None
+
+
 def r_bar_sum_known_length(new, prior, log) -> Optional[str]:
     """A rest reinstated because the bar is short (E6, audit violation 7) -- only where the bar HAS a length: 2.162's
     helper (`consequences._event_range`) must give one exact length, never a range."""
@@ -347,15 +378,11 @@ def r_meter_bars_known_length(new, prior, log) -> Optional[str]:
 
 
 def r_step3_keeps_step1(new, prior, log) -> Optional[str]:
-    """A flag or beam (step 3) never re-opens a head read open at step 1 (A7, audit violation 6). Where the head's
-    own ink does not read filled, the narrowing is refused and the head keeps its open value (`rewrite()`); where
-    the head was never decided at step 1 (a head only the second detector saw), abstaining is a widening."""
-    from .record import Outcome
-    if new.outcome is Outcome.ABSTAINED:
-        return None
-    if (new.detail or {}).get("open_on_stem", {}).get("ink_filled"):
-        return None                                    # step 1 itself is in question: the ink reads filled
-    return "a_flag_reopens_an_open_head"
+    """A flag or beam (step 3) on a head read open at step 1 (A7, audit violation 6). REVISED 2026-10-17 after Sean's
+    Set K (tiles 3, 17: flags boxed as heads; tile 6: a real eighth): keeping the open value WROTE A HALF ON A FLAG. A
+    flag touching an "open head" says the HEAD itself is in question, so the reader's narrowing (EXPORT holds it out)
+    stands and this row allows it. It never writes a value; it stays so the pair is guarded."""
+    return None
 
 
 def r_export_refuses(new, prior, log) -> Optional[str]:
@@ -386,8 +413,8 @@ _ROWS = [
     ((A, "other"), (A, "own_reading"), "dot_widens_a_value", r_widen, "A5"),
     ((A, "other"), (A, "beam_flag"), "dot_widens_a_step3_value", r_widen, "A5"),
     ((A, "other"), (A, "other"), "dot_widens_again", r_widen, "A5"),
-    ((A, "beam_flag"), (A, "notehead"), "flag_never_reopens_an_open_head", r_step3_keeps_step1,
-     "A7 = audit violation 6"),
+    ((A, "beam_flag"), (A, "notehead"), "flag_on_an_open_head_stays_narrowed", r_step3_keeps_step1,
+     "A7 = audit violation 6 (revised after Set K: never writes)"),
     ((A, "bar_sum"), (A, "carried_meter"), "meter_bars_need_a_known_length", r_meter_bars_known_length,
      "A9 = audit violation 2 (2.162)"),
     # ── EVALUATE ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -419,6 +446,12 @@ _ROWS = [
     ((E, "bar_sum"), (E, "shared_stem_guess"), "bar_sum_confirms_only_stem_guess", r_bar_sum_confirm,
      "audit violation 1"),
     ((E, "bar_sum"), (E, "identity"), "bar_sum_confirms_only_rest", r_bar_sum_confirm, "audit violation 1"),
+    ((E, "bar_sum_lengthen"), (A, "own_reading"), "bar_lengthens_only_where_the_longer_fills", r_bar_sum_lengthen,
+     "Sean 2026-10-17 lengthen exception (audit violation 1)"),
+    ((E, "bar_sum_lengthen"), (A, "beam_flag"), "bar_lengthens_only_where_the_longer_fills_step3", r_bar_sum_lengthen,
+     "Sean 2026-10-17"),
+    ((E, "bar_sum_lengthen"), (A, "other"), "bar_lengthens_only_where_the_longer_fills_dot", r_bar_sum_lengthen,
+     "Sean 2026-10-17"),
     ((E, "bar_sum"), (A, "reading"), "bar_sum_reinstates_only_in_a_known_bar", r_bar_sum_known_length,
      "E6 = audit violation 7 (2.162)"),
     ((E, "pitch"), (A, "reading"), "pitch_follows_its_cause", r_downhill, "E7"),

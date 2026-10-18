@@ -77,6 +77,13 @@ class TestTheTable(unittest.TestCase):
             self.assertIn(f"violation {n}", covers)
 
 
+def _open_value(v):
+    """The first build's rewrite of a flag narrowing: its open (unbeamed) candidate, DECIDED (the mutation twin)."""
+    return Verdict(id=v.id, subject=v.subject, quantity=v.quantity, outcome=Outcome.DECIDED,
+                   value=dict(v.candidates[0].value), decider=v.decider, reason="open_head_kept_over_a_flag",
+                   candidates=v.candidates, detail=dict(v.detail))
+
+
 class _On(unittest.TestCase):
     def setUp(self):
         p = mock.patch.dict(os.environ, ON)
@@ -195,22 +202,25 @@ class TestLaterStepsOnlyWiden(_On):
                    reason="stem_value_follows", supersedes=prior.id, single=True)
         self.assertIsNot(got, prior)
 
-    def test_a_flag_never_reopens_an_open_head(self):
-        """Audit violation 6: the step-3 narrowing is refused; the head keeps its step-1 open value."""
-        got = _rec(self.log, G, Q.DURATION, Outcome.NARROWED, None, reason="open_head_flag_contradiction",
-                   candidates=(Candidate(_dur(2.0), 2.0), Candidate(_dur(1.0, 0, 1), 1.0)),
-                   detail={"open_on_stem": {"ink_filled": False}})
-        self.assertIs(got.outcome, Outcome.DECIDED)
-        self.assertEqual(got.value["written"], 2.0)
-        self.assertEqual(got.reason, "open_head_kept_over_a_flag")
-        self.assertEqual(got.detail["flag_on_an_open_head"], [1])
-        self.assertEqual(self.log.near_misses()[0]["row"], "flag_never_reopens_an_open_head")
+    def _flag_narrowing(self):
+        return _rec(self.log, G, Q.DURATION, Outcome.NARROWED, None, reason="open_head_flag_contradiction",
+                    candidates=(Candidate(_dur(2.0), 2.0), Candidate(_dur(1.0, 0, 1), 1.0)),
+                    detail={"open_on_stem": {"ink_filled": False}})
 
-    def test_a_flag_on_a_head_whose_ink_reads_filled_still_narrows(self):
-        got = _rec(self.log, G, Q.DURATION, Outcome.NARROWED, None, reason="open_head_flag_contradiction",
-                   candidates=(Candidate(_dur(2.0), 2.0), Candidate(_dur(1.0, 0, 1), 1.0)),
-                   detail={"open_on_stem": {"ink_filled": True}})
+    def test_a_flag_on_an_open_head_never_writes_a_half(self):
+        """Revised after Set K (tiles 3, 17 flags boxed as heads; 6 a real eighth): the narrowing stands."""
+        got = self._flag_narrowing()
         self.assertIs(got.outcome, Outcome.NARROWED)
+        self.assertEqual(self.log.near_misses(), [])
+
+    def test_MUTATION_the_old_row_writes_the_half(self):
+        """The twin: the row as first built (refuse, keep the open value) writes a half -- the test above catches it."""
+        row = OC.TABLE[((OC.A, "beam_flag"), (OC.A, "notehead"))]
+        with mock.patch.dict(OC.TABLE, {((OC.A, "beam_flag"), (OC.A, "notehead")): OC.Row(
+                "flag_never_reopens_an_open_head", lambda *a: "a_flag_reopens_an_open_head", row.covers)}), \
+                mock.patch.object(OC, "rewrite", lambda log, v, r: _open_value(v)):
+            got = self._flag_narrowing()
+        self.assertIs(got.outcome, Outcome.DECIDED)
 
     def test_the_meter_s_bars_are_summed_by_2_162s_helper(self):
         """Audit violation 2: under the guard a bar holding a narrowed note has no known length."""
@@ -252,6 +262,37 @@ class TestLaterStepsOnlyWiden(_On):
         self.assertFalse(OC.export_may("carried_meter", (OC.A, "bar_sum")).allowed)
 
 
+class TestLongerFillsTheBar(_On):
+    """Sean 2026-10-17: the bar lengthens a note ONLY where every other note is DECIDED, this one is narrowed to two
+    lengths, and the LONGER fills the bar exactly -- written GUESSED."""
+
+    def _bar(self, other_outcome):
+        cellsub = R.cell(0, 0, 0, 0)
+        _rec(self.log, cellsub, Q.EVENT, Outcome.DECIDED, {"events": [{"glyphs": [0]}, {"glyphs": [1]}]},
+             decider="adjudicate_event", reason="t")
+        g1 = R.glyph(0, 0, 0, 0, 1)
+        if other_outcome is Outcome.DECIDED:
+            _rec(self.log, g1, Q.DURATION, Outcome.DECIDED, _dur(1.0))
+        else:
+            _rec(self.log, g1, Q.DURATION, Outcome.NARROWED, None, reason="beams_ambiguous",
+                 candidates=(Candidate(_dur(1.0), 2.0), Candidate(_eighth(), 1.0)))
+        prior = _rec(self.log, G, Q.DURATION, Outcome.NARROWED, None, reason="head_fill_from_ink",
+                     candidates=(Candidate(_dur(1.0), 2.0), Candidate(_dur(2.0), 1.0)))
+        return _rec(self.log, G, Q.DURATION, Outcome.DECIDED, {**_dur(2.0), "reconciled": True},
+                    decider="reconcile_duration", reason="longer_fills_the_bar", supersedes=prior.id,
+                    candidates=prior.candidates, detail={"bar_beats": 3.0}, single=True), prior
+
+    def test_the_longer_is_written_when_every_other_note_is_decided(self):
+        got, prior = self._bar(Outcome.DECIDED)
+        self.assertIsNot(got, prior)
+        self.assertTrue(OC.is_guess(got))
+
+    def test_MUTATION_another_unsure_note_stops_it(self):
+        got, prior = self._bar(Outcome.NARROWED)
+        self.assertIs(got, prior)
+        self.assertEqual(self.log.near_misses()[0]["why"], "lengthen_needs_every_other_note_decided")
+
+
 class TestRemovingTheGuardFails(unittest.TestCase):
     """The same writes with the flag OFF all go through: the refusals above are the guard's, nothing else's."""
 
@@ -272,14 +313,6 @@ class TestRemovingTheGuardFails(unittest.TestCase):
             got = _rec(log, G, Q.DURATION, Outcome.DECIDED, _dur(2.0), decider="share_stem_value",
                        reason="stem_value_follows", supersedes=prior.id, single=True)
             self.assertIsNot(got, prior)
-
-    def test_off_the_open_head_narrows(self):
-        with mock.patch.dict(os.environ, OFF):
-            log = Log()
-            got = _rec(log, G, Q.DURATION, Outcome.NARROWED, None, reason="open_head_flag_contradiction",
-                       candidates=(Candidate(_dur(2.0), 2.0), Candidate(_dur(1.0, 0, 1), 1.0)),
-                       detail={"open_on_stem": {"ink_filled": False}})
-            self.assertIs(got.outcome, Outcome.NARROWED)
 
     def test_guard_patched_out_lets_the_move_through(self):
         """The guard removed (its `check` always allows) with the flag ON: the refusal test's assertion fails."""
@@ -348,6 +381,26 @@ class TestSharedStem(_On):
 
     def test_two_against_two_is_UNDECIDED(self):
         s = _stem_with([2.0, 2.0, 1.0, 1.0]).run()
+        self.assertEqual(s.value(0).reason, "stem_heads_disagree")
+
+    def test_two_boxes_on_one_ink_are_not_two_heads(self):
+        """Set K tiles 4/5: one head boxed twice (one box reads black, one hollow) is one witness: not held out."""
+        s = Stem()
+        s.head(0, "noteheadHalfInSpace", 30, decided=(2.0, 0, 0))
+        s.head(1, "noteheadBlackInSpace", 36, decided=(1.0, 0, 0))
+        for gi in (0, 1):
+            object.__setattr__(s.log.verdict(Q.DURATION, s.heads[gi]), "decider", "adjudicate_duration")
+        s.run()
+        self.assertNotEqual(s.value(0).reason, "stem_heads_disagree")
+        self.assertIs(s.value(0).outcome, Outcome.DECIDED)
+
+    def test_MUTATION_the_same_boxes_apart_do_disagree(self):
+        s = Stem()
+        s.head(0, "noteheadHalfInSpace", 10, decided=(2.0, 0, 0))
+        s.head(1, "noteheadBlackInSpace", 50, decided=(1.0, 0, 0))
+        for gi in (0, 1):
+            object.__setattr__(s.log.verdict(Q.DURATION, s.heads[gi]), "decider", "adjudicate_duration")
+        s.run()
         self.assertEqual(s.value(0).reason, "stem_heads_disagree")
 
     def test_heads_that_agree_are_untouched(self):

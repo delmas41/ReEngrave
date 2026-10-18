@@ -1088,6 +1088,11 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     if confirm_only:
         if narrowed_here:
             if not all(bare_stem_confirmable(n) for n in narrowed_here):
+                from .override_check import enabled as _one_check
+                if _one_check():
+                    # ROADMAP 2.165: under the one shared check the bar moves no DECIDED note; its ONE lengthening is
+                    # Sean's 2026-10-17 exception (`_longer_fills_the_bar`), GUESSED.
+                    return _longer_fills_the_bar(log, subject, meter, expected, notes, set_aside, cleared_by)
                 if confirm_only == "narrowed" and narrowed_bar_length_unknown():
                     return _move_beside_unknown(log, subject, meter, expected, notes, set_aside, cleared_by)
                 return []
@@ -1261,6 +1266,49 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             # declare would be the guard disabled by a typo.
             single_pass_revision=True)))
     return verdicts
+
+
+#: ROADMAP 2.165 (`OMR_ONE_OVERRIDE_CHECK`): the reason of Sean's one lengthening (`_longer_fills_the_bar`).
+LONGER_FILLS_REASON = "longer_fills_the_bar"
+
+
+def _longer_fills_the_bar(log: Log, subject: Subject, meter: Verdict, expected: float, notes, set_aside,
+                          cleared_by) -> List[Verdict]:
+    """ROADMAP 2.165, Sean 2026-10-17 (CLAUDE §4): *"I don't think the bar total should lengthen a note except under 1
+    very specific condition: if all of the other notes are confident and the one note in question has 2 options - one
+    shorter and one longer - if the longer one fills the bar then it can lengthen it. If anything else is unsure it could
+    easily start making up durations"*.
+
+    Fires only where EXACTLY ONE note of the bar is NARROWED, that note is not a rest, its candidates name exactly TWO
+    lengths, every other note still in the bar is DECIDED, and the bar summed (by `bar_length`, per event) with the
+    LONGER is exactly the meter's length. Writes the longer, GUESSED (`reconcile_duration` is an EVALUATE guesser), its
+    candidates kept. Nothing else moves; the shorter is never landed."""
+    narrowed = [n for n in notes if n.outcome is Outcome.NARROWED]
+    if len(narrowed) != 1:
+        return []
+    n = narrowed[0]
+    if _is_rest(n) or any(v.outcome is not Outcome.DECIDED for v in notes if v is not n):
+        return []
+    by_beats = {}
+    for c in n.candidates:
+        if isinstance(c.value, dict) and c.value.get("beats") is not None:
+            by_beats.setdefault(round(float(c.value["beats"]), 6), c.value)
+    if len(by_beats) != 2:
+        return []
+    longer = by_beats[max(by_beats)]
+    trial = Verdict(id=n.id, subject=n.subject, quantity=Q.DURATION, outcome=Outcome.DECIDED, value=dict(longer),
+                    decider=n.decider, reason=n.reason)
+    got = bar_length(log, subject, [v for v in notes if v is not n] + [trial], first_candidate=False)
+    if not got.known or abs(got.value - expected) > 1e-6:
+        return []
+    detail = {"bar_beats": expected, "lengthened_from": min(by_beats), "other_notes_decided": len(notes) - 1}
+    if set_aside:
+        detail["set_aside"] = set_aside
+    return [log.record(Verdict(
+        id=log._next_id("vrd"), subject=n.subject, quantity=Q.DURATION, outcome=Outcome.DECIDED,
+        value={**longer, "reconciled": True}, decider="reconcile_duration", reason=LONGER_FILLS_REASON,
+        considered=(n.id, meter.id, *cleared_by), basis=(n.id, meter.id, *cleared_by), candidates=tuple(n.candidates),
+        detail=detail, supersedes=n.id, single_pass_revision=True))]
 
 
 def _move_beside_unknown(log: Log, subject: Subject, meter: Verdict, expected: float, notes, set_aside,

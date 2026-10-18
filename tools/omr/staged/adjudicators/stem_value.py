@@ -734,6 +734,32 @@ def _member_of(ev: Evidence, join: Any) -> Optional[_Member]:
     return _Member(sub, dur, box, cls, direction)
 
 
+def _same_ink(a: _Member, b: _Member) -> bool:
+    """ROADMAP 2.165: two head boxes that overlap across and by at least half the shorter box's height stand on one ink."""
+    if not a.box or not b.box:
+        return False
+    ax, ay, aw, ah = a.box
+    bx, by, bw, bh = b.box
+    x_over = min(ax + aw, bx + bw) - max(ax, bx)
+    y_over = min(ay + ah, by + bh) - max(ay, by)
+    return x_over > 0 and y_over >= 0.5 * min(ah, bh)
+
+
+def _one_vote_per_ink(voters: List[_Member]) -> List[_Member]:
+    """ROADMAP 2.165: one voter per ink. Boxes on the same ink (`_same_ink`, transitively) that read ONE fill vote once;
+    a group that reads two fills is one witness disagreeing with itself and casts no vote."""
+    groups: List[List[_Member]] = []
+    for m in voters:
+        hit = [g for g in groups if any(_same_ink(m, x) for x in g)]
+        merged = [m] + [x for g in hit for x in g]
+        groups = [g for g in groups if g not in hit] + [merged]
+    out = []
+    for g in groups:
+        if len({x.options[0][0] for x in g}) == 1:
+            out.append(g[0])
+    return out
+
+
 def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
                direction: Optional[str]) -> List[_Member]:
     """The members nearest the stem's TIP first. The tip is the end opposite
@@ -826,7 +852,11 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
     # all but one agree: GUESSED to the majority (blue, candidates kept) and the dissent named as the likely misreading.
     dissent: Optional[_Member] = None
     if one_override_check_enabled():
-        voters = hollow + filled
+        # ⚠️ REVISED 2026-10-17 after Sean's Set K tiles 4 and 5: two detector boxes on the SAME ink (one tall box over
+        # a third and a box on one of its heads; one head boxed twice) are ONE witness read twice, not two heads that
+        # disagree -- count evidence by its source (CLAUDE §4). Boxes that overlap by half a head's height or more are
+        # one head; a head whose boxes read two fills casts no vote here (the 2.78 base below decides it).
+        voters = _one_vote_per_ink(hollow + filled)
         bases = Counter(m.options[0][0] for m in voters)
         if len(bases) > 1:
             (top, n_top), = bases.most_common(1)
