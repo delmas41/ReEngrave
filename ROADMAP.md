@@ -17,6 +17,18 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-17 (manager + lanes on Opus; stopped by the weekly usage limit; main ≥ the commit naming this block)
+
+**Landed ON 10-16/17 (Sean's tiles):** 2.154 bar sum confirm-only arm a (+ bare-stem quarter); 2.155 stem at bar edge; 2.157 replay harness ids; 2.158 lone event in a known meter (GUESSED); 2.159 head fill on the located box; 2.161 head-stem bridge; 2.164 tie tails at a bar's left edge refused; acceptance judges the tree before processing (3984f67b). Overnight 20261016-night ran at 1d42c4aa (judged: Litolff right 104→113, Brahms 77→101). Parked: 2.156 grace notes. Audit 2.163: docs/override-map-2026-10-17.md.
+**Sean's rulings 10-17 (DECISIONS):** bar never moves a DECIDED note; it may lengthen only a two-option note when every other note is decided and the longer fills the bar; a lone event in a known meter may be guessed; a bar holding an undecided note has no known length; 2 disagreeing heads on a stem -> undecided, >=3 with one dissent -> guessed majority; keep tests minimal.
+**In flight — resume each from its branch (all flags OFF, nothing merged; no replay was running when stopped):**
+- **2.162** `lane-2.162-narrowed-bar-length` @3d2e6aed — SPLIT done (meter half only, reconcile_duration moves removed). Next: lean replay (the 6 Brahms systems whose 6/8 returns + systems of Set J tiles 2/4/9/10/14), one fast tier, FINDINGS (text to scratchpad if subagent), then land ON.
+- **2.165** `lane-2.165-one-shared-check` @14e5d7c1 — revision for Sean's bar-lengthen rule + flag row + two-heads hold-out built; was mid lean replay (Litolff on-arm). Next: finish lean replay, re-score incl. Set K, ≤10 tiles, then Sean.
+- **2.166** `lane-2.166-system-arcs` @fbf6830c — arc tracer built; Set I scored (7 arc right, tile 11 swap fixed); open: tiny-box erase exemption must require 2.164's left-edge test; hairline-as-beam on Brahms p1 (erase stays off); check 194 until tie_pair/arc_kind read Q.SYSTEM_ARC — that is its next step.
+- **2.153** `lane-2.153-retile` @205773ad — stays OFF until 2.162 + 2.165 land, then re-check.
+- **2.160** `lane-2.160-low-ink-lone-head` @0862d1fa — guard built OFF; superseded in practice by 2.164; park unless Sean asks.
+**Process notes:** subagents in this harness could not write .md (manager committed FINDINGS from scratchpad drafts); start_session was refused on event turns, lanes ran as worktree Agents instead.
+
 ## START HERE — after 2026-10-16 evening (manager on Opus, lanes on Sonnet; main ≥ the commit naming this block)
 
 **Landed ON today (evening), each on Sean's tiles:** 2.151 a dot boxed as a notehead is a dot (`OMR_DOT_BOXED_AS_A_HEAD`; 31 tiles: 11 of 21 changed notes better, 0 worse); 2.150b rest ink test (`OMR_REST_STROKE_INTO_HEAD`: a rest box whose stroke runs into a notehead is a stem; 40 boxes: 1 wrong refusal, Litolff 2.150b tile 4, 1 barline missed). Width floor `OMR_REST_WIDTH_FLOOR` parked OFF. **Parked:** 2.152 zoom-layers study (page census re-finds the fixed windows on two plates; header-column echo precise but small; 36 of 84 judged errors need the cell); 2.153 beam rule OFF (code on main).
