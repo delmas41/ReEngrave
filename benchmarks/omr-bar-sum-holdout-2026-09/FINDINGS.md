@@ -4683,3 +4683,18 @@ Whole rests against the dossier meter (Brahms 6/8 = 3 beats; Litolff 2/4 = 2): B
 
 ### 2.162-5. Limits
 One night's GATHER, two plates. The range is coarse (min..max over every narrowing, chord heads pooled); a wide range confirms almost any meter -- that is by construction support, and the 6 Brahms carries it restored each have 0-1 disagreeing bars. The moves the range test admits are still bar MOVES (2.154: 3 of 7 right); this lane's 2 judged losses are of that kind. Flag OFF; no DECISIONS line from this lane.
+
+### 2.162 -- Sean's 22 tile answers (2026-10-17, `out/print/2.162-review/answers.json`; `probe/record_answers_2_162.py`)
+Verbatim: *"J - 1.8 2.8 3.dot 4 4.4 5.2 6.dot 4 7.8 8.dot4 9.2 10.2 11.dot4 12.8 13.dot 4 14.8 15.dot 4 16.8 17.4 18.dot 4 19. 4 20.4 21.8 22.4"*. Manifest now names each tile's glyph; judged index rebuilt (1,197 tiles, 22 new duration rows). Key committed (`out/2.162/tiles-key.json`), per-tile scores in `out/2.162/scored.json`.
+
+| kind of change (flag off -> on) | n | main, 2.153 off | 2.153 on |
+|---|--:|---|---|
+| narrowed -> decided (the restored carry lets the 2.154 bare-stem confirm / chord share / bar fire) | 6 (7 with 2.153) | 6 narrowed-holding -> right | 7 narrowed-holding -> right |
+| decided -> another value, a RANGE-GATED move (`bar_length_unknown`, Litolff 2/4/9/10/14/16/19) | 7 | **2 wrong -> right (16, 19), 5 right -> wrong (2, 4, 9, 10, 14)** | same |
+| decided -> another value, an ordinary move under the restored meter (Brahms 1, 20; with 2.153 also 7, 21) | 2 (4) | 1 wrong -> right (1), 1 right -> wrong (20) | 3 wrong -> right (1, 7, 21), 1 right -> wrong (20) |
+| same value, another decider | 5 (2) | right -> right | right -> right |
+| controls (5 Litolff half, 12 Brahms eighth) | 2 | right in all four arms | right |
+
+* **The meter half holds up:** every note the restored carry settled is right (6 of 6; 7 of 7 with 2.153), and the 154 / 216 whole rests it re-sizes go to the dossier's 3 beats.
+* **The range-gated move does not:** 2 of 7 right on these tiles; with the judged ones it admitted earlier (Set F 8, 15, 2.154 tile 8: all right) **5 of 10**. Two of the wrong ones (9, 10) shorten a decided half to a quarter with no flag or beam -- the 2.154 "moves" problem (3 of 7) in a new place, and CLAUDE §4's "never shortens a note with no flag and no beam seen". The bar sum moving a decided note beside a narrowing is still the bar choosing.
+Flag OFF; no DECISIONS line from this lane.
