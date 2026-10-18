@@ -4707,3 +4707,21 @@ every value copied between notes, and the meter's dependence on durations, each 
 report, and from §2.154-2 above for the `reconcile_duration` pick/move split; the top new find is §10 rank 1: `_admitted`
 offers a DECIDED note one beam MORE without `_shortens_without_evidence`, so the bar can still make a bare quarter an
 eighth (the same mechanism 2.150-5 saw shorten two quarters).
+
+### 2.162 -- AFTER THE SPLIT (Sean 2026-10-17 "Spilt it"; branch tip 3d2e6aed code = meter half only; replay 2026-10-18)
+`OMR_NARROWED_BAR_LENGTH_UNKNOWN` now does ONE thing (STAGED ADJUDICATE meter witness, plus `reinstate_rest_between_staves` seeing a narrowed bar as having no total): a bar holding a narrowed note has no known length, so it may not vote against a meter or refute a carry; a range may only confirm. `reconcile_duration` (EVALUATE) makes no move in a bar holding a narrowing under the flag. Flag OFF. Replay = `probe/replay_2_162.py` (WHOLE 20261016-night GATHER rows, `review.rerun`, arms base = flag off, mine = flag on, 2.153 off), `probe/{sum,score}_2_162.py`. Litolff re-run on this tip (every glyph and meter of both arms equal to the earlier post-split run, so the Brahms arms of that run are taken as this tip's; a Brahms re-run is ~3 h and was not repeated). Control (base vs stored live duration): Litolff 14,385 / 14,404 agree (the 19 are 2.158's lone event, landed after the record), Brahms 32,843 / 32,844 (2.158's dotted half).
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| `unknown_moves` (range-gated moves) | 0 | 0 |
+| meters abstained -> decided `carried` | 0 | 6 (sys 6/1, 8/0, 19/0, 21/0, 23/1, 25/1) |
+| whole rests re-sized 4 -> 3 beats (= dossier 6/8) | 0 | 154 (pp 6:10, 8:51, 19:26, 21:30, 23:13, 25:24) |
+| notes changed | 0 | 84 = 67 narrowed -> decided, 13 decided -> another value, 4 same value another decider |
+| Sean's judged tiles right / wrong / narrowed | 157/29/11 -> same | 118/24/15 -> 127/23/7 |
+
+* **Litolff: nothing changes.** Set J tiles 2/4/9/10/14 (the 5 range-gated moves that were right -> wrong) stay at their base value, which Sean judged right: the split removes them by construction.
+* **Brahms, judged tiles (12 of the 84 are judged):** 9 narrowed/wrong -> right (2.162 tiles 6, 8, 11, 13, 17, 22; 2.81 tile_08, tile_14; 2.153b 14; tile 1 wrong -> right), 1 right -> wrong: **2.162 tile 20** (glyph/23/1/4/2/2, Sean quarter, decided 1.0 -> 0.5 by `meter_reconciliation`). 2.162 tile 3 right -> right.
+* **Every one of the 13 decided -> another value is a `meter_reconciliation` move under the restored meter** (EVALUATE, not the range rule): an existing mechanism now firing because those systems have a meter again. It is the bar moving a decided note (CLAUDE §4: the bar never moves a DECIDED note except lengthening a two-option note) and is outside this lane; 2.165's guard owns it. Judged: 2 wrong -> right, 1 right -> wrong, 3 right -> right.
+* Limits: one night's GATHER, two plates, GATHER+ADJUDICATE+EVALUATE+INFER only. Whole-rest sizes are against the dossier, not Sean's print.
+
+Blind tiles for the 72 changed notes Sean has not judged: `out/print/2.162-review-b/` (10: 8 decided-moved + 1 chord-share, + 1 control; Brahms only, seed 21622; `probe/tiles_2_162b.py`, one run; key `out/2.162/tiles-key-b.json`; one key row per PNG, blue box == key box +-3 px), `answers.json {}`. Not answered.
