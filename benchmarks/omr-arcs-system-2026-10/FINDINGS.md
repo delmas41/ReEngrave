@@ -184,8 +184,54 @@ for; the erase emptied it, yet the head gate still keeps it (narrowed, `head_fil
 
 ## 7. Limits / next
 
-Flag OFF. The joined curve is not yet READ by `adjudicate_tie_pair` / `adjudicate_arc_kind` (the consumer, once the
-tiles say the joins are right). The erase perturbs the CV beam reader on Brahms pdf 1 (one cell, 9 heads) and makes
+Flag OFF. (Round 2, Sec. 8: `adjudicate_tie_pair` / `adjudicate_arc_kind` now read the joined curve.) The erase perturbs the CV beam reader on Brahms pdf 1 (one cell, 9 heads) and makes
 one judged eighth a quarter: until that is understood the ERASE should stay off even if the READING is kept. Arcs
 lying along a staff line are bridged only ~3 sp. Single pages only; no whole-movement replay (a GATHER change needs a
 gather, not `review.rerun`).
+
+## 8. Round 2 (2026-10-18): the consumers, the exemption fix, a lean replay
+
+**Built** (flag `OMR_SYSTEM_ARCS`, default OFF; the rows exist only while it is on). STAGED ADJUDICATE:
+* `adjudicate_tie_pair` reads `Q.SYSTEM_ARC` (found through the staff: the row names every piece of the joined curve).
+  CONNECT, NEVER GUESS: where the local flank search found NO head at an end (`no_start_head` / `no_stop_head` /
+  `no_head_near_the_arc` -- the bar's pad stops at the barline the tie crosses) AND the joined curve's two ends landed on
+  two DIFFERENT heads at one staff position with nothing between (`two_heads_one_position_adjacent`, page-facts 1, Sean
+  2026-10-01) AND neither head was refused as a notehead, it decides `paired_by_system_arc`. Every other shape, an
+  unanchored end, a slur, and every local refusal that is itself a finding (`not_adjacent`, `no_pair_at_one_position`,
+  `spans_a_whole_bar`, `*_system`) stays abstained. Where the local search DOES pair, the row only records `agrees`.
+* `adjudicate_arc_kind` RECORDS the system arc's shape and its agreement with the reading in `grammar["system_arc"]`; it
+  acts on nothing (the tie->slur half of any grammar veto measured +130 edits on a scan, `OMR_ARC_RECLASS`).
+* `reach.py`: the `Q.SYSTEM_ARC` KNOWN_GAPS entry LEAVES (it has a reader). **check open-findings 194 -> 193.**
+* The tiny-box erase exemption now also needs 2.164's test: a NOTEHEAD box is "all stroke" only if it starts within half
+  a space of its bar's left edge AND holds < half a head's width of head-tall columns (`head_oval`, same cut as
+  `notehead_precision`); `OMR_ARC_TAIL_NOT_A_HEAD` off, no cell or no raster keeps the box (rule 8). Beam boxes unchanged.
+* Erase stays OFF-by-intent: hairline-as-beam on Brahms pdf 1 is known and not fixed here.
+
+Fast tier `pytest -m "not slow" tools/omr/tests`: 8460 passed, 0 failed (serial; no xdist here).
+
+Tests: `test_staged_system_arc_consumers_2_166.py` (12; each refusal has its positive control: no row -> abstains; two
+positions / heads between / unanchored / slur -> abstain; a thin stroke at the left edge is exempt, a head-tall blob at
+the left edge is not).
+
+**Lean replay** (`probe/page_ab.py`, flag OFF vs ON, detector cached, the pages holding Set I tiles; Litolff 2/4/5 and
+Brahms 26 not re-run, their v1 files are in `out/2.166/v1/`):
+
+| page | tie_pair abstained -> `paired_by_system_arc` | arc_kind changed | other glyph verdicts changed | judged glyphs changed |
+|---|--:|--:|--|--|
+| Litolff 3 | 0 | 0 | 0 | 0 |
+| Litolff 13 | 2 | 0 | 1 eighth-rest gate | 0 |
+| Brahms 1 | 3 | 0 | 14 duration, 2 eighth-rest gates | 3 (below) |
+| Brahms 18 | 5 | 0 | 2 duration, 1 notehead_is_not_a_notehead, 1 rest gate | 0 |
+
+10 ties anchored, all from `no_head_near_the_arc` / `no_stop_head` / `no_start_head`; `decided:paired` counts and
+`narrowed` counts unchanged on every page. The tail erase no longer moves anything on Litolff 3 (0 glyphs changed; was 3:
+the exemption fix). Judged glyphs changed on Brahms 1: `1/0/0/6/5` (Sean "4") narrowed -> quarter, RIGHT (as before);
+`1/0/10/0/17` an eighth-rest gate decided -> abstained, no duration change (as before); `1/1/11/1/21` (Set I tile 11, Sean
+"tie on one side, slur on the other") abstained -> tie_pair start `1/1/11/0/7`, stop `1/1/11/1/23` -- the arc on the tie
+side, consistent with his answer, NOT a verdict he gave on the pair. The earlier WRONG `1/0/11/0/13` (narrowed ->
+quarter) does not change any more. **right -> wrong on judged glyphs: 0.**
+
+**Blind tiles** `out/print/2.166-review-2/` (10: the 9 new ties on unjudged bars + 1 control a per-bar pairing the joined
+curve agrees with), nothing of ours drawn, key `out/2.166/tiles2-key.json`, one run of `probe/tiles2.py` (asserts files =
+manifest = key). Question on each: ONE arc joining the first and last notes (a tie), a different arc (a slur), or none?
+Not yet answered; nothing else changes until they are.

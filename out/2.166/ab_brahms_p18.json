@@ -1,17 +1,17 @@
 {
 "doc": "brahms",
 "page": 18,
-"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5c23bf61adf6fae7/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad5fb21dd5454c276/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
 "same_detector_boxes": true,
-"arcs": 190,
-"pieces_read": 232,
+"arcs": 196,
+"pieces_read": 245,
 "abstained": {
-"below_threshold": 440
+"below_threshold": 427
 },
-"joined_across_barline": 7,
+"joined_across_barline": 12,
 "shapes": {
-"end_unanchored": 92,
-"one_position_heads_between": 16,
+"end_unanchored": 96,
+"one_position_heads_between": 18,
 "two_positions": 28,
 "two_heads_one_position_adjacent": 54
 },
@@ -34,12 +34,13 @@
 "narrowed:more_than_one_pair": 34,
 "abstained:not_an_arc": 397,
 "decided:paired": 68,
-"abstained:no_head_near_the_arc": 18,
+"abstained:no_head_near_the_arc": 15,
 "abstained:not_adjacent": 14,
+"decided:paired_by_system_arc": 5,
 "abstained:no_pair_at_one_position": 11,
-"abstained:no_start_head": 2,
+"abstained:no_start_head": 1,
 "abstained:runs_off_the_system": 10,
-"abstained:no_stop_head": 10
+"abstained:no_stop_head": 9
 },
 "arc_kind_off": {
 "\"slur\"": 93,
@@ -49,8 +50,50 @@
 "\"slur\"": 93,
 "\"tie\"": 579
 },
-"n_changed_glyphs": 3,
+"n_changed_glyphs": 8,
 "changed": {
+"glyph/18/0/2/6/14": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_head_near_the_arc"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/18/0/2/6/13\", \"stop\": \"glyph/18/0/2/6/3\"}",
+"paired_by_system_arc"
+]
+}
+},
+"glyph/18/0/6/1/11": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_head_near_the_arc"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/18/0/6/1/2\", \"stop\": \"glyph/18/0/6/2/2\"}",
+"paired_by_system_arc"
+]
+}
+},
+"glyph/18/1/2/4/2": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_start_head"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/18/1/2/4/0\", \"stop\": \"glyph/18/1/2/5/0\"}",
+"paired_by_system_arc"
+]
+}
+},
 "glyph/18/1/3/6/5": {
 "duration": {
 "off": [
@@ -91,6 +134,20 @@
 ]
 }
 },
+"glyph/18/1/8/6/5": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_head_near_the_arc"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/18/1/8/6/6\", \"stop\": \"glyph/18/1/8/7/5\"}",
+"paired_by_system_arc"
+]
+}
+},
 "glyph/18/1/9/0/6": {
 "duration": {
 "off": [
@@ -102,6 +159,20 @@
 "decided",
 "{\"beam_levels\": 0, \"beats\": 1.0, \"dots\": 0, \"written\": 1.0}",
 "head_and_marks"
+]
+}
+},
+"glyph/18/1/9/6/16": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_stop_head"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/18/1/9/6/9\", \"stop\": \"glyph/18/1/9/7/10\"}",
+"paired_by_system_arc"
 ]
 }
 }
@@ -131,7 +202,7 @@
 "page": 18,
 "staff_index": 0,
 "cell": 2,
-"n": 42905,
+"n": 44888,
 "x0": 2311.0,
 "x1": 2945.68994140625,
 "y0": 366.0,
@@ -141,7 +212,7 @@
 "page": 18,
 "staff_index": 0,
 "cell": 3,
-"n": 40306,
+"n": 43685,
 "x0": 2946.0,
 "x1": 3555.7021484375,
 "y0": 366.0,
@@ -291,7 +362,7 @@
 "page": 18,
 "staff_index": 3,
 "cell": 6,
-"n": 6431,
+"n": 9571,
 "x0": 4960.70947265625,
 "x1": 5108.8955078125,
 "y0": 1243.0712890625,
@@ -361,21 +432,11 @@
 "page": 18,
 "staff_index": 5,
 "cell": 3,
-"n": 49079,
+"n": 54063,
 "x0": 3299.251953125,
 "x1": 3540.8095703125,
 "y0": 1651.994140625,
 "y1": 1870.6171875
-},
-{
-"page": 18,
-"staff_index": 5,
-"cell": 4,
-"n": 36,
-"x0": 3603.42578125,
-"x1": 3604.8125,
-"y0": 1888.88671875,
-"y1": 1890.828125
 },
 {
 "page": 18,
@@ -411,10 +472,10 @@
 "page": 18,
 "staff_index": 6,
 "cell": 4,
-"n": 47,
+"n": 14,
 "x0": 3600.09765625,
-"x1": 3604.8125,
-"y0": 1889.24609375,
+"x1": 3601.76171875,
+"y0": 2124.43359375,
 "y1": 2124.7109375
 },
 {
@@ -531,11 +592,11 @@
 "page": 18,
 "staff_index": 9,
 "cell": 2,
-"n": 59008,
+"n": 61694,
 "x0": 2311.0,
 "x1": 2945.68994140625,
 "y0": 2519.0,
-"y1": 2577.9111328125
+"y1": 2586.90283203125
 },
 {
 "page": 18,
@@ -651,11 +712,21 @@
 "page": 18,
 "staff_index": 14,
 "cell": 4,
-"n": 23582,
+"n": 28867,
 "x0": 3498.19921875,
 "x1": 3698.708984375,
 "y0": 3843.0,
-"y1": 3882.869140625
+"y1": 4024.884765625
+},
+{
+"page": 18,
+"staff_index": 14,
+"cell": 5,
+"n": 172,
+"x0": 4023.0025,
+"x1": 4026.8175,
+"y0": 4122.04,
+"y1": 4128.8525
 },
 {
 "page": 18,
@@ -671,7 +742,7 @@
 "page": 18,
 "staff_index": 14,
 "cell": 7,
-"n": 55453,
+"n": 58328,
 "x0": 4845.0,
 "x1": 5491.7548828125,
 "y0": 3843.0,
@@ -696,6 +767,16 @@
 "x1": 3676.8828125,
 "y0": 4430.826171875,
 "y1": 4440.4296875
+},
+{
+"page": 18,
+"staff_index": 15,
+"cell": 5,
+"n": 60,
+"x0": 4025.975,
+"x1": 4026.8,
+"y0": 4122.0,
+"y1": 4125.85
 },
 {
 "page": 18,
@@ -751,7 +832,7 @@
 "page": 18,
 "staff_index": 16,
 "cell": 5,
-"n": 1638,
+"n": 1706,
 "x0": 3704.225,
 "x1": 3747.95,
 "y0": 4457.15,
@@ -1151,11 +1232,11 @@
 "page": 18,
 "staff_index": 26,
 "cell": 5,
-"n": 44,
+"n": 1403,
 "x0": 3704.1775,
-"x1": 3704.995,
+"x1": 3738.785,
 "y0": 6674.245,
-"y1": 6676.97
+"y1": 6910.775
 },
 {
 "page": 18,
@@ -1180,6 +1261,16 @@
 {
 "page": 18,
 "staff_index": 27,
+"cell": 5,
+"n": 1279,
+"x0": 3720.9225,
+"x1": 3738.96,
+"y0": 6897.2725,
+"y1": 6910.87
+},
+{
+"page": 18,
+"staff_index": 27,
 "cell": 6,
 "n": 6266,
 "x0": 4525.28662109375,
@@ -1200,7 +1291,7 @@
 ],
 "sysarc": [
 {
-"id": "obs:010199",
+"id": "obs:010196",
 "subject": "glyph/18/0/0/0/16",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1245,7 +1336,7 @@
 "basis": []
 },
 {
-"id": "obs:010200",
+"id": "obs:010197",
 "subject": "glyph/18/0/0/0/22",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1290,7 +1381,7 @@
 "basis": []
 },
 {
-"id": "obs:010201",
+"id": "obs:010198",
 "subject": "glyph/18/0/0/0/21",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -1335,7 +1426,7 @@
 "basis": []
 },
 {
-"id": "obs:010202",
+"id": "obs:010199",
 "subject": "glyph/18/0/0/0/4",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -1386,7 +1477,7 @@
 "basis": []
 },
 {
-"id": "obs:010203",
+"id": "obs:010200",
 "subject": "glyph/18/0/0/1/15",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1431,7 +1522,7 @@
 "basis": []
 },
 {
-"id": "obs:010204",
+"id": "obs:010201",
 "subject": "glyph/18/0/0/1/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1440,13 +1531,18 @@
 "score": null,
 "detail": {
 "pieces": [
-"glyph/18/0/0/1/1"
+"glyph/18/0/0/1/1",
+"glyph/18/0/0/2/14",
+"glyph/18/0/0/2/31"
 ],
 "piece_classes": [
+"tie",
+"tie",
 "tie"
 ],
 "cells": [
-1
+1,
+2
 ],
 "x_left_page": 1983,
 "x_right_page": 2353,
@@ -1455,10 +1551,12 @@
 "width_spaces": 13.47,
 "inked_columns": 358,
 "coverage": [
-0.966
+0.966,
+0.827,
+1.0
 ],
 "cut_at_barline": true,
-"beyond_boxes_spaces": 1.54,
+"beyond_boxes_spaces": 0.17,
 "through_boxes": [
 {
 "glyph": "glyph/18/0/0/1/25",
@@ -1494,7 +1592,7 @@
 "basis": []
 },
 {
-"id": "obs:010205",
+"id": "obs:010202",
 "subject": "glyph/18/0/0/2/29",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1539,7 +1637,7 @@
 "basis": []
 },
 {
-"id": "obs:010206",
+"id": "obs:010203",
 "subject": "glyph/18/0/0/2/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1596,7 +1694,7 @@
 "basis": []
 },
 {
-"id": "obs:010207",
+"id": "obs:010204",
 "subject": "glyph/18/0/0/2/4",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1605,13 +1703,16 @@
 "score": null,
 "detail": {
 "pieces": [
-"glyph/18/0/0/2/4"
+"glyph/18/0/0/2/4",
+"glyph/18/0/0/3/16"
 ],
 "piece_classes": [
+"tie",
 "tie"
 ],
 "cells": [
-2
+2,
+3
 ],
 "x_left_page": 2729,
 "x_right_page": 2998,
@@ -1620,10 +1721,11 @@
 "width_spaces": 9.79,
 "inked_columns": 256,
 "coverage": [
-0.948
+0.948,
+1.0
 ],
 "cut_at_barline": true,
-"beyond_boxes_spaces": 1.89,
+"beyond_boxes_spaces": 0.19,
 "through_boxes": [
 {
 "glyph": "glyph/18/0/0/2/19",
@@ -1647,7 +1749,7 @@
 "basis": []
 },
 {
-"id": "obs:010208",
+"id": "obs:010205",
 "subject": "glyph/18/0/0/3/11",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1699,7 +1801,7 @@
 "basis": []
 },
 {
-"id": "obs:010209",
+"id": "obs:010206",
 "subject": "glyph/18/0/0/3/21",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1750,7 +1852,7 @@
 "basis": []
 },
 {
-"id": "obs:010210",
+"id": "obs:010207",
 "subject": "glyph/18/0/0/3/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1788,7 +1890,7 @@
 "basis": []
 },
 {
-"id": "obs:010211",
+"id": "obs:010208",
 "subject": "glyph/18/0/0/6/12",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1839,7 +1941,7 @@
 "basis": []
 },
 {
-"id": "obs:010212",
+"id": "obs:010209",
 "subject": "glyph/18/0/0/6/6",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -1884,7 +1986,7 @@
 "basis": []
 },
 {
-"id": "obs:010220",
+"id": "obs:010217",
 "subject": "glyph/18/0/1/0/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1922,7 +2024,7 @@
 "basis": []
 },
 {
-"id": "obs:010221",
+"id": "obs:010218",
 "subject": "glyph/18/0/1/0/21",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1960,7 +2062,7 @@
 "basis": []
 },
 {
-"id": "obs:010222",
+"id": "obs:010219",
 "subject": "glyph/18/0/1/0/22",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -1998,7 +2100,7 @@
 "basis": []
 },
 {
-"id": "obs:010223",
+"id": "obs:010220",
 "subject": "glyph/18/0/1/0/3",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -2049,7 +2151,7 @@
 "basis": []
 },
 {
-"id": "obs:010224",
+"id": "obs:010221",
 "subject": "glyph/18/0/1/1/9",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2097,7 +2199,7 @@
 "basis": []
 },
 {
-"id": "obs:010225",
+"id": "obs:010222",
 "subject": "glyph/18/0/1/1/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2148,7 +2250,7 @@
 "basis": []
 },
 {
-"id": "obs:010226",
+"id": "obs:010223",
 "subject": "glyph/18/0/1/2/7",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -2211,7 +2313,7 @@
 "basis": []
 },
 {
-"id": "obs:010227",
+"id": "obs:010224",
 "subject": "glyph/18/0/1/3/12",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2265,7 +2367,7 @@
 "basis": []
 },
 {
-"id": "obs:010228",
+"id": "obs:010225",
 "subject": "glyph/18/0/1/3/19",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2303,7 +2405,7 @@
 "basis": []
 },
 {
-"id": "obs:010229",
+"id": "obs:010226",
 "subject": "glyph/18/0/1/4/9",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2354,7 +2456,7 @@
 "basis": []
 },
 {
-"id": "obs:010230",
+"id": "obs:010227",
 "subject": "glyph/18/0/1/6/18",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2399,7 +2501,7 @@
 "basis": []
 },
 {
-"id": "obs:010231",
+"id": "obs:010228",
 "subject": "glyph/18/0/1/6/15",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2456,7 +2558,7 @@
 "basis": []
 },
 {
-"id": "obs:010232",
+"id": "obs:010229",
 "subject": "glyph/18/0/1/6/12",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2507,7 +2609,7 @@
 "basis": []
 },
 {
-"id": "obs:010248",
+"id": "obs:010245",
 "subject": "glyph/18/0/2/0/26",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2545,7 +2647,7 @@
 "basis": []
 },
 {
-"id": "obs:010249",
+"id": "obs:010246",
 "subject": "glyph/18/0/2/0/21",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2608,7 +2710,7 @@
 "basis": []
 },
 {
-"id": "obs:010250",
+"id": "obs:010247",
 "subject": "glyph/18/0/2/0/8",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -2656,7 +2758,7 @@
 "basis": []
 },
 {
-"id": "obs:010251",
+"id": "obs:010248",
 "subject": "glyph/18/0/2/0/37",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2707,7 +2809,7 @@
 "basis": []
 },
 {
-"id": "obs:010252",
+"id": "obs:010249",
 "subject": "glyph/18/0/2/1/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2758,7 +2860,7 @@
 "basis": []
 },
 {
-"id": "obs:010253",
+"id": "obs:010250",
 "subject": "glyph/18/0/2/1/15",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2806,7 +2908,7 @@
 "basis": []
 },
 {
-"id": "obs:010254",
+"id": "obs:010251",
 "subject": "glyph/18/0/2/4/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -2851,7 +2953,7 @@
 "basis": []
 },
 {
-"id": "obs:010255",
+"id": "obs:010252",
 "subject": "glyph/18/0/2/6/14",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2902,7 +3004,7 @@
 "basis": []
 },
 {
-"id": "obs:010256",
+"id": "obs:010253",
 "subject": "glyph/18/0/2/6/9",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -2956,7 +3058,7 @@
 "basis": []
 },
 {
-"id": "obs:010266",
+"id": "obs:010262",
 "subject": "glyph/18/0/3/0/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -3019,7 +3121,7 @@
 "basis": []
 },
 {
-"id": "obs:010267",
+"id": "obs:010263",
 "subject": "glyph/18/0/3/0/16",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -3088,7 +3190,7 @@
 "basis": []
 },
 {
-"id": "obs:010268",
+"id": "obs:010264",
 "subject": "glyph/18/0/3/2/7",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3145,7 +3247,7 @@
 "basis": []
 },
 {
-"id": "obs:010269",
+"id": "obs:010265",
 "subject": "glyph/18/0/3/6/22",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3186,7 +3288,7 @@
 "basis": []
 },
 {
-"id": "obs:010270",
+"id": "obs:010266",
 "subject": "glyph/18/0/3/6/9",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3224,7 +3326,7 @@
 "basis": []
 },
 {
-"id": "obs:010271",
+"id": "obs:010267",
 "subject": "glyph/18/0/3/6/25",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3233,9 +3335,11 @@
 "score": null,
 "detail": {
 "pieces": [
-"glyph/18/0/3/6/25"
+"glyph/18/0/3/6/25",
+"glyph/18/0/3/6/23"
 ],
 "piece_classes": [
+"tie",
 "tie"
 ],
 "cells": [
@@ -3246,9 +3350,10 @@
 "y_left_page": 1251.5,
 "y_right_page": 1265.0,
 "width_spaces": 5.34,
-"inked_columns": 140,
+"inked_columns": 141,
 "coverage": [
-0.664
+0.664,
+0.5
 ],
 "cut_at_barline": false,
 "beyond_boxes_spaces": 0.0,
@@ -3262,7 +3367,7 @@
 "basis": []
 },
 {
-"id": "obs:010276",
+"id": "obs:010272",
 "subject": "glyph/18/0/4/0/26",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3307,7 +3412,7 @@
 "basis": []
 },
 {
-"id": "obs:010277",
+"id": "obs:010273",
 "subject": "glyph/18/0/4/0/3",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -3358,7 +3463,7 @@
 "basis": []
 },
 {
-"id": "obs:010278",
+"id": "obs:010274",
 "subject": "glyph/18/0/4/0/20",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3415,7 +3520,7 @@
 "basis": []
 },
 {
-"id": "obs:010279",
+"id": "obs:010275",
 "subject": "glyph/18/0/4/1/6",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -3472,7 +3577,7 @@
 "basis": []
 },
 {
-"id": "obs:010280",
+"id": "obs:010276",
 "subject": "glyph/18/0/4/1/4",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -3529,7 +3634,7 @@
 "basis": []
 },
 {
-"id": "obs:010281",
+"id": "obs:010277",
 "subject": "glyph/18/0/4/1/19",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3574,7 +3679,7 @@
 "basis": []
 },
 {
-"id": "obs:010282",
+"id": "obs:010278",
 "subject": "glyph/18/0/4/2/21",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3637,7 +3742,7 @@
 "basis": []
 },
 {
-"id": "obs:010283",
+"id": "obs:010279",
 "subject": "glyph/18/0/4/2/6",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3688,7 +3793,7 @@
 "basis": []
 },
 {
-"id": "obs:010284",
+"id": "obs:010280",
 "subject": "glyph/18/0/4/3/21",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3726,7 +3831,7 @@
 "basis": []
 },
 {
-"id": "obs:010301",
+"id": "obs:010296",
 "subject": "glyph/18/0/5/0/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3764,7 +3869,7 @@
 "basis": []
 },
 {
-"id": "obs:010302",
+"id": "obs:010297",
 "subject": "glyph/18/0/5/1/15",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3818,7 +3923,7 @@
 "basis": []
 },
 {
-"id": "obs:010303",
+"id": "obs:010298",
 "subject": "glyph/18/0/5/1/4",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3866,10 +3971,10 @@
 "basis": []
 },
 {
-"id": "obs:010304",
+"id": "obs:010299",
 "subject": "glyph/18/0/5/3/2",
 "quantity": "system_arc",
-"value": "end_unanchored",
+"value": "one_position_heads_between",
 "reader": "cv_system_arc",
 "frame": "page",
 "score": null,
@@ -3905,19 +4010,19 @@
 "glyph": "glyph/18/0/5/4/11",
 "class": "noteheadHalfOnLine",
 "residual_spaces2": 0.041,
-"stroke_only": true
+"stroke_only": false
 }
 ],
 "anchor_left": "glyph/18/0/5/3/16",
-"anchor_right": null,
-"anchor_dy_spaces": null,
-"heads_between": null,
+"anchor_right": "glyph/18/0/5/4/11",
+"anchor_dy_spaces": 0.022,
+"heads_between": 2,
 "space_page_px": 27.511
 },
 "basis": []
 },
 {
-"id": "obs:010305",
+"id": "obs:010300",
 "subject": "glyph/18/0/5/3/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3955,7 +4060,45 @@
 "basis": []
 },
 {
-"id": "obs:010326",
+"id": "obs:010301",
+"subject": "glyph/18/0/5/3/9",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/0/5/3/9"
+],
+"piece_classes": [
+"slur"
+],
+"cells": [
+3
+],
+"x_left_page": 3377,
+"x_right_page": 3514,
+"y_left_page": 1770.5,
+"y_right_page": 1771.0,
+"width_spaces": 4.98,
+"inked_columns": 137,
+"coverage": [
+0.513
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 0.0,
+"through_boxes": [],
+"anchor_left": null,
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 27.511
+},
+"basis": []
+},
+{
+"id": "obs:010322",
 "subject": "glyph/18/0/6/0/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -3993,7 +4136,7 @@
 "basis": []
 },
 {
-"id": "obs:010327",
+"id": "obs:010323",
 "subject": "glyph/18/0/6/1/10",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4062,7 +4205,7 @@
 "basis": []
 },
 {
-"id": "obs:010328",
+"id": "obs:010324",
 "subject": "glyph/18/0/6/3/4",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4119,7 +4262,7 @@
 "basis": []
 },
 {
-"id": "obs:010329",
+"id": "obs:010325",
 "subject": "glyph/18/0/6/3/7",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4157,7 +4300,7 @@
 "basis": []
 },
 {
-"id": "obs:010330",
+"id": "obs:010326",
 "subject": "glyph/18/0/6/3/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4202,7 +4345,7 @@
 "basis": []
 },
 {
-"id": "obs:010363",
+"id": "obs:010359",
 "subject": "glyph/18/0/7/0/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4240,7 +4383,7 @@
 "basis": []
 },
 {
-"id": "obs:010364",
+"id": "obs:010360",
 "subject": "glyph/18/0/7/0/8",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4278,7 +4421,7 @@
 "basis": []
 },
 {
-"id": "obs:010365",
+"id": "obs:010361",
 "subject": "glyph/18/0/7/1/5",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4341,7 +4484,7 @@
 "basis": []
 },
 {
-"id": "obs:010366",
+"id": "obs:010362",
 "subject": "glyph/18/0/7/3/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4383,7 +4526,7 @@
 "basis": []
 },
 {
-"id": "obs:010379",
+"id": "obs:010375",
 "subject": "glyph/18/0/8/0/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4428,7 +4571,7 @@
 "basis": []
 },
 {
-"id": "obs:010380",
+"id": "obs:010376",
 "subject": "glyph/18/0/8/1/6",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4473,7 +4616,7 @@
 "basis": []
 },
 {
-"id": "obs:010381",
+"id": "obs:010377",
 "subject": "glyph/18/0/8/3/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4518,7 +4661,7 @@
 "basis": []
 },
 {
-"id": "obs:010382",
+"id": "obs:010378",
 "subject": "glyph/18/0/8/5/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4569,7 +4712,7 @@
 "basis": []
 },
 {
-"id": "obs:010383",
+"id": "obs:010379",
 "subject": "glyph/18/0/8/5/2",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4626,7 +4769,7 @@
 "basis": []
 },
 {
-"id": "obs:010396",
+"id": "obs:010391",
 "subject": "glyph/18/0/9/0/10",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4664,7 +4807,7 @@
 "basis": []
 },
 {
-"id": "obs:010397",
+"id": "obs:010392",
 "subject": "glyph/18/0/9/0/17",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4718,7 +4861,7 @@
 "basis": []
 },
 {
-"id": "obs:010398",
+"id": "obs:010393",
 "subject": "glyph/18/0/9/1/29",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -4794,7 +4937,7 @@
 "basis": []
 },
 {
-"id": "obs:010399",
+"id": "obs:010394",
 "subject": "glyph/18/0/9/1/3",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4804,14 +4947,17 @@
 "detail": {
 "pieces": [
 "glyph/18/0/9/1/3",
-"glyph/18/0/9/1/21"
+"glyph/18/0/9/1/21",
+"glyph/18/0/9/2/4"
 ],
 "piece_classes": [
+"tie",
 "tie",
 "tie"
 ],
 "cells": [
-1
+1,
+2
 ],
 "x_left_page": 1993,
 "x_right_page": 2351,
@@ -4821,10 +4967,11 @@
 "inked_columns": 354,
 "coverage": [
 0.984,
-0.94
+0.94,
+1.0
 ],
 "cut_at_barline": true,
-"beyond_boxes_spaces": 1.47,
+"beyond_boxes_spaces": 0.01,
 "through_boxes": [
 {
 "glyph": "glyph/18/0/9/1/6",
@@ -4848,7 +4995,7 @@
 "basis": []
 },
 {
-"id": "obs:010400",
+"id": "obs:010395",
 "subject": "glyph/18/0/9/3/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4899,7 +5046,7 @@
 "basis": []
 },
 {
-"id": "obs:010401",
+"id": "obs:010396",
 "subject": "glyph/18/0/9/5/11",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4944,7 +5091,7 @@
 "basis": []
 },
 {
-"id": "obs:010408",
+"id": "obs:010403",
 "subject": "glyph/18/0/10/2/20",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4995,7 +5142,7 @@
 "basis": []
 },
 {
-"id": "obs:010411",
+"id": "obs:010406",
 "subject": "glyph/18/0/11/0/34",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5046,7 +5193,7 @@
 "basis": []
 },
 {
-"id": "obs:010412",
+"id": "obs:010407",
 "subject": "glyph/18/0/11/0/25",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5097,7 +5244,7 @@
 "basis": []
 },
 {
-"id": "obs:010413",
+"id": "obs:010408",
 "subject": "glyph/18/0/11/0/17",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5154,7 +5301,7 @@
 "basis": []
 },
 {
-"id": "obs:010414",
+"id": "obs:010409",
 "subject": "glyph/18/0/11/0/10",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5205,7 +5352,7 @@
 "basis": []
 },
 {
-"id": "obs:010415",
+"id": "obs:010410",
 "subject": "glyph/18/0/11/2/13",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5262,7 +5409,7 @@
 "basis": []
 },
 {
-"id": "obs:010422",
+"id": "obs:010417",
 "subject": "glyph/18/0/12/0/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5325,7 +5472,7 @@
 "basis": []
 },
 {
-"id": "obs:010423",
+"id": "obs:010418",
 "subject": "glyph/18/0/12/0/18",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5388,7 +5535,7 @@
 "basis": []
 },
 {
-"id": "obs:010424",
+"id": "obs:010419",
 "subject": "glyph/18/0/12/0/30",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5445,7 +5592,7 @@
 "basis": []
 },
 {
-"id": "obs:010425",
+"id": "obs:010420",
 "subject": "glyph/18/0/12/0/10",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -5494,7 +5641,7 @@
 "basis": []
 },
 {
-"id": "obs:010426",
+"id": "obs:010421",
 "subject": "glyph/18/0/12/1/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5545,7 +5692,7 @@
 "basis": []
 },
 {
-"id": "obs:010427",
+"id": "obs:010422",
 "subject": "glyph/18/0/12/1/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5596,7 +5743,7 @@
 "basis": []
 },
 {
-"id": "obs:010428",
+"id": "obs:010423",
 "subject": "glyph/18/0/12/2/17",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5641,7 +5788,7 @@
 "basis": []
 },
 {
-"id": "obs:010429",
+"id": "obs:010424",
 "subject": "glyph/18/0/12/2/8",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5679,7 +5826,7 @@
 "basis": []
 },
 {
-"id": "obs:010436",
+"id": "obs:010431",
 "subject": "glyph/18/0/13/0/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5748,7 +5895,7 @@
 "basis": []
 },
 {
-"id": "obs:010437",
+"id": "obs:010432",
 "subject": "glyph/18/0/13/0/6",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -5812,7 +5959,7 @@
 "basis": []
 },
 {
-"id": "obs:010438",
+"id": "obs:010433",
 "subject": "glyph/18/0/13/1/13",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5875,7 +6022,7 @@
 "basis": []
 },
 {
-"id": "obs:010460",
+"id": "obs:010452",
 "subject": "glyph/18/1/0/0/13",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5913,7 +6060,7 @@
 "basis": []
 },
 {
-"id": "obs:010461",
+"id": "obs:010453",
 "subject": "glyph/18/1/0/0/15",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5951,7 +6098,7 @@
 "basis": []
 },
 {
-"id": "obs:010462",
+"id": "obs:010454",
 "subject": "glyph/18/1/0/4/15",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -6011,7 +6158,96 @@
 "basis": []
 },
 {
-"id": "obs:010463",
+"id": "obs:010455",
+"subject": "glyph/18/1/0/4/22",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/1/0/4/22"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+4
+],
+"x_left_page": 3556,
+"x_right_page": 3693,
+"y_left_page": 4016.0,
+"y_right_page": 4021.0,
+"width_spaces": 5.03,
+"inked_columns": 119,
+"coverage": [
+0.633
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 0.0,
+"through_boxes": [],
+"anchor_left": null,
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 27.229
+},
+"basis": []
+},
+{
+"id": "obs:010456",
+"subject": "glyph/18/1/0/5/25",
+"quantity": "system_arc",
+"value": "one_position_heads_between",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/1/0/5/25"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+5
+],
+"x_left_page": 3745,
+"x_right_page": 4026,
+"y_left_page": 4132.5,
+"y_right_page": 4123.5,
+"width_spaces": 10.32,
+"inked_columns": 263,
+"coverage": [
+0.504
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 0.0,
+"through_boxes": [
+{
+"glyph": "glyph/18/1/0/5/13",
+"class": "beam",
+"residual_spaces2": 1.9314,
+"stroke_only": false
+},
+{
+"glyph": "glyph/18/1/0/5/17",
+"class": "beam",
+"residual_spaces2": 0.3561,
+"stroke_only": false
+}
+],
+"anchor_left": "glyph/18/1/0/5/0",
+"anchor_right": "glyph/18/1/0/5/6",
+"anchor_dy_spaces": 0.08,
+"heads_between": 6,
+"space_page_px": 27.229
+},
+"basis": []
+},
+{
+"id": "obs:010457",
 "subject": "glyph/18/1/0/6/5",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6056,7 +6292,7 @@
 "basis": []
 },
 {
-"id": "obs:010464",
+"id": "obs:010458",
 "subject": "glyph/18/1/0/6/12",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6065,13 +6301,16 @@
 "score": null,
 "detail": {
 "pieces": [
-"glyph/18/1/0/6/12"
+"glyph/18/1/0/6/12",
+"glyph/18/1/0/7/16"
 ],
 "piece_classes": [
+"tie",
 "tie"
 ],
 "cells": [
-6
+6,
+7
 ],
 "x_left_page": 4576,
 "x_right_page": 4895,
@@ -6080,10 +6319,11 @@
 "width_spaces": 11.72,
 "inked_columns": 310,
 "coverage": [
-0.959
+0.959,
+0.911
 ],
 "cut_at_barline": true,
-"beyond_boxes_spaces": 1.84,
+"beyond_boxes_spaces": 0.0,
 "through_boxes": [
 {
 "glyph": "glyph/18/1/0/6/13",
@@ -6101,7 +6341,7 @@
 "basis": []
 },
 {
-"id": "obs:010465",
+"id": "obs:010459",
 "subject": "glyph/18/1/0/7/19",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6139,7 +6379,7 @@
 "basis": []
 },
 {
-"id": "obs:010466",
+"id": "obs:010460",
 "subject": "glyph/18/1/0/7/15",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6177,7 +6417,7 @@
 "basis": []
 },
 {
-"id": "obs:010467",
+"id": "obs:010461",
 "subject": "glyph/18/1/0/7/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6215,7 +6455,7 @@
 "basis": []
 },
 {
-"id": "obs:010487",
+"id": "obs:010481",
 "subject": "glyph/18/1/1/0/17",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6253,7 +6493,7 @@
 "basis": []
 },
 {
-"id": "obs:010488",
+"id": "obs:010482",
 "subject": "glyph/18/1/1/0/16",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6294,7 +6534,7 @@
 "basis": []
 },
 {
-"id": "obs:010489",
+"id": "obs:010483",
 "subject": "glyph/18/1/1/0/6",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6339,7 +6579,7 @@
 "basis": []
 },
 {
-"id": "obs:010490",
+"id": "obs:010484",
 "subject": "glyph/18/1/1/4/10",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6384,7 +6624,7 @@
 "basis": []
 },
 {
-"id": "obs:010491",
+"id": "obs:010485",
 "subject": "glyph/18/1/1/6/6",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6429,7 +6669,7 @@
 "basis": []
 },
 {
-"id": "obs:010492",
+"id": "obs:010486",
 "subject": "glyph/18/1/1/6/3",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6474,7 +6714,7 @@
 "basis": []
 },
 {
-"id": "obs:010493",
+"id": "obs:010487",
 "subject": "glyph/18/1/1/6/22",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6518,7 +6758,7 @@
 "basis": []
 },
 {
-"id": "obs:010494",
+"id": "obs:010488",
 "subject": "glyph/18/1/1/7/19",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6559,7 +6799,7 @@
 "basis": []
 },
 {
-"id": "obs:010495",
+"id": "obs:010489",
 "subject": "glyph/18/1/1/7/21",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6600,7 +6840,7 @@
 "basis": []
 },
 {
-"id": "obs:010496",
+"id": "obs:010490",
 "subject": "glyph/18/1/1/7/10",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6641,7 +6881,7 @@
 "basis": []
 },
 {
-"id": "obs:010527",
+"id": "obs:010520",
 "subject": "glyph/18/1/2/0/10",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6674,12 +6914,12 @@
 "anchor_right": "glyph/18/1/2/0/5",
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010528",
+"id": "obs:010521",
 "subject": "glyph/18/1/2/0/14",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6719,12 +6959,12 @@
 "anchor_right": "glyph/18/1/2/0/9",
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010529",
+"id": "obs:010522",
 "subject": "glyph/18/1/2/0/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6745,7 +6985,7 @@
 "x_right_page": 1525,
 "y_left_page": 4429.5,
 "y_right_page": 4428.5,
-"width_spaces": 9.9,
+"width_spaces": 9.89,
 "inked_columns": 265,
 "coverage": [
 0.976
@@ -6756,7 +6996,7 @@
 {
 "glyph": "glyph/18/1/2/1/5",
 "class": "beam",
-"residual_spaces2": 0.0199,
+"residual_spaces2": 0.0198,
 "stroke_only": false
 }
 ],
@@ -6764,12 +7004,12 @@
 "anchor_right": "glyph/18/1/2/1/0",
 "anchor_dy_spaces": 0.017,
 "heads_between": 0,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010530",
+"id": "obs:010523",
 "subject": "glyph/18/1/2/0/13",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6801,7 +7041,7 @@
 {
 "glyph": "glyph/18/1/2/1/8",
 "class": "beam",
-"residual_spaces2": 0.0199,
+"residual_spaces2": 0.0198,
 "stroke_only": false
 }
 ],
@@ -6809,12 +7049,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010531",
+"id": "obs:010524",
 "subject": "glyph/18/1/2/4/2",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6835,7 +7075,7 @@
 "x_right_page": 3743,
 "y_left_page": 4631.5,
 "y_right_page": 4637.0,
-"width_spaces": 8.81,
+"width_spaces": 8.8,
 "inked_columns": 226,
 "coverage": [
 0.939
@@ -6846,7 +7086,7 @@
 {
 "glyph": "glyph/18/1/2/4/0",
 "class": "noteheadBlackOnLine",
-"residual_spaces2": 1.3545,
+"residual_spaces2": 1.3534,
 "stroke_only": false
 },
 {
@@ -6858,7 +7098,7 @@
 {
 "glyph": "glyph/18/1/2/5/0",
 "class": "noteheadBlackOnLine",
-"residual_spaces2": 1.3439,
+"residual_spaces2": 1.3428,
 "stroke_only": false
 }
 ],
@@ -6866,12 +7106,12 @@
 "anchor_right": "glyph/18/1/2/5/0",
 "anchor_dy_spaces": 0.007,
 "heads_between": 0,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010532",
+"id": "obs:010525",
 "subject": "glyph/18/1/2/4/13",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6910,7 +7150,7 @@
 {
 "glyph": "glyph/18/1/2/4/6",
 "class": "noteheadBlackOnLine",
-"residual_spaces2": 0.1006,
+"residual_spaces2": 0.1005,
 "stroke_only": false
 }
 ],
@@ -6918,12 +7158,12 @@
 "anchor_right": "glyph/18/1/2/5/14",
 "anchor_dy_spaces": 0.488,
 "heads_between": 0,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010533",
+"id": "obs:010526",
 "subject": "glyph/18/1/2/4/11",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6932,36 +7172,47 @@
 "score": null,
 "detail": {
 "pieces": [
-"glyph/18/1/2/4/11"
+"glyph/18/1/2/4/11",
+"glyph/18/1/2/5/24"
 ],
 "piece_classes": [
+"tie",
 "tie"
 ],
 "cells": [
-4
+4,
+5
 ],
 "x_left_page": 3545,
 "x_right_page": 3738,
 "y_left_page": 4535.0,
-"y_right_page": 4558.0,
+"y_right_page": 4521.0,
 "width_spaces": 7.02,
-"inked_columns": 151,
+"inked_columns": 168,
 "coverage": [
-0.823
+0.823,
+0.829
 ],
 "cut_at_barline": true,
-"beyond_boxes_spaces": 1.42,
-"through_boxes": [],
+"beyond_boxes_spaces": 0.0,
+"through_boxes": [
+{
+"glyph": "glyph/18/1/2/4/24",
+"class": "restQuarter",
+"residual_spaces2": 0.0675,
+"stroke_only": false
+}
+],
 "anchor_left": null,
 "anchor_right": "glyph/18/1/2/5/13",
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010534",
+"id": "obs:010527",
 "subject": "glyph/18/1/2/6/14",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6982,7 +7233,7 @@
 "x_right_page": 4534,
 "y_left_page": 4630.5,
 "y_right_page": 4626.0,
-"width_spaces": 7.9,
+"width_spaces": 7.89,
 "inked_columns": 206,
 "coverage": [
 0.94
@@ -6993,19 +7244,19 @@
 {
 "glyph": "glyph/18/1/2/6/3",
 "class": "noteheadBlackInSpace",
-"residual_spaces2": 0.5018,
+"residual_spaces2": 0.5014,
 "stroke_only": false
 },
 {
 "glyph": "glyph/18/1/2/6/8",
 "class": "noteheadBlackInSpace",
-"residual_spaces2": 1.2248,
+"residual_spaces2": 1.2237,
 "stroke_only": false
 },
 {
 "glyph": "glyph/18/1/2/6/21",
 "class": "dynamicF",
-"residual_spaces2": 2.4191,
+"residual_spaces2": 2.417,
 "stroke_only": false
 }
 ],
@@ -7013,12 +7264,12 @@
 "anchor_right": "glyph/18/1/2/6/8",
 "anchor_dy_spaces": 0.105,
 "heads_between": 0,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010535",
+"id": "obs:010528",
 "subject": "glyph/18/1/2/6/25",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7041,7 +7292,7 @@
 "x_right_page": 4795,
 "y_left_page": 4487.5,
 "y_right_page": 4511.0,
-"width_spaces": 8.81,
+"width_spaces": 8.8,
 "inked_columns": 223,
 "coverage": [
 0.757,
@@ -7054,12 +7305,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010536",
+"id": "obs:010529",
 "subject": "glyph/18/1/2/6/2",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -7099,12 +7350,12 @@
 "anchor_right": "glyph/18/1/2/7/5",
 "anchor_dy_spaces": 0.004,
 "heads_between": 3,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010537",
+"id": "obs:010530",
 "subject": "glyph/18/1/2/6/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7137,12 +7388,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010538",
+"id": "obs:010531",
 "subject": "glyph/18/1/2/7/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -7175,12 +7426,12 @@
 "anchor_right": "glyph/18/1/2/7/9",
 "anchor_dy_spaces": 0.006,
 "heads_between": 0,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010539",
+"id": "obs:010532",
 "subject": "glyph/18/1/2/7/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7201,7 +7452,7 @@
 "x_right_page": 5494,
 "y_left_page": 4374.5,
 "y_right_page": 4374.5,
-"width_spaces": 12.12,
+"width_spaces": 12.11,
 "inked_columns": 333,
 "coverage": [
 1.0
@@ -7213,12 +7464,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010540",
+"id": "obs:010533",
 "subject": "glyph/18/1/2/7/24",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7239,7 +7490,7 @@
 "x_right_page": 5431,
 "y_left_page": 4512.5,
 "y_right_page": 4510.0,
-"width_spaces": 7.9,
+"width_spaces": 7.89,
 "inked_columns": 204,
 "coverage": [
 0.632
@@ -7251,12 +7502,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010541",
+"id": "obs:010534",
 "subject": "glyph/18/1/2/7/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7277,7 +7528,7 @@
 "x_right_page": 5384,
 "y_left_page": 4653.5,
 "y_right_page": 4673.0,
-"width_spaces": 4.08,
+"width_spaces": 4.07,
 "inked_columns": 112,
 "coverage": [
 0.982
@@ -7289,12 +7540,12 @@
 "anchor_right": null,
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.482
+"space_page_px": 27.493
 },
 "basis": []
 },
 {
-"id": "obs:010567",
+"id": "obs:010560",
 "subject": "glyph/18/1/3/0/11",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7332,7 +7583,7 @@
 "basis": []
 },
 {
-"id": "obs:010568",
+"id": "obs:010561",
 "subject": "glyph/18/1/3/0/15",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -7377,7 +7628,7 @@
 "basis": []
 },
 {
-"id": "obs:010569",
+"id": "obs:010562",
 "subject": "glyph/18/1/3/0/17",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7425,7 +7676,7 @@
 "basis": []
 },
 {
-"id": "obs:010570",
+"id": "obs:010563",
 "subject": "glyph/18/1/3/0/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7463,7 +7714,7 @@
 "basis": []
 },
 {
-"id": "obs:010571",
+"id": "obs:010564",
 "subject": "glyph/18/1/3/4/13",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7508,7 +7759,7 @@
 "basis": []
 },
 {
-"id": "obs:010572",
+"id": "obs:010565",
 "subject": "glyph/18/1/3/4/8",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -7565,7 +7816,7 @@
 "basis": []
 },
 {
-"id": "obs:010573",
+"id": "obs:010566",
 "subject": "glyph/18/1/3/4/15",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7622,7 +7873,7 @@
 "basis": []
 },
 {
-"id": "obs:010574",
+"id": "obs:010567",
 "subject": "glyph/18/1/3/6/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7673,7 +7924,7 @@
 "basis": []
 },
 {
-"id": "obs:010575",
+"id": "obs:010568",
 "subject": "glyph/18/1/3/6/3",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -7724,7 +7975,7 @@
 "basis": []
 },
 {
-"id": "obs:010576",
+"id": "obs:010569",
 "subject": "glyph/18/1/3/6/23",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7762,7 +8013,7 @@
 "basis": []
 },
 {
-"id": "obs:010577",
+"id": "obs:010570",
 "subject": "glyph/18/1/3/6/6",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7813,7 +8064,7 @@
 "basis": []
 },
 {
-"id": "obs:010578",
+"id": "obs:010571",
 "subject": "glyph/18/1/3/6/35",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7854,7 +8105,7 @@
 "basis": []
 },
 {
-"id": "obs:010579",
+"id": "obs:010572",
 "subject": "glyph/18/1/3/7/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -7892,7 +8143,7 @@
 "basis": []
 },
 {
-"id": "obs:010580",
+"id": "obs:010573",
 "subject": "glyph/18/1/3/7/21",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7930,7 +8181,7 @@
 "basis": []
 },
 {
-"id": "obs:010581",
+"id": "obs:010574",
 "subject": "glyph/18/1/3/7/18",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -7975,7 +8226,7 @@
 "basis": []
 },
 {
-"id": "obs:010582",
+"id": "obs:010575",
 "subject": "glyph/18/1/3/7/9",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -8020,7 +8271,7 @@
 "basis": []
 },
 {
-"id": "obs:010614",
+"id": "obs:010607",
 "subject": "glyph/18/1/4/2/2",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -8071,7 +8322,7 @@
 "basis": []
 },
 {
-"id": "obs:010615",
+"id": "obs:010608",
 "subject": "glyph/18/1/4/4/9",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -8122,7 +8373,7 @@
 "basis": []
 },
 {
-"id": "obs:010616",
+"id": "obs:010609",
 "subject": "glyph/18/1/4/6/0",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -8179,7 +8430,7 @@
 "basis": []
 },
 {
-"id": "obs:010617",
+"id": "obs:010610",
 "subject": "glyph/18/1/4/6/17",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -8224,7 +8475,7 @@
 "basis": []
 },
 {
-"id": "obs:010618",
+"id": "obs:010611",
 "subject": "glyph/18/1/4/6/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8262,7 +8513,7 @@
 "basis": []
 },
 {
-"id": "obs:010619",
+"id": "obs:010612",
 "subject": "glyph/18/1/4/7/18",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -8300,7 +8551,7 @@
 "basis": []
 },
 {
-"id": "obs:010620",
+"id": "obs:010613",
 "subject": "glyph/18/1/4/7/17",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -8341,7 +8592,7 @@
 "basis": []
 },
 {
-"id": "obs:010638",
+"id": "obs:010631",
 "subject": "glyph/18/1/5/2/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -8392,7 +8643,7 @@
 "basis": []
 },
 {
-"id": "obs:010639",
+"id": "obs:010632",
 "subject": "glyph/18/1/5/6/3",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -8437,7 +8688,7 @@
 "basis": []
 },
 {
-"id": "obs:010640",
+"id": "obs:010633",
 "subject": "glyph/18/1/5/7/9",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8482,7 +8733,7 @@
 "basis": []
 },
 {
-"id": "obs:010641",
+"id": "obs:010634",
 "subject": "glyph/18/1/5/7/8",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8530,7 +8781,7 @@
 "basis": []
 },
 {
-"id": "obs:010660",
+"id": "obs:010653",
 "subject": "glyph/18/1/6/7/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8575,7 +8826,7 @@
 "basis": []
 },
 {
-"id": "obs:010710",
+"id": "obs:010703",
 "subject": "glyph/18/1/8/1/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8613,7 +8864,7 @@
 "basis": []
 },
 {
-"id": "obs:010711",
+"id": "obs:010704",
 "subject": "glyph/18/1/8/2/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8658,7 +8909,7 @@
 "basis": []
 },
 {
-"id": "obs:010712",
+"id": "obs:010705",
 "subject": "glyph/18/1/8/2/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8712,7 +8963,7 @@
 "basis": []
 },
 {
-"id": "obs:010713",
+"id": "obs:010706",
 "subject": "glyph/18/1/8/4/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8757,7 +9008,7 @@
 "basis": []
 },
 {
-"id": "obs:010714",
+"id": "obs:010707",
 "subject": "glyph/18/1/8/5/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -8795,7 +9046,7 @@
 "basis": []
 },
 {
-"id": "obs:010715",
+"id": "obs:010708",
 "subject": "glyph/18/1/8/6/2",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -8840,7 +9091,7 @@
 "basis": []
 },
 {
-"id": "obs:010716",
+"id": "obs:010709",
 "subject": "glyph/18/1/8/6/5",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -8903,7 +9154,7 @@
 "basis": []
 },
 {
-"id": "obs:010717",
+"id": "obs:010710",
 "subject": "glyph/18/1/8/7/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -8966,7 +9217,7 @@
 "basis": []
 },
 {
-"id": "obs:010735",
+"id": "obs:010727",
 "subject": "glyph/18/1/9/0/14",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9014,7 +9265,7 @@
 "basis": []
 },
 {
-"id": "obs:010736",
+"id": "obs:010728",
 "subject": "glyph/18/1/9/1/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9052,7 +9303,7 @@
 "basis": []
 },
 {
-"id": "obs:010737",
+"id": "obs:010729",
 "subject": "glyph/18/1/9/1/4",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9094,7 +9345,7 @@
 "basis": []
 },
 {
-"id": "obs:010738",
+"id": "obs:010730",
 "subject": "glyph/18/1/9/2/7",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9151,7 +9402,7 @@
 "basis": []
 },
 {
-"id": "obs:010739",
+"id": "obs:010731",
 "subject": "glyph/18/1/9/5/0",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -9189,7 +9440,58 @@
 "basis": []
 },
 {
-"id": "obs:010740",
+"id": "obs:010732",
+"subject": "glyph/18/1/9/5/19",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/1/9/5/19"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+5
+],
+"x_left_page": 3864,
+"x_right_page": 3946,
+"y_left_page": 6130.5,
+"y_right_page": 6139.0,
+"width_spaces": 2.98,
+"inked_columns": 71,
+"coverage": [
+0.821
+],
+"cut_at_barline": false,
+"beyond_boxes_spaces": 0.51,
+"through_boxes": [
+{
+"glyph": "glyph/18/1/9/5/20",
+"class": "beam",
+"residual_spaces2": 2.4529,
+"stroke_only": false
+},
+{
+"glyph": "glyph/18/1/9/5/21",
+"class": "beam",
+"residual_spaces2": 4.6982,
+"stroke_only": false
+}
+],
+"anchor_left": "glyph/18/1/9/5/2",
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 27.5
+},
+"basis": []
+},
+{
+"id": "obs:010733",
 "subject": "glyph/18/1/9/6/3",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9234,7 +9536,7 @@
 "basis": []
 },
 {
-"id": "obs:010741",
+"id": "obs:010734",
 "subject": "glyph/18/1/9/6/10",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9294,7 +9596,64 @@
 "basis": []
 },
 {
-"id": "obs:010768",
+"id": "obs:010747",
+"subject": "glyph/18/1/10/5/26",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/1/10/5/26"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+5
+],
+"x_left_page": 3861,
+"x_right_page": 3948,
+"y_left_page": 6130.5,
+"y_right_page": 6139.0,
+"width_spaces": 3.19,
+"inked_columns": 76,
+"coverage": [
+0.806
+],
+"cut_at_barline": false,
+"beyond_boxes_spaces": 0.5,
+"through_boxes": [
+{
+"glyph": "glyph/18/1/10/5/23",
+"class": "beam",
+"residual_spaces2": 3.7707,
+"stroke_only": false
+},
+{
+"glyph": "glyph/18/1/10/5/25",
+"class": "beam",
+"residual_spaces2": 4.5653,
+"stroke_only": false
+},
+{
+"glyph": "glyph/18/1/10/5/27",
+"class": "beam",
+"residual_spaces2": 6.2002,
+"stroke_only": false
+}
+],
+"anchor_left": "glyph/18/1/10/5/1",
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 27.25
+},
+"basis": []
+},
+{
+"id": "obs:010761",
 "subject": "glyph/18/1/11/0/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9339,7 +9698,7 @@
 "basis": []
 },
 {
-"id": "obs:010769",
+"id": "obs:010762",
 "subject": "glyph/18/1/11/2/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9377,7 +9736,7 @@
 "basis": []
 },
 {
-"id": "obs:010770",
+"id": "obs:010763",
 "subject": "glyph/18/1/11/2/8",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9422,7 +9781,7 @@
 "basis": []
 },
 {
-"id": "obs:010771",
+"id": "obs:010764",
 "subject": "glyph/18/1/11/4/6",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9460,7 +9819,7 @@
 "basis": []
 },
 {
-"id": "obs:010772",
+"id": "obs:010765",
 "subject": "glyph/18/1/11/6/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9505,7 +9864,7 @@
 "basis": []
 },
 {
-"id": "obs:010773",
+"id": "obs:010766",
 "subject": "glyph/18/1/11/7/11",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9543,7 +9902,7 @@
 "basis": []
 },
 {
-"id": "obs:010791",
+"id": "obs:010784",
 "subject": "glyph/18/1/12/0/5",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9588,7 +9947,7 @@
 "basis": []
 },
 {
-"id": "obs:010792",
+"id": "obs:010785",
 "subject": "glyph/18/1/12/2/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9626,7 +9985,7 @@
 "basis": []
 },
 {
-"id": "obs:010793",
+"id": "obs:010786",
 "subject": "glyph/18/1/12/2/8",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9680,7 +10039,7 @@
 "basis": []
 },
 {
-"id": "obs:010794",
+"id": "obs:010787",
 "subject": "glyph/18/1/12/4/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -9721,7 +10080,7 @@
 "basis": []
 },
 {
-"id": "obs:010795",
+"id": "obs:010788",
 "subject": "glyph/18/1/12/6/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9759,7 +10118,7 @@
 "basis": []
 },
 {
-"id": "obs:010796",
+"id": "obs:010789",
 "subject": "glyph/18/1/12/6/22",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9797,7 +10156,7 @@
 "basis": []
 },
 {
-"id": "obs:010797",
+"id": "obs:010790",
 "subject": "glyph/18/1/12/6/3",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9842,7 +10201,7 @@
 "basis": []
 },
 {
-"id": "obs:010798",
+"id": "obs:010791",
 "subject": "glyph/18/1/12/6/7",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9880,7 +10239,7 @@
 "basis": []
 },
 {
-"id": "obs:010799",
+"id": "obs:010792",
 "subject": "glyph/18/1/12/7/7",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9918,7 +10277,7 @@
 "basis": []
 },
 {
-"id": "obs:010800",
+"id": "obs:010793",
 "subject": "glyph/18/1/12/7/2",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -9956,7 +10315,7 @@
 "basis": []
 },
 {
-"id": "obs:010801",
+"id": "obs:010794",
 "subject": "glyph/18/1/12/7/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -9994,7 +10353,7 @@
 "basis": []
 },
 {
-"id": "obs:010802",
+"id": "obs:010795",
 "subject": "glyph/18/1/12/7/20",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -10032,7 +10391,45 @@
 "basis": []
 },
 {
-"id": "obs:010819",
+"id": "obs:010811",
+"subject": "glyph/18/1/13/5/5",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/18/1/13/5/5"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+5
+],
+"x_left_page": 3666,
+"x_right_page": 3738,
+"y_left_page": 6881.0,
+"y_right_page": 6909.0,
+"width_spaces": 2.6,
+"inked_columns": 61,
+"coverage": [
+0.842
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 1.2,
+"through_boxes": [],
+"anchor_left": null,
+"anchor_right": "glyph/18/1/13/5/0",
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 27.731
+},
+"basis": []
+},
+{
+"id": "obs:010812",
 "subject": "glyph/18/1/13/6/12",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -10065,12 +10462,12 @@
 "anchor_right": "glyph/18/1/13/6/3",
 "anchor_dy_spaces": 0.472,
 "heads_between": 0,
-"space_page_px": 27.711
+"space_page_px": 27.731
 },
 "basis": []
 },
 {
-"id": "obs:010820",
+"id": "obs:010813",
 "subject": "glyph/18/1/13/7/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -10103,12 +10500,12 @@
 "anchor_right": "glyph/18/1/13/7/5",
 "anchor_dy_spaces": null,
 "heads_between": null,
-"space_page_px": 27.711
+"space_page_px": 27.731
 },
 "basis": []
 },
 {
-"id": "obs:010821",
+"id": "obs:010814",
 "subject": "glyph/18/1/13/7/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -10139,9 +10536,9 @@
 "through_boxes": [],
 "anchor_left": "glyph/18/1/13/7/8",
 "anchor_right": "glyph/18/1/13/7/2",
-"anchor_dy_spaces": 0.922,
+"anchor_dy_spaces": 0.921,
 "heads_between": 1,
-"space_page_px": 27.711
+"space_page_px": 27.731
 },
 "basis": []
 }
@@ -92718,5 +93115,5 @@
 ]
 }
 },
-"seconds": 601
+"seconds": 586
 }

@@ -1,7 +1,7 @@
 {
 "doc": "brahms",
 "page": 1,
-"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5c23bf61adf6fae7/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad5fb21dd5454c276/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
 "same_detector_boxes": true,
 "arcs": 273,
 "pieces_read": 348,
@@ -12,8 +12,8 @@
 "shapes": {
 "two_positions": 35,
 "end_unanchored": 120,
-"two_heads_one_position_adjacent": 88,
-"one_position_heads_between": 30
+"two_heads_one_position_adjacent": 86,
+"one_position_heads_between": 32
 },
 "tie_pair_off": {
 "decided:paired": 142,
@@ -37,9 +37,10 @@
 "abstained:not_an_arc": 273,
 "abstained:runs_off_the_system": 17,
 "abstained:not_adjacent": 10,
-"abstained:no_head_near_the_arc": 34,
-"abstained:no_stop_head": 5,
-"abstained:no_start_head": 20,
+"abstained:no_head_near_the_arc": 33,
+"abstained:no_stop_head": 4,
+"abstained:no_start_head": 19,
+"decided:paired_by_system_arc": 3,
 "abstained:enters_from_previous_system": 8,
 "abstained:spans_a_whole_bar": 20
 },
@@ -53,7 +54,7 @@
 "\"slur\"": 126,
 "null": 1
 },
-"n_changed_glyphs": 16,
+"n_changed_glyphs": 19,
 "changed": {
 "glyph/1/0/0/0/11": {
 "duration": {
@@ -278,6 +279,48 @@
 "stem_tip_reads_no_beam"
 ]
 }
+},
+"glyph/1/0/5/0/19": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_stop_head"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/1/0/5/0/21\", \"stop\": \"glyph/1/0/5/0/1\"}",
+"paired_by_system_arc"
+]
+}
+},
+"glyph/1/1/0/4/12": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_start_head"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/1/1/0/3/3\", \"stop\": \"glyph/1/1/0/4/1\"}",
+"paired_by_system_arc"
+]
+}
+},
+"glyph/1/1/11/1/21": {
+"tie_pair": {
+"off": [
+"abstained",
+"null",
+"no_head_near_the_arc"
+],
+"on": [
+"decided",
+"{\"start\": \"glyph/1/1/11/0/7\", \"stop\": \"glyph/1/1/11/1/23\"}",
+"paired_by_system_arc"
+]
+}
 }
 },
 "erased_cells": [
@@ -495,7 +538,7 @@
 "page": 1,
 "staff_index": 3,
 "cell": 1,
-"n": 23423,
+"n": 23339,
 "x0": 2118.1962890625,
 "x1": 2480.931640625,
 "y0": 1216.205078125,
@@ -555,7 +598,7 @@
 "page": 1,
 "staff_index": 4,
 "cell": 1,
-"n": 7783,
+"n": 7699,
 "x0": 2395.7900390625,
 "x1": 2480.931640625,
 "y0": 1480.2734375,
@@ -4823,7 +4866,7 @@
 "id": "obs:009690",
 "subject": "glyph/1/0/3/1/16",
 "quantity": "system_arc",
-"value": "two_heads_one_position_adjacent",
+"value": "one_position_heads_between",
 "reader": "cv_system_arc",
 "frame": "page",
 "score": null,
@@ -4859,7 +4902,7 @@
 "glyph": "glyph/1/0/3/1/31",
 "class": "noteheadBlackInSpace",
 "residual_spaces2": 0.0162,
-"stroke_only": true
+"stroke_only": false
 },
 {
 "glyph": "glyph/1/0/3/2/15",
@@ -4871,7 +4914,7 @@
 "anchor_left": "glyph/1/0/3/1/3",
 "anchor_right": "glyph/1/0/3/2/4",
 "anchor_dy_spaces": 0.06,
-"heads_between": 0,
+"heads_between": 1,
 "space_page_px": 27.25
 },
 "basis": []
@@ -4880,7 +4923,7 @@
 "id": "obs:009691",
 "subject": "glyph/1/0/3/1/17",
 "quantity": "system_arc",
-"value": "two_heads_one_position_adjacent",
+"value": "one_position_heads_between",
 "reader": "cv_system_arc",
 "frame": "page",
 "score": null,
@@ -4916,7 +4959,7 @@
 "anchor_left": "glyph/1/0/3/1/6",
 "anchor_right": "glyph/1/0/3/2/12",
 "anchor_dy_spaces": 0.033,
-"heads_between": 0,
+"heads_between": 1,
 "space_page_px": 27.25
 },
 "basis": []
@@ -6091,7 +6134,7 @@
 "glyph": "glyph/1/0/4/5/9",
 "class": "noteheadBlackInSpace",
 "residual_spaces2": 0.0264,
-"stroke_only": true
+"stroke_only": false
 }
 ],
 "anchor_left": null,
@@ -9864,7 +9907,7 @@
 "glyph": "glyph/1/1/3/1/31",
 "class": "noteheadBlackInSpace",
 "residual_spaces2": 0.0391,
-"stroke_only": true
+"stroke_only": false
 },
 {
 "glyph": "glyph/1/1/3/2/2",
@@ -9882,7 +9925,7 @@
 "anchor_left": "glyph/1/1/3/1/27",
 "anchor_right": "glyph/1/1/3/2/5",
 "anchor_dy_spaces": 0.006,
-"heads_between": 4,
+"heads_between": 5,
 "space_page_px": 26.749
 },
 "basis": []
@@ -10286,13 +10329,13 @@
 "glyph": "glyph/1/1/4/3/4",
 "class": "noteheadBlackInSpace",
 "residual_spaces2": 0.0068,
-"stroke_only": true
+"stroke_only": false
 },
 {
 "glyph": "glyph/1/1/4/3/17",
 "class": "noteheadBlackInSpace",
 "residual_spaces2": 0.0122,
-"stroke_only": true
+"stroke_only": false
 },
 {
 "glyph": "glyph/1/1/4/4/8",
@@ -92788,5 +92831,5 @@
 ]
 }
 },
-"seconds": 559
+"seconds": 551
 }

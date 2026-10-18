@@ -1,16 +1,16 @@
 {
 "doc": "litolff",
 "page": 3,
-"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5c23bf61adf6fae7/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+"weights": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad5fb21dd5454c276/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
 "same_detector_boxes": true,
-"arcs": 150,
-"pieces_read": 197,
+"arcs": 152,
+"pieces_read": 200,
 "abstained": {
-"below_threshold": 56
+"below_threshold": 53
 },
 "joined_across_barline": 13,
 "shapes": {
-"end_unanchored": 89,
+"end_unanchored": 91,
 "one_position_heads_between": 5,
 "two_heads_one_position_adjacent": 21,
 "two_positions": 35
@@ -310,7 +310,7 @@
 "page": 3,
 "staff_index": 4,
 "cell": 3,
-"n": 27682,
+"n": 39855,
 "x0": 1072.96,
 "x1": 1166.72,
 "y0": 992.08,
@@ -780,11 +780,11 @@
 "page": 3,
 "staff_index": 13,
 "cell": 10,
-"n": 7672,
+"n": 8661,
 "x0": 1760.075,
-"x1": 1802.855,
+"x1": 1816.805,
 "y0": 2597.095,
-"y1": 2614.455
+"y1": 2691.955
 },
 {
 "page": 3,
@@ -3883,7 +3883,7 @@
 "basis": []
 },
 {
-"id": "obs:005026",
+"id": "obs:005024",
 "subject": "glyph/3/0/4/0/5",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -3928,7 +3928,7 @@
 "basis": []
 },
 {
-"id": "obs:005027",
+"id": "obs:005025",
 "subject": "glyph/3/0/4/1/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -3979,7 +3979,7 @@
 "basis": []
 },
 {
-"id": "obs:005028",
+"id": "obs:005026",
 "subject": "glyph/3/0/4/1/5",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4023,7 +4023,7 @@
 "basis": []
 },
 {
-"id": "obs:005029",
+"id": "obs:005027",
 "subject": "glyph/3/0/4/3/4",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -4068,7 +4068,7 @@
 "basis": []
 },
 {
-"id": "obs:005030",
+"id": "obs:005028",
 "subject": "glyph/3/0/4/3/5",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4106,7 +4106,48 @@
 "basis": []
 },
 {
-"id": "obs:005031",
+"id": "obs:005029",
+"subject": "glyph/3/0/4/3/8",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/3/0/4/3/8",
+"glyph/3/0/4/3/11"
+],
+"piece_classes": [
+"tie",
+"tie"
+],
+"cells": [
+3
+],
+"x_left_page": 1080,
+"x_right_page": 1161,
+"y_left_page": 1060.0,
+"y_right_page": 1059.5,
+"width_spaces": 5.06,
+"inked_columns": 82,
+"coverage": [
+0.621,
+0.707
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 0.0,
+"through_boxes": [],
+"anchor_left": null,
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 16.0
+},
+"basis": []
+},
+{
+"id": "obs:005030",
 "subject": "glyph/3/0/4/4/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4151,7 +4192,7 @@
 "basis": []
 },
 {
-"id": "obs:005032",
+"id": "obs:005031",
 "subject": "glyph/3/0/4/5/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4208,7 +4249,7 @@
 "basis": []
 },
 {
-"id": "obs:005033",
+"id": "obs:005032",
 "subject": "glyph/3/0/4/5/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4246,7 +4287,7 @@
 "basis": []
 },
 {
-"id": "obs:005034",
+"id": "obs:005033",
 "subject": "glyph/3/0/4/5/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4284,7 +4325,7 @@
 "basis": []
 },
 {
-"id": "obs:005035",
+"id": "obs:005034",
 "subject": "glyph/3/0/4/13/5",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4333,7 +4374,7 @@
 "basis": []
 },
 {
-"id": "obs:005036",
+"id": "obs:005035",
 "subject": "glyph/3/0/4/15/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4374,7 +4415,7 @@
 "basis": []
 },
 {
-"id": "obs:005042",
+"id": "obs:005041",
 "subject": "glyph/3/0/5/3/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4419,7 +4460,7 @@
 "basis": []
 },
 {
-"id": "obs:005043",
+"id": "obs:005042",
 "subject": "glyph/3/0/5/3/5",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4460,7 +4501,7 @@
 "basis": []
 },
 {
-"id": "obs:005044",
+"id": "obs:005043",
 "subject": "glyph/3/0/5/4/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4511,7 +4552,7 @@
 "basis": []
 },
 {
-"id": "obs:005045",
+"id": "obs:005044",
 "subject": "glyph/3/0/5/4/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4549,7 +4590,7 @@
 "basis": []
 },
 {
-"id": "obs:005046",
+"id": "obs:005045",
 "subject": "glyph/3/0/5/5/3",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4610,7 +4651,7 @@
 "basis": []
 },
 {
-"id": "obs:005047",
+"id": "obs:005046",
 "subject": "glyph/3/0/5/5/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4648,7 +4689,7 @@
 "basis": []
 },
 {
-"id": "obs:005048",
+"id": "obs:005047",
 "subject": "glyph/3/0/5/14/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4693,7 +4734,7 @@
 "basis": []
 },
 {
-"id": "obs:005049",
+"id": "obs:005048",
 "subject": "glyph/3/0/5/15/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4731,7 +4772,7 @@
 "basis": []
 },
 {
-"id": "obs:005052",
+"id": "obs:005051",
 "subject": "glyph/3/0/6/3/2",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4776,7 +4817,7 @@
 "basis": []
 },
 {
-"id": "obs:005053",
+"id": "obs:005052",
 "subject": "glyph/3/0/6/4/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -4827,7 +4868,7 @@
 "basis": []
 },
 {
-"id": "obs:005054",
+"id": "obs:005053",
 "subject": "glyph/3/0/6/5/1",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -4878,7 +4919,7 @@
 "basis": []
 },
 {
-"id": "obs:005056",
+"id": "obs:005055",
 "subject": "glyph/3/0/7/14/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4927,7 +4968,7 @@
 "basis": []
 },
 {
-"id": "obs:005057",
+"id": "obs:005056",
 "subject": "glyph/3/0/8/14/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -4965,7 +5006,7 @@
 "basis": []
 },
 {
-"id": "obs:005059",
+"id": "obs:005058",
 "subject": "glyph/3/0/9/14/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5003,7 +5044,7 @@
 "basis": []
 },
 {
-"id": "obs:005062",
+"id": "obs:005061",
 "subject": "glyph/3/0/10/0/12",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5041,7 +5082,7 @@
 "basis": []
 },
 {
-"id": "obs:005063",
+"id": "obs:005062",
 "subject": "glyph/3/0/10/0/9",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5098,7 +5139,7 @@
 "basis": []
 },
 {
-"id": "obs:005065",
+"id": "obs:005064",
 "subject": "glyph/3/1/0/3/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5149,7 +5190,7 @@
 "basis": []
 },
 {
-"id": "obs:005066",
+"id": "obs:005065",
 "subject": "glyph/3/1/0/9/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -5187,7 +5228,7 @@
 "basis": []
 },
 {
-"id": "obs:005069",
+"id": "obs:005068",
 "subject": "glyph/3/1/1/2/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5236,7 +5277,7 @@
 "basis": []
 },
 {
-"id": "obs:005070",
+"id": "obs:005069",
 "subject": "glyph/3/1/1/4/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5274,7 +5315,7 @@
 "basis": []
 },
 {
-"id": "obs:005071",
+"id": "obs:005070",
 "subject": "glyph/3/1/1/5/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5325,7 +5366,7 @@
 "basis": []
 },
 {
-"id": "obs:005072",
+"id": "obs:005071",
 "subject": "glyph/3/1/1/6/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5366,7 +5407,7 @@
 "basis": []
 },
 {
-"id": "obs:005073",
+"id": "obs:005072",
 "subject": "glyph/3/1/1/8/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5404,7 +5445,7 @@
 "basis": []
 },
 {
-"id": "obs:005074",
+"id": "obs:005073",
 "subject": "glyph/3/1/1/10/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5449,7 +5490,7 @@
 "basis": []
 },
 {
-"id": "obs:005075",
+"id": "obs:005074",
 "subject": "glyph/3/1/1/12/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5487,7 +5528,7 @@
 "basis": []
 },
 {
-"id": "obs:005076",
+"id": "obs:005075",
 "subject": "glyph/3/1/1/14/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5538,7 +5579,7 @@
 "basis": []
 },
 {
-"id": "obs:005084",
+"id": "obs:005082",
 "subject": "glyph/3/1/2/2/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -5601,7 +5642,7 @@
 "basis": []
 },
 {
-"id": "obs:005085",
+"id": "obs:005083",
 "subject": "glyph/3/1/2/4/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5639,7 +5680,7 @@
 "basis": []
 },
 {
-"id": "obs:005086",
+"id": "obs:005084",
 "subject": "glyph/3/1/2/4/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5677,7 +5718,7 @@
 "basis": []
 },
 {
-"id": "obs:005087",
+"id": "obs:005085",
 "subject": "glyph/3/1/2/6/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5728,7 +5769,7 @@
 "basis": []
 },
 {
-"id": "obs:005088",
+"id": "obs:005086",
 "subject": "glyph/3/1/2/6/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5766,7 +5807,7 @@
 "basis": []
 },
 {
-"id": "obs:005089",
+"id": "obs:005087",
 "subject": "glyph/3/1/2/8/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5829,7 +5870,7 @@
 "basis": []
 },
 {
-"id": "obs:005090",
+"id": "obs:005088",
 "subject": "glyph/3/1/2/8/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5874,7 +5915,7 @@
 "basis": []
 },
 {
-"id": "obs:005091",
+"id": "obs:005089",
 "subject": "glyph/3/1/2/10/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -5925,7 +5966,45 @@
 "basis": []
 },
 {
-"id": "obs:005092",
+"id": "obs:005090",
+"subject": "glyph/3/1/2/10/4",
+"quantity": "system_arc",
+"value": "end_unanchored",
+"reader": "cv_system_arc",
+"frame": "page",
+"score": null,
+"detail": {
+"pieces": [
+"glyph/3/1/2/10/4"
+],
+"piece_classes": [
+"tie"
+],
+"cells": [
+10
+],
+"x_left_page": 1772,
+"x_right_page": 1816,
+"y_left_page": 2688.0,
+"y_right_page": 2688.5,
+"width_spaces": 2.84,
+"inked_columns": 38,
+"coverage": [
+0.818
+],
+"cut_at_barline": true,
+"beyond_boxes_spaces": 0.16,
+"through_boxes": [],
+"anchor_left": null,
+"anchor_right": null,
+"anchor_dy_spaces": null,
+"heads_between": null,
+"space_page_px": 15.5
+},
+"basis": []
+},
+{
+"id": "obs:005091",
 "subject": "glyph/3/1/2/12/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -5963,7 +6042,7 @@
 "basis": []
 },
 {
-"id": "obs:005093",
+"id": "obs:005092",
 "subject": "glyph/3/1/2/12/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6012,7 +6091,7 @@
 "basis": []
 },
 {
-"id": "obs:005094",
+"id": "obs:005093",
 "subject": "glyph/3/1/2/14/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6072,7 +6151,7 @@
 "basis": []
 },
 {
-"id": "obs:005095",
+"id": "obs:005094",
 "subject": "glyph/3/1/2/14/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6113,7 +6192,7 @@
 "basis": []
 },
 {
-"id": "obs:005096",
+"id": "obs:005095",
 "subject": "glyph/3/1/2/16/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6168,7 +6247,7 @@
 "basis": []
 },
 {
-"id": "obs:005097",
+"id": "obs:005096",
 "subject": "glyph/3/1/2/16/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6209,7 +6288,7 @@
 "basis": []
 },
 {
-"id": "obs:005101",
+"id": "obs:005100",
 "subject": "glyph/3/1/3/0/1",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6254,7 +6333,7 @@
 "basis": []
 },
 {
-"id": "obs:005102",
+"id": "obs:005101",
 "subject": "glyph/3/1/3/1/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6292,7 +6371,7 @@
 "basis": []
 },
 {
-"id": "obs:005103",
+"id": "obs:005102",
 "subject": "glyph/3/1/3/2/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6330,7 +6409,7 @@
 "basis": []
 },
 {
-"id": "obs:005104",
+"id": "obs:005103",
 "subject": "glyph/3/1/3/3/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6372,7 +6451,7 @@
 "basis": []
 },
 {
-"id": "obs:005105",
+"id": "obs:005104",
 "subject": "glyph/3/1/3/4/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6413,7 +6492,7 @@
 "basis": []
 },
 {
-"id": "obs:005106",
+"id": "obs:005105",
 "subject": "glyph/3/1/3/5/0",
 "quantity": "system_arc",
 "value": "two_heads_one_position_adjacent",
@@ -6470,7 +6549,7 @@
 "basis": []
 },
 {
-"id": "obs:005107",
+"id": "obs:005106",
 "subject": "glyph/3/1/3/6/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6515,7 +6594,7 @@
 "basis": []
 },
 {
-"id": "obs:005108",
+"id": "obs:005107",
 "subject": "glyph/3/1/3/7/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6553,7 +6632,7 @@
 "basis": []
 },
 {
-"id": "obs:005109",
+"id": "obs:005108",
 "subject": "glyph/3/1/3/7/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6598,7 +6677,7 @@
 "basis": []
 },
 {
-"id": "obs:005110",
+"id": "obs:005109",
 "subject": "glyph/3/1/3/8/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -6643,7 +6722,7 @@
 "basis": []
 },
 {
-"id": "obs:005111",
+"id": "obs:005110",
 "subject": "glyph/3/1/3/12/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6681,7 +6760,7 @@
 "basis": []
 },
 {
-"id": "obs:005112",
+"id": "obs:005111",
 "subject": "glyph/3/1/3/15/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6726,7 +6805,7 @@
 "basis": []
 },
 {
-"id": "obs:005113",
+"id": "obs:005112",
 "subject": "glyph/3/1/3/16/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6764,7 +6843,7 @@
 "basis": []
 },
 {
-"id": "obs:005118",
+"id": "obs:005117",
 "subject": "glyph/3/1/4/0/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6802,7 +6881,7 @@
 "basis": []
 },
 {
-"id": "obs:005119",
+"id": "obs:005118",
 "subject": "glyph/3/1/4/0/7",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6840,7 +6919,7 @@
 "basis": []
 },
 {
-"id": "obs:005120",
+"id": "obs:005119",
 "subject": "glyph/3/1/4/2/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6878,7 +6957,7 @@
 "basis": []
 },
 {
-"id": "obs:005121",
+"id": "obs:005120",
 "subject": "glyph/3/1/4/3/1",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6919,7 +6998,7 @@
 "basis": []
 },
 {
-"id": "obs:005122",
+"id": "obs:005121",
 "subject": "glyph/3/1/4/4/2",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -6957,7 +7036,7 @@
 "basis": []
 },
 {
-"id": "obs:005123",
+"id": "obs:005122",
 "subject": "glyph/3/1/4/6/3",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7006,7 +7085,7 @@
 "basis": []
 },
 {
-"id": "obs:005124",
+"id": "obs:005123",
 "subject": "glyph/3/1/4/8/5",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7047,7 +7126,7 @@
 "basis": []
 },
 {
-"id": "obs:005125",
+"id": "obs:005124",
 "subject": "glyph/3/1/4/10/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7102,7 +7181,7 @@
 "basis": []
 },
 {
-"id": "obs:005126",
+"id": "obs:005125",
 "subject": "glyph/3/1/4/12/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7147,7 +7226,7 @@
 "basis": []
 },
 {
-"id": "obs:005127",
+"id": "obs:005126",
 "subject": "glyph/3/1/4/14/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7189,7 +7268,7 @@
 "basis": []
 },
 {
-"id": "obs:005128",
+"id": "obs:005127",
 "subject": "glyph/3/1/4/16/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7231,7 +7310,7 @@
 "basis": []
 },
 {
-"id": "obs:005132",
+"id": "obs:005131",
 "subject": "glyph/3/1/5/0/2",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7269,7 +7348,7 @@
 "basis": []
 },
 {
-"id": "obs:005133",
+"id": "obs:005132",
 "subject": "glyph/3/1/5/2/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7320,7 +7399,7 @@
 "basis": []
 },
 {
-"id": "obs:005134",
+"id": "obs:005133",
 "subject": "glyph/3/1/5/4/2",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7383,7 +7462,7 @@
 "basis": []
 },
 {
-"id": "obs:005135",
+"id": "obs:005134",
 "subject": "glyph/3/1/5/6/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7434,7 +7513,7 @@
 "basis": []
 },
 {
-"id": "obs:005136",
+"id": "obs:005135",
 "subject": "glyph/3/1/5/8/0",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7472,7 +7551,7 @@
 "basis": []
 },
 {
-"id": "obs:005137",
+"id": "obs:005136",
 "subject": "glyph/3/1/5/10/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7510,7 +7589,7 @@
 "basis": []
 },
 {
-"id": "obs:005138",
+"id": "obs:005137",
 "subject": "glyph/3/1/5/12/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7548,7 +7627,7 @@
 "basis": []
 },
 {
-"id": "obs:005139",
+"id": "obs:005138",
 "subject": "glyph/3/1/5/14/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7599,7 +7678,7 @@
 "basis": []
 },
 {
-"id": "obs:005140",
+"id": "obs:005139",
 "subject": "glyph/3/1/5/16/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7637,7 +7716,7 @@
 "basis": []
 },
 {
-"id": "obs:005142",
+"id": "obs:005141",
 "subject": "glyph/3/1/6/0/4",
 "quantity": "system_arc",
 "value": "end_unanchored",
@@ -7675,7 +7754,7 @@
 "basis": []
 },
 {
-"id": "obs:005143",
+"id": "obs:005142",
 "subject": "glyph/3/1/6/2/1",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7720,7 +7799,7 @@
 "basis": []
 },
 {
-"id": "obs:005144",
+"id": "obs:005143",
 "subject": "glyph/3/1/6/4/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7774,7 +7853,7 @@
 "basis": []
 },
 {
-"id": "obs:005145",
+"id": "obs:005144",
 "subject": "glyph/3/1/6/6/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7831,7 +7910,7 @@
 "basis": []
 },
 {
-"id": "obs:005146",
+"id": "obs:005145",
 "subject": "glyph/3/1/6/8/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7876,7 +7955,7 @@
 "basis": []
 },
 {
-"id": "obs:005147",
+"id": "obs:005146",
 "subject": "glyph/3/1/6/10/0",
 "quantity": "system_arc",
 "value": "one_position_heads_between",
@@ -7921,7 +8000,7 @@
 "basis": []
 },
 {
-"id": "obs:005148",
+"id": "obs:005147",
 "subject": "glyph/3/1/6/12/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -7962,7 +8041,7 @@
 "basis": []
 },
 {
-"id": "obs:005149",
+"id": "obs:005148",
 "subject": "glyph/3/1/6/14/0",
 "quantity": "system_arc",
 "value": "two_positions",
@@ -8014,7 +8093,7 @@
 "basis": []
 },
 {
-"id": "obs:005150",
+"id": "obs:005149",
 "subject": "glyph/3/1/6/16/0",
 "quantity": "system_arc",
 "value": "two_positions",
