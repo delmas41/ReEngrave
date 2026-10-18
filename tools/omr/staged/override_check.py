@@ -233,6 +233,10 @@ def r_shared_stem(new, prior, log) -> Optional[str]:
         return None                                   # the stem's tip reading: beams / dots
     if b_old >= 4.0 and b_new == 2.0:
         return None                                   # whole notes never have stems
+    if prior.reason == "whole_class_on_a_stem":
+        return None                                   # a whole-CLASS box on a stem casts no vote and takes the stem's
+        #                                               value (2.78, Sean 2026-10-09); its half was the convention's,
+        #                                               not a fill read off the head (2.78-phase2 tile 11: an eighth)
     return "shared_stem_overwrites_a_decided_fill"
 
 

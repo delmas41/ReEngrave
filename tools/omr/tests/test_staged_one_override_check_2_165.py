@@ -188,6 +188,13 @@ class TestLaterStepsOnlyWiden(_On):
                    reason="stem_value_follows", supersedes=prior.id, single=True)
         self.assertIsNot(got, prior)
 
+    def test_a_whole_class_box_made_a_half_takes_the_stems_value(self):
+        """2.78-phase2 tile 11 (Sean: eighth): the box's half was the whole-class convention's, not its own fill."""
+        prior = _rec(self.log, G, Q.DURATION, Outcome.DECIDED, _dur(2.0), reason="whole_class_on_a_stem")
+        got = _rec(self.log, G, Q.DURATION, Outcome.DECIDED, _eighth(), decider="share_stem_value",
+                   reason="stem_value_follows", supersedes=prior.id, single=True)
+        self.assertIsNot(got, prior)
+
     def test_a_flag_never_reopens_an_open_head(self):
         """Audit violation 6: the step-3 narrowing is refused; the head keeps its step-1 open value."""
         got = _rec(self.log, G, Q.DURATION, Outcome.NARROWED, None, reason="open_head_flag_contradiction",
