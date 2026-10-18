@@ -65,6 +65,9 @@ RAW_BRIDGE_COST = 0.25
 #: A trace at least this long (spaces) that stays within `STRAIGHT_SPACES` of a straight line is not an arc.
 STRAIGHT_MIN_SPACES = 2.0
 STRAIGHT_SPACES = 0.15
+#: ... and only a straight trace at least this thick (a beam's stroke) is refused: a long flat slur is straight but
+#: thin, and left on the page the beam reader takes it for a beam (Brahms 317803 pdf 1, cell 1/0/0/0).
+STRAIGHT_BEAM_THICK_SPACES = 0.4
 #: A traced column is erased only where its run is at most this many times the trace's median stroke (+1 px).
 THICK_FACTOR = 1.6
 #: Along a trace, a run thicker than this many times the stroke's recent median (+2 px) is the stroke merged with
@@ -96,6 +99,10 @@ END_JOIN_Y_SPACES = 0.35
 SAME_SHARE = 0.6
 #: End-to-start: the two end tangents (dy/dx) may differ by at most this.
 END_JOIN_SLOPE = 0.35
+#: A merge (the stroke's run thicker than the stroke) is a run no taller than this; the erase keeps clear of it by
+#: `MERGE_KEEP_SPACES` on both sides.
+MERGE_MAX_SPACES = 1.5
+MERGE_KEEP_SPACES = 1.0
 #: Erase: a canonical ink run taller than this is not the stroke (a head, stem or barline it touches) and is kept.
 ERASE_RUN_MAX_SPACES = 0.75
 #: A notehead box whose ink OFF the traced stroke is under this (square spaces) holds nothing but the stroke -- a tail
@@ -493,6 +500,36 @@ def join_traces(traces: Sequence[Dict[str, Any]], sp: float) -> List[List[int]]:
     return out
 
 
+def merge_columns(ink: np.ndarray, pts: Dict[int, Tuple[int, int]], thick_cap: float, sp: float) -> List[int]:
+    """Columns along the trace where the stroke is MERGED with other ink: its own run there (a traced run, or the run
+    under the interpolated stroke where the trace bridged a gap) is thicker than `thick_cap` but no taller than
+    `MERGE_MAX_SPACES` (a barline or a stem is taller, and is not a merge)."""
+    xs = sorted(pts)
+    out: List[int] = []
+    if len(xs) < 2:
+        return out
+    H = ink.shape[0]
+    for i, x in enumerate(xs):
+        r = pts[x]
+        if (r[1] - r[0] + 1) > thick_cap:
+            out.append(x)
+        if i + 1 < len(xs) and xs[i + 1] - x > 1:                 # a bridged gap: look under the stroke
+            x2 = xs[i + 1]
+            y1, y2 = sum(pts[x]) / 2.0, sum(pts[x2]) / 2.0
+            for g in range(x + 1, x2):
+                y = int(round(y1 + (y2 - y1) * (g - x) / float(x2 - x)))
+                if not (0 <= y < H) or not ink[y, g]:
+                    continue
+                a = b = y
+                while a > 0 and ink[a - 1, g]:
+                    a -= 1
+                while b < H - 1 and ink[b + 1, g]:
+                    b += 1
+                if thick_cap < (b - a + 1) <= MERGE_MAX_SPACES * sp:
+                    out.append(g)
+    return out
+
+
 def merge_points(traces: Sequence[Dict[str, Any]]) -> Dict[int, Tuple[int, int]]:
     pts: Dict[int, Tuple[int, int]] = {}
     for t in traces:
@@ -762,9 +799,10 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 summary["abstained"] += 1
                 summary["on_a_staff_line"] = summary.get("on_a_staff_line", 0) + 1
                 continue
-            if t is not None and t["points"] and is_straight(t["points"], sp):
+            if t is not None and t["points"] and is_straight(t["points"], sp) and float(
+                    np.median([r[1] - r[0] + 1 for r in t["points"].values()])) >= STRAIGHT_BEAM_THICK_SPACES * sp:
                 log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
-                            reason=ABSTAIN.BELOW_THRESHOLD, note="the trace is straight: a beam or a line, not an arc")
+                            reason=ABSTAIN.BELOW_THRESHOLD, note="the trace is straight and as thick as a beam: not an arc")
                 summary["abstained"] += 1
                 summary["straight"] = summary.get("straight", 0) + 1
                 continue
@@ -840,8 +878,15 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             zones += [hb for hg, hname, hb in marks_by_staff.get((pg, sy, st), []) if hg in stroke_only]
             # and never a column whose run is much thicker than the stroke's own (a beam the trace ran onto)
             thick_cap = THICK_FACTOR * float(np.median([b - a + 1 for a, b in pts.values()])) + 1.0
+            # ... and never within `MERGE_KEEP_SPACES` of where the stroke MERGES with other ink (its run there thicker
+            # than the stroke, but no taller than a mark): erasing up to a merge leaves the other mark's share of the
+            # merged run standing alone as a short straight bar, which the beam reader then reads as a beam
+            # (Brahms 317803 pdf 1, cell 1/0/0/0: 8 eighths read as sixteenths)
+            merges = merge_columns(ink, pts, thick_cap, sp_staff)
+            keep = MERGE_KEEP_SPACES * sp_staff
             pts_erase = {x: r for x, r in pts.items()
                          if (r[1] - r[0] + 1) <= thick_cap
+                         and not any(abs(x - mx) <= keep for mx in merges)
                          and any(z[0] <= x <= z[2] and r[1] >= z[1] and r[0] <= z[3] for z in zones)}
             erase_plan.append((pts_erase, sp_staff))
             if progress:

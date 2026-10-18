@@ -15,6 +15,7 @@ c = [c for c in cells if local.get(c.staff_index) == (sy, st) and c.measure_inde
 a = c.image_no_staff_with_arcs if getattr(c, "image_no_staff_with_arcs", None) is not None else c.image_no_staff
 b = c.image_no_staff
 r0, r1 = (int(sys.argv[7]), int(sys.argv[8])) if len(sys.argv) > 8 else (0, a.shape[0])
-img = np.concatenate([a[r0:r1], np.full((a[r0:r1].shape[0], 10), 128, np.uint8), b[r0:r1]], axis=1)
-cv2.imwrite(out, cv2.resize(img, None, fx=0.5, fy=0.5))
+c0, c1 = (int(sys.argv[9]), int(sys.argv[10])) if len(sys.argv) > 10 else (0, a.shape[1])
+img = np.concatenate([a[r0:r1, c0:c1], np.full((a[r0:r1].shape[0], 10), 128, np.uint8), b[r0:r1, c0:c1]], axis=1)
+cv2.imwrite(out, img)
 print(c.bbox_page_px, c.upscale_factor, a.shape)

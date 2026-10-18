@@ -112,7 +112,48 @@ Which two notes does it join?"* 12 HEAD tiles (11 head boxes with erased ink ins
 control: a head beside an arc, kept whole): one blue box; *"Is the mark in the blue box a note, or not a note?"* Key
 `out/2.166/tiles-key.json`, apart from the tiles.
 
-## 5. Limits / next
+## 5. Sean's 13 arc answers (2026-10-17) and what they changed
+
+He saw the 13 ARC tiles redrawn by the manager (`out/print/2.166-arcs-clear/` in the start-here worktree, print left,
+our traced pixels blue right), numbered 1-13 = our tiles 1, 2, 6, 7, 10, 11, 12, 14, 16, 18, 19, 23, 25. Verbatim:
+*"1. Tie 2. Slur 3.tie 4. Tie 5. Slur 6. Tie on one side of the barline and a slur on the other. The blue line swaps
+arcs. 7. Tie 8. Tie 9. Tie 10. Tie 11 slur 12. Tie 13. Tie"*. Recorded in `out/print/2.166-review/answers.json`
+(manifest names only the answered tiles; the 12 box tiles stay blind), judged index rebuilt; scored by
+`probe/record_answers_2_166.py` -> `out/2.166/arc_answers_scored.json` (our call: a tie's shape -> tie; two positions
+or heads between -> slur; an unanchored end -> no call):
+
+| | tiles |
+|---|---|
+| right | 7 (1, 6, 7, 16, 23, 25 tie; 10 slur) -- 3 of them joined across a barline |
+| wrong | 1 (14: Sean tie, we saw a head between its ends) |
+| a curve that swapped arcs | 1 (11) |
+| no call (an end with no head beside it) | 4 (2 slur, 12 tie, 18 tie, 19 slur) |
+
+**Tile 11, why** (Brahms pdf 1, `glyph/1/1/11/1/21`; fixture `tools/omr/tests/data/system_arc_tile11.npz` cut by
+`probe/fixture_tile11.py`): the tie's piece in bar 1 is cut at the barline; in bar 0 its other half runs just above
+the SLUR and the two touch beside the barline. There the composite run is the two strokes merged (20 px against the
+stroke's 6-7); the trace took that blob's CENTRE as the stroke's height, the prediction dropped 5 px, and the walk
+continued along the slur. Not curvature: HEIGHT continuity across a merge. **Guards** (tests on the fixture, each
+with a mutation twin): a run thicker than 1.6x the stroke's recent median (+2 px) bridges as a gap, so the height
+and slope carry across it (tile 11 now stays on the tie: y 157 at x 175, rising to the head); pieces joined end to
+start must continue in height along the left end's tangent and their end tangents must agree within 0.35; each end
+joins only the piece that continues it best; shared-column joins need 60% of the shared columns to agree.
+
+**The long Brahms slur** (pdf 1, cell `1/0/0/0`, 8 eighths read as sixteenths ON): NOT the erase's own remnant. A
+first guard (never erase within 1 sp of where the stroke merges with other ink; test + mutation) removed the straight
+bar the erase used to leave, and the judged tile `1/0/11/0/13` (Sean "8th") is no longer changed. But the 8 heads
+still change: with the crossing slurs erased, a long HAIRLINE under the beams that no arc box covers (so nothing here
+may erase it) becomes two clean full-width strokes to `Q.BEAM_STROKE` (canonical 643-1911, y 449-537), read as a
+second beam level. OFF, the crossing slur ink hid it. The defect is the beam reader taking an unstemmed hairline for a
+beam level; the erase exposes it. Flat thin slurs are no longer refused as "straight" (only a straight trace as thick
+as a beam, >= 0.4 sp, is). Brahms pdf 1 now: 16 glyphs change, 2 judged (`1/0/0/6/5` right; an eighth-rest gate).
+
+**Check 194 vs 192** (`staged.check` on an `origin/main` snapshot vs this branch, diffed): both new findings are the
+ONE fact that `Q.SYSTEM_ARC` is produced and read by nothing -- counted once by `staged.reach` (its KNOWN_GAPS entry
+keeps it from failing, not from counting) and once by `staged.gather_coverage` ("UNREAD -- produced, and NOTHING
+anywhere reads it", 10 -> 11). Both close the day an adjudicator reads the joined curve.
+
+## 6. Limits / next
 
 Flag OFF. The joined curve is not yet READ by `adjudicate_tie_pair` / `adjudicate_arc_kind` (the consumer, once the
 tiles say the joins are right). The erase perturbs the CV beam reader on Brahms pdf 1 (one cell, 9 heads) and makes

@@ -410,3 +410,40 @@ class TestEndJoinNeedsTheTangentToContinue(unittest.TestCase):
         groups = AS.join_traces([left, good, worse], SP)
         self.assertIn(sorted([0, 1]), [sorted(g) for g in groups])
         self.assertIn([2], groups)
+
+
+# ── Brahms 317803 pdf 1, cell 1/0/0/0: an erase up to a merge left a straight bar the beam reader read as a beam ─────
+
+def _merge_page():
+    """A slur over bar 0 with a short straight dash fused to the underside of its middle."""
+    def draw(img):
+        _head(img, 40, 130)
+        _head(img, 170, 130)
+        _arc(img, 46, 164, 122, -14, t=5)
+        img[113:119, 92:122] = 0                         # the dash, merged with the arc's middle (~y 108-113)
+    dets = [("noteheadBlackInSpace", (28, 121, 52, 139)), ("noteheadBlackInSpace", (158, 121, 182, 139)),
+            ("slur", (46, 104, 164, 124))]
+    return _setup(draw, {0: dets, 1: []})
+
+
+class TestEraseKeepsClearOfAMerge(unittest.TestCase):
+    NEAR = (82, 100, 132, 125)                           # the dash and a half space of arc either side
+
+    def _near_ink(self, patch=None):
+        pws, cells, local, dets = _merge_page()
+        before = _ink(cells[0], self.NEAR)
+        if patch:
+            with mock.patch.object(AS, patch[0], patch[1]):
+                _, summary = _run(pws, cells, local, dets)
+        else:
+            _, summary = _run(pws, cells, local, dets)
+        self.assertGreater(summary["erased_px"], 0)      # the rest of the slur WAS erased
+        return before, _ink(cells[0], self.NEAR)
+
+    def test_the_arc_beside_a_merge_is_left_whole(self):
+        before, after = self._near_ink()
+        self.assertEqual(after, before)
+
+    def test_MUTATION_without_the_keep_clear_the_arc_beside_the_merge_is_erased(self):
+        before, after = self._near_ink(patch=("MERGE_KEEP_SPACES", 0.0))
+        self.assertLess(after, before)

@@ -1,2 +1,1 @@
-FAILED tools/omr/tests/test_staged_check.py::TestEveryRealCheckRunsAndReportsOk::test_none_of_the_eleven_derived_checks_is_broken
-1 failed, 8401 passed, 11 skipped, 833 deselected, 2 xfailed in 875.27s (0:14:35)
+8449 passed, 11 skipped, 833 deselected, 2 xfailed in 875.99s (0:14:35)
