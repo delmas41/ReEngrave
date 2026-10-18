@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-17 -- Session close-out (usage limit): START HERE block names 2.162 / 2.165 / 2.166 in flight on their branches; Sean's bar-lengthen rule in CLAUDE §4
+
+Manager session start-here-go 10-16→17. Lanes stopped by the weekly usage limit with no replay running; each resumes from its branch per the ROADMAP START HERE block.
+
 ## 2026-10-17 -- ROADMAP 2.161 + 2.164 LANDED: OMR_HEAD_STEM_BRIDGE and OMR_ARC_TAIL_NOT_A_HEAD default ON (Sean "Yes both on")
 Lane branches `lane-2.161-box-stem-halves` then `lane-2.164-tie-ends-as-heads` merged with main (gather.py kept both; ROADMAP,
 FINDINGS kept both sides, 2.164 renumbered omr-head-fill Sec.18; judged-tiles.json rebuilt, 1,200 tiles). STAGED GATHER +
