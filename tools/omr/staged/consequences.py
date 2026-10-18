@@ -1074,15 +1074,15 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     if confirm_only:
         if narrowed_here:
             if not all(bare_stem_confirmable(n) for n in narrowed_here):
-                if confirm_only == "narrowed" and narrowed_bar_length_unknown():
-                    return _move_beside_unknown(log, subject, meter, expected, notes, set_aside, cleared_by)
+                # ROADMAP 2.162 (Sean 2026-10-17, "Spilt it"): under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` too, a bar holding
+                # a narrowing gets NO move -- its length is only a range (`bar_length`), which may confirm a meter and
+                # never refutes a reading. The range-gated move was built and refused on Sean's tiles (2 of 7 right).
                 return []
             confirm_bare_only = True
         elif confirm_only == "all":
             return []
     elif narrowed_here and narrowed_bar_length_unknown():
-        # 2.162 with 2.154 off: the bar still never sums a narrowing at its first candidate
-        return _move_beside_unknown(log, subject, meter, expected, notes, set_aside, cleared_by)
+        return []          # 2.162 with 2.154 off: a bar holding a narrowing has no known length, so it moves nothing
 
     # A narrowed note contributes its BEST-SUPPORTED reading to the running
     # total. ⚠️ That is NOT what the exporter does with it (2.22): EXPORT
@@ -1247,63 +1247,6 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             # declare would be the guard disabled by a typo.
             single_pass_revision=True)))
     return verdicts
-
-
-def _move_beside_unknown(log: Log, subject: Subject, meter: Verdict, expected: float, notes, set_aside,
-                         cleared_by) -> List[Verdict]:
-    """ROADMAP 2.162 (`OMR_NARROWED_BAR_LENGTH_UNKNOWN`): a bar holding a narrowed note, under 2.154 arm a. Its length is a
-    RANGE, so:
-
-    * where the meter's length lies INSIDE the range the bar may already fit -- it refutes nothing, and no DECIDED note is
-      moved (the bar cannot say the reading is wrong);
-    * where it lies OUTSIDE, the bar is over (or short) under EVERY candidate of every narrowing: the reading as it stands
-      is refuted exactly as an all-decided bar that does not add up is, and `_admitted`'s +/-1 on ONE decided note is
-      searched as before -- a move lands where the meter's length lies inside the MOVED range, and only a UNIQUE landing
-      is written (two moves that could each fit, at some candidates, refuse).
-
-    The narrowed notes themselves are never landed (2.154 arm a); the bare-stem confirm (every narrowing a bare stem) and
-    INFER's lone-event guess are untouched. Every other bound of `reconcile_duration` holds: no rest is re-read, no tuplet
-    member, the 2.80 missed-rest witness gates a lengthening, a DECIDED note's own level is not a re-reading."""
-    rng = bar_length(log, subject, notes)
-    if rng.unknown:
-        return []
-    lo, hi = rng.lo, rng.hi
-    if rng.contains(expected):
-        return []                        # the bar may already fit: unknown length cannot refute a reading
-    landings = []
-    for note in notes:
-        if note.outcome is not Outcome.DECIDED or _is_rest(note):
-            continue
-        now = note.value
-        if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
-            continue                     # a tuplet member
-        for option in _admitted(note):
-            if option.get("beam_levels") == now.get("beam_levels"):
-                continue
-            delta = float(option.get("beats") or 0.0) - float(now.get("beats") or 0.0)
-            if rng.shifted(delta).contains(expected):
-                landings.append((note, option, delta))
-    if len(landings) != 1:
-        return []
-    note, option, delta = landings[0]
-    detail = {"bar_length_range": [round(lo, 6), round(hi, 6)], "bar_length_unknown": True}
-    if delta > 1e-9:
-        answer, _left = _missed_rest_witness(log, subject)
-        if answer != WITNESS_CLEAR:
-            return []
-        detail["missed_rest_refuted_by_ink"] = True
-    if set_aside:
-        detail["set_aside"] = set_aside
-    return [log.record(Verdict(
-        id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
-        outcome=Outcome.DECIDED,
-        value={**option, "reconciled": True},
-        decider="reconcile_duration", reason="meter_reconciliation",
-        considered=(note.id, meter.id, *cleared_by),
-        basis=(note.id, meter.id, *cleared_by),
-        detail=detail,
-        supersedes=note.id,
-        single_pass_revision=True))]
 
 
 #: How far (staff spaces) beyond its outer line a head may stand and still be

@@ -226,66 +226,36 @@ def _over_bar():
 
 
 class TestReconcileDuration(unittest.TestCase):
+    """Sean 2026-10-17, "Spilt it": under the flag a bar holding a narrowing gets NO move (the range-gated move was refused
+    on his tiles, 2 of 7). RED if a move is wired back in, under 2.154 arm a or with 2.154 off."""
 
-    def test_CONTROL_off_a_narrowing_in_the_bar_withdraws_the_move(self):
+    def test_on_a_bar_over_under_every_candidate_still_moves_nothing_RED(self):
         b, n, d = _over_bar()
-        log, out = _fire(b, on=False)
+        log, out = _fire(b, on=True)
+        self.assertEqual(out, [])
+        self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 1.0)
+        self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED)
+
+    def test_on_with_2_154_off_a_narrowed_bar_moves_nothing_RED(self):
+        b, n, d = _over_bar()
+        log, out = _fire(b, on=False, confirm="off")
+        self.assertTrue(out)                        # CONTROL: 2.154 off and 2.162 off, the old pick/move fires
+        b, n, d = _over_bar()
+        log, out = _fire(b, on=True, confirm="off")
         self.assertEqual(out, [])
         self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 1.0)
 
-    def test_on_a_bar_over_under_every_candidate_still_moves_its_one_decided_note_RED(self):
-        b, n, d = _over_bar()
-        log, out = _fire(b, on=True)
-        self.assertEqual(len(out), 1)
-        v = log.verdict(Q.DURATION, d)
-        self.assertEqual((v.value["beats"], v.reason), (0.5, "meter_reconciliation"))
-        self.assertTrue(v.detail.get("bar_length_unknown"))
-        self.assertEqual(log.verdict(Q.DURATION, n).outcome, Outcome.NARROWED)   # the narrowing is never landed
-
-    def _may_fit_bar(self):
-        """2/4: a narrowed {8, 4}, a decided EIGHTH, a quarter rest: [2.0, 2.5] holds 2.0 -- the bar may already fit.
-        Without the guard the eighth -> a sixteenth ([1.75, 2.25]) is the one landing and would be written."""
-        b = _EvalBar(2, 4)
-        b.narrowed()
-        e = b.decided(0.5, levels=1)
-        b.decided(1.0, rest=True)
-        return b, e
-
-    def test_on_a_bar_that_may_already_fit_moves_nothing_RED(self):
-        b, e = self._may_fit_bar()
-        log, out = _fire(b, on=True)
-        self.assertEqual(out, [])
-        self.assertEqual(log.verdict(Q.DURATION, e).value["beats"], 0.5)
-
-    def test_on_two_moves_that_could_each_fit_refuse(self):
-        # [2.5, 3.0] with two decided quarters: either -> an eighth lands somewhere in range; not unique.
-        b = _EvalBar(2, 4)
-        b.narrowed()
-        d1 = b.decided(1.0)
-        d2 = b.decided(1.0)
-        log, out = _fire(b, on=True)
-        self.assertEqual(out, [])
-        self.assertEqual(log.verdict(Q.DURATION, d1).value["beats"], 1.0)
-        self.assertEqual(log.verdict(Q.DURATION, d2).value["beats"], 1.0)
-
-    def test_on_arm_b_still_moves_nothing(self):
-        b, n, d = _over_bar()
-        log, out = _fire(b, on=True, confirm="all")
-        self.assertEqual(out, [])
-
     def test_on_a_bar_with_no_narrowing_is_unchanged(self):
-        b = _EvalBar(2, 4)
-        d = b.decided(1.0)
-        b.decided(0.5, levels=1)
-        b.decided(1.0, rest=True)
-        log_off, out_off = _fire(b, on=False)
-        b = _EvalBar(2, 4)
-        d = b.decided(1.0)
-        b.decided(0.5, levels=1)
-        b.decided(1.0, rest=True)
-        log_on, out_on = _fire(b, on=True)
-        self.assertEqual([v.value["beats"] for v in out_off], [v.value["beats"] for v in out_on])
+        def bar():
+            b = _EvalBar(2, 4)
+            b.decided(1.0)
+            b.decided(0.5, levels=1)
+            b.decided(1.0, rest=True)
+            return b
+        _l, out_off = _fire(bar(), on=False)
+        _l, out_on = _fire(bar(), on=True)
         self.assertTrue(out_on)
+        self.assertEqual([v.value["beats"] for v in out_off], [v.value["beats"] for v in out_on])
 
 
 # ── EVALUATE: reinstate_rest_between_staves' bar total ───────────────────────────────────────────────────────────────
