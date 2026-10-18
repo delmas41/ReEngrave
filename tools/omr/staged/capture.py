@@ -686,6 +686,11 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "ROADMAP 2.150b: the thin-stroke length, solid-blob length and head-box ink overlap of the dominant "
         "connected piece under a rest-classed box. A measurement of ink with no class and no score.",
         None),
+    "HEAD_OVAL": (
+        RAW_INK,
+        "ROADMAP 2.164: the share of a head-sized ring's sectors that hold ink, at its best placement over a "
+        "notehead box at a bar's left edge (staff-line rows left out). A measurement of ink with no class and no score.",
+        None),
     "UNBOXED_REST_SHAPE": (
         RAW_INK,
         "ROADMAP 2.99: the dimensions, local staff step, stem-column share, "
@@ -884,6 +889,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_NARROW_BOX_SHAPE": ("staged/gather.py", "gather_narrow_box_shape"),
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),
+    "CV_HEAD_OVAL": ("staged/gather.py", "gather_head_oval"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.

@@ -101,6 +101,7 @@ from . import ownership as _ledger
 from . import key_slots as _key_slots
 from . import head_rest_shape as _head_rest_shape
 from . import letter_cover as _letter_cover
+from .. import head_oval as _head_oval
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
 cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
@@ -769,6 +770,99 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON) -- an arc's tail at
+# the bar's left edge boxed as a notehead (Sean 2026-10-17, on the 2.160 sheets:
+# "almost entirely tie ends ... or a bar line").
+#
+# WHY IT WAS A HEAD (`benchmarks/omr-head-fill-2026-09/FINDINGS.md` 2.164): the
+# detector reads one bar's crop at a time, and a measure cell has no horizontal
+# padding, so a tie crossing a barline is CUT there: the previous bar's crop
+# boxes its left piece as the tie (that box ends at the barline), and this bar's
+# crop sees a short stroke at its left edge and boxes it as a head. The box is
+# head-sized (not `too_narrow`, not dot-sized), has no stem (so the 2.49/2.137
+# slash test is never asked), no rest box (2.142) and no rest shape (2.145).
+#
+# THREE WITNESSES, ALL REQUIRED, from three readers:
+#   1. POSITION -- the box starts within `head_oval.LEFT_EDGE_SPACES` of the
+#      cell's left edge (`Q.HEAD_OVAL` is filed only there; re-checked here).
+#   2. THE CUT ARC -- a tie/slur box (`Q.ARC_BOX`) filed in the PREVIOUS cell of
+#      the same staff ends within `ARC_CUT_AT_BARLINE_SPACES` of that cell's
+#      right edge (the crop cut it) and overlaps the head box's rows widened by
+#      `ARC_TAIL_ROW_SLACK_SPACES`. Structural (the crop edge), not fitted.
+#   3. NO OVAL -- `Q.HEAD_OVAL` (`head_oval.oval_width`, page raster): fewer than
+#      `ARC_TAIL_OVAL_MAX_SPACES` (half a standard head's width) of consecutive
+#      columns hold head-tall ink. A cut fitted on two plates, so it only
+#      REFUSES where all three agree, and a box holding a whole head is never
+#      refused; a box we cannot read (no oval row, no previous cell, no arc) is
+#      kept (rule 8).
+# ─────────────────────────────────────────────────────────────────────────────
+ARC_TAIL_REASON = "is_an_arc_tail"
+#: The previous bar's arc box ends this close to its own cell's right edge
+#: (staff spaces): the crop cut it. Measured 0.00-0.36 on the 226 candidates.
+ARC_CUT_AT_BARLINE_SPACES = 0.4
+#: The arc's rows must overlap the head box's rows widened by this much.
+ARC_TAIL_ROW_SLACK_SPACES = 0.5
+#: Half a standard head's width (`head_oval`'s convention, 1.25 sp).
+ARC_TAIL_OVAL_MAX_SPACES = 0.625
+
+
+def _arc_tail_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.164: the box is the tail of an arc the previous bar's crop cut at the barline, or `None` (keep it).
+    Reads rows only; every missing witness keeps the box."""
+    if not _head_oval.enabled():
+        return None
+    ovals = ev.rows(Q.HEAD_OVAL)
+    if not ovals:
+        return None
+    oval = ovals[-1]
+    od = oval.detail or {}
+    width = oval.value
+    sp = od.get("space_page_px")
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    cell_box = _cell_box_page(ev)
+    if width is None or not sp or not page_box or len(page_box) != 4 or not cell_box:
+        return None
+    if not _head_oval.box_at_left_edge(page_box, cell_box, sp):
+        return None
+    me = ev.subject
+    if me.cell is None or me.cell < 1:
+        return None                      # a system's first bar: the arc came from another system's crop
+    prev = R.cell(me.page, me.system, me.staff, me.cell - 1)
+    prev_box_rows = ev.rows(Q.CELL_BOX, subject=prev)
+    if not prev_box_rows or not isinstance(prev_box_rows[-1].value, (list, tuple)) \
+            or len(prev_box_rows[-1].value) != 4:
+        return None
+    prev_right = float(prev_box_rows[-1].value[2])
+    lo = float(page_box[1]) - ARC_TAIL_ROW_SLACK_SPACES * sp
+    hi = float(page_box[3]) + ARC_TAIL_ROW_SLACK_SPACES * sp
+    cut = None
+    for a in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=prev):
+        ab = (a.detail or {}).get("bbox_page_px")
+        if not ab or len(ab) != 4:
+            continue
+        to_edge = (prev_right - float(ab[2])) / sp
+        if abs(to_edge) > ARC_CUT_AT_BARLINE_SPACES:
+            continue
+        if float(ab[3]) < lo or float(ab[1]) > hi:
+            continue
+        if cut is None or abs(to_edge) < abs(cut[1]):
+            cut = (a, to_edge)
+    if cut is None:
+        return None
+    detail["arc_tail"] = {"oval_width_sp": width, "arc": cut[0].id, "arc_kind": cut[0].value,
+                          "arc_end_to_barline_sp": round(cut[1], 3),
+                          "left_gap_sp": round((float(page_box[0]) - float(cell_box[0])) / sp, 3)}
+    margin = (ARC_TAIL_OVAL_MAX_SPACES - float(width)) / ARC_TAIL_OVAL_MAX_SPACES
+    if margin <= 0:
+        detail["arc_tail"]["kept_holds_an_oval"] = True
+        return None
+    return _margins.attach(
+        Ruling(value=True, reason="is_an_arc_tail", used=(box_row.id, oval.id, cut[0].id), detail=detail),
+        margin=round(margin, 4), axis="oval_width_sp", unit="share of half a head's width", band=None,
+        would_choose=(True,))
+
+
 # ROADMAP 2.142 (flag `OMR_HEAD_IS_A_REST_TWIN`, default ON since 2026-10-16) -- a stemless
 # notehead box lying on a non-whole REST box's ink is that rest's ink.
 #
@@ -3186,7 +3280,10 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   Q.STEM,
                   # ⚠️ ROADMAP 2.71: GATHER's read tremolo slash -- the second
                   # witness `_tremolo_slash_crosses_stem` takes.
-                  Q.STEM_SLASH),
+                  Q.STEM_SLASH,
+                  # ROADMAP 2.164: the head-oval reading and the previous bar's
+                  # arc box cut at the barline -- `_arc_tail_refusal`.
+                  Q.HEAD_OVAL, Q.ARC_BOX),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3197,7 +3294,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
-          Q.UNBOXED_REST_SHAPE),
+          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3214,6 +3311,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
                                      "is_a_rest_shape",
+                                     ARC_TAIL_REASON,
                                      OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -3490,6 +3588,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 margin=got.margin, axis=got.axis or "rest_shape",
                 unit="mixed (spaces, steps, column share)", band=None,
                 would_choose=(True,))
+    # ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON): a head box at the
+    # bar's left edge sitting where the previous bar's crop cut a tie/slur, with no
+    # head-tall ink across half a head's width, is that arc's tail. After the shape
+    # rules (each keeps its own reason) and before every same-mark rule.
+    arc_tail = _arc_tail_refusal(ev, box_row, detail)
+    if arc_tail is not None:
+        return arc_tail
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
