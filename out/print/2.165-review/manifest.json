@@ -1,0 +1,6 @@
+{
+ "question": "What is the written value of the note in the blue box (quarter, eighth, half, dotted half ...)? Say 'not a note' if it is not one.",
+ "tiles": 25,
+ "blue": "the note asked about",
+ "nothing_else_drawn": true
+}
