@@ -19,7 +19,7 @@ from typing import Any, List, Optional, Sequence, Tuple
 
 from . import record as R
 from .evaluate import Consequence, rule
-from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
+from .record import Candidate, Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
 
 def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
@@ -394,6 +394,20 @@ def lone_event_fills_bar_enabled() -> bool:
     if raw is None:
         return True
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+#: ROADMAP 2.168, default OFF (Sean 2026-10-18, DECISIONS: the bar MARKS, never moves, a decided note it disagrees with). Where
+#: `reconcile_duration` (meter known, a bar holding NO narrowed note) would have moved a DECIDED note -- one unique landing, the
+#: move 2.162's block now declines -- the note keeps its value and is written GUESSED (blue) carrying the bar's alternative as a
+#: candidate, reason `bar_disagrees_with_decided`. EXPORT marking only: the value is the same verdict value, and the candidate is
+#: never read as a decision by any stage. Needs `OMR_NARROWED_BAR_LENGTH_UNKNOWN` (the block) to mean anything. Only `1/true/yes/on`.
+BAR_DISAGREES_BLUE_ENV = "OMR_BAR_DISAGREES_BLUE"
+BAR_DISAGREES_REASON = "bar_disagrees_with_decided"
+
+
+def bar_disagrees_blue_enabled() -> bool:
+    import os
+    return os.environ.get(BAR_DISAGREES_BLUE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 #: ROADMAP 2.162, default OFF (Sean 2026-10-17, DECISIONS: "a bar holding an undecided note has no known length"). Under it a
@@ -1149,6 +1163,7 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         chord_units = []        # 2.97: not this staff's own heads
     in_chord = {m.id for ms in chord_units for m in ms}
     landings = []
+    shadow_landings = []
     for ms in chord_units:
         if any(float(current[m.id].get("beats") or 0.0)
                != float(current[m.id].get("written") or -1.0) for m in ms):
@@ -1182,7 +1197,13 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         if confirm_bare_only and note.outcome is not Outcome.NARROWED:
             continue                    # 2.154: no decided neighbour moves while a narrowing stands
         if narrowed_bar_length_unknown() and note.outcome is Outcome.DECIDED:
-            continue                    # 2.162 (Sean 2026-10-18 "2. Block"; CLAUDE section 4): the bar never moves a DECIDED note
+            # 2.162 (Sean 2026-10-18 "2. Block"; CLAUDE section 4): the bar never moves a DECIDED note. 2.168: but where the bar
+            # holds no narrowed note, ask what the old rule WOULD have moved, so that note can be marked (value unchanged).
+            if not (bar_disagrees_blue_enabled() and not narrowed_here and not confirm_bare_only):
+                continue
+            shadow = True
+        else:
+            shadow = False
         for option in _admitted(note):
             if confirm_bare_only and not confirms_bare_stem(note, option):
                 continue                # 2.154: never the bare stem's eighth
@@ -1192,9 +1213,31 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             moved = total - float(now.get("beats") or 0.0) \
                 + float(option.get("beats") or 0.0)
             if abs(moved - expected) < 1e-6:
-                landings.append(([note], [option],
-                                 float(now.get("beats") or 0.0),
-                                 float(option.get("beats") or 0.0)))
+                (shadow_landings if shadow else landings).append(
+                    ([note], [option], float(now.get("beats") or 0.0), float(option.get("beats") or 0.0)))
+
+    if shadow_landings and not landings:
+        # 2.168: the old rule's answer is only counted when it is the ONLY landing (its own uniqueness test), and a
+        # lengthening still needs the missed-rest witness clear -- exactly the moves 2.162 declines, nothing more.
+        if len(shadow_landings) == 1:
+            members, options, was_b, new_b = shadow_landings[0]
+            if new_b > was_b + 1e-9 and _missed_rest_witness(log, subject)[0] != WITNESS_CLEAR:
+                return []
+            note, option = members[0], options[0]
+            if note.reason == BAR_DISAGREES_REASON:
+                return []                # already marked (the bounded second EVALUATE pass revisits cells)
+            kept ={k: v for k, v in note.value.items() if k != "reconciled"}
+            alt = {**option}
+            return [log.record(Verdict(
+                id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
+                outcome=Outcome.DECIDED, value=kept,
+                candidates=(Candidate(kept, 0.0), Candidate(alt, 0.0)),
+                decider="reconcile_duration", reason=BAR_DISAGREES_REASON,
+                considered=(note.id, meter.id, *cleared_by), basis=(note.id, meter.id, *cleared_by),
+                detail={"bar_expected_beats": expected, "bar_total_beats": total,
+                        "kept_beats": was_b, "bar_alternative_beats": new_b, "set_aside": set_aside},
+                supersedes=note.id, single_pass_revision=True))]
+        return []
 
     if len(landings) != 1:
         # ⚠️ Zero: no admitted reading of any single event explains the bar, so

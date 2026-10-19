@@ -4744,3 +4744,37 @@ Blind tiles for the 72 changed notes Sean has not judged: `out/print/2.162-revie
 * The block is not limited to the 13 notes of the restored systems: flag ON now declines every decided-note move of `reconcile_duration`, 60 Litolff and 100 Brahms notes that main (flag OFF) moves. That is the rule Sean stated, and it overlaps 2.165 (which owns the flag-OFF behaviour; not changed here). Litolff, which the split left unchanged, now changes on those 60.
 * Judged tiles that move: Litolff 2.154-review 8, 11, 2.153b-review 8, 15 right -> wrong (the bar had fixed a wrong decided reading), 2.154-review 14, 21 wrong -> right. Brahms right -> wrong: 2.154-review 3, 2.162-review 7, 21, 2.153b-review 5, 9, 11; wrong -> right: 2.154-review 13, 2.153b-review 24; the 6 narrowed -> right of 2.162-review (11, 13, 17, 22, 6, 8) and 2.81 tile_08/tile_14 hold. 2.162-review tile 20 (quarter) stays right. Net on judged tiles vs main: Litolff -2 right, Brahms +4 right but +4 wrong; the decided-note bar moves on main were right more often than wrong on the tiles Sean judged, so the block costs tiles where the ADJUDICATE reading was wrong. A narrower block (only bars whose meter the flag restored) would keep the 13-note scope; not built, Sean's call.
 * Fast tier: 8,441 passed, 12 skipped, 2 xfailed, 0 failed.
+
+
+### 2.168 -- THE BAR MARKS, NEVER MOVES, A DECIDED NOTE IT DISAGREES WITH (Sean 2026-10-18 order step 2; branch lane-2.168-bar-disagrees-blue; flag `OMR_BAR_DISAGREES_BLUE`, OFF)
+**What it is (STAGED EVALUATE `reconcile_duration`'s blocked branch + EXPORT `guess_of`).** Under 2.162's block a decided note is never moved. Under the new flag, in a bar with a known meter and NO narrowed note, the landing search the block skips is still run on the decided notes (the old rule's own tests: exactly ONE landing; a lengthening still needs the missed-rest witness clear; a bar that already fits writes nothing). The one note it would have moved is superseded by a DECIDED verdict with the SAME value, `decider=reconcile_duration`, `reason=bar_disagrees_with_decided`, two candidates (kept value, the bar's alternative). EXPORT already classes `reconcile_duration` as a guesser, so the note is written blue `#1F6FEB` with both candidates in `reengrave:guessed`; its `rule` is `bar_disagrees_with_decided` so it counts apart. Only that one note, never the bar. EXPORT RAISES if such a verdict reaches `guess_of` with no alternative candidate or would be written unmarked. A bar holding a narrowed note (2.162 UNKNOWN length), 2.154's bare-stem confirm case, a bar that fits, and a bar with two landings mark nothing. An already-marked note is skipped (the bounded second EVALUATE pass revisits cells).
+
+**No stage reads the candidate as a decision (how checked).** (1) Reading: every INFER solver that reads `.candidates` (`inferences.py`, `infer.py` 692/770) takes them from a NARROWED prior or from `members` filtered `outcome is NARROWED`; the bar solvers hold DECIDED notes fixed by value. (2) Empirically: whole-record replay flag OFF vs ON runs GATHER rows -> ADJUDICATE -> EVALUATE -> INFER -> second EVALUATE (`pipeline.decide`) and compares every glyph's live duration (outcome, written, dots, beats, beam_levels, rest, measure_rest; candidates for narrowed ones) and every system's meter: 0 differ on both plates.
+
+**Replay** (`probe/replay_2_168.py`, `score_2_168.py`; the WHOLE 20261016-night records, per-page slices from `pages_2_162.py`, no detector; arms OFF/ON, all else main = 2.162 block ON; the blue count is `export.guess_of` over every glyph, i.e. the exporter's own test).
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| notes marked `bar_disagrees_with_decided` (ON) | 60 | 114 |
+| of which newly blue (the rest were already blue through an inferred key) | 50 | 103 |
+| glyph values changed OFF -> ON | **0** | **0** |
+| meters changed | 0 | 0 |
+
+The 60 Litolff marks are exactly the 60 decided-note moves 2.162's block declines (2.162 AFTER THE SPLIT).
+
+**Judged, Set B (`out/print/2.162-review-b`, Sean 2026-10-18).** All 8 decided-moved tiles turn blue: the 6 misread notes (tiles 1, 2, 4, 8, 9, 10) AND tiles 3 and 7 (correct; the bar's alternative was wrong), which the bar also disputes. Tile 5 (control) and tile 6 (a chord-share INFER guess, not a decided reading) are not marked. So the mark cannot tell a misread note from a right one the bar happens to dispute; tiles 3 and 7 are the 2 of 8 false marks. Index gap: the Set B rows in `judged-tiles.json` have `subject: null` (no manifest), so `judged score` cannot join them; joined here from `out/2.162/tiles-key-b.json`.
+
+**Precision of the mark on every blue note Sean has judged** (a mark is "right" when the kept value is wrong):
+
+| set | judged blue | kept value wrong (mark right) | kept value right (false mark) |
+|---|--:|--:|--:|
+| Litolff (2.137 / 2.154 / 2.78 tiles) | 6 (4 scored; 2 trem/stem tiles unscored) | 2 | 2 |
+| Brahms, 2.154 / 2.162 Set A | 6 | 4 | 2 |
+| Brahms, 2.162 Set B | 8 | 6 | 2 |
+| **scored total** | **18** | **12 (67%)** | **6 (33%)** |
+
+Of 174 blue notes 20 are judged (11%), so 10 blind tiles were cut. The 67% is on notes Sean was already shown (cut because the bar had moved them), not a sample of all 174; a false mark costs a musician a look, never a value.
+
+**Blind tiles:** `out/print/2.168-review/`: 10 (4 Litolff + 4 Brahms marked notes Sean has not judged, 1 undisputed control per plate), one blue box on the note, nothing else of ours, README, question "what is the written value?"; key `out/2.168/tiles-key.json`; `probe/tiles_2_168.py`, ONE run made tiles AND key, checked equal (every blue box == its key row's box, 10 tiles == 10 rows). Not yet answered.
+
+**Fast tier:** `pytest -m "not slow" tools/omr/tests -q`: 8,484 passed, 12 skipped, 2 xfailed, 2 failed (the new flag undocumented in `docs/flags-2026-09.md`; documented, those two files re-run green). Tests: `test_staged_bar_disagrees_blue_2_168.py` (8, each with a flag-off control; the export test shows `guess_of` gives the rule, both candidates and the chosen value, and that a mark with no alternative RAISES). `test_staged_export.py` failed 3 once before the tier run, identically on main's files, and did not reproduce in the tier: flaky under load, not this lane.
