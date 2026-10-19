@@ -183,6 +183,12 @@ class _Bar:
     #: notes are written exactly as read (CLAUDE.md rule 8: cannot-tell is
     #: never converted into an answer, including "empty").
     meter_return: bool = False
+    #: ROADMAP 2.173 (flag `OMR_RED_BARS`). Set on a `"single"`/`"two_voice"`
+    #: bar `_bar_holds_out` refused and the file writes red instead of holding
+    #: out: `{"words": str, "want": Fraction (whole notes, the bar the
+    #: meter in force asks for), "voices": [Fraction counted per voice]}`.
+    #: None everywhere else.
+    red: Optional[Dict[str, Any]] = None
 
 
 def _lily_gap_text(gap_units: int, divisions: int,
@@ -660,6 +666,19 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                                  condensed=condensed,
                                  where=(run.page, run.system, run.staff, i)))
                 continue
+            # ⚠️ ROADMAP 2.173: the LILYPOND TWIN of `_part_xml`'s red bar.
+            # The SAME predicate, so the two files cannot disagree about
+            # which bars are written red.
+            red = None
+            if SX._red_bar_applies(held):
+                red = {"words": SX._red_bar_words(held),
+                       "want": Fraction(held["want_units"], divisions) / 4,
+                       "voices": [Fraction(v["units"], divisions) / 4
+                                  for v in held["voices"]]}
+                counters["bars_written_red"] += 1
+                counters["notes_written_in_red_bars"] += SX._bar_event_rows(
+                    events)
+                held = None
             if held is not None:
                 # ⚠️ THE SAME BRANCH SHAPE AS THE EVENTLESS CASE ABOVE, AND
                 # FOR THE SAME REASON (CLAUDE.md rule 8): a bar we could not
@@ -732,7 +751,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 bars.append(_Bar("single", meter, run.clef, key,
                                  events=events, directions=directions,
                                  condensed=condensed,
-                                 meter_return=meter_return))
+                                 meter_return=meter_return, red=red))
                 continue
 
             counters["two_voice_bars"] += 1
@@ -746,7 +765,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 1 for e in shared_rests if e.get("fermata"))
             bars.append(_Bar("two_voice", meter, run.clef, key,
                              streams=(v1, v2), directions=directions,
-                             condensed=condensed, meter_return=meter_return))
+                             condensed=condensed, meter_return=meter_return,
+                             red=red))
     return bars, lane0, lane1
 
 
@@ -785,7 +805,8 @@ def _retouch_marks(ev: Dict[str, Any], dyn: str,
 
 def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
                        dyns: Optional[Dict[int, str]] = None,
-                       counters: Optional[Dict[str, int]] = None) -> str:
+                       counters: Optional[Dict[str, int]] = None,
+                       plain: bool = False) -> str:
     """`_legacy._lily_event`, with a GUESSED symbol drawn in the guess colour.
 
     ROADMAP 2.103. The frozen legacy renderer is called UNCHANGED and its
@@ -799,6 +820,10 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
     if counters is not None:
         counters["articulations_written"] += len(_ARTIC_TOKEN.findall(
             text.replace((dyns or {}).get(id(ev), "") or "\0", "", 1)))
+    if plain:
+        # ROADMAP 2.173: a red bar is drawn red whole -- a GUESSED event's
+        # blue is not applied (its status stays in the data / coverage).
+        return text
     if ev.get("kind") == "rest":
         if (ev.get("rest") or {}).get("guess"):
             return "\\once \\override Rest.color = #guessedColor " + text
@@ -820,7 +845,8 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
 def _lily_measure_marked(events: List[Dict[str, Any]],
                          wedges: Dict[int, str],
                          dyns: Optional[Dict[int, str]] = None,
-                         counters: Optional[Dict[str, int]] = None) -> str:
+                         counters: Optional[Dict[str, int]] = None,
+                         plain: bool = False) -> str:
     """`_legacy._lily_measure` with `_lily_event_marked` -- the same tuplet
     run walk, the same join. Equal to the legacy text where nothing is
     guessed."""
@@ -831,11 +857,12 @@ def _lily_measure_marked(events: List[Dict[str, Any]],
     while i < len(events):
         run = runs.get(i)
         if run is None:
-            out.append(_lily_event_marked(events[i], wedges, dyns, counters))
+            out.append(_lily_event_marked(events[i], wedges, dyns, counters,
+                                          plain))
             i += 1
             continue
         last, ratio = run
-        inner = " ".join(_lily_event_marked(ev, wedges, dyns, counters)
+        inner = " ".join(_lily_event_marked(ev, wedges, dyns, counters, plain)
                          for ev in events[i:last + 1])
         out.append(f"\\tuplet {ratio['actual']}/{ratio['normal']} {{ {inner} }}")
         i = last + 1
@@ -907,6 +934,8 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
         if len(voices) == 1:
             return prefix + voices[0] + " |"
         return f"{prefix}<< {{ {voices[0]} }} \\\\ {{ {voices[1]} }} >> |"
+    if bar.red is not None:
+        return prefix + _render_red_bar(bar, wedges, counters, dyn)
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
         return prefix + _lily_measure_marked(
@@ -929,6 +958,81 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
     # because staged decides two-voice PER BAR (`Q.VOICES` is a `Kind.CELL`
     # verdict) and not per staff.
     return f"{prefix}<< {{ {inner1} }} \\\\ {{ {inner2} }} >> |"
+
+
+#: ROADMAP 2.173. The grobs a red bar is drawn in red. Set inside each voice
+#: and reverted at the end of it, so nothing after the bar is touched.
+_RED_GROBS = ("NoteHead", "Stem", "Beam", "Flag", "Rest", "Dots",
+              "Accidental", "Script", "Slur", "Tie", "TupletBracket",
+              "TupletNumber")
+_RED_ON = " ".join("\\override %s.color = #red" % g for g in _RED_GROBS)
+_RED_OFF = " ".join("\\revert %s.color" % g for g in _RED_GROBS)
+_RED_SPAN = (
+    # the words take NO horizontal room: a 50-character label under every red
+    # bar tripled the page count (48 -> 146 on Litolff) when it did
+    "\\once \\override TextScript.extra-spacing-width = #'(+inf.0 . -inf.0) "
+    "\\once \\override TextSpanner.style = #'line "
+    "\\once \\override TextSpanner.color = #red "
+    "\\once \\override TextSpanner.direction = #UP "
+    "\\once \\override TextSpanner.bound-details.left.text = "
+    "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
+    "\\once \\override TextSpanner.bound-details.right.text = "
+    "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
+    "\\once \\override TextSpanner.bound-details.left-broken.text = ##f ")
+
+
+def _lily_frac(frac: Fraction) -> str:
+    return "%d/%d" % (frac.numerator, frac.denominator)
+
+
+def _render_red_bar(bar: _Bar, wedges: Dict[int, str],
+                    counters: Dict[str, int], dyn: str) -> str:
+    """ROADMAP 2.173: a bar that does not add up, written as read.
+
+    Every event keeps the value the record gave it, so every printed note and
+    rest has the shape that was read. LilyPond's TIMING is one clock for the
+    whole score (`Timing` lives in the Score), so a staff cannot carry its own
+    bar length without drifting out of line with every other staff for the rest
+    of the movement; the bar is therefore fitted to the nominal bar length
+    WITHOUT touching a printed value:
+
+    * OVERFULL (counted > should hold): `\\scaleDurations` -- the music's
+      internal time is scaled, the note SHAPES are not (no tuplet bracket or
+      number is drawn). All voices of the bar take the one factor.
+    * SHORT: nothing is scaled; an INVISIBLE skip (`s`, prints nothing, is not
+      a rest) takes the time up, exactly as the 2.117 gap does.
+
+    The whole bar is red under one red bracket carrying want-versus-counted.
+    """
+    red = bar.red
+    word = _ly_escape(red["words"])
+    want = red["want"]
+    lens = list(red["voices"])
+    top = max(lens)
+    factor = (want / top) if top > want else Fraction(1)
+    start = ("\\startTextSpan^\\markup { \\with-color #red \\bold \\fontsize #-3 \"%s\" }"
+             % word)
+
+    def _voice(events: List[Dict[str, Any]], length: Fraction, d: str,
+               with_span: bool) -> str:
+        _tally(events, counters, bar.condensed)
+        body = _lily_measure_marked(
+            events, wedges, {id(events[0]): d + (start if with_span else "")},
+            counters, plain=True)
+        if factor != 1:
+            body = "\\scaleDurations %s { %s }" % (_lily_frac(factor), body)
+        pad = want - length * factor
+        if pad > 0:
+            body += " s1*%s" % _lily_frac(pad)
+        if with_span:
+            body = _RED_SPAN + body + " s1*0\\stopTextSpan"
+        return _RED_ON + " " + body + " " + _RED_OFF
+
+    if bar.kind == "single":
+        return _voice(bar.events, lens[0], dyn, True) + " |"
+    v1, v2 = bar.streams
+    return ("<< { " + _voice(v1, lens[0], dyn, True) + " } \\\\ { "
+            + _voice(v2, lens[1], "", False) + " } >> |")
 
 
 def _meter_return_prefix(bar: _Bar, counters: Dict[str, int]) -> str:

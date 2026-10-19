@@ -139,6 +139,85 @@ def partial_bars_mode() -> str:
     return "off"
 
 
+#: ROADMAP 2.173 (Sean, 2026-10-19: *"Written in red instead of held out is
+#: the way to go"*). A bar whose durations do not add up to the meter is
+#: WRITTEN with exactly what was read -- each event at its own read value and
+#: its own READ/GUESSED status, nothing invented, no padding rest -- and the
+#: whole bar is drawn red with one bar-level marking, "does not add up:
+#: should hold X, counted Y". DEFAULT OFF (an allow-list, like every flag
+#: here): OFF is byte-identical to the 2.8 hold-out. Applies to the bars
+#: `_bar_holds_out` refuses AND the 2.117 partial-bar planner could not place
+#: (a partial bar is not a held bar and keeps its own path).
+RED_BARS_ENV = "OMR_RED_BARS"
+RED_BAR_WORD_PREFIX = "does not add up"
+
+
+def red_bars_enabled() -> bool:
+    """`OMR_RED_BARS` -- DEFAULT OFF; `1`/`true`/`yes`/`on` writes the bar."""
+    return os.environ.get(RED_BARS_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _quarters_text(q: float) -> str:
+    """6 -> "6", 2.5 -> "2.5", 1/3 -> "0.333" (quarters, never rounded to fit)."""
+    q = round(float(q), 3)
+    return ("%d" % q) if q == int(q) else ("%g" % q)
+
+
+def _red_bar_quarters(held: Dict[str, Any]) -> List[float]:
+    return [round(v["units"] / held["divisions"], 6) for v in held["voices"]]
+
+
+def _red_bar_words(held: Dict[str, Any]) -> str:
+    """The bar-level marking, off the held detail: want vs counted, in quarters.
+    Two voices that count differently are both named."""
+    counted = _red_bar_quarters(held)
+    c = (_quarters_text(counted[0]) if len(set(counted)) == 1
+         else " / ".join(_quarters_text(x) for x in counted))
+    return "%s: should hold %s, counted %s (quarters)" % (
+        RED_BAR_WORD_PREFIX, _quarters_text(held["want_quarters"]), c)
+
+
+def _red_bar_applies(held: Optional[Dict[str, Any]]) -> bool:
+    """A held bar is written red unless a lone WHOLE-BAR REST disagrees with
+    the meter: that rest means the bar, two parts of the system disagree about
+    how long the bar is, and it has no value of its own to keep (it stays
+    held, counted, as 2.79 left it)."""
+    return (held is not None and red_bars_enabled()
+            and not any(v.get("measure_rest_length_disagrees")
+                        for v in held["voices"]))
+
+
+_NOTE_OPEN = re.compile(r'<note(?: color="[^"]*")?>')
+
+
+def _redden_note_xml(xml: str) -> str:
+    """Colour each `<note>` red. A GUESSED note's blue is replaced for the
+    DRAWING only; its `reengrave:guessed` carrier stays in the element."""
+    return _NOTE_OPEN.sub('<note color="%s">' % UNREAD_BAR_MARK_COLOR, xml)
+
+
+def _red_bar_rows(events: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """What the bar holds, per event, with its READ/GUESSED status, so the
+    coverage keeps what the red drawing hides."""
+    rows: List[Dict[str, Any]] = []
+    for ev in events:
+        if ev.get("kind") == "rest":
+            r = ev.get("rest") or {}
+            rows.append({"kind": "rest", "beats": ev.get("duration_beats"),
+                         "measure_rest": bool(r.get("measure_rest")),
+                         "status": "GUESSED" if r.get("guess") else "READ",
+                         "glyph": r.get("glyph") or ev.get("glyph")})
+            continue
+        for h in ev.get("noteheads") or ():
+            rows.append({"kind": "note", "pitch": h.get("pitch"),
+                         "beats": h.get("duration_beats"),
+                         "type": h.get("duration_type"),
+                         "status": "GUESSED" if h.get("guess") else "READ",
+                         "glyph": h.get("glyph")})
+    return rows
+
+
 def whole_rest_ink_enabled() -> bool:
     """`OMR_WHOLE_REST_INK` — refuse to write a NOTE where the record says the
     ink is a whole rest (`Q.NOTEHEAD_IS_A_WHOLE_REST`).
@@ -3946,7 +4025,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               plan: Optional["_EndingPlan"] = None,
               partial_bars: Optional[List[Dict[str, Any]]] = None,
               unread_bars: Optional[List[Dict[str, Any]]] = None,
-              doubled_held_bars: Optional[List[Dict[str, Any]]] = None
+              doubled_held_bars: Optional[List[Dict[str, Any]]] = None,
+              red_bars: Optional[List[Dict[str, Any]]] = None
               ) -> str:
     """One `<part>`: every measure of every system this part appears on.
 
@@ -4212,6 +4292,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # ⚠️⚠️ ROADMAP 2.117, DECIDED before any line of the bar is
             # written, as 2.8's own test above is. Planned for every held bar
             # when the flag is `measure` or `on`; only `on` writes it.
+            # ⚠️ ROADMAP 2.173 (flag `OMR_RED_BARS`, OFF): a bar the 2.117
+            # planner cannot keep in part is WRITTEN red, not held out.
+            red = _red_bar_applies(held)
             partial = None
             if held is not None and partial_mode != "off":
                 if run.condensed_from is not None:
@@ -4228,7 +4311,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                             "measure": (number if base is None
                                         else plan.number(_here, i, base)),
                             "part": pid,
-                            "status": "partial" if partial["ok"] else "held",
+                            "status": ("partial" if partial["ok"]
+                                       else "red" if red else "held"),
                             "why": partial.get("why"),
                             "unread_glyphs": [
                                 u["reason"] for u in
@@ -4275,7 +4359,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 _count_directions(counters, directions)
                 lines.extend(_partial_measure_xml(
                     rec, run, i, partial, divisions, counters, split[1]))
-            elif held is not None:
+            elif held is not None and not red:
                 # ⚠️⚠️ THE HOLD-OUT, AND IT IS NOT A MARK ON A KEPT BAR.
                 # Sean, 2026-09-23: *"hold out — I don't care about print
                 # right now — I want to know what we are getting correct."*
@@ -4530,8 +4614,49 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 lines.extend(_direction_xml(kind, text, "      ")
                              for _x, kind, text in directions)
                 _count_directions(counters, directions)
-                lines.extend(_measure_xml(rec, run, i, events, divisions,
-                                          counters, split=split))
+                if red:
+                    # ⚠️⚠️ ROADMAP 2.173. WRITTEN WITH EXACTLY WHAT WAS READ:
+                    # `_measure_xml` is the ordinary writer, so each event
+                    # keeps its own value and its own READ/GUESSED carrier,
+                    # no rest is added and no note moved. Only the DRAWING
+                    # changes: every note red, one red bracket over the bar
+                    # naming want vs counted. The bar is counted apart from
+                    # the bars that add up and from those held out.
+                    counters["bars_written_red"] += 1
+                    counters["notes_written_in_red_bars"] += (
+                        _bar_event_rows(events))
+                    if split[0] is not None:
+                        counters["two_voice_bars_written_red"] += 1
+                    if red_bars is not None:
+                        _rows = _red_bar_rows(events)
+                        red_bars.append({
+                            **_bar_ids(run, i, emitted),
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": (number if base is None
+                                        else plan.number(_here, i, base)),
+                            "part": pid, "events": len(events),
+                            "noteheads_and_rests": _bar_event_rows(events),
+                            "want_quarters": held["want_quarters"],
+                            "counted_quarters": _red_bar_quarters(held),
+                            "words": _red_bar_words(held),
+                            "meter_carried_in_file": meter is None,
+                            "two_voice": split[0] is not None,
+                            "doubled_staff_copy": run.condensed_from is not None,
+                            "read": sum(1 for r in _rows
+                                        if r["status"] == "READ"),
+                            "guessed": sum(1 for r in _rows
+                                           if r["status"] == "GUESSED"),
+                            "rows": _rows})
+                    lines.append(_unread_bracket_xml("start", 1))
+                    lines.append(_red_bar_word_xml(_red_bar_words(held)))
+                    _body = _measure_xml(rec, run, i, events, divisions,
+                                         counters, split=split)
+                    lines.extend(_redden_note_xml(x) for x in _body)
+                    lines.append(_unread_bracket_xml("stop", 1))
+                else:
+                    lines.extend(_measure_xml(rec, run, i, events, divisions,
+                                              counters, split=split))
             lines.extend(_bl_right)
             lines.append("    </measure>")
     lines.append("  </part>")
@@ -5603,6 +5728,18 @@ def _unread_gap_direction_xml(indent: str = "      ",
             f"{indent}</direction>")
 
 
+def _red_bar_word_xml(word: str, indent: str = "      ") -> str:
+    """ROADMAP 2.173: the bar-level words of a red bar. The text begins
+    `RED_BAR_WORD_PREFIX`, which is how the acceptance control tells a red
+    bar from a bar that adds up."""
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">'
+            f"{_legacy._xml_escape(word)}</words>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
 def _gap_xml(units: int, voice: int, indent: str = "      ",
              word: Optional[str] = None) -> List[str]:
     """The unread span: a red `unread` bracket over an INVISIBLE `<forward>`
@@ -6022,6 +6159,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     #: matched to it.
     unread_bars: List[Dict[str, Any]] = []
     doubled_held_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.173: every bar written red (flag `OMR_RED_BARS`).
+    red_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -6121,7 +6260,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    marked_bars=marked_bars, plan=plan,
                                    partial_bars=partial_bars,
                                    unread_bars=unread_bars,
-                                   doubled_held_bars=doubled_held_bars))
+                                   doubled_held_bars=doubled_held_bars,
+                                   red_bars=red_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -6235,6 +6375,25 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "stay_held_by_reason": dict(_still),
         "bars": partial_bars,
     }
+    # ⚠️⚠️ ROADMAP 2.173. REPORTED APART from "bars add up" AND from the held
+    # bars: a red bar does NOT add up -- that is why it is red. Only present
+    # when the flag is on, so OFF writes the report it always wrote.
+    if red_bars_enabled():
+        report["bars_written_red"] = {
+            "flag": RED_BARS_ENV,
+            "bars": len(red_bars),
+            "color": UNREAD_BAR_MARK_COLOR,
+            "noteheads_and_rests": int(
+                counters.get("notes_written_in_red_bars", 0)),
+            "read": sum(b["read"] for b in red_bars),
+            "guessed": sum(b["guessed"] for b in red_bars),
+            "two_voice": int(counters.get("two_voice_bars_written_red", 0)),
+            "bars_list": red_bars,
+        }
+        if len(red_bars) != int(counters.get("bars_written_red", 0)):
+            raise Unbalanced(
+                "red bars listed (%d) do not equal the count (%d)"
+                % (len(red_bars), int(counters.get("bars_written_red", 0))))
     # ⚠️⚠️ ROADMAP 2.4c: THE SAME SHAPE, A DIFFERENT MECHANISM. A bar can be
     # held out because its durations do not sum to the meter OR because it
     # carries an unread mark (never both -- `_part_xml` tests `held is None`
