@@ -910,6 +910,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "RESCUE_LOWCONF": ("yolo_detector.py", "detect"),
     # ROADMAP 2.138: the SAME `YoloDetector.detect` at a lower floor, mark classes only, kept where the ink is a wedge and a head stands on its point's side.
     "RESCUE_WEDGE": ("yolo_detector.py", "detect"),
+    # ROADMAP 2.172: the SAME model on the SAME cell image, resized to another staff space (`YoloDetector.detect_view`), family-restricted.
+    "DETECTOR_VIEW": ("yolo_detector.py", "detect_view"),
     # ⚠️ ROADMAP 2.114. A DIFFERENT model's weights (2.110's OLD arm), but the SAME `YoloDetector.detect` on the SAME cell image
     # production read (the unerased canonical cell), hollow-head classes kept; its own reader name so its boxes are traceable.
     "SECOND_DETECTOR": ("yolo_detector.py", "detect"),

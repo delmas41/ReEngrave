@@ -2908,6 +2908,11 @@ class READERS(_Vocab):
     #: dot / staccato / staccatissimo classes only, a box kept ONLY where its ink is wedge-shaped AND a head stands on the side its
     #: point faces. Its own reader name so a crop, a test or a consumer can tell it from the production pass and from the 2.53 rescue.
     RESCUE_WEDGE = "yolo_rescue_wedge"       # gather: sub-floor wedge box, guided by a head and the ink's shape
+    #: `gather.gather_detector_views` -- ROADMAP 2.172 (`OMR_DETECTOR_VIEWS`, default OFF). The SAME weights `DETECTOR` names on the SAME cell image,
+    #: shown a different staff space (a smaller one for dots/flags/rests, a closer one for black heads), anti-aliased and read at a few sub-pixel
+    #: phases, the median kept. Its own reader name so a box from a view is traceable and separable from the production pass; the row carries the
+    #: view, the size and the phases that found it.
+    DETECTOR_VIEW = "yolo_detector_view"     # gather: another-size view of the same cell, family-restricted, phase median
     #: `gather.gather_far_head_ledger_positions` -- ROADMAP 2.56. Reads the
     #: page's ORIGINAL raster (`pws.page.rgb`, staff lines left in) -- a
     #: different raster from `CV_INK`'s erased crops, so not the same signal --
