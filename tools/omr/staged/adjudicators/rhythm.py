@@ -55,6 +55,7 @@ from . import structure as _structure
 # `notehead_precision`, so this is not a new circular-import risk.
 from . import ownership as _own
 from . import aug_dot_join as _aug_join
+from .. import bar_length as _BL
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -5873,22 +5874,32 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         if any(_sub(gi) in whole_rests
                for e in events for gi in (e.get("glyphs") or [])):
             continue
-        total = 0.0
-        for event in events:
-            beats = []
-            for gi in event.get("glyphs") or []:
-                got = ev.verdict(Q.DURATION, subject=_sub(gi))
-                if got is None:
-                    continue
-                val = (got.value if got.outcome is Outcome.DECIDED
-                       else (got.candidates[0].value if got.candidates else None))
-                if val:
-                    beats.append(float(val.get("beats") or 0.0))
-            if beats:
-                total += Counter(beats).most_common(1)[0][0]
-        if total > 0:
-            bars.setdefault(cell.cell, []).append(round(total, 4))
+        # ⚠️ ROADMAP 2.162 / 2.165: THE ONE BAR-LENGTH HELPER (`staged.bar_length`). Flag off it is the old sum (a narrowing
+        # at its first candidate); under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a staff bar holding a NARROWED note is a RANGE,
+        # recorded as a (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter inside it and never refute one.
+        got = _BL.length_of_events(
+            ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])] for event in events),
+            missing="skip")
+        if got.unknown or got.hi <= 0:
+            continue
+        lo_r, hi_r = round(got.lo, 4), round(got.hi, 4)
+        bars.setdefault(cell.cell, []).append((lo_r, hi_r) if got.ranged and lo_r != hi_r else lo_r)
     return bars
+
+
+def _resolve_lengths(lengths, expected: float) -> list:
+    """ROADMAP 2.162: one bar's per-staff lengths, judged against ONE candidate length. An exact length stands as read; a
+    RANGE (a staff bar holding a narrowed note) that contains `expected` CONFIRMS it (counts as `expected`); a range that
+    does not is UNKNOWN and is dropped -- it may not vote against the meter (Sean 2026-10-17). Flag off: no range exists
+    and this returns `lengths` unchanged."""
+    out = []
+    for x in lengths:
+        if isinstance(x, tuple):
+            if x[0] - 1e-6 <= expected <= x[1] + 1e-6:
+                out.append(expected)
+        else:
+            out.append(x)
+    return out
 
 
 def _score_bars(bars: dict, expected: float) -> dict:
@@ -5897,6 +5908,7 @@ def _score_bars(bars: dict, expected: float) -> dict:
     agree = disagree = 0
     observed = Counter()
     for cell_index, lengths in sorted(bars.items()):
+        lengths = _resolve_lengths(lengths, expected)      # 2.162: a range confirms or is silent
         if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
@@ -6446,6 +6458,7 @@ def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
     """(bars that FIT, bars that do NOT) from `from_cell` onward."""
     fits = misses = 0
     for cell_index, lengths in sorted(bars.items()):
+        lengths = _resolve_lengths(lengths, expected)      # 2.162: a range confirms or is silent
         if cell_index < from_cell or len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
@@ -7546,6 +7559,9 @@ def _bars_opinion(ev: Evidence) -> dict:
     bars = _bar_lengths_for(ev)
     voted = []
     for cell_index, lengths in sorted(bars.items()):
+        # ⚠️ ROADMAP 2.162: a RANGE names no length, so it never stands for election; it may still confirm the length
+        # the exact bars elect (`_score_bars` below resolves it against that length).
+        lengths = [x for x in lengths if not isinstance(x, tuple)]
         if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
             continue
         mode, n = Counter(lengths).most_common(1)[0]
