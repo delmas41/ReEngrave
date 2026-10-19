@@ -21,7 +21,7 @@ from tools.omr.staged.review import rerun as RR  # noqa: E402
 DOC, SD, OUTDIR, ARMS = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split(",")
 D = os.path.join(SD, DOC)
 FLAG = "OMR_BAR_CORRECTS_ONE_NOTE"
-ENV = {"off": "0", "on": "strict", "relaxed": "relaxed", "loose": "loose"}
+ENV = {"off": "0", "on": "strict", "relaxed": "relaxed", "loose": "loose", "loose_rb": "loose_removed_boxes_ok"}
 JUDGED_Q = {"duration", "notehead_is_not_a_notehead", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest", "arc_kind"}
 CORRECT_REASON = "bar_corrects_one_note"
 os.makedirs(OUTDIR, exist_ok=True)
@@ -99,7 +99,8 @@ for arm in ARMS:
         d = o.get("detail") or {}
         return dict(origin_decider=o.get("decider"), origin_reason=o.get("reason"), origin_outcome=o.get("outcome"),
                     **{k: d[k] for k in EV0 if k in d})
-    glyphs = {g: dict(brief(v), margin=v.get("margin"), ev=evd(v)) for g, v in glyph_live.items()}
+    glyphs = {g: dict(brief(v), margin=v.get("margin"), ev=evd(v), refusal=(v.get("detail") or {}).get("one_note_refusal"))
+              for g, v in glyph_live.items()}
     meters = {s: meter_brief(v) for s, v in live(vs, "meter", "system/").items()}
     changed = []
     for g, v in glyph_live.items():

@@ -12,7 +12,7 @@ name of the first gate that failed (recorded on the 2.168 mark, so a refusal say
 
 The gates (all must hold, else no change -- the note then keeps its value and 2.168 marks it blue as before):
 
-1. METER read or carried (`voted` / `carried`), never one the bars themselves derived.
+1. METER read or carried (`voted` / `carried*`), never one the bars themselves derived (`derived_from_bars`).
 2. The bar has a KNOWN length (no narrowed note; 2.162) and EVERY OTHER event is DECIDED on evidence MEASURED solid
    (`solid_refusal`): a class of reading with zero wrong answers among Sean's judged tiles. Never an assumed cut.
 3. Every ink in the bar is accounted for: the ink witness is CLEAR (no staff-sized ink no standing glyph explains), no glyph
@@ -52,7 +52,7 @@ def mode() -> str:
     raw = (os.environ.get(ONE_NOTE_ENV) or "").strip().lower()
     if raw in ("", "0", "false", "no", "off"):
         return ""
-    return raw if raw in ("relaxed", "loose") else "strict"
+    return raw if raw in ("relaxed", "loose", "loose_removed_boxes_ok") else "strict"
 
 
 def enabled() -> bool:
@@ -90,7 +90,7 @@ def solid_refusal(log, v: Verdict, m: Optional[str] = None) -> Optional[str]:
     origin = _origin(log, v)
     if origin.outcome is not Outcome.DECIDED:
         return "settled_from_a_narrowing"
-    if m == "loose":      # MEASUREMENT ARM ONLY: any decided reader value counts -- the upper bound Sean sets the bar against
+    if m.startswith("loose"):      # MEASUREMENT ARM ONLY: any decided reader value counts -- the upper bound Sean sets the bar against
         return None
     if _is_rest(v):
         return None if m == "relaxed" else "rest_reading_not_measured"
@@ -104,7 +104,7 @@ def solid_refusal(log, v: Verdict, m: Optional[str] = None) -> Optional[str]:
 def meter_refusal(meter: Verdict) -> Optional[str]:
     if meter.outcome is not Outcome.DECIDED:
         return "meter_not_decided"
-    if meter.reason not in ("voted", "carried"):
+    if not (meter.reason == "voted" or str(meter.reason).startswith("carried")):
         return "meter_derived_from_the_bars:%s" % meter.reason
     return None
 
@@ -148,7 +148,7 @@ def refusal(log, subject: Subject, meter: Verdict, notes: Sequence[Verdict], not
         why = solid_refusal(log, other)
         if why:
             return "other_note_not_solid:" + why
-    if set_aside:
+    if set_aside and mode() != "loose_removed_boxes_ok":     # MEASUREMENT ARM: what the removed-box gate costs
         return "a_glyph_was_set_aside_in_the_bar:" + "+".join(map(str, set_aside))
     if not ink_clear:
         return "unexplained_ink_in_the_bar"
