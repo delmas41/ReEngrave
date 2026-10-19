@@ -38,6 +38,15 @@ STEM_X0, STEM_X1 = 300.0, 306.0        # a 6px-wide stem
 TIP_Y, FAR_Y = 100.0, 340.0            # an up stem: tip at the top, 6 spaces long
 
 
+import pytest as _pytest_2_162
+
+
+@_pytest_2_162.fixture(autouse=True)
+def _bar_may_move_decided_notes_2_162(monkeypatch):
+    """ROADMAP 2.162 landed ON: the bar never moves a DECIDED note. This file pins the older bar-move behaviour."""
+    monkeypatch.setenv("OMR_NARROWED_BAR_LENGTH_UNKNOWN", "0")
+
+
 def _paper(h=500, w=600):
     return np.full((h, w), 255, dtype=np.uint8)
 

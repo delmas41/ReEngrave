@@ -28,6 +28,15 @@ from tools.omr.staged.record import Log, Outcome, Q, READERS, Verdict
 CELL = R.cell(0, 0, 0, 2)
 
 
+import pytest as _pytest_2_162
+
+
+@_pytest_2_162.fixture(autouse=True)
+def _bar_may_move_decided_notes_2_162(monkeypatch):
+    """ROADMAP 2.162 landed ON: the bar never moves a DECIDED note. This file pins the older bar-move behaviour."""
+    monkeypatch.setenv("OMR_NARROWED_BAR_LENGTH_UNKNOWN", "0")
+
+
 def _verdict(log, sub, q, outcome, value, reason="t", detail=None):
     return log.record(Verdict(
         id=log._next_id("vrd"), subject=sub, quantity=q, outcome=outcome,
