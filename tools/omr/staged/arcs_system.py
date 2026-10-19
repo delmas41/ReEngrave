@@ -1,6 +1,6 @@
 """ROADMAP 2.166 -- arcs read ONCE per staff across the SYSTEM on page pixels, then their own stroke erased.
 
-STAGED GATHER. Flag `OMR_SYSTEM_ARCS`, default OFF (an allow-list: only an explicit on-word turns it on).
+STAGED GATHER. Flag `OMR_SYSTEM_ARCS` (the reading), default ON (Sean 2026-10-18); the ink erase is `OMR_SYSTEM_ARCS_ERASE`, default OFF.
 
 Sean 2026-10-17: *"Can we treat arcs the way we treat hairpins - taking into account the system or page view and then
 erasing them?"*, then *"Open the system level arc"*.
@@ -158,8 +158,22 @@ def is_protected_class(name: str) -> bool:
     return str(name).startswith(PROTECTED_PREFIXES)
 
 
+ERASE_ENV = "OMR_SYSTEM_ARCS_ERASE"
+
+
 def enabled() -> bool:
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_SYSTEM_ARCS` (the READING), default ON (ROADMAP 2.166, Sean 2026-10-18 "1. Land on"); an explicit
+    `0/false/no/off` (or empty) disables."""
+    raw = os.environ.get(ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def erase_enabled() -> bool:
+    """`OMR_SYSTEM_ARCS_ERASE`, default OFF (an allow-list: only an explicit on-word turns it on). The traced stroke is
+    erased from `image_no_staff` only then; the erase perturbs the beam reader on Brahms pdf 1 (FINDINGS Sec.8)."""
+    return os.environ.get(ERASE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -921,6 +935,8 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 print(f"  gather system arc {first['glyph'].to_key()} {anc['shape']} cells={cells_in}")
 
     summary["stroke_only_heads"] = sorted(stroke_only)
+    if not erase_enabled():
+        return summary
     # ── the erase: every cell the traced strokes reach, minus every protected box ──
     arc_boxes = [p["box"] for ps in arcs_by_staff.values() for p in ps]
     protect = [b for g, name, b in others

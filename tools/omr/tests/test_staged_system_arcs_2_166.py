@@ -1,5 +1,5 @@
 """ROADMAP 2.166 -- arcs read ONCE per staff across the SYSTEM on page pixels, then ONLY their own stroke erased
-(STAGED GATHER `arcs_system.gather_system_arcs` -> `Q.SYSTEM_ARC`; flag `OMR_SYSTEM_ARCS`, default OFF).
+(STAGED GATHER `arcs_system.gather_system_arcs` -> `Q.SYSTEM_ARC`; flag `OMR_SYSTEM_ARCS`, default ON; erase `OMR_SYSTEM_ARCS_ERASE` default OFF).
 
 Sean 2026-10-17: "Can we treat arcs the way we treat hairpins - taking into account the system or page view and then
 erasing them?" / "Open the system level arc".
@@ -24,7 +24,7 @@ from tools.omr.staged import arcs_system as AS
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Q
 
-ON = {AS.ENV: "1"}
+ON = {AS.ENV: "1", AS.ERASE_ENV: "1"}
 SP = 20                         # page px per staff space
 LINES = [100, 120, 140, 160, 180]
 BARLINE_X = 200
@@ -194,10 +194,15 @@ class TestTieCutAtBarline(unittest.TestCase):
         self.assertTrue(np.array_equal(pws.page.binary, page))
         self.assertIsNotNone(cells[0].image_no_staff_with_arcs)
 
-    def test_flag_is_off_by_default(self):
+    def test_reading_is_on_and_erase_off_by_default(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(AS.ENV, None)
-            self.assertFalse(AS.enabled())
+            os.environ.pop(AS.ERASE_ENV, None)
+            self.assertTrue(AS.enabled())
+            self.assertFalse(AS.erase_enabled())
+            for off in ("0", "false", "no", "off"):
+                os.environ[AS.ENV] = off
+                self.assertFalse(AS.enabled())
 
 
 # ── erasing never takes a touched head's ink ─────────────────────────────────────────────────────────────────────────

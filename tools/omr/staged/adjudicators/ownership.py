@@ -2712,7 +2712,7 @@ def _kind_with_rules(kind: str, tn: Dict[str, Any],
 def _system_arc_row(ev: Evidence):
     """ROADMAP 2.166: the `Q.SYSTEM_ARC` row whose joined curve holds THIS arc box as one of its pieces, or None.
 
-    Filed (flag `OMR_SYSTEM_ARCS`, default OFF) on the curve's leftmost piece, so a later piece is found through the
+    Filed (flag `OMR_SYSTEM_ARCS`, default ON) on the curve's leftmost piece, so a later piece is found through the
     staff: the row's `pieces` name every box the curve joined. Flag off: no rows, None, decision unchanged."""
     staff = ev.subject.at(Kind.STAFF)
     if staff is None:

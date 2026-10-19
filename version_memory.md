@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-18 -- ROADMAP 2.166 LANDED: OMR_SYSTEM_ARCS default ON (Sean "1. Land on"); ink erase stays OFF
+Lane `lane-2.166-system-arcs` merged normally. STAGED GATHER `arcs_system.gather_system_arcs` files `Q.SYSTEM_ARC` (ties/slurs read once per staff across the system, cut pieces joined, ends anchored), consumed by `adjudicate_tie_pair` / `adjudicate_arc_kind`. `arcs_system.enabled()` is True when unset (explicit `0/false/no/off/""` disables); the stroke erase is split behind new `OMR_SYSTEM_ARCS_ERASE` (`erase_enabled()`), default OFF, because it perturbs the Brahms pdf 1 beam reader. Set 2: 10/10 ties right, 0 judged right->wrong. Flags doc rows and tests updated.
+
 ## 2026-10-17 -- Session close-out (usage limit): START HERE block names 2.162 / 2.165 / 2.166 in flight on their branches; Sean's bar-lengthen rule in CLAUDE §4
 
 Manager session start-here-go 10-16→17. Lanes stopped by the weekly usage limit with no replay running; each resumes from its branch per the ROADMAP START HERE block.
