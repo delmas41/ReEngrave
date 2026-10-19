@@ -2,7 +2,7 @@
 pass of the same record; no gather, no detector) through ADJUDICATE..INFER (review.rerun.run_stages == pipeline.decide) AND THEN
 EXPORT (`export.to_musicxml`), flag OFF vs ON. Adapted from lane-2.165's replay_2_165.py (same harness, so both lanes' numbers
 are comparable). It measures the EXPORTED FILE.
-  off -- OMR_BEAM_REFUSED_OFF_THE_TIP=0      on -- =1      (everything else = main 7f668d66)
+  arms: off (both 0), tip (OMR_BEAM_REFUSED_OFF_THE_TIP=1), arc (OMR_BEAM_NOT_ON_SYSTEM_ARC=1), both   (else = main 7f668d66)
 Per arm: OUTDIR/<doc>.<arm>.json {glyphs (live duration brief + origin), coverage digest, held bars, notes in xml} and
 OUTDIR/<doc>.<arm>.record.json (mini record for `judged score`); OUTDIR/<doc>.control.json (OFF arm vs the stored verdicts).
 usage: replay_2_170.py DOC SLICEDIR OUTDIR ARM[,ARM...] [--lock]"""
@@ -22,8 +22,8 @@ from tools.omr.staged.review import rerun as RR  # noqa: E402
 DOC, SD, OUTDIR, ARMS = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split(",")
 LOCK = "--lock" in sys.argv
 D = os.path.join(SD, DOC)
-FLAG = "OMR_BEAM_REFUSED_OFF_THE_TIP"
-ENV = {"off": "0", "on": "1"}
+TIP, ARCF = "OMR_BEAM_REFUSED_OFF_THE_TIP", "OMR_BEAM_NOT_ON_SYSTEM_ARC"
+ENV = {"off": ("0", "0"), "on": ("1", "0"), "tip": ("1", "0"), "arc": ("0", "1"), "both": ("1", "1")}
 JUDGED_Q = {"duration", "notehead_is_not_a_notehead", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest", "arc_kind"}
 os.makedirs(OUTDIR, exist_ok=True)
 
@@ -76,7 +76,7 @@ def main():
     del stored
     KEEP = ("bars_held_out_sum", "partial_bars", "guessed", "written", "notes_not_written", "notes_not_written_total")
     for arm in ARMS:
-        os.environ[FLAG] = ENV[arm]
+        os.environ[TIP], os.environ[ARCF] = ENV[arm]
         log, _ = RR.rebuild_gather(rec)
         RR.run_stages(log)
         result = {"record": log.to_json(), "summary": log.summary()}
@@ -96,7 +96,8 @@ def main():
             o = origin(v)
             d = o.get("detail") or {}
             glyphs[g] = dict(brief(v), origin_reason=o.get("reason"), origin_outcome=o.get("outcome"),
-                             off_tip=bool(d.get("beam_refused_off_the_tip")))
+                             off_tip=bool(d.get("beam_refused_off_the_tip")),
+                             on_arc=bool((d.get("beams_not_by_ink_why") or {}).get("on_system_arc")))
         if arm == "off":
             first = {}
             for v in vs:
@@ -125,7 +126,7 @@ def main():
             fh.write(xml)
         del vs, result, xml
         print(DOC, arm, "notes", (cov.get("written") or {}).get("notes"), "held", cov["bars_held_out_sum"].get("bars"),
-              "off_tip", sum(1 for x in glyphs.values() if x["off_tip"]), "%.0fs" % (time.time() - t0), flush=True)
+              "off_tip", sum(1 for x in glyphs.values() if x["off_tip"]), "on_arc", sum(1 for x in glyphs.values() if x["on_arc"]), "%.0fs" % (time.time() - t0), flush=True)
 
 
 if LOCK:

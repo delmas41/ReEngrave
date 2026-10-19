@@ -19,11 +19,27 @@ from tools.omr.staged.record import Scope
 from tools.omr.tests.test_staged_stem_tip_decides_beam_2_146 import CELL, _discounted
 
 FLAG = rhythm.BEAM_REFUSED_OFF_THE_TIP_ENV
+ARC = rhythm.BEAM_NOT_ON_SYSTEM_ARC_ENV
+HEAD = "glyph/0/0/0/0/0"
 
 
-def _run(log, on=True):
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
+def _run(log, on=True, arc=False):
+    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0", ARC: "1" if arc else "0"}):
         adjudicate.run(log)
+
+
+def _filled(log, g, share=0.0):
+    """2.148's first-step head-fill reading: interior white `share` of the head's rows (0 -> DECIDED black)."""
+    log.observe(g, Q.NOTEHEAD_INK, 1.0, reader=READERS.CV_NOTEHEAD_INK, frame="cell:0",
+                interior_white={"rows_share": share, "hole_share": 0.0, "rows_read": 12, "box": [100, 90, 20, 16]})
+
+
+def _arc_through(log, glyph, stroke_only=True):
+    """A 2.166 system arc whose traced stroke runs through the detector box `glyph` (class beam)."""
+    from tools.omr.staged import record as R
+    log.observe(R.glyph(0, 0, 0, 0, 7), Q.SYSTEM_ARC, "two_positions", reader=READERS.CV_SYSTEM_ARC, frame="page",
+                pieces=["glyph/0/0/0/0/7"], through_boxes=[{"glyph": glyph, "class": "beam", "residual_spaces2": 0.01,
+                                                            "stroke_only": stroke_only}])
 
 
 def _unread(log, why="ink_not_flag_shaped", end="top"):
@@ -33,9 +49,11 @@ def _unread(log, why="ink_not_flag_shaped", end="top"):
                 stem_row_id=stem.id, end=end, why=why)
 
 
-def _off_tip(log, runs=(), why="ink_not_flag_shaped", levels_row=True):
+def _off_tip(log, runs=(), why="ink_not_flag_shaped", levels_row=True, fill=0.0):
     g = _discounted(log, tip_found=None, runs=runs, levels_row=levels_row)
     _unread(log, why)
+    if fill is not None:
+        _filled(log, g, fill)
     return g
 
 
@@ -118,6 +136,34 @@ class TestOffTheTip(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertNotIn("beam_refused_off_the_tip", v.detail or {})
 
+    def test_no_head_fill_reading_keeps_the_narrowing(self):
+        """Addition 1 (Sean 2026-10-19; tile 2 was a half): the detector class alone never lets the rule decide."""
+        log = Log()
+        g = _off_tip(log, fill=None)
+        _run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+
+    def test_an_undecided_head_fill_keeps_the_narrowing(self):
+        log = Log()
+        g = _off_tip(log, fill=0.15)          # between FILLED_MAX and HOLLOW_MIN: the fill reader did not decide
+        _run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotIn("beam_refused_off_the_tip", v.detail or {})
+
+    def test_a_low_confidence_rescue_box_keeps_the_narrowing(self):
+        """2.170 tile 2's box came from `yolo_rescue_lowconf` (score 0.19); its ink read solid on that box."""
+        from tools.omr.staged import record as R
+        log = Log()
+        g = _discounted(log, tip_found=None, runs=())
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 90, 20, 16), reader=READERS.RESCUE_LOWCONF, frame="cell:0",
+                    score=0.19, bbox_page_px=[1100, 990, 1120, 1006])
+        _unread(log)
+        _filled(log, g)
+        _run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotIn("beam_refused_off_the_tip", v.detail or {})
+
     def test_a_hook_at_the_tip_is_never_read_as_a_quarter(self):
         log = Log()
         g = _discounted(log, tip_found=True, runs=())
@@ -125,6 +171,71 @@ class TestOffTheTip(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertNotIn("beam_refused_off_the_tip", v.detail or {})
         self.assertFalse(v.outcome is Outcome.DECIDED and (v.value or {}).get("beam_levels") == 0)
+
+
+class TestBeamsCannotHaveAnArc(unittest.TestCase):
+    """Addition 2 (Sean: "beams cannot have an arc"): a stroke whose ink lies on a traced system arc is not a beam."""
+
+    def _tip_box_on_arc(self, log, stroke_only=True):
+        from tools.omr.staged import record as R
+        _box_at_the_tip(log)
+        bg = R.glyph(0, 0, 0, 0, 5)
+        log.observe(bg, Q.GLYPH_BOX, ("beam", 100, 76, 30, 6), reader=READERS.DETECTOR, frame="cell:0", score=0.5,
+                    bbox_page_px=[1100, 976, 1130, 982])
+        _arc_through(log, bg.to_key(), stroke_only=stroke_only)
+
+    def test_the_arc_witness_clears_a_slur_piece_at_the_tip(self):
+        log = Log()
+        g = _off_tip(log)
+        self._tip_box_on_arc(log)
+        _run(log, arc=True)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.detail["beam_refused_off_the_tip"]["arc_strokes_at_the_stem_ends"], 1)
+
+    def test_control_arc_flag_off_the_box_still_blocks(self):
+        log = Log()
+        g = _off_tip(log)
+        self._tip_box_on_arc(log)
+        _run(log, arc=False)
+        self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
+
+    def test_a_box_not_all_stroke_still_blocks(self):
+        """a beam FUSED to a slur's tail: its box holds beam ink off the trace (not `stroke_only`) -- never refused."""
+        log = Log()
+        g = _off_tip(log)
+        self._tip_box_on_arc(log, stroke_only=False)
+        _run(log, arc=True)
+        self.assertEqual(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
+
+    def _counted(self, log):
+        """the head's own stem tip carries a CV stroke (counted as one beam level) whose ink lies on a traced slur"""
+        from tools.omr.staged import record as R
+        g = _discounted(log, tip_found=None, runs=())
+        log.observe(CELL, Q.BEAM_STROKE, (100, 74, 40, 6), reader=READERS.CV_LINES, frame="cell:0", x0=100, x1=140,
+                    y_center=77, image="no_staff", staff_lines_erased=True)
+        bg = R.glyph(0, 0, 0, 0, 5)
+        log.observe(bg, Q.GLYPH_BOX, ("beam", 96, 70, 50, 14), reader=READERS.DETECTOR, frame="cell:0", score=0.5,
+                    bbox_page_px=[1096, 970, 1146, 984])
+        _arc_through(log, bg.to_key())
+        return g
+
+    def test_a_counted_stroke_on_the_arc_is_refused_as_a_beam(self):
+        """on its own (tip rule OFF): the stroke at the tip is a slur piece -> refused `on_system_arc`, no beam level."""
+        log = Log()
+        g = self._counted(log)
+        _run(log, on=False, arc=True)
+        v = log.verdict(Q.DURATION, g)
+        self.assertIn("on_system_arc", str(v.detail))
+        self.assertNotEqual((v.value or {}).get("beam_levels"), 1)
+
+    def test_control_arc_off_the_stroke_counts(self):
+        log = Log()
+        g = self._counted(log)
+        _run(log, on=False, arc=False)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotIn("on_system_arc", str(v.detail))
+        self.assertTrue(v.outcome is Outcome.NARROWED or (v.value or {}).get("beam_levels") == 1, (v.outcome, v.reason))
 
 
 class TestTheFlag(unittest.TestCase):
