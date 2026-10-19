@@ -1,1 +1,18 @@
-{}
+{
+ "source": "Sean 2026-10-18",
+ "verbatim": "1. Yes L 2. Not a note 3. Yes L 4. Yes R 5. Yes L. 6. Not a note 7. Yes L  8 rest 9. Yes L 10, stem 11. yes R",
+ "note": "Sean labelled the message 2.162; the answers are to the 2.167 stem question",
+ "answers": {
+  "1": "stem, left",
+  "2": "not a note",
+  "3": "stem, left",
+  "4": "stem, right",
+  "5": "stem, left",
+  "6": "not a note",
+  "7": "stem, left",
+  "8": "rest",
+  "9": "stem, left",
+  "10": "a stem (not a whole note)",
+  "11": "stem, right"
+ }
+}
