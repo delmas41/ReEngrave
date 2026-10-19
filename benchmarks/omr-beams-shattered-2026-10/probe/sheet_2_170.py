@@ -21,7 +21,11 @@ flt = sys.argv[7] if len(sys.argv) > 7 else "all"
 ex = json.load(open(exf))
 cells = json.load(open(cf))["rows"]
 subs = sorted(ex["narrowed"])
-if flt != "all":
+if flt.startswith("@"):
+    want = json.load(open(flt[1:]))
+    want = set(sum(want.values(), [])) if isinstance(want, dict) else set(want)
+    subs = [s for s in subs if s in want]
+elif flt != "all":
     subs = [s for s in subs if bool((ex["narrowed"][s]["detail"] or {}).get("stems_attached")) == (flt == "stem")]
 rnd = random.Random(int(seed))
 rnd.shuffle(subs)

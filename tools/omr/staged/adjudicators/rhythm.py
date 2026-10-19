@@ -1652,7 +1652,11 @@ def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> O
     * no `Q.BEAM_STROKE` row of the cell, from EITHER reader and whatever any later rule made of it (kept, refused, or a
       detector box `_kept_beams` dropped for a CV stroke that overlaps it in x -- the shattered-beam case, a Breitkopf beam
       whose CV piece stops short of the stem while the detector's box reaches it), has a box in the tip zone
-      (`_refused_stroke_at_tip`'s own zone: the stem's x +- `BARE_STEM_ACROSS_SPACES`, the tip +- `BARE_STEM_TIP_SPACES`).
+      (`_refused_stroke_at_tip`'s own zone: the stem's x +- `BARE_STEM_ACROSS_SPACES`, the tip +- `BARE_STEM_TIP_SPACES`),
+      at EITHER end of the stem;
+    * the flag window at the tip filed no observation and only `ink_not_flag_shaped` abstentions (a third reader saying no
+      ink runs off the tip either way: `runs_on` / `crosses_both_sides` / `occupied` / `head_at_this_end` keep the narrowing --
+      the first build, without this clause, decided Litolff p2/p6 beamed eighths whose beam no stroke row held).
 
     CONVENTION ASSUMED: a beam joins every stem it spans AT THE STEM'S END (Gould, *Behind Bars*, "Beams"; FINDINGS
     omr-beam-confirm-2026-10 §9.2-9.3: beamed truth stems 127/129 carry a run at the tip, bare 1/111), so a stroke that stands
@@ -1670,11 +1674,26 @@ def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> O
         space = 0.0
     if space <= 0:
         return None
-    strokes = list(ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
-    at_tip = _refused_stroke_at_tip(strokes, own_stems, side, space)
-    if at_tip is not False:
+    # The flag window at the tip: no observation (a read tip is 2.146's or 2.18c's), and every abstention there says the ink at
+    # the tip is NOT flag-shaped -- the one cannot-tell that also says nothing runs off the tip: a beam leaving to the right
+    # reads `runs_on`, to the left or both ways (a mid-group stem) `crosses_both_sides`, a beam box `occupied`, and a head at
+    # that end (`head_at_this_end`) says the side itself may be wrong. Every other reason keeps the narrowing.
+    end = "top" if side == "up" else "bottom"
+    ids = {s.id for s in own_stems}
+    for r in ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
+            return None
+    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+            if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
+    if not whys or any(w != "ink_not_flag_shaped" for w in whys):
         return None
-    return {"rows": [tip["row"]], "strokes_in_cell": len(strokes)}
+    # No stroke of either reader at EITHER end of the stem: the side reading is a reading too (a chord head mid-stem was read
+    # 'up' while its beam stood at the bottom, Litolff p6), so neither end may hold a stroke.
+    strokes = list(ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    for sd in ("up", "down"):
+        if _refused_stroke_at_tip(strokes, own_stems, sd, space) is not False:
+            return None
+    return {"rows": [tip["row"]], "strokes_in_cell": len(strokes), "tip_window": "ink_not_flag_shaped"}
 
 
 def _stroke_touches_a_head(box, head_boxes) -> bool:
