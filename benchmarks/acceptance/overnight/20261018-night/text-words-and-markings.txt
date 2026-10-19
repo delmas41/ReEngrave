@@ -1,0 +1,14 @@
+== beethoven5-litolff
+  20261016-night: words read 75 (bars with words 74); word refusals {'no_ink': 5045, 'no_reading': 306, 'not_in_lexicon': 4}
+      commonest: [('cresc', 36), ('crésc', 8), ('dimin', 5), ('basso', 4), ('bassi', 3), ('p cresc', 2), ('vcl', 2), ('arco', 2), ('pizz', 2), ('cres', 2), ('allegro con brio', 1), ('brio', 1)]
+      markings: 11 {'same_line_adjacent': 5, 'read_together': 6}  e.g. ['p crésc.', 'p crésc.', 'p cresc.', 'cresc. f', 'p cresc. f', 'P dolce', 'p cresc.', 'sempre più p']
+  20261018-night: words read 75 (bars with words 74); word refusals {'no_ink': 5045, 'no_reading': 306, 'not_in_lexicon': 4}
+      commonest: [('cresc', 36), ('crésc', 8), ('dimin', 5), ('basso', 4), ('bassi', 3), ('p cresc', 2), ('vcl', 2), ('arco', 2), ('pizz', 2), ('cres', 2), ('allegro con brio', 1), ('brio', 1)]
+      markings: 11 {'same_line_adjacent': 5, 'read_together': 6}  e.g. ['p crésc.', 'p crésc.', 'p cresc.', 'cresc. f', 'p cresc. f', 'P dolce', 'p cresc.', 'sempre più p']
+== brahms1-breitkopf
+  20261016-night: words read 369 (bars with words 345); word refusals {'no_ink': 5724, 'no_reading': 956}
+      commonest: [('dim', 68), ('a 2', 38), ('cresc', 35), ('arco', 27), ('pizz', 25), ('p espr', 12), ('a2', 10), ('p dolce', 9), ('espr', 8), ('piu', 8), ('div', 5), ('pp sempre', 5)]
+      markings: 98 {'read_together': 75, 'same_line_adjacent': 23}  e.g. ['f legato', 'f legato', 'f legato', 'F legato', 'f espr. e legato', 'f espr. e legato', 'f espr. e legato', 'f pesante']
+  20261018-night: words read 369 (bars with words 345); word refusals {'no_ink': 5724, 'no_reading': 956}
+      commonest: [('dim', 68), ('a 2', 38), ('cresc', 35), ('arco', 27), ('pizz', 25), ('p espr', 12), ('a2', 10), ('p dolce', 9), ('espr', 8), ('piu', 8), ('div', 5), ('pp sempre', 5)]
+      markings: 98 {'read_together': 75, 'same_line_adjacent': 23}  e.g. ['f legato', 'f legato', 'f legato', 'F legato', 'f espr. e legato', 'f espr. e legato', 'f espr. e legato', 'f pesante']
