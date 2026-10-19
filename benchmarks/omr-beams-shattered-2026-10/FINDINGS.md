@@ -47,3 +47,79 @@ narrowed by strokes it correctly refused. The shattered beam the brief named is 
 
 **The fix targets (d)**, the biggest real-note cause. (b) is mostly not notes and is left alone (deciding them would write
 non-notes); (a) is guarded, not fixed: the rule's zone test sees the dropped detector box at the tip and keeps the narrowing.
+
+## 3. The fix (STAGED ADJUDICATE, `rhythm.adjudicate_duration`; flag `OMR_BEAM_REFUSED_OFF_THE_TIP`, default OFF)
+
+Functions changed, all inside the lane's fence (the `beam_discounted_uncertain` branch): new `beam_refused_off_the_tip_enabled`,
+new `_no_beam_at_the_stem_tip`, and one guard in front of the `beam_discounted_uncertain` narrowing. No GATHER change; nothing in
+`reconcile_duration`, `bar_length.py`, the bar-sum/INFER solvers or EXPORT was touched (2.165's fence).
+
+Same population as 2.146 (every stroke over a stemmed head refused; no flag box; not hollow; no hook at the tip). The narrowing
+is skipped -- the head then goes through the rest of `adjudicate_duration` exactly as an unmarked head does (the flag window,
+the head-fill readers, the head's own value) -- only when ALL hold:
+* the tip's own beam-run reader (`Q.BEAM_STEM_LEVELS`, 2.140) READ the tip and found no run on either side;
+* the flag window at the tip filed no observation and only `ink_not_flag_shaped` abstentions (the one cannot-tell that also says
+  no ink runs off the tip: a beam leaving right reads `runs_on`, left or both ways `crosses_both_sides`, a box `occupied`);
+* no `Q.BEAM_STROKE` box of EITHER reader -- kept, refused, or a detector box `_kept_beams` dropped for a CV piece -- stands at
+  EITHER end of the stem (2.81's zone). This is what keeps the shattered beams (cause a) narrowed.
+
+**Round 1 (built without the last two clauses' strictness: any flag-window reason, the side's tip only) was WRONG on Litolff**
+(whole-record replay, `out/compare_litolff_r1_first_build.txt`): 126 heads touched, 75 values changed, and my look at the 17
+in newly held bars / decided moves found beamed eighths decided as quarters -- p2 sys1 st5 c13 g0/g4 (a short beam between two
+close stems that no stroke row of either reader holds and the run reader's 1.6-space reach misses: the window read `runs_on`
+/ `head_at_this_end`), p6 sys0 st2 c8 g1 (a chord head mid-stem read 'up' while its beam stood at the bottom). Both clauses were
+added for those; tests pin each (11 tests; mutations: zone test removed -> the dropped-box control fails; one end only -> the
+head-end control fails; any reason accepted -> the `runs_on`/`no row` controls fail).
+
+## 4. Measured ON THE EXPORTED FILE (whole-record replay through ADJUDICATE..INFER..EXPORT, `replay_2_170.py`, adapted from 2.165's)
+
+Control: the OFF arm reproduces the stored night verdicts exactly -- Litolff first `adjudicate_duration` 0 of 14,272 differ, live
+(outcome, written) 0 of 14,404; Brahms p0-8 0 of 10,545 / 0 of 10,634.
+
+| | Litolff (whole movement) OFF -> ON | Brahms pages 0-8 (contiguous from the movement start) OFF -> ON |
+|---|---|---|
+| notes written in the file (`written.notes`) | 6,626 -> **6,639** (+13) | 3,543 -> **3,591** (+48) |
+| `<note>` elements in the MusicXML | 9,143 -> 9,156 | 5,626 -> 5,675 |
+| narrowed live duration verdicts (non-rest) | 528 -> 511 | 774 -> 730 |
+| not written as `duration_narrowed` | 259 -> 243 | 374 -> 331 |
+| bars held out (sum does not add up) | 564 -> 567 (0 released, 3 newly held) | 274 -> 269 (8 released, 3 newly held) |
+| heads the rule touched / values changed | 40 / 17 (all narrowed -> quarter) | 50 / 44 (narrowed -> quarter 23, -> dotted quarter 21) |
+| values changed that stand in a held bar (not in the file) | 3 | 6 |
+
+**Brahms whole movement: not run.** The 2.165 lane held one or two Brahms replays on the box all afternoon; my whole-record run
+waits behind them (`probe/run_brahms_2_170.sh`, unattended) and its numbers are NOT in this table. The p0-8 slice reaches 50 of
+the rule's ~330 static Brahms heads (`static_reach_2_170.py`: 331 Brahms / 68 Litolff before the replay).
+
+**Sean's judged tiles** (`python3 -m tools.omr.staged.judged score` on each arm's mini record): Litolff right/wrong/narrowed
+156/30/7 -> 157/30/6 -- one tile moves, 2.81-phase2 tile 10 (`glyph/2/1/4/1/0`, Sean "4") narrowed -> right. Brahms p0-8
+90/11/5 -> 92/11/3 -- 2.81-phase2 tile 2 (`glyph/1/0/3/6/0`, "4") and 2.81 tile 13 (`glyph/2/0/9/4/1`, "quarter") narrowed ->
+right. **No judged tile goes right -> wrong or right -> narrowed on either plate.** (Only ~30 Brahms / 7 Litolff judged subjects
+sit in the narrowed-beam population at all, so this is a small witness.)
+
+My look at every Litolff change of round 2 (17) and 16 Brahms static-reach heads (ours, not evidence): all unbeamed, no flag
+seen; tile 2 below is the one I doubt -- its head looks HOLLOW (a half read black by the head-fill reader), written quarter
+where it was narrowed before. That is 2.146's known cost of deciding (another reader's error carried into a plain note).
+
+## 5. Blind tiles for Sean: `out/print/2.170-review/` (12 tiles; key kept apart in `out/2.170/tiles-key.json`, as 2.169 did)
+
+Cut and keyed in ONE run of `tiles_2_170.py` (seed 2170, asserted one key row per PNG, same numbering). 10 changed notes (5
+Brahms from the p0-8 replay, 5 Litolff), none already judged, + 2 controls (a decided quarter and a decided eighth the rule
+never touched -- they can fail: our reading may be wrong). One blue box on the note, nothing else of ours; README says blue = the
+note asked about. Question: "What is the written value of the note in the blue box?" answers.json `{}`.
+
+## 6. Limits and what is left
+
+* The flag-window clause is the only guard against a flag the detector never boxed; `ink_not_flag_shaped` is still a
+  cannot-tell to the 2.83 reader. The tiles test it. A cut-off was not tuned here: every number is an existing reader's.
+* Not fixed: (b) heads with no own stem (mostly not notes on Brahms -- a notehead-gate question, not a beam one); (c) real beams
+  refused `not_straight` where a slur fuses to a sloped beam (Brahms p3/p4); (a) the shattered beam (27 heads both plates: the
+  detector box that reaches the stem is dropped for a shorter CV piece -- `_kept_beams` keeps the CV stroke whenever the two
+  overlap in x). (a) is the brief's hypothesis and is the smallest cause.
+* The beam-run reader misses a short beam between two close stems (reach >= 1.6 spaces; Litolff p2): a GATHER fault worth its
+  own item if Sean wants beams between close stems read.
+
+## 7. Gates
+
+Fast tier (`pytest -m "not slow" tools/omr/tests -q`, serial, this tree): **8,512 passed, 12 skipped, 2 xfailed, 0 failed**.
+Lane tests: `tools/omr/tests/test_staged_beam_refused_off_the_tip_2_170.py` (11) + 2.146's and 2.81's suites unchanged (48 pass).
+`python3 -m tools.omr.staged.check`: open=193; no finding names this change (the flag, the function or the reason).

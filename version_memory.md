@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-19 -- ROADMAP 2.170 built OFF (branch `lane-2.170-shattered-beams`, not merged)
+
+STAGED ADJUDICATE `rhythm.adjudicate_duration`: `OMR_BEAM_REFUSED_OFF_THE_TIP` (default OFF; `_no_beam_at_the_stem_tip`). Cause count on 20261018-night: the narrowed-beam heads are mostly unbeamed notes held by strokes they correctly refused (1,319 Brahms / 279 Litolff), not shattered beams (17 / 10). Measured on the exported file (whole-record replay, Brahms p0-8 only): Litolff notes 6,626 -> 6,639, Brahms p0-8 3,543 -> 3,591; judged 3 narrowed -> right, 0 right -> wrong. 12 blind tiles `out/print/2.170-review/`. `benchmarks/omr-beams-shattered-2026-10/FINDINGS.md`.
+
 ## 2026-10-18 -- ROADMAP 2.169 + 2.168 LANDED ON (Sean "Yes" to "Land 2.169 and 2.168 ON?")
 STAGED GATHER (`line_detection.stem_pair_at_head_enabled`) + EVALUATE/EXPORT (`consequences.bar_disagrees_blue_enabled`): `OMR_STEM_PAIR_AT_HEAD` and `OMR_BAR_DISAGREES_BLUE` now default ON (unset = ON; explicit `0/false/no/off` disables). 2.169: a stroke ending at a notehead is never pair-deleted (Litolff 346 / Brahms 280 no-stem heads gain a stem). 2.168: decided notes the bar disputes keep their value and are written blue (GUESSED). `OMR_STEM_NOTEHEAD_GATE` stays OFF. Merged lane-2.169 then lane-2.168; flags doc rows updated.
 
