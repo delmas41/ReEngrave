@@ -242,7 +242,62 @@ def staged_stem_finder() -> frozenset:
     out = stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
     if stem_at_bar_edge_enabled():
         out = out | {"edge_head"}
+    if stem_pair_at_head_enabled():
+        out = out | {"pair_head_end"}
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.169 -- two stems set close together are two stems when each ends at its own head
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# CONVENTION ASSUMED: a stem is the line a notehead hangs from -- it ENDS at its head, standing at the head's side (up-stem on
+# the right, down-stem on the left; CLAUDE.md section 5). An accidental's strokes do not: a sharp or natural is two verticals about
+# half a space apart, centred on the head's row and reaching ~1 space past it at BOTH ends, and a flat's stroke is clear of the head
+# on its left. `_drop_paired_strokes` deletes any two verticals within 0.9 space on the premise that *"successive notes are set
+# further apart than an accidental's own strokes"*; on Litolff that premise is false (62 of the 80 pair-deleted strokes that carry a
+# head were paired with another that carries one -- benchmarks/omr-stem-pair-rule-2026-09) and 2.167 found "paired with a
+# neighbour" the biggest refusal of a real stem (14 of 40 sampled no-stem heads). A stroke with an END in a detected notehead's rows
+# and its columns overlapping that head, that does not lie on an accidental, is exempt as the SUBJECT of the pair rule (it stays a
+# partner, so a sharp's stroke beside a real stem is still condemned -- the lesson of `OMR_STEM_NOTEHEAD_GATE`'s tests).
+# WHAT WOULD FALSIFY IT: an accidental's stroke whose end stands in a head's rows and columns (a head box swallowing its sharp), or
+# Sean reading a rescued stem's note as unstemmed. NOT CONFIRMED with Sean. Default OFF.
+STEM_PAIR_AT_HEAD_ENV = "OMR_STEM_PAIR_AT_HEAD"
+#: A stroke at least this tall (staff spaces) that runs through a head's columns is a chord stem, not an accidental's stroke (a
+#: sharp/natural is about 2.5-3 spaces tall, Gould *Behind Bars*). ⚠️ A cut-off from the engraving literature, NOT measured on a
+#: second publisher: it can only NARROW until one confirms it (CLAUDE.md section 4). Found on Sean's 2.167 tile 3 (a 7.7-space stem).
+STEM_PAIR_TALLER_THAN_ACCIDENTAL_SPACES = 3.5
+
+
+def stem_pair_at_head_enabled() -> bool:
+    """`OMR_STEM_PAIR_AT_HEAD` -- default OFF (ROADMAP 2.169), allow-list."""
+    import os
+    return os.environ.get(STEM_PAIR_AT_HEAD_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _stroke_ends_in_a_head(stroke, heads, line_spacing: float) -> bool:
+    """Does one END of this stroke stand in a notehead box's rows (+- the edge_head slack), the stroke's columns overlapping the
+    head's? `heads` are canonical `(x, y, w, h)`; none -> False (never a guess). Unlike `_run_ends_at_a_head` a chord stem that
+    also crosses other heads is fine: the pair rule asks whether THIS stroke is some head's stem, not whose alone."""
+    if not heads:
+        return False
+    slack = STEM_AT_BAR_EDGE_END_SLACK_SPACES * line_spacing
+    x0 = stroke.x_canonical
+    x1 = x0 + stroke.width_canonical
+    top = stroke.y_canonical
+    bot = top + stroke.height_canonical
+    tall = (bot - top) >= STEM_PAIR_TALLER_THAN_ACCIDENTAL_SPACES * line_spacing
+    for hx, hy, hw, hh in heads:
+        if not (x0 < hx + hw and x1 > hx):
+            continue
+        if any(hy - slack <= end <= hy + hh + slack for end in (top, bot)):
+            return True
+        # a CHORD stem runs on past the head it is read at, to the chord's far head: taller than any accidental, centred
+        # within the stroke's extent, in the head's columns
+        if tall and top <= hy + hh / 2.0 <= bot:
+            return True
+    return False
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -742,7 +797,7 @@ def _meets_a_notehead(stroke, heads) -> bool:
 
 def _drop_paired_strokes(stems, line_spacing: float, gap: float,
                          min_overlap: float, heads=None, on_accidental=None,
-                         on_flag=None):
+                         on_flag=None, on_head_end=None):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
     A sharp and a natural are each built from two parallel verticals about half
@@ -805,6 +860,11 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
     for i, stem in enumerate(stems):
         paired = False
         if heads is not None and on_head[i]:
+            kept.append(stem)
+            continue
+        # OMR_STEM_FINDER=pair_head_end (ROADMAP 2.169): a stroke that ENDS in a head (and is not an accidental's) is that head's
+        # stem. Subject only: as a partner it still condemns a sharp's stroke (see the GATE note above).
+        if on_head_end is not None and on_head_end[i]:
             kept.append(stem)
             continue
         for j in range(len(stems)):
@@ -1060,6 +1120,11 @@ def detect_stems(
         # `on_accidental` is passed ONLY when `pair_evidence` built it, so the
         # shipped call is the shipped call, argument for argument.
         extra = {} if on_acc is None else {"on_accidental": on_acc}
+        if "pair_head_end" in stem_finder and noteheads is not None:
+            _acc = on_acc if on_acc is not None else [False] * len(out)
+            extra["on_head_end"] = [
+                (not _acc[k]) and _stroke_ends_in_a_head(s, noteheads, line_spacing)
+                for k, s in enumerate(out)]
         if "pair_flag_curve" in stem_finder and marks is not None:
             extra["on_flag"] = [any(k == "flag" and _inside_share(s, b) >= FLAG_CURVE_MIN_SHARE for k, b in marks) for s in out]
         out = _drop_paired_strokes(
