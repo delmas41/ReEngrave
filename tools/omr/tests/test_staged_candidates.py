@@ -17,6 +17,15 @@ from tools.omr.staged.record import (Candidate, Log, Outcome, Q, READERS,
 from tools.omr.tests.test_staged_duration import CELL, X, _beam, _note
 
 
+import pytest as _pytest_2_162
+
+
+@_pytest_2_162.fixture(autouse=True)
+def _bar_may_move_decided_notes_2_162(monkeypatch):
+    """ROADMAP 2.162 landed ON: the bar never moves a DECIDED note. This file pins the older bar-move behaviour."""
+    monkeypatch.setenv("OMR_NARROWED_BAR_LENGTH_UNKNOWN", "0")
+
+
 class TestTheShapeIsEnforced(unittest.TestCase):
     def test_abstained_may_not_carry_candidates(self):
         """⚠️ A decision holding survivors has NARROWED. Collapsing the two

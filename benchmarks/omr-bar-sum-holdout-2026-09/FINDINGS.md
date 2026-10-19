@@ -4639,6 +4639,66 @@ Nothing is built. The fault belongs upstream (a head box on arc ink at the bar's
 
 Asked "Land 2.158 ON?", Sean answered "2.258 on" (a typo for 2.158). `OMR_LONE_EVENT_FILLS_BAR` is default ON; an explicit `0/false/no/off` (or empty) disables it. The tile-14 guard is ROADMAP 2.160.
 
+## 2.162 -- a bar holding an undecided note has no known length (lane-2.162-narrowed-bar-length; STAGED ADJUDICATE meter witness + EVALUATE; 2026-10-17)
+
+Sean 2026-10-17 (DECISIONS): a bar holding a narrowed note may not vote against a meter, refute a carried meter, or undo a bar-sum move. Built behind `OMR_NARROWED_BAR_LENGTH_UNKNOWN`, **default OFF**. Per the 2.165 coordination note (DECISIONS b9aa71b1) the rule is ONE helper, `tools/omr/staged/bar_length.py`: `bar_length(log, cell, notes)` / `length_of_events(events)` -> `BarLength` (KNOWN, a RANGE `lo..hi`, or UNKNOWN; `.contains(x)`, `.shifted(d)`). Flag off it is the old sum (a narrowing at its first candidate), so the OFF arm is byte-identical to main (checked: Litolff base arm before/after the refactor, every glyph and meter equal).
+
+**CONVENTION ASSUMED:** the bar sum is the weakest witness and may only confirm (CLAUDE §4). **WHAT WOULD FALSIFY IT:** Sean reads the notes the restored carry and the range-gated moves write (tiles below) as other values. **NOT CONFIRMED:** the 2.162 tiles are not answered.
+
+### 2.162-1. Every consumer of a bar's length (derived: `probe/consumers_2_162.py`, AST over `tools/omr/staged`)
+| consumer | path | under the flag |
+|---|---|---|
+| `rhythm._bar_lengths_for` -> `_score_bars` (`_corroborate`: `_carry_meter`, `_bar_corroboration_margin`, `adjudicate_meter`) | ADJUDICATE | a staff bar with a narrowing is a (lo, hi) range: it counts as AGREEING when the candidate meter's length is inside it, and is DROPPED otherwise (never a contradiction) |
+| `rhythm._bar_run` (`_meter_changes`, `_with_segments`, `_change_only`) | ADJUDICATE | same: fits or silent, never a miss |
+| `rhythm._bars_opinion` (`_meter_from_bars`) | ADJUDICATE | a range never stands for election (names no length); it may confirm the length the exact bars elect |
+| `consequences.reconcile_duration` (+ `_admitted`, `_event_totals`) | EVALUATE | 2.154 arm a refused every bar holding a non-bare-stem narrowing; now `_move_beside_unknown`: if the meter's length is inside the range, nothing moves; if outside (over/short under EVERY candidate), one decided note's `_admitted` +/-1 may move when it brings the length into the moved range, uniquely; 2.80 ink witness on a lengthening; the narrowing itself is never landed |
+| `consequences._bar_total_excluding` (`reinstate_rest_between_staves`) | EVALUATE | a narrowed bar has no total (no reinstatement) |
+| unchanged, and why: `size_measure_rest` (reads the meter, not a sum -- it inherits the restored carry); `inferences.solve_bare_stem_bar` / `collapse_bare_stem_by_bar` / `collapse_narrowed_by_bar` / `lone_event_decline` (enumerate every narrowing's OWN candidates, never the first; 2.154 confirm and 2.158 lone event left as they are, per brief); `rhythm._sum_beats` (`adjudicate_voices`) and `_group_length` (DECIDED only); EXPORT `_bar_holds_out` / `_partial_bar_plan` / `_lone_whole_rest_is_the_bar` / `lilypond._collect_bars` (sum the WRITTEN events; a narrowed note is dropped and marked, it never votes) | | |
+Tests: `tools/omr/tests/test_staged_narrowed_bar_length_2_162.py` (20). Mutation run (10 guards, each removed in turn: the helper ignoring the flag, no range recorded, `_score_bars` / `_bar_run` resolve, the `_bars_opinion` filter, a dropped range read as its low end, the reconcile dispatch, the may-already-fit guard, uniqueness, the rest total): every one turns at least one test red. Fast tier 8,405 passed except the new module's registration (added to `reach.NOT_A_STAGE`, then green); `staged.check` 192.
+
+### 2.162-2. Measured: review.rerun, WHOLE 20261016-night records through INFER, no gather (`probe/{pages,replay,sum,score}_2_162.py`)
+Arms: base = main (both flags off); mine = 2.162 on; b153 = `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` on; both. Control, base vs the stored live duration: Litolff 14,385 / 14,404 agree, the 19 that differ are exactly 2.158's `lone_event_fills_bar` (landed after the record); Brahms 32,843 / 32,844, the one is 2.158's dotted half. base -> b153 reproduces 2.153b exactly (Brahms 328 glyphs, 114 whole rests: 88 3->4 on pp 2/3/5/24, 26 4->3 on p19).
+
+| | Litolff base -> mine | Brahms base -> mine | Litolff b153 -> both | Brahms b153 -> both |
+|---|--:|--:|--:|--:|
+| meter verdicts: abstained -> decided `carried` | 0 | 6 (sys 6/1, 8/0, 19/0, 21/0, 23/1, 25/1) | 0 | 9 (adds 2/0, 3/1, 5/0, 24/0) |
+| whole rests resized, all 4 -> 3 beats (= dossier 6/8) | 0 | 154 | 0 | 216 |
+| notes changed | 7 | 93 (67 narrowed -> decided, 22 another value, 4 same value) | 12 | 131 (84 / 40 / 7) |
+| of which range-gated moves (`bar_length_unknown`) | 7 | 9 | 12 | 11 |
+
+Whole rests against the dossier meter (Brahms 6/8 = 3 beats; Litolff 2/4 = 2): Brahms base 1,239 right / 601 at 4 beats; mine 1,393 / 447; b153 1,177 / 663; both 1,393 / 447. **With 2.153 on, 2.162 returns all 114 of 2.153b's rests to 3 beats and 102 more** (the carry 2.153's narrowings vetoed is corroborated again; the other 447 at 4 beats are bars with no decided meter for other reasons). Litolff whole rests do not move (270 at 4 beats in every arm; not a carry question). Most Brahms note changes are knock-on of the restored meter (EVALUATE/INFER now have a meter on those systems: `meter_reconciliation` 69, `chord_mate_shares_the_stem` 19, INFER by-bar 5), not the range rule itself.
+
+**Set F (2.153b) tiles 8, 15 (Litolff), 5, 11 (Brahms): right in base, wrong in b153, right again in both** (each a decided move the range test admits: the bar misses under every candidate of the neighbouring narrowing).
+
+### 2.162-3. Sean's judged tiles (`python3 -m tools.omr.staged.judged`'s `score` on each arm's mini record; index = main's + the 2.153b Set F gallery from lane-2.153-retile)
+| right / wrong / narrowed | base | mine | b153 | both |
+|---|---|---|---|---|
+| Litolff | 150 / 26 / 8 | 150 / 26 / 8 | 138 / 28 / 18 | 141 / 25 / 18 |
+| Brahms | 110 / 22 / 9 | 113 / 21 / 7 | 104 / 21 / 16 | 110 / 20 / 11 |
+* base -> mine: **0 right made wrong**; Brahms +3 (2.81 tile_08 and tile_14 narrowed -> right; 2.153b tile 14 wrong -> right).
+* b153 -> both: Litolff 3 wrong -> right (2.153b 8, 15; 2.154 tile 8); Brahms 6 narrowed -> right, 3 wrong -> right (2.153b 5, 11; 2.154 tile 3), **2 right -> wrong**: 2.154 tile 13 (Sean dotted 4, a move to 0.75) and 2.153b tile 24 (Sean 4, a move to 0.5) -- both `meter_reconciliation` moves of a decided note, the kind 2.154 measured at 3 of 7 right.
+
+### 2.162-4. Blind tiles: `out/print/2.162-review/`, 22, answers.json `{}`
+`probe/tiles_2_162.py` (seed 2162), one run: 20 changed notes not judged (Litolff 7 = every one; Brahms 13 of 145, alternating plates; whole rests excluded; head-sized boxes only) + 2 controls that can fail (a `head_and_marks` decided note unchanged in all four arms, one per plate). One blue box on the note, "Tile N", nothing else ours; question "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?". Key `out/2.162/tiles-key.json` (uncommitted; every arm's value per tile); checked in the cutting run: one key row per PNG, the blue pixels' bounding box equals the key box (+-3 px).
+
+### 2.162-5. Limits
+One night's GATHER, two plates. The range is coarse (min..max over every narrowing, chord heads pooled); a wide range confirms almost any meter -- that is by construction support, and the 6 Brahms carries it restored each have 0-1 disagreeing bars. The moves the range test admits are still bar MOVES (2.154: 3 of 7 right); this lane's 2 judged losses are of that kind. Flag OFF; no DECISIONS line from this lane.
+
+### 2.162 -- Sean's 22 tile answers (2026-10-17, `out/print/2.162-review/answers.json`; `probe/record_answers_2_162.py`)
+Verbatim: *"J - 1.8 2.8 3.dot 4 4.4 5.2 6.dot 4 7.8 8.dot4 9.2 10.2 11.dot4 12.8 13.dot 4 14.8 15.dot 4 16.8 17.4 18.dot 4 19. 4 20.4 21.8 22.4"*. Manifest now names each tile's glyph; judged index rebuilt (1,197 tiles, 22 new duration rows). Key committed (`out/2.162/tiles-key.json`), per-tile scores in `out/2.162/scored.json`.
+
+| kind of change (flag off -> on) | n | main, 2.153 off | 2.153 on |
+|---|--:|---|---|
+| narrowed -> decided (the restored carry lets the 2.154 bare-stem confirm / chord share / bar fire) | 6 (7 with 2.153) | 6 narrowed-holding -> right | 7 narrowed-holding -> right |
+| decided -> another value, a RANGE-GATED move (`bar_length_unknown`, Litolff 2/4/9/10/14/16/19) | 7 | **2 wrong -> right (16, 19), 5 right -> wrong (2, 4, 9, 10, 14)** | same |
+| decided -> another value, an ordinary move under the restored meter (Brahms 1, 20; with 2.153 also 7, 21) | 2 (4) | 1 wrong -> right (1), 1 right -> wrong (20) | 3 wrong -> right (1, 7, 21), 1 right -> wrong (20) |
+| same value, another decider | 5 (2) | right -> right | right -> right |
+| controls (5 Litolff half, 12 Brahms eighth) | 2 | right in all four arms | right |
+
+* **The meter half holds up:** every note the restored carry settled is right (6 of 6; 7 of 7 with 2.153), and the 154 / 216 whole rests it re-sizes go to the dossier's 3 beats.
+* **The range-gated move does not:** 2 of 7 right on these tiles; with the judged ones it admitted earlier (Set F 8, 15, 2.154 tile 8: all right) **5 of 10**. Two of the wrong ones (9, 10) shorten a decided half to a quarter with no flag or beam -- the 2.154 "moves" problem (3 of 7) in a new place, and CLAUDE §4's "never shortens a note with no flag and no beam seen". The bar sum moving a decided note beside a narrowing is still the bar choosing.
+Flag OFF; no DECISIONS line from this lane.
+
 ## 2.163 -- audit: who may override whom (2026-10-17; read from main 2320c2ea, no code changed)
 Extends the 2.149 audit above to every stage: every `supersedes=` site (18), every consumer of a bar's length or sum,
 every value copied between notes, and the meter's dependence on durations, each marked against CLAUDE §3/§4, the
@@ -4647,3 +4707,40 @@ every value copied between notes, and the meter's dependence on durations, each 
 report, and from §2.154-2 above for the `reconcile_duration` pick/move split; the top new find is §10 rank 1: `_admitted`
 offers a DECIDED note one beam MORE without `_shortens_without_evidence`, so the bar can still make a bare quarter an
 eighth (the same mechanism 2.150-5 saw shorten two quarters).
+
+### 2.162 -- AFTER THE SPLIT (Sean 2026-10-17 "Spilt it"; branch tip 3d2e6aed code = meter half only; replay 2026-10-18)
+`OMR_NARROWED_BAR_LENGTH_UNKNOWN` now does ONE thing (STAGED ADJUDICATE meter witness, plus `reinstate_rest_between_staves` seeing a narrowed bar as having no total): a bar holding a narrowed note has no known length, so it may not vote against a meter or refute a carry; a range may only confirm. `reconcile_duration` (EVALUATE) makes no move in a bar holding a narrowing under the flag. Flag OFF. Replay = `probe/replay_2_162.py` (WHOLE 20261016-night GATHER rows, `review.rerun`, arms base = flag off, mine = flag on, 2.153 off), `probe/{sum,score}_2_162.py`. Litolff re-run on this tip (every glyph and meter of both arms equal to the earlier post-split run, so the Brahms arms of that run are taken as this tip's; a Brahms re-run is ~3 h and was not repeated). Control (base vs stored live duration): Litolff 14,385 / 14,404 agree (the 19 are 2.158's lone event, landed after the record), Brahms 32,843 / 32,844 (2.158's dotted half).
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| `unknown_moves` (range-gated moves) | 0 | 0 |
+| meters abstained -> decided `carried` | 0 | 6 (sys 6/1, 8/0, 19/0, 21/0, 23/1, 25/1) |
+| whole rests re-sized 4 -> 3 beats (= dossier 6/8) | 0 | 154 (pp 6:10, 8:51, 19:26, 21:30, 23:13, 25:24) |
+| notes changed | 0 | 84 = 67 narrowed -> decided, 13 decided -> another value, 4 same value another decider |
+| Sean's judged tiles right / wrong / narrowed | 157/29/11 -> same | 118/24/15 -> 127/23/7 |
+
+* **Litolff: nothing changes.** Set J tiles 2/4/9/10/14 (the 5 range-gated moves that were right -> wrong) stay at their base value, which Sean judged right: the split removes them by construction.
+* **Brahms, judged tiles (12 of the 84 are judged):** 10 narrowed/wrong -> right (2.162 tiles 6, 8, 11, 13, 17, 22 and 2.81 tile_08, tile_14 were narrowed; 2.162 tile 1 and 2.153b 14 were wrong), 1 right -> wrong: **2.162 tile 20** (glyph/23/1/4/2/2, Sean quarter, decided 1.0 -> 0.5 by `meter_reconciliation`). 2.162 tile 3 right -> right.
+* **Every one of the 13 decided -> another value is a `meter_reconciliation` move under the restored meter** (EVALUATE, not the range rule): an existing mechanism now firing because those systems have a meter again. It is the bar moving a decided note (CLAUDE §4: the bar never moves a DECIDED note except lengthening a two-option note) and is outside this lane; 2.165's guard owns it. Judged: 2 wrong -> right, 1 right -> wrong, 3 right -> right.
+* Limits: one night's GATHER, two plates, GATHER+ADJUDICATE+EVALUATE+INFER only. Whole-rest sizes are against the dossier, not Sean's print.
+
+Fast tier on this tip: 8,440 passed, 12 skipped, 2 xfailed, 0 failed.
+
+Blind tiles for the 72 changed notes Sean has not judged: `out/print/2.162-review-b/` (10: 8 decided-moved + 1 chord-share, + 1 control; Brahms only, seed 21622; `probe/tiles_2_162b.py`, one run; key `out/2.162/tiles-key-b.json`; one key row per PNG, blue box == key box +-3 px), `answers.json` recorded.
+
+**Set B scored (Sean 2026-10-18; `out/print/2.162-review-b/answers.json`, `out/2.162/scored-b.json`; 1=8, 2=8, 3=4, 4=8, 5=dotted 4, 6=dotted 4, 7=8, 8=4, 9=8, 10=8).** Each of the 8 decided-moved notes was DECIDED by `adjudicate_duration`/`head_and_marks` in base and moved by `reconcile_duration`/`meter_reconciliation` with the flag on: the bar moving a DECIDED note, which Sean's 2026-10-17 rule forbids (CLAUDE §4). Result: ON right on 6 of 8 (tiles 1, 2, 4, 8, 9, 10: the decided reading was wrong), ON wrong on 2 (tiles 3, 7: base was right). Base was right on 2 of 8, wrong on 6. Tile 5 control right in both arms; tile 6 (chord-share, base an INFER collapse, not a decided reading) keeps its value, dotted quarter, right in both. So a bar-sum move of a decided note is right 6/8 here, but the 6 gains rest on the decided reading having been wrong, and the 2 losses are exactly the failure the rule guards against; the mechanism stays outside this lane and 2.165's guard owns it. Judged index rebuilt.
+
+**2.162 -- THE BLOCK (Sean 2026-10-18, "2. Block"; STAGED EVALUATE).** Under `OMR_NARROWED_BAR_LENGTH_UNKNOWN`, `reconcile_duration` no longer re-reads a note whose duration verdict is DECIDED (the `for note in notes` landing loop skips it; narrowed notes, chord units, the 2.154 bare-stem confirm and 2.158's lone event are untouched; no new flag). Tests: `test_staged_narrowed_bar_length_2_162.py` (flag-OFF control moves a decided note; flag ON moves none). Replay = `probe/replay_2_162.py` mine arm on the WHOLE 20261016-night records (the 6/8 carry needs the earlier pages, so a six-system slice cannot be faithful; the base arm is the earlier run, flag-off code unchanged), score = `probe/score_2_162.py`.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| meters abstained -> decided `carried` 6/8 | 0 | 6 (6/1, 8/0, 19/0, 21/0, 23/1, 25/1) |
+| whole rests 4 -> 3 beats | 0 | 154 |
+| `reconcile_duration` moves of a DECIDED note, flag ON | 0 | 0 |
+| `reconcile_duration` moves of a DECIDED note, flag OFF (main), count only | 60 | 100 |
+| notes differing from base | 60 (all decided, back to `adjudicate_duration`'s value) | 321 = 154 rests + 100 decided back to ADJUDICATE + 67 narrowed -> decided |
+| Sean's judged tiles right / wrong / narrowed, base -> ON | 157/29/11 -> 155/31/11 | 118/24/15 -> 122/28/7 |
+
+* The block is not limited to the 13 notes of the restored systems: flag ON now declines every decided-note move of `reconcile_duration`, 60 Litolff and 100 Brahms notes that main (flag OFF) moves. That is the rule Sean stated, and it overlaps 2.165 (which owns the flag-OFF behaviour; not changed here). Litolff, which the split left unchanged, now changes on those 60.
+* Judged tiles that move: Litolff 2.154-review 8, 11, 2.153b-review 8, 15 right -> wrong (the bar had fixed a wrong decided reading), 2.154-review 14, 21 wrong -> right. Brahms right -> wrong: 2.154-review 3, 2.162-review 7, 21, 2.153b-review 5, 9, 11; wrong -> right: 2.154-review 13, 2.153b-review 24; the 6 narrowed -> right of 2.162-review (11, 13, 17, 22, 6, 8) and 2.81 tile_08/tile_14 hold. 2.162-review tile 20 (quarter) stays right. Net on judged tiles vs main: Litolff -2 right, Brahms +4 right but +4 wrong; the decided-note bar moves on main were right more often than wrong on the tiles Sean judged, so the block costs tiles where the ADJUDICATE reading was wrong. A narrower block (only bars whose meter the flag restored) would keep the 13-note scope; not built, Sean's call.
+* Fast tier: 8,441 passed, 12 skipped, 2 xfailed, 0 failed.

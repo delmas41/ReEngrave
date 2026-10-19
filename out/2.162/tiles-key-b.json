@@ -1,0 +1,485 @@
+[
+ {
+  "n": 1,
+  "crop_origin": [
+   2298,
+   6615
+  ],
+  "rect_in_tile": [
+   393.72000000000025,
+   396.6949999999997,
+   475.2950000000001,
+   473.3649999999998
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/25/1/10/3/2",
+  "bbox": [
+   2496.86,
+   6780.3475,
+   2533.6475,
+   6814.6825
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 2,
+  "crop_origin": [
+   4068,
+   6370
+  ],
+  "rect_in_tile": [
+   392.2450000000008,
+   396.6200000000008,
+   479.6100000000006,
+   474.5499999999993
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/6/1/9/6/5",
+  "bbox": [
+   4266.1225,
+   6535.31,
+   4305.805,
+   6570.275
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 3,
+  "crop_origin": [
+   4934,
+   6292
+  ],
+  "rect_in_tile": [
+   393.34499999999935,
+   397.22500000000036,
+   477.9349999999995,
+   470.71500000000015
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/6/1/8/8/3",
+  "bbox": [
+   5132.6725,
+   6457.6125,
+   5170.9675,
+   6490.3575
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 4,
+  "crop_origin": [
+   3565,
+   4831
+  ],
+  "rect_in_tile": [
+   392.3199999999997,
+   397.9200000000001,
+   474.8000000000002,
+   458.0
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/23/1/4/6/3",
+  "bbox": [
+   3763.16,
+   4996.96,
+   3800.4,
+   5023.0
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 5,
+  "crop_origin": [
+   4704,
+   4950
+  ],
+  "rect_in_tile": [
+   392.37890625,
+   396.107421875,
+   478.130859375,
+   471.578125
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/18/1/5/7/7",
+  "bbox": [
+   4902.189453125,
+   5115.0537109375,
+   4941.0654296875,
+   5148.7890625
+  ],
+  "role": "control",
+  "base": {
+   "outcome": "decided",
+   "written": 1.5,
+   "dots": 1,
+   "beats": 1.5,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 1.5,
+   "dots": 1,
+   "beats": 1.5,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 6,
+  "crop_origin": [
+   749,
+   1590
+  ],
+  "rect_in_tile": [
+   393.330078125,
+   396.40234375,
+   473.3203125,
+   465.857421875
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/19/0/5/0/7",
+  "bbox": [
+   947.6650390625,
+   1755.201171875,
+   983.66015625,
+   1785.9287109375
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.5,
+   "dots": 1,
+   "beats": 1.5,
+   "decider": "infer:collapse_arc_ink_not_beam",
+   "reason": "refused_strokes_are_slurs_or_too_thin_for_a_beam",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": [
+    0.75,
+    1.5
+   ]
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 1.5,
+   "dots": 1,
+   "beats": 1.5,
+   "decider": "reconcile_chord_duration",
+   "reason": "chord_mate_shares_the_stem",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 7,
+  "crop_origin": [
+   2681,
+   2760
+  ],
+  "rect_in_tile": [
+   393.52000000000044,
+   397.15999999999985,
+   481.6350000000002,
+   472.1949999999997
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/19/0/10/4/1",
+  "bbox": [
+   2879.76,
+   2925.58,
+   2919.8175,
+   2959.0975
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 8,
+  "crop_origin": [
+   3562,
+   5301
+  ],
+  "rect_in_tile": [
+   393.89999999999964,
+   397.85000000000036,
+   482.75,
+   476.7999999999993
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/6/1/5/5/1",
+  "bbox": [
+   3760.95,
+   5466.925,
+   3801.375,
+   5502.4
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 9,
+  "crop_origin": [
+   3432,
+   6922
+  ],
+  "rect_in_tile": [
+   393.375,
+   397.0599999999995,
+   475.7449999999999,
+   469.9950000000008
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/23/1/12/6/2",
+  "bbox": [
+   3630.6875,
+   7087.53,
+   3667.8725,
+   7119.9975
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ },
+ {
+  "n": 10,
+  "crop_origin": [
+   4667,
+   6455
+  ],
+  "rect_in_tile": [
+   392.85499999999956,
+   396.7099999999991,
+   476.0,
+   475.3349999999991
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/23/1/10/8/2",
+  "bbox": [
+   4865.4275,
+   6620.355,
+   4903.0,
+   6655.6675
+  ],
+  "role": "changed",
+  "base": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  },
+  "mine": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "decider": "reconcile_duration",
+   "reason": "meter_reconciliation",
+   "rest": false,
+   "rest_glyph": null,
+   "measure_rest": false,
+   "unknown": false,
+   "cands": null
+  }
+ }
+]

@@ -549,6 +549,11 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.150b. `rest_ink.py` is PURE (a staff-erased ink mask and boxes in, numbers out: no log, no cell, no
     # quantity named) -- `gather.gather_rest_ink_contact` is its stage; `family_precision` reads only its flag.
     "rest_ink.py",
+    # ROADMAP 2.162 / 2.165. `bar_length.py` is the ONE bar-length helper: given a caller's log, cell and the standing
+    # duration verdicts the caller already chose, it sums them per `Q.EVENT` (known / a range over narrowed candidates /
+    # unknown). It writes nothing and runs no stage; its callers (ADJUDICATE `rhythm._bar_lengths_for`, EVALUATE
+    # `consequences`) are the stages, and they declare what they read.
+    "bar_length.py",
     # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
     # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
     "head_oval.py",

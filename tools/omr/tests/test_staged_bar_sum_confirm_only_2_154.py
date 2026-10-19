@@ -19,6 +19,15 @@ from tools.omr.tests.test_staged_narrowed_bar_2_97 import _EvalBar, _InferBar
 ENV = consequences.BAR_SUM_CONFIRM_ONLY_ENV
 
 
+import pytest as _pytest_2_162
+
+
+@_pytest_2_162.fixture(autouse=True)
+def _bar_may_move_decided_notes_2_162(monkeypatch):
+    """ROADMAP 2.162 landed ON: the bar never moves a DECIDED note. This file pins the older bar-move behaviour."""
+    monkeypatch.setenv("OMR_NARROWED_BAR_LENGTH_UNKNOWN", "0")
+
+
 def _with(word):
     env = {ENV: word} if word is not None else {}
     patch = mock.patch.dict(os.environ, env, clear=False)
