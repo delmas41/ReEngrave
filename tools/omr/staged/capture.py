@@ -834,6 +834,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # raster (`pws.page.binary`), staff lines left in, like `LEDGER_FARHEAD`:
     # the lines of every staff are removed by the reader itself.
     "CV_ARC_INK": ("staged/gather.py", "gather_arc_ink"),
+    "CV_SYSTEM_ARC": ("staged/arcs_system.py", "gather_system_arcs"),
     # ⚠️ ROADMAP 2.38. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP` do.
     "CV_BEAM_JOIN": ("staged/gather.py", "_observe_beam_stem_join"),

@@ -2709,6 +2709,21 @@ def _kind_with_rules(kind: str, tn: Dict[str, Any],
             "stack_says_slur_two_same_pitch_notes")
 
 
+def _system_arc_row(ev: Evidence):
+    """ROADMAP 2.166: the `Q.SYSTEM_ARC` row whose joined curve holds THIS arc box as one of its pieces, or None.
+
+    Filed (flag `OMR_SYSTEM_ARCS`, default OFF) on the curve's leftmost piece, so a later piece is found through the
+    staff: the row's `pieces` name every box the curve joined. Flag off: no rows, None, decision unchanged."""
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return None
+    me = ev.subject.to_key()
+    for r in ev.rows(Q.SYSTEM_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if me in (r.detail.get("pieces") or ()):
+            return r
+    return None
+
+
 @decision(
     quantity=Q.ARC_KIND,
     checkable=Checkable.MIXED,
@@ -2737,7 +2752,7 @@ def _kind_with_rules(kind: str, tn: Dict[str, Any],
            Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
            Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER,
-           Q.CELL_STAFF_SPACE),
+           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
     # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
     # (`two_notes_same_pitch`, `two_notes_different_pitch`,
@@ -2850,6 +2865,19 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                         (x0 + pad, arc_y0, x1 - pad, arc_y1), siblings)
     if s6:
         grammar["s6_stacked_with"] = s6
+
+    # ⚠️ ROADMAP 2.166 -- THE SYSTEM-LEVEL CURVE, RECORDED AND NEVER ACTED ON (the same rule as S4/S6 above: the
+    # tie->slur half of any grammar veto measured +130 edits on a scan). Its ends' shape is a measurement of the
+    # joined stroke on page pixels; it is filed beside the reading so the disagreement rate can be priced.
+    sysarc = _system_arc_row(ev)
+    if sysarc is not None:
+        shape = str(sysarc.value)
+        grammar["system_arc"] = {
+            "shape": shape, "anchor_left": sysarc.detail.get("anchor_left"),
+            "anchor_right": sysarc.detail.get("anchor_right"),
+            "cut_at_barline": sysarc.detail.get("cut_at_barline"),
+            "agrees_with_reading": (None if shape not in ("two_heads_one_position_adjacent", "two_positions")
+                                    else ((kind == "tie") == (shape == "two_heads_one_position_adjacent")))}
 
     if len(flanked) >= 2:
         first, last = flanked[0], flanked[-1]
@@ -3143,6 +3171,13 @@ def _flank_search(ev: Evidence, arc: Any) -> "_Flank":
                   lefts=lefts, rights=rights, counts=counts,
                   head_between=head_between, usable=usable)
 
+def _head_usable(ev: Evidence, key: str) -> bool:
+    """A head glyph key that no decision has refused as a notehead."""
+    sub = R.Subject.from_key(key)
+    refused = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=sub)
+    return not (refused is not None and refused.outcome is Outcome.DECIDED and refused.value is True)
+
+
 @decision(
     quantity=Q.TIE_PAIR,
     checkable=Checkable.MIXED,
@@ -3155,9 +3190,9 @@ def _flank_search(ev: Evidence, arc: Any) -> "_Flank":
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.ARC_KIND, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC,
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.CELL_BOX),
+           Q.CELL_BOX, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_by_system_arc", "more_than_one_pair", "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -3242,6 +3277,22 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
         return Ruling.abstain("not_a_tie",
                               kind=None if kind is None else kind.value)
     fs = _flank_search(ev, arc)
+    sysarc = _system_arc_row(ev)
+    if fs.abstain is not None and fs.abstain[0] in ("no_start_head", "no_stop_head", "no_head_near_the_arc"):
+        # ⚠️ ROADMAP 2.166 -- CONNECT, NEVER GUESS. The local flank search found no head at one end (the bar's pad
+        # stops at the barline the tie crosses). The joined curve's two ends were anchored on page pixels; where
+        # BOTH landed on two DIFFERENT heads at one staff position with nothing between (page-facts 1, Sean
+        # 2026-10-01) that pair is the answer already measured, and it is taken. Any other shape stays abstained.
+        if (sysarc is not None and str(sysarc.value) == "two_heads_one_position_adjacent"
+                and sysarc.detail.get("anchor_left") and sysarc.detail.get("anchor_right")):
+            ends = (sysarc.detail["anchor_left"], sysarc.detail["anchor_right"])
+            if all(_head_usable(ev, k) for k in ends):
+                return Ruling(
+                    value={"start": ends[0], "stop": ends[1]}, reason="paired_by_system_arc",
+                    used=(arc.id, sysarc.id),
+                    detail={"local_abstain": fs.abstain[0], "system_arc_shape": str(sysarc.value),
+                            "dy_spaces": sysarc.detail.get("anchor_dy_spaces"),
+                            "cut_at_barline": sysarc.detail.get("cut_at_barline")})
     if fs.abstain is not None:
         # ⚠️ ONE LITERAL `Ruling.abstain` SITE PER REASON, as before the search
         # moved into `_flank_search`: `brakes` resolves a decision's declared
@@ -3331,6 +3382,11 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
         used=(arc.id, rl.id, rr.id),
         detail={**counts, "dy_spaces": round(dy, 3),
                 "dx_spaces": round(dx, 3),
+                # ⚠️ ROADMAP 2.166, RECORDED NOT ACTED ON: whether the joined system curve's anchors name this pair
+                "system_arc": (None if sysarc is None else {
+                    "shape": str(sysarc.value),
+                    "agrees": [sysarc.detail.get("anchor_left"), sysarc.detail.get("anchor_right")]
+                              == [rl.subject.to_key(), rr.subject.to_key()]}),
                 # ⚠️ RECORDED, NOT GATED: how far the arc sits from its pair
                 # in y. The window is the legacy 3 head heights; the Litolff
                 # crops show false `tie` boxes on a staff line 2-3 spaces from

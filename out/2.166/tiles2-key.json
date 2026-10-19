@@ -1,0 +1,174 @@
+{
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "page_crop": [
+    1157,
+    404,
+    1405,
+    603
+   ],
+   "doc": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/0/0/0/17",
+   "role": "control",
+   "start": "glyph/1/0/0/0/11",
+   "stop": "glyph/1/0/0/0/8",
+   "sp": 27.25
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "page_crop": [
+    933,
+    1888,
+    1660,
+    2088
+   ],
+   "doc": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/0/5/0/19",
+   "role": "new",
+   "start": "glyph/1/0/5/0/21",
+   "stop": "glyph/1/0/5/0/1",
+   "sp": 27.507
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "page_crop": [
+    3253,
+    4009,
+    3561,
+    4206
+   ],
+   "doc": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/1/0/4/12",
+   "role": "new",
+   "start": "glyph/1/1/0/3/3",
+   "stop": "glyph/1/1/0/4/1",
+   "sp": 27.503
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "page_crop": [
+    2272,
+    1213,
+    2442,
+    1322
+   ],
+   "doc": "litolff",
+   "page": 13,
+   "glyph": "glyph/13/0/6/13/1",
+   "role": "new",
+   "start": "glyph/13/0/6/13/2",
+   "stop": "glyph/13/0/6/14/5",
+   "sp": 15.75
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "page_crop": [
+    1869,
+    2221,
+    2040,
+    2327
+   ],
+   "doc": "litolff",
+   "page": 13,
+   "glyph": "glyph/13/1/0/12/3",
+   "role": "new",
+   "start": "glyph/13/1/0/11/2",
+   "stop": "glyph/13/1/0/12/6",
+   "sp": 15.75
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "page_crop": [
+    4851,
+    1023,
+    5258,
+    1222
+   ],
+   "doc": "brahms",
+   "page": 18,
+   "glyph": "glyph/18/0/2/6/14",
+   "role": "new",
+   "start": "glyph/18/0/2/6/13",
+   "stop": "glyph/18/0/2/6/3",
+   "sp": 27.247
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "page_crop": [
+    1891,
+    2002,
+    2442,
+    2198
+   ],
+   "doc": "brahms",
+   "page": 18,
+   "glyph": "glyph/18/0/6/1/11",
+   "role": "new",
+   "start": "glyph/18/0/6/1/2",
+   "stop": "glyph/18/0/6/2/2",
+   "sp": 27.249
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "page_crop": [
+    3409,
+    4550,
+    3832,
+    4751
+   ],
+   "doc": "brahms",
+   "page": 18,
+   "glyph": "glyph/18/1/2/4/2",
+   "role": "new",
+   "start": "glyph/18/1/2/4/0",
+   "stop": "glyph/18/1/2/5/0",
+   "sp": 27.493
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "page_crop": [
+    4480,
+    5774,
+    4995,
+    5972
+   ],
+   "doc": "brahms",
+   "page": 18,
+   "glyph": "glyph/18/1/8/6/5",
+   "role": "new",
+   "start": "glyph/18/1/8/6/6",
+   "stop": "glyph/18/1/8/7/5",
+   "sp": 27.516
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "page_crop": [
+    4480,
+    5774,
+    4994,
+    5973
+   ],
+   "doc": "brahms",
+   "page": 18,
+   "glyph": "glyph/18/1/9/6/16",
+   "role": "new",
+   "start": "glyph/18/1/9/6/9",
+   "stop": "glyph/18/1/9/7/10",
+   "sp": 27.5
+  }
+ ]
+}

@@ -1,0 +1,362 @@
+[
+ {
+  "n": 3,
+  "doc": "litolff",
+  "glyph": "glyph/3/1/2/2/9",
+  "role": "head",
+  "sean": "A large box that has 2 half notes in it.",
+  "sean_is_note": true,
+  "sean_beats": null,
+  "box_size_problem": true,
+  "erased_inside": 8,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 2.0,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 2.0,
+   "reason": "head_and_marks"
+  },
+  "off_score": "kept_value_unscored",
+  "on_score": "kept_value_unscored"
+ },
+ {
+  "n": 4,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/4/5/9",
+  "role": "head",
+  "sean": "Barline",
+  "sean_is_note": false,
+  "sean_beats": null,
+  "box_size_problem": false,
+  "erased_inside": 5,
+  "stroke_only": true,
+  "off": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "too_narrow",
+   "duration": "narrowed",
+   "beats": null,
+   "reason": "beam_discounted_uncertain"
+  },
+  "on": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "too_narrow",
+   "duration": "narrowed",
+   "beats": null,
+   "reason": "beam_discounted_uncertain"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ },
+ {
+  "n": 5,
+  "doc": "brahms",
+  "glyph": "glyph/18/1/12/0/2",
+  "role": "control_head",
+  "sean": "Dot 4",
+  "sean_is_note": true,
+  "sean_beats": 1.5,
+  "box_size_problem": false,
+  "erased_inside": 0,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 1.5,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 1.5,
+   "reason": "head_and_marks"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ },
+ {
+  "n": 8,
+  "doc": "brahms",
+  "glyph": "glyph/18/0/5/4/11",
+  "role": "head",
+  "sean": "Tio of a dot 4 - box is too small",
+  "sean_is_note": true,
+  "sean_beats": 1.5,
+  "box_size_problem": true,
+  "erased_inside": 2,
+  "stroke_only": true,
+  "off": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "clipped_fragment",
+   "duration": "decided",
+   "beats": 3.0,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "clipped_fragment",
+   "duration": "decided",
+   "beats": 3.0,
+   "reason": "head_and_marks"
+  },
+  "off_score": "wrong",
+  "on_score": "wrong"
+ },
+ {
+  "n": 9,
+  "doc": "brahms",
+  "glyph": "glyph/18/0/1/6/0",
+  "role": "head",
+  "sean": "Dot 4",
+  "sean_is_note": true,
+  "sean_beats": 1.5,
+  "box_size_problem": false,
+  "erased_inside": 8,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 1.5,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 1.5,
+   "reason": "head_and_marks"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ },
+ {
+  "n": 13,
+  "doc": "litolff",
+  "glyph": "glyph/13/0/8/10/8",
+  "role": "head",
+  "sean": "2",
+  "sean_is_note": true,
+  "sean_beats": 2.0,
+  "box_size_problem": false,
+  "erased_inside": 9,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 2.0,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 2.0,
+   "reason": "head_and_marks"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ },
+ {
+  "n": 15,
+  "doc": "brahms",
+  "glyph": "glyph/18/0/0/6/9",
+  "role": "head",
+  "sean": "Dot 4",
+  "sean_is_note": true,
+  "sean_beats": 1.5,
+  "box_size_problem": false,
+  "erased_inside": 3,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 0.75,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 0.75,
+   "reason": "head_and_marks"
+  },
+  "off_score": "wrong_value",
+  "on_score": "wrong_value"
+ },
+ {
+  "n": 17,
+  "doc": "litolff",
+  "glyph": "glyph/13/1/0/2/3",
+  "role": "head",
+  "sean": "Tip of a half note - box is too small",
+  "sean_is_note": true,
+  "sean_beats": 2.0,
+  "box_size_problem": true,
+  "erased_inside": 0,
+  "stroke_only": true,
+  "off": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "clipped_fragment",
+   "duration": "decided",
+   "beats": 1.0,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "clipped_fragment",
+   "duration": "decided",
+   "beats": 1.0,
+   "reason": "head_and_marks"
+  },
+  "off_score": "wrong",
+  "on_score": "wrong"
+ },
+ {
+  "n": 20,
+  "doc": "litolff",
+  "glyph": "glyph/13/0/0/0/25",
+  "role": "head",
+  "sean": "Tie",
+  "sean_is_note": false,
+  "sean_beats": null,
+  "box_size_problem": false,
+  "erased_inside": 208,
+  "stroke_only": true,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "narrowed",
+   "beats": null,
+   "reason": "beam_discounted_uncertain"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "narrowed",
+   "beats": null,
+   "reason": "head_fill_from_ink"
+  },
+  "off_score": "wrong",
+  "on_score": "wrong"
+ },
+ {
+  "n": 21,
+  "doc": "brahms",
+  "glyph": "glyph/1/0/3/1/31",
+  "role": "head",
+  "sean": "Barline",
+  "sean_is_note": false,
+  "sean_beats": null,
+  "box_size_problem": false,
+  "erased_inside": 10,
+  "stroke_only": true,
+  "off": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "too_narrow",
+   "duration": "abstained",
+   "beats": null,
+   "reason": "not_a_note_mark"
+  },
+  "on": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "too_narrow",
+   "duration": "abstained",
+   "beats": null,
+   "reason": "not_a_note_mark"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ },
+ {
+  "n": 22,
+  "doc": "litolff",
+  "glyph": "glyph/13/1/1/2/1",
+  "role": "head",
+  "sean": "2",
+  "sean_is_note": true,
+  "sean_beats": 2.0,
+  "box_size_problem": false,
+  "erased_inside": 1,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "stacked_head_duplicate",
+   "duration": "decided",
+   "beats": 1.0,
+   "reason": "head_and_marks"
+  },
+  "on": {
+   "found": true,
+   "refused": true,
+   "refusal_reason": "stacked_head_duplicate",
+   "duration": "decided",
+   "beats": 1.0,
+   "reason": "head_and_marks"
+  },
+  "off_score": "wrong",
+  "on_score": "wrong"
+ },
+ {
+  "n": 24,
+  "doc": "brahms",
+  "glyph": "glyph/1/1/9/3/9",
+  "role": "head",
+  "sean": "8",
+  "sean_is_note": true,
+  "sean_beats": 0.5,
+  "box_size_problem": false,
+  "erased_inside": 5,
+  "stroke_only": false,
+  "off": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 0.5,
+   "reason": "hooks_counted"
+  },
+  "on": {
+   "found": true,
+   "refused": false,
+   "refusal_reason": "notehead",
+   "duration": "decided",
+   "beats": 0.5,
+   "reason": "hooks_counted"
+  },
+  "off_score": "right",
+  "on_score": "right"
+ }
+]

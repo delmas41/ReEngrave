@@ -14730,6 +14730,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_letter_look(log, pws, cells, local, detections,
                            detector=detector, progress=progress)
 
+        # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default OFF): ties/slurs read once per staff across the system on page
+        # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
+        # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
+        from . import arcs_system as _arcs_system
+        _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
+
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files
         # `Q.NOTEHEAD_RECENTRE` per regular notehead, and `gather_ownership_

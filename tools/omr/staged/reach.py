@@ -337,6 +337,9 @@ STAGE_OF_FILE = {
     # reads as UNREAD, which for a module of ten producers would have been a
     # very plausible-looking table.
     "positions.py": "GATHER",
+    # ROADMAP 2.166: files `Q.SYSTEM_ARC` (and erases the traced stroke from `cell.image_no_staff`) from its one hook
+    # line in `gather.gather()`.
+    "arcs_system.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",
