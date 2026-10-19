@@ -235,3 +235,5 @@ quarter) does not change any more. **right -> wrong on judged glyphs: 0.**
 curve agrees with), nothing of ours drawn, key `out/2.166/tiles2-key.json`, one run of `probe/tiles2.py` (asserts files =
 manifest = key). Question on each: ONE arc joining the first and last notes (a tie), a different arc (a slur), or none?
 Not yet answered; nothing else changes until they are.
+
+**Sean's Set 2 answers (2026-10-18, "Set 2 yes to all"; `out/print/2.166-review-2/answers.json`).** All 10 tiles are a tie. Scored against `out/2.166/tiles2-key.json`: tile 1 (control, an existing pair) right; tiles 2-10 (new ties `tie_pair` reads from `Q.SYSTEM_ARC`, Brahms p1 x2, Litolff p13 x2, Brahms p18 x5) **9/9 right**. 10/10 overall. The question was tie vs slur vs none, so this confirms the kind as well as the pair. Flag stays OFF; no default flipped (n=9 on two plates, one publisher each; a cut-off is a measurement, CLAUDE 4).
