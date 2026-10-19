@@ -245,17 +245,24 @@ class TestReconcileDuration(unittest.TestCase):
         self.assertEqual(out, [])
         self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 1.0)
 
-    def test_on_a_bar_with_no_narrowing_is_unchanged(self):
-        def bar():
-            b = _EvalBar(2, 4)
-            b.decided(1.0)
-            b.decided(0.5, levels=1)
-            b.decided(1.0, rest=True)
-            return b
-        _l, out_off = _fire(bar(), on=False)
-        _l, out_on = _fire(bar(), on=True)
-        self.assertTrue(out_on)
-        self.assertEqual([v.value["beats"] for v in out_off], [v.value["beats"] for v in out_on])
+    def _decided_bar(self):
+        b = _EvalBar(2, 4)
+        d = b.decided(1.0)
+        b.decided(0.5, levels=1)
+        b.decided(1.0, rest=True)
+        return b, d
+
+    def test_CONTROL_off_a_decided_note_in_a_bar_that_does_not_fit_is_moved(self):
+        b, d = self._decided_bar()
+        log, out = _fire(b, on=False)
+        self.assertTrue(out)                        # flag OFF: the old bar-moves-a-decided-note behaviour (2.165's job)
+
+    def test_on_the_bar_never_moves_a_DECIDED_note_RED(self):
+        """Sean 2026-10-18 "2. Block" (CLAUDE section 4): a decided note in a restored-meter bar is not moved."""
+        b, d = self._decided_bar()
+        log, out = _fire(b, on=True)
+        self.assertEqual(out, [])
+        self.assertEqual(log.verdict(Q.DURATION, d).value["beats"], 1.0)
 
 
 # ── EVALUATE: reinstate_rest_between_staves' bar total ───────────────────────────────────────────────────────────────

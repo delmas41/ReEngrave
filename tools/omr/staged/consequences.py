@@ -1181,6 +1181,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             continue
         if confirm_bare_only and note.outcome is not Outcome.NARROWED:
             continue                    # 2.154: no decided neighbour moves while a narrowing stands
+        if narrowed_bar_length_unknown() and note.outcome is Outcome.DECIDED:
+            continue                    # 2.162 (Sean 2026-10-18 "2. Block"; CLAUDE section 4): the bar never moves a DECIDED note
         for option in _admitted(note):
             if confirm_bare_only and not confirms_bare_stem(note, option):
                 continue                # 2.154: never the bare stem's eighth
