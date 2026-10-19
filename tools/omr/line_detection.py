@@ -261,7 +261,7 @@ def staged_stem_finder() -> frozenset:
 # and its columns overlapping that head, that does not lie on an accidental, is exempt as the SUBJECT of the pair rule (it stays a
 # partner, so a sharp's stroke beside a real stem is still condemned -- the lesson of `OMR_STEM_NOTEHEAD_GATE`'s tests).
 # WHAT WOULD FALSIFY IT: an accidental's stroke whose end stands in a head's rows and columns (a head box swallowing its sharp), or
-# Sean reading a rescued stem's note as unstemmed. NOT CONFIRMED with Sean. Default OFF.
+# Sean reading a rescued stem's note as unstemmed. NOT CONFIRMED with Sean. Default ON (Sean 2026-10-18).
 STEM_PAIR_AT_HEAD_ENV = "OMR_STEM_PAIR_AT_HEAD"
 #: A stroke at least this tall (staff spaces) that runs through a head's columns is a chord stem, not an accidental's stroke (a
 #: sharp/natural is about 2.5-3 spaces tall, Gould *Behind Bars*). ⚠️ A cut-off from the engraving literature, NOT measured on a
@@ -270,10 +270,12 @@ STEM_PAIR_TALLER_THAN_ACCIDENTAL_SPACES = 3.5
 
 
 def stem_pair_at_head_enabled() -> bool:
-    """`OMR_STEM_PAIR_AT_HEAD` -- default OFF (ROADMAP 2.169), allow-list."""
+    """`OMR_STEM_PAIR_AT_HEAD` -- default ON (ROADMAP 2.169, Sean 2026-10-18); explicit 0/false/no/off disables."""
     import os
-    return os.environ.get(STEM_PAIR_AT_HEAD_ENV, "0").strip().lower() in (
-        "1", "true", "yes", "on")
+    raw = os.environ.get(STEM_PAIR_AT_HEAD_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off")
 
 
 def _stroke_ends_in_a_head(stroke, heads, line_spacing: float) -> bool:

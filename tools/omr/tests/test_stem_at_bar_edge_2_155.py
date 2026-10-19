@@ -11,6 +11,7 @@ columns), a head whose rows the run never reaches, no heads at all, and the flag
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from tools.omr import line_detection as LD
 from tools.omr.line_detection import RUN_ACCEPTED, RUN_AT_CELL_EDGE, detect_stems
@@ -22,6 +23,12 @@ ON = LD.STEM_FINDER_STAGED_DEFAULT | {"edge_head"}
 W = 900                       # edge margin 80 -> a run past x 820 is "at the edge"
 HEAD = (720, 410, 130, 100)   # last head of the bar, right edge 850
 LEFT_HEAD = (50, 410, 130, 100)
+
+
+@pytest.fixture(autouse=True)
+def _pin_omr_stem_pair_at_head_off(monkeypatch):
+    """ROADMAP 2.169 landed ON; this file asserts the finder set without `pair_head_end`, so pin it OFF."""
+    monkeypatch.setenv("OMR_STEM_PAIR_AT_HEAD", "0")
 
 
 def _cell(paint) -> MeasureCell:

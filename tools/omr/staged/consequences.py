@@ -396,18 +396,21 @@ def lone_event_fills_bar_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-#: ROADMAP 2.168, default OFF (Sean 2026-10-18, DECISIONS: the bar MARKS, never moves, a decided note it disagrees with). Where
+#: ROADMAP 2.168, default ON (Sean 2026-10-18, DECISIONS: the bar MARKS, never moves, a decided note it disagrees with). Where
 #: `reconcile_duration` (meter known, a bar holding NO narrowed note) would have moved a DECIDED note -- one unique landing, the
 #: move 2.162's block now declines -- the note keeps its value and is written GUESSED (blue) carrying the bar's alternative as a
 #: candidate, reason `bar_disagrees_with_decided`. EXPORT marking only: the value is the same verdict value, and the candidate is
-#: never read as a decision by any stage. Needs `OMR_NARROWED_BAR_LENGTH_UNKNOWN` (the block) to mean anything. Only `1/true/yes/on`.
+#: never read as a decision by any stage. Needs `OMR_NARROWED_BAR_LENGTH_UNKNOWN` (the block) to mean anything. Explicit `0/false/no/off` disables.
 BAR_DISAGREES_BLUE_ENV = "OMR_BAR_DISAGREES_BLUE"
 BAR_DISAGREES_REASON = "bar_disagrees_with_decided"
 
 
 def bar_disagrees_blue_enabled() -> bool:
     import os
-    return os.environ.get(BAR_DISAGREES_BLUE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    raw = os.environ.get(BAR_DISAGREES_BLUE_ENV)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off")
 
 
 #: ROADMAP 2.162, default OFF (Sean 2026-10-17, DECISIONS: "a bar holding an undecided note has no known length"). Under it a

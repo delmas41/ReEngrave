@@ -65,10 +65,14 @@ class TestPremise:
 
 
 class TestFlagOff:
-    def test_default_is_off(self, monkeypatch):
+    def test_default_is_on_and_off_words_disable(self, monkeypatch):
         monkeypatch.delenv(STEM_PAIR_AT_HEAD_ENV, raising=False)
-        assert stem_pair_at_head_enabled() is False
-        assert "pair_head_end" not in staged_stem_finder()
+        assert stem_pair_at_head_enabled() is True
+        assert "pair_head_end" in staged_stem_finder()
+        for v in ("0", "false", "no", "off", " OFF "):
+            monkeypatch.setenv(STEM_PAIR_AT_HEAD_ENV, v)
+            assert stem_pair_at_head_enabled() is False
+            assert "pair_head_end" not in staged_stem_finder()
 
     def test_env_on_adds_the_token_only(self, monkeypatch):
         monkeypatch.setenv(STEM_PAIR_AT_HEAD_ENV, "1")

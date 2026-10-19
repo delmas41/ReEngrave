@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-18 -- ROADMAP 2.169 + 2.168 LANDED ON (Sean "Yes" to "Land 2.169 and 2.168 ON?")
+STAGED GATHER (`line_detection.stem_pair_at_head_enabled`) + EVALUATE/EXPORT (`consequences.bar_disagrees_blue_enabled`): `OMR_STEM_PAIR_AT_HEAD` and `OMR_BAR_DISAGREES_BLUE` now default ON (unset = ON; explicit `0/false/no/off` disables). 2.169: a stroke ending at a notehead is never pair-deleted (Litolff 346 / Brahms 280 no-stem heads gain a stem). 2.168: decided notes the bar disputes keep their value and are written blue (GUESSED). `OMR_STEM_NOTEHEAD_GATE` stays OFF. Merged lane-2.169 then lane-2.168; flags doc rows updated.
+
 ## 2026-10-18 -- ROADMAP 2.166 LANDED: OMR_SYSTEM_ARCS default ON (Sean "1. Land on"); ink erase stays OFF
 Lane `lane-2.166-system-arcs` merged normally. STAGED GATHER `arcs_system.gather_system_arcs` files `Q.SYSTEM_ARC` (ties/slurs read once per staff across the system, cut pieces joined, ends anchored), consumed by `adjudicate_tie_pair` / `adjudicate_arc_kind`. `arcs_system.enabled()` is True when unset (explicit `0/false/no/off/""` disables); the stroke erase is split behind new `OMR_SYSTEM_ARCS_ERASE` (`erase_enabled()`), default OFF, because it perturbs the Brahms pdf 1 beam reader. Set 2: 10/10 ties right, 0 judged right->wrong. Flags doc rows and tests updated.
 

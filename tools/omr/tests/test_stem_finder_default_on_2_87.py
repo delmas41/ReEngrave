@@ -13,6 +13,12 @@ from tools.omr.staged import geometry as G
 FIVE = {"thin_run", "pair_evidence", "attach_tolerance", "refuse_owned", "one_stem_per_head"}
 
 
+@pytest.fixture(autouse=True)
+def _pin_omr_stem_pair_at_head_off(monkeypatch):
+    """ROADMAP 2.169 landed ON; this file asserts the finder set without `pair_head_end`, so pin it OFF."""
+    monkeypatch.setenv("OMR_STEM_PAIR_AT_HEAD", "0")
+
+
 def test_staged_default_is_the_five_repairs():
     assert set(LD.STEM_FINDER_STAGED_DEFAULT) == FIVE
     assert "head_contact" not in LD.STEM_FINDER_STAGED_DEFAULT

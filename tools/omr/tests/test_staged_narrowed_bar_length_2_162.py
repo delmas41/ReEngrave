@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import os
 import unittest
+
+import pytest
 from unittest import mock
 
 from tools.omr.staged import adjudicate, bar_length, consequences
@@ -29,6 +31,12 @@ from tools.omr.tests.test_staged_narrowed_bar_2_97 import CELL, _EvalBar, _dv, _
 
 ENV = consequences.NARROWED_BAR_LENGTH_UNKNOWN_ENV
 CONFIRM = consequences.BAR_SUM_CONFIRM_ONLY_ENV
+
+
+@pytest.fixture(autouse=True)
+def _pin_omr_bar_disagrees_blue_off(monkeypatch):
+    """ROADMAP 2.168 landed ON; this file asserts the unmarked 2.162 block (no blue verdict), so pin it OFF."""
+    monkeypatch.setenv("OMR_BAR_DISAGREES_BLUE", "0")
 
 
 def _env(on, confirm="narrowed"):
