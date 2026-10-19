@@ -122,3 +122,53 @@ Caveats: labels are my look at 600 dpi crops of coarse scans; a (b) bar can also
 ### Part 2: tiles
 
 `out/print/2.167c-held-bars/` tile_01..10.png, README.md, index.json (made together by `probe/2.167c/c6_tiles.py`, which checks 10 files == 10 index entries). Side by side, NOT blind. 3 missing note (b), 3 extra counted (c), 3 wrong value (d), 1 two voices (a); 4 Litolff, 6 Brahms.
+
+## 2.167d -- why simple bars miss what we read elsewhere
+
+Sean 2026-10-19 on the 2.167c tiles: "They seem like simple measures and we are just missing details that we are finding elsewhere without a problem."
+STAGED, records 20261018-night (main 2bb43b85; worktree on main 13c6cd10+). Probes `probe/2.167d/` (`d0*` record extract, `d1_rerun.py` GATHER-only re-cut, `d2` control, `d3` sheets, `d4` box fates,
+`d5/d6` join and table, `d7` meter column, `d8` new boxes, `d9` position, `d10` crops, `d11` scale; my item lists `items_lit.json`, `items_bra.json`; data in `probe/2.167d/data/`). No product code changed, nothing written to a record.
+Same 45 + 45 held bars as 2.167c (same seeded sample, same order). Weights: the routed production file (`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`, the record's own input_domain `scanned`), never phase-j-mix.
+
+**Controls.** The bar's own cell re-built by the shipped `extract_measures` and run through `YoloDetector.detect` (iou 0.7, agnostic NMS off, imgsz by `imgsz_for_cell`) reproduces the record's detector boxes: Litolff 433 of 433, Brahms 859 of 859 (the other 7 Brahms boxes are `yolo_rescue_wedge` rows, a later pass). The re-cuts use the shipped `_build_measure_cell`; the staff space shown to the detector is 16.0 px in the bar crop, the half-bar shifts and the double-width crop on every bar (`d11`), but only 14.2 px (Litolff) / 11.6 px (Brahms) in the whole-system strip (the 2048 imgsz cap), so the system strip is a handicapped test.
+**Who says it is right:** the items below are my look at the crops (ours, not Sean's, not evidence). I could not read 10 + 8 bars (dense, muddy) and 1 + 1 are voices; items come from 34 Litolff and 36 Brahms bars.
+
+### What each cause is (92 items: 38 Litolff, 54 Brahms; in brackets, bars)
+
+| cause (first place the symbol is lost) | Litolff | Brahms | all |
+|---|--:|--:|--:|
+| A. never boxed (no box of any class at 0.05) | 2 (2) | 3 (3) | 5 |
+| B. boxed in the right class but UNDER the 0.25 floor (the record does not keep it) | 7 (6) | 14 (12) | 21 |
+| C. boxed at 0.25+ but in the WRONG class (black head called a rest; rest called arpeggiato / accidental) | 8 (8) | 2 (2) | 10 |
+| D. boxed right at 0.25+, then dropped or mis-valued by a later gate | 4 (4) | 22 (11) | 26 |
+| F. boxed, but in the NEIGHBOUR cell (a head at the barline) | 1 (1) | 0 | 1 |
+| E. non-note ink boxed as a note/rest and written (clef curl, key flat, digit, dynamic f, barline-edge ink, a rest of the staff above) | 12 (11) | 6 (6) | 18 |
+| G. one chord of a second counted as two events (EVALUATE grouping) | 2 (2) | 6 (3) | 8 |
+| H. one rest ink boxed twice in two classes, both written | 2 (1) | 1 (1) | 3 |
+
+Lost real symbols (A-D, F) are 63 items (Litolff 22, Brahms 41); extras (E, G, H) are 29. D counts one item per kept box, so Brahms bars 0, 4, 14, 38, 39 weigh 6, 3, 3, 2, 2.
+
+**The dominant cause is not the crop window. The detector SEES most of these symbols, and either keeps them under a floor (B, 21), calls them something else (C, 10) or a later gate throws a correct box away (D, 26).** Of the 63 lost real symbols: B+C 31 (49%), D 26 (41%), never boxed 5 (8%), neighbour cell 1 (2%). By plate: Litolff 17 of 22 are A/B/C (detector side); Brahms 14 of 41 are B (flags and dots) and 22 are D (gates). Extras (29) are a further third of the held bars' items.
+
+### (1)-(2) what the detector and the gates did, by cause
+- **B (under the floor)**: `gather.gather_detections` calls `detect(conf_threshold=0.25)`; a box at 0.05-0.25 never reaches the record (the only second floor, `RESCUE_CONF_FLOOR` 0.10, runs on a cell with NO box at all). Brahms: 13 of 14 B items are augmentation dots and flags (dot 0.06-0.24, flag 0.12-0.24 beside a head the detector kept at 0.7+); Litolff: black heads welded to staff lines (0.10-0.24) and eighth/quarter rests (0.18-0.20). In the 90 bars the base pass holds 0.10-0.25 boxes: Litolff 63 note, 20 rest, 4 flag, 5 dot; Brahms 36 note, 25 rest, 17 flag, 15 dot (`d9`), against 94 flags/dots kept at 0.25+ in Brahms.
+- **C (wrong class)**: 4 of 4 Litolff heads boxed as `restWhole`/`restHalf` (0.26-0.35) are square black blocks filling the space between two lines; `family_precision.adjudicate_rest_is_not_a_rest` refuses them (`rest_has_a_stem`) and nothing re-reads the ink as a head, so the head is lost. Also quarter rests boxed `arpeggiato` 0.49-0.63 (3 bars), an eighth rest boxed `accDoubleSharp` 0.26 (Brahms 42).
+- **D (gates)**: 6 real rests of Brahms p3 system 0 (oboe and timpani header bars), boxed 0.34-0.83 and DECIDED rests, are dropped by `family_precision.adjudicate_rest_is_not_a_rest` -> `key_slots.meter_column_occupant` (`rest_is_a_meter_digit`, header cell 0 only): the "meter column" it read off the sibling digit boxes is page x 793-1291, 497 px, about 18 staff spaces wide, so rests at x 989-1259 fall inside (`d7`). Ten kept heads (0.63-0.85) in 4 Brahms bars are lost to `duration_narrowed` / `chord_value_undecided` (the 2.170 lane's beams). Dots: 4 dot boxes at 0.4-0.8 sit beside heads written plain or a chord's two dots (one per head) are read as a double dot; the function that does it is not traced here.
+- **E / G / H**: no gate refuses them, the detector's own class stands: a treble-clef curl as `rest8th` 0.70, a key-signature flat as `rest8th` 0.26, a rehearsal "0" as a hollow head, the hook of a dynamic f as a head, an accidental as `restQuarter` 0.30, a barline sliver as `noteheadWhole` 0.32. Chords of a second with the heads displaced either side of the stem become two events (Litolff bars 20, 38; Brahms 16, 24, 43), cause by 2.167c's account, grouping function not traced here.
+
+### (4) where the never-boxed and the lost items stand in the crop
+Not at the edge: none of the 63 lost items has its box centre within 1 staff space of a barline; medians 6.8 sp (A), 3.7 (B), 2.3 (C), 4.1 (D). The one neighbour-cell item (Litolff 7, a head at the barline whose stem is the barline) is a guess of mine. A mild edge effect exists in the whole census: of all notehead/rest/flag/dot boxes the detector draws at 0.05+, the share kept at 0.25+ is 0.18 (Litolff) and 0.47 (Brahms) in the first tenth of the bar, 0.5-0.8 in the middle, 0.53 / 0.51 in the last tenth, but those edge boxes are mostly clef, key and barline ink, not lost symbols.
+
+### (5) the second detector pass, GATHER-only (A-C = 36 detector-side items)
+Found = a box of the wanted family at 0.25+ at the item's spot, same weights, same settings. Shifted half a bar right / left: 5 / 1 of 21 (B only). Double-width crop: 16 of 36. System strip: 3 of 36 (handicapped scale). Any variant: 23 of 36 (A 2 of 5, B 17 of 21, C 4 of 10; Litolff 7 of 17, Brahms 16 of 19). Almost all of it is the same ink getting a higher score in the wider crop: of the 33 / 25 new boxes the double-width crop adds in the 45 Litolff / Brahms bars, 24 / 19 were already boxes under the floor (e.g. the Brahms bar 2 dot is 0.13 in the bar crop and 0.60 in the wide one, same pixels, same staff space). So a second pass here is a context-dependent LOWER FLOOR, not a new look at unseen ink.
+Cost, same bars, by my look at all 58 new double-width boxes (ours, not evidence; tiles `sheets/new_wide_*`, not committed): Brahms about 22 of 25 are real flags, dots and rests (precision about 0.9); Litolff about 5 of 33 are the right symbol in the right class, about 7 more are a real head or rest in the wrong class, about 21 are false or unclear (accidentals, stems, beams, dynamic f). New boxes at 0.25+ per variant over 45 bars, Litolff / Brahms: shift right 8 / 18, shift left 17 / 11, double-width 33 / 25, system 24 / 49. A shifted window alone would recover little (the symbols are not near an edge) and cost 11-18 new boxes per plate.
+
+### (6) the same symbol read fine nearby
+Brahms bar 7 (contrabass p20): the first Gb3 eighth's flag is read at 0.68, the second's at 0.22; same bar, same engraving, both in the middle of the crop (x 2-4 of 21.9 sp and 11-13); nothing I can measure differs except the lower flag's stem crossing three staff lines. Brahms bar 2: the first dot 0.51, the second 0.13, both round dots in a clear space. Litolff: the same black head is `noteheadBlackInSpace` 0.85 where it is an oval (bar 35) and `restWhole` 0.35 where scan blur squares it between two lines (bar 2; also bars 5, 41, 42). So "found elsewhere without a problem" is the same symbol at a higher score: the score is the only thing I can show differs, and I cannot show its cause.
+
+### What a fix would be, and its reach (estimates, none measured on the exported file)
+1. Widest and cheapest: a per-class floor below 0.25 for `dot`, `flag*` and rest classes in held bars (or a second pass at the bar crop widened by half a bar each side), then the existing gates. Reach: B is 21 of 63 lost real symbols (33%; Litolff 32%, Brahms 34%). Precision by my look is about 0.9 on Brahms and 0.15-0.35 on Litolff, so it must be per plate or per class and proven on Sean's tiles first (CLAUDE.md rule 5: print before default). It does not touch the bar-sum rule.
+2. Re-read a refused rest box whose ink is a black head (`rest_has_a_stem`) as a head candidate: 4 of 22 Litolff lost symbols (18%).
+3. Bound the meter-column gate to the digits' own width: 6 rests in 2 of 45 Brahms bars, n too small to scale.
+4. The 29 extras are class errors the gates do not catch (clef curl, key flat, digit, accidental, barline ink): a separate fix per ink.
+Not done: no fix built, no tile put to Sean beyond the 8 crops `out/print/2.167d/`; D's dot and narrowing mechanisms are named, not traced.

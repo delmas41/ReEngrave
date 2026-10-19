@@ -1,0 +1,2287 @@
+[
+ {
+  "plate": "lit",
+  "bar": 1,
+  "key": "4/1/1/14",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 1,
+  "what": "left head of a beamed eighth group; only a 0.10 box",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.101,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 4.39,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.494
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.446
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 1,
+  "key": "4/1/1/14",
+  "item": 1,
+  "kind": "missing_head",
+  "sure": 1,
+  "what": "middle head of the beamed group, boxed 0.28, refused notehead_is_a_duplicate_box",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.27712586522102356,
+  "stage": "boxed >=0.25, dropped by gate: not_a_notehead:notehead_is_a_duplicate_b",
+  "edge_sp": 3.22,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackInSpace",
+    0.387
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.497
+   ],
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "lit",
+  "bar": 2,
+  "key": "1/0/7/9",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "black quarter head on a line boxed as restWhole 0.35",
+  "cls": "restWhole",
+  "conf": 0.3544807434082031,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+  "edge_sp": 1.79,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "noteheadBlackInSpace",
+    0.27
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 5,
+  "key": "6/0/9/11",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "black quarter head with stem boxed as restHalf 0.26, refused rest_stands_where_no_rest_hangs",
+  "cls": "restHalf",
+  "conf": 0.25654131174087524,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+  "edge_sp": 2.39,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 6,
+  "key": "2/0/10/15",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "a quarter REST boxed as a notehead (NBI 0.47) and written as a quarter note",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.4652639627456665,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 1.45,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 7,
+  "key": "16/1/6/3",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 0,
+  "what": "first eighth of a beamed group stands at the left barline, boxed in the PREVIOUS cell",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.7726483345031738,
+  "stage": "boxed >=0.25 (notehead), other [in neighbour cell]",
+  "edge_sp": -0.72,
+  "crosses_edge": true,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackOnLine",
+    0.767
+   ],
+   "wide": [
+    "noteheadBlackOnLine",
+    0.822
+   ],
+   "system": [
+    "noteheadBlackOnLine",
+    0.836
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "F. boxed, but in the NEIGHBOUR cell (crop edge)"
+ },
+ {
+  "plate": "lit",
+  "bar": 10,
+  "key": "11/1/1/1",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "a quarter rest zigzag boxed as a notehead 0.33; no rest box at 0.05 or above",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.32991430163383484,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.22,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 14,
+  "key": "13/0/0/4",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 1,
+  "what": "a quarter rest, only a NBI 0.10 box",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.102,
+  "stage": "boxed under the 0.25 floor (wrong class)",
+  "edge_sp": 1.59,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 15,
+  "key": "7/0/9/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 1,
+  "what": "black head on a line, NB 0.24 (0.01 under the floor)",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.237,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 3.65,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "noteheadBlackInSpace",
+    0.449
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 15,
+  "key": "7/0/9/4",
+  "item": 1,
+  "kind": "missing_head",
+  "sure": 0,
+  "what": "second black head of the row, NB 0.17",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.172,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 3.18,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 18,
+  "key": "12/0/8/0",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 0,
+  "what": "an augmentation dot (dot 0.32) after the second quarter that I doubt",
+  "cls": "augmentationDot",
+  "conf": 0.32294079661369324,
+  "stage": "boxed >=0.25 (augmentationDot), value not applied",
+  "edge_sp": 1.61,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "augmentationDot",
+    0.362
+   ],
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.323
+   ],
+   "system": null
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "lit",
+  "bar": 19,
+  "key": "14/0/2/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "black head with stem up, NB 0.17 only",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.169,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 1.88,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.529
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.65
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 20,
+  "key": "16/0/1/8",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "three chords of a second (F5+G5, heads displaced) each counted as two events",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 6.29,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "lit",
+  "bar": 21,
+  "key": "9/1/0/6",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 0,
+  "what": "a small rest-like blob right of the quarter rest, no box at 0.05",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 6.8,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "A. never boxed (no box >= 0.05)"
+ },
+ {
+  "plate": "lit",
+  "bar": 23,
+  "key": "12/0/0/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "a key-signature flat read as an eighth rest (R8th 0.26)",
+  "cls": "rest8th",
+  "conf": 0.25515609979629517,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 8.19,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 24,
+  "key": "6/1/10/5",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "a ragged non-head ink boxed twice as heads (rest or accidental)",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.3689025640487671,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.07,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "H. extra: one ink boxed twice, both written"
+ },
+ {
+  "plate": "lit",
+  "bar": 24,
+  "key": "6/1/10/5",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "a ragged non-head ink boxed twice as heads (rest or accidental)",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.5143452286720276,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.08,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "H. extra: one ink boxed twice, both written"
+ },
+ {
+  "plate": "lit",
+  "bar": 25,
+  "key": "13/1/3/4",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "quarter rest boxed as arpeggiato 0.54",
+  "cls": "arpeggiato",
+  "conf": 0.537980854511261,
+  "stage": "boxed >=0.25 (other), other",
+  "edge_sp": 1.43,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "restQuarter",
+    0.385
+   ],
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 26,
+  "key": "14/0/3/11",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "black head with stem down: NB 0.15 and RQuarter 0.20 only",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.15,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 3.83,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 27,
+  "key": "13/0/0/5",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "eighth rest 0.30 boxed over a head",
+  "cls": "rest8th",
+  "conf": 0.29887333512306213,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 2.1,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 28,
+  "key": "5/0/4/2",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 1,
+  "what": "an eighth rest zigzag, no box at 0.05",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 2.0,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "rest8th",
+    0.311
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "A. never boxed (no box >= 0.05)"
+ },
+ {
+  "plate": "lit",
+  "bar": 29,
+  "key": "7/0/6/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "half-note box NH 0.31 on barline-edge ink",
+  "cls": "noteheadHalfInSpace",
+  "conf": 0.3067486882209778,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 0.46,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 30,
+  "key": "2/0/7/10",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "hollow head (white slit) boxed as black NBI 0.26, written a quarter; bar wants a half",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.26343145966529846,
+  "stage": "boxed >=0.25 (notehead), value not applied",
+  "edge_sp": 1.7,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "lit",
+  "bar": 31,
+  "key": "7/0/7/9",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "the hook of a dynamic f boxed as a head",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.6896819472312927,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 1.08,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 32,
+  "key": "12/1/3/5",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 1,
+  "what": "quarter rest boxed as arpeggiato 0.63",
+  "cls": "arpeggiato",
+  "conf": 0.6300261616706848,
+  "stage": "boxed >=0.25 (other), other",
+  "edge_sp": 2.03,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 33,
+  "key": "16/1/3/2",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "eighth rest R8th 0.20 (right class, 0.05 under the floor)",
+  "cls": "rest8th",
+  "conf": 0.199,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 1.98,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "rest8th",
+    0.282
+   ],
+   "wide": [
+    "rest8th",
+    0.407
+   ],
+   "system": [
+    "rest8th",
+    0.829
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 34,
+  "key": "13/0/7/12",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "NWI 0.28 whole-class box on a stem, written as a whole note",
+  "cls": "noteheadWholeOnLine",
+  "conf": 0.28499364852905273,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 3.58,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 35,
+  "key": "15/0/6/17",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "quarter rest boxed as arpeggiato 0.49",
+  "cls": "arpeggiato",
+  "conf": 0.48592686653137207,
+  "stage": "boxed >=0.25 (other), other",
+  "edge_sp": 1.48,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 36,
+  "key": "15/1/3/18",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "accidental cluster boxed as heads",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.5337142944335938,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.83,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 36,
+  "key": "15/1/3/18",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "accidental cluster boxed as heads",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.6378247737884521,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 5.69,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 37,
+  "key": "1/0/0/3",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "a rehearsal-number digit above the staff boxed as a hollow head NH 0.30",
+  "cls": "noteheadHalfInSpace",
+  "conf": 0.30237430334091187,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 1.67,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 38,
+  "key": "16/0/0/8",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "two chords of a second split into two events each",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 6.29,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "lit",
+  "bar": 39,
+  "key": "9/0/10/1",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag on the first eighth missed: F8thUp 0.16",
+  "cls": "flag8thUp",
+  "conf": 0.162,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 2.76,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "lit",
+  "bar": 40,
+  "key": "4/0/8/11",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "dynamic f ink boxed as a head 0.43",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.43113839626312256,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.1,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 41,
+  "key": "11/0/5/15",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 1,
+  "what": "black head with stem boxed as restWhole 0.27, refused rest_stands_where_no_rest_hangs",
+  "cls": "restWhole",
+  "conf": 0.27389097213745117,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+  "edge_sp": 2.9,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 42,
+  "key": "9/1/7/11",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "third beamed head boxed as restWhole 0.33, refused",
+  "cls": "restWhole",
+  "conf": 0.32903602719306946,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+  "edge_sp": 2.3,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "lit",
+  "bar": 43,
+  "key": "14/1/6/10",
+  "item": 0,
+  "kind": "extra",
+  "sure": 0,
+  "what": "blob at the top of a stem boxed NBI 0.33",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.3295116722583771,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.61,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "lit",
+  "bar": 44,
+  "key": "10/1/8/1",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "hollow head (white slit) boxed as black NB 0.43, written a quarter; bar wants a half",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.4277007579803467,
+  "stage": "boxed >=0.25 (notehead), value not applied",
+  "edge_sp": 1.74,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.8423188328742981,
+  "stage": "boxed >=0.25, dropped by gate: chord_value_undecided",
+  "edge_sp": 1.81,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackInSpace",
+    0.84
+   ],
+   "wide": [
+    "noteheadBlackInSpace",
+    0.855
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.861
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.7872102856636047,
+  "stage": "boxed >=0.25, dropped by gate: chord_value_undecided",
+  "edge_sp": 1.78,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackOnLine",
+    0.771
+   ],
+   "wide": [
+    "noteheadBlackOnLine",
+    0.737
+   ],
+   "system": [
+    "noteheadBlackOnLine",
+    0.775
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7614660859107971,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 7.16,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackInSpace",
+    0.788
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.819
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.777
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.7262860536575317,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 7.2,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackOnLine",
+    0.767
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackOnLine",
+    0.694
+   ],
+   "system": [
+    "noteheadBlackOnLine",
+    0.756
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.6752389669418335,
+  "stage": "boxed >=0.25, dropped by gate: chord_value_undecided",
+  "edge_sp": 1.76,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackInSpace",
+    0.736
+   ],
+   "wide": [
+    "noteheadBlackInSpace",
+    0.668
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.767
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 0,
+  "key": "5/1/10/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.630287766456604,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 7.25,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackInSpace",
+    0.641
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.61
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.802
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 2,
+  "key": "3/0/3/5",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot after the second quarter, dot 0.13 (under floor)",
+  "cls": "augmentationDot",
+  "conf": 0.13,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 5.4,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "augmentationDot",
+    0.352
+   ],
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.6
+   ],
+   "system": [
+    "augmentationDot",
+    0.741
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 4,
+  "key": "3/0/8/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "rest8th",
+  "conf": 0.8276102542877197,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 10.6,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "rest8th",
+    0.789
+   ],
+   "shiftL": null,
+   "wide": [
+    "rest8th",
+    0.804
+   ],
+   "system": [
+    "rest8th",
+    0.721
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 4,
+  "key": "3/0/8/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "restQuarter",
+  "conf": 0.6727929711341858,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 4.68,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "restQuarter",
+    0.741
+   ],
+   "shiftL": null,
+   "wide": [
+    "restQuarter",
+    0.771
+   ],
+   "system": [
+    "restQuarter",
+    0.745
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 4,
+  "key": "3/0/8/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "rest8th",
+  "conf": 0.6630344390869141,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 12.19,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "rest8th",
+    0.695
+   ],
+   "shiftL": null,
+   "wide": [
+    "rest8th",
+    0.717
+   ],
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 6,
+  "key": "10/0/12/6",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag of the Gb3 eighth never boxed (no flag box at 0.05)",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 2.09,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "flag8thDown",
+    0.451
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "A. never boxed (no box >= 0.05)"
+ },
+ {
+  "plate": "bra",
+  "bar": 7,
+  "key": "20/0/12/8",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag F8thDown 0.22 (under floor) on the second Gb3",
+  "cls": "flag8thDown",
+  "conf": 0.22,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 9.85,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "flag8thDown",
+    0.257
+   ],
+   "system": [
+    "flag8thDown",
+    0.713
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 9,
+  "key": "25/1/11/2",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag of the C3 head: arpeggiato 0.29 / F8thUp 0.22",
+  "cls": "arpeggiato",
+  "conf": 0.2904152572154999,
+  "stage": "boxed >=0.25 (other), value not applied",
+  "edge_sp": 2.93,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "flag8thUp",
+    0.326
+   ],
+   "wide": [
+    "flag16thUp",
+    0.286
+   ],
+   "system": null
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "bra",
+  "bar": 10,
+  "key": "24/1/10/4",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "dotted eighth written where the page has an eighth; no dot box exists",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 7.86,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "A. never boxed (no box >= 0.05)"
+ },
+ {
+  "plate": "bra",
+  "bar": 13,
+  "key": "4/0/11/4",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "second tiny 'dot' 0.30 after the first dot makes a double dot",
+  "cls": "augmentationDot",
+  "conf": 0.29766735434532166,
+  "stage": "boxed >=0.25 (augmentationDot), value not applied",
+  "edge_sp": 4.13,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "augmentationDot",
+    0.573
+   ],
+   "wide": [
+    "augmentationDot",
+    0.781
+   ],
+   "system": [
+    "augmentationDot",
+    0.472
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 14,
+  "key": "3/0/1/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "rest8th",
+  "conf": 0.8087416291236877,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 10.67,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "rest8th",
+    0.822
+   ],
+   "shiftL": null,
+   "wide": [
+    "rest8th",
+    0.736
+   ],
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 14,
+  "key": "3/0/1/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "rest8th",
+  "conf": 0.5932950973510742,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 12.24,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "rest8th",
+    0.605
+   ],
+   "shiftL": null,
+   "wide": [
+    "rest8th",
+    0.579
+   ],
+   "system": [
+    "rest8th",
+    0.45
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 14,
+  "key": "3/0/1/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+  "cls": "restQuarter",
+  "conf": 0.3445814549922943,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_meter_digit",
+  "edge_sp": 13.25,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "restQuarter",
+    0.548
+   ],
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 15,
+  "key": "5/0/1/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "the top curl of the treble clef boxed as an eighth rest 0.70",
+  "cls": "rest8th",
+  "conf": 0.6967240571975708,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 8.47,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "bra",
+  "bar": 16,
+  "key": "9/0/0/7",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord C6+D6 (second, heads displaced) counted as two events",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.4413917660713196,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 1.58,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 16,
+  "key": "9/0/0/7",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord C6+D6 (second, heads displaced) counted as two events",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7883222699165344,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.96,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 16,
+  "key": "9/0/0/7",
+  "item": 1,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "an eighth rest with no box at all",
+  "cls": null,
+  "conf": null,
+  "stage": "never boxed (no box >=0.05)",
+  "edge_sp": 11.8,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "A. never boxed (no box >= 0.05)"
+ },
+ {
+  "plate": "bra",
+  "bar": 17,
+  "key": "10/0/4/8",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag F8thDown 0.14 on the last Gb3 (quarter written)",
+  "cls": "flag8thDown",
+  "conf": 0.14,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 3.67,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "flag8thDown",
+    0.506
+   ],
+   "system": [
+    "flag8thDown",
+    0.768
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 18,
+  "key": "22/1/2/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 1,
+  "what": "eighth rest, R8th 0.18 (under floor)",
+  "cls": "rest8th",
+  "conf": 0.176,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 7.57,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 19,
+  "key": "19/0/11/4",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot 0.16 after the second quarter (under floor)",
+  "cls": "augmentationDot",
+  "conf": 0.159,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 2.22,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "augmentationDot",
+    0.4
+   ],
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.411
+   ],
+   "system": [
+    "augmentationDot",
+    0.464
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 21,
+  "key": "12/0/2/7",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "a chord's two dots (one per head) read as a double dot",
+  "cls": "augmentationDot",
+  "conf": 0.6104208827018738,
+  "stage": "boxed >=0.25 (augmentationDot), value not applied",
+  "edge_sp": 3.33,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "augmentationDot",
+    0.702
+   ],
+   "wide": [
+    "augmentationDot",
+    0.731
+   ],
+   "system": [
+    "augmentationDot",
+    0.588
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 22,
+  "key": "26/0/12/1",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "one eighth-rest ink boxed twice (R8th 0.81 and RQuarter 0.30), both written",
+  "cls": "restQuarter",
+  "conf": 0.3033483028411865,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 5.99,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "H. extra: one ink boxed twice, both written"
+ },
+ {
+  "plate": "bra",
+  "bar": 23,
+  "key": "24/1/4/5",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag F8thUp 0.21 under floor on the first F2",
+  "cls": "flag8thUp",
+  "conf": 0.21,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 1.56,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "flag8thUp",
+    0.395
+   ],
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "flag16thUp",
+    0.653
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 23,
+  "key": "24/1/4/5",
+  "item": 1,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "flag F8thUp 0.65 boxed at the second F2, note still written a quarter",
+  "cls": "flag8thUp",
+  "conf": 0.6490896344184875,
+  "stage": "boxed >=0.25 (flag), value not applied",
+  "edge_sp": 3.79,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "flag8thUp",
+    0.657
+   ],
+   "wide": [
+    "flag8thUp",
+    0.483
+   ],
+   "system": [
+    "flag16thUp",
+    0.526
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 24,
+  "key": "17/1/6/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord of a second counted as two dotted events",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7468410730361938,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 12.94,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 24,
+  "key": "17/1/6/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord of a second counted as two dotted events",
+  "cls": "noteheadBlackOnLine",
+  "conf": 0.7410858869552612,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 14.13,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 25,
+  "key": "16/0/13/6",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot 0.06 after the C3 quarter",
+  "cls": "augmentationDot",
+  "conf": 0.058,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 4.8,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.287
+   ],
+   "system": null
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 26,
+  "key": "5/1/7/1",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "black blob boxed NWI 0.34 and written as a whole note",
+  "cls": "noteheadWholeOnLine",
+  "conf": 0.3449288606643677,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 6.8,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "bra",
+  "bar": 27,
+  "key": "24/0/10/8",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "flag F8thUp 0.12 on the E4 (quarter written)",
+  "cls": "flag8thUp",
+  "conf": 0.122,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 2.13,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "flag8thUp",
+    0.552
+   ],
+   "system": [
+    "flag8thUp",
+    0.674
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 28,
+  "key": "10/0/5/0",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "a flat sign boxed NHI 0.55 and written as a half note",
+  "cls": "noteheadHalfOnLine",
+  "conf": 0.551280677318573,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 3.88,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "bra",
+  "bar": 29,
+  "key": "8/0/0/12",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "rest box RWhole 0.64 with a dot beside it (dot 0.36) written as a whole rest, 6 quarters",
+  "cls": "restWhole",
+  "conf": 0.6376104950904846,
+  "stage": "boxed >=0.25 (rest), value not applied",
+  "edge_sp": 6.62,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": null,
+   "system": null
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 30,
+  "key": "8/0/6/12",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot 0.24 (0.01 under floor) after a quarter",
+  "cls": "augmentationDot",
+  "conf": 0.237,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 5.04,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.588
+   ],
+   "system": [
+    "augmentationDot",
+    0.406
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 30,
+  "key": "8/0/6/12",
+  "item": 1,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot 0.10 after the other quarter",
+  "cls": "augmentationDot",
+  "conf": 0.1,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 2.84,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.412
+   ],
+   "system": [
+    "augmentationDot",
+    0.514
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 32,
+  "key": "23/0/9/0",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 1,
+  "what": "R8th 0.67 decided but dropped as rest_is_a_duplicate_box (cell 0)",
+  "cls": "rest8th",
+  "conf": 0.6703391671180725,
+  "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_is_a_duplicate_box",
+  "edge_sp": 12.07,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "rest8th",
+    0.776
+   ],
+   "shiftL": null,
+   "wide": [
+    "rest8th",
+    0.659
+   ],
+   "system": [
+    "rest8th",
+    0.731
+   ]
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 33,
+  "key": "13/0/6/2",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 2,
+  "what": "dot 0.08 after the C5 quarter",
+  "cls": "augmentationDot",
+  "conf": 0.082,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 3.95,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "augmentationDot",
+    0.737
+   ],
+   "system": [
+    "augmentationDot",
+    0.433
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 35,
+  "key": "23/1/8/6",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "flag F8thDown 0.24 under floor",
+  "cls": "flag8thDown",
+  "conf": 0.24,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 6.53,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": null,
+   "wide": [
+    "flag8thDown",
+    0.348
+   ],
+   "system": null
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 35,
+  "key": "23/1/8/6",
+  "item": 1,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "flag F8thDown 0.14 under floor",
+  "cls": "flag8thDown",
+  "conf": 0.135,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 2.22,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "flag8thDown",
+    0.377
+   ],
+   "shiftL": null,
+   "wide": null,
+   "system": [
+    "flag8thDown",
+    0.639
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 36,
+  "key": "7/0/1/6",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "barline-edge ink boxed NW 0.32 and written as a whole note",
+  "cls": "noteheadWholeInSpace",
+  "conf": 0.3160119652748108,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.01,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "bra",
+  "bar": 37,
+  "key": "8/0/5/10",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "a rest of the staff above (RWhole 0.51) counted as a whole rest",
+  "cls": "restWhole",
+  "conf": 0.5074560642242432,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 5.64,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ },
+ {
+  "plate": "bra",
+  "bar": 38,
+  "key": "4/0/12/2",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "two kept heads 0.75-0.82 narrowed (beam_discounted_uncertain)",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.8217401504516602,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 4.2,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackInSpace",
+    0.836
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.822
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.797
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 38,
+  "key": "4/0/12/2",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "two kept heads 0.75-0.82 narrowed (beam_discounted_uncertain)",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7490801215171814,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 2.97,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackInSpace",
+    0.765
+   ],
+   "wide": [
+    "noteheadBlackInSpace",
+    0.763
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.736
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 39,
+  "key": "15/1/12/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "two kept heads 0.71-0.73 narrowed",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7261770367622375,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 3.42,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "noteheadBlackInSpace",
+    0.636
+   ],
+   "shiftL": null,
+   "wide": [
+    "noteheadBlackInSpace",
+    0.721
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.68
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 39,
+  "key": "15/1/12/4",
+  "item": 0,
+  "kind": "missing_head",
+  "sure": 2,
+  "what": "two kept heads 0.71-0.73 narrowed",
+  "cls": "noteheadBlackInSpace",
+  "conf": 0.7118724584579468,
+  "stage": "boxed >=0.25, dropped by gate: duration_narrowed",
+  "edge_sp": 2.81,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "noteheadBlackInSpace",
+    0.714
+   ],
+   "wide": [
+    "noteheadBlackInSpace",
+    0.775
+   ],
+   "system": [
+    "noteheadBlackInSpace",
+    0.756
+   ]
+  },
+  "want_family": "notehead",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 40,
+  "key": "18/0/1/2",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "chord dots (one per head) read as double dot",
+  "cls": "augmentationDot",
+  "conf": 0.8025220632553101,
+  "stage": "boxed >=0.25 (augmentationDot), value not applied",
+  "edge_sp": 3.59,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "augmentationDot",
+    0.793
+   ],
+   "wide": [
+    "augmentationDot",
+    0.8
+   ],
+   "system": [
+    "augmentationDot",
+    0.767
+   ]
+  },
+  "want_family": "augmentationDot",
+  "bar_fam": null,
+  "cause": "D. boxed right, a later gate dropped / mis-valued it"
+ },
+ {
+  "plate": "bra",
+  "bar": 41,
+  "key": "25/0/11/4",
+  "item": 0,
+  "kind": "wrong_value",
+  "sure": 1,
+  "what": "flag F8thDown 0.13 under floor on the Db5",
+  "cls": "flag8thDown",
+  "conf": 0.131,
+  "stage": "boxed under the 0.25 floor",
+  "edge_sp": 7.08,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": [
+    "flag8thDown",
+    0.643
+   ],
+   "shiftL": null,
+   "wide": [
+    "flag8thDown",
+    0.436
+   ],
+   "system": [
+    "flag8thDown",
+    0.692
+   ]
+  },
+  "want_family": "flag",
+  "bar_fam": null,
+  "cause": "B. boxed right class, UNDER the 0.25 floor"
+ },
+ {
+  "plate": "bra",
+  "bar": 42,
+  "key": "12/1/3/5",
+  "item": 0,
+  "kind": "missing_rest",
+  "sure": 2,
+  "what": "an eighth rest boxed as accDoubleSharp 0.26",
+  "cls": "accidentalDoubleSharp",
+  "conf": 0.25979554653167725,
+  "stage": "boxed >=0.25 (other), other",
+  "edge_sp": 5.47,
+  "crosses_edge": false,
+  "found": {
+   "shiftR": null,
+   "shiftL": [
+    "rest8th",
+    0.479
+   ],
+   "wide": null,
+   "system": null
+  },
+  "want_family": "rest",
+  "bar_fam": null,
+  "cause": "C. boxed in the WRONG class"
+ },
+ {
+  "plate": "bra",
+  "bar": 43,
+  "key": "16/1/10/4",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord of a second (E#5+D5) counted as two dotted halves",
+  "cls": "noteheadHalfOnLine",
+  "conf": 0.450307160615921,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.74,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 43,
+  "key": "16/1/10/4",
+  "item": 0,
+  "kind": "extra",
+  "sure": 1,
+  "what": "chord of a second (E#5+D5) counted as two dotted halves",
+  "cls": "noteheadWholeOnLine",
+  "conf": 0.2607516646385193,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+  "edge_sp": 2.75,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "G. extra: one chord counted as two events (EVALUATE grouping)"
+ },
+ {
+  "plate": "bra",
+  "bar": 44,
+  "key": "6/1/0/4",
+  "item": 0,
+  "kind": "extra",
+  "sure": 2,
+  "what": "a sharp sign boxed RQuarter 0.30 and written as a quarter rest",
+  "cls": "restQuarter",
+  "conf": 0.29748162627220154,
+  "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+  "edge_sp": 4.23,
+  "crosses_edge": false,
+  "found": {},
+  "want_family": null,
+  "bar_fam": null,
+  "cause": "E. extra: non-note ink boxed as a note/rest and written"
+ }
+]
