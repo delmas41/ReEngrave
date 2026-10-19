@@ -308,6 +308,7 @@ GUESS_COLOR_LILY = "(rgb-color 0.12 0.435 0.92)"
 #: `reconcile_duration` searches the bar for the re-reading that lands the
 #: meter: the bar-sum is the only witness for the value, so it is a guess.
 EVALUATE_GUESSERS = ("reconcile_duration",)
+BAR_DISAGREES_REASON = "bar_disagrees_with_decided"  # == consequences.BAR_DISAGREES_REASON (ROADMAP 2.168)
 
 _CAND_KEYS = ("beats", "written", "dots", "beam_levels", "is_rest")
 
@@ -337,7 +338,10 @@ def _guess_in_chain(rec: "Record", v: Optional[Dict[str, Any]]
             if d.startswith("infer:"):
                 guess = {"stage": "INFER", "rule": d[len("infer:"):]}
             elif d in EVALUATE_GUESSERS:
-                guess = {"stage": "EVALUATE", "rule": d}
+                # ROADMAP 2.168: the bar DISPUTES a decided note it did not move -- same value, marked blue, the bar's
+                # alternative carried as the second candidate. Its own rule name so the count shows it apart.
+                guess = {"stage": "EVALUATE",
+                         "rule": BAR_DISAGREES_REASON if v.get("reason") == BAR_DISAGREES_REASON else d}
         if guess is not None and not cands:
             cands = _guess_candidates(v)
         if guess is not None and cands:
@@ -363,8 +367,12 @@ def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     dur = rec.verdict(Q.DURATION, sub)
     if dur is not None and dur["outcome"] == "decided":
         g = _guess_in_chain(rec, dur)
+        if g is None and dur.get("reason") == BAR_DISAGREES_REASON:
+            raise RuntimeError("2.168: a note the bar disputes would be written unmarked: %s" % sub)
         if g is not None:
             g["quantity"] = Q.DURATION
+            if g["rule"] == BAR_DISAGREES_REASON and len(g["candidates"]) < 2:
+                raise RuntimeError("2.168: a note the bar disputes carries no alternative candidate: %s" % sub)
             g["chosen"] = {k: dur["value"][k] for k in _CAND_KEYS
                            if isinstance(dur["value"], dict) and k in dur["value"]}
             return g
