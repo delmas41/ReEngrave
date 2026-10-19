@@ -23,7 +23,8 @@ The gates (all must hold, else no change -- the note then keeps its value and 2.
    read cleanly is never changed.
 
 `OMR_BAR_CORRECTS_ONE_NOTE`: unset/0 = OFF (default). `strict` (or 1/true/on) = only reading classes with 0 wrong in >= 5 of
-Sean's judged tiles count as solid. `relaxed` = strict plus the two-source beamed eighth (a beam read by BOTH the detector
+Sean's judged tiles count as solid. `loose` = a measurement arm, not a proposal: every DECIDED reader value counts as solid (the bar's own upper bound).
+`relaxed` = strict plus the two-source beamed eighth (a beam read by BOTH the detector
 and the CV reader) and a decided rest, which are measured below the 0-error floor / not measured; the lane's FINDINGS give
 both arms so Sean sets the bar.
 """
@@ -37,12 +38,12 @@ from .record import Kind, Outcome, Q, Subject, Verdict
 ONE_NOTE_ENV = "OMR_BAR_CORRECTS_ONE_NOTE"
 CORRECTS_REASON = "bar_corrects_one_note"
 
-#: Reading classes (the reader's own `reason`) with ZERO wrong among >= 5 of Sean's judged tiles, pooled over both plates --
-#: `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` "2.165 one-note correction", table "what solid means". Everything
-#: else (above all `head_and_marks`, ~77% right on his tiles) is NOT solid. A cut fitted on two plates may only NARROW.
-SOLID_READINGS = frozenset({
-    "stem_tip_reads_no_beam", "beam_discounted_uncertain", "head_fill_from_ink", "hooks_counted",
-})
+#: Reading classes (the reader's own `reason`) that are >= 95% right on >= 10 of Sean's judged tiles, pooled over both plates
+#: (Litolff + Brahms, the 20261018-night OFF replay; stem_tip_reads_no_beam 32/33, beam_discounted_uncertain decided 24/24,
+#: hooks_counted 15/15) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` "2.165 one-note correction", table "what
+#: solid means". Everything else (above all `head_and_marks`, 87% right on his tiles) is NOT solid. The 95% is a declared bar,
+#: not a measured law (CLAUDE section 4), and a cut fitted on two plates may only NARROW.
+SOLID_READINGS = frozenset({"stem_tip_reads_no_beam", "beam_discounted_uncertain", "hooks_counted"})
 _UNROOTED = ("infer:", "reconcile_duration")     # a guess, or the bar's own move, is never evidence for another
 
 
@@ -51,7 +52,7 @@ def mode() -> str:
     raw = (os.environ.get(ONE_NOTE_ENV) or "").strip().lower()
     if raw in ("", "0", "false", "no", "off"):
         return ""
-    return "relaxed" if raw == "relaxed" else "strict"
+    return raw if raw in ("relaxed", "loose") else "strict"
 
 
 def enabled() -> bool:
@@ -79,8 +80,9 @@ def two_source_beam(origin: Verdict) -> bool:
             and not d.get("beams_not_by_ink"))
 
 
-def solid_refusal(log, v: Verdict) -> Optional[str]:
+def solid_refusal(log, v: Verdict, m: Optional[str] = None) -> Optional[str]:
     """None when this standing duration verdict is solid under the current mode, else why not."""
+    m = m or mode()
     if v.outcome is not Outcome.DECIDED:
         return "not_decided"
     if any((v.decider or "").startswith(p) for p in _UNROOTED):
@@ -88,11 +90,13 @@ def solid_refusal(log, v: Verdict) -> Optional[str]:
     origin = _origin(log, v)
     if origin.outcome is not Outcome.DECIDED:
         return "settled_from_a_narrowing"
+    if m == "loose":      # MEASUREMENT ARM ONLY: any decided reader value counts -- the upper bound Sean sets the bar against
+        return None
     if _is_rest(v):
-        return None if mode() == "relaxed" else "rest_reading_not_measured"
+        return None if m == "relaxed" else "rest_reading_not_measured"
     if origin.reason in SOLID_READINGS:
         return None
-    if mode() == "relaxed" and origin.reason == "head_and_marks" and two_source_beam(origin):
+    if m == "relaxed" and origin.reason == "head_and_marks" and two_source_beam(origin):
         return None
     return "reading_class_not_measured_solid:%s" % origin.reason
 
@@ -145,7 +149,7 @@ def refusal(log, subject: Subject, meter: Verdict, notes: Sequence[Verdict], not
         if why:
             return "other_note_not_solid:" + why
     if set_aside:
-        return "a_glyph_was_set_aside_in_the_bar"
+        return "a_glyph_was_set_aside_in_the_bar:" + "+".join(map(str, set_aside))
     if not ink_clear:
         return "unexplained_ink_in_the_bar"
     if not heads_clean:
@@ -154,6 +158,6 @@ def refusal(log, subject: Subject, meter: Verdict, notes: Sequence[Verdict], not
         return "tuplet_evidence"
     if not one_voice(log, subject):
         return "not_one_voice"
-    if solid_refusal(log, note) is None:
+    if solid_refusal(log, note, "strict" if mode() == "strict" else "relaxed") is None:
         return "disputed_note_is_itself_solid"
     return alternative_refusal(log, note, option, subject)

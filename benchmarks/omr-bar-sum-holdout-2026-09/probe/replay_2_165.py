@@ -21,7 +21,7 @@ from tools.omr.staged.review import rerun as RR  # noqa: E402
 DOC, SD, OUTDIR, ARMS = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split(",")
 D = os.path.join(SD, DOC)
 FLAG = "OMR_BAR_CORRECTS_ONE_NOTE"
-ENV = {"off": "0", "on": "1"}
+ENV = {"off": "0", "on": "strict", "relaxed": "relaxed", "loose": "loose"}
 JUDGED_Q = {"duration", "notehead_is_not_a_notehead", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest", "arc_kind"}
 CORRECT_REASON = "bar_corrects_one_note"
 os.makedirs(OUTDIR, exist_ok=True)
@@ -113,6 +113,10 @@ for arm in ARMS:
     by_cell = collections.defaultdict(list)
     for g in glyph_live:
         by_cell["/".join(g.split("/")[:5])].append(g)
+    refusals = collections.Counter(((v.get("detail") or {}).get("one_note_refusal") or "").split(":")[0]
+                                   for g, v in glyph_live.items() if v.get("reason") == "bar_disagrees_with_decided")
+    refusals_full = collections.Counter((v.get("detail") or {}).get("one_note_refusal") for g, v in glyph_live.items()
+                                        if v.get("reason") == "bar_disagrees_with_decided")
     bars = {}
     for g in set(marked) | {c["glyph"] for c in changed}:
         ck = "/".join(g.split("/")[:5])
@@ -138,7 +142,7 @@ for arm in ARMS:
     held_keys = {h["bar_key"] for h in (report.get("bars_held_out_sum") or {}).get("held", [])}
     held_bars = [h for h in (report.get("bars_held_out_sum") or {}).get("held", [])]
     # a glyph "g" = glyph/<page>/<system>/<staff>/<cell>/<i>; bar key page/system/staff... held "bar_key" is "page/system/cell"? kept raw
-    out = dict(doc=DOC, arm=arm, glyphs=glyphs, meters=meters, changed=changed, marked=marked, bars=bars,
+    out = dict(doc=DOC, arm=arm, glyphs=glyphs, meters=meters, changed=changed, marked=marked, bars=bars, refusals=dict(refusals), refusals_full=dict(refusals_full),
                guessed_by_rule_record=dict(by_rule), coverage=cov, notes_in_xml=xml.count("<note"),
                held_bars=[(h["page"], h["system"], h["staff"], h["cell"]) for h in held_bars])
     json.dump(out, open(os.path.join(OUTDIR, "%s.%s.json" % (DOC, arm)), "w"), default=str)

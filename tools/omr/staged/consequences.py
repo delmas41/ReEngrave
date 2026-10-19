@@ -1237,7 +1237,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
                 # ROADMAP 2.165: the ONE-NOTE CORRECTION. Every gate (one_note.refusal) or the note keeps its value and is
                 # only marked (2.168) -- the refusal is recorded on the mark, so a near miss says which gate it missed.
                 refused = _one.refusal(
-                    log, subject, meter, notes, note, option, set_aside=set_aside, bar_known=grouped.known,
+                    log, subject, meter, notes, note, option, set_aside=sorted({getattr(log.row(i), 'quantity', '?') for i in cleared_by} - {Q.GLYPH_OWNER, Q.NOTEHEAD_IS_A_WHOLE_REST}),
+                    bar_known=grouped.known,
                     ink_clear=_missed_rest_witness(log, subject)[0] == WITNESS_CLEAR,
                     heads_clean=_bar_heads_are_clean(log, subject, notes),
                     tuplet=_bar_has_tuplet(log, subject, notes))

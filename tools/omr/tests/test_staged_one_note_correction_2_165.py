@@ -113,6 +113,14 @@ class TestCorrection(unittest.TestCase):
         self.assertEqual(v.value["beats"], 1.0)
         self.assertEqual(v.detail["one_note_refusal"], "disputed_note_is_itself_solid")
 
+    def test_a_refused_possible_head_in_the_bar_blocks_the_correction(self):
+        b = _Bar()
+        extra = b._note(0.5, 1, "head_and_marks", {})
+        b.events.pop()                                  # not part of the grouped events: a box the reader removed
+        _v(b.log, extra, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Outcome.DECIDED, True)
+        b.fire("strict")
+        self.assertEqual(b.log.verdict(Q.DURATION, b.a).detail["one_note_refusal"], "a_glyph_was_set_aside_in_the_bar:" + Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
+
     def test_an_unexplained_ink_piece_is_refused(self):
         b = _Bar()
         with mock.patch.object(consequences, "_missed_rest_witness", return_value=(consequences.WITNESS_UNEXPLAINED, 1)):
