@@ -1202,7 +1202,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         if narrowed_bar_length_unknown() and note.outcome is Outcome.DECIDED:
             # 2.162 (Sean 2026-10-18 "2. Block"; CLAUDE section 4): the bar never moves a DECIDED note. 2.168: but where the bar
             # holds no narrowed note, ask what the old rule WOULD have moved, so that note can be marked (value unchanged).
-            if not (bar_disagrees_blue_enabled() and not narrowed_here and not confirm_bare_only):
+            from . import one_note as _one
+            if not ((bar_disagrees_blue_enabled() or _one.enabled()) and not narrowed_here and not confirm_bare_only):
                 continue
             shadow = True
         else:
@@ -1227,10 +1228,33 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
             if new_b > was_b + 1e-9 and _missed_rest_witness(log, subject)[0] != WITNESS_CLEAR:
                 return []
             note, option = members[0], options[0]
-            if note.reason == BAR_DISAGREES_REASON:
+            if note.reason == BAR_DISAGREES_REASON and not _one.enabled():
                 return []                # already marked (the bounded second EVALUATE pass revisits cells)
             kept ={k: v for k, v in note.value.items() if k != "reconciled"}
             alt = {**option}
+            refused = None
+            if _one.enabled():
+                # ROADMAP 2.165: the ONE-NOTE CORRECTION. Every gate (one_note.refusal) or the note keeps its value and is
+                # only marked (2.168) -- the refusal is recorded on the mark, so a near miss says which gate it missed.
+                refused = _one.refusal(
+                    log, subject, meter, notes, note, option, set_aside=sorted({getattr(log.row(i), 'quantity', '?') for i in cleared_by} - {Q.GLYPH_OWNER, Q.NOTEHEAD_IS_A_WHOLE_REST}),
+                    bar_known=grouped.known,
+                    ink_clear=_missed_rest_witness(log, subject)[0] == WITNESS_CLEAR,
+                    heads_clean=_bar_heads_are_clean(log, subject, notes, ledger_owner_aware=True),   # CLAUDE section 5: the ledger lines name the owner
+                    tuplet=_bar_has_tuplet(log, subject, notes))
+                if refused is None:
+                    return [log.record(Verdict(
+                        id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
+                        outcome=Outcome.DECIDED, value={**alt, "reconciled": True},
+                        candidates=(Candidate(alt, 0.0), Candidate(kept, 0.0)),
+                        decider="reconcile_duration", reason=_one.CORRECTS_REASON,
+                        considered=(note.id, meter.id, *cleared_by), basis=(note.id, meter.id, *cleared_by),
+                        detail={"bar_expected_beats": expected, "bar_total_beats": total,
+                                "kept_beats": was_b, "corrected_to_beats": new_b, "set_aside": set_aside,
+                                "mode": _one.mode()},
+                        supersedes=note.id, single_pass_revision=True))]
+            if not bar_disagrees_blue_enabled() or note.reason == BAR_DISAGREES_REASON:
+                return []                # not marking, or already marked and still refused
             return [log.record(Verdict(
                 id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
                 outcome=Outcome.DECIDED, value=kept,
@@ -1238,7 +1262,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
                 decider="reconcile_duration", reason=BAR_DISAGREES_REASON,
                 considered=(note.id, meter.id, *cleared_by), basis=(note.id, meter.id, *cleared_by),
                 detail={"bar_expected_beats": expected, "bar_total_beats": total,
-                        "kept_beats": was_b, "bar_alternative_beats": new_b, "set_aside": set_aside},
+                        "kept_beats": was_b, "bar_alternative_beats": new_b, "set_aside": set_aside,
+                        **({"one_note_refusal": refused} if refused else {})},
                 supersedes=note.id, single_pass_revision=True))]
         return []
 
