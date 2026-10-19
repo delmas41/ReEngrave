@@ -1631,6 +1631,52 @@ def _stem_tip_beam_verdict(ev: Evidence, cell, own_stems, head_box, side) -> Opt
             "side": tip["side"], "runs": tip["runs"]}
 
 
+#: ROADMAP 2.170 (Sean 2026-10-19, "Send an opus agent out to tackle the beam issue"). Default OFF; only an explicit on-word enables.
+BEAM_REFUSED_OFF_THE_TIP_ENV = "OMR_BEAM_REFUSED_OFF_THE_TIP"
+
+
+def beam_refused_off_the_tip_enabled() -> bool:
+    """ROADMAP 2.170, default OFF: where every stroke over a stemmed head was refused and NO beam stroke of the cell -- either
+    reader's, kept, refused or dropped by `_kept_beams` -- stands at this head's own stem tip, and the tip's own beam-run
+    reader (`Q.BEAM_STEM_LEVELS`) read that tip and found no run, the refused strokes are not this note's beam: the head is
+    decided as if they had never stood over it (the flag window is then asked exactly as for any unmarked head)."""
+    return os.environ.get(BEAM_REFUSED_OFF_THE_TIP_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.170. `{"rows": [...], "strokes_in_cell": n}` where THIS head's own stem tip carries no beam by BOTH witnesses,
+    else `None` (cannot tell -> the narrowing stands, rule 8):
+
+    * the tip's own beam-run reader (`_stem_tip_strokes`, the 2.140 `Q.BEAM_STEM_LEVELS` row of this head's own stem on the
+      side it points) READ the tip and found no run leaving it on either side -- an unread tip is not a clean one;
+    * no `Q.BEAM_STROKE` row of the cell, from EITHER reader and whatever any later rule made of it (kept, refused, or a
+      detector box `_kept_beams` dropped for a CV stroke that overlaps it in x -- the shattered-beam case, a Breitkopf beam
+      whose CV piece stops short of the stem while the detector's box reaches it), has a box in the tip zone
+      (`_refused_stroke_at_tip`'s own zone: the stem's x +- `BARE_STEM_ACROSS_SPACES`, the tip +- `BARE_STEM_TIP_SPACES`).
+
+    CONVENTION ASSUMED: a beam joins every stem it spans AT THE STEM'S END (Gould, *Behind Bars*, "Beams"; FINDINGS
+    omr-beam-confirm-2026-10 §9.2-9.3: beamed truth stems 127/129 carry a run at the tip, bare 1/111), so a stroke that stands
+    nowhere near this stem's end is not this note's beam, whatever it is. The two zone sizes are 2.81's, set before this lane
+    and not refitted here."""
+    if side not in ("up", "down") or not own_stems or head_box is None:
+        return None
+    tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
+    if tip is None or int(tip["count"]) != 0:
+        return None
+    space_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    try:
+        space = float(space_rows[-1].value) if space_rows else 0.0
+    except (TypeError, ValueError):
+        space = 0.0
+    if space <= 0:
+        return None
+    strokes = list(ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    at_tip = _refused_stroke_at_tip(strokes, own_stems, side, space)
+    if at_tip is not False:
+        return None
+    return {"rows": [tip["row"]], "strokes_in_cell": len(strokes)}
+
+
 def _stroke_touches_a_head(box, head_boxes) -> bool:
     """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
     from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
@@ -4588,7 +4634,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             return Ruling(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
                           reason="stem_tip_reads_no_beam", used=tuple(used),
                           detail={**shared, "stem_tip": {"levels": level, "side": tipv["side"], "runs": tipv["runs"]}})
-    if (((discount_removed_all_marks and (own_stems or reach_stem))
+    # ⚠️ ROADMAP 2.170 (flag `OMR_BEAM_REFUSED_OFF_THE_TIP`, default OFF): the same population, where the 2.146 rule could not
+    # decide because the FLAG window at the tip was unread. If no beam stroke of the cell (either reader, kept, refused or
+    # dropped) stands at this head's own stem tip and the tip's beam-run reader found no run there, the refused strokes were
+    # never this note's beam (a beam joins its stems at their ends): the narrowing below is skipped and the head is read as
+    # any unmarked head is -- the flag window, the head-fill readers and the head's own value, in their own order below.
+    off_the_tip = None
+    if (beam_refused_off_the_tip_enabled()
+            and ((discount_removed_all_marks and own_stems) or ink_removed_all_marks or far_removed_all_marks)
+            and beam_evidence == "none_over_this_note"
+            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems):
+        off_the_tip = _no_beam_at_the_stem_tip(ev, cell, own_stems, head_box, side)
+        if off_the_tip is not None:
+            used.extend(off_the_tip["rows"])
+            shared["beam_refused_off_the_tip"] = {"strokes_in_cell": off_the_tip["strokes_in_cell"], "side": side}
+    if off_the_tip is None and (((discount_removed_all_marks and (own_stems or reach_stem))
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
             and not flag_levels and not hollow and not tip_first):
