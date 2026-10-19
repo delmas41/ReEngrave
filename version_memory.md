@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-19 -- ROADMAP 2.171 DONE: why a wider detector crop reads better (study, no product code)
+STAGED GATHER read-only. `probe/2.171/` + `benchmarks/omr-detector-crop-mechanism-2026-10/FINDINGS.md` + 6 crops `out/print/2.171/`. The shipped feed was rebuilt letterbox-only and reproduces the record conf (61/61 Litolff, 121/121 Brahms, max diff 0.0005). One variable at a time on 63 Litolff + 124 Brahms symbols: scale is the strongest lever (and the 16 px is one number for dots, flags, rests and heads), context ink helps Brahms but equals a blank canvas on Litolff, `imgsz_for_cell` rounding gives the 2.167d wide pass an accidental 0.92-1.08 rescale, and a sub-pixel shift alone flips 8-10% of 0.25+ boxes. No fix built.
+
 ## 2026-10-18 -- ROADMAP 2.169 + 2.168 LANDED ON (Sean "Yes" to "Land 2.169 and 2.168 ON?")
 STAGED GATHER (`line_detection.stem_pair_at_head_enabled`) + EVALUATE/EXPORT (`consequences.bar_disagrees_blue_enabled`): `OMR_STEM_PAIR_AT_HEAD` and `OMR_BAR_DISAGREES_BLUE` now default ON (unset = ON; explicit `0/false/no/off` disables). 2.169: a stroke ending at a notehead is never pair-deleted (Litolff 346 / Brahms 280 no-stem heads gain a stem). 2.168: decided notes the bar disputes keep their value and are written blue (GUESSED). `OMR_STEM_NOTEHEAD_GATE` stays OFF. Merged lane-2.169 then lane-2.168; flags doc rows updated.
 

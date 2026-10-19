@@ -1,0 +1,6 @@
+lit prod vs 2.167d base (boxes >= 0.10): 540 of 543 reproduced (class + IoU>0.8); conf diff median 0.0002, max 0.0005, >0.01: 0
+lit wide_rule vs 2.167d wide (boxes >= 0.10): 952 of 964 reproduced (class + IoU>0.8); conf diff median 0.0003, max 0.4246, >0.01: 1
+lit subjects: record conf vs my prod conf: matched 61, not matched 0; conf diff median 0.0002 max 0.0005
+bra prod vs 2.167d base (boxes >= 0.10): 1298 of 1321 reproduced (class + IoU>0.8); conf diff median 0.0003, max 0.3192, >0.01: 1
+bra wide_rule vs 2.167d wide (boxes >= 0.10): 2015 of 2057 reproduced (class + IoU>0.8); conf diff median 0.0003, max 0.0005, >0.01: 0
+bra subjects: record conf vs my prod conf: matched 121, not matched 0; conf diff median 0.0002 max 0.0005

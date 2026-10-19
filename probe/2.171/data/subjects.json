@@ -1,0 +1,3612 @@
+{
+ "lit": {
+  "subjects": [
+   {
+    "plate": "lit",
+    "key": "4/1/1/14",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     2528.9,
+     2315.5,
+     2549.4,
+     2334.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.101,
+    "want": "blackhead",
+    "what": "left head of a beamed eighth group; only a 0.10 box",
+    "sure": 1,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "4/1/1/14",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2558.7,
+     2312.5,
+     2611.9,
+     2333.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.27712586522102356,
+    "want": "blackhead",
+    "what": "middle head of the beamed group, boxed 0.28, refused notehead_is_a_duplicate_box",
+    "sure": 1,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "1/0/7/9",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     1799.0,
+     2401.9,
+     1821.4,
+     2419.7
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.3544807434082031,
+    "want": "blackhead",
+    "what": "black quarter head on a line boxed as restWhole 0.35",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "6/0/9/11",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     2304.6,
+     1721.1,
+     2326.8,
+     1735.9
+    ],
+    "region": false,
+    "cls": "restHalf",
+    "rec_conf": 0.25654131174087524,
+    "want": "blackhead",
+    "what": "black quarter head with stem boxed as restHalf 0.26, refused rest_stands_where_no_rest_hangs",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "13/0/0/4",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     1176.1,
+     411.7,
+     1217.8,
+     462.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.102,
+    "want": "rest",
+    "what": "a quarter rest, only a NBI 0.10 box",
+    "sure": 1,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "7/0/9/4",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     1052.6,
+     1709.6,
+     1072.4,
+     1725.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.237,
+    "want": "blackhead",
+    "what": "black head on a line, NB 0.24 (0.01 under the floor)",
+    "sure": 1,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "7/0/9/4",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     1075.1,
+     1710.0,
+     1096.8,
+     1727.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.172,
+    "want": "blackhead",
+    "what": "second black head of the row, NB 0.17",
+    "sure": 0,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "12/0/8/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     621.4,
+     1575.7,
+     625.0,
+     1580.2
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.32294079661369324,
+    "want": "dot",
+    "what": "an augmentation dot (dot 0.32) after the second quarter that I doubt",
+    "sure": 0,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "lit",
+    "key": "14/0/2/4",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     1063.8,
+     660.2,
+     1084.2,
+     679.4
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.169,
+    "want": "blackhead",
+    "what": "black head with stem up, NB 0.17 only",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/0/6",
+    "role": "lost",
+    "cause": "A",
+    "bbox": [
+     1683.5,
+     2215.1,
+     1702.4,
+     2293.9
+    ],
+    "region": true,
+    "cls": null,
+    "rec_conf": null,
+    "want": "rest",
+    "what": "a small rest-like blob right of the quarter rest, no box at 0.05",
+    "sure": 0,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "13/1/3/4",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     1019.5,
+     2575.5,
+     1060.3,
+     2625.7
+    ],
+    "region": false,
+    "cls": "arpeggiato",
+    "rec_conf": 0.537980854511261,
+    "want": "rest",
+    "what": "quarter rest boxed as arpeggiato 0.54",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "14/0/3/11",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     2074.7,
+     833.7,
+     2098.7,
+     850.2
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.15,
+    "want": "blackhead",
+    "what": "black head with stem down: NB 0.15 and RQuarter 0.20 only",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "5/0/4/2",
+    "role": "lost",
+    "cause": "A",
+    "bbox": [
+     843.0,
+     1212.1,
+     862.0,
+     1290.9
+    ],
+    "region": true,
+    "cls": null,
+    "rec_conf": null,
+    "want": "rest",
+    "what": "an eighth rest zigzag, no box at 0.05",
+    "sure": 1,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "12/1/3/5",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     1354.7,
+     2593.2,
+     1374.2,
+     2641.8
+    ],
+    "region": false,
+    "cls": "arpeggiato",
+    "rec_conf": 0.6300261616706848,
+    "want": "rest",
+    "what": "quarter rest boxed as arpeggiato 0.63",
+    "sure": 1,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "16/1/3/2",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     829.1,
+     2517.8,
+     853.3,
+     2548.8
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.199,
+    "want": "rest",
+    "what": "eighth rest R8th 0.20 (right class, 0.05 under the floor)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "15/0/6/17",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     2210.4,
+     1343.0,
+     2231.1,
+     1392.1
+    ],
+    "region": false,
+    "cls": "arpeggiato",
+    "rec_conf": 0.48592686653137207,
+    "want": "rest",
+    "what": "quarter rest boxed as arpeggiato 0.49",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "lit",
+    "key": "9/0/10/1",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     706.5,
+     1830.0,
+     726.5,
+     1870.9
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.162,
+    "want": "flag",
+    "what": "flag on the first eighth missed: F8thUp 0.16",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "lit",
+    "key": "11/0/5/15",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     2272.0,
+     1200.5,
+     2295.2,
+     1217.4
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.27389097213745117,
+    "want": "blackhead",
+    "what": "black head with stem boxed as restWhole 0.27, refused rest_stands_where_no_rest_hangs",
+    "sure": 1,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/7/11",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     2578.1,
+     3279.3,
+     2599.4,
+     3297.7
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.32903602719306946,
+    "want": "blackhead",
+    "what": "third beamed head boxed as restWhole 0.33, refused",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "lit",
+    "key": "12/0/0/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     460.6,
+     471.7,
+     481.4,
+     493.1
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.255,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "13/0/0/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1247.5,
+     426.0,
+     1262.5,
+     459.6
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.299,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "1/0/7/9",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1846.7,
+     2388.8,
+     1863.4,
+     2434.3
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.515,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/0/0/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1465.1,
+     414.9,
+     1487.4,
+     445.9
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.65,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "1/0/0/3",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1219.6,
+     1161.2,
+     1243.0,
+     1171.7
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.714,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/0/9/11",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2359.7,
+     1722.3,
+     2379.6,
+     1771.3
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.719,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "7/0/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     523.6,
+     1297.0,
+     545.6,
+     1327.2
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.77,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/0/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1629.0,
+     2223.7,
+     1646.0,
+     2271.2
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.794,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/0/1/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1464.1,
+     554.5,
+     1486.6,
+     583.7
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.807,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/1/2/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     758.4,
+     2330.1,
+     776.6,
+     2378.8
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.85,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/1/2/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     713.8,
+     2343.7,
+     735.5,
+     2373.1
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.873,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "2/0/7/10",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1654.0,
+     1476.4,
+     1702.5,
+     1521.4
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.263,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "11/1/1/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     675.2,
+     2032.5,
+     698.0,
+     2045.2
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.33,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/1/10/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     467.1,
+     3568.2,
+     487.2,
+     3586.4
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.366,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/1/3/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     897.3,
+     2483.7,
+     919.6,
+     2517.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.402,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "10/1/8/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     663.4,
+     3318.8,
+     684.2,
+     3329.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.428,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "2/0/10/15",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2362.0,
+     1897.3,
+     2385.7,
+     1912.4
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.465,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/7/11",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2551.2,
+     3279.5,
+     2572.5,
+     3297.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.547,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "12/1/3/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1405.1,
+     2609.4,
+     1427.8,
+     2626.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.564,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/0/0/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1487.7,
+     330.7,
+     1513.9,
+     350.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.606,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/1/2/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     681.5,
+     2308.4,
+     707.2,
+     2327.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.635,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "15/1/4/14",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1892.1,
+     2769.9,
+     1914.8,
+     2790.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.678,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "4/1/7/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1485.3,
+     3124.4,
+     1508.8,
+     3145.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.688,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "13/0/0/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1333.4,
+     419.4,
+     1355.2,
+     440.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.707,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "7/0/9/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1102.7,
+     1708.4,
+     1126.0,
+     1726.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.73,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "13/1/3/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     974.4,
+     2567.1,
+     999.5,
+     2589.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.758,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "4/1/7/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1508.5,
+     3132.4,
+     1532.2,
+     3154.7
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.783,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/1/0/12",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2512.0,
+     1925.2,
+     2542.9,
+     1948.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.79,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/0/10/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     728.9,
+     1852.7,
+     750.5,
+     1873.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.803,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/0/10/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     785.0,
+     1852.3,
+     805.8,
+     1873.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.814,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/0/10/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     688.4,
+     1861.2,
+     711.1,
+     1882.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.822,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "12/0/8/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     582.0,
+     1558.9,
+     605.8,
+     1581.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.83,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "15/1/3/18",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2422.9,
+     2617.6,
+     2444.6,
+     2649.2
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.836,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "5/0/4/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     945.4,
+     1202.4,
+     965.6,
+     1221.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.839,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "4/1/1/14",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2491.4,
+     2296.9,
+     2514.6,
+     2318.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.844,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/1/6/3",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     971.4,
+     2975.9,
+     994.2,
+     2995.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.855,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "2/0/10/15",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2444.9,
+     1932.4,
+     2468.7,
+     1954.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.875,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/7/11",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2492.9,
+     3262.1,
+     2516.7,
+     3317.3
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.35,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "6/1/2/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     681.8,
+     2307.3,
+     709.7,
+     2365.7
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.495,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "4/1/1/14",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2513.0,
+     2260.0,
+     2531.1,
+     2307.0
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.766,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "16/1/3/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     848.0,
+     2436.3,
+     862.8,
+     2485.0
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.801,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "12/0/8/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     621.4,
+     1575.7,
+     625.0,
+     1580.2
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.323,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "9/1/0/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1526.0,
+     2203.0,
+     1529.8,
+     2208.5
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.424,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "lit",
+    "key": "7/0/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     642.7,
+     1428.9,
+     646.4,
+     1431.9
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.434,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   }
+  ],
+  "judged": [
+   {
+    "key": "16/1/10/0",
+    "subject": "glyph/16/1/10/0/7",
+    "answer": "trem slashes",
+    "answer_kind": "not_a_note",
+    "item": "2.159-review",
+    "date": "2026-10-17",
+    "doc": "brahms"
+   }
+  ]
+ },
+ "bra": {
+  "subjects": [
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2789.1,
+     6481.6,
+     2826.8,
+     6513.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.8423188328742981,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2788.0,
+     6409.9,
+     2826.2,
+     6444.2
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.7872102856636047,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     3014.6,
+     6450.3,
+     3051.4,
+     6484.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.7614660859107971,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     3012.9,
+     6326.8,
+     3051.2,
+     6361.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.7262860536575317,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2787.7,
+     6341.4,
+     2825.1,
+     6373.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.6752389669418335,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     3014.0,
+     6398.3,
+     3047.3,
+     6428.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.630287766456604,
+    "want": "blackhead",
+    "what": "six kept heads (0.63-0.84) left out: narrowed or chord undecided",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/3/5",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3419.0,
+     1270.0,
+     3433.9,
+     1285.6
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.13,
+    "want": "dot",
+    "what": "dot after the second quarter, dot 0.13 (under floor)",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/8/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1063.6,
+     2396.1,
+     1095.2,
+     2447.9
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.8276102542877197,
+    "want": "rest",
+    "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/8/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1225.1,
+     2373.0,
+     1259.5,
+     2456.5
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.6727929711341858,
+    "want": "rest",
+    "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/8/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1016.0,
+     2390.1,
+     1055.8,
+     2445.8
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.6630344390869141,
+    "want": "rest",
+    "what": "three rests boxed 0.66-0.83 decided rest_class, then dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/12/6",
+    "role": "lost",
+    "cause": "A",
+    "bbox": [
+     4297.8,
+     3366.4,
+     4330.5,
+     3502.6
+    ],
+    "region": true,
+    "cls": null,
+    "rec_conf": null,
+    "want": "flag",
+    "what": "flag of the Gb3 eighth never boxed (no flag box at 0.05)",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "20/0/12/8",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     5238.9,
+     3712.1,
+     5281.7,
+     3820.8
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.22,
+    "want": "flag",
+    "what": "flag F8thDown 0.22 (under floor) on the second Gb3",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "25/1/11/2",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     1981.7,
+     7067.9,
+     2005.2,
+     7147.3
+    ],
+    "region": false,
+    "cls": "arpeggiato",
+    "rec_conf": 0.2904152572154999,
+    "want": "flag",
+    "what": "flag of the C3 head: arpeggiato 0.29 / F8thUp 0.22",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/10/4",
+    "role": "lost",
+    "cause": "A",
+    "bbox": [
+     3262.2,
+     6446.0,
+     3295.8,
+     6586.0
+    ],
+    "region": true,
+    "cls": null,
+    "rec_conf": null,
+    "want": "dot",
+    "what": "dotted eighth written where the page has an eighth; no dot box exists",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/11/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2423.9,
+     3126.3,
+     2433.4,
+     3136.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.29766735434532166,
+    "want": "dot",
+    "what": "second tiny 'dot' 0.30 after the first dot makes a double dot",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/1/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1064.7,
+     822.9,
+     1095.9,
+     875.1
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.8087416291236877,
+    "want": "rest",
+    "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/1/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1021.0,
+     821.5,
+     1054.0,
+     874.4
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.5932950973510742,
+    "want": "rest",
+    "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/1/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     989.4,
+     835.7,
+     1021.0,
+     924.1
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.3445814549922943,
+    "want": "rest",
+    "what": "three rests boxed 0.34-0.81 decided, dropped as rest_is_a_meter_digit (cell 0)",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "9/0/0/7",
+    "role": "lost",
+    "cause": "A",
+    "bbox": [
+     4610.2,
+     551.4,
+     4642.9,
+     687.6
+    ],
+    "region": true,
+    "cls": null,
+    "rec_conf": null,
+    "want": "rest",
+    "what": "an eighth rest with no box at all",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/4/8",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     5396.7,
+     1441.6,
+     5437.3,
+     1528.6
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.14,
+    "want": "flag",
+    "what": "flag F8thDown 0.14 on the last Gb3 (quarter written)",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "22/1/2/0",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     1049.6,
+     4661.5,
+     1084.3,
+     4718.8
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.176,
+    "want": "rest",
+    "what": "eighth rest, R8th 0.18 (under floor)",
+    "sure": 1,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "19/0/11/4",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3027.7,
+     3116.4,
+     3041.4,
+     3132.2
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.159,
+    "want": "dot",
+    "what": "dot 0.16 after the second quarter (under floor)",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "12/0/2/7",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     3100.6,
+     1016.3,
+     3115.2,
+     1028.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.6104208827018738,
+    "want": "dot",
+    "what": "a chord's two dots (one per head) read as a double dot",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/4/5",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3958.3,
+     5257.3,
+     3983.0,
+     5305.3
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.21,
+    "want": "flag",
+    "what": "flag F8thUp 0.21 under floor on the first F2",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/4/5",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     3589.2,
+     5257.9,
+     3619.2,
+     5307.0
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.6490896344184875,
+    "want": "flag",
+    "what": "flag F8thUp 0.65 boxed at the second F2, note still written a quarter",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "16/0/13/6",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3401.3,
+     3477.7,
+     3415.0,
+     3497.0
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.058,
+    "want": "dot",
+    "what": "dot 0.06 after the C3 quarter",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "24/0/10/8",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     5438.1,
+     3008.4,
+     5456.9,
+     3081.7
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.122,
+    "want": "flag",
+    "what": "flag F8thUp 0.12 on the E4 (quarter written)",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/0/12",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     5288.0,
+     616.5,
+     5327.4,
+     626.7
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.6376104950904846,
+    "want": "dot",
+    "what": "rest box RWhole 0.64 with a dot beside it (dot 0.36) written as a whole rest, 6 quarters",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/6/12",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     5343.5,
+     2399.9,
+     5355.9,
+     2412.9
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.237,
+    "want": "dot",
+    "what": "dot 0.24 (0.01 under floor) after a quarter",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/6/12",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     5197.2,
+     2401.6,
+     5211.0,
+     2414.9
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.1,
+    "want": "dot",
+    "what": "dot 0.10 after the other quarter",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "23/0/9/0",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1079.2,
+     2872.8,
+     1114.9,
+     2926.0
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.6703391671180725,
+    "want": "rest",
+    "what": "R8th 0.67 decided but dropped as rest_is_a_duplicate_box (cell 0)",
+    "sure": 1,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "13/0/6/2",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     1837.5,
+     1886.8,
+     1852.0,
+     1904.1
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.082,
+    "want": "dot",
+    "what": "dot 0.08 after the C5 quarter",
+    "sure": 2,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "23/1/8/6",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3759.4,
+     6097.9,
+     3795.2,
+     6166.8
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.24,
+    "want": "flag",
+    "what": "flag F8thDown 0.24 under floor",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "23/1/8/6",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3977.6,
+     6071.0,
+     4053.3,
+     6167.6
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.135,
+    "want": "flag",
+    "what": "flag F8thDown 0.14 under floor",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/12/2",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1816.7,
+     3334.8,
+     1854.6,
+     3367.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.8217401504516602,
+    "want": "blackhead",
+    "what": "two kept heads 0.75-0.82 narrowed (beam_discounted_uncertain)",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/12/2",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     1651.9,
+     3333.4,
+     1690.0,
+     3364.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.7490801215171814,
+    "want": "blackhead",
+    "what": "two kept heads 0.75-0.82 narrowed (beam_discounted_uncertain)",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "15/1/12/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2513.6,
+     7010.2,
+     2554.1,
+     7041.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.7261770367622375,
+    "want": "blackhead",
+    "what": "two kept heads 0.71-0.73 narrowed",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "15/1/12/4",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2330.5,
+     6981.9,
+     2370.1,
+     7011.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.7118724584579468,
+    "want": "blackhead",
+    "what": "two kept heads 0.71-0.73 narrowed",
+    "sure": 2,
+    "kind": "missing_head"
+   },
+   {
+    "plate": "bra",
+    "key": "18/0/1/2",
+    "role": "lost",
+    "cause": "D",
+    "bbox": [
+     2402.8,
+     697.9,
+     2416.4,
+     712.5
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.8025220632553101,
+    "want": "dot",
+    "what": "chord dots (one per head) read as double dot",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "25/0/11/4",
+    "role": "lost",
+    "cause": "B",
+    "bbox": [
+     3019.7,
+     3354.9,
+     3043.1,
+     3432.8
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.131,
+    "want": "flag",
+    "what": "flag F8thDown 0.13 under floor on the Db5",
+    "sure": 1,
+    "kind": "wrong_value"
+   },
+   {
+    "plate": "bra",
+    "key": "12/1/3/5",
+    "role": "lost",
+    "cause": "C",
+    "bbox": [
+     3309.4,
+     4721.6,
+     3331.4,
+     4754.6
+    ],
+    "region": false,
+    "cls": "accidentalDoubleSharp",
+    "rec_conf": 0.25979554653167725,
+    "want": "rest",
+    "what": "an eighth rest boxed as accDoubleSharp 0.26",
+    "sure": 2,
+    "kind": "missing_rest"
+   },
+   {
+    "plate": "bra",
+    "key": "1/1/3/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3916.8,
+     4926.0,
+     3983.5,
+     4961.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.269,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "9/0/0/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4331.7,
+     505.0,
+     4364.3,
+     537.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.441,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/1/10/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2886.9,
+     6242.7,
+     2921.1,
+     6282.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.542,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/12/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4279.0,
+     3378.1,
+     4315.7,
+     3408.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.574,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "1/1/3/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3796.0,
+     4922.0,
+     3836.0,
+     4952.3
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.635,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "12/1/3/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3394.4,
+     4729.9,
+     3432.6,
+     4764.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.691,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/1/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     952.5,
+     912.0,
+     990.1,
+     944.7
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.711,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "12/1/3/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3454.6,
+     4729.6,
+     3494.8,
+     4764.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.74,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/1/1/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4442.9,
+     4349.7,
+     4480.4,
+     4382.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.751,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/12/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3864.0,
+     3406.0,
+     3901.2,
+     3437.0
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.762,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/8/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     957.4,
+     2419.2,
+     995.4,
+     2447.2
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.77,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "7/0/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4209.7,
+     847.0,
+     4249.0,
+     877.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.788,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "17/1/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     940.1,
+     5399.9,
+     979.9,
+     5429.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.792,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/0/10/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5389.9,
+     3073.2,
+     5426.0,
+     3106.8
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.804,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "23/0/9/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     999.4,
+     2979.2,
+     1038.5,
+     3011.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.814,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "1/0/12/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1226.3,
+     3528.6,
+     1264.0,
+     3562.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.822,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "26/0/12/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1518.9,
+     3499.0,
+     1558.3,
+     3533.4
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.832,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/5/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1223.6,
+     1674.7,
+     1260.2,
+     1704.1
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.846,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/0/2/3",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2331.3,
+     955.4,
+     2371.9,
+     990.5
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.858,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3699.2,
+     6286.4,
+     3737.1,
+     6318.6
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.891,
+    "want": "blackhead",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "25/0/11/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3061.5,
+     3405.8,
+     3101.1,
+     3460.8
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.273,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "5/1/10/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3844.6,
+     6349.4,
+     3876.5,
+     6398.6
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.291,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "26/0/12/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1606.8,
+     3428.3,
+     1629.3,
+     3490.4
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.303,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "20/0/12/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5068.7,
+     3738.3,
+     5104.0,
+     3791.5
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.44,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/5/10",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4688.0,
+     2060.1,
+     4726.1,
+     2073.8
+    ],
+    "region": false,
+    "cls": "restWhole",
+    "rec_conf": 0.507,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/10/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3405.3,
+     6495.3,
+     3439.2,
+     6546.2
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.612,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/0/10/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5076.7,
+     3007.5,
+     5111.2,
+     3061.3
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.628,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "18/1/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4446.2,
+     4249.7,
+     4480.9,
+     4306.6
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.636,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/0/10/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5229.8,
+     2984.6,
+     5259.9,
+     3066.0
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.676,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "5/0/1/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     857.3,
+     804.7,
+     890.5,
+     838.3
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.697,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "7/0/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3944.3,
+     858.5,
+     3975.1,
+     934.1
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.709,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "25/0/11/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2875.6,
+     3405.5,
+     2910.0,
+     3458.9
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.718,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/12/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4128.3,
+     3389.1,
+     4159.3,
+     3470.1
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.73,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/0/13/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3278.5,
+     3446.9,
+     3311.2,
+     3500.6
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.761,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "7/0/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4113.4,
+     880.2,
+     4145.6,
+     935.0
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.801,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "26/0/12/1",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1890.7,
+     3435.2,
+     1921.8,
+     3490.1
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.807,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "20/0/2/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3034.0,
+     988.3,
+     3062.9,
+     1040.6
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.814,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/4/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3710.7,
+     5119.4,
+     3741.5,
+     5168.2
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.831,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/12/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4037.4,
+     3412.9,
+     4068.9,
+     3462.2
+    ],
+    "region": false,
+    "cls": "rest8th",
+    "rec_conf": 0.84,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3274.1,
+     4029.6,
+     3308.3,
+     4107.5
+    ],
+    "region": false,
+    "cls": "restQuarter",
+    "rec_conf": 0.855,
+    "want": "rest",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3417.8,
+     4300.4,
+     3441.1,
+     4332.9
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.251,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "20/0/2/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2994.7,
+     958.9,
+     3017.1,
+     1039.2
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.285,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/1/1/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4719.1,
+     4337.9,
+     4768.6,
+     4436.6
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.296,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/4/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5166.6,
+     1466.2,
+     5201.8,
+     1554.0
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.389,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "25/0/11/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3140.7,
+     3414.3,
+     3182.0,
+     3500.9
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.443,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3287.6,
+     4311.9,
+     3309.2,
+     4332.9
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.483,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "10/0/5/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1377.2,
+     1724.8,
+     1413.8,
+     1820.3
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.513,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "18/1/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4317.8,
+     4411.5,
+     4341.9,
+     4440.8
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.56,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3670.0,
+     3944.2,
+     3697.9,
+     4027.0
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.577,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3422.2,
+     3958.6,
+     3451.8,
+     4043.7
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.601,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/1/1/8",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4557.9,
+     4270.2,
+     4588.4,
+     4353.8
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.609,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "24/1/4/5",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3589.2,
+     5257.9,
+     3619.2,
+     5307.0
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.649,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/1/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     986.6,
+     836.4,
+     1020.3,
+     924.8
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.669,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3522.8,
+     4283.5,
+     3553.5,
+     4332.9
+    ],
+    "region": false,
+    "cls": "flag16thUp",
+    "rec_conf": 0.684,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "20/0/2/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2986.6,
+     954.2,
+     3016.0,
+     1040.3
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.685,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "25/0/3/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1992.0,
+     1349.5,
+     2030.3,
+     1438.9
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.703,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3664.8,
+     4285.2,
+     3692.4,
+     4332.9
+    ],
+    "region": false,
+    "cls": "flag16thUp",
+    "rec_conf": 0.708,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "9/0/0/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4814.6,
+     548.3,
+     4852.6,
+     638.1
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.733,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/8/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     961.0,
+     2257.7,
+     997.6,
+     2346.1
+    ],
+    "region": false,
+    "cls": "flag8thDown",
+    "rec_conf": 0.748,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "6/1/0/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3534.0,
+     3947.4,
+     3559.9,
+     4029.9
+    ],
+    "region": false,
+    "cls": "flag8thUp",
+    "rec_conf": 0.765,
+    "want": "flag",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "18/1/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4530.8,
+     4313.6,
+     4540.5,
+     4340.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.293,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/11/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2423.9,
+     3126.3,
+     2433.4,
+     3136.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.298,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/0/12",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     5333.5,
+     616.5,
+     5343.8,
+     621.2
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.357,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "18/1/1/6",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4580.0,
+     4226.0,
+     4595.9,
+     4243.6
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.399,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "5/0/1/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1235.9,
+     727.6,
+     1252.3,
+     742.9
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.435,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "23/0/9/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1207.6,
+     2681.0,
+     1230.0,
+     2696.6
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.498,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "12/0/2/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3101.7,
+     984.4,
+     3114.1,
+     1000.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.514,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/11/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2596.9,
+     3152.3,
+     2610.1,
+     3166.6
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.55,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "12/0/2/7",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     3100.6,
+     1016.3,
+     3115.2,
+     1028.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.61,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/1/10/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2980.2,
+     6453.6,
+     2994.2,
+     6463.0
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.62,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "18/0/1/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2739.8,
+     697.9,
+     2755.0,
+     712.5
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.625,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "13/0/6/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1972.2,
+     1893.9,
+     1986.2,
+     1907.1
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.658,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/1/10/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2982.1,
+     6246.9,
+     2996.4,
+     6262.8
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.679,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "4/0/12/2",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1866.3,
+     3345.2,
+     1878.6,
+     3357.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.693,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "8/0/1/9",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     4235.0,
+     915.9,
+     4249.8,
+     930.7
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.715,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/1/10/4",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2982.7,
+     6218.2,
+     2996.4,
+     6233.4
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.744,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "17/1/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1402.2,
+     5409.7,
+     1414.2,
+     5422.2
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.746,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "17/1/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     993.5,
+     5407.5,
+     1007.2,
+     5421.7
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.766,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "17/1/6/0",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     1400.6,
+     5436.4,
+     1413.1,
+     5450.5
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.787,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "16/0/2/3",
+    "role": "kept",
+    "cause": "",
+    "bbox": [
+     2208.9,
+     1177.5,
+     2225.0,
+     1187.0
+    ],
+    "region": false,
+    "cls": "augmentationDot",
+    "rec_conf": 0.804,
+    "want": "dot",
+    "what": "kept+written in the record",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "25/1/11/2",
+    "role": "judged",
+    "cause": "",
+    "bbox": [
+     1939.5,
+     7133.1,
+     1979.2,
+     7165.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.849,
+    "want": "blackhead",
+    "what": "Sean judged: 8 (2.162-review, 2026-10-17)",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "1/0/12/0",
+    "role": "judged",
+    "cause": "",
+    "bbox": [
+     1123.9,
+     3570.9,
+     1161.6,
+     3599.7
+    ],
+    "region": false,
+    "cls": "noteheadBlackInSpace",
+    "rec_conf": 0.801,
+    "want": "blackhead",
+    "what": "Sean judged: 16th (2.74-review, 2026-10-09)",
+    "sure": null,
+    "kind": ""
+   },
+   {
+    "plate": "bra",
+    "key": "3/0/3/5",
+    "role": "judged",
+    "cause": "",
+    "bbox": [
+     3139.6,
+     1276.5,
+     3178.4,
+     1310.9
+    ],
+    "region": false,
+    "cls": "noteheadBlackOnLine",
+    "rec_conf": 0.818,
+    "want": "blackhead",
+    "what": "Sean judged: Tie -- as a rule, wherever the arc sits, if it is close to noteheads that are the same, it is a tie (2.75-review, 2026-10-09)",
+    "sure": null,
+    "kind": ""
+   }
+  ],
+  "judged": [
+   {
+    "key": "5/1/10/4",
+    "subject": "glyph/5/1/10/4/12",
+    "answer": "Chord below",
+    "answer_kind": "other",
+    "item": "2.12m-review",
+    "date": "2026-10-11",
+    "doc": null
+   },
+   {
+    "key": "25/1/11/2",
+    "subject": "glyph/25/1/11/2/0",
+    "answer": "8",
+    "answer_kind": "duration",
+    "item": "2.162-review",
+    "date": "2026-10-17",
+    "doc": "brahms"
+   },
+   {
+    "key": "1/0/12/0",
+    "subject": "glyph/1/0/12/0/8",
+    "answer": "16th",
+    "answer_kind": "duration",
+    "item": "2.74-review",
+    "date": "2026-10-09",
+    "doc": "brahms"
+   },
+   {
+    "key": "3/0/3/5",
+    "subject": "glyph/3/0/3/5/0",
+    "answer": "Tie -- as a rule, wherever the arc sits, if it is close to noteheads that are the same, it is a tie",
+    "answer_kind": "arc",
+    "item": "2.75-review",
+    "date": "2026-10-09",
+    "doc": "litolff"
+   }
+  ]
+ }
+}
