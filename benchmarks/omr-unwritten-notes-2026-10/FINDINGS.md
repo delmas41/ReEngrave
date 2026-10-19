@@ -46,3 +46,45 @@ Sean's judged tiles on these boxes are only tens, so the real/non-note splits ar
 (1) Stem finder PAIRED/WIDE/TALL refusals: biggest cause of no_stem on real notes; OFF flag `OMR_STEM_NOTEHEAD_GATE` exists; re-measure and tile it.
 (2) The bar-sum hold: largest real-note bucket (1,237 / 2,612); 95% of Litolff held heads sit in bars with no dropped neighbour, so the sum is off for
 another reason; needs its own classification.
+
+## 2.167b -- ranking on 20261018-night
+
+Same probes, same partition, same controls (`probe/2.167/p1_table.py`, `p3_partition.py`, `p3b_ink.py`; new `p9_moves.py`, `p9b_newheld.py`,
+`p10_table.py`), rerun on the 20261018-night records (main 2bb43b85, through infer; carry 2.158/2.159/2.161/2.164/2.166/2.162/2.169/2.168).
+The 20261016-night records were rerun too, so both columns are one method. Slim outputs: `benchmarks/omr-unwritten-notes-2026-10/2.167b/`.
+Controls HELD: instrumented export reproduces `notes_not_written` exactly (1016: Litolff 5,916 / Brahms 14,997 as in 2.167; 1018: Litolff 6,015 / Brahms 15,310,
+equal to the overnight coverage.json dict for Litolff and Brahms); buckets sum to the box count and ink clusters to the same 9,047 / 20,295 on both nights
+(identical detector boxes, so boxes join one-to-one by subject).
+
+Distinct ink NOT in the file (real / non-note class is the agent's look carried over from 2.167, ours, not Sean's):
+
+| first cause | Lit 1016 | Lit 1018 | Brahms 1016 | Brahms 1018 | class (agent look) |
+|---|--:|--:|--:|--:|---|
+| bar held out, durations do not sum | 1,237 | 1,395 (+158) | 2,612 | 2,870 (+258) | real, held by design |
+| too_narrow box | 236 | 236 | 3,037 | 3,037 | non-note |
+| duration NARROWED | 292 | 235 (-57) | 1,232 | 1,126 (-106) | mostly real |
+| clipped_fragment | 199 | 199 | 310 | 312 | cut copies / letters |
+| chord_value_undecided | 96 | 63 (-33) | 211 | 195 (-16) | real |
+| ink read as whole rest | 108 | 108 | 15 | 14 | rests |
+| no_pitch (clef-abstained) | 95 | 95 | 0 | 0 | real |
+| tremolo slash | 49 | 58 | 114 | 116 | non-note |
+| owned_by_another_staff, no twin kept | 30 | 31 | 53 | 58 | copy whose owner lost it |
+| is_an_arc_tail (new refusal) | 0 | 6 | 0 | 14 | non-note |
+
+Totals: ink not in file Litolff 2,573 -> 2,664 (+91), Brahms 7,892 -> 8,049 (+157); notes written 6,731 -> 6,626 and 12,152 -> 11,991;
+notes_not_written 5,916 -> 6,015 and 14,997 -> 15,310. The file got SMALLER on both plates.
+
+What moved (box level, `p9_moves.py`; Litolff 411 of 11,399 boxes changed bucket, Brahms 752 of 24,260):
+- The hold grew by far the most: WRITTEN -> held bar 174 (Litolff) / 333 (Brahms) boxes in 52 / 91 newly held bars. In 43 / 88 of those boxes the old duration
+  reason was `meter_reconciliation` (the bar had supplied or moved the value) and the new one is `bar_disagrees_with_decided`: traceable to 2.162 + 2.168
+  (the bar no longer moves a DECIDED note, it marks it; the bar still fails its sum, so it is held). In the rest (128 / 228) the cell's own verdicts are unchanged: a
+  neighbour in the bar changed value, a bar-level effect I did not trace further, cause unknown.
+- Narrowed notes and undecided chords moved into the file or into a hold: narrowed -> WRITTEN 56 / 91 boxes, chord_undecided -> WRITTEN 24 / 11. Their new verdicts
+  are `head_and_marks` (and Brahms `stem_tip_reads_no_beam`): consistent with the head-fill / box / stem landings 2.158/2.159/2.161/2.169, but the record does not
+  say which one decided each note, so which landing is unknown.
+- 2.164 (tie ends / barline ink): no change in too_narrow or clipped_fragment on either plate; either it did not touch these records' boxes or its effect shows in other
+  buckets. Unknown. `is_an_arc_tail` (6 / 14 ink) is new; 2.166 (system arcs) is the likely source by name, not proven here.
+- Unchanged to the unit: too_narrow (Brahms 3,037 non-notes), whole rest, no_pitch (Litolff 95), dynamic letters, clefs.
+
+Reading: the landings made more notes DECIDED, and more bars then fail their sum, so the largest real-note bucket (bar held out) grew by 158 / 258 ink while the narrowed
+bucket shrank by 57 / 106. Net, 2.167 Fix first (2) (what makes a bar not sum) is now larger than before; Fix first (1) (stem finder) shows as narrowed/chord falling.
