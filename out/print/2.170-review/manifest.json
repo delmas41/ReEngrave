@@ -1,12 +1,10 @@
 {
  "question": "What is the written value of the note in the blue box?",
- "tiles": 12,
- "blue": "the note asked about",
- "nothing_else_drawn": true,
- "subjects": {
-  "1": {
+ "tiles": [
+  {
+   "n": 1,
    "doc": "brahms",
-   "glyph": "glyph/2/0/9/5/3",
+   "subject": "glyph/2/0/9/5/3",
    "page_box": [
     5237.39453125,
     2486.388671875,
@@ -14,9 +12,10 @@
     2519.1552734375
    ]
   },
-  "2": {
+  {
+   "n": 2,
    "doc": "litolff",
-   "glyph": "glyph/5/1/1/9/7",
+   "subject": "glyph/5/1/1/9/7",
    "page_box": [
     1851.8375,
     2468.62,
@@ -24,9 +23,10 @@
     2484.5275
    ]
   },
-  "3": {
+  {
+   "n": 3,
    "doc": "litolff",
-   "glyph": "glyph/15/1/1/2/7",
+   "subject": "glyph/15/1/1/2/7",
    "page_box": [
     789.6525,
     2353.4275,
@@ -34,9 +34,10 @@
     2373.2725
    ]
   },
-  "4": {
+  {
+   "n": 4,
    "doc": "litolff",
-   "glyph": "glyph/5/0/5/11/2",
+   "subject": "glyph/5/0/5/11/2",
    "page_box": [
     1905.96,
     1488.135,
@@ -44,9 +45,10 @@
     1498.0575
    ]
   },
-  "5": {
+  {
+   "n": 5,
    "doc": "litolff",
-   "glyph": "glyph/15/1/3/7/0",
+   "subject": "glyph/15/1/3/7/0",
    "page_box": [
     1243.4625,
     2593.475,
@@ -54,9 +56,10 @@
     2612.8475
    ]
   },
-  "6": {
+  {
+   "n": 6,
    "doc": "brahms",
-   "glyph": "glyph/4/0/0/2/5",
+   "subject": "glyph/4/0/0/2/5",
    "page_box": [
     1654.6575,
     404.5725,
@@ -64,9 +67,10 @@
     437.03999999999996
    ]
   },
-  "7": {
+  {
+   "n": 7,
    "doc": "litolff",
-   "glyph": "glyph/16/1/10/11/0",
+   "subject": "glyph/16/1/10/11/0",
    "page_box": [
     2092.44,
     3501.4,
@@ -74,9 +78,10 @@
     3522.84
    ]
   },
-  "8": {
+  {
+   "n": 8,
    "doc": "brahms",
-   "glyph": "glyph/5/1/1/4/9",
+   "subject": "glyph/5/1/1/4/9",
    "page_box": [
     3016.875,
     4309.605,
@@ -84,9 +89,10 @@
     4343.94
    ]
   },
-  "9": {
+  {
+   "n": 9,
    "doc": "litolff",
-   "glyph": "glyph/2/1/4/1/3",
+   "subject": "glyph/2/1/4/1/3",
    "page_box": [
     648.0025,
     2710.5675,
@@ -94,9 +100,10 @@
     2733.72
    ]
   },
-  "10": {
+  {
+   "n": 10,
    "doc": "brahms",
-   "glyph": "glyph/6/1/0/7/3",
+   "subject": "glyph/6/1/0/7/3",
    "page_box": [
     4738.7125,
     4039.1,
@@ -104,9 +111,10 @@
     4073.025
    ]
   },
-  "11": {
+  {
+   "n": 11,
    "doc": "brahms",
-   "glyph": "glyph/3/1/12/4/1",
+   "subject": "glyph/3/1/12/4/1",
    "page_box": [
     3148.1,
     6709.85,
@@ -114,9 +122,10 @@
     6742.85
    ]
   },
-  "12": {
+  {
+   "n": 12,
    "doc": "brahms",
-   "glyph": "glyph/7/0/5/8/3",
+   "subject": "glyph/7/0/5/8/3",
    "page_box": [
     5241.7861328125,
     1970.81982421875,
@@ -124,5 +133,7 @@
     2004.77978515625
    ]
   }
- }
+ ],
+ "blue": "the note asked about",
+ "nothing_else_drawn": true
 }

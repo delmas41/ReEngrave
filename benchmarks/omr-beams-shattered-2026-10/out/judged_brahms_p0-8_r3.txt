@@ -1,0 +1,3 @@
+2.81-phase2-review tile tile_02 glyph/1/0/3/6/0: narrowed -> right  (Sean: '4') decided 1 beats (head_and_marks)
+2.81-review tile tile_13 glyph/2/0/9/4/1: narrowed -> right  (Sean: 'quarter') decided 1 beats (head_and_marks)
+moved 2

@@ -24,8 +24,13 @@ PDFS = {"litolff": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beetho
                   "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"}
 RD = Path(sys.argv[1])
 OUT, KEY = Path("out/print/2.170-review"), Path("out/2.170/tiles-key.json")
+ARM_A, ARM_B = "off", "on"
+if len(sys.argv) > 2:      # round 2: tiles.py REPLAYDIR OUTDIR KEY ARM_A ARM_B NCHANGED_PER_DOC
+    OUT, KEY, ARM_A, ARM_B = Path(sys.argv[2]), Path(sys.argv[3]), sys.argv[4], sys.argv[5]
 Q = "What is the written value of the note in the blue box?"
 N_CHANGED = {"brahms": 5, "litolff": 5}
+if len(sys.argv) > 6:
+    N_CHANGED = {"brahms": int(sys.argv[6]), "litolff": int(sys.argv[6])}
 rnd = random.Random(2170)
 J = json.load(open("benchmarks/acceptance/judged-tiles.json"))
 judged = set()
@@ -36,9 +41,9 @@ for it in J["tiles"] if "tiles" in J else list(J.values())[0]:
 picks = []
 boxes = {}
 for doc in ("brahms", "litolff"):
-    off = json.load(open(RD / ("%s.off.json" % doc)))["glyphs"]
-    on = json.load(open(RD / ("%s.on.json" % doc)))["glyphs"]
-    for o in json.load(open(RD / ("%s.on.record.json" % doc)))["observations"]:
+    off = json.load(open(RD / ("%s.%s.json" % (doc, ARM_A))))["glyphs"]
+    on = json.load(open(RD / ("%s.%s.json" % (doc, ARM_B))))["glyphs"]
+    for o in json.load(open(RD / ("%s.%s.record.json" % (doc, ARM_B))))["observations"]:
         boxes[(doc, o["subject"])] = o["detail"]["bbox_page_px"]
     changed, ctl = [], []
     for g in sorted(on):
@@ -82,8 +87,8 @@ for n, (doc, role, g, a, b) in enumerate(picks, 1):
     ImageDraw.Draw(tile).text((10, 10), "Tile %d" % n, fill=(0, 0, 0), font=font)
     tile.save(OUT / ("tile_%02d.png" % n))
     key.append(dict(n=n, doc=doc, role=role, glyph=g, bbox=boxes[(doc, g)], off=a, on=b))
-json.dump(dict(question=Q, tiles=len(picks), blue="the note asked about", nothing_else_drawn=True,
-               subjects={str(r["n"]): {"doc": r["doc"], "glyph": r["glyph"], "page_box": r["bbox"]} for r in key}),
+json.dump(dict(question=Q, n_tiles=len(picks), blue="the note asked about", nothing_else_drawn=True,
+               tiles=[{"n": r["n"], "doc": r["doc"], "subject": r["glyph"], "page_box": r["bbox"]} for r in key]),
           open(OUT / "manifest.json", "w"), indent=1)
 json.dump({}, open(OUT / "answers.json", "w"))
 (OUT / "README.md").write_text(

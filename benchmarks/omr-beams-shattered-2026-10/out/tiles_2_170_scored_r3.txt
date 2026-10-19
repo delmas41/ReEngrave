@@ -1,0 +1,39 @@
+off {'right': 1, 'wrong': 0, 'narrowed': 10, 'other': 1}
+    1 brahms narrowed Sean=1.0 ours=narrowed/None
+    2 litolff narrowed Sean=2.0 ours=narrowed/None
+    3 litolff narrowed Sean=1.0 ours=narrowed/None
+    4 litolff other Sean=not a note (a repeat sign dot) ours=decided/1.0
+    5 litolff narrowed Sean=1.0 ours=narrowed/None
+    6 brahms narrowed Sean=1.0 ours=narrowed/None
+    7 litolff narrowed Sean=1.0 ours=narrowed/None
+    8 brahms right Sean=0.5 ours=decided/0.5
+    9 litolff narrowed Sean=1.0 ours=narrowed/None
+    10 brahms narrowed Sean=1.5 ours=narrowed/None
+    11 brahms narrowed Sean=1.5 ours=narrowed/None
+    12 brahms narrowed Sean=1.5 ours=narrowed/None
+tip {'right': 10, 'wrong': 0, 'narrowed': 1, 'other': 1}
+    1 brahms right Sean=1.0 ours=decided/1.0
+    2 litolff narrowed Sean=2.0 ours=narrowed/None
+    3 litolff right Sean=1.0 ours=decided/1.0
+    4 litolff other Sean=not a note (a repeat sign dot) ours=decided/1.0
+    5 litolff right Sean=1.0 ours=decided/1.0
+    6 brahms right Sean=1.0 ours=decided/1.0
+    7 litolff right Sean=1.0 ours=decided/1.0
+    8 brahms right Sean=0.5 ours=decided/0.5
+    9 litolff right Sean=1.0 ours=decided/1.0
+    10 brahms right Sean=1.5 ours=decided/1.5
+    11 brahms right Sean=1.5 ours=decided/1.5
+    12 brahms right Sean=1.5 ours=decided/1.5
+both {'right': 10, 'wrong': 0, 'narrowed': 1, 'other': 1}
+    1 brahms right Sean=1.0 ours=decided/1.0
+    2 litolff narrowed Sean=2.0 ours=narrowed/None
+    3 litolff right Sean=1.0 ours=decided/1.0
+    4 litolff other Sean=not a note (a repeat sign dot) ours=decided/1.0
+    5 litolff right Sean=1.0 ours=decided/1.0
+    6 brahms right Sean=1.0 ours=decided/1.0
+    7 litolff right Sean=1.0 ours=decided/1.0
+    8 brahms right Sean=0.5 ours=decided/0.5
+    9 litolff right Sean=1.0 ours=decided/1.0
+    10 brahms right Sean=1.5 ours=decided/1.5
+    11 brahms right Sean=1.5 ours=decided/1.5
+    12 brahms right Sean=1.5 ours=decided/1.5

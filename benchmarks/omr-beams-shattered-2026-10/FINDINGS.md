@@ -123,3 +123,55 @@ note asked about. Question: "What is the written value of the note in the blue b
 Fast tier (`pytest -m "not slow" tools/omr/tests -q`, serial, this tree): **8,512 passed, 12 skipped, 2 xfailed, 0 failed**.
 Lane tests: `tools/omr/tests/test_staged_beam_refused_off_the_tip_2_170.py` (11) + 2.146's and 2.81's suites unchanged (48 pass).
 `python3 -m tools.omr.staged.check`: open=193; no finding names this change (the flag, the function or the reason).
+
+## 8. Sean's 12 answers (2026-10-19, `out/print/2.170-review/answers.json`, recorded at 986d703b) and the two additions he approved
+
+Verbatim: *"1.4 2.2 3.4 4 repeat sign dot 5-7.4 8.8 9.4 10-12. Dot 4"*. Of the 10 changed notes 9 right; **tile 2 is a HALF**
+(Litolff p5 sys1 st1 c9 g7) that the rule wrote plain as a quarter. Control 4 (`glyph/5/0/5/11/2`, decided quarter on main) is a
+repeat-sign dot boxed as a head -- not this lane's (the notehead gate); recorded here only. Control 8 right.
+The first manifest named its subjects in a form `judged build` does not read, so the 12 answers indexed with no subject;
+`probe/fix_manifest_2_170.py` rewrote it as a `tiles` list (no role) and the index was rebuilt. The indexer has no comparator for
+numeric answers, so `probe/score_tiles_2_170.py` scores them per arm.
+
+### 8.1 Addition 1 -- head-fill guard (in `adjudicate_duration`, the rule's own guard)
+The rule decides only where 2.148's first-step fill reading SETTLED `black` on a head-sized box. **That alone does not keep
+tile 2 narrowed**: its fill reading IS settled black (interior white 0.0 of 60 rows, centre window ink 1.0 on both rasters) --
+the box is a `yolo_rescue_lowconf` box (score 0.19, witness `accidental_right`) whose ink reads solid, though the print shows a
+hollow head. So the guard also asks that the head's box be the production detector's own (READERS.DETECTOR), never only the
+low-confidence rescue. This second clause is mine, beyond the wording Sean approved -- flagged here for him. Tests: no fill row,
+an undecided fill (0.15), a rescue box -> each keeps the narrowing.
+Effect: Litolff heads the rule touches 40 -> 39 (tile 2 now NARROWED, `beam_discounted_uncertain`); Brahms p0-8 50 -> 48.
+
+### 8.2 Addition 2 -- `OMR_BEAM_NOT_ON_SYSTEM_ARC` (default OFF; Sean: "beams cannot have an arc")
+`_strokes_on_a_system_arc`: a beam stroke whose INK lies on a 2.166 traced system arc -- the detector `beam` boxes 2.166 itself
+measured `stroke_only` (ink off the traced stroke < 0.06 sq spaces, pixel-measured in GATHER on the page raster, and overlapping
+the arc's own boxes), matched to their `Q.BEAM_STROKE` row by the identical box, and any CV stroke wholly inside one. Used twice:
+(a) refused `on_system_arc` first in `_not_a_beam_by_ink`; (b) such a stroke no longer blocks the off-the-tip rule's zone test.
+A beam fused to a slur's tail is not `stroke_only` (its box holds beam ink off the trace), so it is never refused -- but the record
+keeps only the box-level measurement (2.166 files the arc's ends, not its traced pixels), so "refuse only the part on the arc"
+cannot be done without a GATHER change and a re-gather: the fused box is left whole instead.
+Reach: 209 Litolff / 633 Brahms `stroke_only` beam boxes, all 842 match a detector stroke row; no CV stroke lies inside one.
+**On its own it settles 0 notes on both plates** (arc arm: 0 refusals, 0 values changed, file identical): 191 / 584 of those boxes
+are candidates, but every one is already discounted earlier by 2.25b's `_not_a_decided_arc` (a stroke inside a DECIDED slur/tie's
+box) or 18 / 49 dropped by `_kept_beams`. As the rule's second witness it adds 3 Litolff heads (2 values in the file: Litolff
+6,639 -> 6,641 notes), 0 Brahms p0-8.
+
+### 8.3 Round 3 on the exported file (`out/compare_*_r3.txt`; arms off / tip / arc / both; control 0 differ on both plates)
+
+| | Litolff whole movement | Brahms pages 0-8 (whole movement: the box held two 2.165 Brahms replays again -- not run) |
+|---|---|---|
+| file notes off -> tip -> arc -> both | 6,626 -> 6,639 -> 6,626 -> 6,641 | 3,543 -> 3,591 -> 3,543 -> 3,591 |
+| narrowed live verdicts off -> both | 528 -> 510 | 774 -> 731 |
+| values changed off -> both | 18 (17 by the rule, 1 knock-on; all narrowed -> quarter) | 43 (37 by the rule: 19 quarter, 18 dotted quarter; 6 knock-on) |
+| held bars off -> both | 564 -> 567 (0 released, 3 newly held) | 274 -> 269 (8 released, 3 newly held) |
+
+**Judged** (both arm vs off): Litolff 2.81-phase2 tile 10 narrowed -> right; Brahms p0-8 2.81-phase2 tile 2 and 2.81 tile 13
+narrowed -> right; **0 right -> wrong anywhere**. Sean's 2.170 tiles under `both`: Litolff 4 right, tile 2 narrowed (not wrong),
+control 4 not a note (ours decided quarter -- main's error); Brahms 6 of 6 right (incl. control 8). 0 wrong.
+
+### 8.4 Tiles 2: `out/print/2.170-review-2/` (3 tiles; key `out/2.170/tiles-key-2.json`)
+The arc witness changes ONE unjudged note in the file (Litolff p9 sys0 st3 c10 g2, narrowed -> quarter, a chord under a slur
+whose piece stood at the stem tip) -- 1 tile + 2 controls (decided eighths, Litolff and Brahms). Same rules: one blue box, one run,
+asserted. answers.json `{}`.
+
+Round 3 fast tier (this tree, serial): **8,520 passed, 12 skipped, 2 xfailed, 0 failed**; flag-doc tests re-run after the docs edit: 17 passed.

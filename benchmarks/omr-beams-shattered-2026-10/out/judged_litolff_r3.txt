@@ -1,0 +1,2 @@
+2.81-phase2-review tile tile_10 glyph/2/1/4/1/0: narrowed -> right  (Sean: '4') decided 1 beats (head_and_marks)
+moved 1

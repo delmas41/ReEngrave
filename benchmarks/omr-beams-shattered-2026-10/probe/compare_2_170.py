@@ -1,15 +1,16 @@
 """2.170: OFF vs ON from replay_2_170 outputs, per plate, ON THE FILE.
-usage: compare_2_170.py REPLAYDIR DOC"""
+usage: compare_2_170.py REPLAYDIR DOC [ARM_A ARM_B]   (default off on)"""
 import json
 import sys
 from collections import Counter
 from pathlib import Path
 
 RD, DOC = Path(sys.argv[1]), sys.argv[2]
-a = json.load(open(RD / ("%s.off.json" % DOC)))
-b = json.load(open(RD / ("%s.on.json" % DOC)))
+A, B = (sys.argv[3], sys.argv[4]) if len(sys.argv) > 4 else ("off", "on")
+a = json.load(open(RD / ("%s.%s.json" % (DOC, A))))
+b = json.load(open(RD / ("%s.%s.json" % (DOC, B))))
 print("== %s" % DOC)
-for arm, r in (("off", a), ("on", b)):
+for arm, r in ((A, a), (B, b)):
     w = r["coverage"].get("written") or {}
     nn = r["coverage"].get("notes_not_written") or {}
     narrowed = sum(1 for x in r["glyphs"].values() if x["outcome"] == "narrowed" and not x["rest"])
@@ -29,11 +30,12 @@ for g, y in b["glyphs"].items():
         p = g.split("/")
         bar = (int(p[1]), int(p[2]), int(p[3]), int(p[4]))
         kind = "%s->%s" % (x["outcome"] if x["outcome"] != "decided" else x["written"], y["outcome"] if y["outcome"] != "decided" else y["written"])
-        ch[(("by_rule" if y["off_tip"] else "knock_on"), kind, "held_on" if bar in held_on else "bar_written_on")] += 1
+        ch[(("tip_rule" if y["off_tip"] else "arc_rule" if y.get("on_arc") else "knock_on"), kind, "held_on" if bar in held_on else "bar_written_on")] += 1
         detail.append((g, y["off_tip"], x, y, bar in held_off, bar in held_on))
 print(" values changed: %d" % len(detail))
 for k, v in ch.most_common():
     print("   %5d %s" % (v, k))
-print(" heads the rule touched (on):", sum(1 for y in b["glyphs"].values() if y["off_tip"]))
+print(" heads touched (%s): tip rule %d, arc refusal %d" % (B, sum(1 for y in b["glyphs"].values() if y["off_tip"]),
+                                                        sum(1 for y in b["glyphs"].values() if y.get("on_arc"))))
 print(" held bars off->on: %d -> %d (released %d, newly held %d)" % (len(held_off), len(held_on), len(held_off - held_on), len(held_on - held_off)))
-json.dump(detail, open(RD / ("%s.changed.json" % DOC), "w"))
+json.dump(detail, open(RD / ("%s.%s-%s.changed.json" % (DOC, A, B)), "w"))
