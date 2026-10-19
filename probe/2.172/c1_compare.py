@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[2]
 REC = ROOT / "rec172"
 plate = sys.argv[1]
+ARM = sys.argv[2] if len(sys.argv) > 2 else "on"
 
 
 def load(arm):
@@ -43,7 +44,7 @@ def mx(arm):
 
 
 go, vo = load("off")
-gn, vn = load("on")
+gn, vn = load(ARM)
 prod_off = {k: v for k, v in go.items() if v[0] == "detector"}
 missing = [k for k, v in prod_off.items() if gn.get(k, (None,))[:4] != v[:4]]
 print("OFF production boxes", len(prod_off), "-> missing or changed in ON:", len(missing))
@@ -64,10 +65,10 @@ for k, qs in vo.items():
 print("verdicts on OFF's glyphs that differ in ON:", nchg)
 for k, v in changed.most_common(14):
     print("   ", k, v)
-print("notes, rests, red-marked elements  OFF", mx("off"), " ON", mx("on"))
+print("notes, rests, red-marked elements  OFF", mx("off"), " ON(%s)" % ARM, mx(ARM))
 cell_of = lambda s: "/".join(s.split("/")[1:5])
 bars = collections.Counter(cell_of(k) for k in new)
 print("bars with new boxes:", len(bars))
 json.dump(dict(new={k: dict(cls=v[1], box=v[2], conf=v[3], view=v[4].get("view"), fam=v[4].get("family"), pg=v[4].get("bbox_page_px")) for k, v in new.items()},
                verdict_changes={str(k): v for k, v in changed.items()}, missing=missing),
-          open(str(ROOT) + "/probe/2.172/data/compare_%s.json" % plate, "w"))
+          open(str(ROOT) + "/probe/2.172/data/compare_%s%s.json" % (plate, "" if ARM == "on" else "_" + ARM), "w"))

@@ -249,6 +249,14 @@ KNOWN_GAPS: Dict[str, str] = {
         "it is drawing without re-deriving it. No decision consumes it; "
         "whether ADJUDICATE may even SEE the glyph this detail sits "
         "beside is `adjudicate.subjects_for`'s own `RESCUE_SHIPS` gate."),
+    "DETAIL Q.GLYPH_BOX.view": (
+        "RECORDED-ONLY BY DESIGN -- ROADMAP 2.172. Which `OMR_DETECTOR_VIEWS` view (`small`/`close`) a kept box (or a refused near-miss) came from. No decision consumes it; a crop or report script reads it to say which view/phase found a box."),
+    "DETAIL Q.GLYPH_BOX.phases_found": (
+        "RECORDED-ONLY BY DESIGN -- ROADMAP 2.172. Which sub-pixel phases of the view had a box on this ink (the median is the box's score). No decision consumes it; a crop or report script reads it to say which view/phase found a box."),
+    "DETAIL Q.GLYPH_BOX.candidate_class": (
+        "RECORDED-ONLY BY DESIGN -- ROADMAP 2.172. On the refused-near-miss abstention: the class the view's box carried. No decision consumes it; a crop or report script reads it to say which view/phase found a box."),
+    "DETAIL Q.GLYPH_BOX.box_canonical": (
+        "RECORDED-ONLY BY DESIGN -- ROADMAP 2.172. On the refused-near-miss abstention: the view box's canonical-cell rectangle. No decision consumes it; a crop or report script reads it to say which view/phase found a box."),
     "DETAIL Q.MARGIN_LABEL.rungs_requested": (
         "⚠️ RECORDED-ONLY BY DESIGN, and it is the fix PR #34 said had to "
         "land BEFORE the default moved. The record stamped every label "

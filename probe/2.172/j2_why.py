@@ -5,9 +5,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 pl, sub = sys.argv[1], sys.argv[2]
+ARM = sys.argv[3] if len(sys.argv) > 3 else "on"
 cell = "/".join(sub.split("/")[1:5])
-for arm in ("off", "on"):
-    d = json.loads(open(ROOT / ("rec172/%s-%s.record.json" % (pl, arm))).read())["record"]
+for arm in ("off", ARM):
+    d = json.loads(open(ROOT / ("rec172/%s-%s.record.json" % (pl, ARM))).read())["record"]
     print("=====", arm)
     for o in d["observations"]:
         s = o["subject"]
