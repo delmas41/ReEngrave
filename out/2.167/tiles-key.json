@@ -1,0 +1,222 @@
+[
+ {
+  "tile": 1,
+  "file": "tile_01.png",
+  "subject": "glyph/4/0/2/0/7",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: PAIRED with a neighbour (the accidental rule)",
+  "page_box": [
+   507.0875,
+   705.75,
+   532.4375,
+   726.225
+  ],
+  "blue_box_tile_px": [
+   234.9,
+   314.2,
+   335.1,
+   399.8
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 2,
+  "file": "tile_02.png",
+  "subject": "glyph/6/0/1/8/6",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: too WIDE (w > 0.6 spaces)",
+  "page_box": [
+   1803.95,
+   511.7,
+   1823.75,
+   538.85
+  ],
+  "blue_box_tile_px": [
+   243.3,
+   302.8,
+   326.7,
+   408.2
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 3,
+  "file": "tile_03.png",
+  "subject": "glyph/16/1/8/11/1",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: PAIRED with a neighbour (the accidental rule)",
+  "page_box": [
+   2149.0575,
+   3304.26,
+   2170.4775,
+   3321.1125
+  ],
+  "blue_box_tile_px": [
+   240.8,
+   318.3,
+   329.2,
+   392.7
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 4,
+  "file": "tile_04.png",
+  "subject": "glyph/1/0/8/0/7",
+  "why": "sample:ii  S1 stem FOUND beside the box; contact test fails",
+  "cause": "ii  S1 stem FOUND beside the box; contact test fails",
+  "page_box": [
+   965.9482421875,
+   2603.478515625,
+   987.7275390625,
+   2624.56640625
+  ],
+  "blue_box_tile_px": [
+   240.3,
+   313.3,
+   329.7,
+   400.7
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 5,
+  "file": "tile_05.png",
+  "subject": "glyph/13/1/2/0/10",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: too SHORT (h < 2.0 spaces)",
+  "page_box": [
+   540.7475,
+   2425.3775,
+   566.2625,
+   2444.2775
+  ],
+  "blue_box_tile_px": [
+   234.6,
+   316.6,
+   335.4,
+   397.4
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 6,
+  "file": "tile_06.png",
+  "subject": "glyph/13/1/6/10/11",
+  "why": "sample:i   S2x ink run beside head never a candidate",
+  "cause": "i   S2x ink run beside head never a candidate",
+  "page_box": [
+   1733.775,
+   2954.92,
+   1753.15,
+   2984.06
+  ],
+  "blue_box_tile_px": [
+   243.9,
+   299.9,
+   326.1,
+   411.1
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 7,
+  "file": "tile_07.png",
+  "subject": "glyph/16/1/7/5/7",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: PAIRED with a neighbour (the accidental rule)",
+  "page_box": [
+   1204.4025,
+   3113.605,
+   1227.24,
+   3134.08
+  ],
+  "blue_box_tile_px": [
+   238.7,
+   314.2,
+   331.3,
+   399.8
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 8,
+  "file": "tile_08.png",
+  "subject": "glyph/6/0/0/9/1",
+  "why": "sample:0   S3 no vertical ink beside the head",
+  "cause": "0   S3 no vertical ink beside the head",
+  "page_box": [
+   1996.42,
+   441.98,
+   2019.515,
+   453.45000000000005
+  ],
+  "blue_box_tile_px": [
+   238.3,
+   326.4,
+   331.7,
+   384.6
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 9,
+  "file": "tile_09.png",
+  "subject": "glyph/6/0/3/3/7",
+  "why": "sample:i   S2 run beside head REFUSED by the finder",
+  "cause": "i   S2 run beside head REFUSED by the finder: PAIRED with a neighbour (the accidental rule)",
+  "page_box": [
+   992.79,
+   838.34,
+   1017.5175,
+   861.8075
+  ],
+  "blue_box_tile_px": [
+   235.8,
+   309.7,
+   334.2,
+   404.3
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 10,
+  "file": "tile_10.png",
+  "subject": "glyph/4/1/7/7/8",
+  "why": "control:whole_note",
+  "cause": null,
+  "page_box": [
+   1468.0,
+   3155.0,
+   1492.16,
+   3177.4
+  ],
+  "blue_box_tile_px": [
+   236.7,
+   311.3,
+   333.3,
+   402.7
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 11,
+  "file": "tile_11.png",
+  "subject": "glyph/7/0/10/0/9",
+  "why": "control:connected_stem",
+  "cause": null,
+  "page_box": [
+   594.3075,
+   1850.1375,
+   615.5699999999999,
+   1868.25
+  ],
+  "blue_box_tile_px": [
+   241.1,
+   317.8,
+   328.9,
+   396.2
+  ],
+  "blue_checked": true
+ }
+]
