@@ -263,6 +263,10 @@ def staged_stem_finder() -> frozenset:
 # WHAT WOULD FALSIFY IT: an accidental's stroke whose end stands in a head's rows and columns (a head box swallowing its sharp), or
 # Sean reading a rescued stem's note as unstemmed. NOT CONFIRMED with Sean. Default OFF.
 STEM_PAIR_AT_HEAD_ENV = "OMR_STEM_PAIR_AT_HEAD"
+#: A stroke at least this tall (staff spaces) that runs through a head's columns is a chord stem, not an accidental's stroke (a
+#: sharp/natural is about 2.5-3 spaces tall, Gould *Behind Bars*). ⚠️ A cut-off from the engraving literature, NOT measured on a
+#: second publisher: it can only NARROW until one confirms it (CLAUDE.md section 4). Found on Sean's 2.167 tile 3 (a 7.7-space stem).
+STEM_PAIR_TALLER_THAN_ACCIDENTAL_SPACES = 3.5
 
 
 def stem_pair_at_head_enabled() -> bool:
@@ -283,9 +287,15 @@ def _stroke_ends_in_a_head(stroke, heads, line_spacing: float) -> bool:
     x1 = x0 + stroke.width_canonical
     top = stroke.y_canonical
     bot = top + stroke.height_canonical
+    tall = (bot - top) >= STEM_PAIR_TALLER_THAN_ACCIDENTAL_SPACES * line_spacing
     for hx, hy, hw, hh in heads:
-        if x0 < hx + hw and x1 > hx and any(
-                hy - slack <= end <= hy + hh + slack for end in (top, bot)):
+        if not (x0 < hx + hw and x1 > hx):
+            continue
+        if any(hy - slack <= end <= hy + hh + slack for end in (top, bot)):
+            return True
+        # a CHORD stem runs on past the head it is read at, to the chord's far head: taller than any accidental, centred
+        # within the stroke's extent, in the head's columns
+        if tall and top <= hy + hh / 2.0 <= bot:
             return True
     return False
 

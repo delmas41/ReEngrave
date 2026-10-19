@@ -140,3 +140,16 @@ class TestTheRelationDirectly:
         assert not _stroke_ends_in_a_head(s, [(600.0, 450.0, 90.0, 100.0)], SPACING)  # right rows, wrong columns
         assert not _stroke_ends_in_a_head(s, [], SPACING)
         assert not _stroke_ends_in_a_head(s, None, SPACING)
+
+
+class TestChordStemRunningPastItsHead:
+    """Sean's 2.167 tile 3: a 7.7-space down-stem whose ends stand in no detected head (the chord's far head is missed)."""
+
+    def test_a_tall_stroke_through_a_head_is_kept_but_a_short_one_is_not(self):
+        tall = _Box(300, 100, 8, 400)             # 4 spaces
+        short = _Box(300, 180, 8, 320)            # 3.2 spaces: could be an accidental
+        assert _stroke_ends_in_a_head(tall, [HEAD_MID], SPACING)
+        assert not _stroke_ends_in_a_head(short, [HEAD_MID], SPACING)
+
+    def test_a_tall_stroke_clear_of_every_head_column_is_not_exempt(self):
+        assert not _stroke_ends_in_a_head(_Box(600, 100, 8, 400), [HEAD_MID], SPACING)
