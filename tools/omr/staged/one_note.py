@@ -40,8 +40,8 @@ CORRECTS_REASON = "bar_corrects_one_note"
 
 #: Reading classes (the reader's own `reason`) that are >= 95% right on >= 10 of Sean's judged tiles, pooled over both plates
 #: (Litolff + Brahms, the 20261018-night OFF replay; stem_tip_reads_no_beam 32/33, beam_discounted_uncertain decided 24/24,
-#: hooks_counted 15/15) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` "2.165 one-note correction", table "what
-#: solid means". Everything else (above all `head_and_marks`, 87% right on his tiles) is NOT solid. The 95% is a declared bar,
+#: hooks_counted 16/16) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` "2.165 one-note correction", table "what
+#: solid means". Everything else (above all `head_and_marks`, 75% right, 137 of 182, on his tiles) is NOT solid. The 95% is a declared bar,
 #: not a measured law (CLAUDE section 4), and a cut fitted on two plates may only NARROW.
 SOLID_READINGS = frozenset({"stem_tip_reads_no_beam", "beam_discounted_uncertain", "hooks_counted"})
 _UNROOTED = ("infer:", "reconcile_duration")     # a guess, or the bar's own move, is never evidence for another

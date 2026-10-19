@@ -4778,3 +4778,48 @@ Of 174 blue notes 20 are judged (11%), so 10 blind tiles were cut. The 67% is on
 **Blind tiles:** `out/print/2.168-review/`: 10 (4 Litolff + 4 Brahms marked notes Sean has not judged, 1 undisputed control per plate), one blue box on the note, nothing else of ours, README, question "what is the written value?"; key `out/2.168/tiles-key.json`; `probe/tiles_2_168.py`, ONE run made tiles AND key, checked equal (every blue box == its key row's box, 10 tiles == 10 rows). Not yet answered.
 
 **Fast tier:** `pytest -m "not slow" tools/omr/tests -q`: 8,484 passed, 12 skipped, 2 xfailed, 2 failed (the new flag undocumented in `docs/flags-2026-09.md`; documented, those two files re-run green). Tests: `test_staged_bar_disagrees_blue_2_168.py` (8, each with a flag-off control; the export test shows `guess_of` gives the rule, both candidates and the chosen value, and that a mark with no alternative RAISES). `test_staged_export.py` failed 3 once before the tier run, identically on main's files, and did not reproduce in the tier: flaky under load, not this lane.
+
+### 2.165 one-note correction (Sean 2026-10-18/19; branch lane-2.165-one-note-correction; flag `OMR_BAR_CORRECTS_ONE_NOTE`, OFF)
+**What it is (STAGED EVALUATE `reconcile_duration`'s blocked branch + EXPORT `guess_of`; gates in `tools/omr/staged/one_note.py`).** Where 2.168 finds the ONE decided note the bar disputes (unique landing, no narrowed note), the note is CHANGED to the bar's alternative and written GUESSED (blue) with both values as candidates, reason `bar_corrects_one_note`, only when every gate holds; else 2.168's mark stands and records the gate it missed (`one_note_refusal`). INFER cannot do it (infer.py rule 3: no overturning a DECIDED verdict), and the bar rule already lived in EVALUATE and is already written blue. Gates: (1) meter `voted`/`carried*`, never `derived_from_bars`; (2) bar length known and every OTHER note DECIDED on a MEASURED-solid class; (3) ink clear (`_missed_rest_witness`), no box removed from the bar by a decided "not a note"/"not a rest" (owner-contest losers and whole-rest twins excepted), heads clean (ledger-owner aware, CLAUDE §5), no tuplet evidence, one voice (`Q.VOICES` n_voices 1); (4) the disputed note is not itself solid; (5) a shortening needs beam ink in the cell, a lengthening also needs the missed-rest witness clear, and a flag or two-source beam read on the note is never undone. Modes: `strict`, `relaxed`, and two MEASUREMENT arms (`loose`, `loose_removed_boxes_ok` = loose without the removed-box gate) that are not proposals. Tests `test_staged_one_note_correction_2_165.py` (12, each gate with a failing control); fast tier 8,513 passed, 12 skipped, 2 xfailed, 0 failed (before the final ledger/carried edits, re-run on the final tree below).
+
+**Replay.** `probe/{pages,replay,score,solid,tiles}_2_165.py`: the 20261018-night GATHER rows (main 2bb43b85, through infer), ADJUDICATE..INFER..second EVALUATE (`review.rerun`), then `export.to_musicxml` on the replayed record, so every number below is the EXPORTED FILE's. Control (flag off vs the night's own coverage): Litolff 6,626 notes / 624 held / guessed by-rule identical; Brahms 11,991 / 915; judged 156/30/7 and 126/22/8 equal the overnight's.
+
+**Why these bars are held out (not a new policy; checked, not changed).** The 2.117 partial-bar path exists and is ON, but it only rescues a bar with a marked unread symbol to put the gap at; the held bars stay held for: Litolff `voice_overfull` 196, `short_without_an_unread_symbol` 340, `nothing_before_or_after_the_gap` 28; Brahms 497 / 281 / 137. A bar holding a decided note that is wrong (a missed flag or beam) is OVER-full (or short with no unread symbol), so there is nowhere to put a gap and the whole bar is held. Two groups of held bars (OFF replay): (1) a decided note the bar disputes (2.162 block / 2.168 mark): Litolff 44 of 564 held bars, Brahms 100 of 915; (2) the rest, with no unique single-note landing: bars holding a narrowed note (Litolff 37, Brahms 205: length unknown, no move by 2.162) and bars where the sum fails for another reason (Litolff ~483, Brahms ~610; this includes the bars the manager traced to newly decided 2.169/2.159/2.161 values). **The one-note correction can only rescue group 1** (it needs a unique landing; group 2 has zero or several by construction), so it cannot touch the second group the 2.167b ranking found.
+
+**What "solid" meant, MEASURED (judged duration tiles, both plates pooled, the OFF replay's reader verdict against Sean's answer; 2.162 Set B rows included from his typed answers):**
+
+| reader reason (DECIDED) | judged | right | wrong | right % |
+|---|--:|--:|--:|--:|
+| `head_and_marks` (the dominant reading) | 182 | 137 | 45 | 75% |
+| `stem_tip_reads_no_beam` | 33 | 32 | 1 | 97% |
+| `beam_discounted_uncertain` | 24 | 24 | 0 | 100% |
+| `hooks_counted` | 16 | 16 | 0 | 100% |
+| `head_fill_from_ink` | 6 | 5 | 1 | 83% |
+| `open_head_flag_contradiction`, `whole_class_filled_on_a_stem` | 2 + 2 | 4 | 0 | n too small |
+
+Inside `head_and_marks` no recorded feature separates right from wrong: by value a judged quarter is right 12 of 24 (a quarter with no beam over it in a cell where BOTH the detector and the CV reader see beams: 2 right, 8 wrong), a half 56 of 67; by evidence a beam read by both sources with no refused stroke is 33 right / 3 wrong (92%), a beam read by one source 3 / 1, a flag read 11 / 1. The judged tiles were cut because notes looked suspect, so these rates understate the unselected population, but they are the only measurement there is. **Declared bar: >= 95% on >= 10 tiles** (a declared bar, not a law, CLAUDE §4; the cost of a wrong correction is a visible blue note that carries both values). `strict` = those three classes; `relaxed` adds the two-source beamed eighth (92%, below the bar) and a decided rest (not measured by tiles); `loose` = any decided reader value.
+
+**Per plate, on the exported file (OFF = main):**
+
+| | OFF | strict | relaxed | loose_removed_boxes_ok |
+|---|--:|--:|--:|--:|
+| Litolff notes reaching file | 6,626 | 6,626 | 6,630 | 6,671 |
+| Litolff bars held out | 624 | 624 | 623 | 614 |
+| Litolff blue `bar_corrects_one_note` in file | 0 | 0 | 1 | 12 |
+| Litolff notes the rule changed | 0 | 1 | 2 | 13 |
+| Litolff judged right/wrong/narrowed | 156/30/7 | same | same | 157/29/7 |
+| Brahms notes reaching file | 11,991 | (running) | 12,010 | 12,042 |
+| Brahms bars held out | 915 | (running) | 910 | 903 |
+| Brahms blue `bar_corrects_one_note` in file | 0 | (running) | 5 | 12 |
+| Brahms notes the rule changed | 0 | (running) | 5 | 12 |
+| Brahms judged right/wrong/narrowed | 126/22/8 | | same | same |
+
+Every note the rule changed reached the file as a blue note (changed = blue in file: the corrected bar adds up and is no longer held). Other blue families are unchanged (Litolff `fill_part_key` 1,051, etc.).
+
+**Judged tiles that move (vs OFF).** Right->wrong: none in any arm. Wrong->right: Litolff 2.154-review 11 under `loose_removed_boxes_ok` only (one of the 5 overnight right->wrong; Litolff 2.154-review 8 and Brahms 2.154-review 3, 2.162-review 7, 21 do not come back in any arm). **Set B (Brahms, each tile's refusal, `loose_removed_boxes_ok` / `relaxed`):** tile 10 CORRECTED right (only in `loose_removed_boxes_ok`); tiles 1, 2, 9 `not_one_voice`; tiles 3, 4 `unexplained_ink_in_the_bar` (tile 3 must not move and does not); tiles 7, 8 `beam_or_flag_read_cleanly` (tile 7, a right eighth, is correctly protected; tile 8, a wrong eighth, is a flag the reader read wrongly, so the gate that protects 7 also blocks 8). Under `relaxed` tiles 1, 4, 7, 9, 10 stop at `other_note_not_solid: head_and_marks`, tile 2 at `not_one_voice`, tiles 3 and 8 at a removed `rest_is_not_a_rest` / `notehead_is_not_a_notehead` box. Tiles 3 and 7 do not move in any arm.
+
+**Refusals (relaxed, record):** Litolff 52 marked bars -> `other_note_not_solid` 38, removed box 11, unexplained ink 2, voice 1; Brahms 107 -> `other_note_not_solid` 77, removed box 14, ink 5, voice 4, disputed note solid 5, shortening with no beam in cell 1, flag read 1. Under `loose_removed_boxes_ok`: ink 18 / 44, voice 7 / 29, shortening with no beam in the cell 7 / 8, disputed note solid 3 / 11.
+
+**Reading.** With the gates Sean named and "solid" measured, the correction is a very small rule: the dominant reading (`head_and_marks`, 75%) is not solid, so most disputed bars stop at gate 2; of those that pass it the removed-box, ink and one-voice gates stop most of the rest. It never made a judged tile worse. The ceiling with solidity waived (`loose_removed_boxes_ok`) is 13 / 12 notes, still short of the 6 Set B targets (1 reaches). The remaining blockers on the targets are one-voice (1, 2, 9; `Q.VOICES` abstains on an over-full bar with up- and down-stems, the very bars in question) and ink (3, 4).
+
+**Blind tiles** `out/print/2.165-review/`: 12 (5 Litolff + 5 Brahms notes the `loose_removed_boxes_ok` arm changed that Sean has not judged, 1 plain control per plate), one blue box on the note, nothing else of ours, README, question "what is the written value of the note in the blue box?"; key `out/2.165/tiles-key.json` (kept value, the rule's value, roles); `probe/tiles_2_165.py`, ONE run made tiles AND key, checked equal (every blue box == its key row's box, 12 tiles == 12 rows).
