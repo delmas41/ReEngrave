@@ -1,0 +1,131 @@
+[
+ {
+  "n": 1,
+  "doc": "litolff",
+  "role": "control",
+  "glyph": "glyph/12/1/8/12/3",
+  "bbox": [
+   2553.245,
+   3333.845,
+   2574.8225,
+   3355.58
+  ],
+  "off": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "origin_reason": "head_and_marks",
+   "origin_outcome": "decided",
+   "off_tip": false,
+   "on_arc": false
+  },
+  "on": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "origin_reason": "head_and_marks",
+   "origin_outcome": "decided",
+   "off_tip": false,
+   "on_arc": false
+  }
+ },
+ {
+  "n": 2,
+  "doc": "brahms",
+  "role": "control",
+  "glyph": "glyph/1/0/13/0/1",
+  "bbox": [
+   1327.5244140625,
+   3811.51123046875,
+   1364.59228515625,
+   3839.75341796875
+  ],
+  "off": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "origin_reason": "head_and_marks",
+   "origin_outcome": "decided",
+   "off_tip": false,
+   "on_arc": false
+  },
+  "on": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "origin_reason": "head_and_marks",
+   "origin_outcome": "decided",
+   "off_tip": false,
+   "on_arc": false
+  }
+ },
+ {
+  "n": 3,
+  "doc": "litolff",
+  "role": "changed",
+  "glyph": "glyph/9/0/3/10/2",
+  "bbox": [
+   1812.64,
+   798.7825,
+   1838.47,
+   818.785
+  ],
+  "off": {
+   "outcome": "narrowed",
+   "written": null,
+   "dots": null,
+   "beats": null,
+   "beam_levels": null,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "beam_discounted_uncertain",
+   "cands": [
+    0.5,
+    1.0
+   ],
+   "origin_reason": "beam_discounted_uncertain",
+   "origin_outcome": "narrowed",
+   "off_tip": false,
+   "on_arc": false
+  },
+  "on": {
+   "outcome": "decided",
+   "written": 1.0,
+   "dots": 0,
+   "beats": 1.0,
+   "beam_levels": 0,
+   "rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "origin_reason": "head_and_marks",
+   "origin_outcome": "decided",
+   "off_tip": true,
+   "on_arc": false
+  }
+ }
+]

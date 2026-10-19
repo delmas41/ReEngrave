@@ -1,0 +1,14 @@
+== brahms
+ off file notes 3543  <note> 5626  held bars 274  narrowed live verdicts 774  notes_not_written total 5220
+     not written by reason: {'not_a_notehead:too_narrow': 1346, 'bar_does_not_add_up': 1343, 'owned_by_another_staff': 748, 'duration_narrowed': 374, 'not_a_rest:rest_is_a_duplicate_box': 326, 'not_a_rest:rest_clipped_by_crop': 197, 'not_a_notehead:clipped_fragment': 171, 'chord_value_undecided': 109}
+ on  file notes 3591  <note> 5675  held bars 269  narrowed live verdicts 730  notes_not_written total 5171
+     not written by reason: {'not_a_notehead:too_narrow': 1346, 'bar_does_not_add_up': 1345, 'owned_by_another_staff': 748, 'duration_narrowed': 331, 'not_a_rest:rest_is_a_duplicate_box': 326, 'not_a_rest:rest_clipped_by_crop': 197, 'not_a_notehead:clipped_fragment': 171, 'chord_value_undecided': 105}
+ values changed: 44
+      19 ('by_rule', 'narrowed->1.0', 'bar_written_on')
+      14 ('by_rule', 'narrowed->1.5', 'bar_written_on')
+       5 ('by_rule', 'narrowed->1.5', 'held_on')
+       3 ('knock_on', 'narrowed->1.0', 'bar_written_on')
+       2 ('knock_on', 'narrowed->1.5', 'bar_written_on')
+       1 ('by_rule', 'narrowed->1.0', 'held_on')
+ heads the rule touched (on): 50
+ held bars off->on: 274 -> 269 (released 8, newly held 3)

@@ -1,0 +1,39 @@
+== litolff
+ off file notes 6626  <note> 9143  held bars 624  narrowed live verdicts 528  notes_not_written total 6015
+     not written by reason: {'bar_does_not_add_up': 1570, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'duration_narrowed': 259, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'not_a_rest:rest_has_a_stem': 122}
+ tip file notes 6639  <note> 9156  held bars 628  narrowed live verdicts 512  notes_not_written total 6002
+     not written by reason: {'bar_does_not_add_up': 1573, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'duration_narrowed': 243, 'not_a_rest:rest_has_a_stem': 122}
+ values changed: 16
+      13 ('tip_rule', 'narrowed->1.0', 'bar_written_on')
+       3 ('tip_rule', 'narrowed->1.0', 'held_on')
+ heads touched (tip): tip rule 39, arc refusal 0
+ held bars off->on: 564 -> 567 (released 0, newly held 3)
+== litolff
+ off file notes 6626  <note> 9143  held bars 624  narrowed live verdicts 528  notes_not_written total 6015
+     not written by reason: {'bar_does_not_add_up': 1570, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'duration_narrowed': 259, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'not_a_rest:rest_has_a_stem': 122}
+ arc file notes 6626  <note> 9143  held bars 624  narrowed live verdicts 528  notes_not_written total 6015
+     not written by reason: {'bar_does_not_add_up': 1570, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'duration_narrowed': 259, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'not_a_rest:rest_has_a_stem': 122}
+ values changed: 0
+ heads touched (arc): tip rule 0, arc refusal 0
+ held bars off->on: 564 -> 564 (released 0, newly held 0)
+== litolff
+ off file notes 6626  <note> 9143  held bars 624  narrowed live verdicts 528  notes_not_written total 6015
+     not written by reason: {'bar_does_not_add_up': 1570, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'duration_narrowed': 259, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'not_a_rest:rest_has_a_stem': 122}
+ both file notes 6641  <note> 9158  held bars 628  narrowed live verdicts 510  notes_not_written total 6000
+     not written by reason: {'bar_does_not_add_up': 1573, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'duration_narrowed': 241, 'not_a_rest:rest_has_a_stem': 122}
+ values changed: 18
+      14 ('tip_rule', 'narrowed->1.0', 'bar_written_on')
+       3 ('tip_rule', 'narrowed->1.0', 'held_on')
+       1 ('knock_on', 'narrowed->1.0', 'bar_written_on')
+ heads touched (both): tip rule 42, arc refusal 0
+ held bars off->on: 564 -> 567 (released 0, newly held 3)
+== litolff
+ tip file notes 6639  <note> 9156  held bars 628  narrowed live verdicts 512  notes_not_written total 6002
+     not written by reason: {'bar_does_not_add_up': 1573, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'duration_narrowed': 243, 'not_a_rest:rest_has_a_stem': 122}
+ both file notes 6641  <note> 9158  held bars 628  narrowed live verdicts 510  notes_not_written total 6000
+     not written by reason: {'bar_does_not_add_up': 1573, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'duration_narrowed': 241, 'not_a_rest:rest_has_a_stem': 122}
+ values changed: 2
+       1 ('tip_rule', 'narrowed->1.0', 'bar_written_on')
+       1 ('knock_on', 'narrowed->1.0', 'bar_written_on')
+ heads touched (both): tip rule 42, arc refusal 0
+ held bars off->on: 567 -> 567 (released 0, newly held 0)

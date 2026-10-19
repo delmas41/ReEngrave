@@ -1,0 +1,13 @@
+== litolff
+ off file notes 6626  <note> 9143  held bars 624  narrowed live verdicts 528  notes_not_written total 6015
+     not written by reason: {'bar_does_not_add_up': 1570, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'duration_narrowed': 259, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'not_a_rest:rest_has_a_stem': 122}
+ on  file notes 6661  <note> 9176  held bars 634  narrowed live verdicts 455  notes_not_written total 5982
+     not written by reason: {'bar_does_not_add_up': 1587, 'owned_by_another_staff': 1327, 'not_a_notehead:stacked_head_duplicate': 482, 'not_a_notehead:clipped_fragment': 342, 'not_a_notehead:too_narrow': 258, 'not_a_notehead:notehead_is_a_duplicate_box': 249, 'duration_narrowed': 200, 'not_a_rest:rest_has_a_stem': 122}
+ values changed: 75
+      55 ('by_rule', 'narrowed->1.0', 'bar_written_on')
+      14 ('by_rule', 'narrowed->1.0', 'held_on')
+       3 ('knock_on', 'narrowed->1.0', 'bar_written_on')
+       2 ('by_rule', '0.5->1.0', 'bar_written_on')
+       1 ('knock_on', 'narrowed->1.0', 'held_on')
+ heads the rule touched (on): 126
+ held bars off->on: 564 -> 573 (released 3, newly held 12)
