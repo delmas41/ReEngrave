@@ -73,3 +73,27 @@ bar, not those notes: that is the cost of "write it, don't hide it" and why the 
 ## Files
 `replay.py` (EXPORT replay, both arms), `show.py`, `pdfcheck.sh`, `import_check.py`, `acc_check.py`, `judged_cross.py`, `crops.py`;
 crops `out/print/2.173/` (README says what red means). Tests `tools/omr/tests/test_staged_red_bars_2_173.py`.
+
+## Second half: `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM` (Sean 2026-10-19 "Do both")
+Where: `rhythm.adjudicate_duration`, the final whole-class decision only (one block before the closing `head_and_marks` returns; 2.174's beam join,
+`_beam_levels`, `head_and_marks` assembly untouched). Rule: a detector-whole box whose ink reads FILLED (`_reads_filled`, or the 2.148 interior
+reading "black"), or that a stem touches (`own_stems`), abstains `whole_class_filled_or_stemmed` (unread, nothing invented). A box whose fill
+was not read at all is not contradicted and stands. Default OFF (built; the landing agent flips it with 2.173). Tests
+`test_staged_whole_needs_hollow_2_173.py` (6: filled no stem, stem through the middle, flag OFF = old whole, three controls).
+
+Measured on the EXPORTED file, OMR_RED_BARS=1 both arms, ADJUDICATE..INFER re-decided over each whole 20261018-night record on this tree
+(`rerun_whole.py`; the OFF baseline is the re-decision, not the stored export, which predates 2.170/2.17x):
+| | OFF | ON |
+|---|---|---|
+| Litolff whole notes in the file | 2 | **0** (14 verdicts abstained) |
+| Brahms whole notes in the file | 53 | **45** (31 verdicts abstained) |
+| Litolff notes / red bars | 8,142 / 618 | 8,140 / 616 |
+| Brahms notes / red bars | 14,987 / 890 | 14,981 / 882 |
+All whole notes in both arms sit in red bars (55 of the coordinator's 56 reproduced). Crops: `out/print/2.173-whole/` (print only, every OFF whole).
+* **Removed (Litolff 2, Brahms 8): none is a real whole.** Litolff: a filled quarter head with a stem; a stemmed head. Brahms: eight rest curls
+  (quarter-rest lower curls, incl. tile 5's bar).
+* **Still written as a whole, 45 on Brahms (hand look at every crop)**: about 30 are METER DIGITS (the loops of 9/8, 6/8), about 13 more rest
+  curls, one chord cluster under slurs, one hollow dotted half. They are hollow and unstemmed, so this rule cannot see them: they need a
+  different witness (digit ink / rest shape), which is NOT in this lane. 53 of 56 invented wholes -> 45 still there.
+* **Real whole lost: none** on either plate by hand look; Sean's judged tiles do not move (Litolff right/wrong/narrowed 159/29/6 both arms,
+  Brahms 129/22/5 both arms).
