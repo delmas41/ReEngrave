@@ -56,6 +56,9 @@ VIEWS: Dict[str, Tuple[float, Tuple[str, ...], bool]] = {
     "close": (22.0, (FAM_BLACKHEAD,), False),
 }
 
+#: Sean 2026-10-19 ("1 yes"): keep only the smaller view; the close view (0 of 3 tiles right) stays reachable by `OMR_DETECTOR_VIEWS_WHICH=close` only.
+DEFAULT_VIEWS: Tuple[str, ...] = ("small",)
+
 #: sub-pixel phases of the network grid, as (dx, dy) fractions of ONE network pixel; the first is the unshifted view
 PHASE_FRACTIONS: Tuple[Tuple[float, float], ...] = ((0.0, 0.0), (0.34, 0.67), (0.67, 0.34), (0.5, 0.0))
 
@@ -93,7 +96,7 @@ def n_phases() -> int:
 def active_views() -> List[str]:
     raw = os.environ.get(WHICH_ENV, "").strip()
     if not raw:
-        return list(VIEWS)
+        return list(DEFAULT_VIEWS)
     named = [w.strip() for w in raw.split(",") if w.strip()]
     return [v for v in VIEWS if v in named]
 

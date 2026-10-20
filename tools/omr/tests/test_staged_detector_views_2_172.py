@@ -133,6 +133,11 @@ class TestFlagsAndWiring(unittest.TestCase):
         with mock.patch.dict(os.environ, {DV.PARTS_ENV: "views,phase"}):
             self.assertEqual(DV.n_phases(), 3)
             self.assertNotIn("aa", DV.parts())
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(DV.WHICH_ENV, None)
+            self.assertEqual(DV.active_views(), ["small"])          # the close view is not a default part
+        with mock.patch.dict(os.environ, {DV.WHICH_ENV: "small,close"}):
+            self.assertEqual(DV.active_views(), ["small", "close"])
         with mock.patch.dict(os.environ, {DV.WHICH_ENV: "close"}):
             self.assertEqual(DV.active_views(), ["close"])
 
