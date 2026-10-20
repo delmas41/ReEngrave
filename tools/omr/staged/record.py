@@ -589,7 +589,7 @@ class Q(_Vocab):
     #: written. A doc mention is not a consumer; the family `wiring.py` already
     #: documents three times, arriving a fourth.
     #:
-    #: ⚠️ PRODUCER ONLY, default OFF (`OMR_VERTICAL_RUNS`). Nothing reads it,
+    #: ⚠️ PRODUCER ONLY, default ON (`OMR_VERTICAL_RUNS`). Nothing reads it,
     #: deliberately -- the `Q.INK` discipline: a producer and its first consumer
     #: landing together makes the reach measurement circular. Its first
     #: intended consumer is named in `wiring.KNOWN_GAPS`.
@@ -893,7 +893,7 @@ class Q(_Vocab):
     #: `adjudicate_arc_is_not_an_arc` reads it.
     ARC_INK_SHAPE = "arc_ink_shape"
 
-    #: ROADMAP 2.166 (flag `OMR_SYSTEM_ARCS`, default OFF; filed only while it is ON). One row per tie/slur read ONCE
+    #: ROADMAP 2.166 (flag `OMR_SYSTEM_ARCS`, default ON; filed only while it is ON). One row per tie/slur read ONCE
     #: per staff across the SYSTEM on page pixels (`arcs_system.gather_system_arcs`): the detector's pieces of one
     #: curve (cut at barlines) joined, its two ends and the heads beside them, the head boxes the stroke runs through.
     #: Filed on the curve's leftmost piece; the value is the ends' SHAPE (`two_heads_one_position_adjacent`,
@@ -1110,7 +1110,7 @@ class Q(_Vocab):
     # Giving a `ff` a step coordinate would report it at step 14, a number
     # that composes across documents and means nothing.
     #
-    # Produced by `positions.py` behind `OMR_FAMILY_POSITIONS`, default OFF.
+    # Produced by `positions.py` behind `OMR_FAMILY_POSITIONS`, default ON.
     # ⚠️ READ BY NOTHING, DELIBERATELY -- see `reach.KNOWN_GAPS`. A producer
     # and its first consumer landing together makes the reach measurement
     # circular, which is the discipline `gather_ink` shipped under one day
@@ -1706,13 +1706,21 @@ class Q(_Vocab):
     #: `size_unboxed_rest` gives it its length; EXPORT writes it as a rest.
     UNBOXED_INK_IS_A_REST = "unboxed_ink_is_a_rest"
 
-    #: ⚠️ ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF) -- IS THE INK A
+    #: ⚠️ ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default ON) -- IS THE INK A
     #: NOTEHEAD BOX STANDS ON A REST? On the `Q.UNBOXED_REST_SHAPE` cluster's subject
     #: (so EXPORT writes the rest at the ink's own box): `"eighth"` / `"quarter"` only
     #: where ADJUDICATE refused the covering head box `is_a_rest_shape` (no stem
     #: touches it; its ink reads, by 2.99's windows, as a rest). EVALUATE's
     #: `size_head_ink_rest` gives it its length; EXPORT writes it as a rest.
     HEAD_INK_IS_A_REST = "head_ink_is_a_rest"
+
+    #: ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, default ON) -- A HEAD WITH A STEM EACH WAY IS TWO NOTES. On a
+    #: notehead `Q.HEAD_STEM` ruled `unison_two_voices`: the value of EACH voice read off its OWN stem (up stem at the
+    #: right, down stem at the left), `{"voices": {"up": {...}, "down": {...}}}`, each `{beats, written, dots,
+    #: beam_levels, source}` with `source` `flag` / `beam` / `none_seen` / `open_head`. DECIDED only when both voices'
+    #: values are read; otherwise abstains with the reason and each voice's reading. `adjudicate_event` then makes
+    #: ONE event per voice; EXPORT writes the head twice.
+    UNISON_VOICES = "unison_voices"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2354,6 +2362,7 @@ CLAIMS: "dict[str, str]" = {
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
     "HEAD_INK_IS_A_REST": CLAIM.INTERPRETATION,
+    "UNISON_VOICES": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
@@ -2908,7 +2917,7 @@ class READERS(_Vocab):
     #: dot / staccato / staccatissimo classes only, a box kept ONLY where its ink is wedge-shaped AND a head stands on the side its
     #: point faces. Its own reader name so a crop, a test or a consumer can tell it from the production pass and from the 2.53 rescue.
     RESCUE_WEDGE = "yolo_rescue_wedge"       # gather: sub-floor wedge box, guided by a head and the ink's shape
-    #: `gather.gather_detector_views` -- ROADMAP 2.172 (`OMR_DETECTOR_VIEWS`, default OFF). The SAME weights `DETECTOR` names on the SAME cell image,
+    #: `gather.gather_detector_views` -- ROADMAP 2.172 (`OMR_DETECTOR_VIEWS`, default ON). The SAME weights `DETECTOR` names on the SAME cell image,
     #: shown a different staff space (a smaller one for dots/flags/rests, a closer one for black heads), anti-aliased and read at a few sub-pixel
     #: phases, the median kept. Its own reader name so a box from a view is traceable and separable from the production pass; the row carries the
     #: view, the size and the phases that found it.

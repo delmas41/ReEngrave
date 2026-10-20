@@ -1095,6 +1095,9 @@ ORDER: Tuple[str, ...] = (
     # already decided rather than having to move it.
     Q.HEAD_STEM,
     Q.STEM_VALUE,
+    # ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, default ON), AFTER `Q.HEAD_STEM` (it reads the `unison_two_voices`
+    # ruling) AND `Q.DURATION` (it reads the per-voice beam counts), BEFORE `Q.EVENT` (which makes one event per voice).
+    Q.UNISON_VOICES,
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar
     # is summed over EVENTS, not over noteheads -- a chord's members sound
     # together and advance time once -- so anything that checks a bar against

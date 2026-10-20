@@ -207,7 +207,7 @@ def _with_hollow_margin(ruling: Ruling, ink_detail, head_box=None, space=None, *
                            band=_HOLLOW_BAND if raw_gate else None, would_choose=("half",))
 
 
-# ⚠️⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF; `second_hollow.py`). A second detector's hollow-head box is a WITNESS
+# ⚠️⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON; `second_hollow.py`). A second detector's hollow-head box is a WITNESS
 # (`Q.SECOND_HOLLOW`), never a verdict. Where it and production's box DISAGREE (production a black head, the second a hollow one) or production
 # boxed NOTHING (`second_only`), the head's OWN ink decides, on Sean's rule (2026-10-13): *"It can't be as simple as a clear middle because many
 # hollow noteheads have lines through the middle of them. It needs to be a certain amount of white on the inside of the notehead."* -- the
@@ -1497,7 +1497,7 @@ BEAM_LEVEL_NEEDS_A_JOINED_STEM_ENV = "OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM"
 
 
 def beam_level_needs_a_joined_stem_enabled() -> bool:
-    """ROADMAP 2.153, default OFF (allow-list: only 1/true/yes/on enables). A beam level belongs to a STEM (Sean 2026-10-16: notehead,
+    """ROADMAP 2.153, default ON (allow-list: only 1/true/yes/on enables). A beam level belongs to a STEM (Sean 2026-10-16: notehead,
     stem, THEN beam or flag; a later step never overturns an earlier one). A stroke that only COVERS the head's centre column --
     no stem box reaches it and the ink-join reader did not read it joined -- is POSSIBLE, never CERTAIN: the note narrows over the
     levels left open instead of deciding one."""
@@ -1835,7 +1835,7 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
     stems = _stems_connected_to_a_head(ev, cell, stems)
     ink = _beam_ink_rows(ev, cell)
     why: Dict[str, str] = {}          # stroke id -> why it is not a beam
-    # ⚠️ ROADMAP 2.170 addition 2 (flag `OMR_BEAM_NOT_ON_SYSTEM_ARC`, default OFF; Sean: "beams cannot have an arc"). FIRST:
+    # ⚠️ ROADMAP 2.170 addition 2 (flag `OMR_BEAM_NOT_ON_SYSTEM_ARC`, default ON; Sean: "beams cannot have an arc"). FIRST:
     # a stroke whose ink lies on a tie/slur traced across the system (2.166's pixel measurement, `_strokes_on_a_system_arc`)
     # is that arc's ink, however flat its piece inside this bar reads (`BEAM_SAGITTA_MAX_SPACES` judges one bar's crop only).
     if beam_not_on_system_arc_enabled():
@@ -1855,7 +1855,7 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
             if box is not None and _covered_fraction(box, head_boxes) \
                     >= BEAM_THROUGH_HEADS_MIN:
                 why[b.id] = "through_heads"
-    # ⚠️ ROADMAP 2.141h fix 1 (flag, default OFF): a stroke merged with a head that this head's OWN stem runs far past is the
+    # ⚠️ ROADMAP 2.141h fix 1 (flag, default ON): a stroke merged with a head that this head's OWN stem runs far past is the
     # ledger line the heads stand on, not a level (Litolff p5 tile 6: counted as a second down-voice level, 8,8,8 read 16,16,4).
     if own_stems and head_box is not None and head_boxes and beam_level_stroke_is_a_beam_enabled():
         _sp = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
@@ -2422,7 +2422,7 @@ REFUSED_HEAD_NO_DURATION_ENV = "OMR_REFUSED_HEAD_NO_DURATION"
 
 
 def refused_head_no_duration_enabled() -> bool:
-    """ROADMAP 2.143, default OFF: a head refused as not-a-notehead decides no duration. Only an explicit on-word is ON."""
+    """ROADMAP 2.143, default ON: a head refused as not-a-notehead decides no duration. Only an explicit on-word is ON."""
     import os
     return os.environ.get(REFUSED_HEAD_NO_DURATION_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
@@ -2762,7 +2762,7 @@ def _wedge_reading(shape_row):
     # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
     # ⚠️ ROADMAP 2.128 ADDS `Q.DOT_STAFF_POSITION` and the heads'
     # `Q.NOTEHEAD_STAFF_POSITION` -- read only under `OMR_DOT_POSITION_JOIN`
-    # (default OFF): an augmentation dot stands in a SPACE, in its note's own
+    # (default ON): an augmentation dot stands in a SPACE, in its note's own
     # space or in the space above/below a line note's line.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
@@ -3645,7 +3645,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
 BARE_STEM_TIP_SPACES = 0.6
 BARE_STEM_ACROSS_SPACES = 0.3
 
-#: ROADMAP 2.81 phase 2. The RANKING's own flag, default OFF (allow-list: a
+#: ROADMAP 2.81 phase 2. The RANKING's own flag, default ON (allow-list: a
 #: typo leaves it off). ⚠️ Measured on the small re-gather's page 1 (agent-read
 #: against the print): flipping the order moves the total `reconcile_duration`
 #: (EVALUATE) sums -- it counts a narrowed note at its BEST-SUPPORTED reading --
@@ -4044,7 +4044,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         why = _not_a_note_mark(ev, refusal)
         if why is not None:
             return Ruling.abstain("not_a_note_mark", why=why, head=str(head))
-        # ⚠️ ROADMAP 2.143 (flag `OMR_REFUSED_HEAD_NO_DURATION`, default OFF), RULE 8: a head ADJUDICATE refused as not a notehead
+        # ⚠️ ROADMAP 2.143 (flag `OMR_REFUSED_HEAD_NO_DURATION`, default ON), RULE 8: a head ADJUDICATE refused as not a notehead
         # for ANY other reason (too_narrow, is_a_beam_piece, a duplicate box, a clef...) is out of its bar, so it has no
         # duration either -- the verdict stays on the record only as "not a note", never as a value a tile, a report or a
         # chord-mate rule (`reconcile_chord_duration`) can read. Filed `refused_as_a_notehead`; decides nothing.
@@ -5605,7 +5605,7 @@ def _box_of(rows):
     # (`stem_evidence`); the second is what the guard actually runs on. A bar
     # whose stems were read and whose directions all abstained is a real state
     # and the two fields are how it is told from a bar with no stems at all.
-    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION),
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES),
     reasons=("x_clustered", "nothing_to_group"),
     mode=Mode.ADDITIVE,
     subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
@@ -5719,6 +5719,28 @@ def adjudicate_event(ev: Evidence) -> Ruling:
     events = [{"glyphs": sorted(grp),
                "x": round(sum(boxes[i][0] for i in grp) / len(grp), 2),
                "kind": "chord"} for grp in groups]
+    # ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, ON): ONE HEAD, A STEM EACH WAY, IS TWO NOTES -- and ONE EVENT HERE.
+    # Every single-stream consumer of `Q.EVENT` (bar_length, the meter witnesses, reconcile, INFER) sums a bar's events as
+    # one line, so a second event for the same head would be summed as a second note IN THE SAME LINE and refuse a bar
+    # that adds up per voice. The event stays one; it carries each voice's own value (`unison`, from `Q.UNISON_VOICES`),
+    # and `adjudicate_voices` is the consumer that stands it in two streams. Only a head that stands ALONE in its
+    # cluster: a head sharing an onset column with another head is a chord the stems cannot tell apart (counted).
+    from . import unison_two as _unison_two
+    unison_split = unison_kept_whole = 0
+    if _unison_two.enabled():
+        for e in events:
+            if e["kind"] != "chord":
+                continue
+            sub = Subject(Kind.GLYPH, page=ev.subject.page, system=ev.subject.system, staff=ev.subject.staff,
+                          cell=ev.subject.cell, glyph=e["glyphs"][0])
+            uv = ev.verdict(Q.UNISON_VOICES, subject=sub)
+            if uv is None or uv.outcome != "decided" or not isinstance(uv.value, dict):
+                continue
+            if len(e["glyphs"]) != 1:
+                unison_kept_whole += 1
+                continue
+            unison_split += 1
+            e["unison"] = {v: _unison_two.voice_event_beats(uv.value, v) for v in ("up", "down")}
     events += [{"glyphs": [g], "x": round(boxes[g][0], 2), "kind": "rest"}
                for g in rest_ids]
     events.sort(key=lambda e: (e["x"], e["glyphs"][0]))
@@ -5745,6 +5767,8 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                                  "no_direction_decided"),
                 "divisi_separated": separated,
                 "directions_decided": len(directions),
+                **({"unison_split": unison_split, "unison_kept_whole": unison_kept_whole}
+                   if (unison_split or unison_kept_whole) else {}),
                 "stem_evidence": stem_state.value},
     )
 
@@ -6710,7 +6734,7 @@ def _total_staff_count(ev: Evidence) -> Optional[int]:
 # ─── BEGIN template-at-bar consumer ──────────────────────────────────────────
 # Everything between this marker and its END marker is the consumer for
 # `Q.METER_TEMPLATE_AT_BAR`, the template reader aimed at a mid-staff bar head
-# (`gather.gather_meter_at_bars`, default OFF). It is kept contiguous and
+# (`gather.gather_meter_at_bars`, default ON). It is kept contiguous and
 # marked so it can be moved wholesale, because the WEIGHING around it
 # (`METER_CHANGE_FLOOR`, `W_CHANGE_*`) is being changed in parallel and this
 # block deliberately touches none of it.
@@ -9176,6 +9200,9 @@ def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
         glyphs = sorted(e.get("_glyphs") or ())
         if not glyphs:
             continue
+        if e.get("unison_beats") is not None:
+            total += float(e["unison_beats"])       # ROADMAP 2.175: this voice's own stem value
+            continue
         rep = glyphs[0]
         sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
                       staff=cell.staff, cell=cell.cell, glyph=rep)
@@ -9323,31 +9350,61 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
     # reads. The record has already decided which glyphs sound together;
     # re-clustering them here would be a second grouping rule nothing forces
     # to agree with the first.
-    events, read = [], 0
-    for e in raw:
-        glyphs = list(e.get("glyphs") or ())
-        kind = e.get("kind") or "chord"
-        direction = None
-        if kind == "chord":
-            # ⚠️ THE MAJORITY OVER THE CHORD, which is what
-            # `group_chords_in_measure` puts on its own event. A chord whose
-            # members genuinely disagree has already been SPLIT by the divisi
-            # guard, so a disagreement surviving to here is one head whose
-            # stem was missed, not two voices.
-            votes = Counter()
-            for g in glyphs:
-                sub = Subject(Kind.GLYPH, page=ev.subject.page,
-                              system=ev.subject.system,
-                              staff=ev.subject.staff, cell=ev.subject.cell,
-                              glyph=g)
-                d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-                if d is not None and d.outcome == "decided":
-                    votes[d.value] += 1
-            if votes:
-                direction = votes.most_common(1)[0][0]
+    def _expand(unison):
+        out = []
+        for e in raw:
+            # ⚠️ ROADMAP 2.175: a unison head's ONE event stands as TWO here, one per voice, each in the voice of its own
+            # stem and carrying that stem's own value -- but only where the two voices then each sum to the same length.
+            if unison and e.get("unison"):
+                for voice in ("up", "down"):
+                    out.append({**e, "voice": voice, "unison_beats": e["unison"].get(voice)})
+            else:
+                out.append(e)
+        return out
+
+    def _shim(seq):
+        events, read = [], 0
+        for e in seq:
+            glyphs = list(e.get("glyphs") or ())
+            kind = e.get("kind") or "chord"
+            direction = None
+            if e.get("voice"):
+                direction = e["voice"]
                 read += 1
-        events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
-                       "stem_direction": direction, "_glyphs": glyphs})
+            elif kind == "chord":
+                # ⚠️ THE MAJORITY OVER THE CHORD, which is what
+                # `group_chords_in_measure` puts on its own event. A chord whose
+                # members genuinely disagree has already been SPLIT by the divisi
+                # guard, so a disagreement surviving to here is one head whose
+                # stem was missed, not two voices.
+                votes = Counter()
+                for g in glyphs:
+                    sub = Subject(Kind.GLYPH, page=ev.subject.page,
+                                  system=ev.subject.system,
+                                  staff=ev.subject.staff, cell=ev.subject.cell,
+                                  glyph=g)
+                    d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
+                    if d is not None and d.outcome == "decided":
+                        votes[d.value] += 1
+                if votes:
+                    direction = votes.most_common(1)[0][0]
+                    read += 1
+            events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
+                           "stem_direction": direction, "_glyphs": glyphs,
+                           **({"unison_beats": e["unison_beats"]} if e.get("unison_beats") is not None else {})})
+
+        return events, read
+
+    events, read = _shim(_expand(True))
+    unison_declined = None
+    if any(e.get("unison") for e in raw):
+        two = _legacy_voicing.split_events_into_voices(events)
+        sums = [_sum_beats(ev, ev.subject, st) for st in two] if len(two) == 2 else []
+        if len(sums) == 2 and None not in sums and abs(sums[0] - sums[1]) <= VOICE_SUM_EPSILON_QUARTERS:
+            pass
+        else:
+            unison_declined = "streams_unequal" if len(sums) == 2 and None not in sums else "stream_sum_unknown"
+            events, read = _shim(_expand(False))
 
     rests = sorted(g for e in events if e["kind"] == "rest"
                    for g in e["_glyphs"])
@@ -9450,5 +9507,6 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),
+                **({"unison_two_voices_declined": unison_declined} if unison_declined else {}),
                 "directions_read": read, "n_rests_displaced": len(displaced),
                 **rule_detail})

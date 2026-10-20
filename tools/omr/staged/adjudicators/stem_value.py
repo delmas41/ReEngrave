@@ -493,6 +493,16 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
                          stems={i: detail_of(i) for i in ranked})
 
 
+#: ROADMAP 2.175: how many times further than its touch past the head a unison stem must run away from it.
+UNISON_TOUCH_RATIO = 2.0
+
+
+def unison_two_notes_enabled() -> bool:
+    """`OMR_UNISON_TWO_NOTES`, default ON (ROADMAP 2.175)."""
+    from .unison_two import enabled
+    return enabled()
+
+
 #: Another head stands at a DIFFERENT staff position (so it is a second note, not the
 #: same note boxed twice) when its centre is at least this many of the head's own
 #: heights from this head's centre. A third apart is ~1.0; a stacked duplicate box
@@ -585,6 +595,16 @@ def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
                 kinds[i] = "up"
             elif below >= need and above < need and side == "left":
                 kinds[i] = "down"
+            elif unison_two_notes_enabled():
+                # ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, ON): two strokes that touch at the head merge, so the up
+                # stem's row also runs below the head (and the down stem's above it; Litolff p13 tile 3: 1.0 space).
+                # The stem's DIRECTION is the side it stands on (up -> right, down -> left, CLAUDE.md §5) and it must
+                # run mostly away from the head that way: more than twice as far as the touch below it. A barline
+                # (as long each way) or a stem through a chord fails this.
+                if side == "right" and above >= need and above >= UNISON_TOUCH_RATIO * below:
+                    kinds[i] = "up"
+                elif side == "left" and below >= need and below >= UNISON_TOUCH_RATIO * above:
+                    kinds[i] = "down"
         if sorted(kinds.values()) == ["down", "up"]:
             return ("unison", None, {"voices": kinds})
     return None

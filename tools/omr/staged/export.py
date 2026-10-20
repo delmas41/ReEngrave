@@ -57,6 +57,7 @@ from fractions import Fraction
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
+from . import export_unison as _export_unison
 from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
 # ⚠️ Imported as a bare module name, not through the dotted module path:
@@ -1083,7 +1084,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     a LATER reason then dropped (counted in `dropped` under that reason, so
     never lost twice and never counted as placed).
 
-    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF): the one exception to
+    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default ON): the one exception to
     the paragraph below. Sean, 2026-10-06 -- *"All note heads should be found
     and written on their staff"* -- ruled that a head whose decided owner is
     another staff, and which that staff holds NO copy of, is RELOCATED rather
@@ -1563,6 +1564,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # is how this project has already paid for the confusion once.
             "bbox_page": _corners_to_wh(_page_box_of(o)),
         }
+        if not is_rest and plan is None:
+            # ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, ON): a head with a stem each way is two notes; see export_unison.
+            _export_unison.split(rec, sub, _det)
         if plan is None:
             _emit(run, cell_index, _det, s, sub, float(o.get("score") or 0.0))
         else:
@@ -1686,7 +1690,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             relocated["heads"] = relocated.get("heads", 0) + 1
     # ⚠️ ROADMAP 2.90, AFTER relocation (a relocated head joins a chord too) and
     # BEFORE 2.89's refusal: which bars keep the heads' decided stem directions.
+    _export_unison.expand(runs)           # ROADMAP 2.175: the second voice's note joins its bar
     _settle_divisi_pairs(runs, divisi)
+    _export_unison.settle(runs, divisi if divisi is not None else {})
     # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
     # a chord too. See `_chords_whose_value_would_be_voted`.
     for _det in _chords_whose_value_would_be_voted(runs):
@@ -1755,6 +1761,13 @@ def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
                 elif (sum(_event_units(e, 720) for e in streams[0])
                       != sum(_event_units(e, 720) for e in streams[1])):
                     reason = "streams_carry_unequal_time"
+            # ROADMAP 2.175 (Sean 2026-10-20 "Yes"): a unison bar whose voices do not both add up (unequal streams, or a
+            # note whose stem direction is unread, which `split_events_into_voices` puts in voice 1) is written with BOTH
+            # voices as a red bar (2.173), each note in its own colour -- not fused to one note.
+            if (reason in ("streams_carry_unequal_time", "an_undecided_direction_in_the_bar") and red_bars_enabled()
+                    and any(d.get("unison_twin") for d in cell.detections)):
+                stats["unison_bars_kept_two_voices_" + reason] = stats.get("unison_bars_kept_two_voices_" + reason, 0) + 1
+                reason = None
             if reason is None:
                 stats["bars_kept_as_two_voices"] = stats.get("bars_kept_as_two_voices", 0) + 1
                 continue
@@ -4228,6 +4241,14 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             _why: List[str] = []
             split = ((_voice_split(rec, run, i, events, _why), _why)
                      if events else None)
+            if (events and split[0] is None and cell_here is not None
+                    and _export_unison.unfuse(cell_here)):
+                # ROADMAP 2.175: the bar could not be written as two voices after all, so a unison head's second
+                # note must not sit in the one stream (it would overfill the bar): one note per head, as flag OFF.
+                events = _events(cell_here)
+                _why = []
+                split = ((_voice_split(rec, run, i, events, _why), _why)
+                         if events else None)
             # ⚠️ THE METER THE FILE CLAIMS, not the one this bar's own system
             # filed — see `in_force` above. `meter` is still what gets WRITTEN
             # and what sizes a held-out bar's rest; this is only what the bar
@@ -4937,7 +4958,10 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # to fail for the right reason.
     shared = [ev for ev in streams[1] if ev.get("kind") == "rest"
               and any(ev is other for other in streams[0])]
-    counters["rests_duplicated_across_voices"] += len(shared)
+    # ROADMAP 2.175: not on a doubled copy -- its rests are already subtracted under `notes_doubled_to_condensed_slot`
+    # (a rest written in both voices of a doubled copy would be taken out twice)
+    if not doubled:
+        counters["rests_duplicated_across_voices"] += len(shared)
     # ⚠️ AND THE MARKS ON IT, for the same reason. A fermata on a shared rest
     # produces TWO `<fermata>` elements from ONE mark, which would make
     # `fermata_balance` -- `written + not_written <= marks_in_log` -- go False
@@ -5407,7 +5431,8 @@ def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
     """
     n = 0
     for ev in events:
-        n += len(ev.get("noteheads") or ())
+        # ROADMAP 2.175: a unison head's second voice is not a second row of the log
+        n += sum(1 for h in (ev.get("noteheads") or ()) if not h.get("unison_twin"))
         if ev.get("rest"):
             n += 1
     return n
@@ -5933,6 +5958,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 accidental=head.get("printed_accidental"),
                 ), head.get("guess")))
             counters["notes"] += 1
+            if head.get("unison_twin") and not doubled:
+                # ROADMAP 2.175: the second voice of a head with a stem each way; subtracted in `to_musicxml`'s balance
+                counters["notes_unison_second_voice"] += 1
             _count_guess(counters, head.get("guess"), False)
             if doubled:
                 # ⚠️ ROADMAP 2.1b. Subtracted back out of `written` in
@@ -6776,9 +6804,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # written twice needs a named bucket, not a weaker control.
     doubled_to_condensed = int(
         counters.get("notes_doubled_to_condensed_slot", 0))
+    unison_second = int(counters.get("notes_unison_second_voice", 0))
     written = (int(counters["notes"]) + int(counters["rests"])
                + int(counters["measure_rests_read"]) - duplicated
-               - doubled_to_condensed)
+               - doubled_to_condensed - unison_second)
     report["balance"] = {
         # ⚠️ RESTS ARE IN THE CONTROL NOW. They were outside it while they had
         # no quantity, which is exactly how 838 glyphs stayed invisible: a
@@ -6791,6 +6820,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "events_written": written,
         "rests_duplicated_across_voices": duplicated,
         "notes_doubled_to_condensed_slot": doubled_to_condensed,
+        "notes_unison_second_voice": unison_second,
         "events_not_written": report["notes_not_written_total"],
         # ROADMAP 2.58: heads written on the staff that OWNS them, counted
         # once as written -- informational, the equality is unchanged.

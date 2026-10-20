@@ -344,6 +344,7 @@ STAGE_OF_FILE = {
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",
     "export.py": "EXPORT",
+    "export_unison.py": "EXPORT",    # ROADMAP 2.175: writes a head with a stem each way as two notes (Q.UNISON_VOICES)
     # ⚠️ ROADMAP 3.1. `lilypond.py` is a SECOND RENDERER over `export.py`'s
     # own `build()`/`_pair_arcs`/`_place_wedges` -- it calls those rather
     # than reading any `Q.*` quantity itself (`_accessors()`'s scan of it

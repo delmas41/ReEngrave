@@ -431,6 +431,8 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
         heads = ev.get("noteheads") or ()
         for head in heads:
             counters["notes"] += 1
+            if head.get("unison_twin") and not condensed:
+                counters["notes_unison_second_voice"] += 1     # ROADMAP 2.175, as export.py
             SX._count_guess(counters, head.get("guess"), False)
             if condensed:
                 counters["notes_doubled_to_condensed_slot"] += 1
@@ -763,7 +765,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             lane1.extend(v2)
             shared_rests = [e for e in v2 if e.get("kind") == "rest"
                             and any(e is other for other in v1)]
-            counters["rests_duplicated_across_voices"] += len(shared_rests)
+            if not run.condensed_from:      # ROADMAP 2.175: a doubled copy's rests are subtracted as doubled already
+                counters["rests_duplicated_across_voices"] += len(shared_rests)
             counters["fermatas_duplicated_across_voices"] += sum(
                 1 for e in shared_rests if e.get("fermata"))
             bars.append(_Bar("two_voice", meter, run.clef, key,
@@ -1347,7 +1350,7 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         counters.get("notes_doubled_to_condensed_slot", 0))
     written = (int(counters.get("notes", 0)) + int(counters.get("rests", 0))
                + int(counters.get("measure_rests_read", 0)) - duplicated
-               - doubled_to_condensed)
+               - doubled_to_condensed - int(counters.get("notes_unison_second_voice", 0)))
     report["balance"] = {
         "events_in_log": events_in_log,
         "unboxed_rests_placed": unboxed_placed,
