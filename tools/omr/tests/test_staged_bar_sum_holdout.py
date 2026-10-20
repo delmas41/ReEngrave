@@ -38,6 +38,23 @@ from tools.omr.staged.record import Q
 from tools.omr.tests.test_staged_export import (
     QUARTER, _add_rest, _obs, _one_staff_page, _vrd)
 
+
+# ROADMAP 2.173 (`OMR_RED_BARS` default ON, Sean 2026-10-19/20): this file tests the
+# pre-2.173 path (bar held out / old whole value); pinned OFF here.
+_PIN_2_173 = None
+
+
+def setUpModule():
+    global _PIN_2_173
+    import os as _os
+    from unittest import mock as _mock
+    _PIN_2_173 = _mock.patch.dict(_os.environ, {"OMR_RED_BARS": "0"})
+    _PIN_2_173.start()
+
+
+def tearDownModule():
+    _PIN_2_173.stop()
+
 TWO_FOUR = {"numerator": 2, "denominator": 4, "raw": "2/4"}
 EIGHTH = {"beats": 0.5, "written": 0.5, "dots": 0}
 REFUSAL = "bar_does_not_add_up"

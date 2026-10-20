@@ -3798,6 +3798,12 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
 # neighbour's stem flush against its box, made a half. NOT CONFIRMED: the flush window and the stem length (measured on Brahms 317803
 # only); they NARROW (flagged, candidates kept) wherever the ink reads the head FILLED.
 OPEN_HEAD_ON_STEM_ENV = "OMR_OPEN_HEAD_ON_STEM"
+#: ROADMAP 2.173 (Sean 2026-10-19 "Do both"): a WHOLE value is decided only for a hollow head no stem touches. DEFAULT OFF until landed.
+WHOLE_NEEDS_HOLLOW_NO_STEM_ENV = "OMR_WHOLE_NEEDS_HOLLOW_NO_STEM"
+
+
+def whole_needs_hollow_no_stem_enabled() -> bool:
+    return os.environ.get(WHOLE_NEEDS_HOLLOW_NO_STEM_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 OPEN_STEM_FLUSH_FRAC = (-0.25, 0.40)   # stem centre, as a fraction of the head width, measured in from the head's own near edge
 OPEN_STEM_MIN_SPACES = 2.0
 HEAD_FILLED_CENTER_MIN = 0.85
@@ -3943,7 +3949,7 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC),
-    reasons=("whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
+    reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
@@ -5072,6 +5078,18 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     support=1.0))
             return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
                                  hooks_counted=counted)
+
+    # ⚠️⚠️ ROADMAP 2.173, `adjudicate_duration`'s WHOLE-CLASS branch, the final decision only (rule 8; engraving: a whole note has a
+    # HOLLOW head and NO stem). A detector-whole box whose own ink reads FILLED, or that a stem touches, is not a whole note (53 of 56
+    # exported wholes were digit loops, rest curls and whole-rest blocks: Brahms p8 s1 staff8 cell11 is a quarter rest's lower curl
+    # boxed whole at 0.285): UNREAD, nothing invented. A head whose fill was not read at all is not contradicted and stands.
+    if base == 4.0 and whole_needs_hollow_no_stem_enabled():
+        _ink_w = ev.rows(Q.NOTEHEAD_INK)
+        _hf = _head_reads_hollow_first(ev)
+        _filled_w = _reads_filled((_ink_w[-1].detail or {}) if _ink_w else {}) or (_hf is not None and _hf["fill"] == "black")
+        if _filled_w or own_stems:
+            return Ruling.abstain("whole_class_filled_or_stemmed", used=tuple(used),
+                                  filled=bool(_filled_w), own_stems=len(own_stems), **shared)
 
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.

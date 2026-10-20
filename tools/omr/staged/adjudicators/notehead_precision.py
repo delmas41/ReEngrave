@@ -944,6 +944,189 @@ def _rest_twin_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optiona
         unit="fraction of the smaller box shared", band=None, would_choose=(True,))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.173 (Sean 2026-10-19 "Yes"; flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`, with `rhythm`'s whole-class fill/stem rule) -- WHOLE-CLASS BOXES ONLY.
+# 53 of 56 exported whole notes were not notes: meter digit loops and rest curls. Two CONNECTS, never a guess:
+#   (1) `on_a_read_meter`: this system's meter reader READ a meter at THIS cell (the opening `Q.METER_TEMPLATE`/`Q.METER_OCR` at cell 0, or a
+#       `*_AT_BAR` read whose cell is this one), and this whole-class box is that meter's ink: it lies on a detector `timeSig*` box (>= half of the
+#       smaller box shared), or it is one of the LEFTMOST stacked pair (same x, 0.3-1.2 spaces apart) of notehead-/timeSig-class boxes in the cell
+#       -- the printed numerals stand before every note of that bar. Without a meter read at this cell nothing fires.
+#   (2) `on_a_rest`: a rest-class box (any rest class, kept or refused) covers >= `WHOLE_ON_REST_COVER_MIN` of the smaller box.
+# CONVENTION ASSUMED: a printed meter stands before the first note of its bar; a rest and a whole note never share ink. WHAT WOULD FALSIFY IT: a real
+# whole note standing on a meter pair at a meter-change bar, or on a rest box (two voices). NOT CONFIRMED beyond the crops in `out/print/2.173-whole`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+WHOLE_REFUSALS_ENV = "OMR_WHOLE_NEEDS_HOLLOW_NO_STEM"
+METER_READ_REASON = "on_a_read_meter"
+ON_A_REST_REASON = "on_a_rest"
+#: share of the SMALLER box a rest box must cover: the rest-curl population measured 0.47-0.79 on 13 Brahms curls (a few as low as 0.05-0.25); a
+#: real whole's box never shares a rest's ink (a rest in another voice stands a space away). Stated before the count.
+WHOLE_ON_REST_COVER_MIN = 0.3
+
+
+def whole_refusals_enabled() -> bool:
+    return os.environ.get(WHOLE_REFUSALS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _meter_read_at_this_cell(ev: Evidence) -> Optional[Any]:
+    """A meter READ filed on a staff of this system for THIS cell index, or None (the row is the witness)."""
+    system = ev.subject.at(Kind.SYSTEM)
+    idx = ev.subject.cell
+    if system is None or idx is None:
+        return None
+    # literal reads, one per quantity (the wiring check recognises `ev.rows(Q.X, ...)` calls, not a loop over names)
+    if idx == 0:
+        for r in (ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS, subject=system)
+                  + ev.rows(Q.METER_OCR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)):
+            return r
+    for r in (ev.rows(Q.METER_TEMPLATE_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)
+              + ev.rows(Q.METER_OCR_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)):
+        if (r.detail or {}).get("cell") == idx:
+            return r
+    return None
+
+
+#: a printed meter is two numerals one above the other (6 over 8): its loops, boxed piecemeal, form a COLUMN of boxes at one x that spans more
+#: than a chord of whole notes can (a 4-note whole chord spans <= 2 spaces). Stated before the count; measured on 6 Brahms change-bar digits 3.2-3.9.
+METER_STACK_X_TOL_SPACES = 0.25
+METER_STACK_LINK_MAX_SPACES = 3.0
+METER_STACK_MIN_EXTENT_SPACES = 2.4
+
+
+def _meter_stack_witness(boxes, box_row, head, spacing: float):
+    """A column of >= 2 boxes (notehead-, timeSig- or rest-class, this box among them) at one x, linked by gaps <= 3 spaces, spanning >=
+    `METER_STACK_MIN_EXTENT_SPACES`, with NO other notehead-class box more than half a space to its left in the cell (the numerals stand before
+    every note of the bar). Returns ("stacked_column", a member row) or None."""
+    cand = [(b, r) for name, b, r in boxes if name.lower().startswith(("notehead", "timesig", "rest"))]
+    cand.append((head, box_row))
+
+    def xc(b):
+        return (b[0] + b[2] / 2.0) / spacing
+
+    group = [(head, box_row)]
+    changed = True
+    while changed:
+        changed = False
+        for b, r in cand:
+            if any(r is g[1] for g in group):
+                continue
+            if any(abs(xc(b) - xc(g[0])) <= METER_STACK_X_TOL_SPACES
+                   and abs((b[1] + b[3] / 2.0) - (g[0][1] + g[0][3] / 2.0)) / spacing <= METER_STACK_LINK_MAX_SPACES for g in group):
+                group.append((b, r))
+                changed = True
+    if len(group) < 2:
+        return None
+    top = min(g[0][1] for g in group)
+    bottom = max(g[0][1] + g[0][3] for g in group)
+    if (bottom - top) / spacing < METER_STACK_MIN_EXTENT_SPACES:
+        return None
+    gx = sum(xc(g[0]) for g in group) / len(group)
+    for name, b, r in boxes:
+        if name.lower().startswith("notehead") and not any(r is g[1] for g in group) and xc(b) < gx - 0.5:
+            return None
+    partner = next(g[1] for g in group if g[1] is not box_row)
+    return ("stacked_column", partner)
+
+
+def _page_x_centre(row) -> Optional[float]:
+    b = (row.detail or {}).get("bbox_page_px")
+    if isinstance(b, (list, tuple)) and len(b) == 4:
+        return (float(b[0]) + float(b[2])) / 2.0
+    return None
+
+
+def _meter_column_witness(ev: Evidence, box_row, head, spacing: float):
+    """The meter is printed at one x on every staff of the system: this box stands in the column of a `timeSig*` box another staff of this
+    system has at THIS cell index (page x of the centres within 0.8 of this box's width). A real note after the digits stands >= one
+    digit-width + a gap to the right. Returns ("meter_column_of_the_system", that row) or None."""
+    system = ev.subject.at(Kind.SYSTEM)
+    me = ev.subject.to_key()
+    idx = ev.subject.cell
+    mine = _page_x_centre(box_row)
+    if system is None or idx is None or mine is None or not head[2]:
+        return None
+    width_page = None
+    b = (box_row.detail or {}).get("bbox_page_px")
+    if isinstance(b, (list, tuple)) and len(b) == 4:
+        width_page = float(b[2]) - float(b[0])
+    if not width_page:
+        return None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=system):
+        rv = r.value
+        sub = r.subject
+        if r.subject.to_key() == me or sub.cell != idx or not (isinstance(rv, (list, tuple)) and len(rv) == 5):
+            continue
+        if not str(rv[0]).startswith("timeSig"):
+            continue
+        x = _page_x_centre(r)
+        if x is not None and abs(x - mine) <= 0.8 * width_page:
+            return ("meter_column_of_the_system", r)
+    return None
+
+
+def _whole_class_refusal(ev: Evidence, box_row, spacing: float, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`on_a_rest` / `on_a_read_meter` for a whole-class box, else None. Flag-gated; whole classes only."""
+    if not whole_refusals_enabled() or box_row is None:
+        return None
+    v = box_row.value
+    if not (isinstance(v, (list, tuple)) and len(v) == 5 and str(v[0]).startswith("noteheadWhole")):
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or not spacing:
+        return None
+    me = ev.subject.to_key()
+    head = (float(v[1]), float(v[2]), float(v[3]), float(v[4]))
+    boxes = []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        rv = r.value
+        if r.subject.to_key() == me or not (isinstance(rv, (list, tuple)) and len(rv) == 5):
+            continue
+        boxes.append((str(rv[0]), (float(rv[1]), float(rv[2]), float(rv[3]), float(rv[4])), r))
+    best = None
+    for name, b, r in boxes:
+        if name.startswith("rest"):
+            c = _box_cover(head, b)
+            if c >= WHOLE_ON_REST_COVER_MIN and (best is None or c > best[0]):
+                best = (c, name, r)
+    if best is not None:
+        detail["whole_on_rest"] = {"box": best[2].id, "class": best[1], "cover": round(best[0], 3)}
+        return _margins.attach(
+            Ruling(value=True, reason="on_a_rest", used=(box_row.id, best[2].id), detail=detail),
+            margin=best[0] - WHOLE_ON_REST_COVER_MIN, axis="rest_box_cover_fraction",
+            unit="fraction of the smaller box shared", band=None, would_choose=(True,))
+    meter = _meter_read_at_this_cell(ev)
+    if meter is None:
+        return None
+    witness = None
+    for name, b, r in boxes:
+        if name.startswith("timeSig") and _box_cover(head, b) >= 0.5:
+            witness = ("timesig_box", r)
+            break
+    if witness is None:
+        cand = [(b, r) for name, b, r in boxes if name.lower().startswith(("notehead", "timesig"))]
+        cand.append((head, box_row))
+        pairs = []
+        for i in range(len(cand)):
+            for j in range(i + 1, len(cand)):
+                (a, ra), (b2, rb) = cand[i], cand[j]
+                xa, xb = (a[0] + a[2] / 2.0) / spacing, (b2[0] + b2[2] / 2.0) / spacing
+                gy = abs((a[1] + a[3] / 2.0) - (b2[1] + b2[3] / 2.0)) / spacing
+                if abs(xa - xb) <= METER_DIGIT_PAIR_X_TOL_SPACES and METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= gy <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES:
+                    pairs.append((min(xa, xb), ra, rb))
+        if pairs:
+            _x, ra, rb = min(pairs, key=lambda t: t[0])
+            if box_row is ra or box_row is rb:
+                witness = ("leftmost_stacked_pair", rb if ra is box_row else ra)
+    if witness is None:
+        witness = _meter_stack_witness(boxes, box_row, head, spacing)
+    if witness is None:
+        witness = _meter_column_witness(ev, box_row, head, spacing)
+    if witness is None:
+        return None
+    detail["whole_on_meter"] = {"read": meter.id, "by": witness[0], "partner": witness[1].id}
+    return Ruling(value=True, reason="on_a_read_meter", used=(box_row.id, meter.id, witness[1].id), detail=detail)
+
+
 #: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
 #: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
 #: imported: `family_precision` imports FROM this module
@@ -3294,7 +3477,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
-          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX),
+          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX,
+          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3310,6 +3494,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
+                                     "on_a_read_meter", "on_a_rest",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      OFF_STAFF_REASON,
@@ -3572,6 +3757,10 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     rest_twin = _rest_twin_refusal(ev, box_row, detail)
     if rest_twin is not None:
         return rest_twin
+    # ROADMAP 2.173 (flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`): a whole-class box on a rest's ink or on a READ meter's ink.
+    whole_refusal = _whole_class_refusal(ev, box_row, spacing, detail)
+    if whole_refusal is not None:
+        return whole_refusal
     # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
     # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).
     if _head_rest_shape.enabled():
