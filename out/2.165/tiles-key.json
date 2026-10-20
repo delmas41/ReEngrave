@@ -1,0 +1,623 @@
+[
+ {
+  "n": 1,
+  "crop_origin": [
+   2403,
+   1559
+  ],
+  "rect_in_tile": [
+   392.5699999999997,
+   396.80499999999984,
+   481.3649999999998,
+   470.3449999999998
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/14/0/5/3/8",
+  "bbox": [
+   2601.285,
+   1724.4025,
+   2641.6825,
+   1757.1725
+  ],
+  "role": "control",
+  "kept": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "margin": null,
+   "ev": {
+    "origin_decider": "adjudicate_duration",
+    "origin_reason": "head_and_marks",
+    "origin_outcome": "decided",
+    "beam_evidence": "read",
+    "flag_levels": 0,
+    "flags_attached": 0,
+    "beams_by_stem": 1,
+    "levels_certain": 1,
+    "levels_possible": 1,
+    "beams_not_by_ink": 0,
+    "beams_not_by_ink_why": {},
+    "cv_beams": 1,
+    "yolo_beams": 1,
+    "head_is_open": false
+   },
+   "refusal": null
+  }
+ },
+ {
+  "n": 2,
+  "crop_origin": [
+   2223,
+   5903
+  ],
+  "rect_in_tile": [
+   392.41796875,
+   397.7763671875,
+   479.4921875,
+   468.2705078125
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/1/1/8/2/11",
+  "bbox": [
+   2421.208984375,
+   6068.88818359375,
+   2460.74609375,
+   6100.13525390625
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 3.0,
+   "bar_total_beats": 3.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [
+    "glyph/1/1/8/2/19"
+   ],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 3,
+  "crop_origin": [
+   1438,
+   2728
+  ],
+  "rect_in_tile": [
+   392.80499999999984,
+   397.1300000000001,
+   449.31500000000005,
+   446.71000000000004
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/5/1/3/7/1",
+  "bbox": [
+   1636.4025,
+   2893.565,
+   1660.6575,
+   2914.355
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 0.25,
+   "written": 0.25,
+   "dots": 0,
+   "beam_levels": 2
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.25,
+    0.5
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 2.0,
+   "bar_total_beats": 1.75,
+   "kept_beats": 0.25,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 4,
+  "crop_origin": [
+   486,
+   376
+  ],
+  "rect_in_tile": [
+   392.31999999999994,
+   397.6500000000001,
+   450.8499999999999,
+   451.53
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/9/0/1/1/0",
+  "bbox": [
+   684.16,
+   541.825,
+   709.425,
+   564.765
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 2.0,
+   "bar_total_beats": 2.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [
+    "glyph/9/0/1/1/16",
+    "glyph/9/0/1/1/19"
+   ],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 5,
+  "crop_origin": [
+   923,
+   1477
+  ],
+  "rect_in_tile": [
+   392.5999999999999,
+   397.23,
+   447.7199999999998,
+   448.0100000000002
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/5/0/6/4/0",
+  "bbox": [
+   1121.3,
+   1642.615,
+   1144.86,
+   1664.005
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 2.0,
+   "bar_total_beats": 2.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 6,
+  "crop_origin": [
+   3038,
+   6184
+  ],
+  "rect_in_tile": [
+   393.65625,
+   396.77734375,
+   468.83984375,
+   471.38671875
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/9/1/9/4/10",
+  "bbox": [
+   3236.828125,
+   6349.388671875,
+   3270.419921875,
+   6382.693359375
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 3.0,
+   "bar_total_beats": 3.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 7,
+  "crop_origin": [
+   1333,
+   1410
+  ],
+  "rect_in_tile": [
+   392.8899999999999,
+   397.4499999999998,
+   445.93499999999995,
+   445.4549999999999
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/7/0/8/8/2",
+  "bbox": [
+   1531.445,
+   1575.725,
+   1553.9675,
+   1595.7275
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 2.0,
+   "bar_total_beats": 2.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 8,
+  "crop_origin": [
+   1633,
+   6566
+  ],
+  "rect_in_tile": [
+   392.6300000000001,
+   397.97999999999956,
+   476.92999999999984,
+   476.8299999999999
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/21/1/9/2/1",
+  "bbox": [
+   1831.315,
+   6731.99,
+   1869.465,
+   6767.415
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 3.0,
+   "bar_total_beats": 3.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 9,
+  "crop_origin": [
+   325,
+   3109
+  ],
+  "rect_in_tile": [
+   392.34765625,
+   397.072265625,
+   444.908203125,
+   446.662109375
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/8/1/8/0/6",
+  "bbox": [
+   523.173828125,
+   3274.5361328125,
+   545.4541015625,
+   3295.3310546875
+  ],
+  "role": "control",
+  "kept": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "adjudicate_duration",
+   "reason": "head_and_marks",
+   "cands": null,
+   "margin": null,
+   "ev": {
+    "origin_decider": "adjudicate_duration",
+    "origin_reason": "head_and_marks",
+    "origin_outcome": "decided",
+    "beam_evidence": "flag",
+    "flag_levels": 1,
+    "flags_attached": 1,
+    "beams_by_stem": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "beams_not_by_ink": 0,
+    "beams_not_by_ink_why": {},
+    "cv_beams": 2,
+    "yolo_beams": 1,
+    "head_is_open": false
+   },
+   "refusal": null
+  }
+ },
+ {
+  "n": 10,
+  "crop_origin": [
+   858,
+   3075
+  ],
+  "rect_in_tile": [
+   392.9850000000001,
+   396.89500000000044,
+   446.0300000000002,
+   445.84500000000025
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/12/1/8/3/0",
+  "bbox": [
+   1056.4925,
+   3240.4475,
+   1079.015,
+   3260.9225
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 2.0,
+   "bar_total_beats": 2.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 11,
+  "crop_origin": [
+   4285,
+   6531
+  ],
+  "rect_in_tile": [
+   393.3623046875,
+   397.2783203125,
+   476.701171875,
+   471.4638671875
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/17/1/12/4/5",
+  "bbox": [
+   4483.68115234375,
+   6696.63916015625,
+   4521.3505859375,
+   6729.73193359375
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.5,
+   "dots": 0,
+   "beats": 0.5,
+   "beam_levels": 1,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 3.0,
+   "bar_total_beats": 3.5,
+   "kept_beats": 1.0,
+   "corrected_to_beats": 0.5,
+   "set_aside": [
+    "glyph/17/1/12/4/21"
+   ],
+   "mode": "loose_removed_boxes_ok"
+  }
+ },
+ {
+  "n": 12,
+  "crop_origin": [
+   4669,
+   6557
+  ],
+  "rect_in_tile": [
+   393.59000000000015,
+   397.6650000000009,
+   480.0699999999997,
+   472.7000000000007
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/16/1/12/7/3",
+  "bbox": [
+   4867.795,
+   6722.8325,
+   4907.035,
+   6756.35
+  ],
+  "role": "changed",
+  "kept": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "alternative": {
+   "outcome": "decided",
+   "written": 0.25,
+   "dots": 0,
+   "beats": 0.25,
+   "beam_levels": 2,
+   "rest": false,
+   "measure_rest": false,
+   "decider": "reconcile_duration",
+   "reason": "bar_corrects_one_note",
+   "cands": [
+    0.25,
+    0.5
+   ]
+  },
+  "detail": {
+   "bar_expected_beats": 3.0,
+   "bar_total_beats": 3.25,
+   "kept_beats": 0.5,
+   "corrected_to_beats": 0.25,
+   "set_aside": [],
+   "mode": "loose_removed_boxes_ok"
+  }
+ }
+]
