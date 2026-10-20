@@ -1761,6 +1761,13 @@ def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
                 elif (sum(_event_units(e, 720) for e in streams[0])
                       != sum(_event_units(e, 720) for e in streams[1])):
                     reason = "streams_carry_unequal_time"
+            # ROADMAP 2.175 (Sean 2026-10-20 "Yes"): a unison bar whose voices do not both add up (unequal streams, or a
+            # note whose stem direction is unread, which `split_events_into_voices` puts in voice 1) is written with BOTH
+            # voices as a red bar (2.173), each note in its own colour -- not fused to one note.
+            if (reason in ("streams_carry_unequal_time", "an_undecided_direction_in_the_bar") and red_bars_enabled()
+                    and any(d.get("unison_twin") for d in cell.detections)):
+                stats["unison_bars_kept_two_voices_" + reason] = stats.get("unison_bars_kept_two_voices_" + reason, 0) + 1
+                reason = None
             if reason is None:
                 stats["bars_kept_as_two_voices"] = stats.get("bars_kept_as_two_voices", 0) + 1
                 continue

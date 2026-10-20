@@ -259,5 +259,38 @@ class TestExportWritesTwoNotes(unittest.TestCase):
                 self.assertEqual(unison_two.enabled(), on, word)
 
 
+class TestARedUnisonBarKeepsBothVoices(unittest.TestCase):
+    """ROADMAP 2.175 + 2.173 (Sean 2026-10-20 "Yes"): a unison bar whose voices do not both add up keeps BOTH voices."""
+
+    def _runs(self, other_direction):
+        def det(g, x, pitch, beats, direction, twin=False):
+            return {"category": "notehead", "class": "noteheadBlack", "bbox": [x, 0, 20, 16], "pitch": pitch,
+                    "duration_beats": beats, "duration_type": "eighth", "dots": 0, "beam_levels": 1, "glyph": g,
+                    "stem_direction": direction, **({"unison_twin": True} if twin else {})}
+        dets = [det("g1", 0, "C4", 0.5, "up"), det("g1", 0, "C4", 0.25, "down", True),
+                det("g2", 100, "D4", 1.0, other_direction)]
+        return {"k": SimpleNamespace(cells={0: SimpleNamespace(detections=dets)})}
+
+    def test_unequal_streams_are_kept_as_two_voices_when_red_bars_are_on(self):
+        from tools.omr.staged import export as E
+        for other, key in (("up", "unison_bars_kept_two_voices_streams_carry_unequal_time"),
+                           (None, "unison_bars_kept_two_voices_an_undecided_direction_in_the_bar")):
+            runs = self._runs(other)
+            stats = {}
+            with mock.patch.dict(os.environ, {"OMR_RED_BARS": "1"}):
+                E._settle_divisi_pairs(runs, stats)
+            dets = runs["k"].cells[0].detections
+            self.assertEqual([d["stem_direction"] for d in dets[:2]], ["up", "down"], other)
+            self.assertEqual(stats.get(key), 1, stats)
+
+    def test_CONTROL_with_red_bars_off_the_bar_is_left_fused(self):
+        from tools.omr.staged import export as E
+        runs = self._runs("up")
+        stats = {}
+        with mock.patch.dict(os.environ, {"OMR_RED_BARS": "0"}):
+            E._settle_divisi_pairs(runs, stats)
+        self.assertTrue(all(d["stem_direction"] is None for d in runs["k"].cells[0].detections))
+
+
 if __name__ == "__main__":
     unittest.main()
