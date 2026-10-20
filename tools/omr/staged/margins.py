@@ -156,6 +156,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "is_a_rest_shape": THRESHOLD,
         # ROADMAP 2.164: half a head's width minus the head-tall run, as a share of half a head
         "is_an_arc_tail": THRESHOLD,
+        # ROADMAP 2.176: how far inside the leading-edge cut (staff spaces) / how far over the cover floor
+        "on_the_staffs_leading_barline": THRESHOLD, "on_another_symbols_box": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },
