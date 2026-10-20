@@ -1643,6 +1643,23 @@ def beam_refused_off_the_tip_enabled() -> bool:
     return os.environ.get(BEAM_REFUSED_OFF_THE_TIP_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+#: ROADMAP 2.174 (Sean 2026-10-19 "Yes"). Default OFF; only an explicit on-word turns it on.
+QUARTER_UNDER_BEAM_ENV = "OMR_STROKE_AT_STEM_TIP_NARROWS"
+
+#: How far across the stem (staff spaces) a KEPT beam stroke may start and still be "at the stem's end". The CV beam reader ERASES stem ink
+#: before it traces a stroke, so a beam that meets a stem at the group's edge is traced from just PAST the stem: measured ~0.45 space on
+#: Brahms p10 (`glyph/10/0/9/2/0`), beyond 2.81's 0.3. Tip reach along the stem is 2.81's own `BARE_STEM_TIP_SPACES`. NOT CONFIRMED on a
+#: third publisher (CLAUDE §4: a cut-off is a measurement), so it only NARROWS.
+STEM_END_BEAM_ACROSS_SPACES = 0.6
+
+
+def stroke_at_stem_tip_narrows_enabled() -> bool:
+    """ROADMAP 2.174, default OFF: a head that would be written `head_and_marks` at its plain value while a stroke the filters KEPT (either
+    reader's) stands at its own stem's end is NARROWED (value / value-with-one-beam), never decided and never made an eighth: a beam joins
+    every stem it spans at the stem's end (Gould; omr-beam-confirm-2026-10 s9.2), so a kept stroke there is a witness the head may be beamed."""
+    return os.environ.get(QUARTER_UNDER_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: ROADMAP 2.170 addition 2 (Sean 2026-10-19 "Yes"; his rule "beams cannot have an arc"). Default ON (Sean 2026-10-19); explicit 0/false/no/off disables.
 BEAM_NOT_ON_SYSTEM_ARC_ENV = "OMR_BEAM_NOT_ON_SYSTEM_ARC"
 
@@ -3664,7 +3681,7 @@ def bare_stem_rank_enabled() -> bool:
 
 
 def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
-                           space: float) -> Optional[bool]:
+                           space: float, across_spaces: Optional[float] = None) -> Optional[bool]:
     """Did a stroke this decision REFUSED stand at this head's own stem tip?
 
     ROADMAP 2.81 phase 2. `None` -- cannot be asked (no own stem, no side, no
@@ -3682,7 +3699,7 @@ def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
     boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
     if not boxes:
         return None
-    across = BARE_STEM_ACROSS_SPACES * space
+    across = (BARE_STEM_ACROSS_SPACES if across_spaces is None else across_spaces) * space
     reach = BARE_STEM_TIP_SPACES * space
     x0 = min(b[0] for b in boxes) - across
     x1 = max(b[0] + b[2] for b in boxes) + across
@@ -5072,6 +5089,28 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     support=1.0))
             return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
                                  hooks_counted=counted)
+
+    # ⚠️⚠️ ROADMAP 2.174 (flag `OMR_STROKE_AT_STEM_TIP_NARROWS`, default OFF). Reached only where nothing above spoke for this head and it is
+    # about to be written at its plain head value (`head_and_marks`, no beam counted, no flag). A beam joins every stem it spans AT THE STEM'S END;
+    # where a stroke the filters KEPT (side, tip, ink, ledger, neighbour, arc tests all passed) stands at this head's own stem end, the plain value
+    # is "cannot tell" written as an answer (Sean's 2.165 tiles: 9 of 10 bar-disputed decided quarters were beamed eighths). NARROW between the
+    # plain value and ONE beam level, equal support, no ordering: an eighth is only ever decided on a beam or flag READ on this stem (CLAUDE §4).
+    if (stroke_at_stem_tip_narrows_enabled() and not hollow and not open_by_class and not flag_levels and not levels
+            and kept and own_stems and side in ("up", "down") and space and head_box is not None):
+        tip_strokes = [b for b in kept if _refused_stroke_at_tip([b], own_stems, side, space, STEM_END_BEAM_ACROSS_SPACES)]
+        if tip_strokes:
+            cands = []
+            for lv in (0, 1):
+                b = base / (2 ** lv) if lv else base
+                t, add = b, b
+                for _ in range(n_dots):
+                    add /= 2.0
+                    t += add
+                cands.append(Candidate(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv},
+                                       support=1.0))
+            used.extend(b.id for b in tip_strokes)
+            return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used), **shared,
+                                 stroke_at_stem_tip=[b.id for b in tip_strokes])
 
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.
