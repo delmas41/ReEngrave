@@ -64,6 +64,7 @@ class TestPure(unittest.TestCase):
 
     def test_clef_box_standing(self):
         self.assertEqual(CL.clef_box_standing((110, 0, 140, 64), (100, 0, 900, 100), SP), "READ")
+        self.assertEqual(CL.clef_box_standing((110, 0, 140, 64), (100, 0, 900, 100), SP, 3), "NARROWED")   # a later bar: detector alone
         self.assertEqual(CL.clef_box_standing((300, 0, 330, 64), (100, 0, 900, 100), SP), "NARROWED")
         self.assertFalse(CL.is_clef_box("clefG", (0, 0, 20, 20), SP))       # 1.25 sp tall: not clef-sized (2.144)
         self.assertTrue(CL.is_clef_box("clefG", (0, 0, 30, 70), SP))
@@ -120,7 +121,7 @@ class TestGather(unittest.TestCase):
         rows = self._run().rows(Q.CLAIMED_AREA, R.staff(0, 0, 0))
         by = {(r.detail["owner"], r.detail["cell"]): r for r in rows}
         self.assertEqual(by[("clef", 0)].detail["standing"], "READ")
-        self.assertEqual(by[("clef", 1)].detail["standing"], "NARROWED")    # 100 px = 6.25 sp into its bar: past the 6 sp window (2.144)
+        self.assertEqual(by[("clef", 1)].detail["standing"], "NARROWED")    # a later bar's clef box: the detector's word alone
         col = by[("leading_column", 0)]
         self.assertTrue(col.detail["prior"])
         self.assertEqual(col.detail["right_edge"], "own_clef")

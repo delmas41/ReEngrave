@@ -10,10 +10,10 @@ wait_mem() {
     sleep 60
   done
 }
-for doc in litolff brahms; do
-  for arm in off on; do
-    wait_mem
-    python3 benchmarks/omr-claims-register-2026-10/replay_2_181.py $doc $SD $OUT $arm > $OUT/$doc.$arm.log 2>&1
-  done
+# JOBS: "doc.arm ..." (default all four)
+for job in ${=JOBS:-litolff.off litolff.on brahms.off brahms.on}; do
+  doc=${job%.*}; arm=${job#*.}
+  wait_mem
+  python3 benchmarks/omr-claims-register-2026-10/replay_2_181.py $doc $SD $OUT $arm > $OUT/$doc.$arm.log 2>&1
 done
 echo done > $OUT/DONE

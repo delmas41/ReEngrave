@@ -13845,8 +13845,8 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
 
     * `clef`, READ: each `Q.CLEF_LOCATED` row -- its fitted box where it was read on cell 0 (the header-window crop has no page frame:
       the union of the boxes it names), and the head boxes it overrode NAMED as its ink (2.11's connection, carried over).
-    * `clef`, from the detector: each clef-sized `clef*` box of any cell; READ where it starts within `claims.CLEF_WINDOW_SPACES` of
-      its cell's left edge (a clef stands at a bar's start), NARROWED farther in (one witness: 2.144's mid-bar case).
+    * `clef`, from the detector: each clef-sized `clef*` box of any cell; READ in a system's first bar within `claims.CLEF_WINDOW_SPACES`
+      of its left edge (a system opens with a clef), NARROWED anywhere else (the detector's word alone: 2.144's case).
     * `leading_column`, a PRIOR (Sean 2026-10-20 "idk possibly but not normally"): cell 0, from just left of the staff's start to the
       first clef's left edge on THIS staff; where this staff shows no clef, the narrowest clef offset of its system's other staves
       (`right_edge="system"`); no clef on the system -> abstain. Each box carries the line test on its own ink.
@@ -13916,7 +13916,7 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                     pb = _page_box(c, d)
                     if not CL.is_clef_box(d.smufl_name, pb, sp):
                         continue
-                    standing = CL.clef_box_standing(pb, cb, sp)
+                    standing = CL.clef_box_standing(pb, cb, sp, k)
                     gsub = R.glyph(p, sys_idx, li, k, gi)
                     g = log.rows(Q.GLYPH_BOX, gsub)
                     inside = _claim_boxes_inside(binary, pb, dets, c, lambda j, k=k: R.glyph(p, sys_idx, li, k, j).to_key(),

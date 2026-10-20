@@ -40,8 +40,10 @@ ENV = "OMR_CLAIMED_REGISTER"
 INSIDE_SHARE_MIN = 0.5
 #: a detector clef box claims only where it is clef-sized (2.144: the short wide `clef*` boxes, 0.5-1.1 sp, lie on arcs and clutter)
 CLEF_BOX_MIN_HEIGHT_SPACES = 2.0
-#: a detector clef box is READ where it starts this close to its cell's left edge (a clef stands at a bar's start; 2.176's window);
-#: farther into the bar it is the detector's word alone (2.144's mid-bar case, Sean's tile 4 a real eighth in a false clefG box): NARROWED
+#: a detector clef box is READ only in a system's FIRST bar, starting this close to the bar's left edge: a system opens with a clef
+#: (convention) and the detector boxed it there -- two sources. Anywhere else (a clef change at a later bar, or mid-bar) it is the
+#: detector's word alone: NARROWED (2.144: Sean's tile 4 a real eighth in a false clefG box; 2.181 Litolff: two real eighth rests and
+#: a half note inside clef-sized `clef*` boxes at a later bar's start)
 CLEF_WINDOW_SPACES = 6.0
 #: the header column reaches this far left of the staff's start (the bracket and brace stand left of the system barline)
 COLUMN_LEFT_REACH_SPACES = 2.0
@@ -74,9 +76,9 @@ def is_clef_box(name: Any, box: Optional[Sequence[float]], spacing: float) -> bo
     return (box[3] - box[1]) / spacing >= CLEF_BOX_MIN_HEIGHT_SPACES
 
 
-def clef_box_standing(box: Sequence[float], cell_box: Sequence[float], spacing: float) -> str:
-    """READ where the clef box starts within `CLEF_WINDOW_SPACES` of its cell's left edge, else NARROWED."""
-    return "READ" if (box[0] - cell_box[0]) / spacing <= CLEF_WINDOW_SPACES else "NARROWED"
+def clef_box_standing(box: Sequence[float], cell_box: Sequence[float], spacing: float, cell: int = 0) -> str:
+    """READ where the clef box stands in a system's first bar (`cell` 0) within `CLEF_WINDOW_SPACES` of its left edge, else NARROWED."""
+    return "READ" if cell == 0 and (box[0] - cell_box[0]) / spacing <= CLEF_WINDOW_SPACES else "NARROWED"
 
 
 def overlaps(a: Sequence[float], b: Sequence[float]) -> bool:

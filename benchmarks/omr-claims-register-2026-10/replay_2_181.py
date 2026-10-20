@@ -153,7 +153,7 @@ def binary_of(pg):
     return _rast[pg]
 
 
-KEEP = ("bars_held_out_sum", "partial_bars", "guessed", "written", "notes_not_written_total", "balance", "red_bars")
+KEEP = ("bars_held_out_sum", "partial_bars", "guessed", "written", "notes_not_written_total", "balance", "bars_written_red")
 for arm in ARMS:
     os.environ[FLAG] = "1" if arm == "on" else "0"
     os.environ.pop("OMR_METER_OBJECT", None)          # main's default (ON)
