@@ -69,15 +69,15 @@ for doc in ("litolff", "brahms"):
     marked = {}
     for g, a in off["glyphs"].items():
         b = on["glyphs"].get(g)
-        if a and b and a["outcome"] == "decided" and a["beats"] == 1.0 and a["reason"] == "head_and_marks" and b["outcome"] == "narrowed" \
-                and (b.get("ev") or {}).get("origin_reason") == "beams_ambiguous":
-            marked[g] = dict(kept=a["beats"], alternative=b["cands"])
+        if a and b and a["ev"]["origin_outcome"] == "decided" and a["ev"]["origin_reason"] == "head_and_marks" and a["ev"].get("beam_evidence") is not None \
+                and b["ev"]["origin_outcome"] == "narrowed":
+            marked[g] = dict(kept=a["beats"], alternative=dict(standing_off=a["beats"], standing_on=b["beats"], on_reason=b["reason"], cands=b["cands"]))
     pool = sorted(g for g in marked if g not in named and ok(g))
     print(doc, "narrowed by the flag", len(marked), "unjudged head-sized", len(pool), "named excluded", len(set(marked) & named))
     pools[doc] = [dict(doc=doc, glyph=g, bbox=bx[g], role="narrowed", kept=marked[g]["kept"], alternative=marked[g]["alternative"]) for g in pool]
     ctl = [g for g, v in sorted(off["glyphs"].items()) if g not in named and g not in marked and ok(g) and v
            and v["outcome"] == "decided" and v["reason"] == "head_and_marks" and not v["rest"] and v["beats"] == 1.0
-           and (on["glyphs"].get(g) or {}).get("outcome") == "decided"]
+           and (on["glyphs"].get(g) or {}).get("ev", {}).get("origin_outcome") == "decided"]
     c = rnd.choice(ctl)
     picks.append(dict(doc=doc, glyph=c, bbox=bx[c], role="control", kept=off["glyphs"][c]["beats"]))
 chosen = []

@@ -1,0 +1,237 @@
+[
+ {
+  "n": 1,
+  "crop_origin": [
+   2046,
+   3157
+  ],
+  "rect_in_tile": [
+   392.15999999999985,
+   396.72000000000025,
+   444.96000000000004,
+   447.60000000000036
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/15/1/8/17/1",
+  "bbox": [
+   2244.08,
+   3322.36,
+   2266.48,
+   3343.8
+  ],
+  "role": "narrowed",
+  "kept": 1.0,
+  "alternative": {
+   "standing_off": 1.0,
+   "standing_on": 0.5,
+   "on_reason": "chord_mate_shares_the_stem",
+   "cands": null
+  }
+ },
+ {
+  "n": 2,
+  "crop_origin": [
+   1729,
+   2676
+  ],
+  "rect_in_tile": [
+   393.67999999999984,
+   397.1999999999998,
+   447.7600000000002,
+   448.0799999999999
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/11/1/6/11/0",
+  "bbox": [
+   1927.84,
+   2841.6,
+   1950.88,
+   2863.04
+  ],
+  "role": "control",
+  "kept": 1.0
+ },
+ {
+  "n": 3,
+  "crop_origin": [
+   2964,
+   6696
+  ],
+  "rect_in_tile": [
+   392.4150390625,
+   396.279296875,
+   474.90234375,
+   466.2421875
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/20/1/9/4/11",
+  "bbox": [
+   3162.20751953125,
+   6861.1396484375,
+   3199.451171875,
+   6892.12109375
+  ],
+  "role": "narrowed",
+  "kept": 1.0,
+  "alternative": {
+   "standing_off": 1.0,
+   "standing_on": null,
+   "on_reason": "beams_ambiguous",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  }
+ },
+ {
+  "n": 4,
+  "crop_origin": [
+   1332,
+   6443
+  ],
+  "rect_in_tile": [
+   392.2199999999998,
+   396.3600000000006,
+   477.3649999999998,
+   468.1849999999995
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/13/1/11/1/2",
+  "bbox": [
+   1530.11,
+   6608.18,
+   1568.6825,
+   6640.0925
+  ],
+  "role": "control",
+  "kept": 1.0
+ },
+ {
+  "n": 5,
+  "crop_origin": [
+   3934,
+   2433
+  ],
+  "rect_in_tile": [
+   393.28125,
+   396.46875,
+   476.3125,
+   467.25
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/17/0/9/4/7",
+  "bbox": [
+   4132.640625,
+   2598.234375,
+   4170.15625,
+   2629.625
+  ],
+  "role": "narrowed",
+  "kept": 1.5,
+  "alternative": {
+   "standing_off": 1.5,
+   "standing_on": null,
+   "on_reason": "beams_ambiguous",
+   "cands": [
+    0.75,
+    1.5
+   ]
+  }
+ },
+ {
+  "n": 6,
+  "crop_origin": [
+   856,
+   2933
+  ],
+  "rect_in_tile": [
+   392.8899999999999,
+   397.0050000000001,
+   447.8249999999998,
+   448.78999999999996
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/12/1/7/3/1",
+  "bbox": [
+   1054.445,
+   3098.5025,
+   1077.9125,
+   3120.395
+  ],
+  "role": "narrowed",
+  "kept": 1.0,
+  "alternative": {
+   "standing_off": 1.0,
+   "standing_on": null,
+   "on_reason": "beams_ambiguous",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  }
+ },
+ {
+  "n": 7,
+  "crop_origin": [
+   967,
+   6565
+  ],
+  "rect_in_tile": [
+   393.943359375,
+   397.048828125,
+   478.9755859375,
+   469.115234375
+  ],
+  "doc": "brahms",
+  "glyph": "glyph/3/1/12/0/8",
+  "bbox": [
+   1165.9716796875,
+   6730.5244140625,
+   1204.48779296875,
+   6762.5576171875
+  ],
+  "role": "narrowed",
+  "kept": 1.5,
+  "alternative": {
+   "standing_off": 1.5,
+   "standing_on": null,
+   "on_reason": "beams_ambiguous",
+   "cands": [
+    0.75,
+    1.5
+   ]
+  }
+ },
+ {
+  "n": 8,
+  "crop_origin": [
+   858,
+   3075
+  ],
+  "rect_in_tile": [
+   392.9850000000001,
+   396.89500000000044,
+   446.0300000000002,
+   445.84500000000025
+  ],
+  "doc": "litolff",
+  "glyph": "glyph/12/1/8/3/0",
+  "bbox": [
+   1056.4925,
+   3240.4475,
+   1079.015,
+   3260.9225
+  ],
+  "role": "narrowed",
+  "kept": 0.5,
+  "alternative": {
+   "standing_off": 0.5,
+   "standing_on": null,
+   "on_reason": "beams_ambiguous",
+   "cands": [
+    0.5,
+    1.0
+   ]
+  }
+ }
+]
