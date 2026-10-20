@@ -965,13 +965,8 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
     return f"{prefix}<< {{ {inner1} }} \\\\ {{ {inner2} }} >> |"
 
 
-#: ROADMAP 2.173. The grobs a red bar is drawn in red. Set inside each voice
-#: and reverted at the end of it, so nothing after the bar is touched.
-_RED_GROBS = ("NoteHead", "Stem", "Beam", "Flag", "Rest", "Dots",
-              "Accidental", "Script", "Slur", "Tie", "TupletBracket",
-              "TupletNumber")
-_RED_ON = " ".join("\\override %s.color = #red" % g for g in _RED_GROBS)
-_RED_OFF = " ".join("\\revert %s.color" % g for g in _RED_GROBS)
+#: ROADMAP 2.173 (Sean 2026-10-19: each note keeps ITS OWN status colour; the
+#: BAR is red -- bracket + words).
 _RED_SPAN = (
     # the words take NO horizontal room: a 50-character label under every red
     # bar tripled the page count (48 -> 146 on Litolff) when it did
@@ -1007,7 +1002,7 @@ def _render_red_bar(bar: _Bar, wedges: Dict[int, str],
     * SHORT: nothing is scaled; an INVISIBLE skip (`s`, prints nothing, is not
       a rest) takes the time up, exactly as the 2.117 gap does.
 
-    The whole bar is red under one red bracket carrying want-versus-counted.
+    Each note keeps its own status colour; the bar is marked by one red bracket carrying want-versus-counted.
     """
     red = bar.red
     word = _ly_escape(red["words"])
@@ -1023,7 +1018,7 @@ def _render_red_bar(bar: _Bar, wedges: Dict[int, str],
         _tally(events, counters, bar.condensed)
         body = _lily_measure_marked(
             events, wedges, {id(events[0]): d + (start if with_span else "")},
-            counters, plain=True)
+            counters)
         if factor != 1:
             body = "\\scaleDurations %s { %s }" % (_lily_frac(factor), body)
         pad = want - length * factor
@@ -1031,7 +1026,7 @@ def _render_red_bar(bar: _Bar, wedges: Dict[int, str],
             body += " s1*%s" % _lily_frac(pad)
         if with_span:
             body = _RED_SPAN + body + " s1*0\\stopTextSpan"
-        return _RED_ON + " " + body + " " + _RED_OFF
+        return body
 
     if bar.kind == "single":
         return _voice(bar.events, lens[0], dyn, True) + " |"

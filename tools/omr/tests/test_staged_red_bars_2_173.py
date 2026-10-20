@@ -60,11 +60,13 @@ class TestOffIsTheHoldOut(unittest.TestCase):
 
 
 class TestShortBarIsWrittenRed(unittest.TestCase):
-    def test_every_read_note_is_in_the_file_at_its_read_value_and_red(self):
+    def test_every_read_note_is_in_the_file_at_its_read_value_in_its_OWN_colour(self):
+        """Sean 2026-10-19: *"Each note with its own color"* -- READ stays
+        black; the BAR is what is red (bracket + words)."""
         xml, rep = _xml(SHORT, "1")
         self.assertEqual(_steps(xml), ["C", "D", "E"])
         notes = ET.fromstring(xml).findall(".//note")
-        self.assertEqual([n.get("color") for n in notes], [RED] * 3)
+        self.assertEqual([n.get("color") for n in notes], [None] * 3)
         self.assertEqual({n.findtext("type") for n in notes}, {"quarter"})
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 0)
 
@@ -146,6 +148,12 @@ class TestLilyPond(unittest.TestCase):
     def test_off_has_no_red_text(self):
         ly, _ = _ly(SHORT, "0")
         self.assertNotIn("does not add up", ly)
+
+    def test_no_note_or_rest_is_overridden_to_red_in_lilypond(self):
+        ly, _ = _ly(SHORT, "1")
+        line = next(l for l in ly.splitlines() if "does not add up" in l)
+        self.assertNotIn("NoteHead.color", line)
+        self.assertIn("TextSpanner.color = #red", line)      # the bracket stays red
 
     def test_short_bar_is_an_invisible_skip_never_a_rest_or_a_stretch(self):
         ly, rep = _ly(SHORT, "1")

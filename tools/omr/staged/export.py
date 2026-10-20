@@ -188,15 +188,6 @@ def _red_bar_applies(held: Optional[Dict[str, Any]]) -> bool:
                         for v in held["voices"]))
 
 
-_NOTE_OPEN = re.compile(r'<note(?: color="[^"]*")?>')
-
-
-def _redden_note_xml(xml: str) -> str:
-    """Colour each `<note>` red. A GUESSED note's blue is replaced for the
-    DRAWING only; its `reengrave:guessed` carrier stays in the element."""
-    return _NOTE_OPEN.sub('<note color="%s">' % UNREAD_BAR_MARK_COLOR, xml)
-
-
 def _red_bar_rows(events: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """What the bar holds, per event, with its READ/GUESSED status, so the
     coverage keeps what the red drawing hides."""
@@ -4652,7 +4643,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     lines.append(_red_bar_word_xml(_red_bar_words(held)))
                     _body = _measure_xml(rec, run, i, events, divisions,
                                          counters, split=split)
-                    lines.extend(_redden_note_xml(x) for x in _body)
+                    # Sean 2026-10-19: each note keeps ITS OWN status colour
+                    # (black READ, blue GUESSED); the BAR is what is red.
+                    lines.extend(_body)
                     lines.append(_unread_bracket_xml("stop", 1))
                 else:
                     lines.extend(_measure_xml(rec, run, i, events, divisions,

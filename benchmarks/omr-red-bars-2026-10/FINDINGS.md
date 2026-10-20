@@ -5,6 +5,7 @@ Sean 2026-10-19: *"Written in red instead of held out is the way to go."* STAGED
 EXPORT-only, flag OFF vs ON, `replay.py` (loads each record once). Nothing merged, nothing flipped.
 
 ## What it does
+**REVISED 2026-10-19 (Sean: "Each note with its own color")**: the notes are NOT recoloured. Inside a red bar each note/rest keeps its own status colour (black READ, blue #1F6FEB GUESSED); the BAR is marked red by the bracket + words only (MusicXML and LilyPond). Everything below that says "every note red" / "red \override per voice" is superseded; numbers are unchanged (colour only).
 * Where EXPORT held a bar out under 2.8 (`bar_does_not_add_up`) and the 2.117 partial-bar planner could not place a gap, the bar
   is written through the ordinary writer: each event at its own read value, its own READ/GUESSED carrier, **no padding rest,
   no `<forward>`, nothing moved**. A 2.117 partial bar keeps its own path (it is not a held bar).

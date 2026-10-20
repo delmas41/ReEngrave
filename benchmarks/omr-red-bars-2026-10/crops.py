@@ -3,7 +3,7 @@
 
 usage: crops.py RECORD PDF OUT_DIR DOC N_SHORT N_OVER N_GUESSED
   one tile per bar: N_SHORT short bars, N_OVER overfull bars, N_GUESSED bars holding a GUESSED event (kept in the data, drawn red).
-Legend (also on every image): RED = the whole bar does not add up (written with what was read, nothing invented, nothing padded
+Legend (also on every image): RED bracket + words = the bar does not add up (written with what was read, nothing invented, nothing padded
 with a rest); the red bracket's words say should-hold vs counted, in quarters.
 
 Frame control (it can fail): the five staff lines the record filed for the staff must stand out in the print crop (mean ink on
@@ -119,7 +119,7 @@ def take(pred, label, n):
 
 take(lambda b: b["counted_quarters"][0] < b["want_quarters"] and b["guessed"] == 0, "SHORT bar (all read)", N_SHORT)
 take(lambda b: b["counted_quarters"][0] > b["want_quarters"] and b["guessed"] == 0, "OVERFULL bar (all read)", N_OVER)
-take(lambda b: b["guessed"] > 0, "bar with a GUESSED note (blue in other bars, red here)", N_GUESS)
+take(lambda b: b["guessed"] > 0, "bar with a GUESSED note (blue, as in any bar)", N_GUESS)
 
 CLEF = {"treble": "treble", "bass": "bass", "alto": "alto", "tenor": "tenor"}
 
@@ -172,8 +172,8 @@ for n, (key, b, label) in enumerate(chosen, 1):
     dr.text((10, 24), "PRINT (nothing of ours drawn)", fill=(90, 90, 90))
     canvas.paste(print_crop, (10, 44))
     yo = 44 + print_crop.height + 14
-    dr.text((10, yo), "OURS, OMR_RED_BARS=1: RED = this bar does not add up; written with exactly what was read, "
-                      "nothing invented, no rest added", fill=(180, 0, 0))
+    dr.text((10, yo), "OURS, OMR_RED_BARS=1: red bracket = this bar does not add up; each note keeps its own colour "
+                      "(black read, blue guessed); nothing invented, no rest added", fill=(180, 0, 0))
     canvas.paste(ours, (10, yo + 20))
     name = "%s-%d-p%d-s%d-staff%d-cell%d.png" % (DOC, n, page, system, staff, cell)
     canvas.save(OUT / name)
