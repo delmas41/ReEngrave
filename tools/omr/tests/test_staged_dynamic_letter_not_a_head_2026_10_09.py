@@ -253,3 +253,12 @@ def test_a_head_with_no_letter_ink_row_is_unchanged():
 def test_the_reason_is_declared():
     assert "on_a_dynamic_letter" in adjudicate.REGISTRY[
         Q.NOTEHEAD_IS_NOT_A_NOTEHEAD].reasons
+
+
+import pytest as _pytest_2176
+
+
+@_pytest_2176.fixture(autouse=True)
+def _pin_head_on_another_mark_off_2_176(monkeypatch):
+    """ROADMAP 2.176 flipped OMR_HEAD_ON_ANOTHER_MARK ON; these fixtures put a head at a system's first cell, so pin it OFF here."""
+    monkeypatch.setenv("OMR_HEAD_ON_ANOTHER_MARK", "0")

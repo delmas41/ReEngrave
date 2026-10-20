@@ -1,5 +1,5 @@
 """ROADMAP 2.176 -- a head box standing on ink another reading owns (STAGED ADJUDICATE `adjudicate_notehead_is_not_a_notehead`,
-reasons `on_the_staffs_leading_barline` and `on_another_symbols_box`; flag `OMR_HEAD_ON_ANOTHER_MARK`, default OFF).
+reasons `on_the_staffs_leading_barline` and `on_another_symbols_box`; flag `OMR_HEAD_ON_ANOTHER_MARK`, default ON).
 
 CONVENTION ASSUMED: nothing is printed at the left end of a system's first bar but the system barline; one ink is one mark, so a
 head box inside a clef box the detector scored at least as high, with no stem on it, is that mark. WHAT WOULD FALSIFY IT: a print-confirmed head with no stem the finder saw inside such a box. NOT CONFIRMED beyond two plates.
@@ -67,12 +67,15 @@ class TestLeadingBarline(unittest.TestCase):
             v = _nn(log, g)
         self.assertFalse(v.value)
 
-    def test_CONTROL_default_is_off(self):
+    def test_CONTROL_default_is_on(self):
         log, g, _ = _fixture(cell=0, head_page_x0=402.0)
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(HM.ENV, None)
-            self.assertFalse(HM.enabled())
-            self.assertFalse(_nn(log, g).value)
+            self.assertTrue(HM.enabled())
+            self.assertTrue(_nn(log, g).value)
+        for w in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {HM.ENV: w}):
+                self.assertFalse(HM.enabled())
 
     def test_CONTROL_a_later_bar_at_the_same_edge_is_kept(self):
         log, g, _ = _fixture(cell=1, head_page_x0=402.0)

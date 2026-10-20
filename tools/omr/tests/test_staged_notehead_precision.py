@@ -399,3 +399,12 @@ class TestARefusedNoteheadDoesNotReachTheFile(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+import pytest as _pytest_2176
+
+
+@_pytest_2176.fixture(autouse=True)
+def _pin_head_on_another_mark_off_2_176(monkeypatch):
+    """ROADMAP 2.176 flipped OMR_HEAD_ON_ANOTHER_MARK ON; these fixtures put a head at a system's first cell, so pin it OFF here."""
+    monkeypatch.setenv("OMR_HEAD_ON_ANOTHER_MARK", "0")

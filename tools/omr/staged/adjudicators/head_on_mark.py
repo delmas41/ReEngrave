@@ -1,4 +1,4 @@
-"""A head box standing on ink that another reading already owns -- ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default OFF).
+"""A head box standing on ink that another reading already owns -- ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default ON).
 
 PATH: STAGED, ADJUDICATE (notehead precision). It reads rows GATHER already files (`Q.GLYPH_BOX`, `Q.GLYPH_CONF`,
 `Q.CELL_BOX`, `Q.STEM`); no new producer, nothing re-measured.
@@ -56,8 +56,8 @@ CLEF_WINDOW_SPACES = 6.0
 
 
 def enabled() -> bool:
-    """`OMR_HEAD_ON_ANOTHER_MARK`, default OFF (ROADMAP 2.176): only an explicit on-word enables."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_HEAD_ON_ANOTHER_MARK`, default ON (ROADMAP 2.176, Sean 2026-10-20): an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _xywh(v) -> Optional[Tuple[float, float, float, float]]:

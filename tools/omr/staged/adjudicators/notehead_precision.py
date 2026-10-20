@@ -3780,7 +3780,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 margin=got.margin, axis=got.axis or "rest_shape",
                 unit="mixed (spaces, steps, column share)", band=None,
                 would_choose=(True,))
-    # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default OFF): a head box on the system's leading
+    # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default ON): a head box on the system's leading
     # barline, inside a clef box, or on an accidental / curled-rest box the detector scored as high.
     on_mark = _head_on_mark.read(ev, box_row, spacing, _cell_box_page(ev), detail)
     if on_mark is not None:

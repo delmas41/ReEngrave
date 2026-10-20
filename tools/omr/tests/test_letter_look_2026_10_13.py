@@ -526,3 +526,12 @@ def test_a_letter_row_is_attributed_to_the_reader_that_boxed_it():
             and r.subject.to_key() in (R.glyph(0, 0, 0, 0, 2).to_key(),
                                        R.glyph(0, 0, 0, 0, 3).to_key())]
     assert rows and all(r.reader == READERS.LETTER_LOOK for r in rows)
+
+
+import pytest as _pytest_2176
+
+
+@_pytest_2176.fixture(autouse=True)
+def _pin_head_on_another_mark_off_2_176(monkeypatch):
+    """ROADMAP 2.176 flipped OMR_HEAD_ON_ANOTHER_MARK ON; these fixtures put a head at a system's first cell, so pin it OFF here."""
+    monkeypatch.setenv("OMR_HEAD_ON_ANOTHER_MARK", "0")
