@@ -13804,6 +13804,156 @@ def gather_meter_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[in
                     print(f"  gather claimed area (meter) {ssub.to_key()} cell {k}")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# The claimed-area register: clefs and the header column -- ROADMAP 2.181 (plan 2026-10-20 §7 step 2)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _claim_boxes_inside(binary, area, dets, cell, sub_of, line_ys, sp, *, skip=(), named=(), through=False) -> Dict[str, Any]:
+    """`boxes_inside` of ONE claim: every non-owner box of the cell whose box meets the area, with the share of its own ink inside
+    (`meter_object.ink_inside`), the owner's own naming, and (header column) the line test on its own ink. Measured; decides nothing."""
+    from . import claims as CL
+    from . import meter_object as MO
+    out: Dict[str, Any] = {}
+    for gi, d in enumerate(dets):
+        key = sub_of(gi)
+        nm = str(d.smufl_name)
+        if gi in skip or (CL.is_owner_class(nm) and key not in named):
+            continue
+        pb = _page_box(cell, d)
+        if pb is None or not CL.overlaps(area, pb):
+            continue
+        got = MO.ink_inside(binary, pb, area, line_ys, sp)
+        if got is None and key not in named:
+            continue
+        e = dict(got or {}, cls=nm)
+        if key in named:
+            e["named"] = True
+        if through:
+            t = CL.through_stroke(binary, pb, sp)
+            if t is not None:
+                e["through"] = t
+        out[key] = e
+    return out
+
+
+def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default OFF).
+
+    PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). AFTER `gather_clef_locator` (reads its rows) and beside
+    `gather_meter_object` (whose `meter` rows the same consult reads). Per staff:
+
+    * `clef`, READ: each `Q.CLEF_LOCATED` row -- its fitted box where it was read on cell 0 (the header-window crop has no page frame:
+      the union of the boxes it names), and the head boxes it overrode NAMED as its ink (2.11's connection, carried over).
+    * `clef`, from the detector: each clef-sized `clef*` box of any cell; READ where it starts within `claims.CLEF_WINDOW_SPACES` of
+      its cell's left edge (a clef stands at a bar's start), NARROWED farther in (one witness: 2.144's mid-bar case).
+    * `leading_column`, a PRIOR (Sean 2026-10-20 "idk possibly but not normally"): cell 0, from just left of the staff's start to the
+      first clef's left edge on THIS staff; where this staff shows no clef, the narrowest clef offset of its system's other staves
+      (`right_edge="system"`); no clef on the system -> abstain. Each box carries the line test on its own ink.
+
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry is no row, never "nothing claimed"."""
+    from . import claims as CL
+    if not CL.enabled():
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_sys: Dict[int, Dict[int, Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], {})[key[1]] = st
+    cells_of: Dict[int, Dict[int, Any]] = {}
+    for c in cells:
+        cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
+    for sys_idx, members in sorted(by_sys.items()):
+        clef_left: Dict[int, Tuple[float, float]] = {}       # staff -> (clef left x, cell-0 left x)
+        pending_columns = []
+        for li, st in sorted(members.items()):
+            sp = _spacing(st)
+            lines = list(st.line_ys)
+            ssub = R.staff(p, sys_idx, li)
+            mycells = cells_of.get(st.staff_index, {})
+            if not sp or len(lines) < 5 or not mycells:
+                continue
+            c0 = mycells.get(0)
+            # -- clef claims, from the located clef (READ)
+            for r0 in log.rows(Q.CLEF_LOCATED, ssub):
+                d0 = r0.detail or {}
+                if c0 is None or not getattr(c0, "bbox_page_px", None):
+                    continue
+                named = list(d0.get("overrode_glyph_subjects") or ())
+                dets0 = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
+                area = None
+                bb, up = d0.get("bbox"), getattr(c0, "upscale_factor", None)
+                if r0.frame == frame_cell(0) and isinstance(bb, (list, tuple)) and len(bb) == 4 and up:
+                    cx0, cy0 = c0.bbox_page_px[0], c0.bbox_page_px[1]
+                    area = [cx0 + bb[0] / up, cy0 + bb[1] / up, cx0 + (bb[0] + bb[2]) / up, cy0 + (bb[1] + bb[3]) / up]
+                if area is None and named:
+                    boxes = [_page_box(c0, dets0[int(k.rsplit("/", 1)[1])]) for k in named
+                             if int(k.rsplit("/", 1)[1]) < len(dets0)]
+                    boxes = [b for b in boxes if b]
+                    if boxes:
+                        area = [min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)]
+                if area is None:
+                    continue
+                inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(),
+                                             lines, sp, named=set(named))
+                log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0),
+                            cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, unit="area", standing="READ",
+                            source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3))
+                if r0.frame == frame_cell(0):
+                    prev = clef_left.get(li)
+                    clef_left[li] = (min(area[0], prev[0]) if prev else area[0], c0.bbox_page_px[0])
+            # -- clef claims, from the detector's clef-sized boxes
+            for k, c in sorted(mycells.items()):
+                cb = getattr(c, "bbox_page_px", None)
+                if not cb:
+                    continue
+                dets = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+                for gi, d in enumerate(dets):
+                    pb = _page_box(c, d)
+                    if not CL.is_clef_box(d.smufl_name, pb, sp):
+                        continue
+                    standing = CL.clef_box_standing(pb, cb, sp)
+                    gsub = R.glyph(p, sys_idx, li, k, gi)
+                    g = log.rows(Q.GLYPH_BOX, gsub)
+                    inside = _claim_boxes_inside(binary, pb, dets, c, lambda j, k=k: R.glyph(p, sys_idx, li, k, j).to_key(),
+                                                 lines, sp, skip=(gi,))
+                    log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in pb], reader=READERS.CV_CLAIMED_REGISTER,
+                                frame=frame_cell(k), cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None,
+                                owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
+                                cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
+                    if k == 0 and standing == "READ":
+                        prev = clef_left.get(li)
+                        clef_left[li] = (min(pb[0], prev[0]) if prev else pb[0], cb[0])
+            if c0 is not None and getattr(c0, "bbox_page_px", None):
+                pending_columns.append((li, st, sp, lines, ssub, c0))
+        offsets = [(x - x0) for x, x0 in clef_left.values() if x > x0]
+        for li, st, sp, lines, ssub, c0 in pending_columns:
+            cb = c0.bbox_page_px
+            if li in clef_left and clef_left[li][0] > cb[0]:
+                right, src = clef_left[li][0], "own_clef"
+            elif offsets:
+                right, src = cb[0] + min(offsets), "system"
+            else:
+                log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS,
+                            cell=0, owner=CL.OWNER_COLUMN, why="no_clef_on_the_system")
+                continue
+            area = CL.leading_column(cb, right, sp)
+            if area is None:
+                continue
+            dets0 = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
+            inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(),
+                                         lines, sp, through=True)
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0), cell=0,
+                        owner=CL.OWNER_COLUMN, owner_row=None, owner_glyph=None, unit="area", standing="READ", prior=True,
+                        right_edge=src, boxes_inside=inside, space_page_px=round(sp, 3))
+            if progress:
+                print(f"  gather claimed area (register) {ssub.to_key()}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -15119,6 +15269,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_meter_ocr_at_bars(log, cells, local, detections)
         # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
+        # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default OFF): AFTER the clef locator (reads its rows); page raster.
+        gather_claimed_register(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)

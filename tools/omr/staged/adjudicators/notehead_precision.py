@@ -102,6 +102,7 @@ from . import key_slots as _key_slots
 from . import head_rest_shape as _head_rest_shape
 from . import head_on_mark as _head_on_mark
 from . import inside_meter as _inside_meter
+from . import claimed_by as _claimed_by
 from . import letter_cover as _letter_cover
 from .. import head_oval as _head_oval
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
@@ -617,6 +618,30 @@ def _is_a_clef(ev: Evidence):
         if me in (d.get("overrode_glyph_subjects") or ()):
             return r
     return None
+
+
+def _claim_refusal(claim, box_row) -> Ruling:
+    """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")`, the reason a LITERAL per owner (the vocabulary check reads it)."""
+    detail = {"class": box_row.value[0], **claim.detail}
+    if claim.owner == "meter":
+        r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
+    elif claim.owner == "clef":
+        r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
+                           band=None, would_choose=(True,))
+
+
+def _claim_narrowing(claim, used, detail) -> Ruling:
+    """ROADMAP 2.181: NARROWED {a notehead, the owner's ink} -- the notehead first, so it is written (blue, GUESSED)."""
+    cands = (R.Candidate(value=False, support=1.0), R.Candidate(value=True, support=1.0))
+    u = tuple(dict.fromkeys(tuple(used) + tuple(claim.used)))
+    if claim.owner == "clef":
+        return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
+    if claim.owner == "meter":
+        return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
 def _too_narrow(box_row, spacing_canonical: float,
@@ -3499,6 +3524,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
                                      "on_a_read_meter", "on_a_rest", "inside_the_meter",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3676,7 +3703,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ⚠️ BEFORE THE STAFF-SPACE GUARD, because this rule needs no unit at all:
     # it cites a row that already did the geometry. Putting it after would
     # make a clef-box refusal depend on a measurement it does not use.
-    clef_row = _is_a_clef(ev)
+    # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the ONE consult of the claimed-area register, where `is_a_clef`
+    # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
+    # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
+    claim = _claimed_by.consult(ev, box_row, head=True) if _claimed_by.enabled() else None
+    if claim is not None and claim.refuse:
+        return _claim_refusal(claim, box_row)
+    clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
     if clef_row is not None:
         return Ruling(
             value=True, reason="is_a_clef",
@@ -3764,7 +3797,8 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if rest_twin is not None:
         return rest_twin
     # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): a box of ANY head class whose own ink lies inside the meter's claimed area.
-    in_meter = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=True)
+    in_meter = (None if _claimed_by.enabled()
+                else _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=True))
     if in_meter is not None:
         detail.update(in_meter.detail)
         return _margins.attach(
@@ -3793,7 +3827,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 would_choose=(True,))
     # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default ON): a head box on the system's leading
     # barline, inside a clef box, or on an accidental / curled-rest box the detector scored as high.
-    on_mark = _head_on_mark.read(ev, box_row, spacing, _cell_box_page(ev), detail)
+    on_mark = None if _claimed_by.enabled() else _head_on_mark.read(ev, box_row, spacing, _cell_box_page(ev), detail)
     if on_mark is not None:
         if on_mark.leading:
             return _margins.attach(
@@ -3912,6 +3946,11 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if UNLADDERED_SHIPS and would_unladder:
         return Ruling(value=True, reason="unladdered",
                       used=tuple(used), detail=detail)
+    # ROADMAP 2.181: a claim holds this box but is too weak to refuse it -- no other rule refused it either, so it is
+    # NARROWED {notehead, the owner's ink}, the notehead first (written, blue), never refused on a guess.
+    if claim is not None and not claim.refuse:
+        detail.update(claim.detail)
+        return _claim_narrowing(claim, used, detail)
     return Ruling(value=False, reason="notehead", used=tuple(used),
                   detail=detail)
 

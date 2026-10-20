@@ -158,11 +158,15 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "is_an_arc_tail": THRESHOLD,
         # ROADMAP 2.176: how far inside the leading-edge cut (staff spaces) / how far over the cover floor
         "on_the_staffs_leading_barline": THRESHOLD, "on_another_symbols_box": THRESHOLD,
+        # ROADMAP 2.181: the box's ink share inside the claim minus `claims.INSIDE_SHARE_MIN`
+        "claimed_by:meter": THRESHOLD, "claimed_by:clef": THRESHOLD, "claimed_by:leading_column": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },
     "adjudicate_rest_is_not_a_rest": {
         "rest_is_a_barline": THRESHOLD,
+        # ROADMAP 2.181: the box's ink share inside the claim minus `claims.INSIDE_SHARE_MIN`
+        "claimed_by:meter": THRESHOLD, "claimed_by:clef": THRESHOLD, "claimed_by:leading_column": THRESHOLD,
         # ROADMAP 2.150: the class's width floor minus the box's width, in staff spaces
         "rest_narrower_than_its_class": THRESHOLD,
         # ROADMAP 2.150b: the binding one of {stroke length, head evidence} over its cut, as a ratio minus 1
