@@ -377,6 +377,8 @@ STAGES_THAT_SEE_A_HUMAN_BOX = {
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.STEM_DIRECTION,
     Q.NOTEHEAD_IS_A_WHOLE_REST, Q.DURATION, Q.PITCH,
     Q.HEAD_STEM, Q.STEM_VALUE,
+    # ROADMAP 2.175 (flag OFF): filed on every notehead subject too -- an abstention `flag_off`, nothing read from a human row
+    Q.UNISON_VOICES,
 }
 
 

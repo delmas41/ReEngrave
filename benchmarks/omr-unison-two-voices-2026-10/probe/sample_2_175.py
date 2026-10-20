@@ -81,4 +81,5 @@ def main():
     print(plate, "candidates", len(cand), "sampled", len(pick))
 
 
-main()
+if __name__ == "__main__":
+    main()
