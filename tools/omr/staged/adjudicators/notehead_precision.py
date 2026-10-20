@@ -3593,9 +3593,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 would_choose=(True,))
     # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default OFF): a head box on the system's leading
     # barline, inside a clef box, or on an accidental / curled-rest box the detector scored as high.
-    on_mark = _head_on_mark.refusal(ev, box_row, spacing, _cell_box_page(ev), detail)
+    on_mark = _head_on_mark.read(ev, box_row, spacing, _cell_box_page(ev), detail)
     if on_mark is not None:
-        return on_mark
+        if on_mark.leading:
+            return _margins.attach(
+                Ruling(value=True, reason="on_the_staffs_leading_barline", used=on_mark.used, detail=detail),
+                margin=on_mark.margin, axis=on_mark.axis, unit="staff spaces", band=None, would_choose=(True,))
+        return _margins.attach(
+            Ruling(value=True, reason="on_another_symbols_box", used=on_mark.used, detail=detail),
+            margin=on_mark.margin, axis=on_mark.axis, unit="fraction of the box shared", band=None,
+            would_choose=(True,))
     # ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON): a head box at the
     # bar's left edge sitting where the previous bar's crop cut a tie/slur, with no
     # head-tall ink across half a head's width, is that arc's tail. After the shape

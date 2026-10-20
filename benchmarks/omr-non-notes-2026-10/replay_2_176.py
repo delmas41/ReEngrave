@@ -18,6 +18,7 @@ DOC, SD, OUTDIR, ARMS = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split
 D = os.path.join(SD, DOC)
 FLAG = "OMR_HEAD_ON_ANOTHER_MARK"
 ENV = {"off": "0", "on": "1"}
+JUDGED_Q = {"duration", "notehead_is_not_a_notehead", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest", "arc_kind"}
 os.makedirs(OUTDIR, exist_ok=True)
 
 
@@ -48,6 +49,12 @@ def brief(v):
 
 t0 = time.time()
 rec = {"observations": rows("observations"), "abstentions": rows("abstentions"), "verdicts": []}
+boxes, seen = [], set()
+for o in rec["observations"]:
+    s_ = o.get("subject") or ""
+    if s_.startswith("glyph/") and s_ not in seen and isinstance((o.get("detail") or {}).get("bbox_page_px"), list):
+        seen.add(s_)
+        boxes.append({k: o.get(k) for k in ("id", "subject", "quantity", "detail")})
 print(DOC, "rows", len(rec["observations"]), len(rec["abstentions"]), "%.0fs" % (time.time() - t0), flush=True)
 KEEP = ("bars_held_out_sum", "partial_bars", "guessed", "written", "notes_not_written_total", "balance")
 for arm in ARMS:
@@ -73,6 +80,8 @@ for arm in ARMS:
                held_bars=[(h["page"], h["system"], h["staff"], h["cell"]) for h in held_bars],
                not_a_notehead={k: v for k, v in report.items() if "not_a_notehead" in str(k)})
     json.dump(out, open(os.path.join(OUTDIR, "%s.%s.json" % (DOC, arm)), "w"), default=str)
+    json.dump({"observations": boxes, "abstentions": [], "verdicts": [v for v in vs if v["quantity"] in JUDGED_Q]},
+              open(os.path.join(OUTDIR, "%s.%s.record.json" % (DOC, arm)), "w"), default=str)
     del vs, result, xml
     print(DOC, arm, "notes", nfile.get("notes"), "held", cov["bars_held_out_sum"].get("bars"), "partial", (cov.get("partial_bars") or {}).get("bars"),
           "refused", len(refusals), "%.0fs" % (time.time() - t0), flush=True)
