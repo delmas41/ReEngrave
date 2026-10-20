@@ -3,7 +3,7 @@
   "tile": 1,
   "subject": "glyph/13/1/6/8/3",
   "decided_two": true,
-  "twin_written_in_file": false,
+  "twin_written_in_file": true,
   "ours": [
    0.5,
    0.5
@@ -57,7 +57,7 @@
   "tile": 5,
   "subject": "glyph/5/0/0/2/5",
   "decided_two": true,
-  "twin_written_in_file": false,
+  "twin_written_in_file": true,
   "ours": [
    0.5,
    0.5
@@ -75,7 +75,7 @@
   "tile": 7,
   "subject": "glyph/2/0/1/5/4",
   "decided_two": true,
-  "twin_written_in_file": false,
+  "twin_written_in_file": true,
   "ours": [
    0.5,
    0.5
@@ -93,7 +93,7 @@
   "tile": 8,
   "subject": "glyph/26/1/0/3/2",
   "decided_two": true,
-  "twin_written_in_file": false,
+  "twin_written_in_file": true,
   "ours": [
    0.5,
    0.5

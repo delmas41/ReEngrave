@@ -77,3 +77,19 @@ Sean: all 10 shared heads are TWO notes; the two controls are one note each. The
 
 ## LilyPond, Litolff, flag ON (`probe/lily_2_175.py`)
 `staged.lilypond.to_lilypond` first raised `Unbalanced` (its own balance did not subtract the twins; 258 surplus); fixed the same way as MusicXML (twin counter, no rest-duplicate count on a doubled copy). Then: `lilypond` exit 0, **22 warnings (17 unterminated tie, 4 cannot end slur, 1 already have slur), 0 errors, 48 pages**; log `out/2.175/lilypond_litolff_on.log`. Whole fast tier after the change: 8,554 passed, 0 failed.
+
+## After 2.173 landed (main 6eee7c4f3; Sean 2026-10-20 "Yes": a two-voice bar where a voice does not add up is written with both voices, red, each note in its own colour)
+EXPORT change (`_settle_divisi_pairs`): a bar holding a unison twin whose streams are unequal, or that holds a note whose stem direction is unread (`split_events_into_voices` puts it in voice 1), is no longer fused to one note; with `OMR_RED_BARS` ON it keeps both voices and 2.173's red-bar path writes it (nothing padded, nothing invented). Whole-movement replay, flags ON incl. main's defaults (`probe/replay_2_175.py`, OFF = `OMR_UNISON_TWO_NOTES` 0):
+
+| | Litolff OFF | Litolff ON | Brahms OFF | Brahms ON |
+|---|---|---|---|---|
+| notes in the file (rests excluded) | 8,140 | 8,527 | 14,944 | 15,038 |
+| second-voice notes written | 0 | **389** (394 kept; 416 decided) | 0 | **97** (101 kept; 120 decided) |
+| two-voice bars | 17 | 289 | 79 | 130 |
+| red bars (all) / red two-voice bars | 616 / 9 | 638 / 63 | 860 / 21 | 868 / 41 |
+| unison bars kept as two voices that would have been fused (unequal time / undecided direction) | -- | 19 / 31 | -- | 18 / 5 |
+| accounting | balanced | balanced | balanced | balanced |
+
+Sean's 10 shared-head tiles: second note reaches the file in **5 of 10** (was 1 of 10): tiles 1, 5, 7, 8, 9, all 8+8, both values right. Not written: tiles 11 and 12 (the head's single duration is narrowed, so EXPORT drops it before the split; and the down voice reads a 16th where Sean hears an 8th), tile 10 (its staff is not identified: nothing on it is written), tiles 3 and 4 (not traced). Values: 8 of 10 right, as before.
+LilyPond (flag ON, `probe/lily_2_175.py`): Litolff compiles, exit 0, 0 errors, 24 warnings, 74 pages (red bars add pages).
+Judgement call flagged: a note with an UNREAD stem direction in a red unison bar is placed in voice 1 (the legacy rule) -- a placement guess inside a bar that is already marked red; 36 bars on the two plates.
