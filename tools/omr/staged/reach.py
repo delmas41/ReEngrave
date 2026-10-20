@@ -564,6 +564,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
     # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
     "head_oval.py",
+    # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
+    # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
+    "meter_object.py",
 })
 
 

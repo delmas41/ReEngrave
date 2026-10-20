@@ -18,7 +18,9 @@ a time signature after the key stays a meter statement.
 """
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
@@ -132,6 +134,12 @@ class TestATimeSignatureInTheKeySlotsIsNoMeterStatement(unittest.TestCase):
 class TestARestOnTheMetersDigits(unittest.TestCase):
     """Litolff p1 s0: staves 1 and 7 print the 2/4 as `timeSig2`/`timeSig4`
     boxes at page x 819-848; staff 8's own copy is boxed `restQuarter`."""
+
+    def setUp(self):
+        # pinned OFF: this tests the retired 18-space meter_column rule (2.177 ON no longer consults it)
+        p = mock.patch.dict(os.environ, {"OMR_METER_OBJECT": "0"})
+        p.start()
+        self.addCleanup(p.stop)
 
     def _system(self, rest):
         log = Log()

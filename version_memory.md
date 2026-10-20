@@ -6349,3 +6349,6 @@ STAGED ADJUDICATE + EXPORT, branch `lane-2.175-unison-two-voices`, not landed. N
 
 ## 2026-10-20 -- ROADMAP 2.175 landed ON: one head with a stem each way is two notes
 STAGED ADJUDICATE + EXPORT, `OMR_UNISON_TWO_NOTES` default ON (`unison_two.enabled`; explicit `0/false/no/off` disables). Two voices, each valued from its own stem; a two-voice bar that does not add up is written red with both voices (2.173); an unread-stem note keeps voice 1, blue `voice_guessed`. Tests pinned OFF: see the landing commit. Evidence: `benchmarks/omr-unison-two-voices-2026-10/FINDINGS.md`.
+
+## 2026-10-20 -- ROADMAP 2.177 landed ON: the printed meter is one object (claimed-area step 1)
+STAGED GATHER + ADJUDICATE, `OMR_METER_OBJECT` default ON (`meter_object.enabled`; explicit `0/false/no/off` disables). `Q.CLAIMED_AREA` (owner meter) is the two numerals' measured ink box plus a stroke; a head or rest inside is refused `inside_the_meter`; the 18-space `key_slots.meter_column` rest rule is no longer consulted. Litolff 12/12, Brahms 52/56 found; Brahms +19 real rests; 2 Litolff key flats stay rests until claimed-area step 3 (Sean "a"). Next: 2.178 step 2. benchmarks/omr-meter-object-2026-10/FINDINGS.md

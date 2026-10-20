@@ -101,6 +101,7 @@ from . import ownership as _ledger
 from . import key_slots as _key_slots
 from . import head_rest_shape as _head_rest_shape
 from . import head_on_mark as _head_on_mark
+from . import inside_meter as _inside_meter
 from . import letter_cover as _letter_cover
 from .. import head_oval as _head_oval
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
@@ -3467,7 +3468,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   Q.STEM_SLASH,
                   # ROADMAP 2.164: the head-oval reading and the previous bar's
                   # arc box cut at the barline -- `_arc_tail_refusal`.
-                  Q.HEAD_OVAL, Q.ARC_BOX),
+                  Q.HEAD_OVAL, Q.ARC_BOX,
+                  # ROADMAP 2.177: the meter's claimed area -- `inside_meter.read`.
+                  Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3478,7 +3481,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
-          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX,
+          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
@@ -3495,7 +3498,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
-                                     "on_a_read_meter", "on_a_rest",
+                                     "on_a_read_meter", "on_a_rest", "inside_the_meter",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3760,6 +3763,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     rest_twin = _rest_twin_refusal(ev, box_row, detail)
     if rest_twin is not None:
         return rest_twin
+    # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): a box of ANY head class whose own ink lies inside the meter's claimed area.
+    in_meter = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=True)
+    if in_meter is not None:
+        detail.update(in_meter.detail)
+        return _margins.attach(
+            Ruling(value=True, reason="inside_the_meter", used=in_meter.used, detail=detail),
+            margin=in_meter.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
+            would_choose=(True,))
     # ROADMAP 2.173 (flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`): a whole-class box on a rest's ink or on a READ meter's ink.
     whole_refusal = _whole_class_refusal(ev, box_row, spacing, detail)
     if whole_refusal is not None:
