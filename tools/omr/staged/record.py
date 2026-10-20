@@ -1713,6 +1713,14 @@ class Q(_Vocab):
     #: touches it; its ink reads, by 2.99's windows, as a rest). EVALUATE's
     #: `size_head_ink_rest` gives it its length; EXPORT writes it as a rest.
     HEAD_INK_IS_A_REST = "head_ink_is_a_rest"
+
+    #: ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, default OFF) -- A HEAD WITH A STEM EACH WAY IS TWO NOTES. On a
+    #: notehead `Q.HEAD_STEM` ruled `unison_two_voices`: the value of EACH voice read off its OWN stem (up stem at the
+    #: right, down stem at the left), `{"voices": {"up": {...}, "down": {...}}}`, each `{beats, written, dots,
+    #: beam_levels, source}` with `source` `flag` / `beam` / `none_seen` / `open_head`. DECIDED only when both voices'
+    #: values are read; otherwise abstains with the reason and each voice's reading. `adjudicate_event` then makes
+    #: ONE event per voice; EXPORT writes the head twice.
+    UNISON_VOICES = "unison_voices"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2354,6 +2362,7 @@ CLAIMS: "dict[str, str]" = {
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
     "HEAD_INK_IS_A_REST": CLAIM.INTERPRETATION,
+    "UNISON_VOICES": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
