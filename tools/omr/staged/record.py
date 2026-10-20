@@ -2917,6 +2917,10 @@ class READERS(_Vocab):
     #: dot / staccato / staccatissimo classes only, a box kept ONLY where its ink is wedge-shaped AND a head stands on the side its
     #: point faces. Its own reader name so a crop, a test or a consumer can tell it from the production pass and from the 2.53 rescue.
     RESCUE_WEDGE = "yolo_rescue_wedge"       # gather: sub-floor wedge box, guided by a head and the ink's shape
+    #: `gather.gather_stem_end_heads` -- ROADMAP 2.179 (`OMR_STEM_END_HEADS`, default OFF). A CV stem with no head at either end is a note we
+    #: have not seen: the SAME detector re-run on the cell at a lower floor, a head-class box kept ONLY at that stem's end on the side the
+    #: stem convention puts the head (or a block rest box standing there, re-read as the black head it is). Its own reader name.
+    RESCUE_STEM_HEAD = "yolo_rescue_stem_head"  # gather: a head at the end of a stem that has none
     #: `gather.gather_detector_views` -- ROADMAP 2.172 (`OMR_DETECTOR_VIEWS`, default ON). The SAME weights `DETECTOR` names on the SAME cell image,
     #: shown a different staff space (a smaller one for dots/flags/rests, a closer one for black heads), anti-aliased and read at a few sub-pixel
     #: phases, the median kept. Its own reader name so a box from a view is traceable and separable from the production pass; the row carries the
