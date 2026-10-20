@@ -97,3 +97,32 @@ All whole notes in both arms sit in red bars (55 of the coordinator's 56 reprodu
   different witness (digit ink / rest shape), which is NOT in this lane. 53 of 56 invented wholes -> 45 still there.
 * **Real whole lost: none** on either plate by hand look; Sean's judged tiles do not move (Litolff right/wrong/narrowed 159/29/6 both arms,
   Brahms 129/22/5 both arms).
+
+## Third part: the two rules that finish the whole-note fix (Sean 2026-10-19 "Yes", under the same flag)
+`notehead_precision.adjudicate_notehead_is_not_a_notehead`, whole-class boxes ONLY (`noteheadWhole*`), under `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`
+(one flag carries the whole-note fix: the fill/stem abstention, `on_a_rest`, `on_a_read_meter`). Connects, never guesses:
+* `on_a_rest`: a rest-class box in the cell (any rest class, kept or refused) covers >= 0.3 of the smaller box (stated before the count; the 13 Brahms
+  rest curls covered 0.47-0.79).
+* `on_a_read_meter`: gated on the meter reader having READ a meter at THIS cell (`Q.METER_TEMPLATE`/`Q.METER_OCR` at cell 0, or a `*_AT_BAR` row whose
+  cell is this one; wants added). The box is that meter's ink when (a) it lies on a detector `timeSig*` box (>= half shared), or (b) it is one of the
+  leftmost stacked pair (same x, 0.3-1.2 spaces apart) of notehead/timeSig boxes in the cell, or (c) it is in a column of >= 2 boxes at one x (notehead/
+  timeSig/rest class) spanning >= 2.4 spaces (a 6 over an 8 spans 3.2-3.9; a whole chord <= 2) with no notehead-class box left of it, or (d) it
+  stands in the page-x column of a `timeSig*` box another staff of the system has at this cell index (a meter is printed on every staff at one x).
+  How it can fail: a real whole on a meter pair at a change bar -- none seen; every removed box was looked at on the print.
+
+Measured on the exported file (OMR_RED_BARS=1, whole flag ON, ADJUDICATE..INFER re-decided over each whole record, full runs; none cut short):
+
+| whole notes written | Litolff | Brahms |
+|---|---|---|
+| OFF | 2 | 53 |
+| fill/stem rule only | 0 | 45 |
+| + on_a_rest + on_a_read_meter (a)-(c) | 0 | 10 |
+| + (d) column of another staff's timeSig | 0 | **4** |
+
+Notes 14,987 -> 14,944 (Brahms), 8,142 -> 8,140 (Litolff). The 4 remaining Brahms whole-class notes (crops `out/print/2.173-whole-remaining/`, glyph keys in the
+file names): two 6/8 numerals at a change bar (`glyph/1/0/2/1/19`, `glyph/1/0/6/1/12`: the system has one detected timeSig box, not in their column), one
+hollow chord cluster under slurs (`glyph/25/1/0/9/10`), one hollow dotted half with its stem (`glyph/10/1/13/7/1`: a real note, wrongly a whole;
+2.130's stem test does not see this stem as flush). The other 49 were each looked at on the print: digit loops and rest curls, none a real whole.
+Sean's judged tiles do not move (Litolff 159/29/6, Brahms 129/22/5 in every arm). **Real whole or any real note lost: none found.**
+Run integrity: an earlier Litolff re-run (PID 79084) was killed by another lane; it was re-run to completion and its numbers here are from the re-run.
+The Brahms runs behind every number above ran to completion (summary, MusicXML and record files written).
