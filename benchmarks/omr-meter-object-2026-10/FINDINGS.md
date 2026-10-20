@@ -53,6 +53,10 @@ CONVENTION ASSUMED: a printed meter is two stacked bold numerals (or C) between 
 every staff of the system. WHAT WOULD FALSIFY IT: a print-confirmed head inside a claimed area, or numerals printed side by side.
 NOT CONFIRMED beyond the two plates measured below; blind tiles `out/print/2.177-review/`.
 
+**Sean, 2026-10-20 (asked: "At a 6/8 change bar, is anything ever printed between the two numerals and the first note?"):** "it is posible for
+there to be things in between the meter and the first notes but nothing that would overlap with the meter digits." The claim is therefore exactly the
+digits' own ink box (+ one stroke), never the gap after it; a must-keep control (`test_CONTROL_ink_just_right_of_the_numerals_is_outside_the_claim`) pins it.
+
 ## Brief from the tree (what finds meter ink today)
 
 (filled in below as measured)

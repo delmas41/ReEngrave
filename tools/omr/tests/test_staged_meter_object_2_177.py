@@ -47,6 +47,18 @@ class TestFinder(unittest.TestCase):
         loop = MO.ink_inside(img, (200, int(LINES[2]) + 4, 226, int(LINES[4]) + 2), a, LINES, SP)
         self.assertGreater(loop["ink_share_inside"], 0.9)
 
+    def test_CONTROL_ink_just_right_of_the_numerals_is_outside_the_claim(self):
+        """Sean 2026-10-20: "it is posible for there to be things in between the meter and the first notes but nothing that would overlap
+        with the meter digits." A cautionary accidental / a rest printed right after the numerals is kept: the claim is the digits' own
+        extent (one stroke of padding), never the gap after them."""
+        mark = (232, int(LINES[1]) + 2, 244, int(LINES[3]) - 2)          # 6 px past the numerals' right edge (226), a mark's own ink
+        img = _page(extra=[mark])
+        r = MO.find(img, LINES, SP, 100, 400)
+        self.assertTrue(r["found"], r)
+        self.assertLessEqual(r["area"][2], 230)                      # 226 + 1 stroke (3 px), not a column or a gap
+        got = MO.ink_inside(img, mark, r["area"], LINES, SP)
+        self.assertTrue(got is None or got["ink_share_inside"] < 0.2, got)
+
     def test_no_numerals_no_object(self):
         img = _page()
         img[:, 190:240] = 255

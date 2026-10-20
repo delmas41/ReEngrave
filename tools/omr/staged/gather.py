@@ -13728,7 +13728,10 @@ def gather_meter_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[in
                     witness_seen = True
                 common = [pb for _gi, d, pb in ts if d.smufl_name in _METER_CLASSES and pb]
                 staves.append({"key": li, "lines": list(st.line_ys), "spacing": sp, "x_lo": bx[0],
-                               "x_hi": bx[2] if k == 0 else min(bx[2], bx[0] + 7 * sp), "common_box": common[0] if common else None})
+                               "x_hi": bx[2] if k == 0 else min(bx[2], bx[0] + 7 * sp), "common_box": common[0] if common else None,
+                               "hint_x": [(pb[0] + pb[2]) / 2.0 for _gi, _d, pb in ts[:1] if pb],
+                               "avoid": [pb for pb in (_page_box(c, d) for d in dets
+                                                       if str(d.smufl_name).startswith(("clef", "gClef", "fClef", "cClef", "key"))) if pb]})
                 info[li] = (c, sub, ssub, dets, ts, sp, st)
             if len(staves) < 2 or not witness_seen:
                 continue
@@ -13758,7 +13761,10 @@ def gather_meter_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[in
                 for src, r0 in reads:
                     wit.append((src, r0.id))
                 claims[li] = (r, area, wit, reads)
-            if not any(v[2] for v in claims.values()):
+            # THE WITNESS GATE: a column of ink is a meter only where at least two of its staves also have a detector `timeSig*` box on it (or,
+            # for a bar's head, a `*_AT_BAR` read for that bar); a header's template/OCR read exists on every staff of every system and
+            # witnesses nothing alone (a tutti chord that aligns across staves passes the ink test, not this one).
+            if sum(1 for v in claims.values() if any(w[0] == "detector" or (k > 0 and w[0] in ("template", "ocr")) for w in v[2])) < 2:
                 for li in claims:
                     ssub = info[li][2]
                     log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_AREA, frame=frame, reason=ABSTAIN.NO_DETECTIONS,

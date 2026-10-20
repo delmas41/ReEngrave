@@ -39,7 +39,7 @@ PAIR_H_SPACES = (2.6, 4.8)
 MERGED_H_SPACES = (3.0, 4.8)
 MERGED_W_SPACES = (1.2, 2.8)
 #: ink pixels / box pixels of a fused pair (measured Litolff 2/4: 0.66; flats 0.46, stemmed notes ~0.2)
-MERGED_FILL_MIN = 0.5
+MERGED_FILL_MIN = 0.4
 #: one C / cut-C piece
 COMMON_H_SPACES = (1.8, 3.4)
 COMMON_W_SPACES = (1.0, 2.4)
@@ -129,12 +129,15 @@ def _is_dense(piece: Tuple[int, int, int, int, int]) -> bool:
 
 
 def find(binary: Any, line_ys: Sequence[float], spacing: float, x_lo: float, x_hi: float,
-         *, keep_left_of: Optional[float] = None, common_box: Optional[Sequence[float]] = None) -> Dict[str, Any]:
+         *, keep_left_of: Optional[float] = None, common_box: Optional[Sequence[float]] = None,
+         avoid_boxes: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
     """The meter's numeral pair inside the page-pixel column `[x_lo, x_hi)` of ONE staff, or a named reason it could not be drawn.
 
     Returns `{"found": True, "form", "area": [x0, y0, x1, y1] (page px), "pieces": [[x0, y0, x1, y1], ...], "thickness_px", ...}` or
     `{"found": False, "reason": "no_pair" | "no_raster" | "no_staff_geometry" | "merged_with_neighbour", ...}`. The leftmost pair wins (the
     numerals stand before every note of the bar). `keep_left_of`: a page x; a pair whose area would start left of it is not drawn.
+    `avoid_boxes`: page-px boxes of marks another reader has already named (the detector's clef and key-accidental boxes): a piece
+    whose ink lies mostly inside one is that mark (a C clef is as dense and as tall as a numeral pair), not a numeral.
     `common_box`: the detector's `timeSigCommon` / `timeSigCutCommon` box (page px); only with it is a lone C-sized piece taken, and only the
     piece lying on that box (a C is not told from a flat or a clef by shape alone).
     """
@@ -154,6 +157,16 @@ def find(binary: Any, line_ys: Sequence[float], spacing: float, x_lo: float, x_h
     thick = min(_line_thickness(binary, ly, x0, x1), 0.5 * sp)
     ink = _ink_without_bare_lines(binary, ly, y0, y1, x0, x1, thick)
     pcs = _pieces(ink)
+    if avoid_boxes:
+        def _mostly_in(p):
+            px0, py0, px1, py1 = p[0] + x0, p[1] + y0, p[2] + x0, p[3] + y0
+            area = max(1.0, (px1 - px0) * (py1 - py0))
+            for b in avoid_boxes:
+                iw, ih = min(px1, b[2]) - max(px0, b[0]), min(py1, b[3]) - max(py0, b[1])
+                if iw > 0 and ih > 0 and iw * ih / area >= 0.5:
+                    return True
+            return False
+        pcs = [p for p in pcs if not _mostly_in(p)]
     mid_y = (ly[0] + ly[-1]) / 2.0 - y0
 
     def dims(p):
@@ -247,6 +260,8 @@ COLUMN_MIN_SHARE = 0.4
 COLUMN_MIN_STAVES = 2
 #: a staff with no pair of its own is searched again inside the column, this many spaces either side of the column's centre
 COLUMN_SEARCH_SPACES = 1.8
+#: the window (spaces either side of the detector column's x) of the hinted second search
+COLUMN_HINT_SPACES = 1.3
 
 
 def find_column(binary: Any, staves: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
@@ -260,21 +275,45 @@ def find_column(binary: Any, staves: Sequence[Dict[str, Any]]) -> Dict[str, Any]
     `column_x` is None where no column reached the share (nothing is claimed)."""
     first = {}
     for st in staves:
-        first[st["key"]] = find(binary, st["lines"], st["spacing"], st["x_lo"], st["x_hi"], common_box=st.get("common_box"))
-    cands = []
-    for st in staves:
-        r = first[st["key"]]
-        if r.get("found"):
-            cands.append(((r["area"][0] + r["area"][2]) / 2.0, st["key"], st["spacing"]))
-    cands.sort()
-    best: List[Tuple[float, str, float]] = []
-    for i in range(len(cands)):
-        grp = [c for c in cands[i:] if c[0] - cands[i][0] <= COLUMN_X_TOL_SPACES * cands[i][2]]
-        if len(grp) > len(best):
-            best = grp
+        first[st["key"]] = find(binary, st["lines"], st["spacing"], st["x_lo"], st["x_hi"], common_box=st.get("common_box"),
+                                avoid_boxes=st.get("avoid") or ())
     n = len(staves)
-    if len(best) < max(COLUMN_MIN_STAVES, int(COLUMN_MIN_SHARE * n + 0.999)):
-        return {"column_x": None, "n_staves": n, "n_in_column": len(best),
+
+    def consensus(results):
+        cands = sorted(((r["area"][0] + r["area"][2]) / 2.0, st["key"], st["spacing"])
+                       for st in staves for r in [results.get(st["key"], {})] if r.get("found"))
+        best: List[Tuple[float, str, float]] = []
+        for i in range(len(cands)):
+            grp = [c for c in cands[i:] if c[0] - cands[i][0] <= COLUMN_X_TOL_SPACES * cands[i][2]]
+            if len(grp) > len(best):
+                best = grp
+        return best if len(best) >= max(COLUMN_MIN_STAVES, int(COLUMN_MIN_SHARE * n + 0.999)) else None
+
+    best = consensus(first)
+    hinted = False
+    if best is None:
+        # a touching neighbour (a key accidental the numeral's ink runs into) can defeat the plain search on many staves of a shattering
+        # print: the detector's own `timeSig*` boxes then say WHERE the column is (one x on every staff). The ink is searched again only
+        # inside that column's window, so a neighbour's ink is cut off at the window's edge, not merged in.
+        hx = sorted((h, st["key"], st["spacing"]) for st in staves for h in (st.get("hint_x") or [])[:1])
+        hbest: List[Tuple[float, str, float]] = []
+        for i in range(len(hx)):
+            grp = [c for c in hx[i:] if c[0] - hx[i][0] <= COLUMN_X_TOL_SPACES * hx[i][2]]
+            if len(grp) > len(hbest):
+                hbest = grp
+        if len(hbest) >= max(COLUMN_MIN_STAVES, int(COLUMN_MIN_SHARE * n + 0.999)):
+            cx = sum(c[0] for c in hbest) / len(hbest)
+            second = {}
+            for st in staves:
+                sp = st["spacing"]
+                second[st["key"]] = find(binary, st["lines"], sp, max(st["x_lo"], cx - COLUMN_HINT_SPACES * sp),
+                                         min(st["x_hi"], cx + COLUMN_HINT_SPACES * sp), common_box=st.get("common_box"),
+                                         avoid_boxes=st.get("avoid") or ())
+            best = consensus(second)
+            if best is not None:
+                first, hinted = second, True
+    if best is None:
+        return {"column_x": None, "n_staves": n, "n_in_column": 0,
                 "by_staff": {k: dict(v, in_column=False) for k, v in first.items()}}
     xc = sum(c[0] for c in best) / len(best)
     in_col = {c[1] for c in best}
@@ -286,10 +325,10 @@ def find_column(binary: Any, staves: Sequence[Dict[str, Any]]) -> Dict[str, Any]
             continue
         sp = st["spacing"]
         r = find(binary, st["lines"], sp, max(st["x_lo"], xc - COLUMN_SEARCH_SPACES * sp), min(st["x_hi"], xc + COLUMN_SEARCH_SPACES * sp),
-                 common_box=st.get("common_box"))
+                 common_box=st.get("common_box"), avoid_boxes=st.get("avoid") or ())
         if r.get("found"):
             r = dict(r, in_column=True, found_again_in_column=True)
         else:
             r = dict(r, in_column=False)
         out[k] = r
-    return {"column_x": round(xc, 1), "n_staves": n, "n_in_column": sum(1 for v in out.values() if v.get("in_column")), "by_staff": out}
+    return {"column_x": round(xc, 1), "hinted": hinted, "n_staves": n, "n_in_column": sum(1 for v in out.values() if v.get("in_column")), "by_staff": out}
