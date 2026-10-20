@@ -13635,6 +13635,169 @@ _RUNG_READER = {
 #: gets `OUT_OF_SCOPE` on every staff, which SAYS it was never asked. Before
 #: that contract existed this default was a silent blinding, which is exactly
 #: why it could not have been left this way.
+# ─────────────────────────────────────────────────────────────────────────────
+# The printed meter as ONE claimed area -- ROADMAP 2.177 (2.178 step 1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _digit_of(name: str) -> Optional[int]:
+    if name.startswith("timeSig") and len(name) == 8 and name[7:].isdigit():
+        return int(name[7:])
+    return None
+
+
+def _cover_of_smaller(a, b) -> float:
+    iw = min(a[2], b[2]) - max(a[0], b[0])
+    ih = min(a[3], b[3]) - max(a[1], b[1])
+    if iw <= 0 or ih <= 0:
+        return 0.0
+    small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
+    return (iw * ih) / small if small > 0 else 0.0
+
+
+def _meter_numbers(area, dets_pg, read_pairs) -> Dict[str, Any]:
+    """The two numbers of ONE object, from sources already on the record: the detector's digit boxes inside the area (upper half =
+    numerator, lower = denominator) and the readers' (numerator, denominator) pairs. Agreeing sources -> `read`; one -> `one_reader`;
+    disagreeing or none -> `abstain` with every candidate. Never a guess."""
+    mid = (area[1] + area[3]) / 2.0
+    top, bot = [], []
+    for name, pb in dets_pg:
+        dg = _digit_of(name)
+        cx, cy = (pb[0] + pb[2]) / 2.0, (pb[1] + pb[3]) / 2.0
+        if dg is None or not (area[0] <= cx <= area[2] and area[1] <= cy <= area[3]):
+            continue
+        (top if cy < mid else bot).append((cx, dg))
+    cand: Dict[str, Dict[str, int]] = {"numerator": {}, "denominator": {}}
+    if top:
+        cand["numerator"]["detector"] = int("".join(str(d) for _x, d in sorted(top)))
+    if bot:
+        cand["denominator"]["detector"] = int("".join(str(d) for _x, d in sorted(bot)))
+    for src, pair in read_pairs:
+        cand["numerator"][src] = pair[0]
+        cand["denominator"][src] = pair[1]
+    out: Dict[str, Any] = {}
+    for half, c in cand.items():
+        vals = set(c.values())
+        if len(vals) == 1:
+            out[half] = {"value": next(iter(vals)), "state": "read" if len(c) >= 2 else "one_reader", "sources": sorted(c)}
+        else:
+            out[half] = {"value": None, "state": "abstain", "candidates": c}
+    return out
+
+
+def gather_meter_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.CLAIMED_AREA` (owner `meter`) per printed time signature per staff -- ROADMAP 2.177, Sean 2026-10-20 ("sees the meter as 2
+    numbers and blocks the whole thing out ... and doesnt allow anything else to box that area"). Flag `OMR_METER_OBJECT`, default OFF.
+
+    PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). `meter_object.find_column` draws the area from the two numerals' own ink and
+    keeps only the pairs that stand in ONE column on a share of the system's staves; the column is claimed only where a witness stands
+    (a detector `timeSig*` box on it, or a template/OCR read on the staff -- the header's, or a `*_AT_BAR` read for that bar). The
+    numbers are READ from the object's halves by agreement of sources already on the log, or abstained with candidates. The area is
+    the numerals' measured box only (never a column read off sibling staves). AFTER `gather_meter_ocr_at_bars` (reads its rows).
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry / no pair is an abstention, never "no meter"."""
+    from . import meter_object as MO
+    if not MO.enabled():
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_sys: Dict[int, Dict[int, Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], {})[key[1]] = st
+    cell_of = {(c.staff_index, c.measure_index): c for c in cells}
+    for sys_idx, members in sorted(by_sys.items()):
+        idxs = sorted({c.measure_index for c in cells if local.get(c.staff_index, (None,))[0] == sys_idx})
+        for k in idxs:
+            staves, info = [], {}
+            witness_seen = k == 0
+            for li, st in sorted(members.items()):
+                c = cell_of.get((st.staff_index, k))
+                sp = _spacing(st)
+                bx = getattr(c, "bbox_page_px", None) if c is not None else None
+                if c is None or not bx or not sp or len(list(st.line_ys)) < 5:
+                    continue
+                sub = R.cell(p, sys_idx, li, k)
+                dets = detections.get(sub.to_key(), ())
+                ts = [(gi, d, _page_box(c, d)) for gi, d in enumerate(dets) if str(d.smufl_name).startswith("timeSig")]
+                ssub = R.staff(p, sys_idx, li)
+                if k > 0 and (ts or any((r.detail or {}).get("cell") == k for r in
+                                        log.rows(Q.METER_TEMPLATE_AT_BAR, ssub) + log.rows(Q.METER_OCR_AT_BAR, ssub))):
+                    witness_seen = True
+                common = [pb for _gi, d, pb in ts if d.smufl_name in _METER_CLASSES and pb]
+                staves.append({"key": li, "lines": list(st.line_ys), "spacing": sp, "x_lo": bx[0],
+                               "x_hi": bx[2] if k == 0 else min(bx[2], bx[0] + 7 * sp), "common_box": common[0] if common else None})
+                info[li] = (c, sub, ssub, dets, ts, sp, st)
+            if len(staves) < 2 or not witness_seen:
+                continue
+            col = MO.find_column(binary, staves)
+            if col["column_x"] is None:
+                continue
+            frame = frame_cell(k)
+            claims = {}
+            for li, r in col["by_staff"].items():
+                c, sub, ssub, dets, ts, sp, st = info[li]
+                if not r.get("found") or not r.get("in_column"):
+                    log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_AREA, frame=frame, reason=ABSTAIN.NO_INK,
+                                cell=k, owner="meter", why=r.get("reason") or "pair_outside_the_column", column_x=col["column_x"])
+                    continue
+                area = r["area"]
+                wit = []
+                for gi, d, pb in ts:
+                    if pb and _cover_of_smaller(area, pb) >= 0.3:
+                        g = log.rows(Q.GLYPH_BOX, R.glyph(p, sys_idx, li, k, gi))
+                        wit.append(("detector", g[0].id if g else None))
+                if k == 0:
+                    reads = ([("template", r0) for r0 in log.rows(Q.METER_TEMPLATE, ssub)]
+                             + [("ocr", r0) for r0 in log.rows(Q.METER_OCR, ssub)])
+                else:
+                    reads = ([("template", r0) for r0 in log.rows(Q.METER_TEMPLATE_AT_BAR, ssub) if (r0.detail or {}).get("cell") == k]
+                             + [("ocr", r0) for r0 in log.rows(Q.METER_OCR_AT_BAR, ssub) if (r0.detail or {}).get("cell") == k])
+                for src, r0 in reads:
+                    wit.append((src, r0.id))
+                claims[li] = (r, area, wit, reads)
+            if not any(v[2] for v in claims.values()):
+                for li in claims:
+                    ssub = info[li][2]
+                    log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_AREA, frame=frame, reason=ABSTAIN.NO_DETECTIONS,
+                                cell=k, owner="meter", why="column_without_a_witness", column_x=col["column_x"])
+                continue
+            for li, (r, area, wit, reads) in sorted(claims.items()):
+                c, sub, ssub, dets, ts, sp, st = info[li]
+                pairs = []
+                for src, r0 in reads:
+                    v = r0.value
+                    if isinstance(v, (list, tuple)) and len(v) == 2 and all(isinstance(x, int) for x in v):
+                        pairs.append((src, (v[0], v[1])))
+                dets_pg = [(str(d.smufl_name), pb) for _gi, d, pb in ts if pb]
+                numbers = _meter_numbers(area, dets_pg, pairs)
+                inside = {}
+                scan = [(k, dets, c)]
+                prev = cell_of.get((st.staff_index, k - 1))
+                if prev is not None:
+                    scan.append((k - 1, detections.get(R.cell(p, sys_idx, li, k - 1).to_key(), ()), prev))
+                for ck, cdets, cc in scan:
+                    for gi, d in enumerate(cdets):
+                        nm = str(d.smufl_name)
+                        if nm.startswith(("timeSig", "clef", "gClef", "fClef", "cClef", "key")):
+                            continue
+                        pb = _page_box(cc, d)
+                        if pb is None or _cover_of_smaller(area, pb) <= 0.0:
+                            continue
+                        got = MO.ink_inside(binary, pb, area, list(st.line_ys), sp)
+                        if got is not None:
+                            inside[R.glyph(p, sys_idx, li, ck, gi).to_key()] = dict(got, cls=nm)
+                owner_row = next((w[1] for w in wit if w[1]), None)
+                log.observe(ssub, Q.CLAIMED_AREA, list(area), reader=READERS.CV_CLAIMED_AREA, frame=frame, cell=k, owner="meter",
+                            owner_row=owner_row, unit="area", standing="READ", witnesses=[list(w) for w in wit], form=r["form"],
+                            pieces=r["pieces"], thickness_px=r["thickness_px"], column_x=col["column_x"], n_staves=col["n_staves"],
+                            n_in_column=col["n_in_column"], numbers=numbers, boxes_inside=inside, space_page_px=round(sp, 3))
+                if progress:
+                    print(f"  gather claimed area (meter) {ssub.to_key()} cell {k}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -14948,6 +15111,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # `_bar_head_window` is shared: a second reader of the SAME mid-bar
         # region, off by default (`METER_OCR_AT_BAR_ENV`) until priced.
         gather_meter_ocr_at_bars(log, cells, local, detections)
+        # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
+        gather_meter_object(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)

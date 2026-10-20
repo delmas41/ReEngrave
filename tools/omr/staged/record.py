@@ -860,6 +860,14 @@ class Q(_Vocab):
     #: `notehead_precision._arc_tail_refusal` weighs it with the arc cut at the barline.
     HEAD_OVAL = "head_oval"
 
+    #: ROADMAP 2.177 / 2.178 step 1 (flag `OMR_METER_OBJECT`, default OFF; filed only while it is ON). A CLAIMED AREA filed on a STAFF
+    #: by an owner (today only `meter`, detail `owner`, `owner_row`, `unit="area"`, `standing`): one row per printed time signature per staff
+    #: (detail `cell`: 0 for a system's opening meter, a bar's cell for a change): the AREA (page px box) drawn around the two numerals' own ink, the numerals' pieces, the two numbers read off the object's halves (detector digit
+    #: boxes + the template reader, or abstained with candidates), the column it stands in on the system's other staves, and the
+    #: ink share inside the area of every other box of the cell. GATHER measures and names no note; `notehead_precision` and
+    #: `family_precision` refuse a box whose ink lies inside (`inside_the_meter`).
+    CLAIMED_AREA = "claimed_area"
+
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
     #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
@@ -2350,6 +2358,7 @@ CLAIMS: "dict[str, str]" = {
     "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
     "REST_INK_CONTACT": CLAIM.MEASUREMENT,
     "HEAD_OVAL": CLAIM.MEASUREMENT,
+    "CLAIMED_AREA": CLAIM.MEASUREMENT,
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
     "UNBOXED_REST_SHAPE": CLAIM.MEASUREMENT,
     "UNBOXED_INK_IS_A_REST": CLAIM.INTERPRETATION,
@@ -2887,6 +2896,9 @@ class READERS(_Vocab):
     #: `gather.gather_head_oval` -- ROADMAP 2.164. The PAGE raster (staff lines in, their rows left out) asked
     #: whether a head box at a bar's left edge holds a head-shaped oval.
     CV_HEAD_OVAL = "cv_head_oval"
+    #: `gather.gather_meter_object` -- ROADMAP 2.177. The PAGE raster (staff-line runs left out) asked where the two stacked numerals of a
+    #: printed time signature are, one column on every staff of the system.
+    CV_CLAIMED_AREA = "cv_claimed_area"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

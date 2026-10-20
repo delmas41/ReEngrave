@@ -149,6 +149,7 @@ from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
 from .. import margins as _margins
 from .. import rest_ink as _rest_ink
 from . import key_slots as _key_slots
+from . import inside_meter as _inside_meter
 from . import letter_cover as _letter_cover
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
@@ -1774,19 +1775,19 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
                    Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER,
-                   Q.REST_INK_CONTACT),
+                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
-           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT),
+           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_on_a_dynamic_letter",
                                      "rest_is_a_duplicate_box",
                                      "rest_in_a_key_signature_slot",
-                                     "rest_is_a_meter_digit",
+                                     "rest_is_a_meter_digit", "inside_the_meter",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1867,7 +1868,17 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # ROADMAP 2.100 (Sean 2026-10-12, tiles 3 and 13: "time signatures"):
         # a rest-class box standing in the column the system's printed time
         # signature occupies, read off the sibling staves' digit boxes.
-        in_meter = _key_slots.meter_column_occupant(ev, box_row)
+        # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): the meter's claim is the numerals' MEASURED box; with the flag ON the
+        # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
+        if _inside_meter.enabled():
+            claimed = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=False)
+            if claimed is not None:
+                detail.update(claimed.detail)
+                return _margins.attach(
+                    Ruling(value=True, reason="inside_the_meter", used=claimed.used, detail=detail),
+                    margin=claimed.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
+                    would_choose=(True,))
+        in_meter = (None if _inside_meter.enabled() else _key_slots.meter_column_occupant(ev, box_row))
         if in_meter is not None:
             detail.update(in_meter["detail"])
             return Ruling(value=True, reason="rest_is_a_meter_digit",

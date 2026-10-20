@@ -691,6 +691,12 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "ROADMAP 2.164: the share of a head-sized ring's sectors that hold ink, at its best placement over a "
         "notehead box at a bar's left edge (staff-line rows left out). A measurement of ink with no class and no score.",
         None),
+    "CLAIMED_AREA": (
+        RAW_INK,
+        "ROADMAP 2.177 (2.178 step 1): a claimed area (page px box) filed on a staff by an owner (today `meter`: ONE printed time signature), drawn around the two stacked numerals' own ink "
+        "(staff-line runs left out) and standing in one column on the system's staves, with the two numbers read off its halves and the ink "
+        "share inside it of every other box of the cell. A measurement of ink; it names no note and decides no meter.",
+        None),
     "UNBOXED_REST_SHAPE": (
         RAW_INK,
         "ROADMAP 2.99: the dimensions, local staff step, stem-column share, "
@@ -890,6 +896,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),
     "CV_HEAD_OVAL": ("staged/gather.py", "gather_head_oval"),
+    "CV_CLAIMED_AREA": ("staged/gather.py", "gather_meter_object"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.
