@@ -100,6 +100,7 @@ from ..record import ABSTAIN, Kind, Q, Scope
 from . import ownership as _ledger
 from . import key_slots as _key_slots
 from . import head_rest_shape as _head_rest_shape
+from . import head_on_mark as _head_on_mark
 from . import letter_cover as _letter_cover
 from .. import head_oval as _head_oval
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
@@ -3312,6 +3313,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      REST_TWIN_REASON,
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
+                                     "on_the_staffs_leading_barline",
+                                     "on_another_symbols_box",
                                      OFF_STAFF_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -3588,6 +3591,11 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 margin=got.margin, axis=got.axis or "rest_shape",
                 unit="mixed (spaces, steps, column share)", band=None,
                 would_choose=(True,))
+    # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default OFF): a head box on the system's leading
+    # barline, inside a clef box, or on an accidental / curled-rest box the detector scored as high.
+    on_mark = _head_on_mark.refusal(ev, box_row, spacing, _cell_box_page(ev), detail)
+    if on_mark is not None:
+        return on_mark
     # ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON): a head box at the
     # bar's left edge sitting where the previous bar's crop cut a tie/slur, with no
     # head-tall ink across half a head's width, is that arc's tail. After the shape
