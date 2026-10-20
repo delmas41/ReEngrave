@@ -440,6 +440,7 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
     bar_fill = _import_from_path("acceptance_bar_fill", _BAR_FILL_MODULE)
     root = ET.fromstring(xml_text)
     exact = short = over = empty = unassessable = partial_unread = 0
+    written_red = 0
     for part in root.findall("part"):
         div = None
         beats = beat_type = None
@@ -458,6 +459,15 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
                 continue
             if beats is None or beat_type is None:
                 unassessable += 1
+                continue
+            # ROADMAP 2.173: a bar WRITTEN RED (`OMR_RED_BARS`) carries a
+            # bar-level "does not add up: ..." words direction. It does not
+            # add up -- that is why it is red -- and is counted APART, never
+            # as exact, short, overfull or empty (a bar the exporter chose to
+            # write red is not one the hold-out missed).
+            if any((w.text or "").startswith("does not add up")
+                   for w in meas.iter("words")):
+                written_red += 1
                 continue
             total, _holds = bar_fill.bar_total(meas, div)
             want = beats * 4.0 / beat_type
@@ -488,9 +498,25 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
     assessed = exact + short + over + empty
     return {"exact": exact, "short": short, "overfull": over, "empty": empty,
             "partial_unread": partial_unread,
+            "written_red": written_red,
             "unassessable": unassessable,
             "n": exact, "of": assessed,
             "fraction": _fraction(exact, assessed)}
+
+
+def bars_written_red(report: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.173: bars that do NOT add up and are WRITTEN in red instead of
+    held out (`OMR_RED_BARS`; Sean 2026-10-19). Their own number: never part
+    of `bars_add_up_control`'s exact, and not a held-out bar either. Zero
+    (and `flag_on: False`) when the flag is off."""
+    red = report.get("bars_written_red") or {}
+    return {"flag_on": bool(red),
+            "n": red.get("bars", 0),
+            "noteheads_and_rests": red.get("noteheads_and_rests", 0),
+            "read": red.get("read", 0),
+            "guessed": red.get("guessed", 0),
+            "two_voice": red.get("two_voice", 0),
+            "named_in_the_export_report": len(red.get("bars_list") or ())}
 
 
 def unread_bars(report: Dict[str, Any]) -> Dict[str, Any]:
@@ -532,6 +558,7 @@ def machine_proxies(xml_text: str, report: Dict[str, Any]) -> Dict[str, Any]:
         # the hold-out — the bars we could not read to their meter.
         "bars_held_out_sum": bars_held_out_sum(report),
         "bars_add_up_control": bars_add_up(xml_text),
+        "bars_written_red": bars_written_red(report),
         "parts_named": parts_named(xml_text),
         "held_out": {
             "staff_not_identified": dropped.get("staff_not_identified", 0),
@@ -982,6 +1009,12 @@ def render_table(current: Dict[str, Any]) -> str:
                         else f"  notes reaching file   {nrf}")
             lines.append(f"  bars HELD OUT (2.8)   {bho['n']:>6} / {bho['of']:<6} "
                         f"({bho['noteheads_and_rests']} noteheads+rests)")
+            _red = mp.get("bars_written_red") or {}
+            if _red.get("flag_on"):
+                lines.append(f"  bars WRITTEN RED (2.173, do not add up) "
+                            f"{_red['n']:>6} ({_red['noteheads_and_rests']} "
+                            f"noteheads+rests, read {_red['read']} / "
+                            f"guessed {_red['guessed']})")
             lines.append(f"  bars add up [control] {baf['n']:>6} / {baf['of']:<6} "
                         f"(short={baf['short']} overfull={baf['overfull']} "
                         f"unassessable={baf['unassessable']})")

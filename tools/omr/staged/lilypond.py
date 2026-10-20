@@ -674,7 +674,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 red = {"words": SX._red_bar_words(held),
                        "want": Fraction(held["want_units"], divisions) / 4,
                        "voices": [Fraction(v["units"], divisions) / 4
-                                  for v in held["voices"]]}
+                                  for v in held["voices"]],
+                       "meter": judged}
                 counters["bars_written_red"] += 1
                 counters["notes_written_in_red_bars"] += SX._bar_event_rows(
                     events)
@@ -751,7 +752,9 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 bars.append(_Bar("single", meter, run.clef, key,
                                  events=events, directions=directions,
                                  condensed=condensed,
-                                 meter_return=meter_return, red=red))
+                                 meter_return=meter_return, red=red,
+                                 where=((run.page, run.system, run.staff, i)
+                                        if red else None)))
                 continue
 
             counters["two_voice_bars"] += 1
@@ -766,7 +769,9 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             bars.append(_Bar("two_voice", meter, run.clef, key,
                              streams=(v1, v2), directions=directions,
                              condensed=condensed, meter_return=meter_return,
-                             red=red))
+                             red=red,
+                             where=((run.page, run.system, run.staff, i)
+                                    if red else None)))
     return bars, lane0, lane1
 
 
