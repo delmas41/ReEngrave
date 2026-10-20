@@ -4719,7 +4719,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             return Ruling(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
                           reason="stem_tip_reads_no_beam", used=tuple(used),
                           detail={**shared, "stem_tip": {"levels": level, "side": tipv["side"], "runs": tipv["runs"]}})
-    # ⚠️ ROADMAP 2.170 (flag `OMR_BEAM_REFUSED_OFF_THE_TIP`, default OFF): the same population, where the 2.146 rule could not
+    # ⚠️ ROADMAP 2.170 (flag `OMR_BEAM_REFUSED_OFF_THE_TIP`, default ON since 2ca6fc9a): the same population, where the 2.146 rule could not
     # decide because the FLAG window at the tip was unread. If no beam stroke of the cell (either reader, kept, refused or
     # dropped) stands at this head's own stem tip and the tip's beam-run reader found no run there, the refused strokes were
     # never this note's beam (a beam joins its stems at their ends): the narrowing below is skipped and the head is read as

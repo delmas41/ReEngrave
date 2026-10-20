@@ -554,6 +554,9 @@ NOT_A_STAGE = frozenset({
     # unknown). It writes nothing and runs no stage; its callers (ADJUDICATE `rhythm._bar_lengths_for`, EVALUATE
     # `consequences`) are the stages, and they declare what they read.
     "bar_length.py",
+    # ROADMAP 2.165. `one_note.py` holds only the GATES of the one-note correction (a pure function of verdicts the caller
+    # already chose: it writes nothing and runs no stage); EVALUATE `consequences.reconcile_duration` is the stage.
+    "one_note.py",
     # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
     # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
     "head_oval.py",
