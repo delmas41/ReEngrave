@@ -22,7 +22,7 @@ The gates (all must hold, else no change -- the note then keeps its value and 2.
    beam ink in the cell (CLAUDE section 4: never an eighth with no flag and no beam seen); a note whose flag or beam was
    read cleanly is never changed.
 
-`OMR_BAR_CORRECTS_ONE_NOTE`: unset/0 = OFF (default). `strict` (or 1/true/on) = only reading classes with 0 wrong in >= 5 of
+`OMR_BAR_CORRECTS_ONE_NOTE`: DEFAULT ON in mode `loose_removed_boxes_ok` (Sean 2026-10-19); explicit 0/false/no/off = OFF. `strict` (or 1/true/on) = only reading classes with 0 wrong in >= 5 of
 Sean's judged tiles count as solid. `loose` = a measurement arm, not a proposal: every DECIDED reader value counts as solid (the bar's own upper bound).
 `relaxed` = strict plus the two-source beamed eighth (a beam read by BOTH the detector
 and the CV reader) and a decided rest, which are measured below the 0-error floor / not measured; the lane's FINDINGS give
@@ -36,6 +36,7 @@ from typing import Any, Optional, Sequence
 from .record import Kind, Outcome, Q, Subject, Verdict
 
 ONE_NOTE_ENV = "OMR_BAR_CORRECTS_ONE_NOTE"
+DEFAULT_MODE = "loose_removed_boxes_ok"     # Sean 2026-10-19 "Yes": land ON in the loosest arm, written blue
 CORRECTS_REASON = "bar_corrects_one_note"
 
 #: Reading classes (the reader's own `reason`) that are >= 95% right on >= 10 of Sean's judged tiles, pooled over both plates
@@ -48,9 +49,12 @@ _UNROOTED = ("infer:", "reconcile_duration")     # a guess, or the bar's own mov
 
 
 def mode() -> str:
-    """'' (off), 'strict' or 'relaxed'."""
-    raw = (os.environ.get(ONE_NOTE_ENV) or "").strip().lower()
-    if raw in ("", "0", "false", "no", "off"):
+    """'' (off), 'strict', 'relaxed', 'loose' or 'loose_removed_boxes_ok'. Unset = DEFAULT_MODE (ON, Sean 2026-10-19)."""
+    raw = os.environ.get(ONE_NOTE_ENV)
+    if raw is None or not raw.strip():
+        return DEFAULT_MODE
+    raw = raw.strip().lower()
+    if raw in ("0", "false", "no", "off"):
         return ""
     return raw if raw in ("relaxed", "loose", "loose_removed_boxes_ok") else "strict"
 

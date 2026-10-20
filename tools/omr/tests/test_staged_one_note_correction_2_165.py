@@ -1,4 +1,4 @@
-"""ROADMAP 2.165 -- the ONE-NOTE CORRECTION: `OMR_BAR_CORRECTS_ONE_NOTE`, default OFF (Sean 2026-10-18/19).
+"""ROADMAP 2.165 -- the ONE-NOTE CORRECTION: `OMR_BAR_CORRECTS_ONE_NOTE`, default ON in mode `loose_removed_boxes_ok` (Sean 2026-10-19 "Yes"; was OFF 10-18).
 
 "with a collection of solid evidence ... if we know the meter and we feel solid about all the other notes ... change the one note
 that it's unsure about if it adds up to the right bar math." STAGED EVALUATE (`reconcile_duration`'s blocked branch) + EXPORT.
@@ -126,6 +126,46 @@ class TestCorrection(unittest.TestCase):
         with mock.patch.object(consequences, "_missed_rest_witness", return_value=(consequences.WITNESS_UNEXPLAINED, 1)):
             b.fire("strict")
         self.assertEqual(b.log.verdict(Q.DURATION, b.a).detail["one_note_refusal"], "unexplained_ink_in_the_bar")
+
+
+class TestDefaultOn(unittest.TestCase):
+    """Sean 2026-10-19: ON by default, loosest arm; explicit 0/false/no/off disables; mode words select."""
+
+    def _mode(self, val):
+        env = {k: v for k, v in os.environ.items() if k != one_note.ONE_NOTE_ENV}
+        if val is not None:
+            env[one_note.ONE_NOTE_ENV] = val
+        with mock.patch.dict(os.environ, env, clear=True):
+            return one_note.mode()
+
+    def test_unset_is_the_loosest_arm(self):
+        self.assertEqual(self._mode(None), "loose_removed_boxes_ok")
+        self.assertEqual(self._mode(""), "loose_removed_boxes_ok")
+
+    def test_explicit_off_words_disable(self):
+        for w in ("0", "false", "no", "off", "OFF"):
+            self.assertEqual(self._mode(w), "", w)
+
+    def test_mode_words_select(self):
+        self.assertEqual(self._mode("strict"), "strict")
+        self.assertEqual(self._mode("1"), "strict")
+        self.assertEqual(self._mode("relaxed"), "relaxed")
+        self.assertEqual(self._mode("loose"), "loose")
+
+    def test_default_writes_the_correction_GUESSED_blue_with_both_candidates(self):
+        b = _Bar()
+        env = {k: v for k, v in os.environ.items() if k != one_note.ONE_NOTE_ENV}
+        env.update(ENV)
+        with mock.patch.dict(os.environ, env, clear=True):
+            consequences.reconcile_duration(b.log, CELL, b.meter)
+        v = b.log.verdict(Q.DURATION, b.a)
+        self.assertEqual(v.reason, one_note.CORRECTS_REASON)
+        rec = export.Record({"record": {"observations": [], "abstentions": [],
+                                        "verdicts": [x.to_json() for x in b.log.all_verdicts()]}})
+        g = export.guess_of(rec, b.a.to_key())
+        self.assertEqual(g["rule"], "bar_corrects_one_note")
+        self.assertEqual([c["beats"] for c in g["candidates"]], [0.5, 1.0])
+        self.assertEqual(g["chosen"]["beats"], 0.5)
 
 
 class TestExport(unittest.TestCase):
