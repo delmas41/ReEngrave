@@ -105,24 +105,37 @@ def _events(log, g):
     return v.value["events"]
 
 
-class TestOneEventPerVoice(unittest.TestCase):
+class TestOneEventHereTwoVoicesThere(unittest.TestCase):
+    """`Q.EVENT` keeps ONE event per head (every single-stream bar sum counts a head once); `adjudicate_voices` stands it
+    in two streams only where the two voices then sum alike."""
 
-    def test_flag_ON_the_head_is_two_events_in_two_voices(self):
-        def build(l):
-            g0 = _unison(l, down_beams=2, up_beams=1)
-            # rule 1 of `adjudicate_voices` reads the PAGE-frame box and the staff spacing
-            l.observe(g0, Q.GLYPH_BOX, ("noteheadBlackInSpace", 143, 523, 139, 124), reader=READERS.DETECTOR,
-                      frame="cell:0", score=0.9, bbox_page_px=[143, 523, 282, 647])
-            l.observe(R.staff(0, 0, 0), Q.STAFF_SPACING, 100.0, reader=READERS.GEOMETRY, frame="page")
-            return g0
-        log, g = _run(build, True)
+    @staticmethod
+    def _frame(l, g0):
+        # rule 1 of `adjudicate_voices` reads the PAGE-frame box and the staff spacing
+        l.observe(g0, Q.GLYPH_BOX, ("noteheadBlackInSpace", 143, 523, 139, 124), reader=READERS.DETECTOR,
+                  frame="cell:0", score=0.9, bbox_page_px=[143, 523, 282, 647])
+        l.observe(R.staff(0, 0, 0), Q.STAFF_SPACING, 100.0, reader=READERS.GEOMETRY, frame="page")
+        return g0
+
+    def test_flag_ON_the_event_is_one_and_carries_each_voices_value(self):
+        log, g = _run(lambda l: self._frame(l, _unison(l, down_beams=2, up_beams=1)), True)
         events = _events(log, g)
-        self.assertEqual([(e["voice"], e["unison_beats"]) for e in events], [("down", 0.25), ("up", 0.5)])
-        self.assertEqual({tuple(e["glyphs"]) for e in events}, {(g.glyph,)})
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["unison"], {"up": 0.5, "down": 0.25})
+
+    def test_flag_ON_voices_that_sum_alike_are_two_voices_each_on_its_own_value(self):
+        log, g = _run(lambda l: self._frame(l, _flagged(l)), True)
         vo = log.verdict(Q.VOICES, g.at(Kind.CELL))
-        self.assertEqual(vo.outcome, Outcome.DECIDED)
+        self.assertEqual((vo.outcome, vo.reason), (Outcome.DECIDED, "two_voices_same_beat"))
         self.assertEqual(vo.value["n_voices"], 2)
-        self.assertEqual(vo.reason, "two_voices_same_beat")
+        self.assertEqual(vo.value["voices"], [[g.glyph], [g.glyph]])
+
+    def test_flag_ON_voices_that_do_not_sum_alike_stay_one_stream_RED(self):
+        """An eighth in one voice and a sixteenth in the other is not a bar either voice fills alike: the head stays one
+        event in one voice, as with the flag OFF, and the reason is on the record."""
+        log, g = _run(lambda l: self._frame(l, _unison(l, down_beams=2, up_beams=1)), True)
+        vo = log.verdict(Q.VOICES, g.at(Kind.CELL))
+        self.assertNotEqual(vo.value and vo.value.get("n_voices"), 2)
 
     def test_flag_ON_each_voice_sums_on_its_own_stem_value(self):
         from tools.omr.staged.adjudicators import rhythm

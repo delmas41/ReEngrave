@@ -132,6 +132,19 @@ def adjudicate_unison_voices(ev: Evidence) -> Ruling:
             readings[side] = _reading(side, None, "none_seen", beams=[c, pz], flags=0)
     if flag_ids["up"] & flag_ids["down"]:
         return Ruling.abstain("shared_flag", voices=readings)
+    # CORROBORATION ONLY (Sean 2026-10-19: "when multiple voices land unison on eighth notes that have beams, the beams are
+    # both above and below ... easier to see the beam outside of the staff ... just helps as corroboration"). The OTHER
+    # stem's beam is different ink, a second witness: where one voice's beam count is a RANGE and the other voice's level is
+    # READ (c == pz > 0 or a flag) and lies inside that range, it confirms that level. It never supplies a value: a voice with
+    # no beam ink at all stays unmarked (the voices may differ -- one holds a quarter while the other moves in eighths), and
+    # a read level outside the range settles nothing.
+    for side, other in (("up", "down"), ("down", "up")):
+        r, o = readings[side], readings[other]
+        if r.get("range") and o["level"] and o["source"] in ("beam", "flag"):
+            lo, hi = r["beams"]
+            if lo <= o["level"] <= hi:
+                readings[side] = _reading(side, int(o["level"]), "beam_corroborated", beams=r["beams"],
+                                          flags=r.get("flags"), corroborated_by=other)
     if any(r.get("range") for r in readings.values()):
         return Ruling.abstain("voice_beams_range", voices=readings)
     marked = [s for s, r in readings.items() if r["level"]]

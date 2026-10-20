@@ -146,7 +146,26 @@ for arm in ARMS:
             members.append(dict(glyph=m, **brief(v), margin=v.get("margin"), ev=evd(v), live_detail={k: d[k] for k in EV if k in d}))
         bars[ck] = members
     t1 = time.time()
-    xml, report = E.to_musicxml(result)
+    try:
+        xml, report = E.to_musicxml(result)
+    except E.Unbalanced as exc:
+        # keep going: the frame of `to_musicxml` still holds its counters; print what balances the equality
+        import sys as _sys
+        tb = _sys.exc_info()[2]
+        while tb.tb_next:
+            tb = tb.tb_next
+        fl = tb.tb_frame.f_locals
+        c = fl.get("counters", {})
+        print(DOC, arm, "UNBALANCED", str(exc)[:2500], {k: c.get(k) for k in (
+            "notes", "rests", "measure_rests_read", "notes_unison_second_voice", "rests_duplicated_across_voices",
+            "notes_doubled_to_condensed_slot")}, flush=True)
+        if fl.get("xml"):
+            open(os.path.join(OUTDIR, "%s.%s.musicxml" % (DOC, arm)), "w").write(fl["xml"])
+        import json as _j
+        _j.dump({"held": fl.get("held_bars"), "partial": fl.get("partial_bars")}, open(os.path.join(OUTDIR, "%s.%s.heldbars.json" % (DOC, arm)), "w"), default=str)
+        xml, report = fl["xml"], fl["report"]
+        report["unbalanced"] = str(exc)[:200]
+    open(os.path.join(OUTDIR, "%s.%s.musicxml" % (DOC, arm)), "w").write(xml)
     print(DOC, arm, "export %.0fs" % (time.time() - t1), flush=True)
     # which changed notes reached the file (blue, with the rule's name)? guess_of is the exporter's own test
     R = E.Record({"record": {"observations": [], "abstentions": [], "verdicts": vs}})
@@ -168,6 +187,7 @@ for arm in ARMS:
         return out
     cov["voice_counters"] = flat(report)
     cov["balance"] = report.get("balance")
+    cov["not_written"] = report.get("notes_not_written")
     cov["bars_held_out_sum"] = {k: v for k, v in (report.get("bars_held_out_sum") or {}).items() if k != "held"}
     cov["partial_bars"] = {k: v for k, v in (report.get("partial_bars") or {}).items() if not isinstance(v, list) or k == "stay_held_by_reason"}
     held_keys = {h["bar_key"] for h in (report.get("bars_held_out_sum") or {}).get("held", [])}

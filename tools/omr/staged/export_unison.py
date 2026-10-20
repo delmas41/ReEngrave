@@ -97,3 +97,22 @@ def settle(runs, stats: Dict[str, int]) -> None:
                     d.pop("unison_head", None)
                 keep.append(d)
             cell.detections[:] = keep
+
+
+def unfuse(cell) -> bool:
+    """A bar that could not be written as two voices: drop its twins, restore its heads to their OFF reading. True if
+    anything changed."""
+    if not any(d.get("unison_twin") for d in cell.detections):
+        return False
+    keep = []
+    for d in cell.detections:
+        if d.get("unison_twin"):
+            continue
+        off = d.pop("_unison_off", None)
+        if off is not None and d.get("unison_head"):
+            d.update(off)
+            d.pop("unison_head", None)
+            d["stem_direction"] = None
+        keep.append(d)
+    cell.detections[:] = keep
+    return True

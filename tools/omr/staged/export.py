@@ -4163,6 +4163,14 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             _why: List[str] = []
             split = ((_voice_split(rec, run, i, events, _why), _why)
                      if events else None)
+            if (events and split[0] is None and cell_here is not None
+                    and _export_unison.unfuse(cell_here)):
+                # ROADMAP 2.175: the bar could not be written as two voices after all, so a unison head's second
+                # note must not sit in the one stream (it would overfill the bar): one note per head, as flag OFF.
+                events = _events(cell_here)
+                _why = []
+                split = ((_voice_split(rec, run, i, events, _why), _why)
+                         if events else None)
             # ⚠️ THE METER THE FILE CLAIMS, not the one this bar's own system
             # filed — see `in_force` above. `meter` is still what gets WRITTEN
             # and what sizes a held-out bar's rest; this is only what the bar
@@ -4825,7 +4833,10 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # to fail for the right reason.
     shared = [ev for ev in streams[1] if ev.get("kind") == "rest"
               and any(ev is other for other in streams[0])]
-    counters["rests_duplicated_across_voices"] += len(shared)
+    # ROADMAP 2.175: not on a doubled copy -- its rests are already subtracted under `notes_doubled_to_condensed_slot`
+    # (a rest written in both voices of a doubled copy would be taken out twice)
+    if not doubled:
+        counters["rests_duplicated_across_voices"] += len(shared)
     # ⚠️ AND THE MARKS ON IT, for the same reason. A fermata on a shared rest
     # produces TWO `<fermata>` elements from ONE mark, which would make
     # `fermata_balance` -- `written + not_written <= marks_in_log` -- go False
@@ -5295,7 +5306,8 @@ def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
     """
     n = 0
     for ev in events:
-        n += len(ev.get("noteheads") or ())
+        # ROADMAP 2.175: a unison head's second voice is not a second row of the log
+        n += sum(1 for h in (ev.get("noteheads") or ()) if not h.get("unison_twin"))
         if ev.get("rest"):
             n += 1
     return n
@@ -5809,7 +5821,7 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 accidental=head.get("printed_accidental"),
                 ), head.get("guess")))
             counters["notes"] += 1
-            if head.get("unison_twin"):
+            if head.get("unison_twin") and not doubled:
                 # ROADMAP 2.175: the second voice of a head with a stem each way; subtracted in `to_musicxml`'s balance
                 counters["notes_unison_second_voice"] += 1
             _count_guess(counters, head.get("guess"), False)

@@ -5701,15 +5701,16 @@ def adjudicate_event(ev: Evidence) -> Ruling:
     events = [{"glyphs": sorted(grp),
                "x": round(sum(boxes[i][0] for i in grp) / len(grp), 2),
                "kind": "chord"} for grp in groups]
-    # ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, OFF): ONE HEAD, A STEM EACH WAY, IS TWO NOTES -- one event per
-    # voice, both naming the one glyph (the head), each carrying its own voice and value (`unison_beats`). Only a head
-    # that stands ALONE in its cluster: a head that shares an onset column with another head is a chord the stems
-    # cannot tell apart, and stays one event (counted).
+    # ⚠️ ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, OFF): ONE HEAD, A STEM EACH WAY, IS TWO NOTES -- and ONE EVENT HERE.
+    # Every single-stream consumer of `Q.EVENT` (bar_length, the meter witnesses, reconcile, INFER) sums a bar's events as
+    # one line, so a second event for the same head would be summed as a second note IN THE SAME LINE and refuse a bar
+    # that adds up per voice. The event stays one; it carries each voice's own value (`unison`, from `Q.UNISON_VOICES`),
+    # and `adjudicate_voices` is the consumer that stands it in two streams. Only a head that stands ALONE in its
+    # cluster: a head sharing an onset column with another head is a chord the stems cannot tell apart (counted).
     from . import unison_two as _unison_two
     unison_split = unison_kept_whole = 0
     if _unison_two.enabled():
-        twin_events = []
-        for e in list(events):
+        for e in events:
             if e["kind"] != "chord":
                 continue
             sub = Subject(Kind.GLYPH, page=ev.subject.page, system=ev.subject.system, staff=ev.subject.staff,
@@ -5721,14 +5722,10 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                 unison_kept_whole += 1
                 continue
             unison_split += 1
-            events.remove(e)
-            for voice in ("up", "down"):
-                twin_events.append({**e, "voice": voice, "unison": True,
-                                    "unison_beats": _unison_two.voice_event_beats(uv.value, voice)})
-        events += twin_events
+            e["unison"] = {v: _unison_two.voice_event_beats(uv.value, v) for v in ("up", "down")}
     events += [{"glyphs": [g], "x": round(boxes[g][0], 2), "kind": "rest"}
                for g in rest_ids]
-    events.sort(key=lambda e: (e["x"], e["glyphs"][0], e.get("voice") or ""))
+    events.sort(key=lambda e: (e["x"], e["glyphs"][0]))
 
     stem_state = ev.state(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS)
     chorded = sum(1 for e in events if len(e["glyphs"]) > 1)
@@ -9335,36 +9332,61 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
     # reads. The record has already decided which glyphs sound together;
     # re-clustering them here would be a second grouping rule nothing forces
     # to agree with the first.
-    events, read = [], 0
-    for e in raw:
-        glyphs = list(e.get("glyphs") or ())
-        kind = e.get("kind") or "chord"
-        direction = None
-        if e.get("voice"):
-            # ⚠️ ROADMAP 2.175: a unison head's two events stand in the voice of their own stem.
-            direction = e["voice"]
-            read += 1
-        elif kind == "chord":
-            # ⚠️ THE MAJORITY OVER THE CHORD, which is what
-            # `group_chords_in_measure` puts on its own event. A chord whose
-            # members genuinely disagree has already been SPLIT by the divisi
-            # guard, so a disagreement surviving to here is one head whose
-            # stem was missed, not two voices.
-            votes = Counter()
-            for g in glyphs:
-                sub = Subject(Kind.GLYPH, page=ev.subject.page,
-                              system=ev.subject.system,
-                              staff=ev.subject.staff, cell=ev.subject.cell,
-                              glyph=g)
-                d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-                if d is not None and d.outcome == "decided":
-                    votes[d.value] += 1
-            if votes:
-                direction = votes.most_common(1)[0][0]
+    def _expand(unison):
+        out = []
+        for e in raw:
+            # ⚠️ ROADMAP 2.175: a unison head's ONE event stands as TWO here, one per voice, each in the voice of its own
+            # stem and carrying that stem's own value -- but only where the two voices then each sum to the same length.
+            if unison and e.get("unison"):
+                for voice in ("up", "down"):
+                    out.append({**e, "voice": voice, "unison_beats": e["unison"].get(voice)})
+            else:
+                out.append(e)
+        return out
+
+    def _shim(seq):
+        events, read = [], 0
+        for e in seq:
+            glyphs = list(e.get("glyphs") or ())
+            kind = e.get("kind") or "chord"
+            direction = None
+            if e.get("voice"):
+                direction = e["voice"]
                 read += 1
-        events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
-                       "stem_direction": direction, "_glyphs": glyphs,
-                       **({"unison_beats": e["unison_beats"]} if e.get("unison") else {})})
+            elif kind == "chord":
+                # ⚠️ THE MAJORITY OVER THE CHORD, which is what
+                # `group_chords_in_measure` puts on its own event. A chord whose
+                # members genuinely disagree has already been SPLIT by the divisi
+                # guard, so a disagreement surviving to here is one head whose
+                # stem was missed, not two voices.
+                votes = Counter()
+                for g in glyphs:
+                    sub = Subject(Kind.GLYPH, page=ev.subject.page,
+                                  system=ev.subject.system,
+                                  staff=ev.subject.staff, cell=ev.subject.cell,
+                                  glyph=g)
+                    d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
+                    if d is not None and d.outcome == "decided":
+                        votes[d.value] += 1
+                if votes:
+                    direction = votes.most_common(1)[0][0]
+                    read += 1
+            events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
+                           "stem_direction": direction, "_glyphs": glyphs,
+                           **({"unison_beats": e["unison_beats"]} if e.get("unison_beats") is not None else {})})
+
+        return events, read
+
+    events, read = _shim(_expand(True))
+    unison_declined = None
+    if any(e.get("unison") for e in raw):
+        two = _legacy_voicing.split_events_into_voices(events)
+        sums = [_sum_beats(ev, ev.subject, st) for st in two] if len(two) == 2 else []
+        if len(sums) == 2 and None not in sums and abs(sums[0] - sums[1]) <= VOICE_SUM_EPSILON_QUARTERS:
+            pass
+        else:
+            unison_declined = "streams_unequal" if len(sums) == 2 and None not in sums else "stream_sum_unknown"
+            events, read = _shim(_expand(False))
 
     rests = sorted(g for e in events if e["kind"] == "rest"
                    for g in e["_glyphs"])
@@ -9467,5 +9489,6 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),
+                **({"unison_two_voices_declined": unison_declined} if unison_declined else {}),
                 "directions_read": read, "n_rests_displaced": len(displaced),
                 **rule_detail})
