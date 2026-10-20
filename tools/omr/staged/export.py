@@ -7171,6 +7171,38 @@ def _non_detector_ink(rec: "Record", quantity: Optional[str]) -> int:
                if str(o.get("reader")) not in _DETECTOR_READERS)
 
 
+def _detector_view_census(rec: "Record") -> Dict[str, Any]:
+    """ROADMAP 2.172 follow-up: what each `OMR_DETECTOR_VIEWS` view found. Reports only; no decision reads it.
+
+    Per view: kept boxes by family, the `phases_found` distribution (how many sub-pixel phases agreed), and the refused near-misses by
+    candidate class, with how many carried a canonical box rectangle.
+    """
+    kept: Dict[str, Dict[str, int]] = {}
+    phases: Dict[str, Dict[str, int]] = {}
+    refused: Dict[str, Dict[str, int]] = {}
+    with_box = 0
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        d = o.get("detail") or {}
+        view = d.get("view")
+        if view is None:
+            continue
+        fam = str(d.get("family"))
+        kept.setdefault(view, {})[fam] = kept.get(view, {}).get(fam, 0) + 1
+        k = str(d.get("phases_found"))
+        phases.setdefault(view, {})[k] = phases.get(view, {}).get(k, 0) + 1
+    for a in rec.abstentions:
+        d = a.get("detail") or {}
+        if a.get("quantity") != Q.GLYPH_BOX or d.get("view") is None:
+            continue
+        cls = str(d.get("candidate_class"))
+        refused.setdefault(d["view"], {})[cls] = refused.get(d["view"], {}).get(cls, 0) + 1
+        if d.get("box_canonical"):
+            with_box += 1
+    return {"kept_by_view_family": kept, "phases_found_by_view": phases,
+            "refused_near_miss_by_view_class": refused,
+            "refused_with_canonical_box": with_box}
+
+
 def coverage(result: Dict[str, Any],
              written: Optional[Dict[str, int]] = None) -> Dict[str, Any]:
     """For every notation family: did it come out, and if not, WHY NOT.
@@ -7375,6 +7407,7 @@ def coverage(result: Dict[str, Any],
         # already been burnt by twice: a hardcoded 0 still reads 0 the day the
         # thing it counts starts happening.
         "accidental_reading": _accidental_census(rec, detected, written),
+        "detector_views": _detector_view_census(rec),
         # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
         # class nobody has thought about appears here the first time the
         # detector emits one.

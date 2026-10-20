@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-19 -- ROADMAP 2.172 follow-up: wiring gaps closed by a real reader
+
+`export._detector_view_census` (in `export.coverage` as `detector_views`) now reads Q.GLYPH_BOX `view`, `phases_found`, `candidate_class`, `box_canonical`: kept boxes by view and family, phases_found distribution, refused near-misses by class. Their 4 KNOWN_GAPS entries are removed; `staged.check` 197 -> 193. Reporting only, no decision changed.
+
 ## 2026-10-19 -- ROADMAP 2.172 LANDED ON: `OMR_DETECTOR_VIEWS` default ON, small view only
 Sean "Yes" to "may the smaller detector view land ON as the default?". `detector_views.enabled()` now defaults on (explicit 0/false/no/off disables; OFF is byte-identical to the previous feed); default parts are the 8 px anti-aliased 3-phase-median small view, close view only via `OMR_DETECTOR_VIEWS_WHICH`. Takes effect at the next full gather. Sizes NOT CONFIRMED beyond two plates. `benchmarks/omr-detector-view-2026-10/FINDINGS.md`.
 
