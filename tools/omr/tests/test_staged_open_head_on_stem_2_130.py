@@ -20,6 +20,23 @@ from tools.omr.staged.record import Log, Outcome, Q, READERS
 
 from tools.omr.tests.test_staged_duration import CELL, SPACE, _flag, _staff_space, _stem, _beam
 
+
+# ROADMAP 2.173 (`OMR_WHOLE_NEEDS_HOLLOW_NO_STEM` default ON, Sean 2026-10-19/20): this file tests the
+# pre-2.173 path (bar held out / old whole value); pinned OFF here.
+_PIN_2_173 = None
+
+
+def setUpModule():
+    global _PIN_2_173
+    import os as _os
+    from unittest import mock as _mock
+    _PIN_2_173 = _mock.patch.dict(_os.environ, {"OMR_WHOLE_NEEDS_HOLLOW_NO_STEM": "0"})
+    _PIN_2_173.start()
+
+
+def tearDownModule():
+    _PIN_2_173.stop()
+
 ON = {"OMR_OPEN_HEAD_ON_STEM": "1"}
 
 

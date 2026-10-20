@@ -38,6 +38,23 @@ from tools.omr.tests.test_staged_export import (
     _vrd,
 )
 
+
+# ROADMAP 2.173 (`OMR_RED_BARS` default ON, Sean 2026-10-19/20): this file tests the
+# pre-2.173 path (bar held out / old whole value); pinned OFF here.
+_PIN_2_173 = None
+
+
+def setUpModule():
+    global _PIN_2_173
+    import os as _os
+    from unittest import mock as _mock
+    _PIN_2_173 = _mock.patch.dict(_os.environ, {"OMR_RED_BARS": "0"})
+    _PIN_2_173.start()
+
+
+def tearDownModule():
+    _PIN_2_173.stop()
+
 _HAS_LILYPOND = shutil.which("lilypond") is not None
 
 

@@ -1,0 +1,273 @@
+{
+ "seed": 2172,
+ "tiles": [
+  {
+   "file": "tile_01.png",
+   "plate": "bra",
+   "page": 2,
+   "role": "new_view_box",
+   "subject": "glyph/2/0/5/4/15",
+   "cls": "augmentationDot",
+   "conf": 0.6172846555709839,
+   "view": "small",
+   "family": "dot",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    4206.5390625,
+    1662.4697265625,
+    4221.0849609375,
+    1678.955078125
+   ],
+   "sha256": "da4323a6ca85674723af4c35258b3230760cfe34ad24a99696b70f6df1150590"
+  },
+  {
+   "file": "tile_02.png",
+   "plate": "bra",
+   "page": 3,
+   "role": "new_view_box",
+   "subject": "glyph/3/1/8/7/3",
+   "cls": "restWhole",
+   "conf": 0.4043652415275574,
+   "view": "small",
+   "family": "rest",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    4144.2025,
+    5796.0275,
+    4183.33,
+    5814.3425
+   ],
+   "sha256": "594d55ce54aa4b7cd8289f871ad90bf2521a6a34f2bbff4f624c874b4e8ebc47"
+  },
+  {
+   "file": "tile_03.png",
+   "plate": "bra",
+   "page": 1,
+   "role": "new_view_box",
+   "subject": "glyph/1/0/7/1/19",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.5757806897163391,
+   "view": "close",
+   "family": "blackhead",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    1898.4345703125,
+    2317.5595703125,
+    1915.462890625,
+    2336.1943359375
+   ],
+   "sha256": "b5617039ef9dc58ade2bbbba44f9a345133b0dfb8c6d86e06200ee32616311ca"
+  },
+  {
+   "file": "tile_04.png",
+   "plate": "bra",
+   "page": 3,
+   "role": "new_view_box",
+   "subject": "glyph/3/0/2/2/24",
+   "cls": "augmentationDot",
+   "conf": 0.6750102043151855,
+   "view": "small",
+   "family": "dot",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    1810.655,
+    1013.9375,
+    1825.085,
+    1028.09
+   ],
+   "sha256": "caf85ef1965ec811612ea8a125c4453542cefa5786194eeaeb3781d15a72dfe7"
+  },
+  {
+   "file": "tile_05.png",
+   "plate": "lit",
+   "page": 4,
+   "role": "control_blank",
+   "subject": "glyph/4/0/5/14/1",
+   "cls": "(blank)",
+   "conf": null,
+   "view": null,
+   "family": null,
+   "phases_found": null,
+   "bbox": [
+    2604.7748645833653,
+    1110.409585209073,
+    2626.1948645833654,
+    1131.829585209073
+   ],
+   "sha256": "6d1680c99319677c46753d4041b70559ee4d05c4778adc2927b52ad7c677e57f"
+  },
+  {
+   "file": "tile_06.png",
+   "plate": "lit",
+   "page": 2,
+   "role": "new_view_box",
+   "subject": "glyph/2/1/9/6/19",
+   "cls": "flag8thDown",
+   "conf": 0.4838840365409851,
+   "view": "small",
+   "family": "flag",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    1385.2,
+    3403.72,
+    1408.4,
+    3449.96
+   ],
+   "sha256": "18a786ba0165f36a4ba7b935d5532d9bdf5880deea2db0e22fe232e0fc6358bb"
+  },
+  {
+   "file": "tile_07.png",
+   "plate": "lit",
+   "page": 5,
+   "role": "new_view_box",
+   "subject": "glyph/5/0/5/4/11",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.3587709069252014,
+   "view": "close",
+   "family": "blackhead",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    1167.5975,
+    1507.98,
+    1215.635,
+    1523.73
+   ],
+   "sha256": "6f6540da0651f69529b08c51e93ae50008626a1a0fa21049bb578d39f9a77ea3"
+  },
+  {
+   "file": "tile_08.png",
+   "plate": "bra",
+   "page": 3,
+   "role": "new_view_box",
+   "subject": "glyph/3/0/9/7/11",
+   "cls": "flag8thDown",
+   "conf": 0.6940394043922424,
+   "view": "small",
+   "family": "flag",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    4445.9075,
+    2642.7975,
+    4478.93,
+    2737.1475
+   ],
+   "sha256": "8d5e14d3be6a0bec21f679f3379e752fb20e685728abbb268b9767b687b71d5f"
+  },
+  {
+   "file": "tile_09.png",
+   "plate": "bra",
+   "page": 3,
+   "role": "control_production_head",
+   "subject": "glyph/3/1/1/8/0",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.8434376120567322,
+   "view": null,
+   "family": null,
+   "phases_found": null,
+   "bbox": [
+    4520.225,
+    4377.45,
+    4560.375,
+    4411.55
+   ],
+   "sha256": "92e79c68daadb93a97af117e84f11fd34a95c5adbc7c74de728dc6c08551974e"
+  },
+  {
+   "file": "tile_10.png",
+   "plate": "lit",
+   "page": 4,
+   "role": "new_view_box",
+   "subject": "glyph/4/0/7/13/15",
+   "cls": "augmentationDot",
+   "conf": 0.6853988766670227,
+   "view": "small",
+   "family": "dot",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    2433.755,
+    1447.9425,
+    2440.055,
+    1454.2425
+   ],
+   "sha256": "97417557688d4e5c42cebf267d39fbbb62657747d22e8169856cfd5f649116cb"
+  },
+  {
+   "file": "tile_11.png",
+   "plate": "bra",
+   "page": 1,
+   "role": "new_view_box",
+   "subject": "glyph/1/1/11/0/38",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.3161202073097229,
+   "view": "close",
+   "family": "blackhead",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    649.9912109375,
+    6725.51220703125,
+    663.88671875,
+    6741.04248046875
+   ],
+   "sha256": "00229a39996978c42a6e0e80cdfff1a389dced523cd44b75737ba0d22ddfce38"
+  },
+  {
+   "file": "tile_12.png",
+   "plate": "lit",
+   "page": 4,
+   "role": "new_view_box",
+   "subject": "glyph/4/1/4/1/13",
+   "cls": "restQuarter",
+   "conf": 0.5720369219779968,
+   "view": "small",
+   "family": "rest",
+   "phases_found": [
+    0,
+    1,
+    2
+   ],
+   "bbox": [
+    692.15,
+    2710.4725,
+    711.05,
+    2765.2825
+   ],
+   "sha256": "39d37fd2d2801e50e65c53f1c3b53962347789f9c7419096c71b7c9407b565b3"
+  }
+ ]
+}

@@ -58,6 +58,23 @@ from tools.omr.staged.record import (
 )
 from tools.omr.tests.test_staged_export import QUARTER, _obs, _one_staff_page, _vrd
 
+
+# ROADMAP 2.173 (red bars default ON, Sean 2026-10-19/20): this file tests the
+# HELD-OUT path (2.8), which `OMR_RED_BARS=0` keeps; pinned OFF here.
+_RED_PIN = None
+
+
+def setUpModule():
+    global _RED_PIN
+    import os
+    from unittest import mock as _mock
+    _RED_PIN = _mock.patch.dict(os.environ, {"OMR_RED_BARS": "0"})
+    _RED_PIN.start()
+
+
+def tearDownModule():
+    _RED_PIN.stop()
+
 #: A page-frame staff spacing shared by every fixture below, so a "0.10
 #: staff spaces" tolerance and a "0.5 staff spaces" guard both mean a fixed,
 #: legible number of pixels (2px and 10px).

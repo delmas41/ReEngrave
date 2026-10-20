@@ -17,6 +17,23 @@ from tools.omr.staged import export as SX
 from tools.omr.staged import lilypond as LY
 from tools.omr.tests.test_staged_export import QUARTER, _one_staff_page
 
+
+# ROADMAP 2.173 (`OMR_RED_BARS` default ON, Sean 2026-10-19/20): this file tests the
+# pre-2.173 path (bar held out / old whole value); pinned OFF here.
+_PIN_2_173 = None
+
+
+def setUpModule():
+    global _PIN_2_173
+    import os as _os
+    from unittest import mock as _mock
+    _PIN_2_173 = _mock.patch.dict(_os.environ, {"OMR_RED_BARS": "0"})
+    _PIN_2_173.start()
+
+
+def tearDownModule():
+    _PIN_2_173.stop()
+
 FOUR_FOUR = {"numerator": 4, "denominator": 4, "raw": "4/4"}
 RED = "#D00000"
 BLUE = "#1F6FEB"

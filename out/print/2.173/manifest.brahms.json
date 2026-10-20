@@ -1,0 +1,156 @@
+[
+ {
+  "n": 1,
+  "file": "brahms-1-p5-s0-staff8-cell0.png",
+  "label": "SHORT bar (all read)",
+  "page": 5,
+  "system": 0,
+  "staff": 8,
+  "cell": 0,
+  "measure": 79,
+  "want": 3.0,
+  "counted": [
+   2.0
+  ],
+  "read": 4,
+  "guessed": 0,
+  "rows": [
+   {
+    "kind": "note",
+    "pitch": "C3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/5/0/8/0/9"
+   },
+   {
+    "kind": "note",
+    "pitch": "C3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/5/0/8/0/5"
+   },
+   {
+    "kind": "note",
+    "pitch": "C3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/5/0/8/0/7"
+   },
+   {
+    "kind": "rest",
+    "beats": 0.5,
+    "measure_rest": false,
+    "status": "READ",
+    "glyph": "glyph/5/0/8/0/10"
+   }
+  ]
+ },
+ {
+  "n": 2,
+  "file": "brahms-2-p8-s1-staff8-cell11.png",
+  "label": "OVERFULL bar (all read)",
+  "page": 8,
+  "system": 1,
+  "staff": 8,
+  "cell": 11,
+  "measure": 160,
+  "want": 3.0,
+  "counted": [
+   7.0
+  ],
+  "read": 6,
+  "guessed": 0,
+  "rows": [
+   {
+    "kind": "rest",
+    "beats": 1.0,
+    "measure_rest": false,
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/4"
+   },
+   {
+    "kind": "note",
+    "pitch": "Ab3",
+    "beats": 4.0,
+    "type": "whole",
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/11"
+   },
+   {
+    "kind": "note",
+    "pitch": "Gb3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/3"
+   },
+   {
+    "kind": "note",
+    "pitch": "F3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/1"
+   },
+   {
+    "kind": "note",
+    "pitch": "Eb3",
+    "beats": 0.5,
+    "type": "eighth",
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/0"
+   },
+   {
+    "kind": "rest",
+    "beats": 0.5,
+    "measure_rest": false,
+    "status": "READ",
+    "glyph": "glyph/8/1/8/11/350001"
+   }
+  ]
+ },
+ {
+  "n": 3,
+  "file": "brahms-3-p19-s0-staff10-cell3.png",
+  "label": "bar with a GUESSED note (blue, as in any bar)",
+  "page": 19,
+  "system": 0,
+  "staff": 10,
+  "cell": 3,
+  "measure": 355,
+  "want": 3.0,
+  "counted": [
+   2.5
+  ],
+  "read": 2,
+  "guessed": 1,
+  "rows": [
+   {
+    "kind": "note",
+    "pitch": "Ab4",
+    "beats": 1.0,
+    "type": "quarter",
+    "status": "GUESSED",
+    "glyph": "glyph/19/0/10/3/7"
+   },
+   {
+    "kind": "rest",
+    "beats": 0.5,
+    "measure_rest": false,
+    "status": "READ",
+    "glyph": "glyph/19/0/10/3/1"
+   },
+   {
+    "kind": "note",
+    "pitch": "F4",
+    "beats": 1.0,
+    "type": "quarter",
+    "status": "READ",
+    "glyph": "glyph/19/0/10/3/2"
+   }
+  ]
+ }
+]

@@ -598,6 +598,95 @@ class YoloDetector:
                         (float(x0), float(y0), float(x1), float(y1))))
         return out
 
+    def detect_view(
+        self,
+        cell: MeasureCell,
+        staff_space_px: float,
+        *,
+        shifts: "Iterable[tuple[int, int]]" = ((0, 0),),
+        anti_alias: bool = False,
+        conf_threshold: float = 0.05,
+        iou_threshold: float = 0.7,
+    ) -> "list[list[SymbolDetection]] | None":
+        """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, caller-gated; nothing on the
+        production path calls this). The SAME model on the SAME `cell.image`, shown a
+        staff space of EXACTLY `staff_space_px` network pixels, once per entry of
+        `shifts` (each a whole-canonical-pixel `(dx, dy)` by which the picture is moved
+        before it is resized -- a sub-pixel phase of the network grid; the vacated edge
+        repeats the edge pixel). One batch, one forward pass.
+
+        Differs from `detect` in exactly the ways 2.171 measured: the resize ratio is
+        `staff_space_px / canonical staff space` with NO `round32` of a per-crop `imgsz`
+        (so a bar and a wider crop show one size); `anti_alias` resizes with
+        `cv2.INTER_AREA` instead of ultralytics' two-tap bilinear (a 5-8 px dot sampled
+        rather than averaged); the stride padding is the production grey 114, centred as
+        `LetterBox` centres it. Boxes come back in the CELL's canonical pixels, one list per
+        shift, role-twins collapsed as `detect` does. `None` for a cell with no usable
+        staff lines (nothing to calibrate against) -- never a guessed size."""
+        self._ensure_loaded()
+        assert self._model is not None
+        img = cell.image
+        ys = getattr(cell, "staff_line_ys_canonical", None) or []
+        if img is None or len(ys) < 2 or staff_space_px <= 0:
+            return None
+        space = (ys[-1] - ys[0]) / (len(ys) - 1)
+        if space <= 0:
+            return None
+        if img.ndim == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+        elif img.shape[2] != 3:
+            img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
+        h, w = img.shape[:2]
+        r = float(staff_space_px) / float(space)
+        nh, nw = max(1, int(round(h * r))), max(1, int(round(w * r)))
+        hc = int(np.ceil(nh / _IMGSZ_STRIDE) * _IMGSZ_STRIDE)
+        wc = int(np.ceil(nw / _IMGSZ_STRIDE) * _IMGSZ_STRIDE)
+        imgsz = min(_MAX_AUTO_IMGSZ, max(hc, wc))
+        if max(hc, wc) > _MAX_AUTO_IMGSZ:
+            return None
+        left = int(round((wc - nw) / 2 - 0.1))
+        top = int(round((hc - nh) / 2 - 0.1))
+        interp = cv2.INTER_AREA if anti_alias else cv2.INTER_LINEAR
+        shifts = [(int(dx), int(dy)) for dx, dy in shifts]
+        canvases = []
+        for dx, dy in shifts:
+            src = img
+            if dx or dy:
+                src = img[max(0, dy):, max(0, dx):]
+                pad_b, pad_r = max(0, dy), max(0, dx)
+                if pad_b or pad_r:
+                    src = cv2.copyMakeBorder(src, 0, pad_b, 0, pad_r, cv2.BORDER_REPLICATE)
+            small = cv2.resize(src, (nw, nh), interpolation=interp)
+            canvas = np.full((hc, wc, 3), 114, np.uint8)
+            canvas[top:top + nh, left:left + nw] = small
+            canvases.append(canvas)
+        results = self._model.predict(
+            source=canvases, conf=conf_threshold, iou=iou_threshold,
+            imgsz=imgsz, device=self.device if self.device != "auto" else None,
+            verbose=False)
+        rx, ry = nw / w, nh / h
+        out: "list[list[SymbolDetection]]" = []
+        for (dx, dy), res in zip(shifts, results):
+            dets: "list[SymbolDetection]" = []
+            boxes = getattr(res, "boxes", None)
+            if boxes is not None and len(boxes):
+                xyxy = boxes.xyxy.cpu().numpy()
+                confs = boxes.conf.cpu().numpy()
+                clses = boxes.cls.cpu().numpy()
+                for (x0, y0, x1, y1), conf, cls in zip(xyxy, confs, clses):
+                    cx0, cy0 = (x0 - left) / rx + dx, (y0 - top) / ry + dy
+                    cx1, cy1 = (x1 - left) / rx + dx, (y1 - top) / ry + dy
+                    name = (self._class_names or {}).get(int(cls), f"cls_{int(cls)}")
+                    category = _class_name_to_category(name)
+                    dets.append(SymbolDetection(
+                        cell=cell, smufl_name=name, category=category,
+                        x_canonical=int(round(cx0)), y_canonical=int(round(cy0)),
+                        width_canonical=max(1, int(round(cx1 - cx0))),
+                        height_canonical=max(1, int(round(cy1 - cy0))),
+                        confidence=float(conf), pitch=None))
+            out.append(_collapse_role_twins(dets, cell))
+        return out
+
     # --------------- diagnostics ---------------
 
     def time_detect(

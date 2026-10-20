@@ -25,6 +25,23 @@ from tools.omr.tests.test_staged_export import (
 from tools.omr.tests.test_staged_repeats_endings import _page_with
 from tools.omr.tests.test_staged_bar_sum_holdout import _bar
 
+
+# ROADMAP 2.173 (`OMR_RED_BARS` default ON, Sean 2026-10-19/20): this file tests the
+# pre-2.173 path (bar held out / old whole value); pinned OFF here.
+_PIN_2_173 = None
+
+
+def setUpModule():
+    global _PIN_2_173
+    import os as _os
+    from unittest import mock as _mock
+    _PIN_2_173 = _mock.patch.dict(_os.environ, {"OMR_RED_BARS": "0"})
+    _PIN_2_173.start()
+
+
+def tearDownModule():
+    _PIN_2_173.stop()
+
 EIGHTH_REST = {"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 0,
                "is_rest": True, "reinstated_rest": True}
 

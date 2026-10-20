@@ -34,6 +34,24 @@ from tools.omr.staged import lilypond as staged_lily
 from tools.omr.tests.test_staged_bar_sum_holdout import TWO_FOUR, _bar
 from tools.omr.tests.test_staged_export import QUARTER, _add_rest, _one_staff_page
 
+
+# ROADMAP 2.173 (red bars default ON, Sean 2026-10-19/20): this file tests the
+# HELD-OUT path (2.8), which `OMR_RED_BARS=0` keeps; pinned OFF here.
+_RED_PIN = None
+
+
+def setUpModule():
+    global _RED_PIN
+    import os
+    from unittest import mock as _mock
+    _RED_PIN = _mock.patch.dict(os.environ, {"OMR_RED_BARS": "0"})
+    _RED_PIN.start()
+
+
+def tearDownModule():
+    _RED_PIN.stop()
+
+
 UNREAD = SX.UNREAD_BAR_MARK_WORDS[SX.UNREAD_BAR_MARK_REASON_UNREAD]
 HELD_SUM = SX.UNREAD_BAR_MARK_WORDS[SX._BAR_SUM_REFUSAL]
 
