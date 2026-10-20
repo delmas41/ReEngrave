@@ -2723,6 +2723,39 @@ WEDGE_MIN_HEIGHT_SPACES = 0.40
 WEDGE_MAX_HEIGHT_SPACES = 0.85
 
 
+def _wedge_beside_a_head(ev: Evidence, cell, home, dot_box, space, all_keys,
+                         all_targets, ctx, keep_foreign) -> Optional[str]:
+    """ROADMAP 2.180: the ONE head of this staff a wedge-shaped mark with no
+    head above/below is the augmentation dot of -- the head wholly to its left,
+    in the augmentation box window (or within reach, the 2.128 near-miss), and
+    the mark at THAT head's dot step by the 2.128 staff positions (`True`,
+    never merely "cannot tell"). Two heads placed alike (a second's shared
+    space) or none -> `None`: the wedge abstains as before (rule 8)."""
+    if keep_foreign and ctx is not None and ctx.get("stacked"):
+        return None
+    if not _aug_join.dot_position_join_enabled():
+        return None
+    pos_of = _pos_verdicts(ev, cell, home, all_keys)
+    max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
+    fits = []
+    for key, hb in zip(all_keys, all_targets):
+        if pos_of(key) is not True:
+            continue
+        if _in_augmentation_window(dot_box, hb, max_above, max_below) \
+                or _right_of_within_reach(dot_box, hb):
+            sc = (dot_box[0] - (hb[0] + hb[2])
+                  + abs(hb[1] + hb[3] / 2.0
+                        - (dot_box[1] + dot_box[3] / 2.0)) * 2)
+            fits.append((sc, key))
+    if not fits:
+        return None
+    fits.sort()
+    if len(fits) > 1 and fits[1][0] - fits[0][0] < 0.25 * space:
+        return None
+    return fits[0][1]
+
+
 def staccatissimo_shape_enabled() -> bool:
     """Default ON (landed 2026-10-14, Sean: "1"); `0/false/no/off` disables."""
     return os.environ.get("OMR_STACCATISSIMO_SHAPE", "1").strip().lower() \
@@ -2779,7 +2812,8 @@ def _wedge_reading(shape_row):
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
              "owned_by_another_staff", "on_a_barline", "on_a_stroke",
-             "wedge_without_a_head", "wedge_points_away"),
+             "wedge_without_a_head", "wedge_points_away",
+             "beside_a_head_in_its_dot_space"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -2960,6 +2994,24 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                 return Ruling(value=None, reason="wedge_points_away",
                               used=wused, detail=wdetail)
             if owner is None:
+                # ⚠️ ROADMAP 2.180 (`OMR_DOT_POSITION_OVER_WEDGE`, default
+                # OFF): no head stands above or below for the wedge to point
+                # at, but one stands immediately LEFT with the mark at its own
+                # dot step -- the engraving rule (a dot stands in a space right
+                # of its note) outranks a shape cut that a touching staff line
+                # stretches. See `aug_dot_join` for the measurement.
+                beside = _wedge_beside_a_head(
+                    ev, cell, home, dot_box, space, all_keys, all_targets,
+                    ctx, keep_foreign) \
+                    if _aug_join.dot_position_over_wedge_enabled() else None
+                if beside is not None:
+                    return Ruling(value="augmentation",
+                                  reason="beside_a_head_in_its_dot_space",
+                                  used=wused,
+                                  detail={**wdetail, "head": beside,
+                                          "position_admitted": True,
+                                          "shape_read_as": "wedge",
+                                          "candidates": None})
                 return Ruling(value=None, reason="wedge_without_a_head",
                               used=wused, detail=wdetail)
             out = {**wdetail, "owner": owner, "articulation": "staccatissimo"}
