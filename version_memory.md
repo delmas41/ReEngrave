@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-19 -- ROADMAP 2.172 LANDED ON: `OMR_DETECTOR_VIEWS` default ON, small view only
+Sean "Yes" to "may the smaller detector view land ON as the default?". `detector_views.enabled()` now defaults on (explicit 0/false/no/off disables; OFF is byte-identical to the previous feed); default parts are the 8 px anti-aliased 3-phase-median small view, close view only via `OMR_DETECTOR_VIEWS_WHICH`. Takes effect at the next full gather. Sizes NOT CONFIRMED beyond two plates. `benchmarks/omr-detector-view-2026-10/FINDINGS.md`.
+
+## 2026-10-19 -- ROADMAP 2.172 BUILT, OFF: the detector looks at each symbol family at its own size
+STAGED GATHER, flag `OMR_DETECTOR_VIEWS` (+ `_PARTS`, `_PHASES`, `_WHICH`), default OFF. `detector_views.py`, `YoloDetector.detect_view`, `gather.gather_detector_views`, `READERS.DETECTOR_VIEW`. 8 px anti-aliased view for dots/flags/rests, 22 px for black heads, 3-phase median, family-aware merge; no production box changes. The small view helps (Litolff +19 rests, Brahms +27 notes), the close view does not (false heads, one quarter rest made a note). Findings and 12 blind tiles in `benchmarks/omr-detector-view-2026-10/` and `out/print/2.172-review/`.
+
 ## 2026-10-19 -- ROADMAP 2.171 DONE: why a wider detector crop reads better (study, no product code)
 STAGED GATHER read-only. `probe/2.171/` + `benchmarks/omr-detector-crop-mechanism-2026-10/FINDINGS.md` + 6 crops `out/print/2.171/`. The shipped feed was rebuilt letterbox-only and reproduces the record conf (61/61 Litolff, 121/121 Brahms, max diff 0.0005). One variable at a time on 63 Litolff + 124 Brahms symbols: scale is the strongest lever (and the 16 px is one number for dots, flags, rests and heads), context ink helps Brahms but equals a blank canvas on Litolff, `imgsz_for_cell` rounding gives the 2.167d wide pass an accidental 0.92-1.08 rescale, and a sub-pixel shift alone flips 8-10% of 0.25+ boxes. No fix built.
 

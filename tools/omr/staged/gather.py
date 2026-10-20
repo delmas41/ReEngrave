@@ -974,6 +974,82 @@ def gather_wedge_rescue(log: Log, cells: Sequence[Any],
             print(f"  gather wedge rescue {cell_key}: {len(kept)} box(es)")
 
 
+def gather_detector_views(log: Log, cells: Sequence[Any],
+                          local: Dict[int, Tuple[int, int]],
+                          detections: Dict[str, List[Any]], *,
+                          detector: Any = None, progress: bool = False) -> None:
+    """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF; the caller gates). The SAME detector on the SAME cell image at other staff-space
+    sizes (`detector_views.VIEWS`), anti-aliased, read at a few sub-pixel phases with the median kept, only the families each view is for,
+    merged family-aware into the cell's production boxes (`detector_views.merge_into_production`): a production box is never changed or
+    dropped, a view box is appended only where no production box of its family stands and no production box of another family stands there
+    with at least its confidence.
+
+    Each kept box is appended to the cell's `detections` (the rescue's pattern, so every later reader and every ADJUDICATE gate sees it as any
+    other glyph) with `Q.GLYPH_BOX` / `Q.GLYPH_CONF` (/ `Q.NOTEHEAD_CLASS`) under `READERS.DETECTOR_VIEW`, `score` the median confidence,
+    and `view`, `staff_space_px`, `anti_alias`, `phases_found`, `n_phases`, `phase_confs`, `family` on the box row. A box a view found and the
+    merge refused is filed as an abstention on the cell (`ABSTAIN.AMBIGUOUS`, `why` the merge's reason, candidate class and median) -- the
+    near-miss is on the record, never invented. Runs AFTER the rescues (a rescued box is production's reading, so a view box over it is not
+    "unseen") and BEFORE every reader that walks `detections`."""
+    from . import detector_views as DV
+    if detector is None or not hasattr(detector, "detect_view"):
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        frame = frame_cell(c.measure_index)
+        cell_key = cell_sub.to_key()
+        existing = detections.get(cell_key) or []
+        try:
+            out = DV.views_for_cell(detector, c, existing)
+        except Exception as exc:                                  # noqa: BLE001
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR_VIEW, frame=frame,
+                        reason=ABSTAIN.READER_UNAVAILABLE, error=type(exc).__name__)
+            continue
+        if out is None:
+            continue
+        for rf in out["refused"]:
+            if rf["why"] == "production_same_family":
+                continue        # production already boxed that symbol in that family: thousands of rows, no near-miss in them
+            d = rf["det"]
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR_VIEW, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        why=rf["why"], view=rf["view"], candidate_class=d.smufl_name, score=float(rf["conf"]),
+                        family=rf["family"], phases_found=rf["phases"],
+                        box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
+        if not out["kept"]:
+            continue
+        lst = detections.get(cell_key)
+        if lst is None:
+            lst = []
+            detections[cell_key] = lst
+        n0 = len(lst)
+        for k, kb in enumerate(out["kept"]):
+            d = kb["det"]
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, n0 + k)
+            page_box = _page_box(c, d)
+            box_detail: Dict[str, Any] = {
+                "category": d.category, "source": "detector_view", "view": kb["view"],
+                "staff_space_px": kb["staff_space_px"], "anti_alias": kb["anti_alias"], "n_phases": kb["n_phases"],
+                "phases_found": kb["phases"], "phase_confs": kb["phase_confs"], "family": kb["family"]}
+            if page_box is None:
+                box_detail["frame_note"] = "no page box: cell has no bbox_page_px/upscale_factor"
+            else:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX, (d.smufl_name, d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical),
+                        reader=READERS.DETECTOR_VIEW, frame=frame, score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence), reader=READERS.DETECTOR_VIEW, frame=frame, score=float(d.confidence))
+            if d.smufl_name.startswith(_NOTEHEAD_PREFIX):
+                log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name, reader=READERS.DETECTOR_VIEW, frame=frame, score=float(d.confidence))
+            lst.append(d)
+        if progress:
+            print(f"  gather detector views {cell_key}: {len(out['kept'])} box(es), {len(out['refused'])} refused, {out['calls']} view call(s)")
+
+
 def gather_second_hollow(log: Log, cells: Sequence[Any],
                          local: Dict[int, Tuple[int, int]],
                          detections: Dict[str, List[Any]], *,
@@ -14709,6 +14785,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if wedge_rescue_enabled():
             gather_wedge_rescue(log, cells, local, detections,
                                 detector=detector, imgsz=imgsz, progress=progress)
+
+        # ⚠️ ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF): other-size, phase-median views of the same cell; AFTER both rescues, BEFORE every
+        # `detections` walker, for the rescue's reason: a kept view box is appended in place so the dot-role / flag / head readers see it.
+        from . import detector_views as _DV
+        if detector is not None and _DV.enabled():
+            gather_detector_views(log, cells, local, detections, detector=detector, progress=progress)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
