@@ -623,9 +623,9 @@ def _is_a_clef(ev: Evidence):
 def _claim_refusal(claim, box_row) -> Ruling:
     """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")`, the reason a LITERAL per owner (the vocabulary check reads it)."""
     detail = {"class": box_row.value[0], **claim.detail}
-    if claim.owner == "meter":
+    if claim.by == "meter":
         r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
-    elif claim.owner == "clef":
+    elif claim.by == "clef":
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
@@ -637,9 +637,9 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
     """ROADMAP 2.181: NARROWED {a notehead, the owner's ink} -- the notehead first, so it is written (blue, GUESSED)."""
     cands = (R.Candidate(value=False, support=1.0), R.Candidate(value=True, support=1.0))
     u = tuple(dict.fromkeys(tuple(used) + tuple(claim.used)))
-    if claim.owner == "clef":
+    if claim.by == "clef":
         return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
-    if claim.owner == "meter":
+    if claim.by == "meter":
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 

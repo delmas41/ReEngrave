@@ -38,7 +38,7 @@ def enabled() -> bool:
 
 class Finding(NamedTuple):
     refuse: bool          # True: refuse; False: narrow
-    owner: str
+    by: str               # the claiming owner (`clef`, `leading_column`, `meter`)
     used: tuple
     margin: float
     detail: Dict[str, Any]
@@ -103,8 +103,8 @@ def consult(ev: Any, box_row: Any, *, head: bool) -> Optional[Finding]:
             elif head and d.get("owner_glyph"):
                 if confs is None:
                     confs = _confs(ev)
-                own, oc = confs.get(key), confs.get(d.get("owner_glyph"))
-                if own is not None and oc is not None and oc < own:
+                head_conf, clef_conf = confs.get(key), confs.get(d.get("owner_glyph"))
+                if head_conf is not None and clef_conf is not None and clef_conf < head_conf:
                     why = "detector_scored_the_head_above_the_clef"
             (narrowing if why else refusing).append((owner, r, margin, why or "clef_read"))
             continue

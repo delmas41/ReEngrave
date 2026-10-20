@@ -1016,9 +1016,9 @@ REST_BARLINE_MAX_WIDTH_SPACES = 0.8
 
 def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
     """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")` for a rest box, the reason a LITERAL per owner."""
-    if claim.owner == "meter":
+    if claim.by == "meter":
         r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
-    elif claim.owner == "clef":
+    elif claim.by == "clef":
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
@@ -1031,9 +1031,9 @@ def _rest_claim_narrowing(claim, used, detail: Dict[str, Any]) -> Ruling:
     from ..record import Candidate
     cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=1.0))
     u = tuple(dict.fromkeys(tuple(used) + tuple(claim.used)))
-    if claim.owner == "clef":
+    if claim.by == "clef":
         return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
-    if claim.owner == "meter":
+    if claim.by == "meter":
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
