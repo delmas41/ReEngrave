@@ -94,3 +94,6 @@ Sean's 10 shared-head tiles: second note reaches the file in **5 of 10** (was 1 
 LilyPond (flag ON, `probe/lily_2_175.py`): Litolff compiles, exit 0, 0 errors, 24 warnings, 74 pages (red bars add pages).
 Judgement call flagged: a note with an UNREAD stem direction in a red unison bar is placed in voice 1 (the legacy rule) -- a placement guess inside a bar that is already marked red; 36 bars on the two plates.
 LilyPond Brahms (flag ON, whole movement): exit 0, 173 warnings, 3 errors (all three are the pre-existing "bounds of this piece aren't breakable"), 119 pages; logs in out/2.175/.
+
+## Voice guess (Sean 2026-10-20 "I go ahead and guess which voice")
+A note with an unread stem direction in a kept unison bar keeps voice 1 and is now written GUESSED (blue, rule `voice_guessed`, candidates voice 1 / voice 2) in MusicXML and LilyPond; one that already has another status colour keeps it and the guess is only counted (`unison_voice_guess_in_a_coloured_note`). Whole-movement replay: Litolff 31 blue + 19 kept-colour; Brahms 6 blue + 1 kept-colour; balanced. Fast tier 8,612 passed, 0 failed; check 193.

@@ -75,6 +75,25 @@ def expand(runs) -> int:
     return n
 
 
+VOICE_GUESSED = "voice_guessed"
+
+
+def _guess_voices(cell, stats: Dict[str, int]) -> None:
+    """Sean 2026-10-20 "I go ahead and guess which voice": a note with an UNREAD stem direction in a kept unison bar goes
+    to voice 1 (`split_events_into_voices`) -- a GUESS, so it is written GUESSED (blue, `voice_guessed`, both voices as
+    candidates). A note that already carries another status keeps that colour; the voice guess is only counted."""
+    for d in cell.detections:
+        if d.get("category") != "notehead" or d.get("unison_twin") or d.get("unison_head") or d.get("stem_direction"):
+            continue
+        if d.get("guess"):
+            stats["unison_voice_guess_in_a_coloured_note"] = stats.get("unison_voice_guess_in_a_coloured_note", 0) + 1
+            continue
+        d["guess"] = {"rule": VOICE_GUESSED, "stage": "EXPORT", "quantity": "voice",
+                      "candidates": [{"value": {"voice": 1}, "support": 1.0}, {"value": {"voice": 2}, "support": 1.0}],
+                      "chosen": {"voice": 1}}
+        stats["unison_voice_guessed_notes"] = stats.get("unison_voice_guessed_notes", 0) + 1
+
+
 def settle(runs, stats: Dict[str, int]) -> None:
     """After `_settle_divisi_pairs`: a twin whose bar was not kept as two voices is dropped, its head restored."""
     for run in runs.values():
@@ -84,6 +103,7 @@ def settle(runs, stats: Dict[str, int]) -> None:
                 continue
             if all(t.get("stem_direction") == "down" for t in twins):
                 stats["unison_twins_kept"] = stats.get("unison_twins_kept", 0) + len(twins)
+                _guess_voices(cell, stats)
                 continue
             # the bar was left fused (its directions came off): one note per head, as with the flag OFF
             keep = []
@@ -113,6 +133,8 @@ def unfuse(cell) -> bool:
             d.update(off)
             d.pop("unison_head", None)
             d["stem_direction"] = None
+        if (d.get("guess") or {}).get("rule") == VOICE_GUESSED:
+            d.pop("guess")                  # the bar is fused again: no voice was guessed
         keep.append(d)
     cell.detections[:] = keep
     return True

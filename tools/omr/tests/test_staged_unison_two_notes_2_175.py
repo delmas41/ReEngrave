@@ -291,6 +291,29 @@ class TestARedUnisonBarKeepsBothVoices(unittest.TestCase):
             E._settle_divisi_pairs(runs, stats)
         self.assertTrue(all(d["stem_direction"] is None for d in runs["k"].cells[0].detections))
 
+    def test_an_unread_direction_note_in_a_kept_unison_bar_is_a_GUESSED_voice(self):
+        from tools.omr.staged import export as E
+        runs = self._runs(None)
+        stats = {}
+        with mock.patch.dict(os.environ, {"OMR_RED_BARS": "1", FLAG: "1"}):
+            E._settle_divisi_pairs(runs, stats)
+            export_unison.settle(runs, stats)
+        other = runs["k"].cells[0].detections[2]
+        self.assertEqual(other["guess"]["rule"], "voice_guessed")
+        self.assertEqual(other["guess"]["chosen"], {"voice": 1})
+        self.assertEqual(stats["unison_voice_guessed_notes"], 1)
+
+    def test_CONTROL_a_note_that_already_has_a_status_keeps_it_and_the_guess_is_only_counted(self):
+        from tools.omr.staged import export as E
+        runs = self._runs(None)
+        runs["k"].cells[0].detections[2]["guess"] = {"rule": "other_rule"}
+        stats = {}
+        with mock.patch.dict(os.environ, {"OMR_RED_BARS": "1", FLAG: "1"}):
+            E._settle_divisi_pairs(runs, stats)
+            export_unison.settle(runs, stats)
+        self.assertEqual(runs["k"].cells[0].detections[2]["guess"], {"rule": "other_rule"})
+        self.assertEqual(stats["unison_voice_guess_in_a_coloured_note"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
