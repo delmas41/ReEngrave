@@ -151,7 +151,7 @@ def find(binary: Any, line_ys: Sequence[float], spacing: float, x_lo: float, x_h
     y1 = min(H, int(round(ly[-1] + BAND_SPACES * sp)))
     if x1 - x0 < 4 or y1 - y0 < 8:
         return {"found": False, "reason": "no_raster"}
-    thick = _line_thickness(binary, ly, x0, x1)
+    thick = min(_line_thickness(binary, ly, x0, x1), 0.5 * sp)
     ink = _ink_without_bare_lines(binary, ly, y0, y1, x0, x1, thick)
     pcs = _pieces(ink)
     mid_y = (ly[0] + ly[-1]) / 2.0 - y0
@@ -227,7 +227,8 @@ def ink_inside(binary: Any, box: Sequence[float], area: Sequence[float], line_ys
     bx1, by1 = min(W, int(round(box[2]))), min(H, int(round(box[3])))
     if bx1 - bx0 < 1 or by1 - by0 < 1:
         return None
-    thick = _line_thickness(binary, line_ys, bx0, bx1)
+    wide0, wide1 = max(0, bx0 - int(3 * spacing)), min(W, bx1 + int(3 * spacing))
+    thick = min(_line_thickness(binary, line_ys, wide0, wide1), 0.5 * spacing)
     ink = _ink_without_bare_lines(binary, line_ys, by0, by1, bx0, bx1, thick)
     total = int(ink.sum())
     if total < 4:
