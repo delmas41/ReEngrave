@@ -15,6 +15,7 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sample_2_175 import PDF, SP, BLUE, boxes_of, crop  # noqa: E402
 
+HSP = {"lit": 16.0, "bra": 28.0}      # staff space in page pixels, for the head-size test only
 out = sys.argv[1]
 os.makedirs(out, exist_ok=True)
 specs = [a.split(":") for a in sys.argv[2:]]
@@ -55,12 +56,20 @@ for plate, on_json, rec_json, ctl_json, n in specs:
         items.append(("unison", plate, s, boxes[s], ours))
     ctl = json.load(open(ctl_json))
     heads = ctl["heads"]
-    first = plate == specs[0][0]
-    kind, pool = (("control_plain_one_stem", ctl["plain"]) if first else ("control_chord_one_stem", ctl["chord"]))
-    pool = sorted(s for s in pool if s in heads)
-    if pool:
-        s = rng.choice(pool)
-        items.append((kind, plate, s, heads[s]["bb"], {"duration": heads[s].get("dur")}))
+    # both controls come from the first plate (the cleaner engraving): a plain one-stem head, a chord on one stem
+    if plate == specs[0][0]:
+        for kind, pool in (("control_plain_one_stem", ctl["plain"]), ("control_chord_one_stem", ctl["chord"])):
+            # a control must be an unmistakable head: one head's size, an unbeamed quarter
+            def _ok(s):
+                h = heads.get(s)
+                if not h or (h.get("dur") or [None, None])[1] != 1.0:
+                    return False
+                w, ht = h["bb"][2] - h["bb"][0], h["bb"][3] - h["bb"][1]
+                return 0.9 * HSP[plate] <= w <= 1.6 * HSP[plate] and 0.8 * HSP[plate] <= ht <= 1.3 * HSP[plate]
+            pool = sorted(s for s in pool if _ok(s))
+            if pool:
+                s = rng.choice(pool)
+                items.append((kind, plate, s, heads[s]["bb"], {"duration": heads[s].get("dur")}))
 
 # order: shuffle so a control is not recognisable by position
 rng.shuffle(items)
