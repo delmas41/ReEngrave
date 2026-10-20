@@ -1,0 +1,90 @@
+{
+ "source": "Sean 2026-10-19",
+ "verbatim": "1. Two 8 and 8 2. One 4 3.  Two.4 and 4 4. Two 4 and 4 5, two 8 and 8 6. One 4 7.two 8 and 8  8. Two 8 and 8 9-12.  Two 8 and 8",
+ "units": "beats",
+ "note": "count = notes the head stands for (one per stem); controls 2 and 6 are one note each",
+ "answers": {
+  "1": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "2": {
+   "count": 1,
+   "values": [
+    1.0
+   ]
+  },
+  "3": {
+   "count": 2,
+   "values": [
+    1,
+    1
+   ]
+  },
+  "4": {
+   "count": 2,
+   "values": [
+    1,
+    1
+   ]
+  },
+  "5": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "6": {
+   "count": 1,
+   "values": [
+    1.0
+   ]
+  },
+  "7": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "8": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "9": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "10": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "11": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  "12": {
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  }
+ }
+}

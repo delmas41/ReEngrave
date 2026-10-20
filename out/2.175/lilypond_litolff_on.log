@@ -1,0 +1,88 @@
+Changing working directory to: `sp/lily'
+Processing `sp/lily/litolff.on.ly'
+Parsing...
+Interpreting music...[8][16][24][32][40][48][56][64][72][80]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:3692:18: warning: cannot end slur
+      f''4 ees''4
+                 ) |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:3694:18: warning: cannot end slur
+      des''4 c''4
+                 ) |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2159:16: warning: unterminated tie
+      <c' c''>2
+               ~ |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2159:16: warning: unterminated tie
+      <c' c''>2
+               ~ |
+[88][96][104][112][120][128][136][144][152]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:5831:10: warning: unterminated tie
+      g,2
+         ~_\markup { \italic "arco." } |
+[160][168]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2754:15: warning: unterminated tie
+      <c' b'>2
+              ~\f |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2754:15: warning: unterminated tie
+      <c' b'>2
+              ~\f |
+[176][184]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:3795:11: warning: unterminated tie
+      d''2
+          ~\sf |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:4311:10: warning: unterminated tie
+      d'2
+         ~ |
+[192][200][208][216][224][232][240][248][256]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:3873:11: warning: unterminated tie
+      d''2
+          ~ |
+[264][272][280][288]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:819:11: warning: already have slur
+      f''2
+          (\f |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2367:11: warning: unterminated tie
+      d''2
+          ~ |
+[296][304][312][320][328][336][344][352][360][368]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:4495:10: warning: unterminated tie
+      c'2
+         ~ |
+[376]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:5015:10: warning: unterminated tie
+      g'2
+         ~\f |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2964:16: warning: unterminated tie
+      <c' c''>2
+               ~ |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2964:16: warning: unterminated tie
+      <c' c''>2
+               ~ |
+[384][392][400][408][416][424]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:1467:16: warning: unterminated tie
+      <f' d''>2
+               ~ |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:1467:16: warning: unterminated tie
+      <f' d''>2
+               ~ |
+[432][440][448]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:3548:14: warning: unterminated tie
+      g,4 g,4
+             ~ |
+[456][464]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2026:554: warning: cannot end slur
+      \once \override TextSpanner.style = #'line \once \override TextSpanner.color = #red \once \override TextSpanner.direction = #UP \once \override TextSpanner.bound-details.left.text = \markup { \with-color #red \draw-line #'(0 . -0.9) } \once \override TextSpanner.bound-details.right.text = \markup { \with-color #red \draw-line #'(0 . -0.9) } \once \override TextSpanner.bound-details.left-broken.text = ##f s1*3/8\startTextSpan^\markup { \with-color #red "unread" } s1*0\stopTextSpan <\tweak color #guessedColor ees \tweak color #guessedColor g>8
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:2026:555: warning: cannot end slur
+      \once \override TextSpanner.style = #'line \once \override TextSpanner.color = #red \once \override TextSpanner.direction = #UP \once \override TextSpanner.bound-details.left.text = \markup { \with-color #red \draw-line #'(0 . -0.9) } \once \override TextSpanner.bound-details.right.text = \markup { \with-color #red \draw-line #'(0 . -0.9) } \once \override TextSpanner.bound-details.left-broken.text = ##f s1*3/8\startTextSpan^\markup { \with-color #red "unread" } s1*0\stopTextSpan <\tweak color #guessedColor ees \tweak color #guessedColor g>8)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[472][480][488]
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ef413347cd6f679/sp/lily/litolff.on.ly:1534:11: warning: unterminated tie
+      d''2
+          ~ |
+[496][504]
+Preprocessing graphical objects...
+Finding the ideal number of pages...
+Fitting music on 48 or 49 pages...
+Drawing systems...
+Converting to `litolff.on.pdf'...
+Success: compilation successfully completed
