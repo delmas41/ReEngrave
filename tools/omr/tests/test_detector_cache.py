@@ -152,6 +152,5 @@ def test_corrupt_partial_and_misfiled_entries_raise(tmp_path, wfile):
 
 def test_no_cache_is_the_plain_call(wfile):
     m = FakeModel()
-    assert dc.cache_dir() is None or True
     r = dc.predict(m, wfile, source=_img(), conf=0.25, iou=0.7, imgsz=320, device=None, root=None)
     assert m.calls == 1 and len(r) == 1
