@@ -1,0 +1,245 @@
+{
+ "seed": 2182,
+ "tiles": [
+  {
+   "doc": "brahms",
+   "kind": "control_one_line",
+   "bar": "23/1/5/9",
+   "file": "tile_01.png",
+   "sha256": "a39903a52df518c70929b7fb784c2639db993cf07d631275ddf36d172c6895d0"
+  },
+  {
+   "doc": "brahms",
+   "kind": "control_one_line",
+   "bar": "23/0/4/1",
+   "file": "tile_02.png",
+   "sha256": "31edeef9a46124874218e704a09863e4a190b068d9407b25b0b7a55a49f5404e"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "0/0/13/1",
+   "reason": "two_parts_one_resting",
+   "red_on": false,
+   "voices": [
+    [
+     1,
+     4
+    ],
+    [
+     5
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_03.png",
+   "sha256": "2fe80b76eb0c7b6d389e06720650b9cd597bb5ee3d191fdd2ee82a5e79e337da"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "6/1/0/6",
+   "reason": "two_parts_by_stem_and_height",
+   "red_on": false,
+   "voices": [
+    [
+     1,
+     2
+    ],
+    [
+     15
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_04.png",
+   "sha256": "a64bcea8e031ae27b427c2ead6fa75229c50057fdc007806ebaa8e9b6b6c79bb"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "1/0/6/0",
+   "reason": "two_parts_by_stem_and_height",
+   "red_on": true,
+   "voices": [
+    [
+     3,
+     4,
+     5,
+     7,
+     9,
+     12,
+     18,
+     28
+    ],
+    [
+     2,
+     7,
+     8,
+     9,
+     11,
+     12,
+     13,
+     15,
+     23,
+     26,
+     27,
+     28,
+     36
+    ]
+   ],
+   "guessed": [
+    13,
+    23,
+    26,
+    27,
+    36
+   ],
+   "file": "tile_05.png",
+   "sha256": "912257b2adf39d3bb21fe0f42339cbd28a773229f67bc9e4a528abb1ef8f2b4d"
+  },
+  {
+   "doc": "brahms",
+   "kind": "control_rule_1_two_voices",
+   "bar": "24/1/4/2",
+   "file": "tile_06.png",
+   "sha256": "9ea78865040a467daf857791f3966b15146387a15d857eab071858e2ba3dd806"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "1/1/6/6",
+   "reason": "two_parts_one_resting",
+   "red_on": true,
+   "voices": [
+    [
+     4,
+     10
+    ],
+    [
+     6
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_07.png",
+   "sha256": "f0e50b56c98a65fa9fd095415f1a8fd09b4c99aab67eb2f4243ef504f961243c"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "0/0/8/1",
+   "reason": "two_parts_one_resting",
+   "red_on": true,
+   "voices": [
+    [
+     2,
+     3
+    ],
+    [
+     7
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_08.png",
+   "sha256": "9b2acc0f21b720351d24c4cca5af9d260736773083a407a73cae014d9596ecbd"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "6/1/4/6",
+   "reason": "two_parts_one_resting",
+   "red_on": false,
+   "voices": [
+    [
+     1,
+     2,
+     11
+    ],
+    [
+     13
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_09.png",
+   "sha256": "9c30c5ca9273ab429af0a4742e05a0292829032c13b6f91f8572ade8957252ac"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "24/1/2/7",
+   "reason": "two_parts_by_stem_and_height",
+   "red_on": false,
+   "voices": [
+    [
+     4,
+     22,
+     30
+    ],
+    [
+     0,
+     1,
+     2,
+     3,
+     4,
+     6,
+     8,
+     12,
+     30
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_10.png",
+   "sha256": "55c1d2d3a1454f63b90add84b1a701945bf6f6f0f73c41bbdeebc551f0af99f7"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "1/0/2/2",
+   "reason": "two_parts_by_stem_and_height",
+   "red_on": false,
+   "voices": [
+    [
+     9,
+     10,
+     13
+    ],
+    [
+     2,
+     3,
+     4,
+     15,
+     19,
+     21,
+     24
+    ]
+   ],
+   "guessed": [
+    15,
+    19,
+    21,
+    24
+   ],
+   "file": "tile_11.png",
+   "sha256": "a6b9bccade81fffaa98f2f4b6105d43b441f5fb89276038fa0f3290690356b10"
+  },
+  {
+   "doc": "brahms",
+   "kind": "split",
+   "bar": "1/0/0/6",
+   "reason": "two_parts_one_resting",
+   "red_on": false,
+   "voices": [
+    [
+     2,
+     3,
+     4,
+     5
+    ],
+    [
+     9
+    ]
+   ],
+   "guessed": null,
+   "file": "tile_12.png",
+   "sha256": "548434d6792c63a0de4e487f4ab9f138bf2b3c27eaeadf4ef798ae9d3dff8bea"
+  }
+ ]
+}
