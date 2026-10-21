@@ -570,6 +570,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
     # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
     "meter_object.py",
+    # ROADMAP 2.181. `claims.py` is PURE (a raster and boxes in, numbers out; no log, no cell, no quantity named) --
+    # `gather.gather_claimed_register` is its stage; `adjudicators/claimed_by.py` is the consult.
+    "claims.py",
 })
 
 

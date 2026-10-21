@@ -150,6 +150,7 @@ from .. import margins as _margins
 from .. import rest_ink as _rest_ink
 from . import key_slots as _key_slots
 from . import inside_meter as _inside_meter
+from . import claimed_by as _claimed_by
 from . import letter_cover as _letter_cover
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
@@ -1011,6 +1012,31 @@ def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
 #: measured on one plate: it REFUSES (the bar stays marked unread), it never
 #: decides a value.
 REST_BARLINE_MAX_WIDTH_SPACES = 0.8
+
+
+def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
+    """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")` for a rest box, the reason a LITERAL per owner."""
+    if claim.by == "meter":
+        r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
+    elif claim.by == "clef":
+        r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
+                           band=None, would_choose=(True,))
+
+
+def _rest_claim_narrowing(claim, used, detail: Dict[str, Any]) -> Ruling:
+    """ROADMAP 2.181: NARROWED {a rest, the owner's ink} -- the rest first, so it is written (blue, GUESSED)."""
+    from ..record import Candidate
+    cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=1.0))
+    u = tuple(dict.fromkeys(tuple(used) + tuple(claim.used)))
+    if claim.by == "clef":
+        return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
+    if claim.by == "meter":
+        return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
+
 REST_BARLINE_MIN_HEIGHT_SPACES = 2.0
 REST_BARLINE_EDGE_TOL_SPACES = 0.15
 
@@ -1040,9 +1066,13 @@ def _rest_is_a_barline_refusal(ev: Evidence, this_row,
               "margin_width": round(w_sp - REST_BARLINE_MAX_WIDTH_SPACES, 3),
               "margin_height": round(REST_BARLINE_MIN_HEIGHT_SPACES - h_sp, 3),
               "margin_edge": round(edge_sp - REST_BARLINE_EDGE_TOL_SPACES, 3)}
+    # ROADMAP 2.181: with the register ON, the LEADING case (cell 0's left edge, the system barline) is the header column's claim.
+    leading = (ev.subject.at(Kind.CELL) is not None and getattr(ev.subject, "cell", None) == 0
+               and min(abs(page_box[0] - cell_box[0]), abs(page_box[2] - cell_box[0])) / sp_page == edge_sp)
     if (w_sp < REST_BARLINE_MAX_WIDTH_SPACES
             and h_sp >= REST_BARLINE_MIN_HEIGHT_SPACES
-            and edge_sp <= REST_BARLINE_EDGE_TOL_SPACES):
+            and edge_sp <= REST_BARLINE_EDGE_TOL_SPACES
+            and not (leading and _claimed_by.enabled())):
         detail["barline_signal"] = signal
         # ROADMAP 2.106: how far INSIDE the tightest of the three cuts the
         # box stands (>= 0 = refused by this much); no declared band.
@@ -1788,6 +1818,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_duplicate_box",
                                      "rest_in_a_key_signature_slot",
                                      "rest_is_a_meter_digit", "inside_the_meter",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1870,7 +1902,13 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # signature occupies, read off the sibling staves' digit boxes.
         # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): the meter's claim is the numerals' MEASURED box; with the flag ON the
         # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
-        if _inside_meter.enabled():
+        # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the ONE register consult, in place of the 2.177 meter read; a
+        # claim too weak to refuse NARROWS at the end instead.
+        claim = _claimed_by.consult(ev, box_row, head=False) if _claimed_by.enabled() else None
+        if claim is not None and claim.refuse:
+            detail.update(claim.detail)
+            return _rest_claim_refusal(claim, box_row, detail)
+        if _inside_meter.enabled() and not _claimed_by.enabled():
             claimed = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=False)
             if claimed is not None:
                 detail.update(claimed.detail)
@@ -1937,6 +1975,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
             if stroke_head is not None:
                 return stroke_head
+        # ROADMAP 2.181: a claim holds this rest box but is too weak to refuse it, and no rule refused it: NARROWED {rest, the
+        # owner's ink}, the rest first (written, blue), never refused on a guess.
+        if claim is not None and not claim.refuse:
+            detail.update(claim.detail)
+            return _rest_claim_narrowing(claim, used, detail)
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

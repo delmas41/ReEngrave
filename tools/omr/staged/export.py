@@ -464,8 +464,25 @@ def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+#: ROADMAP 2.181: a head/rest box a claim holds but cannot refuse is NARROWED {itself, the owner's ink}; written, it is GUESSED.
+CLAIM_NARROWED_PREFIX = "claim_narrowed:"
+
+
+def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.181: the register's NARROWED head/rest precision verdict as a guess (the box is written, blue, both readings
+    carried), or None. Only a verdict whose reason is `claim_narrowed:<owner>` counts -- none is filed with the flag OFF."""
+    for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
+        v = rec.verdict(q, sub)
+        if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):
+            return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": q,
+                    "candidates": [{"value": "symbol", "support": 1.0},
+                                   {"value": v["reason"][len(CLAIM_NARROWED_PREFIX):] + "_ink", "support": 1.0}],
+                    "chosen": {"value": "symbol"}}
+    return None
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub)
+    g = guess_of(rec, sub) or claim_guess_of(rec, sub)
     return {"guess": g} if g else {}
 
 
@@ -5499,6 +5516,9 @@ _NOT_A_GAP_REASONS = frozenset({
     "not_a_notehead:on_a_dynamic_letter", "not_a_rest:rest_has_a_stem",
     "not_a_rest:rest_in_a_key_signature_slot",
     "not_a_notehead:notehead_in_a_key_signature_slot",
+    # ROADMAP 2.181: a box a READ claim holds is positively another mark's ink
+    "not_a_notehead:claimed_by:clef", "not_a_notehead:claimed_by:meter", "not_a_notehead:claimed_by:leading_column",
+    "not_a_rest:claimed_by:clef", "not_a_rest:claimed_by:meter", "not_a_rest:claimed_by:leading_column",
     "cell_past_the_last_bar", "bar_count_not_decided",
     "staff_not_identified", "owner_staff_has_no_measures",
     "relocation_collides",

@@ -1,6 +1,6 @@
 {
- "n_items": 108,
- "n_tiles": 1398,
+ "n_items": 109,
+ "n_tiles": 1410,
  "tiles": [
   {
    "answer": "right",
@@ -17175,6 +17175,258 @@
    "subjects": null,
    "tile": "tile_12",
    "value": 1.5
+  },
+  {
+   "answer": "bracket",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    342.1525,
+    391.4375,
+    357.4025,
+    441.7625
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/14/0/0/0/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": null
+  },
+  {
+   "answer": "eighth (note)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    688.12,
+    1949.465,
+    715.84,
+    1970.255
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/9/0/11/1/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": null
+  },
+  {
+   "answer": "clef",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    2250.4,
+    835.3199999999999,
+    2295.04,
+    883.0
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/14/0/3/12/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": "clef"
+  },
+  {
+   "answer": "eighth (note)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    830.6325,
+    3106.2025,
+    856.1475,
+    3124.63
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/16/1/7/2/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": null
+  },
+  {
+   "answer": "quarter (note)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    1962.83,
+    695.5725,
+    1985.6675,
+    715.7325
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/12/0/2/11/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": null
+  },
+  {
+   "answer": "half (note)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    1980.405,
+    821.935,
+    2004.345,
+    843.8275
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/9/0/3/11/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": null
+  },
+  {
+   "answer": "clef",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    1888.9475,
+    1592.055,
+    1913.2025,
+    1614.105
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/6/0/8/8/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": "clef"
+  },
+  {
+   "answer": "eighth (note)",
+   "answer_kind": "other",
+   "control": true,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    530.1325,
+    1444.665,
+    553.7575,
+    1465.455
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/5/0/5/0/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": null
+  },
+  {
+   "answer": "half (note)",
+   "answer_kind": "other",
+   "control": true,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    523.36,
+    712.7175,
+    548.56,
+    734.4525
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/15/0/2/0/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": null
+  },
+  {
+   "answer": "eighth (note)",
+   "answer_kind": "other",
+   "control": true,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    513.978515625,
+    3178.3359375,
+    537.431640625,
+    3200.24609375
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/6/1/8/0/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": null
+  },
+  {
+   "answer": "eighth rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    1458.325,
+    2320.01,
+    1483.6825,
+    2352.6125
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/13/1/1/8/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": 0.5
+  },
+  {
+   "answer": "eighth rest",
+   "answer_kind": "rest",
+   "control": false,
+   "date": "2026-10-20",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.181-review",
+   "page_box": [
+    832.995,
+    2939.64,
+    855.8325,
+    2971.2975
+   ],
+   "question_kind": "unknown",
+   "subject": "glyph/16/1/6/2/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": 0.5
   },
   {
    "answer": "8th note on first ledger line",

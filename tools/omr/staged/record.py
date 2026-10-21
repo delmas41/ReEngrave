@@ -866,6 +866,9 @@ class Q(_Vocab):
     #: boxes + the template reader, or abstained with candidates), the column it stands in on the system's other staves, and the
     #: ink share inside the area of every other box of the cell. GATHER measures and names no note; `notehead_precision` and
     #: `family_precision` refuse a box whose ink lies inside (`inside_the_meter`).
+    #: ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the SAME quantity is the shared register -- owners `clef` (a located
+    #: clef, or a clef-sized detector box; NARROWED standing away from a bar's start) and `leading_column` (the header column left of
+    #: the first clef, `prior=True`) are filed by `gather.gather_claimed_register`; `claims.covering` reads every owner alike.
     CLAIMED_AREA = "claimed_area"
 
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
@@ -2908,6 +2911,9 @@ class READERS(_Vocab):
     #: `gather.gather_meter_object` -- ROADMAP 2.177. The PAGE raster (staff-line runs left out) asked where the two stacked numerals of a
     #: printed time signature are, one column on every staff of the system.
     CV_CLAIMED_AREA = "cv_claimed_area"
+    #: `gather.gather_claimed_register` -- ROADMAP 2.181. The PAGE raster asked how much of each box's own ink lies inside a clef's or
+    #: the header column's claimed area, and whether that ink is a line running on past the box (barline / bracket / brace).
+    CV_CLAIMED_REGISTER = "cv_claimed_register"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"
