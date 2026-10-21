@@ -80,3 +80,10 @@ discount); a second Brahms OFF replay is the determinism control (§4).
 - Blind tiles for Sean: `out/print/2.183-key-signature/` (12, orange box = where to look, means nothing; key `out/print/2.183-key.json`): 9
   drawn (seed 2183) from the 20 Litolff written-rest flats, 3 controls = real eighth rests after the meter. Purpose: Sean confirms the count
   (CLAUDE rule 7) before a key-object lane opens. The claim as built changes none of these.
+
+## 5. Sean's tiles (2026-10-21)
+
+"1-6 key flats 7-8. 8 rest 9. Key flat 10. 8 rest 11-12. Key flat" (`out/print/2.183-key-signature/answers.json`). All 9 cause-population
+draws are key flats and all 3 controls are real eighth rests: 12 of 12 as the key. So the census count stands on his eye (20 Litolff + 4
+Brahms key flats written as rests, not 2), and the claim as built keeps the controls. The per-system key reader proposed in §1 is NOT built;
+it waits for Sean's go-ahead.
