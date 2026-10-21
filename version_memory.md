@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-21 -- Overnight 20261020-night + START HERE after 2026-10-21
+Docs only. Overnight on main f1db97989 (through infer), compared with 20261018-night: Litolff notes in file 6,626 -> 8,887, Brahms 11,991 -> 15,165; held-out bars 0 (red bars 508 / 650); judged Brahms right 129 -> 142, wrong 31 -> 21. New ROADMAP START HERE block "after 2026-10-21" consolidates 2.162-2.181 landed, 2.174/2.182 parked, and the ranked next steps; PROJECT_BRIEF "Where things stand (2026-10-21)" added; CLAUDE rule 7 gained "check a count before it opens a lane" (f1db97989).
+
 ## 2026-10-20 -- ROADMAP 2.173 LANDED ON: red bars + whole-note refusals
 STAGED EXPORT + ADJUDICATE, `OMR_RED_BARS` and `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM` default ON (explicit 0/false/no/off disables). A bar that does not add up is written with what was read, each note in its own status colour, one red bracket "does not add up: should hold X, counted Y"; reported as `bars_written_red`, never counted in "bars add up". A whole value needs a hollow head with no stem; a whole-class box on a read meter or a rest is refused (wholes Litolff 2 -> 0, Brahms 53 -> 4). Merged with 2.172 follow-up (`_detector_view_census`). Findings `benchmarks/omr-red-bars-2026-10/FINDINGS.md`. Next: 2.175 on red bars, 2.176, overnight re-gather.
 ## 2026-10-19 -- ROADMAP 2.172 follow-up: wiring gaps closed by a real reader

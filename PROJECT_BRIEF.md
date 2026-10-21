@@ -10,6 +10,10 @@
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
+## Where things stand (2026-10-21)
+
+The STAGED reader now writes every bar: a bar whose values do not add up is written red with what was read (each note in its own colour), never dropped. On the 2026-10-20 overnight, 75% of Litolff and 62% of Brahms noteheads reach the file, up from 58% / 49% three days earlier. The week's mechanisms: a smaller detector view for dots/flags/rests, a head looked for again at the end of a stem, unison heads as two notes, augmentation dots read off staff lines, and a CLAIMED-AREA register (meter, clefs, header column) so one mark's space is never boxed as another (docs/plan-2026-10-20-claimed-area.md). Status and next steps: ROADMAP "START HERE -- after 2026-10-21".
+
 ## Where things stand (2026-10-11)
 
 **Landed 2026-10-11, each judged by Sean on blind tiles first:** 2.84 a ledger

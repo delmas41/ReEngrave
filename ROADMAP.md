@@ -17,6 +17,14 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-21 (main ≥ the commit naming this block; everything Sean approved is landed ON)
+
+**State.** Overnight 20261020-night ran on main f1db97989 with every landing below ON (benchmarks/acceptance/overnight/20261020-night/README.txt): notes reaching the file Litolff 58% -> 75% (8,887/11,797), Brahms 49% -> 62% (15,165/24,375); held-out bars 0 (bars that do not add up are written red: Litolff 508, Brahms 650); unread bars 664 -> 529 / 393 -> 349; Sean's judged tiles (same index) Litolff 157/32/7 -> 159/32/6, Brahms 129/31/8 -> 142/21/5; wall 66 / 233 min.
+**Landed ON 10-18..21 (each on Sean's tiles):** 2.162 bar never moves a decided note; 2.166 system arcs; 2.168 bar-disputed decided note blue; 2.169 stem pair at head; 2.170 beam off the tip + arc witness; 2.165 one-note correction (loosest arm, blue); 2.172 small detector view (8 px dots/flags/rests); 2.173 red bars, each note its own colour + whole note needs hollow/no stem; 2.175 unison head = two notes, voice guess blue; 2.176 head on leading barline/clef refused; 2.177 meter as one object (claimed-area step 1); 2.179 stem-end heads; 2.180 round dot on a staff line read as wedge -> augmentation dot; 2.181 claims register + header column + clefs (claimed-area step 2).
+**Parked (branches kept):** 2.174 quarters under seen beams (selection bias); 2.182 two parts on one staff (premise a miscount); 2.176b (superseded by 2.177); 2.160.
+**Next, ranked:** (1) Sean's open question: 58 rests boxed as BOTH an eighth and a sixteenth on one ink -- write the stronger blue? (2.182 FINDINGS); (2) claimed-area step 3, key signature slots (Sean 10-20: cancelling naturals ARE the signature, page-facts §2) -- also owns the 2 Litolff key flats written as rests since 2.177; (3) 2.101 third-score check before more two-plate tuning; (4) remaining red-bar causes from the new records (re-run the 2.167 ranking on 20261020-night first); (5) 2.153 re-check (2.162 + 2.165 have landed). Plan for steps 3-7: docs/plan-2026-10-20-claimed-area.md §7.
+**Process (CLAUDE rule 7, Sean 10-20):** check a count with a crop look or tiles before it opens a lane. Measure on the EXPORTED FILE. Random samples beside judged tiles. Disk was 100% full on 10-20: ~39 GB free now; remove merged, clean agent worktrees (check for untracked FINDINGS first) before long runs. Sean picks Opus/Fable for some lanes; otherwise Sonnet.
+
 ## START HERE — 2026-10-19 addendum
 
 **2026-10-20 (newest, latest-2):** 2.181 LANDED ON (`OMR_CLAIMED_REGISTER` default ON; Sean "Let's land these"): claimed-area step 2 (register + header column + clefs) is in; next step 3, key signature. See the 2.181 row.
