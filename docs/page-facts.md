@@ -68,6 +68,11 @@ machine-readable form.
   meter digit.
 - A key change, and a meter change, is printed at one bar on every staff of
   the system (meter: Sean, 2026-09-30).
+- **Cancelling accidentals at a key change are part of the key signature**
+  (scope: general): the naturals that cancel the old key, printed before the
+  new key's accidentals, belong to the signature's run, not to any note
+  (Sean, 2026-10-20: "Canceling accidentals should be considered key
+  signature"; claimed-area step 3, ROADMAP 2.178).
 - A cautionary meter after a system's last barline governs no bar. A meter
   is printed at a movement's start and at every change, and a change HOLDS
   until a printed change back -- the return is always printed (Sean,
