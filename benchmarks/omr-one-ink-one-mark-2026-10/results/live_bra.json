@@ -1,0 +1,22 @@
+{
+ "21": {
+  "cells": 220,
+  "cells_live_boxes_equal_stored": 220,
+  "live_boxes": 2939,
+  "stored_boxes": 2939,
+  "live_merged_winners": 66,
+  "live_absorbed": 73,
+  "replay_absorbed": 73,
+  "live_plan_equals_replay_plan(by winner class/box)": 220
+ },
+ "23": {
+  "cells": 250,
+  "cells_live_boxes_equal_stored": 250,
+  "live_boxes": 4066,
+  "stored_boxes": 4066,
+  "live_merged_winners": 61,
+  "live_absorbed": 75,
+  "replay_absorbed": 75,
+  "live_plan_equals_replay_plan(by winner class/box)": 250
+ }
+}

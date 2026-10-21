@@ -1,0 +1,598 @@
+{
+ "counts": {
+  "accidental": {
+   "groups": 1027,
+   "one_staff_group": 827,
+   "cross_staff_groups": 200,
+   "owner_decided": 183,
+   "winner_is_in_owner_cell": 105,
+   "owner_undecided_or_split": 17,
+   "winner_in_other_cell(ink changes hands)": 78,
+   "owner_class_differs_from_winner_class": 28
+  },
+  "rest": {
+   "groups": 2866,
+   "one_staff_group": 2854,
+   "cross_staff_groups": 12,
+   "owner_decided": 12,
+   "winner_is_in_owner_cell": 6,
+   "winner_in_other_cell(ink changes hands)": 6
+  }
+ },
+ "examples": {
+  "accidental:undecided": [
+   [
+    "mg/2/0/243",
+    {
+     "glyph/2/0/3/6/7": [
+      "abstained",
+      null,
+      "tied"
+     ],
+     "glyph/2/0/4/6/2": [
+      "abstained",
+      null,
+      "tied"
+     ]
+    }
+   ],
+   [
+    "mg/2/1/401",
+    {
+     "glyph/2/1/7/14/2": [
+      "decided",
+      "staff/2/1/7",
+      "distance"
+     ],
+     "glyph/2/1/8/14/1": [
+      "decided",
+      "staff/2/1/8",
+      "distance"
+     ],
+     "glyph/2/1/8/14/6": [
+      "decided",
+      "staff/2/1/8",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/3/0/56",
+    {
+     "glyph/3/0/8/1/1": [
+      "decided",
+      "staff/3/0/8",
+      "distance"
+     ],
+     "glyph/3/0/9/1/0": [
+      "decided",
+      "staff/3/0/9",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/4/0/143",
+    {
+     "glyph/4/0/9/5/1": [
+      "decided",
+      "staff/4/0/9",
+      "hairpin_separates"
+     ],
+     "glyph/4/0/10/5/0": [
+      "decided",
+      "staff/4/0/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/4/0/154",
+    {
+     "glyph/4/0/9/6/0": [
+      "decided",
+      "staff/4/0/9",
+      "hairpin_separates"
+     ],
+     "glyph/4/0/10/6/0": [
+      "decided",
+      "staff/4/0/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/4/0/191",
+    {
+     "glyph/4/0/9/7/1": [
+      "decided",
+      "staff/4/0/9",
+      "hairpin_separates"
+     ],
+     "glyph/4/0/10/7/5": [
+      "decided",
+      "staff/4/0/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/7/1/48",
+    {
+     "glyph/7/1/9/2/0": [
+      "decided",
+      "staff/7/1/9",
+      "distance"
+     ],
+     "glyph/7/1/10/2/0": [
+      "decided",
+      "staff/7/1/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/29",
+    {
+     "glyph/8/0/6/1/0": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/6/1/1": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/7/1/0": [
+      "decided",
+      "staff/8/0/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/136",
+    {
+     "glyph/8/0/6/10/1": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/7/10/1": [
+      "decided",
+      "staff/8/0/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/196",
+    {
+     "glyph/8/0/6/14/1": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/7/14/12": [
+      "decided",
+      "staff/8/0/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/228",
+    {
+     "glyph/8/0/6/16/2": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/6/16/7": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/7/16/7": [
+      "decided",
+      "staff/8/0/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/258",
+    {
+     "glyph/8/0/6/18/0": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/6/18/1": [
+      "decided",
+      "staff/8/0/6",
+      "distance"
+     ],
+     "glyph/8/0/7/18/0": [
+      "decided",
+      "staff/8/0/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/0/270",
+    {
+     "glyph/8/0/2/19/0": [
+      "decided",
+      "staff/8/0/2",
+      "distance"
+     ],
+     "glyph/8/0/2/19/1": [
+      "decided",
+      "staff/8/0/2",
+      "distance"
+     ],
+     "glyph/8/0/3/19/0": [
+      "decided",
+      "staff/8/0/3",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/10/1/356",
+    {
+     "glyph/10/1/8/12/0": [
+      "decided",
+      "staff/10/1/8",
+      "distance"
+     ],
+     "glyph/10/1/9/12/0": [
+      "decided",
+      "staff/10/1/9",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/12/0/409",
+    {
+     "glyph/12/0/9/12/10": [
+      "decided",
+      "staff/12/0/9",
+      "distance"
+     ],
+     "glyph/12/0/10/12/5": [
+      "decided",
+      "staff/12/0/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/12/1/450",
+    {
+     "glyph/12/1/2/11/12": [
+      "decided",
+      "staff/12/1/2",
+      "distance"
+     ],
+     "glyph/12/1/3/11/3": [
+      "decided",
+      "staff/12/1/3",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/13/0/548",
+    {
+     "glyph/13/0/7/14/0": [
+      "decided",
+      "staff/13/0/8",
+      "distance"
+     ],
+     "glyph/13/0/7/14/15": [
+      "decided",
+      "staff/13/0/7",
+      "distance"
+     ],
+     "glyph/13/0/8/14/0": [
+      "decided",
+      "staff/13/0/7",
+      "distance"
+     ],
+     "glyph/13/0/8/14/4": [
+      "decided",
+      "staff/13/0/7",
+      "distance"
+     ]
+    }
+   ]
+  ],
+  "accidental:differs": [
+   [
+    "mg/4/0/176",
+    "glyph/4/0/2/7/2",
+    "accidentalFlat",
+    0.7738057971000671,
+    "glyph/4/0/3/7/2",
+    "accidentalNatural",
+    0.7652392983436584,
+    false
+   ],
+   [
+    "mg/6/1/54",
+    "glyph/6/1/9/0/6",
+    "accidentalNatural",
+    0.7664190530776978,
+    "glyph/6/1/10/0/5",
+    "accidentalFlat",
+    0.715979278087616,
+    false
+   ],
+   [
+    "mg/6/0/158",
+    "glyph/6/0/4/6/2",
+    "accidentalFlat",
+    0.8292233347892761,
+    "glyph/6/0/5/6/4",
+    "accidentalNatural",
+    0.6832314729690552,
+    false
+   ],
+   [
+    "mg/6/1/448",
+    "glyph/6/1/0/9/6",
+    "accidentalFlat",
+    0.7432253956794739,
+    "glyph/6/1/1/9/3",
+    "accidentalNatural",
+    0.7278664112091064,
+    false
+   ],
+   [
+    "mg/7/0/292",
+    "glyph/7/0/2/6/0",
+    "accidentalFlat",
+    0.8875244855880737,
+    "glyph/7/0/3/6/0",
+    "accidentalNatural",
+    0.7584214806556702,
+    false
+   ],
+   [
+    "mg/7/0/333",
+    "glyph/7/0/2/7/0",
+    "accidentalFlat",
+    0.8962978720664978,
+    "glyph/7/0/3/7/11",
+    "accidentalNatural",
+    0.25991177558898926,
+    false
+   ],
+   [
+    "mg/7/0/383",
+    "glyph/7/0/0/8/0",
+    "accidentalFlat",
+    0.8861650228500366,
+    "glyph/7/0/1/8/3",
+    "accidentalNatural",
+    0.6000629663467407,
+    false
+   ],
+   [
+    "mg/7/0/426",
+    "glyph/7/0/6/10/0",
+    "accidentalNatural",
+    0.7872156500816345,
+    "glyph/7/0/7/10/4",
+    "accidentalFlat",
+    0.3462848663330078,
+    false
+   ],
+   [
+    "mg/7/0/481",
+    "glyph/7/0/2/13/0",
+    "accidentalDoubleSharp",
+    0.8156557083129883,
+    "glyph/7/0/3/13/1",
+    "accidentalSharp",
+    0.6058922410011292,
+    false
+   ],
+   [
+    "mg/7/0/542",
+    "glyph/7/0/0/15/0",
+    "accidentalFlat",
+    0.8432997465133667,
+    "glyph/7/0/1/15/0",
+    "accidentalNatural",
+    0.8255603909492493,
+    false
+   ],
+   [
+    "mg/10/1/144",
+    "glyph/10/1/6/5/1",
+    "accidentalFlat",
+    0.8198318481445312,
+    "glyph/10/1/7/5/4",
+    "accidentalNatural",
+    0.747361421585083,
+    false
+   ],
+   [
+    "mg/10/1/288",
+    "glyph/10/1/7/9/0",
+    "accidentalFlat",
+    0.870634138584137,
+    "glyph/10/1/8/9/10",
+    "accidentalNatural",
+    0.2671264708042145,
+    false
+   ],
+   [
+    "mg/12/0/66",
+    "glyph/12/0/1/2/2",
+    "accidentalSharp",
+    0.8180872797966003,
+    "glyph/12/0/2/2/3",
+    "accidentalNatural",
+    0.6873323321342468,
+    false
+   ],
+   [
+    "mg/12/0/68",
+    "glyph/12/0/9/2/1",
+    "accidentalFlat",
+    0.8326569199562073,
+    "glyph/12/0/10/2/6",
+    "accidentalNatural",
+    0.7265554070472717,
+    false
+   ],
+   [
+    "mg/12/1/116",
+    "glyph/12/1/6/2/0",
+    "accidentalFlat",
+    0.8367564678192139,
+    "glyph/12/1/7/2/12",
+    "accidentalNatural",
+    0.6310091018676758,
+    false
+   ],
+   [
+    "mg/12/0/297",
+    "glyph/12/0/6/9/4",
+    "accidentalFlat",
+    0.6904194951057434,
+    "glyph/12/0/7/9/12",
+    "accidentalNatural",
+    0.6534637808799744,
+    false
+   ],
+   [
+    "mg/12/1/352",
+    "glyph/12/1/0/8/3",
+    "accidentalFlat",
+    0.7460951209068298,
+    "glyph/12/1/1/8/5",
+    "accidentalNatural",
+    0.6441842317581177,
+    false
+   ],
+   [
+    "mg/12/1/353",
+    "glyph/12/1/2/8/0",
+    "accidentalNatural",
+    0.6921560764312744,
+    "glyph/12/1/3/8/3",
+    "accidentalFlat",
+    0.5330026745796204,
+    false
+   ],
+   [
+    "mg/13/0/190",
+    "glyph/13/0/2/4/0",
+    "accidentalFlat",
+    0.8955185413360596,
+    "glyph/13/0/3/4/0",
+    "accidentalNatural",
+    0.8767665028572083,
+    false
+   ],
+   [
+    "mg/13/0/286",
+    "glyph/13/0/2/6/0",
+    "accidentalFlat",
+    0.8872681260108948,
+    "glyph/13/0/3/6/0",
+    "accidentalNatural",
+    0.835397481918335,
+    false
+   ],
+   [
+    "mg/13/1/285",
+    "glyph/13/1/8/11/0",
+    "accidentalFlat",
+    0.8899891376495361,
+    "glyph/13/1/9/11/0",
+    "accidentalNatural",
+    0.7432992458343506,
+    false
+   ],
+   [
+    "mg/13/1/351",
+    "glyph/13/1/0/14/0",
+    "accidentalFlat",
+    0.864264726638794,
+    "glyph/13/1/1/14/0",
+    "accidentalNatural",
+    0.8563657999038696,
+    false
+   ],
+   [
+    "mg/13/1/352",
+    "glyph/13/1/8/14/4",
+    "accidentalFlat",
+    0.6894786357879639,
+    "glyph/13/1/9/14/4",
+    "accidentalNatural",
+    0.6125890016555786,
+    false
+   ],
+   [
+    "mg/14/0/174",
+    "glyph/14/0/0/7/1",
+    "accidentalFlat",
+    0.8151482939720154,
+    "glyph/14/0/1/7/1",
+    "accidentalNatural",
+    0.7866091728210449,
+    false
+   ],
+   [
+    "mg/14/1/366",
+    "glyph/14/1/9/9/1",
+    "accidentalFlat",
+    0.7742084860801697,
+    "glyph/14/1/10/9/3",
+    "accidentalNatural",
+    0.6250656247138977,
+    false
+   ],
+   [
+    "mg/15/0/37",
+    "glyph/15/0/7/0/2",
+    "accidentalFlat",
+    0.7992573380470276,
+    "glyph/15/0/8/0/6",
+    "accidentalNatural",
+    0.5499696135520935,
+    false
+   ],
+   [
+    "mg/16/1/280",
+    "glyph/16/1/0/7/2",
+    "accidentalFlat",
+    0.8621562719345093,
+    "glyph/16/1/1/7/3",
+    "accidentalNatural",
+    0.817126989364624,
+    false
+   ],
+   [
+    "mg/16/1/544",
+    "glyph/16/1/0/13/5",
+    "accidentalNatural",
+    0.4332539737224579,
+    "glyph/16/1/1/13/4",
+    "accidentalFlat",
+    0.32598876953125,
+    false
+   ]
+  ]
+ }
+}

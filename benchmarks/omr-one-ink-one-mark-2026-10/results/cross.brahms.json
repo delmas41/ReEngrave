@@ -1,0 +1,988 @@
+{
+ "counts": {
+  "accidental": {
+   "groups": 4440,
+   "one_staff_group": 3715,
+   "cross_staff_groups": 725,
+   "owner_decided": 693,
+   "winner_is_in_owner_cell": 471,
+   "winner_in_other_cell(ink changes hands)": 222,
+   "owner_class_differs_from_winner_class": 36,
+   "owner_undecided_or_split": 32
+  },
+  "rest": {
+   "groups": 7985,
+   "one_staff_group": 7844,
+   "cross_staff_groups": 141,
+   "owner_decided": 139,
+   "winner_is_in_owner_cell": 85,
+   "winner_in_other_cell(ink changes hands)": 54,
+   "owner_undecided_or_split": 2
+  }
+ },
+ "examples": {
+  "accidental:differs": [
+   [
+    "mg/1/1/30",
+    "glyph/1/1/2/0/21",
+    "accidentalSharp",
+    0.5673208236694336,
+    "glyph/1/1/3/0/36",
+    "accidentalNatural",
+    0.3946676254272461,
+    false
+   ],
+   [
+    "mg/3/1/28",
+    "glyph/3/1/2/0/1",
+    "accidentalFlat",
+    0.8734583854675293,
+    "glyph/3/1/3/0/2",
+    "accidentalNatural",
+    0.8585318922996521,
+    false
+   ],
+   [
+    "mg/3/1/61",
+    "glyph/3/1/0/0/4",
+    "accidentalFlat",
+    0.8065565824508667,
+    "glyph/3/1/1/0/6",
+    "accidentalNatural",
+    0.7912744283676147,
+    false
+   ],
+   [
+    "mg/3/0/77",
+    "glyph/3/0/2/0/22",
+    "accidentalFlat",
+    0.5888915061950684,
+    "glyph/3/0/3/0/18",
+    "accidentalNatural",
+    0.5190720558166504,
+    false
+   ],
+   [
+    "mg/4/0/567",
+    "glyph/4/0/4/8/0",
+    "accidentalNatural",
+    0.8611211180686951,
+    "glyph/4/0/3/8/5",
+    "accidentalFlat",
+    0.7223878502845764,
+    false
+   ],
+   [
+    "mg/4/0/642",
+    "glyph/4/0/0/9/1",
+    "accidentalFlat",
+    0.8711838722229004,
+    "glyph/4/0/1/9/6",
+    "accidentalNatural",
+    0.7079750299453735,
+    false
+   ],
+   [
+    "mg/5/0/370",
+    "glyph/5/0/0/4/1",
+    "accidentalFlat",
+    0.8345401287078857,
+    "glyph/5/0/1/4/5",
+    "accidentalNatural",
+    0.6624342799186707,
+    false
+   ],
+   [
+    "mg/5/0/476",
+    "glyph/5/0/0/5/31",
+    "accidentalSharp",
+    0.3088243007659912,
+    "glyph/5/0/1/5/49",
+    "accidentalNatural",
+    0.2936224937438965,
+    false
+   ],
+   [
+    "mg/7/1/203",
+    "glyph/7/1/0/3/2",
+    "accidentalFlat",
+    0.8362645506858826,
+    "glyph/7/1/1/3/9",
+    "accidentalNatural",
+    0.7870542407035828,
+    false
+   ],
+   [
+    "mg/7/1/329",
+    "glyph/7/1/0/7/0",
+    "accidentalFlat",
+    0.8546205759048462,
+    "glyph/7/1/1/7/2",
+    "accidentalNatural",
+    0.7335781455039978,
+    false
+   ],
+   [
+    "mg/8/1/215",
+    "glyph/8/1/3/8/1",
+    "accidentalSharp",
+    0.7379841804504395,
+    "glyph/8/1/2/8/3",
+    "accidentalNatural",
+    0.6554674506187439,
+    false
+   ],
+   [
+    "mg/10/0/467",
+    "glyph/10/0/9/5/1",
+    "accidentalFlat",
+    0.8349626064300537,
+    "glyph/10/0/10/5/2",
+    "accidentalNatural",
+    0.8152760863304138,
+    false
+   ],
+   [
+    "mg/11/0/283",
+    "glyph/11/0/8/3/5",
+    "accidentalDoubleSharp",
+    0.4512568712234497,
+    "glyph/11/0/9/3/11",
+    "accidentalSharp",
+    0.43692418932914734,
+    false
+   ],
+   [
+    "mg/12/1/97",
+    "glyph/12/1/11/1/1",
+    "accidentalFlat",
+    0.8744939565658569,
+    "glyph/12/1/12/1/5",
+    "accidentalNatural",
+    0.8379495143890381,
+    false
+   ],
+   [
+    "mg/12/1/98",
+    "glyph/12/1/12/1/2",
+    "accidentalFlat",
+    0.8526067733764648,
+    "glyph/12/1/13/1/5",
+    "accidentalNatural",
+    0.7787756323814392,
+    false
+   ],
+   [
+    "mg/12/1/229",
+    "glyph/12/1/11/3/2",
+    "accidentalFlat",
+    0.7994400858879089,
+    "glyph/12/1/12/3/10",
+    "accidentalDoubleFlat",
+    0.35590261220932007,
+    false
+   ],
+   [
+    "mg/13/0/66",
+    "glyph/13/0/11/0/1",
+    "accidentalFlat",
+    0.8569617867469788,
+    "glyph/13/0/12/0/19",
+    "accidentalDoubleFlat",
+    0.6740857362747192,
+    false
+   ],
+   [
+    "mg/13/1/149",
+    "glyph/13/1/0/2/2",
+    "accidentalFlat",
+    0.8381760120391846,
+    "glyph/13/1/1/2/4",
+    "accidentalNatural",
+    0.7655279040336609,
+    false
+   ],
+   [
+    "mg/13/0/321",
+    "glyph/13/0/8/5/0",
+    "accidentalFlat",
+    0.8551711440086365,
+    "glyph/13/0/9/5/1",
+    "accidentalNatural",
+    0.8172265887260437,
+    false
+   ],
+   [
+    "mg/13/0/343",
+    "glyph/13/0/10/5/13",
+    "accidentalFlat",
+    0.3870048224925995,
+    "glyph/13/0/11/5/8",
+    "accidentalNatural",
+    0.38282036781311035,
+    false
+   ],
+   [
+    "mg/13/0/601",
+    "glyph/13/0/8/10/6",
+    "accidentalNatural",
+    0.5887871384620667,
+    "glyph/13/0/9/10/8",
+    "accidentalFlat",
+    0.5351545810699463,
+    false
+   ],
+   [
+    "mg/14/0/571",
+    "glyph/14/0/0/6/2",
+    "accidentalFlat",
+    0.7801490426063538,
+    "glyph/14/0/1/6/4",
+    "accidentalNatural",
+    0.6630507707595825,
+    false
+   ],
+   [
+    "mg/16/0/175",
+    "glyph/16/0/1/2/6",
+    "accidentalDoubleSharp",
+    0.5095903873443604,
+    "glyph/16/0/2/2/14",
+    "accidentalSharp",
+    0.4321420192718506,
+    false
+   ],
+   [
+    "mg/16/1/178",
+    "glyph/16/1/8/2/1",
+    "accidentalFlat",
+    0.7947975397109985,
+    "glyph/16/1/9/2/2",
+    "accidentalNatural",
+    0.7641057968139648,
+    false
+   ],
+   [
+    "mg/16/0/319",
+    "glyph/16/0/2/5/2",
+    "accidentalFlat",
+    0.800169050693512,
+    "glyph/16/0/3/5/6",
+    "accidentalNatural",
+    0.7318132519721985,
+    false
+   ],
+   [
+    "mg/17/1/636",
+    "glyph/17/1/4/5/9",
+    "accidentalNatural",
+    0.8373517394065857,
+    "glyph/17/1/3/5/39",
+    "accidentalFlat",
+    0.5299986004829407,
+    false
+   ],
+   [
+    "mg/18/0/187",
+    "glyph/18/0/12/1/8",
+    "accidentalFlat",
+    0.7674669623374939,
+    "glyph/18/0/13/1/6",
+    "accidentalNatural",
+    0.756594717502594,
+    false
+   ],
+   [
+    "mg/18/1/562",
+    "glyph/18/1/2/6/10",
+    "accidentalNatural",
+    0.754309356212616,
+    "glyph/18/1/3/6/15",
+    "accidentalFlat",
+    0.7501163482666016,
+    false
+   ],
+   [
+    "mg/18/1/565",
+    "glyph/18/1/13/6/1",
+    "accidentalSharp",
+    0.7892732620239258,
+    "glyph/18/1/12/6/14",
+    "accidentalNatural",
+    0.7365416884422302,
+    false
+   ],
+   [
+    "mg/18/0/607",
+    "glyph/18/0/10/6/3",
+    "accidentalSharp",
+    0.5598350167274475,
+    "glyph/18/0/11/6/2",
+    "accidentalNatural",
+    0.48452576994895935,
+    false
+   ],
+   [
+    "mg/19/1/32",
+    "glyph/19/1/11/0/23",
+    "accidentalFlat",
+    0.40703287720680237,
+    "glyph/19/1/12/0/17",
+    "accidentalDoubleFlat",
+    0.35536274313926697,
+    false
+   ],
+   [
+    "mg/19/1/61",
+    "glyph/19/1/6/0/13",
+    "accidentalDoubleSharp",
+    0.6295505166053772,
+    "glyph/19/1/5/0/12",
+    "accidentalSharp",
+    0.6293577551841736,
+    false
+   ],
+   [
+    "mg/19/0/373",
+    "glyph/19/0/12/4/4",
+    "accidentalFlat",
+    0.8123785853385925,
+    "glyph/19/0/13/4/5",
+    "accidentalNatural",
+    0.6795061230659485,
+    false
+   ],
+   [
+    "mg/19/1/534",
+    "glyph/19/1/2/6/2",
+    "accidentalSharp",
+    0.8062482476234436,
+    "glyph/19/1/1/6/10",
+    "accidentalNatural",
+    0.5313449501991272,
+    false
+   ],
+   [
+    "mg/24/0/668",
+    "glyph/24/0/2/8/0",
+    "accidentalFlat",
+    0.8698582649230957,
+    "glyph/24/0/3/8/2",
+    "accidentalNatural",
+    0.8235625624656677,
+    false
+   ],
+   [
+    "mg/25/0/141",
+    "glyph/25/0/1/1/8",
+    "accidentalFlat",
+    0.751166045665741,
+    "glyph/25/0/2/1/9",
+    "accidentalSharp",
+    0.6776039600372314,
+    false
+   ]
+  ],
+  "accidental:undecided": [
+   [
+    "mg/2/0/324",
+    {
+     "glyph/2/0/2/3/0": [
+      "decided",
+      "staff/2/0/2",
+      "distance"
+     ],
+     "glyph/2/0/3/3/1": [
+      "decided",
+      "staff/2/0/3",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/2/0/505",
+    {
+     "glyph/2/0/0/5/16": [
+      "decided",
+      "staff/2/0/0",
+      "distance"
+     ],
+     "glyph/2/0/1/5/5": [
+      "decided",
+      "staff/2/0/1",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/5/0/516",
+    {
+     "glyph/5/0/8/5/8": [
+      "decided",
+      "staff/5/0/8",
+      "distance"
+     ],
+     "glyph/5/0/9/5/1": [
+      "decided",
+      "staff/5/0/9",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/6/1/677",
+    {
+     "glyph/6/1/7/8/0": [
+      "decided",
+      "staff/6/1/7",
+      "distance"
+     ],
+     "glyph/6/1/7/8/4": [
+      "decided",
+      "staff/6/1/7",
+      "distance"
+     ],
+     "glyph/6/1/7/8/7": [
+      "decided",
+      "staff/6/1/7",
+      "distance"
+     ],
+     "glyph/6/1/8/8/0": [
+      "decided",
+      "staff/6/1/8",
+      "distance"
+     ],
+     "glyph/6/1/8/8/2": [
+      "decided",
+      "staff/6/1/7",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/7/1/129",
+    {
+     "glyph/7/1/4/2/4": [
+      "decided",
+      "staff/7/1/4",
+      "range_veto"
+     ],
+     "glyph/7/1/5/2/2": [
+      "decided",
+      "staff/7/1/5",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/9/0/54",
+    {
+     "glyph/9/0/9/0/0": [
+      "decided",
+      "staff/9/0/9",
+      "distance"
+     ],
+     "glyph/9/0/10/0/24": [
+      "decided",
+      "staff/9/0/10",
+      "range_veto"
+     ],
+     "glyph/9/0/10/0/25": [
+      "decided",
+      "staff/9/0/10",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/9/1/655",
+    {
+     "glyph/9/1/3/8/10": [
+      "abstained",
+      null,
+      "tied"
+     ],
+     "glyph/9/1/4/8/0": [
+      "abstained",
+      null,
+      "tied"
+     ]
+    }
+   ],
+   [
+    "mg/10/0/54",
+    {
+     "glyph/10/0/3/0/1": [
+      "decided",
+      "staff/10/0/3",
+      "range_veto"
+     ],
+     "glyph/10/0/4/0/1": [
+      "decided",
+      "staff/10/0/4",
+      "distance"
+     ],
+     "glyph/10/0/4/0/5": [
+      "decided",
+      "staff/10/0/4",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/10/0/441",
+    {
+     "glyph/10/0/1/5/2": [
+      "decided",
+      "staff/10/0/1",
+      "distance"
+     ],
+     "glyph/10/0/2/5/0": [
+      "decided",
+      "staff/10/0/2",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/11/1/27",
+    {
+     "glyph/11/1/5/0/2": [
+      "decided",
+      "staff/11/1/5",
+      "range_veto"
+     ],
+     "glyph/11/1/6/0/6": [
+      "decided",
+      "staff/11/1/6",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/11/0/361",
+    {
+     "glyph/11/0/10/4/9": [
+      "decided",
+      "staff/11/0/10",
+      "distance"
+     ],
+     "glyph/11/0/11/4/11": [
+      "decided",
+      "staff/11/0/11",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/11/0/362",
+    {
+     "glyph/11/0/10/4/0": [
+      "decided",
+      "staff/11/0/10",
+      "distance"
+     ],
+     "glyph/11/0/11/4/13": [
+      "decided",
+      "staff/11/0/11",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/12/1/472",
+    {
+     "glyph/12/1/11/7/11": [
+      "decided",
+      "staff/12/1/11",
+      "distance"
+     ],
+     "glyph/12/1/12/7/13": [
+      "decided",
+      "staff/12/1/12",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/13/0/295",
+    {
+     "glyph/13/0/5/4/0": [
+      "decided",
+      "staff/13/0/5",
+      "range_veto"
+     ],
+     "glyph/13/0/6/4/3": [
+      "decided",
+      "staff/13/0/6",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/13/0/317",
+    {
+     "glyph/13/0/5/5/0": [
+      "decided",
+      "staff/13/0/5",
+      "range_veto"
+     ],
+     "glyph/13/0/6/5/0": [
+      "decided",
+      "staff/13/0/6",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/13/1/476",
+    {
+     "glyph/13/1/4/6/11": [
+      "decided",
+      "staff/13/1/4",
+      "range_veto"
+     ],
+     "glyph/13/1/5/6/24": [
+      "decided",
+      "staff/13/1/5",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/13/1/712",
+    {
+     "glyph/13/1/10/11/6": [
+      "decided",
+      "staff/13/1/11",
+      "distance"
+     ],
+     "glyph/13/1/10/11/16": [
+      "decided",
+      "staff/13/1/10",
+      "distance"
+     ],
+     "glyph/13/1/11/11/1": [
+      "decided",
+      "staff/13/1/10",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/16/1/429",
+    {
+     "glyph/16/1/8/6/10": [
+      "decided",
+      "staff/16/1/8",
+      "distance"
+     ],
+     "glyph/16/1/9/6/18": [
+      "decided",
+      "staff/16/1/9",
+      "range_veto"
+     ],
+     "glyph/16/1/9/6/28": [
+      "decided",
+      "staff/16/1/9",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/17/0/439",
+    {
+     "glyph/17/0/0/4/8": [
+      "decided",
+      "staff/17/0/1",
+      "distance"
+     ],
+     "glyph/17/0/1/4/15": [
+      "decided",
+      "staff/17/0/1",
+      "distance"
+     ],
+     "glyph/17/0/1/4/18": [
+      "decided",
+      "staff/17/0/0",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/17/1/599",
+    {
+     "glyph/17/1/10/5/4": [
+      "decided",
+      "staff/17/1/10",
+      "distance"
+     ],
+     "glyph/17/1/10/5/21": [
+      "decided",
+      "staff/17/1/10",
+      "distance"
+     ],
+     "glyph/17/1/11/5/13": [
+      "decided",
+      "staff/17/1/11",
+      "distance"
+     ],
+     "glyph/17/1/11/5/31": null,
+     "glyph/17/1/11/5/37": [
+      "decided",
+      "staff/17/1/11",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/17/1/605",
+    {
+     "glyph/17/1/2/5/23": [
+      "decided",
+      "staff/17/1/3",
+      "distance"
+     ],
+     "glyph/17/1/2/5/24": [
+      "decided",
+      "staff/17/1/2",
+      "distance"
+     ],
+     "glyph/17/1/3/5/5": [
+      "decided",
+      "staff/17/1/3",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/18/0/59",
+    {
+     "glyph/18/0/12/0/16": [
+      "decided",
+      "staff/18/0/12",
+      "hairpin_separates"
+     ],
+     "glyph/18/0/12/0/38": [
+      "decided",
+      "staff/18/0/12",
+      "hairpin_separates"
+     ],
+     "glyph/18/0/13/0/5": [
+      "decided",
+      "staff/18/0/13",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/18/0/72",
+    {
+     "glyph/18/0/12/0/14": [
+      "decided",
+      "staff/18/0/12",
+      "hairpin_separates"
+     ],
+     "glyph/18/0/12/0/27": [
+      "decided",
+      "staff/18/0/12",
+      "hairpin_separates"
+     ],
+     "glyph/18/0/13/0/9": [
+      "decided",
+      "staff/18/0/13",
+      "distance"
+     ],
+     "glyph/18/0/13/0/27": null
+    }
+   ],
+   [
+    "mg/18/1/517",
+    {
+     "glyph/18/1/12/5/6": [
+      "decided",
+      "staff/18/1/12",
+      "distance"
+     ],
+     "glyph/18/1/13/5/2": [
+      "decided",
+      "staff/18/1/13",
+      "range_veto"
+     ],
+     "glyph/18/1/13/5/10": [
+      "decided",
+      "staff/18/1/13",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/19/0/289",
+    {
+     "glyph/19/0/3/3/3": [
+      "abstained",
+      null,
+      "tied"
+     ],
+     "glyph/19/0/4/3/0": [
+      "abstained",
+      null,
+      "tied"
+     ]
+    }
+   ],
+   [
+    "mg/19/0/369",
+    {
+     "glyph/19/0/3/4/10": [
+      "abstained",
+      null,
+      "tied"
+     ],
+     "glyph/19/0/3/4/18": [
+      "abstained",
+      null,
+      "tied"
+     ],
+     "glyph/19/0/4/4/1": [
+      "abstained",
+      null,
+      "tied"
+     ]
+    }
+   ],
+   [
+    "mg/19/1/539",
+    {
+     "glyph/19/1/5/6/16": [
+      "decided",
+      "staff/19/1/5",
+      "range_veto"
+     ],
+     "glyph/19/1/6/6/7": [
+      "decided",
+      "staff/19/1/6",
+      "distance"
+     ],
+     "glyph/19/1/6/6/11": [
+      "decided",
+      "staff/19/1/6",
+      "distance"
+     ],
+     "glyph/19/1/6/6/12": [
+      "decided",
+      "staff/19/1/6",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/19/0/620",
+    {
+     "glyph/19/0/1/7/1": [
+      "decided",
+      "staff/19/0/1",
+      "distance"
+     ],
+     "glyph/19/0/2/7/3": [
+      "decided",
+      "staff/19/0/2",
+      "range_veto"
+     ]
+    }
+   ],
+   [
+    "mg/21/1/343",
+    {
+     "glyph/21/1/2/6/5": [
+      "decided",
+      "staff/21/1/2",
+      "distance"
+     ],
+     "glyph/21/1/3/6/0": [
+      "decided",
+      "staff/21/1/3",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/23/1/192",
+    {
+     "glyph/23/1/4/2/7": [
+      "decided",
+      "staff/23/1/4",
+      "range_veto"
+     ],
+     "glyph/23/1/5/2/3": [
+      "decided",
+      "staff/23/1/5",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/25/0/345",
+    {
+     "glyph/25/0/3/2/10": [
+      "decided",
+      "staff/25/0/3",
+      "range_veto"
+     ],
+     "glyph/25/0/4/2/17": [
+      "decided",
+      "staff/25/0/4",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/25/0/397",
+    {
+     "glyph/25/0/2/3/1": [
+      "decided",
+      "staff/25/0/2",
+      "range_veto"
+     ],
+     "glyph/25/0/3/3/0": [
+      "decided",
+      "staff/25/0/3",
+      "distance"
+     ]
+    }
+   ]
+  ],
+  "rest:undecided": [
+   [
+    "mg/5/1/630",
+    {
+     "glyph/5/1/9/6/22": [
+      "decided",
+      "staff/5/1/10",
+      "distance"
+     ],
+     "glyph/5/1/10/6/24": [
+      "decided",
+      "staff/5/1/9",
+      "distance"
+     ]
+    }
+   ],
+   [
+    "mg/8/1/69",
+    {
+     "glyph/8/1/9/0/9": [
+      "decided",
+      "staff/8/1/9",
+      "distance"
+     ],
+     "glyph/8/1/10/0/4": [
+      "decided",
+      "staff/8/1/10",
+      "range_veto"
+     ]
+    }
+   ]
+  ]
+ }
+}

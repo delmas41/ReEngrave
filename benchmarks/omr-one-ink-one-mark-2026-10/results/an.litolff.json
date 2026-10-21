@@ -1,0 +1,286 @@
+{
+ "control_off_equals_stored": {
+  "rest_is_not_a_rest": {
+   "stored": 2969,
+   "live": 2969,
+   "same": 2969
+  },
+  "accidental_owner": {
+   "stored": 1508,
+   "live": 1508,
+   "same": 1508
+  },
+  "accidental": {
+   "stored": 4323,
+   "live": 4323,
+   "same": 4323
+  },
+  "duration": {
+   "stored": 14867,
+   "live": 14867,
+   "same": 14867
+  },
+  "key_signature": {
+   "stored": 0,
+   "live": 0,
+   "same": 0
+  }
+ },
+ "off": {
+  "notes_in_file": 11771,
+  "pitched": 8887,
+  "rests_written": 2884,
+  "rests_guessed_blue": 59,
+  "accidentals_printed": 460,
+  "notes_guessed_blue": 2145,
+  "beams": 2930,
+  "red_bars": 508,
+  "red_rows": 1525,
+  "notes_not_written_total": 4543,
+  "bars_add_up_exact": 4834,
+  "bars_add_up_n": 4834,
+  "heads_owned": 558,
+  "heads_contradicted": 74,
+  "owner_decided": 664,
+  "accidental_applied": 460,
+  "owned_by_another_staff": 0,
+  "ownership_undecided": 0,
+  "accidental_unaccounted": 0,
+  "heads_balanced": true,
+  "guessed_by_one_ink": {},
+  "flags_in_file_beams": 2930,
+  "rest_dup_refused": 106
+ },
+ "on": {
+  "notes_in_file": 11775,
+  "pitched": 8887,
+  "rests_written": 2888,
+  "rests_guessed_blue": 63,
+  "accidentals_printed": 495,
+  "notes_guessed_blue": 2248,
+  "beams": 2930,
+  "red_bars": 507,
+  "red_rows": 1522,
+  "notes_not_written_total": 4532,
+  "bars_add_up_exact": 4835,
+  "bars_add_up_n": 4835,
+  "heads_owned": 517,
+  "heads_contradicted": 3,
+  "owner_decided": 544,
+  "accidental_applied": 495,
+  "owned_by_another_staff": 190,
+  "ownership_undecided": 2,
+  "accidental_unaccounted": 0,
+  "heads_balanced": true,
+  "guessed_by_one_ink": {
+   "one_ink_merged:rest_is_not_a_rest": 4,
+   "one_ink_merged:accidental": 139
+  },
+  "flags_in_file_beams": 2930,
+  "rest_dup_refused": 92
+ },
+ "key_signature_verdicts": {
+  "off": 0,
+  "on": 0,
+  "differ": 0
+ },
+ "duration_reasons_flag": {
+  "flags_disagree": [
+   8,
+   8
+  ],
+  "hooks_counted": [
+   27,
+   27
+  ],
+  "open_head_flag_contradiction": [
+   7,
+   7
+  ]
+ },
+ "duration_verdicts_differing_off_vs_on": 7,
+ "rest_merged_winner_fate_on": {
+  "('narr', None, 'one_ink_merged')": 4
+ },
+ "rest_reason_counts": {
+  "off": {
+   "rest_off_center": 57,
+   "rest_in_a_key_signature_slot": 23,
+   "rest": 2285,
+   "rest_is_a_barline": 90,
+   "claimed_by:meter": 4,
+   "rest_touches_two_staff_lines": 100,
+   "rest_has_a_stem": 123,
+   "rest_is_a_duplicate_box": 106,
+   "rest_outside_its_staff": 9,
+   "rest_clipped_by_crop": 81,
+   "rest_on_a_dynamic_letter": 2,
+   "rest_stroke_into_a_head": 83,
+   "rest_overlaps_a_notehead": 1,
+   "rest_is_a_slashed_stem": 2,
+   "claim_narrowed:clef": 3
+  },
+  "on": {
+   "rest_off_center": 57,
+   "rest_in_a_key_signature_slot": 23,
+   "rest": 2285,
+   "rest_is_a_barline": 91,
+   "claimed_by:meter": 4,
+   "rest_touches_two_staff_lines": 100,
+   "rest_has_a_stem": 124,
+   "rest_is_a_duplicate_box": 92,
+   "rest_outside_its_staff": 9,
+   "rest_clipped_by_crop": 81,
+   "rest_on_a_dynamic_letter": 3,
+   "one_ink_merged": 4,
+   "rest_stroke_into_a_head": 83,
+   "rest_overlaps_a_notehead": 1,
+   "rest_is_a_slashed_stem": 2,
+   "claim_narrowed:clef": 3
+  }
+ },
+ "accidental_owner_off_vs_on": {
+  "abstained_both": 550,
+  "abstained_both:reason_changed": 186,
+  "decided_same_head": 544,
+  "only_off": 222,
+  "decided_to_abstained:owned_by_another_staff": 6
+ },
+ "accidental_owner_merged_on": 109,
+ "heads_contradicted_from_verdicts": {
+  "off": [
+   74,
+   558
+  ],
+  "on": [
+   3,
+   517
+  ]
+ },
+ "margin_distribution": {
+  "accidental": {
+   "n": 210,
+   "min": 0.0008,
+   "p10": 0.0212,
+   "p25": 0.0765,
+   "median": 0.1676,
+   "p75": 0.2825,
+   "p90": 0.4286,
+   "max": 0.6189,
+   "hist_0p1_bins": {
+    "0.0-0.1": 65,
+    "0.1-0.2": 56,
+    "0.2-0.3": 39,
+    "0.3-0.4": 25,
+    "0.4-0.5": 19,
+    "0.5-0.6": 5,
+    "0.6-0.7": 1,
+    "0.7-0.8": 0,
+    "0.8-0.9": 0,
+    "0.9-1.0": 0
+   }
+  },
+  "rest": {
+   "n": 7,
+   "min": 0.0089,
+   "p10": 0.0089,
+   "p25": 0.0407,
+   "median": 0.1331,
+   "p75": 0.2297,
+   "p90": 0.5937,
+   "max": 0.5937,
+   "hist_0p1_bins": {
+    "0.0-0.1": 3,
+    "0.1-0.2": 2,
+    "0.2-0.3": 1,
+    "0.3-0.4": 0,
+    "0.4-0.5": 0,
+    "0.5-0.6": 1,
+    "0.6-0.7": 0,
+    "0.7-0.8": 0,
+    "0.8-0.9": 0,
+    "0.9-1.0": 0
+   }
+  }
+ },
+ "merge_pairs_top": {
+  "accidental accidentalNatural<-accidentalFlat": 89,
+  "accidental accidentalFlat<-accidentalNatural": 74,
+  "accidental accidentalNatural<-accidentalSharp": 17,
+  "accidental accidentalFlat<-accidentalSharp": 6,
+  "accidental accidentalSharp<-accidentalNatural": 6,
+  "accidental accidentalFlat<-accidentalNatural+accidentalNatural": 4,
+  "accidental accidentalSharp<-accidentalDoubleSharp": 3,
+  "accidental accidentalNatural<-accidentalFlat+accidentalSharp": 3,
+  "rest rest8th<-rest16th": 2,
+  "accidental accidentalFlat<-accidentalNatural+accidentalSharp": 2,
+  "rest rest16th<-rest32nd": 2,
+  "accidental accidentalSharp<-accidentalFlat": 2,
+  "accidental accidentalSharp<-accidentalFlat+accidentalNatural": 1,
+  "accidental accidentalFlat<-accidentalNatural+accidentalNatural+accidentalSharp": 1
+ },
+ "tiles_2_182a_fate": [
+  {
+   "tile": 4,
+   "kind": "case",
+   "sean": "quarter rest",
+   "detector": [
+    [
+     "restQuarter",
+     0.468
+    ],
+    [
+     "restHalf",
+     0.369
+    ]
+   ],
+   "glyph/7/0/4/3/3": {
+    "off": [
+     "deci",
+     true,
+     "rest_is_a_duplicate_box"
+    ],
+    "on": [
+     "deci",
+     true,
+     "rest_is_a_duplicate_box"
+    ]
+   },
+   "glyph/7/0/4/3/6": {
+    "off": [
+     "deci",
+     true,
+     "rest_is_a_duplicate_box"
+    ],
+    "on": [
+     "deci",
+     true,
+     "rest_is_a_duplicate_box"
+    ]
+   }
+  },
+  {
+   "tile": 8,
+   "kind": "control",
+   "sean": "quarter rest",
+   "detector": [
+    [
+     "restQuarter",
+     0.45
+    ]
+   ],
+   "glyph/15/0/6/21/1": {
+    "off": [
+     "deci",
+     false,
+     "rest"
+    ],
+    "on": [
+     "deci",
+     false,
+     "rest"
+    ]
+   }
+  }
+ ]
+}
