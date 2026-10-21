@@ -2919,6 +2919,9 @@ class READERS(_Vocab):
     #: `gather.gather_key_signature_claim` -- ROADMAP 2.183. The detector's key-accidental boxes drawn as one area (the key run, cancelling
     #: naturals included) and, from the PAGE raster, how much of every other box's own ink lies inside it.
     CV_KEY_SIGNATURE_CLAIM = "cv_key_signature_claim"
+    #: `gather.gather_key_object` -- ROADMAP 2.187 (flag `OMR_KEY_PER_SYSTEM`, default OFF). The key signature read as ONE system object: its
+    #: count from the staves' agreement (and the dossier, where admitted), the slots placed on each staff from its own clef edge.
+    CV_KEY_OBJECT = "cv_key_object"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

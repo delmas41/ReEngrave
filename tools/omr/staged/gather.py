@@ -14137,6 +14137,130 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
                 print(f"  gather claimed area (key signature) {ssub.to_key()} cell {k}")
 
 
+def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                      detections: Dict[str, List[Any]], *, dossier: Any = None, progress: bool = False) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `key_signature` read ONCE PER SYSTEM -- ROADMAP 2.187, flag `OMR_KEY_PER_SYSTEM` (default OFF; needs
+    `OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER`, which it files into).
+
+    PATH: STAGED GATHER, PAGE raster. AFTER `gather_key_signature_claim` and `gather_meter_object` (reads the meter's left edge). 2.183 drew
+    each staff's key window from that staff's own detector boxes, so a flat the detector boxed as a rest, beyond the last drawn slot, was
+    never inside any window. The page prints ONE signature per system: `key_object.find_object` reads every staff of the system (raster
+    pieces + detector key/accidental boxes), takes the run's COUNT from the staves' agreement (the largest count two staves read in full)
+    and checks it against the dossier's parts (a different source; admitted by the confirmed sheet only -- `dossier` or the log's
+    `Q.DOSSIER_FACT` row; silent otherwise), and files, per staff, the area of N slots placed from THAT staff's clef edge:
+    standing READ where the staff read at least one slot itself, NARROWED where it read none (a transposing staff -- never forced).
+    The 2.183 consult refuses a box standing in a READ area and narrows the rest. Mid-system key changes: cell 0 only here (no change on
+    either plate); `find_object` is bar-agnostic and tested on constructed rasters.
+
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no clef edge / no count / a count the dossier does not print is an ABSTENTION on every staff
+    of the system, counted, never a key."""
+    from . import claims as CL
+    from . import key_object as KO
+    from . import meter_object as MO
+    from .adjudicators import key_slots as KS
+    if not CL.key_active() or not KO.enabled():
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    if dossier is None:
+        rows = log.rows(Q.DOSSIER_FACT, R.DOCUMENT)
+        dossier = rows[0].value if rows else None
+    allowed = KO.allowed_counts(dossier)
+    by_sys: Dict[int, Dict[int, Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], {})[key[1]] = st
+    cell_of = {(c.staff_index, c.measure_index): c for c in cells}
+    for sys_idx, members in sorted(by_sys.items()):
+        info, staves = {}, []
+        for li, st in sorted(members.items()):
+            c = cell_of.get((st.staff_index, 0))
+            sp = _spacing(st)
+            if c is None or not getattr(c, "bbox_page_px", None) or not sp or len(list(st.line_ys)) < 5:
+                continue
+            dets = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
+            clef_x, kb = None, []
+            for gi, d in enumerate(dets):
+                pb = _page_box(c, d)
+                nm = str(d.smufl_name)
+                if pb is None:
+                    continue
+                if nm.startswith(("clef", "gClef", "fClef", "cClef")) and (pb[3] - pb[1]) / sp >= CL.CLEF_BOX_MIN_HEIGHT_SPACES:
+                    clef_x = pb[2] if clef_x is None else min(clef_x, pb[2])
+                elif nm.startswith(("key", "accidental")):
+                    kb.append(list(pb))
+            meter_left = None
+            for r0 in log.rows(Q.CLAIMED_AREA, R.staff(p, sys_idx, li)):
+                d0 = r0.detail or {}
+                if d0.get("owner") == CL.OWNER_METER and d0.get("cell") == 0:
+                    meter_left = float(r0.value[0])
+            info[li] = (c, dets, sp, st, meter_left)
+            staves.append({"key": li, "lines": list(st.line_ys), "spacing": sp, "x_start": clef_x, "x_hi": None, "boxes": kb})
+        known = sorted(s0["x_start"] for s0 in staves if s0["x_start"] is not None)
+        med = known[len(known) // 2] if known else None
+        for s0 in staves:
+            sp = s0["spacing"]
+            fb = s0["x_start"] is None
+            s0["clef_edge"] = "fallback_median" if fb else "detector_clef_box"
+            if fb:
+                s0["x_start"] = med
+            if s0["x_start"] is None:
+                continue
+            reach = s0["x_start"] + KO.WINDOW_REACH_SPACES * sp
+            ml = info[s0["key"]][4]
+            s0["x_hi"] = min(ml, reach) if ml is not None and ml > s0["x_start"] else reach
+            s0["kb_in"] = [b for b in s0["boxes"]]
+        ok = [s0 for s0 in staves if s0["x_start"] is not None and s0["x_hi"] is not None]
+        if len(ok) < 2:
+            continue
+        obj = KO.find_object(binary, ok, allowed_counts=allowed)
+        if obj["status"] != "found":
+            for s0 in ok:
+                log.abstain(R.staff(p, sys_idx, s0["key"]), Q.CLAIMED_AREA, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0),
+                            reason=ABSTAIN.NO_COLUMN_EVIDENCE, cell=0, owner=CL.OWNER_KEY, why=obj["status"], counts=obj["counts"],
+                            dossier=obj["dossier"], allowed_counts=allowed)
+            continue
+        for s0 in ok:
+            li = s0["key"]
+            c, dets, sp, st, _ml = info[li]
+            cl = KO.claim_for_staff(obj, li, s0["lines"], sp)
+            ssub = R.staff(p, sys_idx, li)
+            if cl is None:
+                continue
+            area = cl["area"]
+            win = KS.KeySlotWindow(lo=area[0], hi=area[2], y_lo=area[1], y_hi=area[3], members=(), clef=None, slots=cl["slots"],
+                                   next_x=None, next_tol=0.0)
+            inside: Dict[str, Any] = {}
+            for gi, d in enumerate(dets):
+                pb = _page_box(c, d)
+                nm = str(d.smufl_name)
+                if pb is None or nm.startswith(("clef", "key")):
+                    continue
+                b = KS.KeyBox(R.glyph(p, sys_idx, li, 0, gi).to_key(), nm, pb[0], pb[1], pb[2] - pb[0], pb[3] - pb[1])
+                stands = KS.stands_in_the_window(win, b) and KS.is_refusable_class(nm)
+                if not CL.overlaps(area, pb) and not stands:
+                    continue
+                got = MO.ink_inside(binary, pb, area, list(st.line_ys), sp)
+                if got is None and not stands:
+                    continue
+                e = dict(got or {}, cls=nm)
+                if stands:
+                    e["named"] = True
+                    e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
+                inside[b.row_id] = e
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0), cell=0, owner=CL.OWNER_KEY,
+                        owner_row=None, unit="area", standing=cl["standing"], source="system_key_object", slots=cl["slots"],
+                        own_slots=cl["own"], placed_slots=cl["placed"], system_count=obj["N"], count_basis=obj["basis"],
+                        dossier=obj["dossier"], allowed_counts=allowed, system_counts=obj["counts"], pitch_spaces=obj["pitch_spaces"],
+                        clef_edge=s0["clef_edge"], more_than_system=obj["by_staff"][li]["more_than_system"],
+                        boxes_inside=inside, space_page_px=round(sp, 3))
+            if progress:
+                print(f"  gather claimed area (key object) {ssub.to_key()}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -15462,6 +15586,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_claimed_register(log, pws, cells, local, detections)
         # ROADMAP 2.183 (flag OMR_KEY_SIGNATURE_CLAIM, default OFF): AFTER the register; page raster.
         gather_key_signature_claim(log, pws, cells, local, detections)
+        # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default OFF): AFTER the key claim and the meter object; page raster.
+        gather_key_object(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
