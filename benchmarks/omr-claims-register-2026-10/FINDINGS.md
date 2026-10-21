@@ -44,7 +44,20 @@ OFF == main: the Litolff OFF MusicXML is byte-identical to the same replay run o
 - Judged (`judged score --doc litolff`): identical OFF and ON, 137/25/6/1/15/103.
 
 ### Brahms
-(pending: ON arm running at the time of writing)
+- Claims: 71 located clef, 775 clef READ + 51 NARROWED (detector), 691 header columns (683 own clef, 8 system), 52 meter.
+- Heads refused by owner: leading_column 304, meter 74, clef 40 (none newly refused). Rests: meter 5, leading_column 2.
+- Narrowed (written blue): heads clef 7 + leading_column 1; rests clef 1.
+- Parity: is_a_clef 32/32 -> claimed_by:clef; on_another_symbols_box 5 -> 4 claimed_by:clef, 1 narrowed (a mid-bar F clef `2/1/12/4/16`,
+  cell 4, now blue); on_the_staffs_leading_barline 37 -> 34 claimed_by:leading_column, 2 refused as duplicate boxes, 1 narrowed (a
+  tremolo slash `17/0/13/0/11` the 0.5 sp cut caught by position: its ink is not a line, so the prior only narrows it); the one box the
+  parity probe found unheld (`6/1/2/0/25`, a system-derived column edge) is refused as a duplicate box in the replay; 2.177
+  inside_the_meter 74 heads + 5 rests -> claimed_by:meter (all). rest_is_a_barline leading case: 0 on the record.
+- Real notes lost: 0. Notes in file 22,336 -> 22,341.
+- Newly blue (were plain), looked at: 6 heads + 1 rest -- 4 are pieces of mid-bar F clefs (now flagged, were plain notes), 2 real heads
+  (2.176's must-keep `6/0/3/0/20` under "a 2" among them) and 1 real eighth rest.
+- Red bars 854 -> 853 (3 no longer red, 2 newly red: `6/0/2/0`, `17/0/13/0`, the slash now written blue); partial 524 -> 526; bars with
+  events 6,299 both.
+- Judged (`judged score --doc brahms`): identical OFF and ON, 120/19/5/0/17/149.
 
 ## Tests and checks
 - `tools/omr/tests/test_staged_claims_register_2_181.py` (22): line test, column extent, standing, covering, GATHER rows, every
@@ -55,4 +68,4 @@ OFF == main: the Litolff OFF MusicXML is byte-identical to the same replay run o
 ## Tiles
 `out/print/2.181-review/` (12: 9 register changes -- 5 heads and 2 rests now blue, 2 old refusals now blue -- and 3 controls, the first
 note after a READ clef). Key `out/print/2.181-key.json`, made by the same `tiles_2_181.py` run and asserted equal. Litolff only (Brahms
-ON was still running). Question: "is the thing in the blue box a note, or what is it?"
+ON was still running when they were cut; Brahms' changes are the same kinds). Question: "is the thing in the blue box a note, or what is it?"
