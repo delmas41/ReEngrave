@@ -1,6 +1,6 @@
 """ROADMAP 2.180 -- a mark the wedge test calls a wedge, with no head above or
 below it to point at, standing right of a head at that head's own dot step, is
-the head's augmentation dot (`OMR_DOT_POSITION_OVER_WEDGE`, default OFF).
+the head's augmentation dot (`OMR_DOT_POSITION_OVER_WEDGE`, default ON since 2026-10-20).
 
 Measured on the 20261018-night Brahms record
 (`benchmarks/omr-augmentation-dots-2026-10/FINDINGS.md`): such marks abstain
@@ -67,13 +67,16 @@ class TestWedgeBesideAHead(unittest.TestCase):
         self.assertEqual(role.reason, "wedge_without_a_head")
         self.assertEqual(log.verdict(Q.DURATION, head).value["dots"], 0)
 
-    def test_DEFAULT_is_OFF(self):
+    def test_DEFAULT_is_ON(self):
         env = {k: v for k, v in os.environ.items() if k != AJ.DOT_POSITION_OVER_WEDGE_ENV}
         with mock.patch.dict(os.environ, env, clear=True):
-            self.assertFalse(AJ.dot_position_over_wedge_enabled())
+            self.assertTrue(AJ.dot_position_over_wedge_enabled())
         for w in ("1", "on", "true", "yes"):
             with mock.patch.dict(os.environ, {AJ.DOT_POSITION_OVER_WEDGE_ENV: w}):
                 self.assertTrue(AJ.dot_position_over_wedge_enabled())
+        for w in ("0", "off", "false", "no"):
+            with mock.patch.dict(os.environ, {AJ.DOT_POSITION_OVER_WEDGE_ENV: w}):
+                self.assertFalse(AJ.dot_position_over_wedge_enabled())
 
     def test_CONTROL_a_mark_on_a_line_is_not_a_dot(self):
         """Always in a space: a mark measured clearly ON a line is never the dot."""

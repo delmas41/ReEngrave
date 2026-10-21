@@ -214,10 +214,10 @@ DOT_POSITION_OVER_WEDGE_ENV = "OMR_DOT_POSITION_OVER_WEDGE"
 
 
 def dot_position_over_wedge_enabled() -> bool:
-    """`OMR_DOT_POSITION_OVER_WEDGE`, DEFAULT OFF (ROADMAP 2.180, until Sean's
-    tiles); `1`/`true`/`yes`/`on` turns it on."""
-    return os.environ.get(DOT_POSITION_OVER_WEDGE_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_DOT_POSITION_OVER_WEDGE`, default ON since 2026-10-20 (ROADMAP 2.180;
+    Sean: "Let's land these."); only an explicit off-word disables."""
+    return os.environ.get(DOT_POSITION_OVER_WEDGE_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 def dot_boxed_as_a_head_enabled() -> bool:
