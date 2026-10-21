@@ -69,3 +69,21 @@ OFF == main: the Litolff OFF MusicXML is byte-identical to the same replay run o
 `out/print/2.181-review/` (12: 9 register changes -- 5 heads and 2 rests now blue, 2 old refusals now blue -- and 3 controls, the first
 note after a READ clef). Key `out/print/2.181-key.json`, made by the same `tiles_2_181.py` run and asserted equal. Litolff only (Brahms
 ON was still running when they were cut; Brahms' changes are the same kinds). Question: "is the thing in the blue box a note, or what is it?"
+
+## v2 after Sean's tiles (2026-10-20)
+
+Sean: "2.181 - 1.braxket 2.4 3.2 4. Clef 5.8 6.2 7.8 8. 8rest 9. 8 rest 10.8 11. Clef 12. 8" (`out/print/2.181-review/answers.json`).
+The clef narrowings kept 6 real items (tiles 2, 3, 6, 8, 9, 10, 12), and controls 5-7 are right. Tiles 1 (bracket) and 11 (clef), which
+2.176 refused, and tile 4 (a clef) were non-notes written blue. Fix: the register keeps 2.176's two Sean-confirmed tests as REFUSALS:
+header column, left edge within 0.5 sp of cell 0 (`left_edge_spaces`, measured in GATHER); clef, a stemless head >= 0.9 inside a clef
+box that starts within 6 sp of its bar's left edge and that the detector scored at least as high (`box_cover`, `start_spaces`).
+
+Litolff whole movement re-run (ON arm, exported file): parity is complete. is_a_clef 30, on_another_symbols_box 3 and
+on_the_staffs_leading_barline 1 are all refused again `claimed_by:*`; the 4 meter rests stay refused. 0 old refusals become blue.
+Tiles 1 and 11 are refused; tiles 2, 3, 10 and 12 are still narrowed, so they are kept and written blue. Notes in the file 11,344 = OFF.
+Red bars 636 -> 640: the 3 barline-sliver partial -> red bars, plus 1. Judged: unchanged, plus the 2.181 tiles.
+Tile 4 (`6/0/8/8/9`) stays NARROWED. Its clefF box starts 9.4 sp into its bar (a clef change printed before the next barline), and the
+detector scored it 0.32 against the head's 0.35. 2.176's test fails both conditions, so that test cannot refuse it without the
+confidence argmax the plan forbids. A rule for "a clef printed at a bar's end" is a separate question.
+The Brahms v2 re-run was stopped on the manager's instruction. Brahms v1 parity (above) already refused 34/37 leading-edge boxes and
+4/5 clef boxes; v2 restores the 2 that v1 left blue by the same two tests.
