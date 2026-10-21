@@ -49,6 +49,12 @@ project. Ask him.
    report opens with the cause and the process lesson.
 4. **One objective, three measures.** Report against the acceptance set
    (`docs/measuring.md`). Anything a lane measures internally is a control.
+   **A lane reports exactly three things** (Sean, 2026-10-21, `docs/measuring.md`
+   §0): what changed in the exported file (gained/lost by kind, one line per
+   plate, from the one shared command -- no lane-built tables); Sean's 12
+   blind tiles on those changes; and how many of his judged answers went
+   right->wrong (must be 0). On the frozen page sample, in minutes; the
+   whole movement is the overnight's job.
 5. **Reach before accuracy, and print before default.** No default flips on
    agreement with our own reading. A crop is cheaper than a lane.
 6. **Connect, never guess.** A wiring change may connect a decision, never

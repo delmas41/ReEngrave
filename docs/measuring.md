@@ -4,6 +4,28 @@ The acceptance set, the three measures, how to A/B without fooling
 yourself, the test tiers, and the flags. Moved out of `CLAUDE.md` §6 and §7
 on 2026-10-13 (`docs/claude-md-migration-2026-10-13.md`).
 
+## 0. How a lane reports (Sean, 2026-10-21) -- read this first
+
+Sean: "Can we simplify the measurements?" ... "Set that up as a rule". Every lane
+reports the SAME three things and nothing else unless Sean asks:
+
+1. **What changed in the exported file**, flag OFF vs ON: symbols written that
+   were not, and symbols no longer written, by kind (notes, rests,
+   accidentals, flags, dots, ...), one line per plate, plus red bars. Produced
+   by the ONE shared command (ROADMAP 2.188), never by a lane's own script.
+2. **Were the changes right**: Sean's 12 blind tiles -- ~9 drawn at random
+   (seed stated) from the changes, ~3 controls, a neutral orange where-to-look
+   marker, the key in a separate file.
+3. **Did anything Sean already judged get worse**: his judged answers that go
+   right->wrong (`tools.omr.staged.judged`). Must be 0; each one is shown.
+
+Measured on the **frozen page sample** (about 8 pages per plate, drawn at
+random once and fixed, listed by ROADMAP 2.188), which takes minutes. No
+lane runs a whole-movement replay; the whole movement is the overnight
+Sean runs. Trade-off accepted: a rare case may miss the sample and is caught
+overnight. The report opens with the cause and the process lesson (CLAUDE
+rule 3). Everything below is the background these three rest on.
+
 ## 1. The acceptance set and the three measures (plan §4)
 
 | document | kind | count page |
