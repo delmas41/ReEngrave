@@ -1,4 +1,4 @@
-"""The claimed-area REGISTER -- ROADMAP 2.181 (docs/plan-2026-10-20-claimed-area.md §3, §7 step 2). Flag `OMR_CLAIMED_REGISTER`, default OFF.
+"""The claimed-area REGISTER -- ROADMAP 2.181 (docs/plan-2026-10-20-claimed-area.md §3, §7 step 2). Flag `OMR_CLAIMED_REGISTER`, default ON.
 
 PATH: STAGED. PURE helpers (a page raster and boxes in, numbers out; no log, no cell, no quantity named): `gather.gather_claimed_register`
 is the GATHER stage that files the rows, `adjudicators/claimed_by.py` is the one ADJUDICATE consult. Registered in `reach.NOT_A_STAGE`.
@@ -67,8 +67,8 @@ OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "br
 
 
 def enabled() -> bool:
-    """`OMR_CLAIMED_REGISTER`, default OFF (ROADMAP 2.181, until Sean's blind tiles); only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLAIMED_REGISTER`, default ON (ROADMAP 2.181, Sean 2026-10-20); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def is_owner_class(name: Any) -> bool:

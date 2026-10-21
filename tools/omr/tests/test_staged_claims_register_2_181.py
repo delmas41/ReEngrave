@@ -1,5 +1,5 @@
 """ROADMAP 2.181 (plan 2026-10-20 §7 step 2): the claimed-area register -- `Q.CLAIMED_AREA` owners `clef` and `leading_column` (plus
-2.177's `meter`), `claims.covering`, and the one consult (`adjudicators/claimed_by.py`). Flag `OMR_CLAIMED_REGISTER`, default OFF.
+2.177's `meter`), `claims.covering`, and the one consult (`adjudicators/claimed_by.py`). Flag `OMR_CLAIMED_REGISTER`, default ON.
 Every CONTROL passes with the rule absent or present, so a rule that refuses everything cannot pass.
 """
 from __future__ import annotations
@@ -33,12 +33,15 @@ def _page():
 
 
 class TestPure(unittest.TestCase):
-    def test_flag_default_off(self):
+    def test_flag_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_CLAIMED_REGISTER", None)
-            self.assertFalse(CL.enabled())
+            self.assertTrue(CL.enabled())
         with mock.patch.dict(os.environ, ON):
             self.assertTrue(CL.enabled())
+        for v in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {"OMR_CLAIMED_REGISTER": v}):
+                self.assertFalse(CL.enabled())
 
     def test_a_box_on_the_barline_is_line_shaped(self):
         t = CL.through_stroke(_page(), (98, 116, 116, 132), SP)

@@ -866,7 +866,7 @@ class Q(_Vocab):
     #: boxes + the template reader, or abstained with candidates), the column it stands in on the system's other staves, and the
     #: ink share inside the area of every other box of the cell. GATHER measures and names no note; `notehead_precision` and
     #: `family_precision` refuse a box whose ink lies inside (`inside_the_meter`).
-    #: ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the SAME quantity is the shared register -- owners `clef` (a located
+    #: ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the SAME quantity is the shared register -- owners `clef` (a located
     #: clef, or a clef-sized detector box; NARROWED standing away from a bar's start) and `leading_column` (the header column left of
     #: the first clef, `prior=True`) are filed by `gather.gather_claimed_register`; `claims.covering` reads every owner alike.
     CLAIMED_AREA = "claimed_area"

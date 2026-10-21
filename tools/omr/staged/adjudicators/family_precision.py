@@ -1902,7 +1902,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # signature occupies, read off the sibling staves' digit boxes.
         # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): the meter's claim is the numerals' MEASURED box; with the flag ON the
         # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
-        # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the ONE register consult, in place of the 2.177 meter read; a
+        # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE register consult, in place of the 2.177 meter read; a
         # claim too weak to refuse NARROWS at the end instead.
         claim = _claimed_by.consult(ev, box_row, head=False) if _claimed_by.enabled() else None
         if claim is not None and claim.refuse:

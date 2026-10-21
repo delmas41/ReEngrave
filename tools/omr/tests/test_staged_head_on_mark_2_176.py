@@ -163,3 +163,21 @@ class TestAnotherMark(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ROADMAP 2.181 flipped OMR_CLAIMED_REGISTER ON; this file pins the pre-register path (flag OFF) it was written for.
+import os as _os_2181
+_PREV_2181 = None
+
+
+def setUpModule():
+    global _PREV_2181
+    _PREV_2181 = _os_2181.environ.get("OMR_CLAIMED_REGISTER")
+    _os_2181.environ["OMR_CLAIMED_REGISTER"] = "0"
+
+
+def tearDownModule():
+    if _PREV_2181 is None:
+        _os_2181.environ.pop("OMR_CLAIMED_REGISTER", None)
+    else:
+        _os_2181.environ["OMR_CLAIMED_REGISTER"] = _PREV_2181

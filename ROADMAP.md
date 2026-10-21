@@ -19,6 +19,8 @@ re-enter.
 
 ## START HERE — 2026-10-19 addendum
 
+**2026-10-20 (newest, latest-2):** 2.181 LANDED ON (`OMR_CLAIMED_REGISTER` default ON; Sean "Let's land these"): claimed-area step 2 (register + header column + clefs) is in; next step 3, key signature. See the 2.181 row.
+
 **2026-10-20 (newest, latest):** 2.180 LANDED ON (`OMR_DOT_POSITION_OVER_WEDGE` default ON; Sean "Let's land these"). A round dot on a staff line read as a wedge, beside one head at its dot step, is that head's augmentation dot. Takes effect at the next gather/adjudicate. See the 2.180 row.
 
 **2026-10-20 (newest, later):** 2.179 LANDED ON (`OMR_STEM_END_HEADS` default ON; Sean "1. Land on"). It is a GATHER change: it takes effect at the next full gather, not on existing records. See the 2.179 row.

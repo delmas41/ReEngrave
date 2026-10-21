@@ -3703,7 +3703,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ⚠️ BEFORE THE STAFF-SPACE GUARD, because this rule needs no unit at all:
     # it cites a row that already did the geometry. Putting it after would
     # make a clef-box refusal depend on a measurement it does not use.
-    # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF): the ONE consult of the claimed-area register, where `is_a_clef`
+    # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE consult of the claimed-area register, where `is_a_clef`
     # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
     # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
     claim = _claimed_by.consult(ev, box_row, head=True) if _claimed_by.enabled() else None

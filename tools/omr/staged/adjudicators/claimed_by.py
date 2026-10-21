@@ -1,4 +1,4 @@
-"""The ONE consult of the claimed-area register -- ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default OFF).
+"""The ONE consult of the claimed-area register -- ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON).
 
 PATH: STAGED, ADJUDICATE (notehead precision, rest precision). It reads `Q.CLAIMED_AREA` (every owner: `clef`, `leading_column`,
 2.177's `meter`), `Q.STEM` and `Q.GLYPH_CONF`; it measures nothing (GATHER measured the ink shares, `claims.covering` lists them).

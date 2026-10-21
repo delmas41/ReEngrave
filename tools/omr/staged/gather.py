@@ -15362,7 +15362,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_meter_ocr_at_bars(log, cells, local, detections)
         # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
-        # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default OFF): AFTER the clef locator (reads its rows); page raster.
+        # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
         gather_claimed_register(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
