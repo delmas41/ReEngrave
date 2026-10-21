@@ -32,6 +32,7 @@ from collections import Counter
 
 from ... import transcribe as _legacy_stems
 from ... import voicing as _legacy_voicing
+from . import two_parts as _two_parts
 
 from .. import margins as _margins
 from .. import movements as _movements
@@ -9270,14 +9271,14 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
     # head positions).
     composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-                   Q.NOTEHEAD_STAFF_POSITION),
+                   Q.NOTEHEAD_STAFF_POSITION, Q.DIRECTION_WORD),
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION),
+           Q.NOTEHEAD_STAFF_POSITION, Q.DIRECTION_WORD),
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
-             "nothing_to_split"),
+             "nothing_to_split", _two_parts.BY_STEMS, _two_parts.BY_RESTS),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_voices(ev: Evidence) -> Ruling:
@@ -9413,11 +9414,23 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
     down_events = [e for e in events if e["kind"] == "chord"
                   and e["stem_direction"] == "down"]
 
+    two_parts = None                        # ROADMAP 2.182: (streams, reason, detail) where the witnesses say two parts
     if not up_events or not down_events:
         # ⚠️ NO CANDIDATE TO GATE. `split_events_into_voices` would return
         # `[events]` here too (its own guard, restated nowhere) -- this is
         # the ordinary one-voice bar, not the convention question at all.
         streams, reason, rule_detail = [events], "one_voice", {}
+        # ⚠️ ROADMAP 2.182 (flag `OMR_TWO_PARTS_ONE_STAFF`, OFF): one part's stems, the OTHER part resting (a rest
+        # displaced to its side) -- two parts, one of them only rests. Rule 3 still comes first: a line that sums as
+        # one voice stays one voice.
+        if _two_parts.enabled() and (up_events or down_events):
+            cand = _two_parts.split(ev, events, _rest_voice_side)
+            if cand is not None:
+                target = _meter_quarters(_meter_in_force(ev))
+                if not (target is not None and _sums_to(_sum_beats(ev, ev.subject, events), target)):
+                    two_parts = cand
+                    streams, reason = cand[0], cand[1]
+                    rule_detail = {"two_parts": cand[2]}
     else:
         cell = ev.subject
         overlap, overlap_detail = _voices_overlap_in_time(ev, up_events,
@@ -9431,16 +9444,22 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
             meter_segment = _meter_in_force(ev)
             target = _meter_quarters(meter_segment)
             rule_detail["meter"] = meter_segment
-            if target is None:
+            if target is None and _two_parts.enabled():
+                # ROADMAP 2.182: the page's own witnesses need no meter (the parts are judged per part at EXPORT).
+                two_parts = _two_parts.split(ev, events, _rest_voice_side)
+            if target is None and two_parts is None:
                 # No meter in force: rules (2)/(3) both need one to sum
                 # against, and rule (1) already did not fire.
                 return Ruling.abstain("no_voice_convention_fits",
                                       why="no_meter", **rule_detail)
 
-            merged_sum = _sum_beats(ev, cell, events)
+            merged_sum = _sum_beats(ev, cell, events) if two_parts is None else None
             rule_detail["merged_quarters"] = merged_sum
             rule_detail["target_quarters"] = target
-            if _sums_to(merged_sum, target):
+            if two_parts is not None:
+                streams, reason = two_parts[0], two_parts[1]
+                rule_detail["two_parts"] = two_parts[2]
+            elif _sums_to(merged_sum, target):
                 # RULE (3): one line, and it sums to a full measure.
                 streams, reason = [events], "one_voice_sums"
             else:
@@ -9462,8 +9481,15 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                     streams = candidate
                     reason = "two_voices_separated_and_full"
                 else:
-                    return Ruling.abstain("no_voice_convention_fits",
-                                          **rule_detail)
+                    # ⚠️ ROADMAP 2.182 (flag `OMR_TWO_PARTS_ONE_STAFF`, OFF): where Sean's three rules cannot say, the
+                    # page's own witnesses (stems + height, displaced rests, `a2`) may -- never the bar sum.
+                    two_parts = (_two_parts.split(ev, events, _rest_voice_side)
+                                 if _two_parts.enabled() else None)
+                    if two_parts is None:
+                        return Ruling.abstain("no_voice_convention_fits",
+                                              **rule_detail)
+                    streams, reason = two_parts[0], two_parts[1]
+                    rule_detail["two_parts"] = two_parts[2]
 
     # ⚠️ ROADMAP 2.27c: `split_events_into_voices` puts every rest in BOTH
     # streams unconditionally (its own docstring: "so each voice's bar can
@@ -9503,7 +9529,10 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                # otherwise report a loss. Empty in the one-voice case, where
                # there is no duplication to declare.
                "rests_in_every_voice": covering if n > 1 else [],
-               "rests_displaced_by_position": displaced},
+               "rests_displaced_by_position": displaced,
+               # ROADMAP 2.182: notes whose part was GUESSED by height (stem unread) -- EXPORT writes them blue
+               **({"voice_guessed": two_parts[2]["voice_guessed"]}
+                  if two_parts is not None and two_parts[2].get("voice_guessed") else {})},
         reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),

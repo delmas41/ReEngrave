@@ -142,6 +142,7 @@ refused or would have — are KEPT; the 13 crops are pinned as fixtures in
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
@@ -396,6 +397,48 @@ def _rest_duplicate_priority(row) -> Tuple[float, int]:
     return (score, -idx)
 
 
+REST_CHAIN_ENV = "OMR_REST_CHAIN_KEPT_OUTRANKS"
+
+
+def rest_chain_enabled() -> bool:
+    """`OMR_REST_CHAIN_KEPT_OUTRANKS` (ROADMAP 2.182), default OFF; an explicit 1/true/yes/on enables."""
+    return os.environ.get(REST_CHAIN_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _rest_refused_otherwise(ev: Evidence, subj) -> bool:
+    """Would a rule OTHER than the duplicate rule refuse the rest box `subj` (a sibling in this cell)?
+
+    The SAME rules `adjudicate_rest_is_not_a_rest` runs, asked of the sibling on the sibling's own evidence (one spec,
+    so every read stays declared); the duplicate rule is not among them, so this never recurses."""
+    sib = Evidence(ev.log, subj, ev._spec)
+    d, _used = _class_detail(sib)
+    if _refused_by_a_human(sib, d) is not None:
+        return True
+    row = _glyph_box_row(sib)
+    if row is None:
+        return False
+    return (_rest_refusal_before_duplicate(sib, row, d) is not None
+            or _rest_refusal_after_duplicate(sib, row, d) is not None)
+
+
+def _rest_boxes_kept_by_the_duplicate_rule(ev: Evidence, boxes: Dict[Any, Any]) -> Dict[str, set]:
+    """ROADMAP 2.182. `candidates`: the cell's rest boxes no other rule refuses; `kept`: of those, the boxes a greedy
+    pass by `_rest_duplicate_priority` keeps among SAME-class overlaps (the strongest stands, a box overlapping a kept
+    stronger one of its class does not, and a box that lost outranks nobody). The same answer for every glyph of the
+    cell (the order is total and deterministic)."""
+    cands = {subj for subj in boxes if subj == ev.subject or not _rest_refused_otherwise(ev, subj)}
+    order = sorted((boxes[s] for s in cands
+                    if isinstance(boxes[s].value, (list, tuple)) and len(boxes[s].value) == 5),
+                   key=_rest_duplicate_priority, reverse=True)
+    kept: List[Any] = []
+    for row in order:
+        if any(k.value[0] == row.value[0] and _rest_box_iou(k.value, row.value) >= REST_DUPLICATE_IOU_MIN
+               for k in kept):
+            continue
+        kept.append(row)
+    return {"candidates": cands, "kept": {r.subject for r in kept}}
+
+
 def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
                            ) -> Optional[Ruling]:
     """ROADMAP 2.15: is this box the SAME physical mark as another rest
@@ -435,8 +478,18 @@ def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
 
     disagreeing: List[str] = []
     better: Optional[Any] = None
-    for subj, row in _cell_rest_boxes(ev, cell).items():
+    boxes = _cell_rest_boxes(ev, cell)
+    standing = None
+    if rest_chain_enabled():
+        # ⚠️ ROADMAP 2.182 (flag `OMR_REST_CHAIN_KEPT_OUTRANKS`, OFF): A REFUSED BOX CANNOT OUTRANK A KEPT ONE. Only
+        # the cell's rest boxes that no OTHER rule refuses take part, and the same-class pairs are settled greedily by
+        # priority (a box that lost to a stronger one outranks nobody).
+        standing = _rest_boxes_kept_by_the_duplicate_rule(ev, boxes)
+        detail["duplicate_rule"] = "kept_outranks"
+    for subj, row in boxes.items():
         if subj == ev.subject:
+            continue
+        if standing is not None and subj not in standing["candidates"]:
             continue
         other_val = row.value
         if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
@@ -447,6 +500,8 @@ def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
             disagreeing.append(row.id)
             continue
         if _rest_duplicate_priority(row) > this_priority:
+            if standing is not None and subj not in standing["kept"]:
+                continue
             better = row
 
     if disagreeing:
@@ -1768,6 +1823,97 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     return Ruling(value=False, reason="accidental", used=used, detail=detail)
 
 
+def _rest_refusal_before_duplicate(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`adjudicate_rest_is_not_a_rest`'s rules that run BEFORE the duplicate-box rule (header geometry), unchanged;
+    split out (ROADMAP 2.182) so the duplicate rule can ask them of a SIBLING box."""
+    # ROADMAP 2.100, AFTER the human and BEFORE every rest rule: nothing
+    # but a clef stands before a key signature's accidentals (Sean,
+    # 2026-10-12), so a rest-named box in the signature's slots is the
+    # signature's own ink boxed under a second name. Geometry of the
+    # header, never the bar sum (`key_slots` module docstring).
+    in_key = _key_slots.key_slot_occupant(ev, box_row)
+    if in_key is not None:
+        detail.update(in_key["detail"])
+        return Ruling(value=True, reason="rest_in_a_key_signature_slot",
+                      used=(box_row.id,) + in_key["used"], detail=detail)
+    # ROADMAP 2.100 (Sean 2026-10-12, tiles 3 and 13: "time signatures"):
+    # a rest-class box standing in the column the system's printed time
+    # signature occupies, read off the sibling staves' digit boxes.
+    # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): the meter's claim is the numerals' MEASURED box; with the flag ON the
+    # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
+    if _inside_meter.enabled():
+        claimed = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=False)
+        if claimed is not None:
+            detail.update(claimed.detail)
+            return _margins.attach(
+                Ruling(value=True, reason="inside_the_meter", used=claimed.used, detail=detail),
+                margin=claimed.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
+                would_choose=(True,))
+    in_meter = (None if _inside_meter.enabled() else _key_slots.meter_column_occupant(ev, box_row))
+    if in_meter is not None:
+        detail.update(in_meter["detail"])
+        return Ruling(value=True, reason="rest_is_a_meter_digit",
+                      used=(box_row.id,) + in_meter["used"],
+                      detail=detail)
+    return None
+
+
+def _rest_refusal_after_duplicate(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`adjudicate_rest_is_not_a_rest`'s rules that run AFTER the duplicate-box rule, unchanged, in order; split out
+    (ROADMAP 2.182) so the duplicate rule can ask them of a SIBLING box."""
+    # ROADMAP 2.107: a rest whose ink the second look read as a dynamic
+    # letter (the `s` of an `sf` boxed `rest16th`).
+    cover_row, cover_share = _letter_cover.cover_of(
+        ev.rows(Q.LETTER_LOOK_COVER), detail)
+    if _letter_cover.refuses(cover_share):
+        detail["read_by"] = "letter_look"
+        return _letter_cover.with_margin(
+            Ruling(value=True, reason="rest_on_a_dynamic_letter",
+                   used=(box_row.id, cover_row.id), detail=detail),
+            cover_share, would_choose="rest")
+    clipped = _rest_clipped_by_crop_refusal(ev, box_row, detail)
+    if clipped is not None:
+        return clipped
+    stem = _rest_has_a_stem_refusal(ev, box_row, detail)
+    if stem is not None:
+        return stem
+    # ROADMAP 2.71, AFTER `rest_has_a_stem` so a refusal already standing
+    # keeps its reason: this one only adds the rest `rest_has_a_stem`
+    # cannot say (a quarter rest's own stroke reads as a stem).
+    slashed = _rest_on_a_slashed_stem_refusal(ev, box_row, detail)
+    if slashed is not None:
+        return slashed
+    two_lines = _rest_touches_two_staff_lines_refusal(ev, box_row, detail)
+    if two_lines is not None:
+        return two_lines
+    if str(detail.get("class")) == "restWhole":
+        off_center = _rest_off_center_refusal(ev, box_row, detail)
+        if off_center is not None:
+            return off_center
+    vertical = _rest_vertical_window_refusal(ev, box_row, detail)
+    if vertical is not None:
+        return vertical
+    overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
+    if overlap is not None:
+        return overlap
+    # ROADMAP 2.105(c): LAST, so every refusal already standing keeps its
+    # reason; this only adds the barline the others could not name.
+    barline = _rest_is_a_barline_refusal(ev, box_row, detail)
+    if barline is not None:
+        return barline
+    # ROADMAP 2.150, LAST again: only adds the narrow box no earlier rule named (a note's stem, a flag's stem).
+    if rest_width_floor_enabled():
+        narrow = _rest_narrower_than_its_class_refusal(ev, box_row, detail)
+        if narrow is not None:
+            return narrow
+    # ROADMAP 2.150b, LAST of all (flag-gated; GATHER files its row only while the flag is ON).
+    if _rest_ink.enabled():
+        stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
+        if stroke_head is not None:
+            return stroke_head
+    return None
+
+
 @decision(
     quantity=Q.REST_IS_NOT_A_REST,
     composed_from=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
@@ -1855,88 +2001,15 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         return refused
     box_row = _glyph_box_row(ev)
     if box_row is not None:
-        # ROADMAP 2.100, AFTER the human and BEFORE every rest rule: nothing
-        # but a clef stands before a key signature's accidentals (Sean,
-        # 2026-10-12), so a rest-named box in the signature's slots is the
-        # signature's own ink boxed under a second name. Geometry of the
-        # header, never the bar sum (`key_slots` module docstring).
-        in_key = _key_slots.key_slot_occupant(ev, box_row)
-        if in_key is not None:
-            detail.update(in_key["detail"])
-            return Ruling(value=True, reason="rest_in_a_key_signature_slot",
-                          used=(box_row.id,) + in_key["used"], detail=detail)
-        # ROADMAP 2.100 (Sean 2026-10-12, tiles 3 and 13: "time signatures"):
-        # a rest-class box standing in the column the system's printed time
-        # signature occupies, read off the sibling staves' digit boxes.
-        # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): the meter's claim is the numerals' MEASURED box; with the flag ON the
-        # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
-        if _inside_meter.enabled():
-            claimed = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=False)
-            if claimed is not None:
-                detail.update(claimed.detail)
-                return _margins.attach(
-                    Ruling(value=True, reason="inside_the_meter", used=claimed.used, detail=detail),
-                    margin=claimed.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
-                    would_choose=(True,))
-        in_meter = (None if _inside_meter.enabled() else _key_slots.meter_column_occupant(ev, box_row))
-        if in_meter is not None:
-            detail.update(in_meter["detail"])
-            return Ruling(value=True, reason="rest_is_a_meter_digit",
-                          used=(box_row.id,) + in_meter["used"],
-                          detail=detail)
+        before = _rest_refusal_before_duplicate(ev, box_row, detail)
+        if before is not None:
+            return before
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup
-        # ROADMAP 2.107: a rest whose ink the second look read as a dynamic
-        # letter (the `s` of an `sf` boxed `rest16th`).
-        cover_row, cover_share = _letter_cover.cover_of(
-            ev.rows(Q.LETTER_LOOK_COVER), detail)
-        if _letter_cover.refuses(cover_share):
-            detail["read_by"] = "letter_look"
-            return _letter_cover.with_margin(
-                Ruling(value=True, reason="rest_on_a_dynamic_letter",
-                       used=(box_row.id, cover_row.id), detail=detail),
-                cover_share, would_choose="rest")
-        clipped = _rest_clipped_by_crop_refusal(ev, box_row, detail)
-        if clipped is not None:
-            return clipped
-        stem = _rest_has_a_stem_refusal(ev, box_row, detail)
-        if stem is not None:
-            return stem
-        # ROADMAP 2.71, AFTER `rest_has_a_stem` so a refusal already standing
-        # keeps its reason: this one only adds the rest `rest_has_a_stem`
-        # cannot say (a quarter rest's own stroke reads as a stem).
-        slashed = _rest_on_a_slashed_stem_refusal(ev, box_row, detail)
-        if slashed is not None:
-            return slashed
-        two_lines = _rest_touches_two_staff_lines_refusal(ev, box_row, detail)
-        if two_lines is not None:
-            return two_lines
-        if str(detail.get("class")) == "restWhole":
-            off_center = _rest_off_center_refusal(ev, box_row, detail)
-            if off_center is not None:
-                return off_center
-        vertical = _rest_vertical_window_refusal(ev, box_row, detail)
-        if vertical is not None:
-            return vertical
-        overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
-        if overlap is not None:
-            return overlap
-        # ROADMAP 2.105(c): LAST, so every refusal already standing keeps its
-        # reason; this only adds the barline the others could not name.
-        barline = _rest_is_a_barline_refusal(ev, box_row, detail)
-        if barline is not None:
-            return barline
-        # ROADMAP 2.150, LAST again: only adds the narrow box no earlier rule named (a note's stem, a flag's stem).
-        if rest_width_floor_enabled():
-            narrow = _rest_narrower_than_its_class_refusal(ev, box_row, detail)
-            if narrow is not None:
-                return narrow
-        # ROADMAP 2.150b, LAST of all (flag-gated; GATHER files its row only while the flag is ON).
-        if _rest_ink.enabled():
-            stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
-            if stroke_head is not None:
-                return stroke_head
+        after = _rest_refusal_after_duplicate(ev, box_row, detail)
+        if after is not None:
+            return after
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

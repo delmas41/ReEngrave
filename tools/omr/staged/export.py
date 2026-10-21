@@ -58,6 +58,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
 from . import export_unison as _export_unison
+from . import export_two_parts as _export_two_parts
 from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
 # ⚠️ Imported as a bare module name, not through the dotted module path:
@@ -4828,6 +4829,9 @@ def _recorded_voice_split(rec: Record, run: StaffRun, cell_index: int,
         # nothing.
         why.append("a_stream_has_no_written_note")
         return None
+    # ROADMAP 2.182 (flag `OMR_TWO_PARTS_ONE_STAFF`, OFF): a note whose part `Q.VOICES` GUESSED by height (its stem
+    # unread) is written blue (Sean 2026-10-20 "I go ahead and guess which voice").
+    _export_two_parts.mark_voice_guessed(out, value.get("voice_guessed") or ())
     return out
 
 
