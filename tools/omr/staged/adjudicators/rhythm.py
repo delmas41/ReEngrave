@@ -9054,6 +9054,21 @@ def _rest_voice_side(ev: Evidence, glyph_indices: Sequence[int]
     return None
 
 
+def _rest_step_of(ev: Evidence, glyph_indices: Sequence[int]) -> Optional[float]:
+    """The first of these rest glyphs' centre as a staff step (`_rest_slot`, CALLED), or None -- ROADMAP 2.182's
+    two-part witness reads the step itself to bound it to this staff."""
+    for gi in glyph_indices:
+        sub = Subject(Kind.GLYPH, page=ev.subject.page, system=ev.subject.system, staff=ev.subject.staff,
+                      cell=ev.subject.cell, glyph=gi)
+        box_rows = ev.rows(Q.GLYPH_BOX, subject=sub)
+        if not box_rows:
+            continue
+        step, _detail, _used = _rest_slot(ev, box_rows)
+        if step is not None:
+            return step
+    return None
+
+
 def _event_page_x(ev: Evidence, cell: Subject, glyphs) -> Optional[float]:
     """The PAGE-frame x centre of an event's glyphs, or `None`.
 
@@ -9415,6 +9430,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                   and e["stem_direction"] == "down"]
 
     two_parts = None                        # ROADMAP 2.182: (streams, reason, detail) where the witnesses say two parts
+    _a2 = _two_parts.enabled() and _two_parts.a2_in_bar(ev, ev.subject)   # an `a2` word in the bar: one line
     if not up_events or not down_events:
         # ⚠️ NO CANDIDATE TO GATE. `split_events_into_voices` would return
         # `[events]` here too (its own guard, restated nowhere) -- this is
@@ -9424,7 +9440,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         # displaced to its side) -- two parts, one of them only rests. Rule 3 still comes first: a line that sums as
         # one voice stays one voice.
         if _two_parts.enabled() and (up_events or down_events):
-            cand = _two_parts.split(ev, events, _rest_voice_side)
+            cand = _two_parts.split(ev, events, _rest_step_of, _a2)
             if cand is not None:
                 target = _meter_quarters(_meter_in_force(ev))
                 if not (target is not None and _sums_to(_sum_beats(ev, ev.subject, events), target)):
@@ -9446,7 +9462,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
             rule_detail["meter"] = meter_segment
             if target is None and _two_parts.enabled():
                 # ROADMAP 2.182: the page's own witnesses need no meter (the parts are judged per part at EXPORT).
-                two_parts = _two_parts.split(ev, events, _rest_voice_side)
+                two_parts = _two_parts.split(ev, events, _rest_step_of, _a2)
             if target is None and two_parts is None:
                 # No meter in force: rules (2)/(3) both need one to sum
                 # against, and rule (1) already did not fire.
@@ -9483,7 +9499,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                 else:
                     # ⚠️ ROADMAP 2.182 (flag `OMR_TWO_PARTS_ONE_STAFF`, OFF): where Sean's three rules cannot say, the
                     # page's own witnesses (stems + height, displaced rests, `a2`) may -- never the bar sum.
-                    two_parts = (_two_parts.split(ev, events, _rest_voice_side)
+                    two_parts = (_two_parts.split(ev, events, _rest_step_of, _a2)
                                  if _two_parts.enabled() else None)
                     if two_parts is None:
                         return Ruling.abstain("no_voice_convention_fits",

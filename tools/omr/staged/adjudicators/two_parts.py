@@ -51,6 +51,44 @@ def _positions(ev, cell: Subject, e) -> List[float]:
     return out
 
 
+#: the staff's middle line in `Q.NOTEHEAD_STAFF_POSITION`'s frame (half-steps from the TOP line, larger = lower)
+MIDDLE_LINE_POS = 4.0
+#: a head this far past the middle line is clearly on the far side (half a space)
+PAST_THE_MIDDLE = 0.5
+
+
+def _against_one_line(ev, cell: Subject, chords, direction: str) -> bool:
+    """Every chord's heads sit where ONE line would point the stem the OTHER way: for stems down, at or below the middle
+    line (and one clearly below); for stems up, at or above it (and one clearly above). One line's stems follow the
+    head (above the middle -> down), two parts' stems follow the part."""
+    means = []
+    for e in chords:
+        ps = _positions(ev, cell, e)
+        if not ps:
+            return False
+        means.append(sum(ps) / len(ps))
+    if direction == "down":
+        return all(m >= MIDDLE_LINE_POS for m in means) and any(m > MIDDLE_LINE_POS + PAST_THE_MIDDLE for m in means)
+    return all(m <= MIDDLE_LINE_POS for m in means) and any(m < MIDDLE_LINE_POS - PAST_THE_MIDDLE for m in means)
+
+
+#: 2.27c's displacement (`rhythm.REST_VOICE_DISPLACEMENT_MIN_STEPS` off the middle line, step 4 in the rest frame:
+#: bottom line 0, top line 8, up positive) -- and NO FURTHER than a quarter space outside the staff: a rest farther out is
+#: another staff's (a whole rest hanging from the staff above), not this staff's upper part (a crop, 2.182).
+REST_PART_MAX_STEPS_OUTSIDE = 0.5
+
+
+def _side(step: Optional[float]) -> Optional[str]:
+    from .rhythm import REST_VOICE_DISPLACEMENT_MIN_STEPS as D, STAFF_MIDDLE_LINE_STEP as M
+    if step is None or step > 8.0 + REST_PART_MAX_STEPS_OUTSIDE or step < -REST_PART_MAX_STEPS_OUTSIDE:
+        return None
+    if step >= M + D:
+        return "upper"
+    if step <= M - D:
+        return "lower"
+    return None
+
+
 def a2_in_bar(ev, cell: Subject) -> bool:
     """An `a2` word stands in this bar (`Q.DIRECTION_WORD` terms): both parts play one line."""
     for r in ev.rows(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
@@ -60,21 +98,21 @@ def a2_in_bar(ev, cell: Subject) -> bool:
 
 
 def split(ev, events: Sequence[Dict[str, Any]],
-          rest_side: Callable[[Any, Sequence[int]], Optional[str]]
+          rest_step: Callable[[Any, Sequence[int]], Optional[float]], a2: bool = False
           ) -> Optional[Tuple[List[List[Dict[str, Any]]], str, Dict[str, Any]]]:
     """`(streams, reason, detail)` -- stream 0 the upper part, stream 1 the lower -- or None where no witness says two
     parts. `events` are `adjudicate_voices`' shims (`kind`, `stem_direction` DECIDED or None, `_glyphs`, `x_position`).
     Rests: a displaced rest joins its own part only; a centred rest stands in both (the existing cover). Nothing here
     reads a duration."""
     cell = ev.subject
-    if a2_in_bar(ev, cell):
+    if a2:                                  # `a2_in_bar`, read by the caller: both parts play one line
         return None
     chords = [e for e in events if e["kind"] == "chord"]
     rests = [e for e in events if e["kind"] == "rest"]
     ups = [e for e in chords if e.get("stem_direction") == "up"]
     downs = [e for e in chords if e.get("stem_direction") == "down"]
     unknown = [e for e in chords if e.get("stem_direction") not in ("up", "down")]
-    sides = {id(r): rest_side(ev, r["_glyphs"]) for r in rests}
+    sides = {id(r): _side(rest_step(ev, r["_glyphs"])) for r in rests}
     detail: Dict[str, Any] = {"n_up": len(ups), "n_down": len(downs), "n_unknown": len(unknown),
                               "rests_high": sum(1 for s in sides.values() if s == "upper"),
                               "rests_low": sum(1 for s in sides.values() if s == "lower")}
@@ -87,10 +125,15 @@ def split(ev, events: Sequence[Dict[str, Any]],
         reason = BY_STEMS
         detail["up_range"] = [min(up_pos), max(up_pos)]
         detail["down_range"] = [min(down_pos), max(down_pos)]
-    elif ups and detail["rests_low"] and not detail["rests_high"]:
-        reason = BY_RESTS                      # the lower part rests while the upper (stems up) plays
-    elif downs and detail["rests_high"] and not detail["rests_low"]:
-        reason = BY_RESTS                      # the upper part rests while the lower (stems down) plays
+    elif not unknown and ((ups and detail["rests_low"] and not detail["rests_high"]
+                           and _against_one_line(ev, cell, ups, "up"))
+                          or (downs and detail["rests_high"] and not detail["rests_low"]
+                              and _against_one_line(ev, cell, downs, "down"))):
+        # One part rests (its rest displaced to its side) while the other plays -- and the playing part's stems point
+        # the way only a PART's do: down on heads at or below the middle line (up on heads at or above it). In one line
+        # those stems would point the other way, so a displaced rest beside them is not a single line's rest moved
+        # aside. Every stem in the bar must be read: a part made of rests has no note to guess.
+        reason = BY_RESTS
     else:
         return None
     upper, lower = list(ups), list(downs)

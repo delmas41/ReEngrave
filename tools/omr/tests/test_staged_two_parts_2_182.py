@@ -148,6 +148,35 @@ class TestOnePartResting(unittest.TestCase):
             v = _run(log)
         self.assertEqual(v.reason, "one_voice")
 
+    def test_CONTROL_a_high_rest_beside_one_line_high_notes_stems_down_is_one_line(self):
+        """Heads ABOVE the middle line stem down in ONE line too -- a high rest beside them is no witness of a part."""
+        with mock.patch.dict(os.environ, ON):
+            log = Log()
+            _spacing(log, px=20.0)
+            _staff_geometry(log)
+            _meter(log, 2, 4)
+            _note(log, 0, 120, "down", 1.0, 1.0)
+            _note(log, 1, 400, "down", 1.0, 2.0)
+            _rest_positioned(log, 2, 250, center_y=10.0)
+            _duration(log, R.glyph(0, 0, 0, 0, 2), 2.0)
+            v = _run(log)
+        self.assertEqual(v.reason, "one_voice")
+
+    def test_CONTROL_an_unread_stem_blocks_the_resting_split(self):
+        with mock.patch.dict(os.environ, ON):
+            log = Log()
+            self._bar(log, rest_y=10.0)
+            _note(log, 3, 600, None, 1.0, 6.0)
+            v = _run(log)
+        self.assertEqual(v.reason, "one_voice")
+
+    def test_CONTROL_a_rest_far_above_the_staff_is_another_staffs(self):
+        with mock.patch.dict(os.environ, ON):
+            log = Log()
+            self._bar(log, rest_y=-40.0)           # step 12 -- two spaces above the top line
+            v = _run(log)
+        self.assertEqual(v.reason, "one_voice")
+
     def test_CONTROL_a_centred_rest_is_one_line(self):
         with mock.patch.dict(os.environ, ON):
             log = Log()
