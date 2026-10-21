@@ -95,3 +95,25 @@ def test_one_ink_at_two_stem_ends_is_kept_once():
 @pytest.mark.parametrize("cy,want", [(100, "noteheadBlackOnLine"), (150, "noteheadBlackInSpace"), (300, "noteheadBlackOnLine")])
 def test_black_head_class_by_position(cy, want):
     assert SEH.black_head_class(cy, *GRID) == want
+
+
+def test_a_rests_own_upright_is_not_an_orphan_stem():
+    """the body of a Breitkopf quarter rest reads as a stem; inside the rest's box it is the rest's, never a note's"""
+    s = stem(300, 100, 400)
+    rest = D("restQuarter", 230, 80, 140, 340, 0.6, "rest")
+    kept, _r, n = SEH.candidates_for_cell([s], [rest], [head(250, 400, conf=0.15)], GRID)
+    assert n == 0 and kept == []
+
+
+def test_a_candidate_beside_a_seen_head_is_never_added():
+    """one ink boxed again half a space off, or the slot the stacked fit gives one head: the production head must not be overturned"""
+    s = stem(300, 0, 470)
+    seen = head(245, 340, conf=0.8)               # centre 130 above the stem's bottom end: the stem still reads as an orphan
+    kept, refused, n = SEH.candidates_for_cell([s], [seen], [head(245, 440, conf=0.13)], GRID)
+    assert n == 1 and kept == [] and refused[0]["why"] == "beside_a_seen_head"
+
+
+def test_a_whole_class_box_at_a_stem_end_is_not_taken():
+    s = stem(300, 0, 350)
+    kept, _r, _n = SEH.candidates_for_cell([s], [], [head(245, 350, name="noteheadWholeOnLine", conf=0.2)], GRID)
+    assert kept == []

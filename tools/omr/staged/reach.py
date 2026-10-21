@@ -398,6 +398,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.172. Pure helpers for `gather.gather_detector_views` (the flag, the views, the phase median, the family-aware merge): files no row,
     # names no quantity; the rows are `gather_detector_views`'s own.
     "detector_views.py",
+    # ROADMAP 2.179. Pure helpers for `gather.gather_stem_end_heads` (the flag, orphan stems, the stem-end window, the candidate pick):
+    # files no row, names no quantity; the rows are `gather_stem_end_heads`'s own.
+    "stem_end_heads.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a

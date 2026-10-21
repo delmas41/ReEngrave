@@ -33,7 +33,7 @@ new = log.to_json()
 del log
 r2 = dict(result)
 r2["record"] = new
-xml, rep = E.to_musicxml(r2)
+xml, rep, refusals, placed = RR.export_with_subjects(r2)
 ly, lrep = LY.to_lilypond(r2)
 base = os.path.join(outdir, tag)
 open(base + ".musicxml", "w").write(xml)
@@ -64,4 +64,25 @@ for o in new["observations"]:
         boxes.append({k: o.get(k) for k in ("id", "subject", "quantity", "detail")})
 json.dump({"observations": boxes, "abstentions": [], "verdicts": [v for v in new["verdicts"] if v["quantity"] in JUDGED_Q]},
           open(base + ".judged.record.json", "w"), default=str)
+# every glyph a GATHER reader other than the production pass filed for 2.179 (stem-end heads): what became of it
+NEW_READER = "yolo_rescue_stem_head"
+placed_set = {g for g, _c in placed if g}
+refused_by = {s: r for s, r in refusals}
+fates = []
+vidx = {}
+for v in new["verdicts"]:
+    vidx[(v["quantity"], v["subject"])] = v
+for o in new["observations"]:
+    if o.get("reader") == NEW_READER and o["quantity"] == "glyph_box":
+        s = o["subject"]
+        nn = vidx.get(("notehead_is_not_a_notehead", s))
+        du = vidx.get(("duration", s))
+        fates.append(dict(glyph=s, cls=o["value"][0], score=o.get("score"), detail=o.get("detail"),
+                          placed=s in placed_set, export_refusal=refused_by.get(s),
+                          not_a_head=(nn or {}).get("value"), not_a_head_reason=(nn or {}).get("reason"),
+                          duration=((du or {}).get("outcome"), (du or {}).get("value"), (du or {}).get("reason"))))
+json.dump(fates, open(base + ".new_glyphs.json", "w"), default=str, indent=0)
+summ["new_glyphs"] = len(fates)
+summ["new_glyphs_placed"] = sum(1 for f in fates if f["placed"])
+json.dump(summ, open(base + ".summary.json", "w"), indent=1, default=str)
 print(json.dumps(summ, default=str), flush=True)

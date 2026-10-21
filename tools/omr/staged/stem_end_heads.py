@@ -16,6 +16,9 @@ ONE flag, `OMR_STEM_END_HEADS`, default OFF. Per cell:
       sub-floor) standing there is a candidate too, RE-READ as a black head (a rest never has a stem -- the convention
       `rest_has_a_stem` already refuses the rest by); the box is kept, its class becomes the black head of its staff position, and the
       detector's own class is carried as `read_from`.
+  A stem standing inside another mark's box for most of its length (a quarter rest's body, a flat's stem, a clef bar, a dynamic's
+      stroke) is that mark's, never an orphan; a whole-class box is never taken (a whole note has no stem); a candidate within about a
+      space of a head already seen is never added (the first run's one judged regression: a second box beside a production half note).
   (4) one candidate per stem end (highest score); a candidate standing on a box of another symbol family at least as confident as it
       is dropped (the 2.172 merge rule: never overturn a confident production box); a production box is never changed or removed.
 Kept boxes are APPENDED to the cell's `detections` under `READERS.RESCUE_STEM_HEAD` (the 2.53 pattern: every later reader and every
@@ -44,6 +47,16 @@ ORPHAN_HALF_HEIGHT_SPACES = 1.0
 SIDE_SPACES = 1.1
 CROSS_SPACES = 0.25
 END_SPACES = 1.0
+#: a candidate whose centre is this close to a head already seen (across / along, staff spaces) is that head boxed again, or its
+#: neighbour in the slot the stacked-head fit gives ONE head: never added (2.179 first run: a second box under a judged half note made
+#: `stacked_head_duplicate` refuse the production one -- a confident production box must never be overturned)
+BESIDE_ACROSS_SPACES = 0.6
+BESIDE_ALONG_SPACES = 1.1
+#: a CV stem standing inside another mark's box for at least this share of its length is that mark's own upright (the body of a
+#: Breitkopf quarter rest, a flat's stem, a clef's bar, a dynamic's down-stroke), not a note's stem: never an orphan
+OWNED_SHARE = 0.5
+#: the marks whose box can own an upright stroke
+_OWNER_PREFIXES = ("rest", "acc", "clef", "dynamic", "timeSig", "keyFlat", "keySharp", "keyNatural", "brace", "bracket", "repeat")
 #: block rest classes that, at a stem end, are a black head boxed in the wrong class
 BLOCK_RESTS = ("restWhole", "restHalf")
 #: the families a candidate may not stand on when that box is at least as confident (never overturn a confident box)
@@ -102,6 +115,18 @@ def is_orphan(stem: Any, head_boxes: Sequence[Sequence[float]], space: float) ->
     return True
 
 
+def owned_by_a_mark(stem: Any, owners: Sequence[Sequence[float]], space: float) -> bool:
+    """The stem's x is inside an owner box (with a tenth of a space to spare) and the box covers `OWNED_SHARE` of its length."""
+    x, yt, yb = stem_ends(stem)
+    pad = 0.1 * space
+    length = max(yb - yt, 1.0)
+    for b in owners:
+        if b[0] - pad <= x <= b[2] + pad:
+            if max(0.0, min(yb, b[3]) - max(yt, b[1])) >= OWNED_SHARE * length:
+                return True
+    return False
+
+
 def at_stem_end(b: Sequence[float], stem: Any, space: float) -> Optional[str]:
     """`"bottom"` (stem up: head at the bottom end, LEFT of the stem), `"top"` (stem down: head at the top end, RIGHT of the stem), or
     None. A head's centre is beside the stem by about half a head width, so the own-side band is wide and the far side narrow."""
@@ -128,7 +153,8 @@ def candidates_for_cell(stems: Sequence[Any], existing: Sequence[Any], rerun: Se
     top_y, half_step = grid
     space = 2.0 * half_step
     heads = [_box(d) for d in existing if is_head(d.smufl_name)]
-    orphans = [i for i, s in enumerate(stems) if is_orphan(s, heads, space)]
+    owners = [_box(d) for d in existing if str(d.smufl_name).startswith(_OWNER_PREFIXES) and float(d.confidence) >= 0.25]
+    orphans = [i for i, s in enumerate(stems) if is_orphan(s, heads, space) and not owned_by_a_mark(s, owners, space)]
     if not orphans:
         return [], [], 0
     others = [(_box(d), float(d.confidence)) for d in existing
@@ -139,6 +165,8 @@ def candidates_for_cell(stems: Sequence[Any], existing: Sequence[Any], rerun: Se
             pool.append((d, True))
     for d in rerun:
         n = str(d.smufl_name)
+        if n.startswith("noteheadWhole"):
+            continue                           # a whole note has no stem (page-facts): a whole-class box at a stem end is not one
         if (is_head(n) and float(d.confidence) < 0.25) or n.startswith(BLOCK_RESTS):
             if any(same_ink(_box(d), _box(e)) and str(e.smufl_name).startswith(BLOCK_RESTS) for e, _ in pool):
                 continue                       # the rest the record already holds, boxed again
@@ -149,11 +177,17 @@ def candidates_for_cell(stems: Sequence[Any], existing: Sequence[Any], rerun: Se
         b = _box(d)
         if any(same_ink(b, h) for h in heads):
             continue                           # a head already stands on this ink (it is not unseen)
+        cx, cy = _centre(b)
+        beside = any(abs(cx - hx) <= BESIDE_ACROSS_SPACES * space and abs(cy - hy) <= BESIDE_ALONG_SPACES * space
+                     for hx, hy in (_centre(h) for h in heads))
         for si in orphans:
             end = at_stem_end(b, stems[si], space)
             if end is None:
                 continue
             conf = float(d.confidence)
+            if beside:
+                refused.append({"det": d, "why": "beside_a_seen_head", "score": conf, "stem_index": si, "end": end})
+                continue
             blocker = next((oc for ob, oc in others if same_ink(b, ob) and oc >= conf), None)
             if blocker is not None:
                 refused.append({"det": d, "why": "another_mark_stronger", "score": conf, "stem_index": si, "end": end})
