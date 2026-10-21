@@ -42,6 +42,11 @@ project. Ask him.
    engraving convention governs it. One line to Sean before code. If nobody
    can be asked, write `CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
    CONFIRMED` at the top and proceed.
+   **Find the cause, not just a fix** (Sean, 2026-10-21): every lane asks
+   first *why is this, and what does it teach us about our process?* -- a
+   clean mark we read well elsewhere and fail on here has a cause upstream;
+   find it and measure it before building a fix downstream. Every lane
+   report opens with the cause and the process lesson.
 4. **One objective, three measures.** Report against the acceptance set
    (`docs/measuring.md`). Anything a lane measures internally is a control.
 5. **Reach before accuracy, and print before default.** No default flips on
