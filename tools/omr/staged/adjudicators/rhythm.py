@@ -2699,6 +2699,20 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
             kept.append((d, cx, cy))
         keep_ids = {k.id for k, _x, _y in kept}
         out = [d for d in out if d.id in keep_ids]
+    # ⚠️ ROADMAP 2.180: a mark admitted only by its POSITION over a wedge
+    # shape (`beside_a_head_in_its_dot_space`) may give a note its dot; it
+    # never makes a second one -- beside a note already dotted it is that
+    # dot's twin or a neighbour's mark (measured: 5 Brahms notes went out
+    # double-dotted before this guard).
+    if len(out) > 1:
+        def _pos_only(d):
+            role = ev.verdict(Q.DOT_ROLE, subject=d.subject)
+            return role is not None and role.reason == "beside_a_head_in_its_dot_space"
+        others = [d for d in out if not _pos_only(d)]
+        if others:
+            out = others
+        else:
+            out = out[:1]
     return out
 
 

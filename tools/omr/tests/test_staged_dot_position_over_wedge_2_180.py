@@ -122,6 +122,23 @@ class TestWedgeBesideAHead(unittest.TestCase):
                 self.assertEqual(role.value, "augmentation")
                 self.assertNotEqual(role.reason, "beside_a_head_in_its_dot_space")
 
+    def test_a_position_only_dot_never_makes_a_second_dot(self):
+        """A note that already carries a round dot keeps ONE dot when a
+        wedge-read mark also stands beside it (5 Brahms notes went out
+        double-dotted without this). CONTROL: the same wedge alone dots it."""
+        log = _jlog()
+        head = _head(log, 0, 5.0)
+        r = _dot(log, 3, x=112, y=4, pos=5.0, w=6, h=6)
+        _shape(log, r, ROUND)
+        d = _dot(log, 1, x=122, y=4, pos=5.0, w=6, h=9)
+        _shape(log, d, WEDGE)
+        with mock.patch.dict(os.environ, ON):
+            adjudicate.run(log)
+        self.assertEqual(_role(log, 3).value, "augmentation")
+        self.assertEqual(log.verdict(Q.DURATION, head).value["dots"], 1)
+        log2, role2, head2 = _case(ON)
+        self.assertEqual(log2.verdict(Q.DURATION, head2).value["dots"], 1)
+
     def test_CONTROL_a_wedge_ABOVE_a_head_stays_its_staccatissimo(self):
         """The 2.131 ruling stands: a wedge that points at a head is that
         head's staccatissimo, flag on or off."""
