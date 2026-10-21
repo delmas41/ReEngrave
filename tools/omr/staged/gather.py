@@ -14054,8 +14054,9 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
     key accidentals") and the share of its own ink inside (`meter_object.ink_inside`).
 
     * cell 0 (the header): standing READ -- the convention Sean confirmed.
-    * a later cell (a key change in mid-system): READ only where at least two staves of the system draw a window at one x (a key change
-      is printed on every staff at one bar, page-facts §2 -- a second witness of a different staff), else NARROWED.
+    * a later cell (a key change in mid-system): always NARROWED, the staves drawing a window there at one x are recorded as
+      `witness_staves` (a key change is printed on every staff at one bar, page-facts §2) but do not make it READ: on Litolff 16 of 69
+      such windows had a witness and one refused a real eighth note.
 
     ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry / no window is no row."""
     from . import claims as CL
@@ -14097,8 +14098,10 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
             if k == 0:
                 standing, witnesses = "READ", None
             else:
+                # a later cell is NEVER read: a second staff's window at the same x did not make it real (Litolff replay: 69 mid-system
+                # windows, a real eighth NOTE refused in one with a witness; neither plate changes key, so no change is confirmed)
                 witnesses = sorted({lj for lj, kj, wj, *_ in drawn if kj == k and lj != li and abs(wj.lo - win.lo) <= 1.5 * sp})
-                standing = "READ" if witnesses else "NARROWED"
+                standing = "NARROWED"
             area = [round(win.lo, 1), round(win.y_lo, 1), round(win.hi, 1), round(win.y_hi, 1)]
             by_id = {b.row_id: b for b in boxes}
             inside: Dict[str, Any] = {}

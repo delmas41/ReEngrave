@@ -195,7 +195,7 @@ class TestGather(unittest.TestCase):
         log, _ = _fx([CLEF, ("rest8th", 520, 585, 102, 239)])
         self.assertEqual(list(log.rows(Q.CLAIMED_AREA, R.staff(1, 0, 0))), [])
 
-    def test_a_key_change_in_a_later_cell_seen_on_one_staff_is_narrowed(self):
+    def test_a_key_change_in_a_later_cell_is_never_read_even_with_a_witness_staff(self):
         log = Log()
         cells = [_Cell(0, (0.0, 0.0, 1300.0, 1800.0)), _Cell(3, (1300.0, 0.0, 2600.0, 1800.0))]
         boxes3 = [("keyFlat", 100, 590, 105, 270), ("keyFlat", 210, 540, 105, 270)]
@@ -205,6 +205,19 @@ class TestGather(unittest.TestCase):
         with mock.patch.dict(os.environ, ON):
             G.gather_key_signature_claim(log, pws, cells, {0: (0, 0)}, dets)
         self.assertEqual([(r.detail["cell"], r.detail["standing"]) for r in _key_rows(log)], [(3, "NARROWED")])
+        # a second staff drawing the same window at the same x is recorded, and still does not make it READ
+        log2 = Log()
+        pws2 = _PWS()
+        pws2.staves = [_Staff(0), _Staff(1)]
+        pws2.page.binary = pws.page.binary
+        cells2 = cells + [_Cell(3, (1300.0, 0.0, 2600.0, 1800.0), staff=1)]
+        dets2 = dict(dets)
+        dets2[R.cell(1, 0, 1, 3).to_key()] = [_Det(*b) for b in boxes3]
+        with mock.patch.dict(os.environ, ON):
+            G.gather_key_signature_claim(log2, pws2, cells2, {0: (0, 0), 1: (0, 1)}, dets2)
+        rows2 = [r for sub in (R.staff(1, 0, 0), R.staff(1, 0, 1)) for r in log2.rows(Q.CLAIMED_AREA, sub) if r.detail["owner"] == "key_signature"]
+        self.assertEqual({r.detail["standing"] for r in rows2}, {"NARROWED"})
+        self.assertTrue(all(r.detail["witness_staves"] for r in rows2))
 
 
 class TestParityWithTheFiveGates(unittest.TestCase):
