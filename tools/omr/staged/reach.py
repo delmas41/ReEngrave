@@ -573,6 +573,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.181. `claims.py` is PURE (a raster and boxes in, numbers out; no log, no cell, no quantity named) --
     # `gather.gather_claimed_register` is its stage; `adjudicators/claimed_by.py` is the consult.
     "claims.py",
+    # ROADMAP 2.186. `one_ink.py` is PURE (boxes in, a merge plan out; the flag, the READ bar, the guess candidates): it files no row and names
+    # no quantity -- `gather.py` calls `merge` and files `detail.one_ink` on the rows it already files.
+    "one_ink.py",
 })
 
 
