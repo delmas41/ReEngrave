@@ -70,7 +70,9 @@ Parity is exact for all five gates' refusals on both plates: the claim does the 
 (`6/1/3/1/4`); 69 + 38 mid-system "key windows" exist on plates that never change key, so later cells are now always NARROWED -- the two
 real marks narrowed above are the cost of keeping them at all (drop them if Sean prefers: they confirm nothing on these plates).
 Brahms ON vs OFF also differs by 19 blue dynamics words, 2 notes and 3 glyph verdicts that no key claim touches (text/dynamics readers, beam
-discount); a second Brahms OFF replay is the determinism control (§4).
+discount). Determinism control: a second Brahms OFF replay is byte-identical to the first, so OFF is deterministic and these differences
+come from running ON -- UNEXPLAINED (nothing in the claim touches dynamics words; the injected key rows renumber the log's later ids, the
+first suspect). Litolff ON is byte-identical to OFF, so it is Brahms-only. A reason is owed before this flag is ever turned ON.
 
 ## 4. Controls and checks
 
@@ -80,3 +82,10 @@ discount); a second Brahms OFF replay is the determinism control (§4).
 - Blind tiles for Sean: `out/print/2.183-key-signature/` (12, orange box = where to look, means nothing; key `out/print/2.183-key.json`): 9
   drawn (seed 2183) from the 20 Litolff written-rest flats, 3 controls = real eighth rests after the meter. Purpose: Sean confirms the count
   (CLAUDE rule 7) before a key-object lane opens. The claim as built changes none of these.
+
+## 5. Sean's tiles (2026-10-21)
+
+"1-6 key flats 7-8. 8 rest 9. Key flat 10. 8 rest 11-12. Key flat" (`out/print/2.183-key-signature/answers.json`). All 9 cause-population
+draws are key flats and all 3 controls are real eighth rests: 12 of 12 as the key. So the census count stands on his eye (20 Litolff + 4
+Brahms key flats written as rests, not 2), and the claim as built keeps the controls. The per-system key reader proposed in §1 is NOT built;
+it waits for Sean's go-ahead.
