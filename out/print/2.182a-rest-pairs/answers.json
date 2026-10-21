@@ -1,0 +1,213 @@
+{
+ "source": "Sean 2026-10-21",
+ "verbatim": "1. 8 rest 2. tip of an 8th stem 3.8 rest 4. 4 rest 5. 8 rest 6. 8 rest 7.8 rest 8. 4 rest 9. part of a barline and ff 10-12. 8 rest",
+ "note": "relayed by the manager; '8' read as eighth, '4' as quarter; '10-12. 8 rest' expanded to tiles 10, 11, 12; tile 1 and 7, 8 are controls",
+ "answers": {
+  "1": "eighth rest",
+  "2": "not a rest (tip of an 8th stem)",
+  "3": "eighth rest",
+  "4": "quarter rest",
+  "5": "eighth rest",
+  "6": "eighth rest",
+  "7": "eighth rest",
+  "8": "quarter rest",
+  "9": "not a rest (part of a barline and ff)",
+  "10": "eighth rest",
+  "11": "eighth rest",
+  "12": "eighth rest"
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "kind": "control",
+   "doc": "brahms",
+   "page": 23,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest16th",
+     "conf": 0.598
+    }
+   ]
+  },
+  {
+   "tile": 2,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 23,
+   "answer": "not a rest (tip of an 8th stem)",
+   "detector": [
+    {
+     "cls": "rest16th",
+     "conf": 0.436
+    },
+    {
+     "cls": "rest8th",
+     "conf": 0.35
+    }
+   ]
+  },
+  {
+   "tile": 3,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 21,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest16th",
+     "conf": 0.402
+    },
+    {
+     "cls": "rest8th",
+     "conf": 0.689
+    }
+   ]
+  },
+  {
+   "tile": 4,
+   "kind": "case",
+   "doc": "litolff",
+   "page": 7,
+   "answer": "quarter rest",
+   "detector": [
+    {
+     "cls": "restQuarter",
+     "conf": 0.468
+    },
+    {
+     "cls": "restHalf",
+     "conf": 0.369
+    }
+   ]
+  },
+  {
+   "tile": 5,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 23,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest8th",
+     "conf": 0.256
+    },
+    {
+     "cls": "restQuarter",
+     "conf": 0.663
+    }
+   ]
+  },
+  {
+   "tile": 6,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 23,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest8th",
+     "conf": 0.67
+    },
+    {
+     "cls": "rest16th",
+     "conf": 0.268
+    }
+   ]
+  },
+  {
+   "tile": 7,
+   "kind": "control",
+   "doc": "brahms",
+   "page": 4,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest8th",
+     "conf": 0.575
+    }
+   ]
+  },
+  {
+   "tile": 8,
+   "kind": "control",
+   "doc": "litolff",
+   "page": 15,
+   "answer": "quarter rest",
+   "detector": [
+    {
+     "cls": "restQuarter",
+     "conf": 0.45
+    }
+   ]
+  },
+  {
+   "tile": 9,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 16,
+   "answer": "not a rest (part of a barline and ff)",
+   "detector": [
+    {
+     "cls": "rest32nd",
+     "conf": 0.548
+    },
+    {
+     "cls": "rest16th",
+     "conf": 0.454
+    }
+   ]
+  },
+  {
+   "tile": 10,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 26,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest8th",
+     "conf": 0.679
+    },
+    {
+     "cls": "rest16th",
+     "conf": 0.513
+    }
+   ]
+  },
+  {
+   "tile": 11,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 24,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "restQuarter",
+     "conf": 0.494
+    },
+    {
+     "cls": "rest8th",
+     "conf": 0.562
+    }
+   ]
+  },
+  {
+   "tile": 12,
+   "kind": "case",
+   "doc": "brahms",
+   "page": 21,
+   "answer": "eighth rest",
+   "detector": [
+    {
+     "cls": "rest16th",
+     "conf": 0.446
+    },
+    {
+     "cls": "rest8th",
+     "conf": 0.653
+    }
+   ]
+  }
+ ]
+}

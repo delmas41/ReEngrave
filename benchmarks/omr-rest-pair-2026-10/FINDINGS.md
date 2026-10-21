@@ -30,3 +30,17 @@ plates pooled, sorted by doc then glyph id before sampling), 3 controls (single-
 restQuarter, no other rest box in the cell, same RNG), shuffled. One blue box each (union of the cluster's boxes +4 px). KEY (not in the
 tiles folder): out/print/2.182a-key.json -- tile, kind, doc, page, glyph ids, both detector classes and confidences.
 Scripts: extract.py (stream a record, ijson), count.py, tiles_2_182a.py.
+
+## Sean's tiles (answered 2026-10-21)
+Verbatim: "1. 8 rest 2. tip of an 8th stem 3.8 rest 4. 4 rest 5. 8 rest 6. 8 rest 7.8 rest 8. 4 rest 9. part of a barline and ff 10-12. 8 rest".
+Recorded in out/print/2.182a-rest-pairs/answers.json (per tile: Sean's answer, key kind, detector classes and confidences).
+
+n=9 cases, one random draw (seed 2182). 7 of 9 are real rests: 6 eighths (tiles 3, 5, 6, 10, 11, 12) and 1 quarter (tile 4). 2 are NOT
+rests: tile 2 (tip of an 8th stem; boxed rest16th 0.436 > rest8th 0.35) and tile 9 (part of a barline and ff; boxed rest32nd 0.548 >
+rest16th 0.454).
+If the higher-confidence class were taken it would be right on 6 of the 7 real rests (3, 4, 6, 10, 11, 12) and wrong on tile 5 (restQuarter
+0.663 > rest8th 0.256, Sean: 8 rest), and it would invent a rest on tiles 2 and 9.
+Controls: tile 7 (rest8th 0.575) and tile 8 (restQuarter 0.45) right; tile 1, kept as a single rest16th 0.598, is an EIGHTH rest per Sean --
+a kept rest with the wrong value.
+Reading: the refusal of a different-class pair on one ink throws away real rests (7 of 9, 6 of them eighths), so the loss is real; but the
+two non-rests show the pair cannot simply take the stronger class.
