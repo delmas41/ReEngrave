@@ -52,6 +52,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[3]
 SAMPLE_PATH = ROOT / "benchmarks" / "lane-report" / "sample.json"
 LIB = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library")
 RECORDS = LIB / "_shared-records"
+DETECTOR_CACHE: Optional[pathlib.Path] = RECORDS / "detector-cache"      # ROADMAP 2.189: OFF and ON share it; None = no cache
 LOCK = RECORDS / ".record-load.lock"
 ORANGE = (255, 140, 0)
 
@@ -830,6 +831,10 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
             for name, off, on in flags:
                 env[name] = on if a == "on" else off
             env["OMR_SURYA_KEEP_ALIVE"] = "0"
+            if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
+                env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
+            else:
+                env.pop("OMR_DETECTOR_CACHE", None)
             cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[p]["pdf"]), "--pages",
                    ",".join(map(str, pages[p])), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
             print("  gather %s %s pages %s ..." % (p, a, pages[p]), flush=True)
@@ -929,6 +934,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--seed", type=int, default=2188, help="tile draw seed (the page sample's seed is in sample.json)")
     ap.add_argument("--workers", type=int, default=2, help="arm processes at once (<= 4)")
     ap.add_argument("--allow-unknown-flag", action="store_true")
+    ap.add_argument("--detector-cache", default=None,
+                    help="--from gather: the detector's raw-output cache dir (default library/_shared-records/detector-cache; 'off' = none)")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -962,6 +969,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         notes.append("no --flag: OFF and ON are the same tree (the identity control)")
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    global DETECTOR_CACHE
+    if a.detector_cache:
+        DETECTOR_CACHE = None if a.detector_cache == "off" else pathlib.Path(a.detector_cache)
     rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse)
     print(render_text(rep))
     return 0

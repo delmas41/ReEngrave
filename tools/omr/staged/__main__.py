@@ -190,6 +190,10 @@ def main(argv=None) -> int:
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--imgsz", type=int, default=None)
+    ap.add_argument("--detector-cache", default=None, metavar="DIR",
+                    help="ROADMAP 2.189: cache the detector's raw (pre-NMS) output in DIR so a re-gather that only changes "
+                         "merging/judging does not read the page twice (same as OMR_DETECTOR_CACHE=DIR; "
+                         "tools/omr/detector_cache.py). Unset = no cache.")
     ap.add_argument("--out", default=None)
     ap.add_argument("--against", default=None,
                     help="a legacy transcribe result JSON, for the divergence "
@@ -343,6 +347,8 @@ def main(argv=None) -> int:
                          "EXPORT needs what EVALUATE (and, if it ran, "
                          "INFER) derive.")
     args = ap.parse_args(argv)
+    if args.detector_cache:
+        os.environ["OMR_DETECTOR_CACHE"] = str(args.detector_cache)
 
     if args.through != "infer" and (args.musicxml or args.lilypond
                                     or args.pdf_out):
