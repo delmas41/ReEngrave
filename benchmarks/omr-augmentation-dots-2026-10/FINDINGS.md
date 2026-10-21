@@ -64,7 +64,7 @@ Guarded ON arm re-run: `replay2` (see the ROADMAP row when it lands).
 On 2.179's own base record (`probe/why2_2179_bars.py`): in those bars 25 of 28 decided augmentation dots ARE on a head decided
 dotted (1.5 / 3.0, `dots: 1`), 3 on a chord narrowed for its beam with every candidate dotted. The red-bar row prints `type`
 without the dot (`quarter` with beats 1.5 = a dotted quarter), so those bars are red for another reason, not a lost dot. Only 1 of
-the 24 holds a `wedge_without_a_head` mark. File-level OFF/ON on that record: `probe/check_2179_bars.py`.
+the 24 holds a `wedge_without_a_head` mark. File-level OFF/ON on that record (`probe/check_2179_bars.py`): red bars 152 -> 150, dotted notes 510 -> 513, 8 roles changed; of the 24 labelled bars 1 changes and stops being red (23/1/10/4), 23 stay red with their dots already written.
 
 ## 6. Tiles
 `out/print/2.180-review/tiles/` (12: 9 notes the flag dots, 3 controls), README, key `_key/key.json`, one run, checked equal.
