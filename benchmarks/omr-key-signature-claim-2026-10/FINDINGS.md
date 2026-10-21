@@ -70,7 +70,9 @@ Parity is exact for all five gates' refusals on both plates: the claim does the 
 (`6/1/3/1/4`); 69 + 38 mid-system "key windows" exist on plates that never change key, so later cells are now always NARROWED -- the two
 real marks narrowed above are the cost of keeping them at all (drop them if Sean prefers: they confirm nothing on these plates).
 Brahms ON vs OFF also differs by 19 blue dynamics words, 2 notes and 3 glyph verdicts that no key claim touches (text/dynamics readers, beam
-discount); a second Brahms OFF replay is the determinism control (§4).
+discount). Determinism control: a second Brahms OFF replay is byte-identical to the first, so OFF is deterministic and these differences
+come from running ON -- UNEXPLAINED (nothing in the claim touches dynamics words; the injected key rows renumber the log's later ids, the
+first suspect). Litolff ON is byte-identical to OFF, so it is Brahms-only. A reason is owed before this flag is ever turned ON.
 
 ## 4. Controls and checks
 
