@@ -1,0 +1,408 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/4/0/7",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.6705551743507385,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     705.44140625,
+     1296.0,
+     750.8046875,
+     1319.54296875
+    ]
+   },
+   {
+    "subject": "glyph/12/0/4/0/9",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.6301781535148621,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     714.341796875,
+     1296.0,
+     750.8046875,
+     1315.5234375
+    ]
+   },
+   {
+    "subject": "glyph/12/0/4/0/15",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.2923806607723236,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "given_away:glyph_owner:staff_band_no_box | export=n/a",
+    "bbox": [
+     693.669921875,
+     1296.0,
+     751.091796875,
+     1329.017578125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/0/1/10/16",
+    "cls": "noteheadHalfOnLine",
+    "score": 0.3977435231208801,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:on_a_dynamic_letter | export=n/a",
+    "bbox": [
+     5127.5375,
+     918.0025,
+     5168.0525,
+     949.6375
+    ]
+   },
+   {
+    "subject": "glyph/4/0/2/10/5",
+    "cls": "noteheadHalfOnLine",
+    "score": 0.4429609179496765,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:on_a_dynamic_letter | export=n/a",
+    "bbox": [
+     5125.775,
+     918.15,
+     5170.325,
+     950.875
+    ]
+   },
+   {
+    "subject": "glyph/4/0/2/10/8",
+    "cls": "noteheadWholeOnLine",
+    "score": 0.35490140318870544,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:stacked_head_duplicate | export=n/a",
+    "bbox": [
+     5126.875,
+     918.425,
+     5168.675,
+     950.875
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/1/11/3/2",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.6294796466827393,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:too_narrow | export=n/a",
+    "bbox": [
+     2404.3375,
+     6634.0725,
+     2429.4075,
+     6656.145
+    ]
+   },
+   {
+    "subject": "glyph/16/1/12/3/1",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.7518712282180786,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "given_away:glyph_owner:stem_toward_staff | export=n/a",
+    "bbox": [
+     2406.5175,
+     6631.0,
+     2446.3025,
+     6650.62
+    ]
+   },
+   {
+    "subject": "glyph/16/1/12/3/2",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.6816660165786743,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:too_narrow | export=n/a",
+    "bbox": [
+     2404.61,
+     6633.18,
+     2430.225,
+     6656.07
+    ]
+   },
+   {
+    "subject": "glyph/16/1/12/3/6",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.42957234382629395,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     2404.61,
+     6631.2725,
+     2440.8525,
+     6656.615
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 11,
+  "members": [
+   {
+    "subject": "glyph/11/1/10/5/2",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.4846474826335907,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     3165.8,
+     6329.76,
+     3194.64,
+     6360.28
+    ]
+   },
+   {
+    "subject": "glyph/11/1/10/5/6",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.38919493556022644,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:tremolo_slash_crosses_stem | export=n/a",
+    "bbox": [
+     3165.24,
+     6327.8,
+     3206.4,
+     6360.56
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 18,
+  "members": [
+   {
+    "subject": "glyph/18/1/11/6/11",
+    "cls": "noteheadWholeInSpace",
+    "score": 0.4498777687549591,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:stacked_head_duplicate | export=n/a",
+    "bbox": [
+     4284.056640625,
+     6464.2529296875,
+     4328.4697265625,
+     6494.6728515625
+    ]
+   },
+   {
+    "subject": "glyph/18/1/11/6/19",
+    "cls": "noteheadHalfInSpace",
+    "score": 0.3265373706817627,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:stacked_head_duplicate | export=n/a",
+    "bbox": [
+     4284.056640625,
+     6464.2529296875,
+     4329.078125,
+     6494.36865234375
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/10/6/9",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.6066156625747681,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     3309.775,
+     6397.9,
+     3338.1,
+     6421.0
+    ]
+   },
+   {
+    "subject": "glyph/15/1/10/6/17",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.25582534074783325,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:tremolo_slash_crosses_stem | export=n/a",
+    "bbox": [
+     3295.75,
+     6397.35,
+     3338.1,
+     6421.825
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/10/2/5",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.33344072103500366,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "given_away:glyph_owner:staff_band | export=n/a",
+    "bbox": [
+     1530.2725,
+     2642.8275,
+     1568.5675,
+     2665.86
+    ]
+   },
+   {
+    "subject": "glyph/12/0/10/2/8",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.3114399313926697,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     1538.0425,
+     2641.1625,
+     1566.3475,
+     2665.86
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/2/7/5",
+    "cls": "noteheadHalfOnLine",
+    "score": 0.40470758080482483,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:stacked_head_duplicate | export=n/a",
+    "bbox": [
+     3045.81,
+     1013.3199999999999,
+     3091.98,
+     1050.31
+    ]
+   },
+   {
+    "subject": "glyph/12/0/2/7/14",
+    "cls": "noteheadWholeOnLine",
+    "score": 0.2634216845035553,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:stacked_head_duplicate | export=n/a",
+    "bbox": [
+     3046.35,
+     1014.94,
+     3092.52,
+     1050.85
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/0/11/5/4",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.5117588043212891,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     2806.125,
+     3017.875,
+     2836.1,
+     3053.9
+    ]
+   },
+   {
+    "subject": "glyph/16/0/11/5/7",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.5026686787605286,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:tremolo_slash_crosses_stem | export=n/a",
+    "bbox": [
+     2791.55,
+     3017.05,
+     2835.825,
+     3054.45
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/10/7/12",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.300487220287323,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:tremolo_slash_crosses_stem | export=n/a",
+    "bbox": [
+     3731.675,
+     6406.975,
+     3772.1,
+     6426.775
+    ]
+   },
+   {
+    "subject": "glyph/15/1/10/7/17",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.26176244020462036,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:noteheadnotehead:notehead_is_a_duplicate_box | export=n/a",
+    "bbox": [
+     3731.4,
+     6410.275,
+     3769.625,
+     6431.175
+    ]
+   }
+  ]
+ }
+]

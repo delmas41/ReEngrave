@@ -1,0 +1,352 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 18,
+  "members": [
+   {
+    "subject": "glyph/18/1/9/5/3",
+    "cls": "accidentalNatural",
+    "score": 0.8580370545387268,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     4086.475,
+     5916.225,
+     4111.5,
+     5999.825
+    ]
+   },
+   {
+    "subject": "glyph/18/1/9/5/25",
+    "cls": "accidentalSharp",
+    "score": 0.3064422905445099,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     4086.2,
+     5915.95,
+     4111.5,
+     5999.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 6,
+  "members": [
+   {
+    "subject": "glyph/6/0/10/1/8",
+    "cls": "accidentalFlat",
+    "score": 0.5437073111534119,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     1774.12,
+     3230.32,
+     1827.6,
+     3308.72
+    ]
+   },
+   {
+    "subject": "glyph/6/0/10/1/19",
+    "cls": "accidentalNatural",
+    "score": 0.27182537317276,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     1773.56,
+     3230.88,
+     1799.6,
+     3316.28
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/0/12/6/7",
+    "cls": "accidentalSharp",
+    "score": 0.31769728660583496,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3275.975,
+     3309.7,
+     3302.65,
+     3399.075
+    ]
+   },
+   {
+    "subject": "glyph/13/0/12/6/8",
+    "cls": "accidentalNatural",
+    "score": 0.28809764981269836,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3276.525,
+     3309.15,
+     3302.65,
+     3399.075
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/0/13/7/3",
+    "cls": "accidentalNatural",
+    "score": 0.7272160649299622,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3708.1025,
+     3456.3075,
+     3733.1725,
+     3540.51
+    ]
+   },
+   {
+    "subject": "glyph/13/0/13/7/7",
+    "cls": "accidentalSharp",
+    "score": 0.44917550683021545,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3708.1025,
+     3455.7625,
+     3733.445,
+     3541.3275
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 20,
+  "members": [
+   {
+    "subject": "glyph/20/1/3/6/10",
+    "cls": "accidentalNatural",
+    "score": 0.6165855526924133,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     4365.535,
+     5150.27,
+     4390.06,
+     5236.6525
+    ]
+   },
+   {
+    "subject": "glyph/20/1/3/6/12",
+    "cls": "accidentalSharp",
+    "score": 0.5306898355484009,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     4365.535,
+     5150.27,
+     4390.06,
+     5235.835
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/6/9/13",
+    "cls": "accidentalSharp",
+    "score": 0.29325568675994873,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     4406.075,
+     5325.025,
+     4438.525,
+     5405.325
+    ]
+   },
+   {
+    "subject": "glyph/15/1/6/9/15",
+    "cls": "accidentalFlat",
+    "score": 0.2597358822822571,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     4406.075,
+     5327.775,
+     4439.35,
+     5403.95
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 17,
+  "members": [
+   {
+    "subject": "glyph/17/1/9/1/13",
+    "cls": "accidentalNatural",
+    "score": 0.6956567168235779,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     1755.265625,
+     6132.109375,
+     1780.265625,
+     6220.0
+    ]
+   },
+   {
+    "subject": "glyph/17/1/9/1/14",
+    "cls": "accidentalFlat",
+    "score": 0.48438921570777893,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     1755.265625,
+     6132.890625,
+     1780.65625,
+     6220.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 24,
+  "members": [
+   {
+    "subject": "glyph/24/0/9/3/3",
+    "cls": "accidentalNatural",
+    "score": 0.7652862668037415,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     2716.92,
+     2757.825,
+     2741.0625,
+     2845.515
+    ]
+   },
+   {
+    "subject": "glyph/24/0/9/3/15",
+    "cls": "accidentalSharp",
+    "score": 0.3426420986652374,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     2716.92,
+     2757.5475,
+     2741.34,
+     2842.4625
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/0/1/4/7",
+    "cls": "accidentalFlat",
+    "score": 0.7376214861869812,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     2329.9275,
+     740.9575,
+     2361.5625,
+     813.94
+    ]
+   },
+   {
+    "subject": "glyph/4/0/1/4/18",
+    "cls": "accidentalDoubleFlat",
+    "score": 0.5488600730895996,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=None by None",
+    "bbox": [
+     2328.8175,
+     740.68,
+     2361.84,
+     813.385
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/0/1/6/4",
+    "cls": "accidentalNatural",
+    "score": 0.808692216873169,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3251.065,
+     682.1275,
+     3274.0975,
+     768.7075
+    ]
+   },
+   {
+    "subject": "glyph/4/0/1/6/15",
+    "cls": "accidentalSharp",
+    "score": 0.4718654155731201,
+    "src": "detector",
+    "fate": "",
+    "why": "head alter=b by respell_accidental",
+    "bbox": [
+     3250.7875,
+     682.405,
+     3274.0975,
+     766.4875
+    ]
+   }
+  ]
+ }
+]

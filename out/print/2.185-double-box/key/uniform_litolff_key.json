@@ -1,0 +1,352 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/3/2/7",
+    "cls": "keyFlat",
+    "score": 0.426008403301239,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     779.415,
+     2748.77,
+     795.165,
+     2762.0
+    ]
+   },
+   {
+    "subject": "glyph/15/1/3/2/9",
+    "cls": "accidentalFlat",
+    "score": 0.3980526328086853,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     779.1,
+     2748.9275,
+     794.535,
+     2762.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 9,
+  "members": [
+   {
+    "subject": "glyph/9/0/5/8/2",
+    "cls": "ledgerLine",
+    "score": 0.39913350343704224,
+    "src": "prod",
+    "fate": "refused",
+    "why": "ledgerledger:inside_the_staff",
+    "bbox": [
+     1529.2525,
+     1151.075,
+     1560.91,
+     1154.3825
+    ]
+   },
+   {
+    "subject": "glyph/9/0/5/8/3",
+    "cls": "ledgerLine",
+    "score": 0.31061309576034546,
+    "src": "prod",
+    "fate": "refused",
+    "why": "ledgerledger:inside_the_staff",
+    "bbox": [
+     1528.9375,
+     1150.9175,
+     1574.9275,
+     1154.3825
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/5/8/2",
+    "cls": "dynamicF",
+    "score": 0.5885146260261536,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1539.785,
+     1173.3625,
+     1598.06,
+     1234.0
+    ]
+   },
+   {
+    "subject": "glyph/12/0/6/8/3",
+    "cls": "dynamicF",
+    "score": 0.6473910212516785,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:range_veto",
+    "bbox": [
+     1539.6275,
+     1172.9375,
+     1596.17,
+     1242.395
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/8/13/9",
+    "cls": "articStaccatoBelow",
+    "score": 0.6445605158805847,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     2390.4,
+     1589.16,
+     2396.48,
+     1596.3600000000001
+    ]
+   },
+   {
+    "subject": "glyph/12/0/9/13/16",
+    "cls": "articStaccatoBelow",
+    "score": 0.31997430324554443,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:distance",
+    "bbox": [
+     2390.785,
+     1589.2925,
+     2396.6125,
+     1596.2225
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 2,
+  "members": [
+   {
+    "subject": "glyph/2/1/6/8/1",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.7993775606155396,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:ledger_note_first",
+    "bbox": [
+     1657.0425,
+     3077.205,
+     1679.88,
+     3100.515
+    ]
+   },
+   {
+    "subject": "glyph/2/1/7/8/0",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.8561617732048035,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1656.885,
+     3077.2825,
+     1679.7225,
+     3099.9625
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/1/10/2/0",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.38723665475845337,
+    "src": "prod",
+    "fate": "refused",
+    "why": "noteheadnotehead:tremolo_slash_crosses_stem",
+    "bbox": [
+     796.13,
+     3575.9275,
+     824.3225,
+     3599.71
+    ]
+   },
+   {
+    "subject": "glyph/13/1/10/2/1",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.3467017114162445,
+    "src": "prod",
+    "fate": "refused",
+    "why": "noteheadnotehead:tremolo_slash_crosses_stem",
+    "bbox": [
+     794.0825,
+     3575.455,
+     824.3225,
+     3592.3075
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 14,
+  "members": [
+   {
+    "subject": "glyph/14/1/8/9/8",
+    "cls": "beam",
+    "score": 0.37385398149490356,
+    "src": "prod",
+    "fate": "unjudged",
+    "why": "",
+    "bbox": [
+     1833.4775,
+     3235.0,
+     1897.1075,
+     3240.67
+    ]
+   },
+   {
+    "subject": "glyph/14/1/8/9/9",
+    "cls": "beam",
+    "score": 0.34886905550956726,
+    "src": "prod",
+    "fate": "unjudged",
+    "why": "",
+    "bbox": [
+     1833.635,
+     3235.0,
+     1924.1975,
+     3240.8275
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/0/2/13/0",
+    "cls": "slur",
+    "score": 0.8917046189308167,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:distance",
+    "bbox": [
+     2152.66,
+     935.2625,
+     2264.3275,
+     967.0775
+    ]
+   },
+   {
+    "subject": "glyph/5/0/3/13/0",
+    "cls": "slur",
+    "score": 0.8929177522659302,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     2153.235,
+     934.93,
+     2264.525,
+     966.86
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 7,
+  "members": [
+   {
+    "subject": "glyph/7/1/0/13/0",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.49269261956214905,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     2175.015,
+     2070.02,
+     2194.7,
+     2087.69
+    ]
+   },
+   {
+    "subject": "glyph/7/1/0/13/1",
+    "cls": "noteheadHalfInSpace",
+    "score": 0.47572168707847595,
+    "src": "prod",
+    "fate": "refused",
+    "why": "noteheadnotehead:stacked_head_duplicate",
+    "bbox": [
+     2170.985,
+     2065.835,
+     2194.39,
+     2085.21
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 7,
+  "members": [
+   {
+    "subject": "glyph/7/1/2/6/5",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.5384280681610107,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1446.9125,
+     2410.01,
+     1468.0175,
+     2426.8625
+    ]
+   },
+   {
+    "subject": "glyph/7/1/2/6/7",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.37408220767974854,
+    "src": "prod",
+    "fate": "refused",
+    "why": "noteheadnotehead:notehead_is_a_duplicate_box",
+    "bbox": [
+     1446.44,
+     2407.175,
+     1468.0175,
+     2423.87
+    ]
+   }
+  ]
+ }
+]

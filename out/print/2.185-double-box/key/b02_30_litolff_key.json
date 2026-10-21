@@ -1,0 +1,282 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 14,
+  "members": [
+   {
+    "subject": "glyph/14/1/2/4/0",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.7547961473464966,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1081.4425,
+     2509.225,
+     1103.4925,
+     2530.645
+    ]
+   },
+   {
+    "subject": "glyph/14/1/2/4/5",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.32202470302581787,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1090.5775,
+     2504.3425,
+     1123.0225,
+     2522.6125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 8,
+  "members": [
+   {
+    "subject": "glyph/8/0/8/16/3",
+    "cls": "dynamicP",
+    "score": 0.7773619294166565,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1983.5525,
+     1586.1775,
+     2015.9975,
+     1620.1975
+    ]
+   },
+   {
+    "subject": "glyph/8/0/8/16/2",
+    "cls": "dynamicP",
+    "score": 0.7920270562171936,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2008.1225,
+     1585.2325,
+     2043.4025,
+     1615.945
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 8,
+  "members": [
+   {
+    "subject": "glyph/8/1/1/17/5",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.784332275390625,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2314.68,
+     2074.29,
+     2336.8875,
+     2096.4975
+    ]
+   },
+   {
+    "subject": "glyph/8/1/1/17/10",
+    "cls": "flag8thDown",
+    "score": 0.5451371073722839,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2317.3575,
+     2080.59,
+     2340.0375,
+     2144.22
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/1/6/4/3",
+    "cls": "dynamicF",
+    "score": 0.7108457088470459,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1045.0875,
+     2913.0,
+     1080.21,
+     2935.05
+    ]
+   },
+   {
+    "subject": "glyph/4/1/6/4/5",
+    "cls": "dynamicF",
+    "score": 0.6940529942512512,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1063.0425,
+     2913.0,
+     1101.945,
+     2934.105
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 10,
+  "members": [
+   {
+    "subject": "glyph/10/1/9/0/7",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.5235783457756042,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     569.1475,
+     3467.85,
+     593.245,
+     3487.8525
+    ]
+   },
+   {
+    "subject": "glyph/10/1/9/0/3",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.7069198489189148,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     569.4625,
+     3486.435,
+     591.1975,
+     3507.54
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 7,
+  "members": [
+   {
+    "subject": "glyph/7/1/8/0/6",
+    "cls": "dynamicS",
+    "score": 0.5403497815132141,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     529.125,
+     3159.1125,
+     541.8825,
+     3181.005
+    ]
+   },
+   {
+    "subject": "glyph/7/1/8/0/1",
+    "cls": "dynamicF",
+    "score": 0.7968400716781616,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     531.4875,
+     3144.78,
+     564.8775,
+     3191.5575
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 10,
+  "members": [
+   {
+    "subject": "glyph/10/1/9/9/9",
+    "cls": "accidentalFlat",
+    "score": 0.3065894842147827,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1905.3725,
+     3396.345,
+     1937.1875,
+     3456.195
+    ]
+   },
+   {
+    "subject": "glyph/10/1/9/9/8",
+    "cls": "accidentalNatural",
+    "score": 0.32848700881004333,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1931.36,
+     3371.6175,
+     1945.6925,
+     3441.075
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/0/0/4/8",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.4572173058986664,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1090.1225,
+     377.9075,
+     1112.4875,
+     388.6175
+    ]
+   },
+   {
+    "subject": "glyph/16/0/0/4/7",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.4802233576774597,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1090.91,
+     383.42,
+     1112.8025,
+     400.90250000000003
+    ]
+   }
+  ]
+ }
+]

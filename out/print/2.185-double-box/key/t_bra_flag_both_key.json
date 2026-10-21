@@ -1,0 +1,282 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 19,
+  "members": [
+   {
+    "subject": "glyph/19/0/2/7/18",
+    "cls": "flag16thUp",
+    "score": 0.40247872471809387,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     4085.0175,
+     1217.8425,
+     4101.3675,
+     1247.0
+    ]
+   },
+   {
+    "subject": "glyph/19/0/2/7/22",
+    "cls": "flag8thUp",
+    "score": 0.35347211360931396,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     4085.0175,
+     1217.57,
+     4100.8225,
+     1247.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 6,
+  "members": [
+   {
+    "subject": "glyph/6/1/1/4/10",
+    "cls": "flag16thUp",
+    "score": 0.5596765875816345,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3419.7,
+     4300.73,
+     3448.99,
+     4383.38
+    ]
+   },
+   {
+    "subject": "glyph/6/1/1/4/15",
+    "cls": "flag8thUp",
+    "score": 0.44556060433387756,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3420.57,
+     4302.18,
+     3449.28,
+     4385.99
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 6,
+  "members": [
+   {
+    "subject": "glyph/6/1/9/3/8",
+    "cls": "flag8thUp",
+    "score": 0.5349865555763245,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3063.72,
+     6642.7025,
+     3093.4125,
+     6734.8325
+    ]
+   },
+   {
+    "subject": "glyph/6/1/9/3/11",
+    "cls": "flag16thUp",
+    "score": 0.338272362947464,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3063.72,
+     6640.76,
+     3093.4125,
+     6734.8325
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 25,
+  "members": [
+   {
+    "subject": "glyph/25/1/11/4/5",
+    "cls": "flag16thUp",
+    "score": 0.6319933533668518,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     2884.7625,
+     7059.2975,
+     2916.3975,
+     7151.9825
+    ]
+   },
+   {
+    "subject": "glyph/25/1/11/4/10",
+    "cls": "flag8thUp",
+    "score": 0.3579809069633484,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     2884.2075,
+     7061.795,
+     2916.9525,
+     7148.93
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 10,
+  "members": [
+   {
+    "subject": "glyph/10/0/4/7/8",
+    "cls": "flag8thUp",
+    "score": 0.512130618095398,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     4455.7,
+     1619.45,
+     4482.925,
+     1664.0
+    ]
+   },
+   {
+    "subject": "glyph/10/0/4/7/11",
+    "cls": "flag16thUp",
+    "score": 0.33546289801597595,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     4455.7,
+     1617.525,
+     4482.925,
+     1664.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/1/9/5/10",
+    "cls": "flag8thUp",
+    "score": 0.3841842710971832,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3483.6975,
+     6261.57,
+     3513.4,
+     6291.0
+    ]
+   },
+   {
+    "subject": "glyph/5/1/9/5/14",
+    "cls": "flag16thUp",
+    "score": 0.2604112923145294,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     3483.425,
+     6260.48,
+     3513.4,
+     6291.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 20,
+  "members": [
+   {
+    "subject": "glyph/20/0/9/0/10",
+    "cls": "flag16thUp",
+    "score": 0.4624457061290741,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     1382.78955078125,
+     2887.47265625,
+     1414.06005859375,
+     2972.51318359375
+    ]
+   },
+   {
+    "subject": "glyph/20/0/9/0/12",
+    "cls": "flag8thUp",
+    "score": 0.4023940861225128,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     1382.408203125,
+     2887.09130859375,
+     1414.44140625,
+     2972.89453125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 18,
+  "members": [
+   {
+    "subject": "glyph/18/0/4/3/22",
+    "cls": "flag16thDown",
+    "score": 0.3724394738674164,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     2971.615234375,
+     1353.0,
+     2995.443359375,
+     1371.1689453125
+    ]
+   },
+   {
+    "subject": "glyph/18/0/4/3/23",
+    "cls": "flag8thDown",
+    "score": 0.3336623013019562,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept ",
+    "bbox": [
+     2971.615234375,
+     1353.0,
+     2995.443359375,
+     1371.1689453125
+    ]
+   }
+  ]
+ }
+]

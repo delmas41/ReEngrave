@@ -1,0 +1,380 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 2,
+  "members": [
+   {
+    "subject": "glyph/2/1/4/8/1",
+    "cls": "beam",
+    "score": 0.3425166606903076,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:staff_band_no_box",
+    "bbox": [
+     5064.8,
+     5198.655,
+     5495.6225,
+     5214.46
+    ]
+   },
+   {
+    "subject": "glyph/2/1/5/8/0",
+    "cls": "beam",
+    "score": 0.27773863077163696,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:range_veto",
+    "bbox": [
+     5050.3575,
+     5198.9225,
+     5476.0025,
+     5216.635
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/1/8/2/1",
+    "cls": "accidentalFlat",
+    "score": 0.8782649636268616,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:distance",
+    "bbox": [
+     1897.4,
+     5935.04,
+     1926.8,
+     6008.96
+    ]
+   },
+   {
+    "subject": "glyph/12/1/9/2/2",
+    "cls": "accidentalFlat",
+    "score": 0.8794049620628357,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1896.87,
+     5935.31,
+     1927.38,
+     6009.83
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/0/10/8/0",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.7754691243171692,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:ledger_direction",
+    "bbox": [
+     4193.625,
+     2957.025,
+     4230.2,
+     2974.9
+    ]
+   },
+   {
+    "subject": "glyph/13/0/11/8/2",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.7818701863288879,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     4193.625,
+     2957.225,
+     4230.75,
+     2988.3
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 25,
+  "members": [
+   {
+    "subject": "glyph/25/0/3/4/21",
+    "cls": "dynamicP",
+    "score": 0.5142289996147156,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     3087.5125,
+     1565.9775,
+     3144.4,
+     1599.0
+    ]
+   },
+   {
+    "subject": "glyph/25/0/3/4/30",
+    "cls": "dynamicP",
+    "score": 0.32040950655937195,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     3081.4075,
+     1565.9775,
+     3128.5825,
+     1599.0
+    ]
+   },
+   {
+    "subject": "glyph/25/0/4/4/6",
+    "cls": "dynamicM",
+    "score": 0.4287448525428772,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:range_veto",
+    "bbox": [
+     3082.24,
+     1566.39,
+     3108.0475,
+     1600.8
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/1/4/3/7",
+    "cls": "beam",
+    "score": 0.3732849955558777,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     2664.3025,
+     5048.035,
+     2814.7225,
+     5060.57
+    ]
+   },
+   {
+    "subject": "glyph/16/1/5/3/4",
+    "cls": "beam",
+    "score": 0.5685771703720093,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:range_veto",
+    "bbox": [
+     2660.7675,
+     5046.165,
+     2812.005,
+     5058.6525
+    ]
+   },
+   {
+    "subject": "glyph/16/1/5/3/7",
+    "cls": "beam",
+    "score": 0.34101980924606323,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:range_veto",
+    "bbox": [
+     2660.7675,
+     5052.27,
+     2815.335,
+     5061.705
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 18,
+  "members": [
+   {
+    "subject": "glyph/18/1/8/5/1",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.8602151274681091,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:ledger_note_first",
+    "bbox": [
+     3739.975,
+     5913.225,
+     3778.475,
+     5946.5
+    ]
+   },
+   {
+    "subject": "glyph/18/1/9/5/4",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.8457310199737549,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     3740.25,
+     5912.1,
+     3778.75,
+     5945.925
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/0/8/4/16",
+    "cls": "rest8th",
+    "score": 0.4125373661518097,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     3566.59375,
+     2331.2109375,
+     3596.18359375,
+     2384.82421875
+    ]
+   },
+   {
+    "subject": "glyph/5/0/8/4/19",
+    "cls": "rest8th",
+    "score": 0.30604779720306396,
+    "src": "prod",
+    "fate": "refused",
+    "why": "restrest:rest_is_a_duplicate_box",
+    "bbox": [
+     3563.37109375,
+     2329.74609375,
+     3586.22265625,
+     2384.23828125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 0,
+  "members": [
+   {
+    "subject": "glyph/0/0/12/0/5",
+    "cls": "dynamicP",
+    "score": 0.8310952186584473,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1766.611328125,
+     6581.5390625,
+     1814.521484375,
+     6635.546875
+    ]
+   },
+   {
+    "subject": "glyph/0/0/13/0/8",
+    "cls": "dynamicP",
+    "score": 0.8369043469429016,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:distance",
+    "bbox": [
+     1766.611328125,
+     6581.48828125,
+     1815.392578125,
+     6635.49609375
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 2,
+  "members": [
+   {
+    "subject": "glyph/2/1/7/6/1",
+    "cls": "tie",
+    "score": 0.5660834312438965,
+    "src": "prod",
+    "fate": "refused",
+    "why": "arcarc:ink_is_a_staff_line",
+    "bbox": [
+     4094.2725,
+     5787.195,
+     4617.745,
+     5803.0
+    ]
+   },
+   {
+    "subject": "glyph/2/1/8/6/3",
+    "cls": "tie",
+    "score": 0.36807981133461,
+    "src": "prod",
+    "fate": "refused",
+    "why": "arcarc:ink_is_a_staff_line",
+    "bbox": [
+     4094.55,
+     5788.325,
+     4617.325,
+     5802.9
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 17,
+  "members": [
+   {
+    "subject": "glyph/17/0/8/1/4",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.8309569954872131,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "glyph_owner:ledger_note_first",
+    "bbox": [
+     1963.8994140625,
+     2426.5087890625,
+     2001.830078125,
+     2457.7041015625
+    ]
+   },
+   {
+    "subject": "glyph/17/0/9/1/2",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.8730329871177673,
+    "src": "prod",
+    "fate": "kept",
+    "why": "",
+    "bbox": [
+     1963.1904296875,
+     2426.31640625,
+     2001.4755859375,
+     2457.51171875
+    ]
+   }
+  ]
+ }
+]

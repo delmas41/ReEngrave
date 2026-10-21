@@ -1,0 +1,352 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/0/1/3/2",
+    "cls": "arpeggiato",
+    "score": 0.7077142000198364,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     866.99,
+     556.3625,
+     884.0,
+     603.455
+    ]
+   },
+   {
+    "subject": "glyph/15/0/1/3/3",
+    "cls": "restQuarter",
+    "score": 0.5542565584182739,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     866.5175,
+     556.835,
+     884.315,
+     603.455
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/1/6/13/1",
+    "cls": "arpeggiato",
+    "score": 0.5547789335250854,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2419.945,
+     3508.1925,
+     2430.4975,
+     3563.16
+    ]
+   },
+   {
+    "subject": "glyph/5/1/6/13/6",
+    "cls": "restQuarter",
+    "score": 0.2510044276714325,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:restrest:rest_stroke_into_a_head | export=not_a_rest:rest_stroke_into_a_head",
+    "bbox": [
+     2420.575,
+     3506.775,
+     2429.71,
+     3563.9475
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/1/4/8/2",
+    "cls": "restQuarter",
+    "score": 0.5801901817321777,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     1800.35,
+     2712.6375,
+     1818.935,
+     2762.7225
+    ]
+   },
+   {
+    "subject": "glyph/12/1/4/8/3",
+    "cls": "arpeggiato",
+    "score": 0.27932456135749817,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1800.1925,
+     2712.0075,
+     1818.62,
+     2762.4075
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/1/5/8/4",
+    "cls": "arpeggiato",
+    "score": 0.3279089331626892,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1799.52,
+     2832.08,
+     1824.32,
+     2881.84
+    ]
+   },
+   {
+    "subject": "glyph/12/1/5/8/5",
+    "cls": "restQuarter",
+    "score": 0.7836084961891174,
+    "src": "view_small",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     1801.12,
+     2832.56,
+     1818.88,
+     2883.76
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/3/7/2",
+    "cls": "restQuarter",
+    "score": 0.6325373649597168,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     1220.1525,
+     2637.7325,
+     1238.265,
+     2689.235
+    ]
+   },
+   {
+    "subject": "glyph/15/1/3/7/4",
+    "cls": "arpeggiato",
+    "score": 0.4243159890174866,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1220.31,
+     2638.0475,
+     1237.7925,
+     2689.0775
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/1/2/16/1",
+    "cls": "restQuarter",
+    "score": 0.646018385887146,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     2579.7875,
+     2431.835,
+     2598.0575,
+     2477.825
+    ]
+   },
+   {
+    "subject": "glyph/13/1/2/16/10",
+    "cls": "arpeggiato",
+    "score": 0.27460992336273193,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2580.26,
+     2432.3075,
+     2597.585,
+     2477.6675
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 14,
+  "members": [
+   {
+    "subject": "glyph/14/1/4/0/3",
+    "cls": "arpeggiato",
+    "score": 0.654068648815155,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     604.5675,
+     2754.1575,
+     612.7574999999999,
+     2800.7775
+    ]
+   },
+   {
+    "subject": "glyph/14/1/4/0/9",
+    "cls": "restQuarter",
+    "score": 0.32624003291130066,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:restrest:rest_stroke_into_a_head | export=not_a_rest:rest_stroke_into_a_head",
+    "bbox": [
+     604.725,
+     2753.2125,
+     612.7574999999999,
+     2800.305
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/1/4/8/2",
+    "cls": "arpeggiato",
+    "score": 0.41434040665626526,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1709.1125,
+     2654.8275,
+     1716.83,
+     2714.0475
+    ]
+   },
+   {
+    "subject": "glyph/16/1/4/8/3",
+    "cls": "restQuarter",
+    "score": 0.37127387523651123,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:restrest:rest_stroke_into_a_head | export=not_a_rest:rest_stroke_into_a_head",
+    "bbox": [
+     1709.1125,
+     2668.53,
+     1717.145,
+     2713.4175
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 9,
+  "members": [
+   {
+    "subject": "glyph/9/1/8/4/1",
+    "cls": "restQuarter",
+    "score": 0.6381520628929138,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     1295.7325,
+     3405.89,
+     1314.79,
+     3453.6125
+    ]
+   },
+   {
+    "subject": "glyph/9/1/8/4/4",
+    "cls": "arpeggiato",
+    "score": 0.4072897732257843,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1296.205,
+     3406.3625,
+     1313.845,
+     3453.455
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/1/4/0/5",
+    "cls": "arpeggiato",
+    "score": 0.3342141807079315,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     569.185,
+     2711.89,
+     588.8725,
+     2762.605
+    ]
+   },
+   {
+    "subject": "glyph/4/1/4/0/12",
+    "cls": "restQuarter",
+    "score": 0.7812743782997131,
+    "src": "view_small",
+    "fate": "kept",
+    "why": "kept: | export=written",
+    "bbox": [
+     569.5,
+     2712.6775,
+     587.9275,
+     2764.495
+    ]
+   }
+  ]
+ }
+]

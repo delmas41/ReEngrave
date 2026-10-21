@@ -1,0 +1,394 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/0/9/1/2",
+    "cls": "accidentalNatural",
+    "score": 0.807079553604126,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     610.395,
+     1753.0975,
+     623.4675,
+     1809.01
+    ]
+   },
+   {
+    "subject": "glyph/15/0/9/1/4",
+    "cls": "accidentalFlat",
+    "score": 0.6880699992179871,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     610.395,
+     1752.7825,
+     623.31,
+     1808.695
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/7/4/3",
+    "cls": "accidentalFlat",
+    "score": 0.77402263879776,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1031.56,
+     1344.52,
+     1043.24,
+     1389.64
+    ]
+   },
+   {
+    "subject": "glyph/12/0/7/4/4",
+    "cls": "accidentalNatural",
+    "score": 0.6466938257217407,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1031.4,
+     1344.52,
+     1043.08,
+     1389.48
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/9/10/2",
+    "cls": "accidentalNatural",
+    "score": 0.8063583374023438,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=None detail=None",
+    "bbox": [
+     1783.8275,
+     1669.145,
+     1797.845,
+     1739.075
+    ]
+   },
+   {
+    "subject": "glyph/12/0/9/10/8",
+    "cls": "accidentalNatural",
+    "score": 0.4840419590473175,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=None detail=None",
+    "bbox": [
+     1778.7875,
+     1672.7675,
+     1797.6875,
+     1739.705
+    ]
+   },
+   {
+    "subject": "glyph/12/0/9/10/10",
+    "cls": "accidentalFlat",
+    "score": 0.46321141719818115,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=None detail=None",
+    "bbox": [
+     1778.7875,
+     1679.0675,
+     1797.53,
+     1739.2325
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 3,
+  "members": [
+   {
+    "subject": "glyph/3/0/8/6/10",
+    "cls": "accidentalNatural",
+    "score": 0.6626028418540955,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1575.17,
+     1651.06,
+     1588.035,
+     1717.245
+    ]
+   },
+   {
+    "subject": "glyph/3/0/8/6/20",
+    "cls": "accidentalSharp",
+    "score": 0.3562900722026825,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1575.325,
+     1650.905,
+     1588.345,
+     1718.64
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/0/0/8/11",
+    "cls": "accidentalFlat",
+    "score": 0.4819589853286743,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1644.89,
+     389.0325,
+     1661.4275,
+     433.605
+    ]
+   },
+   {
+    "subject": "glyph/13/0/0/8/15",
+    "cls": "accidentalNatural",
+    "score": 0.3955575227737427,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1644.575,
+     388.875,
+     1661.4275,
+     436.755
+    ]
+   },
+   {
+    "subject": "glyph/13/0/0/8/18",
+    "cls": "accidentalNatural",
+    "score": 0.3114089071750641,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1644.575,
+     388.56,
+     1661.1125,
+     459.5925
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/0/10/17/5",
+    "cls": "accidentalNatural",
+    "score": 0.42283380031585693,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     2148.0475,
+     1949.8775,
+     2161.9075,
+     1994.9225000000001
+    ]
+   },
+   {
+    "subject": "glyph/15/0/10/17/8",
+    "cls": "accidentalSharp",
+    "score": 0.3034246563911438,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     2146.7875,
+     1949.8775,
+     2162.2225,
+     1993.9775
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 7,
+  "members": [
+   {
+    "subject": "glyph/7/0/7/0/11",
+    "cls": "accidentalNatural",
+    "score": 0.5866956114768982,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     549.2625,
+     1423.2925,
+     562.1775,
+     1489.7575
+    ]
+   },
+   {
+    "subject": "glyph/7/0/7/0/16",
+    "cls": "accidentalSharp",
+    "score": 0.4277810752391815,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     549.2625,
+     1423.2925,
+     562.335,
+     1479.0475000000001
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 10,
+  "members": [
+   {
+    "subject": "glyph/10/0/9/1/7",
+    "cls": "accidentalNatural",
+    "score": 0.46784552931785583,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     657.875,
+     1703.205,
+     672.68,
+     1770.4575
+    ]
+   },
+   {
+    "subject": "glyph/10/0/9/1/10",
+    "cls": "accidentalFlat",
+    "score": 0.2854019105434418,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     658.505,
+     1699.8975,
+     672.8375,
+     1769.67
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/0/9/2/5",
+    "cls": "accidentalFlat",
+    "score": 0.6189718842506409,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     763.9125,
+     1755.9325,
+     775.5675,
+     1809.4825
+    ]
+   },
+   {
+    "subject": "glyph/15/0/9/2/6",
+    "cls": "accidentalNatural",
+    "score": 0.6177650690078735,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     764.2275,
+     1755.145,
+     775.41,
+     1814.365
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/0/8/7/8",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.428792268037796,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1505.96,
+     1614.64,
+     1525.48,
+     1646.0
+    ]
+   },
+   {
+    "subject": "glyph/13/0/8/7/11",
+    "cls": "accidentalNatural",
+    "score": 0.30095499753952026,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1532.68,
+     1598.48,
+     1545.0,
+     1660.88
+    ]
+   },
+   {
+    "subject": "glyph/13/0/8/7/12",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.29441142082214355,
+    "src": "detector",
+    "fate": "",
+    "why": "head final accidental verdict=b detail=respell_accidental",
+    "bbox": [
+     1513.32,
+     1612.88,
+     1526.12,
+     1645.2
+    ]
+   }
+  ]
+ }
+]

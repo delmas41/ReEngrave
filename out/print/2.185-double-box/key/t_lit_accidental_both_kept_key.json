@@ -1,0 +1,394 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/1/4/12/8",
+    "cls": "accidentalFlat",
+    "score": 0.31122711300849915,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1723.68,
+     2858.535,
+     1742.28,
+     2890.0
+    ]
+   },
+   {
+    "subject": "glyph/15/1/4/12/9",
+    "cls": "keyFlat",
+    "score": 0.29630807042121887,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1723.37,
+     2857.915,
+     1744.45,
+     2890.0
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/7/9/1",
+    "cls": "accidentalNatural",
+    "score": 0.8298659920692444,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "given_away:glyph_owner:distance | export=n/a",
+    "bbox": [
+     1668.44,
+     1468.04,
+     1681.24,
+     1513.0
+    ]
+   },
+   {
+    "subject": "glyph/12/0/8/9/3",
+    "cls": "accidentalNatural",
+    "score": 0.7336454391479492,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1668.44,
+     1467.4,
+     1680.92,
+     1525.8
+    ]
+   },
+   {
+    "subject": "glyph/12/0/8/9/9",
+    "cls": "accidentalFlat",
+    "score": 0.3360741436481476,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1668.44,
+     1467.72,
+     1681.08,
+     1523.88
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 12,
+  "members": [
+   {
+    "subject": "glyph/12/0/9/12/10",
+    "cls": "accidentalNatural",
+    "score": 0.5710150003433228,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2118.0,
+     1706.315,
+     2131.23,
+     1769.0
+    ]
+   },
+   {
+    "subject": "glyph/12/0/10/12/5",
+    "cls": "accidentalNatural",
+    "score": 0.5401320457458496,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2118.0,
+     1720.0,
+     2131.23,
+     1782.055
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 4,
+  "members": [
+   {
+    "subject": "glyph/4/0/3/8/2",
+    "cls": "accidentalFlat",
+    "score": 0.7376995086669922,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1605.465,
+     832.855,
+     1616.005,
+     908.495
+    ]
+   },
+   {
+    "subject": "glyph/4/0/3/8/5",
+    "cls": "accidentalFlat",
+    "score": 0.39843055605888367,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1605.31,
+     855.485,
+     1616.005,
+     908.34
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/1/10/0/15",
+    "cls": "keySharp",
+    "score": 0.3579915761947632,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     453.96500000000003,
+     3528.835,
+     474.755,
+     3570.2575
+    ]
+   },
+   {
+    "subject": "glyph/13/1/10/0/18",
+    "cls": "keyFlat",
+    "score": 0.2847096920013428,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     453.8075,
+     3528.9925,
+     472.235,
+     3569.47
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 15,
+  "members": [
+   {
+    "subject": "glyph/15/0/10/16/1",
+    "cls": "accidentalNatural",
+    "score": 0.7071782350540161,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2089.03,
+     1956.1775,
+     2100.8425,
+     2005.6325
+    ]
+   },
+   {
+    "subject": "glyph/15/0/10/16/8",
+    "cls": "accidentalSharp",
+    "score": 0.2780495882034302,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2088.5575,
+     1956.8075,
+     2101.63,
+     2005.9475
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 7,
+  "members": [
+   {
+    "subject": "glyph/7/1/0/0/3",
+    "cls": "keyFlat",
+    "score": 0.6889315247535706,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     428.445,
+     2086.915,
+     445.805,
+     2130.47
+    ]
+   },
+   {
+    "subject": "glyph/7/1/0/0/7",
+    "cls": "keyFlat",
+    "score": 0.44256269931793213,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     428.445,
+     2065.525,
+     445.96000000000004,
+     2130.625
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 1,
+  "members": [
+   {
+    "subject": "glyph/1/0/10/14/0",
+    "cls": "accidentalFlat",
+    "score": 0.5526482462882996,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2447.9275,
+     2877.7,
+     2457.85,
+     2930.62
+    ]
+   },
+   {
+    "subject": "glyph/1/0/10/14/2",
+    "cls": "keyFlat",
+    "score": 0.37167906761169434,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     2447.77,
+     2877.2275,
+     2457.85,
+     2932.9825
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/0/0/0/7",
+    "cls": "accidentalFlat",
+    "score": 0.6119681000709534,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     443.705,
+     384.365,
+     461.03,
+     424.52750000000003
+    ]
+   },
+   {
+    "subject": "glyph/16/0/0/0/18",
+    "cls": "keyFlat",
+    "score": 0.2999710738658905,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     443.705,
+     384.365,
+     471.425,
+     424.055
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/1/8/11/0",
+    "cls": "accidentalFlat",
+    "score": 0.8899891376495361,
+    "src": "prod",
+    "fate": "given_away",
+    "why": "given_away:glyph_owner:distance | export=n/a",
+    "bbox": [
+     1889.9,
+     3366.8925,
+     1902.6575,
+     3408.0
+    ]
+   },
+   {
+    "subject": "glyph/13/1/9/11/0",
+    "cls": "accidentalNatural",
+    "score": 0.7432992458343506,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1889.27,
+     3367.2,
+     1902.3425,
+     3425.475
+    ]
+   },
+   {
+    "subject": "glyph/13/1/9/11/3",
+    "cls": "accidentalFlat",
+    "score": 0.533089280128479,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1889.27,
+     3367.0425,
+     1902.5,
+     3425.79
+    ]
+   },
+   {
+    "subject": "glyph/13/1/9/11/6",
+    "cls": "accidentalSharp",
+    "score": 0.4822249710559845,
+    "src": "prod",
+    "fate": "kept",
+    "why": "kept: | export=n/a",
+    "bbox": [
+     1888.7975,
+     3366.7275,
+     1902.6575,
+     3425.16
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,282 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 23,
+  "members": [
+   {
+    "subject": "glyph/23/0/5/9/9",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.3135431408882141,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     5233.6675,
+     1824.1325,
+     5268.0775,
+     1878.245
+    ]
+   },
+   {
+    "subject": "glyph/23/0/5/9/3",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.697731077671051,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     5312.755,
+     1818.5825,
+     5347.165,
+     1848.275
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/1/3/2/16",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.29038771986961365,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1976.4925,
+     4758.2475,
+     2010.8274999999999,
+     4814.11
+    ]
+   },
+   {
+    "subject": "glyph/5/1/3/2/14",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.33454790711402893,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2036.4425,
+     4743.26,
+     2085.22,
+     4806.2075
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 14,
+  "members": [
+   {
+    "subject": "glyph/14/0/8/3/19",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.3147723972797394,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2490.55,
+     2429.475,
+     2524.1,
+     2480.075
+    ]
+   },
+   {
+    "subject": "glyph/14/0/8/3/13",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.6009953022003174,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     2539.775,
+     2447.9,
+     2579.925,
+     2479.8
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 5,
+  "members": [
+   {
+    "subject": "glyph/5/1/10/8/5",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.7371057868003845,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     4728.1,
+     6345.8,
+     4764.125,
+     6400.525
+    ]
+   },
+   {
+    "subject": "glyph/5/1/10/8/7",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.6983111500740051,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     4811.15,
+     6351.575,
+     4852.675,
+     6388.15
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 24,
+  "members": [
+   {
+    "subject": "glyph/24/1/3/8/17",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.36812302470207214,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     5116.625,
+     4858.975,
+     5148.525,
+     4915.35
+    ]
+   },
+   {
+    "subject": "glyph/24/1/3/8/7",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.6698765158653259,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     5177.675,
+     4869.15,
+     5216.725,
+     4903.25
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 18,
+  "members": [
+   {
+    "subject": "glyph/18/0/10/3/18",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.29273173213005066,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     3179.8134765625,
+     2855.3515625,
+     3211.9814453125,
+     2909.8583984375
+    ]
+   },
+   {
+    "subject": "glyph/18/0/10/3/9",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.623242974281311,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     3257.2548828125,
+     2876.4990234375,
+     3296.2734375,
+     2906.58203125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 19,
+  "members": [
+   {
+    "subject": "glyph/19/0/1/8/19",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.46911147236824036,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     4554.2,
+     810.625,
+     4587.75,
+     862.6
+    ]
+   },
+   {
+    "subject": "glyph/19/0/1/8/5",
+    "cls": "noteheadBlackOnLine",
+    "score": 0.7290711402893066,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     4615.8,
+     814.75,
+     4654.85,
+     849.125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 25,
+  "members": [
+   {
+    "subject": "glyph/25/0/1/1/17",
+    "cls": "accidentalDoubleSharp",
+    "score": 0.5900059342384338,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1560.755,
+     799.86,
+     1597.94,
+     855.0825
+    ]
+   },
+   {
+    "subject": "glyph/25/0/1/1/22",
+    "cls": "noteheadBlackInSpace",
+    "score": 0.5057488679885864,
+    "src": "detector",
+    "fate": "",
+    "why": "",
+    "bbox": [
+     1610.705,
+     820.6725,
+     1653.1625,
+     856.7475
+    ]
+   }
+  ]
+ }
+]

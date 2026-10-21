@@ -1,0 +1,324 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 17,
+  "members": [
+   {
+    "subject": "glyph/17/1/0/1/21",
+    "cls": "tie",
+    "score": 0.39571329951286316,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     1734.171875,
+     4042.09375,
+     2533.0,
+     4076.078125
+    ]
+   },
+   {
+    "subject": "glyph/17/1/1/1/5",
+    "cls": "tie",
+    "score": 0.7690218091011047,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     1734.171875,
+     4046.0,
+     2533.0,
+     4094.4375
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 3,
+  "members": [
+   {
+    "subject": "glyph/3/1/4/10/6",
+    "cls": "tie",
+    "score": 0.4334106743335724,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     5212.22,
+     5080.8475,
+     5489.72,
+     5104.435
+    ]
+   },
+   {
+    "subject": "glyph/3/1/5/10/1",
+    "cls": "tie",
+    "score": 0.3792666792869568,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     5212.475,
+     5086.7,
+     5489.125,
+     5103.75
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 11,
+  "members": [
+   {
+    "subject": "glyph/11/1/0/8/3",
+    "cls": "tie",
+    "score": 0.6600632667541504,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4430.2725,
+     4381.3325,
+     4854.555,
+     4397.955
+    ]
+   },
+   {
+    "subject": "glyph/11/1/1/8/4",
+    "cls": "tie",
+    "score": 0.5305787920951843,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4430.0,
+     4384.2,
+     4855.425,
+     4396.575
+    ]
+   },
+   {
+    "subject": "glyph/11/1/1/8/7",
+    "cls": "tie",
+    "score": 0.331729531288147,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4430.0,
+     4383.1,
+     4855.975,
+     4402.35
+    ]
+   },
+   {
+    "subject": "glyph/11/1/1/8/8",
+    "cls": "tie",
+    "score": 0.30312031507492065,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4430.825,
+     4383.1,
+     4855.975,
+     4413.9
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 9,
+  "members": [
+   {
+    "subject": "glyph/9/0/6/5/13",
+    "cls": "tie",
+    "score": 0.38565242290496826,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     3283.576171875,
+     2073.66015625,
+     3873.0,
+     2096.4189453125
+    ]
+   },
+   {
+    "subject": "glyph/9/0/6/5/14",
+    "cls": "tie",
+    "score": 0.34381890296936035,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     3284.4404296875,
+     2063.0009765625,
+     3873.0,
+     2096.4189453125
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 11,
+  "members": [
+   {
+    "subject": "glyph/11/1/12/3/7",
+    "cls": "tie",
+    "score": 0.5146533250808716,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     2207.28955078125,
+     6986.08203125,
+     2800.0,
+     7007.79833984375
+    ]
+   },
+   {
+    "subject": "glyph/11/1/13/3/2",
+    "cls": "tie",
+    "score": 0.5072089433670044,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     2207.0,
+     6990.9755859375,
+     2799.4208984375,
+     7006.32177734375
+    ]
+   },
+   {
+    "subject": "glyph/11/1/13/3/10",
+    "cls": "tie",
+    "score": 0.3676089644432068,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     2207.0,
+     6990.10693359375,
+     2800.0,
+     7011.8232421875
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 19,
+  "members": [
+   {
+    "subject": "glyph/19/1/4/7/8",
+    "cls": "tie",
+    "score": 0.3668181598186493,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4494.725,
+     5213.65,
+     4903.925,
+     5228.5
+    ]
+   },
+   {
+    "subject": "glyph/19/1/4/7/13",
+    "cls": "tie",
+    "score": 0.2884218692779541,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     4386.375,
+     5212.0,
+     4902.825,
+     5227.675
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 13,
+  "members": [
+   {
+    "subject": "glyph/13/1/6/1/13",
+    "cls": "tie",
+    "score": 0.3202768564224243,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     1307.0,
+     5597.92,
+     1684.1225,
+     5629.0
+    ]
+   },
+   {
+    "subject": "glyph/13/1/7/1/13",
+    "cls": "tie",
+    "score": 0.4056099057197571,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     1307.275,
+     5597.425,
+     1683.475,
+     5633.45
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 16,
+  "members": [
+   {
+    "subject": "glyph/16/0/5/7/2",
+    "cls": "tie",
+    "score": 0.26057517528533936,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     3539.545,
+     1821.85,
+     3867.9075,
+     1840.1075
+    ]
+   },
+   {
+    "subject": "glyph/16/0/6/7/2",
+    "cls": "tie",
+    "score": 0.36025524139404297,
+    "src": "prod",
+    "fate": "refused",
+    "why": "refused:arcarc:ink_is_a_staff_line | export=n/a",
+    "bbox": [
+     3542.815,
+     1822.465,
+     3868.9975,
+     1841.2675
+    ]
+   }
+  ]
+ }
+]
