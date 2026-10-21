@@ -69,3 +69,13 @@ the 24 holds a `wedge_without_a_head` mark. File-level OFF/ON on that record (`p
 ## 6. Tiles
 `out/print/2.180-review/tiles/` (12: 9 notes the flag dots, 3 controls), README, key `_key/key.json`, one run, checked equal.
 Fast tier 8,635 passed; `staged.check` 193.
+
+## 7. Final numbers (guarded ON arm, `replay2`) and Sean's answers (2026-10-20)
+Brahms OFF -> ON on the exported file: dotted notes 4,780 -> 4,819; red bars 860 -> 842; bars that add up 5,432 -> 5,460; pitched
+notes in file 15,015 -> 15,026; 60 dot roles change; 58 durations change: 35 longer by one dot, 0 double dots, 0 shorter, 18 same
+value with a new decider, 2 narrowed -> decided. Litolff byte-identical.
+Sean: "2.180 - 1-4. Dot 4 5. Dot 2 6-8. Dot 4 9. Dot 2 10. 4 11.  Dot 4 12.4", then "12 is dot 4". 8 of 9 changed notes right;
+tile 1 is a dotted QUARTER (the dot is right; the head was read as an eighth -- a head-value error outside this lane); controls 3/3.
+Judged Brahms with the 2.180 tiles indexed: OFF 132/31/5/0/19/191 -> ON 140/23/5/0/19/191 (2.180 tiles 3 -> 11; nothing else
+moves). The guarded arm's mini record was lost to a full disk; the guard only removes the 5 double dots, none of them a judged tile.
+Fast tier 8,636 passed (the one failure was the judged index, rebuilt); `staged.check` 193.
