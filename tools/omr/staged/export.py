@@ -7054,6 +7054,10 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
             "is_a_key_signature_marker", 0),
         "head_belongs_to_a_nearer_staff": by_reason.get(
             "head_belongs_to_a_nearer_staff", 0),
+        # ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`): the glyph's own `glyph_owner` names another staff (the copy in the wrong cell, dropped)
+        # or the contest did not decide (abstained and counted). Zero with the flag OFF.
+        "owned_by_another_staff": by_reason.get("owned_by_another_staff", 0),
+        "ownership_undecided": by_reason.get("ownership_undecided", 0),
         "heads_owned": heads_owned,
         "heads_contradicted": heads_contradicted,
         "owners_sharing_a_head": decided - heads_owned,
