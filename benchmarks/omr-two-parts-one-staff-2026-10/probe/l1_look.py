@@ -18,7 +18,18 @@ from t1_tiles import PDF  # noqa: E402
 doc, rec_path, outdir, arm_path = sys.argv[1:5]
 bars = sys.argv[5:]
 arm = json.load(open(arm_path))
-rec = load_record(rec_path)["record"]
+if os.path.isdir(rec_path):                 # a slice directory: only the pages named
+    import glob
+    pages = {b.split("/")[0] for b in bars}
+    obs = []
+    for f in sorted(glob.glob(os.path.join(rec_path, "*.observations.jsonl"))):
+        n = os.path.basename(f).split(".")[0]
+        if n.startswith("p") and n[1:].isdigit() and str(int(n[1:])) not in pages:
+            continue
+        obs += [json.loads(line) for line in open(f)]
+    rec = {"observations": obs}
+else:
+    rec = load_record(rec_path)["record"]
 cell_box, lines, boxes = {}, {}, {}
 want = set(bars)
 for o in rec["observations"]:

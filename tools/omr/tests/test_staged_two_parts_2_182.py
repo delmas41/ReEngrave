@@ -88,6 +88,15 @@ class TestTwoPartsByStemsAndHeight(unittest.TestCase):
             v = _run(log)
         self.assertEqual(v.reason, two_parts.BY_STEMS)
 
+    def test_CONTROL_a_head_far_outside_the_staff_leaves_the_bar_alone(self):
+        """A head two spaces below the staff may be the next staff's: no split is made around it."""
+        with mock.patch.dict(os.environ, ON):
+            log = Log()
+            _upper_lower(log)
+            _note(log, 4, 800, "down", 1.0, 13.0)
+            v = _run(log)
+        self.assertNotIn(v.reason, (two_parts.BY_STEMS, two_parts.BY_RESTS))
+
     def test_rule_3_still_comes_first(self):
         """A merged line that sums to the meter stays ONE voice (Sean 2026-09-29), even with the parts' order."""
         with mock.patch.dict(os.environ, ON):

@@ -89,6 +89,20 @@ def _side(step: Optional[float]) -> Optional[str]:
     return None
 
 
+#: heads of either part must stand within one space outside the staff (positions, top line 0, bottom line 8)
+HEAD_WINDOW = (-2.0, 10.0)
+
+
+def _rest_class(ev, cell: Subject, e) -> Optional[str]:
+    for g in e.get("_glyphs") or ():
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=g)
+        for r in ev.rows(Q.GLYPH_BOX, subject=sub):
+            v = r.value
+            if isinstance(v, (list, tuple)) and v:
+                return str(v[0])
+    return None
+
+
 def a2_in_bar(ev, cell: Subject) -> bool:
     """An `a2` word stands in this bar (`Q.DIRECTION_WORD` terms): both parts play one line."""
     for r in ev.rows(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
@@ -112,7 +126,15 @@ def split(ev, events: Sequence[Dict[str, Any]],
     ups = [e for e in chords if e.get("stem_direction") == "up"]
     downs = [e for e in chords if e.get("stem_direction") == "down"]
     unknown = [e for e in chords if e.get("stem_direction") not in ("up", "down")]
-    sides = {id(r): _side(rest_step(ev, r["_glyphs"])) for r in rests}
+    # ⚠️ A head farther than a space outside the staff may be the NEIGHBOUR staff's (the most common fault in the
+    # bars 2.182 looked at: another staff's head counted in this cell); a split would carry it into a part, so the
+    # bar is left alone. Narrows only.
+    for e in chords:
+        if any(p < HEAD_WINDOW[0] or p > HEAD_WINDOW[1] for p in _positions(ev, cell, e)):
+            return None
+    # A whole or half rest hangs from / sits on its line by convention, so its height says nothing about a part.
+    sides = {id(r): (None if _rest_class(ev, cell, r) in ("restWhole", "restHalf") else _side(rest_step(ev, r["_glyphs"])))
+             for r in rests}
     detail: Dict[str, Any] = {"n_up": len(ups), "n_down": len(downs), "n_unknown": len(unknown),
                               "rests_high": sum(1 for s in sides.values() if s == "upper"),
                               "rests_low": sum(1 for s in sides.values() if s == "lower")}
