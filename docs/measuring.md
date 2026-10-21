@@ -12,7 +12,8 @@ reports the SAME three things and nothing else unless Sean asks:
 1. **What changed in the exported file**, flag OFF vs ON: symbols written that
    were not, and symbols no longer written, by kind (notes, rests,
    accidentals, flags, dots, ...), one line per plate, plus red bars. Produced
-   by the ONE shared command (ROADMAP 2.188), never by a lane's own script.
+   by the ONE shared command, `python3 -m tools.omr.staged.lane_report --flag OMR_X --out DIR`
+   (`docs/running.md` §2b), never by a lane's own script.
 2. **Were the changes right**: Sean's 12 blind tiles -- ~9 drawn at random
    (seed stated) from the changes, ~3 controls, a neutral orange where-to-look
    marker, the key in a separate file.
@@ -20,7 +21,8 @@ reports the SAME three things and nothing else unless Sean asks:
    right->wrong (`tools.omr.staged.judged`). Must be 0; each one is shown.
 
 Measured on the **frozen page sample** (about 8 pages per plate, drawn at
-random once and fixed, listed by ROADMAP 2.188), which takes minutes. No
+random once and fixed, `benchmarks/lane-report/sample.json`), which takes
+minutes (`lane_report` reads it; `benchmarks/lane-report/FINDINGS.md`). No
 lane runs a whole-movement replay; the whole movement is the overnight
 Sean runs. Trade-off accepted: a rare case may miss the sample and is caught
 overnight. The report opens with the cause and the process lesson (CLAUDE

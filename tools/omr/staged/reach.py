@@ -401,6 +401,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.179. Pure helpers for `gather.gather_stem_end_heads` (the flag, orphan stems, the stem-end window, the candidate pick):
     # files no row, names no quantity; the rows are `gather_stem_end_heads`'s own.
     "stem_end_heads.py",
+    # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
+    # its own, files no row, decides nothing.
+    "lane_report.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a
