@@ -191,6 +191,35 @@ DOT_SHAPED_MAX_SPACES = 0.75
 TWIN_DOT_MAX_SPACES = 0.3
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.180 -- a "wedge" with no head it points to, standing beside a head
+# in that head's dot space, is the head's augmentation dot (POSITION BEFORE SHAPE)
+# ─────────────────────────────────────────────────────────────────────────────
+# Measured on the 20261018-night Brahms record
+# (`benchmarks/omr-augmentation-dots-2026-10/FINDINGS.md`): notes written PLAIN
+# (read, not flagged) with a dot box beside them that the 2.131 wedge test called
+# a wedge and then refused (`wedge_without_a_head`: no head above or below for it
+# to point at); in the crops nearly all are a round augmentation dot whose box the
+# staff line it touches has stretched (h/w >= 1.3 is the line's ink, the 2.133
+# finding). The engraving rule decides it, the shape cut only narrows: a dot
+# stands in a SPACE right of its head (Sean 2026-10-14, "Always in a space").
+# Only the case the 2.131 ruling left open is touched: a wedge that POINTS at a
+# head is still that head's staccatissimo and never a dot.
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a dot-family mark
+# right of a head, in the augmentation window AND at that head's own dot step
+# (2.128 staff position, both positions known), with no head above or below it,
+# is that head's augmentation dot; falsified by Sean's blind tiles
+# (`out/print/2.180-review/`) showing such a mark is a staccatissimo or other ink.
+DOT_POSITION_OVER_WEDGE_ENV = "OMR_DOT_POSITION_OVER_WEDGE"
+
+
+def dot_position_over_wedge_enabled() -> bool:
+    """`OMR_DOT_POSITION_OVER_WEDGE`, DEFAULT OFF (ROADMAP 2.180, until Sean's
+    tiles); `1`/`true`/`yes`/`on` turns it on."""
+    return os.environ.get(DOT_POSITION_OVER_WEDGE_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
 def dot_boxed_as_a_head_enabled() -> bool:
     """`OMR_DOT_BOXED_AS_A_HEAD`, default ON since 2026-10-16 (ROADMAP 2.151;
     Sean: "Land 2.151 ON."); only an explicit off-word disables."""
