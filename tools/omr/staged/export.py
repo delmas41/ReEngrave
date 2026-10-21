@@ -481,8 +481,23 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def rest_pair_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.184 (flag `OMR_REST_PAIR_STRONGER_BLUE`): the stronger box of a different-class rest pair on one ink, NARROWED by
+    `family_precision`, as a guess -- written, blue, BOTH classes carried with their detector confidences (the chosen one first).
+    None unless the verdict is `rest_pair_stronger` (none is filed with the flag OFF)."""
+    v = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
+    if v is None or v.get("outcome") != "narrowed" or v.get("reason") != "rest_pair_stronger":
+        return None
+    pair = (v.get("detail") or {}).get("rest_pair") or {}
+    cands = [{"value": c.get("class"), "support": c.get("conf")} for c in pair.get("candidates") or ()]
+    if len(cands) < 2:
+        return None
+    return {"stage": "ADJUDICATE", "rule": "rest_pair_stronger", "quantity": Q.REST_IS_NOT_A_REST,
+            "candidates": cands, "chosen": {"value": cands[0]["value"]}, "margin": pair.get("gap")}
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub)
+    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or rest_pair_guess_of(rec, sub)
     return {"guess": g} if g else {}
 
 

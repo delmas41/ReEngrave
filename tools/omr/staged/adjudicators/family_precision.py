@@ -397,6 +397,73 @@ def _rest_duplicate_priority(row) -> Tuple[float, int]:
     return (score, -idx)
 
 
+REST_PAIR_STRONGER_BLUE_ENV = "OMR_REST_PAIR_STRONGER_BLUE"
+REST_PAIR_NARROWED_REASON = "rest_pair_stronger"
+
+
+def rest_pair_stronger_blue_enabled() -> bool:
+    """`OMR_REST_PAIR_STRONGER_BLUE`, default OFF (ROADMAP 2.184); only an explicit `1/true/yes/on` enables."""
+    import os
+    return os.environ.get(REST_PAIR_STRONGER_BLUE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _rest_pair_outcome(ev: Evidence, this_row, detail: Dict[str, Any], cell) -> Tuple[bool, Optional[Ruling]]:
+    """ROADMAP 2.184 (flag `OMR_REST_PAIR_STRONGER_BLUE`; STAGED ADJUDICATE). One ink the detector boxed under TWO OR MORE rest classes
+    (class-wise NMS keeps every class channel that clears the floor; 2.184 FINDINGS Part 1). Today BOTH are refused (rule 8).
+    With the flag ON the cluster is settled by the SAME total order 2.15 uses for same-class twins (`_rest_duplicate_priority`):
+      * a box some overlapping box outranks (any class) is the LOSER: refused `rest_is_a_duplicate_box`, `duplicate_of` the stronger;
+      * the box nothing outranks, with a different-class rival, is the PAIR WINNER: NOT refused here -- it goes on through every
+        later rest rule (letter cover, crop clip, stem, barline, width ...) and, if none refuses it, ends NARROWED (see
+        `_rest_pair_narrowing`), written GUESSED (blue) carrying both classes. So the ink that is a stem tip or a barline+ff is still
+        refused by the rule that names it, and a refused winner leaves the ink refused, as before.
+    Returns `(handled, ruling)`: handled False = not a pair situation, the caller continues unchanged."""
+    this_val = this_row.value
+    this_priority = _rest_duplicate_priority(this_row)
+    rivals = []        # the row of every overlapping box of ANOTHER class
+    stronger: Optional[Any] = None
+    for subj, row in _cell_rest_boxes(ev, cell).items():
+        if subj == ev.subject:
+            continue
+        ov = row.value
+        if not isinstance(ov, (list, tuple)) or len(ov) != 5:
+            continue
+        if _rest_box_iou(this_val, ov) < REST_DUPLICATE_IOU_MIN:
+            continue
+        if ov[0] != this_val[0]:
+            rivals.append(row)
+        if _rest_duplicate_priority(row) > this_priority and (
+                stronger is None or _rest_duplicate_priority(row) > _rest_duplicate_priority(stronger)):
+            stronger = row
+    if not rivals:
+        return False, None
+    if stronger is not None:
+        detail["duplicate_of"] = stronger.id
+        detail["duplicate_disagrees_with"] = [r.id for r in rivals]
+        detail["rest_pair_loser"] = True
+        return True, Ruling(value=True, reason="rest_is_a_duplicate_box",
+                            used=(this_row.id, stronger.id) + tuple(r.id for r in rivals), detail=detail)
+    others = sorted(rivals, key=_rest_duplicate_priority, reverse=True)
+    detail["rest_pair"] = {
+        "candidates": [{"class": this_val[0], "conf": round(this_row.score or 0.0, 4), "row": this_row.id}]
+        + [{"class": r.value[0], "conf": round(r.score or 0.0, 4), "row": r.id} for r in others],
+        "gap": round((this_row.score or 0.0) - (others[0].score or 0.0), 4),
+    }
+    return True, None
+
+
+def _rest_pair_narrowing(detail: Dict[str, Any], used) -> Optional[Ruling]:
+    """The pair winner that no rest rule refused: NARROWED {the rest, not a rest}, the rest first, so it is written GUESSED (blue)
+    with the pair's classes carried on the verdict (`detail.rest_pair`); the signed margin is the confidence gap to the runner-up."""
+    pair = detail.get("rest_pair")
+    if not pair:
+        return None
+    from ..record import Candidate
+    cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=0.5))
+    r = Ruling.narrow(cands, REST_PAIR_NARROWED_REASON, used=tuple(used), **detail)
+    return _margins.attach(r, margin=pair["gap"], axis="confidence_gap_to_runner_up", unit="detector confidence", band=None,
+                           would_choose=(False,))
+
+
 def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
                            ) -> Optional[Ruling]:
     """ROADMAP 2.15: is this box the SAME physical mark as another rest
@@ -432,6 +499,10 @@ def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
     if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
         return None
     this_class = this_val[0]
+    if rest_pair_stronger_blue_enabled():
+        handled, ruling = _rest_pair_outcome(ev, this_row, detail, cell)
+        if handled:
+            return ruling
     this_priority = _rest_duplicate_priority(this_row)
 
     disagreeing: List[str] = []
@@ -1820,6 +1891,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_meter_digit", "inside_the_meter",
                                      "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
+                                     "rest_pair_stronger",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1980,6 +2052,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         if claim is not None and not claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_narrowing(claim, used, detail)
+        # ROADMAP 2.184 (flag `OMR_REST_PAIR_STRONGER_BLUE`): the stronger box of a different-class pair that no rule above refused.
+        if "rest_pair" in detail:
+            pair = _rest_pair_narrowing(detail, (box_row.id,) + tuple(c["row"] for c in detail["rest_pair"]["candidates"][1:]))
+            if pair is not None:
+                return pair
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 
