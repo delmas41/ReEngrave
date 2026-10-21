@@ -194,6 +194,30 @@ class TestConsult(unittest.TestCase):
             v = _v(log, g)
             self.assertEqual((v.outcome, v.reason), want, through)
 
+    def test_a_box_at_the_staffs_leading_edge_is_refused_even_when_its_ink_is_not_a_line(self):
+        """Sean 2026-10-20, 2.181 tile 1: a bracket's beak written blue is wrong -- 2.176's leading-edge test stays a refusal."""
+        log, g = self._fx("leading_column", {"ink_share_inside": 1.0, "through": {"through": False}, "left_edge_spaces": 0.01},
+                          prior=True)
+        v = _v(log, g)
+        self.assertEqual((v.outcome, v.reason), ("decided", "claimed_by:leading_column"))
+        log2, g2 = self._fx("leading_column", {"ink_share_inside": 1.0, "through": {"through": False}, "left_edge_spaces": 0.8},
+                            prior=True)
+        self.assertEqual(_v(log2, g2).outcome, "narrowed")                 # CONTROL: past the 0.5 sp cut, the prior only narrows
+
+    def test_a_stemless_head_inside_a_bar_start_clef_box_scored_higher_is_refused(self):
+        """Sean 2026-10-20, 2.181 tile 11: a clef written blue is wrong -- 2.176's `on_another_symbols_box` stays a refusal."""
+        def fx(start, head_conf, clef_conf):
+            log, g = self._fx("clef", {"ink_share_inside": 0.95, "box_cover": 0.97}, standing="NARROWED",
+                              owner_glyph=R.glyph(0, 0, 0, 0, 7).to_key(), start_spaces=start)
+            log.observe(R.glyph(0, 0, 0, 0, 7), Q.GLYPH_CONF, clef_conf, reader=READERS.DETECTOR, frame="cell:0")
+            return log, g, head_conf
+        log, g, _ = fx(0.5, 0.9, 0.95)
+        self.assertEqual(_v(log, g).reason, "claimed_by:clef")
+        log2, g2, _ = fx(9.0, 0.9, 0.95)                                    # CONTROL: 9 sp into its bar -- narrowed (2.181 tile 4 kind)
+        self.assertEqual(_v(log2, g2).reason, "claim_narrowed:clef")
+        log3, g3, _ = fx(0.5, 0.9, 0.3)                                     # CONTROL: the detector scored the head higher (tiles 2/3/10/12)
+        self.assertEqual(_v(log3, g3).reason, "claim_narrowed:clef")
+
     def test_CONTROL_a_stemmed_head_in_the_column_is_narrowed_not_refused(self):
         log, g = self._fx("leading_column", {"ink_share_inside": 1.0, "through": {"through": True}}, prior=True)
         log.observe(R.cell(0, 0, 0, 0), Q.STEM, (430, 20, 4, 200), reader=READERS.CV_INK, frame="cell:0", x0=430, x1=434, y_center=75)

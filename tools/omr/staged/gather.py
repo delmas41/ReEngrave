@@ -13905,6 +13905,13 @@ def _claim_boxes_inside(binary, area, dets, cell, sub_of, line_ys, sp, *, skip=(
         if got is None and key not in named:
             continue
         e = dict(got or {}, cls=nm)
+        # ROADMAP 2.181 v2: the two 2.176 tests Sean confirmed (9/9), measured here so the consult can keep them as refusals --
+        # the share of the BOX inside the area (2.176's cover) and, for the header column, the box's left edge from the staff's start
+        bw, bh = pb[2] - pb[0], pb[3] - pb[1]
+        iw, ih = min(pb[2], area[2]) - max(pb[0], area[0]), min(pb[3], area[3]) - max(pb[1], area[1])
+        e["box_cover"] = round(iw * ih / (bw * bh), 4) if iw > 0 and ih > 0 and bw > 0 and bh > 0 else 0.0
+        if through and getattr(cell, "bbox_page_px", None):
+            e["left_edge_spaces"] = round((pb[0] - cell.bbox_page_px[0]) / sp, 3)
         if key in named:
             e["named"] = True
         if through:
@@ -14003,6 +14010,7 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                     log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in pb], reader=READERS.CV_CLAIMED_REGISTER,
                                 frame=frame_cell(k), cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None,
                                 owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
+                                start_spaces=round((pb[0] - cb[0]) / sp, 3),
                                 cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
                     if k == 0 and standing == "READ":
                         prev = clef_left.get(li)

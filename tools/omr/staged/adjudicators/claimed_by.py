@@ -98,19 +98,31 @@ def consult(ev: Any, box_row: Any, *, head: bool) -> Optional[Finding]:
                 continue
             if stemmed:
                 continue                                   # 2.176 / 2.144: a stem stands on it: a note
-            if standing != "READ":
-                why = "clef_away_from_a_bar_start"
-            elif head and d.get("owner_glyph"):
+            voted_under = False
+            if head and d.get("owner_glyph"):
                 if confs is None:
                     confs = _confs(ev)
                 head_conf, clef_conf = confs.get(key), confs.get(d.get("owner_glyph"))
-                if head_conf is not None and clef_conf is not None and clef_conf < head_conf:
-                    why = "detector_scored_the_head_above_the_clef"
+                voted_under = head_conf is not None and clef_conf is not None and clef_conf < head_conf
+            # 2.176 `on_another_symbols_box`, kept a REFUSAL (Sean-confirmed 9/9): a stemless head box >= 0.9 inside a clef box that
+            # starts within 6 sp of its bar's left edge, the clef scored at least as high
+            bar_start = d.get("start_spaces") is not None and float(d["start_spaces"]) <= _claims.CLEF_WINDOW_SPACES
+            if head and bar_start and not voted_under and float(e.get("box_cover", 0.0)) >= _claims.CLEF_BOX_COVER_MIN \
+                    and d.get("owner_glyph"):
+                why = None
+            elif standing != "READ":
+                why = "clef_away_from_a_bar_start"
+            elif voted_under:
+                why = "detector_scored_the_head_above_the_clef"
             (narrowing if why else refusing).append((owner, r, margin, why or "clef_read"))
             continue
         if owner == _claims.OWNER_COLUMN:
             t = e.get("through") or {}
-            if t.get("through") and not stemmed:
+            edge = e.get("left_edge_spaces")
+            if edge is not None and float(edge) <= _claims.LEADING_EDGE_SPACES:
+                # 2.176 `on_the_staffs_leading_barline`, kept a REFUSAL (Sean-confirmed brackets / barlines)
+                refusing.append((owner, r, _claims.LEADING_EDGE_SPACES - float(edge), "at_the_staffs_leading_edge"))
+            elif t.get("through") and not stemmed:
                 refusing.append((owner, r, margin, "line_shaped_ink"))
             else:
                 narrowing.append((owner, r, margin, "stemmed" if stemmed else "ink_not_line_shaped"))

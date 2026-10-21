@@ -51,6 +51,12 @@ COLUMN_LEFT_REACH_SPACES = 2.0
 THROUGH_COVER_MIN = 0.9
 #: ... that goes on past the box's top or bottom edge for this many staff spaces (a barline / bracket / brace stroke runs on; a head stops)
 THROUGH_BEYOND_SPACES = 0.5
+#: 2.176's two tests, kept as REFUSALS through the register (Sean 2026-10-20, 2.176 tiles 9/9 and 2.181 tiles 1 and 11: a bracket and a
+#: clef written blue are wrong): a box whose left edge is this close to a system's cell-0 left edge is the barline/bracket/brace ...
+LEADING_EDGE_SPACES = 0.5
+#: ... and a stemless head box this much inside a clef box that starts within `CLEF_WINDOW_SPACES` of its bar's left edge, scored by the
+#: detector at least as high as the head, is that clef (2.176 `on_another_symbols_box`)
+CLEF_BOX_COVER_MIN = 0.9
 
 OWNER_CLEF = "clef"
 OWNER_COLUMN = "leading_column"
@@ -147,6 +153,9 @@ def covering(rows: Iterable[Any], key: str) -> List[Tuple[Any, Dict[str, Any]]]:
         got = (d.get("boxes_inside") or {}).get(key)
         if not got:
             continue
-        if got.get("named") or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
+        at_edge = d.get("owner") == OWNER_COLUMN and got.get("left_edge_spaces") is not None \
+            and float(got["left_edge_spaces"]) <= LEADING_EDGE_SPACES
+        clef_cover = d.get("owner") == OWNER_CLEF and float(got.get("box_cover", 0.0)) >= CLEF_BOX_COVER_MIN
+        if got.get("named") or at_edge or clef_cover or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
             out.append((r, got))
     return out
