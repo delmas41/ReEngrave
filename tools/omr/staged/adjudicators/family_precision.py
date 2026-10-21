@@ -147,6 +147,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
 from .. import margins as _margins
+from .. import one_ink as _one_ink
 from .. import rest_ink as _rest_ink
 from . import key_slots as _key_slots
 from . import inside_meter as _inside_meter
@@ -1031,6 +1032,16 @@ def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
                            band=None, would_choose=(True,))
 
 
+def _one_ink_rest_narrowing(merged: Dict[str, Any], used, detail: Dict[str, Any]) -> Ruling:
+    """ROADMAP 2.186: NARROWED {a rest, not a rest}, the rest first (written, blue); the merged classes ride on `detail.one_ink`, the
+    detector-confidence margin to the best rival is the signed margin."""
+    from ..record import Candidate
+    cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=0.5))
+    r = Ruling.narrow(cands, "one_ink_merged", used=tuple(used), **detail)
+    return _margins.attach(r, margin=merged.get("margin"), axis="confidence_gap_to_runner_up", unit="detector confidence", band=None,
+                           would_choose=(False,))
+
+
 def _rest_claim_narrowing(claim, used, detail: Dict[str, Any]) -> Ruling:
     """ROADMAP 2.181: NARROWED {a rest, the owner's ink} -- the rest first, so it is written (blue, GUESSED)."""
     from ..record import Candidate
@@ -1828,6 +1839,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
+                                     "one_ink_merged",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1990,6 +2002,15 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         if claim is not None and not claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_narrowing(claim, used, detail)
+        # ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`): this box absorbed another class of the family on its ink (`staged/one_ink.py`);
+        # no rule above refused it, so it is a rest WRITTEN GUESSED (blue) with the classes it chose between, unless the margin clears
+        # the READ bar (unset: nothing does). Placed AFTER every refusal, so a stem tip or a barline+ff is still refused by the rule that
+        # names it.
+        merged = (box_row.detail or {}).get("one_ink")
+        if merged:
+            detail["one_ink"] = merged
+            if not _one_ink.reads(merged.get("margin")):
+                return _one_ink_rest_narrowing(merged, used, detail)
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

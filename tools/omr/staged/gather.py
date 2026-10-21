@@ -33,6 +33,7 @@ import os
 from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
+from . import one_ink as _one_ink
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
                        STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
@@ -408,6 +409,10 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # which ranks it first and gives the recipe. It is recorded rather
         # than quietly fixed so the next reader does not have to find it again.
         dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz)
+        # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default OFF): the class-wise NMS above keeps two classes of one family on one ink;
+        # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
+        if dets and _one_ink.enabled():
+            dets = _one_ink.merge(dets)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
@@ -433,7 +438,7 @@ def gather_detections(log: Log, cells: Sequence[Any],
             # is unknown and one measured at page x 1841 are different facts,
             # and only the second may reach a cross-staff consumer.
             page_box = _page_box(c, d)
-            box_detail: Dict[str, Any] = {"category": d.category}
+            box_detail: Dict[str, Any] = {"category": d.category, **_one_ink.box_detail(d)}
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
@@ -1768,7 +1773,8 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                 x1=float(d.x_canonical + d.width_canonical),
                 y0=float(d.y_canonical),
                 y1=float(d.y_canonical + d.height_canonical),
-                confidence=float(d.confidence))
+                confidence=float(d.confidence),
+                **_one_ink.box_detail(d))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

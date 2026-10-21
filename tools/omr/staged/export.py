@@ -481,8 +481,38 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+ONE_INK_RULE = "one_ink_merged"
+
+
+def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`): a symbol whose detector box absorbed another class of its family on one ink, written
+    GUESSED unless the margin clears the READ bar (`one_ink.reads`; unset, nothing does). Two shapes, both with the classes carried and the
+    chosen (stronger) one first: a REST (NARROWED `one_ink_merged`), and a NOTE whose printed accidental came from a merged glyph (the
+    `Q.ACCIDENTAL` verdict's basis names the `accidental_owner` verdict whose detail carries `one_ink`). None with the flag OFF."""
+    from . import one_ink as _oi
+    v = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
+    if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == ONE_INK_RULE:
+        oi = (v.get("detail") or {}).get("one_ink")
+        if oi:
+            return {"stage": "ADJUDICATE", "rule": ONE_INK_RULE, "quantity": Q.REST_IS_NOT_A_REST,
+                    "candidates": _oi.candidates_of(oi), "chosen": {"value": (oi.get("winner") or {}).get("class")},
+                    "margin": oi.get("margin")}
+    a = rec.verdict(Q.ACCIDENTAL, sub)
+    if a is not None and a.get("outcome") == "decided":
+        for bid in a.get("basis") or ():
+            b = rec.verdict_by_id(bid)
+            if b is None or b.get("quantity") != Q.ACCIDENTAL_OWNER or b.get("outcome") != "decided":
+                continue
+            oi = (b.get("detail") or {}).get("one_ink")
+            if oi and not _oi.reads(oi.get("margin")):
+                return {"stage": "ADJUDICATE", "rule": ONE_INK_RULE, "quantity": Q.ACCIDENTAL,
+                        "candidates": _oi.candidates_of(oi), "chosen": {"value": (oi.get("winner") or {}).get("class")},
+                        "margin": oi.get("margin")}
+    return None
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub)
+    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub)
     return {"guess": g} if g else {}
 
 
@@ -7026,6 +7056,10 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
             "is_a_key_signature_marker", 0),
         "head_belongs_to_a_nearer_staff": by_reason.get(
             "head_belongs_to_a_nearer_staff", 0),
+        # ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`): the glyph's own `glyph_owner` names another staff (the copy in the wrong cell, dropped)
+        # or the contest did not decide (abstained and counted). Zero with the flag OFF.
+        "owned_by_another_staff": by_reason.get("owned_by_another_staff", 0),
+        "ownership_undecided": by_reason.get("ownership_undecided", 0),
         "heads_owned": heads_owned,
         "heads_contradicted": heads_contradicted,
         "owners_sharing_a_head": decided - heads_owned,
@@ -7060,7 +7094,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
                             "no_candidate", "no_unit", "no_evidence",
                             "refused_not_an_accidental",
                             "is_a_key_signature_marker",
-                            "head_belongs_to_a_nearer_staff"))
+                            "head_belongs_to_a_nearer_staff",
+                            "owned_by_another_staff", "ownership_undecided"))
     return census
 
 

@@ -112,6 +112,10 @@ class SymbolDetection:
     #: carries the surviving (higher-scoring) spelling, same as always.
     #: `None` on every box no merge touched.
     detector_role: str | None = None
+    #: ROADMAP 2.186 (`OMR_ONE_INK_ONE_MARK`, `staged/one_ink.merge`): the weaker classes of one family this box absorbed, `((class, conf), ...)`,
+    #: and the confidence margin to the best of them. None on every box no merge touched.
+    one_ink_rivals: tuple | None = None
+    one_ink_margin: float | None = None
 
     @property
     def y_center(self) -> int:

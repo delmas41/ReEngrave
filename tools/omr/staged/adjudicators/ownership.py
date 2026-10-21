@@ -21,6 +21,7 @@ from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tup
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
+from .. import one_ink as _one_ink
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
                       owner_from_staves_enabled)
@@ -4235,7 +4236,8 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
     reasons=("immediately_right_same_position", "ambiguous_height",
              "no_candidate", "no_unit", "no_evidence",
              "refused_not_an_accidental", "is_a_key_signature_marker",
-             "head_belongs_to_a_nearer_staff"),
+             "head_belongs_to_a_nearer_staff", "owned_by_another_staff",
+             "ownership_undecided"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -4342,6 +4344,23 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                               marker_shape=marker.value,
                               marker_role=(marker.detail or {}).get(
                                   "detector_role"))
+
+    # ⚠️⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`; Sean 2026-10-21: "each cell should claim its own and the one it belongs to should
+    # decide what it is, not the other staff"). OWNERSHIP FIRST, before any head is looked at. A neighbouring staff's crop boxes the same
+    # accidental ink again; `glyph_owner` is the existing cross-staff contest (ledger lines, range, distance) and decides which staff the
+    # ink belongs to. The copy in the OTHER staff's cell is the same raster read twice, never a witness: it owns no head here. Where the
+    # contest has NOT decided, the glyph abstains and is counted -- the stronger box of either cell never wins by confidence alone.
+    # Uncontested glyphs carry no verdict or `no_contest` for their own staff and pass.
+    if _one_ink.enabled():
+        gown = ev.verdict(Q.GLYPH_OWNER)
+        if gown is not None:
+            if gown.outcome is Outcome.DECIDED and isinstance(gown.value, str):
+                if gown.value != ev.subject.at(Kind.STAFF).to_key():
+                    return Ruling.abstain("owned_by_another_staff", alteration=alteration, owner=gown.value,
+                                          owner_verdict=gown.id, owner_reason=gown.reason)
+            else:
+                return Ruling.abstain("ownership_undecided", alteration=alteration, owner_verdict=gown.id,
+                                      owner_outcome=gown.outcome.value)
 
     cell = ev.subject.at(Kind.CELL)
     unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
@@ -4493,7 +4512,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 "accidental_position": round(apos, 3),
                 "anchor_fraction": detail.get("anchor_fraction"),
                 "confidence": detail.get("confidence"),
-                "heads_excluded": excluded or None})
+                "heads_excluded": excluded or None,
+                # ROADMAP 2.186: the classes this glyph's box chose between at the merge; absent (and no key) when it chose none
+                **({"one_ink": detail["one_ink"]} if detail.get("one_ink") else {})})
 
 
 def _keysig_marker_row(ev: Evidence):
