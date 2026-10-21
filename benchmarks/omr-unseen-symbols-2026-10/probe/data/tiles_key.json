@@ -1,0 +1,185 @@
+{
+ "seed": 2179,
+ "tiles": [
+  {
+   "doc": "brahms",
+   "kind": "new",
+   "glyph": "glyph/24/1/8/7/21",
+   "box": [
+    4913.6775,
+    6040.94,
+    4951.9725,
+    6074.795
+   ],
+   "read_from": "noteheadBlackInSpace",
+   "score": 0.2143482267856598,
+   "file": "tile_01.png",
+   "sha256": "76a91d3dd580ee7aa5d2a310c5fb973245db5c29c98539e1e314e881b3e2c067"
+  },
+  {
+   "doc": "brahms",
+   "kind": "new",
+   "glyph": "glyph/24/1/8/8/20",
+   "box": [
+    5241.1,
+    6044.825,
+    5279.95,
+    6074.24
+   ],
+   "read_from": "noteheadBlackOnLine",
+   "score": 0.2463091015815735,
+   "file": "tile_02.png",
+   "sha256": "15bdad25b6481e82f487286937116c014f9f1254d9b092e962ccf15515b23b22"
+  },
+  {
+   "doc": "litolff",
+   "kind": "new",
+   "glyph": "glyph/10/1/7/10/7",
+   "box": [
+    2116.3725,
+    3105.555,
+    2138.4225,
+    3122.25
+   ],
+   "read_from": "restWhole",
+   "score": 0.20766998827457428,
+   "file": "tile_03.png",
+   "sha256": "471a01dd3a95680adbf3c56392a3e0559a2e624df92174e798c9bc987e52eeb0"
+  },
+  {
+   "doc": "litolff",
+   "kind": "new",
+   "glyph": "glyph/10/0/7/7/10",
+   "box": [
+    1652.2025,
+    1417.6225,
+    1675.5125,
+    1431.325
+   ],
+   "read_from": "restWhole",
+   "score": 0.20120182633399963,
+   "file": "tile_04.png",
+   "sha256": "abbc35c5b92d2e392924e2c77678857277c43972e2a54b40ecb439bcd559be04"
+  },
+  {
+   "doc": "litolff",
+   "kind": "new",
+   "glyph": "glyph/16/1/4/11/2",
+   "box": [
+    2088.2625,
+    2649.7875,
+    2109.84,
+    2665.8525
+   ],
+   "read_from": "noteheadBlackInSpace",
+   "score": 0.23650386929512024,
+   "file": "tile_05.png",
+   "sha256": "9cc094c732350bdd892faf01813dd246dd23fc4a303d6fe15c59ea71d01e5dd8"
+  },
+  {
+   "doc": "litolff",
+   "kind": "new",
+   "glyph": "glyph/16/0/3/13/4",
+   "box": [
+    2128.49,
+    811.6525,
+    2151.8,
+    835.75
+   ],
+   "read_from": "noteheadHalfInSpace",
+   "score": 0.24151182174682617,
+   "file": "tile_06.png",
+   "sha256": "0860a021342b3911db10a88e6fdcf998c38c39a3dd4ae5b2b322e1c6f4b0beba"
+  },
+  {
+   "doc": "brahms",
+   "kind": "new",
+   "glyph": "glyph/1/0/11/5/14",
+   "box": [
+    4462.69921875,
+    3310.755859375,
+    4504.236328125,
+    3341.53515625
+   ],
+   "read_from": "noteheadBlackInSpace",
+   "score": 0.1623966246843338,
+   "file": "tile_07.png",
+   "sha256": "aa02ecfc6bdeb4a44c8b251528fc247711eb19324284f3cbbabc2f1a686436d6"
+  },
+  {
+   "doc": "litolff",
+   "kind": "control",
+   "glyph": "glyph/13/0/0/3/1",
+   "box": [
+    1078.3775,
+    396.9075,
+    1099.955,
+    414.705
+   ],
+   "read_from": "noteheadBlackInSpace",
+   "score": 0.8659745454788208,
+   "file": "tile_08.png",
+   "sha256": "876bb23df9518b652f3aa05ae839bbed8f483fe2f5c6385be9ed1b6e1bc1f10e"
+  },
+  {
+   "doc": "litolff",
+   "kind": "control",
+   "glyph": "glyph/13/1/9/3/0",
+   "box": [
+    886.28,
+    3390.0375,
+    912.11,
+    3412.875
+   ],
+   "read_from": "noteheadHalfInSpace",
+   "score": 0.7173415422439575,
+   "file": "tile_09.png",
+   "sha256": "665a40f11564617db964ce5aea2be41fe5e488a92730149a89bacc9c0f54c375"
+  },
+  {
+   "doc": "brahms",
+   "kind": "control",
+   "glyph": "glyph/1/0/0/5/2",
+   "box": [
+    4787.82421875,
+    621.92578125,
+    4820.396484375,
+    674.220703125
+   ],
+   "read_from": "rest8th",
+   "score": 0.8617529273033142,
+   "file": "tile_10.png",
+   "sha256": "13fe06df0fda5e60b68cdaa3d37afe15ff991f8e3f241d6669615ba848e92fff"
+  },
+  {
+   "doc": "litolff",
+   "kind": "new",
+   "glyph": "glyph/16/1/10/11/5",
+   "box": [
+    2148.44,
+    3527.8,
+    2170.68,
+    3547.8
+   ],
+   "read_from": "noteheadBlackInSpace",
+   "score": 0.10720260441303253,
+   "file": "tile_11.png",
+   "sha256": "006dd4dbf39d48f3eec48279764889fa53f8e1ca9efb0e01c5a2f5a8c2bcb9c3"
+  },
+  {
+   "doc": "brahms",
+   "kind": "new",
+   "glyph": "glyph/24/0/8/4/11",
+   "box": [
+    2969.425,
+    2504.15,
+    3002.425,
+    2532.2
+   ],
+   "read_from": "noteheadBlackOnLine",
+   "score": 0.21896548569202423,
+   "file": "tile_12.png",
+   "sha256": "65823b7e1e0f67758797c0419c66e40a0021f138462fced9f9f3b4d0d21d94e3"
+  }
+ ]
+}

@@ -1,0 +1,225 @@
+# ROADMAP 2.179 step 2 -- MY labels (ours, not evidence) of every red bar on the Litolff sample (pdf pages 1,6,10,13,16), from s1_sheets.py.
+# index | codes | note.  a never boxed in its own family (nothing of its family at 0.03; a wrong-family sub-floor box may exist)
+# b boxed in its own family under the 0.25 floor / c boxed at 0.25+ in the wrong class / d boxed right, dropped by a gate
+# e seen but mis-valued (flag/beam/dot present, value read wrong) / f other: fx extra non-note or another staff's note counted,
+# fv two voices summed as one, fg one chord counted as several events, fs one bar cut in two cells by a false barline, fu cannot tell.
+# Several codes per bar where several items are lost; the FIRST is the bar's main cause.
+0 | fx | tempo-mark note (Adagio half) counted in the staff; whole rest ok
+1 | fx | clef curl read as a quarter; meter digit; extra heads on the barline
+2 | fv | rest + 3 eighths all read; summed as two voices
+3 | a | eighth rest never boxed as a rest (head 0.15 only)
+4 | c | black head (square block on a line) boxed restWhole, refused
+5 | a | first beamed eighth head under the staff never boxed
+6 | e | first beamed eighth read as a half (beam drawn over it)
+7 | b | eighth rest boxed rest under the floor
+8 | c | eighth rest boxed as a quarter rest (written 1.0)
+9 | fx | a staff line boxed as a second whole rest
+10 | fx | key flat boxed rest8th and written
+11 | fx a | four heads of the staff above counted; whole rest boxed only as a sub-floor head
+12 | fx a | notes of the staff above counted; whole rest only a sub-floor head
+13 | fu | crowded
+14 | fx | sharp boxed as a head
+15 | fx | sharp boxed as two heads
+16 | fs | narrow last cell: one rest; the bar's other half is the neighbour cell
+17 | fv | beamed heads over rests, two parts
+18 | fg | chord with a second split into events
+19 | fs | narrow cell pair at the system end
+20 | fs | narrow cell pair at the system end
+21 | fv | two beamed voices
+22 | fv | upper r8 + 3 eighths, lower half note, summed
+23 | fv | same
+24 | fv | same
+25 | fu | crowded chords, cresc.
+26 | fu | crowded, arcs
+27 | fs | narrow cell pair at the system end
+28 | fs | narrow cell pair at the system end
+29 | b fv | upper eighth rest boxed rest under the floor (0.15); two voices
+30 | fs | system-end bar cut in cells
+31 | fs | system-end bar cut in cells
+32 | fs | system-end bar cut in cells
+33 | fs | system-end bar cut in cells
+34 | fs | system-end bar cut in cells
+35 | fv | quarter + quarter rest read; a second stream counted
+36 | d fx | welded head refused by a gate; another staff's head counted
+37 | fu | crowded, sf
+38 | fs | system-end cells
+39 | fx | tie end boxed as a head
+40 | fv | sharp + chords, two parts
+41 | fs | system-end cells
+42 | a fx | own welded head never boxed; another staff's head counted
+43 | fs | system-end cells
+44 | b | first head boxed head under the floor
+45 | fu | two parts on one staff
+46 | fx | sharp boxed as a head
+47 | a | eighth rest only a sub-floor head
+48 | a | eighth rest never boxed
+49 | fu | crowded
+50 | fu | crowded
+51 | fx c | key flat counted as a quarter; eighth rest boxed as a head
+52 | e | two beamed eighths written quarter (beam over them)
+53 | fx | C-clef pieces boxed as heads
+54 | fs | system-end cells
+55 | fx | cautionary clef boxed as a head
+56 | fx | key flat boxed as a head
+57 | fx | sharp boxed as a head
+58 | fx | accidental boxed as a hollow head
+59 | c | welded head boxed restWhole, refused
+60 | c b | welded head boxed as a rest, refused; head only under the floor
+61 | d e | upper head refused; a speck read as an augmentation dot
+62 | fs | system-end cells
+63 | b | quarter rest boxed rest8th under the floor
+64 | fx | hook of sf boxed as a head
+65 | fg | chord of a second split; one head boxed twice
+66 | b | quarter rest boxed rest under the floor
+67 | b | eighth rest boxed rest under the floor
+68 | b | quarter rest boxed rest under the floor
+69 | b | eighth rest boxed rest under the floor
+70 | a | eighth rest never boxed
+71 | fg | chord of a second counted as two halves
+72 | a | welded head with stem only a sub-floor restWhole
+73 | b | first beamed head under the floor (0.24)
+74 | b | first beamed head under the floor
+75 | c | eighth rest boxed restQuarter
+76 | fx a | another staff's head counted; eighth rest only a sub-floor flag
+77 | a | last beamed head only a sub-floor restWhole
+78 | fx | key flat boxed rest8th
+79 | b | eighth rest/first item under the floor
+80 | b | head under the floor (0.22)
+81 | fu | another staff's head counted
+82 | b | three welded beamed heads under the floor (0.05-0.17)
+83 | b | two-three welded beamed heads under the floor
+84 | fu | head under the staff with ledger, unclear owner
+85 | fx | C clef boxed as a head
+86 | b | first beamed head under the floor (0.23)
+87 | b fx | half note under the floor; another head counted
+88 | c | hollow half boxed as a black head
+89 | c | welded fourth head boxed as a rest, refused
+90 | e | four beamed eighths written quarters
+91 | b | first welded beamed head under the floor
+92 | fg | octave chords split, clef boxed
+93 | fu | crowded chord
+94 | e | speck read as an augmentation dot (half written dotted)
+95 | c | welded head boxed restWhole, refused
+96 | e | speck read as an augmentation dot
+97 | b | welded beamed head under the floor
+98 | a | eighth rest under ff never boxed
+99 | b | welded beamed heads under the floor
+100 | b | welded beamed heads and eighth rest under the floor
+101 | b | welded head under the floor
+102 | e | speck read as an augmentation dot
+103 | c | welded head boxed restWhole, refused
+104 | e | DUP of 96 (same bar written to two parts)
+105 | b | DUP of 97
+106 | a | DUP of 98
+107 | b | DUP of 99
+108 | b | DUP of 100
+109 | b | DUP of 101
+110 | fv | two parts; lower beam's heads unseen
+111 | b | welded heads under the floor (0.05-0.10)
+112 | fx | eighth rest ink also boxed as a head and written
+113 | a | eighth rest only a sub-floor head
+114 | fu | system-end cells, another staff
+115 | c | eighth rest boxed as a head (with a view flag)
+116 | a | eighth rest never boxed
+117 | fu | notes at the cell edge
+118 | fg | half chord with a second split
+119 | fx | clef/key ink counted
+120 | c | eighth rest boxed as a head
+121 | a | eighth rest never boxed
+122 | fx | sharps boxed as heads
+123 | a | eighth rest only a sub-floor head
+124 | fu | notes at the cell edge
+125 | b | quarter rest boxed rest under the floor (0.04)
+126 | a | eighth rest never boxed
+127 | c | hollow chord read as black
+128 | fx | dynamic f boxed as a head
+129 | fu | a.2 text, crowded
+130 | fx | one head boxed twice
+131 | fx | tie end boxed as a head
+132 | b | eighth rest boxed rest under the floor (0.18)
+133 | fu | crowded
+134 | fs | system-end cells
+135 | fu | two parts, welded
+136 | fg e | half chord split; speck as dot
+137 | fx | bass clef boxed as a head; another staff's head
+138 | fs | system-end cells
+139 | b | half note under the floor
+140 | b | half note under the floor
+141 | a | eighth rest never boxed
+142 | fx | f hook boxed as a head
+143 | fx | another staff's head counted
+144 | fx b | another staff's heads; own half under the floor
+145 | fu | crowded, another staff
+146 | e | flagged eighth below the staff written quarter
+147 | a | eighth rest only a sub-floor head
+148 | a | eighth rest never boxed
+149 | b | half note under the floor
+150 | fs | system-end cells
+151 | fu | crowded
+152 | fu | three eighths read, bar short by an unseen item
+153 | b fx | half note under the floor; key flat as rest8th
+154 | e | beamed eighth written quarter
+155 | a | eighth rest never boxed
+156 | fs | system-end cells
+157 | fx | sharp boxed as a head
+158 | fx | sharp boxed as a head
+159 | b | DUP of 153
+160 | e | DUP of 154
+161 | a | DUP of 155
+162 | fs | DUP of 156
+163 | fu | ff, three eighths read
+164 | fx | DUP of 157
+165 | fx | DUP of 158
+166 | fu | other staffs' heads, rest refused
+167 | fu | crowded
+168 | c | hollow half boxed as a black head
+169 | fx | chord heads boxed twice
+170 | a | eighth rest never boxed
+171 | fx | heads boxed twice
+172 | fu | crowded
+173 | b | hollow half heads under the floor
+174 | fu | welded stacked heads
+175 | a | eighth rest only a sub-floor head
+176 | fu | head and cautionary clef
+177 | a | eighth rest never boxed
+178 | fu | welded heads
+179 | a b | eighth rest never boxed; first welded head under the floor
+180 | b | half chord under the floor
+181 | fv | welded beamed heads split in two streams
+182 | a | welded head with stem never boxed
+183 | a | middle welded head only a sub-floor restWhole
+184 | fv | first welded quarter under the floor (0.23); streams split
+185 | b | lower chord heads under the floor
+186 | a | eighth rest never boxed
+187 | d | eighth rest box refused
+188 | e | beamed eighth written quarter
+189 | fs | head cut at the cell edge
+190 | a | welded head only a sub-floor restWhole
+191 | b | welded head under the floor
+192 | b | welded beamed heads under the floor
+193 | b | flag and welded beamed heads under the floor
+194 | b | welded beamed head under the floor
+195 | b | heads under the floor
+196 | a | eighth rest never boxed
+197 | b | welded beamed head under the floor (0.21)
+198 | e b | flagged eighth written quarter; lower head under the floor
+199 | fu | chord heads, one refused
+200 | b | hollow half under the floor
+201 | fv | half + quarter, two parts
+202 | fu | crowded hollow heads
+203 | fx | key flat boxed as a head; half chord split
+204 | fu | hollow chord, refusals
+205 | fu | crowded
+206 | c | welded head boxed restWhole, refused
+207 | a | welded head + stem only a sub-floor quarter rest
+208 | b | welded head under the floor (0.07)
+209 | b | welded head under the floor (0.10)
+210 | fu | crowded half chords
+211 | fx | DUP of 203
+212 | fu | DUP of 204
+213 | fu | DUP of 205
+214 | fu | beamed heads at the cell edge
+215 | c | DUP of 206
+216 | a | DUP of 207
+217 | b | DUP of 208
+218 | b | DUP of 209

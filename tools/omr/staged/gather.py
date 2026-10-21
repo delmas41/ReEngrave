@@ -1050,6 +1050,85 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
             print(f"  gather detector views {cell_key}: {len(out['kept'])} box(es), {len(out['refused'])} refused, {out['calls']} view call(s)")
 
 
+def gather_stem_end_heads(log: Log, cells: Sequence[Any],
+                          local: Dict[int, Tuple[int, int]],
+                          detections: Dict[str, List[Any]], *,
+                          detector: Any = None, imgsz: Optional[int] = None,
+                          progress: bool = False) -> None:
+    """ROADMAP 2.179 (flag `OMR_STEM_END_HEADS`, default ON; the caller gates). STAGED GATHER; decides nothing.
+
+    For every cell: its CV stems (the 2.55 rescue's call); a stem with no head box at either end is an orphan; for a cell holding one,
+    the SAME detector is re-run at `stem_end_heads.FLOOR` and a head-class box (or a block rest box, re-read as a black head) whose
+    centre stands at an orphan stem's end on the convention's side is APPENDED to the cell's `detections` under
+    `READERS.RESCUE_STEM_HEAD`, with the stem, the end, the detector's own class (`read_from`) and score on the row. A candidate standing
+    on a box of another family at least as confident is filed as an abstention (`ABSTAIN.AMBIGUOUS`). Production boxes are never changed.
+    `stem_end_heads` holds the rule, the convention and what would falsify it."""
+    from . import stem_end_heads as SEH
+    if detector is None:
+        return
+    from ..line_detection import detect_lines, staged_stem_finder
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        cell_key = cell_sub.to_key()
+        frame = frame_cell(c.measure_index)
+        existing = detections.get(cell_key) or []
+        try:
+            stems = (detect_lines(c, candidates_out=None, noteheads=None, stem_finder=staged_stem_finder()) or {}).get("stems") or []
+        except Exception as exc:                                  # noqa: BLE001
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        reason=ABSTAIN.READER_UNAVAILABLE, error=type(exc).__name__)
+            continue
+        if not stems:
+            continue
+        heads = [SEH._box(d) for d in existing if SEH.is_head(d.smufl_name)]
+        if not any(SEH.is_orphan(s, heads, 2.0 * grid[1]) for s in stems):
+            continue
+        rerun = detector.detect(c, conf_threshold=SEH.FLOOR, imgsz=imgsz)
+        kept, refused, n_orph = SEH.candidates_for_cell(stems, existing, rerun, grid)
+        for rf in refused:
+            d = rf["det"]
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        why=rf["why"], candidate_class=d.smufl_name, score=float(rf["score"]), end=rf["end"],
+                        box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
+        if not kept:
+            continue
+        lst = detections.get(cell_key)
+        if lst is None:
+            lst = []
+            detections[cell_key] = lst
+        n0 = len(lst)
+        for k, kb in enumerate(kept):
+            d = kb["det"]
+            s = stems[kb["stem_index"]]
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, n0 + k)
+            box_detail: Dict[str, Any] = {
+                "category": d.category, "source": "stem_end_head", "read_from": kb["read_from"], "end": kb["end"],
+                "from_record_box": bool(kb["from_record"]), "orphan_stems": n_orph,
+                "stem_canonical": [s.x_canonical, s.y_canonical, s.width_canonical, s.height_canonical]}
+            page_box = _page_box(c, d)
+            if page_box is not None:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX, (d.smufl_name, d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical),
+                        reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence), reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        score=float(d.confidence))
+            log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name, reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        score=float(d.confidence))
+            lst.append(d)
+        if progress:
+            print(f"  gather stem-end heads {cell_key}: {len(kept)} box(es), {n_orph} orphan stem(s)")
+
+
 def gather_second_hollow(log: Log, cells: Sequence[Any],
                          local: Dict[int, Tuple[int, int]],
                          detections: Dict[str, List[Any]], *,
@@ -14960,6 +15039,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         from . import detector_views as _DV
         if detector is not None and _DV.enabled():
             gather_detector_views(log, cells, local, detections, detector=detector, progress=progress)
+
+        # ROADMAP 2.179 (flag `OMR_STEM_END_HEADS`, default ON): a head looked for again at the end of a stem that carries none. AFTER the
+        # views (a view's box counts as seen), BEFORE every `detections` walker, for the rescue's reason: a kept box is appended in place.
+        from . import stem_end_heads as _SEH
+        if detector is not None and _SEH.enabled():
+            gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
