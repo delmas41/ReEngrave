@@ -498,7 +498,7 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     live = {k: v for k, v in _live(vs, ("duration", "rest_is_not_a_rest")).items() if page_of(k[0]) in cp}
     stored = {k: v for k, v in stored.items() if page_of(k[0]) in cp}
     control = None
-    if arm == "off" and stored:
+    if stored:
         same = [k for k, v in stored.items() if k in live and _brief(live[k]) == _brief(v)]
         diff = [k for k in stored if k not in set(same)]
         control = dict(stored=len(stored), same=len(same), differ=len(diff), first_differ=sorted(k[0] for k in diff)[:10])
@@ -633,6 +633,16 @@ _NAMES = {"note": "notes", "rest": "rests", "accidental": "accidentals", "dot": 
           "ornament": "ornaments", "tuplet": "tuplet notes", "value": "note values", "pitch": "pitches",
           "blue": "blue marks", "dynamic": "dynamics", "wedge": "wedges", "words": "words", "clef": "clefs",
           "key": "keys", "time": "meters"}
+
+
+def control_of(off: Optional[dict], on: Optional[dict]) -> Optional[dict]:
+    """The saved record was made at the tree's defaults, so the arm in the DEFAULT state of the flag must reproduce it and
+    the other arm is allowed to differ (a landed default-ON flag turned OFF moves the OFF arm). Verdict: `off` / `on`
+    reproduces, `both` (identity control), or `neither` (the tree moved: every number below is suspect)."""
+    if off is None or on is None:
+        return None
+    r = "both" if off["differ"] == 0 and on["differ"] == 0 else "off" if off["differ"] == 0 else "on" if on["differ"] == 0 else "neither"
+    return dict(reproduces=r, off=off, on=on)
 
 
 def format_counts(counts: Dict[str, Dict[str, int]]) -> str:
@@ -854,9 +864,9 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
         jm = judged_moves(work / ("%s.off.mini-record.json" % p), work / ("%s.on.mini-record.json" % p), p)
         all_changes[p], all_same[p] = d["changes"], d["same"]
         rep["plates"][p] = dict(pages=pages[p], counts=d["counts"], hosts=d["hosts"], paired=d["paired"],
-                                red_bars=[off["red_bars"], on["red_bars"]], bars_held_out=[off["bars_held_out"], on["bars_held_out"]],
+                                red_bars=[off["red_bars"], on["red_bars"]],
                                 notes_not_written=[off["notes_not_written"], on["notes_not_written"]],
-                                control=off["control"], judged=jm, seconds=[off["seconds"], on["seconds"]])
+                                control=control_of(off["control"], on["control"]), judged=jm, seconds=[off["seconds"], on["seconds"]])
     items = pick_tiles(all_changes, all_same, seed)
     rep["tiles"] = cut_tiles(items, out) if items else dict(n=0, cases=0, controls=0)
     rep["tile_seed"] = seed
@@ -876,17 +886,20 @@ def render_text(rep: Dict[str, Any]) -> str:
         L.append("")
         L.append("%s  pages %s  (%d notes+rests OFF, %d ON, %d paired)" % (p, r["pages"], r["hosts"][0], r["hosts"][1], r["paired"]))
         L.append("  file:   " + format_counts(r["counts"]))
-        L.append("  red bars %s -> %s | bars held out %s -> %s | notes not written %s -> %s"
-                 % (r["red_bars"][0], r["red_bars"][1], r["bars_held_out"][0], r["bars_held_out"][1],
-                    r["notes_not_written"][0], r["notes_not_written"][1]))
+        L.append("  red bars %s -> %s | notes not written %s -> %s"
+                 % (r["red_bars"][0], r["red_bars"][1], r["notes_not_written"][0], r["notes_not_written"][1]))
         c = r["control"]
         if c is None:
             L.append("  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED")
-        elif c["differ"] == 0:
-            L.append("  control: OFF reproduces the record: %d of %d duration/rest verdicts identical" % (c["same"], c["stored"]))
         else:
-            L.append("  control: OFF DOES NOT REPRODUCE THE RECORD: %d of %d differ (e.g. %s) -- the tree, not only the flag, moved these"
-                     % (c["differ"], c["stored"], ", ".join(c["first_differ"][:3])))
+            o, n = c["off"], c["on"]
+            say = {"both": "OFF and ON both reproduce the record",
+                   "off": "OFF reproduces the record (ON is the arm that moves)",
+                   "on": "ON reproduces the record (the flag is default-ON; OFF is the arm that moves)",
+                   "neither": "NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number"}[c["reproduces"]]
+            L.append("  control: %s: duration/rest verdicts differing from the record OFF %d / ON %d of %d%s"
+                     % (say, o["differ"], n["differ"], o["stored"],
+                        "" if c["reproduces"] in ("both",) else " (e.g. %s)" % ", ".join((o if o["differ"] else n)["first_differ"][:3])))
         j = r["judged"]
         L.append("  Sean's judged answers (%d tiles on these pages): right->wrong %d | right->narrowed/abstained/gone %d | wrong->right %d"
                  % (j["scored"], len(j["worse"]), len(j["lost"]), len(j["better"])))

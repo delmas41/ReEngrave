@@ -120,6 +120,29 @@ editions (`build_wishlist`'s logic), uses a held one or opens IMSLP for the
 one click and watches `~/Downloads`, then runs `tools.omr.staged` per
 movement into `out/<work_id>/`. Never defeats the IMSLP download gate.
 
+## 2b. The lane report (ROADMAP 2.188; the one command every lane reports with)
+
+```bash
+python3 -m tools.omr.staged.lane_report --flag OMR_X --out out/lane-report/2.NNN          # OFF=0 vs ON=1
+python3 -m tools.omr.staged.lane_report --flag OMR_X=2 --flag OMR_Y=0:1 --plates litolff --out DIR   # ON=2 ; OFF=0 ON=1
+python3 -m tools.omr.staged.lane_report --out DIR                                          # no flag: OFF==ON, must print "NOTHING CHANGED"
+```
+
+Runs the tree OFF and ON through EXPORT on the **frozen page sample** (`benchmarks/lane-report/sample.json`, 8 pages per
+plate drawn once with seed 2188 from the 20261020-night records, plus each plate's opening page loaded for its meter/key,
+never counted), one fresh process per (plate, arm), `--workers N` (default 2, max 4). It prints, per plate, what changed in
+the exported MusicXML by kind (`+` gained `-` lost `~` changed; notes, rests, accidentals, dots, flags, beams, ties, slurs,
+articulations, fermatas, ornaments, tuplets, note values, pitches, blue marks, dynamics, wedges, words, clef/key/meter), red bars,
+the OFF==record control, and Sean's judged answers going right->wrong / right->gone / wrong->right; and writes
+`DIR/tiles/` (12 tiles + `sheet.png`, neutral orange box, seed `--seed`, default 2188), `DIR/key.json` (outside the tile
+folder), `DIR/report.txt|json`, `DIR/work/` (each arm's MusicXML). **Stage:** `--from auto` (default) replays the saved GATHER
+rows through ADJUDICATE..EXPORT (`adjudicate`); a flag named in a GATHER module (`gather.py`, `positions.py`, ...) is re-gathered
+for both arms (`gather`, the detector, slow); `--from adjudicate` on such a flag is refused. A flag named nowhere in the tree is
+refused unless `--allow-unknown-flag` (the can-it-fail control). The first run cuts the sample pages out of the 8.8 GB Brahms
+record (streamed, one reader at a time under `.record-load.lock`) into `library/_shared-records/lane-report-slices-*`. Wall time:
+about 16 min for both plates at 2 workers (Brahms is ~13 min an arm). The sample is frozen: `lane_report sample` refuses to
+re-draw without `--force`, Sean's word.
+
 ## 3. The two re-gathers
 
 (Sean, 2026-09-30; `docs/measuring.md` §2 has the A/B rules.)
