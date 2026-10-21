@@ -107,7 +107,7 @@ class TestRestPairStrongerBlue(unittest.TestCase):
     def test_the_export_guess_carries_both_classes(self):
         log, (a, b) = _decide(self.PAIR, True)
         rec = SX.Record({"record": {"observations": [], "abstentions": [], "verdicts": log.to_json()["verdicts"]}})
-        sub = a.path if hasattr(a, 'path') else 'glyph/0/0/0/0/0'
+        sub = "glyph/0/0/0/0/0"
         g = SX.rest_pair_guess_of(rec, sub)
         self.assertIsNotNone(g)
         self.assertEqual(g["rule"], "rest_pair_stronger")
