@@ -144,11 +144,13 @@ def find_object(binary: Any, staves: Sequence[Dict[str, Any]], *, allowed_counts
             N = k
             break
     basis = "two_staves"
-    top_count = max(counts.values()) if counts else 0
-    if N < top_count and allowed_counts is not None and top_count in set(allowed_counts):
-        # ONE staff read more than any pair did, and the dossier (the work's own encoding, a different source) prints that count: the
-        # dossier stands in for the second staff. Without the dossier this stays `N` (the pair) -- one staff alone is never the system.
-        N, basis = top_count, "one_staff_and_dossier"
+    if allowed_counts is not None:
+        # the dossier (the work's own encoding, a different source) stands in for the second staff: the largest count it prints that
+        # AT LEAST ONE staff read in full. Without the dossier this stays the pair's `N` -- one staff alone is never the system.
+        top = max(counts.values()) if counts else 0
+        ks = [k for k in set(allowed_counts) if 1 <= k <= MAX_SLOTS and k <= top]
+        if ks and max(ks) > N:
+            N, basis = max(ks), "one_staff_and_dossier"
     gaps = []
     for st in staves:
         pc = runs[st["key"]]["pieces"]

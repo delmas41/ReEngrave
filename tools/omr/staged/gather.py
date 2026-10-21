@@ -14221,7 +14221,7 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
             for s0 in ok:
                 log.abstain(R.staff(p, sys_idx, s0["key"]), Q.CLAIMED_AREA, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0),
                             reason=ABSTAIN.NO_COLUMN_EVIDENCE, cell=0, owner=CL.OWNER_KEY, why=obj["status"], counts=obj["counts"],
-                            dossier=obj["dossier"], allowed_counts=allowed)
+                            dossier=obj["dossier"])
             continue
         for s0 in ok:
             li = s0["key"]
@@ -14251,12 +14251,13 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                     e["named"] = True
                     e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
                 inside[b.row_id] = e
+            # how the claim was drawn rides in ONE key, `key_object`, which the consult copies onto the verdict (`claimed_by.consult`)
+            ko = {"system_count": obj["N"], "basis": obj["basis"], "dossier": obj["dossier"], "allowed_counts": allowed,
+                  "system_counts": obj["counts"], "pitch_spaces": obj["pitch_spaces"], "clef_edge": s0["clef_edge"],
+                  "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"]}
             log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0), cell=0, owner=CL.OWNER_KEY,
                         owner_row=None, unit="area", standing=cl["standing"], source="system_key_object", slots=cl["slots"],
-                        own_slots=cl["own"], placed_slots=cl["placed"], system_count=obj["N"], count_basis=obj["basis"],
-                        dossier=obj["dossier"], allowed_counts=allowed, system_counts=obj["counts"], pitch_spaces=obj["pitch_spaces"],
-                        clef_edge=s0["clef_edge"], more_than_system=obj["by_staff"][li]["more_than_system"],
-                        boxes_inside=inside, space_page_px=round(sp, 3))
+                        key_object=ko, boxes_inside=inside, space_page_px=round(sp, 3))
             if progress:
                 print(f"  gather claimed area (key object) {ssub.to_key()}")
 

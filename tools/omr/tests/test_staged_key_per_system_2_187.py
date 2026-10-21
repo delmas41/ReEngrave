@@ -145,29 +145,29 @@ class TestCountFromTheSystem(unittest.TestCase):
         log, _ = gather([3, 3, 3], _full((3, 3, 3)))
         for i in range(3):
             d = rows(log, i)[0].detail
-            self.assertEqual((d["system_count"], d["standing"], d["slots"]), (3, "READ", 3))
-            self.assertEqual(d["dossier"], "silent")
+            self.assertEqual((d["key_object"]["system_count"], d["standing"], d["slots"]), (3, "READ", 3))
+            self.assertEqual(d["key_object"]["dossier"], "silent")
 
     def test_a_staff_that_read_fewer_slots_claims_the_systems_count(self):
         log, _ = gather([3, 3, 2], _full((3, 3, 2)))
         d = rows(log, 2)[0].detail
-        self.assertEqual((d["own_slots"], d["placed_slots"], d["slots"]), (2, 1, 3))
+        self.assertEqual((d["key_object"]["own_slots"], d["key_object"]["placed_slots"], d["slots"]), (2, 1, 3))
         a = rows(log, 2)[0].value
         self.assertGreater(a[2], FLAT0 + PITCH * 2 + 18)                          # the area reaches the third slot's right edge
 
     def test_a_staff_that_read_none_is_narrowed_never_read(self):
         log, _ = gather([3, 3, 0], [_full()[0], _full()[1], [clef_box(2)]])
         d = rows(log, 2)[0].detail
-        self.assertEqual((d["own_slots"], d["standing"]), (0, "NARROWED"))
+        self.assertEqual((d["key_object"]["own_slots"], d["standing"]), (0, "NARROWED"))
 
     def test_one_staff_alone_with_the_dossier_silent_is_not_the_system(self):
         log, _ = gather([3, 2, 2], [_full()[0], [clef_box(1), flat_box(1, 0), flat_box(1, 1)], _full()[2][:3]])
-        self.assertEqual(rows(log, 0)[0].detail["system_count"], 2)                # the pair's count, not the lone staff's
+        self.assertEqual(rows(log, 0)[0].detail["key_object"]["system_count"], 2)                # the pair's count, not the lone staff's
 
     def test_one_staff_and_the_dossier_make_three(self):
         log, _ = gather([3, 2, 2], [_full()[0], [clef_box(1), flat_box(1, 0), flat_box(1, 1)], _full()[2][:3]], dossier={"parts": [{"written_fifths": -3}, {"written_fifths": -1}]})
         d = rows(log, 1)[0].detail
-        self.assertEqual((d["system_count"], d["count_basis"], d["dossier"]), (3, "one_staff_and_dossier", "agrees"))
+        self.assertEqual((d["key_object"]["system_count"], d["key_object"]["basis"], d["key_object"]["dossier"]), (3, "one_staff_and_dossier", "agrees"))
 
     def test_the_dossier_disagreeing_abstains_the_system_and_counts_it(self):
         log, _ = gather([3, 3, 3], _full((3, 3, 3)), dossier={"parts": [{"written_fifths": -1}, {"written_fifths": 0}]})
@@ -179,7 +179,7 @@ class TestCountFromTheSystem(unittest.TestCase):
         # staff 2 prints ONE flat (a clarinet): the system's 3 is placed as an area for refusing boxes, never as a key written to the staff
         log, _ = gather([3, 3, 1], [_full()[0], _full()[1], [clef_box(2), flat_box(2, 0)]])
         d = rows(log, 2)[0].detail
-        self.assertEqual((d["own_slots"], d["placed_slots"]), (1, 2))
+        self.assertEqual((d["key_object"]["own_slots"], d["key_object"]["placed_slots"]), (1, 2))
         self.assertEqual(len([r for r in log.rows(Q.KEY_SIGNATURE, R.staff(1, 0, 2))]), 0)
 
     def test_CONTROL_a_c_major_system_claims_nothing(self):
