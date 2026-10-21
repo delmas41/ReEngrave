@@ -53,6 +53,10 @@ project. Ask him.
    computation, not a measurement. **Before trusting any result, ask who
    says it's right:** Sean, the print or the reference encoding is evidence;
    a model's own output, or a result whose raw data is gone, is not.
+   **Check a count before it opens a lane** (Sean, 2026-10-20): a count from
+   an agent's own look -- above all one that contradicts an earlier figure or
+   comes from hand-picked pages -- gets a 10-minute crop look or a few tiles
+   to Sean first; three of them were wrong in one day.
 8. **A fallback never converts "cannot tell" into an answer** — not "same",
    not "clean", not a whole rest that means silence.
 9. **No new flag, benchmark directory, derived check or handoff without a
