@@ -137,9 +137,12 @@ for arm in ARMS:
                         beams=len(re.findall(r"<beam ", xml))),
                written=report.get("written"), bars_written_red=red.get("bars"), red_rows=red.get("noteheads_and_rests"),
                notes_not_written_total=report.get("notes_not_written_total"), notes_not_written=report.get("notes_not_written"),
-               accidental_census=report.get("accidentals") or report.get("accidental_census"), guessed_by_one_ink=dict(guessed),
+               accidental_census=report.get("accidental_reading"), guessed_by_one_ink=dict(guessed),
                guessed_report=report.get("guessed"), bars_add_up=bau, report_keys=sorted(report.keys()))
     tag = "" if not PAGES else "." + "-".join(sorted(PAGES))
+    from tools.omr.staged import judged as J
+    json.dump({"record": {"observations": [], "verdicts": [v for v in vs if v["quantity"] in J._QUANTITIES]}},
+              open(os.path.join(OUTDIR, "%s.%s%s.mini.record.json" % (DOC, arm, tag)), "w"), default=str)
     json.dump(out, open(os.path.join(OUTDIR, "%s.%s%s.json" % (DOC, arm, tag)), "w"), default=str)
     open(os.path.join(OUTDIR, "%s.%s%s.musicxml" % (DOC, arm, tag)), "w").write(xml)
     print(DOC, arm, "control", ctl, "merge", mstats, "rests", len(rests), "guessed rests", out["xml"]["guessed_rests"], "red", red.get("bars"),
