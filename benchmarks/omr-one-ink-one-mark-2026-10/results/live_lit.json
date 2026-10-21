@@ -1,0 +1,32 @@
+{
+ "4": {
+  "cells": 330,
+  "cells_live_boxes_equal_stored": 330,
+  "live_boxes": 3019,
+  "stored_boxes": 3019,
+  "live_merged_winners": 9,
+  "live_absorbed": 9,
+  "replay_absorbed": 9,
+  "live_plan_equals_replay_plan(by winner class/box)": 330
+ },
+ "7": {
+  "cells": 385,
+  "cells_live_boxes_equal_stored": 385,
+  "live_boxes": 2256,
+  "stored_boxes": 2256,
+  "live_merged_winners": 30,
+  "live_absorbed": 33,
+  "replay_absorbed": 33,
+  "live_plan_equals_replay_plan(by winner class/box)": 385
+ },
+ "16": {
+  "cells": 352,
+  "cells_live_boxes_equal_stored": 352,
+  "live_boxes": 2411,
+  "stored_boxes": 2411,
+  "live_merged_winners": 17,
+  "live_absorbed": 17,
+  "replay_absorbed": 17,
+  "live_plan_equals_replay_plan(by winner class/box)": 352
+ }
+}
