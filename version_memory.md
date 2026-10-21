@@ -6352,3 +6352,6 @@ STAGED ADJUDICATE + EXPORT, `OMR_UNISON_TWO_NOTES` default ON (`unison_two.enabl
 
 ## 2026-10-20 -- ROADMAP 2.177 landed ON: the printed meter is one object (claimed-area step 1)
 STAGED GATHER + ADJUDICATE, `OMR_METER_OBJECT` default ON (`meter_object.enabled`; explicit `0/false/no/off` disables). `Q.CLAIMED_AREA` (owner meter) is the two numerals' measured ink box plus a stroke; a head or rest inside is refused `inside_the_meter`; the 18-space `key_slots.meter_column` rest rule is no longer consulted. Litolff 12/12, Brahms 52/56 found; Brahms +19 real rests; 2 Litolff key flats stay rests until claimed-area step 3 (Sean "a"). Next: 2.178 step 2. benchmarks/omr-meter-object-2026-10/FINDINGS.md
+
+## 2026-10-20 -- ROADMAP 2.179 landed ON: a stem always carries a head
+STAGED GATHER, `OMR_STEM_END_HEADS` default ON (`stem_end_heads.enabled`; explicit `0/false/no/off` disables). Where a kept stem has no head at its end, the detector is re-read at 0.05 on that cell and a head box at the stem's end (side from the stem direction) is added; a block rest box there is re-read as the black head; a stem inside a rest/flat/clef/dynamic does not count. Takes effect at the next full gather. Sean's tiles: 8/9 new boxes real notes, controls 3/3. `benchmarks/omr-unseen-symbols-2026-10/FINDINGS.md`.
