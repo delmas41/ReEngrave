@@ -1,6 +1,6 @@
 """ROADMAP 2.182 -- Sean's blind tiles: ONE blue box around a BAR on one staff, nothing else of ours. Tiles and key from ONE run.
 
-usage: python3 .../t1_tiles.py make SEED ON.json RECORD.json DOC [CONTROLS_FROM.json]  |  python3 .../t1_tiles.py check
+usage: python3 .../t1_tiles.py make SEED DOC=ON.json=RECORD_OR_SLICEDIR [...]  |  python3 .../t1_tiles.py check
 make: picks bars the ON arm split as two parts (`two_parts` in m1_replay's ON json, seeded), up to 9, plus 3 controls
 (2 bars the ON arm leaves one line and that add up -- `one_voice_sums`; 1 bar main already writes as two voices by Sean's
 rule 1 -- `two_voices_same_beat`), shuffles, writes out/print/2.182-review/tile_NN.png + README.md, and the key to
@@ -56,30 +56,50 @@ def tile(img, box, ys, path):
     cv2.imwrite(path, crop)
 
 
-def make(seed, on_path, rec_path, doc, controls_from=None):
-    rng = random.Random(seed)
-    on = json.load(open(on_path))
-    red = set(on["red_bars"])
-    split = sorted(on["two_parts"])
-    rng.shuffle(split)
-    picks = [dict(doc=doc, kind="split", bar=b, reason=on["two_parts"][b]["reason"], red_on=b in red,
-                  voices=on["two_parts"][b]["voices"], guessed=on["two_parts"][b]["guessed"]) for b in split[:N_SPLIT]]
-    ctl = json.load(open(controls_from)) if controls_from else on
-    ones = sorted(b for b, v in ctl["voices"].items() if v[1] == "one_voice_sums" and b not in red)
-    rule1 = sorted(b for b, v in ctl["voices"].items() if v[1] == "two_voices_same_beat" and b not in red)
-    rng.shuffle(ones)
-    rng.shuffle(rule1)
-    picks += [dict(doc=doc, kind="control_one_line", bar=b) for b in ones[:N_ONE]]
-    picks += [dict(doc=doc, kind="control_rule_1_two_voices", bar=b) for b in rule1[:N_RULE1]]
-    rng.shuffle(picks)
-    rec = load_record(rec_path)["record"]
+def _geometry(rec_path, pages_wanted):
+    if os.path.isdir(rec_path):             # a slice directory (per-page jsonl): only the pages the picks name
+        import glob
+        obs = []
+        for f in sorted(glob.glob(os.path.join(rec_path, "*.observations.jsonl"))):
+            n = os.path.basename(f).split(".")[0]
+            if n.startswith("p") and n[1:].isdigit() and str(int(n[1:])) not in pages_wanted:
+                continue
+            obs += [json.loads(line) for line in open(f)]
+        rec = {"observations": obs}
+    else:
+        rec = load_record(rec_path)["record"]
     cell_box, lines = {}, {}
     for o in rec["observations"]:
         if o["quantity"] == "cell_box" and o["subject"].startswith("cell/"):
             cell_box.setdefault(o["subject"][5:], o["value"])
         elif o["quantity"] == "staff_lines" and o["subject"].startswith("staff/"):
             lines.setdefault(o["subject"][6:], o["value"])
-    del rec
+    return cell_box, lines
+
+
+def make(seed, plates):
+    """`plates`: [(doc, ON.json, RECORD-or-slice-dir)]; every split of every plate up to N_SPLIT, controls from the
+    first plate (N_ONE one-line bars that add up, N_RULE1 rule-1 two-voice bars)."""
+    rng = random.Random(seed)
+    picks, src = [], {}
+    for k, (doc, on_path, rec_path) in enumerate(plates):
+        on = json.load(open(on_path))
+        src[doc] = rec_path
+        red = set(on["red_bars"])
+        split = sorted(on["two_parts"])
+        rng.shuffle(split)
+        picks += [dict(doc=doc, kind="split", bar=b, reason=on["two_parts"][b]["reason"], red_on=b in red,
+                       voices=on["two_parts"][b]["voices"], guessed=on["two_parts"][b]["guessed"]) for b in split]
+        if k == 0:
+            ones = sorted(b for b, v in on["voices"].items() if v[1] == "one_voice_sums" and b not in red)
+            rule1 = sorted(b for b, v in on["voices"].items() if v[1] == "two_voices_same_beat" and b not in red)
+            rng.shuffle(ones)
+            rng.shuffle(rule1)
+            ctl = ([dict(doc=doc, kind="control_one_line", bar=b) for b in ones[:N_ONE]]
+                   + [dict(doc=doc, kind="control_rule_1_two_voices", bar=b) for b in rule1[:N_RULE1]])
+    picks = picks[:N_SPLIT] + ctl
+    rng.shuffle(picks)
+    geo = {doc: _geometry(path, {p["bar"].split("/")[0] for p in picks if p["doc"] == doc}) for doc, path in src.items()}
     os.makedirs(TILES, exist_ok=True)
     for f in os.listdir(TILES):
         if f.endswith(".png"):
@@ -87,16 +107,17 @@ def make(seed, on_path, rec_path, doc, controls_from=None):
     pages, key = {}, []
     for i, p in enumerate(picks, 1):
         pg = int(p["bar"].split("/")[0])
-        if pg not in pages:
+        if (p["doc"], pg) not in pages:
             pages.clear()
-            pages[pg] = cv2.cvtColor(render_page(PDF[doc], pg).rgb, cv2.COLOR_RGB2BGR)
+            pages[(p["doc"], pg)] = cv2.cvtColor(render_page(PDF[p["doc"]], pg).rgb, cv2.COLOR_RGB2BGR)
+        cell_box, lines = geo[p["doc"]]
         st = "/".join(p["bar"].split("/")[:3])
         name = "tile_%02d.png" % i
-        tile(pages[pg], cell_box[p["bar"]], lines.get(st), os.path.join(TILES, name))
+        tile(pages[(p["doc"], pg)], cell_box[p["bar"]], lines.get(st), os.path.join(TILES, name))
         key.append(dict(p, file=name, sha256=sha(os.path.join(TILES, name))))
     open(os.path.join(TILES, "README.md"), "w").write(
         "# 2.182 review -- how many parts are in the bar in the blue box?\n\n"
-        "%d tiles, each a crop of the printed score (Brahms 1, Breitkopf) with ONE blue box drawn around ONE BAR on ONE staff, "
+        "%d tiles, each a crop of the printed score (Beethoven 5 Litolff, or Brahms 1 Breitkopf) with ONE blue box drawn around ONE BAR on ONE staff, "
         "and nothing else of ours. The blue box is only the place to look; it is not a reading.\n\n"
         "For each tile: **how many parts are in this bar, and what are the notes' values in each part (upper / lower)?** "
         "For example `2 parts: upper 8 8 8 rest8 / lower dotted half`, or `1 part: q q q`. Answers go in `answers.json` "
@@ -109,6 +130,6 @@ def make(seed, on_path, rec_path, doc, controls_from=None):
 
 if __name__ == "__main__":
     if sys.argv[1] == "make":
-        make(int(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6] if len(sys.argv) > 6 else None)
+        make(int(sys.argv[2]), [tuple(a.split("=")) for a in sys.argv[3:]])
     else:
         check()

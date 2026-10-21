@@ -1,6 +1,6 @@
 """ROADMAP 2.182 -- compare two m1_replay arms: red bars in/out, two-part bars and their fate, rests restored, labelled bars.
 
-usage: c1_compare.py OFF.json ON.json [CENSUS LABELS]"""
+usage: c1_compare.py OFF.json ON.json [CENSUS LABELS | WITNESS_ROWS.json]"""
 import collections
 import json
 import sys
@@ -22,6 +22,12 @@ print("two_voice refused off", off["summary"]["two_voice_refused"], "on", on["su
 rb = collections.Counter("/".join(g.split("/")[1:5]) for g in restored)
 print("bars with a restored rest", len(rb), "of them red->ok", sum(1 for b in rb if b in ro and b not in rn),
       "ok->red", sum(1 for b in rb if b not in ro and b in rn))
+if len(sys.argv) == 4:                      # p2_witness's per-bar rows, which carry 2.179's label of each red bar
+    seen = {r["bar"]: r["label"] for r in json.load(open(sys.argv[3])) if r.get("label")}
+    for code in ("fv", "d"):
+        bars = [b for b, c in seen.items() if code in c]
+        print("label", code, len(bars), "| red off", sum(b in ro for b in bars), "red on", sum(b in rn for b in bars),
+              "| split on", sum(b in tp for b in bars), "| with a restored rest", sum(b in rb for b in bars))
 if len(sys.argv) > 4:
     census = json.load(open(sys.argv[3]))
     lab = {}
