@@ -40,3 +40,9 @@ an independent measurement (rule 7). Recomputed the box overlap of each contradi
 
 Limits: "real symbols lost" from 10-crop looks, not Sean; dynamics and accidental carry not traced into the file; IoU 0.5 a cut
 checked on crops, not a convention; Brahms file-level figures from the exporter's census (export not re-run).
+
+**Correction (manager, 2026-10-21, after 2.184):** the HARMFUL doubles are NOT the cross-cell overlap. All 74 / 740 contradicted
+accidentals have both boxes from reader `detector` in ONE crop (same glyph page/system/cell/staff prefix), and 2.184 traced all 98
+rest pairs to one crop too and reproduced them (6/6, 63/63) by re-running the detector; `agnostic_nms=True` cuts rest pairs 71 -> 5
+Brahms, 6 -> 2 Litolff. Cause of the harm: class-wise NMS (`agnostic_nms=False`) in the production pass keeps two classes on one ink.
+Cross-cell overlap is the bulk of doubles and is resolved downstream.
