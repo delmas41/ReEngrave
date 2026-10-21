@@ -1,0 +1,128 @@
+{
+ "source": {
+  "sean_2026_10_20_first": "2.180 - 1-4. Dot 4 5. Dot 2 6-8. Dot 4 9. Dot 2 10. 4 11.  Dot 4 12.4",
+  "sean_2026_10_20_correction": "12 is dot 4",
+  "note": "tile 12 first read '4' from the first message; Sean corrected it to 'dot 4'. Per-tile answers are his words split by tile."
+ },
+ "question": "what is the written value of the note in the blue box (e.g. dotted 4, 4, dotted 8)?",
+ "tile_01": {
+  "sean": "Dot 4",
+  "glyph": "glyph/16/1/4/3/1",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "8",
+  "on": "dotted 8",
+  "on_right": false,
+  "off_right": false
+ },
+ "tile_02": {
+  "sean": "Dot 4",
+  "glyph": "glyph/19/0/10/4/4",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_03": {
+  "sean": "Dot 4",
+  "glyph": "glyph/8/0/6/9/5",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_04": {
+  "sean": "Dot 4",
+  "glyph": "glyph/23/1/10/4/7",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_05": {
+  "sean": "Dot 2",
+  "glyph": "glyph/12/0/8/3/1",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "2",
+  "on": "dotted 2",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_06": {
+  "sean": "Dot 4",
+  "glyph": "glyph/9/0/0/1/5",
+  "doc": "brahms",
+  "kind": "control_dotted",
+  "off": "dotted 4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": true
+ },
+ "tile_07": {
+  "sean": "Dot 4",
+  "glyph": "glyph/13/1/5/6/12",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_08": {
+  "sean": "Dot 4",
+  "glyph": "glyph/9/1/8/3/5",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_09": {
+  "sean": "Dot 2",
+  "glyph": "glyph/22/1/10/7/4",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "2",
+  "on": "dotted 2",
+  "on_right": true,
+  "off_right": false
+ },
+ "tile_10": {
+  "sean": "4",
+  "glyph": "glyph/21/1/7/3/8",
+  "doc": "brahms",
+  "kind": "control_plain",
+  "off": "4",
+  "on": "4",
+  "on_right": true,
+  "off_right": true
+ },
+ "tile_11": {
+  "sean": "Dot 4",
+  "glyph": "glyph/18/0/9/5/1",
+  "doc": "brahms",
+  "kind": "control_dotted",
+  "off": "dotted 4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": true
+ },
+ "tile_12": {
+  "sean": "dot 4",
+  "glyph": "glyph/14/0/1/6/3",
+  "doc": "brahms",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4",
+  "on_right": true,
+  "off_right": false
+ }
+}
