@@ -627,8 +627,13 @@ def _claim_refusal(claim, box_row) -> Ruling:
         r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
     elif claim.by == "clef":
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    elif claim.by == "key_signature":
+        r = Ruling(value=True, reason="claimed_by:key_signature", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    if claim.by == "key_signature":       # 2.183: the 2.100 centre rule, so the margin is the depth of the centre inside the run
+        return _margins.attach(r, margin=claim.margin, axis="stand_margin_spaces", unit="staff spaces inside the key run",
+                               band=None, would_choose=(True,))
     return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
                            band=None, would_choose=(True,))
 
@@ -641,6 +646,8 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
         return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
     if claim.by == "meter":
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    if claim.by == "key_signature":
+        return Ruling.narrow(cands, "claim_narrowed:key_signature", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
@@ -3524,8 +3531,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
                                      "on_a_read_meter", "on_a_rest", "inside_the_meter",
-                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
+                                     "claim_narrowed:key_signature",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3724,7 +3732,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # slots is a flat's bowl boxed under a second name. It needs no unit of
     # its own beyond the cell's (`key_slots.key_slot_occupant` returns `None`
     # without one), so it sits before the guard like `is_a_clef`.
-    in_key = _key_slots.key_slot_occupant(ev, box_row)
+    # ROADMAP 2.183 (flags `OMR_KEY_SIGNATURE_CLAIM` + the register, ON): the key run is a claim in the register, consulted above;
+    # this geometry gate stands only while that flag is OFF.
+    in_key = None if _claimed_by.key_active() else _key_slots.key_slot_occupant(ev, box_row)
     if in_key is not None:
         return Ruling(value=True, reason="notehead_in_a_key_signature_slot",
                       used=(box_row.id,) + in_key["used"],

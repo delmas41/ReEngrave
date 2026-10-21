@@ -61,7 +61,11 @@ CLEF_BOX_COVER_MIN = 0.9
 OWNER_CLEF = "clef"
 OWNER_COLUMN = "leading_column"
 OWNER_METER = "meter"
-OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER)
+#: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
+#: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
+OWNER_KEY = "key_signature"
+OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY)
+ENV_KEY = "OMR_KEY_SIGNATURE_CLAIM"
 #: classes that are owners' own ink, never measured as a box inside a claim
 OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "brace", "bracket")
 
@@ -69,6 +73,16 @@ OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "br
 def enabled() -> bool:
     """`OMR_CLAIMED_REGISTER`, default ON (ROADMAP 2.181, Sean 2026-10-20); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def key_enabled() -> bool:
+    """`OMR_KEY_SIGNATURE_CLAIM` (ROADMAP 2.183), default OFF: only an explicit 1/true/yes/on enables the key-signature claim."""
+    return os.environ.get(ENV_KEY, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def key_active() -> bool:
+    """The key claim files and is consulted only through the register: both `OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER` on."""
+    return key_enabled() and enabled()
 
 
 def is_owner_class(name: Any) -> bool:

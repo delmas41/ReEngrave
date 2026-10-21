@@ -1020,8 +1020,13 @@ def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
         r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
     elif claim.by == "clef":
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    elif claim.by == "key_signature":
+        r = Ruling(value=True, reason="claimed_by:key_signature", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    if claim.by == "key_signature":       # 2.183: the 2.100 centre rule, so the margin is the depth of the centre inside the run
+        return _margins.attach(r, margin=claim.margin, axis="stand_margin_spaces", unit="staff spaces inside the key run",
+                               band=None, would_choose=(True,))
     return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
                            band=None, would_choose=(True,))
 
@@ -1035,6 +1040,8 @@ def _rest_claim_narrowing(claim, used, detail: Dict[str, Any]) -> Ruling:
         return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
     if claim.by == "meter":
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    if claim.by == "key_signature":
+        return Ruling.narrow(cands, "claim_narrowed:key_signature", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 REST_BARLINE_MIN_HEIGHT_SPACES = 2.0
@@ -1818,8 +1825,9 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_duplicate_box",
                                      "rest_in_a_key_signature_slot",
                                      "rest_is_a_meter_digit", "inside_the_meter",
-                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
+                                     "claim_narrowed:key_signature",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1892,7 +1900,9 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # 2026-10-12), so a rest-named box in the signature's slots is the
         # signature's own ink boxed under a second name. Geometry of the
         # header, never the bar sum (`key_slots` module docstring).
-        in_key = _key_slots.key_slot_occupant(ev, box_row)
+        # ROADMAP 2.183 (`OMR_KEY_SIGNATURE_CLAIM` + the register ON): the key run is a claim in the register, consulted just below; this
+        # geometry gate stands only while that flag is OFF.
+        in_key = None if _claimed_by.key_active() else _key_slots.key_slot_occupant(ev, box_row)
         if in_key is not None:
             detail.update(in_key["detail"])
             return Ruling(value=True, reason="rest_in_a_key_signature_slot",
@@ -1986,14 +1996,14 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
 @decision(
     quantity=Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
     composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
+           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("arpeggiato",),
     reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO)
-    + ("in_a_key_signature_slot",),
+    + ("in_a_key_signature_slot", "claimed_by:key_signature"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
@@ -2067,14 +2077,14 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.ARC_IS_NOT_AN_ARC,
     composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE,
-                   Q.CELL_STAFF_SPACE),
+                   Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE),
+           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
     + ("ink_is_a_staff_line", "ink_is_a_barline",
-       "in_a_key_signature_slot"),
+       "in_a_key_signature_slot", "claimed_by:key_signature"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
@@ -2430,6 +2440,18 @@ def _key_slot_refusal(ev: Evidence, detail: Dict[str, Any]
     key-signature slots is a key accidental the detector named something else
     (Sean, 2026-10-12, tiles 1 6 7 8 9 11). Refused as what the detector
     called it, citing the key rows. Geometry only (`key_slots`)."""
+    # ROADMAP 2.183 (`OMR_KEY_SIGNATURE_CLAIM` + the register ON): the key run is a claim in the register; a flag / arpeggiato / arc box
+    # standing in it is refused as `claimed_by:key_signature`, the same test through the one consult.
+    if _claimed_by.key_active():
+        box_row = _glyph_box_row(ev)
+        claim = _claimed_by.consult(ev, box_row, head=False, family="mark",
+                                    rows=ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS)) if box_row is not None else None
+        if claim is None or not claim.refuse:
+            return None
+        detail.update(claim.detail)
+        return _margins.attach(
+            Ruling(value=True, reason="claimed_by:key_signature", used=claim.used, detail=detail),
+            margin=claim.margin, axis="stand_margin_spaces", unit="staff spaces inside the key run", band=None, would_choose=(True,))
     # the cell's own staff space, read HERE (not inside `key_slots`) so
     # `inventory --check` sees the declaration read
     spaces = [float(r.value) for r in ev.rows(
@@ -2447,13 +2469,13 @@ def _key_slot_refusal(ev: Evidence, detail: Dict[str, Any]
 @decision(
     quantity=Q.FLAG_IS_NOT_A_FLAG,
     composed_from=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE,
-           Q.CELL_STAFF_SPACE),
+           Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     subjects_from=Q.FLAG,
     reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG)
-    + ("in_a_key_signature_slot",),
+    + ("in_a_key_signature_slot", "claimed_by:key_signature"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:

@@ -29,11 +29,16 @@ from .. import geometry as _geom
 from ..record import Kind, Q, Scope
 
 #: which owner names a refusal when several refuse (the most specific mark first; the header column, a prior, last)
-_ORDER = (_claims.OWNER_METER, _claims.OWNER_CLEF, _claims.OWNER_COLUMN)
+_ORDER = (_claims.OWNER_METER, _claims.OWNER_KEY, _claims.OWNER_CLEF, _claims.OWNER_COLUMN)
 
 
 def enabled() -> bool:
     return _claims.enabled()
+
+
+def key_active() -> bool:
+    """ROADMAP 2.183: the key signature is a claim in the register (`OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER` both on)."""
+    return _claims.key_active()
 
 
 class Finding(NamedTuple):
@@ -70,12 +75,14 @@ def _confs(ev: Any) -> Dict[str, float]:
     return out
 
 
-def consult(ev: Any, box_row: Any, *, head: bool) -> Optional[Finding]:
-    """REFUSE / NARROW / None for this box (see the module docstring). A missing row declines (rule 8)."""
+def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: Any = None) -> Optional[Finding]:
+    """REFUSE / NARROW / None for this box (see the module docstring). A missing row declines (rule 8). `family` is "note" (a head or
+    a rest: a claim that cannot refuse NARROWS) or "mark" (a flag, an arpeggiato, an arc: only the key signature's NAMED box refuses
+    -- those families have no blue reading, so nothing else is consulted). `rows`: the decision's own read of `Q.CLAIMED_AREA`, if it made one."""
     if not enabled() or box_row is None or ev.subject.at(Kind.STAFF) is None:
         return None
-    key = ev.subject.to_key()
-    held = _claims.covering(ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), key)
+    key = box_row.subject.to_key() if family == "mark" else ev.subject.to_key()
+    held = _claims.covering(rows if rows is not None else ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), key)
     if not held:
         return None
     stemmed = _stemmed(ev, box_row) if head else False
@@ -84,6 +91,8 @@ def consult(ev: Any, box_row: Any, *, head: bool) -> Optional[Finding]:
     for r, e in held:
         d = r.detail or {}
         owner, standing = d.get("owner"), d.get("standing")
+        if family == "mark" and owner != _claims.OWNER_KEY:
+            continue
         share = float(e.get("ink_share_inside", 1.0 if e.get("named") else 0.0))
         margin = share - _claims.INSIDE_SHARE_MIN
         why = None
@@ -91,6 +100,24 @@ def consult(ev: Any, box_row: Any, *, head: bool) -> Optional[Finding]:
             if standing != "READ" or stemmed:
                 continue                                   # 2.177: a stemmed head is a note; an unread meter files no claim
             refusing.append((owner, r, margin, "meter_read"))
+            continue
+        if owner == _claims.OWNER_KEY:
+            # 2.183: the key run's own ink. A box that STANDS in the window (the 2.100 rule, Sean 2026-10-12 "only clefs appear before
+            # key accidentals") is the signature's ink boxed under another name: refused, a head with a stem on it included (2.100
+            # refused them all). A box merely holding >= `INSIDE_SHARE_MIN` of its own ink inside the area, or any box of a window one
+            # staff alone drew away from the header (a key change with no second staff), is NARROWED -- never refused on that.
+            if family == "mark":
+                if e.get("named") and standing == "READ":
+                    refusing.append((owner, r, float(e.get("stand_margin_spaces") or 0.0), "stands_in_the_key_run"))
+                continue
+            if e.get("named"):
+                m = float(e.get("stand_margin_spaces") or 0.0)
+                if standing == "READ":
+                    refusing.append((owner, r, m, "stands_in_the_key_run"))
+                else:
+                    narrowing.append((owner, r, m, "key_run_seen_on_one_staff"))
+            else:
+                narrowing.append((owner, r, margin, "ink_inside_the_key_run"))
             continue
         if owner == _claims.OWNER_CLEF:
             if e.get("named"):

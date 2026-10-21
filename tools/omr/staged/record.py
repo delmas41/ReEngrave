@@ -869,6 +869,8 @@ class Q(_Vocab):
     #: ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the SAME quantity is the shared register -- owners `clef` (a located
     #: clef, or a clef-sized detector box; NARROWED standing away from a bar's start) and `leading_column` (the header column left of
     #: the first clef, `prior=True`) are filed by `gather.gather_claimed_register`; `claims.covering` reads every owner alike.
+    #: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`, default OFF): owner `key_signature` -- the key run (cancelling naturals included) --
+    #: is filed by `gather.gather_key_signature_claim`; `boxes_inside[key].named` says the box STANDS in the window (the 2.100 rule).
     CLAIMED_AREA = "claimed_area"
 
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
@@ -2914,6 +2916,9 @@ class READERS(_Vocab):
     #: `gather.gather_claimed_register` -- ROADMAP 2.181. The PAGE raster asked how much of each box's own ink lies inside a clef's or
     #: the header column's claimed area, and whether that ink is a line running on past the box (barline / bracket / brace).
     CV_CLAIMED_REGISTER = "cv_claimed_register"
+    #: `gather.gather_key_signature_claim` -- ROADMAP 2.183. The detector's key-accidental boxes drawn as one area (the key run, cancelling
+    #: naturals included) and, from the PAGE raster, how much of every other box's own ink lies inside it.
+    CV_KEY_SIGNATURE_CLAIM = "cv_key_signature_claim"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

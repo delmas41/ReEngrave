@@ -223,6 +223,75 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
         next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space)
 
 
+#: ROADMAP 2.183: a cancelling run may hold up to this many slots (seven naturals, then up to seven sharps / flats)
+MAX_CLAIM_SLOTS = 2 * MAX_SLOTS
+
+
+def _window_of(chain: Sequence[KeyBox], clef: Optional[KeyBox], space: float, slots: int, next_x: Optional[float] = None
+               ) -> KeySlotWindow:
+    lo = (clef.x + clef.w) if clef is not None else chain[0].x - EDGE_MARGIN_SPACES * space
+    return KeySlotWindow(
+        lo=lo, hi=max(b.x + b.w for b in chain) + EDGE_MARGIN_SPACES * space,
+        y_lo=min(b.y for b in chain) - LEVEL_MARGIN_SPACES * space,
+        y_hi=max(b.y + b.h for b in chain) + LEVEL_MARGIN_SPACES * space,
+        members=tuple(b.row_id for b in chain), clef=None if clef is None else clef.row_id, slots=slots,
+        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space)
+
+
+def window_with_cancels(boxes: Sequence[KeyBox], space: float) -> Optional[KeySlotWindow]:
+    """ROADMAP 2.183: the key run when it opens with CANCELLING NATURALS the standard window cannot see (Sean 2026-10-20: "Canceling
+    accidentals should be considered key signature"; page-facts §2). `key_slot_window` asks the first accidental to stand within
+    `MAX_START_AFTER_CLEF_SPACES` of the clef and keeps one kind of box; a run of naturals pushes the new key's first sharp / flat farther
+    out, and a natural boxed as an in-bar accidental is dropped when the detector's KEY boxes are of another kind. Here the run starts at the
+    first natural-shaped box within that bound of the clef, chains boxes by `RUN_GAP_SPACES`, takes naturals only BEFORE the first
+    sharp / flat (a natural after it is a note's, never the signature's) and one sharp-or-flat kind after them. `None` where there is no
+    natural, no sharp / flat after it, or no clef (a natural-only run is `key_slot_window`'s own). CONVENTION ASSUMED (page-facts §2,
+    Sean 2026-10-20); WHAT WOULD FALSIFY IT: a print with a note between the cancelling naturals and the new key's accidentals; NOT SEEN on
+    the two acceptance plates (neither movement changes key), so this path is covered by constructed tests only."""
+    if space <= 0:
+        return None
+    shaped = sorted((b for b in boxes if _shape(b.cls) is not None), key=lambda b: b.x)
+    nat = [b for b in shaped if _shape(b.cls) == "keyNatural"]
+    if not nat:
+        return None
+    first = nat[0]
+    clefs = [b for b in boxes if b.cls.startswith("clef") and b.x < first.x]
+    if not clefs:
+        return None
+    clef = max(clefs, key=lambda b: b.x + b.w)
+    if first.x - (clef.x + clef.w) > MAX_START_AFTER_CLEF_SPACES * space:
+        return None
+    chain, kind = [first], None
+    for b in shaped:
+        if b.x <= first.x or b is first:
+            continue
+        if b.x - chain[-1].x > RUN_GAP_SPACES * space:
+            break
+        sh = _shape(b.cls)
+        if sh == "keyNatural":
+            if kind is not None:
+                break
+        elif kind is None:
+            kind = sh
+        elif sh != kind:
+            break
+        chain.append(b)
+    if kind is None:
+        return None
+    centres = [chain[0].x]
+    for b in chain[1:]:
+        if b.x - centres[-1] > SLOT_TOLERANCE_SPACES * space:
+            centres.append(b.x)
+    if len(centres) > MAX_CLAIM_SLOTS:
+        return None
+    return _window_of(chain, clef, space, len(centres))
+
+
+def claim_window(boxes: Sequence[KeyBox], space: float) -> Optional[KeySlotWindow]:
+    """The window the key-signature CLAIM (ROADMAP 2.183) draws: the standard window, else the one that opens with cancelling naturals."""
+    return key_slot_window(boxes, space) or window_with_cancels(boxes, space)
+
+
 def is_music_class(cls: str) -> bool:
     return cls.startswith(MUSIC_PREFIXES)
 
@@ -243,6 +312,17 @@ def stands_in_the_window(window: KeySlotWindow, box: KeyBox) -> bool:
         return True
     return (box.cls.startswith("rest") and window.next_x is not None
             and abs(box.x - window.next_x) <= window.next_tol)
+
+
+def stand_margin_spaces(window: KeySlotWindow, box: KeyBox, space: float) -> Optional[float]:
+    """ROADMAP 2.183: how deep inside the window `stands_in_the_window` puts this box, in staff spaces (the smallest distance of the
+    centre from the window's four edges, or, for a rest on the next slot, the tolerance minus its offset); `None` where it does not stand."""
+    if not stands_in_the_window(window, box) or space <= 0:
+        return None
+    inside = min(box.cx - window.lo, window.hi - box.cx, box.cy - window.y_lo, window.y_hi - box.cy)
+    if inside >= 0 and window.lo <= box.cx <= window.hi:
+        return round(inside / space, 3)
+    return round((window.next_tol - abs(box.x - (window.next_x or 0.0))) / space, 3)
 
 
 def cell_space(ev: Any, cell: Any) -> float:

@@ -14041,6 +14041,93 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                 print(f"  gather claimed area (register) {ssub.to_key()}")
 
 
+def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                               detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `key_signature` -- ROADMAP 2.183 (claimed-area step 3), flag `OMR_KEY_SIGNATURE_CLAIM` (default OFF;
+    needs `OMR_CLAIMED_REGISTER`, which it files into).
+
+    PATH: STAGED GATHER, PAGE raster. AFTER `gather_claimed_register`. Per staff and cell: the key run (`key_slots.claim_window` -- the
+    existing 2.100 window, plus a run that opens with CANCELLING NATURALS, Sean 2026-10-20) drawn as one area in page px, from the clef's
+    right edge to the run's last slot, level with it. The detector's boxes are the run's members (a window is only ever drawn around
+    what the detector boxed as a key accidental); this reader decides nothing about any other box -- it files, for every other box of the
+    cell that meets the area, whether it STANDS in the window (the 2.100 centre rule, `named`: Sean 2026-10-12 "only clefs appear before
+    key accidentals") and the share of its own ink inside (`meter_object.ink_inside`).
+
+    * cell 0 (the header): standing READ -- the convention Sean confirmed.
+    * a later cell (a key change in mid-system): READ only where at least two staves of the system draw a window at one x (a key change
+      is printed on every staff at one bar, page-facts §2 -- a second witness of a different staff), else NARROWED.
+
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry / no window is no row."""
+    from . import claims as CL
+    from . import meter_object as MO
+    from .adjudicators import key_slots as KS
+    if not CL.key_active():
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_sys: Dict[int, Dict[int, Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], {})[key[1]] = st
+    cells_of: Dict[int, Dict[int, Any]] = {}
+    for c in cells:
+        cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
+    for sys_idx, members in sorted(by_sys.items()):
+        drawn = []                                   # (staff li, cell k, window, boxes, st, sp, lines, cell, dets)
+        for li, st in sorted(members.items()):
+            sp = _spacing(st)
+            lines = list(st.line_ys)
+            if not sp or len(lines) < 5:
+                continue
+            for k, c in sorted(cells_of.get(st.staff_index, {}).items()):
+                dets = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+                boxes = []
+                for gi, d in enumerate(dets):
+                    pb = _page_box(c, d)
+                    if pb is not None:
+                        boxes.append(KS.KeyBox(R.glyph(p, sys_idx, li, k, gi).to_key(), str(d.smufl_name), pb[0], pb[1],
+                                               pb[2] - pb[0], pb[3] - pb[1]))
+                win = KS.claim_window(boxes, sp)
+                if win is not None:
+                    drawn.append((li, k, win, boxes, st, sp, lines, c, dets))
+        for li, k, win, boxes, st, sp, lines, c, dets in drawn:
+            if k == 0:
+                standing, witnesses = "READ", None
+            else:
+                witnesses = sorted({lj for lj, kj, wj, *_ in drawn if kj == k and lj != li and abs(wj.lo - win.lo) <= 1.5 * sp})
+                standing = "READ" if witnesses else "NARROWED"
+            area = [round(win.lo, 1), round(win.y_lo, 1), round(win.hi, 1), round(win.y_hi, 1)]
+            by_id = {b.row_id: b for b in boxes}
+            inside: Dict[str, Any] = {}
+            for gi, d in enumerate(dets):
+                key = R.glyph(p, sys_idx, li, k, gi).to_key()
+                b = by_id.get(key)
+                if b is None or key in win.members or str(d.smufl_name).startswith(("clef", "key")):
+                    continue
+                stands = KS.stands_in_the_window(win, b) and KS.is_refusable_class(b.cls)
+                pb = (b.x, b.y, b.x + b.w, b.y + b.h)
+                if not CL.overlaps(area, pb) and not stands:
+                    continue
+                got = MO.ink_inside(binary, pb, area, lines, sp)
+                if got is None and not stands:
+                    continue
+                e = dict(got or {}, cls=b.cls)
+                if stands:
+                    e["named"] = True
+                    e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
+                inside[key] = e
+            ssub = R.staff(p, sys_idx, li)
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_SIGNATURE_CLAIM, frame=frame_cell(k), cell=k,
+                        owner=CL.OWNER_KEY, owner_row=win.members[0], owner_glyph=win.members[0], unit="area", standing=standing,
+                        source="detector_key_run", members=list(win.members), clef=win.clef, slots=win.slots,
+                        witness_staves=witnesses, boxes_inside=inside, space_page_px=round(sp, 3))
+            if progress:
+                print(f"  gather claimed area (key signature) {ssub.to_key()} cell {k}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -15364,6 +15451,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
         gather_claimed_register(log, pws, cells, local, detections)
+        # ROADMAP 2.183 (flag OMR_KEY_SIGNATURE_CLAIM, default OFF): AFTER the register; page raster.
+        gather_key_signature_claim(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
