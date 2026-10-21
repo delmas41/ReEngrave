@@ -49,7 +49,7 @@ from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tupl
 
 DERIVED_CHECK = False
 ROOT = pathlib.Path(__file__).resolve().parents[3]
-SAMPLE_PATH = ROOT / "benchmarks" / "lane-report" / "sample.json"
+SAMPLE_PATH = pathlib.Path(os.environ.get("LANE_REPORT_SAMPLE") or ROOT / "benchmarks" / "lane-report" / "sample.json")  # env: a one-page control (2.189)
 LIB = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library")
 RECORDS = LIB / "_shared-records"
 DETECTOR_CACHE: Optional[pathlib.Path] = RECORDS / "detector-cache"      # ROADMAP 2.189: OFF and ON share it; None = no cache
@@ -965,6 +965,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         raise SystemExit("--out DIR is required")
     plates = [p for p in a.plates.split(",") if p]
     mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag)
+    if os.environ.get("LANE_REPORT_SAMPLE"):
+        notes.append("NOT THE FROZEN SAMPLE: %s (a development control)" % SAMPLE_PATH)
     if not flags:
         notes.append("no --flag: OFF and ON are the same tree (the identity control)")
     out = pathlib.Path(a.out)
