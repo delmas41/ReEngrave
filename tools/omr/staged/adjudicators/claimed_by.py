@@ -162,7 +162,7 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
     d0 = r0.detail or {}
     detail = {"claimed_by": {"owner": owner, "row": r0.id, "why": why, "stemmed": stemmed,
                              # how the claim was drawn: the header column's right edge (own clef / the system's clefs), the locator's crop
-                             "right_edge": d0.get("right_edge"), "key_object": d0.get("key_object"), "locator_frame": d0.get("locator_frame"), "prior": d0.get("prior"),
+                             "right_edge": d0.get("right_edge"), "key_object": d0.get("key_object"), "part": d0.get("part"), "locator_frame": d0.get("locator_frame"), "prior": d0.get("prior"),
                              "holding": [{"owner": o, "row": r.id, "why": w, "margin": round(m, 3)} for o, r, m, w in refusing + narrowing],
                              "entry": (r0.detail or {}).get("boxes_inside", {}).get(key)}}
     return Finding(bool(refusing), owner, used, margin, detail)
