@@ -7016,9 +7016,19 @@ def _ink_components(cell: Any):
     img = getattr(cell, "image_no_staff", None)
     if img is None or getattr(img, "ndim", 0) != 2:
         return None
+    # ROADMAP 2.191: five gather readers ask this of every cell; it is a pure function of the erased raster, so the
+    # first answer is kept on the cell (checked against the raster itself) and each caller gets its own list.
+    hit = getattr(cell, "_ink_components_191", None)
+    if hit is not None and hit[0] is img:
+        return list(hit[1])
     ink = (img == 0).astype(np.uint8)
     n, _labels, stats, _cent = cv2.connectedComponentsWithStats(ink, 8)
-    return [tuple(int(stats[i, k]) for k in range(5)) for i in range(1, n)]
+    comps = [tuple(int(stats[i, k]) for k in range(5)) for i in range(1, n)]
+    try:
+        cell._ink_components_191 = (img, comps)
+    except Exception:                                  # noqa: BLE001  (a cell that takes no attribute is just not cached)
+        pass
+    return list(comps)
 
 
 def _explaining_detections(dets: Sequence[Any], spacing: float
@@ -11350,8 +11360,44 @@ BEAM_INK_CORE_SMOOTH_SPACES = 0.3
 def _ink_runs(col: Any) -> List[Tuple[int, int]]:
     """`(start, end_exclusive)` of every run of True in a 1-D bool array."""
     import numpy as np
-    d = np.diff(np.concatenate([[0], col.astype(np.int8), [0]]))
-    return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
+    # ROADMAP 2.191: the same runs as `np.diff(np.concatenate([[0], col.astype(np.int8), [0]]))`,
+    # without np.diff / concatenate's per-call overhead (this is called millions of times a page).
+    c = np.zeros(len(col) + 2, np.int8)
+    c[1:-1] = col
+    d = c[1:] - c[:-1]
+    return list(zip(np.flatnonzero(d == 1).tolist(), np.flatnonzero(d == -1).tolist()))
+
+
+def _best_overlap_runs(slab: Any, off: float, lo_v: float, hi_v: float):
+    """For every column of the 2-D bool `slab` (row 0 is page row `off`): the run of True whose overlap with
+    `[lo_v, hi_v]` is the largest and positive (the FIRST of equals), as `(columns, starts, ends_exclusive)` int arrays
+    in column order, columns with no overlapping run absent. ROADMAP 2.191: the per-column python loop of
+    `_ink_runs` + max-overlap that `beam_stroke_ink` and `local_line_thickness` ran, done for all columns at once;
+    it picks exactly the run that loop picked (same float arithmetic, strict `>` = first of equals)."""
+    import numpy as np
+    n_rows, n_cols = slab.shape
+    e0 = np.zeros(0, np.int64)
+    if n_rows == 0 or n_cols == 0:
+        return e0, e0, e0
+    pad = np.zeros((n_cols, n_rows + 2), np.int8)
+    pad[:, 1:-1] = slab.T
+    d = pad[:, 1:] - pad[:, :-1]
+    sc, sr = np.nonzero(d == 1)
+    _ec, er = np.nonzero(d == -1)
+    if len(sc) == 0:
+        return e0, e0, e0
+    ov = np.minimum(er + off, hi_v) - np.maximum(sr + off, lo_v)
+    good = ov > 0.0
+    if not good.any():
+        return e0, e0, e0
+    c, o, s_, e_ = sc[good], ov[good], sr[good], er[good]
+    first = np.flatnonzero(np.concatenate([[True], c[1:] != c[:-1]]))
+    mx = np.maximum.reduceat(o, first)
+    counts = np.diff(np.concatenate([first, [len(c)]]))
+    sel = np.flatnonzero(o == np.repeat(mx, counts))
+    cs = c[sel]
+    sel = sel[np.concatenate([[True], cs[1:] != cs[:-1]])]
+    return c[sel], s_[sel], e_[sel]
 
 
 def _median_filter_1d(a: Any, k: int) -> Any:
@@ -11359,7 +11405,12 @@ def _median_filter_1d(a: Any, k: int) -> Any:
     k |= 1
     h = k // 2
     pad = np.pad(a, h, mode="edge")
-    return np.array([np.median(pad[i:i + k]) for i in range(len(a))])
+    if len(a) == 0:
+        return np.array([])
+    # ROADMAP 2.191: every window's median at once (k is odd: the middle element, no averaging), same values as the
+    # per-window `np.median` loop.
+    from numpy.lib.stride_tricks import sliding_window_view
+    return np.median(sliding_window_view(pad, k)[:len(a)], axis=1)
 
 
 def local_line_thickness(ink: Any, line_ys: Sequence[float], x0: int, x1: int,
@@ -11390,17 +11441,10 @@ def local_line_thickness(ink: Any, line_ys: Sequence[float], x0: int, x1: int,
         lo, hi = max(0, int(ly - 0.5 * space)), min(H, int(ly + 0.5 * space) + 1)
         if hi <= lo:
             continue
-        vals: List[int] = []
-        for cx in range(cx0, cx1):
-            # the run that sits on the line's own row, measured over a wider
-            # slice so a line thicker than the window is not clipped to it
-            best, bov = None, 0.0
-            for rs, re_ in _ink_runs(ink[lo:hi, cx]):
-                ov = min(re_ + lo, ly + half) - max(rs + lo, ly - half)
-                if ov > bov:
-                    best, bov = (rs, re_), ov
-            if best is not None:
-                vals.append(best[1] - best[0])
+        # the run that sits on the line's own row, measured over a wider
+        # slice so a line thicker than the window is not clipped to it
+        _c, _s, _e = _best_overlap_runs(ink[lo:hi, cx0:cx1], lo, ly - half, ly + half)
+        vals = (_e - _s)
         if len(vals) >= 8:
             per_line.append(float(np.percentile(vals, 25)))
     if len(per_line) < 3:
@@ -11538,24 +11582,12 @@ def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
     y0, y1 = max(0, int(round(y)) - pad), min(H, int(round(y + h)) + pad)
     if y1 <= y0:
         return None
-    xs: List[int] = []
-    th: List[int] = []
-    cs: List[float] = []
-    tops: List[float] = []
-    bots: List[float] = []
-    for cx in range(xi0, xi1):
-        best, bov = None, 0.0
-        for s, e in _ink_runs(ink[y0:y1, cx]):
-            ov = min(e + y0, y + h) - max(s + y0, y)
-            if ov > bov:
-                best, bov = (s, e), ov
-        if best is None:
-            continue
-        xs.append(cx)
-        th.append(best[1] - best[0])
-        cs.append(y0 + (best[0] + best[1]) / 2.0)
-        tops.append(float(y0 + best[0]))
-        bots.append(float(y0 + best[1]))
+    _c, _s, _e = _best_overlap_runs(ink[y0:y1, xi0:xi1], y0, y, y + h)
+    xs: List[int] = (_c + xi0).tolist()
+    th: List[int] = (_e - _s).tolist()
+    cs: List[float] = (y0 + (_s + _e) / 2.0).tolist()
+    tops: List[float] = (_s + y0).astype(float).tolist()
+    bots: List[float] = (_e + y0).astype(float).tolist()
     if len(xs) < BEAM_INK_MIN_COVER * (xi1 - xi0):
         return None
     xs_a, th_a, cs_a = (np.array(xs, float), np.array(th, float),

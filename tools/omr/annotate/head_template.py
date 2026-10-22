@@ -48,7 +48,7 @@ Nothing here is wired into any product/default path. Measurement only
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -527,17 +527,30 @@ def _classify_kind_from_ink(gray: np.ndarray, head_box: Tuple[float, float, floa
     return "hollow" if frac < HOLLOW_INNER_INK_MAX_FRACTION else "filled"
 
 
+def _centred_masked(arr: np.ndarray, mask: np.ndarray, memo: Optional[dict]):
+    """`arr[mask]` as float64 minus its mean, and the sum of its squares (ROADMAP 2.191: with a `memo`, each (array, mask)
+    pair is computed once -- the arrays and the mask are all kept alive by the caller, so an `id` names one of them)."""
+    if memo is not None:
+        hit = memo.get((id(arr), id(mask)))
+        if hit is not None:
+            return hit[0], hit[1]
+    v = arr[mask].astype(np.float64)
+    v = v - v.mean()
+    sq = (v * v).sum()
+    if memo is not None:
+        memo[(id(arr), id(mask))] = (v, sq, arr, mask)
+    return v, sq
+
+
 def _masked_ncc(template_img: np.ndarray, candidate_img: np.ndarray,
-                mask: np.ndarray) -> Optional[float]:
+                mask: np.ndarray, memo: Optional[dict] = None) -> Optional[float]:
     """Normalised correlation, restricted to `mask`. `None` where the mask
     selects nothing (never scored)."""
     if not mask.any():
         return None
-    t = template_img[mask].astype(np.float64)
-    c = candidate_img[mask].astype(np.float64)
-    t = t - t.mean()
-    c = c - c.mean()
-    denom = float(np.sqrt((t * t).sum() * (c * c).sum()))
+    t, t2 = _centred_masked(template_img, mask, memo)
+    c, c2 = _centred_masked(candidate_img, mask, memo)
+    denom = float(np.sqrt(t2 * c2))
     if denom <= 0:
         return 0.0
     return float((t * c).sum() / denom)
@@ -570,9 +583,9 @@ SHIFT_PENALTY_PER_SPACE = 0.5
 
 def _template_score(tmpl: Template, candidate: np.ndarray,
                     line_candidate: Optional[np.ndarray] = None,
-                    line_term: str = "ncc") -> Optional[float]:
+                    line_term: str = "ncc", memo: Optional[dict] = None) -> Optional[float]:
     head_score = _masked_ncc(tmpl.head_img if tmpl.head_img is not None else tmpl.img,
-                             candidate, HEAD_MASK)
+                             candidate, HEAD_MASK, memo)
     if head_score is None:
         return None
     if not tmpl.line_mask_components:
@@ -591,7 +604,7 @@ def _template_score(tmpl: Template, candidate: np.ndarray,
             if bar.any():
                 comp_scores.append(float(lc[bar].mean()))
     else:
-        comp_scores = [s for s in (_masked_ncc(tmpl.img, lc, m)
+        comp_scores = [s for s in (_masked_ncc(tmpl.img, lc, m, memo)
                                    for m in tmpl.line_mask_components) if s is not None]
     if not comp_scores:
         return head_score
@@ -724,21 +737,22 @@ def match_head_template(
         if not allowed_shifts:
             allowed_shifts = None      # nothing to constrain with: fall back, and say so
 
-    def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
-        if tmpl is None:
-            return None, None
-        best_score, best_shift = None, None
-        for dxp, shift in [(a, b) for a in range(-dx_max, dx_max + 1)
-                           for b in range(-slide_px, slide_px + 1, SLIDE_STEP_PX)
-                           if not (allowed_shifts is not None and tmpl.variant == "raw"
-                                   and b not in allowed_shifts)]:
-            lx0, lx1 = lx0_base + dxp, lx1_base + dxp
-            win_cy = cy + shift
-            ly0 = int(round(win_cy - half_h)) - iy0
-            ly1 = int(round(win_cy + half_h)) - iy0
-            if ly0 < 0 or ly1 > ink.shape[0] or lx0 < 0 or lx1 > ink.shape[1] \
-                    or ly1 <= ly0 or lx1 <= lx0:
-                continue
+    # ROADMAP 2.191: the window at (dx, shift) is a function of the raster alone, not of the template, and `_best_for` is run
+    # for the on-line, in-space (and raw) templates over the SAME grid -- so each window is cut and resized once.
+    _windows: Dict[Tuple[int, int], Any] = {}
+    _ncc_memo: dict = {}      # (array, mask) -> centred values; every array in it lives as long as this call
+
+    def _window(dxp: int, shift: int):
+        hit = _windows.get((dxp, shift), _windows)
+        if hit is not _windows:
+            return hit
+        lx0, lx1 = lx0_base + dxp, lx1_base + dxp
+        win_cy = cy + shift
+        ly0 = int(round(win_cy - half_h)) - iy0
+        ly1 = int(round(win_cy + half_h)) - iy0
+        out = None
+        if not (ly0 < 0 or ly1 > ink.shape[0] or lx0 < 0 or lx1 > ink.shape[1]
+                or ly1 <= ly0 or lx1 <= lx0):
             candidate = ink[ly0:ly1, lx0:lx1]
             if candidate.shape[0] != CANONICAL_H or candidate.shape[1] != CANONICAL_W:
                 candidate = cv2.resize(candidate, (CANONICAL_W, CANONICAL_H),
@@ -749,7 +763,23 @@ def match_head_template(
                 if cand_line.shape[0] != CANONICAL_H or cand_line.shape[1] != CANONICAL_W:
                     cand_line = cv2.resize(cand_line, (CANONICAL_W, CANONICAL_H),
                                            interpolation=cv2.INTER_AREA)
-            score = _template_score(tmpl, candidate, cand_line, line_term)
+            out = (candidate, cand_line)
+        _windows[(dxp, shift)] = out
+        return out
+
+    def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
+        if tmpl is None:
+            return None, None
+        best_score, best_shift = None, None
+        for dxp, shift in [(a, b) for a in range(-dx_max, dx_max + 1)
+                           for b in range(-slide_px, slide_px + 1, SLIDE_STEP_PX)
+                           if not (allowed_shifts is not None and tmpl.variant == "raw"
+                                   and b not in allowed_shifts)]:
+            win = _window(dxp, shift)
+            if win is None:
+                continue
+            candidate, cand_line = win
+            score = _template_score(tmpl, candidate, cand_line, line_term, _ncc_memo)
             if score is None:
                 continue
             score -= SHIFT_PENALTY_PER_SPACE * (abs(shift) / spacing)

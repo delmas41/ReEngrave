@@ -181,11 +181,9 @@ def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
     import cv2                                              # noqa: PLC0415
     import pytesseract                                      # noqa: PLC0415
 
-    out: list[str] = []
-    for crop in crops:
+    def one(crop) -> str:
         if crop is None or getattr(crop, "size", 0) == 0:
-            out.append("")
-            continue
+            return ""
         gray = (cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
                 if getattr(crop, "ndim", 2) == 3 else crop)
         work = (cv2.resize(gray, None, fx=upscale, fy=upscale,
@@ -196,10 +194,17 @@ def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
                 work, config=f"--psm {PSM_LINE}")
         except Exception as exc:                            # noqa: BLE001
             logger.warning("tesseract failed on one crop: %s", exc)
-            out.append("")
-            continue
-        out.append(strip_line_fragments(text))
-    return out
+            return ""
+        return strip_line_fragments(text)
+
+    # ROADMAP 2.191: each crop is its own `tesseract` process, independent of every other, so a few run at once
+    # (<= 4, CLAUDE.md "lean lanes"); `map` returns them in crop order, so the list is the one the serial loop built.
+    crops = list(crops)
+    if len(crops) < 2:
+        return [one(c) for c in crops]
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=min(4, len(crops))) as pool:
+        return list(pool.map(one, crops))
 
 
 def read_system_labels(pws: PageWithStaves,
