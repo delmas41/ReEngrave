@@ -911,6 +911,13 @@ class Q(_Vocab):
     #: `two_positions`, ...), a measurement naming nothing -- `Q.ARC_KIND` / `Q.TIE_PAIR` are not changed by it.
     SYSTEM_ARC = "system_arc"
 
+    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default OFF; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
+    #: a cell's staff-erased ink, measured once: `value` is the kind (`vertical` / `horizontal` / `curve` / `blob`), `detail` its measurements (box in both
+    #: frames, length / angle / thickness / curvature / fill / hole share, ends in staff steps against the staff measured AT the ends' x, the strokes it
+    #: touches). It decides nothing and NOTHING READS IT yet (step 1 of 10; the `Q.INK` discipline). A piece under 0.05 sp^2 is counted on its cell's
+    #: rows (`cell_n_below_floor`), not filed.
+    STROKE = "stroke"
+
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
     #: glyph: the ink fraction INSIDE the detector's OWN box, two ways --
@@ -2297,6 +2304,8 @@ CLAIMS: "dict[str, str]" = {
     #: be wrong about what the ink is, only about where the ruler was laid.
     #: `score is None` follows, as it does for `NOTEHEAD_STAFF_POSITION`.
     "VERTICAL_RUN": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.195: a measurement of ink, like `VERTICAL_RUN`; names nothing, so it cannot be wrong about what the ink is.
+    "STROKE": CLAIM.MEASUREMENT,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
@@ -2899,6 +2908,8 @@ class READERS(_Vocab):
     #: `CV_INK` reads (one crop, one signal), filed as staff-sized pieces
     #: with page boxes for EVALUATE's missed-rest question.
     CV_INK_PIECES = "cv_ink_pieces"
+    #: `gather.gather_stroke_map` -- ROADMAP 2.195. The SAME erased raster `CV_INK` reads (one crop, one signal), reduced to 16 px a space.
+    CV_STROKE = "cv_stroke"
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"

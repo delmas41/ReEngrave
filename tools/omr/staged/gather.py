@@ -7341,6 +7341,85 @@ def gather_ink(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The stroke map -- every stroke of a cell, measured once (ROADMAP 2.195, step 1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `OMR_STROKE_MAP` -- file one `Q.STROKE` row per stroke of each cell's staff-erased ink (`stroke_map.py`). **Default OFF**, so the ON test is an
+#: ALLOW-LIST (an empty value or a typo must not switch a document onto an unpriced GATHER change). PRODUCER ONLY: nothing reads the rows, so
+#: flag on writes a byte-identical exported file.
+STROKE_MAP_ENV = "OMR_STROKE_MAP"
+_STROKE_GLYPH_BASE = 400_000          # past the detector's ordinals, `_CV_GLYPH_BASE`, `_INK_GLYPH_BASE`, `_VERTICAL_RUN_GLYPH_BASE`
+
+
+def stroke_map_enabled() -> bool:
+    return os.environ.get(STROKE_MAP_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> None:
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
+    raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
+    staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`)."""
+    if not stroke_map_enabled():
+        return
+    from . import stroke_map as SM
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        grid = _cell_grid(c)
+        if img is None or getattr(img, "ndim", 0) != 2:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if grid is None:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None))
+        if res is None:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        if not res.strokes:
+            if res.n_below_floor == 0:
+                log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_INK)
+            else:           # ink, but every piece under the floor: said, never read as "no ink"
+                log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.ONLY_DEBRIS,
+                            n_below_floor=res.n_below_floor)
+            continue
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+        for i, st in enumerate(res.strokes):
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, _STROKE_GLYPH_BASE + i)
+            optional: Dict[str, Any] = {}
+            if st.sagitta_sp is not None:
+                optional["sagitta_spaces"] = st.sagitta_sp
+            if st.hole_share is not None:
+                optional["hole_share"] = st.hole_share
+            if st.lines_right != st.lines_left:          # absent = the staff is level across the stroke (bytes: 5 ints on most rows)
+                optional["staff_lines_right"] = st.lines_right
+            if page_ok:
+                x, y, w, h = st.box
+                optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
+                                            round(cell_box[0] + (x + w) / up, 1), round(cell_box[1] + (y + h) / up, 1)]
+            else:
+                optional["frame_note"] = "no page box: cell has no bbox_page_px/upscale_factor"
+            log.observe(
+                g, Q.STROKE, st.kind, reader=READERS.CV_STROKE, frame=frame,
+                stroke_box=list(st.box), area_sp2=st.area_sp2, length_spaces=st.length_sp, angle_deg=st.angle_deg,
+                thickness_spaces=st.thickness_sp, thickness_spread_spaces=st.thickness_spread_sp, fill=st.fill,
+                ends=[list(st.ends[0]), list(st.ends[1])], end_steps_from_top=list(st.end_steps),
+                profile_sixteenths=st.profile, touches=[[j, ct] for j, ct in st.touches],
+                component=st.component, component_n_strokes=st.component_n_strokes,
+                staff_lines_left=st.lines_left, staff_space_local_px=st.staff_space_local,
+                staff_local=res.staff_local, cell_n_below_floor=res.n_below_floor, **optional)
+        if progress:
+            print(f"  gather strokes {sub.to_key()}: {len(res.strokes)}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The staff-sized ink of a bar, with its page box -- ROADMAP 2.80
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -15298,6 +15377,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
         _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
+        # ROADMAP 2.195 (flag OMR_STROKE_MAP, default OFF; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
+        # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
+        gather_stroke_map(log, cells, local, progress=progress)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files

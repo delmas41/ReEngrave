@@ -488,6 +488,13 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "Nothing converts them.",
         None),
 
+    "STROKE": (
+        RAW_INK,
+        "ROADMAP 2.195, step 1 of the shared ink map: every stroke of a cell's erased ink (vertical / horizontal / curve / blob), scoreless because run "
+        "analysis returns no confidence and the row names no mark. Its ends are given in staff steps against the staff measured at the ends' own x "
+        "(`LocalStaff`), so it is a staff-grid measurement as well; nothing reads it yet.",
+        None),
+
     "VERTICAL_RUN": (
         RAW_INK,
         "EVERY component the stem opening produced, accepted AND refused, "
@@ -892,6 +899,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
     "CV_INK_PIECES": ("staged/gather.py", "gather_cell_ink_pieces"),
+    # ROADMAP 2.195: the erased raster, reduced to 16 px a space, and the raw raster for the local staff.
+    "CV_STROKE": ("staged/gather.py", "gather_stroke_map"),
     "CV_NARROW_BOX_SHAPE": ("staged/gather.py", "gather_narrow_box_shape"),
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),
