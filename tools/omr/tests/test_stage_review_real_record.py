@@ -24,7 +24,7 @@ from tools.omr.staged.review import server as R
 REAL_RECORD = Path(os.environ.get("REENGRAVE_LIBRARY_DIR")
                    or "/Users/seanjohnson/Desktop/ReEngrave/library"
                    ) / "_shared-records" / (
-    "beethoven5-litolff-mvt1-whole-20260923.record.json")
+    "beethoven5-litolff-mvt1-whole-20261020-night.record.json")
 
 
 @pytest.mark.slow

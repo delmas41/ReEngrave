@@ -5,7 +5,7 @@ what did it DECIDE**. Sean's corrections leave as a review-actions SIDECAR
 which lane (A) ingests into the record as human WITNESSES and re-decides with.
 
     python3 -m tools.omr.staged.review.server \\
-        --record library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json \\
+        --record library/_shared-records/beethoven5-litolff-mvt1-whole-20261020-night.record.json \\
         --pdf    library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \\
         --staff  staff/3/0/9
 
