@@ -89,3 +89,39 @@ first suspect). Litolff ON is byte-identical to OFF, so it is Brahms-only. A rea
 draws are key flats and all 3 controls are real eighth rests: 12 of 12 as the key. So the census count stands on his eye (20 Litolff + 4
 Brahms key flats written as rests, not 2), and the claim as built keeps the controls. The per-system key reader proposed in §1 is NOT built;
 it waits for Sean's go-ahead.
+
+---
+
+# 2.187 -- the key signature read ONCE PER SYSTEM
+
+Path: STAGED GATHER (`key_object.py` PURE, `gather.gather_key_object`) + the 2.183 `claimed_by.consult` (unchanged except it copies the row's `key_object` onto the verdict). Flag
+`OMR_KEY_PER_SYSTEM`, default OFF, needs `OMR_KEY_SIGNATURE_CLAIM` + `OMR_CLAIMED_REGISTER`. Branch `lane-2.187-key-per-system` (on `lane-2.183-key-signature-claim`).
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Assumed: (1) the printed key signature has ONE count per system, read by the staves' agreement; (2) the
+header between a staff's clef and its last accidental holds nothing but key accidentals (Sean 2026-10-12), so a box STANDING in a slot is refused; (3) a staff that reads no
+slot of its own may be a transposing staff, so its area is only NARROWED (blue) and no key is ever written to it. Falsified by: a print-confirmed real rest/note standing in a
+placed slot, or a transposing staff whose own signature differs from the system's count AND which carries a real mark where the system's count places a slot. NOT confirmed: Sean
+has not seen this reader's tiles; two plates only; the dossier check is built but the pipeline admits a dossier only through a confirmed sheet, so ON without a sheet is
+"dossier silent". Question for Sean (transposing staves): Beethoven's clarinets print 1 flat, horns none, the rest 3. Is it right that a staff that reads some slots of its own claims the
+whole system run (so a mark at a slot it did not print is refused), and one that reads none is only narrowed?
+
+## What was found (measured, not the 2.183 guess)
+
+- The signature is NOT at one x on every staff: each staff's signature is typeset against its own clef, whose width differs (Litolff p2: clef edge 404-414 px, first slot 405-427). An absolute-column
+  reader (the 2.177 `find_column` shape) split real columns in pieces and found a run of 1-3 where the print has 3. What the staves agree on is the COUNT and the slot PITCH (~1.1 sp).
+- The raster alone does not read these slots (a crushed Litolff flat is a blob fused with its stem, the clef, a barline: connected-component pieces fail the size test on many staves);
+  the detector's key/accidental boxes alone do not either (the 2.183 cause). Both are taken as candidate slots per staff (`staff_run`), and the count is the largest k that two staves read in full.
+- 12 of the 20 Litolff pages' systems, all 8 per-plate... see measures below.
+
+## The 24 known key flats written as rests (checked page by page: `known_flats_2_187.py`; REAL gather rows -> ADJUDICATE..EXPORT of each page's slice of the 20261020-night record)
+
+| arm | refused as the key's own ink | written blue (narrowed) | still written as rest |
+|---|---|---|---|
+| base (main) | 0 | 0 | 24 |
+| 2.183 only | 0 | 0 | 24 |
+| 2.187, dossier admitted (pair or one staff + dossier) | 19 | 2 | 3 |
+| 2.187, dossier silent (pair only) | 20 | 2 | 2 |
+
+(`glyph/5/1/1/0/13` stays a rest in both: its staff read 3 slots itself but the flat's box stands 1.2 sp past the placed third; `glyph/7/0/10/0/12` and the two Brahms keys
+`15/0/0/0/11`, `21/0/9/0/3` change with the dossier -- see the dossier note: a count the work prints as {0,1,3} made the pair's 2 "disagree" before the dossier-stands-in rule was fixed;
+the table above is the pre-fix run, re-run in the final measure.) The 2 narrowed are staves that read NO slot of their own on a system whose other staves read 3 (`5/1/5/0/5`, `9/0/1/0/12`): blue, never refused.

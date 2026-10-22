@@ -145,12 +145,18 @@ def find_object(binary: Any, staves: Sequence[Dict[str, Any]], *, allowed_counts
             break
     basis = "two_staves"
     if allowed_counts is not None:
-        # the dossier (the work's own encoding, a different source) stands in for the second staff: the largest count it prints that
-        # AT LEAST ONE staff read in full. Without the dossier this stays the pair's `N` -- one staff alone is never the system.
+        # the dossier (the work's own encoding, a different source) bounds the count: the largest count it prints that AT LEAST ONE staff read
+        # in full (a pair reading 4 where the work prints 3 and 1 read a clef's fragment as a slot: 3). It stands in for the second staff when only
+        # one read that many. Without the dossier the count stays the pair's -- one staff alone is never the system.
         top = max(counts.values()) if counts else 0
         ks = [k for k in set(allowed_counts) if 1 <= k <= MAX_SLOTS and k <= top]
-        if ks and max(ks) > N:
-            N, basis = max(ks), "one_staff_and_dossier"
+        # a pair reading a count the work does not print may be one stray piece too many (a clef's fragment, a barline): the dossier's next
+        # count down is taken only if it is ONE slot below the pair's; a larger gap is a disagreement, not a correction
+        ok = [k for k in ks if k >= N or k == N - 1] if N not in set(allowed_counts) else [k for k in ks if k >= N]
+        if ok:
+            k = max(ok)
+            if k != N:
+                N, basis = k, ("two_staves" if sum(1 for c in counts.values() if c >= k) >= COUNT_MIN_STAVES else "one_staff_and_dossier")
     gaps = []
     for st in staves:
         pc = runs[st["key"]]["pieces"]

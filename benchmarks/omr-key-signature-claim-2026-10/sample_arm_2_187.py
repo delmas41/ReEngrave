@@ -96,10 +96,7 @@ if os.environ.get("PAGES"):
     SAMPLE[PLATE] = [int(x) for x in os.environ["PAGES"].split(",")]
 TAG = os.environ.get("TAG", "")
 os.makedirs(OUTD, exist_ok=True)
-env = {"base": dict(OMR_KEY_SIGNATURE_CLAIM="0", OMR_KEY_PER_SYSTEM="0"), "c183": dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="0"),
-       "c187": dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="1"), "c187nd": dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="1")}[ARM]
-os.environ.update(env)
-dossier = json.load(open(DOSS[PLATE])) if ARM != "c187nd" else None
+ARMS = ARM.split(",")          # several arms in ONE process = the 2.183 harness's setup
 P = os.path.join(SD, PLATE)
 def ld(kind):
     out = []
@@ -108,18 +105,17 @@ def ld(kind):
     return out
 obs, ab = ld("observations"), ld("abstentions")
 rec = {"observations": obs, "abstentions": ab, "verdicts": []}
-log, _ = RR.rebuild_gather(rec)
-if ARM != "base":
-    for pg in SAMPLE[PLATE]:
-        binary = render_page(PDFS[PLATE], pg, dpi=600).binary
-        inject(log, [o for o in obs if (o["subject"] or "").split("/")[1:2] == [str(pg)]], binary, pg, dossier, ARM.startswith("c187"))
-RR.run_stages(log)
-result = {"record": log.to_json(), "summary": log.summary()}
-xml, report = E.to_musicxml(result)
-open(os.path.join(OUTD, "%s.%s%s.musicxml" % (PLATE, ARM, TAG)), "w").write(xml)
-vs = [v for v in result["record"]["verdicts"] if v["quantity"] in ("duration", "notehead_is_not_a_notehead", "rest_is_not_a_rest", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest", "arc_kind")]
-json.dump({"verdicts": vs, "claims": [dict(subject=o["subject"], value=o["value"], detail={k: v for k, v in (o.get("detail") or {}).items() if k != "boxes_inside"})
-                                      for o in result["record"]["observations"] if o["quantity"] == "claimed_area" and (o.get("detail") or {}).get("owner") == "key_signature"],
-           "red": (report.get("red_bars") or {}).get("n") if isinstance(report.get("red_bars"), dict) else None},
-          open(os.path.join(OUTD, "%s.%s%s.json" % (PLATE, ARM, TAG)), "w"), default=str)
-print(PLATE, ARM, "xml", hashlib.sha1(xml.encode()).hexdigest()[:10], "notes", xml.count("<note"), "blue", xml.count('color="%s"' % E.GUESS_COLOR), flush=True)
+ENVS = {"base": dict(OMR_KEY_SIGNATURE_CLAIM="0", OMR_KEY_PER_SYSTEM="0"), "c183": dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="0"),
+        "c187": dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="1")}
+for ARM in ARMS:
+    os.environ.update(ENVS[ARM])
+    log, _ = RR.rebuild_gather(rec)
+    if ARM != "base":
+        for pg in SAMPLE[PLATE]:
+            binary = render_page(PDFS[PLATE], pg, dpi=600).binary
+            inject(log, [o for o in obs if (o["subject"] or "").split("/")[1:2] == [str(pg)]], binary, pg, DOSS and json.load(open(DOSS[PLATE])), ARM.startswith("c187"))
+    RR.run_stages(log)
+    xml, report = E.to_musicxml({"record": log.to_json(), "summary": log.summary()})
+    del log
+    open(os.path.join(OUTD, "%s.%s%s.musicxml" % (PLATE, ARM, TAG)), "w").write(xml)
+    print(PLATE, ARM, "xml", hashlib.sha1(xml.encode()).hexdigest()[:10], "notes", xml.count("<note"), "blue", xml.count('color="%s"' % E.GUESS_COLOR), flush=True)
