@@ -51,6 +51,7 @@ class DetectorCacheError(RuntimeError):
 
 _STATS = {"hits": 0, "misses": 0, "bytes_written": 0, "bytes_read": 0, "miss_s": 0.0, "hit_s": 0.0, "plain_s": 0.0, "calls_plain": 0}
 _WEIGHT_HASH: Dict[Any, str] = {}
+_USED_WEIGHTS: set = set()
 _LOCK = threading.Lock()
 
 
@@ -248,6 +249,7 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
     t0 = time.perf_counter()
     images = _images_of(source)
     key = make_key(weights_path=weights_path, source=source, conf=conf, imgsz=imgsz, device=device)
+    _USED_WEIGHTS.add(key["weights"][:12])
     digest = key_digest(key)
     hit = _load(root, digest, key)
     if hit is not None:
@@ -271,10 +273,40 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
 def _report() -> None:
     if (_STATS["hits"] or _STATS["misses"]) and cache_dir():
         sys.stderr.write("detector-cache: %d hit, %d miss, %.1f MB written, %.1f MB read; detector seconds: %.1f on misses, "
-                         "%.1f serving hits (%s)\n" % (_STATS["hits"], _STATS["misses"], _STATS["bytes_written"] / 1e6,
-                                                      _STATS["bytes_read"] / 1e6, _STATS["miss_s"], _STATS["hit_s"], cache_dir()))
+                         "%.1f serving hits; weights %s (%s)\n" % (_STATS["hits"], _STATS["misses"], _STATS["bytes_written"] / 1e6,
+                                                      _STATS["bytes_read"] / 1e6, _STATS["miss_s"], _STATS["hit_s"],
+                                                      ",".join(sorted(_USED_WEIGHTS)), cache_dir()))
     elif _STATS["calls_plain"] and os.environ.get("OMR_DETECTOR_TIMING"):
         sys.stderr.write("detector (no cache): %d calls, %.1f s\n" % (_STATS["calls_plain"], _STATS["plain_s"]))
 
 
 atexit.register(_report)
+
+
+def summarize(logs: Sequence[str]) -> str:
+    """One line for an unattended run: hits / misses summed over the runs' logs (the `detector-cache:` line each process
+    prints on exit), and whether any run met a bad entry. A stale key cannot hit (the key holds the weights hash and the
+    pixels); a bad entry raises and kills its run, which the log shows as `DetectorCacheError`."""
+    import re
+    h = m = bad = 0
+    ws: set = set()
+    secs = [0.0, 0.0]
+    for lg in logs:
+        try:
+            txt = Path(lg).read_text(errors="replace")
+        except OSError:
+            continue
+        bad += txt.count("DetectorCacheError")
+        for g in re.finditer(r"detector-cache: (\d+) hit, (\d+) miss.*?([\d.]+) on misses, ([\d.]+) serving hits; weights ([0-9a-f,]*)", txt):
+            h += int(g.group(1)); m += int(g.group(2)); secs[0] += float(g.group(3)); secs[1] += float(g.group(4))
+            ws.update(x for x in g.group(5).split(",") if x)
+    return ("detector-cache: %d hit / %d miss (%.0f s detector on misses, %.0f s serving hits); weights %s; "
+            "bad or mismatched entries: %d%s" % (h, m, secs[0], secs[1], ",".join(sorted(ws)) or "-", bad,
+                                                 "" if not bad else "  <-- A RUN DIED ON A BAD ENTRY"))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 2 and sys.argv[1] == "summary":
+        print(summarize(sys.argv[2:]))
+    else:
+        raise SystemExit("usage: python3 -m tools.omr.detector_cache summary LOG...")

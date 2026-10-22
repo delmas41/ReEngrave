@@ -35,15 +35,22 @@ git worktree add -q --detach "$WT" "$REF" || exit 2
 cd "$WT"
 ln -sfn $M/.venv-surya .venv-surya; ln -sfn $M/.venv-omrned .venv-omrned; ln -sfn $M/omr-weights omr-weights
 mkdir -p tools/omr/training/data && ln -sfn $M/tools/omr/training/data/weights tools/omr/training/data/weights
+# ROADMAP 2.189 step 2: the detector's raw output is cached PER MOVEMENT and kept between nights ($OUT/detector-cache/<id>), so a
+# night whose weights, crops and detector parameters are unchanged does not read the pages again. The key holds the weights-file
+# hash, conf/imgsz and the crop's pixel hash: a changed weight, parameter or crop is a MISS (a fresh read), never a reuse; a bad
+# entry kills the run loudly. DETECTOR_CACHE=off turns it off (the first night after this lands fills it, at today's wall time).
+DETECTOR_CACHE=${DETECTOR_CACHE:-$OUT/detector-cache}
 export OMR_SURYA_KEEP_ALIVE=0 OMRNED_PYTHON=$M/.venv-omrned/bin/python
 echo "ref $REF commit $(git rev-parse HEAD) through $THROUGH start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
 run() {  # id pdf pages
   local t0=$(date +%s)
+  if [ "$DETECTOR_CACHE" = off ]; then unset OMR_DETECTOR_CACHE; else export OMR_DETECTOR_CACHE="$DETECTOR_CACHE/$1"; fi
   python3 -m tools.omr.staged "$2" --pages "$3" --weights auto --through "$THROUGH" --out "$OUT/$1-mvt1-whole-$TAG.record.json" > "$LOG/$1.log" 2>&1
   local rc=$?
   # a gather whose detector never fired still exits 0 -- refuse it here
   grep -q "'duration':" "$LOG/$1.log" || rc=3
   echo "$1 pages $3 exit $rc wall $(( ($(date +%s)-t0)/60 )) min" >> "$LOG/summary.txt"
+  echo "$1 $(python3 -m tools.omr.detector_cache summary "$LOG/$1.log")" >> "$LOG/summary.txt"
 }
 run beethoven5-litolff $M/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf 1-16
 run brahms1-breitkopf $M/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf 0-26
