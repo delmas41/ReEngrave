@@ -22,6 +22,7 @@ from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
 from .. import one_ink as _one_ink
+from .. import accidental_shape as _acc_shape
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
                       owner_from_staves_enabled)
@@ -4237,7 +4238,7 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
              "no_candidate", "no_unit", "no_evidence",
              "refused_not_an_accidental", "is_a_key_signature_marker",
              "head_belongs_to_a_nearer_staff", "owned_by_another_staff",
-             "ownership_undecided"),
+             "ownership_undecided", "one_ink_absorbed"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -4352,6 +4353,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # contest has NOT decided, the glyph abstains and is counted -- the stronger box of either cell never wins by confidence alone.
     # Uncontested glyphs carry no verdict or `no_contest` for their own staff and pass.
     if _one_ink.enabled():
+        if detail.get("one_ink_absorbed"):
+            # the merge kept this box (its glyph index is unchanged) but a stronger class of the SAME ink in this cell stands for it
+            return Ruling.abstain("one_ink_absorbed", alteration=alteration, detector_class=detail.get("detector_class"))
         gown = ev.verdict(Q.GLYPH_OWNER)
         if gown is not None:
             if gown.outcome is Outcome.DECIDED and isinstance(gown.value, str):
@@ -4361,6 +4365,38 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             else:
                 return Ruling.abstain("ownership_undecided", alteration=alteration, owner_verdict=gown.id,
                                       owner_outcome=gown.outcome.value)
+
+    # ⚠️⚠️ ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, on top of 2.186): where the merge left TWO OR MORE of the detector's own classes for this
+    # ink, the shape of the ink itself (`gather._accidental_shape_detail`, classified here from the filed corner densities so a cut-off
+    # change needs no re-gather) may CHOOSE AMONG THEM -- never a class the detector did not offer. A clear shape that names a candidate
+    # replaces the confidence winner (alteration AND the staff position that class anchors at); an unclear / unread / unoffered shape leaves
+    # the 2.186 winner and the candidates stand. Always GUESSED (the merge's `one_ink` detail is what export reads); the shape is a second
+    # reader of the detector's own raster, not a second witness. Singles (no rival) are only recorded, never moved.
+    apos_override = None
+    shape_choice = None
+    if _acc_shape.enabled() and detail.get("shape") is not None:
+        shape_row = detail["shape"]
+        shape_now = _acc_shape.classify(shape_row if shape_row.get("bl") is not None else None)
+        pbc = detail.get("position_by_class") or {}
+        oi = detail.get("one_ink")
+        cands = ([str((oi.get("winner") or {}).get("class"))] + [str(r.get("class")) for r in oi.get("rivals") or ()]) if oi else \
+            [str(detail.get("detector_class"))]
+        shape_choice = _acc_shape.choose(cands, shape_now)
+        shape_choice = {**shape_choice, "measured": shape_now["shape"], "bl": shape_row.get("bl"), "tr": shape_row.get("tr"),
+                        "margin": shape_now["margin"], "candidates": cands}
+        pick = shape_choice.get("pick")
+        if oi and pick and pick in pbc and str(pick) != str((oi.get("winner") or {}).get("class")):
+            was = oi.get("winner") or {}
+            rivals = [r for r in oi.get("rivals") or () if str(r.get("class")) != str(pick)] + [dict(was)]
+            conf_of = {str(r.get("class")): r.get("conf") for r in oi.get("rivals") or ()}
+            oi = {**oi, "winner": {"class": str(pick), "conf": conf_of.get(str(pick))}, "rivals": rivals, "chosen_by": "shape",
+                  "confidence_winner": str(was.get("class"))}
+            detail = {**detail, "one_ink": oi, "detector_class": str(pick)}
+            alteration = pbc[pick]["alteration"]
+            apos_override = float(pbc[pick]["position"])
+            shape_choice["switched_from"] = str(was.get("class"))
+        elif oi and pick:
+            shape_choice["agrees_with_winner"] = True
 
     cell = ev.subject.at(Kind.CELL)
     unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
@@ -4433,7 +4469,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             pos_of[r.subject.to_key()] = (float(r.value), r)
 
     ax1 = float(detail.get("x1", 0.0))
-    apos = float(acc.value)
+    apos = float(acc.value) if apos_override is None else apos_override
 
     cands = []
     for key, row in list(heads.items()) + list(elsewhere.items()):
@@ -4514,7 +4550,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 "confidence": detail.get("confidence"),
                 "heads_excluded": excluded or None,
                 # ROADMAP 2.186: the classes this glyph's box chose between at the merge; absent (and no key) when it chose none
-                **({"one_ink": detail["one_ink"]} if detail.get("one_ink") else {})})
+                **({"one_ink": detail["one_ink"]} if detail.get("one_ink") else {}),
+                # ROADMAP 2.190: what the shape check said about this ink (flag ON, a measured box only)
+                **({"shape_check": shape_choice} if shape_choice else {})})
 
 
 def _keysig_marker_row(ev: Evidence):

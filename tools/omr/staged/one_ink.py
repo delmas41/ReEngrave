@@ -1,4 +1,4 @@
-"""ROADMAP 2.186 -- ONE INK, ONE MARK (flag `OMR_ONE_INK_ONE_MARK`, default OFF). STAGED GATHER (the merge) + ADJUDICATE (ownership first
+"""ROADMAP 2.186 -- ONE INK, ONE MARK (flag `OMR_ONE_INK_ONE_MARK`, default ON). STAGED GATHER (the merge) + ADJUDICATE (ownership first
 for accidentals, the narrowing for rests) + EXPORT (the blue guess). Sean 2026-10-21: "the one mark one box was what I had in mind for
 claiming ink. Each cell should claim its own and the one it belongs to should decide what it is not the other staff".
 
@@ -44,6 +44,7 @@ ONE_INK_ENV = "OMR_ONE_INK_ONE_MARK"
 ONE_INK_REASON = "one_ink_merged"
 OWNED_ELSEWHERE_REASON = "owned_by_another_staff"
 OWNERSHIP_UNDECIDED_REASON = "ownership_undecided"
+ABSORBED_REASON = "one_ink_absorbed"
 
 #: The overlap that means "the same ink". 2.185 checked it on crops (20/20 random crops at >= 0.5 real doubles; the 0.3-0.5 band was half
 #: neighbours). A convention checked on crops, not a measurement tuned for this lane.
@@ -58,8 +59,8 @@ ONE_INK_READ_MARGIN: Optional[float] = None
 
 
 def enabled() -> bool:
-    """`OMR_ONE_INK_ONE_MARK`, default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ONE_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ONE_INK_ONE_MARK`, default ON (ROADMAP 2.186, Sean 2026-10-22); an explicit 0/false/no/off disables."""
+    return os.environ.get(ONE_INK_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def reads(margin: Optional[float]) -> bool:
@@ -124,27 +125,33 @@ def detail_of(info: Optional[Dict[str, Any]], winner_class: str, winner_conf: fl
 
 
 def merge(detections: Sequence[Any]) -> List[Any]:
-    """LIVE path (GATHER, right after `detector.detect`): `SymbolDetection`s of ONE cell in, merged list out. Absorbed boxes are dropped;
-    each winner is a copy with `one_ink_rivals` / `one_ink_margin` set. The survivors keep the detector's order."""
+    """LIVE path (GATHER, right after `detector.detect`): `SymbolDetection`s of ONE cell in, SAME-LENGTH, SAME-ORDER list out -- so every glyph index
+    (the key Sean's answers, the review corrections and the judged index name) is unchanged. A winner is a copy with `one_ink_rivals` /
+    `one_ink_margin` set; an absorbed box is kept as a copy with `one_ink_absorbed_by` = its winner's index and is REFUSED downstream as a
+    duplicate (the rest rule `rest_is_a_duplicate_box`, the accidental owner `one_ink_absorbed`), exactly as every other refused box is kept."""
     if len(detections) < 2:
         return list(detections)
     boxes = [(d.smufl_name, d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical, d.confidence) for d in detections]
     p = plan(boxes)
     if not p:
         return list(detections)
-    gone = {j for info in p.values() for j in info["absorbed"]}
+    winner_of = {j: i for i, info in p.items() for j in info["absorbed"]}
     out: List[Any] = []
     for i, d in enumerate(detections):
-        if i in gone:
-            continue
         info = p.get(i)
-        out.append(d if info is None else dataclasses.replace(
-            d, one_ink_rivals=tuple((r["class"], r["conf"]) for r in info["rivals"]), one_ink_margin=info["margin"]))
+        if info is not None:
+            d = dataclasses.replace(d, one_ink_rivals=tuple((r["class"], r["conf"]) for r in info["rivals"]), one_ink_margin=info["margin"])
+        elif i in winner_of:
+            d = dataclasses.replace(d, one_ink_absorbed_by=winner_of[i])
+        out.append(d)
     return out
 
 
 def box_detail(d: Any) -> Dict[str, Any]:
     """`one_ink` for a GLYPH_BOX / ACCIDENTAL_STAFF_POSITION row detail, from a merged `SymbolDetection`; {} otherwise."""
+    absorbed = getattr(d, "one_ink_absorbed_by", None)
+    if absorbed is not None:
+        return {"one_ink_absorbed_by_index": int(absorbed)}
     rivals = getattr(d, "one_ink_rivals", None)
     if not rivals:
         return {}

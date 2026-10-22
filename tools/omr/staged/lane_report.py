@@ -162,6 +162,9 @@ def load_sample(path: pathlib.Path = SAMPLE_PATH) -> Dict[str, Any]:
 # ───────────────────────────── 2. per-page slices ─────────────────────────────
 
 def slice_dir(plate: str, tag: str) -> pathlib.Path:
+    """The per-page slices of the night record `tag`; or, when `tag` is an existing DIRECTORY (2.190), that directory's `<plate>/` slices as built."""
+    if os.path.isdir(tag):
+        return pathlib.Path(tag) / plate
     return RECORDS / ("lane-report-slices-%s" % tag) / plate
 
 
@@ -170,6 +173,8 @@ def ensure_slices(plate: str, pages: Sequence[int], tag: str, log=print) -> path
     while the page list and the record file are unchanged. Never loads a record whole."""
     from .judged import iter_array
     d = slice_dir(plate, tag)
+    if os.path.isdir(tag):      # slices built by hand (2.190 build_slices): used as they stand
+        return d
     rp = record_path(plate, tag)
     st = rp.stat()
     stamp = {"pages": sorted(pages), "size": st.st_size, "mtime": int(st.st_mtime)}
@@ -234,8 +239,11 @@ def acts_in_gather(homes: Iterable[str]) -> bool:
     return any(pathlib.PurePath(h).name in GATHER_MODULES and "staged" in pathlib.PurePath(h).parts for h in homes)
 
 
-def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unknown: bool) -> Tuple[str, List[str]]:
-    """`(from, notes)`. Refuses what would report a clean zero by construction."""
+def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unknown: bool,
+                replay_gathered: bool = False) -> Tuple[str, List[str]]:
+    """`(from, notes)`. Refuses what would report a clean zero by construction. `replay_gathered` (2.190): the replayed record (`--tag`) was
+    GATHERED with the GATHER-side flags already on and those flags are only MEASURING (the OFF arm ignores what they filed), so a flag homed in
+    GATHER may be replayed from ADJUDICATE; the claim is the caller's and is printed in the notes."""
     notes: List[str] = []
     gather = False
     for name, _off, _on in flags:
@@ -250,6 +258,11 @@ def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unk
         gather = gather or g
         notes.append("%s: read in %s -> %s" % (name, ", ".join(homes[:4]) + (" ..." if len(homes) > 4 else ""),
                                               "GATHER" if g else "ADJUDICATE..EXPORT"))
+    if replay_gathered:
+        if requested == "gather":
+            raise SystemExit("--replay-gathered replays a record gathered with the flags on: use --from adjudicate (or auto)")
+        notes.append("REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT")
+        return "adjudicate", notes
     if requested == "auto":
         return ("gather" if gather else "adjudicate"), notes
     if requested == "adjudicate" and gather:
@@ -956,6 +969,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--allow-unknown-flag", action="store_true")
     ap.add_argument("--detector-cache", default=None,
                     help="--from gather: the detector's raw-output cache dir (default library/_shared-records/detector-cache; 'off' = none)")
+    ap.add_argument("--replay-gathered", action="store_true",
+                    help="--tag names a record GATHERED with the GATHER-side flags on (2.190); replay ADJUDICATE..EXPORT for both arms")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -984,7 +999,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if not a.out:
         raise SystemExit("--out DIR is required")
     plates = [p for p in a.plates.split(",") if p]
-    mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag)
+    mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag, a.replay_gathered)
     if os.environ.get("LANE_REPORT_SAMPLE"):
         notes.append("NOT THE FROZEN SAMPLE: %s (a development control)" % SAMPLE_PATH)
     if not flags:
