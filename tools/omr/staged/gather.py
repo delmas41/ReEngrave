@@ -348,6 +348,16 @@ def _is_clef_class(name: Optional[str], category: Optional[str]) -> bool:
     return "percussion" in (name or "").lower()
 
 
+
+def _accepts_natural_candidates(detector) -> bool:
+    """ROADMAP 2.193: does `detector.detect` take `natural_candidates` (or **kwargs)? A test double with a fixed signature does not."""
+    import inspect
+    try:
+        ps = inspect.signature(detector.detect).parameters
+    except (TypeError, ValueError):
+        return False
+    return "natural_candidates" in ps or any(p.kind is inspect.Parameter.VAR_KEYWORD for p in ps.values())
+
 def gather_detections(log: Log, cells: Sequence[Any],
                       local: Dict[int, Tuple[int, int]], *,
                       detector: Any = None, conf_threshold: float = 0.25,
@@ -411,8 +421,8 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # which ranks it first and gives the recipe. It is recorded rather
         # than quietly fixed so the next reader does not have to find it again.
         # ⚠️ ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`, default ON): also keep the detector's sub-floor NATURAL score on each accidental box
-        # (`natural_score`), a candidate only; the kwarg is passed ONLY with the flag on, so a detector double without it is unaffected.
-        dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz, **({"natural_candidates": True} if _natural_candidate.enabled() else {}))
+        # (`natural_score`), a candidate only; the kwarg is passed ONLY with the flag on AND to a detector whose `detect` takes it, so a detector double without it is unaffected.
+        dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz, **({"natural_candidates": True} if _natural_candidate.enabled() and _accepts_natural_candidates(detector) else {}))
         # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default OFF): the class-wise NMS above keeps two classes of one family on one ink;
         # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
         if dets and _one_ink.enabled():
