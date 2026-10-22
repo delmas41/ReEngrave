@@ -73,6 +73,14 @@ machine-readable form.
   new key's accidentals, belong to the signature's run, not to any note
   (Sean, 2026-10-20: "Canceling accidentals should be considered key
   signature"; claimed-area step 3, ROADMAP 2.178).
+- **A transposing instrument prints its own written key** (scope: general):
+  its key signature has a different number of flats or sharps from the
+  concert key the rest of the system prints, and its accidentals are
+  transposed with it (Sean, 2026-10-22: "transposing instruments treat
+  accidentals differently. So, yes they will have a different key and amount
+  of flats or sharps"). So the system's key count never carries onto a
+  transposing staff; its count comes from its own instrument's transposition
+  (roster/dossier) or from what that staff reads (ROADMAP 2.187).
 - A cautionary meter after a system's last barline governs no bar. A meter
   is printed at a movement's start and at every change, and a change HOLDS
   until a printed change back -- the return is always printed (Sean,
