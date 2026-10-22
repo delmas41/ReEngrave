@@ -1,0 +1,5 @@
+v7+v8 cells 146 completed cells (v13-v21) 320 same stem in both 146
+accidentals present in completed label but absent from v7/v8 label (all shared cells): {'natural': 21, 'flat': 9, 'sharp': 15, 'double': 0}
+  same, only cells in the TRAIN split hollow-ft used: {'natural': 15, 'flat': 9, 'sharp': 8, 'double': 0}
+cells with >=1 such accidental: {'any': 34, 'any_train': 24, 'natural': 17, 'natural_train': 12} of 146 shared cells; train-split shared cells: 119
+per completed version: {'v13-2026-09-03-complete-v7-beet5-bolero': {'natural': 0, 'flat': 0, 'sharp': 0, 'double': 0}, 'v14-2026-09-03-complete-litolff': {'natural': 0, 'flat': 0, 'sharp': 8, 'double': 0}, 'v18-2026-09-03-complete-breitkopf': {'natural': 3, 'flat': 2, 'sharp': 0, 'double': 0}, 'v17-2026-09-03-complete-simrock': {'natural': 0, 'flat': 0, 'sharp': 0, 'double': 0}, 'v15-2026-09-03-complete-peters': {'natural': 8, 'flat': 2, 'sharp': 4, 'double': 0}, 'v16-2026-09-03-complete-eulenburg': {'natural': 10, 'flat': 5, 'sharp': 3, 'double': 0}}

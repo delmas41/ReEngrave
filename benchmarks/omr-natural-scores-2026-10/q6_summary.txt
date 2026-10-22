@@ -1,0 +1,10 @@
+
+prod
+  human natural  n=80   {'confused_with_flat': '9 (11%)', 'confused_with_sharp': '14 (18%)', 'offered': '42 (52%)', 'silent': '15 (19%)'}
+  human flat     n=67   {'offered': '53 (79%)', 'silent': '14 (21%)'}
+  human sharp    n=85   {'confused_with_flat': '1 (1%)', 'offered': '68 (80%)', 'silent': '16 (19%)'}
+
+dsv2base
+  human natural  n=80   {'confused_with_flat': '4 (5%)', 'confused_with_sharp': '9 (11%)', 'offered': '39 (49%)', 'silent': '28 (35%)'}
+  human flat     n=67   {'confused_with_sharp': '1 (1%)', 'offered': '48 (72%)', 'silent': '18 (27%)'}
+  human sharp    n=85   {'confused_with_flat': '1 (1%)', 'confused_with_natural': '1 (1%)', 'offered': '69 (81%)', 'silent': '14 (16%)'}

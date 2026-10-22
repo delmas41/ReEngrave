@@ -1,0 +1,26 @@
+row                          prod=hFT  prod=d25  prod=base | max|prod-base| max|d25-base| max|w| base 
+noteheadHalfOnLine           False     False     False     | 2.44e-04     2.44e-04     3.07e-01    
+noteheadHalfOnLineSmall      False     False     False     | 1.24e-04     1.24e-04     1.61e-01    
+noteheadHalfInSpace          False     False     False     | 2.44e-04     2.44e-04     3.27e-01    
+noteheadHalfInSpaceSmall     False     False     False     | 1.53e-04     1.53e-04     1.72e-01    
+noteheadWholeOnLine          False     False     False     | 1.83e-04     1.83e-04     2.89e-01    
+noteheadWholeInSpace         False     False     False     | 2.44e-04     2.44e-04     2.76e-01    
+noteheadWhole                False     False     False     | 1.83e-04     1.83e-04     1.56e-01    
+accidentalFlat[59]           True      False     False     | 1.22e-04     2.42e-01     2.51e-01    
+accidentalFlatSmall[60]      True      False     False     | 1.22e-04     1.53e-04     1.55e-01    
+accidentalNatural[61]        True      False     False     | 8.01e-05     2.91e-01     2.72e-01    
+accidentalNaturalSmall[62]   True      False     False     | 1.22e-04     1.83e-04     1.68e-01    
+accidentalSharp[63]          True      False     False     | 1.22e-04     2.59e-01     2.73e-01    
+accidentalSharpSmall[64]     True      False     False     | 1.22e-04     1.53e-04     1.63e-01    
+accidentalDoubleSharp[65]    True      False     False     | 1.22e-04     3.25e-01     3.46e-01    
+accidentalDoubleFlat[66]     True      False     False     | 1.22e-04     1.97e-01     2.41e-01    
+keyFlat[67]                  True      False     False     | 1.22e-04     1.22e-04     2.71e-01    
+keyNatural[68]               True      False     False     | 1.22e-04     2.44e-04     2.20e-01    
+keySharp[69]                 True      False     False     | 1.22e-04     1.22e-04     2.70e-01    
+accidentalFlat[170]          True      False     False     | 1.22e-04     1.37e-04     1.67e-01    
+accidentalNatural[171]       True      False     False     | 1.22e-04     1.22e-04     1.58e-01    
+accidentalSharp[172]         True      False     False     | 1.22e-04     1.37e-04     1.56e-01    
+accidentalDoubleSharp[173]   True      False     False     | 1.22e-04     1.26e-04     1.60e-01    
+accidentalDoubleFlat[174]    True      False     False     | 1.22e-04     1.53e-04     1.61e-01    
+tensors 595 prod==d25: 589 prod==hollowft: 187 prod==base: 186
+non-head weight tensors (no BN buffers): 280 prod==d25: 280 prod==hollowft: 84 prod==base: 83

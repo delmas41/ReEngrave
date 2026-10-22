@@ -1,0 +1,45 @@
+
+## ALL human-boxed accidentals (v1-v4, v14-v22)
+model             group       n    med    >=.25    >=.05
+prod              natural    86  0.000    0.30     0.37
+prod              flat       83  0.000    0.27     0.28
+prod              sharp      86  0.000    0.13     0.14
+hollowft          natural    86  0.000    0.29     0.35
+hollowft          flat       83  0.000    0.28     0.29
+hollowft          sharp      86  0.000    0.12     0.14
+dsv2base          natural    86  0.000    0.26     0.30
+dsv2base          flat       83  0.000    0.25     0.29
+dsv2base          sharp      86  0.000    0.10     0.10
+prod_baseNatRows  natural    86  0.000    0.30     0.37
+prod_baseNatRows  flat       83  0.000    0.27     0.28
+prod_baseNatRows  sharp      86  0.000    0.13     0.14
+
+## v1-v4 only (labels hollow-ft trained on)
+model             group       n    med    >=.25    >=.05
+prod              natural     6  0.000    0.33     0.33
+prod              flat       16  0.000    0.06     0.12
+prod              sharp       1  0.131    0.00     1.00
+hollowft          natural     6  0.000    0.33     0.33
+hollowft          flat       16  0.000    0.19     0.19
+hollowft          sharp       1  0.077    0.00     1.00
+dsv2base          natural     6  0.000    0.33     0.33
+dsv2base          flat       16  0.000    0.12     0.19
+dsv2base          sharp       1  0.021    0.00     0.00
+prod_baseNatRows  natural     6  0.000    0.33     0.33
+prod_baseNatRows  flat       16  0.000    0.06     0.12
+prod_baseNatRows  sharp       1  0.131    0.00     1.00
+
+## v14-v22 only (hollow-ft did NOT see these boxes; v14-v18 cells overlap v7/v8 where they were unboxed)
+model             group       n    med    >=.25    >=.05
+prod              natural    80  0.000    0.30     0.38
+prod              flat       67  0.000    0.31     0.31
+prod              sharp      85  0.000    0.13     0.13
+hollowft          natural    80  0.000    0.29     0.35
+hollowft          flat       67  0.000    0.30     0.31
+hollowft          sharp      85  0.000    0.12     0.13
+dsv2base          natural    80  0.000    0.25     0.30
+dsv2base          flat       67  0.000    0.28     0.31
+dsv2base          sharp      85  0.000    0.11     0.11
+prod_baseNatRows  natural    80  0.000    0.30     0.38
+prod_baseNatRows  flat       67  0.000    0.31     0.31
+prod_baseNatRows  sharp      85  0.000    0.13     0.13

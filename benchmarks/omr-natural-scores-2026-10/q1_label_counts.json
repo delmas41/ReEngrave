@@ -1,0 +1,468 @@
+{
+ "all_cells": {
+  "v1-2026-05-18-orchestral": {
+   "cells": 60,
+   "cells_with_any": 20,
+   "natural": 17,
+   "row61": 16,
+   "flat": 39,
+   "row59": 39,
+   "keyFlat": 1,
+   "row67": 1,
+   "row62": 1,
+   "sharp": 2,
+   "row63": 2
+  },
+  "v10-2026-09-03-hollow3-elgar1": {
+   "cells": 15,
+   "cells_with_any": 0
+  },
+  "v11-2026-09-03-hollow3-lamer": {
+   "cells": 11,
+   "cells_with_any": 0
+  },
+  "v12-2026-09-03-hollow3-tchaikovsky1-lowres": {
+   "cells": 18,
+   "cells_with_any": 0
+  },
+  "v13-2026-09-03-complete-v7-beet5-bolero": {
+   "cells": 25,
+   "cells_with_any": 0
+  },
+  "v14-2026-09-03-complete-litolff": {
+   "cells": 54,
+   "cells_with_any": 17,
+   "sharp": 31,
+   "row63": 31,
+   "natural": 1,
+   "row61": 1
+  },
+  "v15-2026-09-03-complete-peters": {
+   "cells": 54,
+   "cells_with_any": 23,
+   "sharp": 8,
+   "row63": 8,
+   "flat": 11,
+   "row59": 10,
+   "natural": 13,
+   "row61": 12,
+   "keyFlat": 17,
+   "row67": 17,
+   "row62": 1,
+   "row60": 1,
+   "keyNatural": 2,
+   "row68": 2
+  },
+  "v16-2026-09-03-complete-eulenburg": {
+   "cells": 55,
+   "cells_with_any": 34,
+   "natural": 12,
+   "row62": 1,
+   "keySharp": 47,
+   "row69": 47,
+   "keyFlat": 2,
+   "row67": 2,
+   "row61": 11,
+   "sharp": 3,
+   "row63": 3,
+   "flat": 7,
+   "row59": 7
+  },
+  "v17-2026-09-03-complete-simrock": {
+   "cells": 13,
+   "cells_with_any": 1,
+   "keySharp": 1,
+   "row69": 1
+  },
+  "v18-2026-09-03-complete-breitkopf": {
+   "cells": 56,
+   "cells_with_any": 34,
+   "natural": 32,
+   "row61": 31,
+   "flat": 14,
+   "row59": 14,
+   "keyFlat": 25,
+   "row67": 25,
+   "sharp": 4,
+   "row63": 4,
+   "row62": 1
+  },
+  "v19-2026-09-03-complete-mahler1": {
+   "cells": 37,
+   "cells_with_any": 8,
+   "keyFlat": 5,
+   "row67": 5,
+   "sharp": 4,
+   "row63": 4
+  },
+  "v2-2026-06-08-beet5": {
+   "cells": 37,
+   "cells_with_any": 2,
+   "flat": 2,
+   "row59": 2
+  },
+  "v20-2026-09-03-complete-elgar1": {
+   "cells": 15,
+   "cells_with_any": 3,
+   "natural": 4,
+   "row61": 4
+  },
+  "v21-2026-09-03-complete-lamer": {
+   "cells": 11,
+   "cells_with_any": 4,
+   "sharp": 5,
+   "row63": 5,
+   "flat": 1,
+   "row59": 1,
+   "keyFlat": 1,
+   "row67": 1
+  },
+  "v22-2026-09-04-simrock-dense": {
+   "cells": 110,
+   "cells_with_any": 63,
+   "sharp": 30,
+   "row63": 30,
+   "flat": 34,
+   "row59": 34,
+   "natural": 18,
+   "row61": 18,
+   "keySharp": 18,
+   "row69": 18,
+   "keyFlat": 12,
+   "row67": 12
+  },
+  "v23-2026-09-04-arcs-reconcile": {
+   "cells": 126,
+   "cells_with_any": 0
+  },
+  "v24-2026-10-13-hollow4-train": {
+   "cells": 100,
+   "cells_with_any": 49,
+   "sharp": 41,
+   "row172": 41,
+   "flat": 32,
+   "row170": 32,
+   "natural": 45,
+   "row171": 45,
+   "double": 4,
+   "row173": 3,
+   "keySharp": 5,
+   "row69": 5,
+   "keyFlat": 16,
+   "row67": 16,
+   "row174": 1
+  },
+  "v3-2026-06-09-mahler5": {
+   "cells": 35,
+   "cells_with_any": 7,
+   "sharp": 5,
+   "row63": 5,
+   "flat": 6,
+   "row59": 6,
+   "natural": 4,
+   "row61": 4
+  },
+  "v4-2026-06-10-la-mer": {
+   "cells": 29,
+   "cells_with_any": 11,
+   "flat": 21,
+   "row59": 21,
+   "sharp": 29,
+   "row63": 29,
+   "natural": 5,
+   "row61": 5
+  },
+  "v5-2026-07-12-clef": {
+   "cells": 15,
+   "cells_with_any": 13,
+   "keySharp": 49,
+   "row69": 49,
+   "sharp": 3,
+   "row63": 3
+  },
+  "v6-2026-07-13-clef-diverse": {
+   "cells": 47,
+   "cells_with_any": 31,
+   "keyFlat": 31,
+   "row67": 31,
+   "natural": 4,
+   "row61": 4,
+   "flat": 13,
+   "row59": 13,
+   "keySharp": 17,
+   "row69": 17
+  },
+  "v7-2026-09-02-hollow": {
+   "cells": 24,
+   "cells_with_any": 0
+  },
+  "v8-2026-09-02-hollow2-5pub": {
+   "cells": 122,
+   "cells_with_any": 0
+  },
+  "v9-2026-09-03-hollow3-mahler1": {
+   "cells": 37,
+   "cells_with_any": 0
+  }
+ },
+ "train_split": {
+  "v1-2026-05-18-orchestral": {
+   "cells": 49,
+   "cells_with_any": 17,
+   "natural": 14,
+   "row61": 13,
+   "flat": 32,
+   "row59": 32,
+   "keyFlat": 1,
+   "row67": 1,
+   "row62": 1,
+   "sharp": 2,
+   "row63": 2
+  },
+  "v10-2026-09-03-hollow3-elgar1": {
+   "cells": 12,
+   "cells_with_any": 0
+  },
+  "v11-2026-09-03-hollow3-lamer": {
+   "cells": 10,
+   "cells_with_any": 0
+  },
+  "v12-2026-09-03-hollow3-tchaikovsky1-lowres": {
+   "cells": 15,
+   "cells_with_any": 0
+  },
+  "v13-2026-09-03-complete-v7-beet5-bolero": {
+   "cells": 23,
+   "cells_with_any": 0
+  },
+  "v14-2026-09-03-complete-litolff": {
+   "cells": 44,
+   "cells_with_any": 12,
+   "sharp": 21,
+   "row63": 21,
+   "natural": 1,
+   "row61": 1
+  },
+  "v15-2026-09-03-complete-peters": {
+   "cells": 45,
+   "cells_with_any": 19,
+   "sharp": 8,
+   "row63": 8,
+   "natural": 12,
+   "row61": 11,
+   "keyFlat": 10,
+   "row67": 10,
+   "flat": 10,
+   "row59": 9,
+   "row62": 1,
+   "row60": 1
+  },
+  "v16-2026-09-03-complete-eulenburg": {
+   "cells": 47,
+   "cells_with_any": 29,
+   "natural": 9,
+   "row62": 1,
+   "keySharp": 42,
+   "row69": 42,
+   "keyFlat": 2,
+   "row67": 2,
+   "row61": 8,
+   "sharp": 2,
+   "row63": 2,
+   "flat": 5,
+   "row59": 5
+  },
+  "v17-2026-09-03-complete-simrock": {
+   "cells": 11,
+   "cells_with_any": 1,
+   "keySharp": 1,
+   "row69": 1
+  },
+  "v18-2026-09-03-complete-breitkopf": {
+   "cells": 44,
+   "cells_with_any": 27,
+   "natural": 28,
+   "row61": 27,
+   "flat": 9,
+   "row59": 9,
+   "keyFlat": 22,
+   "row67": 22,
+   "sharp": 4,
+   "row63": 4,
+   "row62": 1
+  },
+  "v19-2026-09-03-complete-mahler1": {
+   "cells": 28,
+   "cells_with_any": 4,
+   "keyFlat": 4,
+   "row67": 4
+  },
+  "v2-2026-06-08-beet5": {
+   "cells": 33,
+   "cells_with_any": 2,
+   "flat": 2,
+   "row59": 2
+  },
+  "v20-2026-09-03-complete-elgar1": {
+   "cells": 14,
+   "cells_with_any": 3,
+   "natural": 4,
+   "row61": 4
+  },
+  "v21-2026-09-03-complete-lamer": {
+   "cells": 10,
+   "cells_with_any": 3,
+   "sharp": 4,
+   "row63": 4,
+   "keyFlat": 1,
+   "row67": 1
+  },
+  "v22-2026-09-04-simrock-dense": {
+   "cells": 93,
+   "cells_with_any": 55,
+   "sharp": 26,
+   "row63": 26,
+   "flat": 29,
+   "row59": 29,
+   "keySharp": 15,
+   "row69": 15,
+   "natural": 15,
+   "row61": 15,
+   "keyFlat": 12,
+   "row67": 12
+  },
+  "v23-2026-09-04-arcs-reconcile": {
+   "cells": 110,
+   "cells_with_any": 0
+  },
+  "v24-2026-10-13-hollow4-train": {
+   "cells": 84,
+   "cells_with_any": 40,
+   "sharp": 33,
+   "row172": 33,
+   "flat": 25,
+   "row170": 25,
+   "natural": 33,
+   "row171": 33,
+   "double": 4,
+   "row173": 3,
+   "keySharp": 5,
+   "row69": 5,
+   "keyFlat": 16,
+   "row67": 16,
+   "row174": 1
+  },
+  "v3-2026-06-09-mahler5": {
+   "cells": 28,
+   "cells_with_any": 5,
+   "sharp": 3,
+   "row63": 3,
+   "flat": 6,
+   "row59": 6,
+   "natural": 2,
+   "row61": 2
+  },
+  "v4-2026-06-10-la-mer": {
+   "cells": 26,
+   "cells_with_any": 9,
+   "flat": 16,
+   "row59": 16,
+   "sharp": 25,
+   "row63": 25,
+   "natural": 5,
+   "row61": 5
+  },
+  "v5-2026-07-12-clef": {
+   "cells": 12,
+   "cells_with_any": 10,
+   "keySharp": 40,
+   "row69": 40,
+   "sharp": 3,
+   "row63": 3
+  },
+  "v6-2026-07-13-clef-diverse": {
+   "cells": 41,
+   "cells_with_any": 27,
+   "keyFlat": 29,
+   "row67": 29,
+   "natural": 4,
+   "row61": 4,
+   "flat": 9,
+   "row59": 9,
+   "keySharp": 17,
+   "row69": 17
+  },
+  "v7-2026-09-02-hollow": {
+   "cells": 17,
+   "cells_with_any": 0
+  },
+  "v8-2026-09-02-hollow2-5pub": {
+   "cells": 102,
+   "cells_with_any": 0
+  },
+  "v9-2026-09-03-hollow3-mahler1": {
+   "cells": 23,
+   "cells_with_any": 0
+  }
+ },
+ "hollowft_trainset_detail": {
+  "v1-2026-05-18-orchestral": {
+   "cells": 24,
+   "cells_with_any": 9,
+   "natural": 6,
+   "row61": 5,
+   "flat": 14,
+   "row59": 14,
+   "keyFlat": 1,
+   "row67": 1,
+   "row62": 1,
+   "mult": 2,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_nc208/v1-2026-05-18-orchestral"
+  },
+  "v2-2026-06-08-beet5": {
+   "cells": 12,
+   "cells_with_any": 0,
+   "mult": 2,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_nc208/v2-2026-06-08-beet5"
+  },
+  "v3-2026-06-09-mahler5": {
+   "cells": 6,
+   "cells_with_any": 1,
+   "sharp": 1,
+   "row63": 1,
+   "mult": 2,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_nc208/v3-2026-06-09-mahler5"
+  },
+  "v4-2026-06-10-la-mer": {
+   "cells": 1,
+   "cells_with_any": 0,
+   "mult": 2,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/_nc208/v4-2026-06-10-la-mer"
+  },
+  "v7-2026-09-02-hollow": {
+   "cells": 17,
+   "cells_with_any": 0,
+   "mult": 1,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v7-2026-09-02-hollow"
+  },
+  "v8-2026-09-02-hollow2-5pub": {
+   "cells": 102,
+   "cells_with_any": 0,
+   "mult": 1,
+   "dir": "/Users/seanjohnson/Desktop/ReEngrave/data/user-labeled/v8-2026-09-02-hollow2-5pub"
+  }
+ },
+ "hollowft_trainset_weighted": {
+  "cells": 205,
+  "cells_with_any": 20,
+  "natural": 12,
+  "row61": 10,
+  "flat": 28,
+  "row59": 28,
+  "keyFlat": 2,
+  "row67": 2,
+  "row62": 2,
+  "sharp": 2,
+  "row63": 2
+ }
+}

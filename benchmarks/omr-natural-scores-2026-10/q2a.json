@@ -1,0 +1,336 @@
+{
+ "shared": 146,
+ "total": {
+  "natural": 21,
+  "flat": 9,
+  "sharp": 15,
+  "double": 0
+ },
+ "train": {
+  "natural": 15,
+  "flat": 9,
+  "sharp": 8,
+  "double": 0
+ },
+ "cells_with": {
+  "any": 34,
+  "any_train": 24,
+  "natural": 17,
+  "natural_train": 12
+ },
+ "per_version": {
+  "v13-2026-09-03-complete-v7-beet5-bolero": {
+   "natural": 0,
+   "flat": 0,
+   "sharp": 0,
+   "double": 0
+  },
+  "v14-2026-09-03-complete-litolff": {
+   "natural": 0,
+   "flat": 0,
+   "sharp": 8,
+   "double": 0
+  },
+  "v18-2026-09-03-complete-breitkopf": {
+   "natural": 3,
+   "flat": 2,
+   "sharp": 0,
+   "double": 0
+  },
+  "v17-2026-09-03-complete-simrock": {
+   "natural": 0,
+   "flat": 0,
+   "sharp": 0,
+   "double": 0
+  },
+  "v15-2026-09-03-complete-peters": {
+   "natural": 8,
+   "flat": 2,
+   "sharp": 4,
+   "double": 0
+  },
+  "v16-2026-09-03-complete-eulenburg": {
+   "natural": 10,
+   "flat": 5,
+   "sharp": 3,
+   "double": 0
+  }
+ },
+ "examples": [
+  [
+   "beet5hr-p48-sys0-s15-m5",
+   "v14-2026-09-03-complete-litolff",
+   true,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "beet5hr-p48-sys0-s4-m8",
+   "v14-2026-09-03-complete-litolff",
+   false,
+   {
+    "sharp": 2
+   }
+  ],
+  [
+   "beet5hr-p48-sys0-s5-m6",
+   "v14-2026-09-03-complete-litolff",
+   true,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "beet5hr-p49-sys0-s2-m2",
+   "v14-2026-09-03-complete-litolff",
+   true,
+   {
+    "sharp": 2
+   }
+  ],
+  [
+   "beet5hr-p51-sys0-s12-m3",
+   "v14-2026-09-03-complete-litolff",
+   false,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "beet5hr-p51-sys0-s2-m3",
+   "v14-2026-09-03-complete-litolff",
+   true,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s3-m6",
+   "v18-2026-09-03-complete-breitkopf",
+   true,
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s0-m3",
+   "v18-2026-09-03-complete-breitkopf",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s1-m3",
+   "v18-2026-09-03-complete-breitkopf",
+   true,
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "mahler5-p175-sys0-s4-m2",
+   "v15-2026-09-03-complete-peters",
+   false,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "mahler5-p175-sys0-s4-m4",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "mahler5-p175-sys1-s12-m7",
+   "v15-2026-09-03-complete-peters",
+   false,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "mahler5-p175-sys1-s13-m6",
+   "v15-2026-09-03-complete-peters",
+   false,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "mahler5-p176-sys0-s4-m2",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "sharp": 1,
+    "natural": 1
+   }
+  ],
+  [
+   "mahler5-p176-sys1-s11-m5",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "mahler5-p176-sys1-s13-m3",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "mahler5-p177-sys0-s5-m3",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "mahler5-p177-sys1-s7-m6",
+   "v15-2026-09-03-complete-peters",
+   false,
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "mahler5-p178-sys0-s3-m0",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "mahler5-p178-sys1-s11-m4",
+   "v15-2026-09-03-complete-peters",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p2-sys0-s0-m2",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p3-sys0-s14-m3",
+   "v16-2026-09-03-complete-eulenburg",
+   false,
+   {
+    "natural": 1,
+    "sharp": 1
+   }
+  ],
+  [
+   "schehe-p3-sys0-s3-m3",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 1,
+    "sharp": 1
+   }
+  ],
+  [
+   "schehe-p3-sys0-s3-m4",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "schehe-p4-sys0-s2-m4",
+   "v16-2026-09-03-complete-eulenburg",
+   false,
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s10-m3",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "schehe-p4-sys1-s10-m4",
+   "v16-2026-09-03-complete-eulenburg",
+   false,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s11-m1",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s11-m2",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s11-m5",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s13-m5",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "schehe-p4-sys1-s16-m3",
+   "v16-2026-09-03-complete-eulenburg",
+   false,
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s9-m1",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "schehe-p4-sys1-s9-m2",
+   "v16-2026-09-03-complete-eulenburg",
+   true,
+   {
+    "flat": 1
+   }
+  ]
+ ]
+}
