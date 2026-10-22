@@ -188,16 +188,21 @@ LEVEL_MARGIN_SPACES = 1.0
 SLOT_WIDTH_SPACES = 1.0
 
 
-def claim_for_staff(obj: Dict[str, Any], key: Any, lines: Sequence[float], spacing: float) -> Optional[Dict[str, Any]]:
-    """What ONE staff claims of the system's run of `N` slots, or None (status not `found`).
+def claim_for_staff(obj: Dict[str, Any], key: Any, lines: Sequence[float], spacing: float, *, written_count: Optional[int] = None
+                    ) -> Optional[Dict[str, Any]]:
+    """What ONE staff claims of the system's run of `N` slots, as one or two PARTS, or None (status not `found`).
 
-    A staff that read at least one slot claims N: its own slots where it read them, the rest PLACED one pitch apart from its last (the
-    'fewer slots' case this reader exists for; the pitch is its own where it read two, else the system's). The area runs from its clef
-    edge to the Nth slot's right edge, `standing: READ`. A staff that read none (a transposing staff, or a missed one -- not told apart on
-    one raster) claims the area the system's N implies from its clef edge as `standing: NARROWED`: a box there is written blue, never
-    refused. A staff that read MORE than N claims only its first N (a place to look again, reported, never overruled).
-    Returns `{"area", "slots", "own", "placed", "standing"}`; `y` is the staff's own pieces' extent (else its five lines') padded by
-    `LEVEL_MARGIN_SPACES`."""
+    * the slots the staff READ itself (its own pieces, up to N): area from its clef edge to its last read slot, `standing: READ`;
+    * the slots it did NOT read, placed one pitch apart from its last (the 'fewer slots' case): a part `standing: NARROWED` -- a box there
+      is written blue, never refused -- UNLESS `written_count` (the staff's own instrument's written accidental count, from the roster /
+      dossier transposition) is known and is at least N, when that part is READ. Where the instrument's written key cannot be determined
+      (`None`, which is every GATHER call today: the part-to-staff join is an ADJUDICATE product) a staff can NEVER claim, beyond the
+      slots it read, more than a blue mark -- a B-flat clarinet reading its 1 flat cannot claim 3 (coordinator, 2026-10-22; Sean's
+      convention answer pending: CONVENTION ASSUMED);
+    * a staff that read none: one NARROWED part over the N slots the system implies (a transposing staff, or a missed one).
+    A staff that read MORE than N claims only its first N (a place to look again, reported, never overruled).
+    Returns `{"parts": [{"area", "standing", "kind"}], "slots", "own", "placed"}`; `y` is the staff's own pieces' extent (else its five lines')
+    unioned with the five lines, padded by `LEVEL_MARGIN_SPACES`."""
     me = obj["by_staff"].get(key)
     N = obj["N"]
     if me is None or obj["status"] != "found" or not N or len(lines) < 5 or not spacing:
@@ -206,26 +211,32 @@ def claim_for_staff(obj: Dict[str, Any], key: Any, lines: Sequence[float], spaci
     xs = float(me["x_start"])
     pcs = me["pieces"][:N]
     if pcs:
-        pitch = ((pcs[-1]["cx"] - pcs[0]["cx"]) / (len(pcs) - 1) / sp) if len(pcs) >= 2 else obj["pitch_spaces"]
-        pitch = min(max(pitch, PITCH_SPACES[0]), PITCH_SPACES[1])
-        last_cx = pcs[-1]["cx"] + (N - len(pcs)) * pitch * sp
-        x1 = max(pcs[-1]["x1"], last_cx + SLOT_WIDTH_SPACES * sp / 2.0) + EDGE_MARGIN_SPACES * sp
-        if len(pcs) < N:
-            # slots PLACED, not read: their x is uncertain by the staff's own pitch error and by a crowded print's drift (Litolff p5: the
-            # third flat stands 1.2 spaces past where two read slots put it). Reach as far as a signature of N slots from the clef edge can
-            # (first slot <= 1.8 spaces, pitch <= `PITCH_SPACES[1]`), never past the staff's own meter / window bound.
-            x1 = max(x1, min(float(me["x_hi"]) - EDGE_MARGIN_SPACES * sp,
-                             xs + (1.8 + (N - 1) * PITCH_SPACES[1] + SLOT_WIDTH_SPACES + EDGE_MARGIN_SPACES) * sp))
         top, bot = min(p["y0"] for p in pcs), max(p["y1"] for p in pcs)
-        standing = "READ"
     else:
-        x1 = xs + (0.9 + (N - 1) * obj["pitch_spaces"] + SLOT_WIDTH_SPACES) * sp + EDGE_MARGIN_SPACES * sp
         top, bot = float(lines[0]), float(lines[-1])
-        standing = "NARROWED"
     # a placed slot's level is not read: take every level a signature's accidental stands at (the staff's five lines, a space beyond)
     top, bot = min(top, float(lines[0])), max(bot, float(lines[-1]))
-    return {"area": [round(xs, 1), round(top - LEVEL_MARGIN_SPACES * sp, 1), round(x1, 1), round(bot + LEVEL_MARGIN_SPACES * sp, 1)],
-            "slots": N, "own": len(pcs), "placed": N - len(pcs), "standing": standing}
+    y0, y1 = round(top - LEVEL_MARGIN_SPACES * sp, 1), round(bot + LEVEL_MARGIN_SPACES * sp, 1)
+    parts: List[Dict[str, Any]] = []
+    if pcs:
+        read_x1 = pcs[-1]["x1"] + EDGE_MARGIN_SPACES * sp
+        parts.append({"area": [round(xs, 1), y0, round(read_x1, 1), y1], "standing": "READ", "kind": "read"})
+        if len(pcs) < N:
+            pitch = ((pcs[-1]["cx"] - pcs[0]["cx"]) / (len(pcs) - 1) / sp) if len(pcs) >= 2 else obj["pitch_spaces"]
+            pitch = min(max(pitch, PITCH_SPACES[0]), PITCH_SPACES[1])
+            last_cx = pcs[-1]["cx"] + (N - len(pcs)) * pitch * sp
+            x1 = max(last_cx + SLOT_WIDTH_SPACES * sp / 2.0 + EDGE_MARGIN_SPACES * sp, read_x1)
+            # slots PLACED, not read: their x is uncertain by the pitch error and a crowded print's drift (Litolff p5: the third flat stands 1.2
+            # spaces past where two read slots put it): reach as far as N slots from the clef edge can (first <= 1.8 spaces, pitch <=
+            # `PITCH_SPACES[1]`), never past the staff's own meter / window bound
+            x1 = max(x1, min(float(me["x_hi"]) - EDGE_MARGIN_SPACES * sp,
+                             xs + (1.8 + (N - 1) * PITCH_SPACES[1] + SLOT_WIDTH_SPACES + EDGE_MARGIN_SPACES) * sp))
+            known = written_count is not None and int(written_count) >= N
+            parts.append({"area": [round(read_x1, 1), y0, round(x1, 1), y1], "standing": "READ" if known else "NARROWED", "kind": "placed"})
+    else:
+        x1 = xs + (0.9 + (N - 1) * obj["pitch_spaces"] + SLOT_WIDTH_SPACES) * sp + EDGE_MARGIN_SPACES * sp
+        parts.append({"area": [round(xs, 1), y0, round(x1, 1), y1], "standing": "NARROWED", "kind": "none_read"})
+    return {"parts": parts, "slots": N, "own": len(pcs), "placed": N - len(pcs)}
 
 
 def allowed_counts(dossier: Any) -> Optional[List[int]]:

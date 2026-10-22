@@ -84,7 +84,7 @@ def rest_on_slot(i, s):
     return ("rest8th", f[1] + 6, f[2] + 10, 18, 22)             # 0.3 space off the slot: past the 2.100 next-slot rule's 0.2
 
 
-def gather(flats, boxes_by_staff, *, env=ON, dossier=None, extra=(), n=3):
+def gather(flats, boxes_by_staff, *, env=ON, dossier=None, extra=(), n=3, written_counts=None):
     log = Log()
     pws = _PWS()
     pws.page.binary = raster(flats, extra=extra, n=n)
@@ -106,7 +106,7 @@ def gather(flats, boxes_by_staff, *, env=ON, dossier=None, extra=(), n=3):
         dets[R.cell(1, 0, i, 0).to_key()] = ds
     with mock.patch.dict(os.environ, env):
         G.gather_key_signature_claim(log, pws, cells, {k: (0, k) for k in range(n)}, dets)
-        G.gather_key_object(log, pws, cells, {k: (0, k) for k in range(n)}, dets, dossier=dossier)
+        G.gather_key_object(log, pws, cells, {k: (0, k) for k in range(n)}, dets, dossier=dossier, written_counts=written_counts)
     return log, gids
 
 
@@ -148,12 +148,14 @@ class TestCountFromTheSystem(unittest.TestCase):
             self.assertEqual((d["key_object"]["system_count"], d["standing"], d["slots"]), (3, "READ", 3))
             self.assertEqual(d["key_object"]["dossier"], "silent")
 
-    def test_a_staff_that_read_fewer_slots_claims_the_systems_count(self):
+    def test_a_staff_that_read_fewer_slots_reads_its_own_and_only_narrows_the_rest(self):
         log, _ = gather([3, 3, 2], _full((3, 3, 2)))
-        d = rows(log, 2)[0].detail
-        self.assertEqual((d["key_object"]["own_slots"], d["key_object"]["placed_slots"], d["slots"]), (2, 1, 3))
-        a = rows(log, 2)[0].value
-        self.assertGreater(a[2], FLAT0 + PITCH * 2 + 18)                          # the area reaches the third slot's right edge
+        parts = {r.detail["part"]: r for r in rows(log, 2)}
+        self.assertEqual(set(parts), {"read", "placed"})
+        d = parts["read"].detail
+        self.assertEqual((d["key_object"]["own_slots"], d["key_object"]["placed_slots"], d["slots"], d["standing"]), (2, 1, 3, "READ"))
+        self.assertEqual(parts["placed"].detail["standing"], "NARROWED")           # its instrument's written key is unknown here: blue only
+        self.assertGreater(parts["placed"].value[2], FLAT0 + PITCH * 2 + 18)       # the placed area reaches the third slot's right edge
 
     def test_a_staff_that_read_none_is_narrowed_never_read(self):
         log, _ = gather([3, 3, 0], [_full()[0], _full()[1], [clef_box(2)]])
@@ -180,6 +182,7 @@ class TestCountFromTheSystem(unittest.TestCase):
         log, _ = gather([3, 3, 1], [_full()[0], _full()[1], [clef_box(2), flat_box(2, 0)]])
         d = rows(log, 2)[0].detail
         self.assertEqual((d["key_object"]["own_slots"], d["key_object"]["placed_slots"]), (1, 2))
+        self.assertEqual([r.detail["standing"] for r in rows(log, 2)], ["READ", "NARROWED"])     # the clarinet's 2 unread slots: blue only
         self.assertEqual(len([r for r in log.rows(Q.KEY_SIGNATURE, R.staff(1, 0, 2))]), 0)
 
     def test_CONTROL_a_c_major_system_claims_nothing(self):
@@ -213,14 +216,27 @@ class TestTheConsult(unittest.TestCase):
         decide(log, env, Q.REST_IS_NOT_A_REST)
         return log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)])
 
-    def test_the_rest_on_the_third_flat_is_refused_only_with_the_system_reader(self):
-        # the raster has only 2 flats on staff 2 (the third is the bowl the detector boxed as a rest, drawn here as ink too)
+    def test_the_rest_on_a_placed_slot_is_narrowed_unless_the_instruments_written_key_allows_it(self):
         boxes = _full()
         off = self._rest(OFF, boxes)
-        on = self._rest(ON, boxes)
-        self.assertEqual(on.reason, "claimed_by:key_signature")
-        self.assertGreater(on.margin, 0)
         self.assertNotEqual(off.reason, "claimed_by:key_signature")
+        on = self._rest(ON, boxes)                                                 # written key unknown at GATHER: blue, never refused
+        self.assertEqual((on.outcome, on.reason), ("narrowed", "claim_narrowed:key_signature"))
+        log, g = gather([3, 3, 2], boxes, env=ON, written_counts={2: 3})           # the instrument's written key IS 3 flats: refused
+        decide(log, ON, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)])
+        self.assertEqual(v.reason, "claimed_by:key_signature")
+        self.assertGreater(v.margin, 0)
+        log, g = gather([3, 3, 2], boxes, env=ON, written_counts={2: 1})           # a B-flat clarinet (1 flat) can never claim 3
+        decide(log, ON, Q.REST_IS_NOT_A_REST)
+        self.assertEqual(log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)]).outcome, "narrowed")
+
+    def test_a_rest_on_a_slot_the_staff_read_itself_is_still_refused(self):
+        boxes = _full((3, 3, 3))
+        boxes[2].append(("rest8th", FLAT0 + PITCH * 2 + 6, lines_of(2)[1] - 10 + 10, 18, 22))
+        log, g = gather([3, 3, 3], boxes)
+        decide(log, ON, Q.REST_IS_NOT_A_REST)
+        self.assertEqual(log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 4)]).reason, "claimed_by:key_signature")
 
     def test_CONTROL_a_real_rest_after_the_signature_is_kept_both_ways(self):
         boxes = _full()

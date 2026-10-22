@@ -14138,7 +14138,8 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
 
 
 def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                      detections: Dict[str, List[Any]], *, dossier: Any = None, progress: bool = False) -> None:
+                      detections: Dict[str, List[Any]], *, dossier: Any = None, written_counts: Any = None,
+                      progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `key_signature` read ONCE PER SYSTEM -- ROADMAP 2.187, flag `OMR_KEY_PER_SYSTEM` (default OFF; needs
     `OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER`, which it files into).
 
@@ -14226,38 +14227,38 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
         for s0 in ok:
             li = s0["key"]
             c, dets, sp, st, _ml = info[li]
-            cl = KO.claim_for_staff(obj, li, s0["lines"], sp)
+            cl = KO.claim_for_staff(obj, li, s0["lines"], sp, written_count=(written_counts or {}).get(li))
             ssub = R.staff(p, sys_idx, li)
             if cl is None:
                 continue
-            area = cl["area"]
-            win = KS.KeySlotWindow(lo=area[0], hi=area[2], y_lo=area[1], y_hi=area[3], members=(), clef=None, slots=cl["slots"],
-                                   next_x=None, next_tol=0.0)
-            inside: Dict[str, Any] = {}
-            for gi, d in enumerate(dets):
-                pb = _page_box(c, d)
-                nm = str(d.smufl_name)
-                if pb is None or nm.startswith(("clef", "key")):
-                    continue
-                b = KS.KeyBox(R.glyph(p, sys_idx, li, 0, gi).to_key(), nm, pb[0], pb[1], pb[2] - pb[0], pb[3] - pb[1])
-                stands = KS.stands_in_the_window(win, b) and KS.is_refusable_class(nm)
-                if not CL.overlaps(area, pb) and not stands:
-                    continue
-                got = MO.ink_inside(binary, pb, area, list(st.line_ys), sp)
-                if got is None and not stands:
-                    continue
-                e = dict(got or {}, cls=nm)
-                if stands:
-                    e["named"] = True
-                    e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
-                inside[b.row_id] = e
-            # how the claim was drawn rides in ONE key, `key_object`, which the consult copies onto the verdict (`claimed_by.consult`)
             ko = {"system_count": obj["N"], "basis": obj["basis"], "dossier": obj["dossier"], "allowed_counts": allowed,
                   "system_counts": obj["counts"], "pitch_spaces": obj["pitch_spaces"], "clef_edge": s0["clef_edge"],
                   "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"]}
-            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0), cell=0, owner=CL.OWNER_KEY,
-                        owner_row=None, unit="area", standing=cl["standing"], source="system_key_object", slots=cl["slots"],
-                        key_object=ko, boxes_inside=inside, space_page_px=round(sp, 3))
+            for part in cl["parts"]:
+                area = part["area"]
+                win = KS.KeySlotWindow(lo=area[0], hi=area[2], y_lo=area[1], y_hi=area[3], members=(), clef=None, slots=cl["slots"],
+                                       next_x=None, next_tol=0.0)
+                inside: Dict[str, Any] = {}
+                for gi, d in enumerate(dets):
+                    pb = _page_box(c, d)
+                    nm = str(d.smufl_name)
+                    if pb is None or nm.startswith(("clef", "key")):
+                        continue
+                    b = KS.KeyBox(R.glyph(p, sys_idx, li, 0, gi).to_key(), nm, pb[0], pb[1], pb[2] - pb[0], pb[3] - pb[1])
+                    stands = KS.stands_in_the_window(win, b) and KS.is_refusable_class(nm)
+                    if not CL.overlaps(area, pb) and not stands:
+                        continue
+                    got = MO.ink_inside(binary, pb, area, list(st.line_ys), sp)
+                    if got is None and not stands:
+                        continue
+                    e = dict(got or {}, cls=nm)
+                    if stands:
+                        e["named"] = True
+                        e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
+                    inside[b.row_id] = e
+                log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0), cell=0, owner=CL.OWNER_KEY,
+                            owner_row=None, unit="area", standing=part["standing"], source="system_key_object", slots=cl["slots"],
+                            part=part["kind"], key_object=ko, boxes_inside=inside, space_page_px=round(sp, 3))
             if progress:
                 print(f"  gather claimed area (key object) {ssub.to_key()}")
 
