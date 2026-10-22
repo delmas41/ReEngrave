@@ -1,9 +1,0 @@
-{
- "1": "dot 4",
- "2": "4 and 8 (with an 8 and 4 in between them, not in blue)",
- "scoring": {
-  "tile 1 (chord, ours 1.5)": "right -- the hand-truth 'miss' is a scorer dot artefact",
-  "tile 2 (columns, cross-staff; ours 1.0,1.0)": "second head is an eighth: wrong; heads of the staff above, blocked by the clean-heads guard"
- },
- "verbatim": "next group tile 1 dot 4 tile 2 - 4 and 8 (with an 8 and 4 in between them not in blue)"
-}

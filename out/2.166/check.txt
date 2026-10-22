@@ -1,1 +1,0 @@
-TOTAL                    open=194   status=ok

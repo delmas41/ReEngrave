@@ -1,5 +1,0 @@
-rows 148415 stored glyphs 6580
-off 257s
-injected 67
-on 509s
-control {'agree': 6302, 'differ': 278} {'beam_discounted_uncertain': 77, 'rest_class': 179, 'refused_strokes_are_slurs_or_too_thin_for_a_beam': 15, 'hooks_counted': 2, 'head_and_marks': 5} | changed 14 | refused is_an_arc_tail 12 509s

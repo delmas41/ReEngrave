@@ -1,6 +1,0 @@
-{
- "n": 14,
- "true_frame_inside_beats_both": 13,
- "shifted_frame_inside_beats_both": 0,
- "reading": "must pass on the true frame and mostly fail on the shifted one"
-}

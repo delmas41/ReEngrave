@@ -1,3 +1,0 @@
-music21 read back: 2 DynamicWedge
-  Crescendo    binds ('C', 'E')
-  Diminuendo   binds ('D', 'F')

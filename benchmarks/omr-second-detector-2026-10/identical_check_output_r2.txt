@@ -1,2 +1,0 @@
-OFF glyphs 751; ON glyphs 758 of which second-only 7; identical set: True; differing keys: []
-OFF glyphs 1776; ON glyphs 1777 of which second-only 1; identical set: True; differing keys: []
