@@ -163,3 +163,37 @@ def choose(candidates: Sequence[str], shape: Optional[Dict[str, Any]]) -> Dict[s
         if c.lower() == want:
             return {"pick": c, "why": "shape_names_a_candidate", "shape": s}
     return {"pick": None, "why": "shape_not_offered", "shape": s}
+
+
+# ── ROADMAP 2.192 -- AN ACCIDENTAL BOX ON A REST'S INK (flag `OMR_ACCIDENTAL_ON_A_REST`, default OFF) ──────────────────────────────────────
+# THE CAUSE (benchmarks/omr-phantom-accidental-2026-10/FINDINGS.md): the production detector boxes an eighth rest's bulb-and-stem as
+# `accidentalDoubleSharp` (and, rarely, a real rest as another class); 2.186 merges only WITHIN a family and `adjudicate_rest_is_not_a_rest` /
+# `adjudicate_accidental_is_not_an_accidental` each look only at their own family, so nothing ever compares the two boxes on one ink.
+ON_REST_ENV = "OMR_ACCIDENTAL_ON_A_REST"
+#: Two boxes in one cell contest ONE ink when their IoU is at least this (checked on crops: 10 of 10 double sharps at >= .5 were an eighth rest; the
+#: kept-rest overlap of real accidentals sits in the same band, which is why the SHAPE, not the overlap, decides whether the accidental stays).
+ON_REST_IOU = 0.5
+#: Every accidental class the shape reader can compare, to the shape (family) its ink must have.
+_FAMILY_OF_CLASS = {"accidentalflat": "flat", "accidentaldoubleflat": "flat", "accidentalnatural": "natural",
+                    "accidentalsharp": "sharp", "accidentaldoublesharp": "sharp"}
+
+
+def on_rest_enabled() -> bool:
+    """`OMR_ACCIDENTAL_ON_A_REST`, default OFF; only an explicit 1/true/yes/on enables."""
+    return os.environ.get(ON_REST_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def on_rest_verdict(detector_class: str, shape: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """For an accidental that CONTESTS a kept rest's ink: `{"keep": bool, "why": ...}`. It is kept only when its own ink is clearly accidental-shaped
+    AND of the shape its class names (a double sharp stands for `sharp`, a double flat for `flat`). An unread / unclear / mismatched shape is
+    refused (rule 8: where it cannot tell, the accidental is NOT applied -- the note keeps its key/bar alteration -- and the case is counted)."""
+    want = _FAMILY_OF_CLASS.get(str(detector_class or "").lower())
+    if want is None:
+        return {"keep": False, "why": "class_has_no_shape"}
+    if not shape or shape.get("shape") in (None, "unread"):
+        return {"keep": False, "why": "unread"}
+    if shape["shape"] == "unclear":
+        return {"keep": False, "why": "unclear"}
+    if shape["shape"] != want:
+        return {"keep": False, "why": "shape_is_%s_not_%s" % (shape["shape"], want)}
+    return {"keep": True, "why": "shape_matches_class"}
