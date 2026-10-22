@@ -1,0 +1,57 @@
+{
+ "lane": "2.193",
+ "date": "2026-10-22",
+ "question": "which accidental is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "verbatim": "Tiles 2 and 11 are flats, all the others are naturals.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "natural"
+  },
+  {
+   "tile": 2,
+   "sean": "flat"
+  },
+  {
+   "tile": 3,
+   "sean": "natural"
+  },
+  {
+   "tile": 4,
+   "sean": "natural"
+  },
+  {
+   "tile": 5,
+   "sean": "natural"
+  },
+  {
+   "tile": 6,
+   "sean": "natural"
+  },
+  {
+   "tile": 7,
+   "sean": "natural"
+  },
+  {
+   "tile": 8,
+   "sean": "natural"
+  },
+  {
+   "tile": 9,
+   "sean": "natural"
+  },
+  {
+   "tile": 10,
+   "sean": "natural"
+  },
+  {
+   "tile": 11,
+   "sean": "flat"
+  },
+  {
+   "tile": 12,
+   "sean": "natural"
+  }
+ ],
+ "summary": "cases 9: flag right 8 (3,4,5,6,7,8,9,12 now natural; OFF had flat/sharp), 0 right before; tile 10 a natural: OFF wrote flat, ON writes nothing (both wrong); controls 1, 2, 11 right"
+}
