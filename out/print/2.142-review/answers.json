@@ -1,0 +1,83 @@
+{
+ "date": "2026-10-16",
+ "who": "Sean",
+ "raw_answer": "1. 4 rest 2. 8 rest 3. 4 rest 4. 8 5. 8 rest 6. 4 rest 7-11. 4 rest 12. Dot 2",
+ "tally": {
+  "agree": "12/12",
+  "note": "the 10 boxes the fix takes out are all rests (8 quarter, 2 eighth) we used to write as quarter notes; controls 4 (an eighth) and 12 (a dotted half) are real notes, kept"
+ },
+ "tiles": [
+  {
+   "n": 1,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 2,
+   "role": "changed",
+   "sean": "8 rest",
+   "agrees": true
+  },
+  {
+   "n": 3,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 4,
+   "role": "control",
+   "sean": "8",
+   "agrees": true
+  },
+  {
+   "n": 5,
+   "role": "changed",
+   "sean": "8 rest",
+   "agrees": true
+  },
+  {
+   "n": 6,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 7,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 8,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 9,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 10,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 11,
+   "role": "changed",
+   "sean": "4 rest",
+   "agrees": true
+  },
+  {
+   "n": 12,
+   "role": "control",
+   "sean": "Dot 2",
+   "agrees": true
+  }
+ ]
+}

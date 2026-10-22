@@ -1,0 +1,21 @@
+{
+  "abstention_subject_kinds": {
+    "staff": 25
+  },
+  "margin_label_abstention_reasons": {
+    "no_ink": 25
+  },
+  "margin_label_observations": 50,
+  "readers": {
+    "OBS:surya": 50,
+    "text_layer": 25
+  },
+  "summary_instrument": {
+    "abstained": 25,
+    "decided": 50
+  },
+  "summary_margin_label": {
+    "declined": 25,
+    "read": 50
+  }
+}

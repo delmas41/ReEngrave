@@ -1,0 +1,35 @@
+========================================================================
+/tmp/ttc/lit/staged.json  provenance: {'commit': 'f83c0e2b88adc3f876dbb17d7935c835f37f2a7d', 'dirty': True}
+── REACH (the exporter's own pairing, no export run) ──
+  arc_boxes                                          514
+  arc_boxes_classed_tie                              270
+  tie_chains                                         46
+  tie_chains_longer_than_two_notes                   4
+  tie_ends_landing_in_a_chord                        80
+  tie_ends_on_a_chord_member_that_is_NOT_lowest      42
+  tie_groups_after_the_merge                         261
+  tie_groups_merged_from_two_halves                  31
+  tie_links                                          59
+  tie_links_crossing_a_barline                       10
+  tie_links_crossing_a_system_break                  0
+  chain length in NOTES -> how many: {2: 42, 3: 3, 4: 1}
+── EXPORT (what the report now says) ──
+  tie_links_marked                                   59
+  tie_chains_marked                                  46
+  tie_chains_over_two_notes                          4
+  tie_links_crossing_a_barline                       10
+  tie_links_crossing_a_system_break                  0
+  ties                                               48
+  tie_spans_marked                                   59
+  tie_starts_written_on_an_untied_note               17
+  tie_stops_written_on_an_untied_note                15
+  slurs                                              23
+  slur_spans_marked                                  55
+  notes                                              1075
+  rests                                              443
+  arcs_not_written: {'arc_binds_fewer_than_two_notes': 362, 'arc_ends_in_one_chord': 43}
+  balance holds: True  census unaccounted: []
+  census row: {'family': 'slur', 'detector_glyphs': 244, 'decided': 244, 'written': 23, 'status': 'emitted'}
+  census row: {'family': 'tie', 'detector_glyphs': 270, 'decided': 270, 'written': 48, 'status': 'emitted'}
+  abstained_without_a_family: {}
+  probe and exporter agree: True

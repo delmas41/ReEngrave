@@ -1,0 +1,19 @@
+{
+  "work": "brahms--symphony-4",
+  "edition": "brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+  "provenance": "PRINT, read by eye off out/crops-brahms4/p000,p031,p041,p063,p067,p069,p076_margin.png",
+  "entry_page": {
+    "Piccolo": 41,
+    "Contrabassoon": 41,
+    "Triangle": 41,
+    "Trombone": 67
+  },
+  "why_these": {
+    "Piccolo/Contrabassoon/Triangle": "page 41 opens movement III and is the first page printing any of them; pages 0 and 31 (movement I) print a 13-staff lineup holding none.",
+    "Trombone": "page 67 opens movement IV and is the first page printing '3 Posaunen'; page 63, still movement III, prints Triangel and no trombone."
+  },
+  "the_case_this_work_is_here_for": "Movements III and IV BOTH print 16 staves and their lineups are DIFFERENT — III has Kleine Flöte + Triangel and no trombones, IV has 3 Posaunen and neither piccolo nor triangle. `lineup_spans` keys on staff COUNT, so it puts pages 41-98 in one span and cannot separate them. A lineup SWAP at constant size is outside the axiom the rule is built on ('a page whose largest system is larger than every page before it has proved the lineup grew'), and this is the first document measured where that case occurs.",
+  "deliberately_excluded": {
+    "Timpani/Trumpet/Horn": "present in every movement"
+  }
+}

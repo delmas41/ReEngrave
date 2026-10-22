@@ -1,0 +1,145 @@
+==============================================================================
+BASELINE (the positive control -- every arm below is free if this is not green)
+==============================================================================
+  SUITE  exit 0: 35 passed, 5 warnings in 0.21s
+  ARM    exit 0
+  REACH: 700 vertical-run candidates over 192 cells
+  FAITHFULNESS flag-OFF: 190 = 190? YES; cells disagreeing: 0
+  FAITHFULNESS flag-ON:  190 strokes, cells moved: 0
+  too TALL (h > 8.0 spaces)                           326   46.6%
+  accepted                                            190   27.1%
+  too SHORT (h < 2.0 spaces)                           95   13.6%
+  at a CELL EDGE (0.8 spaces)                          52    7.4%
+  PAIRED with a neighbour (the accidental rule)        21    3.0%
+  too WIDE (w > 0.6 spaces)                            16    2.3%
+  -> refused by a DIMENSION bound                     489   69.9%
+  too TALL (h > 8.0 spaces)                      326   0.0%   0.0%   0.0%   0.0%   0.0%
+  accepted                                       190   0.0%   3.7%  11.1%  22.1%  49.5%
+  too SHORT (h < 2.0 spaces)                      95   0.0%   0.0%   0.0%   0.0%   0.0%
+  at a CELL EDGE (0.8 spaces)                     52   0.0%   3.8%   9.6%  28.8%  38.5%
+  PAIRED with a neighbour (the accidental rule)    21   0.0%   4.8%   4.8%   9.5%  42.9%
+  too WIDE (w > 0.6 spaces)                       16   0.0%  18.8%  37.5%  43.8%  68.8%
+  too TALL (h > 8.0 spaces)                      326   0.0%   0.0%   0.0%   0.0%   0.0%
+  accepted                                       190   0.0%   3.7%  11.1%  22.1%  49.5%
+  too SHORT (h < 2.0 spaces)                      95   0.0%   0.0%   0.0%   0.0%   0.0%
+  at a CELL EDGE (0.8 spaces)                     52   0.0%   3.8%   9.6%  28.8%  38.5%
+  PAIRED with a neighbour (the accidental rule)    21   0.0%   4.8%   4.8%   9.5%  42.9%
+  t
+
+------------------------------------------------------------------------------
+ARM [linedet]: the SHORT and TALL reasons are swapped
+  judge: unit suite   expected: one test per filter must fail -- a single fixture asserting 'seven outcomes appear' would pass with these swapped, which is why there is one test each
+  exit 1  -> RED
+  2 failed, 33 passed, 5 warnings in 0.26s
+
+------------------------------------------------------------------------------
+ARM [linedet]: the WIDE reason is reported as AT A CELL EDGE
+  judge: unit suite   expected: test_too_wide must fail
+  exit 1  -> RED
+  4 failed, 31 passed, 5 warnings in 0.27s
+
+------------------------------------------------------------------------------
+ARM [linedet]: a refused candidate is silently dropped (the OLD behaviour)
+  judge: unit suite   expected: the whole point of the quantity: a candidate the pipeline found and discarded must not vanish
+  exit 1  -> RED
+  3 failed, 32 passed, 5 warnings in 0.27s
+
+------------------------------------------------------------------------------
+ARM [linedet]: the pair rule's drops stay labelled `accepted`
+  judge: unit suite   expected: the seventh outcome must be distinguishable from the six -- a pair rejection is the only one a candidate's own measurements cannot explain
+  exit 1  -> RED
+  2 failed, 33 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [linedet]: the pair re-stamp fires on EVERY candidate, not the dropped
+  judge: unit suite   expected: a SURVIVING stroke must not be labelled PAIRED
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.24s
+
+------------------------------------------------------------------------------
+ARM [linedet]: the box is emitted as CORNERS instead of [x, y, w, h]
+  judge: unit suite   expected: the convention test must fail -- reading one box spelling as another is what produced a NEGATIVE width and a clean believable zero in a sibling lane
+  exit 1  -> RED
+  4 failed, 31 passed, 5 warnings in 0.27s
+
+------------------------------------------------------------------------------
+ARM [linedet]: `accepted` is derived from the wrong word
+  judge: unit suite   expected: every accepted/refused assertion must fail
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.24s
+
+------------------------------------------------------------------------------
+ARM [linedet]: `detect_lines` drops the out-parameter on the floor
+  judge: unit suite   expected: the forwarding test must fail, and with it the whole gather rung -- `gather_cv_lines` reaches `detect_stems` only through here
+  exit 1  -> RED
+  10 failed, 25 passed, 5 warnings in 0.30s
+
+------------------------------------------------------------------------------
+ARM [linedet]: the dimension group silently includes the pair rule
+  judge: unit suite   expected: §9's question -- how much is refused BY DIMENSION -- must stop being answerable, and the six-not-seven test must fail
+  exit 1  -> RED
+  3 failed, 32 passed, 5 warnings in 0.26s
+
+------------------------------------------------------------------------------
+ARM [gather]: the flag's ON test becomes a DENY-list (wrong for default-OFF)
+  judge: unit suite   expected: a typo must not switch a document ONTO an unpriced gather change -- the allow-list test must fail, and so must the derived flag-direction guard
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [gather]: the flag defaults ON
+  judge: unit suite   expected: the default-OFF test must fail
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [gather]: flag-off still allocates the list, so the rung writes rows
+  judge: unit suite   expected: `off means ABSENT, not quiet` must fail -- a flag-off record would stop being byte-identical to a tree without the quantity
+  exit 1  -> RED
+  2 failed, 33 passed, 5 warnings in 0.26s
+
+------------------------------------------------------------------------------
+ARM [gather]: the page box is DEFAULTED instead of DECLINED
+  judge: unit suite   expected: a fallback must never convert `cannot tell` into a definite answer -- and a zeroed page box is the frame error this quantity exists to avoid
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [gather]: the staff-space unit is the nominal 100 px
+  judge: unit suite   expected: `_upscale_to_canonical` scales a too-wide cell by WIDTH, so the nominal is silently wrong on a minority of cells -- the cell's-own-unit test must fail
+  exit 1  -> RED
+  2 failed, 33 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [gather]: the candidate glyph base collides with the ink base
+  judge: unit suite   expected: a collision would not raise; it would silently merge two readers' rows into one subject -- the disjoint-subject test must fail
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.25s
+
+------------------------------------------------------------------------------
+ARM [gather]: an empty cell writes nothing instead of abstaining NO_INK
+  judge: unit suite   expected: ABSENT and DECLINED must stay distinguishable -- the honest `NO_INK` is the one case where that reason word is true for this family
+  exit 1  -> RED
+  1 failed, 34 passed, 5 warnings in 0.24s
+
+------------------------------------------------------------------------------
+ARM [arm]: the faithfulness control compares against the WRONG pages
+  judge: ARM headline   expected: the control must refuse -- this is exactly the failure its own first run had, and a control that cannot fail is not one
+  exit 3  -> RED
+  ABORT: the re-cut does not reproduce the record's strokes. Every number below would attribute against a moved baseline.
+
+------------------------------------------------------------------------------
+ARM [arm]: the barline predicate tests only the TOP end
+  judge: ARM headline   expected: the fire rates must move -- `BOTH ends` is the whole of Sean's rule
+  exit 0  -> RED
+  == COST: 700 rows over 1 page(s) = 700.0 rows/page at 639.1 bytes = 0.447 MB/page
+
+------------------------------------------------------------------------------
+ARM [arm]: the end offsets are unsigned, so a systematic offset reads as scatter
+  judge: ARM headline   expected: the diagnosis must change -- the `too TALL` bucket's median -4.00 is what NAMES the cell padding, and an absolute value hides the sign
+  exit 0  -> RED
+  == COST: 700 rows over 1 page(s) = 700.0 rows/page at 639.1 bytes = 0.447 MB/page
+
+==============================================================================
+RED 19   SURVIVED 0   BAD ANCHORS 0
+restore VERIFIED by md5: True

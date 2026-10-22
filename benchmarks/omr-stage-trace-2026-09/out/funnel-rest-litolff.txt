@@ -1,0 +1,17 @@
+FAMILY rest   deciding quantity rest  (a consequence or gather only — no adjudicator owns this quantity)
+POPULATION (its own ink): 646   via {'detector_class': 646}
+INK      Q.INK rows 7093 over 1183 cells; the population occupies 567 cells, 567 of which carry ink rows
+
+         rows = every verdict row this stage wrote (what it DID); STAND = subjects whose FINAL answer it owns.
+stage        quantity                   rows    dec   narr   abst  STAND  directions
+ADJUDICATE   duration                    646    646      0      0    366  {'first_answer': 646}
+   reasons: [('decided/rest_class', 646)]
+EVALUATE     duration                    280    280      0      0    280  {'changed_the_value': 280}
+   reasons: [('decided/whole_rest_means_the_bar', 280)]
+ADJUDICATE   glyph_owner                   2      2      0      0      2  {'first_answer': 2}
+   reasons: [('decided/distance', 2)]
+EVALUATE     pitch                         1      1      0      0      1  {'first_answer': 1}
+   reasons: [('decided/reowned', 1)]
+
+EXPORT   declined
+         no export report; pass --export to run the real exporter. This step is NEVER re-derived here -- see the module docstring.

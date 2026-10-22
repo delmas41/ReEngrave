@@ -1,0 +1,33 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "no_stem": 793,
+ "control_identical": 783,
+ "control_cells": 783,
+ "arms": {
+  "ERASED, shipped (control)": {
+   "strokes": 1920,
+   "recovered": 0,
+   "new_strokes": 0,
+   "new_on_accidental": 0
+  },
+  "ERASED, all filters relaxed": {
+   "strokes": 2903,
+   "recovered": 287,
+   "new_strokes": 2793,
+   "new_on_accidental": 340
+  },
+  "ORIGINAL, shipped filters": {
+   "strokes": 1957,
+   "recovered": 6,
+   "new_strokes": 1957,
+   "new_on_accidental": 163
+  },
+  "ORIGINAL, all filters relaxed": {
+   "strokes": 2771,
+   "recovered": 268,
+   "new_strokes": 2771,
+   "new_on_accidental": 368
+  }
+ },
+ "binding_constraint_is_erasure": false
+}

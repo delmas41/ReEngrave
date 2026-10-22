@@ -1,0 +1,403 @@
+[
+ {
+  "tag": "B01",
+  "file": "B01-glyph-3-0-7-9-7.png",
+  "subject": "glyph/3/0/7/9/7",
+  "cls": "noteheadBlackOnLine",
+  "height_sp": 3.18,
+  "cell": "cell/3/0/7/9",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 55.47385620915033,
+  "waist": 0.16666666666666666
+ },
+ {
+  "tag": "B02",
+  "file": "B02-glyph-3-1-4-12-3.png",
+  "subject": "glyph/3/1/4/12/3",
+  "cls": "noteheadBlackInSpace",
+  "height_sp": 2.8,
+  "cell": "cell/3/1/4/12",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 2,
+  "duration": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 63.83399209486167,
+  "waist": 0.17391304347826086
+ },
+ {
+  "tag": "B03",
+  "file": "B03-glyph-3-1-2-12-2.png",
+  "subject": "glyph/3/1/2/12/2",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 2.49,
+  "cell": "cell/3/1/2/12",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 2,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 72.83950617283949,
+  "waist": 0.5185185185185185
+ },
+ {
+  "tag": "B04",
+  "file": "B04-glyph-3-1-2-9-5.png",
+  "subject": "glyph/3/1/2/9/5",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 2.4,
+  "cell": "cell/3/1/2/9",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 2,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 77.1891891891892,
+  "waist": 0.64
+ },
+ {
+  "tag": "B05",
+  "file": "B05-glyph-3-0-8-7-8.png",
+  "subject": "glyph/3/0/8/7/8",
+  "cls": "noteheadBlackInSpace",
+  "height_sp": 2.37,
+  "cell": "cell/3/0/8/7",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 4,
+  "duration": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 71.74447174447174,
+  "waist": 0.18181818181818182
+ },
+ {
+  "tag": "B06",
+  "file": "B06-glyph-3-1-2-11-3.png",
+  "subject": "glyph/3/1/2/11/3",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 2.36,
+  "cell": "cell/3/1/2/11",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 77.4054054054054,
+  "waist": 0.56
+ },
+ {
+  "tag": "B07",
+  "file": "B07-glyph-3-1-2-2-3.png",
+  "subject": "glyph/3/1/2/2/3",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 2.29,
+  "cell": "cell/3/1/2/2",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 2,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 75.83333333333334,
+  "waist": 0.625
+ },
+ {
+  "tag": "B08",
+  "file": "B08-glyph-3-0-9-0-6.png",
+  "subject": "glyph/3/0/9/0/6",
+  "cls": "noteheadBlackOnLine",
+  "height_sp": 2.09,
+  "cell": "cell/3/0/9/0",
+  "refused": true,
+  "reason": "is_a_clef",
+  "n_stems_in_cell": 5,
+  "duration": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 75.98204264870932,
+  "waist": 0.4074074074074074
+ },
+ {
+  "tag": "B09",
+  "file": "B09-glyph-3-0-9-6-7.png",
+  "subject": "glyph/3/0/9/6/7",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 2.03,
+  "cell": "cell/3/0/9/6",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 2,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 74.50000000000001,
+  "waist": 0.64
+ },
+ {
+  "tag": "B10",
+  "file": "B10-glyph-3-0-5-2-7.png",
+  "subject": "glyph/3/0/5/2/7",
+  "cls": "noteheadBlackInSpace",
+  "height_sp": 1.94,
+  "cell": "cell/3/0/5/2",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 3,
+  "duration": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 68.475073313783,
+  "waist": 0.18181818181818182
+ },
+ {
+  "tag": "B11",
+  "file": "B11-glyph-3-0-7-1-7.png",
+  "subject": "glyph/3/0/7/1/7",
+  "cls": "noteheadBlackInSpace",
+  "height_sp": 1.85,
+  "cell": "cell/3/0/7/1",
+  "refused": true,
+  "reason": "too_narrow",
+  "n_stems_in_cell": 3,
+  "duration": {
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 90.71618037135279,
+  "waist": 0.8461538461538461
+ },
+ {
+  "tag": "B12",
+  "file": "B12-glyph-3-1-6-13-0.png",
+  "subject": "glyph/3/1/6/13/0",
+  "cls": "noteheadHalfOnLine",
+  "height_sp": 1.83,
+  "cell": "cell/3/1/6/13",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 71.67487684729063,
+  "waist": 0.5714285714285714
+ },
+ {
+  "tag": "B13",
+  "file": "B13-glyph-3-1-5-15-3.png",
+  "subject": "glyph/3/1/5/15/3",
+  "cls": "noteheadHalfOnLine",
+  "height_sp": 1.79,
+  "cell": "cell/3/1/5/15",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 47.822299651567945,
+  "waist": 0.17073170731707318
+ },
+ {
+  "tag": "B14",
+  "file": "B14-glyph-3-1-6-11-2.png",
+  "subject": "glyph/3/1/6/11/2",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 1.79,
+  "cell": "cell/3/1/6/11",
+  "refused": true,
+  "reason": "notehead_is_a_duplicate_box",
+  "n_stems_in_cell": 0,
+  "duration": {
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 1
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 72.8896103896104,
+  "waist": 0.5227272727272727
+ },
+ {
+  "tag": "B15",
+  "file": "B15-glyph-3-1-6-17-2.png",
+  "subject": "glyph/3/1/6/17/2",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 1.79,
+  "cell": "cell/3/1/6/17",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 82.85714285714286,
+  "waist": 0.72
+ },
+ {
+  "tag": "B16",
+  "file": "B16-glyph-3-1-5-6-6.png",
+  "subject": "glyph/3/1/5/6/6",
+  "cls": "noteheadHalfOnLine",
+  "height_sp": 1.78,
+  "cell": "cell/3/1/5/6",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 76.78062678062678,
+  "waist": 0.6538461538461539
+ },
+ {
+  "tag": "B17",
+  "file": "B17-glyph-3-1-6-17-1.png",
+  "subject": "glyph/3/1/6/17/1",
+  "cls": "noteheadHalfOnLine",
+  "height_sp": 1.77,
+  "cell": "cell/3/1/6/17",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 82.85714285714286,
+  "waist": 0.72
+ },
+ {
+  "tag": "B18",
+  "file": "B18-glyph-3-1-5-15-0.png",
+  "subject": "glyph/3/1/5/15/0",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 1.76,
+  "cell": "cell/3/1/5/15",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 77.63532763532763,
+  "waist": 0.5769230769230769
+ },
+ {
+  "tag": "B19",
+  "file": "B19-glyph-3-1-5-15-2.png",
+  "subject": "glyph/3/1/5/15/2",
+  "cls": "noteheadHalfOnLine",
+  "height_sp": 1.74,
+  "cell": "cell/3/1/5/15",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 1,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0
+  },
+  "duration_reason": "head_and_marks",
+  "ink_pct": 76.77514792899409,
+  "waist": 0.5769230769230769
+ },
+ {
+  "tag": "B20",
+  "file": "B20-glyph-3-1-6-11-0.png",
+  "subject": "glyph/3/1/6/11/0",
+  "cls": "noteheadHalfInSpace",
+  "height_sp": 1.74,
+  "cell": "cell/3/1/6/11",
+  "refused": false,
+  "reason": "notehead",
+  "n_stems_in_cell": 0,
+  "duration": {
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "reconciled": true
+  },
+  "duration_reason": "meter_reconciliation",
+  "ink_pct": 76.69753086419753,
+  "waist": 0.5416666666666666
+ }
+]

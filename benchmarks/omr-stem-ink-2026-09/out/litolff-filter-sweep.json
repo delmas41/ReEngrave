@@ -1,0 +1,38 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "no_stem_total": 793,
+ "control_cells_identical": 783,
+ "control_cells": 783,
+ "arms": {
+  "shipped (control)": {
+   "recovered": 0,
+   "new_strokes": 0,
+   "new_on_accidental": 0
+  },
+  "no accidental-pair rule": {
+   "recovered": 73,
+   "new_strokes": 244,
+   "new_on_accidental": 56
+  },
+  "height cap 8.0 -> 24.0": {
+   "recovered": 17,
+   "new_strokes": 81,
+   "new_on_accidental": 0
+  },
+  "height floor 2.0 -> 1.0": {
+   "recovered": 58,
+   "new_strokes": 1127,
+   "new_on_accidental": 140
+  },
+  "width cap 0.6 -> 1.5": {
+   "recovered": 217,
+   "new_strokes": 175,
+   "new_on_accidental": 4
+  },
+  "ALL FOUR relaxed (ceiling)": {
+   "recovered": 287,
+   "new_strokes": 2793,
+   "new_on_accidental": 340
+  }
+ }
+}

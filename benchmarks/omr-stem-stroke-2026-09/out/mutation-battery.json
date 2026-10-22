@@ -1,0 +1,68 @@
+{
+ "arms": [
+  {
+   "arm": "the reader accepts nothing at all",
+   "test": "test_the_column_profile_finds_it",
+   "result": "RED"
+  },
+  {
+   "arm": "the flag defaults ON",
+   "test": "test_the_flag_is_OFF_by_default",
+   "result": "RED"
+  },
+  {
+   "arm": "the OFF test becomes a DENY-list",
+   "test": "test_only_an_explicit_ON_word_turns_it_on",
+   "result": "RED"
+  },
+  {
+   "arm": "the reader runs regardless of the flag",
+   "test": "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS",
+   "result": "RED"
+  },
+  {
+   "arm": "the reader never runs",
+   "test": "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS",
+   "result": "RED"
+  },
+  {
+   "arm": "the reader SUBSTITUTES instead of adding",
+   "test": "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS",
+   "result": "RED"
+  },
+  {
+   "arm": "a band cut by the width cap is ADMITTED",
+   "test": "test_a_TALL_wide_block_yields_no_band",
+   "result": "RED"
+  },
+  {
+   "arm": "the column extent is FIRST-TO-LAST, not the longest run",
+   "test": "test_a_column_holding_TWO_runs_takes_its_LONGEST",
+   "result": "RED"
+  },
+  {
+   "arm": "the EDGE filter is dropped",
+   "test": "test_a_stroke_at_the_CELL_EDGE_is_refused",
+   "result": "RED"
+  },
+  {
+   "arm": "the height CAP is dropped",
+   "test": "test_a_stroke_too_TALL_is_refused",
+   "result": "RED"
+  },
+  {
+   "arm": "the ASPECT filter is dropped",
+   "test": "test_the_3_to_1_ASPECT_filter_binds_only_at_a_tiny_staff_spacing",
+   "result": "RED"
+  },
+  {
+   "arm": "the agree tolerance is ignored (all columns band together)",
+   "test": "test_two_ADJACENT_strokes_at_different_heights_are_two_bands",
+   "result": "RED"
+  }
+ ],
+ "red": 12,
+ "survived": 0,
+ "bad_anchor": 0,
+ "baseline_passes": true
+}

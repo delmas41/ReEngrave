@@ -1,0 +1,1723 @@
+{
+  "version_name": "v22-2026-09-04-simrock-dense",
+  "created_utc": "2026-09-04T16:35:55+00:00",
+  "labeler": "sean",
+  "description": "N. Simrock Dvorak 9 \u2014 110 dense cells drawn from scratch; 1 ledger-zone parity correction after adjudicating 7 audit candidates (6 were false positives)",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase4-merged/simrock-new/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase4-merged/simrock-new/detections",
+    "manifest": "benchmarks/omr-labeling-survey-2026-09/phase4-merged/simrock-new/simrock-new-cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 110,
+    "n_v1_cells": 0,
+    "n_v2_cells": 110,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 759,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "accidentalSharp",
+    "articAccentAbove",
+    "articAccentBelow",
+    "articStaccatoAbove",
+    "articStaccatoBelow",
+    "articTenutoBelow",
+    "articulationStaccato",
+    "augmentationDot",
+    "clefC",
+    "clefF",
+    "clefG",
+    "dynamicCrescendoHairpin",
+    "dynamicDiminuendoHairpin",
+    "dynamicF",
+    "dynamicLetterZ",
+    "dynamicM",
+    "dynamicP",
+    "fingering0",
+    "keyFlat",
+    "keySharp",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "ornamentMordent",
+    "rest8th",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "tie",
+    "tuplet3"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "dvorak9-p10-sys0-s1-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys0-s12-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicM",
+        "dynamicP",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys0-s13-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicM",
+        "dynamicP",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys0-s2-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicDiminuendoHairpin",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys0-s9-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys1-s17-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "dynamicP",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys1-s18-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys1-s19-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys1-s25-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "fingering0",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p10-sys1-s26-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys0-s12-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefC",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefC",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys1-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys1-s17-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys1-s26-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "articAccentAbove",
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p11-sys1-s27-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefC",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys0-s12-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s15-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s16-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s17-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s23-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s26-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 14,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p12-sys1-s27-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s11-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articTenutoBelow",
+        "augmentationDot",
+        "dynamicDiminuendoHairpin",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s12-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s13-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s2-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "dynamicDiminuendoHairpin",
+        "keyFlat",
+        "noteheadBlackOnLine",
+        "ornamentMordent",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s4-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys0-s8-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys1-s15-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys1-s16-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys1-s17-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfOnLine",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p13-sys1-s18-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p14-sys0-s12-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefC",
+        "dynamicDiminuendoHairpin",
+        "keySharp",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p14-sys0-s8-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p14-sys1-s20-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p14-sys1-s22-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p14-sys1-s24-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s17-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s22-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefC",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s25-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "clefG",
+        "dynamicF",
+        "dynamicLetterZ",
+        "keySharp",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s27-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefC",
+        "dynamicF",
+        "dynamicLetterZ",
+        "keySharp",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefC",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p15-sys0-s8-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefF",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys0-s0-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys0-s1-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 18,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentAbove",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "dynamicP",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys0-s12-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys0-s8-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys1-s15-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoAbove",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys1-s25-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "articulationStaccato",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p16-sys1-s27-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadHalfOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys0-s12-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalSharp",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys0-s13-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "augmentationDot",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys0-s5-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articAccentAbove",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys1-s17-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys1-s26-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys1-s27-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p17-sys1-s28-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s10-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articAccentAbove",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s11-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoBelow",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s14-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s15-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s17-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s18-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalSharp",
+        "articAccentAbove",
+        "augmentationDot",
+        "clefG",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s2-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s23-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "dynamicF",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s24-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s25-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s7-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s8-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "clefC",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p18-sys0-s9-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "dynamicF",
+        "keySharp",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s1-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s10-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articAccentAbove",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s11-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "tie",
+        "tuplet3"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s13-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s3-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s5-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s6-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s7-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys0-s9-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s16-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentBelow",
+        "augmentationDot",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s17-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s21-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s23-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadHalfInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s25-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p19-sys1-s29-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p20-sys0-s12-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p20-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "augmentationDot",
+        "dynamicCrescendoHairpin",
+        "dynamicP",
+        "noteheadBlackOnLine",
+        "restWhole",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p20-sys0-s6-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p20-sys1-s17-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentBelow",
+        "articStaccatoBelow",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p20-sys1-s18-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentAbove",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "clefF",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys0-s0-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys0-s10-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentAbove",
+        "articStaccatoAbove",
+        "augmentationDot",
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articStaccatoAbove",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys0-s5-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s18-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s21-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s22-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s23-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s26-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s27-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "dynamicLetterZ",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p9-sys1-s28-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+=== ARM off  2026-09-06T21:58:07Z
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 88 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-on.json
+=== ARM refuse  2026-09-06T21:58:16Z
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 88 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-on.json
+=== ARM search  2026-09-06T21:58:24Z
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 88 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-on.json
+
+############ OMR_SPAN_REFERENCE_FIT=off
+=== INPUT ASSERTIONS ===
+  staff records          : 1616
+  pages                  : 87
+  reference slots        : off=17 on=17
+  veto config            : mode=report rule=span window=0
+  judgeable (full systems): 807 (expected 807)
+  slot assignments moved by spans: 180 of 1616
+
+=== BASELINE VALIDATION ===
+  spans-off / veto-off IMPOSSIBLE = 43 (the whole-work session's figure: 91)
+  ⚠️ THE BASELINE DOES NOT REPRODUCE. This harness is measuring something narrower than the claim and NO OTHER ARM IS COMPARABLE TO IT. Stop here.
+        36  Trombone
+         4  Contrabassoon
+         3  Piccolo
+  on pages: [16, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 39, 40, 41, 42, 43]
+
+=== THE 2x2 ===
+                        IMPOSSIBLE  correct   wrong  unnamed   of 807 judgeable
+  spans-off  veto-off           43      756      51        0
+  spans-off  veto-on             0      756      50        1
+  spans-on   veto-off            0      756      51        0
+  spans-on   veto-on             0      756      51        0
+
+=== CORRECT NAMES LOST, against the baseline cell ===
+  spans-off  veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-off   lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+
+=== WHAT THE VETO REFUSED, and where ===
+  spans-off: 64 vetoes
+
+############ OMR_SPAN_REFERENCE_FIT=refuse
+=== INPUT ASSERTIONS ===
+  staff records          : 1616
+  pages                  : 87
+  reference slots        : off=17 on=17
+  veto config            : mode=report rule=span window=0
+  judgeable (full systems): 807 (expected 807)
+  slot assignments moved by spans: 180 of 1616
+
+=== BASELINE VALIDATION ===
+  spans-off / veto-off IMPOSSIBLE = 43 (the whole-work session's figure: 91)
+  ⚠️ THE BASELINE DOES NOT REPRODUCE. This harness is measuring something narrower than the claim and NO OTHER ARM IS COMPARABLE TO IT. Stop here.
+        36  Trombone
+         4  Contrabassoon
+         3  Piccolo
+  on pages: [16, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 39, 40, 41, 42, 43]
+
+=== THE 2x2 ===
+                        IMPOSSIBLE  correct   wrong  unnamed   of 807 judgeable
+  spans-off  veto-off           43      756      51        0
+  spans-off  veto-on             0      756      50        1
+  spans-on   veto-off            0      756      51        0
+  spans-on   veto-on             0      756      51        0
+
+=== CORRECT NAMES LOST, against the baseline cell ===
+  spans-off  veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-off   lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+
+=== WHAT THE VETO REFUSED, and where ===
+  spans-off: 64 vetoes
+
+############ OMR_SPAN_REFERENCE_FIT=search
+=== INPUT ASSERTIONS ===
+  staff records          : 1616
+  pages                  : 87
+  reference slots        : off=17 on=17
+  veto config            : mode=report rule=span window=0
+  judgeable (full systems): 807 (expected 807)
+  slot assignments moved by spans: 180 of 1616
+
+=== BASELINE VALIDATION ===
+  spans-off / veto-off IMPOSSIBLE = 43 (the whole-work session's figure: 91)
+  ⚠️ THE BASELINE DOES NOT REPRODUCE. This harness is measuring something narrower than the claim and NO OTHER ARM IS COMPARABLE TO IT. Stop here.
+        36  Trombone
+         4  Contrabassoon
+         3  Piccolo
+  on pages: [16, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 39, 40, 41, 42, 43]
+
+=== THE 2x2 ===
+                        IMPOSSIBLE  correct   wrong  unnamed   of 807 judgeable
+  spans-off  veto-off           43      756      51        0
+  spans-off  veto-on             0      756      50        1
+  spans-on   veto-off            0      756      51        0
+  spans-on   veto-on             0      756      51        0
+
+=== CORRECT NAMES LOST, against the baseline cell ===
+  spans-off  veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-off   lost   0 (0 refused / 0 misnamed)  gained   0
+  spans-on   veto-on    lost   0 (0 refused / 0 misnamed)  gained   0
+
+=== WHAT THE VETO REFUSED, and where ===
+  spans-off: 64 vetoes
+=== DONE 2026-09-06T21:58:33Z

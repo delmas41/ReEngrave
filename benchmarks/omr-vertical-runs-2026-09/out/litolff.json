@@ -1,0 +1,949 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "pages": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "record": "library/_shared-records/beethoven5-p1-p4.record.json",
+ "record_stem_rows": 1920,
+ "cells": 1183,
+ "reach": {
+  "candidates": 6128,
+  "strokes_flag_off": 1920,
+  "strokes_flag_on": 1920
+ },
+ "faithfulness": {
+  "record_strokes": 1920,
+  "recut_flag_off": 1920,
+  "cells_disagreeing": 0,
+  "identical": true,
+  "flag_on_moves_strokes": 0
+ },
+ "outcomes": {
+  "accepted": 1920,
+  "too SHORT (h < 2.0 spaces)": 1276,
+  "PAIRED with a neighbour (the accidental rule)": 244,
+  "too TALL (h > 8.0 spaces)": 1866,
+  "too WIDE (w > 0.6 spaces)": 215,
+  "at a CELL EDGE (0.8 spaces)": 607
+ },
+ "refused_by_dimension": 3964,
+ "barline_test": {
+  "scorable": 6128,
+  "of": 6128,
+  "tolerances": [
+   0.15,
+   0.25,
+   0.4,
+   0.6,
+   1.0
+  ],
+  "by_outcome": {
+   "ends": {
+    "accepted": {
+     "n": 1920,
+     "fires": {
+      "0.15": 0.009375,
+      "0.25": 0.036458333333333336,
+      "0.4": 0.08385416666666666,
+      "0.6": 0.16822916666666668,
+      "1.0": 0.43072916666666666
+     }
+    },
+    "too TALL (h > 8.0 spaces)": {
+     "n": 1866,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.0,
+      "0.4": 0.0,
+      "0.6": 0.0,
+      "1.0": 0.0
+     }
+    },
+    "too SHORT (h < 2.0 spaces)": {
+     "n": 1276,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.0,
+      "0.4": 0.0,
+      "0.6": 0.0,
+      "1.0": 0.0
+     }
+    },
+    "at a CELL EDGE (0.8 spaces)": {
+     "n": 607,
+     "fires": {
+      "0.15": 0.0016474464579901153,
+      "0.25": 0.023064250411861616,
+      "0.4": 0.07084019769357495,
+      "0.6": 0.12355848434925865,
+      "1.0": 0.19769357495881384
+     }
+    },
+    "PAIRED with a neighbour (the accidental rule)": {
+     "n": 244,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.004098360655737705,
+      "0.4": 0.020491803278688523,
+      "0.6": 0.04918032786885246,
+      "1.0": 0.2336065573770492
+     }
+    },
+    "too WIDE (w > 0.6 spaces)": {
+     "n": 215,
+     "fires": {
+      "0.15": 0.004651162790697674,
+      "0.25": 0.023255813953488372,
+      "0.4": 0.05581395348837209,
+      "0.6": 0.11162790697674418,
+      "1.0": 0.3023255813953488
+     }
+    }
+   },
+   "ends_any": {
+    "accepted": {
+     "n": 1920,
+     "fires": {
+      "0.15": 0.009375,
+      "0.25": 0.036458333333333336,
+      "0.4": 0.08385416666666666,
+      "0.6": 0.16822916666666668,
+      "1.0": 0.43072916666666666
+     }
+    },
+    "too TALL (h > 8.0 spaces)": {
+     "n": 1866,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.0,
+      "0.4": 0.0,
+      "0.6": 0.0,
+      "1.0": 0.0
+     }
+    },
+    "too SHORT (h < 2.0 spaces)": {
+     "n": 1276,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.0,
+      "0.4": 0.0,
+      "0.6": 0.0,
+      "1.0": 0.0
+     }
+    },
+    "at a CELL EDGE (0.8 spaces)": {
+     "n": 607,
+     "fires": {
+      "0.15": 0.0016474464579901153,
+      "0.25": 0.023064250411861616,
+      "0.4": 0.07084019769357495,
+      "0.6": 0.12355848434925865,
+      "1.0": 0.19769357495881384
+     }
+    },
+    "PAIRED with a neighbour (the accidental rule)": {
+     "n": 244,
+     "fires": {
+      "0.15": 0.0,
+      "0.25": 0.004098360655737705,
+      "0.4": 0.020491803278688523,
+      "0.6": 0.04918032786885246,
+      "1.0": 0.2336065573770492
+     }
+    },
+    "too WIDE (w > 0.6 spaces)": {
+     "n": 215,
+     "fires": {
+      "0.15": 0.004651162790697674,
+      "0.25": 0.023255813953488372,
+      "0.4": 0.05581395348837209,
+      "0.6": 0.11162790697674418,
+      "1.0": 0.3023255813953488
+     }
+    }
+   }
+  },
+  "staves_spanned": {
+   "0": 2546,
+   "1": 3582
+  },
+  "end_offsets": {
+   "accepted": {
+    "n": 1920,
+    "d_top": [
+     -4.0,
+     -0.24,
+     3.69
+    ],
+    "d_bot": [
+     -4.94,
+     -0.3,
+     3.13
+    ]
+   },
+   "too TALL (h > 8.0 spaces)": {
+    "n": 1866,
+    "d_top": [
+     -5.97,
+     -4.0,
+     -0.11
+    ],
+    "d_bot": [
+     0.14,
+     4.0,
+     5.96
+    ]
+   },
+   "too SHORT (h < 2.0 spaces)": {
+    "n": 1276,
+    "d_top": [
+     -4.0,
+     1.47,
+     8.2
+    ],
+    "d_bot": [
+     -7.16,
+     -0.77,
+     5.96
+    ]
+   },
+   "at a CELL EDGE (0.8 spaces)": {
+    "n": 607,
+    "d_top": [
+     -4.0,
+     0.14,
+     4.51
+    ],
+    "d_bot": [
+     -5.03,
+     0.84,
+     4.0
+    ]
+   },
+   "PAIRED with a neighbour (the accidental rule)": {
+    "n": 244,
+    "d_top": [
+     -3.99,
+     0.24,
+     3.76
+    ],
+    "d_bot": [
+     -5.47,
+     -0.11,
+     2.83
+    ]
+   },
+   "too WIDE (w > 0.6 spaces)": {
+    "n": 215,
+    "d_top": [
+     -4.31,
+     -0.24,
+     1.98
+    ],
+    "d_bot": [
+     -2.21,
+     0.14,
+     3.99
+    ]
+   }
+  }
+ },
+ "print_join": {
+  "barlines": [
+   {
+    "id": "L016",
+    "subject": "glyph/1/0/2/0/9",
+    "n_runs": 1,
+    "h_spaces": 12.011,
+    "w_spaces": 0.824,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L018",
+    "subject": "glyph/2/0/5/14/5",
+    "n_runs": 1,
+    "h_spaces": 12.0,
+    "w_spaces": 0.32,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L047",
+    "subject": "glyph/1/0/6/6/1",
+    "n_runs": 1,
+    "h_spaces": 8.4,
+    "w_spaces": 0.2,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L067",
+    "subject": "glyph/1/0/2/0/14",
+    "n_runs": 1,
+    "h_spaces": 12.011,
+    "w_spaces": 0.824,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L071",
+    "subject": "glyph/2/1/3/12/2",
+    "n_runs": 1,
+    "h_spaces": 8.59,
+    "w_spaces": 0.39,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L086",
+    "subject": "glyph/2/1/4/4/3",
+    "n_runs": 1,
+    "h_spaces": 8.18,
+    "w_spaces": 0.26,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L106",
+    "subject": "glyph/2/1/0/12/10",
+    "n_runs": 1,
+    "h_spaces": 8.42,
+    "w_spaces": 0.45,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   }
+  ],
+  "stems": [
+   {
+    "id": "L001",
+    "subject": "glyph/2/1/5/13/4",
+    "n_runs": 1,
+    "h_spaces": 7.11,
+    "w_spaces": 0.44,
+    "outcome": "at a CELL EDGE (0.8 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L002",
+    "subject": "glyph/4/1/1/14/1",
+    "n_runs": 1,
+    "h_spaces": 1.19,
+    "w_spaces": 1.02,
+    "outcome": "too SHORT (h < 2.0 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L006",
+    "subject": "glyph/4/0/1/12/3",
+    "n_runs": 2,
+    "h_spaces": 5.02,
+    "w_spaces": 0.51,
+    "outcome": "PAIRED with a neighbour (the accidental rule)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L011",
+    "subject": "glyph/4/1/5/10/1",
+    "n_runs": 1,
+    "h_spaces": 1.14,
+    "w_spaces": 1.06,
+    "outcome": "too SHORT (h < 2.0 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L012",
+    "subject": "glyph/3/0/3/2/0",
+    "n_runs": 1,
+    "h_spaces": 4.83,
+    "w_spaces": 1.34,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L013",
+    "subject": "glyph/4/0/8/1/8",
+    "n_runs": 0
+   },
+   {
+    "id": "L017",
+    "subject": "glyph/2/0/0/2/9",
+    "n_runs": 1,
+    "h_spaces": 6.43,
+    "w_spaces": 1.25,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L020",
+    "subject": "glyph/4/0/9/6/2",
+    "n_runs": 0
+   },
+   {
+    "id": "L026",
+    "subject": "glyph/1/0/10/10/2",
+    "n_runs": 1,
+    "h_spaces": 4.12,
+    "w_spaces": 0.25,
+    "outcome": "PAIRED with a neighbour (the accidental rule)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "L031",
+    "subject": "glyph/2/0/7/3/4",
+    "n_runs": 1,
+    "h_spaces": 9.56,
+    "w_spaces": 0.43,
+    "outcome": "too TALL (h > 8.0 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L043",
+    "subject": "glyph/4/1/1/1/7",
+    "n_runs": 1,
+    "h_spaces": 6.99,
+    "w_spaces": 0.82,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L046",
+    "subject": "glyph/4/1/0/2/0",
+    "n_runs": 1,
+    "h_spaces": 6.09,
+    "w_spaces": 1.33,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L055",
+    "subject": "glyph/2/1/1/9/2",
+    "n_runs": 1,
+    "h_spaces": 5.25,
+    "w_spaces": 1.12,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L056",
+    "subject": "glyph/4/1/3/6/0",
+    "n_runs": 2,
+    "h_spaces": 5.27,
+    "w_spaces": 0.45,
+    "outcome": "PAIRED with a neighbour (the accidental rule)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L058",
+    "subject": "glyph/4/1/0/6/0",
+    "n_runs": 1,
+    "h_spaces": 7.17,
+    "w_spaces": 1.27,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L079",
+    "subject": "glyph/2/0/0/1/14",
+    "n_runs": 1,
+    "h_spaces": 7.0,
+    "w_spaces": 1.12,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L090",
+    "subject": "glyph/2/0/0/3/1",
+    "n_runs": 1,
+    "h_spaces": 6.87,
+    "w_spaces": 1.25,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L091",
+    "subject": "glyph/4/0/2/10/3",
+    "n_runs": 1,
+    "h_spaces": 1.46,
+    "w_spaces": 0.37,
+    "outcome": "too SHORT (h < 2.0 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L092",
+    "subject": "glyph/4/1/1/7/1",
+    "n_runs": 1,
+    "h_spaces": 5.46,
+    "w_spaces": 1.33,
+    "outcome": "too WIDE (w > 0.6 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "L093",
+    "subject": "glyph/2/1/5/13/6",
+    "n_runs": 1,
+    "h_spaces": 7.11,
+    "w_spaces": 0.44,
+    "outcome": "at a CELL EDGE (0.8 spaces)",
+    "staves_spanned": 1,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L095",
+    "subject": "glyph/2/1/6/13/7",
+    "n_runs": 1,
+    "h_spaces": 2.24,
+    "w_spaces": 0.32,
+    "outcome": "at a CELL EDGE (0.8 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "L104",
+    "subject": "glyph/3/0/8/6/5",
+    "n_runs": 1,
+    "h_spaces": 0.92,
+    "w_spaces": 0.64,
+    "outcome": "too SHORT (h < 2.0 spaces)",
+    "staves_spanned": 0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   }
+  ]
+ },
+ "height_by_coincidence": {
+  "(no detection over it)": {
+   "n": 3192,
+   "p05": 1.13,
+   "median": 8.14,
+   "p95": 13.96
+  },
+  "notehead": {
+   "n": 1946,
+   "p05": 1.32,
+   "median": 4.06,
+   "p95": 7.23
+  },
+  "clef": {
+   "n": 308,
+   "p05": 1.16,
+   "median": 2.35,
+   "p95": 5.38
+  },
+  "accidental": {
+   "n": 262,
+   "p05": 0.92,
+   "median": 2.63,
+   "p95": 4.06
+  },
+  "rest": {
+   "n": 231,
+   "p05": 1.65,
+   "median": 3.25,
+   "p95": 8.2
+  },
+  "keysig": {
+   "n": 93,
+   "p05": 1.06,
+   "median": 2.66,
+   "p95": 3.43
+  },
+  "(several kinds)": {
+   "n": 82,
+   "p05": 1.25,
+   "median": 3.33,
+   "p95": 6.92
+  },
+  "meter": {
+   "n": 14,
+   "p05": 1.62,
+   "median": 4.35,
+   "p95": 12.0
+  }
+ },
+ "cost": {
+  "rows": 6128,
+  "pages": 4,
+  "rows_per_page": 1532.0,
+  "bytes_per_row": 629.5,
+  "mb_per_page": 0.964
+ }
+}

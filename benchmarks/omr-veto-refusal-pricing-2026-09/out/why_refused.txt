@@ -1,0 +1,19 @@
+reference_size = 17  rule=span window=0
+p56 sy0 st 6 slot12 Violin     system_size=10 anchor_above=(pos 5, slot 6) anchor_below=(pos 10, slot 17) slots=11 staves=5 deficit=6
+p56 sy0 st 7 slot13 Violin     system_size=10 anchor_above=(pos 5, slot 6) anchor_below=(pos 10, slot 17) slots=11 staves=5 deficit=6
+p56 sy0 st 8 slot14 Viola      system_size=10 anchor_above=(pos 5, slot 6) anchor_below=(pos 10, slot 17) slots=11 staves=5 deficit=6
+p56 sy1 st15 slot12 Violin     system_size= 9 anchor_above=(pos 4, slot 6) anchor_below=(pos 9, slot 17) slots=11 staves=5 deficit=6
+p56 sy1 st16 slot13 Violin     system_size= 9 anchor_above=(pos 4, slot 6) anchor_below=(pos 9, slot 17) slots=11 staves=5 deficit=6
+p56 sy1 st17 slot14 Viola      system_size= 9 anchor_above=(pos 4, slot 6) anchor_below=(pos 9, slot 17) slots=11 staves=5 deficit=6
+p57 sy1 st20 slot13 Violin     system_size=15 anchor_above=(pos 10, slot 11) anchor_below=(pos 15, slot 17) slots=6 staves=5 deficit=1
+p57 sy1 st21 slot14 Viola      system_size=15 anchor_above=(pos 10, slot 11) anchor_below=(pos 15, slot 17) slots=6 staves=5 deficit=1
+p57 sy1 st22 slot15 Cello      system_size=15 anchor_above=(pos 10, slot 11) anchor_below=(pos 15, slot 17) slots=6 staves=5 deficit=1
+p63 sy1 st 9 slot12 Violin     system_size= 7 anchor_above=(pos 1, slot 3) anchor_below=(pos 7, slot 17) slots=14 staves=6 deficit=8
+p63 sy1 st10 slot13 Violin     system_size= 7 anchor_above=(pos 1, slot 3) anchor_below=(pos 7, slot 17) slots=14 staves=6 deficit=8
+p63 sy1 st11 slot14 Viola      system_size= 7 anchor_above=(pos 1, slot 3) anchor_below=(pos 7, slot 17) slots=14 staves=6 deficit=8
+p63 sy2 st19 slot12 Violin     system_size=10 anchor_above=(pos 5, slot 8) anchor_below=(pos 10, slot 17) slots=9 staves=5 deficit=4
+p63 sy2 st20 slot13 Violin     system_size=10 anchor_above=(pos 5, slot 8) anchor_below=(pos 10, slot 17) slots=9 staves=5 deficit=4
+p63 sy2 st21 slot14 Viola      system_size=10 anchor_above=(pos 5, slot 8) anchor_below=(pos 10, slot 17) slots=9 staves=5 deficit=4
+p86 sy0 st12 slot13 Violin     system_size=16 anchor_above=(pos 11, slot 11) anchor_below=(pos 16, slot 17) slots=6 staves=5 deficit=1
+p86 sy0 st13 slot14 Viola      system_size=16 anchor_above=(pos 11, slot 11) anchor_below=(pos 16, slot 17) slots=6 staves=5 deficit=1
+p86 sy0 st14 slot15 Cello      system_size=16 anchor_above=(pos 11, slot 11) anchor_below=(pos 16, slot 17) slots=6 staves=5 deficit=1

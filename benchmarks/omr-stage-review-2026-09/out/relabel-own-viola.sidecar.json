@@ -1,0 +1,16 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "staff": "staff/3/0/9",
+ "actions": [
+  {
+   "stage": "gather",
+   "kind": "own_box",
+   "glyph": "glyph/3/0/9/6/3",
+   "staff": "staff/3/0/9",
+   "note": "ownership awarded this head to Violin (staff/3/0/8) on distance; owning it back to the Viola it was cut from",
+   "id": "act-0001",
+   "t": "2026-09-24T01:28:53+00:00"
+  }
+ ],
+ "reader": "session-test"
+}

@@ -1,0 +1,20 @@
+=== Breitkopf Brahms 1 p0-3: 398 `restWhole` detections with staff geometry ===
+
+  THE SHIPPED SHAPE BAND, run over this document's OWN whole rests
+  inside the SHIPPED shape band                      209  ( 52.5%)
+  refused: TALLER than the shipped max height          2  (  0.5%)
+  refused: NARROWER than the shipped min aspect       18  (  4.5%)
+  refused: WIDER than the shipped max aspect         169  ( 42.5%)
+
+  below the staff by more than a space (< -2)         64  ( 16.1%)
+  just below the bottom line (-2..0)                   3  (  0.8%)
+  INSIDE the staff (0..8)                            325  ( 81.7%)
+  just above the top line (8..10)                      1  (  0.3%)
+  above the staff by more than a space (> 10)          5  (  1.3%)
+
+  at the SLOT (|step - 5.5| <= 1.0)                314  ( 78.9%)
+  OUTSIDE their own staff entirely                    73  ( 18.3%)
+
+  ⚠️ Every row outside its own staff is a rest the neighbour witness can use to vouch for a suspect ALSO outside the staff — which is the population a whole-rest rule has no business speaking about.
+
+wrote -> benchmarks/omr-second-publisher-pricing-2026-09/out/rest-population-brahms.json

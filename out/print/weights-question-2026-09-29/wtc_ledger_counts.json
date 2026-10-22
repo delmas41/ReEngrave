@@ -1,0 +1,152 @@
+{
+ "beet5-p10-sys0-s0-m0": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m1": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m2": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m3": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m4": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m5": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m6": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m7": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m8": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "beet5-p10-sys0-s0-m9": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p10-sys0-s0-m0": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p10-sys0-s0-m1": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p10-sys0-s0-m2": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p10-sys0-s0-m3": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p10-sys0-s0-m4": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s0-m0": {
+  "prod": 0,
+  "pre": 1,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s0-m1": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s0-m2": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s1-m0": {
+  "prod": 0,
+  "pre": 5,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s1-m1": {
+  "prod": 0,
+  "pre": 6,
+  "raw": 0
+ },
+ "wtc-p5-sys0-s1-m2": {
+  "prod": 2,
+  "pre": 4,
+  "raw": 2
+ },
+ "wtc-p5-sys1-s2-m0": {
+  "prod": 1,
+  "pre": 3,
+  "raw": 1
+ },
+ "wtc-p5-sys1-s2-m1": {
+  "prod": 0,
+  "pre": 2,
+  "raw": 0
+ },
+ "wtc-p5-sys1-s3-m0": {
+  "prod": 3,
+  "pre": 8,
+  "raw": 3
+ },
+ "wtc-p5-sys1-s3-m1": {
+  "prod": 0,
+  "pre": 13,
+  "raw": 0
+ },
+ "wtc-p5-sys2-s4-m0": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys2-s4-m1": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys2-s4-m2": {
+  "prod": 0,
+  "pre": 0,
+  "raw": 0
+ },
+ "wtc-p5-sys2-s5-m0": {
+  "prod": 3,
+  "pre": 8,
+  "raw": 3
+ },
+ "wtc-p5-sys2-s5-m1": {
+  "prod": 2,
+  "pre": 7,
+  "raw": 2
+ }
+}

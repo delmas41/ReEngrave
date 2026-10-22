@@ -1,0 +1,5593 @@
+{
+  "meta": {
+    "n_cells": 97,
+    "models": {
+      "haiku": "claude-haiku-4-5-20251001",
+      "sonnet": "claude-sonnet-5"
+    },
+    "kept_questions": [
+      "notehead_count",
+      "hollow_notehead_present",
+      "accidental_present",
+      "rest_count",
+      "dynamic_present",
+      "augmentation_dot_present"
+    ],
+    "skipped_questions": [],
+    "distribution_gate": {
+      "notehead_count": {
+        "keep": true,
+        "kind": "count",
+        "n_nonzero": 68,
+        "n_total": 97,
+        "reason": "68/97 cells nonzero"
+      },
+      "hollow_notehead_present": {
+        "keep": true,
+        "kind": "bool",
+        "n_true": 32,
+        "n_false": 65,
+        "reason": "True=32, False=65"
+      },
+      "accidental_present": {
+        "keep": true,
+        "kind": "bool",
+        "n_true": 22,
+        "n_false": 75,
+        "reason": "True=22, False=75"
+      },
+      "rest_count": {
+        "keep": true,
+        "kind": "count",
+        "n_nonzero": 45,
+        "n_total": 97,
+        "reason": "45/97 cells nonzero"
+      },
+      "dynamic_present": {
+        "keep": true,
+        "kind": "bool",
+        "n_true": 21,
+        "n_false": 76,
+        "reason": "True=21, False=76"
+      },
+      "augmentation_dot_present": {
+        "keep": true,
+        "kind": "bool",
+        "n_true": 12,
+        "n_false": 85,
+        "reason": "True=12, False=85"
+      }
+    },
+    "cost_usd_actual": 1.0338199999999995,
+    "cost_usd_estimated": 1.039616,
+    "hard_budget_usd": 2.0,
+    "price_per_mtok": {
+      "claude-haiku-4-5-20251001": {
+        "input": 1.0,
+        "output": 5.0
+      },
+      "claude-sonnet-5": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    }
+  },
+  "cells": {
+    "beet5-p15-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1198,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0014730000000000001
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1446,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005298
+        }
+      }
+    },
+    "beet5-p15-sys0-s1-m5": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "barlineSingle",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2370,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002645
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3228,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010644
+        }
+      }
+    },
+    "beet5-p15-sys1-s3-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 3,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1762,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0020369999999999997
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2010,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.00702
+        }
+      }
+    },
+    "beet5-p15-sys1-s5-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadHalfInSpace",
+        "tie"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1792,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002067
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2040,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00708
+        }
+      }
+    },
+    "beet5-p15-sys1-s7-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1794,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002069
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2042,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007085999999999999
+        }
+      }
+    },
+    "beet5-p15-sys2-s11-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2362,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002637
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2931,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009753000000000001
+        }
+      }
+    },
+    "beet5-p15-sys2-s13-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefG",
+        "restWhole",
+        "barlineSingle",
+        "barlineSingle",
+        "restWhole",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 3,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1810,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002085
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2752,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009245999999999999
+        }
+      }
+    },
+    "beet5-p15-sys2-s15-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefG",
+        "accidentalFlat",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 8,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1810,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002085
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 9,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2752,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009215999999999998
+        }
+      }
+    },
+    "beet5-p15-sys2-s17-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefC",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 4,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1810,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002085
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 7,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2752,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009245999999999999
+        }
+      }
+    },
+    "beet5-p15-sys2-s9-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "barlineSingle",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2339,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002614
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2906,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009677999999999999
+        }
+      }
+    },
+    "beet5-p25-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefG",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "legerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 4,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1586,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001861
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2382,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008105999999999999
+        }
+      }
+    },
+    "beet5-p25-sys0-s2-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "legerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "tremolo2",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 11,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 3,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1866,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002141
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2900,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009659999999999998
+        }
+      }
+    },
+    "beet5-p25-sys0-s4-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "tremolo2",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "tremolo2",
+        "noteheadBlackInSpace",
+        "augmentationDot",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1362,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001637
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1938,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.006774
+        }
+      }
+    },
+    "beet5-p25-sys0-s6-m3": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1866,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002141
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2900,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009659999999999998
+        }
+      }
+    },
+    "beet5-p25-sys0-s9-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefC",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "tremolo2",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "augmentationDot",
+        "augmentationDot",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1586,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001861
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2456,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008357999999999999
+        }
+      }
+    },
+    "beet5-p25-sys1-s11-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "legerLine",
+        "augmentationDot"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2146,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002421
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3344,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.011022
+        }
+      }
+    },
+    "beet5-p25-sys1-s12-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "augmentationDot",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2146,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002421
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3418,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.011213999999999998
+        }
+      }
+    },
+    "beet5-p25-sys2-s13-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "tremolo2",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "tremolo2",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1698,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001973
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 7,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2604,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008801999999999999
+        }
+      }
+    },
+    "beet5-p25-sys2-s13-m10": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "rest8th",
+        "rest8th"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1858,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002133
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2106,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007277999999999999
+        }
+      }
+    },
+    "beet5-p25-sys3-s17-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "rest8th",
+        "noteheadBlackInSpace",
+        "tremolo2",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "flag16thUp",
+        "rest8th",
+        "rest8th",
+        "slur",
+        "fermataAbove",
+        "fermataAbove",
+        "fermataAbove",
+        "rest8th",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 5,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1026,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001301
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 4,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1494,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005442
+        }
+      }
+    },
+    "beet5-p35-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "keyFlat",
+        "tie",
+        "noteheadHalfInSpace",
+        "restWhole",
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "restWhole",
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "restWhole",
+        "restQuarter",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 5,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1642,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001917
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2456,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008357999999999999
+        }
+      }
+    },
+    "beet5-p35-sys0-s3-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "tie",
+        "noteheadHalfOnLine",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "augmentationDot",
+        "tie",
+        "tie",
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1586,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001861
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2382,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008105999999999999
+        }
+      }
+    },
+    "beet5-p35-sys0-s6-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadBlackInSpace",
+        "tie",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "articStaccatoAbove",
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "augmentationDot",
+        "accidentalNatural",
+        "accidentalNaturalSmall",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 22,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 8,
+        "dynamic_present": true,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 47,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0013570000000000001
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 30,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 6,
+            "dynamic_present": true,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1494,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005442
+        }
+      }
+    },
+    "beet5-p35-sys0-s9-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "slur",
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "accidentalSharp",
+        "slur",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "slur",
+        "accidentalNatural",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "dynamicF",
+        "accidentalNatural",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadHalfOnLine",
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "augmentationDot",
+        "noteheadHalfOnLine",
+        "augmentationDot",
+        "accidentalNatural",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadHalfOnLine",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "augmentationDot",
+        "noteheadHalfInSpace",
+        "augmentationDot"
+      ],
+      "ground_truth": {
+        "notehead_count": 20,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 14,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0013570000000000001
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 19,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1494,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005442
+        }
+      }
+    },
+    "beet5-p35-sys1-s11-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "slur",
+        "accidentalFlat",
+        "slur",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "articStaccatoAbove"
+      ],
+      "ground_truth": {
+        "notehead_count": 7,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2339,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002614
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2906,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009677999999999999
+        }
+      }
+    },
+    "beet5-p35-sys1-s12-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefF",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLineSmall",
+        "augmentationDot",
+        "augmentationDot"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2370,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002645
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3098,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.010284
+        }
+      }
+    },
+    "beet5-p35-sys1-s12-m6": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "augmentationDot",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1826,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002101
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2074,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007182
+        }
+      }
+    },
+    "beet5-p35-sys1-s13-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadHalfInSpace",
+        "augmentationDot"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1890,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002165
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2138,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007374
+        }
+      }
+    },
+    "beet5-p35-sys1-s13-m8": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "dynamicS",
+        "dynamicLetterF",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 12,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1858,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002133
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2106,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007277999999999999
+        }
+      }
+    },
+    "beet5-p35-sys1-s14-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "restWhole",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2339,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002614
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2906,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009677999999999999
+        }
+      }
+    },
+    "beet5-p45-sys0-s0-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefG",
+        "timeSigCommon",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "repeatLeft"
+      ],
+      "ground_truth": {
+        "notehead_count": 4,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2090,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002365
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3270,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.010799999999999999
+        }
+      }
+    },
+    "beet5-p45-sys0-s1-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefG",
+        "timeSigCommon",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "repeatLeft"
+      ],
+      "ground_truth": {
+        "notehead_count": 4,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2090,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002365
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3270,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010769999999999998
+        }
+      }
+    },
+    "beet5-p45-sys0-s2-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineDouble",
+        "clefF",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "repeatLeft"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2090,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002365
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3270,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010769999999999998
+        }
+      }
+    },
+    "beet5-p45-sys0-s3-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineDouble",
+        "clefF",
+        "timeSigCommon",
+        "dynamicF",
+        "dynamicF",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2090,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002365
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3270,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010769999999999998
+        }
+      }
+    },
+    "beet5-p45-sys0-s4-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefG",
+        "timeSigCommon",
+        "dynamicF",
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace",
+        "repeatLeft"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2146,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002421
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3344,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010992000000000002
+        }
+      }
+    },
+    "beet5-p45-sys0-s5-m1": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineSingle",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2274,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002549
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2522,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008525999999999999
+        }
+      }
+    },
+    "beet5-p45-sys1-s6-m1": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefF",
+        "timeSigCommon",
+        "dynamicF",
+        "dynamicF",
+        "repeatLeft"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2258,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002533
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3354,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.011052000000000001
+        }
+      }
+    },
+    "beet5-p45-sys1-s6-m7": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "augmentationDot"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": true
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2050,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0023250000000000002
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2298,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007854
+        }
+      }
+    },
+    "beet5-p45-sys2-s7-m1": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefC",
+        "timeSigCommon"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2338,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002613
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2634,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008861999999999998
+        }
+      }
+    },
+    "beet5-p45-sys2-s7-m7": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "tremolo2",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1594,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001869
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1842,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.0064860000000000004
+        }
+      }
+    },
+    "beet5-p5-sys0-s0-m5": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "noteheadHalfOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1602,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001877
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1850,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00651
+        }
+      }
+    },
+    "beet5-p5-sys0-s1-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadHalfOnLine",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1602,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001877
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1850,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00651
+        }
+      }
+    },
+    "beet5-p5-sys0-s1-m8": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1986,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002261
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2234,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.0076619999999999995
+        }
+      }
+    },
+    "beet5-p5-sys1-s11-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackOnLine",
+        "slur",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "articStaccatoAbove",
+        "noteheadBlackOnLine",
+        "articStaccatoAbove",
+        "noteheadWholeOnLine",
+        "slur",
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace",
+        "noteheadWholeInSpace",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "slur",
+        "noteheadBlackOnLine",
+        "articStaccatoBelow",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "articStaccatoBelow",
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "flag8thUp",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "dynamicF",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "articStaccatoAbove",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "articStaccatoAbove",
+        "accidentalFlat",
+        "noteheadBlackOnLine",
+        "articStaccatoAbove",
+        "articStaccatoAbove",
+        "noteheadBlackOnLine",
+        "slur",
+        "slur",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 27,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 14,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 28,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.006359999999999999
+        }
+      }
+    },
+    "beet5-p5-sys1-s13-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "clefC",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 12,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 4,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 12,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 13,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 4,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00633
+        }
+      }
+    },
+    "beet5-p5-sys1-s3-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "rest8th",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "dynamicF",
+        "dynamicF",
+        "barlineSingle",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 13,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 4,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 10,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 15,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 4,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.006359999999999999
+        }
+      }
+    },
+    "beet5-p5-sys1-s5-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "barlineSingle",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 24,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 4,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 7,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 13,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 7,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.006359999999999999
+        }
+      }
+    },
+    "beet5-p5-sys1-s7-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "barlineSingle",
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "clefC",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 19,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 4,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 12,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 16,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 5,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00633
+        }
+      }
+    },
+    "beet5-p5-sys1-s9-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadBlackInSpace",
+        "legerLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "barlineSingle",
+        "restWhole",
+        "noteheadBlackInSpace",
+        "tie",
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "noteheadHalfInSpace",
+        "dynamicF",
+        "dynamicF",
+        "tie",
+        "barlineSingle",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "tie",
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 11,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 3,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 11,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1790,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00633
+        }
+      }
+    },
+    "beet5-p55-sys0-s1-m4": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "dynamicF",
+        "ledgerLine",
+        "noteheadWholeOnLine",
+        "accidentalFlat"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2370,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002645
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3066,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010158
+        }
+      }
+    },
+    "beet5-p55-sys0-s2-m8": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 13,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2314,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002589
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3258,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.010764
+        }
+      }
+    },
+    "beet5-p55-sys0-s4-m3": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "clefF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 8,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2352,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002627
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2714,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009101999999999999
+        }
+      }
+    },
+    "beet5-p55-sys0-s5-m7": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadWholeInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2362,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002637
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2842,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009485999999999998
+        }
+      }
+    },
+    "beet5-p55-sys1-s10-m2": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2114,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002389
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2362,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008076
+        }
+      }
+    },
+    "beet5-p55-sys1-s11-m6": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "restHalf"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2339,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002614
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2906,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009677999999999999
+        }
+      }
+    },
+    "beet5-p55-sys1-s7-m3": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 8,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2352,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002627
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2682,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009006
+        }
+      }
+    },
+    "beet5-p55-sys1-s8-m7": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "restQuarter",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2362,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002637
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2842,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009485999999999998
+        }
+      }
+    },
+    "beet5-p55-sys2-s13-m2": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "tremolo2",
+        "tremolo2",
+        "tremolo2",
+        "tremolo2",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "dynamicF"
+      ],
+      "ground_truth": {
+        "notehead_count": 4,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2178,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002453
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2426,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008268000000000001
+        }
+      }
+    },
+    "beet5-p65-sys1-s2-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefC",
+        "timeSigCommon",
+        "noteheadHalfInSpace",
+        "dynamicLetterF",
+        "noteheadHalfOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1866,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002141
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2900,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009659999999999998
+        }
+      }
+    },
+    "beet5-p65-sys1-s3-m2": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2221,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002496
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2469,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008367
+        }
+      }
+    },
+    "beet5-p65-sys1-s4-m4": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2332,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002607
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2832,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009455999999999999
+        }
+      }
+    },
+    "beet5-p65-sys2-s5-m16": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1378,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0016530000000000002
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1626,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005838
+        }
+      }
+    },
+    "beet5-p65-sys2-s5-m6": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2332,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002607
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2778,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009294
+        }
+      }
+    },
+    "beet5-p65-sys3-s6-m15": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1891,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002166
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2139,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007376999999999999
+        }
+      }
+    },
+    "beet5-p65-sys3-s6-m5": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "rest8th",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1429,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001704
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1677,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005991000000000001
+        }
+      }
+    },
+    "beet5-p65-sys4-s8-m0": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "clefF",
+        "timeSigCommon"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1890,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002165
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2138,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.007374
+        }
+      }
+    },
+    "beet5-p65-sys5-s9-m3": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "rest8th",
+        "noteheadBlackInSpaceSmall"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1602,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001877
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1850,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00651
+        }
+      }
+    },
+    "beet5-p75-sys1-s1-m8": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2970,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00987
+        }
+      }
+    },
+    "beet5-p75-sys3-s3-m6": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3002,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009966
+        }
+      }
+    },
+    "beet5-p75-sys4-s5-m4": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1922,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002197
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2170,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00747
+        }
+      }
+    },
+    "beet5-p75-sys4-s7-m1": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineSingle",
+        "clefG",
+        "noteheadWholeInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2320,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002595
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2568,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008694
+        }
+      }
+    },
+    "beet5-p75-sys5-s10-m7": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineSingle",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3002,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.009966
+        }
+      }
+    },
+    "beet5-p75-sys5-s8-m10": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "restHalf",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2362,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002637
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2842,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009515999999999998
+        }
+      }
+    },
+    "beet5-p75-sys6-s12-m4": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1570,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001845
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1818,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.0064139999999999996
+        }
+      }
+    },
+    "beet5-p75-sys6-s13-m11": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "restQuarter",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1378,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0016530000000000002
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1626,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005838
+        }
+      }
+    },
+    "beet5-p75-sys7-s14-m18": {
+      "version": "v2-2026-06-08-beet5",
+      "classes": [
+        "noteheadBlackOnLine",
+        "barlineSingle",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 12,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2338,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002613
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 5,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2634,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008861999999999998
+        }
+      }
+    },
+    "mahler5-p130-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "restWhole",
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1474,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0017490000000000001
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 2,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2234,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.0076619999999999995
+        }
+      }
+    },
+    "mahler5-p25-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "clefG",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "accidentalNatural",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadHalfInSpace",
+        "dynamicCrescendoHairpin",
+        "slur",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "dynamicF"
+      ],
+      "ground_truth": {
+        "notehead_count": 11,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 8,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1250,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001525
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 10,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1864,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.006552
+        }
+      }
+    },
+    "mahler5-p25-sys0-s1-m3": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "dynamicF",
+        "dynamicF",
+        "dynamicDiminuendoHairpin",
+        "noteheadHalfInSpace",
+        "slur",
+        "slur",
+        "textDynamic"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2178,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002453
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2426,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.008268000000000001
+        }
+      }
+    },
+    "mahler5-p25-sys0-s3-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "dynamicF",
+        "noteheadHalfOnLine",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2332,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002607
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2865,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009585
+        }
+      }
+    },
+    "mahler5-p25-sys0-s4-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole",
+        "articAccentAbove",
+        "noteheadWholeInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1642,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001917
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2530,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00855
+        }
+      }
+    },
+    "mahler5-p25-sys0-s6-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2342,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002617
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3129,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010346999999999999
+        }
+      }
+    },
+    "mahler5-p25-sys0-s8-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "dynamicLetterP",
+        "restHalf"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2332,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002607
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2865,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009585
+        }
+      }
+    },
+    "mahler5-p25-sys0-s9-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "restWhole",
+        "barlineSingle",
+        "articAccentAbove",
+        "noteheadWholeInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1642,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001917
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2530,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.00855
+        }
+      }
+    },
+    "mahler5-p25-sys1-s11-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1698,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001973
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2604,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.008771999999999999
+        }
+      }
+    },
+    "mahler5-p25-sys2-s12-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restQuarter",
+        "accidentalNatural"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1634,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001909
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1882,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.0066359999999999995
+        }
+      }
+    },
+    "mahler5-p25-sys3-s13-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadHalfOnLine",
+        "articAccentAbove",
+        "articulationAccent",
+        "noteheadHalfOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3096,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010248
+        }
+      }
+    },
+    "mahler5-p70-sys0-s0-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalNatural",
+        "dynamicLetterS",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "dynamicDiminuendoHairpin",
+        "noteheadBlackInSpace",
+        "legerLine",
+        "rest8th",
+        "restQuarter"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 2,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2370,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002645
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 1,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2650,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.00894
+        }
+      }
+    },
+    "mahler5-p70-sys1-s1-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole",
+        "restQuarter",
+        "dynamicM",
+        "dynamicM",
+        "dynamicF",
+        "ledgerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "dynamicS",
+        "dynamicF",
+        "ledgerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine",
+        "dynamicS",
+        "dynamicF",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "dynamicDiminuendoHairpin",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 14,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 3,
+        "dynamic_present": true,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 6,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1306,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0015810000000000002
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 10,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 2,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1938,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.006774
+        }
+      }
+    },
+    "mahler5-p70-sys1-s4-m1": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "legerLine",
+        "rest8th",
+        "legerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "legerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "ground_truth": {
+        "notehead_count": 5,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 2,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2370,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002645
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3228,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.010674
+        }
+      }
+    },
+    "mahler5-p70-sys1-s6-m3": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "legerLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 3,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2314,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002589
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3294,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.010872
+        }
+      }
+    },
+    "mahler5-p70-sys2-s10-m3": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2314,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002589
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3226,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.010638000000000002
+        }
+      }
+    },
+    "mahler5-p70-sys2-s8-m5": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "restWhole"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": true,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 0,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3030,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.01005
+        }
+      }
+    },
+    "mahler5-p70-sys3-s11-m8": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "noteheadHalfInSpace",
+        "noteheadHalfInSpace"
+      ],
+      "ground_truth": {
+        "notehead_count": 2,
+        "hollow_notehead_present": true,
+        "accidental_present": true,
+        "rest_count": 0,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 4,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1314,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.0015890000000000001
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 3,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1562,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.005646
+        }
+      }
+    },
+    "mahler5-p70-sys4-s13-m4": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "legerLine",
+        "legerLine",
+        "restHalf",
+        "barlineSingle"
+      ],
+      "ground_truth": {
+        "notehead_count": 0,
+        "hollow_notehead_present": false,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": true,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 1,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 3030,
+            "output_tokens": 64
+          },
+          "cost_usd": 0.01005
+        }
+      }
+    },
+    "mahler5-p70-sys6-s16-m0": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "rest8th",
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "restHalf"
+      ],
+      "ground_truth": {
+        "notehead_count": 15,
+        "hollow_notehead_present": false,
+        "accidental_present": true,
+        "rest_count": 4,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 9,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 1418,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.001693
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 9,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 3,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2086,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.007248000000000001
+        }
+      }
+    },
+    "mahler5-p70-sys7-s18-m2": {
+      "version": "v1-2026-05-18-orchestral",
+      "classes": [
+        "noteheadHalfOnLine",
+        "restQuarter",
+        "clefF"
+      ],
+      "ground_truth": {
+        "notehead_count": 1,
+        "hollow_notehead_present": true,
+        "accidental_present": false,
+        "rest_count": 1,
+        "dynamic_present": false,
+        "augmentation_dot_present": false
+      },
+      "answers": {
+        "haiku": {
+          "model_id": "claude-haiku-4-5-20251001",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": true,
+            "rest_count": 0,
+            "dynamic_present": false,
+            "augmentation_dot_present": false
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2368,
+            "output_tokens": 55
+          },
+          "cost_usd": 0.002643
+        },
+        "sonnet": {
+          "model_id": "claude-sonnet-5",
+          "parsed": {
+            "notehead_count": 2,
+            "hollow_notehead_present": false,
+            "accidental_present": false,
+            "rest_count": 1,
+            "dynamic_present": false,
+            "augmentation_dot_present": true
+          },
+          "error": null,
+          "usage": {
+            "input_tokens": 2997,
+            "output_tokens": 66
+          },
+          "cost_usd": 0.009981
+        }
+      }
+    }
+  }
+}

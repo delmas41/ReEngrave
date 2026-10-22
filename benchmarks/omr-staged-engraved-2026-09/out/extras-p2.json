@@ -1,0 +1,25 @@
+{
+ "staged": 784,
+ "legacy": 717,
+ "extras": 67,
+ "attribution": {
+  "cross-staff, RESOLVED: its own Q.GLYPH_OWNER verdict names another staff": 32,
+  "cross-staff, NOT CONTESTED: twin at IoU 0.3-0.5 \u2014 legacy dedupes at 0.3, staged contests at 0.5": 9,
+  "cross-staff, kept: a twin at IoU >= CONTEST_IOU (0.5) and this copy WON or the contest disagreed": 20,
+  "NMS: a same-cell, same-family twin (IoU >= 0.3)": 4,
+  "unexplained by any of the four": 2
+ },
+ "by_family": {
+  "notehead": 14,
+  "accidental": 2,
+  "dynamic_letter": 43,
+  "null": 5,
+  "beam": 1,
+  "rest": 1,
+  "flag": 1
+ },
+ "noteheads": {
+  "staged": 221,
+  "legacy": 207
+ }
+}

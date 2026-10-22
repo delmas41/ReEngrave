@@ -1,0 +1,68 @@
+SUBJECT glyph/1/1/5/7/11  (glyph, 13 rows filed at it)
+
+── GATHER ────────────────────────────────────────────────────────────
+  READ     glyph_box                  = ['noteheadHalfInSpace', 164, 1114, 164, 82]
+           by detector in frame cell:7 score=0.33094918727874756  detail=['bbox_page_px', 'category', 'x_center_page', 'y_center_page']
+  READ     glyph_conf                 = 0.33094918727874756
+           by detector in frame cell:7 score=0.33094918727874756
+  READ     notehead_class             = 'noteheadHalfInSpace'
+           by detector in frame cell:7 score=0.33094918727874756
+  READ     notehead_staff_position    = 16.34
+           by geometry in frame cell:7  detail=['residual', 'rounded']
+  READ     glyph_band_distance        = 3.549999999999973
+           by geometry in frame page  detail=['candidate', 'own', 'position_in_candidate']
+  READ     glyph_ladder               = False
+           by detector in frame page  detail=['candidate', 'expected', 'found']
+  READ     glyph_band_distance        = 0.0
+           by geometry in frame page  detail=['candidate', 'own', 'position_in_candidate']
+── ADJUDICATE ────────────────────────────────────────────────────────
+  DECIDED  glyph_owner                = 'staff/1/1/6'
+           by adjudicate_glyph_owner  reason=distance
+           read 2 of 7 rows considered; basis 17; 3 correlated group(s)
+  DECIDED  stem_direction             = 'up'
+           by adjudicate_stem_direction  reason=stem_projection
+           read 2 of 14 rows considered; basis 14; 1 correlated group(s)
+  DECIDED  notehead_is_a_whole_rest   = True
+           by adjudicate_notehead_is_a_whole_rest  reason=shape_and_position_agree
+           read 4 of 106 rows considered; basis 106; 14 correlated group(s)
+  DECIDED  duration                   = {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}
+           by adjudicate_duration  reason=head_and_marks
+           read 4 of 17 rows considered; basis 17; 2 correlated group(s)
+           MISSING  ['aug_dot', 'flag', 'rest', 'tuplet_ratio']
+           DECLINED ['beam_stroke']
+── EVALUATE ──────────────────────────────────────────────────────────
+  DECIDED  pitch                      = 'D3'
+           by restate_pitch  reason=position_and_clef
+           read 0 of 2 rows considered; basis 2
+  DECIDED  pitch                      = 'D5'
+           by move_glyph  reason=reowned
+           read 0 of 3 rows considered; basis 3
+           SUPERSEDES vrd:079305 (restate_pitch: decided='D3') -> changed_the_value
+
+── CONTEXT (decided on an ANCESTOR, not on this subject) ──────
+  cell/1/1/5/7           3 read, 2 declined, 4 verdicts
+      event={'events': [{'glyphs': [11], 'x': 246.0, 'kind': 'chord'}, {'glyphs': [1], 'x': 970.0, 'ki...(+14 chars) [decided/x_clustered] by adjudicate_event
+      voices={'n_voices': 1, 'voices': [[1, 11]], 'rests_in_every_voice': []} [decided/one_voice] by adjudicate_voices
+      dynamic=None [abstained/unspellable] by adjudicate_dynamic
+      direction=[] [decided/no_words] by adjudicate_direction
+  staff/1/1/5            15 read, 6 declined, 8 verdicts
+      staff_group=0 [decided/bracket_block] by adjudicate_staff_group
+      measure_partition=8 [decided/read] by adjudicate_measure_partition
+      staff_ordinal=5 [decided/read] by adjudicate_staff_ordinal
+      instrument={'name': 'Horn', 'family': 'brass', 'expected_clef': 'treble', 'written_range': [41, 77], ...(+19 chars) [decided/label] by adjudicate_instrument
+      slot_index=5 [decided/paired_by_name] by adjudicate_slot_index
+      clef=treble [decided/scored] by adjudicate_clef
+      key_signature=0 [decided/fitted_by_template] by adjudicate_key_signature
+      part_name=Horn [decided/from_instrument] by name_part
+  system/1/1             1 read, 0 declined, 5 verdicts
+      system_membership=13 [decided/counted] by adjudicate_system_membership
+      system_staff_count=13 [decided/counted] by adjudicate_system_staff_count
+      group_symbol=bracket [decided/bracket] by adjudicate_group_symbol
+      onset_column={'bars': [{'measure': 0, 'staves': 13, 'columns': [{'x_page': 810.4, 'witnesses': [5], 'n_...(+18132 chars) [decided/columns_read] by adjudicate_onset_column
+      meter={'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 4, 'numerator'...(+117 chars) [decided/change_only] by adjudicate_meter
+  page/1                 1 read, 0 declined, 0 verdicts
+  document               0 read, 8 declined, 1 verdicts
+      part_partition={'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]} [decided/slot] by adjudicate_part_partition
+
+── EXPORT ──────────────────────────────────────────────────────
+  declined: no export report supplied (--export to run it)

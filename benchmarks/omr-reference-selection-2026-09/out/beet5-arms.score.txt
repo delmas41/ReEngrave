@@ -1,0 +1,48 @@
+=== beet5-p1-off.json   work=beet5
+INPUT ASSERTION: pages=1 systems-in-run=1 full-systems-scored=1 staff-records-scored=12
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 12
+
+CORRECT 12/12 = 1.0000   unnamed 0   wrong 0
+   size  12:   12/  12 = 1.0000
+
+confusions (truth -> emitted), most common first:
+
+=== beet5-p1-on.json   work=beet5
+INPUT ASSERTION: pages=1 systems-in-run=1 full-systems-scored=1 staff-records-scored=12
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 12
+
+CORRECT 12/12 = 1.0000   unnamed 0   wrong 0
+   size  12:   12/  12 = 1.0000
+
+confusions (truth -> emitted), most common first:
+
+=== beet5-p02-off.json   work=beet5
+INPUT ASSERTION: pages=3 systems-in-run=3 full-systems-scored=1 staff-records-scored=12
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 11
+
+CORRECT 4/12 = 0.3333   unnamed 1   wrong 7
+   size  12:    4/  12 = 0.3333
+
+confusions (truth -> emitted), most common first:
+      1  Flute            -> (unnamed)
+      1  Oboe             -> Flute
+      1  Clarinet         -> Oboe
+      1  Bassoon          -> Clarinet
+      1  Horn             -> Bassoon
+      1  Trumpet          -> Horn
+      1  Timpani          -> Trumpet
+      1  Violin           -> Timpani
+
+=== beet5-p02-on.json   work=beet5
+INPUT ASSERTION: pages=3 systems-in-run=3 full-systems-scored=1 staff-records-scored=12
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 12
+
+CORRECT 12/12 = 1.0000   unnamed 0   wrong 0
+   size  12:   12/  12 = 1.0000
+
+confusions (truth -> emitted), most common first:
+

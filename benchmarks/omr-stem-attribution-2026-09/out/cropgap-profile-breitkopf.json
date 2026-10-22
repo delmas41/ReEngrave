@@ -1,0 +1,2390 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3 PROFILE",
+ "source": "profile",
+ "gap_cut": 1.0,
+ "seed": 20260921,
+ "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "FAR_population_size": 124,
+ "cropped_all_of_FAR": true,
+ "affine_residual_px": {
+  "mean": 0.0,
+  "max": 0.0
+ },
+ "sheets": [
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-0.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-1.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-2.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-3.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-4.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-5.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-6.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-7.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-8.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-9.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-10.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-11.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-12.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-13.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-14.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-15.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-16.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-17.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-18.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-19.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-20.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-21.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-22.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-23.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-24.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-25.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-26.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-27.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-28.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-29.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-30.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-31.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-profile-breitkopf/sheet-32.png"
+ ],
+ "index": [
+  {
+   "tile": "G00",
+   "subject": "glyph/2/0/2/2/11",
+   "stem": "profile:cell/2/0/2/2:3",
+   "cell": "cell/2/0/2/2",
+   "gap_head_heights": 2.49,
+   "stroke_in_head_heights": 5.147,
+   "stem_box_canonical": [
+    155.0,
+    330.0,
+    3.0,
+    525.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 189.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G01",
+   "subject": "glyph/3/1/3/0/27",
+   "stem": "profile:cell/3/1/3/0:12",
+   "cell": "cell/3/1/3/0",
+   "gap_head_heights": 2.17,
+   "stroke_in_head_heights": 4.773,
+   "stem_box_canonical": [
+    1726.0,
+    308.0,
+    3.0,
+    420.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 126.7,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G02",
+   "subject": "glyph/1/0/0/1/26",
+   "stem": "profile:cell/1/0/0/1:1",
+   "cell": "cell/1/0/0/1",
+   "gap_head_heights": 1.056,
+   "stroke_in_head_heights": 2.211,
+   "stem_box_canonical": [
+    427.0,
+    611.0,
+    15.0,
+    199.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 172.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G03",
+   "subject": "glyph/3/0/11/8/25",
+   "stem": "profile:cell/3/0/11/8:11",
+   "cell": "cell/3/0/11/8",
+   "gap_head_heights": 2.288,
+   "stroke_in_head_heights": 4.619,
+   "stem_box_canonical": [
+    1367.0,
+    478.0,
+    4.0,
+    545.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 167.9,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G04",
+   "subject": "glyph/0/0/5/0/13",
+   "stem": "profile:cell/0/0/5/0:4",
+   "cell": "cell/0/0/5/0",
+   "gap_head_heights": 1.927,
+   "stroke_in_head_heights": 4.594,
+   "stem_box_canonical": [
+    1091.0,
+    551.0,
+    2.0,
+    441.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 160.1,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G05",
+   "subject": "glyph/3/1/10/2/19",
+   "stem": "profile:cell/3/1/10/2:3",
+   "cell": "cell/3/1/10/2",
+   "gap_head_heights": 1.607,
+   "stroke_in_head_heights": 4.282,
+   "stem_box_canonical": [
+    303.0,
+    327.0,
+    4.0,
+    441.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 172.1,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G06",
+   "subject": "glyph/3/1/3/5/4",
+   "stem": "profile:cell/3/1/3/5:5",
+   "cell": "cell/3/1/3/5",
+   "gap_head_heights": 1.852,
+   "stroke_in_head_heights": 4.312,
+   "stem_box_canonical": [
+    848.0,
+    372.0,
+    3.0,
+    539.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 154.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G07",
+   "subject": "glyph/3/1/2/5/5",
+   "stem": "profile:cell/3/1/2/5:5",
+   "cell": "cell/3/1/2/5",
+   "gap_head_heights": 1.09,
+   "stroke_in_head_heights": 2.393,
+   "stem_box_canonical": [
+    836.0,
+    571.0,
+    4.0,
+    292.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 148.7,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G08",
+   "subject": "glyph/3/1/3/1/12",
+   "stem": "profile:cell/3/1/3/1:36",
+   "cell": "cell/3/1/3/1",
+   "gap_head_heights": 1.475,
+   "stroke_in_head_heights": 3.811,
+   "stem_box_canonical": [
+    1618.0,
+    667.0,
+    4.0,
+    465.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 160.0,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G09",
+   "subject": "glyph/3/0/6/4/6",
+   "stem": "profile:cell/3/0/6/4:4",
+   "cell": "cell/3/0/6/4",
+   "gap_head_heights": 1.44,
+   "stroke_in_head_heights": 4.034,
+   "stem_box_canonical": [
+    235.0,
+    254.0,
+    10.0,
+    468.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 182.4,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G10",
+   "subject": "glyph/1/0/2/1/21",
+   "stem": "profile:cell/1/0/2/1:3",
+   "cell": "cell/1/0/2/1",
+   "gap_head_heights": 1.5,
+   "stroke_in_head_heights": 3.847,
+   "stem_box_canonical": [
+    592.0,
+    405.0,
+    3.0,
+    377.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 173.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G11",
+   "subject": "glyph/1/0/9/1/7",
+   "stem": "profile:cell/1/0/9/1:3",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 2.17,
+   "stroke_in_head_heights": 4.864,
+   "stem_box_canonical": [
+    595.0,
+    76.0,
+    3.0,
+    501.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 148.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G12",
+   "subject": "glyph/3/1/3/0/27",
+   "stem": "profile:cell/3/1/3/0:13",
+   "cell": "cell/3/1/3/0",
+   "gap_head_heights": 2.17,
+   "stroke_in_head_heights": 4.773,
+   "stem_box_canonical": [
+    1726.0,
+    308.0,
+    3.0,
+    420.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 126.7,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G13",
+   "subject": "glyph/3/1/3/2/19",
+   "stem": "profile:cell/3/1/3/2:32",
+   "cell": "cell/3/1/3/2",
+   "gap_head_heights": 1.586,
+   "stroke_in_head_heights": 3.352,
+   "stem_box_canonical": [
+    1726.0,
+    514.0,
+    3.0,
+    352.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 166.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G14",
+   "subject": "glyph/3/0/11/3/9",
+   "stem": "profile:cell/3/0/11/3:1",
+   "cell": "cell/3/0/11/3",
+   "gap_head_heights": 1.012,
+   "stroke_in_head_heights": 2.512,
+   "stem_box_canonical": [
+    382.0,
+    358.0,
+    4.0,
+    309.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 115.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G15",
+   "subject": "glyph/1/0/0/0/16",
+   "stem": "profile:cell/1/0/0/0:22",
+   "cell": "cell/1/0/0/0",
+   "gap_head_heights": 1.328,
+   "stroke_in_head_heights": 3.138,
+   "stem_box_canonical": [
+    1338.0,
+    244.0,
+    2.0,
+    182.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 134.5,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G16",
+   "subject": "glyph/3/1/10/2/16",
+   "stem": "profile:cell/3/1/10/2:14",
+   "cell": "cell/3/1/10/2",
+   "gap_head_heights": 1.315,
+   "stroke_in_head_heights": 3.657,
+   "stem_box_canonical": [
+    883.0,
+    439.0,
+    13.0,
+    395.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 163.5,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G17",
+   "subject": "glyph/3/0/11/9/8",
+   "stem": "profile:cell/3/0/11/9:2",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 2.37,
+   "stroke_in_head_heights": 4.88,
+   "stem_box_canonical": [
+    157.0,
+    485.0,
+    3.0,
+    527.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 174.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G18",
+   "subject": "glyph/3/0/10/9/9",
+   "stem": "profile:cell/3/0/10/9:0",
+   "cell": "cell/3/0/10/9",
+   "gap_head_heights": 1.115,
+   "stroke_in_head_heights": 3.677,
+   "stem_box_canonical": [
+    136.0,
+    357.0,
+    4.0,
+    478.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 144.2,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G19",
+   "subject": "glyph/3/0/11/9/8",
+   "stem": "profile:cell/3/0/11/9:3",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 2.37,
+   "stroke_in_head_heights": 4.88,
+   "stem_box_canonical": [
+    157.0,
+    485.0,
+    3.0,
+    527.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 174.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G20",
+   "subject": "glyph/3/0/5/8/9",
+   "stem": "profile:cell/3/0/5/8:14",
+   "cell": "cell/3/0/5/8",
+   "gap_head_heights": 1.836,
+   "stroke_in_head_heights": 4.064,
+   "stem_box_canonical": [
+    1535.0,
+    466.0,
+    4.0,
+    508.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 164.0,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G21",
+   "subject": "glyph/1/0/3/1/21",
+   "stem": "profile:cell/1/0/3/1:8",
+   "cell": "cell/1/0/3/1",
+   "gap_head_heights": 1.371,
+   "stroke_in_head_heights": 3.673,
+   "stem_box_canonical": [
+    474.0,
+    620.0,
+    3.0,
+    371.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 155.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G22",
+   "subject": "glyph/2/1/3/3/6",
+   "stem": "profile:cell/2/1/3/3:1",
+   "cell": "cell/2/1/3/3",
+   "gap_head_heights": 2.236,
+   "stroke_in_head_heights": 4.827,
+   "stem_box_canonical": [
+    237.0,
+    201.0,
+    3.0,
+    531.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G23",
+   "subject": "glyph/3/0/1/0/7",
+   "stem": "profile:cell/3/0/1/0:2",
+   "cell": "cell/3/0/1/0",
+   "gap_head_heights": 1.076,
+   "stroke_in_head_heights": 3.859,
+   "stem_box_canonical": [
+    961.0,
+    438.0,
+    14.0,
+    355.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 173.7,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G24",
+   "subject": "glyph/0/0/2/0/5",
+   "stem": "profile:cell/0/0/2/0:3",
+   "cell": "cell/0/0/2/0",
+   "gap_head_heights": 2.659,
+   "stroke_in_head_heights": 5.409,
+   "stem_box_canonical": [
+    983.0,
+    280.0,
+    2.0,
+    476.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 166.2,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G25",
+   "subject": "glyph/0/0/7/0/20",
+   "stem": "profile:cell/0/0/7/0:1",
+   "cell": "cell/0/0/7/0",
+   "gap_head_heights": 2.778,
+   "stroke_in_head_heights": 6.889,
+   "stem_box_canonical": [
+    74.0,
+    472.0,
+    2.0,
+    372.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 205.2,
+   "frame_ok": true,
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "G26",
+   "subject": "glyph/3/1/3/7/4",
+   "stem": "profile:cell/3/1/3/7:2",
+   "cell": "cell/3/1/3/7",
+   "gap_head_heights": 1.889,
+   "stroke_in_head_heights": 4.27,
+   "stem_box_canonical": [
+    291.0,
+    300.0,
+    4.0,
+    538.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 141.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G27",
+   "subject": "glyph/3/1/3/1/8",
+   "stem": "profile:cell/3/1/3/1:4",
+   "cell": "cell/3/1/3/1",
+   "gap_head_heights": 1.77,
+   "stroke_in_head_heights": 3.852,
+   "stem_box_canonical": [
+    204.0,
+    481.0,
+    4.0,
+    470.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 142.0,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G28",
+   "subject": "glyph/3/1/3/8/7",
+   "stem": "profile:cell/3/1/3/8:9",
+   "cell": "cell/3/1/3/8",
+   "gap_head_heights": 1.04,
+   "stroke_in_head_heights": 2.169,
+   "stem_box_canonical": [
+    1087.0,
+    471.0,
+    4.0,
+    269.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 147.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G29",
+   "subject": "glyph/3/0/10/9/7",
+   "stem": "profile:cell/3/0/10/9:29",
+   "cell": "cell/3/0/10/9",
+   "gap_head_heights": 1.054,
+   "stroke_in_head_heights": 3.942,
+   "stem_box_canonical": [
+    1325.0,
+    372.0,
+    4.0,
+    477.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 167.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G30",
+   "subject": "glyph/3/0/11/9/7",
+   "stem": "profile:cell/3/0/11/9:13",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 2.5,
+   "stroke_in_head_heights": 5.34,
+   "stem_box_canonical": [
+    568.0,
+    478.0,
+    3.0,
+    534.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 179.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G31",
+   "subject": "glyph/1/0/1/1/12",
+   "stem": "profile:cell/1/0/1/1:1",
+   "cell": "cell/1/0/1/1",
+   "gap_head_heights": 1.205,
+   "stroke_in_head_heights": 3.467,
+   "stem_box_canonical": [
+    470.0,
+    381.0,
+    4.0,
+    364.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 155.8,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G32",
+   "subject": "glyph/3/1/0/3/10",
+   "stem": "profile:cell/3/1/0/3:6",
+   "cell": "cell/3/1/0/3",
+   "gap_head_heights": 1.745,
+   "stroke_in_head_heights": 5.382,
+   "stem_box_canonical": [
+    186.0,
+    285.0,
+    3.0,
+    549.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 204.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G33",
+   "subject": "glyph/3/0/5/0/9",
+   "stem": "profile:cell/3/0/5/0:2",
+   "cell": "cell/3/0/5/0",
+   "gap_head_heights": 2.436,
+   "stroke_in_head_heights": 5.287,
+   "stem_box_canonical": [
+    975.0,
+    441.0,
+    11.0,
+    497.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 170.6,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G34",
+   "subject": "glyph/3/1/5/3/4",
+   "stem": "profile:cell/3/1/5/3:1",
+   "cell": "cell/3/1/5/3",
+   "gap_head_heights": 2.267,
+   "stroke_in_head_heights": 5.183,
+   "stem_box_canonical": [
+    291.0,
+    354.0,
+    4.0,
+    622.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 154.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G35",
+   "subject": "glyph/3/1/3/0/27",
+   "stem": "profile:cell/3/1/3/0:18",
+   "cell": "cell/3/1/3/0",
+   "gap_head_heights": 1.932,
+   "stroke_in_head_heights": 4.557,
+   "stem_box_canonical": [
+    1736.0,
+    329.0,
+    3.0,
+    401.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 126.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G36",
+   "subject": "glyph/3/0/13/1/2",
+   "stem": "profile:cell/3/0/13/1:0",
+   "cell": "cell/3/0/13/1",
+   "gap_head_heights": 2.433,
+   "stroke_in_head_heights": 11.583,
+   "stem_box_canonical": [
+    1052.0,
+    110.0,
+    4.0,
+    695.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 184.6,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G37",
+   "subject": "glyph/2/0/2/2/11",
+   "stem": "profile:cell/2/0/2/2:1",
+   "cell": "cell/2/0/2/2",
+   "gap_head_heights": 2.49,
+   "stroke_in_head_heights": 5.147,
+   "stem_box_canonical": [
+    155.0,
+    330.0,
+    3.0,
+    525.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 189.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G38",
+   "subject": "glyph/2/0/12/0/33",
+   "stem": "profile:cell/2/0/12/0:4",
+   "cell": "cell/2/0/12/0",
+   "gap_head_heights": 1.904,
+   "stroke_in_head_heights": 8.096,
+   "stem_box_canonical": [
+    71.0,
+    287.0,
+    2.0,
+    421.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 192.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G39",
+   "subject": "glyph/3/1/6/8/17",
+   "stem": "profile:cell/3/1/6/8:4",
+   "cell": "cell/3/1/6/8",
+   "gap_head_heights": 1.769,
+   "stroke_in_head_heights": 3.914,
+   "stem_box_canonical": [
+    1082.0,
+    293.0,
+    3.0,
+    364.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 177.8,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G40",
+   "subject": "glyph/1/0/9/1/16",
+   "stem": "profile:cell/1/0/9/1:6",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.519,
+   "stroke_in_head_heights": 5.755,
+   "stem_box_canonical": [
+    607.0,
+    275.0,
+    4.0,
+    610.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 156.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G41",
+   "subject": "glyph/2/0/7/5/6",
+   "stem": "profile:cell/2/0/7/5:5",
+   "cell": "cell/2/0/7/5",
+   "gap_head_heights": 1.017,
+   "stroke_in_head_heights": 3.697,
+   "stem_box_canonical": [
+    1742.0,
+    131.0,
+    2.0,
+    329.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 204.1,
+   "frame_ok": true,
+   "staff_space_px": 27.0
+  },
+  {
+   "tile": "G42",
+   "subject": "glyph/3/0/11/3/9",
+   "stem": "profile:cell/3/0/11/3:0",
+   "cell": "cell/3/0/11/3",
+   "gap_head_heights": 1.012,
+   "stroke_in_head_heights": 2.512,
+   "stem_box_canonical": [
+    382.0,
+    358.0,
+    4.0,
+    309.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 115.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G43",
+   "subject": "glyph/3/1/0/3/10",
+   "stem": "profile:cell/3/1/0/3:5",
+   "cell": "cell/3/1/0/3",
+   "gap_head_heights": 1.745,
+   "stroke_in_head_heights": 5.382,
+   "stem_box_canonical": [
+    186.0,
+    285.0,
+    3.0,
+    549.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 204.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G44",
+   "subject": "glyph/1/0/9/1/16",
+   "stem": "profile:cell/1/0/9/1:7",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.519,
+   "stroke_in_head_heights": 5.755,
+   "stem_box_canonical": [
+    607.0,
+    275.0,
+    4.0,
+    610.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 156.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G45",
+   "subject": "glyph/2/0/1/2/5",
+   "stem": "profile:cell/2/0/1/2:2",
+   "cell": "cell/2/0/1/2",
+   "gap_head_heights": 1.911,
+   "stroke_in_head_heights": 4.25,
+   "stem_box_canonical": [
+    152.0,
+    419.0,
+    3.0,
+    476.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 155.3,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G46",
+   "subject": "glyph/3/1/3/2/20",
+   "stem": "profile:cell/3/1/3/2:15",
+   "cell": "cell/3/1/3/2",
+   "gap_head_heights": 1.592,
+   "stroke_in_head_heights": 4.306,
+   "stem_box_canonical": [
+    1212.0,
+    326.0,
+    3.0,
+    422.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 159.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G47",
+   "subject": "glyph/3/1/3/0/14",
+   "stem": "profile:cell/3/1/3/0:6",
+   "cell": "cell/3/1/3/0",
+   "gap_head_heights": 1.916,
+   "stroke_in_head_heights": 3.978,
+   "stem_box_canonical": [
+    1390.0,
+    245.0,
+    3.0,
+    354.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 134.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G48",
+   "subject": "glyph/3/0/11/8/25",
+   "stem": "profile:cell/3/0/11/8:12",
+   "cell": "cell/3/0/11/8",
+   "gap_head_heights": 2.288,
+   "stroke_in_head_heights": 4.619,
+   "stem_box_canonical": [
+    1367.0,
+    478.0,
+    4.0,
+    545.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 167.9,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G49",
+   "subject": "glyph/2/0/12/1/9",
+   "stem": "profile:cell/2/0/12/1:17",
+   "cell": "cell/2/0/12/1",
+   "gap_head_heights": 0.106,
+   "stroke_in_head_heights": 4.197,
+   "stem_box_canonical": [
+    1021.0,
+    357.0,
+    11.0,
+    277.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 140.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G50",
+   "subject": "glyph/3/1/11/3/24",
+   "stem": "profile:cell/3/1/11/3:1",
+   "cell": "cell/3/1/11/3",
+   "gap_head_heights": 1.01,
+   "stroke_in_head_heights": 4.224,
+   "stem_box_canonical": [
+    163.0,
+    456.0,
+    3.0,
+    414.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 187.7,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G51",
+   "subject": "glyph/3/1/3/2/20",
+   "stem": "profile:cell/3/1/3/2:16",
+   "cell": "cell/3/1/3/2",
+   "gap_head_heights": 1.061,
+   "stroke_in_head_heights": 2.551,
+   "stem_box_canonical": [
+    1215.0,
+    488.0,
+    4.0,
+    250.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 161.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G52",
+   "subject": "glyph/0/0/1/0/15",
+   "stem": "profile:cell/0/0/1/0:3",
+   "cell": "cell/0/0/1/0",
+   "gap_head_heights": 2.687,
+   "stroke_in_head_heights": 5.747,
+   "stem_box_canonical": [
+    981.0,
+    354.0,
+    2.0,
+    431.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 204.6,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G53",
+   "subject": "glyph/3/1/3/7/4",
+   "stem": "profile:cell/3/1/3/7:7",
+   "cell": "cell/3/1/3/7",
+   "gap_head_heights": 1.056,
+   "stroke_in_head_heights": 2.913,
+   "stem_box_canonical": [
+    306.0,
+    467.0,
+    3.0,
+    367.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 147.0,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G54",
+   "subject": "glyph/3/1/11/2/5",
+   "stem": "profile:cell/3/1/11/2:11",
+   "cell": "cell/3/1/11/2",
+   "gap_head_heights": 1.04,
+   "stroke_in_head_heights": 2.133,
+   "stem_box_canonical": [
+    511.0,
+    418.0,
+    3.0,
+    241.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 147.9,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G55",
+   "subject": "glyph/1/0/9/1/7",
+   "stem": "profile:cell/1/0/9/1:2",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 2.17,
+   "stroke_in_head_heights": 4.864,
+   "stem_box_canonical": [
+    595.0,
+    76.0,
+    3.0,
+    501.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 148.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G56",
+   "subject": "glyph/1/0/5/0/7",
+   "stem": "profile:cell/1/0/5/0:10",
+   "cell": "cell/1/0/5/0",
+   "gap_head_heights": 2.569,
+   "stroke_in_head_heights": 5.276,
+   "stem_box_canonical": [
+    1669.0,
+    263.0,
+    2.0,
+    306.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 154.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G57",
+   "subject": "glyph/3/1/11/2/12",
+   "stem": "profile:cell/3/1/11/2:13",
+   "cell": "cell/3/1/11/2",
+   "gap_head_heights": 1.836,
+   "stroke_in_head_heights": 4.336,
+   "stem_box_canonical": [
+    880.0,
+    297.0,
+    3.0,
+    464.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 167.0,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G58",
+   "subject": "glyph/1/0/3/0/14",
+   "stem": "profile:cell/1/0/3/0:24",
+   "cell": "cell/1/0/3/0",
+   "gap_head_heights": 1.172,
+   "stroke_in_head_heights": 3.69,
+   "stem_box_canonical": [
+    1333.0,
+    302.0,
+    2.0,
+    214.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 131.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G59",
+   "subject": "glyph/3/1/3/8/8",
+   "stem": "profile:cell/3/1/3/8:5",
+   "cell": "cell/3/1/3/8",
+   "gap_head_heights": 1.9,
+   "stroke_in_head_heights": 4.365,
+   "stem_box_canonical": [
+    709.0,
+    267.0,
+    4.0,
+    502.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 178.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G60",
+   "subject": "glyph/3/1/3/8/1",
+   "stem": "profile:cell/3/1/3/8:0",
+   "cell": "cell/3/1/3/8",
+   "gap_head_heights": 1.297,
+   "stroke_in_head_heights": 3.252,
+   "stem_box_canonical": [
+    306.0,
+    340.0,
+    3.0,
+    400.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 152.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G61",
+   "subject": "glyph/3/0/10/9/12",
+   "stem": "profile:cell/3/0/10/9:13",
+   "cell": "cell/3/0/10/9",
+   "gap_head_heights": 1.185,
+   "stroke_in_head_heights": 3.874,
+   "stem_box_canonical": [
+    551.0,
+    346.0,
+    3.0,
+    492.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 143.7,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G62",
+   "subject": "glyph/3/1/10/2/19",
+   "stem": "profile:cell/3/1/10/2:4",
+   "cell": "cell/3/1/10/2",
+   "gap_head_heights": 1.607,
+   "stroke_in_head_heights": 4.282,
+   "stem_box_canonical": [
+    303.0,
+    327.0,
+    4.0,
+    441.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 172.1,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G63",
+   "subject": "glyph/3/0/6/4/6",
+   "stem": "profile:cell/3/0/6/4:5",
+   "cell": "cell/3/0/6/4",
+   "gap_head_heights": 1.095,
+   "stroke_in_head_heights": 3.707,
+   "stem_box_canonical": [
+    245.0,
+    252.0,
+    8.0,
+    430.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 181.3,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G64",
+   "subject": "glyph/3/0/10/8/9",
+   "stem": "profile:cell/3/0/10/8:19",
+   "cell": "cell/3/0/10/8",
+   "gap_head_heights": 1.76,
+   "stroke_in_head_heights": 4.339,
+   "stem_box_canonical": [
+    1494.0,
+    273.0,
+    3.0,
+    551.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 143.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G65",
+   "subject": "glyph/3/1/2/5/5",
+   "stem": "profile:cell/3/1/2/5:6",
+   "cell": "cell/3/1/2/5",
+   "gap_head_heights": 1.09,
+   "stroke_in_head_heights": 2.393,
+   "stem_box_canonical": [
+    836.0,
+    571.0,
+    4.0,
+    292.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 148.7,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G66",
+   "subject": "glyph/3/0/10/8/9",
+   "stem": "profile:cell/3/0/10/8:18",
+   "cell": "cell/3/0/10/8",
+   "gap_head_heights": 1.76,
+   "stroke_in_head_heights": 4.339,
+   "stem_box_canonical": [
+    1494.0,
+    273.0,
+    3.0,
+    551.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 143.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G67",
+   "subject": "glyph/0/0/2/0/5",
+   "stem": "profile:cell/0/0/2/0:4",
+   "cell": "cell/0/0/2/0",
+   "gap_head_heights": 2.659,
+   "stroke_in_head_heights": 5.409,
+   "stem_box_canonical": [
+    983.0,
+    280.0,
+    2.0,
+    476.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 166.2,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G68",
+   "subject": "glyph/3/1/2/7/6",
+   "stem": "profile:cell/3/1/2/7:11",
+   "cell": "cell/3/1/2/7",
+   "gap_head_heights": 1.483,
+   "stroke_in_head_heights": 3.926,
+   "stem_box_canonical": [
+    1132.0,
+    254.0,
+    3.0,
+    475.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 159.5,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G69",
+   "subject": "glyph/2/1/3/3/6",
+   "stem": "profile:cell/2/1/3/3:5",
+   "cell": "cell/2/1/3/3",
+   "gap_head_heights": 2.236,
+   "stroke_in_head_heights": 5.0,
+   "stem_box_canonical": [
+    259.0,
+    201.0,
+    3.0,
+    550.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.8,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G70",
+   "subject": "glyph/3/0/11/7/10",
+   "stem": "profile:cell/3/0/11/7:9",
+   "cell": "cell/3/0/11/7",
+   "gap_head_heights": 1.089,
+   "stroke_in_head_heights": 4.42,
+   "stem_box_canonical": [
+    390.0,
+    332.0,
+    3.0,
+    495.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 180.8,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G71",
+   "subject": "glyph/3/1/3/1/7",
+   "stem": "profile:cell/3/1/3/1:16",
+   "cell": "cell/3/1/3/1",
+   "gap_head_heights": 1.172,
+   "stroke_in_head_heights": 3.664,
+   "stem_box_canonical": [
+    1433.0,
+    656.0,
+    4.0,
+    436.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 134.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G72",
+   "subject": "glyph/1/0/9/1/7",
+   "stem": "profile:cell/1/0/9/1:1",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.956,
+   "stroke_in_head_heights": 4.524,
+   "stem_box_canonical": [
+    592.0,
+    98.0,
+    3.0,
+    466.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 147.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G73",
+   "subject": "glyph/1/0/3/0/22",
+   "stem": "profile:cell/1/0/3/0:47",
+   "cell": "cell/1/0/3/0",
+   "gap_head_heights": 1.16,
+   "stroke_in_head_heights": 3.1,
+   "stem_box_canonical": [
+    1885.0,
+    334.0,
+    2.0,
+    155.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 158.5,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G74",
+   "subject": "glyph/2/0/12/2/5",
+   "stem": "profile:cell/2/0/12/2:4",
+   "cell": "cell/2/0/12/2",
+   "gap_head_heights": 0.14,
+   "stroke_in_head_heights": 2.86,
+   "stem_box_canonical": [
+    1693.0,
+    424.0,
+    23.0,
+    326.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 147.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G75",
+   "subject": "glyph/3/0/5/9/11",
+   "stem": "profile:cell/3/0/5/9:1",
+   "cell": "cell/3/0/5/9",
+   "gap_head_heights": 1.791,
+   "stroke_in_head_heights": 4.197,
+   "stem_box_canonical": [
+    127.0,
+    470.0,
+    3.0,
+    533.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 162.2,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G76",
+   "subject": "glyph/1/0/9/1/7",
+   "stem": "profile:cell/1/0/9/1:0",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.956,
+   "stroke_in_head_heights": 4.524,
+   "stem_box_canonical": [
+    592.0,
+    98.0,
+    3.0,
+    466.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 147.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G77",
+   "subject": "glyph/2/1/3/2/3",
+   "stem": "profile:cell/2/1/3/2:5",
+   "cell": "cell/2/1/3/2",
+   "gap_head_heights": 1.864,
+   "stroke_in_head_heights": 4.085,
+   "stem_box_canonical": [
+    1077.0,
+    216.0,
+    3.0,
+    527.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 163.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G78",
+   "subject": "glyph/3/1/3/7/3",
+   "stem": "profile:cell/3/1/3/7:14",
+   "cell": "cell/3/1/3/7",
+   "gap_head_heights": 1.792,
+   "stroke_in_head_heights": 4.608,
+   "stem_box_canonical": [
+    1033.0,
+    285.0,
+    4.0,
+    553.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 166.7,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G79",
+   "subject": "glyph/2/0/6/3/10",
+   "stem": "profile:cell/2/0/6/3:2",
+   "cell": "cell/2/0/6/3",
+   "gap_head_heights": 1.776,
+   "stroke_in_head_heights": 3.592,
+   "stem_box_canonical": [
+    350.0,
+    187.0,
+    2.0,
+    273.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 180.7,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G80",
+   "subject": "glyph/2/0/1/2/5",
+   "stem": "profile:cell/2/0/1/2:1",
+   "cell": "cell/2/0/1/2",
+   "gap_head_heights": 1.911,
+   "stroke_in_head_heights": 4.25,
+   "stem_box_canonical": [
+    152.0,
+    419.0,
+    3.0,
+    476.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 155.3,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G81",
+   "subject": "glyph/1/1/3/1/1",
+   "stem": "profile:cell/1/1/3/1:8",
+   "cell": "cell/1/1/3/1",
+   "gap_head_heights": 0.19,
+   "stroke_in_head_heights": 2.97,
+   "stem_box_canonical": [
+    1427.0,
+    552.0,
+    18.0,
+    297.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 156.2,
+   "frame_ok": true,
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "G82",
+   "subject": "glyph/3/1/3/1/12",
+   "stem": "profile:cell/3/1/3/1:35",
+   "cell": "cell/3/1/3/1",
+   "gap_head_heights": 1.475,
+   "stroke_in_head_heights": 3.811,
+   "stem_box_canonical": [
+    1618.0,
+    667.0,
+    4.0,
+    465.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 160.0,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G83",
+   "subject": "glyph/0/0/7/0/20",
+   "stem": "profile:cell/0/0/7/0:0",
+   "cell": "cell/0/0/7/0",
+   "gap_head_heights": 2.778,
+   "stroke_in_head_heights": 6.889,
+   "stem_box_canonical": [
+    74.0,
+    472.0,
+    2.0,
+    372.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 205.2,
+   "frame_ok": true,
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "G84",
+   "subject": "glyph/3/1/1/1/12",
+   "stem": "profile:cell/3/1/1/1:11",
+   "cell": "cell/3/1/1/1",
+   "gap_head_heights": 1.528,
+   "stroke_in_head_heights": 4.468,
+   "stem_box_canonical": [
+    960.0,
+    376.0,
+    4.0,
+    487.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G85",
+   "subject": "glyph/3/1/3/6/5",
+   "stem": "profile:cell/3/1/3/6:1",
+   "cell": "cell/3/1/3/6",
+   "gap_head_heights": 2.025,
+   "stroke_in_head_heights": 4.525,
+   "stem_box_canonical": [
+    295.0,
+    300.0,
+    4.0,
+    552.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 140.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G86",
+   "subject": "glyph/0/0/5/4/15",
+   "stem": "profile:cell/0/0/5/4:5",
+   "cell": "cell/0/0/5/4",
+   "gap_head_heights": 3.375,
+   "stroke_in_head_heights": 8.5,
+   "stem_box_canonical": [
+    335.0,
+    761.0,
+    3.0,
+    612.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 165.7,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G87",
+   "subject": "glyph/1/0/3/1/13",
+   "stem": "profile:cell/1/0/3/1:19",
+   "cell": "cell/1/0/3/1",
+   "gap_head_heights": 1.967,
+   "stroke_in_head_heights": 4.682,
+   "stem_box_canonical": [
+    1205.0,
+    294.0,
+    3.0,
+    501.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 156.3,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G88",
+   "subject": "glyph/3/0/10/3/23",
+   "stem": "profile:cell/3/0/10/3:9",
+   "cell": "cell/3/0/10/3",
+   "gap_head_heights": 1.273,
+   "stroke_in_head_heights": 4.278,
+   "stem_box_canonical": [
+    1160.0,
+    475.0,
+    4.0,
+    415.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 176.2,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G89",
+   "subject": "glyph/3/0/11/8/13",
+   "stem": "profile:cell/3/0/11/8:17",
+   "cell": "cell/3/0/11/8",
+   "gap_head_heights": 1.611,
+   "stroke_in_head_heights": 4.111,
+   "stem_box_canonical": [
+    1575.0,
+    576.0,
+    3.0,
+    444.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 170.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G90",
+   "subject": "glyph/3/1/2/7/6",
+   "stem": "profile:cell/3/1/2/7:10",
+   "cell": "cell/3/1/2/7",
+   "gap_head_heights": 1.483,
+   "stroke_in_head_heights": 3.926,
+   "stem_box_canonical": [
+    1132.0,
+    254.0,
+    3.0,
+    475.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 159.5,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G91",
+   "subject": "glyph/3/1/2/8/0",
+   "stem": "profile:cell/3/1/2/8:10",
+   "cell": "cell/3/1/2/8",
+   "gap_head_heights": 1.087,
+   "stroke_in_head_heights": 3.0,
+   "stem_box_canonical": [
+    963.0,
+    564.0,
+    3.0,
+    378.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 154.6,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G92",
+   "subject": "glyph/3/1/3/8/17",
+   "stem": "profile:cell/3/1/3/8:15",
+   "cell": "cell/3/1/3/8",
+   "gap_head_heights": 1.405,
+   "stroke_in_head_heights": 3.138,
+   "stem_box_canonical": [
+    1436.0,
+    485.0,
+    4.0,
+    364.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 176.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G93",
+   "subject": "glyph/2/0/2/2/11",
+   "stem": "profile:cell/2/0/2/2:2",
+   "cell": "cell/2/0/2/2",
+   "gap_head_heights": 2.49,
+   "stroke_in_head_heights": 5.147,
+   "stem_box_canonical": [
+    155.0,
+    330.0,
+    3.0,
+    525.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 189.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G94",
+   "subject": "glyph/1/0/2/1/21",
+   "stem": "profile:cell/1/0/2/1:2",
+   "cell": "cell/1/0/2/1",
+   "gap_head_heights": 1.5,
+   "stroke_in_head_heights": 3.847,
+   "stem_box_canonical": [
+    592.0,
+    405.0,
+    3.0,
+    377.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 173.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G95",
+   "subject": "glyph/2/0/11/0/13",
+   "stem": "profile:cell/2/0/11/0:10",
+   "cell": "cell/2/0/11/0",
+   "gap_head_heights": 0.173,
+   "stroke_in_head_heights": 2.891,
+   "stem_box_canonical": [
+    1425.0,
+    410.0,
+    8.0,
+    159.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 155.9,
+   "frame_ok": true,
+   "staff_space_px": 28.25
+  },
+  {
+   "tile": "G96",
+   "subject": "glyph/3/1/10/2/20",
+   "stem": "profile:cell/3/1/10/2:11",
+   "cell": "cell/3/1/10/2",
+   "gap_head_heights": 1.108,
+   "stroke_in_head_heights": 2.309,
+   "stem_box_canonical": [
+    511.0,
+    380.0,
+    3.0,
+    224.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 176.7,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G97",
+   "subject": "glyph/2/0/0/2/13",
+   "stem": "profile:cell/2/0/0/2:1",
+   "cell": "cell/2/0/0/2",
+   "gap_head_heights": 2.542,
+   "stroke_in_head_heights": 6.031,
+   "stem_box_canonical": [
+    142.0,
+    240.0,
+    10.0,
+    579.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 214.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G98",
+   "subject": "glyph/3/0/10/3/23",
+   "stem": "profile:cell/3/0/10/3:8",
+   "cell": "cell/3/0/10/3",
+   "gap_head_heights": 1.273,
+   "stroke_in_head_heights": 4.278,
+   "stem_box_canonical": [
+    1160.0,
+    475.0,
+    4.0,
+    415.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 176.2,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G99",
+   "subject": "glyph/3/1/10/1/15",
+   "stem": "profile:cell/3/1/10/1:19",
+   "cell": "cell/3/1/10/1",
+   "gap_head_heights": 1.764,
+   "stroke_in_head_heights": 4.557,
+   "stem_box_canonical": [
+    1143.0,
+    355.0,
+    3.0,
+    483.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 184.9,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G100",
+   "subject": "glyph/3/0/11/9/7",
+   "stem": "profile:cell/3/0/11/9:12",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 2.5,
+   "stroke_in_head_heights": 5.34,
+   "stem_box_canonical": [
+    568.0,
+    478.0,
+    3.0,
+    534.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 179.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G101",
+   "subject": "glyph/1/0/1/0/30",
+   "stem": "profile:cell/1/0/1/0:39",
+   "cell": "cell/1/0/1/0",
+   "gap_head_heights": 1.518,
+   "stroke_in_head_heights": 3.895,
+   "stem_box_canonical": [
+    1879.0,
+    166.0,
+    1.0,
+    222.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 149.8,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G102",
+   "subject": "glyph/3/1/1/1/12",
+   "stem": "profile:cell/3/1/1/1:10",
+   "cell": "cell/3/1/1/1",
+   "gap_head_heights": 1.528,
+   "stroke_in_head_heights": 4.468,
+   "stem_box_canonical": [
+    960.0,
+    376.0,
+    4.0,
+    487.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G103",
+   "subject": "glyph/3/1/3/2/20",
+   "stem": "profile:cell/3/1/3/2:14",
+   "cell": "cell/3/1/3/2",
+   "gap_head_heights": 1.592,
+   "stroke_in_head_heights": 4.306,
+   "stem_box_canonical": [
+    1212.0,
+    326.0,
+    3.0,
+    422.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 159.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G104",
+   "subject": "glyph/2/1/3/3/6",
+   "stem": "profile:cell/2/1/3/3:0",
+   "cell": "cell/2/1/3/3",
+   "gap_head_heights": 2.236,
+   "stroke_in_head_heights": 4.827,
+   "stem_box_canonical": [
+    237.0,
+    201.0,
+    3.0,
+    531.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G105",
+   "subject": "glyph/1/0/9/1/16",
+   "stem": "profile:cell/1/0/9/1:4",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.519,
+   "stroke_in_head_heights": 5.755,
+   "stem_box_canonical": [
+    607.0,
+    275.0,
+    4.0,
+    610.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 156.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G106",
+   "subject": "glyph/3/1/10/1/15",
+   "stem": "profile:cell/3/1/10/1:18",
+   "cell": "cell/3/1/10/1",
+   "gap_head_heights": 1.764,
+   "stroke_in_head_heights": 4.557,
+   "stem_box_canonical": [
+    1143.0,
+    355.0,
+    3.0,
+    483.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 184.9,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G107",
+   "subject": "glyph/3/0/10/3/9",
+   "stem": "profile:cell/3/0/10/3:7",
+   "cell": "cell/3/0/10/3",
+   "gap_head_heights": 1.135,
+   "stroke_in_head_heights": 2.468,
+   "stem_box_canonical": [
+    749.0,
+    435.0,
+    4.0,
+    311.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 155.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G108",
+   "subject": "glyph/1/1/3/3/37",
+   "stem": "profile:cell/1/1/3/3:11",
+   "cell": "cell/1/1/3/3",
+   "gap_head_heights": 1.471,
+   "stroke_in_head_heights": 4.386,
+   "stem_box_canonical": [
+    1532.0,
+    464.0,
+    7.0,
+    307.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 178.0,
+   "frame_ok": true,
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "G109",
+   "subject": "glyph/1/0/0/1/26",
+   "stem": "profile:cell/1/0/0/1:0",
+   "cell": "cell/1/0/0/1",
+   "gap_head_heights": 1.056,
+   "stroke_in_head_heights": 2.211,
+   "stem_box_canonical": [
+    427.0,
+    611.0,
+    15.0,
+    199.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 172.6,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G110",
+   "subject": "glyph/1/0/5/0/7",
+   "stem": "profile:cell/1/0/5/0:11",
+   "cell": "cell/1/0/5/0",
+   "gap_head_heights": 2.569,
+   "stroke_in_head_heights": 5.276,
+   "stem_box_canonical": [
+    1669.0,
+    263.0,
+    2.0,
+    306.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 154.3,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G111",
+   "subject": "glyph/3/0/11/9/12",
+   "stem": "profile:cell/3/0/11/9:8",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 1.167,
+   "stroke_in_head_heights": 2.746,
+   "stem_box_canonical": [
+    364.0,
+    576.0,
+    4.0,
+    313.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 178.8,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G112",
+   "subject": "glyph/3/0/3/7/9",
+   "stem": "profile:cell/3/0/3/7:8",
+   "cell": "cell/3/0/3/7",
+   "gap_head_heights": 1.206,
+   "stroke_in_head_heights": 2.67,
+   "stem_box_canonical": [
+    1357.0,
+    521.0,
+    3.0,
+    291.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 190.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G113",
+   "subject": "glyph/3/0/10/3/23",
+   "stem": "profile:cell/3/0/10/3:19",
+   "cell": "cell/3/0/10/3",
+   "gap_head_heights": 1.077,
+   "stroke_in_head_heights": 3.062,
+   "stem_box_canonical": [
+    1332.0,
+    574.0,
+    4.0,
+    297.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 181.4,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G114",
+   "subject": "glyph/3/0/5/7/8",
+   "stem": "profile:cell/3/0/5/7:0",
+   "cell": "cell/3/0/5/7",
+   "gap_head_heights": 1.784,
+   "stroke_in_head_heights": 3.598,
+   "stem_box_canonical": [
+    1434.0,
+    362.0,
+    4.0,
+    367.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 187.6,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G115",
+   "subject": "glyph/1/0/13/0/5",
+   "stem": "profile:cell/1/0/13/0:10",
+   "cell": "cell/1/0/13/0",
+   "gap_head_heights": 0.173,
+   "stroke_in_head_heights": 2.788,
+   "stem_box_canonical": [
+    1408.0,
+    171.0,
+    5.0,
+    145.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 182.1,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G116",
+   "subject": "glyph/3/0/11/9/7",
+   "stem": "profile:cell/3/0/11/9:9",
+   "cell": "cell/3/0/11/9",
+   "gap_head_heights": 1.13,
+   "stroke_in_head_heights": 2.32,
+   "stem_box_canonical": [
+    550.0,
+    649.0,
+    3.0,
+    232.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 178.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G117",
+   "subject": "glyph/2/1/3/1/3",
+   "stem": "profile:cell/2/1/3/1:2",
+   "cell": "cell/2/1/3/1",
+   "gap_head_heights": 1.106,
+   "stroke_in_head_heights": 3.354,
+   "stem_box_canonical": [
+    1084.0,
+    565.0,
+    3.0,
+    426.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 175.7,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G118",
+   "subject": "glyph/2/1/3/3/6",
+   "stem": "profile:cell/2/1/3/3:4",
+   "cell": "cell/2/1/3/3",
+   "gap_head_heights": 2.236,
+   "stroke_in_head_heights": 5.0,
+   "stem_box_canonical": [
+    259.0,
+    201.0,
+    3.0,
+    550.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 186.8,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G119",
+   "subject": "glyph/3/1/11/1/7",
+   "stem": "profile:cell/3/1/11/1:26",
+   "cell": "cell/3/1/11/1",
+   "gap_head_heights": 1.082,
+   "stroke_in_head_heights": 2.926,
+   "stem_box_canonical": [
+    1413.0,
+    459.0,
+    3.0,
+    357.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 158.9,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G120",
+   "subject": "glyph/2/1/11/0/17",
+   "stem": "profile:cell/2/1/11/0:6",
+   "cell": "cell/2/1/11/0",
+   "gap_head_heights": 2.526,
+   "stroke_in_head_heights": 5.143,
+   "stem_box_canonical": [
+    834.0,
+    319.0,
+    3.0,
+    396.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 189.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G121",
+   "subject": "glyph/2/0/2/2/11",
+   "stem": "profile:cell/2/0/2/2:0",
+   "cell": "cell/2/0/2/2",
+   "gap_head_heights": 2.49,
+   "stroke_in_head_heights": 5.147,
+   "stem_box_canonical": [
+    155.0,
+    330.0,
+    3.0,
+    525.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 189.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G122",
+   "subject": "glyph/2/0/0/2/13",
+   "stem": "profile:cell/2/0/0/2:0",
+   "cell": "cell/2/0/0/2",
+   "gap_head_heights": 2.542,
+   "stroke_in_head_heights": 6.031,
+   "stem_box_canonical": [
+    142.0,
+    240.0,
+    10.0,
+    579.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 214.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G123",
+   "subject": "glyph/2/0/7/3/4",
+   "stem": "profile:cell/2/0/7/3:1",
+   "cell": "cell/2/0/7/3",
+   "gap_head_heights": 1.9,
+   "stroke_in_head_heights": 3.947,
+   "stem_box_canonical": [
+    242.0,
+    311.0,
+    3.0,
+    375.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 151.5,
+   "frame_ok": true,
+   "staff_space_px": 27.0
+  },
+  {
+   "tile": "G124",
+   "subject": "glyph/3/1/3/1/7",
+   "stem": "profile:cell/3/1/3/1:17",
+   "cell": "cell/3/1/3/1",
+   "gap_head_heights": 1.172,
+   "stroke_in_head_heights": 3.664,
+   "stem_box_canonical": [
+    1433.0,
+    656.0,
+    4.0,
+    436.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 134.6,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G125",
+   "subject": "glyph/1/0/9/1/16",
+   "stem": "profile:cell/1/0/9/1:5",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 1.519,
+   "stroke_in_head_heights": 5.755,
+   "stem_box_canonical": [
+    607.0,
+    275.0,
+    4.0,
+    610.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 156.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G126",
+   "subject": "glyph/3/1/2/8/13",
+   "stem": "profile:cell/3/1/2/8:21",
+   "cell": "cell/3/1/2/8",
+   "gap_head_heights": 1.855,
+   "stroke_in_head_heights": 4.455,
+   "stem_box_canonical": [
+    1316.0,
+    549.0,
+    3.0,
+    490.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 188.8,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G127",
+   "subject": "glyph/1/0/1/0/30",
+   "stem": "profile:cell/1/0/1/0:40",
+   "cell": "cell/1/0/1/0",
+   "gap_head_heights": 1.518,
+   "stroke_in_head_heights": 3.895,
+   "stem_box_canonical": [
+    1879.0,
+    166.0,
+    1.0,
+    222.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 149.8,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G128",
+   "subject": "glyph/3/0/10/3/8",
+   "stem": "profile:cell/3/0/10/3:3",
+   "cell": "cell/3/0/10/3",
+   "gap_head_heights": 1.05,
+   "stroke_in_head_heights": 2.186,
+   "stem_box_canonical": [
+    261.0,
+    468.0,
+    4.0,
+    282.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 152.3,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G129",
+   "subject": "glyph/0/0/0/6/8",
+   "stem": "profile:cell/0/0/0/6:13",
+   "cell": "cell/0/0/0/6",
+   "gap_head_heights": 0.128,
+   "stroke_in_head_heights": 4.681,
+   "stem_box_canonical": [
+    1720.0,
+    321.0,
+    3.0,
+    440.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 213.8,
+   "frame_ok": true,
+   "staff_space_px": 32.25
+  }
+ ]
+}

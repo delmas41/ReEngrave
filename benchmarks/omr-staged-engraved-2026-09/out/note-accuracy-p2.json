@@ -1,0 +1,194 @@
+{
+ "parts": 18,
+ "bars_printed": 8,
+ "bars_written": 9,
+ "truth_first_bar": 17,
+ "part_bars": 144,
+ "bars_exact": 56,
+ "parts_exact_as_sequence": 0,
+ "events_truth": 300,
+ "events_ours": 284,
+ "disagreements": {
+  "same pitches, different duration": 21,
+  "same count, different pitch/rest": 19,
+  "different number of events": 48
+ },
+ "per_part": [
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 1,
+   "name": "Flute 2",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 2,
+   "name": "Oboe 1",
+   "bars_exact": 2,
+   "bars": 8
+  },
+  {
+   "part": 3,
+   "name": "Oboe 2",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 4,
+   "name": "Bb Clarinet",
+   "bars_exact": 2,
+   "bars": 8
+  },
+  {
+   "part": 5,
+   "name": "Bb Clarinet 2",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 7,
+   "name": "Bassoon 2",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 8,
+   "name": "Eb Horn 1",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 9,
+   "name": "Eb Horn 2",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 10,
+   "name": "C Trumpet 1",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 11,
+   "name": "C Trumpet 2",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 12,
+   "name": "C, G Timpani",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 13,
+   "name": "Violin 1",
+   "bars_exact": 3,
+   "bars": 8
+  },
+  {
+   "part": 14,
+   "name": "Violin 2",
+   "bars_exact": 2,
+   "bars": 8
+  },
+  {
+   "part": 15,
+   "name": "Viola",
+   "bars_exact": 2,
+   "bars": 8
+  },
+  {
+   "part": 16,
+   "name": "Violoncello",
+   "bars_exact": 4,
+   "bars": 8
+  },
+  {
+   "part": 17,
+   "name": "Contrabass",
+   "bars_exact": 3,
+   "bars": 8
+  }
+ ],
+ "examples": [
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bar": 17,
+   "ours": [
+    [
+     "rest",
+     4.0
+    ]
+   ],
+   "truth": [
+    [
+     "rest",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bar": 19,
+   "ours": [
+    [
+     "E6",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "E-6",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  },
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bar": 21,
+   "ours": [
+    [
+     [
+      "A2",
+      "G6"
+     ],
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "G6",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  }
+ ]
+}

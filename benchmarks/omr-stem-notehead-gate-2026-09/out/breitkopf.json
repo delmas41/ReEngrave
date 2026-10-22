@@ -1,0 +1,27 @@
+{
+ "tag": "breitkopf-brahms1-p0-p3",
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "pages": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "dpi": 600,
+ "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+ "cells": 818,
+ "cells_with_a_notehead": 643,
+ "noteheads": 3337,
+ "stems_off": 2305,
+ "stems_on": 2457,
+ "cells_changed": 121,
+ "rescued": 152,
+ "rescued_on_a_notehead": 152,
+ "lost": 0,
+ "heads_without_a_stem_off": 1529,
+ "heads_without_a_stem_on": 1351,
+ "beams_off": 412,
+ "beams_on": 444,
+ "expected_off": 2305,
+ "faithful": true
+}

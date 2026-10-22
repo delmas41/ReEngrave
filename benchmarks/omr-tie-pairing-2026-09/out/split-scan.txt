@@ -1,0 +1,14 @@
+file                                            same  SPELL  STEP  WIDE   ?  WIDE-rescuable
+bach-brandenburg3-mvt1-468678-p1.restamp-compo     2      0     7    13   0               5
+beethoven-sym5-mvt1-575951-p1.restamp-composed     4      0     8     2   0               0
+beethoven-sym5-mvt1-575951-p2.restamp-composed     9      0     9    30   0              16
+beethoven-sym5-mvt1-984073-p1.restamp-composed     0      0     0     1   0               0
+beethoven-sym5-mvt1-984073-p2.restamp-composed     8      0     3     6   0               3
+brahms-sym1-mvt1-317803-p1.restamp-composed.om    14      0     9    16   0               4
+brahms-sym1-mvt1-317803-p2.restamp-composed.om    54     11    25    31   0               8
+dvorak-sym9-mvt1-405834-p5.restamp-composed.om     1      0     6     4   0               1
+dvorak-sym9-mvt1-405834-p6.restamp-composed.om     0      0     2    15   0               3
+mahler-sym5-mvt1-local-p2.restamp-composed.omr     1      0     0     0   0               0
+mahler-sym5-mvt1-local-p3.restamp-composed.omr     5      0     2     4   0               1
+
+ pooled: SPELLING=11  STEP_APART=71  WIDE=122  WIDE_rescuable=41  same=98

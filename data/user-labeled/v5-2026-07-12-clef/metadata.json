@@ -1,0 +1,290 @@
+{
+  "version_name": "v5-2026-07-12-clef",
+  "created_utc": "2026-07-13T01:31:23+00:00",
+  "labeler": "sean",
+  "description": "Phase-0 clef batch: Mahler idx1+p13, 15 clefs incl 3 alto + 2 tenor",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-2026-07-12-clef/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-2026-07-12-clef/detections",
+    "manifest": "benchmarks/omr-labeling-2026-07-12-clef/cells.json",
+    "weights_for_class_names": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 15,
+    "n_v1_cells": 0,
+    "n_v2_cells": 15,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 134,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalSharp",
+    "articAccentAbove",
+    "articAccentBelow",
+    "articulationAccent",
+    "augmentationDot",
+    "clefCAlto",
+    "clefCTenor",
+    "clefF",
+    "clefG",
+    "flag8thDown",
+    "flag8thUp",
+    "keySharp",
+    "noteheadBlackInSpace",
+    "noteheadBlackInSpaceSmall",
+    "noteheadBlackOnLine",
+    "noteheadBlackOnLineSmall",
+    "noteheadHalfInSpace",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "timeSig2"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "mahler-p12-sys1-s8-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler-p12-sys2-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 14,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articulationAccent",
+        "augmentationDot",
+        "clefCTenor",
+        "flag8thDown",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpaceSmall",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLineSmall",
+        "noteheadHalfInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler-p12-sys2-s23-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 19,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentBelow",
+        "augmentationDot",
+        "clefCAlto",
+        "flag8thUp",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler-p12-sys2-s24-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 18,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentAbove",
+        "augmentationDot",
+        "clefCTenor",
+        "flag8thUp",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys1-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys1-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys3-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys3-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys4-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    },
+    {
+      "cell_id": "mahler-p2-sys5-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restQuarter",
+        "timeSig2"
+      ]
+    }
+  ]
+}

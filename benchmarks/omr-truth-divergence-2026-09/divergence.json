@@ -1,0 +1,680 @@
+{
+ "scan": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "label": "Beethoven 5 / Litolff-family / low-res bitonal",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 12,
+   "page_n_systems": 1,
+   "hand_lineup": 12,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     12
+    ],
+    "total": 12
+   },
+   "raw_span": 12,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 12,
+    "condensation": 6,
+    "tacet_suppressed": 0,
+    "delta": 6,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "label": "Beethoven 5 / Litolff-family / low-res bitonal \u2014 p.2, first two-system row",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 22,
+   "page_n_systems": 2,
+   "hand_lineup": 11,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 11,
+    "condensation": 7,
+    "tacet_suppressed": 0,
+    "delta": 7,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "label": "Beethoven 5 / Litolff-family / low-res bitonal \u2014 p.3, first tacet-suppressed Litolff page",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 19,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     8
+    ],
+    "total": 19
+   },
+   "raw_span": 19,
+   "attribution": {
+    "attributable": false,
+    "delta": -1
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "label": "Beethoven 5 / Litolff-family / low-res bitonal \u2014 p.4, two 11-staff systems with DIFFERENT lineups",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 22,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
+   "attribution": {
+    "attributable": false,
+    "delta": -4
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "label": "Beethoven 5 / same plates, high-res + text layer",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 12,
+   "page_n_systems": 1,
+   "hand_lineup": 12,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     12
+    ],
+    "total": 12
+   },
+   "raw_span": 12,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 12,
+    "condensation": 6,
+    "tacet_suppressed": 0,
+    "delta": 6,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "label": "Beethoven 5 / same plates, high-res + text layer \u2014 p.2",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 22,
+   "page_n_systems": 2,
+   "hand_lineup": 11,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 11,
+    "condensation": 7,
+    "tacet_suppressed": 0,
+    "delta": 7,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "label": "Beethoven 5 / same plates, high-res + text layer \u2014 p.3",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 19,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     8
+    ],
+    "total": 19
+   },
+   "raw_span": 19,
+   "attribution": {
+    "attributable": false,
+    "delta": -1
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "label": "Beethoven 5 / same plates, high-res + text layer \u2014 p.4",
+   "reference": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "works_json_n_parts": 18,
+   "page_n_staves": 22,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
+   "attribution": {
+    "attributable": false,
+    "delta": -4
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "label": "Dvorak 9 / Simrock 1894 / the one 1:1 part-staff pair",
+   "reference": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "encoded_parts": 15,
+   "encoded_staves": 15,
+   "works_json_n_parts": 15,
+   "page_n_staves": 15,
+   "page_n_systems": 1,
+   "hand_lineup": 15,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     15
+    ],
+    "total": 15
+   },
+   "raw_span": 15,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 15,
+    "condensation": 0,
+    "tacet_suppressed": 0,
+    "delta": 0,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "label": "Dvorak 9 / Simrock 1894 \u2014 p.6 (printed p.184), the 1:1 pairing continued",
+   "reference": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "encoded_parts": 15,
+   "encoded_staves": 15,
+   "works_json_n_parts": 15,
+   "page_n_staves": 15,
+   "page_n_systems": 1,
+   "hand_lineup": 15,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     15
+    ],
+    "total": 15
+   },
+   "raw_span": 15,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 15,
+    "condensation": 0,
+    "tacet_suppressed": 0,
+    "delta": 0,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "label": "Dvorak 9 / Simrock 1894 \u2014 p.7 (printed p.185), Adagio closes into Allegro molto",
+   "reference": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "encoded_parts": 15,
+   "encoded_staves": 15,
+   "works_json_n_parts": 15,
+   "page_n_staves": 30,
+   "page_n_systems": 2,
+   "hand_lineup": 15,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     15,
+     15
+    ],
+    "total": 30
+   },
+   "raw_span": 30,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 15,
+    "condensation": 0,
+    "tacet_suppressed": 0,
+    "delta": 0,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "label": "Brahms 1 / Breitkopf Samtliche Werke / dense, engraved twin",
+   "reference": "brahms--symphony-1--mvt1--gradus.mxl",
+   "encoded_parts": 21,
+   "encoded_staves": 21,
+   "works_json_n_parts": 21,
+   "page_n_staves": 14,
+   "page_n_systems": 1,
+   "hand_lineup": 14,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     14
+    ],
+    "total": 14
+   },
+   "raw_span": 14,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 14,
+    "condensation": 7,
+    "tacet_suppressed": 0,
+    "delta": 7,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "label": "Brahms 1 / Breitkopf Samtliche Werke \u2014 p.2, meter change + suppressed trumpet staff",
+   "reference": "brahms--symphony-1--mvt1--gradus.mxl",
+   "encoded_parts": 21,
+   "encoded_staves": 21,
+   "works_json_n_parts": 21,
+   "page_n_staves": 27,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     13
+    ],
+    "total": 27
+   },
+   "raw_span": 27,
+   "attribution": {
+    "attributable": false,
+    "delta": -6
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "label": "Brahms 1 / Breitkopf Samtliche Werke \u2014 p.3, full lineup restored, intro's final page",
+   "reference": "brahms--symphony-1--mvt1--gradus.mxl",
+   "encoded_parts": 21,
+   "encoded_staves": 21,
+   "works_json_n_parts": 21,
+   "page_n_staves": 28,
+   "page_n_systems": 2,
+   "hand_lineup": 14,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     14
+    ],
+    "total": 28
+   },
+   "raw_span": 28,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 14,
+    "condensation": 7,
+    "tacet_suppressed": 0,
+    "delta": 7,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "label": "Brahms 1 / Breitkopf Samtliche Werke \u2014 p.4, the Allegro opens; exposition start-repeat",
+   "reference": "brahms--symphony-1--mvt1--gradus.mxl",
+   "encoded_parts": 21,
+   "encoded_staves": 21,
+   "works_json_n_parts": 21,
+   "page_n_staves": 28,
+   "page_n_systems": 2,
+   "hand_lineup": 14,
+   "hand_has_parts": true,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     14
+    ],
+    "total": 28
+   },
+   "raw_span": 28,
+   "attribution": {
+    "attributable": true,
+    "n_staves_lineup": 14,
+    "condensation": 7,
+    "tacet_suppressed": 0,
+    "delta": 7,
+    "residual": 0
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "label": "Mahler 5 / Edition Peters / densest, anacrusis",
+   "reference": "mahler--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 25,
+   "encoded_staves": 38,
+   "works_json_n_parts": 38,
+   "page_n_staves": 17,
+   "page_n_systems": 1,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 19,
+   "attribution": {
+    "attributable": false,
+    "delta": 8
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "label": "Mahler 5 / Edition Peters \u2014 p.3 (printed p.4), tacet-suppressed lineup",
+   "reference": "mahler--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 25,
+   "encoded_staves": 38,
+   "works_json_n_parts": 38,
+   "page_n_staves": 13,
+   "page_n_systems": 1,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     13
+    ],
+    "total": 13
+   },
+   "raw_span": 15,
+   "attribution": {
+    "attributable": false,
+    "delta": 12
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "label": "Mahler 5 / Edition Peters \u2014 p.4 (printed p.5), the funeral-march tutti",
+   "reference": "mahler--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 25,
+   "encoded_staves": 38,
+   "works_json_n_parts": 38,
+   "page_n_staves": 18,
+   "page_n_systems": 1,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 21,
+   "attribution": {
+    "attributable": false,
+    "delta": 7
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "label": "Mahler 5 / Edition Peters \u2014 p.5 (printed p.6), the march subsides",
+   "reference": "mahler--symphony-5--mvt1--gradus.mxl",
+   "encoded_parts": 25,
+   "encoded_staves": 38,
+   "works_json_n_parts": 38,
+   "page_n_staves": 17,
+   "page_n_systems": 1,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 21,
+   "attribution": {
+    "attributable": false,
+    "delta": 8
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering \u2014 COMPLETION of the parked row",
+   "reference": "bach--brandenburg-concerto-3--mvt1--gradus.mxl",
+   "encoded_parts": 11,
+   "encoded_staves": 11,
+   "works_json_n_parts": 11,
+   "page_n_staves": 24,
+   "page_n_systems": 2,
+   "hand_lineup": null,
+   "hand_has_parts": false,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     12,
+     12
+    ],
+    "total": 24
+   },
+   "raw_span": 24,
+   "attribution": {
+    "attributable": false,
+    "delta": -13
+   }
+  }
+ ],
+ "engraved": [
+  {
+   "row_id": "beethoven-sym5-mvt1",
+   "encoded_parts": 18,
+   "encoded_staves": 18,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 18
+  },
+  {
+   "row_id": "brahms-sym1-mvt1",
+   "encoded_parts": 21,
+   "encoded_staves": 21,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     21
+    ],
+    "total": 21
+   },
+   "raw_span": 21
+  },
+  {
+   "row_id": "mahler-sym5-mvt1",
+   "encoded_parts": 38,
+   "encoded_staves": 38,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     38
+    ],
+    "total": 38
+   },
+   "raw_span": 38
+  },
+  {
+   "row_id": "mozart-sym40-mvt1",
+   "encoded_parts": 11,
+   "encoded_staves": 11,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     11
+    ],
+    "total": 11
+   },
+   "raw_span": 11
+  },
+  {
+   "row_id": "mozart-sym41-mvt1",
+   "encoded_parts": 17,
+   "encoded_staves": 17,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 17
+  },
+  {
+   "row_id": "beethoven-sym3-mvt1",
+   "encoded_parts": 19,
+   "encoded_staves": 19,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     19
+    ],
+    "total": 19
+   },
+   "raw_span": 19
+  },
+  {
+   "row_id": "brahms-sym4-mvt1",
+   "encoded_parts": 20,
+   "encoded_staves": 20,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     20
+    ],
+    "total": 20
+   },
+   "raw_span": 20
+  },
+  {
+   "row_id": "dvorak-sym9-mvt4",
+   "encoded_parts": 18,
+   "encoded_staves": 19,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 19
+  },
+  {
+   "row_id": "tchaikovsky-sym4-mvt2",
+   "encoded_parts": 20,
+   "encoded_staves": 20,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     20
+    ],
+    "total": 20
+   },
+   "raw_span": 20
+  },
+  {
+   "row_id": "tchaikovsky-sym6-mvt2",
+   "encoded_parts": 16,
+   "encoded_staves": 17,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 17
+  },
+  {
+   "row_id": "bruckner-sym5-mvt1",
+   "encoded_parts": 25,
+   "encoded_staves": 25,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     25
+    ],
+    "total": 25
+   },
+   "raw_span": 25
+  }
+ ]
+}

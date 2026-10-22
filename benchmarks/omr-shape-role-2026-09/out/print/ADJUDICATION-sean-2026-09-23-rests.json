@@ -1,0 +1,108 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-23",
+ "method": "10 'lands on the other convention' crops shown in chat; Sean: 'they are all whole notes' (whole rests)",
+ "summary": "10 of 10: the detector class (restWhole) is RIGHT and the slot geometry is WRONG \u2014 every measured step sits 4.16\u20134.71 where the rule's whole-rest slot is nominally 5.5 and the agreed population's median is 5.33\u20135.52; the rule narrowed, never flipped, so no value was lost; the bands need recalibrating from the print-confirmed population, not from the convention's nominal line",
+ "verdicts": [
+  {
+   "crop": "beethoven5-litolff-p1-s0-st11-c10-g3-lands_on_the_other_convention.png",
+   "subject": "glyph/1/0/11/10/3",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.16,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "beethoven5-litolff-p14-s0-st5-c4-g1-lands_on_the_other_convention.png",
+   "subject": "glyph/14/0/5/4/1",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.58,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "beethoven5-litolff-p2-s0-st6-c4-g1-lands_on_the_other_convention.png",
+   "subject": "glyph/2/0/6/4/1",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.71,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "beethoven5-litolff-p8-s0-st3-c4-g3-lands_on_the_other_convention.png",
+   "subject": "glyph/8/0/3/4/3",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.7,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p11-s1-st7-c3-g3-lands_on_the_other_convention.png",
+   "subject": "glyph/11/1/7/3/3",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.713,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p12-s1-st8-c1-g5-lands_on_the_other_convention.png",
+   "subject": "glyph/12/1/8/1/5",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.57,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p20-s0-st7-c8-g3-lands_on_the_other_convention.png",
+   "subject": "glyph/20/0/7/8/3",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.654,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p25-s0-st1-c9-g0-lands_on_the_other_convention.png",
+   "subject": "glyph/25/0/1/9/0",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.57,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p7-s0-st1-c3-g0-lands_on_the_other_convention.png",
+   "subject": "glyph/7/0/1/3/0",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.69,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  },
+  {
+   "crop": "brahms1-breitkopf-p8-s1-st0-c0-g5-lands_on_the_other_convention.png",
+   "subject": "glyph/8/1/0/0/5",
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.533,
+   "rule_said": "narrowed {whole, half} \u2014 slot reads as the half-rest convention",
+   "sean": "whole rest",
+   "class_right": true,
+   "geometry_right": false
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+system/0/0       decided   voted                                C
+system/1/0       abstained too_few_staves_read_it               None
+system/2/0       abstained no_evidence                          None
+system/3/0       decided   voted                                3/4
+system/4/0       abstained no_evidence                          None

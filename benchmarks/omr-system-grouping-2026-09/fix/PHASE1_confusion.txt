@@ -1,0 +1,49 @@
+params L=2.0 R=4.5 min_cross=1 gate=0.7
+case                   kind                       status                 final           gt     detector     FP gate
+B9-p25                 failure                    still-broken              []         [11]           []     [] ON   <==
+B9-p60                 failure                    FIXED                   [11]         [11]         [11]     [] ON 
+B5-p40                 failure                    FIXED                [6, 13]      [6, 13]      [6, 13]     [] ON 
+B9-p20                 control                    kept                    [11]         [11]           []     [] ON 
+B9-p30                 control                    kept                      []           []           []     [] ON 
+B9-p35                 control                    kept                      []           []           []     [] ON 
+B9-p40                 control                    kept                      []           []           []     [] ON 
+B9-p45                 control                    kept                      []           []           []     [] ON 
+B9-p50                 control                    kept                      []           []           []     [] ON 
+B9-p55                 control                    kept                     [7]          [7]           []     [] ON 
+B9-p65                 control                    kept                     [7]          [7]           []     [] ON 
+B9-p70                 control                    kept                    [10]         [10]           []     [] ON 
+B9-p75                 control                    kept                     [9]          [9]           []     [] ON 
+B5-p10@300             control                    kept                    [10]         [10]           []     [] ON 
+B5-p10@600             control                    kept                    [10]         [10]           []     [] ON 
+Mahler5-p2             control                    kept                      []           []           []     [] ON 
+Mahler5-p10            control                    kept                      []           []           []     [] ON 
+Mahler5-p20            control                    kept                      []           []           []     [] ON 
+LaMer-p2               control                    kept                    [10]         [10]           []     [] ON 
+LaMer-p20              control                    kept                      []           []           []     [] ON 
+Bolero-p2              control                    kept             [6, 14, 22]  [6, 14, 22]           []     [] ON 
+Bolero-p10             control                    kept                    [16]         [16]           []     [] ON 
+Bolero-p20             control                    kept                      []           []           []     [] ON 
+B5-p47                 control                    kept                      []           []           []     [] ON 
+wtc-p5                 control                    kept            [1, 3, 5, 7] [1, 3, 5, 7]           []     [] ON 
+lamer-p25              control                    kept                      []           []           []     [] ON 
+sw-bach-brande-p10     control                    kept                     [6]          [6]           []     [] ON 
+sw-bach-brande-p10_2   control                    kept                     [8]          [8]           []     [] ON 
+sw-bach-brande-p10_3   control                    kept                    [11]         [11]           []     [] ON 
+sw-bach-brande-p6      control                    kept                     [8]          [8]           []     [] ON 
+sw-bach-brande-p6_2    control                    kept                 [7, 15]      [7, 15]           []     [] ON 
+sw-bach-brande-p16     control                    kept                 [7, 15]      [7, 15]           []     [] ON 
+sw-bach-mass-p110      control                    kept                 [6, 13]      [6, 13]           []     [] ON 
+sw-bach-orches-p4      control                    kept                    [11]         [11]           []     [] ON 
+sw-beet-egmont-p53     control                    kept                     [9]          [9]           []     [] ON 
+sw-beet-piano-p30      control                    kept                    [12]         [12]           []     [] ON 
+sw-beet-piano-p44      control                    kept                    [10]         [10]           []     [] ON 
+sw-beet-piano-p57      control                    kept                     [8]          [8]           []     [] ON 
+sw-bach-mattha-p302    discovered_overmerge_vocal missed(vocal)             []          [7]           []     [] ON   <==
+sw-beac-sympho-p142    control                    kept                      []           []           []     [] ON 
+sw-beet-coriol-p9      control                    kept                      []           []           []     [] ON 
+sw-beet-sympho-p36     discovered_overmerge       FIXED(disc)             [10]         [10]         [10]     [] ON 
+
+original FAILURES fixed 2/3 (still-broken 1)
+discovered instrumental over-merges fixed 1 (missed 0)
+discovered VOCAL over-merges (Phase-3) fixed 0 (missed 1)
+genuine CONTROLS kept 37/37   REGRESSIONS 0

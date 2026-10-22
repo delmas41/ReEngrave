@@ -1,0 +1,44 @@
+=== running  2026-09-06T21:59:37Z
+
+############ brahms   (impossible = Trombone,Tuba before page 45)
+label                               staves  slots  IMPOSS  IMPOSS+veto  contra   slot fingerprint
+front/off/spans-off                    125     14       0            0       6   06b6c8
+front/off/spans-on                     125     14       0            0       6   06b6c8
+front/refuse/spans-off                 125     14       0            0       6   06b6c8
+front/refuse/spans-on                  125     14       0            0       6   06b6c8
+front/search/spans-off                 125     14       0            0       6   06b6c8
+front/search/spans-on                  125     14       0            0       6   06b6c8
+cross/off/spans-off                    211     16       4            0       0   171166
+cross/off/spans-on                     211     16       0            0       0   70cd44
+cross/refuse/spans-off                 211     16       4            0       0   171166
+cross/refuse/spans-on                  211     16       0            0       0   70cd44
+cross/search/spans-off                 211     16       4            0       0   171166
+cross/search/spans-on                  211     16       0            0       0   70cd44
+adhoc/off/spans-off                     36     10       0            0       3   a6029b
+adhoc/off/spans-on                      36     10       0            0       3   a6029b
+adhoc/refuse/spans-off                  36     10       0            0       3   a6029b
+adhoc/refuse/spans-on                   36     10       0            0       3   a6029b
+adhoc/search/spans-off                  36     10       0            0       3   a6029b
+adhoc/search/spans-on                   36     10       0            0       3   a6029b
+
+############ beet5   (impossible = Piccolo,Contrabassoon,Trombone before page 44)
+label                               staves  slots  IMPOSS  IMPOSS+veto  contra   slot fingerprint
+front/off/spans-off                     75     11       0            0       7   e40252
+front/off/spans-on                      75     11       0            0       7   e40252
+front/refuse/spans-off                  75     11       0            0       7   e40252
+front/refuse/spans-on                   75     11       0            0       7   e40252
+front/search/spans-off                  75     11       0            0       7   e40252
+front/search/spans-on                   75     11       0            0       7   e40252
+cross/off/spans-off                    175      7       0            0      28   6270b2
+cross/off/spans-on                     175      7       0            0      28   6270b2
+cross/refuse/spans-off                 175      7       0            0      28   6270b2
+cross/refuse/spans-on                  175      7       0            0      28   6270b2
+cross/search/spans-off                 175      7       0            0      28   6270b2
+cross/search/spans-on                  175      7       0            0      28   6270b2
+adhoc/off/spans-off                     38     17       1            0       1   c240d1
+adhoc/off/spans-on                      38     17       1            0       1   c240d1
+adhoc/refuse/spans-off                  38     17       1            0       1   c240d1
+adhoc/refuse/spans-on                   38     17       1            0       1   c240d1
+adhoc/search/spans-off                  38     17       1            0       1   c240d1
+adhoc/search/spans-on                   38     17       1            0       1   c240d1
+=== DONE 2026-09-06T22:02:01Z

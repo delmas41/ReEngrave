@@ -1,0 +1,87 @@
+{
+ "answered": "2026-10-17",
+ "verbatim": "1. Ff 2. 2 3.2 4.trem slashes 5.4 6.2 7-8.2",
+ "question": "What is the written value of the note in the blue box (1, 2, 4, 8 ..., dot, or not a note)?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "brahms",
+   "glyph": "glyph/18/1/9/6/15",
+   "sean": "ff",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "NOT A NOTE"
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/10/0/3/2/1",
+   "sean": "2",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "right"
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/4/8/7",
+   "sean": "2",
+   "off": null,
+   "on": null,
+   "control": true,
+   "verdict": "control right"
+  },
+  {
+   "n": 4,
+   "doc": "brahms",
+   "glyph": "glyph/16/1/10/0/7",
+   "sean": "trem slashes",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "NOT A NOTE"
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "glyph": "glyph/0/0/0/1/4",
+   "sean": "4",
+   "off": null,
+   "on": null,
+   "control": true,
+   "verdict": "control right"
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/10/5/4",
+   "sean": "2",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "right"
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/9/11/1",
+   "sean": "2",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "right"
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/1/8/8",
+   "sean": "2",
+   "off": "1.0|2.0|4.0",
+   "on": "2.0",
+   "control": false,
+   "verdict": "right"
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+[
+ {
+  "n": 1,
+  "kind": "far_answer_changed",
+  "subject": "glyph/13/0/12/10/0",
+  "page": 13,
+  "caps": [
+   "BASE (azure): on the 2nd ledger line above the staff.",
+   "NEW (red): in the space above the 1st ledger line above the staff.",
+   "Magenta = the edge of the staff the note is filed on; green = ledger lines counted out from it."
+  ]
+ },
+ {
+  "n": 2,
+  "kind": "far_answer_changed",
+  "subject": "glyph/19/0/3/4/4",
+  "page": 19,
+  "caps": [
+   "BASE (azure): on the 2nd ledger line above the staff.",
+   "NEW (red): in the space above the 1st ledger line above the staff.",
+   "Magenta = the edge of the staff the note is filed on; green = ledger lines counted out from it."
+  ]
+ },
+ {
+  "n": 3,
+  "kind": "owner_moved_to_another_staff",
+  "subject": "glyph/6/0/4/8/0",
+  "page": 6,
+  "caps": [
+   "BASE (azure): belongs to Horn (system 1, staff 5 from the top), by which staff is nearer.",
+   "NEW (red): belongs to Bassoon (system 1, staff 4 from the top), by counting ledger lines outward from the note.",
+   "Grey = the staff it is filed on (Horn (system 1, staff 5 from the top)). NEW's staff holds no second box of this mark."
+  ]
+ },
+ {
+  "n": 4,
+  "kind": "owner_moved_to_another_staff",
+  "subject": "glyph/7/1/0/9/9",
+  "page": 7,
+  "caps": [
+   "BASE (azure): belongs to Oboe (system 2, staff 2 from the top), by counting ledger lines outward from the note.",
+   "NEW (red): belongs to Flute (system 2, staff 1 from the top), by which staff is nearer.",
+   "Grey = the staff it is filed on (Flute (system 2, staff 1 from the top)). NEW is the staff it is filed on."
+  ]
+ },
+ {
+  "n": 5,
+  "kind": "far_decided_then_abstains",
+  "subject": "glyph/18/1/0/5/21",
+  "page": 18,
+  "caps": [
+   "BASE (azure): on the 1st ledger line above the staff.",
+   "NEW: no answer; it found no staff or ledger line at the note's box.",
+   "Magenta = the edge of the staff the note is filed on; green = ledger lines counted out from it."
+  ]
+ },
+ {
+  "n": 6,
+  "kind": "far_decided_then_abstains",
+  "subject": "glyph/25/1/5/5/1",
+  "page": 25,
+  "caps": [
+   "BASE (azure): on the 1st ledger line below the staff.",
+   "NEW: no answer; the line it found was not beyond the staff edge.",
+   "Magenta = the edge of the staff the note is filed on; green = ledger lines counted out from it."
+  ]
+ },
+ {
+  "n": 7,
+  "kind": "arc_owner_changed",
+  "subject": "glyph/5/0/1/5/1",
+  "page": 5,
+  "caps": [
+   "BASE (azure): the arc belongs to Oboe (system 1, staff 2 from the top), by no other staff explaining the arc better.",
+   "NEW (red): the arc belongs to Clarinet (system 1, staff 3 from the top), by the staff whose noteheads the arc hugs.",
+   "Grey = the staff it is filed on (Oboe (system 1, staff 2 from the top))."
+  ]
+ },
+ {
+  "n": 8,
+  "kind": "arc_owner_changed",
+  "subject": "glyph/5/0/6/5/11",
+  "page": 5,
+  "caps": [
+   "BASE (azure): the arc belongs to Horn (system 1, staff 6 from the top), by the staff whose noteheads the arc hugs.",
+   "NEW (red): the arc belongs to staff with no name read (system 1, staff 7 from the top), by no other staff explaining the arc better.",
+   "Grey = the staff it is filed on (staff with no name read (system 1, staff 7 from the top))."
+  ]
+ },
+ {
+  "n": 9,
+  "kind": "in_staff_position_moved",
+  "subject": "glyph/7/0/5/4/4",
+  "page": 7,
+  "caps": [
+   "BASE (azure, its five staff lines for this bar): the note sits in staff space 1st from the bottom.",
+   "NEW (red, its five staff lines for this bar): the note sits on staff line 2nd from the bottom."
+  ]
+ },
+ {
+  "n": 10,
+  "kind": "in_staff_position_moved",
+  "subject": "glyph/7/0/5/8/6",
+  "page": 7,
+  "caps": [
+   "BASE (azure, its five staff lines for this bar): the note sits on staff line 4th from the bottom.",
+   "NEW (red, its five staff lines for this bar): the note sits on staff line 3rd from the bottom."
+  ]
+ },
+ {
+  "n": 11,
+  "kind": "dot_no_longer_read_as_lengthening",
+  "subject": "glyph/18/1/12/6/18",
+  "page": 18,
+  "caps": [
+   "BASE (azure): the dot lengthens the note before it by half; that note counts 1.5 beats.",
+   "NEW (red): cannot tell whether the dot lengthens the note or is something else; that note counts 1.0 beats.",
+   "Orange = the dot; green = the note head to its left; magenta = the staff line nearest the dot."
+  ]
+ },
+ {
+  "n": 12,
+  "kind": "dot_no_longer_read_as_lengthening",
+  "subject": "glyph/5/0/1/5/32",
+  "page": 5,
+  "caps": [
+   "BASE (azure): the dot lengthens the note before it by half; that note counts 0.75 beats.",
+   "NEW (red): cannot tell whether the dot lengthens the note or is something else; that note counts 0.75 beats.",
+   "Orange = the dot; green = the note head to its left; magenta = the staff line nearest the dot."
+  ]
+ }
+]

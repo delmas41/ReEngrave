@@ -1,0 +1,120 @@
+{
+ "shipped page_normalise": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "ok": true,
+   "problems": [],
+   "n_staves": 21,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "ok": false,
+   "problems": [
+    "page_normalise REFUSED this map: KeyError: 4397159184"
+   ],
+   "n_staves": 15,
+   "normalised": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "ok": false,
+   "problems": [
+    "page_normalise REFUSED this map: TypeError: '<' not supported between instances of 'tuple' and 'str'"
+   ],
+   "n_staves": 21,
+   "normalised": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "ok": true,
+   "problems": [],
+   "n_staves": 21,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "exact_duplication_share": 0.994,
+    "divisi_share": 0.006
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "ok": true,
+   "problems": [],
+   "n_staves": 11,
+   "normalised": {
+    "n_source_parts": 11,
+    "n_output_parts": 11,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  }
+ ],
+ "with the two one-line fixes": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "ok": true,
+   "problems": [],
+   "n_staves": 21,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "ok": true,
+   "problems": [],
+   "n_staves": 15,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 15,
+    "exact_duplication_share": 0.975,
+    "divisi_share": 0.025
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "ok": true,
+   "problems": [],
+   "n_staves": 21,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "exact_duplication_share": 0.9592,
+    "divisi_share": 0.0408
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "ok": true,
+   "problems": [],
+   "n_staves": 21,
+   "normalised": {
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "exact_duplication_share": 0.994,
+    "divisi_share": 0.006
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "ok": true,
+   "problems": [],
+   "n_staves": 11,
+   "normalised": {
+    "n_source_parts": 11,
+    "n_output_parts": 11,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  }
+ ]
+}

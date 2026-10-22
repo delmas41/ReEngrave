@@ -1,0 +1,71 @@
+{
+ "tile_01": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_02": {
+  "answer": "not a note",
+  "sean": "Trem slash"
+ },
+ "tile_03": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_04": {
+  "answer": "not a note",
+  "sean": "Whole rest"
+ },
+ "tile_05": {
+  "answer": "not a note",
+  "sean": "Part of a tie"
+ },
+ "tile_06": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_07": {
+  "answer": "black",
+  "sean": "4"
+ },
+ "tile_08": {
+  "answer": "hollow",
+  "sean": "Dot 2"
+ },
+ "tile_09": {
+  "answer": "not a note",
+  "sean": "trem slash"
+ },
+ "tile_10": {
+  "answer": "hollow",
+  "sean": "Dot 2"
+ },
+ "tile_11": {
+  "answer": "black",
+  "sean": "Dot 4"
+ },
+ "tile_12": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_13": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_14": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_15": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "tile_16": {
+  "answer": "black",
+  "sean": "8"
+ },
+ "tile_17": {
+  "answer": "hollow",
+  "sean": "2"
+ },
+ "_note": "Sean 2026-10-14, answered with durations: 2 / dot 2 = hollow; 4 / dot 4 / 8 = black; trem slash, whole rest, part of a tie = not a note. Verbatim string: 1.2 2. Trem slash 3. 2 4. Whole rest 5. Part of a tie 6.2 7. 4 8. Dot 2 9 trem slash 10. Dot 2 11. Dot 4 12-15. 2 16.8 17.2 (tile 1 read as '2')."
+}

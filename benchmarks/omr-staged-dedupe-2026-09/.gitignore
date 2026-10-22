@@ -1,0 +1,4 @@
+# The exported arms are large and derived; the summary and the pairs table
+# are the committed evidence.
+out/base.musicxml
+out/fix.musicxml

@@ -1,0 +1,115 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4 (ADDED population, not the pre-registered sample)",
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "dpi": 600,
+ "frame_control": [
+  {
+   "page": 2,
+   "staff": "staff/2/0/3",
+   "ok": true,
+   "contrast": 46.71
+  },
+  {
+   "page": 4,
+   "staff": "staff/4/1/10",
+   "ok": true,
+   "contrast": 220.85
+  }
+ ],
+ "px_per_space": 100.0,
+ "pad_x_spaces": 2.2,
+ "pad_y_spaces": 5.0,
+ "crop_reach_note": "each tile spans 10.0 staff spaces vertically (5.0 either side of the head centre) and 4.4 horizontally plus the head's own width, so a stem of the usual 3.5 spaces is fully inside it and an absence in the tile IS an absence in that window",
+ "tiles": [
+  {
+   "id": "W001",
+   "subject": "glyph/2/0/3/1/18",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 15.75,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 1,
+    "glyph": 18
+   }
+  },
+  {
+   "id": "W002",
+   "subject": "glyph/2/0/3/1/21",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 15.75,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 1,
+    "glyph": 21
+   }
+  },
+  {
+   "id": "W003",
+   "subject": "glyph/4/1/10/2/3",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 16.0,
+   "where": {
+    "page": 4,
+    "system": 1,
+    "staff": 10,
+    "cell": 2,
+    "glyph": 3
+   }
+  },
+  {
+   "id": "W004",
+   "subject": "glyph/4/1/7/7/8",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 16.0,
+   "where": {
+    "page": 4,
+    "system": 1,
+    "staff": 7,
+    "cell": 7,
+    "glyph": 8
+   }
+  },
+  {
+   "id": "W005",
+   "subject": "glyph/2/1/4/13/1",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 15.75,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 4,
+    "cell": 13,
+    "glyph": 1
+   }
+  }
+ ]
+}

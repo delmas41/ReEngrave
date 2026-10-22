@@ -1,0 +1,10 @@
+ARM 0 positive control on the unmutated tree: SURVIVED  (expected SURVIVED, 333 passed)
+RED: TRANSCRIBE: shrink the window to zero — the old rule, restored
+RED: TRANSCRIBE: widen the window past a step, so any pair qualifies
+RED: TRANSCRIBE: delete the same-position branch outright
+RED: TRANSCRIBE: invert the window — prefer heads at DIFFERENT positions
+RED: TRANSCRIBE: take the FURTHEST same-position pair, not the nearest
+RED: EXPORT: let the mirror drift — delete its same-position branch
+RED: EXPORT: invert the mirror's window
+RED: EXPORT: restate the constant instead of importing it (drift by hand)
+RED: ARM P: never enter the branch at all (refuse-everything control)

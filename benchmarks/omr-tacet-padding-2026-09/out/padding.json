@@ -1,0 +1,22 @@
+{
+  "base": "beethoven5-mvt1-p1-p4.document-numbered.musicxml",
+  "tacet_bar_total": 149,
+  "systems_with_a_meter": 1,
+  "systems": 7,
+  "arm_a": {
+    "padded": 0,
+    "refused_no_meter": 149
+  },
+  "arm_b_counterfactual": {
+    "meter": {
+      "denominator": 4,
+      "numerator": 2
+    },
+    "padded": 149,
+    "refused_no_meter": 0
+  },
+  "measures": {
+    "before": 1183,
+    "after": 1332
+  }
+}

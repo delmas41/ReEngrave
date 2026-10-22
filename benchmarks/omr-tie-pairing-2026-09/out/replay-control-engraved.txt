@@ -1,0 +1,13 @@
+beethoven-sym3-mvt1                            stored=   4 replay=   4 OK
+beethoven-sym5-mvt1                            stored=  22 replay=  16 MISMATCH  +0 -6
+brahms-sym1-mvt1                               stored=  89 replay=  68 MISMATCH  +0 -21
+brahms-sym4-mvt1                               stored=  14 replay=   2 MISMATCH  +0 -12
+bruckner-sym5-mvt1                             stored=   8 replay=   8 OK
+dvorak-sym9-mvt4                               stored=   0 replay=   0 OK
+mahler-sym5-mvt1                               stored=   4 replay=   4 OK
+mozart-sym40-mvt1                              stored=   0 replay=   0 OK
+mozart-sym41-mvt1                              stored=  18 replay=  20 MISMATCH  +2 -0
+tchaikovsky-sym4-mvt2                          stored=   0 replay=   0 OK
+tchaikovsky-sym6-mvt2                          stored=   0 replay=   0 OK
+
+reproduced 159 stored tie flags over 11 rows; 4 rows MISMATCH

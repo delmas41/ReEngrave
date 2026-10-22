@@ -1,0 +1,22 @@
+--- litolff ---
+  provenance      : 6b7471ed9b7bc1637949be9591f25f7cc064244a dirty= False
+  candidates/page : {'1': 9, '2': 25, '3': 8}
+  accepted/page   : {'2': 2}
+  family row      : {'status': 'emitted', 'detector_glyphs': 0, 'cv_glyphs': 2, 'ink_rows': 2, 'decided': 853, 'written': 2}
+  ⚠️ cv_glyphs is the ACCEPTED count, not the ink: 2 against 42 candidates
+  census unaccounted: [] balanced: True
+  decided_and_unwritten: {}
+  main balance    : True
+  direction_balance: {'words_decided': 2, 'placed': 2, 'written': 2, 'not_written': 0, 'balanced': True}
+  counters        : direction_words=2 dynamics=132
+--- brahms ---
+  provenance      : 6b7471ed9b7bc1637949be9591f25f7cc064244a dirty= False
+  candidates/page : {'0': 16, '1': 20, '2': 9, '3': 11}
+  accepted/page   : {'0': 2, '1': 8}
+  family row      : {'status': 'emitted', 'detector_glyphs': 0, 'cv_glyphs': 10, 'ink_rows': 10, 'decided': 818, 'written': 10}
+  ⚠️ cv_glyphs is the ACCEPTED count, not the ink: 10 against 56 candidates
+  census unaccounted: [] balanced: True
+  decided_and_unwritten: {}
+  main balance    : True
+  direction_balance: {'words_decided': 10, 'placed': 10, 'written': 10, 'not_written': 0, 'balanced': True}
+  counters        : direction_words=10 dynamics=181

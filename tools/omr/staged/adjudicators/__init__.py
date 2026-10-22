@@ -1,0 +1,27 @@
+"""One module per decision. Importing this package populates the registry.
+
+⚠️ EVERY quantity in `adjudicate.ORDER` must have an owner here, even if that
+owner is a declared stub. A stub is fine; a MISSING decision is not, because
+a missing decision is indistinguishable from one that always abstains and
+nobody can tell which they are looking at.
+"""
+
+from . import movement    # noqa: F401
+from . import structure   # noqa: F401
+from . import identity    # noqa: F401
+from . import clef        # noqa: F401
+from . import header      # noqa: F401
+from . import ownership   # noqa: F401
+from . import rhythm      # noqa: F401
+from . import text        # noqa: F401
+from . import notehead_precision  # noqa: F401
+from . import family_precision    # noqa: F401
+from . import unread_mark         # noqa: F401
+from . import rest_search         # noqa: F401
+from . import position            # noqa: F401
+from . import stem_value          # noqa: F401
+from . import repeats             # noqa: F401  ROADMAP 2.85
+from . import narrow_rest         # noqa: F401  ROADMAP 2.80b
+from . import unboxed_rest        # noqa: F401  ROADMAP 2.99
+from . import head_rest_shape     # noqa: F401  ROADMAP 2.145
+from . import unison_two          # noqa: F401  ROADMAP 2.175

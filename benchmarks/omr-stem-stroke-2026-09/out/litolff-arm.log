@@ -1,0 +1,47 @@
+Litolff Beethoven 5 pp.1-4: 793 heads abstain `no_stem`; the record holds 1920 stem rows
+
+== CONTROL 1 (flag OFF vs the record): 1920 strokes against 1920; cells matching exactly 1183 of 1183
+== CONTROL 2 (the arm has teeth): strokes held by each arm
+   raw            3313  (+1393 added)
+   side           2501  (+581 added)
+   side+end       2465  (+545 added)
+   side+end+legal   2418  (+498 added)
+   side+end@0.20   2451  (+531 added)
+   side+end@0.50   2478  (+558 added)
+   side+end@0.75   2491  (+571 added)
+
+== REACH: `no_stem` heads newly covered, of 793
+variant       heads   share  added strokes  heads per stroke
+raw             351  44.3%           1393              0.25
+side            346  43.6%            581              0.60
+side+end        344  43.4%            545              0.63
+side+end+legal    328  41.4%            498              0.66
+side+end@0.20    343  43.3%            531              0.65
+side+end@0.50    344  43.4%            558              0.62
+side+end@0.75    346  43.6%            571              0.61
+
+== is this the WIDTH CAP by another name?  (`max_width_lines` 0.6 -> 1.5 reaches 217)
+variant        both  ONLY column  ONLY width cap   shared
+raw             214          137               3   61.0%
+side            213          133               4   61.6%
+side+end        212          132               5   61.6%
+side+end+legal    203          125              14   61.9%
+side+end@0.20    211          132               6   61.5%
+side+end@0.50    212          132               5   61.6%
+side+end@0.75    213          133               4   61.6%
+
+== QUALITY: do the recovered strokes agree with the engraving convention, read off the ORIGINAL page raster?
+variant       AGREES  disagrees  silent    rate
+raw              190         43     118  81.5%
+side             190         40     116  82.6%
+side+end         190         40     114  82.6%
+side+end+legal     187         35     106  84.2%   <- CIRCULAR
+side+end@0.20     190         39     114  83.0%
+side+end@0.50     190         40     114  82.6%
+side+end@0.75     191         39     116  83.0%
+
+   REFERENCE (stems we already read): 902/942 = 95.8%   <- the bar
+   (`width_cap_check.py` measured the width cap's recoveries at 83.6% against this bar and REFUSED them)
+   ⚠️ `side+legal` is graded on the rule it was BUILT to satisfy. Read its REACH, never its rate.
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/litolff-arm.json

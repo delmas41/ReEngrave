@@ -1,0 +1,26 @@
+{
+  "1 system": {
+    "rows": 7,
+    "es_ours": 4350,
+    "es_audiveris": 4350,
+    "em_ours": 3477,
+    "em_audiveris": 4545
+  },
+  "2 systems": {
+    "rows": 3,
+    "es_ours": 3817,
+    "es_audiveris": 1226,
+    "em_ours": 7147,
+    "em_audiveris": 6883
+  },
+  "first page": {
+    "rows": 5,
+    "es_ours": 2676,
+    "es_audiveris": 2676
+  },
+  "later page": {
+    "rows": 5,
+    "es_ours": 5491,
+    "es_audiveris": 2900
+  }
+}

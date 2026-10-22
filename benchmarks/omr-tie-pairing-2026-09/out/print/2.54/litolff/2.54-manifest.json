@@ -1,0 +1,570 @@
+{
+ "roadmap_item": "2.54",
+ "cache": "/tmp/litolff254_cache.json",
+ "record_provenance": "library/_shared-records/beethoven5-litolff-mvt1-whole-20261001.record.json",
+ "dpi": 600,
+ "population": {
+  "total": 18
+ },
+ "crops": [
+  {
+   "n": 1,
+   "file": "2.54-tie-01.png",
+   "kind": "linked",
+   "page": 13,
+   "staff": "staff/13/1/1",
+   "start": "glyph/13/1/1/0/5",
+   "stop": "glyph/13/1/1/1/0",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/1/1/1/4"
+   ],
+   "start_box": [
+    602.33,
+    2277.3275,
+    628.475,
+    2298.4325
+   ],
+   "stop_box": [
+    702.405,
+    2274.65,
+    731.2275,
+    2298.7475
+   ],
+   "frame_contrast": 189.16,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "file": "2.54-tie-02.png",
+   "kind": "linked",
+   "page": 13,
+   "staff": "staff/13/1/6",
+   "start": "glyph/13/1/6/10/11",
+   "stop": "glyph/13/1/6/11/10",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/1/6/11/8"
+   ],
+   "start_box": [
+    1733.775,
+    2954.92,
+    1753.15,
+    2984.06
+   ],
+   "stop_box": [
+    1917.655,
+    2964.53,
+    1945.4,
+    2984.06
+   ],
+   "frame_contrast": 198.82,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "file": "2.54-tie-03.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/1",
+   "start": "glyph/3/0/1/1/3",
+   "stop": "glyph/3/0/1/2/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/0/1/1/8"
+   ],
+   "start_box": [
+    663.405,
+    575.9975,
+    687.66,
+    597.26
+   ],
+   "stop_box": [
+    836.8225,
+    578.675,
+    857.14,
+    596.7875
+   ],
+   "frame_contrast": 94.47,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "file": "2.54-tie-04.png",
+   "kind": "linked",
+   "page": 16,
+   "staff": "staff/16/0/1",
+   "start": "glyph/16/0/1/8/6",
+   "stop": "glyph/16/0/1/8/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/16/0/1/8/17"
+   ],
+   "start_box": [
+    1506.165,
+    517.9825,
+    1527.1125,
+    533.575
+   ],
+   "stop_box": [
+    1554.2025,
+    515.935,
+    1574.6775,
+    534.9925000000001
+   ],
+   "frame_contrast": 39.28,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 5,
+   "file": "2.54-tie-05.png",
+   "kind": "linked",
+   "page": 13,
+   "staff": "staff/13/0/2",
+   "start": "glyph/13/0/2/13/1",
+   "stop": "glyph/13/0/2/14/0",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/0/2/13/7"
+   ],
+   "start_box": [
+    2304.75,
+    779.0550000000001,
+    2330.265,
+    798.7425000000001
+   ],
+   "stop_box": [
+    2379.805,
+    779.0550000000001,
+    2405.32,
+    799.53
+   ],
+   "frame_contrast": 175.21,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 6,
+   "file": "2.54-tie-06.png",
+   "kind": "linked",
+   "page": 13,
+   "staff": "staff/13/0/0",
+   "start": "glyph/13/0/0/14/1",
+   "stop": "glyph/13/0/0/15/6",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/0/0/14/9"
+   ],
+   "start_box": [
+    2376.97,
+    365.7225,
+    2406.265,
+    386.5125
+   ],
+   "stop_box": [
+    2507.695,
+    364.62,
+    2534.6275,
+    385.2525
+   ],
+   "frame_contrast": 176.27,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 7,
+   "file": "2.54-tie-07.png",
+   "kind": "linked",
+   "page": 6,
+   "staff": "staff/6/0/5",
+   "start": "glyph/6/0/5/2/3",
+   "stop": "glyph/6/0/5/3/0",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/6/0/5/2/4"
+   ],
+   "start_box": [
+    836.98,
+    1157.4975,
+    862.3375,
+    1179.705
+   ],
+   "stop_box": [
+    992.3175,
+    1158.915,
+    1015.155,
+    1180.1775
+   ],
+   "frame_contrast": 178.36,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 8,
+   "file": "2.54-tie-08.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/1",
+   "start": "glyph/3/0/1/1/3",
+   "stop": "glyph/3/0/1/2/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/0/1/1/5"
+   ],
+   "start_box": [
+    663.405,
+    575.9975,
+    687.66,
+    597.26
+   ],
+   "stop_box": [
+    836.8225,
+    578.675,
+    857.14,
+    596.7875
+   ],
+   "frame_contrast": 94.47,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 9,
+   "file": "2.54-tie-09.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/2",
+   "start": "glyph/3/0/2/5/4",
+   "stop": "glyph/3/0/2/7/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/0/2/6/5"
+   ],
+   "start_box": [
+    1365.8225,
+    713.715,
+    1388.345,
+    729.6225
+   ],
+   "stop_box": [
+    1714.7825,
+    715.1325,
+    1736.8325,
+    735.2925
+   ],
+   "frame_contrast": 132.58,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 10,
+   "file": "2.54-tie-10.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/1",
+   "start": "glyph/3/0/1/1/3",
+   "stop": "glyph/3/0/1/2/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/0/1/1/4"
+   ],
+   "start_box": [
+    663.405,
+    575.9975,
+    687.66,
+    597.26
+   ],
+   "stop_box": [
+    836.8225,
+    578.675,
+    857.14,
+    596.7875
+   ],
+   "frame_contrast": 94.47,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 11,
+   "file": "2.54-tie-11.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/1",
+   "start": "glyph/3/0/1/1/3",
+   "stop": "glyph/3/0/1/2/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/0/1/1/1"
+   ],
+   "start_box": [
+    663.405,
+    575.9975,
+    687.66,
+    597.26
+   ],
+   "stop_box": [
+    836.8225,
+    578.675,
+    857.14,
+    596.7875
+   ],
+   "frame_contrast": 94.47,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 12,
+   "file": "2.54-tie-12.png",
+   "kind": "linked",
+   "page": 10,
+   "staff": "staff/10/0/3",
+   "start": "glyph/10/0/3/2/1",
+   "stop": "glyph/10/0/3/3/3",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/10/0/3/2/2"
+   ],
+   "start_box": [
+    827.38,
+    865.285,
+    848.6425,
+    879.3025
+   ],
+   "stop_box": [
+    990.5925,
+    864.655,
+    1014.5325,
+    886.2325
+   ],
+   "frame_contrast": 20.04,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 13,
+   "file": "2.54-tie-13.png",
+   "kind": "not_adjacent",
+   "page": 4,
+   "staff": "staff/4/1/9",
+   "start": "glyph/4/1/9/5/4",
+   "stop": "glyph/4/1/9/6/3",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/4/1/9/5/9"
+   ],
+   "start_box": [
+    1262.56,
+    3425.555,
+    1287.445,
+    3445.5575
+   ],
+   "stop_box": [
+    1410.0325,
+    3426.0275,
+    1432.7125,
+    3446.345
+   ],
+   "frame_contrast": 167.38,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 14,
+   "file": "2.54-tie-14.png",
+   "kind": "not_adjacent",
+   "page": 9,
+   "staff": "staff/9/0/3",
+   "start": "glyph/9/0/3/9/2",
+   "stop": "glyph/9/0/3/10/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/9/0/3/9/4"
+   ],
+   "start_box": [
+    1745.355,
+    811.54,
+    1769.925,
+    832.4875
+   ],
+   "stop_box": [
+    1876.1125,
+    815.7925,
+    1900.84,
+    836.2675
+   ],
+   "frame_contrast": 122.21,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 15,
+   "file": "2.54-tie-15.png",
+   "kind": "not_adjacent",
+   "page": 13,
+   "staff": "staff/13/1/4",
+   "start": "glyph/13/1/4/1/2",
+   "stop": "glyph/13/1/4/2/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/1/4/1/5"
+   ],
+   "start_box": [
+    703.5075,
+    2714.125,
+    730.44,
+    2733.8125
+   ],
+   "stop_box": [
+    798.335,
+    2712.7075,
+    824.9525,
+    2732.395
+   ],
+   "frame_contrast": 136.0,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 16,
+   "file": "2.54-tie-16.png",
+   "kind": "not_adjacent",
+   "page": 13,
+   "staff": "staff/13/1/4",
+   "start": "glyph/13/1/4/1/2",
+   "stop": "glyph/13/1/4/2/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/13/1/4/2/0"
+   ],
+   "start_box": [
+    703.5075,
+    2714.125,
+    730.44,
+    2733.8125
+   ],
+   "stop_box": [
+    798.335,
+    2712.7075,
+    824.9525,
+    2732.395
+   ],
+   "frame_contrast": 136.0,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 17,
+   "file": "2.54-tie-17.png",
+   "kind": "not_adjacent",
+   "page": 14,
+   "staff": "staff/14/1/0",
+   "start": "glyph/14/1/0/10/13",
+   "stop": "glyph/14/1/0/11/3",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/14/1/0/10/1"
+   ],
+   "start_box": [
+    1969.175,
+    2131.965,
+    1996.4225,
+    2153.385
+   ],
+   "stop_box": [
+    2065.8525,
+    2135.745,
+    2091.84,
+    2157.48
+   ],
+   "frame_contrast": 229.97,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 18,
+   "file": "2.54-tie-18.png",
+   "kind": "not_adjacent",
+   "page": 15,
+   "staff": "staff/15/1/2",
+   "start": "glyph/15/1/2/1/7",
+   "stop": "glyph/15/1/2/2/3",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/15/1/2/1/12"
+   ],
+   "start_box": [
+    645.27,
+    2519.0725,
+    669.0525,
+    2540.335
+   ],
+   "stop_box": [
+    759.57,
+    2518.1275,
+    783.825,
+    2542.225
+   ],
+   "frame_contrast": 83.43,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": []
+}

@@ -1,0 +1,423 @@
+{
+  "_README": [
+    "SIX DRAFTED ROWS widening the scan gate from 5 verified pages toward 10, by",
+    "chaining onto the editions the gate already trusts: the NEXT page of each",
+    "verified row's PDF (plus the completion of the parked Bach row). Drafted",
+    "2026-09-04; every row needs Sean's confirmation against the print before it",
+    "can score. The human step is designed to be minutes per row — see",
+    "ROW_VERIFICATION_CHECKLIST_2026-09-04.md in this directory.",
+    "",
+    "KEPT OUT OF works.json ON PURPOSE, like works-draft-nongerman.json before",
+    "it, and for a sharper reason than precedent: scan_eval.py runs every row",
+    "whose window is complete (runnable() checks only for null first/last), and",
+    "then WITHHOLDS the pooled figure while any scored row's confidence is not",
+    "'verified'. A draft with a complete window merged into works.json would",
+    "therefore be transcribed on the next default run AND take the pooled gate",
+    "number away from every session. Drafts live here; scan_eval.py never reads",
+    "this file. The pooled gate (results.json, and the round arms like",
+    "results-round3-prodbase.json, pooled 0.7517 / 7894 on production weights)",
+    "is untouched by construction.",
+    "",
+    "TO PROMOTE A ROW: confirm its `check` list against the print, move the row",
+    "into works.json's `rows`, set window.confidence to 'verified', and record",
+    "what was confirmed in window.verified_by (VERIFICATION.md gets the story).",
+    "The bach row is special: works.json already holds a row with the same",
+    "row_id whose window is null — promotion REPLACES that row's page/window",
+    "fields rather than adding a second row.",
+    "",
+    "WHY THESE PAGES ARE CHEAP TO VERIFY, where the first five were expensive:",
+    "three of the four editions print MEASURE NUMBERS at system starts (Litolff",
+    "984073: 17/34, then 49 opening p.3; Breitkopf Brahms: 8/15, then 23 opening",
+    "p.3; Peters Mahler: 9, then 17 opening the next page; Peters Bach: boxed 5,",
+    "then boxed 10 opening p.2). A printed number chained from an",
+    "already-verified window is the engraver's own testimony, needs no counting,",
+    "and cannot share a failure mode with the pipeline's barline detection. The",
+    "verified rows never had this luxury because every one of them was a",
+    "movement's FIRST page - bar 1 carries no number.",
+    "",
+    "Evidence classes used per row (each row's window.verified_by lists its own):",
+    "  - printed system-start measure numbers, read off the scan at high zoom;",
+    "  - the pipeline's own per-staff measure counts (unanimity across staves is",
+    "    reported but never trusted alone - the 0.8706-against-17 lesson);",
+    "  - reference activity grids (verify_window.py), checked in BOTH directions;",
+    "  - reference trims (trim_reference.py) proving the window exists in the",
+    "    truth file, with measure numbers and no unmatched repeats;",
+    "  - for the twin pair, a plate fingerprint: measure boundaries normalised",
+    "    to system width agree across the two scans to 0.0024 or better.",
+    "",
+    "⚠️ draft_windows.py was run for the four chainable pages and its output is",
+    "folded in, but two of its drafts needed hand correction, both worth",
+    "recording: (1) on the LOW-RES Beethoven scan it chained 17-47, one measure",
+    "short, because the pipeline misses one barline (the m19|m20 boundary) in",
+    "system 1 - the printed numbers and the high-res twin both say 17-48;",
+    "(2) on Brahms system 2 it paired the margin misread 'Trumpet' (the printed",
+    "(Es) Hr. staff) to the base row's '2 Trompeten in C' and silently dropped",
+    "the Es-horn staff - the reference's trumpets are tacet through mm 8-22 and",
+    "the print suppresses exactly their staff. Both are the documented traps",
+    "(CLAUDE.md: the margin reader turns Kontrafagott into Bassoon and Hörner",
+    "in Es into Trumpet on this edition); the drafts below carry the corrected",
+    "values with the trap noted in `check`."
+  ],
+  "protocol_note": "Rows inherit works.json's protocol verbatim on promotion; nothing here overrides it.",
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2",
+      "work_id": "beethoven--symphony-5",
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal — p.2, first two-system row",
+      "edition": {
+        "catalog_path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+        "imslp_id": "984073",
+        "publisher_as_catalogued": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+        "raster": "2897x3813 ccitt bitonal @600ppi, page 347.6x457.6 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 18,
+        "n_measures": 502,
+        "meter_at_start": "2/4"
+      },
+      "page": {
+        "pdf_page_index": 2,
+        "printed_page": 2,
+        "n_systems": 2,
+        "n_staves": 22,
+        "n_staves_note": "2 systems of 11. From p.2 the p.1 lineup condenses by one: Violoncello and Basso share the bottom string staff (the staff opens with the printed word 'Basso'); the other ten staves keep p.1's order."
+      },
+      "window": {
+        "first_ref_measure": 17,
+        "last_ref_measure": 48,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "printed system-start measure numbers: this plate prints 17 over system 1 and 34 over system 2, and p.3 opens printing 49 — chained from the verified p.1 window (mm 1-16), whose last measure is 16",
+        "verified_by": [
+          "DRAFT 2026-09-04, not yet human-verified. Evidence assembled so far:",
+          "printed numbers 17 / 34 / 49 — three engraved facts agreeing with the chain (16+1=17) and with each other (34-17=17 bars in system 1, 49-34=15 in system 2, 32 measures on the page).",
+          "the high-res twin 575951 p.2 (same plates, proved for p.1 by barline fingerprint and re-proved for p.2 below): its pipeline run reads 17 + 15 bars, unanimous across all 22 staves.",
+          "trim_reference: reference mm 17-48 exist, 32 measures numbered 17..48, no unmatched repeats.",
+          "⚠️ THIS scan's own pipeline read of system 1 is 16 bars — one SHORT. Boundary fingerprint against the twin: all 17 low-res boundaries land within 0.0018 (normalised to system width) of a high-res boundary, and exactly one high-res boundary (at 0.234 of the system — the m19|m20 barline) has no low-res partner. A missed barline on the 2897px raster, not a window fact; the window comes from the print. Expect detected measures 31/32 when this row runs."
+        ],
+        "confidence": "draft",
+        "check": [
+          "confirm the printed 17 above system 1 and 34 above system 2 on p.2, and 49 opening p.3",
+          "confirm the bottom string staff is the condensed Violoncello+Basso (it opens with the printed word 'Basso'; p.1 printed them separately) — the reference's Vc and Cb both sound throughout mm 17-48 in near-identical (unison) figures, so the one staff carries both parts",
+          "confirm 11 staves per system, p.1's order otherwise (Fl/Ob/Cl/Fag/Cor/Tr/Tp + 4 string staves)"
+        ]
+      },
+      "staves": [
+        { "name": "Flauti", "parts": [0, 1] },
+        { "name": "Oboi", "parts": [2, 3] },
+        { "name": "Clarinetti in B", "parts": [4, 5] },
+        { "name": "Fagotti", "parts": [6, 7] },
+        { "name": "Corni in Es", "parts": [8, 9] },
+        { "name": "Trombe in C", "parts": [10, 11] },
+        { "name": "Timpani in C.G.", "parts": [12] },
+        { "name": "Violino I", "parts": [13] },
+        { "name": "Violino II", "parts": [14] },
+        { "name": "Viola", "parts": [15] },
+        { "name": "Violoncello e Basso", "parts": [16, 17] }
+      ],
+      "notes": "First two-system row in the table. Both systems print the same 11-staff lineup, so export stitching should join them into 11 parts and the 11-entry staves map pairs positionally. draft_windows.py chained 17-47 off this scan's own pipeline count (one short, see verified_by) and paired the bottom staff as Violoncello [16] only, dropping Basso [17] — both corrected by the print. Clefs/keys not hand-read (same status as the verified Dvorak/Brahms rows)."
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2",
+      "work_id": "beethoven--symphony-5",
+      "label": "Beethoven 5 / same plates, high-res + text layer — p.2",
+      "edition": {
+        "catalog_path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+        "imslp_id": "575951",
+        "publisher_as_catalogued": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+        "raster": "5409x7207 jbig2 bitonal @599ppi, page 649.1x865.1 pt",
+        "has_text_layer": true
+      },
+      "reference": {
+        "catalog_path": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 18,
+        "n_measures": 502,
+        "meter_at_start": "2/4"
+      },
+      "page": {
+        "pdf_page_index": 1,
+        "printed_page": 2,
+        "n_systems": 2,
+        "n_staves": 22,
+        "n_staves_note": "same engraving as 984073 p.2: 2 systems of 11, Violoncello+Basso condensed"
+      },
+      "window": {
+        "first_ref_measure": 17,
+        "last_ref_measure": 48,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "chained from this PDF's own verified p.1 window (mm 1-16): first = 17; the pipeline reads 17 + 15 bars, unanimous across all 22 staves, giving last = 48; plate identity with 984073 p.2 (which prints the numbers) corroborates",
+        "verified_by": [
+          "DRAFT 2026-09-04, not yet human-verified. Evidence assembled so far:",
+          "⚠️ this printing does NOT carry the system-start measure numbers 984073 prints (confirmed at high zoom on both systems) — the reprint dropped the marginal numbers. The numbers 17/34/49 live on the TWIN and transfer via plate identity.",
+          "plate fingerprint against 984073 p.2, same method that verified the p.1 pair: system 2's 16 measure boundaries, normalised to system width, agree to a maximum of 0.0024 across the 4443px vs 2299px rasters; system 1's boundaries agree to 0.0018 with exactly one extra boundary on this (high-res) scan — the m19|m20 barline the low-res raster loses. Same engraving, same page break, same window. (Fingerprint computed from the two transcriptions' cell boundaries — cross-SCAN agreement of independent rasters, unlike the p.1 pair's probe-based fingerprint; noted for honesty, decisive either way.)",
+          "pipeline measure counts 17 + 15 = 32, unanimous across 22 staves; trim_reference: mm 17-48 = 32 measures, no repeats."
+        ],
+        "confidence": "draft",
+        "check": [
+          "one glance: same engraving as 984073 p.2 (verify a bar or two side by side) — the window then transfers with the plate",
+          "confirm this printing really lacks the marginal measure numbers (so nobody later 'corrects' the row against a number that is not there)",
+          "confirm 11 staves per system with the condensed bottom staff, as on the twin"
+        ]
+      },
+      "staves": "same-as:beethoven-sym5-mvt1-984073-p2",
+      "notes": "Same music and window as 984073 p.2; what differs is resolution and the text layer, exactly the controlled comparison the verified p.1 pair set up — extended to a two-system page where the low-res arm is known to drop one barline. draft_windows.py chained this one correctly (17-48) because this scan's pipeline count is right."
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3",
+      "work_id": "mahler--symphony-5",
+      "label": "Mahler 5 / Edition Peters — p.3 (printed p.4), tacet-suppressed lineup",
+      "edition": {
+        "catalog_path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+        "imslp_id": null,
+        "publisher_as_catalogued": "(unidentified scan 2016); the page itself says Edition Peters No. 3087b",
+        "raster": "4385x5857 jbig2 bitonal @600ppi, page 523.8x703.3 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 38,
+        "n_measures": 416,
+        "meter_at_start": "2/2"
+      },
+      "page": {
+        "pdf_page_index": 2,
+        "printed_page": 4,
+        "n_systems": 1,
+        "n_staves": 13,
+        "n_staves_note": "13 FIVE-LINE staves plus 2 one-line percussion staves (Becken, Gr. Tr.) = 15 printed. Compare `detected` against 13, as on the verified p.2 row. The lineup is tacet-suppressed relative to p.2's 22: Flöten, Hoboen, Klarinetten, Pauken, Kleine Trommel, Tamtam and the combined Becken/Gr.Tr. player staff are gone; margins read Fag.1/2, Contraf., F-Hörner 1/3/5, F-Hörner 2/4/6, B-Tromp.1/2, B-Tromp.3/4, Posaunen 1/2/3, Tuba, Becken, Gr.Tr., Erste Viol., Zweite Viol., Violen, Vcelle., Bässe."
+      },
+      "window": {
+        "first_ref_measure": 9,
+        "last_ref_measure": 16,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "Peters prints the measure number 9 at the page's start (above Fag. 1/2 and again above Erste Viol.) and 17 opening the next page (pdf index 3) — chained from the verified p.2 window (mm 0-8, pickup numbered 0, so the print's 9 IS reference 9)",
+        "verified_by": [
+          "DRAFT 2026-09-04, not yet human-verified. Evidence assembled so far:",
+          "printed numbers 9 and 17 agree with the chain (8+1=9) and with each other (17-9=8 bars).",
+          "pipeline: 8 bars, unanimous across all 13 five-line staves; trim_reference: mm 9-16 = 8 measures, no repeats.",
+          "activity grid (verify_window over mm 9-16, context 2) matches the page in the discriminating directions: bars 1-4 are near-silent with only the solo B-trumpet fanfare continuing (reference: Vier Trompeten upper part sounds 4/4/4/3 objects in mm 9-12, everything else rests); the horns enter ONE bar before the tutti (m12, the a3 > tied note at page bar 4); m13 is the ff tutti — page bar 5, with 'nicht teilen!' printed over the string entries; Hoboen and Klarinetten stay silent through m16 and enter at m17 — and they are exactly the staves that reappear in the margins of the NEXT page.",
+          "the six suppressed percussion/wind staves are exactly the parts the reference holds silent through mm 9-16 (Pauken, Kleine Trommel, Tamtam never sound in the window; Becken sounds at m12 and Gr. Tr. from m13, and exactly those two one-line staves are printed)."
+        ],
+        "confidence": "draft",
+        "check": [
+          "confirm the printed 9 at the page start and 17 opening the next page",
+          "confirm 13 five-line staves + 2 one-line staves (Becken, Gr. Tr.), margins as in n_staves_note",
+          "no staves map is drafted (38 reference parts vs 13 staves — the same condensation problem the verified p.2 row solved with staves_as_printed); the row reports OMR-NED only until such a map is hand-built. The upper-trumpet pinning from p.2 (part 17 = the sounding fanfare, printed on the '1.2.' staff) carries over if one is built."
+        ]
+      },
+      "notes": "Drafted BY HAND, not by draft_windows.py: the verified base row has no `staves` list (its map lives in condensation.staves_as_printed because of the one-line percussion staves), and the drafter refuses such a base. The chain itself needs no tool — Peters prints the numbers. A future staves_as_printed for this page, from p.2's allocations: Fag.1/2->[10], Contraf.->[11], Hörner 1/3/5 + 2/4/6 -> {12,13,14} (split ambiguous, as priced on p.2), B-Tromp.1/2->[15,17] with 17 pinned by the continuing fanfare, B-Tromp.3/4->[16,18], Posaunen->[19,20], Tuba->[21], Becken->[23], Gr.Tr.->[24], Erste Viol.->[27,28], Zweite Viol.->[29,30,31], Violen->[32,33], Vcelle.->[34,35], Bässe->[36,37]."
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p2",
+      "work_id": "brahms--symphony-1",
+      "label": "Brahms 1 / Breitkopf Samtliche Werke — p.2, meter change + suppressed trumpet staff",
+      "edition": {
+        "catalog_path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+        "imslp_id": "317803",
+        "publisher_as_catalogued": "Breitkopf & Hartel (Brahms Samtliche Werke)",
+        "raster": "~5276x6940 ccitt bitonal @~533ppi (dimensions vary per page), page 711.6x936.3 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 21,
+        "n_measures": 513,
+        "meter_at_start": "6/8"
+      },
+      "page": {
+        "pdf_page_index": 1,
+        "printed_page": 2,
+        "n_systems": 2,
+        "n_staves": 27,
+        "n_staves_note": "system 1 = 14 staves (the full p.1 lineup); system 2 = 13 (the 2 Trompeten in C staff is suppressed — the reference's trumpets are tacet through the whole window)."
+      },
+      "window": {
+        "first_ref_measure": 8,
+        "last_ref_measure": 22,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "printed system-start measure numbers: 8 over system 1, 15 over system 2, and p.3 opens printing 23 — chained from the verified p.1 window (mm 1-7), and closed from the reference side by the meter: the reference changes to 9/8 AT m8 (ql 4.5) and back to 6/8 at m9, and the page's first bar prints 9/8 with 6/8 printed at its second bar. This is the same reference fact (9/8 at m8) that verified p.1's window as ending at m7, consumed from the other side.",
+        "verified_by": [
+          "DRAFT 2026-09-04, not yet human-verified. Evidence assembled so far:",
+          "printed numbers 8 / 15 / 23 agree with the chain (7+1=8) and with each other (15-8=7 bars in system 1, 23-15=8 in system 2, 15 measures on the page).",
+          "pipeline: 7 + 8 bars, unanimous across all 27 staves — agrees with the engraver exactly here.",
+          "trim_reference: mm 8-22 = 15 measures numbered 8..22, no repeats; m8 is the 9/8 bar (ql 4.5).",
+          "activity grid: C Trumpets 1/2 are silent through mm 8-22 (and either side) — the suppressed staff in system 2 is theirs; Eb Horn 4 re-enters at mm 21-22 and Timpani at mm 21-22, which are the pp entries printed just before rehearsal A at system 2's end — so the horn and Pauken staves must be printed in system 2, and they are."
+        ],
+        "confidence": "draft",
+        "check": [
+          "confirm the printed 8 / 15 on p.2 and 23 opening p.3",
+          "confirm the first bar prints 9/8 and the second bar 6/8 (the m8 meter change)",
+          "confirm system 2 prints NO Trpt. staff: 13 staves, margins running Fl. / Ob. / Klar.(B) / Fag. / K-Fag. / (C) Hr. (Es) / Pk. / 1.Viol. / 2.Viol. / Br. / Vcl. / K.-B.",
+          "⚠️ the drafter trap fired here and was hand-corrected — see notes; confirm the correction, not the drafter"
+        ]
+      },
+      "systems_as_printed": {
+        "_purpose": "informational — the row carries no `staves` map (system counts 14 vs 13 make export stitching refuse, so predicted parts stay per-system and a single positional map cannot pair them). OMR-NED only until promotion decides otherwise.",
+        "system_1": [
+          { "name": "2 Floten", "parts": [0, 1] },
+          { "name": "2 Oboen", "parts": [2, 3] },
+          { "name": "2 Klarinetten in B", "parts": [4, 5] },
+          { "name": "2 Fagotte", "parts": [6, 7] },
+          { "name": "Kontrafagott", "parts": [8] },
+          { "name": "4 Horner in C 1./2.", "parts": [9, 10] },
+          { "name": "4 Horner in Es 3./4.", "parts": [11, 12] },
+          { "name": "2 Trompeten in C", "parts": [13, 14] },
+          { "name": "Pauken in C u.G", "parts": [15] },
+          { "name": "1. Violine", "parts": [16] },
+          { "name": "2. Violine", "parts": [17] },
+          { "name": "Bratsche", "parts": [18] },
+          { "name": "Violoncell", "parts": [19] },
+          { "name": "Kontrabass", "parts": [20] }
+        ],
+        "system_2": [
+          { "name": "2 Floten", "parts": [0, 1] },
+          { "name": "2 Oboen", "parts": [2, 3] },
+          { "name": "2 Klarinetten in B", "parts": [4, 5] },
+          { "name": "2 Fagotte", "parts": [6, 7] },
+          { "name": "Kontrafagott", "parts": [8] },
+          { "name": "4 Horner in C 1./2.", "parts": [9, 10] },
+          { "name": "4 Horner in Es 3./4.", "parts": [11, 12] },
+          { "name": "Pauken in C u.G", "parts": [15] },
+          { "name": "1. Violine", "parts": [16] },
+          { "name": "2. Violine", "parts": [17] },
+          { "name": "Bratsche", "parts": [18] },
+          { "name": "Violoncell", "parts": [19] },
+          { "name": "Kontrabass", "parts": [20] }
+        ]
+      },
+      "notes": "draft_windows.py got the window right (8-22) and system 1 right (positional, with the two documented margin misreads flagged as cross-checks: Kontrafagott read 'Bassoon', Hörner in Es read 'Trumpet'). On system 2 (13 staves, paired by instrument) the 'Trumpet' misread of the (Es) Hr. staff silently claimed the base's '2 Trompeten in C' entry and the Es-horn staff vanished from the map — no check line was emitted because the instrument pairing 'succeeded'. Corrected here from the print (margins listed above) and the reference (trumpets tacet mm 8-22; Eb Horn 4 sounds mm 21-22, so its staff must exist). systems_as_printed.system_2 above is the corrected pairing."
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6",
+      "work_id": "dvorak--symphony-9",
+      "label": "Dvorak 9 / Simrock 1894 — p.6 (printed p.184), the 1:1 pairing continued",
+      "edition": {
+        "catalog_path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+        "imslp_id": "405834",
+        "publisher_as_catalogued": "N. Simrock, Berlin, 1894, plate 10139",
+        "raster": "5088x6976 jbig2 (indexed) @601x600ppi, page 610x837 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/dvorak/symphony-9/dvorak--symphony-9--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 15,
+        "n_measures": 452,
+        "meter_at_start": "4/8"
+      },
+      "page": {
+        "pdf_page_index": 5,
+        "printed_page": 184,
+        "n_systems": 1,
+        "n_staves": 15
+      },
+      "window": {
+        "first_ref_measure": 9,
+        "last_ref_measure": 15,
+        "leading_pickup": false,
+        "print_to_reference_offset": 0,
+        "established_by": "chained from the verified p.5 window (mm 1-8): first = 9. The page holds 7 measures: pipeline unanimous 7 across all 15 staves, hand-counted 7 on the Flauti staff at high zoom, and the activity grid closes both ends. This plate prints NO system-start measure numbers.",
+        "verified_by": [
+          "DRAFT 2026-09-04, not yet human-verified. Evidence assembled so far:",
+          "the START is pre-proved by the verified p.5 row itself, whose decisive check was that Violini I/II enter at m9 and Timpani at m10 'and neither appears anywhere on the page [p.5]' — this page's FIRST bar is the Violini I+II ff entry and its SECOND bar the Timpani entry.",
+          "the END, from the grid in both directions: mm 13-14 are the two near-tacet bars (winds silent, only low strings moving — the page's 5th and 6th bars); m15 is an 11-object Flauto/Oboi flourish — the beamed run in the page's LAST bar, entering p over the pp string tremolos; an 8th bar would be m16 (Corni III/IV and Viola/Violoncello each 8 objects — a busy bar), and no such bar is printed.",
+          "pipeline: 7 bars, unanimous across 15 staves; trim_reference: mm 9-15 = 7 measures, no repeats.",
+          "⚠️ the ink probe is honestly UNAVAILABLE here: probe_page_measures' band finder returns 0 five-line bands on this scan (faint staff lines — the same family as the Jurgenson row, where 5 bands were found on a 16-staff page). The near-tacet Trombe/Tromboni staves would be countable by eye; that is Sean's check.",
+          "⚠️ the italic '32' printed over the Viola near the page's end is a TREMOLO SUBDIVISION marking (thirty-seconds) over two tied half notes, not a measure number — recorded so nobody reads it as one. The same measured-tremolo notation appears in the low strings; note for note-recall reading, not for the window."
+        ],
+        "confidence": "draft",
+        "check": [
+          "count 7 bars on a tacet staff by eye — Trombe in E (staff 7) or either Tromboni staff rests the whole page",
+          "confirm the page's first bar is the Violini I/II ff entry and the second adds Timpani (the p.5 row's own m9/m10 predictions)",
+          "confirm the last bar carries the flute/oboe beamed flourish entering p (m15), with nothing after it",
+          "confirm 15 staves in p.183's order (the margins print only on p.183; this page relies on order)"
+        ]
+      },
+      "staves": [
+        { "name": "Flauti", "parts": [0] },
+        { "name": "Oboi", "parts": [1] },
+        { "name": "Clarinetti in A", "parts": [2] },
+        { "name": "Fagotti", "parts": [3] },
+        { "name": "Corni I.II. in E", "parts": [4] },
+        { "name": "Corni III.IV. in C", "parts": [5] },
+        { "name": "Trombe in E", "parts": [6] },
+        { "name": "Tromboni I.II.", "parts": [7] },
+        { "name": "Trombone basso", "parts": [8] },
+        { "name": "Tympani A.E.H.", "parts": [9] },
+        { "name": "Violino I", "parts": [10] },
+        { "name": "Violino II", "parts": [11] },
+        { "name": "Viola", "parts": [12] },
+        { "name": "Violoncello", "parts": [13] },
+        { "name": "Contrabasso", "parts": [14] }
+      ],
+      "notes": "Extends the one 1:1 part-staff work by a page — same 15 staves, same order (staves map copied verbatim from the verified p.5 row; the pipeline's contextual pass read 8 of the 15 instruments on this page and every one agrees with p.5's order at that position). draft_windows.py chained 9-15 correctly. Clefs/keys not hand-read, as on p.5."
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1",
+      "work_id": "bach--concerto-3",
+      "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering — COMPLETION of the parked row",
+      "edition": {
+        "catalog_path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+        "imslp_id": "468678",
+        "publisher_as_catalogued": "''Edition Peters Nr.4412''",
+        "raster": "2341x3277 jbig2 bitonal @300ppi, page 561.8x786.5 pt",
+        "has_text_layer": false
+      },
+      "reference": {
+        "catalog_path": "reference/bach/brandenburg-concerto-3/bach--brandenburg-concerto-3--mvt1--gradus.mxl",
+        "movement": "mvt1",
+        "n_parts": 11,
+        "n_measures": 137,
+        "meter_at_start": "4/4"
+      },
+      "page": {
+        "pdf_page_index": 0,
+        "printed_page": 59,
+        "n_systems": 2,
+        "n_staves": 24,
+        "n_staves_note": "TWO systems of 12: Violini I-III, Viole I-III, Violoncelli I-III, Contrabasso, Cembalo on two staves — the Cembalo pair set apart by a gap, which is why the page reads as 'three blocks'. The boxed measure number of system 2 is printed twice, once over the strings block and once over the Cembalo block; both say 5. ⚠️ the parked works.json row says n_staves 13 — a first-pass eyeball number that matches neither one system (12) nor the page (24); VERIFICATION.md itself says 24 five-line bands. Correct it on promotion."
+      },
+      "window": {
+        "first_ref_measure": 1,
+        "last_ref_measure": 10,
+        "leading_pickup": true,
+        "print_to_reference_offset": 1,
+        "established_by": "system 1 = a narrow pickup cell (two sixteenths, ref m1 at ql 0.5) plus 4 full bars = ref mm 1-5, as the parked row already established (boxed 5 opens system 2). System 2 = printed bars 5-9, because p.2 (pdf index 1) opens with a boxed 10: with this reference numbering the pickup m1, printed N = reference N+1, so system 2 = ref mm 6-10 and the page = ref mm 1-10.",
+        "verified_by": [
+          "COMPLETION DRAFT 2026-09-04, not yet human-verified. The parked row's blocker was 'system 2 needs counting by hand'; the engraver already counted it: the boxed 10 opening p.2 bounds system 2 at 5 bars with no counting and no pipeline.",
+          "hand count agrees: system 2 shows 5 measures at high zoom (barlines shared across the strings block and the Cembalo block).",
+          "trim_reference: mm 1-10 = 10 measures numbered 1..10, no repeats; m1 is the ql-0.5 pickup in 4/4 — the 'narrow pickup cell', confirming the +1 numbering the row exists to stress.",
+          "the activity grid CANNOT discriminate here and is not claimed: a Bach tutti sounds every part in every bar (2-16 objects per part per measure, no rests anywhere in mm 1-12), which is exactly why the parked row had no tacet staff for the ink probe. The boxed numbers and the hand count are the two witnesses, and they fail differently (a misread digit vs a miscount).",
+          "⚠️ expectation-setting, not evidence: the current pipeline SHATTERS this page — it reads 6 'systems' (the 12-staff system 1, then 3/3/3/1/2-staff fragments of system 2 reporting 28/29/25/24/10 'bars', stem columns read as barlines once grouping broke). The row will score terribly and honestly; measuring that failure is its purpose as a stress row, alongside the +1 numbering."
+        ],
+        "confidence": "draft",
+        "check": [
+          "confirm the boxed 5 (printed twice: strings block and Cembalo block) and the boxed 10 opening p.2",
+          "count system 2's 5 bars by eye",
+          "confirm 12 staves per system (3 Vni, 3 Vle, 3 Vc, Cb, Cembalo x2) and correct the row's n_staves 13 -> 24 on promotion",
+          "confirm the pickup: system 1 opens with a narrow two-sixteenth cell, and this reference numbers that cell measure 1 (print runs one BEHIND the reference)"
+        ]
+      },
+      "notes": "This drafts the completion of the works.json row with the same row_id (window null, 'NOT RUNNABLE until last_ref_measure is established'). Promotion REPLACES that row's page/window fields — do not add a second row with this id. The only work in the table whose reference numbering runs +1 against the print. No staves map: the Cembalo grand staff (2 staves, 1 part) breaks the one-staff-one-entry pairing, and the segmentation failure makes positional pairing meaningless until it is fixed; OMR-NED only."
+    }
+  ],
+  "provenance": {
+    "drafted": "2026-09-04, branch claude/scan-gate-rows, base commit b8b10514",
+    "checklist": "benchmarks/omr-scan-e2e-2026-09/ROW_VERIFICATION_CHECKLIST_2026-09-04.md",
+    "method": [
+      "each candidate page transcribed once at CLI defaults (dpi 600, --no-direction-text — the reader only affects <words>, not segmentation or counts) on this branch's pinned tree;",
+      "draft_windows.py run for the four pages chainable from a verified base row (the Mahler base has no staves list and the Bach page has no base; both hand-drafted);",
+      "windows cross-checked against printed system-start measure numbers read off the scans at high zoom, next-page opening numbers, reference trims, and verify_window activity grids;",
+      "the Beethoven twin pair additionally fingerprinted against each other (measure boundaries normalised to system width)."
+    ]
+  }
+}

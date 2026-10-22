@@ -1,0 +1,16 @@
+{
+ "1": "8th note, yes (every mark on the stem is a notehead)",
+ "2": "Half notes",
+ "3": "Dotted half - only one note and a trem slash",
+ "4": "Same (as tile 3): dotted half - only one note and a trem slash",
+ "5": "Dotted half notes",
+ "6": "Half note with a trem slash",
+ "7": "2 half notes with a trem slash",
+ "8": "Dotted half with a trem slash",
+ "9": "8th (stem of the upper-left note of the beamed group)",
+ "10": "2 half notes and a trem slash",
+ "11": "Same (as tile 10): 2 half notes and a trem slash",
+ "12": "2 dotted half notes",
+ "13": "Same (as tile 12): 2 dotted half notes",
+ "14": "Half note"
+}

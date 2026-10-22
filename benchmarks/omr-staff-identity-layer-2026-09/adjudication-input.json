@@ -1,0 +1,675 @@
+[
+ {
+  "row": "beethoven-sym5-mvt1-575951-p2",
+  "sys": 0,
+  "ord": 9,
+  "n": 11,
+  "TRUTH": "Viola",
+  "TRUTH_family": "string",
+  "PRED": "Violin",
+  "PRED_family": "string",
+  "clef_read": "treble",
+  "roster_at_ord": "Viola",
+  "truth_above": "Violin",
+  "truth_below": "Cello",
+  "pred_above": "Violin",
+  "pred_below": "Bass voice",
+  "gap_above_spaces": 5.4,
+  "gap_below_spaces": 5.11,
+  "keysig": {
+   "sharps": 0,
+   "flats": 2,
+   "alterations": {
+    "B": "b",
+    "E": "b"
+   }
+  },
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 2,
+    "alterations": {
+     "B": "b",
+     "E": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p2",
+  "sys": 0,
+  "ord": 10,
+  "n": 11,
+  "TRUTH": "Cello",
+  "TRUTH_family": "string",
+  "PRED": "Bass voice",
+  "PRED_family": "voice",
+  "clef_read": "bass",
+  "roster_at_ord": "Cello",
+  "truth_above": "Viola",
+  "truth_below": null,
+  "pred_above": "Violin",
+  "pred_below": null,
+  "gap_above_spaces": 5.06,
+  "gap_below_spaces": null,
+  "keysig": null,
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 2,
+    "alterations": {
+     "B": "b",
+     "E": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p2",
+  "sys": 1,
+  "ord": 10,
+  "n": 11,
+  "TRUTH": "Cello",
+  "TRUTH_family": "string",
+  "PRED": "Bass voice",
+  "PRED_family": "voice",
+  "clef_read": "bass",
+  "roster_at_ord": "Cello",
+  "truth_above": "Viola",
+  "truth_below": null,
+  "pred_above": "Viola",
+  "pred_below": null,
+  "gap_above_spaces": 4.16,
+  "gap_below_spaces": null,
+  "keysig": null,
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 3,
+    "alterations": {
+     "B": "b",
+     "E": "b",
+     "A": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p2",
+  "sys": 0,
+  "ord": 9,
+  "n": 11,
+  "TRUTH": "Viola",
+  "TRUTH_family": "string",
+  "PRED": "Violin",
+  "PRED_family": "string",
+  "clef_read": "treble",
+  "roster_at_ord": "Viola",
+  "truth_above": "Violin",
+  "truth_below": "Cello",
+  "pred_above": "Violin",
+  "pred_below": "Bass voice",
+  "gap_above_spaces": 5.31,
+  "gap_below_spaces": 5.12,
+  "keysig": null,
+  "keysig_neighbours": [
+   null,
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p2",
+  "sys": 0,
+  "ord": 10,
+  "n": 11,
+  "TRUTH": "Cello",
+  "TRUTH_family": "string",
+  "PRED": "Bass voice",
+  "PRED_family": "voice",
+  "clef_read": "bass",
+  "roster_at_ord": "Cello",
+  "truth_above": "Viola",
+  "truth_below": null,
+  "pred_above": "Violin",
+  "pred_below": null,
+  "gap_above_spaces": 5.21,
+  "gap_below_spaces": null,
+  "keysig": null,
+  "keysig_neighbours": [
+   null,
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p2",
+  "sys": 1,
+  "ord": 9,
+  "n": 11,
+  "TRUTH": "Viola",
+  "TRUTH_family": "string",
+  "PRED": "Cello",
+  "PRED_family": "string",
+  "clef_read": null,
+  "roster_at_ord": "Viola",
+  "truth_above": "Violin",
+  "truth_below": "Cello",
+  "pred_above": "Violin",
+  "pred_below": "Bass voice",
+  "gap_above_spaces": 5.12,
+  "gap_below_spaces": 4.38,
+  "keysig": {
+   "sharps": 0,
+   "flats": 2,
+   "alterations": {
+    "B": "b",
+    "E": "b"
+   }
+  },
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 3,
+    "alterations": {
+     "B": "b",
+     "E": "b",
+     "A": "b"
+    }
+   },
+   {
+    "sharps": 0,
+    "flats": 2,
+    "alterations": {
+     "B": "b",
+     "E": "b"
+    }
+   }
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p2",
+  "sys": 1,
+  "ord": 10,
+  "n": 11,
+  "TRUTH": "Cello",
+  "TRUTH_family": "string",
+  "PRED": "Bass voice",
+  "PRED_family": "voice",
+  "clef_read": "bass",
+  "roster_at_ord": "Cello",
+  "truth_above": "Viola",
+  "truth_below": null,
+  "pred_above": "Cello",
+  "pred_below": null,
+  "gap_above_spaces": 4.31,
+  "gap_below_spaces": null,
+  "keysig": {
+   "sharps": 0,
+   "flats": 2,
+   "alterations": {
+    "B": "b",
+    "E": "b"
+   }
+  },
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 2,
+    "alterations": {
+     "B": "b",
+     "E": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ]
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p3",
+  "sys": 0,
+  "ord": 4,
+  "n": 14,
+  "TRUTH": "Contrabassoon",
+  "TRUTH_family": "woodwind",
+  "PRED": "Horn",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Contrabassoon",
+  "truth_above": "Bassoon",
+  "truth_below": "Horn",
+  "pred_above": "Bassoon",
+  "pred_below": "Horn",
+  "gap_above_spaces": 2.31,
+  "gap_below_spaces": 3.05,
+  "keysig": {
+   "sharps": 0,
+   "flats": 5,
+   "alterations": {
+    "B": "b",
+    "E": "b",
+    "A": "b",
+    "D": "b",
+    "G": "b"
+   }
+  },
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 3,
+    "alterations": {
+     "B": "b",
+     "E": "b",
+     "A": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p3",
+  "sys": 0,
+  "ord": 8,
+  "n": 14,
+  "TRUTH": "Timpani",
+  "TRUTH_family": "percussion",
+  "PRED": "Trumpet",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Timpani",
+  "truth_above": "Trumpet",
+  "truth_below": "Violin",
+  "pred_above": "Trumpet",
+  "pred_below": "Violin",
+  "gap_above_spaces": 4.65,
+  "gap_below_spaces": 7.38,
+  "keysig": null,
+  "keysig_neighbours": [
+   null,
+   {
+    "sharps": 0,
+    "flats": 3,
+    "alterations": {
+     "B": "b",
+     "E": "b",
+     "A": "b"
+    }
+   }
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p4",
+  "sys": 0,
+  "ord": 4,
+  "n": 14,
+  "TRUTH": "Contrabassoon",
+  "TRUTH_family": "woodwind",
+  "PRED": "Horn",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Contrabassoon",
+  "truth_above": "Bassoon",
+  "truth_below": "Horn",
+  "pred_above": "Bassoon",
+  "pred_below": "Horn",
+  "gap_above_spaces": 3.71,
+  "gap_below_spaces": 3.35,
+  "keysig": {
+   "sharps": 0,
+   "flats": 2,
+   "alterations": {
+    "B": "b",
+    "E": "b"
+   }
+  },
+  "keysig_neighbours": [
+   {
+    "sharps": 0,
+    "flats": 2,
+    "alterations": {
+     "B": "b",
+     "E": "b"
+    }
+   },
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p4",
+  "sys": 0,
+  "ord": 8,
+  "n": 14,
+  "TRUTH": "Timpani",
+  "TRUTH_family": "percussion",
+  "PRED": "Trumpet",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Timpani",
+  "truth_above": "Trumpet",
+  "truth_below": "Violin",
+  "pred_above": "Trumpet",
+  "pred_below": "Violin",
+  "gap_above_spaces": 4.29,
+  "gap_below_spaces": 4.91,
+  "keysig": null,
+  "keysig_neighbours": [
+   null,
+   {
+    "sharps": 0,
+    "flats": 3,
+    "alterations": {
+     "B": "b",
+     "E": "b",
+     "A": "b"
+    }
+   }
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p4",
+  "sys": 1,
+  "ord": 4,
+  "n": 14,
+  "TRUTH": "Contrabassoon",
+  "TRUTH_family": "woodwind",
+  "PRED": "Horn",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Contrabassoon",
+  "truth_above": "Bassoon",
+  "truth_below": "Horn",
+  "pred_above": "Bassoon",
+  "pred_below": "Horn",
+  "gap_above_spaces": 3.75,
+  "gap_below_spaces": 3.39,
+  "keysig": {
+   "sharps": 0,
+   "flats": 2,
+   "alterations": {
+    "B": "b",
+    "E": "b"
+   }
+  },
+  "keysig_neighbours": [
+   null,
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "dvorak-sym9-mvt1-405834-p7",
+  "sys": 0,
+  "ord": 3,
+  "n": 15,
+  "TRUTH": "Bassoon",
+  "TRUTH_family": "woodwind",
+  "PRED": "Horn",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Bassoon",
+  "truth_above": "Clarinet",
+  "truth_below": "Horn",
+  "pred_above": "Clarinet",
+  "pred_below": "Horn",
+  "gap_above_spaces": 4.16,
+  "gap_below_spaces": 5.54,
+  "keysig": {
+   "sharps": 2,
+   "flats": 0,
+   "alterations": {
+    "F": "#",
+    "C": "#"
+   }
+  },
+  "keysig_neighbours": [
+   null,
+   null
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Trombone",
+   "Trombone",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ },
+ {
+  "row": "dvorak-sym9-mvt1-405834-p7",
+  "sys": 0,
+  "ord": 7,
+  "n": 15,
+  "TRUTH": "Trombone",
+  "TRUTH_family": "brass",
+  "PRED": "Trumpet",
+  "PRED_family": "brass",
+  "clef_read": "treble",
+  "roster_at_ord": "Trombone",
+  "truth_above": "Trumpet",
+  "truth_below": "Trombone",
+  "pred_above": "Trumpet",
+  "pred_below": "Trombone",
+  "gap_above_spaces": 3.17,
+  "gap_below_spaces": 3.09,
+  "keysig": {
+   "sharps": 1,
+   "flats": 0,
+   "alterations": {
+    "F": "#"
+   }
+  },
+  "keysig_neighbours": [
+   null,
+   {
+    "sharps": 1,
+    "flats": 0,
+    "alterations": {
+     "F": "#"
+    }
+   }
+  ],
+  "roster": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Trombone",
+   "Trombone",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ }
+]

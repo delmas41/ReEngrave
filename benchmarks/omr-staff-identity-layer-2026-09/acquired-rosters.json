@@ -1,0 +1,319 @@
+{
+ "beethoven-sym5-mvt1-575951-p1": {
+  "page_index": 0,
+  "tiers": [
+   12,
+   0,
+   0,
+   0,
+   0
+  ],
+  "n_staves": 12,
+  "read": {
+   "0": {
+    "text": "Flauti.",
+    "instrument": "Flute",
+    "confidence": "high"
+   },
+   "1": {
+    "text": "Oboi.",
+    "instrument": "Oboe",
+    "confidence": "high"
+   },
+   "2": {
+    "text": "Clarinetti in B.",
+    "instrument": "Clarinet",
+    "confidence": "high"
+   },
+   "3": {
+    "text": "Fagotti.",
+    "instrument": "Bassoon",
+    "confidence": "high"
+   },
+   "4": {
+    "text": "Corni in Es.",
+    "instrument": "Horn",
+    "confidence": "medium"
+   },
+   "5": {
+    "text": "Trombe inC.",
+    "instrument": "Trumpet",
+    "confidence": "high"
+   },
+   "6": {
+    "text": "Timpani in C.G.",
+    "instrument": "Timpani",
+    "confidence": "high"
+   },
+   "7": {
+    "text": "Violino ].",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "8": {
+    "text": "Yiolino II.",
+    "instrument": "Violin",
+    "confidence": "low"
+   },
+   "9": {
+    "text": "Viola.",
+    "instrument": "Viola",
+    "confidence": "high"
+   },
+   "10": {
+    "text": "Violoncello.",
+    "instrument": "Cello",
+    "confidence": "high"
+   },
+   "11": {
+    "text": "Basso.",
+    "instrument": "Bass voice",
+    "confidence": "high"
+   }
+  }
+ },
+ "beethoven-sym5-mvt1-984073-p1": {
+  "page_index": 1,
+  "tiers": [
+   0,
+   12,
+   0,
+   0,
+   0
+  ],
+  "n_staves": 12,
+  "read": {
+   "0": {
+    "text": "Flauti.",
+    "instrument": "Flute",
+    "confidence": "high"
+   },
+   "1": {
+    "text": "Obol.",
+    "instrument": "Oboe",
+    "confidence": "low"
+   },
+   "2": {
+    "text": "Clarinetti in B.",
+    "instrument": "Clarinet",
+    "confidence": "high"
+   },
+   "3": {
+    "text": "Fagotti.",
+    "instrument": "Bassoon",
+    "confidence": "high"
+   },
+   "4": {
+    "text": "Corni in Es.",
+    "instrument": "Horn",
+    "confidence": "medium"
+   },
+   "5": {
+    "text": "Trombe in C.",
+    "instrument": "Trumpet",
+    "confidence": "high"
+   },
+   "6": {
+    "text": "Timpani in C.G.",
+    "instrument": "Timpani",
+    "confidence": "high"
+   },
+   "7": {
+    "text": "Violino I.",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "8": {
+    "text": "Violino II.",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "9": {
+    "text": "Viola.",
+    "instrument": "Viola",
+    "confidence": "high"
+   },
+   "10": {
+    "text": "Violoncello.",
+    "instrument": "Cello",
+    "confidence": "high"
+   },
+   "11": {
+    "text": "Basso.",
+    "instrument": "Bass voice",
+    "confidence": "high"
+   }
+  }
+ },
+ "brahms-sym1-mvt1-317803-p1": {
+  "page_index": 0,
+  "tiers": [
+   0,
+   14,
+   0,
+   0,
+   0
+  ],
+  "n_staves": 14,
+  "read": {
+   "0": {
+    "text": "2 Fl\u00f6ten",
+    "instrument": "Flute",
+    "confidence": "high"
+   },
+   "1": {
+    "text": "2 Oboen",
+    "instrument": "Oboe",
+    "confidence": "high"
+   },
+   "2": {
+    "text": "2 Klarinetten in B",
+    "instrument": "Clarinet",
+    "confidence": "high"
+   },
+   "3": {
+    "text": "2 Fagotte",
+    "instrument": "Bassoon",
+    "confidence": "high"
+   },
+   "4": {
+    "text": "Kontrafagott",
+    "instrument": "Contrabassoon",
+    "confidence": "high"
+   },
+   "5": {
+    "text": "in C 1 2",
+    "instrument": null,
+    "confidence": "none"
+   },
+   "6": {
+    "text": "in Es 3 4",
+    "instrument": null,
+    "confidence": "none"
+   },
+   "7": {
+    "text": "2 Trompeten in C",
+    "instrument": "Trumpet",
+    "confidence": "high"
+   },
+   "8": {
+    "text": "Pauken in C u. G",
+    "instrument": "Timpani",
+    "confidence": "medium"
+   },
+   "9": {
+    "text": "1. Violine",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "10": {
+    "text": "2. Violine",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "11": {
+    "text": "Bratsche",
+    "instrument": "Viola",
+    "confidence": "high"
+   },
+   "12": {
+    "text": "Violoncell",
+    "instrument": "Cello",
+    "confidence": "high"
+   },
+   "13": {
+    "text": "Kontraba\u00df",
+    "instrument": "Contrabass",
+    "confidence": "high"
+   }
+  }
+ },
+ "dvorak-sym9-mvt1-405834-p5": {
+  "page_index": 4,
+  "tiers": [
+   0,
+   15,
+   0,
+   0,
+   0
+  ],
+  "n_staves": 15,
+  "read": {
+   "0": {
+    "text": "Flauti.",
+    "instrument": "Flute",
+    "confidence": "high"
+   },
+   "1": {
+    "text": "Oboi.",
+    "instrument": "Oboe",
+    "confidence": "high"
+   },
+   "2": {
+    "text": "Clarinetti in A.",
+    "instrument": "Clarinet",
+    "confidence": "high"
+   },
+   "3": {
+    "text": "Fagotti.",
+    "instrument": "Bassoon",
+    "confidence": "high"
+   },
+   "4": {
+    "text": "Corni I. II. in E.",
+    "instrument": "Horn",
+    "confidence": "medium"
+   },
+   "5": {
+    "text": "Corni III. IV. in C.",
+    "instrument": "Horn",
+    "confidence": "medium"
+   },
+   "6": {
+    "text": "Trombe in E.",
+    "instrument": "Trumpet",
+    "confidence": "high"
+   },
+   "7": {
+    "text": "Tromboni I. II.",
+    "instrument": "Trombone",
+    "confidence": "high"
+   },
+   "8": {
+    "text": "Trombone basso.",
+    "instrument": "Trombone",
+    "confidence": "high"
+   },
+   "9": {
+    "text": "Tympani A. E. H.",
+    "instrument": "Timpani",
+    "confidence": "high"
+   },
+   "10": {
+    "text": "Violino I.",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "11": {
+    "text": "Violino II.",
+    "instrument": "Violin",
+    "confidence": "high"
+   },
+   "12": {
+    "text": "Viola.",
+    "instrument": "Viola",
+    "confidence": "high"
+   },
+   "13": {
+    "text": "Violoncello.",
+    "instrument": "Cello",
+    "confidence": "high"
+   },
+   "14": {
+    "text": "Contrabasso.",
+    "instrument": "Contrabass",
+    "confidence": "high"
+   }
+  }
+ }
+}

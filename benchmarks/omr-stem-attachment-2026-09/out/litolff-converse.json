@@ -1,0 +1,48 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "control": {
+  "disagrees": 132,
+  "heads": 1435,
+  "agrees": 1391
+ },
+ "control_agreement": 0.9133,
+ "reach": {
+  "heads": 111,
+  "stems=2": 105,
+  "several legal, DISAGREEING": 108,
+  "NO legal cell (both stems illegal)": 1,
+  "exactly ONE legal (the convention decides)": 2,
+  "stems=3": 4,
+  "stems=4": 2
+ },
+ "resolved": [
+  {
+   "subject": "glyph/4/0/9/0/7",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  },
+  {
+   "subject": "glyph/4/1/5/6/3",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "label": "brahms1-breitkopf",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
+ "provenance": {
+  "commit": "47fbff1e15e35723c96bbfe5fd43c6aa5f0e908b",
+  "dirty": true
+ },
+ "rest_2_12b": {
+  "counts": {
+   "population": 2104,
+   "measurable": 2104,
+   "lands_on_neither_convention": 235,
+   "cross_checked": 2104,
+   "other_rest_class": 6019,
+   "class_not_contradicted": 1837,
+   "lands_on_the_other_convention": 32
+  },
+  "where_the_ink_stands_by_bucket": {
+   "neither": {
+    "inside_its_own_staff": 45,
+    "below_its_own_staff": 186,
+    "above_its_own_staff": 4
+   },
+   "agrees": {
+    "inside_its_own_staff": 1709,
+    "below_its_own_staff": 31,
+    "above_its_own_staff": 97
+   },
+   "other": {
+    "inside_its_own_staff": 32
+   }
+  },
+  "step_distribution_by_bucket": {
+   "neither": {
+    "n": 235,
+    "median_step": -7.31,
+    "p10": -7.6,
+    "p90": 2.96
+   },
+   "agrees": {
+    "n": 1837,
+    "median_step": 5.33,
+    "p10": 5.082,
+    "p90": 5.93
+   },
+   "other": {
+    "n": 32,
+    "median_step": 4.65,
+    "p10": 4.489,
+    "p90": 4.729
+   }
+  },
+  "rest_position_rows_on_the_record": 0,
+  "measured_steps_adjudicator_frame": {
+   "restWhole": {
+    "n": 2069,
+    "median_step": 5.29,
+    "p10": 1.483,
+    "p90": 5.84
+   },
+   "restHalf": {
+    "n": 35,
+    "median_step": -7.4,
+    "p10": -10.95,
+    "p90": 15.29
+   }
+  },
+  "convention": {
+   "restWhole": 5.5,
+   "restHalf": 4.5,
+   "slack_half_steps": 0.5,
+   "frame": "bottom line 0, one step per half space, up positive (rhythm._staff_step)"
+  },
+  "frames_disagree_examples": []
+ },
+ "flag_2_12e": {
+  "population_with_a_role_half": 3040,
+  "flag_classes_with_no_role_half": 0,
+  "in_a_cell_with_a_decided_stem_direction": 2877,
+  "unjoinable": 163,
+  "unjoinable_because_every_stem_direction_in_the_cell_abstained": 139,
+  "unjoinable_because_no_stem_direction_verdict_in_the_cell": 24,
+  "audit_cell_join": {
+   "joined_unambiguous_cells": 527,
+   "agree": 506,
+   "unjoinable_flags": 2513,
+   "flag_classes_with_no_role_half": 0,
+   "note": "a flag is filed on its own glyph subject and the stem direction on the notehead's; only cells holding exactly one of each are joined here"
+  },
+  "audit_disagree": 21
+ }
+}

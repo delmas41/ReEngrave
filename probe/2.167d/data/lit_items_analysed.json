@@ -1,0 +1,840 @@
+{
+ "items": [
+  {
+   "plate": "lit",
+   "bar": 1,
+   "key": "4/1/1/14",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 1,
+   "what": "left head of a beamed eighth group; only a 0.10 box",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.101,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 4.39,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": [
+     "noteheadBlackInSpace",
+     0.494
+    ],
+    "system": [
+     "noteheadBlackInSpace",
+     0.446
+    ]
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 1,
+   "key": "4/1/1/14",
+   "item": 1,
+   "kind": "missing_head",
+   "sure": 1,
+   "what": "middle head of the beamed group, boxed 0.28, refused notehead_is_a_duplicate_box",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.27712586522102356,
+   "stage": "boxed >=0.25, dropped by gate: not_a_notehead:notehead_is_a_duplicate_b",
+   "edge_sp": 3.22,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": [
+     "noteheadBlackInSpace",
+     0.387
+    ],
+    "shiftL": null,
+    "wide": [
+     "noteheadBlackInSpace",
+     0.497
+    ],
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 2,
+   "key": "1/0/7/9",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 2,
+   "what": "black quarter head on a line boxed as restWhole 0.35",
+   "cls": "restWhole",
+   "conf": 0.3544807434082031,
+   "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+   "edge_sp": 1.79,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": [
+     "noteheadBlackInSpace",
+     0.27
+    ]
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 5,
+   "key": "6/0/9/11",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 2,
+   "what": "black quarter head with stem boxed as restHalf 0.26, refused rest_stands_where_no_rest_hangs",
+   "cls": "restHalf",
+   "conf": 0.25654131174087524,
+   "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+   "edge_sp": 2.39,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 6,
+   "key": "2/0/10/15",
+   "item": 0,
+   "kind": "extra",
+   "sure": 1,
+   "what": "a quarter REST boxed as a notehead (NBI 0.47) and written as a quarter note",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.4652639627456665,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 1.45,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 7,
+   "key": "16/1/6/3",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 0,
+   "what": "first eighth of a beamed group stands at the left barline, boxed in the PREVIOUS cell",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.7726483345031738,
+   "stage": "boxed >=0.25 (notehead), other [in neighbour cell]",
+   "edge_sp": -0.72,
+   "crosses_edge": true,
+   "found": {
+    "shiftR": null,
+    "shiftL": [
+     "noteheadBlackOnLine",
+     0.767
+    ],
+    "wide": [
+     "noteheadBlackOnLine",
+     0.822
+    ],
+    "system": [
+     "noteheadBlackOnLine",
+     0.836
+    ]
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 10,
+   "key": "11/1/1/1",
+   "item": 0,
+   "kind": "extra",
+   "sure": 1,
+   "what": "a quarter rest zigzag boxed as a notehead 0.33; no rest box at 0.05 or above",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.32991430163383484,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.22,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 14,
+   "key": "13/0/0/4",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 1,
+   "what": "a quarter rest, only a NBI 0.10 box",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.102,
+   "stage": "boxed under the 0.25 floor (wrong class)",
+   "edge_sp": 1.59,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 15,
+   "key": "7/0/9/4",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 1,
+   "what": "black head on a line, NB 0.24 (0.01 under the floor)",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.237,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 3.65,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": [
+     "noteheadBlackInSpace",
+     0.449
+    ]
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 15,
+   "key": "7/0/9/4",
+   "item": 1,
+   "kind": "missing_head",
+   "sure": 0,
+   "what": "second black head of the row, NB 0.17",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.172,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 3.18,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 18,
+   "key": "12/0/8/0",
+   "item": 0,
+   "kind": "wrong_value",
+   "sure": 0,
+   "what": "an augmentation dot (dot 0.32) after the second quarter that I doubt",
+   "cls": "augmentationDot",
+   "conf": 0.32294079661369324,
+   "stage": "boxed >=0.25 (augmentationDot), value not applied",
+   "edge_sp": 1.61,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": [
+     "augmentationDot",
+     0.362
+    ],
+    "shiftL": null,
+    "wide": [
+     "augmentationDot",
+     0.323
+    ],
+    "system": null
+   },
+   "want_family": "augmentationDot",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 19,
+   "key": "14/0/2/4",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 2,
+   "what": "black head with stem up, NB 0.17 only",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.169,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 1.88,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": [
+     "noteheadBlackInSpace",
+     0.529
+    ],
+    "system": [
+     "noteheadBlackInSpace",
+     0.65
+    ]
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 20,
+   "key": "16/0/1/8",
+   "item": 0,
+   "kind": "extra",
+   "sure": 1,
+   "what": "three chords of a second (F5+G5, heads displaced) each counted as two events",
+   "cls": null,
+   "conf": null,
+   "stage": "never boxed (no box >=0.05)",
+   "edge_sp": 6.29,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 21,
+   "key": "9/1/0/6",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 0,
+   "what": "a small rest-like blob right of the quarter rest, no box at 0.05",
+   "cls": null,
+   "conf": null,
+   "stage": "never boxed (no box >=0.05)",
+   "edge_sp": 6.8,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 23,
+   "key": "12/0/0/0",
+   "item": 0,
+   "kind": "extra",
+   "sure": 2,
+   "what": "a key-signature flat read as an eighth rest (R8th 0.26)",
+   "cls": "rest8th",
+   "conf": 0.25515609979629517,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+   "edge_sp": 8.19,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 24,
+   "key": "6/1/10/5",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "a ragged non-head ink boxed twice as heads (rest or accidental)",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.3689025640487671,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.07,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 24,
+   "key": "6/1/10/5",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "a ragged non-head ink boxed twice as heads (rest or accidental)",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.5143452286720276,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.08,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 25,
+   "key": "13/1/3/4",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 2,
+   "what": "quarter rest boxed as arpeggiato 0.54",
+   "cls": "arpeggiato",
+   "conf": 0.537980854511261,
+   "stage": "boxed >=0.25 (other), other",
+   "edge_sp": 1.43,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": [
+     "restQuarter",
+     0.385
+    ],
+    "system": null
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 26,
+   "key": "14/0/3/11",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 2,
+   "what": "black head with stem down: NB 0.15 and RQuarter 0.20 only",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.15,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 3.83,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 27,
+   "key": "13/0/0/5",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "eighth rest 0.30 boxed over a head",
+   "cls": "rest8th",
+   "conf": 0.29887333512306213,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (rest)",
+   "edge_sp": 2.1,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 28,
+   "key": "5/0/4/2",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 1,
+   "what": "an eighth rest zigzag, no box at 0.05",
+   "cls": null,
+   "conf": null,
+   "stage": "never boxed (no box >=0.05)",
+   "edge_sp": 2.0,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": [
+     "rest8th",
+     0.311
+    ]
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 29,
+   "key": "7/0/6/0",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "half-note box NH 0.31 on barline-edge ink",
+   "cls": "noteheadHalfInSpace",
+   "conf": 0.3067486882209778,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 0.46,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 30,
+   "key": "2/0/7/10",
+   "item": 0,
+   "kind": "wrong_value",
+   "sure": 1,
+   "what": "hollow head (white slit) boxed as black NBI 0.26, written a quarter; bar wants a half",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.26343145966529846,
+   "stage": "boxed >=0.25 (notehead), value not applied",
+   "edge_sp": 1.7,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 31,
+   "key": "7/0/7/9",
+   "item": 0,
+   "kind": "extra",
+   "sure": 2,
+   "what": "the hook of a dynamic f boxed as a head",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.6896819472312927,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 1.08,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 32,
+   "key": "12/1/3/5",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 1,
+   "what": "quarter rest boxed as arpeggiato 0.63",
+   "cls": "arpeggiato",
+   "conf": 0.6300261616706848,
+   "stage": "boxed >=0.25 (other), other",
+   "edge_sp": 2.03,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 33,
+   "key": "16/1/3/2",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 2,
+   "what": "eighth rest R8th 0.20 (right class, 0.05 under the floor)",
+   "cls": "rest8th",
+   "conf": 0.199,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 1.98,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": [
+     "rest8th",
+     0.282
+    ],
+    "wide": [
+     "rest8th",
+     0.407
+    ],
+    "system": [
+     "rest8th",
+     0.829
+    ]
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 34,
+   "key": "13/0/7/12",
+   "item": 0,
+   "kind": "extra",
+   "sure": 1,
+   "what": "NWI 0.28 whole-class box on a stem, written as a whole note",
+   "cls": "noteheadWholeOnLine",
+   "conf": 0.28499364852905273,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 3.58,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 35,
+   "key": "15/0/6/17",
+   "item": 0,
+   "kind": "missing_rest",
+   "sure": 2,
+   "what": "quarter rest boxed as arpeggiato 0.49",
+   "cls": "arpeggiato",
+   "conf": 0.48592686653137207,
+   "stage": "boxed >=0.25 (other), other",
+   "edge_sp": 1.48,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "rest",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 36,
+   "key": "15/1/3/18",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "accidental cluster boxed as heads",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.5337142944335938,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.83,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 36,
+   "key": "15/1/3/18",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "accidental cluster boxed as heads",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.6378247737884521,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 5.69,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 37,
+   "key": "1/0/0/3",
+   "item": 0,
+   "kind": "extra",
+   "sure": 2,
+   "what": "a rehearsal-number digit above the staff boxed as a hollow head NH 0.30",
+   "cls": "noteheadHalfInSpace",
+   "conf": 0.30237430334091187,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 1.67,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 38,
+   "key": "16/0/0/8",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "two chords of a second split into two events each",
+   "cls": null,
+   "conf": null,
+   "stage": "never boxed (no box >=0.05)",
+   "edge_sp": 6.29,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 39,
+   "key": "9/0/10/1",
+   "item": 0,
+   "kind": "wrong_value",
+   "sure": 2,
+   "what": "flag on the first eighth missed: F8thUp 0.16",
+   "cls": "flag8thUp",
+   "conf": 0.162,
+   "stage": "boxed under the 0.25 floor",
+   "edge_sp": 2.76,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "flag",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 40,
+   "key": "4/0/8/11",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "dynamic f ink boxed as a head 0.43",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.43113839626312256,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.1,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 41,
+   "key": "11/0/5/15",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 1,
+   "what": "black head with stem boxed as restWhole 0.27, refused rest_stands_where_no_rest_hangs",
+   "cls": "restWhole",
+   "conf": 0.27389097213745117,
+   "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+   "edge_sp": 2.9,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 42,
+   "key": "9/1/7/11",
+   "item": 0,
+   "kind": "missing_head",
+   "sure": 2,
+   "what": "third beamed head boxed as restWhole 0.33, refused",
+   "cls": "restWhole",
+   "conf": 0.32903602719306946,
+   "stage": "boxed >=0.25, dropped by gate: rest:decided/rest_has_a_stem",
+   "edge_sp": 2.3,
+   "crosses_edge": false,
+   "found": {
+    "shiftR": null,
+    "shiftL": null,
+    "wide": null,
+    "system": null
+   },
+   "want_family": "notehead",
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 43,
+   "key": "14/1/6/10",
+   "item": 0,
+   "kind": "extra",
+   "sure": 0,
+   "what": "blob at the top of a stem boxed NBI 0.33",
+   "cls": "noteheadBlackOnLine",
+   "conf": 0.3295116722583771,
+   "stage": "boxed >=0.25, not a symbol of this bar, written (notehead)",
+   "edge_sp": 2.61,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  },
+  {
+   "plate": "lit",
+   "bar": 44,
+   "key": "10/1/8/1",
+   "item": 0,
+   "kind": "wrong_value",
+   "sure": 1,
+   "what": "hollow head (white slit) boxed as black NB 0.43, written a quarter; bar wants a half",
+   "cls": "noteheadBlackInSpace",
+   "conf": 0.4277007579803467,
+   "stage": "boxed >=0.25 (notehead), value not applied",
+   "edge_sp": 1.74,
+   "crosses_edge": false,
+   "found": {},
+   "want_family": null,
+   "bar_fam": null
+  }
+ ],
+ "newbox": {
+  "shiftR": {
+   "lost_from_base": 107,
+   "same_as_base": 65,
+   "new_flag": 1,
+   "new_total": 8,
+   "new_notehead": 5,
+   "new_rest": 2
+  },
+  "shiftL": {
+   "lost_from_base": 119,
+   "same_as_base": 61,
+   "new_notehead": 13,
+   "new_total": 17,
+   "new_rest": 3,
+   "new_flag": 1
+  },
+  "wide": {
+   "new_rest": 12,
+   "new_total": 33,
+   "same_as_base": 132,
+   "lost_from_base": 32,
+   "new_notehead": 18,
+   "new_flag": 2,
+   "new_augmentationDot": 1
+  },
+  "system": {
+   "same_as_base": 120,
+   "lost_from_base": 46,
+   "new_notehead": 15,
+   "new_total": 24,
+   "new_flag": 2,
+   "new_rest": 6,
+   "new_augmentationDot": 1
+  }
+ }
+}

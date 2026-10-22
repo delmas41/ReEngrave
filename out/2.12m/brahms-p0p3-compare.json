@@ -1,0 +1,36 @@
+{
+ "fermata": {},
+ "invariants": {
+  "decided_measured_side_equals_class": 88
+ },
+ "label": "arm",
+ "marks": 196,
+ "moved": [],
+ "moved_owners": {
+  "n": 0,
+  "where": {}
+ },
+ "r2_by_rule_and_reason": {
+  "abstained:no_notehead": 62,
+  "abstained:owned_by_another_staff": 8,
+  "abstained:stem_contradicts_class_side": 5,
+  "abstained:stem_direction_unread": 31,
+  "decided:notehead_side": 88,
+  "decided:single_voice": 88,
+  "narrowed:heads_about_equally_near": 2
+ },
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 62,
+  "abstained/owned_by_another_staff -> abstained/owned_by_another_staff": 8,
+  "abstained/stem_contradicts_class_side -> abstained/stem_contradicts_class_side": 5,
+  "abstained/stem_direction_unread -> abstained/stem_direction_unread": 31,
+  "decided/nearest_on_notehead_side -> decided/nearest_on_notehead_side (SAME head)": 88,
+  "narrowed/heads_about_equally_near -> narrowed/heads_about_equally_near": 2
+ },
+ "twins": {
+  "abstained": 108,
+  "abstained, a twin is DECIDED (owned via the neighbour's cell)": 41,
+  "abstained, has a same-ink twin in another cell": 63,
+  "decided": 88
+ }
+}

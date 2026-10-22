@@ -1,0 +1,20 @@
+{
+ "label": "Breitkopf",
+ "groups": {
+  "DECIDED": {
+   "n": 1586,
+   "paired": 249,
+   "share": 0.157
+  },
+  "no_stem": {
+   "n": 1037,
+   "paired": 828,
+   "share": 0.7985
+  },
+  "stems_disagree": {
+   "n": 14,
+   "paired": 1,
+   "share": 0.0714
+  }
+ }
+}

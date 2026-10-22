@@ -1,0 +1,461 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "populations": {
+  "crop_pass_standoff_26": {
+   "n": 26,
+   "in_record": 26,
+   "with_a_stem": 0,
+   "with_a_MID_stroke_stem_0.25": 0,
+   "rows": [
+    {
+     "id": "S001",
+     "subject": "glyph/2/0/6/3/1",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S002",
+     "subject": "glyph/2/0/11/1/7",
+     "print_says": "up",
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S003",
+     "subject": "glyph/3/1/1/8/15",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S004",
+     "subject": "glyph/1/0/8/0/2",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S005",
+     "subject": "glyph/1/0/8/0/7",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S006",
+     "subject": "glyph/0/0/6/2/5",
+     "print_says": null,
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S007",
+     "subject": "glyph/2/0/11/0/10",
+     "print_says": "up",
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S008",
+     "subject": "glyph/3/0/12/8/13",
+     "print_says": null,
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S009",
+     "subject": "glyph/2/1/1/3/3",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S010",
+     "subject": "glyph/3/1/1/8/5",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S011",
+     "subject": "glyph/2/1/4/0/8",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S012",
+     "subject": "glyph/3/1/1/8/2",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S013",
+     "subject": "glyph/3/1/3/0/43",
+     "print_says": null,
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S014",
+     "subject": "glyph/1/0/5/0/3",
+     "print_says": null,
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S015",
+     "subject": "glyph/2/0/11/1/0",
+     "print_says": "up",
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S016",
+     "subject": "glyph/3/0/11/7/24",
+     "print_says": null,
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S017",
+     "subject": "glyph/0/0/6/2/3",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S018",
+     "subject": "glyph/3/0/11/7/28",
+     "print_says": null,
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S019",
+     "subject": "glyph/3/0/11/7/15",
+     "print_says": null,
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S020",
+     "subject": "glyph/3/1/1/8/14",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S021",
+     "subject": "glyph/2/0/7/3/2",
+     "print_says": "up",
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S022",
+     "subject": "glyph/2/0/5/2/4",
+     "print_says": null,
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S023",
+     "subject": "glyph/2/1/4/0/2",
+     "print_says": "down",
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S024",
+     "subject": "glyph/3/0/11/7/16",
+     "print_says": null,
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S025",
+     "subject": "glyph/2/0/11/0/7",
+     "print_says": "up",
+     "attachment_says": "up",
+     "beam_mate_says": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "id": "S026",
+     "subject": "glyph/3/1/1/7/3",
+     "print_says": null,
+     "attachment_says": "down",
+     "beam_mate_says": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    }
+   ]
+  },
+  "stroke_lane_crops": {
+   "n": 18,
+   "in_record": 18,
+   "with_a_stem": 0,
+   "with_a_MID_stroke_stem_0.25": 0,
+   "rows": [
+    {
+     "i": 0,
+     "stratum": "agree",
+     "subject": "glyph/0/0/2/5/1",
+     "we_say": "up",
+     "convention": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 1,
+     "stratum": "agree",
+     "subject": "glyph/2/0/0/5/6",
+     "we_say": "down",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 2,
+     "stratum": "agree",
+     "subject": "glyph/3/0/2/3/3",
+     "we_say": "down",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 3,
+     "stratum": "agree",
+     "subject": "glyph/3/1/3/2/2",
+     "we_say": "down",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 4,
+     "stratum": "agree",
+     "subject": "glyph/0/0/1/3/12",
+     "we_say": "down",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 5,
+     "stratum": "agree",
+     "subject": "glyph/3/1/12/7/2",
+     "we_say": "down",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 6,
+     "stratum": "disagree",
+     "subject": "glyph/3/1/3/6/4",
+     "we_say": "up",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 7,
+     "stratum": "disagree",
+     "subject": "glyph/3/0/10/3/10",
+     "we_say": "up",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 8,
+     "stratum": "disagree",
+     "subject": "glyph/3/0/5/3/1",
+     "we_say": "down",
+     "convention": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 9,
+     "stratum": "disagree",
+     "subject": "glyph/1/0/2/0/18",
+     "we_say": "down",
+     "convention": "up",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 10,
+     "stratum": "disagree",
+     "subject": "glyph/3/1/3/0/22",
+     "we_say": "up",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 11,
+     "stratum": "disagree",
+     "subject": "glyph/3/0/3/9/7",
+     "we_say": "up",
+     "convention": "down",
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 12,
+     "stratum": "silent",
+     "subject": "glyph/3/0/10/5/2",
+     "we_say": "up",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 13,
+     "stratum": "silent",
+     "subject": "glyph/3/1/2/2/16",
+     "we_say": "up",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 14,
+     "stratum": "silent",
+     "subject": "glyph/3/0/0/8/9",
+     "we_say": "down",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 15,
+     "stratum": "silent",
+     "subject": "glyph/0/0/1/5/6",
+     "we_say": "down",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 16,
+     "stratum": "silent",
+     "subject": "glyph/2/1/2/5/9",
+     "we_say": "down",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    },
+    {
+     "i": 17,
+     "stratum": "silent",
+     "subject": "glyph/0/0/0/3/6",
+     "we_say": "down",
+     "convention": null,
+     "in_record": true,
+     "n_overlapping_stems": 0,
+     "fracs": []
+    }
+   ]
+  }
+ }
+}

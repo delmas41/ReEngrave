@@ -1,0 +1,120 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "control": {
+  "agrees": 1701,
+  "heads": 1774,
+  "disagrees": 147
+ },
+ "control_agreement": 0.9205,
+ "reach": {
+  "heads": 17,
+  "stems=2": 16,
+  "several legal, DISAGREEING": 10,
+  "exactly ONE legal (the convention decides)": 7,
+  "stems=3": 1
+ },
+ "resolved": [
+  {
+   "subject": "glyph/0/0/11/1/12",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  },
+  {
+   "subject": "glyph/1/0/0/4/13",
+   "cells": [
+    [
+     "L",
+     "up"
+    ],
+    [
+     "L",
+     "down"
+    ]
+   ],
+   "decides": "down"
+  },
+  {
+   "subject": "glyph/1/0/0/4/20",
+   "cells": [
+    [
+     "L",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ],
+    [
+     "L",
+     "down"
+    ]
+   ],
+   "decides": "down"
+  },
+  {
+   "subject": "glyph/1/0/0/4/21",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  },
+  {
+   "subject": "glyph/1/0/0/4/33",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  },
+  {
+   "subject": "glyph/1/0/0/4/42",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  },
+  {
+   "subject": "glyph/1/0/0/4/52",
+   "cells": [
+    [
+     "R",
+     "up"
+    ],
+    [
+     "R",
+     "down"
+    ]
+   ],
+   "decides": "up"
+  }
+ ]
+}

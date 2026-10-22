@@ -1,0 +1,185 @@
+{
+  "families": [
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "detector_glyphs": 4,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 664
+      },
+      "produced_by": "adjudicate",
+      "status": "starved",
+      "why": "declared stub AND its input is never gathered (articulation_mark) \u2014 writing the adjudicator alone would still produce nothing"
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "detector_glyphs": 20,
+      "decided": 17,
+      "abstained": {
+        "no_candidates": 2
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "detector_glyphs": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 153
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "detector_glyphs": 20,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 153
+      },
+      "produced_by": "adjudicate",
+      "status": "starved",
+      "why": "declared stub AND its input is never gathered (dynamic_letter) \u2014 writing the adjudicator alone would still produce nothing"
+    },
+    {
+      "family": "fermata",
+      "quantity": null,
+      "detector_glyphs": 3,
+      "status": "NO_QUANTITY",
+      "why": "the staged vocabulary has no quantity for this family: no gather site, no adjudicator, no stub and no `wants` naming it. Nothing in the record declares the absence."
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "detector_glyphs": 31,
+      "decided": 2,
+      "abstained": {
+        "no_evidence": 10,
+        "run_fits_no_slot_table": 5,
+        "needs_clef": 2
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "detector_glyphs": 52,
+      "decided": 76,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "emitted"
+    },
+    {
+      "family": "ornament",
+      "quantity": null,
+      "detector_glyphs": 0,
+      "status": "NO_QUANTITY",
+      "why": "the staged vocabulary has no quantity for this family: no gather site, no adjudicator, no stub and no `wants` naming it. Nothing in the record declares the absence."
+    },
+    {
+      "family": "rest",
+      "quantity": null,
+      "detector_glyphs": 118,
+      "status": "NO_QUANTITY",
+      "why": "the staged vocabulary has no quantity for this family: no gather site, no adjudicator, no stub and no `wants` naming it. Nothing in the record declares the absence."
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "detector_glyphs": 1,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 664
+      },
+      "produced_by": "adjudicate",
+      "status": "starved",
+      "why": "declared stub AND its input is never gathered (arc_box) \u2014 writing the adjudicator alone would still produce nothing"
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "detector_glyphs": 96,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 664
+      },
+      "produced_by": "adjudicate",
+      "status": "starved",
+      "why": "declared stub AND its input is never gathered (arc_box) \u2014 writing the adjudicator alone would still produce nothing"
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "detector_glyphs": 17,
+      "decided": 1,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "detector_glyphs": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "detector_glyphs": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 664
+      },
+      "produced_by": "adjudicate",
+      "status": "starved",
+      "why": "declared stub AND its input is never gathered (wedge_box) \u2014 writing the adjudicator alone would still produce nothing"
+    }
+  ],
+  "detected_and_unrepresented": {
+    "articulation": 4,
+    "dynamic": 20,
+    "fermata": 3,
+    "rest": 118,
+    "slur": 1,
+    "tie": 96
+  },
+  "detected_and_unrepresented_total": 242,
+  "written": {
+    "measure_rests": 123,
+    "notes": 42,
+    "parts": 19,
+    "divisions": 16
+  },
+  "part_join": {
+    "join_decided": "ordinal",
+    "join_used": "ordinal",
+    "join_reason": "ordinal",
+    "systems": [
+      "1/0"
+    ],
+    "staves_per_system": [
+      19
+    ],
+    "parts": 19,
+    "fragmented": false
+  },
+  "notes_not_written": {
+    "duration_narrowed": 10
+  },
+  "notes_not_written_total": 10,
+  "balance": {
+    "noteheads_in_log": 52,
+    "notes_written": 42,
+    "notes_not_written": 10,
+    "balanced": true
+  }
+}

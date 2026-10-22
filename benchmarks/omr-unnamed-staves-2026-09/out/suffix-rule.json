@@ -1,0 +1,191 @@
+{
+ "A": {
+  "ok": 25
+ },
+ "B": {
+  "ok": 20,
+  "abstain_condensed": 5
+ },
+ "C": {
+  "agree": 17,
+  "spoke": 17,
+  "silent": 8
+ },
+ "rows": [
+  {
+   "subject": "staff/2/0/7",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/2/0/8",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/2/0/9",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/2/0/10",
+   "printed": "Violoncello e Basso",
+   "slot": null,
+   "class": "abstain_condensed",
+   "clef_glyph": "bass"
+  },
+  {
+   "subject": "staff/2/1/7",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/2/1/8",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/2/1/9",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/2/1/10",
+   "printed": "Violoncello e Basso",
+   "slot": null,
+   "class": "abstain_condensed",
+   "clef_glyph": "bass"
+  },
+  {
+   "subject": "staff/3/0/7",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/3/0/8",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/3/0/9",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/3/0/10",
+   "printed": "Violoncello e Basso",
+   "slot": null,
+   "class": "abstain_condensed",
+   "clef_glyph": "bass"
+  },
+  {
+   "subject": "staff/3/1/4",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/3/1/5",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/3/1/6",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/3/1/7",
+   "printed": "Violoncello e Basso",
+   "slot": null,
+   "class": "abstain_condensed",
+   "clef_glyph": "bass"
+  },
+  {
+   "subject": "staff/4/0/6",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/4/0/7",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/4/0/8",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/4/0/9",
+   "printed": "Violoncello",
+   "slot": 10,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/4/0/10",
+   "printed": "Basso",
+   "slot": 11,
+   "class": "ok",
+   "clef_glyph": "bass"
+  },
+  {
+   "subject": "staff/4/1/7",
+   "printed": "Violino I",
+   "slot": 7,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/4/1/8",
+   "printed": "Violino II",
+   "slot": 8,
+   "class": "ok",
+   "clef_glyph": "treble"
+  },
+  {
+   "subject": "staff/4/1/9",
+   "printed": "Viola",
+   "slot": 9,
+   "class": "ok",
+   "clef_glyph": null
+  },
+  {
+   "subject": "staff/4/1/10",
+   "printed": "Violoncello e Basso",
+   "slot": null,
+   "class": "abstain_condensed",
+   "clef_glyph": null
+  }
+ ]
+}

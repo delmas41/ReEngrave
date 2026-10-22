@@ -1,0 +1,801 @@
+{
+ "calls": [
+  {
+   "chosen_positions": [
+    1,
+    2,
+    3,
+    4,
+    8,
+    10,
+    12,
+    14,
+    16
+   ],
+   "chosen_slots": [
+    1,
+    2,
+    3,
+    4,
+    8,
+    10,
+    12,
+    14,
+    16
+   ],
+   "groups": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "labels": [
+    "Flute",
+    "Oboe",
+    "Clarinet",
+    "Bassoon",
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "reference": [
+    {
+     "group": 0,
+     "index": 0,
+     "instrument": "Piccolo",
+     "position": 0.0
+    },
+    {
+     "group": 0,
+     "index": 1,
+     "instrument": "Flute",
+     "position": 0.0625
+    },
+    {
+     "group": 0,
+     "index": 2,
+     "instrument": "Oboe",
+     "position": 0.125
+    },
+    {
+     "group": 0,
+     "index": 3,
+     "instrument": "Clarinet",
+     "position": 0.1875
+    },
+    {
+     "group": 0,
+     "index": 4,
+     "instrument": "Bassoon",
+     "position": 0.25
+    },
+    {
+     "group": 0,
+     "index": 5,
+     "instrument": "Contrabassoon",
+     "position": 0.3125
+    },
+    {
+     "group": 1,
+     "index": 6,
+     "instrument": "Horn",
+     "position": 0.375
+    },
+    {
+     "group": 1,
+     "index": 7,
+     "instrument": "Trumpet",
+     "position": 0.4375
+    },
+    {
+     "group": 1,
+     "index": 8,
+     "instrument": "Timpani",
+     "position": 0.5
+    },
+    {
+     "group": 1,
+     "index": 9,
+     "instrument": "Trombone",
+     "position": 0.5625
+    },
+    {
+     "group": 1,
+     "index": 10,
+     "instrument": "Trombone",
+     "position": 0.625
+    },
+    {
+     "group": 1,
+     "index": 11,
+     "instrument": "Trombone",
+     "position": 0.6875
+    },
+    {
+     "group": 2,
+     "index": 12,
+     "instrument": "Violin",
+     "position": 0.75
+    },
+    {
+     "group": 2,
+     "index": 13,
+     "instrument": "Violin",
+     "position": 0.8125
+    },
+    {
+     "group": 2,
+     "index": 14,
+     "instrument": "Viola",
+     "position": 0.875
+    },
+    {
+     "group": 2,
+     "index": 15,
+     "instrument": "Cello",
+     "position": 0.9375
+    },
+    {
+     "group": 2,
+     "index": 16,
+     "instrument": "Bass voice",
+     "position": 1.0
+    }
+   ],
+   "size": 9,
+   "staff_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "chosen_positions": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "chosen_slots": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "groups": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "labels": [
+    "Flute",
+    "Oboe",
+    "Clarinet",
+    "Bassoon",
+    "Horn",
+    "Trumpet",
+    "Timpani",
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "reference": [
+    {
+     "group": 0,
+     "index": 0,
+     "instrument": "Piccolo",
+     "position": 0.0
+    },
+    {
+     "group": 0,
+     "index": 1,
+     "instrument": "Flute",
+     "position": 0.0625
+    },
+    {
+     "group": 0,
+     "index": 2,
+     "instrument": "Oboe",
+     "position": 0.125
+    },
+    {
+     "group": 0,
+     "index": 3,
+     "instrument": "Clarinet",
+     "position": 0.1875
+    },
+    {
+     "group": 0,
+     "index": 4,
+     "instrument": "Bassoon",
+     "position": 0.25
+    },
+    {
+     "group": 0,
+     "index": 5,
+     "instrument": "Contrabassoon",
+     "position": 0.3125
+    },
+    {
+     "group": 1,
+     "index": 6,
+     "instrument": "Horn",
+     "position": 0.375
+    },
+    {
+     "group": 1,
+     "index": 7,
+     "instrument": "Trumpet",
+     "position": 0.4375
+    },
+    {
+     "group": 1,
+     "index": 8,
+     "instrument": "Timpani",
+     "position": 0.5
+    },
+    {
+     "group": 1,
+     "index": 9,
+     "instrument": "Trombone",
+     "position": 0.5625
+    },
+    {
+     "group": 1,
+     "index": 10,
+     "instrument": "Trombone",
+     "position": 0.625
+    },
+    {
+     "group": 1,
+     "index": 11,
+     "instrument": "Trombone",
+     "position": 0.6875
+    },
+    {
+     "group": 2,
+     "index": 12,
+     "instrument": "Violin",
+     "position": 0.75
+    },
+    {
+     "group": 2,
+     "index": 13,
+     "instrument": "Violin",
+     "position": 0.8125
+    },
+    {
+     "group": 2,
+     "index": 14,
+     "instrument": "Viola",
+     "position": 0.875
+    },
+    {
+     "group": 2,
+     "index": 15,
+     "instrument": "Cello",
+     "position": 0.9375
+    },
+    {
+     "group": 2,
+     "index": 16,
+     "instrument": "Bass voice",
+     "position": 1.0
+    }
+   ],
+   "size": 12,
+   "staff_indices": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ]
+  },
+  {
+   "chosen_positions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "chosen_slots": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "groups": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "labels": [
+    "Piccolo",
+    "Flute",
+    "Oboe",
+    "Clarinet",
+    "Bassoon",
+    "Contrabassoon",
+    "Horn",
+    "Trumpet",
+    "Timpani",
+    "Trombone",
+    "Trombone",
+    "Trombone",
+    "Violin",
+    "Violin",
+    "Viola",
+    "Cello",
+    "Bass voice"
+   ],
+   "reference": [
+    {
+     "group": 0,
+     "index": 0,
+     "instrument": "Piccolo",
+     "position": 0.0
+    },
+    {
+     "group": 0,
+     "index": 1,
+     "instrument": "Flute",
+     "position": 0.0625
+    },
+    {
+     "group": 0,
+     "index": 2,
+     "instrument": "Oboe",
+     "position": 0.125
+    },
+    {
+     "group": 0,
+     "index": 3,
+     "instrument": "Clarinet",
+     "position": 0.1875
+    },
+    {
+     "group": 0,
+     "index": 4,
+     "instrument": "Bassoon",
+     "position": 0.25
+    },
+    {
+     "group": 0,
+     "index": 5,
+     "instrument": "Contrabassoon",
+     "position": 0.3125
+    },
+    {
+     "group": 1,
+     "index": 6,
+     "instrument": "Horn",
+     "position": 0.375
+    },
+    {
+     "group": 1,
+     "index": 7,
+     "instrument": "Trumpet",
+     "position": 0.4375
+    },
+    {
+     "group": 1,
+     "index": 8,
+     "instrument": "Timpani",
+     "position": 0.5
+    },
+    {
+     "group": 1,
+     "index": 9,
+     "instrument": "Trombone",
+     "position": 0.5625
+    },
+    {
+     "group": 1,
+     "index": 10,
+     "instrument": "Trombone",
+     "position": 0.625
+    },
+    {
+     "group": 1,
+     "index": 11,
+     "instrument": "Trombone",
+     "position": 0.6875
+    },
+    {
+     "group": 2,
+     "index": 12,
+     "instrument": "Violin",
+     "position": 0.75
+    },
+    {
+     "group": 2,
+     "index": 13,
+     "instrument": "Violin",
+     "position": 0.8125
+    },
+    {
+     "group": 2,
+     "index": 14,
+     "instrument": "Viola",
+     "position": 0.875
+    },
+    {
+     "group": 2,
+     "index": 15,
+     "instrument": "Cello",
+     "position": 0.9375
+    },
+    {
+     "group": 2,
+     "index": 16,
+     "instrument": "Bass voice",
+     "position": 1.0
+    }
+   ],
+   "size": 17,
+   "staff_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  },
+  {
+   "chosen_positions": [
+    1,
+    2,
+    3,
+    4,
+    8,
+    10,
+    12,
+    14,
+    16
+   ],
+   "chosen_slots": [
+    1,
+    2,
+    3,
+    4,
+    8,
+    10,
+    12,
+    14,
+    16
+   ],
+   "groups": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "labels": [
+    "Flute",
+    "Oboe",
+    "Clarinet",
+    "Bassoon",
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "reference": [
+    {
+     "group": 0,
+     "index": 0,
+     "instrument": "Piccolo",
+     "position": 0.0
+    },
+    {
+     "group": 0,
+     "index": 1,
+     "instrument": "Flute",
+     "position": 0.0625
+    },
+    {
+     "group": 0,
+     "index": 2,
+     "instrument": "Oboe",
+     "position": 0.125
+    },
+    {
+     "group": 0,
+     "index": 3,
+     "instrument": "Clarinet",
+     "position": 0.1875
+    },
+    {
+     "group": 0,
+     "index": 4,
+     "instrument": "Bassoon",
+     "position": 0.25
+    },
+    {
+     "group": 0,
+     "index": 5,
+     "instrument": "Contrabassoon",
+     "position": 0.3125
+    },
+    {
+     "group": 1,
+     "index": 6,
+     "instrument": "Horn",
+     "position": 0.375
+    },
+    {
+     "group": 1,
+     "index": 7,
+     "instrument": "Trumpet",
+     "position": 0.4375
+    },
+    {
+     "group": 1,
+     "index": 8,
+     "instrument": "Timpani",
+     "position": 0.5
+    },
+    {
+     "group": 1,
+     "index": 9,
+     "instrument": "Trombone",
+     "position": 0.5625
+    },
+    {
+     "group": 1,
+     "index": 10,
+     "instrument": "Trombone",
+     "position": 0.625
+    },
+    {
+     "group": 1,
+     "index": 11,
+     "instrument": "Trombone",
+     "position": 0.6875
+    },
+    {
+     "group": 2,
+     "index": 12,
+     "instrument": "Violin",
+     "position": 0.75
+    },
+    {
+     "group": 2,
+     "index": 13,
+     "instrument": "Violin",
+     "position": 0.8125
+    },
+    {
+     "group": 2,
+     "index": 14,
+     "instrument": "Viola",
+     "position": 0.875
+    },
+    {
+     "group": 2,
+     "index": 15,
+     "instrument": "Cello",
+     "position": 0.9375
+    },
+    {
+     "group": 2,
+     "index": 16,
+     "instrument": "Bass voice",
+     "position": 1.0
+    }
+   ],
+   "size": 9,
+   "staff_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  }
+ ],
+ "dpi": 600,
+ "labelled_staves": 28,
+ "pages": [
+  23,
+  44
+ ],
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "reference": [
+  {
+   "group": 0,
+   "instrument": "Piccolo",
+   "slot": 0
+  },
+  {
+   "group": 0,
+   "instrument": "Flute",
+   "slot": 1
+  },
+  {
+   "group": 0,
+   "instrument": "Oboe",
+   "slot": 2
+  },
+  {
+   "group": 0,
+   "instrument": "Clarinet",
+   "slot": 3
+  },
+  {
+   "group": 0,
+   "instrument": "Bassoon",
+   "slot": 4
+  },
+  {
+   "group": 0,
+   "instrument": "Contrabassoon",
+   "slot": 5
+  },
+  {
+   "group": 1,
+   "instrument": "Horn",
+   "slot": 6
+  },
+  {
+   "group": 1,
+   "instrument": "Trumpet",
+   "slot": 7
+  },
+  {
+   "group": 1,
+   "instrument": "Trumpet",
+   "slot": 8
+  },
+  {
+   "group": 1,
+   "instrument": "Trombone",
+   "slot": 9
+  },
+  {
+   "group": 1,
+   "instrument": "Trombone",
+   "slot": 10
+  },
+  {
+   "group": 1,
+   "instrument": "Trombone",
+   "slot": 11
+  },
+  {
+   "group": 2,
+   "instrument": "Violin",
+   "slot": 12
+  },
+  {
+   "group": 2,
+   "instrument": "Violin",
+   "slot": 13
+  },
+  {
+   "group": 2,
+   "instrument": "Viola",
+   "slot": 14
+  },
+  {
+   "group": 2,
+   "instrument": "Cello",
+   "slot": 15
+  },
+  {
+   "group": 2,
+   "instrument": "Contrabass",
+   "slot": 16
+  }
+ ]
+}

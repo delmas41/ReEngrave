@@ -1,0 +1,72 @@
+# SCAN ARM 2 — THE SECOND PUBLISHER. Brahms 1 mvt1 / Breitkopf & Härtel,
+# pdf pages 0-3 (14/27/28/28 staves). Windows hand-verified in works.json.
+#
+# TRUTH, read off the reference encoding rather than remembered:
+#   m1 = 6/8 (3.0 quarters), m8 = 9/8 (4.5), m9 onward = 6/8.
+# ⚠️ Our segmentation is EXACT on pages 1-3 (15, 15, 21 bars against the
+#    window's 15, 15, 21), which independently places m8 at p1 s0 c0.
+#    Page 0 prints 7 bars and we segment 8, so its cell 7 has no truth
+#    and is excluded.
+
+## the harness verifies itself first
+CONTROL: 4365 of 4365 duration verdicts reproduced exactly, 0 differ, +0 extra
+
+## BARS (>=3 staves, >=50% agreeing) — off=all vs ON
+OFF: 8 assessable, 0 correct
+ON : 8 assessable, 6 correct
+      4  stopped being assessable (was wrong)
+      3  became assessable, RIGHT
+      3  wrong -> RIGHT
+      1  unchanged
+      1  became assessable, wrong
+  bars that moved:
+   p0s0c4                - -> 3.0(7/12)      RIGHT
+   p1s1c4         4.0(4/7) -> -              
+   p1s1c5         4.0(2/3) -> 3.0(2/3)       RIGHT
+   p1s1c7         4.0(3/6) -> -              
+   p2s1c5         2.0(2/4) -> 3.0(2/4)       RIGHT
+   p2s1c6         1.0(2/4) -> -              
+   p3s0c1         1.0(3/6) -> -              
+   p3s0c7                - -> 3.0(3/6)       RIGHT
+   p3s1c3                - -> 4.0(6/11)      
+   p3s1c7                - -> 3.0(5/9)       RIGHT
+   p3s1c10        2.5(2/4) -> 3.0(2/4)       RIGHT
+
+## PER-STAFF READINGS — and the two halves are SUPER-ADDITIVE here
+-- ON (both halves) --
+     261  (52.9%)  wrong -> wrong
+      97  (19.7%)  unchanged (wrong)
+      93  (18.9%)  wrong -> RIGHT
+      27  ( 5.5%)  ⚠️ RIGHT -> wrong
+      15  ( 3.0%)  unchanged (right)
+      42 right OFF  ->    108 right ON   of 493 readings
+-- the STEM tier alone --
+     310  (62.9%)  unchanged (wrong)
+     114  (23.1%)  wrong -> wrong
+      30  ( 6.1%)  unchanged (right)
+      27  ( 5.5%)  wrong -> RIGHT
+      12  ( 2.4%)  ⚠️ RIGHT -> wrong
+      42 right OFF  ->     57 right ON   of 493 readings
+-- the MARKS alone --
+     240  (48.7%)  unchanged (wrong)
+     165  (33.5%)  wrong -> wrong
+      46  ( 9.3%)  wrong -> RIGHT
+      33  ( 6.7%)  ⚠️ RIGHT -> wrong
+       9  ( 1.8%)  unchanged (right)
+      42 right OFF  ->     55 right ON   of 493 readings
+
+## CENSUS, and the contradiction probe
+/tmp/dur/brahms-off-all.json
+   duration verdicts   {'decided': 3685, 'narrowed': 794, 'abstained': 4}
+   beam_evidence       {'reader_declined': 679, 'read': 1630, 'none_over_this_note': 1028, None: 1146}
+   rows available      flag 371  aug_dot 656  stem 2305  beam_stroke 2084  cell_staff_space 817
+   attached            stems 0  beams-by-stem 0  flags 0  dots 0
+   noteheads           3337   with a beam level 1630   with a flag 0
+   ⚠️ CONTRADICTIONS   0  (0.0% of flagged notes also carry a beam level)
+/tmp/dur/brahms.json
+   duration verdicts   {'decided': 3951, 'narrowed': 542, 'abstained': 4}
+   beam_evidence       {'reader_declined': 596, 'read': 1827, 'none_over_this_note': 714, 'flag': 200, None: 1160}
+   rows available      flag 371  aug_dot 656  stem 2305  beam_stroke 2084  cell_staff_space 817
+   attached            stems 1902  beams-by-stem 1188  flags 301  dots 587
+   noteheads           3337   with a beam level 1827   with a flag 276
+   ⚠️ CONTRADICTIONS   76  (27.5% of flagged notes also carry a beam level)

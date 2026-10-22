@@ -1,0 +1,7 @@
+# The cell staff-space unit is NOT a constant.
+# CANONICAL_STAFF_SPAN_PX/4 = 100 is only the NOMINAL:
+# _upscale_to_canonical scales a too-wide cell by WIDTH instead.
+
+cells reporting a unit: 368
+distribution (px per staff SPACE): [(100, 184), (56, 59), (46, 56), (38, 15), (99, 14), (47, 13), (55, 10), (98, 9), (39, 8)]
+min/max: 38.5 100.0

@@ -1,0 +1,137 @@
+{
+ "seed": 20261004,
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/6/0/8/12/2",
+   "page": 6,
+   "reader": -3,
+   "geometry": -4,
+   "box_source": "detector",
+   "shape_source": "document pool n=11"
+  },
+  {
+   "n": 2,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/6/1/10/10/7",
+   "page": 6,
+   "reader": 12,
+   "geometry": 13,
+   "box_source": "detector",
+   "shape_source": "document pool n=11"
+  },
+  {
+   "n": 3,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/15/0/1/5/0",
+   "page": 15,
+   "reader": -4,
+   "geometry": -5,
+   "box_source": "detector",
+   "shape_source": "document pool n=47"
+  },
+  {
+   "n": 4,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/16/0/0/1/5",
+   "page": 16,
+   "reader": 13,
+   "geometry": 12,
+   "box_source": "standard",
+   "shape_source": "page n=8"
+  },
+  {
+   "n": 5,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/5/0/3/7/0",
+   "page": 5,
+   "reader": -3,
+   "geometry": -5,
+   "box_source": "standard",
+   "shape_source": "document pool n=9"
+  },
+  {
+   "n": 6,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/6/0/0/10/4",
+   "page": 6,
+   "reader": -7,
+   "geometry": -6,
+   "box_source": "standard",
+   "shape_source": "document pool n=11"
+  },
+  {
+   "n": 7,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/26/0/6/6/5",
+   "page": 26,
+   "reader": -4,
+   "geometry": -6,
+   "box_source": "standard",
+   "shape_source": "page n=35"
+  },
+  {
+   "n": 8,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/26/1/5/0/14",
+   "page": 26,
+   "reader": 13,
+   "geometry": 16,
+   "box_source": "detector",
+   "shape_source": "page n=35"
+  },
+  {
+   "n": 9,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/25/0/0/1/32",
+   "page": 25,
+   "reader": 13,
+   "geometry": 16,
+   "box_source": "detector",
+   "shape_source": "page n=39"
+  },
+  {
+   "n": 10,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/16/1/0/4/7",
+   "page": 16,
+   "reader": -5,
+   "geometry": -7,
+   "box_source": "detector",
+   "shape_source": "page n=112"
+  },
+  {
+   "n": 11,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/4/0/0/3/12",
+   "page": 4,
+   "reader": -3,
+   "geometry": -5,
+   "box_source": "standard",
+   "shape_source": "page n=67"
+  },
+  {
+   "n": 12,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/18/0/0/4/6",
+   "page": 18,
+   "reader": -7,
+   "geometry": -8,
+   "box_source": "standard",
+   "shape_source": "page n=53"
+  }
+ ],
+ "replay": {
+  "beethoven5-litolff": {
+   "tried": 6,
+   "mismatch": 0,
+   "drawn": 6
+  },
+  "brahms1-breitkopf": {
+   "tried": 6,
+   "mismatch": 0,
+   "drawn": 6
+  }
+ }
+}

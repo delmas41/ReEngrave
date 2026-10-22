@@ -1,0 +1,6 @@
+1 | Sean: Not a note - barline | today iou=1.00 noteheadBlackInSpace not_a_note=True dur=narrowed:head_fill_from_ink
+2 | Sean: An accidental (natural) in front of an 8th note with stems g | today iou=0.82 noteheadBlackOnLine not_a_note=True dur=decided:eighth (0.5 beats)
+3 | Sean: Half note with a single trem slash and an accidental (natura | today iou=0.43 restQuarter not_a_note=None dur=decided:quarter (1 beat)
+4 | Sean: Whole rest hanging off the bottom line because it refers to  | today iou=1.00 noteheadBlackInSpace not_a_note=False dur=decided:quarter (1 beat)
+5 | Sean: Half note in top voice; (outside the box) tied to the next m | today iou=0.84 noteheadBlackInSpace not_a_note=False dur=decided:quarter (1 beat)
+6 | Sean: Half note | today iou=1.00 noteheadBlackOnLine not_a_note=False dur=decided:quarter (1 beat)

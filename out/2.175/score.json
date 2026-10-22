@@ -1,0 +1,182 @@
+[
+ {
+  "tile": 1,
+  "subject": "glyph/13/1/6/8/3",
+  "decided_two": true,
+  "twin_written_in_file": true,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 3,
+  "subject": "glyph/14/1/0/5/1",
+  "decided_two": true,
+  "twin_written_in_file": false,
+  "ours": [
+   1.0,
+   1.0
+  ],
+  "sean": [
+   1,
+   1
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 4,
+  "subject": "glyph/16/1/7/5/1",
+  "decided_two": true,
+  "twin_written_in_file": false,
+  "ours": [
+   1.0,
+   1.0
+  ],
+  "sean": [
+   1,
+   1
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 5,
+  "subject": "glyph/5/0/0/2/5",
+  "decided_two": true,
+  "twin_written_in_file": true,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 7,
+  "subject": "glyph/2/0/1/5/4",
+  "decided_two": true,
+  "twin_written_in_file": true,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 8,
+  "subject": "glyph/26/1/0/3/2",
+  "decided_two": true,
+  "twin_written_in_file": true,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 9,
+  "subject": "glyph/16/1/7/4/1",
+  "decided_two": true,
+  "twin_written_in_file": true,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 10,
+  "subject": "glyph/16/1/10/3/3",
+  "decided_two": true,
+  "twin_written_in_file": false,
+  "ours": [
+   0.5,
+   0.5
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   true
+  ]
+ },
+ {
+  "tile": 11,
+  "subject": "glyph/8/1/2/0/6",
+  "decided_two": true,
+  "twin_written_in_file": false,
+  "ours": [
+   0.5,
+   0.25
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   false
+  ]
+ },
+ {
+  "tile": 12,
+  "subject": "glyph/16/1/7/3/2",
+  "decided_two": true,
+  "twin_written_in_file": false,
+  "ours": [
+   0.5,
+   0.25
+  ],
+  "sean": [
+   0.5,
+   0.5
+  ],
+  "voice_values_right": [
+   true,
+   false
+  ]
+ }
+]

@@ -1,0 +1,148 @@
+{
+ "tally": {
+  "seen_ONLY_here": 4,
+  "also_seen_by_another_staff": 8
+ },
+ "rows": [
+  {
+   "subject": "glyph/1/0/13/0/29",
+   "staff_step": 5.152,
+   "witness": "slot",
+   "state": "seen_ONLY_here",
+   "others": []
+  },
+  {
+   "subject": "glyph/1/0/2/5/32",
+   "staff_step": 15.565,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/1/0/1/5/3",
+     "iou": 0.329,
+     "kind": "notehead:noteheadBlackOnLine",
+     "conf": 0.8074651956558228
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/5/7/11",
+   "staff_step": -7.1,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/1/1/6/7/3",
+     "iou": 0.688,
+     "kind": "notehead:noteheadHalfInSpace",
+     "conf": 0.6320772171020508
+    }
+   ]
+  },
+  {
+   "subject": "glyph/2/1/6/0/10",
+   "staff_step": -7.54,
+   "witness": "neighbouring_bar",
+   "state": "seen_ONLY_here",
+   "others": []
+  },
+  {
+   "subject": "glyph/2/1/6/0/8",
+   "staff_step": -7.554,
+   "witness": "neighbouring_bar",
+   "state": "seen_ONLY_here",
+   "others": []
+  },
+  {
+   "subject": "glyph/3/0/6/0/12",
+   "staff_step": -7.55,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/0/7/0/9",
+     "iou": 0.128,
+     "kind": "rest:rest8th",
+     "conf": 0.6498406529426575
+    }
+   ]
+  },
+  {
+   "subject": "glyph/3/0/6/0/16",
+   "staff_step": -7.627,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/0/7/0/2",
+     "iou": 0.127,
+     "kind": "rest:rest8th",
+     "conf": 0.8462511897087097
+    }
+   ]
+  },
+  {
+   "subject": "glyph/3/0/6/4/12",
+   "staff_step": -7.62,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/0/7/4/3",
+     "iou": 0.109,
+     "kind": "rest:rest8th",
+     "conf": 0.7476682662963867
+    }
+   ]
+  },
+  {
+   "subject": "glyph/3/0/6/4/8",
+   "staff_step": -7.57,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/0/7/4/0",
+     "iou": 0.106,
+     "kind": "rest:rest8th",
+     "conf": 0.8516583442687988
+    }
+   ]
+  },
+  {
+   "subject": "glyph/3/0/6/8/1",
+   "staff_step": -7.48,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/0/7/8/0",
+     "iou": 0.569,
+     "kind": "rest:restWhole",
+     "conf": 0.6031677722930908
+    }
+   ]
+  },
+  {
+   "subject": "glyph/3/1/7/9/15",
+   "staff_step": -7.63,
+   "witness": "neighbouring_bar",
+   "state": "seen_ONLY_here",
+   "others": []
+  },
+  {
+   "subject": "glyph/3/1/7/9/9",
+   "staff_step": -7.61,
+   "witness": "neighbouring_bar",
+   "state": "also_seen_by_another_staff",
+   "others": [
+    {
+     "subject": "glyph/3/1/8/9/8",
+     "iou": 0.112,
+     "kind": "rest:rest8th",
+     "conf": 0.5646834969520569
+    }
+   ]
+  }
+ ]
+}

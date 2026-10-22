@@ -1,0 +1,98 @@
+[
+  {
+    "subject": "system/0/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    }
+  },
+  {
+    "subject": "system/1/0",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.043,
+      "n_staves_spoke": 1,
+      "n_staves_on_system": 23,
+      "would_have_been": "C"
+    }
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/3/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    }
+  },
+  {
+    "subject": "system/4/0",
+    "outcome": "decided",
+    "reason": "derived_from_bars",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "instead_of": "no_evidence",
+      "form_borrowed_from": "system/3/0",
+      "form_source_raw": "3/4",
+      "state": "named",
+      "length": 3.0,
+      "support": 4.0,
+      "floor": 4.0,
+      "bars_assessable": 4,
+      "bars_agree": 4,
+      "bars_disagree": 0,
+      "bar_lengths_seen": {
+        "3.0": 4
+      }
+    }
+  }
+]

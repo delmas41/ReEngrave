@@ -1,0 +1,47 @@
+[
+  {
+    "id": "vrd:017271",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 1167,
+    "n_basis": 3723,
+    "n_correlated": 217
+  },
+  {
+    "id": "vrd:017272",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_glyph",
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 856,
+    "n_basis": 3406,
+    "n_correlated": 143
+  }
+]

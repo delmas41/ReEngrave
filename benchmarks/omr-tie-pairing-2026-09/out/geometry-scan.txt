@@ -1,0 +1,13 @@
+bach-brandenburg3-mvt1-468678-p1.restamp-compo   ties=  41 paired=  22 same=   2 DIFF=  20 unpaired=  19 self=   0 Lchoice=   6 Rchoice=  12 rescuable=  7
+beethoven-sym5-mvt1-575951-p1.restamp-composed   ties=  52 paired=  14 same=   4 DIFF=  10 unpaired=  38 self=   0 Lchoice=   3 Rchoice=   7 rescuable=  4
+beethoven-sym5-mvt1-575951-p2.restamp-composed   ties= 322 paired=  48 same=   9 DIFF=  39 unpaired= 274 self=   0 Lchoice=  26 Rchoice=  21 rescuable= 20
+beethoven-sym5-mvt1-984073-p1.restamp-composed   ties=   9 paired=   1 same=   0 DIFF=   1 unpaired=   8 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+beethoven-sym5-mvt1-984073-p2.restamp-composed   ties=  99 paired=  17 same=   8 DIFF=   9 unpaired=  82 self=   0 Lchoice=  10 Rchoice=  11 rescuable=  5
+brahms-sym1-mvt1-317803-p1.restamp-composed.om   ties= 155 paired=  39 same=  14 DIFF=  25 unpaired= 116 self=   0 Lchoice=  18 Rchoice=  18 rescuable=  5
+brahms-sym1-mvt1-317803-p2.restamp-composed.om   ties= 396 paired= 121 same=  54 DIFF=  67 unpaired= 275 self=   0 Lchoice=  53 Rchoice=  65 rescuable= 15
+dvorak-sym9-mvt1-405834-p5.restamp-composed.om   ties= 141 paired=  11 same=   1 DIFF=  10 unpaired= 130 self=   0 Lchoice=   4 Rchoice=   8 rescuable=  4
+dvorak-sym9-mvt1-405834-p6.restamp-composed.om   ties= 140 paired=  17 same=   0 DIFF=  17 unpaired= 123 self=   0 Lchoice=   6 Rchoice=   5 rescuable=  3
+mahler-sym5-mvt1-local-p2.restamp-composed.omr   ties=  36 paired=   1 same=   1 DIFF=   0 unpaired=  35 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+mahler-sym5-mvt1-local-p3.restamp-composed.omr   ties=  73 paired=  11 same=   5 DIFF=   6 unpaired=  62 self=   0 Lchoice=   2 Rchoice=   5 rescuable=  1
+
+ pooled: DIFF_but_a_same_pitch_pair_was_in_range=64  DIFF_pitch=204  left_had_a_choice=128  paired=302  right_had_a_choice=152  same_pitch=98  ties=1464  unpaired=1162

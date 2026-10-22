@@ -1,0 +1,188 @@
+{
+ "head_pages": 1,
+ "margin_fraction": 0.3,
+ "documents": [
+  {
+   "document": "beethoven5-575951-textlayer",
+   "spans": 24,
+   "diagnostic_votes": 9,
+   "language": "it",
+   "share": 1.0,
+   "votes": {
+    "it": 9,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "beethoven5-984073-scan",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "beethoven6-504082-textlayer",
+   "spans": 52,
+   "diagnostic_votes": 7,
+   "language": "it",
+   "share": 1.0,
+   "votes": {
+    "it": 7,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "debussy-lamer-scan",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "mahler5-local-scan",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "handel-messiah-leadsheet",
+   "spans": 5,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "handel-messiah-reduction",
+   "spans": 6,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "ravel-bolero-textlayer",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "bach-wtc1",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "kirchhoff-abc",
+   "spans": 2,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "dvorak9-simrock-scan",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "brahms1-breitkopf-scan",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  },
+  {
+   "document": "bach-brandenburg3-peters",
+   "spans": 0,
+   "diagnostic_votes": 0,
+   "language": null,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "mixed": false
+  }
+ ]
+}

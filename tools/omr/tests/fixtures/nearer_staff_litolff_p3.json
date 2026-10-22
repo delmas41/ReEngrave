@@ -1,0 +1,2713 @@
+{
+ "_readme": "ROADMAP 2.7b \u2014 cut the MEASURED geometry of Sean's adjudicated heads out of\na record, as the fixture `tools/omr/tests/test_staged_nearer_staff.py` reads.",
+ "record": "litolff-arm.record.json",
+ "staves": {
+  "staff/3/0/0": {
+   "staff_lines": [
+    450,
+    465,
+    481,
+    497,
+    512
+   ],
+   "staff_spacing": 15.5
+  },
+  "staff/3/0/1": {
+   "staff_lines": [
+    596,
+    612,
+    628,
+    644,
+    659
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/10": {
+   "staff_lines": [
+    1957,
+    1973,
+    1989,
+    2004,
+    2020
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/2": {
+   "staff_lines": [
+    726,
+    742,
+    758,
+    773,
+    789
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/3": {
+   "staff_lines": [
+    866,
+    882,
+    898,
+    913,
+    929
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/4": {
+   "staff_lines": [
+    1022,
+    1038,
+    1054,
+    1070,
+    1086
+   ],
+   "staff_spacing": 16.0
+  },
+  "staff/3/0/5": {
+   "staff_lines": [
+    1154,
+    1170,
+    1186,
+    1201,
+    1217
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/6": {
+   "staff_lines": [
+    1300,
+    1316,
+    1331,
+    1347,
+    1363
+   ],
+   "staff_spacing": 15.75
+  },
+  "staff/3/0/7": {
+   "staff_lines": [
+    1486,
+    1503,
+    1518,
+    1534,
+    1550
+   ],
+   "staff_spacing": 16.0
+  },
+  "staff/3/0/8": {
+   "staff_lines": [
+    1643,
+    1659,
+    1674,
+    1690,
+    1705
+   ],
+   "staff_spacing": 15.5
+  },
+  "staff/3/0/9": {
+   "staff_lines": [
+    1800,
+    1816,
+    1831,
+    1847,
+    1863
+   ],
+   "staff_spacing": 15.75
+  }
+ },
+ "cells": {
+  "cell/3/0/7/0": {
+   "cell_box": [
+    [
+     343.0,
+     1390.0,
+     635.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/7/2": {
+   "cell_box": [
+    [
+     808.0,
+     1390.0,
+     996.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/7/4": {
+   "cell_box": [
+    [
+     1167.0,
+     1390.0,
+     1337.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/7/5": {
+   "cell_box": [
+    [
+     1337.0,
+     1390.0,
+     1510.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/7/6": {
+   "cell_box": [
+    [
+     1510.0,
+     1390.0,
+     1691.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/7/7": {
+   "cell_box": [
+    [
+     1691.0,
+     1390.0,
+     1802.0,
+     1614.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/0": {
+   "cell_box": [
+    [
+     343.0,
+     1581.0,
+     635.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/1": {
+   "cell_box": [
+    [
+     635.0,
+     1581.0,
+     808.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/2": {
+   "cell_box": [
+    [
+     808.0,
+     1581.0,
+     996.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/4": {
+   "cell_box": [
+    [
+     1167.0,
+     1581.0,
+     1337.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/5": {
+   "cell_box": [
+    [
+     1337.0,
+     1581.0,
+     1510.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/6": {
+   "cell_box": [
+    [
+     1510.0,
+     1581.0,
+     1691.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/8/7": {
+   "cell_box": [
+    [
+     1691.0,
+     1581.0,
+     1802.0,
+     1767.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/9/2": {
+   "cell_box": [
+    [
+     808.0,
+     1737.0,
+     996.0,
+     1926.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/9/5": {
+   "cell_box": [
+    [
+     1337.0,
+     1737.0,
+     1510.0,
+     1926.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/9/6": {
+   "cell_box": [
+    [
+     1510.0,
+     1737.0,
+     1691.0,
+     1926.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  },
+  "cell/3/0/9/7": {
+   "cell_box": [
+    [
+     1691.0,
+     1737.0,
+     1802.0,
+     1926.0
+    ],
+    {}
+   ],
+   "cell_staff_space": [
+    100.0,
+    {
+     "half_step": 50.0,
+     "lines": 5
+    }
+   ]
+  }
+ },
+ "heads": [
+  {
+   "subject": "glyph/3/0/7/0/7",
+   "sean": "confirmed",
+   "crops": [
+    12
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    1125,
+    417,
+    131,
+    135
+   ],
+   "bbox_page_px": [
+    523.0,
+    1456.72,
+    543.96,
+    1478.32
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/0/10",
+     "value": [
+      "ledgerLine",
+      1590,
+      616,
+      233,
+      31
+     ],
+     "bbox_page_px": [
+      597.4,
+      1488.56,
+      634.6800000000001,
+      1493.52
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/0/15",
+     "value": [
+      "ledgerLine",
+      1628,
+      821,
+      197,
+      23
+     ],
+     "bbox_page_px": [
+      603.48,
+      1521.3600000000001,
+      635.0,
+      1525.04
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/0/17",
+     "value": [
+      "ledgerLine",
+      1661,
+      916,
+      164,
+      26
+     ],
+     "bbox_page_px": [
+      608.76,
+      1536.56,
+      635.0,
+      1540.72
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/2/2",
+   "sean": "confirmed",
+   "crops": [
+    16
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    547,
+    1119,
+    131,
+    143
+   ],
+   "bbox_page_px": [
+    895.52,
+    1569.04,
+    916.48,
+    1591.92
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/2/7",
+     "value": [
+      "ledgerLine",
+      461,
+      1005,
+      456,
+      25
+     ],
+     "bbox_page_px": [
+      881.76,
+      1550.8,
+      954.72,
+      1554.8
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    },
+    {
+     "subject": "glyph/3/0/7/2/8",
+     "value": [
+      "ledgerLine",
+      744,
+      910,
+      431,
+      24
+     ],
+     "bbox_page_px": [
+      927.04,
+      1535.6,
+      996.0,
+      1539.44
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/2/9",
+     "value": [
+      "ledgerLine",
+      980,
+      913,
+      183,
+      22
+     ],
+     "bbox_page_px": [
+      964.8,
+      1536.08,
+      994.08,
+      1539.6
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/4/2",
+   "sean": "confirmed",
+   "crops": [
+    1,
+    21
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    454,
+    435,
+    148,
+    131
+   ],
+   "bbox_page_px": [
+    1239.64,
+    1459.6,
+    1263.32,
+    1480.56
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/4/10",
+     "value": [
+      "ledgerLine",
+      429,
+      706,
+      475,
+      24
+     ],
+     "bbox_page_px": [
+      1235.64,
+      1502.96,
+      1311.6399999999999,
+      1506.8
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/4/12",
+     "value": [
+      "ledgerLine",
+      405,
+      795,
+      650,
+      31
+     ],
+     "bbox_page_px": [
+      1231.8,
+      1517.2,
+      1335.8,
+      1522.16
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/4/5",
+     "value": [
+      "ledgerLine",
+      652,
+      604,
+      403,
+      24
+     ],
+     "bbox_page_px": [
+      1271.32,
+      1486.64,
+      1335.8,
+      1490.48
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/4/6",
+     "value": [
+      "ledgerLine",
+      415,
+      607,
+      496,
+      19
+     ],
+     "bbox_page_px": [
+      1233.4,
+      1487.12,
+      1312.76,
+      1490.16
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/4/8",
+     "value": [
+      "ledgerLine",
+      648,
+      704,
+      406,
+      22
+     ],
+     "bbox_page_px": [
+      1270.68,
+      1502.64,
+      1335.6399999999999,
+      1506.16
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/5/1",
+   "sean": "confirmed",
+   "crops": [
+    9
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    187,
+    499,
+    142,
+    119
+   ],
+   "bbox_page_px": [
+    1366.92,
+    1469.84,
+    1389.64,
+    1488.88
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/6/10",
+   "sean": "confirmed",
+   "crops": [
+    25
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    507,
+    800,
+    129,
+    114
+   ],
+   "bbox_page_px": [
+    1591.12,
+    1518.0,
+    1611.76,
+    1536.24
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/6/14",
+     "value": [
+      "ledgerLine",
+      867,
+      1075,
+      185,
+      35
+     ],
+     "bbox_page_px": [
+      1648.72,
+      1562.0,
+      1678.32,
+      1567.6
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/6/15",
+     "value": [
+      "ledgerLine",
+      19,
+      590,
+      253,
+      35
+     ],
+     "bbox_page_px": [
+      1513.04,
+      1484.4,
+      1553.52,
+      1490.0
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/6/16",
+     "value": [
+      "ledgerLine",
+      601,
+      975,
+      215,
+      32
+     ],
+     "bbox_page_px": [
+      1606.16,
+      1546.0,
+      1640.56,
+      1551.12
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/6/17",
+     "value": [
+      "ledgerLine",
+      780,
+      975,
+      343,
+      35
+     ],
+     "bbox_page_px": [
+      1634.8,
+      1546.0,
+      1689.68,
+      1551.6
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/6/2",
+   "sean": "confirmed",
+   "crops": [
+    5
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    506,
+    1148,
+    133,
+    131
+   ],
+   "bbox_page_px": [
+    1590.96,
+    1573.68,
+    1612.24,
+    1594.6399999999999
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/6/14",
+     "value": [
+      "ledgerLine",
+      867,
+      1075,
+      185,
+      35
+     ],
+     "bbox_page_px": [
+      1648.72,
+      1562.0,
+      1678.32,
+      1567.6
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/6/15",
+     "value": [
+      "ledgerLine",
+      19,
+      590,
+      253,
+      35
+     ],
+     "bbox_page_px": [
+      1513.04,
+      1484.4,
+      1553.52,
+      1490.0
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/6/16",
+     "value": [
+      "ledgerLine",
+      601,
+      975,
+      215,
+      32
+     ],
+     "bbox_page_px": [
+      1606.16,
+      1546.0,
+      1640.56,
+      1551.12
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/6/17",
+     "value": [
+      "ledgerLine",
+      780,
+      975,
+      343,
+      35
+     ],
+     "bbox_page_px": [
+      1634.8,
+      1546.0,
+      1689.68,
+      1551.6
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [
+    [
+     2.134999999999991,
+     "staff/3/0/7"
+    ],
+    [
+     3.796129032258074,
+     "staff/3/0/8"
+    ]
+   ],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/7/0",
+   "sean": "confirmed",
+   "crops": [
+    24
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    163,
+    1143,
+    148,
+    129
+   ],
+   "bbox_page_px": [
+    1717.08,
+    1572.88,
+    1740.76,
+    1593.52
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/7/10",
+     "value": [
+      "ledgerLine",
+      101,
+      975,
+      222,
+      34
+     ],
+     "bbox_page_px": [
+      1707.16,
+      1546.0,
+      1742.68,
+      1551.44
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/7/12",
+     "value": [
+      "ledgerLine",
+      148,
+      1084,
+      171,
+      41
+     ],
+     "bbox_page_px": [
+      1714.68,
+      1563.44,
+      1742.04,
+      1570.0
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/4",
+     "value": [
+      "ledgerLine",
+      138,
+      1175,
+      207,
+      28
+     ],
+     "bbox_page_px": [
+      1713.08,
+      1578.0,
+      1746.2,
+      1582.48
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/7",
+     "value": [
+      "ledgerLine",
+      125,
+      875,
+      245,
+      27
+     ],
+     "bbox_page_px": [
+      1711.0,
+      1530.0,
+      1750.2,
+      1534.32
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/7/8",
+     "value": [
+      "ledgerLine",
+      145,
+      1075,
+      171,
+      40
+     ],
+     "bbox_page_px": [
+      1714.2,
+      1562.0,
+      1741.56,
+      1568.4
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/9",
+     "value": [
+      "ledgerLine",
+      108,
+      975,
+      585,
+      34
+     ],
+     "bbox_page_px": [
+      1708.28,
+      1546.0,
+      1801.88,
+      1551.44
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [
+    [
+     2.075000000000003,
+     "staff/3/0/7"
+    ],
+    [
+     3.8580645161290295,
+     "staff/3/0/8"
+    ]
+   ],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/7/7/3",
+   "sean": "confirmed",
+   "crops": [
+    6,
+    28
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    164,
+    792,
+    143,
+    109
+   ],
+   "bbox_page_px": [
+    1717.24,
+    1516.72,
+    1740.12,
+    1534.16
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/7/7/10",
+     "value": [
+      "ledgerLine",
+      101,
+      975,
+      222,
+      34
+     ],
+     "bbox_page_px": [
+      1707.16,
+      1546.0,
+      1742.68,
+      1551.44
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/7/12",
+     "value": [
+      "ledgerLine",
+      148,
+      1084,
+      171,
+      41
+     ],
+     "bbox_page_px": [
+      1714.68,
+      1563.44,
+      1742.04,
+      1570.0
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/4",
+     "value": [
+      "ledgerLine",
+      138,
+      1175,
+      207,
+      28
+     ],
+     "bbox_page_px": [
+      1713.08,
+      1578.0,
+      1746.2,
+      1582.48
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/7",
+     "value": [
+      "ledgerLine",
+      125,
+      875,
+      245,
+      27
+     ],
+     "bbox_page_px": [
+      1711.0,
+      1530.0,
+      1750.2,
+      1534.32
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/7/7/8",
+     "value": [
+      "ledgerLine",
+      145,
+      1075,
+      171,
+      40
+     ],
+     "bbox_page_px": [
+      1714.2,
+      1562.0,
+      1741.56,
+      1568.4
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/7/7/9",
+     "value": [
+      "ledgerLine",
+      108,
+      975,
+      585,
+      34
+     ],
+     "bbox_page_px": [
+      1708.28,
+      1546.0,
+      1801.88,
+      1551.44
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/0/3",
+   "sean": "confirmed",
+   "crops": [
+    7
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    1167,
+    572,
+    151,
+    141
+   ],
+   "bbox_page_px": [
+    523.885,
+    1669.66,
+    547.29,
+    1691.515
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/1/3",
+   "sean": "confirmed",
+   "crops": [
+    15
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    530,
+    904,
+    148,
+    163
+   ],
+   "bbox_page_px": [
+    717.15,
+    1721.12,
+    740.09,
+    1746.385
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/1/10",
+     "value": [
+      "ledgerLine",
+      893,
+      821,
+      223,
+      39
+     ],
+     "bbox_page_px": [
+      773.415,
+      1708.255,
+      807.98,
+      1714.3
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/1/11",
+     "value": [
+      "ledgerLine",
+      333,
+      718,
+      209,
+      23
+     ],
+     "bbox_page_px": [
+      686.615,
+      1692.29,
+      719.01,
+      1695.855
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/1/12",
+     "value": [
+      "ledgerLine",
+      772,
+      716,
+      344,
+      25
+     ],
+     "bbox_page_px": [
+      754.66,
+      1691.98,
+      807.98,
+      1695.855
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/1/13",
+     "value": [
+      "ledgerLine",
+      605,
+      819,
+      386,
+      31
+     ],
+     "bbox_page_px": [
+      728.775,
+      1707.945,
+      788.605,
+      1712.75
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/1/14",
+     "value": [
+      "ledgerLine",
+      723,
+      1016,
+      177,
+      46
+     ],
+     "bbox_page_px": [
+      747.065,
+      1738.48,
+      774.5,
+      1745.6100000000001
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/1/16",
+     "value": [
+      "ledgerLine",
+      895,
+      718,
+      220,
+      25
+     ],
+     "bbox_page_px": [
+      773.725,
+      1692.29,
+      807.825,
+      1696.165
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/1/4",
+     "value": [
+      "ledgerLine",
+      722,
+      905,
+      172,
+      33
+     ],
+     "bbox_page_px": [
+      746.91,
+      1721.275,
+      773.57,
+      1726.39
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/1/5",
+     "value": [
+      "ledgerLine",
+      722,
+      1015,
+      178,
+      33
+     ],
+     "bbox_page_px": [
+      746.91,
+      1738.325,
+      774.5,
+      1743.44
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/1/9",
+     "value": [
+      "ledgerLine",
+      680,
+      819,
+      405,
+      31
+     ],
+     "bbox_page_px": [
+      740.4,
+      1707.945,
+      803.175,
+      1712.75
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/2/3",
+   "sean": "wrong_staff",
+   "crops": [
+    26
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    564,
+    0,
+    133,
+    73
+   ],
+   "bbox_page_px": [
+    895.42,
+    1581.0,
+    916.035,
+    1592.315
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/2/8",
+     "value": [
+      "ledgerLine",
+      460,
+      816,
+      352,
+      21
+     ],
+     "bbox_page_px": [
+      879.3,
+      1707.48,
+      933.86,
+      1710.7350000000001
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/2/6",
+   "sean": "confirmed",
+   "crops": [
+    27
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    576,
+    919,
+    144,
+    156
+   ],
+   "bbox_page_px": [
+    897.28,
+    1723.445,
+    919.6,
+    1747.625
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/2/8",
+     "value": [
+      "ledgerLine",
+      460,
+      816,
+      352,
+      21
+     ],
+     "bbox_page_px": [
+      879.3,
+      1707.48,
+      933.86,
+      1710.7350000000001
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/4/5",
+   "sean": "confirmed",
+   "crops": [
+    18
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    500,
+    613,
+    134,
+    118
+   ],
+   "bbox_page_px": [
+    1244.5,
+    1676.015,
+    1265.27,
+    1694.305
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/4/3",
+     "value": [
+      "ledgerLine",
+      11,
+      609,
+      197,
+      19
+     ],
+     "bbox_page_px": [
+      1168.705,
+      1675.395,
+      1199.24,
+      1678.34
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/4/6",
+     "value": [
+      "ledgerLine",
+      6,
+      505,
+      546,
+      23
+     ],
+     "bbox_page_px": [
+      1167.93,
+      1659.275,
+      1252.56,
+      1662.84
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/4/9",
+     "value": [
+      "ledgerLine",
+      775,
+      502,
+      292,
+      25
+     ],
+     "bbox_page_px": [
+      1287.125,
+      1658.81,
+      1332.385,
+      1662.685
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/5/2",
+   "sean": "confirmed",
+   "crops": [
+    11
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    193,
+    647,
+    141,
+    131
+   ],
+   "bbox_page_px": [
+    1366.915,
+    1681.285,
+    1388.77,
+    1701.59
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/6/0",
+   "sean": "confirmed",
+   "crops": [
+    22
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    526,
+    978,
+    146,
+    132
+   ],
+   "bbox_page_px": [
+    1591.53,
+    1732.59,
+    1614.16,
+    1753.05
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/6/15",
+     "value": [
+      "ledgerLine",
+      518,
+      900,
+      164,
+      27
+     ],
+     "bbox_page_px": [
+      1590.29,
+      1720.5,
+      1615.71,
+      1724.685
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/18",
+     "value": [
+      "ledgerLine",
+      632,
+      888,
+      218,
+      37
+     ],
+     "bbox_page_px": [
+      1607.96,
+      1718.64,
+      1641.75,
+      1724.375
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/19",
+     "value": [
+      "ledgerLine",
+      816,
+      792,
+      306,
+      33
+     ],
+     "bbox_page_px": [
+      1636.48,
+      1703.76,
+      1683.91,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/20",
+     "value": [
+      "ledgerLine",
+      52,
+      591,
+      262,
+      34
+     ],
+     "bbox_page_px": [
+      1518.06,
+      1672.605,
+      1558.67,
+      1677.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/6/22",
+     "value": [
+      "ledgerLine",
+      887,
+      875,
+      160,
+      40
+     ],
+     "bbox_page_px": [
+      1647.4850000000001,
+      1716.625,
+      1672.285,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [
+    [
+     2.439999999999996,
+     "staff/3/0/8"
+    ],
+    [
+     3.6304761904761946,
+     "staff/3/0/9"
+    ]
+   ],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/6/11",
+   "sean": "confirmed",
+   "crops": [
+    10,
+    17
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    535,
+    588,
+    135,
+    127
+   ],
+   "bbox_page_px": [
+    1592.925,
+    1672.14,
+    1613.85,
+    1691.825
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/6/15",
+     "value": [
+      "ledgerLine",
+      518,
+      900,
+      164,
+      27
+     ],
+     "bbox_page_px": [
+      1590.29,
+      1720.5,
+      1615.71,
+      1724.685
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/18",
+     "value": [
+      "ledgerLine",
+      632,
+      888,
+      218,
+      37
+     ],
+     "bbox_page_px": [
+      1607.96,
+      1718.64,
+      1641.75,
+      1724.375
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/19",
+     "value": [
+      "ledgerLine",
+      816,
+      792,
+      306,
+      33
+     ],
+     "bbox_page_px": [
+      1636.48,
+      1703.76,
+      1683.91,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/20",
+     "value": [
+      "ledgerLine",
+      52,
+      591,
+      262,
+      34
+     ],
+     "bbox_page_px": [
+      1518.06,
+      1672.605,
+      1558.67,
+      1677.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/6/22",
+     "value": [
+      "ledgerLine",
+      887,
+      875,
+      160,
+      40
+     ],
+     "bbox_page_px": [
+      1647.4850000000001,
+      1716.625,
+      1672.285,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/6/12",
+   "sean": "wrong_staff",
+   "crops": [
+    20
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    525,
+    0,
+    128,
+    90
+   ],
+   "bbox_page_px": [
+    1591.375,
+    1581.0,
+    1611.215,
+    1594.95
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/6/15",
+     "value": [
+      "ledgerLine",
+      518,
+      900,
+      164,
+      27
+     ],
+     "bbox_page_px": [
+      1590.29,
+      1720.5,
+      1615.71,
+      1724.685
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/18",
+     "value": [
+      "ledgerLine",
+      632,
+      888,
+      218,
+      37
+     ],
+     "bbox_page_px": [
+      1607.96,
+      1718.64,
+      1641.75,
+      1724.375
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/19",
+     "value": [
+      "ledgerLine",
+      816,
+      792,
+      306,
+      33
+     ],
+     "bbox_page_px": [
+      1636.48,
+      1703.76,
+      1683.91,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    },
+    {
+     "subject": "glyph/3/0/8/6/20",
+     "value": [
+      "ledgerLine",
+      52,
+      591,
+      262,
+      34
+     ],
+     "bbox_page_px": [
+      1518.06,
+      1672.605,
+      1558.67,
+      1677.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/6/22",
+     "value": [
+      "ledgerLine",
+      887,
+      875,
+      160,
+      40
+     ],
+     "bbox_page_px": [
+      1647.4850000000001,
+      1716.625,
+      1672.285,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/7/0",
+   "sean": "confirmed",
+   "crops": [
+    8
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    166,
+    954,
+    150,
+    131
+   ],
+   "bbox_page_px": [
+    1716.73,
+    1728.87,
+    1739.98,
+    1749.175
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/7/11",
+     "value": [
+      "ledgerLine",
+      424,
+      675,
+      283,
+      35
+     ],
+     "bbox_page_px": [
+      1756.72,
+      1685.625,
+      1800.585,
+      1691.05
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/7/6",
+     "value": [
+      "ledgerLine",
+      150,
+      875,
+      171,
+      40
+     ],
+     "bbox_page_px": [
+      1714.25,
+      1716.625,
+      1740.755,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/7/7",
+     "value": [
+      "ledgerLine",
+      130,
+      789,
+      213,
+      36
+     ],
+     "bbox_page_px": [
+      1711.15,
+      1703.295,
+      1744.165,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    }
+   ],
+   "band_rows": [
+    [
+     2.1950000000000025,
+     "staff/3/0/8"
+    ],
+    [
+     3.8715873015872995,
+     "staff/3/0/9"
+    ]
+   ],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/7/1",
+   "sean": "wrong_staff",
+   "crops": [
+    2
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    165,
+    0,
+    165,
+    79
+   ],
+   "bbox_page_px": [
+    1716.575,
+    1581.0,
+    1742.15,
+    1593.245
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/7/11",
+     "value": [
+      "ledgerLine",
+      424,
+      675,
+      283,
+      35
+     ],
+     "bbox_page_px": [
+      1756.72,
+      1685.625,
+      1800.585,
+      1691.05
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/7/6",
+     "value": [
+      "ledgerLine",
+      150,
+      875,
+      171,
+      40
+     ],
+     "bbox_page_px": [
+      1714.25,
+      1716.625,
+      1740.755,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/7/7",
+     "value": [
+      "ledgerLine",
+      130,
+      789,
+      213,
+      36
+     ],
+     "bbox_page_px": [
+      1711.15,
+      1703.295,
+      1744.165,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    }
+   ],
+   "band_rows": [
+    [
+     2.3201562499999966,
+     "staff/3/0/7"
+    ],
+    [
+     3.6050000000000035,
+     "staff/3/0/8"
+    ]
+   ],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/8/7/9",
+   "sean": "confirmed",
+   "crops": [
+    19
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    174,
+    595,
+    144,
+    117
+   ],
+   "bbox_page_px": [
+    1717.97,
+    1673.225,
+    1740.29,
+    1691.3600000000001
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/8/7/11",
+     "value": [
+      "ledgerLine",
+      424,
+      675,
+      283,
+      35
+     ],
+     "bbox_page_px": [
+      1756.72,
+      1685.625,
+      1800.585,
+      1691.05
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/8/7/6",
+     "value": [
+      "ledgerLine",
+      150,
+      875,
+      171,
+      40
+     ],
+     "bbox_page_px": [
+      1714.25,
+      1716.625,
+      1740.755,
+      1722.825
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/8/7/7",
+     "value": [
+      "ledgerLine",
+      130,
+      789,
+      213,
+      36
+     ],
+     "bbox_page_px": [
+      1711.15,
+      1703.295,
+      1744.165,
+      1708.875
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "on_a_staff_line"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/9/2/6",
+   "sean": "wrong_staff",
+   "crops": [
+    4
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    566,
+    0,
+    141,
+    66
+   ],
+   "bbox_page_px": [
+    897.145,
+    1737.0,
+    919.3525,
+    1747.395
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/9/2/10",
+     "value": [
+      "ledgerLine",
+      215,
+      928,
+      218,
+      22
+     ],
+     "bbox_page_px": [
+      841.8625,
+      1883.16,
+      876.1975,
+      1886.625
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/11",
+     "value": [
+      "ledgerLine",
+      216,
+      923,
+      220,
+      24
+     ],
+     "bbox_page_px": [
+      842.02,
+      1882.3725,
+      876.67,
+      1886.1525
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/12",
+     "value": [
+      "ledgerLine",
+      964,
+      611,
+      229,
+      25
+     ],
+     "bbox_page_px": [
+      959.83,
+      1833.2325,
+      995.8975,
+      1837.17
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/9/2/13",
+     "value": [
+      "ledgerLine",
+      736,
+      927,
+      196,
+      23
+     ],
+     "bbox_page_px": [
+      923.92,
+      1883.0025,
+      954.79,
+      1886.625
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/17",
+     "value": [
+      "ledgerLine",
+      216,
+      815,
+      270,
+      28
+     ],
+     "bbox_page_px": [
+      842.02,
+      1865.3625,
+      884.545,
+      1869.7725
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/18",
+     "value": [
+      "ledgerLine",
+      492,
+      816,
+      232,
+      26
+     ],
+     "bbox_page_px": [
+      885.49,
+      1865.52,
+      922.03,
+      1869.615
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/20",
+     "value": [
+      "ledgerLine",
+      931,
+      712,
+      262,
+      28
+     ],
+     "bbox_page_px": [
+      954.6325,
+      1849.14,
+      995.8975,
+      1853.55
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/9/2/21",
+     "value": [
+      "ledgerLine",
+      543,
+      612,
+      335,
+      27
+     ],
+     "bbox_page_px": [
+      893.5225,
+      1833.39,
+      946.285,
+      1837.6425
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    },
+    {
+     "subject": "glyph/3/0/9/2/22",
+     "value": [
+      "ledgerLine",
+      829,
+      908,
+      278,
+      29
+     ],
+     "bbox_page_px": [
+      938.5675,
+      1880.01,
+      982.3525,
+      1884.5775
+     ],
+     "category": "structural",
+     "refused": false,
+     "reason": "ledger_line"
+    },
+    {
+     "subject": "glyph/3/0/9/2/23",
+     "value": [
+      "ledgerLine",
+      414,
+      716,
+      292,
+      25
+     ],
+     "bbox_page_px": [
+      873.205,
+      1849.77,
+      919.195,
+      1853.7075
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/9/5/1",
+   "sean": "not_a_head",
+   "crops": [
+    3
+   ],
+   "value": [
+    "noteheadBlackOnLine",
+    366,
+    465,
+    93,
+    102
+   ],
+   "bbox_page_px": [
+    1394.645,
+    1810.2375,
+    1409.2925,
+    1826.3025
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    true,
+    "too_narrow"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/9/5/5",
+   "sean": "confirmed",
+   "crops": [
+    14
+   ],
+   "value": [
+    "noteheadHalfInSpace",
+    206,
+    699,
+    165,
+    119
+   ],
+   "bbox_page_px": [
+    1369.445,
+    1847.0925,
+    1395.4325,
+    1865.835
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/9/6/8",
+   "sean": "wrong_staff",
+   "crops": [
+    23
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    521,
+    0,
+    138,
+    103
+   ],
+   "bbox_page_px": [
+    1592.0575,
+    1737.0,
+    1613.7925,
+    1753.2225
+   ],
+   "category": "notehead",
+   "ledgers": [],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  },
+  {
+   "subject": "glyph/3/0/9/7/5",
+   "sean": "wrong_staff",
+   "crops": [
+    13
+   ],
+   "value": [
+    "noteheadBlackInSpace",
+    150,
+    0,
+    165,
+    79
+   ],
+   "bbox_page_px": [
+    1714.625,
+    1737.0,
+    1740.6125,
+    1749.4425
+   ],
+   "category": "notehead",
+   "ledgers": [
+    {
+     "subject": "glyph/3/0/9/7/6",
+     "value": [
+      "ledgerLine",
+      315,
+      775,
+      380,
+      35
+     ],
+     "bbox_page_px": [
+      1740.6125,
+      1859.0625,
+      1800.4625,
+      1864.575
+     ],
+     "category": "structural",
+     "refused": true,
+     "reason": "inside_the_staff"
+    }
+   ],
+   "band_rows": [],
+   "npv_on_base": [
+    "decided",
+    false,
+    "notehead"
+   ]
+  }
+ ]
+}

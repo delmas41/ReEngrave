@@ -1,0 +1,201 @@
+{
+ "label": "beethoven5-litolff",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "provenance": {
+  "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+  "dirty": true
+ },
+ "counts": {
+  "observations": 156525,
+  "verdicts": 101361,
+  "glyph_box": 37390
+ },
+ "families": {
+  "keysig_vs_accidental": {
+   "population": 2058,
+   "population_key_classes": 527,
+   "population_accidental_classes": 1531,
+   "disagree": 194,
+   "detail": {
+    "accidental_in_cell0_left_of_first_notehead": 115,
+    "accidental_in_cell0_total": 238,
+    "accidental_in_cell0_no_notehead_reference": 13,
+    "key_class_after_cell0": 79,
+    "key_class_in_cell0": 448,
+    "staves_losing_a_header_accidental": 64
+   }
+  },
+  "notehead_on_line_in_space": {
+   "population": 11632,
+   "disagree": 2994,
+   "detail": {
+    "agree": 8638,
+    "disagree_where_the_grid_is_confident": 1391,
+    "no_measured_position": 0,
+    "notehead_classes_with_no_role_half": 0,
+    "residual_over_quarter_step": 3736,
+    "median_residual": 0.16
+   }
+  },
+  "rest_whole_vs_half": {
+   "population": 1642,
+   "disagree": 300,
+   "detail": {
+    "lands_on_the_other_convention": 102,
+    "lands_on_neither_convention": 198,
+    "no_staff_geometry": 0,
+    "measured": {
+     "restWhole": {
+      "n": 1633,
+      "median_step": 2.543,
+      "p10": 2.29,
+      "p90": 4.88
+     },
+     "restHalf": {
+      "n": 9,
+      "median_step": 0.82,
+      "p10": -8.187,
+      "p90": 15.43
+     }
+    },
+    "convention": {
+     "restWhole": 2.5,
+     "restHalf": 3.5,
+     "slack_half_steps": 0.5
+    },
+    "other_rest_classes": {
+     "restQuarter": 1015,
+     "rest8th": 213,
+     "rest16th": 20,
+     "rest32nd": 7,
+     "rest64th": 1
+    }
+   }
+  },
+  "flag_up_down_vs_stem": {
+   "population": 253,
+   "disagree": 27,
+   "detail": {
+    "joined_unambiguous_cells": 90,
+    "agree": 63,
+    "unjoinable_flags": 163,
+    "flag_classes_with_no_role_half": 0,
+    "note": "a flag is filed on its own glyph subject and the stem direction on the notehead's; only cells holding exactly one of each are joined here"
+   }
+  },
+  "arc_tie_vs_slur": {
+   "population": 2656,
+   "disagree": 585,
+   "detail": {
+    "grammar_silent": 1421,
+    "grammar_says": {
+     "None": 1421,
+     "tie": 222,
+     "slur": 1013
+    },
+    "note": "the geometry is already computed and recorded; the class still decides (OMR_ARC_RECLASS default OFF)"
+   }
+  },
+  "aug_dot_vs_staccato": {
+   "population": 608,
+   "disagree": 116,
+   "detail": {
+    "aug_dot_rows": 162,
+    "aug_dot_not_right_of_a_head": 107,
+    "artic_staccato_rows": 446,
+    "artic_staccato_sitting_where_a_dot_sits": 9,
+    "no_notehead_in_cell": 37,
+    "no_cell_staff_space": 0
+   }
+  },
+  "timesig_role": {
+   "population": 85,
+   "disagree": 23,
+   "detail": {
+    "at_cell_0_header": 31,
+    "mid_staff_corroborated_by_another_staff": 31,
+    "mid_staff_alone_on_its_system": 23
+   }
+  },
+  "clef_sized_notehead": {
+   "population": 898,
+   "disagree": 18,
+   "detail": {
+    "threshold_staff_spaces": 3.0,
+    "no_cell_staff_space": 0,
+    "median_height_spaces": 1.313,
+    "note": "cell 0 only \u2014 the header, where a clef stands"
+   }
+  },
+  "artic_fermata_side": {
+   "population": 644,
+   "disagree": 139,
+   "detail": {
+    "artic": {
+     "population": 464,
+     "disagree": 84,
+     "no_notehead_in_cell": 17,
+     "class_states_no_side": 0
+    },
+    "fermata": {
+     "population": 180,
+     "disagree": 55,
+     "no_notehead_in_cell": 61,
+     "class_states_no_side": 0
+    }
+   }
+  },
+  "role_twin_boxes": {
+   "population": 37390,
+   "disagree": 505,
+   "detail": {
+    "iou_threshold": 0.3,
+    "cells_holding_a_twin_pair": 410,
+    "by_shape_core": {
+     "noteheadBlack:InSpace/OnLine": 347,
+     "noteheadHalf:InSpace/OnLine": 158
+    },
+    "note": "the INVISIBLE half -- a head whose evidence split below conf 0.25 and was emitted as neither spelling -- cannot be counted from a record and needs a detector arm"
+   }
+  }
+ },
+ "uncomputable": {
+  "dynamic_letters": {
+   "population": 1576,
+   "reason": "the class names a LETTER and claims no role; the role question is 'is this run of letters a dynamic or a word' and lives in direction_text._blank_detections, which already overrules the category with an ink measurement"
+  },
+  "tuplet_vs_fingering_vs_numeral": {
+   "population": 32,
+   "by_class": {
+    "tupletBracket": 14,
+    "fingering1": 17,
+    "tuplet3": 1
+   },
+   "reason": "gather admits BOTH tuplet3 and fingering3 and gates positionally in adjudicate_tuplet_ratio \u2014 already the 2.12 shape. `numeral*` carries no role at all and class_aliases REFUSES to map it"
+  },
+  "keyboard_pedal": {
+   "population": 13,
+   "by_class": {
+    "keyboardPedalPed": 2,
+    "keyboardPedalUp": 11
+   },
+   "reason": "no quantity is gathered for it; nothing reads it"
+  },
+  "beam": {
+   "population": 2558,
+   "reason": "the role question is 'beam vs slur vs ledger line', and line_detection.detect_beams already decides it by ATTACHED STEM COUNT, not by a class name; gather unions the two readers rather than gating"
+  },
+  "ledger_line": {
+   "population": 7617,
+   "reason": "ledgerLine claims no role; _ledger_index reads it as geometry already"
+  },
+  "clefC_line": {
+   "population": 16,
+   "by_class": {
+    "clefCAlto": 8,
+    "clefCTenor": 8
+   },
+   "reason": "clef_geometry.resolve_clef MEASURES the line and prefers it over the class fallback \u2014 already the 2.12 shape"
+  }
+ }
+}

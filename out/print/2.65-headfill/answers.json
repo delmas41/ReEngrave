@@ -1,0 +1,8 @@
+{
+ "1": "Not a note - barline",
+ "2": "An accidental (natural) in front of an 8th note with stems going up and down; box also captures part of the barline. The 8th has a flag up and the stem going down connects to a beam",
+ "3": "Half note with a single trem slash and an accidental (natural) in front",
+ "4": "Whole rest hanging off the bottom line because it refers to the second voice in that measure (2/4 bar); the first voice above (not in red) is a half note",
+ "5": "Half note in top voice; (outside the box) tied to the next measure",
+ "6": "Half note"
+}

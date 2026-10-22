@@ -1,0 +1,55 @@
+{
+ "what": "The four possible slips in Sean's labels, Brahms 317803 page 0 (read, never written). Staff numbers count from the top of the page (1 = top).",
+ "truth_page": "imslp317803:0",
+ "slips": [
+  {
+   "slip": 1,
+   "file": "slip_1.png",
+   "cell": "s0-st3-m0",
+   "box": "q415",
+   "class": "accidentalFlat",
+   "origin": "prefill-confirmed",
+   "question": "key-signature flat or an ordinary flat?",
+   "effect": "the key reads -2 from the boxes; the record reads -3"
+  },
+  {
+   "slip": 2,
+   "file": "slip_2.png",
+   "cell": "s0-st5-m7",
+   "box": "q713",
+   "class": "noteheadWholeInSpace",
+   "origin": "prefill-fixed",
+   "question": "the 8 of a 9/8, or a whole note?"
+  },
+  {
+   "slip": 3,
+   "file": "slip_3.png",
+   "cell": "s0-st4-m0",
+   "box": null,
+   "class": null,
+   "boxed_neighbour": "q539",
+   "unboxed_digit_page_rect_estimated": [
+    1503.1,
+    3137.0,
+    1550.1,
+    3199.3
+   ],
+   "estimate": "median (8 box - 6 box) over 7 staves whose 6/8 are boxed; neither Sean nor our detector has a box on this digit",
+   "question": "the 8 of a 6/8 with no box: does it need one?"
+  },
+  {
+   "slip": 4,
+   "file": "slip_4.png",
+   "cell": "s0-st0-m6",
+   "boxes": [
+    "q133",
+    "q136"
+   ],
+   "classes": [
+    "noteheadBlackOnLine",
+    "noteheadBlackOnLine"
+   ],
+   "question": "ledger lines under these two far heads? and which staff?"
+  }
+ ]
+}

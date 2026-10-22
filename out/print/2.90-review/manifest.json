@@ -1,0 +1,454 @@
+{
+ "dpi": 600,
+ "question": "What is the written value of the note inside each RED corner bracket (whole, half, quarter, eighth, ..., dotted or not)? Answer top to bottom.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "Bb4",
+     "voice": 1,
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "G4",
+     "voice": 2,
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 6.85,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.12,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    2946,
+    894,
+    3660,
+    1307
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 1,
+   "staff": 2,
+   "cell": 0,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "C5",
+     "voice": 1,
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "Eb4",
+     "voice": 2,
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 6.37,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.15,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.1,
+   "page_box_600dpi": [
+    573,
+    4485,
+    1546,
+    4898
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "document": "brahms",
+   "page": 7,
+   "system": 1,
+   "staff": 2,
+   "cell": 4,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "D5",
+     "voice": 1,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "up"
+    },
+    {
+     "pitch": "F4",
+     "voice": 2,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 17.1,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.15,
+   "page_box_600dpi": [
+    2425,
+    4409,
+    3146,
+    4825
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "document": "brahms",
+   "page": 7,
+   "system": 1,
+   "staff": 2,
+   "cell": 5,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "C5",
+     "voice": 1,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "up"
+    },
+    {
+     "pitch": "F4",
+     "voice": 2,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 16.42,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.05,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    2817,
+    4409,
+    3537,
+    4825
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "document": "brahms",
+   "page": 7,
+   "system": 1,
+   "staff": 3,
+   "cell": 11,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "C4",
+     "voice": 1,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "up"
+    },
+    {
+     "pitch": "Eb3",
+     "voice": 2,
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 20.36,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.04,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.15,
+   "page_box_600dpi": [
+    4958,
+    4722,
+    5652,
+    5124
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 6,
+   "n_heads": 3,
+   "bar_written_by_the_export": false,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "E5",
+     "voice": 1,
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "C5",
+     "voice": 1,
+     "beats": 1.5,
+     "type": "quarter",
+     "dots": 1,
+     "dir": "up"
+    },
+    {
+     "pitch": "E4",
+     "voice": 2,
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 11.31,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.08,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.15,
+   "page_box_600dpi": [
+    4828,
+    894,
+    5575,
+    1307
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "document": "brahms",
+   "page": 7,
+   "system": 1,
+   "staff": 2,
+   "cell": 1,
+   "n_heads": 2,
+   "bar_written_by_the_export": false,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "Bb4",
+     "voice": 1,
+     "beats": 1.5,
+     "type": "quarter",
+     "dots": 1,
+     "dir": "up"
+    },
+    {
+     "pitch": "G4",
+     "voice": 2,
+     "beats": 1.5,
+     "type": "quarter",
+     "dots": 1,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 5.49,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.15,
+   "page_box_600dpi": [
+    1195,
+    4409,
+    1915,
+    4825
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "document": "litolff",
+   "page": 15,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "n_heads": 2,
+   "bar_written_by_the_export": true,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "D5",
+     "voice": 1,
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "G4",
+     "voice": 2,
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 3.94,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.23,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.15,
+   "page_box_600dpi": [
+    272,
+    618,
+    680,
+    854
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "document": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 0,
+   "cell": 6,
+   "n_heads": 2,
+   "bar_written_by_the_export": false,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "C6",
+     "voice": 1,
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "D5",
+     "voice": 2,
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 18.8,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.15,
+   "page_box_600dpi": [
+    1223,
+    2057,
+    1632,
+    2293
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "document": "litolff",
+   "page": 14,
+   "system": 1,
+   "staff": 1,
+   "cell": 16,
+   "n_heads": 2,
+   "bar_written_by_the_export": false,
+   "heads_top_to_bottom": [
+    {
+     "pitch": "Ab5",
+     "voice": 1,
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0,
+     "dir": "up"
+    },
+    {
+     "pitch": "C5",
+     "voice": 2,
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0,
+     "dir": "down"
+    }
+   ],
+   "frame_control": {
+    "ratio": 188.8,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.0,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.25,
+   "page_box_600dpi": [
+    2380,
+    2243,
+    2789,
+    2479
+   ]
+  }
+ ]
+}

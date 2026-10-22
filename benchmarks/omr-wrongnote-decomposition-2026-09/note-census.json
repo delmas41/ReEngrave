@@ -1,0 +1,450 @@
+[
+ {
+  "row": "beethoven-sym5-mvt1-984073-p1",
+  "truth": 147,
+  "pred": 117,
+  "truth_hollow": 68,
+  "pred_hollow": 31,
+  "truth_types": {
+   "eighth": 77,
+   "half": 68,
+   "quarter": 2
+  },
+  "pred_types": {
+   "quarter": 12,
+   "eighth": 74,
+   "half": 31
+  },
+  "truth_parts": 18,
+  "pred_parts": 12
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p2",
+  "truth": 601,
+  "pred": 509,
+  "truth_hollow": 131,
+  "pred_hollow": 80,
+  "truth_types": {
+   "eighth": 322,
+   "quarter": 148,
+   "half": 131
+  },
+  "pred_types": {
+   "quarter": 168,
+   "eighth": 255,
+   "half": 72,
+   "whole": 8,
+   "16th": 6
+  },
+  "truth_parts": 18,
+  "pred_parts": 11
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p3",
+  "truth": 442,
+  "pred": 378,
+  "truth_hollow": 196,
+  "pred_hollow": 148,
+  "truth_types": {
+   "half": 196,
+   "quarter": 118,
+   "eighth": 128
+  },
+  "pred_types": {
+   "half": 145,
+   "eighth": 91,
+   "quarter": 132,
+   "whole": 3,
+   "16th": 7
+  },
+  "truth_parts": 18,
+  "pred_parts": 19
+ },
+ {
+  "row": "beethoven-sym5-mvt1-984073-p4",
+  "truth": 775,
+  "pred": 696,
+  "truth_hollow": 114,
+  "pred_hollow": 55,
+  "truth_types": {
+   "quarter": 339,
+   "half": 114,
+   "eighth": 322
+  },
+  "pred_types": {
+   "quarter": 324,
+   "half": 53,
+   "eighth": 285,
+   "16th": 32,
+   "whole": 2
+  },
+  "truth_parts": 18,
+  "pred_parts": 11
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p1",
+  "truth": 147,
+  "pred": 144,
+  "truth_hollow": 68,
+  "pred_hollow": 53,
+  "truth_types": {
+   "eighth": 77,
+   "half": 68,
+   "quarter": 2
+  },
+  "pred_types": {
+   "quarter": 22,
+   "eighth": 67,
+   "half": 52,
+   "whole": 1,
+   "16th": 2
+  },
+  "truth_parts": 18,
+  "pred_parts": 12
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p2",
+  "truth": 601,
+  "pred": 529,
+  "truth_hollow": 131,
+  "pred_hollow": 113,
+  "truth_types": {
+   "eighth": 322,
+   "quarter": 148,
+   "half": 131
+  },
+  "pred_types": {
+   "quarter": 151,
+   "eighth": 264,
+   "half": 112,
+   "16th": 1,
+   "whole": 1
+  },
+  "truth_parts": 18,
+  "pred_parts": 11
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p3",
+  "truth": 442,
+  "pred": 430,
+  "truth_hollow": 196,
+  "pred_hollow": 211,
+  "truth_types": {
+   "half": 196,
+   "quarter": 118,
+   "eighth": 128
+  },
+  "pred_types": {
+   "half": 208,
+   "quarter": 120,
+   "eighth": 95,
+   "whole": 3,
+   "16th": 4
+  },
+  "truth_parts": 18,
+  "pred_parts": 19
+ },
+ {
+  "row": "beethoven-sym5-mvt1-575951-p4",
+  "truth": 775,
+  "pred": 716,
+  "truth_hollow": 114,
+  "pred_hollow": 107,
+  "truth_types": {
+   "quarter": 339,
+   "half": 114,
+   "eighth": 322
+  },
+  "pred_types": {
+   "quarter": 297,
+   "half": 105,
+   "eighth": 286,
+   "16th": 26,
+   "whole": 2
+  },
+  "truth_parts": 18,
+  "pred_parts": 11
+ },
+ {
+  "row": "dvorak-sym9-mvt1-405834-p5",
+  "truth": 96,
+  "pred": 109,
+  "truth_hollow": 0,
+  "pred_hollow": 3,
+  "truth_types": {
+   "eighth": 30,
+   "32nd": 12,
+   "16th": 34,
+   "quarter": 18,
+   "64th": 2
+  },
+  "pred_types": {
+   "16th": 39,
+   "eighth": 32,
+   "quarter": 30,
+   "32nd": 5,
+   "whole": 3
+  },
+  "truth_parts": 15,
+  "pred_parts": 15
+ },
+ {
+  "row": "dvorak-sym9-mvt1-405834-p6",
+  "truth": 226,
+  "pred": 224,
+  "truth_hollow": 5,
+  "pred_hollow": 45,
+  "truth_types": {
+   "eighth": 16,
+   "64th": 44,
+   "quarter": 22,
+   "16th": 59,
+   "32nd": 80,
+   "half": 5
+  },
+  "pred_types": {
+   "eighth": 30,
+   "quarter": 47,
+   "64th": 19,
+   "32nd": 25,
+   "half": 39,
+   "16th": 58,
+   "whole": 6
+  },
+  "truth_parts": 15,
+  "pred_parts": 15
+ },
+ {
+  "row": "dvorak-sym9-mvt1-405834-p7",
+  "truth": 583,
+  "pred": 623,
+  "truth_hollow": 22,
+  "pred_hollow": 56,
+  "truth_types": {
+   "32nd": 339,
+   "16th": 98,
+   "half": 22,
+   "eighth": 89,
+   "quarter": 35
+  },
+  "pred_types": {
+   "16th": 219,
+   "quarter": 76,
+   "32nd": 92,
+   "half": 54,
+   "eighth": 164,
+   "whole": 2,
+   "64th": 16
+  },
+  "truth_parts": 15,
+  "pred_parts": 15
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p1",
+  "truth": 505,
+  "pred": 446,
+  "truth_hollow": 14,
+  "pred_hollow": 52,
+  "truth_types": {
+   "quarter": 151,
+   "eighth": 289,
+   "half": 14,
+   "16th": 51
+  },
+  "pred_types": {
+   "quarter": 167,
+   "eighth": 170,
+   "whole": 16,
+   "half": 36,
+   "16th": 53,
+   "32nd": 4
+  },
+  "truth_parts": 21,
+  "pred_parts": 14
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p2",
+  "truth": 615,
+  "pred": 814,
+  "truth_hollow": 4,
+  "pred_hollow": 71,
+  "truth_types": {
+   "eighth": 504,
+   "quarter": 85,
+   "half": 4,
+   "16th": 22
+  },
+  "pred_types": {
+   "whole": 59,
+   "eighth": 403,
+   "quarter": 170,
+   "16th": 101,
+   "32nd": 61,
+   "half": 12,
+   "64th": 8
+  },
+  "truth_parts": 21,
+  "pred_parts": 27
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p3",
+  "truth": 477,
+  "pred": 570,
+  "truth_hollow": 29,
+  "pred_hollow": 46,
+  "truth_types": {
+   "half": 29,
+   "quarter": 129,
+   "eighth": 214,
+   "16th": 105
+  },
+  "pred_types": {
+   "whole": 9,
+   "quarter": 245,
+   "eighth": 168,
+   "16th": 66,
+   "half": 37,
+   "32nd": 21,
+   "64th": 24
+  },
+  "truth_parts": 21,
+  "pred_parts": 14
+ },
+ {
+  "row": "brahms-sym1-mvt1-317803-p4",
+  "truth": 744,
+  "pred": 826,
+  "truth_hollow": 15,
+  "pred_hollow": 24,
+  "truth_types": {
+   "quarter": 284,
+   "half": 15,
+   "eighth": 373,
+   "16th": 72
+  },
+  "pred_types": {
+   "quarter": 346,
+   "eighth": 387,
+   "half": 22,
+   "16th": 52,
+   "32nd": 17,
+   "whole": 2
+  },
+  "truth_parts": 21,
+  "pred_parts": 14
+ },
+ {
+  "row": "mahler-sym5-mvt1-local-p2",
+  "truth": 27,
+  "pred": 46,
+  "truth_hollow": 7,
+  "pred_hollow": 4,
+  "truth_types": {
+   "eighth": 18,
+   "half": 5,
+   "whole": 2,
+   "quarter": 2
+  },
+  "pred_types": {
+   "quarter": 29,
+   "whole": 4,
+   "eighth": 7,
+   "16th": 6
+  },
+  "truth_parts": 38,
+  "pred_parts": 17
+ },
+ {
+  "row": "mahler-sym5-mvt1-local-p3",
+  "truth": 280,
+  "pred": 219,
+  "truth_hollow": 29,
+  "pred_hollow": 21,
+  "truth_types": {
+   "whole": 22,
+   "eighth": 88,
+   "16th": 148,
+   "half": 7,
+   "quarter": 15
+  },
+  "pred_types": {
+   "eighth": 86,
+   "32nd": 8,
+   "16th": 73,
+   "half": 11,
+   "quarter": 31,
+   "whole": 10
+  },
+  "truth_parts": 38,
+  "pred_parts": 13
+ },
+ {
+  "row": "mahler-sym5-mvt1-local-p4",
+  "truth": 395,
+  "pred": 370,
+  "truth_hollow": 86,
+  "pred_hollow": 36,
+  "truth_types": {
+   "whole": 72,
+   "quarter": 82,
+   "eighth": 227,
+   "half": 14
+  },
+  "pred_types": {
+   "quarter": 135,
+   "whole": 27,
+   "eighth": 195,
+   "half": 9,
+   "16th": 4
+  },
+  "truth_parts": 38,
+  "pred_parts": 18
+ },
+ {
+  "row": "mahler-sym5-mvt1-local-p5",
+  "truth": 276,
+  "pred": 251,
+  "truth_hollow": 56,
+  "pred_hollow": 34,
+  "truth_types": {
+   "quarter": 153,
+   "half": 37,
+   "eighth": 43,
+   "whole": 19,
+   "16th": 8,
+   "32nd": 16
+  },
+  "pred_types": {
+   "quarter": 136,
+   "whole": 12,
+   "eighth": 70,
+   "half": 22,
+   "16th": 11
+  },
+  "truth_parts": 38,
+  "pred_parts": 17
+ },
+ {
+  "row": "bach-brandenburg3-mvt1-468678-p1",
+  "truth": 954,
+  "pred": 1202,
+  "truth_hollow": 0,
+  "pred_hollow": 8,
+  "truth_types": {
+   "16th": 476,
+   "eighth": 462,
+   "quarter": 16
+  },
+  "pred_types": {
+   "eighth": 614,
+   "half": 3,
+   "16th": 336,
+   "quarter": 238,
+   "32nd": 4,
+   "whole": 5,
+   "64th": 2
+  },
+  "truth_parts": 11,
+  "pred_parts": 12
+ }
+]

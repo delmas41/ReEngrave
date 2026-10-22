@@ -1,0 +1,837 @@
+{
+ "meta": {
+  "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures",
+  "tag": "reconciliation",
+  "n_records": 45
+ },
+ "acquisitions": {
+  "dvorak-sym9-mvt1-405834-p6": {
+   "roster": {
+    "page_index": 4,
+    "system_index": 0,
+    "n_staves": 15,
+    "named": 15,
+    "coverage": 1.0,
+    "pages_searched": [
+     5,
+     4
+    ],
+    "pages_opened": [
+     4
+    ],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Flauti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Oboi.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Clarinetti in A.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fagotti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Corni I. II. in E.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Horn",
+      "text": "Corni III. IV. in C.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Trumpet",
+      "text": "Trombe in E.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trombone",
+      "text": "Tromboni I. II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Trombone",
+      "text": "Trombone basso.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Timpani",
+      "text": "Tympani A. E. H.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "Violino I.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Violin",
+      "text": "Violino II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Viola",
+      "text": "Viola.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Cello",
+      "text": "Violoncello.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 14,
+      "instrument": "Contrabass",
+      "text": "Contrabasso.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 15,
+   "from_roster": 15,
+   "from_score_order_off": 8,
+   "from_score_order_on": 0
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+   "roster": {
+    "page_index": 4,
+    "system_index": 0,
+    "n_staves": 15,
+    "named": 15,
+    "coverage": 1.0,
+    "pages_searched": [
+     6,
+     5,
+     4
+    ],
+    "pages_opened": [
+     5,
+     4
+    ],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Flauti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Oboi.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Clarinetti in A.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fagotti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Corni I. II. in E.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Horn",
+      "text": "Corni III. IV. in C.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Trumpet",
+      "text": "Trombe in E.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trombone",
+      "text": "Tromboni I. II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Trombone",
+      "text": "Trombone basso.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Timpani",
+      "text": "Tympani A. E. H.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "Violino I.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Violin",
+      "text": "Violino II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Viola",
+      "text": "Viola.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Cello",
+      "text": "Violoncello.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 14,
+      "instrument": "Contrabass",
+      "text": "Contrabasso.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 15,
+   "from_roster": 15,
+   "from_score_order_off": 7,
+   "from_score_order_on": 0
+  }
+ },
+ "records": [
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Flute",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Oboe",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Clarinet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "score_order",
+   "ON": "Bassoon",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trumpet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Contrabass",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "score_order",
+   "ON": "Flute",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Oboe",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Clarinet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Bassoon",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trumpet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Contrabass",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "score_order",
+   "ON": "Flute",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Oboe",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Clarinet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Bassoon",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trumpet",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Trombone",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "roster"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": "Contrabass",
+   "ON_source": "roster"
+  }
+ ],
+ "abstained": []
+}

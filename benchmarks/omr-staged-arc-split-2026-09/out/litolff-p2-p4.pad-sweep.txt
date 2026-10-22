@@ -1,0 +1,12 @@
+REACH: 514 arc_box rows, 53 staff-runs, 12 parts
+       drops BEFORE pairing: none
+
+PAD SWEEP (ships at 0.25 notehead widths)
+   pad  paired  A none  B miss   C one
+  0.25     115     170     109      82
+   0.5     144     170      78      84
+  0.75     161     170      57      88
+   1.0     175     170      34      97
+   1.5     193     170      16      97
+   2.0     197     170      10      99
+   3.0     201     170       2     103

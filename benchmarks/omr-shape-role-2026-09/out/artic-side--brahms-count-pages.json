@@ -1,0 +1,19 @@
+{
+ "changed": [],
+ "decided_population": {
+  "decided": 2,
+  "decided_but_beyond_reach(>1.5 head heights)": 1
+ },
+ "fermata": {},
+ "invariants": {
+  "base_decided_stays_decided": 2,
+  "decided_measured_side_equals_class": 2
+ },
+ "label": "brahms-small",
+ "marks": 4,
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 1,
+  "abstained/owned_by_another_staff -> abstained/owned_by_another_staff": 1,
+  "decided/nearest_on_declared_side -> decided/nearest_on_declared_side": 2
+ }
+}

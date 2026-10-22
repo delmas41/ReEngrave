@@ -1,0 +1,363 @@
+{
+ "meta": {
+  "tag": "reconciliation",
+  "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures"
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "n": 12,
+   "n_systems": 1,
+   "sizes": [
+    12
+   ],
+   "named": 12,
+   "unnamed": 0,
+   "derived": 2,
+   "noclef": 0,
+   "slotted": 11,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "n": 22,
+   "n_systems": 2,
+   "sizes": [
+    11
+   ],
+   "named": 22,
+   "unnamed": 0,
+   "derived": 8,
+   "noclef": 2,
+   "slotted": 20,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "n": 19,
+   "n_systems": 2,
+   "sizes": [
+    8,
+    11
+   ],
+   "named": 19,
+   "unnamed": 0,
+   "derived": 8,
+   "noclef": 1,
+   "slotted": 17,
+   "stitch": "REFUSED",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "n": 22,
+   "n_systems": 2,
+   "sizes": [
+    11
+   ],
+   "named": 20,
+   "unnamed": 2,
+   "derived": 8,
+   "noclef": 1,
+   "slotted": 20,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "n": 12,
+   "n_systems": 1,
+   "sizes": [
+    12
+   ],
+   "named": 12,
+   "unnamed": 0,
+   "derived": 2,
+   "noclef": 0,
+   "slotted": 11,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "n": 22,
+   "n_systems": 2,
+   "sizes": [
+    11
+   ],
+   "named": 22,
+   "unnamed": 0,
+   "derived": 8,
+   "noclef": 0,
+   "slotted": 20,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "n": 19,
+   "n_systems": 2,
+   "sizes": [
+    8,
+    11
+   ],
+   "named": 19,
+   "unnamed": 0,
+   "derived": 8,
+   "noclef": 0,
+   "slotted": 17,
+   "stitch": "REFUSED",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "n": 22,
+   "n_systems": 2,
+   "sizes": [
+    11
+   ],
+   "named": 18,
+   "unnamed": 4,
+   "derived": 4,
+   "noclef": 0,
+   "slotted": 20,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "n": 15,
+   "n_systems": 1,
+   "sizes": [
+    15
+   ],
+   "named": 15,
+   "unnamed": 0,
+   "derived": 0,
+   "noclef": 15,
+   "slotted": 14,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "n": 15,
+   "n_systems": 1,
+   "sizes": [
+    15
+   ],
+   "named": 8,
+   "unnamed": 7,
+   "derived": 8,
+   "noclef": 0,
+   "slotted": 14,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "n": 30,
+   "n_systems": 2,
+   "sizes": [
+    15
+   ],
+   "named": 14,
+   "unnamed": 16,
+   "derived": 14,
+   "noclef": 0,
+   "slotted": 28,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "n": 14,
+   "n_systems": 1,
+   "sizes": [
+    14
+   ],
+   "named": 14,
+   "unnamed": 0,
+   "derived": 2,
+   "noclef": 0,
+   "slotted": 13,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "n": 27,
+   "n_systems": 2,
+   "sizes": [
+    13,
+    14
+   ],
+   "named": 27,
+   "unnamed": 0,
+   "derived": 5,
+   "noclef": 0,
+   "slotted": 25,
+   "stitch": "REFUSED",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "n": 28,
+   "n_systems": 2,
+   "sizes": [
+    14
+   ],
+   "named": 28,
+   "unnamed": 0,
+   "derived": 6,
+   "noclef": 1,
+   "slotted": 26,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "n": 28,
+   "n_systems": 2,
+   "sizes": [
+    14
+   ],
+   "named": 28,
+   "unnamed": 0,
+   "derived": 6,
+   "noclef": 0,
+   "slotted": 26,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "n": 17,
+   "n_systems": 1,
+   "sizes": [
+    17
+   ],
+   "named": 17,
+   "unnamed": 0,
+   "derived": 4,
+   "noclef": 0,
+   "slotted": 16,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "n": 13,
+   "n_systems": 1,
+   "sizes": [
+    13
+   ],
+   "named": 13,
+   "unnamed": 0,
+   "derived": 4,
+   "noclef": 1,
+   "slotted": 12,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "n": 18,
+   "n_systems": 1,
+   "sizes": [
+    18
+   ],
+   "named": 18,
+   "unnamed": 0,
+   "derived": 5,
+   "noclef": 0,
+   "slotted": 17,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "n": 17,
+   "n_systems": 1,
+   "sizes": [
+    17
+   ],
+   "named": 17,
+   "unnamed": 0,
+   "derived": 6,
+   "noclef": 1,
+   "slotted": 16,
+   "stitch": "REFUSED",
+   "by_slot": "-",
+   "ctx": true,
+   "ctx_reason": null
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "n": 24,
+   "n_systems": 2,
+   "sizes": [
+    12
+   ],
+   "named": 22,
+   "unnamed": 2,
+   "derived": 12,
+   "noclef": 12,
+   "slotted": 22,
+   "stitch": "joined",
+   "by_slot": "available",
+   "ctx": true,
+   "ctx_reason": null
+  }
+ ],
+ "pooled": {
+  "n": 396,
+  "named": 365,
+  "unnamed": 31,
+  "derived": 120,
+  "noclef": 34,
+  "slotted": 365,
+  "rows": 20,
+  "stitch_refused_rows": 12,
+  "stitch_refused_staves": 198,
+  "by_slot_rows": 3
+ }
+}

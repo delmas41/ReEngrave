@@ -1,0 +1,245 @@
+{
+ "mahler-sym5-mvt1-local-p2": {
+  "n_pred_parts": 17,
+  "n_norm_truth_parts": 21,
+  "total_cost": 702,
+  "part_ops": [
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 17,
+    "name": "Zweite Violinen.",
+    "cost": 25
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 18,
+    "name": "Violen.",
+    "cost": 25
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 19,
+    "name": "Violoncelle.",
+    "cost": 25
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 20,
+    "name": "Bässe.",
+    "cost": 25
+   }
+  ],
+  "op_counts": {
+   "inspart": 4,
+   "extrains": 19,
+   "headedit": 24,
+   "notedel": 12,
+   "noteins": 12,
+   "extrainfoedit": 14,
+   "delbar": 26,
+   "insbar": 26,
+   "extrasymboledit": 6,
+   "delexpression": 1,
+   "extradel": 4,
+   "delbeam": 1,
+   "accidentins": 2,
+   "insarticulation": 1,
+   "instuplet": 2
+  },
+  "part_op_cost": 100
+ },
+ "mahler-sym5-mvt1-local-p3": {
+  "n_pred_parts": 13,
+  "n_norm_truth_parts": 15,
+  "total_cost": 2159,
+  "part_ops": [
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 13,
+    "name": "Violoncelle.",
+    "cost": 103
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 14,
+    "name": "Bässe.",
+    "cost": 104
+   }
+  ],
+  "op_counts": {
+   "inspart": 2,
+   "extrains": 53,
+   "notedel": 166,
+   "noteins": 211,
+   "insbeam": 15,
+   "accidentdel": 2,
+   "headedit": 10,
+   "extradel": 25,
+   "extrainfoedit": 8,
+   "instuplet": 4,
+   "delbeam": 7,
+   "insbar": 19,
+   "delbar": 19,
+   "accidentins": 1,
+   "dotins": 3,
+   "insarticulation": 4,
+   "tieins": 2,
+   "extrasymboledit": 8,
+   "editbeam": 3
+  },
+  "part_op_cost": 207
+ },
+ "mahler-sym5-mvt1-local-p4": {
+  "n_pred_parts": 18,
+  "n_norm_truth_parts": 21,
+  "total_cost": 3209,
+  "part_ops": [
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 18,
+    "name": "Violoncelle.",
+    "cost": 121
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 19,
+    "name": "Bässe.",
+    "cost": 119
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 20,
+    "name": "Bässe.",
+    "cost": 121
+   }
+  ],
+  "op_counts": {
+   "inspart": 3,
+   "delbar": 53,
+   "notedel": 242,
+   "noteins": 256,
+   "tieins": 7,
+   "extrains": 74,
+   "insbar": 35,
+   "insarticulation": 16,
+   "insbeam": 9,
+   "instuplet": 32,
+   "delbeam": 10,
+   "extradel": 32,
+   "extrasymboledit": 6,
+   "accidentins": 12,
+   "headedit": 11,
+   "extrainfoedit": 11,
+   "editbeam": 2,
+   "accidentdel": 3,
+   "tiedel": 2,
+   "delarticulation": 1,
+   "extradurationedit": 1,
+   "insexpression": 1
+  },
+  "part_op_cost": 361
+ },
+ "mahler-sym5-mvt1-local-p5": {
+  "n_pred_parts": 17,
+  "n_norm_truth_parts": 21,
+  "total_cost": 2300,
+  "part_ops": [
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 17,
+    "name": "Violoncelle.",
+    "cost": 162
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 18,
+    "name": "Violoncelle.",
+    "cost": 90
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 19,
+    "name": "Bässe.",
+    "cost": 162
+   },
+   {
+    "op": "inspart",
+    "side": "truth (missed)",
+    "index": 20,
+    "name": "Bässe.",
+    "cost": 90
+   }
+  ],
+  "op_counts": {
+   "inspart": 4,
+   "extrains": 55,
+   "delbar": 57,
+   "notedel": 112,
+   "noteins": 127,
+   "insbar": 57,
+   "headedit": 19,
+   "insbeam": 3,
+   "instuplet": 2,
+   "delbeam": 9,
+   "extradel": 18,
+   "tieins": 1,
+   "extrasymboledit": 5,
+   "dotdel": 1,
+   "extracontentedit": 1,
+   "extrainfoedit": 4,
+   "extradurationedit": 1,
+   "accidentins": 3,
+   "tiedel": 2,
+   "accidentdel": 1
+  },
+  "part_op_cost": 504
+ },
+ "bach-brandenburg3-mvt1-468678-p1": {
+  "n_pred_parts": 12,
+  "n_norm_truth_parts": 11,
+  "total_cost": 6148,
+  "part_ops": [
+   {
+    "op": "delpart",
+    "side": "pred (invented)",
+    "index": 11,
+    "name": "Staff 11",
+    "cost": 286
+   }
+  ],
+  "op_counts": {
+   "delpart": 1,
+   "notedel": 637,
+   "noteins": 526,
+   "editbeam": 62,
+   "insbeam": 64,
+   "lyricins": 6,
+   "delarticulation": 2,
+   "tiedel": 6,
+   "accidentdel": 2,
+   "accidentins": 4,
+   "headedit": 2,
+   "extradel": 9,
+   "extrains": 19,
+   "delbar": 37,
+   "insbar": 26,
+   "delbeam": 7,
+   "extrainfoedit": 4,
+   "extradurationedit": 1,
+   "extrasymboledit": 1
+  },
+  "part_op_cost": 286
+ }
+}

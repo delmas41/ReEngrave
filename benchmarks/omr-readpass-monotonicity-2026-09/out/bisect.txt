@@ -1,0 +1,8 @@
+913a1c5b rc=0  | 2026-09-06 HEADLINE (replay, 24 pages): impossible instruments 47 -> 0, and page 23 keeps its strings
+7ea27a4b rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 DEFAULT ON: OMR_LABEL_MERGE_QUALITY — the free rungs run as documented
+5d6e76a8 rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 FIX: the timpani exported as a second trumpet — with a CORRECT lexicon
+a827fa36 rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 slots: a bracket ordinal is not a family identity — strings were named Trombone
+776f8e4f rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 Span composition: the span reference must be one the document reference can EXPRESS
+fd94b270 rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 A staff that contradicts its own label: 0.873 of the time the EXPORT is wrong
+b6233a9e rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 Roster-constrained margin labels: 20 of 1422 change, and both singers go
+HEAD rc=0 slot8=Trumpet src=score_order_ambiguity n_ref=17 | 2026-09-06 readpass monotonicity: the two-label-set replay, and the arms it produced

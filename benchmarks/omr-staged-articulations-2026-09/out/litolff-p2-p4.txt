@@ -1,0 +1,21 @@
+REACH: 24 articulation marks in the record
+       classes: articStaccatoAbove x17, articStaccatoBelow x6, articTenutoBelow x1
+       declared sides: {'below': 7, 'above': 17}
+
+ON : <articulations> 14  written 14
+     not written: {'artic_no_notehead': 6, 'artic_owning_notehead_not_written': 4}
+     balance: {'marks_in_log': 24, 'written': 14, 'not_written': 10, 'balanced': True}
+OFF: <articulations> 0  written 0
+
+outside the <articulations> blocks, the two files are ⚠️ DIFFERENT
+  notes      ON  1075 vs OFF  1075
+  rests      ON   432 vs OFF   432
+  slurs      ON    23 vs OFF    23
+  ties       ON    49 vs OFF    49
+  dynamics   ON   132 vs OFF   132
+
+dx from the owning notehead, in NOTEHEAD WIDTHS (limit 0.75):
+  n=18  min 0.003  median 0.095  max 0.435
+  all: [0.003, 0.037, 0.04, 0.052, 0.054, 0.07, 0.074, 0.081, 0.085, 0.095, 0.116, 0.119, 0.121, 0.126, 0.163, 0.213, 0.221, 0.435]
+
+kinds written: {'tenuto': 1, 'staccato': 13}

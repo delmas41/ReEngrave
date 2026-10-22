@@ -1,0 +1,296 @@
+{
+  "schema_version": 3,
+  "work_id": "dvorak-sym9-mvt3",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/dvorak-sym9-mvt3.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "Symphony No. 9",
+  "composer": "Antonin Dvo\u0159\u00e1k",
+  "total_measures": 300,
+  "starting_meter": {
+    "beats": 3,
+    "beat_type": 4
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 3,
+      "beat_type": 4
+    }
+  ],
+  "constant_meter": true,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "Flauti I. II.",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 1,
+      "name": "Oboi I. II.",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 2,
+      "name": "Clarinetti I. II. A",
+      "written_clef": "treble",
+      "written_fifths": -2,
+      "transposition_semitones": -3,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 1
+        },
+        {
+          "measure": 123,
+          "fifths": -2
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 3,
+      "name": "Fagotti I. II.",
+      "written_clef": "bass",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 176,
+          "clef": "tenor"
+        },
+        {
+          "measure": 224,
+          "clef": "bass"
+        }
+      ],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 4,
+      "name": "Corni I. II. E",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -8,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 300
+    },
+    {
+      "slot": 5,
+      "name": "Corni III. IV. E",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -8,
+      "clef_changes": [
+        {
+          "measure": 142,
+          "clef": "bass"
+        },
+        {
+          "measure": 151,
+          "clef": "treble"
+        },
+        {
+          "measure": 249,
+          "clef": "treble_8vb"
+        },
+        {
+          "measure": 258,
+          "clef": "treble"
+        }
+      ],
+      "key_changes": [],
+      "measures": 300
+    },
+    {
+      "slot": 6,
+      "name": "Trombe I. II. E",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -2,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 300
+    },
+    {
+      "slot": 7,
+      "name": "Timpani",
+      "written_clef": "bass",
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 300
+    },
+    {
+      "slot": 8,
+      "name": "Triangolo",
+      "written_clef": null,
+      "written_fifths": 0,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 300
+    },
+    {
+      "slot": 9,
+      "name": "Violini I.",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 10,
+      "name": "Violini II.",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 11,
+      "name": "Viole",
+      "written_clef": "alto",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [
+        {
+          "measure": 273,
+          "clef": "treble"
+        },
+        {
+          "measure": 281,
+          "clef": "alto"
+        }
+      ],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 12,
+      "name": "Violoncelli",
+      "written_clef": "bass",
+      "written_fifths": 1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    },
+    {
+      "slot": 13,
+      "name": "Contrabassi",
+      "written_clef": "bass",
+      "written_fifths": 1,
+      "transposition_semitones": -12,
+      "clef_changes": [],
+      "key_changes": [
+        {
+          "measure": 68,
+          "fifths": 4
+        },
+        {
+          "measure": 123,
+          "fifths": 1
+        }
+      ],
+      "measures": 300
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "tenor",
+    "treble",
+    "treble_8vb"
+  ],
+  "written_fifths_used": [
+    -2,
+    0,
+    1,
+    4
+  ],
+  "n_parts": 14
+}

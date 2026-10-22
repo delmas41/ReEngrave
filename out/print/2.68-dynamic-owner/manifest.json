@@ -1,0 +1,702 @@
+{
+ "question": "What dynamic markings are printed for this staff in the blue bar?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "cell": "cell/1/0/3/0",
+   "staff_name": "Bassoon",
+   "before": [
+    "ff"
+   ],
+   "after": [],
+   "file": "dyn_01.png"
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "cell": "cell/1/0/10/0",
+   "staff_name": "Cello",
+   "before": [
+    "f",
+    "ff",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_02.png"
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "cell": "cell/1/0/10/6",
+   "staff_name": "Cello",
+   "before": [
+    "p",
+    "p"
+   ],
+   "after": [
+    "p"
+   ],
+   "file": "dyn_03.png"
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "cell": "cell/1/0/11/0",
+   "staff_name": "Contrabass",
+   "before": [
+    "f",
+    "ff",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_04.png"
+  },
+  {
+   "n": 5,
+   "doc": "litolff",
+   "cell": "cell/1/0/11/6",
+   "staff_name": "Contrabass",
+   "before": [
+    "p"
+   ],
+   "after": [],
+   "file": "dyn_05.png"
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "cell": "cell/2/0/0/1",
+   "staff_name": "Flute",
+   "before": [],
+   "after": [
+    "p"
+   ],
+   "file": "dyn_06.png"
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "cell": "cell/2/0/1/2",
+   "staff_name": "Oboe",
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_07.png"
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "cell": "cell/2/0/3/1",
+   "staff_name": "Bassoon",
+   "before": [
+    "p"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_08.png"
+  },
+  {
+   "n": 9,
+   "doc": "litolff",
+   "cell": "cell/2/0/4/1",
+   "staff_name": "Horn",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "p"
+   ],
+   "file": "dyn_09.png"
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "cell": "cell/2/0/4/5",
+   "staff_name": "Horn",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_10.png"
+  },
+  {
+   "n": 11,
+   "doc": "litolff",
+   "cell": "cell/2/0/4/15",
+   "staff_name": "Horn",
+   "before": [],
+   "after": [
+    "p"
+   ],
+   "file": "dyn_11.png"
+  },
+  {
+   "n": 12,
+   "doc": "litolff",
+   "cell": "cell/2/0/5/5",
+   "staff_name": "Trumpet",
+   "before": [
+    "f"
+   ],
+   "after": [],
+   "file": "dyn_12.png"
+  },
+  {
+   "n": 13,
+   "doc": "litolff",
+   "cell": "cell/2/0/5/15",
+   "staff_name": "Trumpet",
+   "before": [
+    "p"
+   ],
+   "after": [],
+   "file": "dyn_13.png"
+  },
+  {
+   "n": 14,
+   "doc": "litolff",
+   "cell": "cell/2/0/8/2",
+   "staff_name": null,
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_14.png"
+  },
+  {
+   "n": 15,
+   "doc": "litolff",
+   "cell": "cell/2/0/8/9",
+   "staff_name": null,
+   "before": [],
+   "after": [
+    "fp"
+   ],
+   "file": "dyn_15.png"
+  },
+  {
+   "n": 16,
+   "doc": "litolff",
+   "cell": "cell/2/0/9/2",
+   "staff_name": null,
+   "before": [
+    "f",
+    "ff"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_16.png"
+  },
+  {
+   "n": 17,
+   "doc": "litolff",
+   "cell": "cell/2/0/9/9",
+   "staff_name": null,
+   "before": [
+    "p"
+   ],
+   "after": [],
+   "file": "dyn_17.png"
+  },
+  {
+   "n": 18,
+   "doc": "litolff",
+   "cell": "cell/2/1/1/7",
+   "staff_name": "Oboe",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_18.png"
+  },
+  {
+   "n": 19,
+   "doc": "litolff",
+   "cell": "cell/2/1/1/9",
+   "staff_name": "Oboe",
+   "before": [
+    "f"
+   ],
+   "after": [],
+   "file": "dyn_19.png"
+  },
+  {
+   "n": 20,
+   "doc": "litolff",
+   "cell": "cell/2/1/2/7",
+   "staff_name": "Clarinet",
+   "before": [
+    "f",
+    "sf"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_20.png"
+  },
+  {
+   "n": 21,
+   "doc": "litolff",
+   "cell": "cell/2/1/5/9",
+   "staff_name": "Trumpet",
+   "before": [],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_21.png"
+  },
+  {
+   "n": 22,
+   "doc": "litolff",
+   "cell": "cell/2/1/5/10",
+   "staff_name": "Trumpet",
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_22.png"
+  },
+  {
+   "n": 23,
+   "doc": "litolff",
+   "cell": "cell/2/1/6/9",
+   "staff_name": "Timpani",
+   "before": [
+    "f",
+    "sf"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_23.png"
+  },
+  {
+   "n": 24,
+   "doc": "litolff",
+   "cell": "cell/2/1/6/10",
+   "staff_name": "Timpani",
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_24.png"
+  },
+  {
+   "n": 25,
+   "doc": "litolff",
+   "cell": "cell/2/1/7/4",
+   "staff_name": null,
+   "before": [
+    "f"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_25.png"
+  },
+  {
+   "n": 26,
+   "doc": "litolff",
+   "cell": "cell/2/1/8/4",
+   "staff_name": null,
+   "before": [
+    "sf",
+    "sf",
+    "f"
+   ],
+   "after": [],
+   "file": "dyn_26.png"
+  },
+  {
+   "n": 27,
+   "doc": "litolff",
+   "cell": "cell/2/1/8/7",
+   "staff_name": null,
+   "before": [],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_27.png"
+  },
+  {
+   "n": 28,
+   "doc": "litolff",
+   "cell": "cell/2/1/9/7",
+   "staff_name": null,
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_28.png"
+  },
+  {
+   "n": 29,
+   "doc": "litolff",
+   "cell": "cell/2/1/9/8",
+   "staff_name": null,
+   "before": [
+    "sf",
+    "f"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_29.png"
+  },
+  {
+   "n": 30,
+   "doc": "litolff",
+   "cell": "cell/2/1/9/9",
+   "staff_name": null,
+   "before": [],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_30.png"
+  },
+  {
+   "n": 31,
+   "doc": "litolff",
+   "cell": "cell/2/1/10/9",
+   "staff_name": null,
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "sf"
+   ],
+   "file": "dyn_31.png"
+  },
+  {
+   "n": 32,
+   "doc": "litolff",
+   "cell": "cell/3/0/4/3",
+   "staff_name": "Horn",
+   "before": [
+    "f",
+    "f",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_32.png"
+  },
+  {
+   "n": 33,
+   "doc": "litolff",
+   "cell": "cell/3/0/4/14",
+   "staff_name": "Horn",
+   "before": [],
+   "after": [
+    "p"
+   ],
+   "file": "dyn_33.png"
+  },
+  {
+   "n": 34,
+   "doc": "litolff",
+   "cell": "cell/3/0/5/14",
+   "staff_name": "Trumpet",
+   "before": [
+    "p"
+   ],
+   "after": [],
+   "file": "dyn_34.png"
+  },
+  {
+   "n": 35,
+   "doc": "litolff",
+   "cell": "cell/3/0/6/3",
+   "staff_name": "Timpani",
+   "before": [
+    "f",
+    "f",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_35.png"
+  },
+  {
+   "n": 36,
+   "doc": "litolff",
+   "cell": "cell/3/0/8/3",
+   "staff_name": null,
+   "before": [
+    "f",
+    "f",
+    "f",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_36.png"
+  },
+  {
+   "n": 37,
+   "doc": "litolff",
+   "cell": "cell/3/0/10/3",
+   "staff_name": null,
+   "before": [
+    "f",
+    "ff",
+    "f"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_37.png"
+  },
+  {
+   "n": 38,
+   "doc": "litolff",
+   "cell": "cell/3/0/10/14",
+   "staff_name": null,
+   "before": [
+    "p"
+   ],
+   "after": [],
+   "file": "dyn_38.png"
+  },
+  {
+   "n": 39,
+   "doc": "brahms",
+   "cell": "cell/0/0/6/0",
+   "staff_name": "Horn",
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_39.png"
+  },
+  {
+   "n": 40,
+   "doc": "brahms",
+   "cell": "cell/0/0/10/0",
+   "staff_name": "Violin",
+   "before": [
+    "f",
+    "f",
+    "mp",
+    "ff"
+   ],
+   "after": [
+    "ff"
+   ],
+   "file": "dyn_40.png"
+  },
+  {
+   "n": 41,
+   "doc": "brahms",
+   "cell": "cell/1/0/2/1",
+   "staff_name": "Clarinet",
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_41.png"
+  },
+  {
+   "n": 42,
+   "doc": "brahms",
+   "cell": "cell/1/0/3/1",
+   "staff_name": "Bassoon",
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_42.png"
+  },
+  {
+   "n": 43,
+   "doc": "brahms",
+   "cell": "cell/1/0/5/1",
+   "staff_name": null,
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_43.png"
+  },
+  {
+   "n": 44,
+   "doc": "brahms",
+   "cell": "cell/1/0/6/1",
+   "staff_name": null,
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_44.png"
+  },
+  {
+   "n": 45,
+   "doc": "brahms",
+   "cell": "cell/1/0/9/3",
+   "staff_name": "Violin",
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_45.png"
+  },
+  {
+   "n": 46,
+   "doc": "brahms",
+   "cell": "cell/1/0/11/0",
+   "staff_name": "Viola",
+   "before": [],
+   "after": [
+    "fff"
+   ],
+   "file": "dyn_46.png"
+  },
+  {
+   "n": 47,
+   "doc": "brahms",
+   "cell": "cell/1/0/11/1",
+   "staff_name": "Viola",
+   "before": [
+    "f",
+    "f",
+    "p"
+   ],
+   "after": [
+    "f",
+    "p"
+   ],
+   "file": "dyn_47.png"
+  },
+  {
+   "n": 48,
+   "doc": "brahms",
+   "cell": "cell/1/0/11/3",
+   "staff_name": "Viola",
+   "before": [],
+   "after": [
+    "fp"
+   ],
+   "file": "dyn_48.png"
+  },
+  {
+   "n": 49,
+   "doc": "brahms",
+   "cell": "cell/1/0/12/0",
+   "staff_name": "Cello",
+   "before": [
+    "fff"
+   ],
+   "after": [],
+   "file": "dyn_49.png"
+  },
+  {
+   "n": 50,
+   "doc": "brahms",
+   "cell": "cell/1/0/12/1",
+   "staff_name": "Cello",
+   "before": [
+    "f",
+    "p",
+    "fp"
+   ],
+   "after": [
+    "f",
+    "fp"
+   ],
+   "file": "dyn_50.png"
+  },
+  {
+   "n": 51,
+   "doc": "brahms",
+   "cell": "cell/1/0/12/3",
+   "staff_name": "Cello",
+   "before": [
+    "pp"
+   ],
+   "after": [],
+   "file": "dyn_51.png"
+  },
+  {
+   "n": 52,
+   "doc": "brahms",
+   "cell": "cell/1/1/8/1",
+   "staff_name": "Violin",
+   "before": [],
+   "after": [
+    "pp"
+   ],
+   "file": "dyn_52.png"
+  },
+  {
+   "n": 53,
+   "doc": "brahms",
+   "cell": "cell/1/1/9/1",
+   "staff_name": "Violin",
+   "before": [
+    "pp"
+   ],
+   "after": [],
+   "file": "dyn_53.png"
+  },
+  {
+   "n": 54,
+   "doc": "brahms",
+   "cell": "cell/1/1/9/6",
+   "staff_name": "Violin",
+   "before": [
+    "pp"
+   ],
+   "after": [
+    "ppp"
+   ],
+   "file": "dyn_54.png"
+  },
+  {
+   "n": 55,
+   "doc": "brahms",
+   "cell": "cell/1/1/10/6",
+   "staff_name": "Viola",
+   "before": [
+    "p",
+    "fp",
+    "fp"
+   ],
+   "after": [],
+   "file": "dyn_55.png"
+  }
+ ]
+}

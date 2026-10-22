@@ -1,0 +1,7 @@
+links with at least one candidate pair : 70
+  ...of which more than one option     : 25
+  ...for which a same-pitch pair EXISTS: 48
+
+rule          heads at one staff position  same pitch  == oracle
+shipped                                58          47         47
+argmin_dy                              59          48         48

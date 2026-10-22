@@ -1,0 +1,36 @@
+{
+ "judge": "sean",
+ "date": "2026-10-10",
+ "via": "blind-tile gallery (claude.ai artifact Xs8UKjLo9Ug1xMNBzkyuS6)",
+ "answers": {
+  "1": {
+   "sean": "8",
+   "verdict": "narrowed, answer in set (8)"
+  },
+  "2": {
+   "sean": "8",
+   "verdict": "right (decided 8)"
+  },
+  "3": {
+   "sean": "8",
+   "verdict": "narrowed, answer in set (8)"
+  },
+  "4": {
+   "sean": "8",
+   "verdict": "narrowed, answer in set (8)"
+  },
+  "5": {
+   "sean": "Dot 4",
+   "verdict": "narrowed, answer in set (dotted quarter)"
+  },
+  "6": {
+   "sean": "8",
+   "verdict": "right (decided 8)"
+  },
+  "7": {
+   "sean": "4",
+   "verdict": "narrowed, answer in set (4)"
+  }
+ },
+ "summary": "0 wrong: 2 decided right, 5 narrowed with Sean's answer among the candidates"
+}

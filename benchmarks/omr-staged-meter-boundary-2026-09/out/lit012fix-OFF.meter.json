@@ -1,0 +1,97 @@
+[
+  {
+    "id": "vrd:016738",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4",
+      "segments": [
+        {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:002944",
+      "obs:002948",
+      "obs:002950",
+      "obs:002954",
+      "obs:002956",
+      "obs:002958",
+      "obs:002960",
+      "obs:002963",
+      "obs:002965",
+      "obs:002967",
+      "obs:002969",
+      "obs:002972"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 12
+    },
+    "n_considered": 511,
+    "n_basis": 1455,
+    "n_correlated": 88
+  },
+  {
+    "id": "vrd:016739",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 605,
+    "n_basis": 2178,
+    "n_correlated": 99
+  },
+  {
+    "id": "vrd:016740",
+    "subject": "system/2/1",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "too_few_staves_read_it",
+    "used": [],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {
+      "coverage": 0.273,
+      "n_staves_spoke": 3,
+      "n_staves_on_system": 11,
+      "would_have_been": "C"
+    },
+    "n_considered": 658,
+    "n_basis": 2607,
+    "n_correlated": 129
+  }
+]

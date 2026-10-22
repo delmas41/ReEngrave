@@ -1,0 +1,47 @@
+{
+ "png": "brahms1-breitkopf-p16-s1-st12-c1-g8-cal-neither-to-other.png",
+ "caption": "brahms1-breitkopf page 16, system 1, staff 12, bar-cell 1 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 3.16, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-neither-to-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+ "subject": "glyph/16/1/12/1/8",
+ "bucket": "cal-neither-to-other",
+ "page": 16,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 220.49
+ },
+ "detector_class": "restWhole",
+ "measured_staff_step": 3.16,
+ "convention": {
+  "restWhole": 5.5,
+  "restHalf": 4.5,
+  "tolerance_below_whole_half_steps": 1.35,
+  "tolerance_above_half_half_steps": 0.5,
+  "frame": "bottom line 0, one step per half space, up positive"
+ },
+ "what_the_rule_does": "NARROW over both values \u2014 2.12b ABSTAINED outright. EXPORT refuses to argmax a narrowing, so the rest is still held out and counted; what changed is the record's claim about it, not the file.",
+ "rest_page_px": [
+  1459.15,
+  6789.3225,
+  1498.1175,
+  6822.5675
+ ],
+ "staff_lines_page_px": [
+  6740,
+  6767,
+  6794,
+  6821,
+  6849
+ ],
+ "ruler_page_px": {
+  "restWhole": 6774.06,
+  "restHalf": 6787.69
+ },
+ "crop_page_px": [
+  1213.9,
+  6494.75,
+  1743.3675,
+  7094.25
+ ],
+ "VERDICT_none_yet": null
+}

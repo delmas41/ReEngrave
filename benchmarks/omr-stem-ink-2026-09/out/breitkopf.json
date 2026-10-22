@@ -1,0 +1,24 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "min_stem_spaces": 1.75,
+ "groups": {
+  "DECIDED": {
+   "n": 1791,
+   "median": 3.636,
+   "with_stem_ink": 1787,
+   "share": 0.9978
+  },
+  "no_stem": {
+   "n": 1529,
+   "median": 3.928,
+   "with_stem_ink": 1424,
+   "share": 0.9313
+  },
+  "stems_disagree": {
+   "n": 17,
+   "median": 3.673,
+   "with_stem_ink": 17,
+   "share": 1.0
+  }
+ }
+}

@@ -1,0 +1,1311 @@
+{
+  "tally": {
+    "engraved-render": {
+      "engraved": 36
+    },
+    "library-scan": {
+      "ambiguous": 6,
+      "scanned": 174
+    }
+  },
+  "false_positives": [],
+  "both": [],
+  "rows": [
+    {
+      "family": "engraved-render",
+      "pdf": "beethoven-sym3-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "beethoven-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym1-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym4-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "bruckner-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "dvorak-sym9-mvt4.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mahler-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mozart-sym40-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mozart-sym41-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "tchaikovsky-sym4-mvt2.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "tchaikovsky-sym6-mvt2.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "beethoven-sym3-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "beethoven-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym1-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym4-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "bruckner-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "dvorak-sym9-mvt4.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mahler-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mozart-sym40-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mozart-sym41-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "tchaikovsky-sym4-mvt2.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "tchaikovsky-sym6-mvt2.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "bach-wtc-postfix.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "bach-wtc.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "beethoven-5.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "handel-leadsheet.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "handel-leadsheet.pdf",
+      "page": 1,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "handel-reduction.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "ravel-bolero.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "ravel-bolero.pdf",
+      "page": 1,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym1-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mahler-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "brahms-sym1-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "mahler-sym5-mvt1.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "one_system.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "engraved-render",
+      "pdf": "two_system.pdf",
+      "page": 0,
+      "verdict": "engraved"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--swan-lake-ballet-op20--535915--imslp535915.pdf",
+      "page": 0,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--swan-lake-ballet-op20--535915--imslp535915.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--swan-lake-ballet-op20--535915--imslp535915.pdf",
+      "page": 2,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--ein-heldenleben-op40--leuckart-1899--imslp19168.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--ein-heldenleben-op40--leuckart-1899--imslp19168.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--ein-heldenleben-op40--leuckart-1899--imslp19168.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--don-quixote-op35--jos-aibl-verlag-1898--imslp18787.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--don-quixote-op35--jos-aibl-verlag-1898--imslp18787.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--don-quixote-op35--jos-aibl-verlag-1898--imslp18787.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--breitkopf-hartel-brahms--imslp317804.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--breitkopf-hartel-brahms--imslp317804.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--breitkopf-hartel-brahms--imslp317804.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--romeo-and-juliet-overture-fantasia-th-42--ed-bote-g-bock-1881--imslp333131.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--romeo-and-juliet-overture-fantasia-th-42--ed-bote-g-bock-1881--imslp333131.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--romeo-and-juliet-overture-fantasia-th-42--ed-bote-g-bock-1881--imslp333131.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--breitkopf-hartel-beethovens-werke-1862--imslp52624.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--breitkopf-hartel-beethovens-werke-1862--imslp52624.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-5-op67--breitkopf-hartel-beethovens-werke-1862--imslp52624.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-31-in-d-major-k297--breitkopf-hartel-mozart-1880--imslp1015171.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-31-in-d-major-k297--breitkopf-hartel-mozart-1880--imslp1015171.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-31-in-d-major-k297--breitkopf-hartel-mozart-1880--imslp1015171.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+      "page": 0,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+      "page": 1,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--serenade-for-string-orchestra-op48--jurgenson-1881--imslp380582.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--serenade-for-string-orchestra-op48--jurgenson-1881--imslp380582.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--serenade-for-string-orchestra-op48--jurgenson-1881--imslp380582.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-88-in-g-major-hob-i-88--linkwork-1874--imslp494073.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-88-in-g-major-hob-i-88--linkwork-1874--imslp494073.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-88-in-g-major-hob-i-88--linkwork-1874--imslp494073.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-3-op56--breitkopf-und-hartel-1842--imslp514187.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-3-op56--breitkopf-und-hartel-1842--imslp514187.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-3-op56--breitkopf-und-hartel-1842--imslp514187.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "grieg--piano-concerto-op16--peters--imslp503994.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "grieg--piano-concerto-op16--peters--imslp503994.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "grieg--piano-concerto-op16--peters--imslp503994.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--symphony-domestica-op53--bote-bock-1904--imslp13130.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--symphony-domestica-op53--bote-bock-1904--imslp13130.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--symphony-domestica-op53--bote-bock-1904--imslp13130.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-103-in-e-flat-major-hob-i-103--breitkopf-und-hartel-1854--imslp546607.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-103-in-e-flat-major-hob-i-103--breitkopf-und-hartel-1854--imslp546607.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "haydn--symphony-103-in-e-flat-major-hob-i-103--breitkopf-und-hartel-1854--imslp546607.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-8-op93--haslinger-1837--imslp244620.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-8-op93--haslinger-1837--imslp244620.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-8-op93--haslinger-1837--imslp244620.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schumann--symphony-1-op38--breitkopf-und-hartel--imslp758868.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schumann--symphony-1-op38--breitkopf-und-hartel--imslp758868.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schumann--symphony-1-op38--breitkopf-und-hartel--imslp758868.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-5-op64--breitkopf-hartel-1930--imslp504184.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-5-op64--breitkopf-hartel-1930--imslp504184.pdf",
+      "page": 1,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-5-op64--breitkopf-hartel-1930--imslp504184.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-1-op11--breitkopf-und-hartel--imslp214825.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-1-op11--breitkopf-und-hartel--imslp214825.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-1-op11--breitkopf-und-hartel--imslp214825.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--bolero-m-81--durand-1929--imslp949562.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--bolero-m-81--durand-1929--imslp949562.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--bolero-m-81--durand-1929--imslp949562.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "boulanger--d-un-matin-de-printemps--durand--imslp780326.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "boulanger--d-un-matin-de-printemps--durand--imslp780326.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "boulanger--d-un-matin-de-printemps--durand--imslp780326.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-8-op88--novello-1892--imslp405841.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-8-op88--novello-1892--imslp405841.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-8-op88--novello-1892--imslp405841.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "weber--der-freischutz-op77--breitkopf-und-hartel-1688--imslp218184.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "weber--der-freischutz-op77--breitkopf-und-hartel-1688--imslp218184.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "weber--der-freischutz-op77--breitkopf-und-hartel-1688--imslp218184.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "janacek--sinfonietta--peters-1980--imslp440853.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "janacek--sinfonietta--peters-1980--imslp440853.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "janacek--sinfonietta--peters-1980--imslp440853.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "debussy--la-boite-a-joujoux-cd-136--durand-et-cie-1913--imslp199718.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "debussy--la-boite-a-joujoux-cd-136--durand-et-cie-1913--imslp199718.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "debussy--la-boite-a-joujoux-cd-136--durand-et-cie-1913--imslp199718.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-4-op90--mendelssohncomplete-1877--imslp20286.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-4-op90--mendelssohncomplete-1877--imslp20286.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--symphony-4-op90--mendelssohncomplete-1877--imslp20286.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-34-in-c-major-k338--eulenburg-1956--imslp411740.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-34-in-c-major-k338--eulenburg-1956--imslp411740.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-34-in-c-major-k338--eulenburg-1956--imslp411740.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--a-midsummer-night-s-dream-incidental-music-op61--peters--imslp225827.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--a-midsummer-night-s-dream-incidental-music-op61--peters--imslp225827.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mendelssohn--a-midsummer-night-s-dream-incidental-music-op61--peters--imslp225827.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-1-in-e-flat-major-k16--breitkopf-hartel-mozart-1879--imslp33.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-1-in-e-flat-major-k16--breitkopf-hartel-mozart-1879--imslp33.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-1-in-e-flat-major-k16--breitkopf-hartel-mozart-1879--imslp33.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--elektra-op58--furstner-1916--imslp24779.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--elektra-op58--furstner-1916--imslp24779.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "strauss--elektra-op58--furstner-1916--imslp24779.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schubert--symphony-4-d-417--schubertcomplete-1884--imslp515581.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schubert--symphony-4-d-417--schubertcomplete-1884--imslp515581.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "schubert--symphony-4-d-417--schubertcomplete-1884--imslp515581.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-2-gmw-30--hofmeister-1897--imslp415748.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-2-gmw-30--hofmeister-1897--imslp415748.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-2-gmw-30--hofmeister-1897--imslp415748.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--das-wohltemperierte-klavier-i-bwv846-869--g-schirmer-breitkopf-har--imslp22080.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--das-wohltemperierte-klavier-i-bwv846-869--g-schirmer-breitkopf-har--imslp22080.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--das-wohltemperierte-klavier-i-bwv846-869--g-schirmer-breitkopf-har--imslp22080.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "verdi--requiem--eulenburg--imslp984085.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "verdi--requiem--eulenburg--imslp984085.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "verdi--requiem--eulenburg--imslp984085.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-33-in-b-flat-major-k319--breitkopf-hartel-s-parti--imslp1016351.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-33-in-b-flat-major-k319--breitkopf-hartel-s-parti--imslp1016351.pdf",
+      "page": 1,
+      "verdict": "ambiguous"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-33-in-b-flat-major-k319--breitkopf-hartel-s-parti--imslp1016351.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-6-op60--simrock-1888--imslp26977.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-6-op60--simrock-1888--imslp26977.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--symphony-6-op60--simrock-1888--imslp26977.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-6-gmw-46--c-f-kahnt-nachfolger-1906--imslp514284.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-6-gmw-46--c-f-kahnt-nachfolger-1906--imslp514284.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mahler--symphony-6-gmw-46--c-f-kahnt-nachfolger-1906--imslp514284.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-3-op90--simrock-1884--imslp23120.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-3-op90--simrock-1884--imslp23120.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "brahms--symphony-3-op90--simrock-1884--imslp23120.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--rapsodie-espagnole-m-54--durand-fils-1908--imslp134638.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--rapsodie-espagnole-m-54--durand-fils-1908--imslp134638.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--rapsodie-espagnole-m-54--durand-fils-1908--imslp134638.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-1-op13--jurgenson-1875--imslp369941.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-1-op13--jurgenson-1875--imslp369941.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "tchaikovsky--symphony-1-op13--jurgenson-1875--imslp369941.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-25-in-g-minor-k183--breitkopf-hartel-mozart-1880--imslp57.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-25-in-g-minor-k183--breitkopf-hartel-mozart-1880--imslp57.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "mozart--symphony-25-in-g-minor-k183--breitkopf-hartel-mozart-1880--imslp57.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "rossini--guillaume-tell--breitkopf-hartel--imslp33461.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "rossini--guillaume-tell--breitkopf-hartel--imslp33461.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "rossini--guillaume-tell--breitkopf-hartel--imslp33461.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "chaminade--concertino-pour-flute-op107--enoch-cie-1902--imslp57545.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-7-op92--breitkopf-hartel-beethov-1863--imslp312601.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-7-op92--breitkopf-hartel-beethov-1863--imslp312601.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "beethoven--symphony-7-op92--breitkopf-hartel-beethov-1863--imslp312601.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--la-valse-m-72--durand-cie-1921--imslp923399.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--la-valse-m-72--durand-cie-1921--imslp923399.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "ravel--la-valse-m-72--durand-cie-1921--imslp923399.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+      "page": 0,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+      "page": 1,
+      "verdict": "scanned"
+    },
+    {
+      "family": "library-scan",
+      "pdf": "bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+      "page": 2,
+      "verdict": "scanned"
+    }
+  ]
+}

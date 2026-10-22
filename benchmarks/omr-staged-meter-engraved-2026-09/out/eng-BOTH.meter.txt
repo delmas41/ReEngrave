@@ -1,0 +1,5 @@
+system/0/0       decided   voted                                C
+system/1/0       abstained carry_outweighed_by_the_bars         None  support=1.0 (4+/4-)
+system/2/0       abstained carry_not_corroborated               None
+system/3/0       decided   voted                                3/4
+system/4/0       decided   carried                              3/4  support=5.0 (4+/0-)

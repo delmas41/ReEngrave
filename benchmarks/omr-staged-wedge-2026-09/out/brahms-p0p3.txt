@@ -1,0 +1,36 @@
+========================================================================
+REACH: 47 Q.WEDGE_BOX rows
+  by reader     : {'cv_hairpins': 46, 'detector': 1}
+  with page box : 46  (the rest can only abstain)
+  provenance    : {'commit': 'e3d0d455243eab999376814d035efbdf52a9e891', 'dirty': False}
+========================================================================
+
+BEFORE (the stub, as the pipeline wrote it):
+  abstained  not_implemented          47
+
+running wedge_anchor over the record's own verdicts...
+
+AFTER (this tree):
+  abstained  no_page_frame            1
+  decided    nearest_either_side      46
+
+  kinds                    : {'crescendo': 30, 'diminuendo': 16}
+  under ONE note            : 10
+  bars whose voices were read: 29
+  candidate heads per hairpin: min 6 median 19 max 37
+
+EXPORT   <wedge> 0 -> 20
+  notes                  2687 -> 2687
+  rests                   989 -> 989
+  measure_rests_read      105 -> 105
+  slurs                   227 -> 227
+  ties                    349 -> 349
+  dynamics                181 -> 181
+  articulations           153 -> 153
+  fermatas                  0 -> 0
+  ornaments                 3 -> 3
+  balance : {'rows_in_log': 47, 'decided': 46, 'abstained': 1, 'written': 20, 'not_written': 26, 'balanced': True}
+  not written: {'wedge_neither_anchor_written': 10, 'wedge_anchor_note_not_written': 16}
+
+  identical OUTSIDE the <wedge> elements: True
+  wrote /tmp/wedge/on.musicxml and off.musicxml

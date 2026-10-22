@@ -1,0 +1,18 @@
+{
+ "source": "Sean 2026-10-20",
+ "verbatim": "2.176 - 1-2. Bracket 3. C clef 4. c clef 5. Bracket 6, c clef 7. Bracket 8. Top of number 8 in meter 9. Half note 10. Clef 11.8th note 12. Clef",
+ "answers": {
+  "1": "bracket",
+  "2": "bracket",
+  "3": "C clef",
+  "4": "C clef",
+  "5": "bracket",
+  "6": "C clef",
+  "7": "bracket",
+  "8": "top of the number 8 in a meter",
+  "9": "half note",
+  "10": "clef",
+  "11": "eighth note",
+  "12": "clef"
+ }
+}

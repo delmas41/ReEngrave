@@ -1,0 +1,2254 @@
+{
+  "add_meters": "4/8",
+  "min_score": null,
+  "totals": {
+    "wrong": 1,
+    "correct": 12,
+    "missed": 2,
+    "correct_silences": 40
+  },
+  "cases": [
+    {
+      "case": "beet5-scan-p1",
+      "expected": [
+        "2/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 12,
+          "meter": {
+            "numerator": 2,
+            "denominator": 4,
+            "raw": "2/4",
+            "source": "header_reader",
+            "votes": 11,
+            "voters": 12,
+            "median_score": 0.5493
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "2/4",
+              "score": 0.505
+            },
+            {
+              "staff": 1,
+              "raw": "2/4",
+              "score": 0.574
+            },
+            {
+              "staff": 2,
+              "raw": "2/4",
+              "score": 0.532
+            },
+            {
+              "staff": 3,
+              "raw": "2/4",
+              "score": 0.54
+            },
+            null,
+            {
+              "staff": 5,
+              "raw": "2/4",
+              "score": 0.59
+            },
+            {
+              "staff": 6,
+              "raw": "2/4",
+              "score": 0.549
+            },
+            {
+              "staff": 7,
+              "raw": "2/4",
+              "score": 0.617
+            },
+            {
+              "staff": 8,
+              "raw": "2/4",
+              "score": 0.549
+            },
+            {
+              "staff": 9,
+              "raw": "2/4",
+              "score": 0.609
+            },
+            {
+              "staff": 10,
+              "raw": "2/4",
+              "score": 0.512
+            },
+            {
+              "staff": 11,
+              "raw": "2/4",
+              "score": 0.609
+            }
+          ]
+        }
+      ],
+      "seconds": 1.5
+    },
+    {
+      "case": "beet5-scan-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            {
+              "staff": 13,
+              "raw": "C",
+              "score": 0.545
+            },
+            null,
+            {
+              "staff": 15,
+              "raw": "C",
+              "score": 0.577
+            },
+            {
+              "staff": 16,
+              "raw": "C",
+              "score": 0.515
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 1.7
+    },
+    {
+      "case": "beet5-scan-p3",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            {
+              "staff": 3,
+              "raw": "4/4",
+              "score": 0.507
+            },
+            {
+              "staff": 4,
+              "raw": "4/4",
+              "score": 0.554
+            },
+            {
+              "staff": 5,
+              "raw": "4/4",
+              "score": 0.557
+            },
+            {
+              "staff": 6,
+              "raw": "4/4",
+              "score": 0.509
+            },
+            null,
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.516
+            },
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 8,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.0
+    },
+    {
+      "case": "beet5-scan-p4",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.51
+            },
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            {
+              "staff": 12,
+              "raw": "C",
+              "score": 0.522
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "staff": 18,
+              "raw": "C",
+              "score": 0.542
+            },
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.2
+    },
+    {
+      "case": "beet5-scan-p5",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 9,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 7,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            {
+              "staff": 11,
+              "raw": "4/4",
+              "score": 0.501
+            },
+            null,
+            null,
+            {
+              "staff": 14,
+              "raw": "4/4",
+              "score": 0.501
+            },
+            null
+          ]
+        }
+      ],
+      "seconds": 1.9
+    },
+    {
+      "case": "beet5-scan-p6",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.527
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.554
+            },
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 12,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.529
+            },
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.501
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.2
+    },
+    {
+      "case": "e2e-beethoven",
+      "expected": [
+        "2/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 18,
+          "meter": {
+            "numerator": 2,
+            "denominator": 4,
+            "raw": "2/4",
+            "source": "header_reader",
+            "votes": 18,
+            "voters": 18,
+            "median_score": 0.7623
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "2/4",
+              "score": 0.768
+            },
+            {
+              "staff": 1,
+              "raw": "2/4",
+              "score": 0.765
+            },
+            {
+              "staff": 2,
+              "raw": "2/4",
+              "score": 0.762
+            },
+            {
+              "staff": 3,
+              "raw": "2/4",
+              "score": 0.762
+            },
+            {
+              "staff": 4,
+              "raw": "2/4",
+              "score": 0.761
+            },
+            {
+              "staff": 5,
+              "raw": "2/4",
+              "score": 0.767
+            },
+            {
+              "staff": 6,
+              "raw": "2/4",
+              "score": 0.764
+            },
+            {
+              "staff": 7,
+              "raw": "2/4",
+              "score": 0.763
+            },
+            {
+              "staff": 8,
+              "raw": "2/4",
+              "score": 0.761
+            },
+            {
+              "staff": 9,
+              "raw": "2/4",
+              "score": 0.756
+            },
+            {
+              "staff": 10,
+              "raw": "2/4",
+              "score": 0.769
+            },
+            {
+              "staff": 11,
+              "raw": "2/4",
+              "score": 0.772
+            },
+            {
+              "staff": 12,
+              "raw": "2/4",
+              "score": 0.763
+            },
+            {
+              "staff": 13,
+              "raw": "2/4",
+              "score": 0.755
+            },
+            {
+              "staff": 14,
+              "raw": "2/4",
+              "score": 0.761
+            },
+            {
+              "staff": 15,
+              "raw": "2/4",
+              "score": 0.761
+            },
+            {
+              "staff": 16,
+              "raw": "2/4",
+              "score": 0.756
+            },
+            {
+              "staff": 17,
+              "raw": "2/4",
+              "score": 0.761
+            }
+          ]
+        }
+      ],
+      "seconds": 3.5
+    },
+    {
+      "case": "e2e-brahms",
+      "expected": [
+        "6/8"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 21,
+          "meter": {
+            "numerator": 6,
+            "denominator": 8,
+            "raw": "6/8",
+            "source": "header_reader",
+            "votes": 21,
+            "voters": 21,
+            "median_score": 0.7802
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/8",
+              "score": 0.784
+            },
+            {
+              "staff": 1,
+              "raw": "6/8",
+              "score": 0.78
+            },
+            {
+              "staff": 2,
+              "raw": "6/8",
+              "score": 0.785
+            },
+            {
+              "staff": 3,
+              "raw": "6/8",
+              "score": 0.779
+            },
+            {
+              "staff": 4,
+              "raw": "6/8",
+              "score": 0.78
+            },
+            {
+              "staff": 5,
+              "raw": "6/8",
+              "score": 0.777
+            },
+            {
+              "staff": 6,
+              "raw": "6/8",
+              "score": 0.779
+            },
+            {
+              "staff": 7,
+              "raw": "6/8",
+              "score": 0.779
+            },
+            {
+              "staff": 8,
+              "raw": "6/8",
+              "score": 0.781
+            },
+            {
+              "staff": 9,
+              "raw": "6/8",
+              "score": 0.781
+            },
+            {
+              "staff": 10,
+              "raw": "6/8",
+              "score": 0.779
+            },
+            {
+              "staff": 11,
+              "raw": "6/8",
+              "score": 0.79
+            },
+            {
+              "staff": 12,
+              "raw": "6/8",
+              "score": 0.781
+            },
+            {
+              "staff": 13,
+              "raw": "6/8",
+              "score": 0.78
+            },
+            {
+              "staff": 14,
+              "raw": "6/8",
+              "score": 0.79
+            },
+            {
+              "staff": 15,
+              "raw": "6/8",
+              "score": 0.791
+            },
+            {
+              "staff": 16,
+              "raw": "6/8",
+              "score": 0.775
+            },
+            {
+              "staff": 17,
+              "raw": "6/8",
+              "score": 0.778
+            },
+            {
+              "staff": 18,
+              "raw": "6/8",
+              "score": 0.78
+            },
+            {
+              "staff": 19,
+              "raw": "6/8",
+              "score": 0.78
+            },
+            {
+              "staff": 20,
+              "raw": "6/8",
+              "score": 0.781
+            }
+          ]
+        }
+      ],
+      "seconds": 6.8
+    },
+    {
+      "case": "e2e-mahler",
+      "expected": [
+        "2/2"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 38,
+          "meter": {
+            "numerator": 2,
+            "denominator": 2,
+            "raw": "2/2",
+            "source": "header_reader",
+            "votes": 38,
+            "voters": 38,
+            "median_score": 0.6911
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "2/2",
+              "score": 0.694
+            },
+            {
+              "staff": 1,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 2,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 3,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 4,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 5,
+              "raw": "2/2",
+              "score": 0.692
+            },
+            {
+              "staff": 6,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 7,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 8,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 9,
+              "raw": "2/2",
+              "score": 0.684
+            },
+            {
+              "staff": 10,
+              "raw": "2/2",
+              "score": 0.687
+            },
+            {
+              "staff": 11,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 12,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 13,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 14,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 15,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 16,
+              "raw": "2/2",
+              "score": 0.692
+            },
+            {
+              "staff": 17,
+              "raw": "2/2",
+              "score": 0.695
+            },
+            {
+              "staff": 18,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 19,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 20,
+              "raw": "2/2",
+              "score": 0.688
+            },
+            {
+              "staff": 21,
+              "raw": "2/2",
+              "score": 0.688
+            },
+            {
+              "staff": 22,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 23,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 24,
+              "raw": "2/2",
+              "score": 0.693
+            },
+            {
+              "staff": 25,
+              "raw": "2/2",
+              "score": 0.697
+            },
+            {
+              "staff": 26,
+              "raw": "2/2",
+              "score": 0.698
+            },
+            {
+              "staff": 27,
+              "raw": "2/2",
+              "score": 0.697
+            },
+            {
+              "staff": 28,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 29,
+              "raw": "2/2",
+              "score": 0.688
+            },
+            {
+              "staff": 30,
+              "raw": "2/2",
+              "score": 0.697
+            },
+            {
+              "staff": 31,
+              "raw": "2/2",
+              "score": 0.692
+            },
+            {
+              "staff": 32,
+              "raw": "2/2",
+              "score": 0.692
+            },
+            {
+              "staff": 33,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 34,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 35,
+              "raw": "2/2",
+              "score": 0.691
+            },
+            {
+              "staff": 36,
+              "raw": "2/2",
+              "score": 0.685
+            },
+            {
+              "staff": 37,
+              "raw": "2/2",
+              "score": 0.688
+            }
+          ]
+        }
+      ],
+      "seconds": 7.9
+    },
+    {
+      "case": "ravel-bolero",
+      "expected": [
+        "C"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 27,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 25,
+            "voters": 27,
+            "median_score": 0.7588,
+            "symbol": "common"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.762
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.763
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.741
+            },
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 12,
+              "raw": "C",
+              "score": 0.763
+            },
+            {
+              "staff": 13,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 14,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 15,
+              "raw": "C",
+              "score": 0.757
+            },
+            null,
+            null,
+            {
+              "staff": 18,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 19,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 20,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 21,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 22,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 23,
+              "raw": "C",
+              "score": 0.762
+            },
+            {
+              "staff": 24,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 25,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 26,
+              "raw": "C",
+              "score": 0.75
+            }
+          ]
+        }
+      ],
+      "seconds": 4.5
+    },
+    {
+      "case": "handel-reduction",
+      "expected": [
+        "C"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 12,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 12,
+            "voters": 12,
+            "median_score": 0.7607,
+            "symbol": "common"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.763
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.76
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.76
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.757
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.77
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.759
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.76
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.766
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.761
+            },
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.761
+            }
+          ]
+        }
+      ],
+      "seconds": 3.0
+    },
+    {
+      "case": "bach-wtc",
+      "expected": [
+        "C"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 10,
+            "voters": 11,
+            "median_score": 0.7471,
+            "symbol": "common"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.748
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.747
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.746
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.732
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.747
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.735
+            },
+            null,
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.746
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.747
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.755
+            },
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.732
+            }
+          ]
+        }
+      ],
+      "seconds": 3.2
+    },
+    {
+      "case": "wtc-book-p2",
+      "expected": [
+        "C",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 2,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 2,
+            "voters": 2,
+            "median_score": 0.756,
+            "symbol": "common"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.741
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.756
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 2,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 3,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 4,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 5,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.5
+    },
+    {
+      "case": "wtc-book-p3",
+      "expected": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 2,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 3,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 4,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        },
+        {
+          "system": 5,
+          "n_staves": 2,
+          "meter": null,
+          "per_staff": [
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.4
+    },
+    {
+      "case": "mozart40-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": {
+            "numerator": 2,
+            "denominator": 2,
+            "raw": "C|",
+            "source": "header_reader",
+            "votes": 11,
+            "voters": 11,
+            "median_score": 0.5789,
+            "symbol": "cut"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C|",
+              "score": 0.57
+            },
+            {
+              "staff": 1,
+              "raw": "C|",
+              "score": 0.583
+            },
+            {
+              "staff": 2,
+              "raw": "C|",
+              "score": 0.599
+            },
+            {
+              "staff": 3,
+              "raw": "C|",
+              "score": 0.545
+            },
+            {
+              "staff": 4,
+              "raw": "C|",
+              "score": 0.551
+            },
+            {
+              "staff": 5,
+              "raw": "C|",
+              "score": 0.608
+            },
+            {
+              "staff": 6,
+              "raw": "C|",
+              "score": 0.584
+            },
+            {
+              "staff": 7,
+              "raw": "C|",
+              "score": 0.579
+            },
+            {
+              "staff": 8,
+              "raw": "C|",
+              "score": 0.593
+            },
+            {
+              "staff": 9,
+              "raw": "C|",
+              "score": 0.565
+            },
+            {
+              "staff": 10,
+              "raw": "C|",
+              "score": 0.578
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.8
+    },
+    {
+      "case": "mozart40-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.503
+            },
+            null,
+            null,
+            {
+              "staff": 14,
+              "raw": "C",
+              "score": 0.569
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.8
+    },
+    {
+      "case": "brahms4-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 13,
+          "meter": {
+            "numerator": 2,
+            "denominator": 2,
+            "raw": "C|",
+            "source": "header_reader",
+            "votes": 13,
+            "voters": 13,
+            "median_score": 0.5649,
+            "symbol": "cut"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C|",
+              "score": 0.594
+            },
+            {
+              "staff": 1,
+              "raw": "C|",
+              "score": 0.564
+            },
+            {
+              "staff": 2,
+              "raw": "C|",
+              "score": 0.583
+            },
+            {
+              "staff": 3,
+              "raw": "C|",
+              "score": 0.553
+            },
+            {
+              "staff": 4,
+              "raw": "C|",
+              "score": 0.578
+            },
+            {
+              "staff": 5,
+              "raw": "C|",
+              "score": 0.559
+            },
+            {
+              "staff": 6,
+              "raw": "C|",
+              "score": 0.565
+            },
+            {
+              "staff": 7,
+              "raw": "C|",
+              "score": 0.549
+            },
+            {
+              "staff": 8,
+              "raw": "C|",
+              "score": 0.564
+            },
+            {
+              "staff": 9,
+              "raw": "C|",
+              "score": 0.573
+            },
+            {
+              "staff": 10,
+              "raw": "C|",
+              "score": 0.556
+            },
+            {
+              "staff": 11,
+              "raw": "C|",
+              "score": 0.569
+            },
+            {
+              "staff": 12,
+              "raw": "C|",
+              "score": 0.566
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 4,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 2,
+          "n_staves": 5,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.2
+    },
+    {
+      "case": "brahms4-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.2
+    },
+    {
+      "case": "bruckner5-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 19,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.7
+    },
+    {
+      "case": "mozart41-p1",
+      "expected": [
+        "C"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 10,
+            "voters": 10,
+            "median_score": 0.7977,
+            "symbol": "common"
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.817
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.821
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.792
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.781
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.819
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.795
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.82
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.768
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.791
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.798
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.8
+    },
+    {
+      "case": "mozart41-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.0
+    },
+    {
+      "case": "beet3-p1",
+      "expected": [
+        "3/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 12,
+          "meter": {
+            "numerator": 6,
+            "denominator": 4,
+            "raw": "6/4",
+            "source": "header_reader",
+            "votes": 6,
+            "voters": 12,
+            "median_score": 0.5713
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/4",
+              "score": 0.553
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.506
+            },
+            {
+              "staff": 2,
+              "raw": "6/4",
+              "score": 0.571
+            },
+            {
+              "staff": 3,
+              "raw": "6/4",
+              "score": 0.561
+            },
+            {
+              "staff": 4,
+              "raw": "3/4",
+              "score": 0.613
+            },
+            {
+              "staff": 5,
+              "raw": "6/4",
+              "score": 0.623
+            },
+            {
+              "staff": 6,
+              "raw": "6/4",
+              "score": 0.546
+            },
+            {
+              "staff": 7,
+              "raw": "3/4",
+              "score": 0.623
+            },
+            {
+              "staff": 8,
+              "raw": "3/4",
+              "score": 0.62
+            },
+            null,
+            {
+              "staff": 10,
+              "raw": "9/4",
+              "score": 0.598
+            },
+            {
+              "staff": 11,
+              "raw": "6/4",
+              "score": 0.575
+            }
+          ]
+        }
+      ],
+      "seconds": 3.8
+    },
+    {
+      "case": "beet3-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.51
+            },
+            null,
+            {
+              "staff": 12,
+              "raw": "C",
+              "score": 0.504
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.3
+    },
+    {
+      "case": "brahms3-p1",
+      "expected": [
+        "6/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 16,
+          "meter": {
+            "numerator": 6,
+            "denominator": 4,
+            "raw": "6/4",
+            "source": "header_reader",
+            "votes": 16,
+            "voters": 16,
+            "median_score": 0.7079
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/4",
+              "score": 0.68
+            },
+            {
+              "staff": 1,
+              "raw": "6/4",
+              "score": 0.728
+            },
+            {
+              "staff": 2,
+              "raw": "6/4",
+              "score": 0.643
+            },
+            {
+              "staff": 3,
+              "raw": "6/4",
+              "score": 0.708
+            },
+            {
+              "staff": 4,
+              "raw": "6/4",
+              "score": 0.721
+            },
+            {
+              "staff": 5,
+              "raw": "6/4",
+              "score": 0.729
+            },
+            {
+              "staff": 6,
+              "raw": "6/4",
+              "score": 0.655
+            },
+            {
+              "staff": 7,
+              "raw": "6/4",
+              "score": 0.692
+            },
+            {
+              "staff": 8,
+              "raw": "6/4",
+              "score": 0.686
+            },
+            {
+              "staff": 9,
+              "raw": "6/4",
+              "score": 0.681
+            },
+            {
+              "staff": 10,
+              "raw": "6/4",
+              "score": 0.747
+            },
+            {
+              "staff": 11,
+              "raw": "6/4",
+              "score": 0.751
+            },
+            {
+              "staff": 12,
+              "raw": "6/4",
+              "score": 0.693
+            },
+            {
+              "staff": 13,
+              "raw": "6/4",
+              "score": 0.774
+            },
+            {
+              "staff": 14,
+              "raw": "6/4",
+              "score": 0.696
+            },
+            {
+              "staff": 15,
+              "raw": "6/4",
+              "score": 0.712
+            }
+          ]
+        }
+      ],
+      "seconds": 3.4
+    },
+    {
+      "case": "brahms3-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 13,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 13,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.5
+    },
+    {
+      "case": "dvorak9-p5",
+      "expected": [
+        "4/8"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 15,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.2
+    },
+    {
+      "case": "dvorak9-p6",
+      "expected": [
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 15,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.8
+    },
+    {
+      "case": "tchaikovsky4-p4",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 16,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.2
+    },
+    {
+      "case": "mahler5-scan-p5",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 21,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "staff": 17,
+              "raw": "7/4",
+              "score": 0.504
+            },
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.1
+    },
+    {
+      "case": "mahler5-scan-p6",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 14,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 7,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.6
+    }
+  ]
+}

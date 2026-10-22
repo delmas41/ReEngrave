@@ -1,0 +1,161 @@
+{
+ "question": "What dynamic markings are printed for this staff in the blue bar?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "brahms",
+   "cell": "cell/1/0/1/5",
+   "staff_name": "Oboe",
+   "file": "dyn_01.png",
+   "before": [
+    "fp"
+   ],
+   "after": [
+    "p"
+   ],
+   "anchored_here": [
+    "p (at_note, detected in bar 5)"
+   ]
+  },
+  {
+   "n": 2,
+   "doc": "brahms",
+   "cell": "cell/1/0/0/3",
+   "staff_name": "Flute",
+   "file": "dyn_02.png",
+   "before": [
+    "ppp"
+   ],
+   "after": [
+    "p"
+   ],
+   "anchored_here": [
+    "p (at_note, detected in bar 3)"
+   ]
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "cell": "cell/1/0/7/7",
+   "staff_name": "Violin",
+   "file": "dyn_03.png",
+   "before": [
+    "pp"
+   ],
+   "after": [
+    "p"
+   ],
+   "anchored_here": [
+    "p (at_note, detected in bar 7)"
+   ]
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "cell": "cell/2/0/8/9",
+   "staff_name": null,
+   "file": "dyn_04.png",
+   "before": [
+    "fp"
+   ],
+   "after": "<narrowed:f/p>",
+   "anchored_here": [
+    "None (at_note, detected in bar 9)"
+   ]
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "cell": "cell/1/0/3/1",
+   "staff_name": "Bassoon",
+   "file": "dyn_05.png",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "f",
+    "p"
+   ],
+   "anchored_here": [
+    "f (next_onset, detected in bar 1)",
+    "p (at_note, detected in bar 1)"
+   ]
+  },
+  {
+   "n": 6,
+   "doc": "brahms",
+   "cell": "cell/1/0/2/5",
+   "staff_name": "Clarinet",
+   "file": "dyn_06.png",
+   "before": [],
+   "after": [
+    "p",
+    "p"
+   ],
+   "anchored_here": [
+    "p (next_onset, detected in bar 5)"
+   ]
+  },
+  {
+   "n": 7,
+   "doc": "brahms",
+   "cell": "cell/1/1/0/6",
+   "staff_name": "Flute",
+   "file": "dyn_07.png",
+   "before": [],
+   "after": [
+    "pp"
+   ],
+   "anchored_here": [
+    "f (next_onset, detected in bar 5)",
+    "pp (at_note, detected in bar 6)"
+   ]
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "cell": "cell/2/1/9/4",
+   "staff_name": null,
+   "file": "dyn_08.png",
+   "before": [],
+   "after": [
+    "sf"
+   ],
+   "anchored_here": [
+    "sf (at_note, detected in bar 4)"
+   ]
+  },
+  {
+   "n": 9,
+   "doc": "litolff",
+   "cell": "cell/2/0/3/2",
+   "staff_name": "Bassoon",
+   "file": "dyn_09.png",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "f"
+   ],
+   "anchored_here": [
+    "f (at_note, detected in bar 1)"
+   ]
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "cell": "cell/2/0/6/1",
+   "staff_name": "Timpani",
+   "file": "dyn_10.png",
+   "before": [
+    "p"
+   ],
+   "after": [
+    "p"
+   ],
+   "anchored_here": [
+    "p (next_onset, detected in bar 1)"
+   ]
+  }
+ ]
+}

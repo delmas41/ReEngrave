@@ -1,0 +1,878 @@
+"""INFER — what is most LIKELY, given everything at once. The fourth stage.
+
+⚠️⚠️ READ `docs/plan-2026-09-10-wire-first-then-reconcile.md` §5 BEFORE
+CHANGING ANYTHING HERE. This stage is the one place in the pipeline where an
+answer may be BEST rather than FORCED, and every guard below exists to stop
+that licence leaking into the three stages in front of it.
+
+    GATHER     what is on the page?                 decides nothing
+    ADJUDICATE what does this ONE thing mean?       reads it, or abstains
+    EVALUATE   what FOLLOWS from what we know?      acts only when FORCED
+    INFER      what is most LIKELY, given it all?   acts when the answer is BEST
+    EXPORT     write it, and count what did not     always
+
+**The property this stage exists to keep sayable**, and the reason it is a
+separate stage rather than a widened EVALUATE:
+
+    Everything in the record before EXPORT was READ or ENTAILED.
+    Everything after INFER was read, entailed, or INFERRED -- and LABELLED.
+
+The boundary between the stages is exactly where that guarantee changes,
+which is the right place for one.
+
+─────────────────────────────────────────────────────────────────────────────
+⚠️ WHAT THIS STAGE MAY NOT DO. Five rules, each enforced by the harness
+rather than by a docstring, because a discipline nobody can break is worth
+more than one everybody has read.
+
+1.  **It may not run before EVALUATE.** `run()` requires the EVALUATE report
+    as an argument, so it cannot be called before one exists. Structural: no
+    ordering convention to remember.
+
+2.  **It may not loosen GATHER or ADJUDICATE.** `run()` refuses an unfrozen
+    log. The whole design rests on the earlier stages still refusing to
+    guess, so that this stage can always tell *"nobody could read this"* from
+    *"this was read and it is wrong"*. Destroy that distinction upstream and
+    INFER is unbuildable -- so the temptation to relax a reader "because
+    INFER will clean it up" is the one failure mode that would cost the
+    architecture rather than a number.
+
+3.  **It may only speak where the record has no answer.** `INFERABLE` is
+    `{NARROWED, ABSTAINED}`. An inference may NEVER overturn a DECIDED
+    verdict: a decision is a READING, and replacing a reading with a guess is
+    the thing that makes a cleanup count unable to tell a reading fault from
+    an inference fault.
+
+4.  **It may not invent a value.** Where the prior is NARROWED the proposed
+    value must be one of the candidates the reader itself admitted --
+    `_admit` raises `ValueNotAdmitted` otherwise. So the reader's refusal
+    bounds the inference: INFER chooses among what was admitted, it does not
+    widen the field.
+
+5.  **It supersedes VISIBLY.** A rule returns a `Proposal`, never a
+    `Verdict`; the harness builds the verdict, stamps `decider="infer:..."`
+    and `detail["inferred"]=True`, and points `supersedes` at the prior. The
+    log is append-only, so the narrowing STAYS in the record with its
+    candidates and their support. Nothing is overwritten and nothing is lost.
+
+─────────────────────────────────────────────────────────────────────────────
+⚠️⚠️ THE TWO HAZARDS, BOTH ALREADY PAID FOR IN THIS REPOSITORY.
+
+**(a) An uncalibrated number must not be laundered into evidence.**
+`Candidate.support` is a sum of signed terms in the deciding function's OWN
+units. It does not normalise and 3.0 does not mean twice 1.5. This project
+measured what happens when such a number is treated as a probability: ECE
+0.1277, failing WORST at the top of the range, the top bin promising 0.989
+and delivering 0.692.
+
+    ⚠️ So NOTHING IN THIS MODULE MAY RANK CANDIDATES BY `support` ALONE.
+    A rule must reach its answer through evidence the prior did not already
+    weigh; `support` may be REPORTED beside the answer and may never be the
+    reason for it. `Rule.forbids_argmax` is asserted by the test suite.
+
+**(b) Two readers can fall silent TOGETHER.** *The bars are not an
+independent umpire over a bad reading*: a page whose meter the reader mangles
+is a page whose ink is degraded, and the same degradation stops its bars from
+summing -- so **the case that most needs an arbiter is the case where the
+arbiter is silent**. Measured twice independently here (bar sums; `arc_kind`'s
+position grammar, available on 81 of 199 arcs and absent on exactly the weaker
+readings).
+
+    ⚠️ So A RULE THAT COUNTS N AGREEING WITNESSES MUST SAY WHY THEY ARE N AND
+    NOT ONE, and here that is not an argument, it is a COMPUTATION.
+    `independent_groups()` partitions witnesses by whether their verdicts'
+    provenance closures INTERSECT -- two witnesses resting on a shared row
+    are one signal. The partition is recorded on the verdict's `correlated`
+    field, which has existed for exactly this and until now was consumed by
+    nothing.
+
+─────────────────────────────────────────────────────────────────────────────
+⚠️ BYPASS. Default ON since 2026-09-23 (roadmap 2.3, Sean's decision -- see
+`docs/flags-2026-09.md`), and an explicit OFF still means ABSENT rather than
+quiet: `pipeline` adds no `inference` key when the stage did not run. ⚠️ SINCE
+2026-10-07 (roadmap 0.2c) TWO RULES HAVE NO FLAG (`ALWAYS_ON`: the slot-index
+and clef-gap rules), so `OMR_INFER=0` alone no longer bypasses the stage: the
+key is absent only when NO rule is enabled, which `test_infer_bypass.py`
+reaches by removing the always-on rules from the registry. That is asserted by
+`test_infer_bypass.py` rather than asserted here -- an earlier stage's arm (`readjudicate`, `reexport_arm`) must never
+have to know this stage exists.
+"""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import (Any, Callable, Dict, List, Mapping, Optional, Sequence,
+                    Tuple)
+
+from .record import Kind, Log, Outcome, Q, Subject, Verdict
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The flag
+# ─────────────────────────────────────────────────────────────────────────────
+
+INFER_ENV = "OMR_INFER"
+
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON (Sean, 2026-09-23 -- roadmap
+#: 2.3). Until then this was an allow-list for a default-OFF flag; that
+#: direction has to follow the default, so flipping the default without
+#: flipping the predicate would have been the exact mistake
+#: `test_flag_default_direction.py` exists to catch -- a typo (`OMR_INFER=`,
+#: `OMR_INFER=nope`) silently reading as OFF and turning a shipped stage back
+#: into a bypass. `_OFF_WORDS` (below) is shared with `part_key_enabled`;
+#: this predicate is still written out on its own line, never behind a
+#: helper, so the AST scan sees each flag's own `os.environ.get` call.
+_OFF_WORDS = ("0", "", "false", "no", "off")
+
+
+def infer_enabled() -> bool:
+    """Read the flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(INFER_ENV, "1").strip().lower() not in _OFF_WORDS
+
+
+#: PROMOTED 2026-10-07 (roadmap 0.2c): the slot-index rule
+#: (`collapse_slot_index_to_family_block`, 25 of 25 placements correct against
+#: the print, ZERO grafts, `staff_not_identified` 783 -> 141) and the clef-gap
+#: rule (`fill_clef_gap`, roadmap 2.10) each had their own default-ON flag
+#: (`OMR_SLOT_FAMILY_BLOCK`, `OMR_CLEF_GAP`). Both flags are REMOVED: the
+#: behaviour is the old ON default, the environment read and the OFF path are
+#: gone, and the two rules register with `ALWAYS_ON` below. The per-rule
+#: evidence stays on each rule in `inferences.py`; an arm that needs the old
+#: identity must now be a code arm, not an environment variable.
+
+
+#: The key-gap rule's OWN flag, default ON (roadmap 2.9b, Sean 2026-09-23).
+#:
+#: ⚠️⚠️ A FOURTH FLAG FOR THE REASON THE SECOND AND THIRD EXIST: this rule's
+#: evidence is its own. Its first tier is the DOCUMENT-WIDE majority of the
+#: concert keys the record already decided -- a reading of other ink on other
+#: systems, weighed against a truth Sean adjudicated off four crops (every
+#: non-transposing staff of both count pages prints three flats) -- and its
+#: second is the same part's own written key on its other systems. One flag
+#: over four rules would make turning any of them off one decision about all
+#: of them.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- as with the three above.
+#: `OMR_PART_KEY=` or a typo must leave the rule RUNNING. The predicate is
+#: written out on its own line, never behind a helper, so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+PART_KEY_ENV = "OMR_PART_KEY"
+
+
+def part_key_enabled() -> bool:
+    """Read the key-gap rule's flag. Anything but an off-word is ON."""
+    return (os.environ.get(PART_KEY_ENV, "1").strip().lower()
+            not in _OFF_WORDS)
+
+
+@dataclass(frozen=True)
+class Switch:
+    """A flag NAME and the predicate that reads it, as ONE object.
+
+    ⚠️ The pair travels together so a report can NAME the flag that held a
+    rule back without a second table mapping predicates to names. A two-entry
+    hand list is still a hand list, and this file's own history is a
+    `_names_by_system` that could not represent the case it existed for.
+    """
+
+    env: str
+    fn: Callable[[], bool]
+
+    def __call__(self) -> bool:
+        return self.fn()
+
+
+#: The stage-wide flag: the two DURATION rules. Default ON since 2026-09-23
+#: (roadmap 2.3, Sean's decision) -- three subjects checked against the
+#: print, all three corrected by the `Q.GLYPH_OWNER` fix; see
+#: `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9 and
+#: `benchmarks/omr-infer-default-2026-09/FINDINGS.md` for the default-flip
+#: measurement.
+INFER_SWITCH = Switch(INFER_ENV, infer_enabled)
+
+#: A rule with no flag of its own (a PROMOTED rule, roadmap 0.2c). It reads
+#: no environment variable and is always enabled; the name is what the review
+#: server shows as the rule's gate. It is not an off switch that happens to be
+#: on -- `Switch.fn` never reads anything.
+ALWAYS_ON = Switch("(always on)", lambda: True)
+
+#: The key-gap rule alone. Default ON (roadmap 2.9b).
+PART_KEY_SWITCH = Switch(PART_KEY_ENV, part_key_enabled)
+
+#: ROADMAP 2.81 PHASE 2. The bare-stem bar-math rule's OWN flag, default ON
+#: (Sean, 2026-10-11, "Yes": land it with the bar check switched on). Sean's blind
+#: tiles: the 6 heads it settled are 6 of 6 right (FINDINGS `omr-missing-notes-
+#: 2026-09` 20.8); his hand-truth page 33 right / 0 wrong.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON: `OMR_BARE_STEM_BAR=` or a typo must
+#: leave the rule RUNNING. Written out on its own line so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+BARE_STEM_BAR_ENV = "OMR_BARE_STEM_BAR"
+
+
+def bare_stem_bar_enabled() -> bool:
+    """Read the bare-stem flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(BARE_STEM_BAR_ENV, "1").strip().lower() not in _OFF_WORDS
+
+
+BARE_STEM_BAR_SWITCH = Switch(BARE_STEM_BAR_ENV, bare_stem_bar_enabled)
+
+
+#: ROADMAP 2.97. The narrowed-heads bar-math rule's OWN flag, default ON since
+#: 2026-10-13 (Sean: "Yes, switch it on"). His blind tiles: columns 4 of 4 right
+#: (2.97-review tiles 9-12), eighths on beam evidence 2 of 2 (2.97-review-3
+#: tiles 1-2). Everything it settles is exported as GUESSED (blue, 2.103).
+#: A DENY-LIST, BECAUSE THE DEFAULT IS ON: a typo must leave the rule RUNNING
+#: (an empty value is an off-word, as for its siblings). Written out on its own line so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+NARROWED_BAR_ENV = "OMR_NARROWED_BAR"
+
+
+def narrowed_bar_enabled() -> bool:
+    """Read the narrowed-bar flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(NARROWED_BAR_ENV, "1").strip().lower() not in _OFF_WORDS
+
+
+NARROWED_BAR_SWITCH = Switch(NARROWED_BAR_ENV, narrowed_bar_enabled)
+
+
+#: ROADMAP 2.136 step 2, SPLIT in two flags (Sean 2026-10-15). (W1) `OMR_INFER_CARRIED_METER_FIX`, default ON: a CARRIED meter is
+#: compared with the segment in force at the END of the system it was carried from (not its opening one). A deny-list: only an
+#: explicit off-word restores the old comparison. Written out on its own line so the AST scan in `test_flag_default_direction.py`
+#: sees this flag's own `os.environ.get`. Neither fix changes what the rule may settle (GUESSED, the reader's own candidates,
+#: no eighth without a flag or beam, every landing agreeing).
+CARRIED_METER_FIX_ENV = "OMR_INFER_CARRIED_METER_FIX"
+
+
+def carried_meter_fix_enabled() -> bool:
+    """Read the 2.136 W1 flag. Default ON: a deny-list, only an explicit off-word restores the old comparison."""
+    return os.environ.get(CARRIED_METER_FIX_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+#: (W2) `OMR_INFER_LEDGER_OWNER_HEADS`, default OFF until the Litolff failures are understood (ROADMAP 2.141): a head beyond the
+#: staff whose `Q.GLYPH_OWNER` is DECIDED and names THIS staff stays in the bar. An allow-list: a typo must leave it OFF.
+LEDGER_OWNER_HEADS_ENV = "OMR_INFER_LEDGER_OWNER_HEADS"
+
+
+def ledger_owner_heads_enabled() -> bool:
+    """Read the 2.136 W2 flag. Only an explicit on-word is ON."""
+    return os.environ.get(LEDGER_OWNER_HEADS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: ROADMAP 2.107. The dynamic INK PICK's own flag, default OFF (Sean 2026-10-13,
+#: "land with blue dyn only"): a narrowed dynamic is exported as a blue `dyn.`
+#: carrying every candidate, never as one of them. Sean's tiles 10/11: the pick
+#: was WRONG on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`) -- a letter
+#: on a staff line erases to fragments the detector calls `m`. Kept for when
+#: the letter reader improves.
+#: A default-OFF flag is an ALLOW-LIST: a typo must leave the pick OFF. Written
+#: out on its own line so the AST scan in `test_flag_default_direction.py` sees
+#: this flag's own `os.environ.get`.
+DYNAMIC_INK_PICK_ENV = "OMR_DYNAMIC_INK_PICK"
+
+
+def dynamic_ink_pick_enabled() -> bool:
+    """Read the ink-pick flag. Only an explicit on-word is ON."""
+    return os.environ.get(DYNAMIC_INK_PICK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+DYNAMIC_INK_PICK_SWITCH = Switch(DYNAMIC_INK_PICK_ENV, dynamic_ink_pick_enabled)
+
+
+#: ROADMAP 2.121. The arc-ink-is-not-a-beam rule's own flag, default ON since 2026-10-14 (Sean: "Land"; his 15 tiles: 9 of 13 exact,
+#: 0 quarters made eighths): a bare
+#: stem whose every refused "beam" stroke is a slur/tie's own ink or measured thinner/more bowed than any beam is collapsed to the
+#: unbeamed value, GUESSED (blue). A default-ON flag is a DENY-LIST: only an explicit off-word turns it off. Written out on its own line
+#: so the AST scan in `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+ARC_INK_NOT_BEAM_ENV = "OMR_ARC_INK_NOT_BEAM"
+
+
+def arc_ink_not_beam_enabled() -> bool:
+    """Read the arc-ink flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(ARC_INK_NOT_BEAM_ENV, "1").strip().lower() not in _OFF_WORDS
+
+
+ARC_INK_NOT_BEAM_SWITCH = Switch(ARC_INK_NOT_BEAM_ENV, arc_ink_not_beam_enabled)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The vocabulary
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class Inference(str, Enum):
+    """What kind of claim an inference is making."""
+
+    #: A narrowed duration collapsed by what the OTHER staves of the system
+    #: say about the same stretch of time.
+    COLLAPSE_DURATION_BY_COLUMN = "collapse_duration_by_column"
+
+    #: The same claim for a note that runs to the BARLINE -- the bucket the
+    #: rule above declines by design, because a note with no further onset
+    #: has the bar's own length and the bar's length is the METER.
+    #:
+    #: ⚠️⚠️ IT IS A SEPARATE RULE AND NOT A WIDENING, because it needs a
+    #: guard the other one does not: a witness whose own length reached it
+    #: THROUGH the meter is refused. Folding the two together would hide that
+    #: guard behind a branch and put the two reach numbers in one bucket,
+    #: which is exactly what stops a reader seeing what the new claim bought.
+    COLLAPSE_DURATION_TO_BARLINE = "collapse_duration_to_barline"
+
+    #: A narrowed SLOT INDEX collapsed by the convention that a short string
+    #: block is short at its FOOT -- the condensed `Violoncello e Basso`.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE THAT IS NOT ABOUT A DURATION, AND THAT IS THE
+    #: POINT. `staged/brakes.py` measured that of 28 decisions exactly ONE
+    #: could hand work to this stage: 2,289 abstentions on one document said
+    #: *"I cannot"* into a pipeline whose fourth stage is defined to answer
+    #: exactly that, with no rule to receive them. This is the second target
+    #: quantity, and it came from the largest single population a human had
+    #: actually looked at -- 25 staves of music held out of the file.
+    COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK = "collapse_slot_index_to_family_block"
+
+    #: A clef nobody could read, on a staff whose PART is settled, filled from
+    #: the same part's clef on other systems -- and failing that from the
+    #: instrument's conventional header clef.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE WHOSE PRIOR IS AN ABSTENTION RATHER THAN A
+    #: NARROWING, AND THAT IS A DIFFERENT SHAPE. `INFERABLE` has always held
+    #: both, but until now every rule spoke into a narrowing, where rule 4
+    #: bounds the answer to the reader's own candidates. `adjudicate_clef`
+    #: abstaining `no_candidates` kept NO candidates -- so on this path rule 4
+    #: has nothing to bound with, and the bound has to come from the rule's
+    #: own evidence instead: the value is a clef DECIDED elsewhere in the same
+    #: document on the same part, or the `default_clef` of an instrument the
+    #: record already named. Neither is invented by the rule, and that is what
+    #: makes an abstention a legitimate target rather than a licence.
+    FILL_CLEF_GAP = "fill_clef_gap"
+
+    #: A key signature nobody could read, or one abstained because it
+    #: disagreed with its own document, filled from the DOCUMENT-WIDE
+    #: majority of decided concert keys -- re-transposed for this staff --
+    #: and failing that from the same PART's written key on other systems.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE WHOSE PRIOR THE PIPELINE CREATED ON PURPOSE
+    #: FOR IT. `adjudicate_key_signature` abstains `disagrees_with_document`
+    #: exactly so this rule may speak, because rule 3 forbids overturning a
+    #: DECIDED verdict and a staff that read its key wrongly HAS decided one.
+    #: That is not a way around rule 3 and it must not become one: the
+    #: abstention is a CHECK that reads rows, can FAIL, and records the
+    #: reading it set aside -- so the record still separates *nobody could
+    #: read this* from *this was read and the document contradicts it*, which
+    #: is the distinction rule 3 protects. A rule whose ADJUDICATE side
+    #: abstained on the inference's say-so would be the fixpoint instead.
+    FILL_PART_KEY = "fill_part_key"
+
+    #: ROADMAP 2.81 PHASE 2. A narrowed duration of a head that stands on a
+    #: stem whose every candidate beam was refused (`beam_discounted_
+    #: uncertain`: the quarter, or ONE beam level more), collapsed to the one
+    #: reading under which the BAR'S ARITHMETIC lands on the meter.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE THAT READS `Q.METER`, AND IT SAYS SO: its
+    #: `reads` names it, so `scoring_conflict` is non-empty against the
+    #: bar-fill self-check and `probe/self_check.py` will refuse to score this
+    #: rule by bar-fill. The count against the PRINT (Sean's hand truth) is
+    #: the only legitimate score. The likelihood the ranking carries (a bare
+    #: stem is a quarter) is NOT the reason for any answer: the arithmetic is.
+    COLLAPSE_BARE_STEM_BY_BAR = "collapse_bare_stem_by_bar"
+
+    #: ROADMAP 2.97 (Sean 2026-10-12). Any NARROWED head (or chord) of a bar,
+    #: whatever refused its beams, collapsed to the one candidate under which
+    #: the bar lands on the PRINTED meter and every landing agrees. The bare-
+    #: stem rule's arithmetic with its reach widened; it reads `Q.METER` for
+    #: the same reason that one does, so bar-fill is not a legitimate score.
+    COLLAPSE_NARROWED_BY_BAR = "collapse_narrowed_by_bar"
+
+    #: ROADMAP 2.107 (Sean 2026-10-13: *"maybe the closest dynamic we can guess
+    #: with the info that we have?"*). A NARROWED dynamic -- letters seen, not
+    #: all read -- collapsed to the candidate the INK itself scores closest: the
+    #: letter reader's own score for the open letter(s) over their ink, under two
+    #: erasures. Never the document's frequency of a word (Sean: not evidence).
+    #: Where the ink favours none (no letter scored, or a tie inside the
+    #: declared margin) the narrowing stands and EXPORT writes `dyn.`.
+    COLLAPSE_DYNAMIC_BY_INK = "collapse_dynamic_by_ink"
+
+    #: ROADMAP 2.121 (Sean 2026-10-14, "start the beam confirmation fix"; 2.119 twins split A). A stemmed head whose EVERY candidate
+    #: beam stroke was refused, each as a slur/tie's own ink or as thinner/more bowed than any beam (2.74's ink test), with its stem
+    #: tip read clean, collapsed to the head's own unbeamed value. Evidence: the arc reader's DECIDED glyph and the CV ink test read
+    #: the SAME ink, so they are ONE witness -- GUESSED, never READ. No bar arithmetic.
+    COLLAPSE_ARC_INK_NOT_BEAM = "collapse_arc_ink_not_beam"
+
+
+#: The only prior states an inference may speak into.
+#:
+#: ⚠️ `DECIDED` IS DELIBERATELY ABSENT AND MUST STAY ABSENT. See rule 3 in the
+#: module docstring: an inference that can overturn a reading makes a cleanup
+#: count unable to separate a reading fault from an inference fault, which is
+#: the one thing that would cost the architecture rather than a number.
+INFERABLE: Tuple[Outcome, ...] = (Outcome.NARROWED, Outcome.ABSTAINED)
+
+#: Every verdict this stage writes carries a decider beginning with this.
+DECIDER_PREFIX = "infer:"
+
+
+def is_inferred(verdict: Any) -> bool:
+    """True for a verdict this stage wrote. Takes a `Verdict` or its JSON.
+
+    ⚠️ The SEPARABILITY primitive. A consumer asking *"was this inferred?"*
+    gets a straight answer from the record alone, with no side table to keep
+    in sync -- the fault that let `clef_final` go stale in 9 of 20 rows.
+    """
+    decider = getattr(verdict, "decider", None)
+    if decider is None and isinstance(verdict, Mapping):
+        decider = verdict.get("decider")
+    return bool(decider) and str(decider).startswith(DECIDER_PREFIX)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# What a rule returns -- and what it CANNOT return
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@dataclass(frozen=True)
+class Proposal:
+    """One inference, before the harness has stamped it.
+
+    ⚠️⚠️ A RULE RETURNS THESE AND NEVER A `Verdict`, WHICH IS WHAT MAKES THE
+    LABELLING STRUCTURAL. A rule physically cannot write an unlabelled
+    verdict, cannot overturn a DECIDED one, and cannot point `supersedes`
+    somewhere convenient -- the harness does all three, once, for every rule.
+
+    That is mechanism 3 of `record.py` (*"the decision is not asked to be
+    honest about what it was missing, it is not consulted"*) applied to the
+    one stage where the temptation to be less than honest is greatest.
+    """
+
+    #: Where the inference lands. Required, because a rule at SYSTEM scope
+    #: emits proposals about many glyphs.
+    subject: Subject
+    value: Any
+    reason: str
+    #: Row ids the inference rests on. The prior is added by the harness.
+    basis: Tuple[str, ...] = ()
+    #: The independent witnesses, as verdict ids, BEFORE the correlation
+    #: partition. `_admit` computes the partition and records it.
+    witnesses: Tuple[str, ...] = ()
+    detail: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class Rule:
+    """One inference rule.
+
+    ⚠️ `bound` and `why_witnesses_are_independent` are REQUIRED PROSE, on the
+    model of `evaluate.Rule.bound`. Every propagation in this tree that works
+    is bounded and the boundedness is what makes it safe; a rule that cannot
+    state its bound in one sentence has not been thought through, and this
+    parameter makes that obvious at the point of writing rather than after a
+    run.
+    """
+
+    inference: Inference
+    target: str                     # the quantity it writes
+    reads: Tuple[str, ...]          # the quantities it consumes
+    scope: Kind
+    fn: Callable[[Log, Subject], Sequence[Proposal]]
+    bound: str
+    #: ⚠️ Declares that this rule looks ACROSS siblings -- the thing EVALUATE
+    #: structurally cannot do, and the reason this stage exists at all. A
+    #: rule that is not sideways should be asked why it is not a consequence.
+    sideways: bool
+    why_witnesses_are_independent: str
+    #: ⚠️ Asserted by the suite. A rule may REPORT `support` and may never
+    #: choose by it -- see hazard (a).
+    forbids_argmax: bool = True
+    stub: bool = False
+    #: ⚠️ THE RULE'S OWN GATE, so a default is a property of the RULE and not
+    #: of the stage. Without this the stage's one flag is the only dial, and
+    #: shipping any single rule on ships every rule on -- which is how a
+    #: print-verified rule and two rules with no crop between them come to be
+    #: one decision. Default `INFER_SWITCH`, so a rule that says nothing
+    #: keeps the stage-wide flag it has always had.
+    switch: Switch = INFER_SWITCH
+
+
+RULES: List[Rule] = []
+
+
+def rule(*, inference: Inference, target: str, reads: Sequence[str],
+         scope: Kind, bound: str, sideways: bool,
+         why_witnesses_are_independent: str, stub: bool = False,
+         switch: Switch = INFER_SWITCH):
+    """Register an inference rule."""
+    if target not in Q.all():
+        raise ValueError(f"{target!r} is not a known quantity")
+    for q in reads:
+        if q not in Q.all():
+            raise ValueError(f"{q!r} is not a known quantity")
+
+    def wrap(fn):
+        RULES.append(Rule(inference, target, tuple(reads), scope, fn, bound,
+                          sideways, why_witnesses_are_independent, True, stub,
+                          switch))
+        return fn
+
+    return wrap
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Independence -- hazard (b), computed rather than argued
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def independent_groups(log: Log,
+                       verdict_ids: Sequence[str]) -> Tuple[frozenset, ...]:
+    """Partition witnesses into groups that share no provenance.
+
+    ⚠️⚠️ THIS IS THE ANSWER TO *"why are they N witnesses and not one"*, and
+    it is a COMPUTATION rather than an argument. Two verdicts whose
+    `Log.closure` intersects rest on a shared row -- the same detection, the
+    same staff spacing, the same external document -- and counting them twice
+    is the double-counting that `Observation.derived_from` was added to stop.
+
+    Returns one frozenset of verdict ids per INDEPENDENT group, so
+    `len(independent_groups(...))` is the honest witness count and
+    `len(verdict_ids)` is not.
+
+    ⚠️ It is a ONE-SIDED test and says so here rather than in a write-up:
+    DISJOINT closures prove the rows differ, they do NOT prove the readings
+    fail independently. Two staves of one badly-printed page share no row and
+    still degrade together -- that is the CONVENTION/INK correlation CLAUDE.md
+    records as measured but unquantified. So this rules out the correlation
+    the record can see and is silent about the one it cannot.
+    """
+    closures = {vid: log.closure(vid) for vid in verdict_ids}
+    groups: List[set] = []
+    members: List[set] = []
+    for vid, cl in closures.items():
+        hit = [i for i, g in enumerate(groups) if g & cl]
+        if not hit:
+            groups.append(set(cl))
+            members.append({vid})
+            continue
+        first = hit[0]
+        for i in reversed(hit[1:]):
+            groups[first] |= groups[i]
+            members[first] |= members[i]
+            del groups[i]
+            del members[i]
+        groups[first] |= cl
+        members[first].add(vid)
+    return tuple(frozenset(m) for m in members)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Errors -- each names a rule this stage refuses to break
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class NotEvaluated(RuntimeError):
+    """INFER was asked to run without EVALUATE's report.
+
+    The stage ordering, made structural. See rule 1.
+    """
+
+
+class LogNotFrozen(RuntimeError):
+    """INFER was asked to run on a log still open for measurement.
+
+    See rule 2: this stage may not loosen GATHER.
+    """
+
+
+class ValueNotAdmitted(RuntimeError):
+    """An inference proposed a value the reader never admitted.
+
+    See rule 4. The reader's own candidate set bounds the inference: INFER
+    chooses among what was admitted, it does not widen the field. A rule that
+    wants to widen it is not an inference, it is a second reader, and belongs
+    in ADJUDICATE where it would have to declare its evidence.
+    """
+
+
+class NoRulesRegistered(RuntimeError):
+    """INFER ran with no rules loaded.
+
+    ⚠️ AN ERROR, NOT AN EMPTY RESULT, and for the reason
+    `evaluate.NoRulesRegistered` gives at length: a stage that runs with zero
+    rules reports `inferred: []`, which is indistinguishable from a stage that
+    ran and found nothing to infer. This tree already had that fault twice
+    (`OMR_CONTEST_DUMP`, `locate_clef(trace=)`) -- complete recorders that
+    recorded NOTHING because they were off, with nothing in the output saying
+    so.
+    """
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The report
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@dataclass
+class Report:
+    """What INFER did. Event-shaped, like everything else here."""
+
+    #: (inference, subject, verdict id)
+    inferred: List[Tuple[str, str, str]] = field(default_factory=list)
+    #: (inference, subject, why)
+    skipped: List[Tuple[str, str, str]] = field(default_factory=list)
+    stubs: List[str] = field(default_factory=list)
+    #: Reach, per rule, BEFORE any inference is made -- how much there was to
+    #: speak about at all.
+    #:
+    #: ⚠️ REPORTED FIRST AND SEPARATELY, because this repository has burned a
+    #: session on a clean zero that meant nothing: a change that moves nothing
+    #: because it is INERT and one that moves nothing because the page holds
+    #: NOTHING TO MOVE are the same number.
+    reach: Dict[str, Dict[str, int]] = field(default_factory=dict)
+    #: Rules whose own switch is off, with the flag that turned them off.
+    #:
+    #: ⚠️ NAMED RATHER THAN OMITTED. Once rules have separate defaults, a
+    #: report listing only what ran cannot be told from one where a rule
+    #: silently stopped firing -- *a change that moves nothing because it is
+    #: INERT and one that moves nothing because the page holds NOTHING TO
+    #: MOVE are the same number*, arriving in the stage's own report. This is
+    #: about the REPORT; the record key stays absent when nothing runs.
+    disabled: List[Tuple[str, str]] = field(default_factory=list)
+
+    def to_json(self) -> dict:
+        return {
+            "inferred": [list(i) for i in self.inferred],
+            "skipped": [list(s) for s in self.skipped],
+            "stubs": sorted(set(self.stubs)),
+            "disabled": [list(d) for d in self.disabled],
+            "reach": self.reach,
+            "counts": {"inferred": len(self.inferred),
+                       "skipped": len(self.skipped)},
+        }
+
+
+def _ensure_rules() -> None:
+    """Load the inference rules. Idempotent, and a lazy import so `inferences`
+    can import this module."""
+    if not RULES:
+        from . import inferences  # noqa: F401
+    if not RULES:
+        raise NoRulesRegistered(
+            "INFER has no rules. An empty stage is not an empty result.")
+
+
+def enabled_rules() -> List[Rule]:
+    """The rules whose own switch is on. Stubs are not rules that ran."""
+    _ensure_rules()
+    return [r for r in RULES if not r.stub and r.switch()]
+
+
+def stage_should_run() -> bool:
+    """Whether INFER has anything to do at all.
+
+    ⚠️⚠️ THIS REPLACED A BARE `infer_enabled()` AT THE PIPELINE CALL SITE AND
+    THE BYPASS CLAIM MOVED WITH IT. *Off means ABSENT, not quiet* used to
+    read "with `OMR_INFER` off the `inference` key is absent"; with a
+    default-ON rule in the registry that sentence is FALSE, and leaving it
+    written would be this repository's own `fixed-then-kept-open-in-prose`
+    with the polarity reversed. The property it becomes is the one that was
+    always meant: **when NO RULE IS ENABLED the key is absent**, which is
+    still provable -- remove the `ALWAYS_ON` rules (promoted 2026-10-07,
+    roadmap 0.2c, so no environment variable can silence them), turn every
+    remaining rule's flag off and compare -- and is what `test_infer_bypass`
+    now asserts.
+
+    ⚠️ So a record from a tree carrying INFER is no longer byte-identical to
+    one from a tree without it under default settings. That is not a
+    regression hidden in a helper, it is what flipping a rule on MEANS, and
+    an arm that needs the old identity must be a code arm (the
+    `OMR_SLOT_FAMILY_BLOCK` flag was promoted away 2026-10-07).
+    """
+    return bool(enabled_rules())
+
+
+def _candidate_values(prior: Verdict) -> Tuple[Any, ...]:
+    return tuple(c.value for c in (prior.candidates or ()))
+
+
+def _same_value(a: Any, b: Any) -> bool:
+    """Value equality that survives a round trip through JSON.
+
+    ⚠️ A duration value is a dict, and `reinfer.py` rebuilds one from a saved
+    record -- where an int has become an int and a tuple a list. Comparing
+    with `==` on the raw objects would make a rebuilt arm silently admit
+    nothing, which would read as *"the rule is inert"*.
+    """
+    if a is b:
+        return True
+    if isinstance(a, Mapping) and isinstance(b, Mapping):
+        return (set(a) == set(b)
+                and all(_same_value(a[k], b[k]) for k in a))
+    if isinstance(a, (list, tuple)) and isinstance(b, (list, tuple)):
+        return len(a) == len(b) and all(_same_value(x, y) for x, y in zip(a, b))
+    return a == b
+
+
+def _admit(log: Log, r: Rule, p: Proposal, report: Report) -> Optional[Verdict]:
+    """Every guard in the module docstring, in one place.
+
+    ⚠️ ONE PLACE ON PURPOSE. A guard repeated per rule is a guard that a new
+    rule can forget; this one runs for every proposal of every rule and there
+    is no path around it.
+    """
+    key = p.subject.to_key()
+    prior = log.verdict(r.target, p.subject)
+    if prior is None:
+        report.skipped.append((r.inference.value, key, "no_prior_verdict"))
+        return None
+    if prior.outcome not in INFERABLE:
+        # Rule 3. Reported by NAME so a reader can see that the stage declined
+        # to overturn a reading, rather than that it found nothing.
+        report.skipped.append(
+            (r.inference.value, key, f"prior_is_{prior.outcome.value}"))
+        return None
+    if prior.outcome is Outcome.NARROWED:
+        admitted = _candidate_values(prior)
+        if not any(_same_value(p.value, v) for v in admitted):
+            raise ValueNotAdmitted(
+                f"{r.inference.value} proposed a value for {key} that "
+                f"{prior.decider} never admitted. An inference chooses among "
+                f"the candidates the reader kept; widening the field is a "
+                f"second READING and belongs in ADJUDICATE, where it would "
+                f"have to declare its evidence. Proposed {p.value!r}; "
+                f"admitted {list(admitted)!r}.")
+
+    groups = independent_groups(log, p.witnesses) if p.witnesses else ()
+    detail = dict(p.detail)
+    detail.update({
+        # ⚠️ The label, stamped by the HARNESS. A rule cannot omit it.
+        "inferred": True,
+        "rule": r.inference.value,
+        "sideways": r.sideways,
+        "prior_outcome": prior.outcome.value,
+        "n_witnesses": len(p.witnesses),
+        "n_independent_witnesses": len(groups),
+    })
+    v = Verdict(
+        id=log._next_id("vrd"),          # noqa: SLF001 -- same module family
+        subject=p.subject,
+        quantity=r.target,
+        outcome=Outcome.DECIDED,
+        value=p.value,
+        decider=f"{DECIDER_PREFIX}{r.inference.value}",
+        reason=p.reason,
+        used=tuple(p.witnesses),
+        # ⚠️ The prior is ALWAYS in the basis: an inference that collapses a
+        # narrowing has read that narrowing, and saying so is what lets the
+        # fixpoint guard in `Log.record` do its job.
+        basis=tuple(p.basis) + (prior.id,),
+        correlated=groups,
+        # ⚠️ The candidates the reader kept travel FORWARD onto the inferred
+        # verdict, so the narrowing is legible from the answer itself and not
+        # only by walking back to a superseded row.
+        candidates=prior.candidates,
+        supersedes=prior.id,
+        detail=detail,
+    )
+    log.record(v)
+    report.inferred.append((r.inference.value, key, v.id))
+    return v
+
+
+def run(log: Log, evaluated: Any, *, progress: bool = False) -> Report:
+    """One pass. No fixpoint, and there must never be one.
+
+    `evaluated` is EVALUATE's `Report` and is REQUIRED -- it is how the stage
+    ordering is enforced rather than remembered (rule 1). Pass the real one;
+    a caller that has not run EVALUATE has nothing to pass.
+
+    ⚠️ There is deliberately no `while` in this function. If you find
+    yourself wanting to re-run it until stable, that is the escalation
+    signal, not a design. `Log.record`'s `UphillConsequence` guard is still
+    live underneath and will refuse a verdict that reaches its own prior
+    through its other inputs.
+    """
+    if evaluated is None:
+        raise NotEvaluated(
+            "INFER needs EVALUATE's report. It may not run before "
+            "consequences are settled -- a narrowed duration that a "
+            "consequence was about to restate is not a narrowing to infer "
+            "over.")
+    if not log.frozen:
+        raise LogNotFrozen(
+            "INFER was handed a log still open for measurement. This stage "
+            "may not loosen GATHER: the whole design rests on the earlier "
+            "stages still refusing to guess, so that INFER can tell 'nobody "
+            "could read this' from 'this was read and it is wrong'.")
+    _ensure_rules()
+
+    report = Report()
+    for r in RULES:
+        if r.stub:
+            report.stubs.append(f"{r.inference.value}({r.target})")
+            continue
+        if not r.switch():
+            # ⚠️ NOT `continue` silently. A rule held back by its own flag is
+            # a different fact from a rule that ran and found nothing, and
+            # the report is the only place that distinction survives.
+            report.disabled.append((r.inference.value, r.switch.env))
+            continue
+        produced = 0
+        for subject in log.subjects(r.scope):
+            for p in r.fn(log, subject):
+                if _admit(log, r, p, report) is not None:
+                    produced += 1
+        report.reach.setdefault(r.inference.value, {})["inferred"] = produced
+        if progress:
+            print(f"  infer {r.inference.value}: {produced} inferred")
+    return report
+
+
+def inferred_in_basis(log: Log, verdict: Any) -> Tuple[str, ...]:
+    """The INFERRED verdicts `verdict` rests on, transitively. Sorted ids.
+
+    ⚠️⚠️ THIS IS HOW THE LABEL PROPAGATES, AND IT IS A QUERY RATHER THAN A
+    SECOND FLAG ON EVERY DOWNSTREAM ROW. A pitch restated from an inferred
+    clef is not itself an inference -- `restate_pitch` is a CONSEQUENCE and
+    the pitch FOLLOWS from the clef -- but a reader of that pitch is entitled
+    to know that one link in its chain was a guess. Stamping a second
+    `inferred` flag onto the consequence would make two things that must
+    agree, which is the `clef_final` failure (9 of 20 stale) in miniature;
+    walking the basis cannot go stale because the basis is the chain.
+
+    Empty for a verdict no inference reaches, which is the honest answer for
+    everything the pipeline read or entailed.
+    """
+    vid = getattr(verdict, "id", None)
+    if vid is None and isinstance(verdict, Mapping):
+        vid = verdict.get("id")
+    if vid is None:
+        return ()
+    out = []
+    for rid in log.closure(str(vid)):
+        row = log.row(rid)
+        if row is not None and isinstance(row, Verdict) and is_inferred(row):
+            out.append(rid)
+    return tuple(sorted(out))
+
+
+def inferred_verdicts(log: Log) -> Tuple[Verdict, ...]:
+    """Every verdict this stage wrote, for a consumer that wants to strip
+    them -- the separability requirement, as a query rather than a list
+    somebody maintains."""
+    return tuple(v for v in log.all_verdicts() if is_inferred(v))
+
+
+def scoring_conflict(r: Rule, quantities: Sequence[str]) -> Tuple[str, ...]:
+    """The quantities a self-check would share with what this rule CONSUMED.
+
+    ⚠️⚠️ THE TRAP THIS EXISTS TO STOP, AND IT HAS ALREADY BEEN PAID FOR HERE:
+    **do not score an inference by the quantity it consumed.** If a rule
+    collapses a duration USING the bar sum, then scoring it BY bar-fill is
+    scoring it by the thing it optimises -- the fault CLAUDE.md records
+    against the tie-pairing repair, where *"same-y and same-pitch are near
+    equivalent, and the rule is being scored by a quantity it optimises"*.
+
+    A non-empty result means the invariant is NOT a legitimate self-check for
+    this rule. `probe/self_check.py` refuses to print a score rather than
+    printing one with a caveat, because a caveat beside a number is read as a
+    number.
+    """
+    return tuple(sorted(set(r.reads) & set(quantities)))

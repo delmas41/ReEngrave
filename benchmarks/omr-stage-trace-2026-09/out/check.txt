@@ -1,0 +1,32 @@
+STAGE TRACE — what each stage does to a symbol
+
+row-writing stages (derived from reach.ORDER): ['GATHER', 'ADJUDICATE', 'EVALUATE', 'INFER']
+  ADJUDICATE   28 deciders
+  EVALUATE     7 deciders
+  INFER        by prefix 'infer:'
+
+GENUINELY ABLATABLE (everything else is TRACE-ONLY):
+  INFER                        OMR_INFER=0 (default off; the stage is ABSENT, not quiet)
+  EVALUATE/join_parts          declared stub: abstains already
+TRACE-ONLY stages: ['GATHER', 'ADJUDICATE', 'EVALUATE']
+
+WHAT THIS CANNOT SEE:
+  - ACCURACY. Every direction here is a direction of CHANGE, never of CORRECTNESS: a stage that overturns a reading is reported as having overturned it, and whether it was right needs a truth the shared records have none of (both are SCANS; page_truth exists only for a page we RENDER).
+  - A GATHER CHANGE. The trace reads a SAVED record, so a quantity that was not gathered leaves no row and is indistinguishable from one gathered and empty -- which is the ABSENT/DECLINED collapse, one level up. Two full re-gathers are the only instrument for that.
+  - WHETHER A ROW IS RIGHT ABOUT THE INK. The empty-claims question uses Q.INK as an independent witness that ink is PRESENT; it says nothing about whether the ink is of the kind the refusing reader wanted.
+  - THE DETECTOR. Everything upstream of the first row is invisible: a notehead the detector never fired on produces no Q.GLYPH_BOX and so no step of any funnel below.
+
+CONTROLS (any zero => the question did not run):
+  row_writing_stages                 4
+  adjudicate_deciders                28
+  evaluate_deciders                  7
+  families                           14
+  families_with_a_population_route   14
+  ink_claiming_reasons               1
+  ablatable_entries                  2
+  things_this_cannot_see             4
+
+PROBLEMS: 3  unaccounted: 0  stale gaps: 0
+  OPEN  EXPORT-BY-REASON the exporter counts refusals by REASON, not by subject, so a per-subject EXPORT outcome is unavailable.
+  OPEN  NO-TRUTH no direction of CORRECTNESS is reported, on either publisher, because both shared records are SCANS and `page_truth` exists only for a page we RENDER.
+  OPEN  DROPS-NOT-SPLIT-BY-KIND three of `_place_notes`' five refusal reasons -- `owned_by_another_staff`, `staff_not_identified` and a narrowed `duration` -- are counted for NOTEHEADS AND RESTS TOGETHER, because one ladder walks both.

@@ -1,0 +1,27 @@
+Litolff Beethoven 5 pp.1-4: 793 heads abstain `no_stem`
+cells measured: 1183   EXCLUDED for drift: 0
+
+== POSITIVE CONTROL: does the column profile re-find the strokes `detect_stems` ALREADY accepts?
+ agree (spaces)  reproduced    LOST     rate
+           0.10        2122      42   98.1%
+           0.15        2120      44   98.0%
+           0.25        2120      44   98.0%
+           0.40        2120      44   98.0%
+           0.60        2120      44   98.0%
+
+== SECTION 5: inside a REJECTED component, is a stroke separable?
+  agree   bands   heads a band covers   share     (no edge filter)
+   0.10    1130                   289  36.4%                  361
+   0.15     988                   281  35.4%                  353
+   0.25     955                   279  35.2%                  351
+   0.40     920                   274  34.6%                  346
+   0.60     797                   270  34.0%                  342
+
+== which REJECTION does a separable stroke live inside? (agree=0.25)
+rejected as           components  a band inside     rate
+at a CELL EDGE               607             47    7.7%
+too SHORT                   1276              0    0.0%
+too TALL                    1866            130    7.0%
+too WIDE                     215            198   92.1%
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/litolff-separability.json

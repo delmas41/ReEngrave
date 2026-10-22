@@ -1,0 +1,20 @@
+{
+  "cell_subjects": [
+    "cell/9/1/9/7",
+    "cell/9/1/10/7"
+  ],
+  "quantity": "meter",
+  "decided_reason": "change_only",
+  "numerator": 4,
+  "denominator": 4,
+  "raw": "4/4",
+  "support": 5.5,
+  "staves_reading_it": [
+    9,
+    10
+  ],
+  "coverage_of_system": "2 of 13 (15.4%)",
+  "caveat": "the bracket is the CELL FRAME each reading staff was filed at, not the glyph itself -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+  "file": "m212j-phantom-9-1-7.png",
+  "VERDICT_none_yet": null
+}

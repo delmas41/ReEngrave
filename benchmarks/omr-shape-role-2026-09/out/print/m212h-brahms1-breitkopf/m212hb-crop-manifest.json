@@ -1,0 +1,59 @@
+{
+  "label": "brahms1-breitkopf-2.12h.b",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "tiles": [
+    {
+      "cell_subject": "cell/1/0/1/1",
+      "staff_subject": "staff/1/0/1",
+      "bbox_page_px": [
+        1830.0,
+        712.0,
+        2488.0,
+        1039.0
+      ],
+      "caveat": "the bracket is the CELL FRAME, not any one glyph",
+      "file": "m212hb-brahms1-breitkopf-sys1-0-return-cell1-staff1-clean.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/7/1",
+      "staff_subject": "staff/1/0/7",
+      "bbox_page_px": [
+        1830.0,
+        2208.0,
+        2488.0,
+        2541.0
+      ],
+      "caveat": "the bracket is the CELL FRAME, not any one glyph",
+      "file": "m212hb-brahms1-breitkopf-sys1-0-return-cell1-staff7.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/7/2",
+      "staff_subject": "staff/1/0/7",
+      "bbox_page_px": [
+        2488.0,
+        2208.0,
+        3024.0,
+        2541.0
+      ],
+      "caveat": "the bracket is the CELL FRAME, not any one glyph",
+      "file": "m212hb-brahms1-breitkopf-sys1-0-return-cell2-staff7-spurious4-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/1/2",
+      "staff_subject": "staff/1/0/1",
+      "bbox_page_px": [
+        2488.0,
+        712.0,
+        3024.0,
+        1039.0
+      ],
+      "caveat": "the bracket is the CELL FRAME, not any one glyph",
+      "file": "m212hb-brahms1-breitkopf-sys1-0-return-cell2-staff1-clean.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+finale systems by the string slots their bottom block took
+slots                    systems  with a refusal
+12Vn,13Vn,14Va,15Vc,16Cb      40               0
+12Vn,13Vn,14Va,16Cb            4               4
+13Vn,14Va,15Vc,16Cb            2               2
+
+blocks of exactly FOUR string staves — which slot was deleted:
+  deleted slot 15 (Vc): 4 systems   [12,13,14,16]
+  deleted slot 12 (Vn): 2 systems   [13,14,15,16]

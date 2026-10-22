@@ -1,0 +1,45 @@
+pages 1      mode off    reference=12 slots   size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+pages 1      mode on     reference=12 slots   size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+pages 1      mode pure   reference=12 slots   size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+
+pages 0-2    mode off    reference=11 slots   size 11: 14/22  size 12: 0/12
+    p1 sys0 size  12 slots=[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=[None, 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+pages 0-2    mode on     reference=12 slots   size 11: 16/22  size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+pages 0-2    mode pure   reference=12 slots   size 11: 16/22  size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+
+pages 0-4    mode off    reference=11 slots   size 11: 35/55  size 12: 0/12
+    p1 sys0 size  12 slots=[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=[None, 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p3 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p3 sys1 size   8 slots=[0, 2, 3, 4, 7, 8, 9, 10]  names=['Flute', 'Clarinet', 'Bassoon', 'Horn', None, None, None, None]
+    p4 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+    p4 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', None, None, None, None]
+pages 0-4    mode on     reference=12 slots   size 11: 39/55  size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p3 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p3 sys1 size   8 slots=[0, 2, 3, 4, 7, 8, 9, 11]  names=['Flute', 'Clarinet', 'Bassoon', 'Horn', 'Violin', 'Violin', 'Viola', 'Bass voice']
+    p4 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p4 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+pages 0-4    mode pure   reference=12 slots   size 11: 39/55  size 12: 11/12
+    p1 sys0 size  12 slots=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p2 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p3 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p3 sys1 size   8 slots=[0, 2, 3, 4, 7, 8, 9, 11]  names=['Flute', 'Clarinet', 'Bassoon', 'Horn', 'Violin', 'Violin', 'Viola', 'Bass voice']
+    p4 sys0 size  11 slots=[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+    p4 sys1 size  11 slots=[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11]  names=['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Viola', 'Cello', 'Bass voice']
+

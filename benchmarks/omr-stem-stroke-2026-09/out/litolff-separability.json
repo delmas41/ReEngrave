@@ -1,0 +1,109 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "cells": 1183,
+ "drift": 0,
+ "no_stem": 793,
+ "rejected_components": {
+  "too SHORT": 1276,
+  "too TALL": 1866,
+  "too WIDE": 215,
+  "at a CELL EDGE": 607
+ },
+ "sweep": {
+  "0.1": {
+   "control": {
+    "reproduced": 2122,
+    "LOST": 42
+   },
+   "bands": 1130,
+   "heads_a_band_covers": 289,
+   "heads_a_band_covers_no_edge_filter": 361,
+   "share_of_no_stem": 0.3644,
+   "by_reason": {
+    "too SHORT -> none": 1276,
+    "too TALL -> none": 1735,
+    "too TALL -> band": 131,
+    "too WIDE -> band": 202,
+    "at a CELL EDGE -> band": 52,
+    "at a CELL EDGE -> none": 555,
+    "too WIDE -> none": 13
+   }
+  },
+  "0.15": {
+   "control": {
+    "reproduced": 2120,
+    "LOST": 44
+   },
+   "bands": 988,
+   "heads_a_band_covers": 281,
+   "heads_a_band_covers_no_edge_filter": 353,
+   "share_of_no_stem": 0.3544,
+   "by_reason": {
+    "too SHORT -> none": 1276,
+    "too TALL -> none": 1735,
+    "too TALL -> band": 131,
+    "too WIDE -> band": 199,
+    "at a CELL EDGE -> band": 47,
+    "at a CELL EDGE -> none": 560,
+    "too WIDE -> none": 16
+   }
+  },
+  "0.25": {
+   "control": {
+    "reproduced": 2120,
+    "LOST": 44
+   },
+   "bands": 955,
+   "heads_a_band_covers": 279,
+   "heads_a_band_covers_no_edge_filter": 351,
+   "share_of_no_stem": 0.3518,
+   "by_reason": {
+    "too SHORT -> none": 1276,
+    "too TALL -> none": 1736,
+    "too TALL -> band": 130,
+    "too WIDE -> band": 198,
+    "at a CELL EDGE -> band": 47,
+    "at a CELL EDGE -> none": 560,
+    "too WIDE -> none": 17
+   }
+  },
+  "0.4": {
+   "control": {
+    "reproduced": 2120,
+    "LOST": 44
+   },
+   "bands": 920,
+   "heads_a_band_covers": 274,
+   "heads_a_band_covers_no_edge_filter": 346,
+   "share_of_no_stem": 0.3455,
+   "by_reason": {
+    "too SHORT -> none": 1276,
+    "too TALL -> none": 1736,
+    "too TALL -> band": 130,
+    "too WIDE -> band": 196,
+    "at a CELL EDGE -> none": 563,
+    "too WIDE -> none": 19,
+    "at a CELL EDGE -> band": 44
+   }
+  },
+  "0.6": {
+   "control": {
+    "reproduced": 2120,
+    "LOST": 44
+   },
+   "bands": 797,
+   "heads_a_band_covers": 270,
+   "heads_a_band_covers_no_edge_filter": 342,
+   "share_of_no_stem": 0.3405,
+   "by_reason": {
+    "too SHORT -> none": 1276,
+    "too TALL -> none": 1736,
+    "too TALL -> band": 130,
+    "too WIDE -> band": 191,
+    "at a CELL EDGE -> none": 567,
+    "too WIDE -> none": 24,
+    "at a CELL EDGE -> band": 40
+   }
+  }
+ }
+}

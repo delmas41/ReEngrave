@@ -1,0 +1,159 @@
+{
+ "dpi": 600,
+ "question": "Is what's in the red brackets a note, or part of a dynamic marking (a p or f)?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "subject": "glyph/2/0/1/5/13",
+   "page": 2,
+   "page_box": [
+    1129.67,
+    592.63,
+    1151.09,
+    635.78
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 90.77,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "subject": "glyph/1/0/7/1/9",
+   "page": 1,
+   "page_box": [
+    1925.1,
+    2208.32,
+    1981.65,
+    2268.72
+   ],
+   "label": "Brahms 1 (Breitkopf), pdf page 2",
+   "frame_contrast": 217.51,
+   "pdf_page_index": 1,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "subject": "glyph/2/1/8/6/7",
+   "page": 2,
+   "page_box": [
+    1408.15,
+    3326.72,
+    1430.83,
+    3347.98
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 196.29,
+   "pdf_page_index": 2,
+   "our_outcome_now": "kept (note stem 7 spaces)",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "subject": "glyph/2/1/0/8/8",
+   "page": 2,
+   "page_box": [
+    1675.31,
+    2149.54,
+    1693.9,
+    2163.24
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 208.98,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "subject": "glyph/2/0/1/2/9",
+   "page": 2,
+   "page_box": [
+    803.92,
+    613.58,
+    819.67,
+    624.28
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 12.59,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "subject": "glyph/3/0/1/3/6",
+   "page": 3,
+   "page_box": [
+    1029.86,
+    649.71,
+    1048.92,
+    662.94
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 4",
+   "frame_contrast": 112.57,
+   "pdf_page_index": 3,
+   "our_outcome_now": "kept (a 6.5-space stem stands against it)",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "subject": "glyph/2/0/7/5/6",
+   "page": 2,
+   "page_box": [
+    1155.72,
+    1497.88,
+    1178.12,
+    1512.12
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 177.33,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "subject": "glyph/2/0/2/1/13",
+   "page": 2,
+   "page_box": [
+    649.92,
+    756.36,
+    669.13,
+    796.21
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 44.47,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "subject": "glyph/2/1/9/6/9",
+   "page": 2,
+   "page_box": [
+    1407.28,
+    3337.0,
+    1430.48,
+    3347.56
+   ],
+   "label": "Beethoven 5 (Litolff), pdf page 3",
+   "frame_contrast": 20.52,
+   "pdf_page_index": 2,
+   "our_outcome_now": "refused",
+   "page_box_note": "600 dpi page pixels"
+  }
+ ]
+}

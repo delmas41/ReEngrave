@@ -1,0 +1,55 @@
+{
+ "date": "2026-10-16",
+ "who": "Sean",
+ "raw_answer": "1. 16,16,16 2. 16,16 3. 8",
+ "as_decided_before_fix": "tile 3 decided 16 (WRONG): second run 0.571 sp = 0.76 of one beam (passed the 0.7 cut; sp was read as a ratio), box excess 0.616 vs 0.6",
+ "tally_after_fix": {
+  "right": 5,
+  "narrowed": 1,
+  "WRONG": 0
+ },
+ "tiles": [
+  {
+   "n": 1,
+   "sean": "16,16,16",
+   "role": "changed by the fixed rule [18, 0, 11, 1]",
+   "flag_ON_now": [
+    "16",
+    "16",
+    "16"
+   ],
+   "per_note": [
+    "right",
+    "right",
+    "right"
+   ],
+   "agrees": true
+  },
+  {
+   "n": 2,
+   "sean": "16,16",
+   "role": "changed by the fixed rule [18, 0, 1, 6]",
+   "flag_ON_now": [
+    "16",
+    "16"
+   ],
+   "per_note": [
+    "right",
+    "right"
+   ],
+   "agrees": true
+  },
+  {
+   "n": 3,
+   "sean": "8",
+   "role": "changed by the fixed rule [6, 1, 7, 0]",
+   "flag_ON_now": [
+    "narrowed"
+   ],
+   "per_note": [
+    "narrowed"
+   ],
+   "agrees": true
+  }
+ ]
+}

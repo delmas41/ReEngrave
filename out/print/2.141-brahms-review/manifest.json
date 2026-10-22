@@ -1,0 +1,11 @@
+{
+ "dpi": 600,
+ "question": "In the bar inside the RED corners, the notes inside the BLUE corners: reading left to right, what is the value of each: an eighth (beamed or flagged), a sixteenth, a quarter, a dotted eighth, a dotted quarter, or something else? Say if you cannot tell. If the bar has a second voice, say what that voice has.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "blue_notes": 1
+  }
+ ]
+}

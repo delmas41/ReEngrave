@@ -1,0 +1,110 @@
+[
+ {
+  "tile": 1,
+  "file": "tile_01.png",
+  "plate": "bra",
+  "note": "glyph/16/1/4/3/1",
+  "kind": "changed",
+  "off": "8",
+  "on": "dotted 8"
+ },
+ {
+  "tile": 2,
+  "file": "tile_02.png",
+  "plate": "bra",
+  "note": "glyph/19/0/10/4/4",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 3,
+  "file": "tile_03.png",
+  "plate": "bra",
+  "note": "glyph/8/0/6/9/5",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 4,
+  "file": "tile_04.png",
+  "plate": "bra",
+  "note": "glyph/23/1/10/4/7",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 5,
+  "file": "tile_05.png",
+  "plate": "bra",
+  "note": "glyph/12/0/8/3/1",
+  "kind": "changed",
+  "off": "2",
+  "on": "dotted 2"
+ },
+ {
+  "tile": 6,
+  "file": "tile_06.png",
+  "plate": "bra",
+  "note": "glyph/9/0/0/1/5",
+  "kind": "control_dotted",
+  "off": "dotted 4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 7,
+  "file": "tile_07.png",
+  "plate": "bra",
+  "note": "glyph/13/1/5/6/12",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 8,
+  "file": "tile_08.png",
+  "plate": "bra",
+  "note": "glyph/9/1/8/3/5",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 9,
+  "file": "tile_09.png",
+  "plate": "bra",
+  "note": "glyph/22/1/10/7/4",
+  "kind": "changed",
+  "off": "2",
+  "on": "dotted 2"
+ },
+ {
+  "tile": 10,
+  "file": "tile_10.png",
+  "plate": "bra",
+  "note": "glyph/21/1/7/3/8",
+  "kind": "control_plain",
+  "off": "4",
+  "on": "4"
+ },
+ {
+  "tile": 11,
+  "file": "tile_11.png",
+  "plate": "bra",
+  "note": "glyph/18/0/9/5/1",
+  "kind": "control_dotted",
+  "off": "dotted 4",
+  "on": "dotted 4"
+ },
+ {
+  "tile": 12,
+  "file": "tile_12.png",
+  "plate": "bra",
+  "note": "glyph/14/0/1/6/3",
+  "kind": "changed",
+  "off": "4",
+  "on": "dotted 4"
+ }
+]

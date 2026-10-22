@@ -1,0 +1,245 @@
+{
+ "loo_family": {
+  "pagewide": {
+   "correct": 6,
+   "n": 155,
+   "abstained_singletons": 0,
+   "accuracy": 0.0387
+  },
+  "within_block": {
+   "correct": 132,
+   "n": 154,
+   "abstained_singletons": 1,
+   "accuracy": 0.8571
+  }
+ },
+ "loo_instrument": {
+  "pagewide": {
+   "correct": 0,
+   "n": 155,
+   "abstained_singletons": 0,
+   "accuracy": 0.0
+  },
+  "within_block": {
+   "correct": 24,
+   "n": 154,
+   "abstained_singletons": 1,
+   "accuracy": 0.1558
+  }
+ },
+ "block_boundaries": {
+  "rows": [
+   {
+    "page": [
+     "beethoven-sym5-mvt1-575951-p1",
+     0,
+     0
+    ],
+    "n_staves": 12,
+    "predicted_blocks": 3,
+    "truth_family_runs": 5,
+    "boundaries_predicted": 2,
+    "boundaries_true": 4,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "beethoven-sym5-mvt1-575951-p2",
+     1,
+     0
+    ],
+    "n_staves": 11,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "beethoven-sym5-mvt1-575951-p2",
+     1,
+     1
+    ],
+    "n_staves": 11,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "beethoven-sym5-mvt1-984073-p1",
+     1,
+     0
+    ],
+    "n_staves": 12,
+    "predicted_blocks": 3,
+    "truth_family_runs": 5,
+    "boundaries_predicted": 2,
+    "boundaries_true": 4,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "beethoven-sym5-mvt1-984073-p2",
+     2,
+     0
+    ],
+    "n_staves": 11,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "beethoven-sym5-mvt1-984073-p2",
+     2,
+     1
+    ],
+    "n_staves": 11,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "brahms-sym1-mvt1-317803-p1",
+     0,
+     0
+    ],
+    "n_staves": 14,
+    "predicted_blocks": 2,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 1,
+    "boundaries_true": 3,
+    "boundaries_hit": 1
+   },
+   {
+    "page": [
+     "brahms-sym1-mvt1-317803-p2",
+     1,
+     0
+    ],
+    "n_staves": 14,
+    "predicted_blocks": 2,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 1,
+    "boundaries_true": 3,
+    "boundaries_hit": 1
+   },
+   {
+    "page": [
+     "brahms-sym1-mvt1-317803-p2",
+     1,
+     1
+    ],
+    "n_staves": 13,
+    "predicted_blocks": 2,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 1,
+    "boundaries_true": 3,
+    "boundaries_hit": 1
+   },
+   {
+    "page": [
+     "dvorak-sym9-mvt1-405834-p5",
+     4,
+     0
+    ],
+    "n_staves": 15,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "dvorak-sym9-mvt1-405834-p6",
+     5,
+     0
+    ],
+    "n_staves": 15,
+    "predicted_blocks": 3,
+    "truth_family_runs": 4,
+    "boundaries_predicted": 2,
+    "boundaries_true": 3,
+    "boundaries_hit": 2
+   },
+   {
+    "page": [
+     "mahler-sym5-mvt1-local-p2",
+     1,
+     0
+    ],
+    "n_staves": 16,
+    "predicted_blocks": 4,
+    "truth_family_runs": 5,
+    "boundaries_predicted": 3,
+    "boundaries_true": 4,
+    "boundaries_hit": 3
+   }
+  ],
+  "hit": 22,
+  "true": 39,
+  "predicted": 22,
+  "recall": 0.5641,
+  "precision": 1.0
+ },
+ "continuity_against_truth": {
+  "bach-brandenburg3-mvt1-468678-p1": {
+   "shared_slots_checked": 0,
+   "same_instrument": 0,
+   "different_instrument": 0,
+   "no_truth_label": 11,
+   "precision": null,
+   "system_sizes": [
+    12,
+    3,
+    3,
+    3,
+    1,
+    2
+   ]
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+   "shared_slots_checked": 11,
+   "same_instrument": 11,
+   "different_instrument": 0,
+   "no_truth_label": 0,
+   "precision": 1.0,
+   "system_sizes": [
+    11,
+    11
+   ]
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+   "shared_slots_checked": 11,
+   "same_instrument": 11,
+   "different_instrument": 0,
+   "no_truth_label": 0,
+   "precision": 1.0,
+   "system_sizes": [
+    11,
+    11
+   ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+   "shared_slots_checked": 13,
+   "same_instrument": 12,
+   "different_instrument": 1,
+   "no_truth_label": 0,
+   "precision": 0.9231,
+   "system_sizes": [
+    14,
+    13
+   ]
+  }
+ }
+}

@@ -1,0 +1,29 @@
+| page | sys | staff | refused | staff above (label) | verdict |
+|---|---|---|---|---|---|
+| 6 | 1 | 17 | Trombone | Horn | **benefit** |
+| 7 | 0 | 5 | Trombone | Horn | **benefit** |
+| 7 | 1 | 16 | Trombone | Horn | **benefit** |
+| 8 | 0 | 5 | Trombone | Horn | **benefit** |
+| 8 | 1 | 16 | Trombone | Horn | **benefit** |
+| 9 | 0 | 6 | Trombone | Horn | **benefit** |
+| 20 | 1 | 18 | Trombone | Horn | **benefit** |
+| 21 | 0 | 5 | Trombone | Horn | **benefit** |
+| 22 | 0 | 5 | Trombone | Horn | **benefit** |
+| 22 | 1 | 16 | Trombone | Horn | **benefit** |
+| 23 | 0 | 6 | Trombone | Horn | **benefit** |
+| 25 | 1 | 20 | Trombone | Horn | **benefit** |
+| 42 | 1 | 17 | Trombone | Horn | **benefit** |
+| 43 | 0 | 5 | Trombone | Horn | **benefit** |
+| 43 | 1 | 16 | Trombone | Horn | **benefit** |
+| 44 | 0 | 5 | Trombone | Horn | **benefit** |
+
+refusals: 16   all before the finale (p45): True
+rows failing either reading: 0
+
+vetoed with spans OFF but not ON: 6 — what spans renamed them to:
+  p12 sy1 st21  Trombone -> Trombone
+  p15 sy1 st18  Trombone -> Trumpet
+  p19 sy1 st20  Trombone -> Trumpet
+  p20 sy0 st 6  Trombone -> Trumpet
+  p26 sy0 st 6  Trombone -> Trumpet
+  p26 sy1 st19  Trombone -> Trumpet

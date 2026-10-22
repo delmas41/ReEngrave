@@ -1,0 +1,90 @@
+{
+ "off": {
+  "parts": 12,
+  "measures": 1332,
+  "note_elements": 2131,
+  "pitched_notes": 965,
+  "rests": 1166,
+  "held_out_staves": 25,
+  "unidentified_parts": 0,
+  "join_used": "slot",
+  "staff_not_identified": 783,
+  "notes_not_written_total": 1521,
+  "balanced": true,
+  "events_in_log": 2993,
+  "events_written": 1472,
+  "dropped": {
+   "ink_is_a_whole_rest": 25,
+   "duration_narrowed": 335,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 783,
+   "no_pitch": 205
+  }
+ },
+ "on": {
+  "parts": 12,
+  "measures": 1332,
+  "note_elements": 2191,
+  "pitched_notes": 1053,
+  "rests": 1138,
+  "held_out_staves": 20,
+  "unidentified_parts": 0,
+  "join_used": "slot",
+  "staff_not_identified": 671,
+  "notes_not_written_total": 1409,
+  "balanced": true,
+  "events_in_log": 2993,
+  "events_written": 1584,
+  "dropped": {
+   "ink_is_a_whole_rest": 25,
+   "duration_narrowed": 335,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 671,
+   "no_pitch": 205
+  }
+ },
+ "block": {
+  "parts": 12,
+  "measures": 1332,
+  "note_elements": 2532,
+  "pitched_notes": 1527,
+  "rests": 1005,
+  "held_out_staves": 5,
+  "unidentified_parts": 0,
+  "join_used": "slot",
+  "staff_not_identified": 141,
+  "notes_not_written_total": 879,
+  "balanced": true,
+  "events_in_log": 2993,
+  "events_written": 2114,
+  "dropped": {
+   "ink_is_a_whole_rest": 25,
+   "duration_narrowed": 335,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 141,
+   "no_pitch": 205
+  }
+ },
+ "infer": {
+  "parts": 12,
+  "measures": 1332,
+  "note_elements": 2543,
+  "pitched_notes": 1540,
+  "rests": 1003,
+  "held_out_staves": 5,
+  "unidentified_parts": 0,
+  "join_used": "slot",
+  "staff_not_identified": 141,
+  "notes_not_written_total": 866,
+  "balanced": true,
+  "events_in_log": 2993,
+  "events_written": 2127,
+  "dropped": {
+   "ink_is_a_whole_rest": 25,
+   "duration_narrowed": 320,
+   "owned_by_another_staff": 175,
+   "staff_not_identified": 141,
+   "no_pitch": 205
+  }
+ }
+}

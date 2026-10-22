@@ -1,0 +1,105 @@
+beethoven-sym5-mvt1-984073-p1          join=resolved   map/pred=12/12  meas=veri rows=  472  corresp=100.0%
+beethoven-sym5-mvt1-984073-p2          join=resolved   map/pred=11/11  meas=hypo rows= 1412  corresp=100.0%
+beethoven-sym5-mvt1-984073-p3          join=unresolved map/pred=11/19  meas=veri rows= 1903  corresp= 0.0%
+beethoven-sym5-mvt1-984073-p4          join=resolved   map/pred=11/11  meas=veri rows= 1571  corresp=100.0%
+beethoven-sym5-mvt1-575951-p1          join=resolved   map/pred=12/12  meas=veri rows=  467  corresp=100.0%
+beethoven-sym5-mvt1-575951-p2          join=resolved   map/pred=11/11  meas=veri rows= 1286  corresp=100.0%
+beethoven-sym5-mvt1-575951-p3          join=unresolved map/pred=11/19  meas=veri rows= 1994  corresp= 0.0%
+beethoven-sym5-mvt1-575951-p4          join=resolved   map/pred=11/11  meas=hypo rows= 1675  corresp=97.9%
+dvorak-sym9-mvt1-405834-p5             join=resolved   map/pred=15/15  meas=veri rows=  469  corresp=100.0%
+dvorak-sym9-mvt1-405834-p6             join=resolved   map/pred=15/15  meas=veri rows=  757  corresp=100.0%
+dvorak-sym9-mvt1-405834-p7             join=resolved   map/pred=15/15  meas=veri rows= 1769  corresp=100.0%
+brahms-sym1-mvt1-317803-p1             join=resolved   map/pred=14/14  meas=hypo rows= 1161  corresp=98.5%
+brahms-sym1-mvt1-317803-p2             join=unresolved map/pred=14/27  meas=veri rows= 3040  corresp= 0.0%
+brahms-sym1-mvt1-317803-p3             join=resolved   map/pred=14/14  meas=veri rows= 1399  corresp=100.0%
+brahms-sym1-mvt1-317803-p4             join=resolved   map/pred=14/14  meas=veri rows= 2089  corresp=100.0%
+mahler-sym5-mvt1-local-p2              join=unresolved map/pred=0/17  meas=veri rows=  771  corresp= 0.0%
+mahler-sym5-mvt1-local-p3              join=unresolved map/pred=15/13  meas=veri rows= 1420  corresp= 0.0%
+mahler-sym5-mvt1-local-p4              join=unresolved map/pred=21/18  meas=hypo rows= 1889  corresp= 0.0%
+mahler-sym5-mvt1-local-p5              join=unresolved map/pred=21/17  meas=veri rows= 1506  corresp= 0.0%
+bach-brandenburg3-mvt1-468678-p1       join=unresolved map/pred=11/12  meas=hypo rows= 2469  corresp= 0.0%
+
+========================================================================
+CONTROLS  identity+cross-parser over 40 files: CLEAN
+========================================================================
+
+20 rows, 12 with a resolved part join.  29519 symbol rows.
+
+LEDGER OUTCOMES
+  uncorresponded                 15044   51.0%
+  spurious                        3186   10.8%
+  ambiguous                       2904    9.8%
+  matched_attribute_error         2879    9.8%
+  missing                         2783    9.4%
+  matched_exact                   2723    9.2%
+
+  uncorresponded, by which tier failed
+    part_unresolved              14992
+    measure_unresolved              52
+
+NAMED ATTRIBUTE ERRORS (corroborated pairings)
+  note.pitch                      1034
+  rest.duration_ql                 471
+  rest.type                        471
+  note.duration_ql                 383
+  note.type                        371
+  note.accidental                  162
+  key.fifths                        68
+  dynamic.text                      48
+  rest.dots                         36
+  note.dots                         21
+  tie.endpoint                      15
+  clef.clef                         15
+  time.beats                        11
+  time.beat_type                     7
+
+  from a SINGLE-KEY pairing (uncorroborated — reported apart)
+    note.pitch                     622
+    note.duration_ql               313
+    note.type                      304
+    note.accidental                 96
+    rest.duration_ql                76
+    rest.type                       72
+    rest.dots                       40
+    dynamic.text                    25
+
+NOT ASSESSABLE — the pairing used the attribute, so it cannot report on it
+  note.duration_ql                 435
+  note.type                        435
+  note.dots                        435
+  note.pitch                       361
+  note.accidental                  361
+  note.grace                       361
+  rest.duration_ql                 114
+  rest.type                        114
+
+--- restricted to the 12 rows whose PART JOIN RESOLVED (14527 symbol rows) ---
+  spurious                        3186   21.9%
+  ambiguous                       2904   20.0%
+  matched_attribute_error         2879   19.8%
+  missing                         2783   19.2%
+  matched_exact                   2723   18.7%
+  uncorresponded                    52    0.4%
+  named attribute errors, corroborated:
+    note.pitch                    1034
+    rest.duration_ql               471
+    rest.type                      471
+    note.duration_ql               383
+    note.type                      371
+    note.accidental                162
+    key.fifths                      68
+    dynamic.text                    48
+    rest.dots                       36
+    note.dots                       21
+
+MUSICDIFF on the same pairs — 74956 edits
+  entire measure insert/delete   29655
+  wrong note                     22174
+  entire staff insert/delete     17520
+  wrong note head                 1788
+  wrong flag/beam                  688
+  wrong dynamic                    512
+  wrong keysig                     507
+  wrong direction                  500
+  wrong timesig                    468
+  wrong dot                        282

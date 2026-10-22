@@ -1,0 +1,129 @@
+{
+ "reach": {
+  "verdicts": 2347,
+  "no_stem": 793,
+  "decided": 1443
+ },
+ "positive_control": {
+  "by_head_kind": {
+   "whole": {
+    "stem_found": 8,
+    "no_stem": 9
+   },
+   "half": {
+    "stem_found": 309,
+    "no_stem": 103
+   },
+   "black": {
+    "stem_found": 1126,
+    "no_stem": 681
+   }
+  },
+  "no_ink_in_bar": 211
+ },
+ "axis_of_miss": {
+  "level in y, MISSED in x": 275,
+  "beside it in x, MISSED in y": 139,
+  "missed on BOTH axes": 167,
+  "overlap on both axes (should not happen)": 1
+ },
+ "median_dx_spaces": 0.625,
+ "median_dy_spaces": 0.27,
+ "column_sweep": {
+  "0.2": {
+   "columns": 507,
+   "all_stemmed": 235,
+   "all_stemless": 157,
+   "mixed": 115,
+   "mixed_share": 0.227
+  },
+  "0.35": {
+   "columns": 509,
+   "all_stemmed": 230,
+   "all_stemless": 161,
+   "mixed": 118,
+   "mixed_share": 0.232
+  },
+  "0.5": {
+   "columns": 512,
+   "all_stemmed": 230,
+   "all_stemless": 160,
+   "mixed": 122,
+   "mixed_share": 0.238
+  },
+  "0.75": {
+   "columns": 510,
+   "all_stemmed": 226,
+   "all_stemless": 157,
+   "mixed": 127,
+   "mixed_share": 0.249
+  },
+  "1.0": {
+   "columns": 531,
+   "all_stemmed": 227,
+   "all_stemless": 152,
+   "mixed": 152,
+   "mixed_share": 0.286
+  }
+ },
+ "stemless_with_stemmed_column_partner": 151,
+ "accidental_gap_bands": {
+  "-99..0": {
+   "heads": 10,
+   "stemless": 2,
+   "rate": 0.2
+  },
+  "0..0.5": {
+   "heads": 140,
+   "stemless": 65,
+   "rate": 0.464
+  },
+  "0.5..0.9": {
+   "heads": 14,
+   "stemless": 4,
+   "rate": 0.286
+  },
+  "0.9..1.5": {
+   "heads": 3,
+   "stemless": 2,
+   "rate": 0.667
+  },
+  "1.5..3": {
+   "heads": 48,
+   "stemless": 9,
+   "rate": 0.188
+  },
+  "3..99": {
+   "heads": 117,
+   "stemless": 28,
+   "rate": 0.239
+  },
+  "none": {
+   "heads": 1904,
+   "stemless": 683,
+   "rate": 0.359
+  }
+ },
+ "accidental_by_class": {
+  "accidentalFlat": {
+   "heads": 82,
+   "stemless": 32
+  },
+  "accidentalSharp": {
+   "heads": 12,
+   "stemless": 3
+  },
+  "accidentalNatural": {
+   "heads": 51,
+   "stemless": 29
+  },
+  "accidentalDoubleSharp": {
+   "heads": 8,
+   "stemless": 4
+  },
+  "accidentalDoubleFlat": {
+   "heads": 1,
+   "stemless": 1
+  }
+ }
+}

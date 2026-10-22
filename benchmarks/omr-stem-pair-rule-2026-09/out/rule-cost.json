@@ -1,0 +1,79 @@
+{
+ "n_scored": 10,
+ "summed_abs_error_on": 15,
+ "summed_abs_error_off": 53,
+ "cells_off_worse": 7,
+ "cells_off_better": 0,
+ "rows": [
+  {
+   "n": 18,
+   "score": "bolero-p31",
+   "truth": 7,
+   "on": 6,
+   "off": 15
+  },
+  {
+   "n": 19,
+   "score": "mahler-5-p11",
+   "truth": 5,
+   "on": 5,
+   "off": 16
+  },
+  {
+   "n": 20,
+   "score": "wtc-p5",
+   "truth": 15,
+   "on": 15,
+   "off": 18
+  },
+  {
+   "n": 22,
+   "score": "bolero-p31",
+   "truth": 9,
+   "on": 14,
+   "off": 14
+  },
+  {
+   "n": 24,
+   "score": "lamer-p25",
+   "truth": 0,
+   "on": 5,
+   "off": 7
+  },
+  {
+   "n": 25,
+   "score": "bolero-p31",
+   "truth": 7,
+   "on": 9,
+   "off": 11
+  },
+  {
+   "n": 26,
+   "score": "wtc-p5",
+   "truth": 8,
+   "on": 9,
+   "off": 11
+  },
+  {
+   "n": 27,
+   "score": "mahler-5-p11",
+   "truth": 3,
+   "on": 3,
+   "off": 14
+  },
+  {
+   "n": 28,
+   "score": "bolero-p31",
+   "truth": 11,
+   "on": 12,
+   "off": 12
+  },
+  {
+   "n": 29,
+   "score": "wtc-p5",
+   "truth": 9,
+   "on": 9,
+   "off": 9
+  }
+ ]
+}

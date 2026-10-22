@@ -1,0 +1,1006 @@
+[
+ {
+  "tag": "G01-glyph-3-0-0-0-right",
+  "file": "out/print/2.42/litolff/G01-glyph-3-0-0-0-right.png",
+  "members": [
+   "glyph/3/0/0/0/8",
+   "glyph/3/0/0/0/13",
+   "glyph/3/0/0/0/15"
+  ],
+  "ink": {
+   "glyph/3/0/0/0/8": {
+    "raw_box_pct": 55.26315789473685,
+    "decided_ink": 0.6238
+   },
+   "glyph/3/0/0/0/13": {
+    "raw_box_pct": 62.33333333333333,
+    "decided_ink": 0.6999
+   },
+   "glyph/3/0/0/0/15": {
+    "raw_box_pct": 74.07407407407408,
+    "decided_ink": 0.7613
+   }
+  },
+  "legend": [
+   "g8:REFUSED:decided=0.62/raw=55%",
+   "g13:kept:decided=0.70/raw=62%",
+   "g15:kept:decided=0.76/raw=74%"
+  ]
+ },
+ {
+  "tag": "G02-glyph-3-0-0-4-right",
+  "file": "out/print/2.42/litolff/G02-glyph-3-0-0-4-right.png",
+  "members": [
+   "glyph/3/0/0/4/7",
+   "glyph/3/0/0/4/8",
+   "glyph/3/0/0/4/9"
+  ],
+  "ink": {
+   "glyph/3/0/0/4/7": {
+    "raw_box_pct": 85.35353535353535,
+    "decided_ink": 0.8794
+   },
+   "glyph/3/0/0/4/8": {
+    "raw_box_pct": 87.66233766233766,
+    "decided_ink": 0.8785
+   },
+   "glyph/3/0/0/4/9": {
+    "raw_box_pct": 68.1917211328976,
+    "decided_ink": 0.9538
+   }
+  },
+  "legend": [
+   "g7:kept:decided=0.88/raw=85%",
+   "g8:REFUSED:decided=0.88/raw=88%",
+   "g9:kept:decided=0.95/raw=68%"
+  ]
+ },
+ {
+  "tag": "G03-glyph-3-0-1-4-left",
+  "file": "out/print/2.42/litolff/G03-glyph-3-0-1-4-left.png",
+  "members": [
+   "glyph/3/0/1/4/10",
+   "glyph/3/0/1/4/12",
+   "glyph/3/0/1/4/13"
+  ],
+  "ink": {
+   "glyph/3/0/1/4/10": {
+    "raw_box_pct": 70.27972027972028,
+    "decided_ink": 0.6549
+   },
+   "glyph/3/0/1/4/12": {
+    "raw_box_pct": 68.22916666666666,
+    "decided_ink": 0.7515
+   },
+   "glyph/3/0/1/4/13": {
+    "raw_box_pct": 54.60526315789473,
+    "decided_ink": 0.8218
+   }
+  },
+  "legend": [
+   "g10:REFUSED:decided=0.65/raw=70%",
+   "g12:REFUSED:decided=0.75/raw=68%",
+   "g13:kept:decided=0.82/raw=55%"
+  ]
+ },
+ {
+  "tag": "G04-glyph-3-0-10-6-left",
+  "file": "out/print/2.42/litolff/G04-glyph-3-0-10-6-left.png",
+  "members": [
+   "glyph/3/0/10/6/2",
+   "glyph/3/0/10/6/3",
+   "glyph/3/0/10/6/4"
+  ],
+  "ink": {
+   "glyph/3/0/10/6/2": {
+    "raw_box_pct": 62.153846153846146,
+    "decided_ink": 0.843
+   },
+   "glyph/3/0/10/6/3": {
+    "raw_box_pct": 76.5432098765432,
+    "decided_ink": 0.5073
+   },
+   "glyph/3/0/10/6/4": {
+    "raw_box_pct": 70.58823529411765,
+    "decided_ink": 0.9805
+   }
+  },
+  "legend": [
+   "g2:REFUSED:decided=0.84/raw=62%",
+   "g3:REFUSED:decided=0.51/raw=77%",
+   "g4:kept:decided=0.98/raw=71%"
+  ]
+ },
+ {
+  "tag": "G05-glyph-3-0-2-3-right",
+  "file": "out/print/2.42/litolff/G05-glyph-3-0-2-3-right.png",
+  "members": [
+   "glyph/3/0/2/3/10",
+   "glyph/3/0/2/3/13"
+  ],
+  "ink": {
+   "glyph/3/0/2/3/10": {
+    "raw_box_pct": 75.56818181818183,
+    "decided_ink": 0.7298
+   },
+   "glyph/3/0/2/3/13": {
+    "raw_box_pct": 67.42857142857143,
+    "decided_ink": 0.6028
+   }
+  },
+  "legend": [
+   "g10:kept:decided=0.73/raw=76%",
+   "g13:REFUSED:decided=0.60/raw=67%"
+  ]
+ },
+ {
+  "tag": "G06-glyph-3-0-2-4-right",
+  "file": "out/print/2.42/litolff/G06-glyph-3-0-2-4-right.png",
+  "members": [
+   "glyph/3/0/2/4/6",
+   "glyph/3/0/2/4/9"
+  ],
+  "ink": {
+   "glyph/3/0/2/4/6": {
+    "raw_box_pct": 77.70833333333333,
+    "decided_ink": 0.6683
+   },
+   "glyph/3/0/2/4/9": {
+    "raw_box_pct": 77.70833333333333,
+    "decided_ink": 0.658
+   }
+  },
+  "legend": [
+   "g6:kept:decided=0.67/raw=78%",
+   "g9:REFUSED:decided=0.66/raw=78%"
+  ]
+ },
+ {
+  "tag": "G07-glyph-3-0-3-5-right",
+  "file": "out/print/2.42/litolff/G07-glyph-3-0-3-5-right.png",
+  "members": [
+   "glyph/3/0/3/5/2",
+   "glyph/3/0/3/5/10"
+  ],
+  "ink": {
+   "glyph/3/0/3/5/2": {
+    "raw_box_pct": 68.52173913043478,
+    "decided_ink": 0.7658
+   },
+   "glyph/3/0/3/5/10": {
+    "raw_box_pct": 70.78260869565217,
+    "decided_ink": 0.774
+   }
+  },
+  "legend": [
+   "g2:REFUSED:decided=0.77/raw=69%",
+   "g10:kept:decided=0.77/raw=71%"
+  ]
+ },
+ {
+  "tag": "G08-glyph-3-0-3-6-right",
+  "file": "out/print/2.42/litolff/G08-glyph-3-0-3-6-right.png",
+  "members": [
+   "glyph/3/0/3/6/2",
+   "glyph/3/0/3/6/3",
+   "glyph/3/0/3/6/5"
+  ],
+  "ink": {
+   "glyph/3/0/3/6/2": {
+    "raw_box_pct": 76.72727272727272,
+    "decided_ink": 0.6857
+   },
+   "glyph/3/0/3/6/3": {
+    "raw_box_pct": 80.41666666666667,
+    "decided_ink": 0.6638
+   },
+   "glyph/3/0/3/6/5": {
+    "raw_box_pct": 74.65034965034964,
+    "decided_ink": 0.6796
+   }
+  },
+  "legend": [
+   "g2:kept:decided=0.69/raw=77%",
+   "g3:REFUSED:decided=0.66/raw=80%",
+   "g5:REFUSED:decided=0.68/raw=75%"
+  ]
+ },
+ {
+  "tag": "G09-glyph-3-0-4-11-right",
+  "file": "out/print/2.42/litolff/G09-glyph-3-0-4-11-right.png",
+  "members": [
+   "glyph/3/0/4/11/2",
+   "glyph/3/0/4/11/4"
+  ],
+  "ink": {
+   "glyph/3/0/4/11/2": {
+    "raw_box_pct": 69.45454545454545,
+    "decided_ink": 0.5475
+   },
+   "glyph/3/0/4/11/4": {
+    "raw_box_pct": 69.45454545454545,
+    "decided_ink": 0.5459
+   }
+  },
+  "legend": [
+   "g2:kept:decided=0.55/raw=69%",
+   "g4:REFUSED:decided=0.55/raw=69%"
+  ]
+ },
+ {
+  "tag": "G10-glyph-3-0-4-12-right",
+  "file": "out/print/2.42/litolff/G10-glyph-3-0-4-12-right.png",
+  "members": [
+   "glyph/3/0/4/12/2",
+   "glyph/3/0/4/12/3"
+  ],
+  "ink": {
+   "glyph/3/0/4/12/2": {
+    "raw_box_pct": 73.33333333333333,
+    "decided_ink": 0.6538
+   },
+   "glyph/3/0/4/12/3": {
+    "raw_box_pct": 77.06766917293233,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g2:REFUSED:decided=0.65/raw=73%",
+   "g3:kept:decided=1.00/raw=77%"
+  ]
+ },
+ {
+  "tag": "G11-glyph-3-0-4-6-left",
+  "file": "out/print/2.42/litolff/G11-glyph-3-0-4-6-left.png",
+  "members": [
+   "glyph/3/0/4/6/4",
+   "glyph/3/0/4/6/5",
+   "glyph/3/0/4/6/6"
+  ],
+  "ink": {
+   "glyph/3/0/4/6/4": {
+    "raw_box_pct": 79.94652406417111,
+    "decided_ink": 0.6293
+   },
+   "glyph/3/0/4/6/5": {
+    "raw_box_pct": 83.16666666666667,
+    "decided_ink": 0.7092
+   },
+   "glyph/3/0/4/6/6": {
+    "raw_box_pct": 73.77777777777777,
+    "decided_ink": 0.4874
+   }
+  },
+  "legend": [
+   "g4:REFUSED:decided=0.63/raw=80%",
+   "g5:kept:decided=0.71/raw=83%",
+   "g6:REFUSED:decided=0.49/raw=74%"
+  ]
+ },
+ {
+  "tag": "G12-glyph-3-0-5-2-left",
+  "file": "out/print/2.42/litolff/G12-glyph-3-0-5-2-left.png",
+  "members": [
+   "glyph/3/0/5/2/2",
+   "glyph/3/0/5/2/7",
+   "glyph/3/0/5/2/8"
+  ],
+  "ink": {
+   "glyph/3/0/5/2/2": {
+    "raw_box_pct": 76.98412698412699,
+    "decided_ink": 1.0
+   },
+   "glyph/3/0/5/2/7": {
+    "raw_box_pct": 68.47507331378299,
+    "decided_ink": 0.9597
+   },
+   "glyph/3/0/5/2/8": {
+    "raw_box_pct": 92.95454545454545,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g2:kept:decided=1.00/raw=77%",
+   "g7:REFUSED:decided=0.96/raw=68%",
+   "g8:kept:decided=1.00/raw=93%"
+  ]
+ },
+ {
+  "tag": "G13-glyph-3-0-5-4-left",
+  "file": "out/print/2.42/litolff/G13-glyph-3-0-5-4-left.png",
+  "members": [
+   "glyph/3/0/5/4/4",
+   "glyph/3/0/5/4/5"
+  ],
+  "ink": {
+   "glyph/3/0/5/4/4": {
+    "raw_box_pct": 79.67032967032966,
+    "decided_ink": 0.6357
+   },
+   "glyph/3/0/5/4/5": {
+    "raw_box_pct": 72.39999999999999,
+    "decided_ink": 0.9733
+   }
+  },
+  "legend": [
+   "g4:REFUSED:decided=0.64/raw=80%",
+   "g5:kept:decided=0.97/raw=72%"
+  ]
+ },
+ {
+  "tag": "G14-glyph-3-0-5-5-left",
+  "file": "out/print/2.42/litolff/G14-glyph-3-0-5-5-left.png",
+  "members": [
+   "glyph/3/0/5/5/6",
+   "glyph/3/0/5/5/7"
+  ],
+  "ink": {
+   "glyph/3/0/5/5/6": {
+    "raw_box_pct": 72.69565217391303,
+    "decided_ink": 0.8195
+   },
+   "glyph/3/0/5/5/7": {
+    "raw_box_pct": 72.69565217391303,
+    "decided_ink": 0.8313
+   }
+  },
+  "legend": [
+   "g6:REFUSED:decided=0.82/raw=73%",
+   "g7:kept:decided=0.83/raw=73%"
+  ]
+ },
+ {
+  "tag": "G15-glyph-3-0-5-6-left",
+  "file": "out/print/2.42/litolff/G15-glyph-3-0-5-6-left.png",
+  "members": [
+   "glyph/3/0/5/6/2",
+   "glyph/3/0/5/6/4"
+  ],
+  "ink": {
+   "glyph/3/0/5/6/2": {
+    "raw_box_pct": 77.13365539452496,
+    "decided_ink": 0.8793
+   },
+   "glyph/3/0/5/6/4": {
+    "raw_box_pct": 77.13365539452496,
+    "decided_ink": 0.8813
+   }
+  },
+  "legend": [
+   "g2:REFUSED:decided=0.88/raw=77%",
+   "g4:kept:decided=0.88/raw=77%"
+  ]
+ },
+ {
+  "tag": "G16-glyph-3-0-6-5-left",
+  "file": "out/print/2.42/litolff/G16-glyph-3-0-6-5-left.png",
+  "members": [
+   "glyph/3/0/6/5/3",
+   "glyph/3/0/6/5/4"
+  ],
+  "ink": {
+   "glyph/3/0/6/5/3": {
+    "raw_box_pct": 72.54464285714286,
+    "decided_ink": 0.937
+   },
+   "glyph/3/0/6/5/4": {
+    "raw_box_pct": 76.95238095238095,
+    "decided_ink": 0.5762
+   }
+  },
+  "legend": [
+   "g3:kept:decided=0.94/raw=73%",
+   "g4:REFUSED:decided=0.58/raw=77%"
+  ]
+ },
+ {
+  "tag": "G17-glyph-3-0-8-7-left",
+  "file": "out/print/2.42/litolff/G17-glyph-3-0-8-7-left.png",
+  "members": [
+   "glyph/3/0/8/7/0",
+   "glyph/3/0/8/7/8",
+   "glyph/3/0/8/7/9"
+  ],
+  "ink": {
+   "glyph/3/0/8/7/0": {
+    "raw_box_pct": 76.60455486542443,
+    "decided_ink": 1.0
+   },
+   "glyph/3/0/8/7/8": {
+    "raw_box_pct": 71.74447174447175,
+    "decided_ink": 0.5684
+   },
+   "glyph/3/0/8/7/9": {
+    "raw_box_pct": 93.96135265700482,
+    "decided_ink": 0.9648
+   }
+  },
+  "legend": [
+   "g0:kept:decided=1.00/raw=77%",
+   "g8:REFUSED:decided=0.57/raw=72%",
+   "g9:kept:decided=0.96/raw=94%"
+  ]
+ },
+ {
+  "tag": "G18-glyph-3-0-9-0-left",
+  "file": "out/print/2.42/litolff/G18-glyph-3-0-9-0-left.png",
+  "members": [
+   "glyph/3/0/9/0/5",
+   "glyph/3/0/9/0/7",
+   "glyph/3/0/9/0/9",
+   "glyph/3/0/9/0/12"
+  ],
+  "ink": {
+   "glyph/3/0/9/0/5": {
+    "raw_box_pct": 67.20647773279353,
+    "decided_ink": 0.836
+   },
+   "glyph/3/0/9/0/7": {
+    "raw_box_pct": 73.91975308641975,
+    "decided_ink": 0.7996
+   },
+   "glyph/3/0/9/0/9": {
+    "raw_box_pct": 73.68421052631578,
+    "decided_ink": 0.7303
+   },
+   "glyph/3/0/9/0/12": {
+    "raw_box_pct": 68.23361823361823,
+    "decided_ink": 0.8149
+   }
+  },
+  "legend": [
+   "g5:kept:decided=0.84/raw=67%",
+   "g7:REFUSED:decided=0.80/raw=74%",
+   "g9:REFUSED:decided=0.73/raw=74%",
+   "g12:kept:decided=0.81/raw=68%"
+  ]
+ },
+ {
+  "tag": "G19-glyph-3-1-2-11-left",
+  "file": "out/print/2.42/litolff/G19-glyph-3-1-2-11-left.png",
+  "members": [
+   "glyph/3/1/2/11/1",
+   "glyph/3/1/2/11/2",
+   "glyph/3/1/2/11/3"
+  ],
+  "ink": {
+   "glyph/3/1/2/11/1": {
+    "raw_box_pct": 67.36842105263158,
+    "decided_ink": 0.7353
+   },
+   "glyph/3/1/2/11/2": {
+    "raw_box_pct": 74.50980392156863,
+    "decided_ink": 0.6322
+   },
+   "glyph/3/1/2/11/3": {
+    "raw_box_pct": 77.4054054054054,
+    "decided_ink": 0.7144
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.74/raw=67%",
+   "g2:REFUSED:decided=0.63/raw=75%",
+   "g3:kept:decided=0.71/raw=77%"
+  ]
+ },
+ {
+  "tag": "G20-glyph-3-1-2-15-right",
+  "file": "out/print/2.42/litolff/G20-glyph-3-1-2-15-right.png",
+  "members": [
+   "glyph/3/1/2/15/0",
+   "glyph/3/1/2/15/2"
+  ],
+  "ink": {
+   "glyph/3/1/2/15/0": {
+    "raw_box_pct": 65.75091575091575,
+    "decided_ink": 0.7134
+   },
+   "glyph/3/1/2/15/2": {
+    "raw_box_pct": 79.5673076923077,
+    "decided_ink": 0.6394
+   }
+  },
+  "legend": [
+   "g0:kept:decided=0.71/raw=66%",
+   "g2:REFUSED:decided=0.64/raw=80%"
+  ]
+ },
+ {
+  "tag": "G21-glyph-3-1-2-8-right",
+  "file": "out/print/2.42/litolff/G21-glyph-3-1-2-8-right.png",
+  "members": [
+   "glyph/3/1/2/8/4",
+   "glyph/3/1/2/8/5",
+   "glyph/3/1/2/8/9",
+   "glyph/3/1/2/8/10"
+  ],
+  "ink": {
+   "glyph/3/1/2/8/4": {
+    "raw_box_pct": 73.62962962962963,
+    "decided_ink": 0.758
+   },
+   "glyph/3/1/2/8/5": {
+    "raw_box_pct": 77.25694444444444,
+    "decided_ink": 0.7166
+   },
+   "glyph/3/1/2/8/9": {
+    "raw_box_pct": 73.07692307692307,
+    "decided_ink": 0.6256
+   },
+   "glyph/3/1/2/8/10": {
+    "raw_box_pct": 72.72727272727273,
+    "decided_ink": 0.6725
+   }
+  },
+  "legend": [
+   "g4:kept:decided=0.76/raw=74%",
+   "g5:REFUSED:decided=0.72/raw=77%",
+   "g9:REFUSED:decided=0.63/raw=73%",
+   "g10:kept:decided=0.67/raw=73%"
+  ]
+ },
+ {
+  "tag": "G22-glyph-3-1-2-9-left",
+  "file": "out/print/2.42/litolff/G22-glyph-3-1-2-9-left.png",
+  "members": [
+   "glyph/3/1/2/9/1",
+   "glyph/3/1/2/9/2",
+   "glyph/3/1/2/9/3",
+   "glyph/3/1/2/9/5"
+  ],
+  "ink": {
+   "glyph/3/1/2/9/1": {
+    "raw_box_pct": 72.55244755244755,
+    "decided_ink": 0.6496
+   },
+   "glyph/3/1/2/9/2": {
+    "raw_box_pct": 76.29629629629629,
+    "decided_ink": 0.643
+   },
+   "glyph/3/1/2/9/3": {
+    "raw_box_pct": 72.55244755244755,
+    "decided_ink": 0.66
+   },
+   "glyph/3/1/2/9/5": {
+    "raw_box_pct": 77.1891891891892,
+    "decided_ink": 0.6549
+   }
+  },
+  "legend": [
+   "g1:REFUSED:decided=0.65/raw=73%",
+   "g2:REFUSED:decided=0.64/raw=76%",
+   "g3:kept:decided=0.66/raw=73%",
+   "g5:REFUSED:decided=0.65/raw=77%"
+  ]
+ },
+ {
+  "tag": "G23-glyph-3-1-3-0-left",
+  "file": "out/print/2.42/litolff/G23-glyph-3-1-3-0-left.png",
+  "members": [
+   "glyph/3/1/3/0/6",
+   "glyph/3/1/3/0/7"
+  ],
+  "ink": {
+   "glyph/3/1/3/0/6": {
+    "raw_box_pct": 74.76923076923076,
+    "decided_ink": 0.7262
+   },
+   "glyph/3/1/3/0/7": {
+    "raw_box_pct": 77.47252747252747,
+    "decided_ink": 0.6899
+   }
+  },
+  "legend": [
+   "g6:kept:decided=0.73/raw=75%",
+   "g7:REFUSED:decided=0.69/raw=77%"
+  ]
+ },
+ {
+  "tag": "G24-glyph-3-1-3-3-left",
+  "file": "out/print/2.42/litolff/G24-glyph-3-1-3-3-left.png",
+  "members": [
+   "glyph/3/1/3/3/1",
+   "glyph/3/1/3/3/2"
+  ],
+  "ink": {
+   "glyph/3/1/3/3/1": {
+    "raw_box_pct": 78.55029585798816,
+    "decided_ink": 0.7282
+   },
+   "glyph/3/1/3/3/2": {
+    "raw_box_pct": 76.76282051282051,
+    "decided_ink": 0.7346
+   }
+  },
+  "legend": [
+   "g1:REFUSED:decided=0.73/raw=79%",
+   "g2:kept:decided=0.73/raw=77%"
+  ]
+ },
+ {
+  "tag": "G25-glyph-3-1-3-8-left",
+  "file": "out/print/2.42/litolff/G25-glyph-3-1-3-8-left.png",
+  "members": [
+   "glyph/3/1/3/8/3",
+   "glyph/3/1/3/8/4",
+   "glyph/3/1/3/8/5"
+  ],
+  "ink": {
+   "glyph/3/1/3/8/3": {
+    "raw_box_pct": 78.59531772575251,
+    "decided_ink": 0.7937
+   },
+   "glyph/3/1/3/8/4": {
+    "raw_box_pct": 74.66666666666667,
+    "decided_ink": 0.9131
+   },
+   "glyph/3/1/3/8/5": {
+    "raw_box_pct": 78.98550724637681,
+    "decided_ink": 0.8079
+   }
+  },
+  "legend": [
+   "g3:REFUSED:decided=0.79/raw=79%",
+   "g4:kept:decided=0.91/raw=75%",
+   "g5:kept:decided=0.81/raw=79%"
+  ]
+ },
+ {
+  "tag": "G26-glyph-3-1-4-12-right",
+  "file": "out/print/2.42/litolff/G26-glyph-3-1-4-12-right.png",
+  "members": [
+   "glyph/3/1/4/12/2",
+   "glyph/3/1/4/12/3"
+  ],
+  "ink": {
+   "glyph/3/1/4/12/2": {
+    "raw_box_pct": 89.47368421052632,
+    "decided_ink": 1.0
+   },
+   "glyph/3/1/4/12/3": {
+    "raw_box_pct": 63.83399209486166,
+    "decided_ink": 0.5087
+   }
+  },
+  "legend": [
+   "g2:kept:decided=1.00/raw=89%",
+   "g3:REFUSED:decided=0.51/raw=64%"
+  ]
+ },
+ {
+  "tag": "G27-glyph-3-1-5-11-left",
+  "file": "out/print/2.42/litolff/G27-glyph-3-1-5-11-left.png",
+  "members": [
+   "glyph/3/1/5/11/2",
+   "glyph/3/1/5/11/3"
+  ],
+  "ink": {
+   "glyph/3/1/5/11/2": {
+    "raw_box_pct": 77.08333333333334,
+    "decided_ink": 0.6932
+   },
+   "glyph/3/1/5/11/3": {
+    "raw_box_pct": 75.0,
+    "decided_ink": 0.7894
+   }
+  },
+  "legend": [
+   "g2:REFUSED:decided=0.69/raw=77%",
+   "g3:kept:decided=0.79/raw=75%"
+  ]
+ },
+ {
+  "tag": "G28-glyph-3-1-5-13-left",
+  "file": "out/print/2.42/litolff/G28-glyph-3-1-5-13-left.png",
+  "members": [
+   "glyph/3/1/5/13/0",
+   "glyph/3/1/5/13/2"
+  ],
+  "ink": {
+   "glyph/3/1/5/13/0": {
+    "raw_box_pct": 73.25174825174825,
+    "decided_ink": 0.6835
+   },
+   "glyph/3/1/5/13/2": {
+    "raw_box_pct": 73.25174825174825,
+    "decided_ink": 0.685
+   }
+  },
+  "legend": [
+   "g0:REFUSED:decided=0.68/raw=73%",
+   "g2:kept:decided=0.69/raw=73%"
+  ]
+ },
+ {
+  "tag": "G29-glyph-3-1-5-15-left",
+  "file": "out/print/2.42/litolff/G29-glyph-3-1-5-15-left.png",
+  "members": [
+   "glyph/3/1/5/15/0",
+   "glyph/3/1/5/15/2"
+  ],
+  "ink": {
+   "glyph/3/1/5/15/0": {
+    "raw_box_pct": 77.63532763532763,
+    "decided_ink": 0.6343
+   },
+   "glyph/3/1/5/15/2": {
+    "raw_box_pct": 76.77514792899409,
+    "decided_ink": 0.6356
+   }
+  },
+  "legend": [
+   "g0:REFUSED:decided=0.63/raw=78%",
+   "g2:kept:decided=0.64/raw=77%"
+  ]
+ },
+ {
+  "tag": "G30-glyph-3-1-5-5-left",
+  "file": "out/print/2.42/litolff/G30-glyph-3-1-5-5-left.png",
+  "members": [
+   "glyph/3/1/5/5/0",
+   "glyph/3/1/5/5/2"
+  ],
+  "ink": {
+   "glyph/3/1/5/5/0": {
+    "raw_box_pct": 79.73333333333333,
+    "decided_ink": 0.7613
+   },
+   "glyph/3/1/5/5/2": {
+    "raw_box_pct": 78.0,
+    "decided_ink": 0.8811
+   }
+  },
+  "legend": [
+   "g0:REFUSED:decided=0.76/raw=80%",
+   "g2:kept:decided=0.88/raw=78%"
+  ]
+ },
+ {
+  "tag": "G31-glyph-3-1-5-6-left",
+  "file": "out/print/2.42/litolff/G31-glyph-3-1-5-6-left.png",
+  "members": [
+   "glyph/3/1/5/6/2",
+   "glyph/3/1/5/6/6"
+  ],
+  "ink": {
+   "glyph/3/1/5/6/2": {
+    "raw_box_pct": 81.50887573964496,
+    "decided_ink": 0.9005
+   },
+   "glyph/3/1/5/6/6": {
+    "raw_box_pct": 76.78062678062678,
+    "decided_ink": 0.8609
+   }
+  },
+  "legend": [
+   "g2:kept:decided=0.90/raw=82%",
+   "g6:REFUSED:decided=0.86/raw=77%"
+  ]
+ },
+ {
+  "tag": "G32-glyph-3-1-5-7-left",
+  "file": "out/print/2.42/litolff/G32-glyph-3-1-5-7-left.png",
+  "members": [
+   "glyph/3/1/5/7/1",
+   "glyph/3/1/5/7/2"
+  ],
+  "ink": {
+   "glyph/3/1/5/7/1": {
+    "raw_box_pct": 72.41379310344827,
+    "decided_ink": 0.5845
+   },
+   "glyph/3/1/5/7/2": {
+    "raw_box_pct": 76.01880877742947,
+    "decided_ink": 0.5358
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.58/raw=72%",
+   "g2:REFUSED:decided=0.54/raw=76%"
+  ]
+ },
+ {
+  "tag": "G33-glyph-3-1-6-1-right",
+  "file": "out/print/2.42/litolff/G33-glyph-3-1-6-1-right.png",
+  "members": [
+   "glyph/3/1/6/1/0",
+   "glyph/3/1/6/1/1"
+  ],
+  "ink": {
+   "glyph/3/1/6/1/0": {
+    "raw_box_pct": 86.05072463768117,
+    "decided_ink": 0.8503
+   },
+   "glyph/3/1/6/1/1": {
+    "raw_box_pct": 82.33333333333334,
+    "decided_ink": 0.7695
+   }
+  },
+  "legend": [
+   "g0:kept:decided=0.85/raw=86%",
+   "g1:REFUSED:decided=0.77/raw=82%"
+  ]
+ },
+ {
+  "tag": "G34-glyph-3-1-6-10-right",
+  "file": "out/print/2.42/litolff/G34-glyph-3-1-6-10-right.png",
+  "members": [
+   "glyph/3/1/6/10/1",
+   "glyph/3/1/6/10/4"
+  ],
+  "ink": {
+   "glyph/3/1/6/10/1": {
+    "raw_box_pct": 81.66666666666667,
+    "decided_ink": 0.7909
+   },
+   "glyph/3/1/6/10/4": {
+    "raw_box_pct": 80.2536231884058,
+    "decided_ink": 0.7495
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.79/raw=82%",
+   "g4:REFUSED:decided=0.75/raw=80%"
+  ]
+ },
+ {
+  "tag": "G35-glyph-3-1-6-15-right",
+  "file": "out/print/2.42/litolff/G35-glyph-3-1-6-15-right.png",
+  "members": [
+   "glyph/3/1/6/15/0",
+   "glyph/3/1/6/15/1"
+  ],
+  "ink": {
+   "glyph/3/1/6/15/0": {
+    "raw_box_pct": 73.91304347826086,
+    "decided_ink": 0.6865
+   },
+   "glyph/3/1/6/15/1": {
+    "raw_box_pct": 75.75250836120402,
+    "decided_ink": 0.6933
+   }
+  },
+  "legend": [
+   "g0:REFUSED:decided=0.69/raw=74%",
+   "g1:kept:decided=0.69/raw=76%"
+  ]
+ },
+ {
+  "tag": "G36-glyph-3-1-6-17-right",
+  "file": "out/print/2.42/litolff/G36-glyph-3-1-6-17-right.png",
+  "members": [
+   "glyph/3/1/6/17/1",
+   "glyph/3/1/6/17/2"
+  ],
+  "ink": {
+   "glyph/3/1/6/17/1": {
+    "raw_box_pct": 82.85714285714286,
+    "decided_ink": 0.7843
+   },
+   "glyph/3/1/6/17/2": {
+    "raw_box_pct": 82.85714285714286,
+    "decided_ink": 0.7738
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.78/raw=83%",
+   "g2:REFUSED:decided=0.77/raw=83%"
+  ]
+ },
+ {
+  "tag": "G37-glyph-3-1-6-3-right",
+  "file": "out/print/2.42/litolff/G37-glyph-3-1-6-3-right.png",
+  "members": [
+   "glyph/3/1/6/3/1",
+   "glyph/3/1/6/3/2"
+  ],
+  "ink": {
+   "glyph/3/1/6/3/1": {
+    "raw_box_pct": 76.38095238095238,
+    "decided_ink": 0.6613
+   },
+   "glyph/3/1/6/3/2": {
+    "raw_box_pct": 75.625,
+    "decided_ink": 0.6542
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.66/raw=76%",
+   "g2:REFUSED:decided=0.65/raw=76%"
+  ]
+ },
+ {
+  "tag": "G38-glyph-3-1-6-4-right",
+  "file": "out/print/2.42/litolff/G38-glyph-3-1-6-4-right.png",
+  "members": [
+   "glyph/3/1/6/4/1",
+   "glyph/3/1/6/4/3"
+  ],
+  "ink": {
+   "glyph/3/1/6/4/1": {
+    "raw_box_pct": 74.47619047619047,
+    "decided_ink": 0.7209
+   },
+   "glyph/3/1/6/4/3": {
+    "raw_box_pct": 71.96969696969697,
+    "decided_ink": 0.7081
+   }
+  },
+  "legend": [
+   "g1:kept:decided=0.72/raw=74%",
+   "g3:REFUSED:decided=0.71/raw=72%"
+  ]
+ },
+ {
+  "tag": "G39-glyph-3-1-6-5-right",
+  "file": "out/print/2.42/litolff/G39-glyph-3-1-6-5-right.png",
+  "members": [
+   "glyph/3/1/6/5/0",
+   "glyph/3/1/6/5/1"
+  ],
+  "ink": {
+   "glyph/3/1/6/5/0": {
+    "raw_box_pct": 80.80357142857143,
+    "decided_ink": 0.7389
+   },
+   "glyph/3/1/6/5/1": {
+    "raw_box_pct": 81.33333333333333,
+    "decided_ink": 0.7528
+   }
+  },
+  "legend": [
+   "g0:REFUSED:decided=0.74/raw=81%",
+   "g1:kept:decided=0.75/raw=81%"
+  ]
+ },
+ {
+  "tag": "G40-glyph-3-1-6-6-right",
+  "file": "out/print/2.42/litolff/G40-glyph-3-1-6-6-right.png",
+  "members": [
+   "glyph/3/1/6/6/1",
+   "glyph/3/1/6/6/3"
+  ],
+  "ink": {
+   "glyph/3/1/6/6/1": {
+    "raw_box_pct": 72.7810650887574,
+    "decided_ink": 0.596
+   },
+   "glyph/3/1/6/6/3": {
+    "raw_box_pct": 72.7810650887574,
+    "decided_ink": 0.6312
+   }
+  },
+  "legend": [
+   "g1:REFUSED:decided=0.60/raw=73%",
+   "g3:kept:decided=0.63/raw=73%"
+  ]
+ },
+ {
+  "tag": "G41-glyph-3-1-7-17-right",
+  "file": "out/print/2.42/litolff/G41-glyph-3-1-7-17-right.png",
+  "members": [
+   "glyph/3/1/7/17/3",
+   "glyph/3/1/7/17/5",
+   "glyph/3/1/7/17/6"
+  ],
+  "ink": {
+   "glyph/3/1/7/17/3": {
+    "raw_box_pct": 69.6842105263158,
+    "decided_ink": 0.6686
+   },
+   "glyph/3/1/7/17/5": {
+    "raw_box_pct": 69.92,
+    "decided_ink": 0.6949
+   },
+   "glyph/3/1/7/17/6": {
+    "raw_box_pct": 74.93333333333332,
+    "decided_ink": 0.7378
+   }
+  },
+  "legend": [
+   "g3:REFUSED:decided=0.67/raw=70%",
+   "g5:REFUSED:decided=0.69/raw=70%",
+   "g6:kept:decided=0.74/raw=75%"
+  ]
+ }
+]

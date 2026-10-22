@@ -1,0 +1,1145 @@
+{
+ "note": "Extract of the staged shadow run on beethoven-sym5-mvt1-984073-p1 (page index 1, 12 staves, 1 system). Key-signature evidence chain only; the full 3.3MB result is regenerable with the command in FINDINGS.md.",
+ "adjudication_summary": {
+  "decided": {
+   "clef": 12,
+   "duration": 113,
+   "glyph_owner": 60,
+   "key_signature": 4,
+   "measure_partition": 12,
+   "meter": 1,
+   "part_partition": 1,
+   "slot_index": 12,
+   "staff_group": 12,
+   "staff_ordinal": 12,
+   "system_membership": 1,
+   "system_staff_count": 1
+  },
+  "abstained": {
+   "arc_kind": {
+    "not_implemented": 755
+   },
+   "arc_owner": {
+    "not_implemented": 755
+   },
+   "articulation_owner": {
+    "not_implemented": 755
+   },
+   "direction": {
+    "not_implemented": 192
+   },
+   "duration": {
+    "beams_ambiguous": 41
+   },
+   "dynamic": {
+    "not_implemented": 192
+   },
+   "group_symbol": {
+    "no_identity": 1
+   },
+   "instrument": {
+    "no_evidence": 12
+   },
+   "key_signature": {
+    "run_fits_no_slot_table": 1,
+    "no_evidence": 7
+   },
+   "wedge_anchor": {
+    "not_implemented": 755
+   }
+  },
+  "missing_evidence": {
+   "aug_dot": 154,
+   "clef_seed": 12,
+   "flag": 154,
+   "glyph_ladder": 58,
+   "keysig_clef_fit": 14,
+   "tuplet_ratio": 154
+  },
+  "excluded_as_circular": [],
+  "n_verdicts": 3707
+ },
+ "verdicts": [
+  {
+   "id": "vrd:002790",
+   "subject": "staff/1/0/0",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002602",
+    "obs:002642",
+    "obs:002643",
+    "obs:002644"
+   ],
+   "basis": [
+    "obs:002602",
+    "obs:002642",
+    "obs:002643",
+    "obs:002644",
+    "vrd:002764"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0,
+     "tenor": 1.5,
+     "bass": 1.5,
+     "alto": 1.5
+    }
+   }
+  },
+  {
+   "id": "vrd:002791",
+   "subject": "staff/1/0/1",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002603"
+   ],
+   "basis": [
+    "obs:002603",
+    "vrd:002765"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002792",
+   "subject": "staff/1/0/2",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002604"
+   ],
+   "basis": [
+    "obs:002604",
+    "obs:002650",
+    "obs:002651",
+    "obs:002652",
+    "obs:002653",
+    "vrd:002766"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002793",
+   "subject": "staff/1/0/3",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored",
+   "used": [
+    "obs:002605",
+    "obs:002621"
+   ],
+   "basis": [
+    "obs:002605",
+    "obs:002621",
+    "vrd:002767"
+   ],
+   "detail": {
+    "scores": {
+     "bass": 3.0,
+     "alto": 2.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002794",
+   "subject": "staff/1/0/4",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002606"
+   ],
+   "basis": [
+    "obs:002606",
+    "vrd:002768"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002795",
+   "subject": "staff/1/0/5",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002607"
+   ],
+   "basis": [
+    "obs:002607",
+    "vrd:002769"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002796",
+   "subject": "staff/1/0/6",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored",
+   "used": [
+    "obs:002608"
+   ],
+   "basis": [
+    "obs:002608",
+    "vrd:002770"
+   ],
+   "detail": {
+    "scores": {
+     "bass": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002797",
+   "subject": "staff/1/0/7",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002609"
+   ],
+   "basis": [
+    "obs:002609",
+    "vrd:002771"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002798",
+   "subject": "staff/1/0/8",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored",
+   "used": [
+    "obs:002610",
+    "obs:002611",
+    "obs:002669",
+    "obs:002670"
+   ],
+   "basis": [
+    "obs:002610",
+    "obs:002611",
+    "obs:002669",
+    "obs:002670",
+    "vrd:002772"
+   ],
+   "detail": {
+    "scores": {
+     "treble": 4.5,
+     "alto": 1.5
+    }
+   }
+  },
+  {
+   "id": "vrd:002799",
+   "subject": "staff/1/0/9",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored",
+   "used": [
+    "obs:002612",
+    "obs:002633",
+    "obs:002675",
+    "obs:002674",
+    "obs:002676"
+   ],
+   "basis": [
+    "obs:002612",
+    "obs:002633",
+    "obs:002674",
+    "obs:002675",
+    "obs:002676",
+    "vrd:002773"
+   ],
+   "detail": {
+    "scores": {
+     "alto": 3.5,
+     "treble": 1.5,
+     "tenor": 1.5,
+     "bass": 1.5
+    }
+   }
+  },
+  {
+   "id": "vrd:002800",
+   "subject": "staff/1/0/10",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored",
+   "used": [
+    "obs:002613",
+    "obs:002680",
+    "obs:002681"
+   ],
+   "basis": [
+    "obs:002613",
+    "obs:002680",
+    "obs:002681",
+    "vrd:002774"
+   ],
+   "detail": {
+    "scores": {
+     "bass": 4.5,
+     "alto": 1.5
+    }
+   }
+  },
+  {
+   "id": "vrd:002801",
+   "subject": "staff/1/0/11",
+   "quantity": "clef",
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored",
+   "used": [
+    "obs:002614"
+   ],
+   "basis": [
+    "obs:002614",
+    "vrd:002775"
+   ],
+   "detail": {
+    "scores": {
+     "bass": 3.0
+    }
+   }
+  },
+  {
+   "id": "vrd:002802",
+   "subject": "staff/1/0/0",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "run_fits_no_slot_table",
+   "used": [],
+   "basis": [
+    "obs:002602",
+    "obs:002642",
+    "obs:002643",
+    "obs:002644",
+    "vrd:002764",
+    "vrd:002790"
+   ],
+   "detail": {
+    "clef": "treble",
+    "fits": [
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "vrd:002803",
+   "subject": "staff/1/0/1",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002603",
+    "vrd:002765",
+    "vrd:002791"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002804",
+   "subject": "staff/1/0/2",
+   "quantity": "key_signature",
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted",
+   "used": [
+    "obs:002650",
+    "vrd:002792"
+   ],
+   "basis": [
+    "obs:002604",
+    "obs:002650",
+    "obs:002651",
+    "obs:002652",
+    "obs:002653",
+    "vrd:002766",
+    "vrd:002792"
+   ],
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern"
+   }
+  },
+  {
+   "id": "vrd:002805",
+   "subject": "staff/1/0/3",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002605",
+    "obs:002621",
+    "vrd:002767",
+    "vrd:002793"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002806",
+   "subject": "staff/1/0/4",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002606",
+    "vrd:002768",
+    "vrd:002794"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002807",
+   "subject": "staff/1/0/5",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002607",
+    "vrd:002769",
+    "vrd:002795"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002808",
+   "subject": "staff/1/0/6",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002608",
+    "vrd:002770",
+    "vrd:002796"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002809",
+   "subject": "staff/1/0/7",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002609",
+    "vrd:002771",
+    "vrd:002797"
+   ],
+   "detail": {}
+  },
+  {
+   "id": "vrd:002810",
+   "subject": "staff/1/0/8",
+   "quantity": "key_signature",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted",
+   "used": [
+    "obs:002669",
+    "vrd:002798"
+   ],
+   "basis": [
+    "obs:002610",
+    "obs:002611",
+    "obs:002669",
+    "obs:002670",
+    "vrd:002772",
+    "vrd:002798"
+   ],
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "tail"
+   }
+  },
+  {
+   "id": "vrd:002811",
+   "subject": "staff/1/0/9",
+   "quantity": "key_signature",
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted",
+   "used": [
+    "obs:002675",
+    "vrd:002799"
+   ],
+   "basis": [
+    "obs:002612",
+    "obs:002633",
+    "obs:002674",
+    "obs:002675",
+    "obs:002676",
+    "vrd:002773",
+    "vrd:002799"
+   ],
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern"
+   }
+  },
+  {
+   "id": "vrd:002812",
+   "subject": "staff/1/0/10",
+   "quantity": "key_signature",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted",
+   "used": [
+    "obs:002680",
+    "vrd:002800"
+   ],
+   "basis": [
+    "obs:002613",
+    "obs:002680",
+    "obs:002681",
+    "vrd:002774",
+    "vrd:002800"
+   ],
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "pattern"
+   }
+  },
+  {
+   "id": "vrd:002813",
+   "subject": "staff/1/0/11",
+   "quantity": "key_signature",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "used": [],
+   "basis": [
+    "obs:002614",
+    "vrd:002775",
+    "vrd:002801"
+   ],
+   "detail": {}
+  }
+ ],
+ "observations": [
+  {
+   "id": "obs:002639",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 541,
+    "y_center": 665
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002640",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 642,
+    "y_center": 528
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002641",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 750,
+    "y_center": 704
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002642",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_clef_fit",
+   "value": "bass",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002643",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_clef_fit",
+   "value": "alto",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002644",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_clef_fit",
+   "value": "tenor",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "#",
+    "decided_by": "pattern",
+    "fifths": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002645",
+   "subject": "staff/1/0/0",
+   "quantity": "keysig_run_position",
+   "value": [
+    580
+   ],
+   "detail": {
+    "n_accidentals": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002646",
+   "subject": "staff/1/0/1",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 532,
+    "y_center": 505
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002647",
+   "subject": "staff/1/0/1",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 637,
+    "y_center": 359
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002650",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_clef_fit",
+   "value": "treble",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002651",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_clef_fit",
+   "value": "bass",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002652",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_clef_fit",
+   "value": "alto",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002653",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_clef_fit",
+   "value": "tenor",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "#",
+    "decided_by": "pattern",
+    "fifths": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002654",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_run_position",
+   "value": [
+    700
+   ],
+   "detail": {
+    "n_accidentals": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002655",
+   "subject": "staff/1/0/3",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 538,
+    "y_center": 573
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002663",
+   "subject": "staff/1/0/7",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 531,
+    "y_center": 680
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002664",
+   "subject": "staff/1/0/7",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 642,
+    "y_center": 544
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002665",
+   "subject": "staff/1/0/7",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 746,
+    "y_center": 748
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002667",
+   "subject": "staff/1/0/8",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 539,
+    "y_center": 700
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002668",
+   "subject": "staff/1/0/8",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 654,
+    "y_center": 570
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002669",
+   "subject": "staff/1/0/8",
+   "quantity": "keysig_clef_fit",
+   "value": "treble",
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "tail",
+    "fifths": -3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002670",
+   "subject": "staff/1/0/8",
+   "quantity": "keysig_clef_fit",
+   "value": "alto",
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "tail",
+    "fifths": -3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002671",
+   "subject": "staff/1/0/8",
+   "quantity": "keysig_run_position",
+   "value": [
+    700,
+    827,
+    948
+   ],
+   "detail": {
+    "n_accidentals": 3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002672",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 644,
+    "y_center": 611
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002673",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 768,
+    "y_center": 755
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002674",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_clef_fit",
+   "value": "bass",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002675",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_clef_fit",
+   "value": "alto",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002676",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_clef_fit",
+   "value": "tenor",
+   "detail": {
+    "n_accidentals": 1,
+    "accidental": "#",
+    "decided_by": "pattern",
+    "fifths": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002677",
+   "subject": "staff/1/0/9",
+   "quantity": "keysig_run_position",
+   "value": [
+    1161
+   ],
+   "detail": {
+    "n_accidentals": 1
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002678",
+   "subject": "staff/1/0/10",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 527,
+    "y_center": 765
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002679",
+   "subject": "staff/1/0/10",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 640,
+    "y_center": 632
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002680",
+   "subject": "staff/1/0/10",
+   "quantity": "keysig_clef_fit",
+   "value": "bass",
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002681",
+   "subject": "staff/1/0/10",
+   "quantity": "keysig_clef_fit",
+   "value": "alto",
+   "detail": {
+    "n_accidentals": 3,
+    "accidental": "b",
+    "decided_by": "pattern",
+    "fifths": -3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002682",
+   "subject": "staff/1/0/10",
+   "quantity": "keysig_run_position",
+   "value": [
+    664,
+    808,
+    922
+   ],
+   "detail": {
+    "n_accidentals": 3
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002683",
+   "subject": "staff/1/0/11",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 526,
+    "y_center": 782
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:002684",
+   "subject": "staff/1/0/11",
+   "quantity": "keysig_marker",
+   "value": "keyFlat",
+   "detail": {
+    "x": 766,
+    "y_center": 839
+   },
+   "basis": []
+  }
+ ],
+ "abstentions": [
+  {
+   "id": "abs:002648",
+   "subject": "staff/1/0/1",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002649",
+   "subject": "staff/1/0/2",
+   "quantity": "keysig_marker",
+   "reason": "no_detections",
+   "detail": {}
+  },
+  {
+   "id": "abs:002656",
+   "subject": "staff/1/0/3",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002657",
+   "subject": "staff/1/0/4",
+   "quantity": "keysig_marker",
+   "reason": "no_detections",
+   "detail": {}
+  },
+  {
+   "id": "abs:002658",
+   "subject": "staff/1/0/4",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002659",
+   "subject": "staff/1/0/5",
+   "quantity": "keysig_marker",
+   "reason": "no_detections",
+   "detail": {}
+  },
+  {
+   "id": "abs:002660",
+   "subject": "staff/1/0/5",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002661",
+   "subject": "staff/1/0/6",
+   "quantity": "keysig_marker",
+   "reason": "no_detections",
+   "detail": {}
+  },
+  {
+   "id": "abs:002662",
+   "subject": "staff/1/0/6",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002666",
+   "subject": "staff/1/0/7",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  },
+  {
+   "id": "abs:002685",
+   "subject": "staff/1/0/11",
+   "quantity": "keysig_run_position",
+   "reason": "no_clusters",
+   "detail": {
+    "note": "no candidate clef's slot table fits this header",
+    "clefs_tried": [
+     "treble",
+     "bass",
+     "alto",
+     "tenor"
+    ]
+   }
+  }
+ ]
+}

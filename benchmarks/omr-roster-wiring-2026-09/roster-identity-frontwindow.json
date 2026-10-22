@@ -1,0 +1,3809 @@
+{
+ "meta": {
+  "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures",
+  "tag": "reconciliation",
+  "n_records": 198
+ },
+ "acquisitions": {
+  "beethoven-sym5-mvt1-984073-p1": {
+   "roster": {
+    "page_index": 1,
+    "system_index": 0,
+    "n_staves": 12,
+    "named": 11,
+    "coverage": 0.9167,
+    "pages_searched": [
+     1
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Flauti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Clarinetti in B.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fagotti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Corni in Es.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Trombe in C.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Timpani in C.G.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Violin",
+      "text": "Violino I.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Violin",
+      "text": "Violino II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Viola",
+      "text": "Viola.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Cello",
+      "text": "Violoncello.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Bass voice",
+      "text": "Basso.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 11,
+   "from_roster": 0,
+   "from_score_order_off": 1,
+   "from_score_order_on": 1
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+   "roster": {
+    "page_index": 2,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 7,
+    "coverage": 0.6364,
+    "pages_searched": [
+     2
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Tp.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 7,
+   "from_roster": 0,
+   "from_score_order_off": 4,
+   "from_score_order_on": 4
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+   "roster": {
+    "page_index": 3,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 7,
+    "coverage": 0.6364,
+    "pages_searched": [
+     3
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Tp.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 7,
+   "from_roster": 0,
+   "from_score_order_off": 4,
+   "from_score_order_on": 4
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+   "roster": {
+    "page_index": 4,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 6,
+    "coverage": 0.5455,
+    "pages_searched": [
+     4
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 6,
+   "from_roster": 0,
+   "from_score_order_off": 3,
+   "from_score_order_on": 3
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+   "roster": {
+    "page_index": 0,
+    "system_index": 0,
+    "n_staves": 12,
+    "named": 11,
+    "coverage": 0.9167,
+    "pages_searched": [
+     0
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Flauti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Oboi.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Clarinetti in B.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fagotti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Corni in Es.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Trombe inC.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Timpani in C.G.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Violin",
+      "text": "Violino ].",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Viola",
+      "text": "Viola.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Cello",
+      "text": "Violoncello.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Bass voice",
+      "text": "Basso.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 11,
+   "from_roster": 0,
+   "from_score_order_off": 1,
+   "from_score_order_on": 1
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+   "roster": {
+    "page_index": 1,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 7,
+    "coverage": 0.6364,
+    "pages_searched": [
+     1
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Tp.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 7,
+   "from_roster": 0,
+   "from_score_order_off": 4,
+   "from_score_order_on": 4
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+   "roster": {
+    "page_index": 2,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 7,
+    "coverage": 0.6364,
+    "pages_searched": [
+     2
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Timpani",
+      "text": "Tp.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 7,
+   "from_roster": 0,
+   "from_score_order_off": 4,
+   "from_score_order_on": 4
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+   "roster": {
+    "page_index": 3,
+    "system_index": 0,
+    "n_staves": 11,
+    "named": 6,
+    "coverage": 0.5455,
+    "pages_searched": [
+     3
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Cl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Cor.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Trumpet",
+      "text": "Tr.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 6,
+   "from_roster": 0,
+   "from_score_order_off": 2,
+   "from_score_order_on": 2
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+   "roster": {
+    "page_index": 4,
+    "system_index": 0,
+    "n_staves": 15,
+    "named": 15,
+    "coverage": 1.0,
+    "pages_searched": [
+     4
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Flauti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Oboi.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Clarinetti in A.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fagotti.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Horn",
+      "text": "Corni I. II. in E.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Horn",
+      "text": "Corni III. IV. in C.",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 6,
+      "instrument": "Trumpet",
+      "text": "Trombe in E.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trombone",
+      "text": "Tromboni I. II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Trombone",
+      "text": "Trombone basso.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Timpani",
+      "text": "Tympani A. E. H.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "Violino I.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Violin",
+      "text": "Violino II.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Viola",
+      "text": "Viola.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Cello",
+      "text": "Violoncello.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 14,
+      "instrument": "Contrabass",
+      "text": "Contrabasso.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 15,
+   "from_roster": 0,
+   "from_score_order_off": 0,
+   "from_score_order_on": 0
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+   "roster": null,
+   "offered": 0,
+   "from_roster": 0,
+   "from_score_order_off": 8,
+   "from_score_order_on": 8
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+   "roster": null,
+   "offered": 0,
+   "from_roster": 0,
+   "from_score_order_off": 7,
+   "from_score_order_on": 7
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+   "roster": {
+    "page_index": 0,
+    "system_index": 0,
+    "n_staves": 14,
+    "named": 12,
+    "coverage": 0.8571,
+    "pages_searched": [
+     0
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "2 Fl\u00f6ten",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "2 Oboen",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "2 Klarinetten in B",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "2 Fagotte",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Contrabassoon",
+      "text": "Kontrafagott",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trumpet",
+      "text": "2 Trompeten in C",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Timpani",
+      "text": "Pauken in C u. G",
+      "confidence": "medium"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Violin",
+      "text": "1. Violine",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "2. Violine",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Viola",
+      "text": "Bratsche",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Cello",
+      "text": "Violoncell",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Contrabass",
+      "text": "Kontraba\u00df",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 12,
+   "from_roster": 0,
+   "from_score_order_off": 2,
+   "from_score_order_on": 2
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+   "roster": {
+    "page_index": 1,
+    "system_index": 0,
+    "n_staves": 14,
+    "named": 12,
+    "coverage": 0.8571,
+    "pages_searched": [
+     1
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Klar. (B)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Contrabassoon",
+      "text": "K-Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trumpet",
+      "text": "Trpt.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Timpani",
+      "text": "Pk. (C)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Violin",
+      "text": "1.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "2.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Viola",
+      "text": "Br.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Cello",
+      "text": "Vcl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Contrabass",
+      "text": "K-B.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 12,
+   "from_roster": 0,
+   "from_score_order_off": 2,
+   "from_score_order_on": 2
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+   "roster": {
+    "page_index": 2,
+    "system_index": 0,
+    "n_staves": 14,
+    "named": 13,
+    "coverage": 0.9286,
+    "pages_searched": [
+     2
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 0,
+      "instrument": "Flute",
+      "text": "Fl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Klar. (B)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Contrabassoon",
+      "text": "K-Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 5,
+      "instrument": "Horn",
+      "text": "(C) Hr.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trumpet",
+      "text": "Trpt. (C)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Timpani",
+      "text": "Pk.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Violin",
+      "text": "1.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "2.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Viola",
+      "text": "Br.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Cello",
+      "text": "Vcl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Contrabass",
+      "text": "K-B.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 13,
+   "from_roster": 0,
+   "from_score_order_off": 1,
+   "from_score_order_on": 1
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+   "roster": {
+    "page_index": 3,
+    "system_index": 0,
+    "n_staves": 14,
+    "named": 11,
+    "coverage": 0.7857,
+    "pages_searched": [
+     3
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 1,
+      "instrument": "Oboe",
+      "text": "Ob.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 2,
+      "instrument": "Clarinet",
+      "text": "Klar. (B)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 3,
+      "instrument": "Bassoon",
+      "text": "Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Contrabassoon",
+      "text": "K-Fag.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Trumpet",
+      "text": "Trpt. (C)",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 8,
+      "instrument": "Timpani",
+      "text": "Pk.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Violin",
+      "text": "1.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Violin",
+      "text": "2.Viol.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 11,
+      "instrument": "Viola",
+      "text": "Br.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 12,
+      "instrument": "Cello",
+      "text": "Vcl.",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 13,
+      "instrument": "Contrabass",
+      "text": "K-B.",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 11,
+   "from_roster": 0,
+   "from_score_order_off": 1,
+   "from_score_order_on": 1
+  },
+  "bach-brandenburg3-mvt1-468678-p1": {
+   "roster": {
+    "page_index": 0,
+    "system_index": 0,
+    "n_staves": 12,
+    "named": 5,
+    "coverage": 0.4167,
+    "pages_searched": [
+     0
+    ],
+    "pages_opened": [],
+    "label_tiers": {
+     "text_layer": 0,
+     "surya": 0,
+     "tesseract": 0,
+     "vision": 0,
+     "human": 0
+    },
+    "entries": [
+     {
+      "ordinal": 1,
+      "instrument": "Violin",
+      "text": "Violini II",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 4,
+      "instrument": "Viola",
+      "text": "Viole II",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 7,
+      "instrument": "Cello",
+      "text": "Violoncelli II",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 9,
+      "instrument": "Contrabass",
+      "text": "Contrabasso",
+      "confidence": "high"
+     },
+     {
+      "ordinal": 10,
+      "instrument": "Piano",
+      "text": "Cembalo",
+      "confidence": "high"
+     }
+    ]
+   },
+   "offered": 5,
+   "from_roster": 0,
+   "from_score_order_off": 6,
+   "from_score_order_on": 6
+  }
+ },
+ "records": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "score_order",
+   "ON": "Oboe",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Bass voice",
+   "TRUTH_printed": "Basso",
+   "OFF": "Contrabass",
+   "OFF_source": "score_order_ambiguity",
+   "ON": "Bass voice",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello e Basso",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "publisher": "Litolff",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello e Basso",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "publisher": "Litolff",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Bass voice",
+   "TRUTH_printed": "Basso",
+   "OFF": "Contrabass",
+   "OFF_source": "score_order_ambiguity",
+   "ON": "Bass voice",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello e Basso",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni in Es",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Timpani in C.G.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "publisher": "Litolff",
+   "page_index": 1,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello e Basso",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": "Trombone",
+   "OFF_source": "label",
+   "ON": "Trombone",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": "Trombone",
+   "OFF_source": "label",
+   "ON": "Trombone",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "publisher": "Simrock",
+   "page_index": 4,
+   "system_index": 0,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": "Bassoon",
+   "OFF_source": "score_order",
+   "ON": "Bassoon",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "publisher": "Simrock",
+   "page_index": 5,
+   "system_index": 0,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "score_order",
+   "ON": "Flute",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 0,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "Flauti",
+   "OFF": "Flute",
+   "OFF_source": "score_order",
+   "ON": "Flute",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "Oboi",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "Clarinetti in A",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "Fagotti",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni I.II. in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "Corni III.IV. in C",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "Trombe in E",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Tromboni I.II.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Trombone",
+   "TRUTH_printed": "Trombone basso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Tympani A.E.H.",
+   "OFF": "Timpani",
+   "OFF_source": "score_order",
+   "ON": "Timpani",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino I",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 11,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "Violino II",
+   "OFF": "Violin",
+   "OFF_source": "score_order",
+   "ON": "Violin",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 12,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Viola",
+   "OFF": "Viola",
+   "OFF_source": "score_order",
+   "ON": "Viola",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 13,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncello",
+   "OFF": "Cello",
+   "OFF_source": "score_order",
+   "ON": "Cello",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "publisher": "Simrock",
+   "page_index": 6,
+   "system_index": 1,
+   "ordinal": 14,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Contrabasso",
+   "OFF": null,
+   "OFF_source": null,
+   "ON": null,
+   "ON_source": null
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "2 Floten",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "2 Oboen",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "2 Klarinetten in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "2 Fagotte",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Contrabassoon",
+   "TRUTH_printed": "Kontrafagott",
+   "OFF": "Contrabassoon",
+   "OFF_source": "label",
+   "ON": "Contrabassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in C 1./2.",
+   "OFF": "Horn",
+   "OFF_source": "score_order",
+   "ON": "Horn",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in Es 3./4.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "2 Trompeten in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Pauken in C u.G",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "1. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "2. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Bratsche",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncell",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "publisher": "Breitkopf",
+   "page_index": 0,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Kontrabass",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "2 Floten",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "2 Oboen",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "2 Klarinetten in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "2 Fagotte",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Contrabassoon",
+   "TRUTH_printed": "Kontrafagott",
+   "OFF": "Contrabassoon",
+   "OFF_source": "label",
+   "ON": "Contrabassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in C 1./2.",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in Es 3./4.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "2 Trompeten in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Pauken in C u.G",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "1. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "2. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Bratsche",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncell",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Kontrabass",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "2 Floten",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "2 Oboen",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "2 Klarinetten in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "2 Fagotte",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Contrabassoon",
+   "TRUTH_printed": "Kontrafagott",
+   "OFF": "Contrabassoon",
+   "OFF_source": "label",
+   "ON": "Contrabassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in C 1./2.",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in Es 3./4.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "2 Trompeten in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Pauken in C u.G",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "1. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "2. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 11,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Bratsche",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 12,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncell",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "publisher": "Breitkopf",
+   "page_index": 2,
+   "system_index": 1,
+   "ordinal": 13,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Kontrabass",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "2 Floten",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "2 Oboen",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "2 Klarinetten in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "2 Fagotte",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 4,
+   "TRUTH": "Contrabassoon",
+   "TRUTH_printed": "Kontrafagott",
+   "OFF": "Contrabassoon",
+   "OFF_source": "label",
+   "ON": "Contrabassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in C 1./2.",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 6,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in Es 3./4.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 7,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "2 Trompeten in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 8,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Pauken in C u.G",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 9,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "1. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "2. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 11,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Bratsche",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 12,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncell",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 0,
+   "ordinal": 13,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Kontrabass",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 0,
+   "TRUTH": "Flute",
+   "TRUTH_printed": "2 Floten",
+   "OFF": "Flute",
+   "OFF_source": "label",
+   "ON": "Flute",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 1,
+   "TRUTH": "Oboe",
+   "TRUTH_printed": "2 Oboen",
+   "OFF": "Oboe",
+   "OFF_source": "label",
+   "ON": "Oboe",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 2,
+   "TRUTH": "Clarinet",
+   "TRUTH_printed": "2 Klarinetten in B",
+   "OFF": "Clarinet",
+   "OFF_source": "label",
+   "ON": "Clarinet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 3,
+   "TRUTH": "Bassoon",
+   "TRUTH_printed": "2 Fagotte",
+   "OFF": "Bassoon",
+   "OFF_source": "label",
+   "ON": "Bassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 4,
+   "TRUTH": "Contrabassoon",
+   "TRUTH_printed": "Kontrafagott",
+   "OFF": "Contrabassoon",
+   "OFF_source": "label",
+   "ON": "Contrabassoon",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 5,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in C 1./2.",
+   "OFF": "Horn",
+   "OFF_source": "label",
+   "ON": "Horn",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 6,
+   "TRUTH": "Horn",
+   "TRUTH_printed": "4 Horner in Es 3./4.",
+   "OFF": "Trumpet",
+   "OFF_source": "score_order",
+   "ON": "Trumpet",
+   "ON_source": "score_order"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 7,
+   "TRUTH": "Trumpet",
+   "TRUTH_printed": "2 Trompeten in C",
+   "OFF": "Trumpet",
+   "OFF_source": "label",
+   "ON": "Trumpet",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 8,
+   "TRUTH": "Timpani",
+   "TRUTH_printed": "Pauken in C u.G",
+   "OFF": "Timpani",
+   "OFF_source": "label",
+   "ON": "Timpani",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 9,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "1. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 10,
+   "TRUTH": "Violin",
+   "TRUTH_printed": "2. Violine",
+   "OFF": "Violin",
+   "OFF_source": "label",
+   "ON": "Violin",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 11,
+   "TRUTH": "Viola",
+   "TRUTH_printed": "Bratsche",
+   "OFF": "Viola",
+   "OFF_source": "label",
+   "ON": "Viola",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 12,
+   "TRUTH": "Cello",
+   "TRUTH_printed": "Violoncell",
+   "OFF": "Cello",
+   "OFF_source": "label",
+   "ON": "Cello",
+   "ON_source": "label"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "publisher": "Breitkopf",
+   "page_index": 3,
+   "system_index": 1,
+   "ordinal": 13,
+   "TRUTH": "Contrabass",
+   "TRUTH_printed": "Kontrabass",
+   "OFF": "Contrabass",
+   "OFF_source": "label",
+   "ON": "Contrabass",
+   "ON_source": "label"
+  }
+ ],
+ "abstained": [
+  [
+   "beethoven-sym5-mvt1-984073-p3 sys0",
+   "n 11 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-984073-p3 sys1",
+   "n 8 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-984073-p4 sys0",
+   "n 11 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-984073-p4 sys1",
+   "n 11 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-575951-p3 sys0",
+   "n 11 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-575951-p3 sys1",
+   "n 8 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-575951-p4 sys0",
+   "n 11 != truth 0"
+  ],
+  [
+   "beethoven-sym5-mvt1-575951-p4 sys1",
+   "n 11 != truth 0"
+  ],
+  [
+   "brahms-sym1-mvt1-317803-p2 sys0",
+   "n 14 != truth 0"
+  ],
+  [
+   "brahms-sym1-mvt1-317803-p2 sys1",
+   "n 13 != truth 0"
+  ],
+  [
+   "mahler-sym5-mvt1-local-p2",
+   "detection [19] != fixture [17]"
+  ],
+  [
+   "mahler-sym5-mvt1-local-p3",
+   "detection [15] != fixture [13]"
+  ],
+  [
+   "mahler-sym5-mvt1-local-p4",
+   "detection [21] != fixture [18]"
+  ],
+  [
+   "mahler-sym5-mvt1-local-p5",
+   "detection [21] != fixture [17]"
+  ],
+  [
+   "bach-brandenburg3-mvt1-468678-p1 sys0",
+   "n 12 != truth 0"
+  ],
+  [
+   "bach-brandenburg3-mvt1-468678-p1 sys1",
+   "n 12 != truth 0"
+  ]
+ ]
+}

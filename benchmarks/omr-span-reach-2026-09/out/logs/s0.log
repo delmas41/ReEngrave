@@ -1,0 +1,55 @@
+
+berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf: 148 pages in 1317s -> 3 span(s) [[0, 72], [73, 138], [139, 147]]
+   pages 0-72 (73p) peak sizes [4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+   pages 73-138 (66p) peak sizes [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 25, 26, 27]
+   pages 139-147 (9p) peak sizes [5, 6, 7, 8, 21, 22]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.json
+
+sibelius--symphony-5-op82--hansen-1921--imslp15922.pdf: 134 pages in 319s -> 3 span(s) [[0, 31], [32, 41], [42, 133]]
+   pages 0-31 (32p) peak sizes [5, 7, 8, 9, 10, 11, 16]
+   pages 32-41 (10p) peak sizes [16, 18, 19]
+   pages 42-133 (92p) peak sizes [7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/sibelius--symphony-5-op82--hansen-1921--imslp15922.json
+
+mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.pdf: 131 pages in 634s -> 1 span(s) [[0, 130]]
+   pages 0-130 (131p) peak sizes [0, 4, 5, 6, 8, 9, 10, 11, 12]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746.json
+
+tchaikovsky--violin-concerto-op35--jurgenson-1888--imslp105393.pdf: 120 pages in 293s -> 2 span(s) [[0, 72], [73, 119]]
+   pages 0-72 (73p) peak sizes [0, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+   pages 73-119 (47p) peak sizes [7, 8, 9, 10, 11, 12, 14, 15, 16, 17]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/tchaikovsky--violin-concerto-op35--jurgenson-1888--imslp105393.json
+
+schumann--piano-concerto-op7--chang-2019--imslp573002.pdf: 106 pages in 1132s -> 1 span(s) [[0, 105]]
+   pages 0-105 (106p) peak sizes [0, 3, 4, 21]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/schumann--piano-concerto-op7--chang-2019--imslp573002.json
+
+prokofiev--symphony-1-op25--editions-russes-de-musiq-1925--imslp5981.pdf: 97 pages in 137s -> 3 span(s) [[0, 35], [36, 54], [55, 96]]
+   pages 0-35 (36p) peak sizes [0, 11, 12]
+   pages 36-54 (19p) peak sizes [8, 12, 13]
+   pages 55-96 (42p) peak sizes [12, 13, 14]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/prokofiev--symphony-1-op25--editions-russes-de-musiq-1925--imslp5981.json
+
+schumann--symphony-3-op97--peters-1887--imslp13086.pdf: 93 pages in 612s -> 3 span(s) [[0, 18], [19, 45], [46, 92]]
+   pages 0-18 (19p) peak sizes [0, 13]
+   pages 19-45 (27p) peak sizes [10, 13, 14]
+   pages 46-92 (47p) peak sizes [14, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/schumann--symphony-3-op97--peters-1887--imslp13086.json
+
+bizet--symphony-in-c-major--edition-1935--imslp512840.pdf: 89 pages in 509s -> 2 span(s) [[0, 10], [11, 88]]
+   pages 0-10 (11p) peak sizes [11, 13]
+   pages 11-88 (78p) peak sizes [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/bizet--symphony-in-c-major--edition-1935--imslp512840.json
+
+brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf: 86 pages in 695s -> 2 span(s) [[0, 44], [45, 85]]
+   pages 0-44 (45p) peak sizes [10, 11, 12, 13, 14]
+   pages 45-85 (41p) peak sizes [10, 11, 12, 13, 14, 15, 16]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.json
+
+beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf: 76 pages in 653s -> 1 span(s) [[0, 75]]
+   pages 0-75 (76p) peak sizes [6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 21]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.json
+
+saint-saens--cello-concerto-1-op33--durand-1874--imslp81392.pdf: 74 pages in 253s -> 1 span(s) [[0, 73]]
+   pages 0-73 (74p) peak sizes [0, 5, 7, 8, 9, 10, 11, 12, 13, 14]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/saint-saens--cello-concerto-1-op33--durand-1874--imslp81392.json

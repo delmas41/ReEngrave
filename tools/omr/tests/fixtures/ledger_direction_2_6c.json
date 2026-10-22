@@ -1,0 +1,2306 @@
+{
+ "heads": [
+  {
+   "band_rows": [
+    [
+     3.13174603174602,
+     {
+      "candidate": "staff/16/1/7",
+      "own": true,
+      "position_in_candidate": 14.263492063492041
+     }
+    ],
+    [
+     2.2650793650793766,
+     {
+      "candidate": "staff/16/1/8",
+      "own": false,
+      "position_in_candidate": -4.530158730158753
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     2490.0,
+     2998.0,
+     2644.0,
+     3218.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/16/1/7/14"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      2525.595,
+      3193.1425,
+      2547.4875,
+      3215.5075
+     ],
+     "category": "notehead",
+     "x_center_page": 2536.54125,
+     "y_center_page": 3204.325
+    },
+    "value": [
+     "noteheadBlackInSpace",
+     226,
+     1239,
+     139,
+     142
+    ]
+   },
+   "ladder_rows": [
+    [
+     false,
+     {
+      "candidate": "staff/16/1/7",
+      "expected": 3,
+      "found": 2
+     }
+    ],
+    [
+     false,
+     {
+      "candidate": "staff/16/1/8",
+      "expected": 2,
+      "found": 0
+     }
+    ]
+   ],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      2523.705,
+      3189.835,
+      2553.63,
+      3194.245
+     ],
+     "subject": "glyph/16/1/7/14/4",
+     "value": [
+      "ledgerLine",
+      214,
+      1218,
+      190,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2490.1575,
+      3126.0475,
+      2549.0625,
+      3130.1425
+     ],
+     "subject": "glyph/16/1/7/14/6",
+     "value": [
+      "ledgerLine",
+      1,
+      813,
+      374,
+      26
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2524.4925,
+      3174.085,
+      2552.8425,
+      3178.18
+     ],
+     "subject": "glyph/16/1/7/14/7",
+     "value": [
+      "ledgerLine",
+      219,
+      1118,
+      180,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2522.6025,
+      3142.585,
+      2573.16,
+      3147.625
+     ],
+     "subject": "glyph/16/1/7/14/8",
+     "value": [
+      "ledgerLine",
+      207,
+      918,
+      321,
+      32
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2524.335,
+      3335.13,
+      2553.7875,
+      3339.3825
+     ],
+     "subject": "glyph/16/1/8/14/5",
+     "value": [
+      "ledgerLine",
+      218,
+      1004,
+      187,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2523.705,
+      3188.8125,
+      2554.26,
+      3194.64
+     ],
+     "subject": "glyph/16/1/8/14/7",
+     "value": [
+      "ledgerLine",
+      214,
+      75,
+      194,
+      37
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2523.705,
+      3323.475,
+      2554.26,
+      3327.0975
+     ],
+     "subject": "glyph/16/1/8/14/8",
+     "value": [
+      "ledgerLine",
+      214,
+      930,
+      194,
+      23
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2501.34,
+      3289.2975,
+      2555.6775,
+      3294.3375
+     ],
+     "subject": "glyph/16/1/8/14/10",
+     "value": [
+      "ledgerLine",
+      72,
+      713,
+      345,
+      32
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2528.2725,
+      3289.9275,
+      2579.775,
+      3294.495
+     ],
+     "subject": "glyph/16/1/8/14/11",
+     "value": [
+      "ledgerLine",
+      243,
+      717,
+      327,
+      29
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2495.355,
+      3304.89,
+      2555.205,
+      3309.615
+     ],
+     "subject": "glyph/16/1/8/14/12",
+     "value": [
+      "ledgerLine",
+      34,
+      812,
+      380,
+      30
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2500.08,
+      3289.14,
+      2535.5175,
+      3293.3925
+     ],
+     "subject": "glyph/16/1/8/14/13",
+     "value": [
+      "ledgerLine",
+      64,
+      712,
+      225,
+      27
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2526.855,
+      3470.325,
+      2555.0475,
+      3474.105
+     ],
+     "subject": "glyph/16/1/9/14/4",
+     "value": [
+      "ledgerLine",
+      234,
+      910,
+      179,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2524.1775,
+      3335.3475,
+      2554.575,
+      3339.4425
+     ],
+     "subject": "glyph/16/1/9/14/5",
+     "value": [
+      "ledgerLine",
+      217,
+      53,
+      193,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackInSpace",
+   "on_the_arm_record": {
+    "glyph_owner": [
+     "decided",
+     "staff/16/1/8",
+     "distance"
+    ],
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "belongs_to_filed_staff",
+   "sheet": 1,
+   "staves": {
+    "staff/16/1/7": {
+     "clef": "treble",
+     "instrument": null,
+     "staff_lines": [
+      3092,
+      3108,
+      3124,
+      3139,
+      3155
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/16/1/8": {
+     "clef": "treble",
+     "instrument": null,
+     "staff_lines": [
+      3240,
+      3256,
+      3272,
+      3287,
+      3303
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/16/1/9": {
+     "clef": "alto",
+     "instrument": null,
+     "staff_lines": [
+      3390,
+      3406,
+      3422,
+      3437,
+      3453
+     ],
+     "staff_spacing": 15.75
+    }
+   },
+   "subject": "glyph/16/1/7/14/0"
+  },
+  {
+   "band_rows": [],
+   "cell": {
+    "cell_box": [
+     2346.0,
+     2314.0,
+     2453.0,
+     2503.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/10/1/2/12"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      2385.06,
+      2492.605,
+      2416.0875,
+      2503.0
+     ],
+     "category": "notehead",
+     "x_center_page": 2400.57375,
+     "y_center_page": 2497.8025
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     248,
+     1134,
+     197,
+     66
+    ]
+   },
+   "ladder_rows": [],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      2381.7525,
+      2224.745,
+      2414.67,
+      2229.3125
+     ],
+     "subject": "glyph/10/1/1/12/4",
+     "value": [
+      "ledgerLine",
+      227,
+      246,
+      209,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2356.8675,
+      2264.12,
+      2416.875,
+      2268.6875
+     ],
+     "subject": "glyph/10/1/1/12/5",
+     "value": [
+      "ledgerLine",
+      69,
+      496,
+      381,
+      29
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2356.8675,
+      2264.12,
+      2397.8175,
+      2268.845
+     ],
+     "subject": "glyph/10/1/1/12/6",
+     "value": [
+      "ledgerLine",
+      69,
+      496,
+      260,
+      30
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2349.465,
+      2280.0275,
+      2394.195,
+      2284.4375
+     ],
+     "subject": "glyph/10/1/1/12/10",
+     "value": [
+      "ledgerLine",
+      22,
+      597,
+      284,
+      28
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2382.855,
+      2264.12,
+      2446.8,
+      2268.6875
+     ],
+     "subject": "glyph/10/1/1/12/11",
+     "value": [
+      "ledgerLine",
+      234,
+      496,
+      406,
+      29
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2382.855,
+      2479.5325,
+      2414.67,
+      2483.6275
+     ],
+     "subject": "glyph/10/1/2/12/4",
+     "value": [
+      "ledgerLine",
+      234,
+      1051,
+      202,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2382.6975,
+      2391.9625,
+      2440.9725,
+      2396.6875
+     ],
+     "subject": "glyph/10/1/2/12/5",
+     "value": [
+      "ledgerLine",
+      233,
+      495,
+      370,
+      30
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2349.78,
+      2514.89,
+      2412.15,
+      2518.355
+     ],
+     "subject": "glyph/10/1/3/12/3",
+     "value": [
+      "ledgerLine",
+      24,
+      412,
+      396,
+      22
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2359.23,
+      2530.4825,
+      2397.8175,
+      2534.105
+     ],
+     "subject": "glyph/10/1/3/12/4",
+     "value": [
+      "ledgerLine",
+      84,
+      511,
+      245,
+      23
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2388.0525,
+      2515.205,
+      2450.1075,
+      2518.5125
+     ],
+     "subject": "glyph/10/1/3/12/5",
+     "value": [
+      "ledgerLine",
+      267,
+      414,
+      394,
+      21
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2383.3275,
+      2477.5625,
+      2415.1425,
+      2483.39
+     ],
+     "subject": "glyph/10/1/3/12/6",
+     "value": [
+      "ledgerLine",
+      237,
+      175,
+      202,
+      37
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2354.505,
+      2530.01,
+      2442.39,
+      2533.9475
+     ],
+     "subject": "glyph/10/1/3/12/7",
+     "value": [
+      "ledgerLine",
+      54,
+      508,
+      558,
+      25
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2348.205,
+      2531.1125,
+      2397.975,
+      2534.105
+     ],
+     "subject": "glyph/10/1/3/12/8",
+     "value": [
+      "ledgerLine",
+      14,
+      515,
+      316,
+      19
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2357.1825,
+      2530.325,
+      2409.7875,
+      2534.105
+     ],
+     "subject": "glyph/10/1/3/12/9",
+     "value": [
+      "ledgerLine",
+      71,
+      510,
+      334,
+      24
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2380.8075,
+      2748.585,
+      2412.465,
+      2752.365
+     ],
+     "subject": "glyph/10/1/4/12/1",
+     "value": [
+      "ledgerLine",
+      221,
+      918,
+      201,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record": {
+    "glyph_owner": null,
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "belongs_to_the_nearer_staff",
+   "sheet": 4,
+   "staves": {
+    "staff/10/1/1": {
+     "clef": "treble",
+     "instrument": {
+      "expected_clef": "treble",
+      "family": "woodwind",
+      "name": "Oboe",
+      "unpitched": false,
+      "written_range": [
+       58,
+       91
+      ]
+     },
+     "staff_lines": [
+      2249,
+      2265,
+      2281,
+      2297,
+      2312
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/10/1/2": {
+     "clef": "treble",
+     "instrument": {
+      "expected_clef": "treble",
+      "family": "woodwind",
+      "name": "Clarinet",
+      "unpitched": false,
+      "written_range": [
+       50,
+       91
+      ]
+     },
+     "staff_lines": [
+      2377,
+      2393,
+      2408,
+      2424,
+      2440
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/10/1/3": {
+     "clef": "bass",
+     "instrument": {
+      "expected_clef": "bass",
+      "family": "woodwind",
+      "name": "Bassoon",
+      "unpitched": false,
+      "written_range": [
+       34,
+       72
+      ]
+     },
+     "staff_lines": [
+      2513,
+      2529,
+      2545,
+      2560,
+      2576
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/10/1/4": {
+     "clef": "treble",
+     "instrument": {
+      "expected_clef": "treble",
+      "family": "brass",
+      "name": "Horn",
+      "unpitched": false,
+      "written_range": [
+       41,
+       77
+      ]
+     },
+     "staff_lines": [
+      2667,
+      2682,
+      2698,
+      2714,
+      2730
+     ],
+     "staff_spacing": 15.75
+    }
+   },
+   "subject": "glyph/10/1/2/12/6"
+  },
+  {
+   "band_rows": [],
+   "cell": {
+    "cell_box": [
+     1588.0,
+     1269.0,
+     1679.0,
+     1458.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/8/0/6/12"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      1626.2725,
+      1443.825,
+      1646.4325,
+      1458.0
+     ],
+     "category": "notehead",
+     "x_center_page": 1636.3525,
+     "y_center_page": 1450.9125
+    },
+    "value": [
+     "noteheadHalfInSpace",
+     243,
+     1110,
+     128,
+     90
+    ]
+   },
+   "ladder_rows": [],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      1615.09,
+      1411.5375,
+      1648.0075,
+      1415.16
+     ],
+     "subject": "glyph/8/0/6/12/2",
+     "value": [
+      "ledgerLine",
+      172,
+      905,
+      209,
+      23
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1595.245,
+      1395.0,
+      1653.6775,
+      1398.9375
+     ],
+     "subject": "glyph/8/0/6/12/3",
+     "value": [
+      "ledgerLine",
+      46,
+      800,
+      371,
+      25
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "on_a_staff_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1590.9925,
+      1330.8975,
+      1672.735,
+      1335.9375
+     ],
+     "subject": "glyph/8/0/6/12/5",
+     "value": [
+      "ledgerLine",
+      19,
+      393,
+      519,
+      32
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1590.205,
+      1346.9625,
+      1667.695,
+      1351.6875
+     ],
+     "subject": "glyph/8/0/6/12/6",
+     "value": [
+      "ledgerLine",
+      14,
+      495,
+      492,
+      30
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1615.09,
+      1427.6625,
+      1645.1725,
+      1431.1275
+     ],
+     "subject": "glyph/8/0/7/12/6",
+     "value": [
+      "ledgerLine",
+      172,
+      55,
+      191,
+      22
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1591.465,
+      1480.11,
+      1678.09,
+      1485.9375
+     ],
+     "subject": "glyph/8/0/7/12/7",
+     "value": [
+      "ledgerLine",
+      22,
+      388,
+      550,
+      37
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1589.26,
+      1629.3325,
+      1645.015,
+      1634.3725
+     ],
+     "subject": "glyph/8/0/8/12/4",
+     "value": [
+      "ledgerLine",
+      8,
+      491,
+      354,
+      32
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1598.08,
+      1613.2675,
+      1653.0475,
+      1618.78
+     ],
+     "subject": "glyph/8/0/8/12/5",
+     "value": [
+      "ledgerLine",
+      64,
+      389,
+      349,
+      35
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1593.1975,
+      1613.425,
+      1672.105,
+      1618.78
+     ],
+     "subject": "glyph/8/0/8/12/7",
+     "value": [
+      "ledgerLine",
+      33,
+      390,
+      501,
+      34
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadHalfInSpace",
+   "on_the_arm_record": {
+    "glyph_owner": null,
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "not_a_note",
+   "sheet": 10,
+   "staves": {
+    "staff/8/0/6": {
+     "clef": "treble",
+     "instrument": null,
+     "staff_lines": [
+      1332,
+      1348,
+      1363,
+      1379,
+      1395
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/8/0/7": {
+     "clef": "alto",
+     "instrument": null,
+     "staff_lines": [
+      1482,
+      1498,
+      1513,
+      1529,
+      1545
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/8/0/8": {
+     "clef": "bass",
+     "instrument": null,
+     "staff_lines": [
+      1615,
+      1631,
+      1647,
+      1662,
+      1678
+     ],
+     "staff_spacing": 15.75
+    }
+   },
+   "subject": "glyph/8/0/6/12/7"
+  },
+  {
+   "band_rows": [
+    [
+     1.0554761904761887,
+     {
+      "candidate": "staff/12/0/10",
+      "own": false,
+      "position_in_candidate": 10.110952380952378
+     }
+    ],
+    [
+     3.1350000000000016,
+     {
+      "candidate": "staff/12/0/11",
+      "own": true,
+      "position_in_candidate": -6.270000000000003
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     2446.0,
+     1849.0,
+     2632.0,
+     2069.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/12/0/11/14"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      2467.105,
+      1852.3075,
+      2491.36,
+      1872.94
+     ],
+     "category": "notehead",
+     "x_center_page": 2479.2325,
+     "y_center_page": 1862.62375
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     134,
+     21,
+     154,
+     131
+    ]
+   },
+   "ladder_rows": [
+    [
+     true,
+     {
+      "candidate": "staff/12/0/10",
+      "expected": 1,
+      "found": 1
+     }
+    ],
+    [
+     true,
+     {
+      "candidate": "staff/12/0/11",
+      "expected": 3,
+      "found": 3
+     }
+    ]
+   ],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      2574.0475,
+      1597.955,
+      2608.0675,
+      1601.735
+     ],
+     "subject": "glyph/12/0/9/14/7",
+     "value": [
+      "ledgerLine",
+      813,
+      114,
+      216,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2446.4725,
+      1639.0625,
+      2474.5075,
+      1643.7875
+     ],
+     "subject": "glyph/12/0/9/14/11",
+     "value": [
+      "ledgerLine",
+      3,
+      375,
+      178,
+      30
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "on_a_staff_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2446.0,
+      1654.8125,
+      2484.43,
+      1660.1675
+     ],
+     "subject": "glyph/12/0/9/14/13",
+     "value": [
+      "ledgerLine",
+      0,
+      475,
+      244,
+      34
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2544.1225,
+      1596.5375,
+      2607.7525,
+      1601.8925
+     ],
+     "subject": "glyph/12/0/9/14/15",
+     "value": [
+      "ledgerLine",
+      623,
+      105,
+      404,
+      34
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2468.8375,
+      1591.8125,
+      2494.9825,
+      1597.955
+     ],
+     "subject": "glyph/12/0/9/14/17",
+     "value": [
+      "ledgerLine",
+      145,
+      75,
+      166,
+      39
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2469.4675,
+      1610.555,
+      2494.51,
+      1615.4375
+     ],
+     "subject": "glyph/12/0/9/14/24",
+     "value": [
+      "ledgerLine",
+      149,
+      194,
+      159,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2446.0,
+      1670.5625,
+      2507.5825,
+      1675.76
+     ],
+     "subject": "glyph/12/0/9/14/25",
+     "value": [
+      "ledgerLine",
+      0,
+      575,
+      391,
+      33
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2467.8925,
+      1762.0525,
+      2493.88,
+      1765.5175
+     ],
+     "subject": "glyph/12/0/10/14/5",
+     "value": [
+      "ledgerLine",
+      139,
+      267,
+      165,
+      22
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2463.955,
+      1893.25,
+      2492.1475,
+      1898.4475
+     ],
+     "subject": "glyph/12/0/10/14/6",
+     "value": [
+      "ledgerLine",
+      114,
+      1100,
+      179,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2464.4275,
+      1860.0175,
+      2496.8725,
+      1865.845
+     ],
+     "subject": "glyph/12/0/10/14/7",
+     "value": [
+      "ledgerLine",
+      117,
+      889,
+      206,
+      37
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2464.585,
+      1860.655,
+      2496.715,
+      1865.38
+     ],
+     "subject": "glyph/12/0/11/14/3",
+     "value": [
+      "ledgerLine",
+      118,
+      74,
+      204,
+      30
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2464.27,
+      1892.155,
+      2491.99,
+      1898.9275
+     ],
+     "subject": "glyph/12/0/11/14/4",
+     "value": [
+      "ledgerLine",
+      116,
+      274,
+      176,
+      43
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2465.0575,
+      1876.405,
+      2493.0925,
+      1881.76
+     ],
+     "subject": "glyph/12/0/11/14/5",
+     "value": [
+      "ledgerLine",
+      121,
+      174,
+      178,
+      34
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record": {
+    "glyph_owner": [
+     "decided",
+     "staff/12/0/10",
+     "ladder"
+    ],
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "belongs_to_filed_staff",
+   "sheet": 14,
+   "staves": {
+    "staff/12/0/10": {
+     "clef": null,
+     "instrument": null,
+     "staff_lines": [
+      1783,
+      1798,
+      1814,
+      1830,
+      1846
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/12/0/11": {
+     "clef": "bass",
+     "instrument": null,
+     "staff_lines": [
+      1912,
+      1928,
+      1943,
+      1959,
+      1975
+     ],
+     "staff_spacing": 15.75
+    },
+    "staff/12/0/9": {
+     "clef": "bass",
+     "instrument": null,
+     "staff_lines": [
+      1643,
+      1659,
+      1674,
+      1690,
+      1706
+     ],
+     "staff_spacing": 15.75
+    }
+   },
+   "subject": "glyph/12/0/11/14/1"
+  },
+  {
+   "band_rows": [
+    [
+     2.502181869369369,
+     {
+      "candidate": "staff/9/0/10",
+      "own": false,
+      "position_in_candidate": 13.00436373873874
+     }
+    ],
+    [
+     3.2801649305555554,
+     {
+      "candidate": "staff/9/0/11",
+      "own": true,
+      "position_in_candidate": -6.560329861111111
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     636.0,
+     3210.0,
+     1492.0,
+     3588.0
+    ],
+    "cell_staff_space": [
+     64.5,
+     {
+      "half_step": 32.25,
+      "lines": 5
+     }
+    ],
+    "key": "cell/9/0/11/0"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      1190.2265625,
+      3212.5078125,
+      1228.26171875,
+      3246.36328125
+     ],
+     "category": "notehead",
+     "x_center_page": 1209.244140625,
+     "y_center_page": 3229.435546875
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     1326,
+     6,
+     91,
+     81
+    ]
+   },
+   "ladder_rows": [
+    [
+     false,
+     {
+      "candidate": "staff/9/0/10",
+      "expected": 2,
+      "found": 0
+     }
+    ],
+    [
+     false,
+     {
+      "candidate": "staff/9/0/11",
+      "expected": 3,
+      "found": 2
+     }
+    ]
+   ],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      1273.8203125,
+      2984.86328125,
+      1330.24609375,
+      2991.55078125
+     ],
+     "subject": "glyph/9/0/9/0/20",
+     "value": [
+      "ledgerLine",
+      1526,
+      727,
+      135,
+      16
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1181.44921875,
+      2958.94921875,
+      1237.0390625,
+      2964.80078125
+     ],
+     "subject": "glyph/9/0/9/0/22",
+     "value": [
+      "ledgerLine",
+      1305,
+      665,
+      133,
+      14
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1182.703125,
+      2986.1171875,
+      1232.859375,
+      2992.8046875
+     ],
+     "subject": "glyph/9/0/9/0/28",
+     "value": [
+      "ledgerLine",
+      1308,
+      730,
+      120,
+      16
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1272.984375,
+      3253.984375,
+      1330.24609375,
+      3261.08984375
+     ],
+     "subject": "glyph/9/0/10/0/18",
+     "value": [
+      "ledgerLine",
+      1524,
+      756,
+      137,
+      17
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      960.34375,
+      3174.98828125,
+      1018.0234375,
+      3180.421875
+     ],
+     "subject": "glyph/9/0/10/0/19",
+     "value": [
+      "ledgerLine",
+      776,
+      567,
+      138,
+      13
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1275.4921875,
+      3012.81640625,
+      1326.90234375,
+      3020.7578125
+     ],
+     "subject": "glyph/9/0/10/0/20",
+     "value": [
+      "ledgerLine",
+      1530,
+      179,
+      123,
+      19
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1273.8203125,
+      2984.39453125,
+      1329.41015625,
+      2992.3359375
+     ],
+     "subject": "glyph/9/0/10/0/21",
+     "value": [
+      "ledgerLine",
+      1526,
+      111,
+      133,
+      19
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1184.375,
+      3226.81640625,
+      1237.0390625,
+      3235.17578125
+     ],
+     "subject": "glyph/9/0/10/0/22",
+     "value": [
+      "ledgerLine",
+      1312,
+      691,
+      126,
+      20
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1182.28515625,
+      2984.39453125,
+      1233.27734375,
+      2993.171875
+     ],
+     "subject": "glyph/9/0/10/0/23",
+     "value": [
+      "ledgerLine",
+      1307,
+      111,
+      122,
+      21
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1182.28515625,
+      3011.14453125,
+      1232.859375,
+      3019.921875
+     ],
+     "subject": "glyph/9/0/10/0/28",
+     "value": [
+      "ledgerLine",
+      1307,
+      175,
+      121,
+      21
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1276.74609375,
+      3282.30859375,
+      1328.9921875,
+      3287.7421875
+     ],
+     "subject": "glyph/9/0/11/0/11",
+     "value": [
+      "ledgerLine",
+      1533,
+      173,
+      125,
+      13
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1185.62890625,
+      3254.3046875,
+      1236.203125,
+      3260.57421875
+     ],
+     "subject": "glyph/9/0/11/0/12",
+     "value": [
+      "ledgerLine",
+      1315,
+      106,
+      121,
+      15
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1181.8671875,
+      3227.5546875,
+      1236.62109375,
+      3234.2421875
+     ],
+     "subject": "glyph/9/0/11/0/13",
+     "value": [
+      "ledgerLine",
+      1306,
+      42,
+      131,
+      16
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1275.4921875,
+      3253.05078125,
+      1330.24609375,
+      3259.73828125
+     ],
+     "subject": "glyph/9/0/11/0/14",
+     "value": [
+      "ledgerLine",
+      1530,
+      103,
+      131,
+      16
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record": {
+    "glyph_owner": [
+     "abstained",
+     null,
+     "tied"
+    ],
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "belongs_to_filed_staff",
+   "sheet": 18,
+   "staves": {
+    "staff/9/0/10": {
+     "clef": "bass",
+     "instrument": {
+      "expected_clef": "bass",
+      "family": "string",
+      "name": "Cello",
+      "unpitched": false,
+      "written_range": [
+       36,
+       81
+      ]
+     },
+     "staff_lines": [
+      3049,
+      3076,
+      3103,
+      3132,
+      3160
+     ],
+     "staff_spacing": 27.75
+    },
+    "staff/9/0/11": {
+     "clef": "bass",
+     "instrument": {
+      "expected_clef": "bass",
+      "family": "string",
+      "name": "Contrabass",
+      "unpitched": false,
+      "written_range": [
+       28,
+       67
+      ]
+     },
+     "staff_lines": [
+      3318,
+      3345,
+      3372,
+      3400,
+      3426
+     ],
+     "staff_spacing": 27.0
+    },
+    "staff/9/0/9": {
+     "clef": "alto",
+     "instrument": {
+      "expected_clef": "alto",
+      "family": "string",
+      "name": "Viola",
+      "unpitched": false,
+      "written_range": [
+       48,
+       88
+      ]
+     },
+     "staff_lines": [
+      2791,
+      2819,
+      2848,
+      2874,
+      2901
+     ],
+     "staff_spacing": 27.5
+    }
+   },
+   "subject": "glyph/9/0/11/0/1"
+  },
+  {
+   "band_rows": [
+    [
+     5.454999999999976,
+     {
+      "candidate": "staff/4/1/2",
+      "own": true,
+      "position_in_candidate": 18.909999999999954
+     }
+    ],
+    [
+     1.0871100917431433,
+     {
+      "candidate": "staff/4/1/3",
+      "own": false,
+      "position_in_candidate": -2.1742201834862867
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     4954.0,
+     4449.0,
+     5491.0,
+     4837.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/4/1/2/8"
+   },
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      5000.62,
+      4809.195,
+      5041.135,
+      4835.5575
+     ],
+     "category": "notehead",
+     "x_center_page": 5020.8775000000005,
+     "y_center_page": 4822.376249999999
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     168,
+     1298,
+     146,
+     95
+    ]
+   },
+   "ladder_rows": [
+    [
+     false,
+     {
+      "candidate": "staff/4/1/2",
+      "expected": 5,
+      "found": 2
+     }
+    ],
+    [
+     true,
+     {
+      "candidate": "staff/4/1/3",
+      "expected": 1,
+      "found": 1
+     }
+    ]
+   ],
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      5225.6725,
+      4793.1,
+      5278.675,
+      4799.76
+     ],
+     "subject": "glyph/4/1/2/8/25",
+     "value": [
+      "ledgerLine",
+      979,
+      1240,
+      191,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      4993.1275,
+      4792.8225,
+      5048.35,
+      4798.095
+     ],
+     "subject": "glyph/4/1/2/8/26",
+     "value": [
+      "ledgerLine",
+      141,
+      1239,
+      199,
+      19
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      5224.865,
+      4819.8,
+      5278.275,
+      4827.975
+     ],
+     "subject": "glyph/4/1/3/8/12",
+     "value": [
+      "ledgerLine",
+      994,
+      480,
+      196,
+      30
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      4993.5125,
+      4791.7325,
+      5048.285,
+      4797.455
+     ],
+     "subject": "glyph/4/1/3/8/17",
+     "value": [
+      "ledgerLine",
+      145,
+      377,
+      201,
+      21
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      5222.14,
+      4793.095,
+      5278.5475,
+      4800.725
+     ],
+     "subject": "glyph/4/1/3/8/19",
+     "value": [
+      "ledgerLine",
+      984,
+      382,
+      207,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      4994.875,
+      4819.8,
+      5047.74,
+      4828.52
+     ],
+     "subject": "glyph/4/1/3/8/21",
+     "value": [
+      "ledgerLine",
+      150,
+      480,
+      194,
+      32
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      4994.6025,
+      4792.8225,
+      5047.195,
+      4800.4525
+     ],
+     "subject": "glyph/4/1/3/8/23",
+     "value": [
+      "ledgerLine",
+      149,
+      381,
+      193,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record": {
+    "glyph_owner": [
+     "decided",
+     "staff/4/1/3",
+     "ladder"
+    ],
+    "notehead_is_not_a_notehead": [
+     "decided",
+     false,
+     "notehead"
+    ]
+   },
+   "sean": "belongs_to_the_nearer_staff",
+   "sheet": 22,
+   "staves": {
+    "staff/4/1/2": {
+     "clef": "treble",
+     "instrument": {
+      "expected_clef": "treble",
+      "family": "woodwind",
+      "name": "Clarinet",
+      "unpitched": false,
+      "written_range": [
+       50,
+       91
+      ]
+     },
+     "staff_lines": [
+      4560,
+      4587,
+      4613,
+      4643,
+      4671
+     ],
+     "staff_spacing": 27.75
+    },
+    "staff/4/1/3": {
+     "clef": "bass",
+     "instrument": {
+      "expected_clef": "bass",
+      "family": "woodwind",
+      "name": "Bassoon",
+      "unpitched": false,
+      "written_range": [
+       34,
+       72
+      ]
+     },
+     "staff_lines": [
+      4852,
+      4879,
+      4906,
+      4933,
+      4961
+     ],
+     "staff_spacing": 27.25
+    },
+    "staff/4/1/4": {
+     "clef": "bass",
+     "instrument": {
+      "expected_clef": "bass",
+      "family": "woodwind",
+      "name": "Contrabassoon",
+      "unpitched": false,
+      "written_range": [
+       22,
+       60
+      ]
+     },
+     "staff_lines": [
+      5033,
+      5060,
+      5087,
+      5115,
+      5142
+     ],
+     "staff_spacing": 27.25
+    }
+   },
+   "subject": "glyph/4/1/2/8/31"
+  }
+ ],
+ "made_by": "benchmarks/omr-owner-domain-2026-09/extract_ledger_fixture_2_6c.py",
+ "source": {
+  "breitkopf": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/brahms-arm.record.json",
+  "litolff": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/litolff-arm.record.json"
+ }
+}

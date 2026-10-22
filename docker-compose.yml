@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      # Build from repo root so the Dockerfile can COPY both backend/ and tools/
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - uploads:/app/uploads
+      - exports:/app/exports
+      - db:/app/data
+      # Mount the OMR weights file from the host. The directory is gitignored
+      # and shared across worktrees — set OMR_WEIGHTS_HOST_DIR to an absolute
+      # path (e.g. /Users/you/Desktop/ReEngrave/omr-weights) when running from
+      # a worktree where ./omr-weights doesn't exist locally. Defaults to
+      # ./omr-weights for the main checkout. See tools/omr/README.md.
+      - ${OMR_WEIGHTS_HOST_DIR:-./omr-weights}:/app/tools/omr/training/data/weights:ro
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////app/data/reengrave.db
+      UPLOAD_DIR: /app/uploads
+      EXPORT_DIR: /app/exports
+      # DEV ONLY (never in docker-compose.prod.yml): start even with the
+      # shipped default SECRET_KEY, and send the refresh cookie over http.
+      ALLOW_DEFAULT_SECRET: "true"
+      COOKIE_SECURE: "false"
+      # Override default OMR weights path / pipeline knobs by uncommenting:
+      # OMR_WEIGHTS_PATH: /app/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt
+      # OMR_MAX_PAGES: 5
+      # OMR_CONF_THRESHOLD: 0.25
+      # OMR_IMGSZ: 1280
+      # OMR_DPI: 300
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  uploads:
+  exports:
+  db:

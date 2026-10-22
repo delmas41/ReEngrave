@@ -1,0 +1,458 @@
+{
+  "_comment": "one row per engine per work; written by run_industry.py",
+  "engines": {
+    "audiveris": {
+      "beethoven-sym3-mvt1": {
+        "omr_ed": 195,
+        "omr_ned": 0.10906040268456375,
+        "pred_path": "out/audiveris/beethoven-sym3-mvt1/beethoven-sym3-mvt1.mxl",
+        "pred_symbols": 906,
+        "seconds": 24.0,
+        "status": "ok",
+        "top_categories": {
+          "wrong articulation": 12,
+          "wrong barline": 57,
+          "wrong direction": 36,
+          "wrong dynamic": 18,
+          "wrong lyric": 49
+        },
+        "truth_symbols": 882
+      },
+      "beethoven-sym5-mvt1": {
+        "omr_ed": 194,
+        "omr_ned": 0.14663643235071808,
+        "pred_path": "out/audiveris/beethoven-sym5-mvt1/beethoven-sym5-mvt1.mxl",
+        "pred_symbols": 668,
+        "seconds": 18.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 50,
+          "wrong flag/beam": 17,
+          "wrong lyric": 49,
+          "wrong note": 51,
+          "wrong tie": 13
+        },
+        "truth_symbols": 655
+      },
+      "brahms-sym1-mvt1": {
+        "omr_ed": 481,
+        "omr_ned": 0.11384615384615385,
+        "pred_path": "out/audiveris/brahms-sym1-mvt1/brahms-sym1-mvt1.mxl",
+        "pred_symbols": 2142,
+        "seconds": 33.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 85,
+          "wrong direction": 137,
+          "wrong dynamic": 14,
+          "wrong lyric": 152,
+          "wrong note": 71
+        },
+        "truth_symbols": 2083
+      },
+      "brahms-sym4-mvt1": {
+        "omr_ed": 507,
+        "omr_ned": 0.28774120317820656,
+        "pred_path": "out/audiveris/brahms-sym4-mvt1/brahms-sym4-mvt1.mxl",
+        "pred_symbols": 813,
+        "seconds": 21.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 44,
+          "wrong direction": 30,
+          "wrong lyric": 57,
+          "wrong note": 299,
+          "wrong slur": 27
+        },
+        "truth_symbols": 949
+      },
+      "bruckner-sym5-mvt1": {
+        "omr_ed": 255,
+        "omr_ned": 0.12536873156342182,
+        "pred_path": "out/audiveris/bruckner-sym5-mvt1/bruckner-sym5-mvt1.mxl",
+        "pred_symbols": 1027,
+        "seconds": 30.1,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 132,
+          "wrong direction": 41,
+          "wrong dynamic": 7,
+          "wrong lyric": 51,
+          "wrong note": 8
+        },
+        "truth_symbols": 1007
+      },
+      "dvorak-sym9-mvt4": {
+        "omr_ed": 246,
+        "omr_ned": 0.3360655737704918,
+        "pred_path": "out/audiveris/dvorak-sym9-mvt4/dvorak-sym9-mvt4.mxl",
+        "pred_symbols": 359,
+        "seconds": 15.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 33,
+          "entire staff insert/delete": 42,
+          "wrong direction": 46,
+          "wrong keysig": 9,
+          "wrong note": 106
+        },
+        "truth_symbols": 373
+      },
+      "mahler-sym5-mvt1": {
+        "omr_ed": 264,
+        "omr_ned": 0.14178302900107412,
+        "pred_path": "out/audiveris/mahler-sym5-mvt1/mahler-sym5-mvt1.mxl",
+        "pred_symbols": 904,
+        "seconds": 42.1,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 144,
+          "wrong clef": 16,
+          "wrong direction": 5,
+          "wrong keysig": 16,
+          "wrong note": 81
+        },
+        "truth_symbols": 958
+      },
+      "mozart-sym40-mvt1": {
+        "omr_ed": 106,
+        "omr_ned": 0.06725888324873096,
+        "pred_path": "out/audiveris/mozart-sym40-mvt1/mozart-sym40-mvt1.mxl",
+        "pred_symbols": 788,
+        "seconds": 18.0,
+        "status": "ok",
+        "top_categories": {
+          "wrong articulation": 28,
+          "wrong dynamic": 4,
+          "wrong note": 60,
+          "wrong note head": 4,
+          "wrong slur": 8
+        },
+        "truth_symbols": 788
+      },
+      "mozart-sym41-mvt1": {
+        "omr_ed": 741,
+        "omr_ned": 0.2589098532494759,
+        "pred_path": "out/audiveris/mozart-sym41-mvt1/mozart-sym41-mvt1.mxl",
+        "pred_symbols": 1408,
+        "seconds": 27.1,
+        "status": "ok",
+        "top_categories": {
+          "wrong lyric": 42,
+          "wrong note": 607,
+          "wrong note head": 16,
+          "wrong slur": 26,
+          "wrong tuplet": 20
+        },
+        "truth_symbols": 1454
+      },
+      "tchaikovsky-sym4-mvt2": {
+        "omr_ed": 97,
+        "omr_ned": 0.0641958967571145,
+        "pred_path": "out/audiveris/tchaikovsky-sym4-mvt2/tchaikovsky-sym4-mvt2.mxl",
+        "pred_symbols": 725,
+        "seconds": 18.0,
+        "status": "ok",
+        "top_categories": {
+          "wrong articulation": 1,
+          "wrong direction": 20,
+          "wrong flag/beam": 7,
+          "wrong lyric": 7,
+          "wrong note": 59
+        },
+        "truth_symbols": 786
+      },
+      "tchaikovsky-sym6-mvt2": {
+        "omr_ed": 245,
+        "omr_ned": 0.17253521126760563,
+        "pred_path": "out/audiveris/tchaikovsky-sym6-mvt2/tchaikovsky-sym6-mvt2.mxl",
+        "pred_symbols": 690,
+        "seconds": 21.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 40,
+          "wrong direction": 20,
+          "wrong lyric": 18,
+          "wrong note": 134,
+          "wrong note head": 8
+        },
+        "truth_symbols": 730
+      }
+    },
+    "homr": {
+      "beethoven-sym3-mvt1": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 13.0,
+        "status": "failed"
+      },
+      "beethoven-sym5-mvt1": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 28.7,
+        "status": "failed"
+      },
+      "brahms-sym1-mvt1": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 16.9,
+        "status": "failed"
+      },
+      "brahms-sym4-mvt1": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 11.4,
+        "status": "failed"
+      },
+      "bruckner-sym5-mvt1": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 14.2,
+        "status": "failed"
+      },
+      "dvorak-sym9-mvt4": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 8.4,
+        "status": "failed"
+      },
+      "mahler-sym5-mvt1": {
+        "omr_ed": 1663,
+        "omr_ned": 0.973083674663546,
+        "pred_path": "out/homr/mahler-sym5-mvt1.musicxml",
+        "pred_symbols": 751,
+        "seconds": 22.6,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 728,
+          "entire staff insert/delete": 935
+        },
+        "truth_symbols": 958
+      },
+      "mozart-sym40-mvt1": {
+        "omr_ed": 301,
+        "omr_ned": 0.19660352710646636,
+        "pred_path": "out/homr/mozart-sym40-mvt1.musicxml",
+        "pred_symbols": 743,
+        "seconds": 9.1,
+        "status": "ok",
+        "top_categories": {
+          "wrong articulation": 63,
+          "wrong direction": 14,
+          "wrong flag/beam": 130,
+          "wrong note": 49,
+          "wrong timesig": 33
+        },
+        "truth_symbols": 788
+      },
+      "mozart-sym41-mvt1": {
+        "omr_ed": 716,
+        "omr_ned": 0.26362297496318116,
+        "pred_path": "out/homr/mozart-sym41-mvt1.musicxml",
+        "pred_symbols": 1262,
+        "seconds": 12.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 24,
+          "entire staff insert/delete": 118,
+          "wrong flag/beam": 182,
+          "wrong note": 287,
+          "wrong timesig": 48
+        },
+        "truth_symbols": 1454
+      },
+      "tchaikovsky-sym4-mvt2": {
+        "error": "no MusicXML produced (rc=1)\nnstrument.add_child(mxl.XMLMidiChannel(value_=part + 1))\n                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 40, in __init__\n    self.value_ = value_\n    ^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 368, in __setattr__\n    super().__setattr__(key, value)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xmlelement/xmlelement.py\", line 218, in value_\n    self.TYPE(val, parent=self)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 32, in __init__\n    self.value = value\n    ^^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 202, in value\n    super(XSDSimpleTypePositiveInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 159, in value\n    super(XSDSimpleTypeInteger, type(self)).value.fset(self, v)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 133, in value\n    self._check_value(v)\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.venv-homr/lib/python3.14/site-packages/musicxml/xsd/xsdsimpletype.py\", line 81, in _check_value\n    raise ValueError(\n        f\"{self._get_error_class()}.value '{v}' must be less than or equal to\"\n        f\" '{child.get_attributes()['value']}'\")\nValueError: XMLMidiChannel.value '17' must be",
+        "seconds": 12.8,
+        "status": "failed"
+      },
+      "tchaikovsky-sym6-mvt2": {
+        "omr_ed": 100,
+        "omr_ned": 0.07178750897343862,
+        "pred_path": "out/homr/tchaikovsky-sym6-mvt2.musicxml",
+        "pred_symbols": 663,
+        "seconds": 9.8,
+        "status": "ok",
+        "top_categories": {
+          "wrong direction": 41,
+          "wrong dynamic": 13,
+          "wrong flag/beam": 6,
+          "wrong staff group name/abbrev": 8,
+          "wrong timesig": 18
+        },
+        "truth_symbols": 730
+      }
+    },
+    "oemer": {
+      "beethoven-sym3-mvt1": {
+        "omr_ed": 1467,
+        "omr_ned": 0.9760479041916168,
+        "pred_path": "out/oemer/beethoven-sym3-mvt1.musicxml",
+        "pred_symbols": 621,
+        "seconds": 232.4,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 586,
+          "entire staff insert/delete": 824,
+          "wrong direction": 16,
+          "wrong note": 14,
+          "wrong note head": 12
+        },
+        "truth_symbols": 882
+      },
+      "beethoven-sym5-mvt1": {
+        "omr_ed": 1088,
+        "omr_ned": 0.9801801801801802,
+        "pred_path": "out/oemer/beethoven-sym5-mvt1.musicxml",
+        "pred_symbols": 455,
+        "seconds": 447.8,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 410,
+          "entire staff insert/delete": 614,
+          "wrong direction": 16,
+          "wrong note": 26,
+          "wrong note head": 16
+        },
+        "truth_symbols": 655
+      },
+      "brahms-sym1-mvt1": {
+        "omr_ed": 3599,
+        "omr_ned": 0.9852176293457432,
+        "pred_path": "out/oemer/brahms-sym1-mvt1.musicxml",
+        "pred_symbols": 1570,
+        "seconds": 290.8,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 1502,
+          "entire staff insert/delete": 1975,
+          "wrong direction": 25,
+          "wrong note": 81,
+          "wrong slur": 6
+        },
+        "truth_symbols": 2083
+      },
+      "brahms-sym4-mvt1": {
+        "omr_ed": 1643,
+        "omr_ned": 0.9750741839762611,
+        "pred_path": "out/oemer/brahms-sym4-mvt1.musicxml",
+        "pred_symbols": 736,
+        "seconds": 213.3,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 691,
+          "entire staff insert/delete": 864,
+          "wrong direction": 23,
+          "wrong note": 40,
+          "wrong note head": 14
+        },
+        "truth_symbols": 949
+      },
+      "bruckner-sym5-mvt1": {
+        "omr_ed": 1758,
+        "omr_ned": 0.9788418708240535,
+        "pred_path": "out/oemer/bruckner-sym5-mvt1.musicxml",
+        "pred_symbols": 789,
+        "seconds": 197.4,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 770,
+          "entire staff insert/delete": 981,
+          "wrong direction": 6,
+          "wrong timesig": 1
+        },
+        "truth_symbols": 1007
+      },
+      "dvorak-sym9-mvt4": {
+        "omr_ed": 633,
+        "omr_ned": 0.9844479004665629,
+        "pred_path": "out/oemer/dvorak-sym9-mvt4.musicxml",
+        "pred_symbols": 270,
+        "seconds": 202.2,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 220,
+          "entire staff insert/delete": 329,
+          "wrong direction": 24,
+          "wrong note": 44,
+          "wrong staff group": 10
+        },
+        "truth_symbols": 373
+      },
+      "mahler-sym5-mvt1": {
+        "omr_ed": 1703,
+        "omr_ned": 0.9770510613884108,
+        "pred_path": "out/oemer/mahler-sym5-mvt1.musicxml",
+        "pred_symbols": 785,
+        "seconds": 317.7,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 609,
+          "entire staff insert/delete": 935,
+          "wrong keysig": 12,
+          "wrong note": 145,
+          "wrong timesig": 2
+        },
+        "truth_symbols": 958
+      },
+      "mozart-sym40-mvt1": {
+        "omr_ed": 1382,
+        "omr_ned": 0.9787535410764873,
+        "pred_path": "out/oemer/mozart-sym40-mvt1.musicxml",
+        "pred_symbols": 624,
+        "seconds": 216.8,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 609,
+          "entire staff insert/delete": 758,
+          "wrong direction": 14,
+          "wrong timesig": 1
+        },
+        "truth_symbols": 788
+      },
+      "mozart-sym41-mvt1": {
+        "omr_ed": 2485,
+        "omr_ned": 0.977961432506887,
+        "pred_path": "out/oemer/mozart-sym41-mvt1.musicxml",
+        "pred_symbols": 1087,
+        "seconds": 238.0,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 1001,
+          "entire staff insert/delete": 1323,
+          "wrong direction": 14,
+          "wrong note": 117,
+          "wrong note head": 10
+        },
+        "truth_symbols": 1454
+      },
+      "tchaikovsky-sym4-mvt2": {
+        "omr_ed": 1381,
+        "omr_ned": 0.9815209665955935,
+        "pred_path": "out/oemer/tchaikovsky-sym4-mvt2.musicxml",
+        "pred_symbols": 621,
+        "seconds": 190.4,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 600,
+          "entire staff insert/delete": 761,
+          "wrong clef": 1,
+          "wrong note head": 16,
+          "wrong timesig": 2
+        },
+        "truth_symbols": 786
+      },
+      "tchaikovsky-sym6-mvt2": {
+        "omr_ed": 1322,
+        "omr_ned": 0.9850968703427719,
+        "pred_path": "out/oemer/tchaikovsky-sym6-mvt2.musicxml",
+        "pred_symbols": 612,
+        "seconds": 190.2,
+        "status": "ok",
+        "top_categories": {
+          "entire measure insert/delete": 590,
+          "entire staff insert/delete": 686,
+          "wrong direction": 21,
+          "wrong note": 10,
+          "wrong staff group": 10
+        },
+        "truth_symbols": 730
+      }
+    }
+  },
+  "png_dpi": 300
+}

@@ -1,0 +1,139 @@
+{
+ "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+ "reference_sheet": {
+  "truth": 48,
+  "rows": [
+   {
+    "thickness": 1,
+    "truth": 48,
+    "on": 47,
+    "off": 56,
+    "gated": 56,
+    "noteheads": 68
+   },
+   {
+    "thickness": 2,
+    "truth": 48,
+    "on": 48,
+    "off": 56,
+    "gated": 56,
+    "noteheads": 64
+   },
+   {
+    "thickness": 3,
+    "truth": 48,
+    "on": 49,
+    "off": 56,
+    "gated": 56,
+    "noteheads": 65
+   },
+   {
+    "thickness": 4,
+    "truth": 48,
+    "on": 47,
+    "off": 51,
+    "gated": 51,
+    "noteheads": 72
+   }
+  ]
+ },
+ "hand_cells": {
+  "summed_abs_error": {
+   "on": 15,
+   "off": 53,
+   "gated": 20
+  },
+  "rows": [
+   {
+    "n": 18,
+    "score": "bolero-p31",
+    "truth": 7,
+    "on": 6,
+    "off": 15,
+    "gated": 11,
+    "noteheads": 14
+   },
+   {
+    "n": 19,
+    "score": "mahler-5-p11",
+    "truth": 5,
+    "on": 5,
+    "off": 16,
+    "gated": 5,
+    "noteheads": 6
+   },
+   {
+    "n": 20,
+    "score": "wtc-p5",
+    "truth": 15,
+    "on": 15,
+    "off": 18,
+    "gated": 16,
+    "noteheads": 15
+   },
+   {
+    "n": 22,
+    "score": "bolero-p31",
+    "truth": 9,
+    "on": 14,
+    "off": 14,
+    "gated": 14,
+    "noteheads": 9
+   },
+   {
+    "n": 24,
+    "score": "lamer-p25",
+    "truth": 0,
+    "on": 5,
+    "off": 7,
+    "gated": 5,
+    "noteheads": 0
+   },
+   {
+    "n": 25,
+    "score": "bolero-p31",
+    "truth": 7,
+    "on": 9,
+    "off": 11,
+    "gated": 9,
+    "noteheads": 7
+   },
+   {
+    "n": 26,
+    "score": "wtc-p5",
+    "truth": 8,
+    "on": 9,
+    "off": 11,
+    "gated": 9,
+    "noteheads": 8
+   },
+   {
+    "n": 27,
+    "score": "mahler-5-p11",
+    "truth": 3,
+    "on": 3,
+    "off": 14,
+    "gated": 4,
+    "noteheads": 8
+   },
+   {
+    "n": 28,
+    "score": "bolero-p31",
+    "truth": 11,
+    "on": 12,
+    "off": 12,
+    "gated": 12,
+    "noteheads": 12
+   },
+   {
+    "n": 29,
+    "score": "wtc-p5",
+    "truth": 9,
+    "on": 9,
+    "off": 9,
+    "gated": 9,
+    "noteheads": 10
+   }
+  ]
+ }
+}

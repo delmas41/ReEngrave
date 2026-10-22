@@ -1,0 +1,14 @@
+=== ARM ordinal  2026-09-06T20:36:18Z
+[spans-on] available=True reason=None in 4s reference=17 slots vetoes=18
+  wrote benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (88 pages read, 0 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-off.json
+  benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-on.json
+=== ARM map  2026-09-06T20:49:26Z
+[spans-on] available=True reason=None in 4s reference=17 slots vetoes=21
+  wrote benchmarks/omr-slot-alignment-2026-09/out/-map-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 88 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-slot-alignment-2026-09/out/-map-spans-off.json
+  benchmarks/omr-slot-alignment-2026-09/out/-map-spans-on.json
+=== SCORING 2026-09-06T20:49:35Z
+=== DONE 2026-09-06T20:49:35Z

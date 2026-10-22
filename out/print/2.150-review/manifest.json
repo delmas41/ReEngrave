@@ -1,0 +1,237 @@
+{
+ "dpi": 600,
+ "question": "What is the mark in the blue box?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    2802,
+    4975,
+    3435,
+    5335
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2028,
+    3319,
+    2249,
+    3523
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2108,
+    621,
+    2340,
+    829
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    1453,
+    2018,
+    1707,
+    2219
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2444,
+    3440,
+    2668,
+    3644
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    4880,
+    2164,
+    5578,
+    2518
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    2224,
+    2432,
+    2848,
+    2789
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    1648,
+    1599,
+    1871,
+    1807
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    3514,
+    2837,
+    4352,
+    3194
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    2712,
+    1519,
+    3235,
+    1873
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    1481,
+    5989,
+    2007,
+    6346
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2110,
+    627,
+    2330,
+    831
+   ]
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    3630,
+    6954,
+    4201,
+    7314
+   ]
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    3181,
+    4646,
+    3652,
+    5003
+   ]
+  },
+  {
+   "n": 15,
+   "file": "tile_15.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    4788,
+    4269,
+    5308,
+    4626
+   ]
+  },
+  {
+   "n": 16,
+   "file": "tile_16.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    4199,
+    6094,
+    4758,
+    6454
+   ]
+  },
+  {
+   "n": 17,
+   "file": "tile_17.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    3086,
+    6597,
+    3694,
+    6951
+   ]
+  },
+  {
+   "n": 18,
+   "file": "tile_18.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2200,
+    1371,
+    2419,
+    1572
+   ]
+  },
+  {
+   "n": 19,
+   "file": "tile_19.png",
+   "document": "litolff",
+   "page_box_600dpi": [
+    2260,
+    1729,
+    2494,
+    1937
+   ]
+  },
+  {
+   "n": 20,
+   "file": "tile_20.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    4803,
+    4504,
+    5573,
+    4864
+   ]
+  },
+  {
+   "n": 21,
+   "file": "tile_21.png",
+   "document": "brahms",
+   "page_box_600dpi": [
+    2032,
+    4511,
+    2751,
+    4927
+   ]
+  }
+ ]
+}

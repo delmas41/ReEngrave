@@ -1,0 +1,7 @@
+  114  ('box_ov', 'stem', 'stem_meets_beam')
+  104  ('no_box_ov', 'stem', '-')
+   55  no cv beam in cell
+    8  ('no_box_ov', 'no_stem', '-')
+    4  ('box_ov', 'no_stem', '-')
+
+centre-past-the-beam-end distance, in notehead widths: [(0.37, 21), (0.38, 18), (0.4, 15), (0.39, 12), (0.44, 10), (0.43, 8), (0.36, 7), (0.47, 6), (0.35, 5), (0.45, 5)]

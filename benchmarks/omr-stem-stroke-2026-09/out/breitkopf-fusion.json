@@ -1,0 +1,47 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "cells": 818,
+ "drift": 0,
+ "components": 6816,
+ "comps_per_cell": {
+  "median": 7.0,
+  "mean": 8.33,
+  "p90": 18,
+  "max": 43
+ },
+ "height_spaces": {
+  "median": 3.203,
+  "p90": 12.0,
+  "max": 16.011,
+  "over_cap": 1500
+ },
+ "width_spaces": {
+  "median": 0.21,
+  "p90": 0.393,
+  "over_cap": 408
+ },
+ "heads_per_component": {
+  "0": 4210,
+  "1": 1787,
+  "2": 706,
+  "3": 66,
+  "4": 47
+ },
+ "what_it_is": {
+  "covers NO notehead": 4210,
+  "covers 2+ noteheads (a MERGE across notes)": 819,
+  "covers 1 notehead, >= 2 spaces tall": 1467,
+  "covers 1 notehead, shorter than 2 spaces": 320
+ },
+ "blamed": {
+  "WIDE, 2+ head(s)": 276,
+  "TALL, 0 head(s)": 1270,
+  "TALL, 1 head(s)": 99,
+  "WIDE, 1 head(s)": 78,
+  "WIDE+TALL, 2+ head(s)": 6,
+  "WIDE+TALL, 0 head(s)": 18,
+  "TALL, 2+ head(s)": 106,
+  "WIDE, 0 head(s)": 25,
+  "WIDE+TALL, 1 head(s)": 1
+ }
+}

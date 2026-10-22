@@ -1,0 +1,45 @@
+243 PDFs, 1001 planned pages (pair-tagged PDFs: 8)
+0 (pdf,page) rows already present in sweep_leftedge.jsonl
+1001 tasks to run this invocation
+  [25/1001] ok=25 err=0 elapsed=28s
+  [50/1001] ok=50 err=0 elapsed=51s
+  [75/1001] ok=75 err=0 elapsed=73s
+  [100/1001] ok=100 err=0 elapsed=97s
+  [125/1001] ok=125 err=0 elapsed=118s
+  [150/1001] ok=150 err=0 elapsed=140s
+  [175/1001] ok=175 err=0 elapsed=157s
+  [200/1001] ok=200 err=0 elapsed=171s
+  [225/1001] ok=225 err=0 elapsed=186s
+  [250/1001] ok=250 err=0 elapsed=203s
+  [275/1001] ok=275 err=0 elapsed=221s
+  [300/1001] ok=300 err=0 elapsed=243s
+  [325/1001] ok=325 err=0 elapsed=272s
+  [350/1001] ok=350 err=0 elapsed=289s
+  [375/1001] ok=375 err=0 elapsed=304s
+  [400/1001] ok=400 err=0 elapsed=319s
+  [425/1001] ok=425 err=0 elapsed=334s
+  [450/1001] ok=450 err=0 elapsed=350s
+  [475/1001] ok=475 err=0 elapsed=367s
+  [500/1001] ok=500 err=0 elapsed=385s
+  [525/1001] ok=525 err=0 elapsed=402s
+  [550/1001] ok=550 err=0 elapsed=420s
+  [575/1001] ok=575 err=0 elapsed=437s
+  [600/1001] ok=600 err=0 elapsed=454s
+  [625/1001] ok=625 err=0 elapsed=473s
+  [650/1001] ok=650 err=0 elapsed=491s
+  [675/1001] ok=675 err=0 elapsed=506s
+  [700/1001] ok=700 err=0 elapsed=522s
+  [725/1001] ok=725 err=0 elapsed=541s
+  [750/1001] ok=750 err=0 elapsed=560s
+  [775/1001] ok=775 err=0 elapsed=577s
+  [800/1001] ok=800 err=0 elapsed=594s
+  [825/1001] ok=825 err=0 elapsed=608s
+  [850/1001] ok=850 err=0 elapsed=624s
+  [875/1001] ok=875 err=0 elapsed=643s
+  [900/1001] ok=900 err=0 elapsed=662s
+  [925/1001] ok=925 err=0 elapsed=679s
+  [950/1001] ok=950 err=0 elapsed=698s
+  [975/1001] ok=975 err=0 elapsed=713s
+  [1000/1001] ok=1000 err=0 elapsed=730s
+  [1001/1001] ok=1001 err=0 elapsed=731s
+done: 1001 ok, 0 error, wrote/updated sweep_leftedge.jsonl

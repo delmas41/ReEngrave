@@ -1,0 +1,806 @@
+"""Does every QUANTITY reach a consumer? — the fifth derived question.
+
+    python3 -m tools.omr.staged.reach            # the table
+    python3 -m tools.omr.staged.reach --json
+    python3 -m tools.omr.staged.reach --check    # non-zero on anything not
+                                                 # on KNOWN_GAPS
+    python3 -m tools.omr.staged.reach --run rec.json   # which edges CARRIED
+
+⚠️⚠️ **WHY THIS IS NOT A SIXTH COPY OF AN EXISTING TOOL.** Four derived
+instruments already stand and each asks a different question:
+
+  `gather_coverage`  is it OBSERVED at all?
+  `inventory --check` is a `wants` entry actually READ?
+  `wiring --check`   can a declared read REACH it (frame / detail / roundtrip)?
+  `no_producer`      is a threaded PARAMETER ever supplied?
+
+**None of them asks whether anything reads a quantity AT ALL.** `wiring.py`'s
+own docstring defers that one to run time -- *"`export.status_census` already
+answers it at RUN time as a PARTITION"* -- and that is measurement-first. A
+quantity that is gathered, declared by nobody and read by nobody is reported
+by `gather_coverage` as **GATHERED (observed)**, i.e. as healthy.
+`Q.STAFF_SKEW` sat in exactly that cell (`Q.STAFF_EXTENT` did too, until
+ROADMAP 4.2b's movement-boundary detection became its first reader; STAFF_SKEW
+until lane-owner-from-staves read its thickness) -- see `KNOWN_GAPS` below.
+
+## ⚠️ THE ACCESSOR SET IS DERIVED, AND THIS TOOL'S OWN FIRST RUN PROVES WHY
+
+The first version hand-wrote the accessor names off a `grep`, missed
+`rec.obs_of(...)` and `ev.state(...)`, and reported `Q.CELL_BOX` and
+`Q.KEYSIG_RUN_POSITION` as read by nothing -- two false positives, from this
+repo's own named anti-pattern, in a tool written to catch that anti-pattern.
+`_accessors()` now reads every public method of `Log` / `Evidence` /
+`export.Record` that takes a `quantity` parameter, and takes the ARGUMENT
+INDEX from the signature rather than assuming it is first: `observe` and
+`abstain` take the subject first, so an index assumption silently reads the
+subject as the quantity and reports every gather site as unresolved.
+
+## The four outcomes, which are four different repairs
+
+  LIVE        produced and read by a later stage -- nothing to do
+  GHOST       in `Q`, produced by nothing and declared by nobody
+  UNREAD      produced, and NOTHING anywhere reads it
+  GATHER_ONLY read, but only inside GATHER -- no later stage sees it
+
+⚠️ UNREAD is not automatically a bug: a quantity may be gathered so a HUMAN
+can read the record. What it must never be is UNREAD *and unremarked*, which
+is how `Q.STEM` stayed unread through three separate discoveries.
+"""
+from __future__ import annotations
+
+import argparse
+import ast
+import collections
+import importlib
+import inspect
+import json
+import pathlib
+import sys
+from typing import Dict, Set, Tuple
+
+from .record import Q
+
+#: Quantities whose lack of a reader is ACCOUNTED FOR, each with its reason.
+#:
+#: ⚠️ An INVENTORY, never a suppression list -- the same contract as
+#: `export_coverage.KNOWN_GAPS` and `inventory.KNOWN_GAPS`. `--check` fails on
+#: anything NOT here, **and on an entry nothing reports any more**: a closed
+#: gap must LEAVE the list or the list stops describing the pipeline and starts
+#: describing its history.
+KNOWN_GAPS: Dict[str, str] = {
+    Q.DYNAMIC_ANCHOR: (
+        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
+        "(Sean 2026-10-09: a dynamic is anchored to ONE note) is GATHER+"
+        "ADJUDICATE only. What EXPORT needs to read it: the anchored note's "
+        "MEASURE and the mark's offset from that note's onset (so a dynamic "
+        "printed on a barline is written in the bar it announces, not the one "
+        "that detected it), and for a hairpin a start and a stop in different "
+        "measures. The entry LEAVES this list the day `export.py` reads it."),
+    Q.EMPTY_BAR_WHOLE_REST: (
+        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.52 "
+        "is GATHER+ADJUDICATE only (Sean, 2026-09-30: 'I want all our tests "
+        "for now to just be the first 2 stages'). Wiring this verdict into "
+        "`size_measure_rest`/`export.py` so a found whole rest actually "
+        "sizes the bar is explicitly OUT of scope for this lane and is the "
+        "obvious next item if the search is confirmed against the print."),
+    Q.HUMAN_VERDICT_STANCE: (
+        "⚠️ PRODUCER ONLY BY DESIGN, NOT AN UNCLOSED GAP — roadmap 3.4. A "
+        "human's `agree`/`disagree` is filed AGAINST a verdict and must never "
+        "be read BY one: if a stage consumed it, his agreement would become a "
+        "term in the very decision he is judging, and the review would stop "
+        "measuring the pipeline and start steering it. Sean's own framing is "
+        "that a review pass produces a FEEDBACK FILE FOR A SESSION, not a "
+        "corrected score. Its consumer is `review/feedback.py`, a reporting "
+        "instrument registered in NOT_A_STAGE. ⚠️ THIS ENTRY DOES NOT LEAVE "
+        "THE LIST WHEN SOMETHING READS IT — something reading it is the "
+        "finding, and the right response is to ask Sean, not to close a gap."),
+    # ── already reported by a sibling instrument; listed so this tool's own
+    #    --check does not duplicate a failure another tool already owns.
+    Q.DOSSIER_FACT: (
+        "⚠️ CORRECTED 2026-09-21. There is still no `--dossier` and there will "
+        "not be one -- Sean's ruling is that a dossier reaches this pipeline "
+        "ONLY through a sheet whose `movement.dossier_id` a human confirmed "
+        "(`--sheet`, `factsheet.dossier_for`), so the measurement path is "
+        "structurally unable to consume one rather than trusted not to. The "
+        "row is therefore an abstain on every run that passes no confirmed "
+        "sheet, which is every benchmark run. ⚠️⚠️ AND IT IS STILL AN INERT "
+        "`wants` ON key_signature AND meter (inventory owns that half): "
+        "`grep DOSSIER_FACT adjudicators/` returns two `wants` tuples and no "
+        "read, so even an admitted dossier reaches NEITHER. Its one live "
+        "consumer is `Q.CLEF_SEED` -> `adjudicate_clef` (`clef.py:301`)."),
+    # ── ROADMAP 3.4g. A FAMILY WHOSE REFUSAL REACHES ONLY THE CENSUS ──
+    #
+    # ⚠️ TWO FACTS, BOTH TRUE, AND THE ENTRY IS USELESS WITHOUT BOTH.
+    #
+    #   1. THIS TOOL CANNOT SEE THE READ THAT EXISTS. `export._family_refusals`
+    #      reads every family refusal through `rec.verdicts_of(quantity)` in a
+    #      LOOP over `family_precision.FAMILY_REFUSALS`, which is DERIVED from
+    #      the adjudicators' own table rather than typed twice. `qname()`
+    #      resolves a literal `Q.X` or a literal string and nothing else, so a
+    #      loop-bound quantity reads as unresolved — the same blind spot
+    #      `inventory._gather_sites` documents paying for on `gather_cv_lines`
+    #      and answers with a loop resolver. The other family refusals do NOT
+    #      appear here only because each has a second reader that names it
+    #      literally.
+    #   2. AND THE CENSUS REALLY IS ITS ONLY READER, so the entry would be
+    #      half-true even with a loop resolver. The family reaches no MusicXML
+    #      element on ANY path (`gather_coverage.FAMILY_TO_Q` maps
+    #      `arpeggiato` to `None`). What the refusal buys is that a human's
+    #      *nothing* on one of these boxes lands on the record as a verdict he
+    #      can be shown, instead of on no stage at all.
+    #
+    # ⚠️ `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL` STOOD HERE BESIDE IT UNTIL ROADMAP
+    # 2.7 LANDED (2026-09-27), and it left by the route this comment named:
+    # its family gained a reader that is not the census —
+    # `adjudicate_accidental_owner` reads the refusal literally and a refused
+    # glyph owns no head. The entry was deleted when this tool reported it
+    # STALE, not before.
+    Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO: (
+        "READ BY `export._family_refusals` THROUGH A LOOP THIS TOOL CANNOT "
+        "RESOLVE, and read by nothing else, because the `arpeggiato` family "
+        "reaches no MusicXML element on any path. See the block comment "
+        "above for both halves."),
+    Q.GAP_BRIDGING: (
+        "inert declaration, owned by `inventory --check`: the connectivity veto "
+        "already ran in GATHER and `adjudicate_system_membership` reads the "
+        "COUNT, not the bridging."),
+    # ⚠️ ROADMAP 2.4a CLOSED THIS: `adjudicate_notehead_is_not_a_notehead`'s
+    # `unladdered` rule reads `Q.GLYPH_CONF` to gate a low-confidence
+    # outside-staff notehead, so the quantity is no longer read by nobody.
+    # `glyph_owner`'s OWN standing observation that IT declares but does not
+    # weight confidence is untouched and stays documented at its own site
+    # (`ownership.py`'s `adjudicate_glyph_owner`) -- a decision declaring a
+    # quantity in `wants` and not weighting it is a different fact from the
+    # quantity being read by nothing at all, and only the second is this
+    # tool's question.
+    Q.VERTICAL_RUN: (
+        "PRODUCER ONLY and deliberately unread, the `Q.INK` discipline: a "
+        "producer and its first consumer landing in one change makes the reach "
+        "measurement circular. ⚠️ Its first intended consumer is NAMED in "
+        "`wiring.KNOWN_GAPS` -- an ADJUDICATE decision asking WHAT KIND of "
+        "vertical mark a run is, reading the page frame these rows carry "
+        "against `Q.STAFF_LINES`. It does not exist. ⚠️ AND THE REACH IS "
+        "MEASURED RATHER THAN PROMISED: 6,128 candidates on Litolff pp.1-4 "
+        "against 1,920 `Q.STEM` strokes and 6,816 against 2,305 on Breitkopf "
+        "pp.0-3, so the record was carrying about a third of the population "
+        "the pipeline looked at. This entry LEAVES the day a decision reads "
+        "it."),
+    Q.SYSTEMIC_COLUMN: (
+        "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
+        "such -- a reader declared it and never observed one."),
+    Q.CLEF_REFUSAL_BRANCH: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
+    Q.LEFT_EDGE_INK: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
+    Q.TEXT_LAYER: (
+        "DECLARED, UNGATHERED — reported by `gather_coverage` section 2. ⚠️ Not "
+        "to be confused with `READERS.TEXT_LAYER`, which is alive and is what "
+        "`gather_margin_labels` files a label under."),
+
+    Q.DOCUMENT_IDENTITY: (
+        "⚠️ BY DESIGN, NOT A FAULT — recorded 2026-09-17 with "
+        "`gather_document_identity`, and the same producer-only discipline as "
+        "`Q.INK` below. It files WHICH PRINTING this is (edition, publisher, "
+        "work, scan type) on the DOCUMENT at `source_kind: \"catalog\"`, "
+        "because where a mark falls is a property of the PLATE and the "
+        "conditioning variable had no producer at all: `grep publisher "
+        "tools/omr/staged/gather.py` returned ONE COMMENT while the catalog "
+        "that knows has been committed all along. ⚠️ IT IS DEFAULT-**ON** "
+        "SINCE 2026-09-22 (`OMR_DOCUMENT_IDENTITY`, now a DENY-list, "
+        "Sean's instruction that the printing be gathered in the first "
+        "stage), so a default run DOES observe it -- what is still open "
+        "is the READ. ⚠️ Its sibling `Q.INPUT_DOMAIN` left this list the "
+        "same day: that one now has both a producer "
+        "(`gather_input_domain`) and a decision reading it "
+        "(`adjudicate_key_signature`). The consumer this one is aimed at "
+        "is "
+        "`tools/omr/positional_store.py`, which reads it through "
+        "`identity_of_record` on a SAVED record rather than through a staged "
+        "accessor — which is why this tool cannot see the read. REMOVE THIS "
+        "ENTRY the day a DECISION reads it."),
+
+    # ── THE TEN FAMILY POSITIONS + their refusal. OPEN BY DESIGN. ──────────
+    #
+    # ⚠️⚠️ THE SAME DISCIPLINE AS `Q.INK` ONE DAY EARLIER, AND FOR THE SAME
+    # REASON: a producer and its first consumer landing together makes the
+    # reach measurement circular. `positions.py` answers Sean's 2026-09-17
+    # instruction — *"give the families real position information - or if it
+    # should be symbol specific then make it so"* — for the eleven families
+    # `capture.py` graded `position: NONE`, and wires NOTHING to read them.
+    #
+    # ⚠️ EACH ONE'S FIRST CONSUMER IS NAMED, because *UNREAD and unremarked*
+    # is how `Q.STEM` stayed unread through three separate discoveries.
+    # **REMOVE AN ENTRY THE DAY ITS CONSUMER LANDS.**
+    Q.REST_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, `OMR_FAMILY_POSITIONS`. ⚠️⚠️ "
+        "UPDATED 2026-09-23, ROADMAP 2.12b: the named FIRST CONSUMER LANDED "
+        "AND STILL DOES NOT READ THIS ROW, and the two reasons are worth more "
+        "than the entry. `_rest_ruling` no longer takes a rest's value off its "
+        "class — it measures the slot with `_staff_step` over `Q.GLYPH_BOX`'s "
+        "page box, narrows where the ink lands on the other convention and "
+        "abstains where it lands on neither. It does not read `Q.REST_POSITION` "
+        "because (i) that quantity files ZERO rows on all three acceptance "
+        "records, `OMR_FAMILY_POSITIONS` being default OFF, so a rule resting "
+        "on it would be inert exactly where it is needed. ⚠️ (ii) IS CLOSED, "
+        "ROADMAP 0.5 / 3.4b-check: declaring it in `wants` USED TO open a "
+        "NEW `inventory --check` finding — *no gather site observes it* — "
+        "because `inventory._gather_sites` walked the AST of `gather.py` "
+        "AND NOTHING ELSE, so every quantity `positions.py` observes, "
+        "including this one (routed through its own `_STEP_FAMILIES` table), "
+        "was invisible to that tool. `inventory` now walks every file "
+        "`reach.STAGE_OF_FILE` marks GATHER and follows a module-level table "
+        "a recording function indexes into, so declaring `Q.REST_POSITION` "
+        "in `wants` today would read as a MEASUREMENT, not a hole — measured "
+        "by `test_staged_out_of_pipeline_producer.py`. What remains open is "
+        "reason (i) alone. What `Q.REST_POSITION` would still "
+        "ADD is real and unmeasured: it reads which EDGE of the rectangle is "
+        "nearer a line and how decisively (`attach_margin`), which is strictly "
+        "more of the convention than a centre. Second CONSUMER: "
+        "`OMR_WHOLE_REST_INK`, whose position witness is reconstructed "
+        "per-document from the detector's boxes and INVERTS between two "
+        "publishers. `benchmarks/omr-shape-role-2026-09/FINDINGS.md` §2.12b."),
+    Q.ARC_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_arc_kind`, which declares `notehead_staff_position` (the "
+        "NOTES' positions) and has nothing about the curve's own ink. "
+        "`depth_steps` is the geometric half of the tie/slur grammar that "
+        "`OMR_ARC_RECLASS` decides without."),
+    Q.ARTICULATION_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_articulation_owner`, whose attach rule requires the "
+        "geometry to AGREE with the side the class names — and the side is "
+        "read off that class, so today the two cannot disagree."),
+    Q.FERMATA_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_fermata_owner`. ⚠️ Its `nearest_in_bar` fallback fired "
+        "ZERO times on the page it was measured on, so this family's own "
+        "reach is the thing to measure before its accuracy."),
+    Q.ORNAMENT_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_ornament_owner`. The sharpest case is the TREMOLO, whose "
+        "class states no side at all because it rides the stem."),
+    Q.TUPLET_MARKER_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_tuplet_ratio`, which fired ZERO times across 286 runs of "
+        "the plumbing matrix on fixtures printing explicit tuplets. One "
+        "`numeral` class covers meters, tuplet digits, fingerings and measure "
+        "numbers — *a POSITIONAL distinction, made by where the digit "
+        "stands* — so shape structurally cannot answer this and position is "
+        "the only thing that can."),
+    Q.METER_GLYPH_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`_meter_from_digits`, which accepts ANY two `timeSig*` glyphs at two "
+        "different `y_center` values — no width, height, x or half test — and "
+        "is how one barline broken into two fragments became the Litolff p.62 "
+        "`3/4` this project cited for weeks."),
+    # ⚠️ ROADMAP 2.27c: `Q.DYNAMIC_BAND_POSITION` LEFT THIS LIST HERE.
+    # `adjudicate_dynamic` now reads it (gated on `Q.GLYPH_OWNER` leaving a
+    # letter's ownership undecided, and on its own decisive zone -- see
+    # `adjudicators/text.py`'s docstring), and THIS module's own measurement
+    # -- unlike `capture.KNOWN_GAPS`'s sibling entry, which stays: that
+    # check's AST walk never resolves the quantity's GATHER site at all,
+    # a different blind spot -- reports it LIVE. Leaving the entry made
+    # `reach --check` fail on a STALE GAP, which is the check doing its job;
+    # `test_staged_positions.py::test_reach_accounts_for_every_one_as_an_
+    # OPEN_finding`'s own docstring records why this one, and only this one
+    # of the ten, is now asserted ABSENT rather than present.
+    Q.WEDGE_BAND_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, PROMOTED for the CV rung and "
+        "MEASURED for the detector rung, which never carried one. FIRST "
+        "CONSUMER: `adjudicate_wedge_anchor`."),
+    Q.DIRECTION_BAND_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, and the only one of the ten that "
+        "is genuinely NEW: this family has no detector row to promote a "
+        "detail off. FIRST CONSUMER: `adjudicate_direction`, whose only "
+        "staff-relative input today is `placement`, an above/below far too "
+        "coarse to separate a `cresc.` in the dynamics row from an `Allegro` "
+        "above the system."),
+    Q.CELL_POSITION_BASIS: (
+        "⚠️ ABSTAIN-ONLY BY CONSTRUCTION, never observed — it is the REFUSAL "
+        "a cell with no five-line grid files, once, instead of the position "
+        "rows it cannot measure. Same shape as `Q.SYSTEMIC_COLUMN` above. Its "
+        "consumer is a HUMAN reading the record: it is what separates *this "
+        "page prints no rests* from *this staff has one line and no ruler*."),
+
+    # ── OPEN FINDINGS. Reported by NO other instrument. Recorded rather than
+    #    excused, so `--check` can pass while the finding stays visible.
+    #
+    # ⚠️ `Q.STAFF_EXTENT`'S ENTRY REMOVED 2026-09-28 (ROADMAP 4.2b), AS ITS
+    # OWN TEXT SAID TO: `adjudicators.movement.adjudicate_movement_start`
+    # (`wants=(..., Q.STAFF_EXTENT, ...)`) is now a real consumer -- the
+    # system's own top-staff left edge, read for the "wider first-system
+    # indent" movement-boundary cue. `reach --check` itself catches a stale
+    # entry left in place (`stale gap entries`), which is how this one was
+    # found; the module docstring's own "sit in exactly that cell today"
+    # line (above) is corrected the same day.
+    # ⚠️ `Q.STAFF_SKEW`'S ENTRY REMOVED 2026-10-06 (lane-owner-from-staves), AS ITS
+    # OWN TEXT SAID TO: the ownership adjudicator's `_staff_band` now reads the staff's
+    # measured line thickness (`thickness_px`) for the half-line-thickness the
+    # staves tier adds to a band.
+    # ⚠️ THE `Q.GROUP_SYMBOL` ENTRY THAT STOOD HERE LEFT 2026-09-29, ROADMAP
+    # 2.27d: `adjudicators/text.py` (`_canonical_grand_staff_owner`),
+    # `adjudicators/rhythm.py` (`_not_the_neighbours_beam`) and
+    # `adjudicators/ownership.py` (`adjudicate_pedal_owner`) each read the
+    # verdict directly to gate the grand-staff exceptions Sean asked to be
+    # built anyway (DECISIONS 2026-09-29). Deleted rather than left, per
+    # this file's own rule: "a closed gap must LEAVE the list or it stops
+    # describing the pipeline and starts describing its history."
+    Q.SYSTEM_MEMBERSHIP: (
+        "⚠️ OPEN FINDING — decision #0's verdict is read by nothing. It appears "
+        "in `implicates`, in `DOWNHILL`, in `legacy.EXTRACTED_QUANTITIES` and "
+        "in `wants` — all DECLARATIONS, none of them a read."),
+}
+
+STAGE_OF_FILE = {
+    "gather.py": "GATHER", "legacy.py": "GATHER",
+    # ⚠️ A GATHER MODULE, and this tool's `unaccounted_modules()` is what
+    # caught it being in neither list on the day it landed — a new staged
+    # module is otherwise silently skipped and every quantity only it reads
+    # reads as UNREAD, which for a module of ten producers would have been a
+    # very plausible-looking table.
+    "positions.py": "GATHER",
+    # ROADMAP 2.166: files `Q.SYSTEM_ARC` (and erases the traced stroke from `cell.image_no_staff`) from its one hook
+    # line in `gather.gather()`.
+    "arcs_system.py": "GATHER",
+    "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
+    "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
+    "infer.py": "INFER", "inferences.py": "INFER",
+    "export.py": "EXPORT",
+    "export_unison.py": "EXPORT",    # ROADMAP 2.175: writes a head with a stem each way as two notes (Q.UNISON_VOICES)
+    # ⚠️ ROADMAP 3.1. `lilypond.py` is a SECOND RENDERER over `export.py`'s
+    # own `build()`/`_pair_arcs`/`_place_wedges` -- it calls those rather
+    # than reading any `Q.*` quantity itself (`_accessors()`'s scan of it
+    # finds no `rec.value`/`ev.observe`-shaped call at all), so registering
+    # it "EXPORT" contributes zero new sites to the wiring graph and is safe
+    # by construction. It still has to be in ONE of the two lists or
+    # `unaccounted_modules()` reports it, the same guard that caught
+    # `positions.py` on the day it landed.
+    "lilypond.py": "EXPORT",
+    "pipeline.py": "HARNESS", "record.py": "HARNESS",
+    # ⚠️ ROADMAP 3.2 (first half). `weight_routing.py` runs BEFORE `gather()`
+    # -- it classifies the PDF and picks a checkpoint, then hands its
+    # classification into `gather_input_domain` so `Q.INPUT_DOMAIN` is filed
+    # from the SAME evidence rather than a second, independently re-run
+    # classification. Like `pipeline.py` it orchestrates rather than reading
+    # a `Q.*` quantity through `Evidence` (`_accessors()`'s scan finds no
+    # `ev.rows`/`ev.value`-shaped call in it), so it is HARNESS for the same
+    # reason `pipeline.py` is, not a stage with its own row of the table.
+    "weight_routing.py": "HARNESS",
+    # ⚠️ ROADMAP 4.2. `movements.py` holds the one real accessor call this
+    # module makes (`spans_from_evidence`'s `ev.rows(Q.MOVEMENT_SPANS, ...)`),
+    # and it is called from ADJUDICATE (`rhythm.py`, `header.py`) -- its
+    # other functions (`spans_from_result`, `split_result`, `export_each`,
+    # the parser, the membership tests) read a loaded record's plain dict or
+    # take no `Evidence`/`Log` at all, so `_accessors()`'s scan finds nothing
+    # in them to attribute to any other stage.
+    "movements.py": "ADJUDICATE",
+}
+ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
+
+#: Staged modules that are deliberately NOT a stage — instruments that REPORT
+#: on quantities without consuming them, and the package marker.
+#:
+#: ⚠️⚠️ `STAGE_OF_FILE` is a HAND LIST keyed on filename, so a new staged
+#: module is silently skipped and every quantity only it reads reads as
+#: UNREAD. `unaccounted_modules()` closes that: every `.py` under `staged/`
+#: must be in one list or the other, and `--check` fails otherwise. An earlier
+#: draft guarded this with a separate `INSTRUMENTS` frozenset, which was an
+#: EQUIVALENT MUTANT — the stage map already skipped those files, so the
+#: exclusion could never change an answer. Deleted rather than left as
+#: decoration.
+NOT_A_STAGE = frozenset({
+    "inventory.py", "health.py", "wiring.py", "gather_coverage.py",
+    # ROADMAP 2.118: the detailed re-gather report. Reads a saved record, the
+    # exporter's own report and the MusicXML; runs no stage, decides nothing.
+    "regather_report.py",
+    "check_helpers.py", "margins.py", "judged.py",
+    # ⚠️ ROADMAP 2.114. Pure helpers for `gather.gather_second_hollow` (the flag, the class list, box matching): files no row, names
+    # no quantity, so it is neither a reader nor a decider.
+    "second_hollow.py",
+    # ROADMAP 2.172. Pure helpers for `gather.gather_detector_views` (the flag, the views, the phase median, the family-aware merge): files no row,
+    # names no quantity; the rows are `gather_detector_views`'s own.
+    "detector_views.py",
+    # ROADMAP 2.179. Pure helpers for `gather.gather_stem_end_heads` (the flag, orphan stems, the stem-end window, the candidate pick):
+    # files no row, names no quantity; the rows are `gather_stem_end_heads`'s own.
+    "stem_end_heads.py",
+    # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
+    # its own, files no row, decides nothing.
+    "lane_report.py",
+    "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
+    # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
+    # SHOWS a saved record to a human and writes his corrections to a
+    # sidecar. It runs no stage and decides nothing — its export figures are
+    # `export.to_musicxml`'s own, instrumented at run time — so registering
+    # it here contributes zero sites to the wiring graph. ⚠️⚠️ AND THAT IS
+    # THE POINT rather than a convenience: a viewer that READ a quantity
+    # would make an UNREAD quantity read as LIVE, which is this tool's
+    # question answered by its own instrument. It still has to be in ONE of
+    # the two lists or `unaccounted_modules()` reports it — the guard that
+    # caught `positions.py` on the day it landed, and it caught this file
+    # too (run `python3 -m tools.omr.staged.reach --check` with this line
+    # removed: exit 1, naming `review/server.py`).
+    "server.py",
+    # ⚠️ ROADMAP 3.4, the STAGE REVIEW (`review/`). These three run OUTSIDE
+    # the pipeline: `human_evidence.py` turns a review sidecar into rows,
+    # `rerun.py` replays ADJUDICATE→EXPORT over a saved record, `feedback.py`
+    # writes the session-readable report. They NAME quantities — a human's
+    # box, his stance on a verdict — in order to file and to report them, and
+    # no stage is standing here, so registering them as stages would put a
+    # reader on the wiring graph that the pipeline does not have.
+    #
+    # ⚠️ The one place a human row is actually CONSUMED is inside ADJUDICATE:
+    # `adjudicators/notehead_precision.py` reads `Q.HUMAN_BOX_VERDICT`, and
+    # the adjudicators package is a stage by directory. That is the CONNECT;
+    # everything else a review pass produces is reported and applied by
+    # nobody, on purpose.
+    #
+    # ⚠️ Registering them is not optional — `unaccounted_modules()` must
+    # return empty and `--check` fails on a staged `.py` in neither list.
+    # `__init__.py` is already named above and covers this package's marker
+    # (the scan keys on the file NAME, not the path).
+    "human_evidence.py", "rerun.py", "feedback.py",
+    # ⚠️ `capture.py` is a DERIVED CHECK, like the six above it: it asks, per
+    # notation family, whether the ink's SHAPE, its staff-grid POSITION and
+    # the RASTER it was measured on are recorded. It names quantities in
+    # order to audit them and reads none of them at runtime — the same reason
+    # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question,
+    # which counted its mention of `staff_lines_erased` as a consumer.
+    "capture.py",
+    # ⚠️ `meaning.py` is the seventh derived check: what KIND of measurement
+    # is a quantity, and may two of its rows be COMBINED. It names detail
+    # keys and frame tokens in order to audit them and reads none of them at
+    # run time, so it declares `DERIVED_CHECK = True` for the same reason
+    # `capture.py` does.
+    "meaning.py",
+    # ⚠️ `brakes.py` is a DERIVED CHECK for the same reason: it asks whether a
+    # REFUSAL's premise was written against a capability the staged
+    # architecture has since grown, and it NAMES quantities and reasons in
+    # order to audit them while reading none of them at run time. It declares
+    # `DERIVED_CHECK = True` for `wiring`'s DETAIL question too. Registering it
+    # here is not optional — `unaccounted_modules()` must return empty, and a
+    # staged `.py` in neither list breaks it.
+    #
+    # ⚠️⚠️ THAT GUARD WAS A TEST AND NOT `--check`, AND IS NOW BOTH. The
+    # brake audit found it by a mutation arm that removed this very line and
+    # watched `reach --check` exit 0, and reported it rather than repairing
+    # it; the measurement-meaning audit found the same gap independently.
+    # `check()` now calls `unaccounted_modules()` and FAILS on an
+    # unregistered module (proved with a stray `_orphan_probe.py`: exit 1
+    # naming it, exit 0 once removed). ⚠️ THE TWO HALVES LANDED ON DIFFERENT
+    # BRANCHES AND ONLY THIS MERGE HAS BOTH — the comment was true when
+    # written and false the moment the trees met, which is exactly the
+    # 'merged tree is the one thing nobody runs' hazard.
+    "brakes.py",
+    # ⚠️ `trace.py` is the ninth derived check, and the only one that is
+    # PER-SUBJECT rather than aggregate: given a saved record and a subject
+    # key it replays what each stage DID to that symbol, and given a family
+    # it walks the stage funnel. Like the eight above it, it NAMES quantities
+    # and reason words in order to audit them and reads none of them at run
+    # time, so it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL
+    # question as well.
+    #
+    # ⚠️ REGISTERING IT HERE IS NOT OPTIONAL, and the control was run in both
+    # directions rather than assumed: with `trace.py` on disk and this line
+    # absent, `reach --check` exits 1 naming it; move the file aside and it
+    # exits 0. That is the guard the brake audit's mutation arm asked for,
+    # doing its job on the next module to arrive.
+    "trace.py",
+    # ⚠️ ROADMAP 1.5. `readout.py` is the STAGE READOUT: it READS a saved
+    # record and prints what one stage produced per symbol, diffs two records
+    # at GATHER+ADJUDICATE, and draws the page over the print. It runs no
+    # stage and decides nothing -- the stage of a verdict is `trace`'s own
+    # `stage_of_decider` -- and it names quantities only to show them, so it
+    # declares `DERIVED_CHECK = True` like `trace.py`. Registered here because
+    # the guard above tripped on it on arrival (`reach --check`: "UNREGISTERED
+    # MODULE readout.py").
+    "readout.py",
+    # ⚠️ `check.py` (2026-09-22, plan §5 Phase 0.4b) is the tenth derived
+    # check and folds the other nine plus `conventions.py`, `no_producer.py`,
+    # `export_coverage.py` and `accuracy_record.py` into one open-findings
+    # number. It calls their own `build()` / `report()` / `survey()` /
+    # `check()` functions and reads none of their `Q.` quantities itself, so
+    # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question and
+    # is registered here for the same reason as the nine above it: the
+    # guard this comment sits beside is what a new, unregistered staged
+    # module trips, proved on itself before this line existed.
+    "check.py",
+    # ⚠️ ROADMAP 1.1. `record_slim.py` is an OFFLINE MIGRATION TOOL, not a
+    # pipeline stage or a derived check: it rewrites an already-written
+    # record's `Q.INK` rows into the roadmap-1.1 summary form for a record
+    # gathered before that default existed. It never imports `record.py`
+    # (it re-derives the tiny bit of subject-string parsing it needs rather
+    # than pull in the `Q`/`Evidence`/`Log` machinery) and reads no
+    # quantity through `Evidence` -- it streams raw JSON with `ijson`. It is
+    # registered here rather than left unaccounted for the same reason
+    # `check.py` names: an unregistered staged module trips
+    # `unaccounted_modules()`.
+    "record_slim.py",
+    # ⚠️ ROADMAP 1.1b. `record_io.py` is the record FILE's spelling and
+    # nothing else: it pools the verdict id lists (`considered`/`basis`/
+    # `correlated`) that a system-scoped read repeats per verdict and
+    # expands them again on load. It reads no quantity, names no quantity
+    # and no detail key, and touches no `Log` -- `pool_id_lists` takes the
+    # dict `Log.to_json` already produced. Registered here for the reason
+    # the four entries above give: the guard tripped on it on arrival (the
+    # fast tier's `test_brakes.py::test_reach_accounts_for_this_module` and
+    # `check` both went red), which is that guard doing its job.
+    "record_io.py",
+    # ⚠️ ROADMAP 0.5 / 3.4b-check. `producers.py` DECLARES the out-of-pipeline
+    # producers (`review/human_evidence.py` today) and reads none of `record.Q`
+    # at run time itself -- it walks THEIR AST for a literal `Q.X` argument,
+    # the same way `inventory._gather_sites` walks `gather.py`'s. Registering
+    # it as a stage would make `survey()` scan IT for `.observe`/`.abstain`/
+    # read calls, which it makes none of, and would risk exactly the trap this
+    # comment warns about elsewhere in this file: a module that NAMES a
+    # quantity in order to report on it is not a consumer of it. It still has
+    # to be in one of the two lists or `unaccounted_modules()` reports it.
+    "producers.py",
+    # ⚠️ ROADMAP 1.2b / 3.3 (second half). `budget.py` is a per-page TIME
+    # ESTIMATE, not a pipeline stage or a derived check: it multiplies a
+    # page count by constants CLAUDE.md §5b already names and returns
+    # seconds. It reads no `Q.*` quantity and touches no `Record`/`Log` at
+    # all -- `estimate_job_budget_s`'s only input is an integer. Registered
+    # here for the reason every entry above gives: an unregistered staged
+    # `.py` trips `unaccounted_modules()`, the guard that caught
+    # `positions.py` on arrival.
+    "budget.py",
+    # ⚠️ ROADMAP 2.39. `geometry.py` is the shared STANDARD-notehead-box
+    # helper (constants + pure arithmetic), imported by both GATHER
+    # (`gather.py`) and ADJUDICATE (`adjudicators/notehead_precision.py`) so
+    # the box's size cannot drift between the two stages. It reads no
+    # `Q.*` quantity and touches no `Record`/`Log`/`Evidence` at all --
+    # `standard_head_box`'s only inputs are three floats a CALLER already
+    # read off the record. Registered here for the reason every entry above
+    # gives: an unregistered staged `.py` trips `unaccounted_modules()`.
+    "geometry.py",
+    # ROADMAP 2.107. `letter_look.py` is PURE (ink in, a reading out: no log, no
+    # cell, no quantity named) -- `gather.gather_letter_look` is its stage;
+    # `letter_look_report.py` READS a saved record to count and show what the
+    # look did, and runs no stage.
+    "letter_look.py", "letter_look_report.py",
+    # ROADMAP 2.150b. `rest_ink.py` is PURE (a staff-erased ink mask and boxes in, numbers out: no log, no cell, no
+    # quantity named) -- `gather.gather_rest_ink_contact` is its stage; `family_precision` reads only its flag.
+    "rest_ink.py",
+    # ROADMAP 2.162 / 2.165. `bar_length.py` is the ONE bar-length helper: given a caller's log, cell and the standing
+    # duration verdicts the caller already chose, it sums them per `Q.EVENT` (known / a range over narrowed candidates /
+    # unknown). It writes nothing and runs no stage; its callers (ADJUDICATE `rhythm._bar_lengths_for`, EVALUATE
+    # `consequences`) are the stages, and they declare what they read.
+    "bar_length.py",
+    # ROADMAP 2.165. `one_note.py` holds only the GATES of the one-note correction (a pure function of verdicts the caller
+    # already chose: it writes nothing and runs no stage); EVALUATE `consequences.reconcile_duration` is the stage.
+    "one_note.py",
+    # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
+    # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
+    "head_oval.py",
+    # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
+    # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
+    "meter_object.py",
+    # ROADMAP 2.181. `claims.py` is PURE (a raster and boxes in, numbers out; no log, no cell, no quantity named) --
+    # `gather.gather_claimed_register` is its stage; `adjudicators/claimed_by.py` is the consult.
+    "claims.py",
+    # ROADMAP 2.186. `one_ink.py` is PURE (boxes in, a merge plan out; the flag, the READ bar, the guess candidates): it files no row and names
+    # no quantity -- `gather.py` calls `merge` and files `detail.one_ink` on the rows it already files.
+    "one_ink.py",
+})
+
+
+def unaccounted_modules() -> list:
+    """Staged modules in neither `STAGE_OF_FILE` nor `NOT_A_STAGE`."""
+    root = pathlib.Path(__file__).resolve().parent
+    out = []
+    for p in sorted(root.rglob("*.py")):
+        if p.name.startswith("test_"):
+            continue
+        if p.parent.name == "adjudicators":
+            continue          # the whole package is ADJUDICATE, by directory
+        if p.name in STAGE_OF_FILE or p.name in NOT_A_STAGE:
+            continue
+        out.append(str(p.relative_to(root)))
+    return out
+
+
+def _accessors() -> Tuple[Dict[str, int], Dict[str, int]]:
+    """(read, write) -> {method name: index of its `quantity` argument}.
+
+    ⚠️ DERIVED from the classes, and the INDEX is derived too. `observe` and
+    `abstain` take `subject` first; assuming index 0 makes every gather site
+    read as unresolved and every quantity as a GHOST.
+    """
+    read: Dict[str, int] = {}
+    write: Dict[str, int] = {}
+    for mname in ("tools.omr.staged.record", "tools.omr.staged.adjudicate",
+                  "tools.omr.staged.export"):
+        mod = importlib.import_module(mname)
+        for _, cls in inspect.getmembers(mod, inspect.isclass):
+            if cls.__module__ != mname:
+                continue
+            for name, fn in inspect.getmembers(cls, inspect.isfunction):
+                if name.startswith("_"):
+                    continue
+                try:
+                    params = [p for p in inspect.signature(fn).parameters
+                              if p != "self"]
+                except (TypeError, ValueError):
+                    continue
+                if "quantity" not in params:
+                    continue
+                (write if name in ("observe", "abstain") else read)[name] = \
+                    params.index("quantity")
+    return read, write
+
+
+def _q_values() -> Dict[str, str]:
+    return {k: v for k, v in vars(Q).items()
+            if isinstance(v, str) and not k.startswith("_")}
+
+
+def survey() -> dict:
+    by_attr = _q_values()
+    values = set(by_attr.values())
+    read_at, write_at = _accessors()
+
+    def qname(node):
+        if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)
+                and node.value.id == "Q" and node.attr in by_attr):
+            return by_attr[node.attr]
+        if isinstance(node, ast.Constant) and node.value in values:
+            return node.value
+        return None
+
+    produced: Dict[str, Set[str]] = collections.defaultdict(set)
+    declared: Dict[str, Set[str]] = collections.defaultdict(set)
+    read: Dict[str, Set[str]] = collections.defaultdict(set)
+    sites: Dict[str, Set[str]] = collections.defaultdict(set)
+    unresolved = []
+
+    root = pathlib.Path(__file__).resolve().parent
+    files = [p for p in sorted(root.rglob("*.py"))
+             if not p.name.startswith("test_")]
+    for path in files:
+        stage = ("ADJUDICATE" if path.parent.name == "adjudicators"
+                 else STAGE_OF_FILE.get(path.name))
+        if stage is None:
+            continue
+        for node in ast.walk(ast.parse(path.read_text())):
+            if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
+                continue
+            attr = node.func.attr
+            table = write_at if attr in write_at else (read_at if attr in read_at else None)
+            if table is None:
+                continue
+            idx = table[attr]
+            if len(node.args) <= idx:
+                unresolved.append(f"{path.name}:{node.lineno} .{attr}(<kwarg>)")
+                continue
+            q = qname(node.args[idx])
+            if q is None:
+                unresolved.append(f"{path.name}:{node.lineno} .{attr}(<expr>)")
+                continue
+            site = f"{path.name}:{node.lineno}"
+            if attr == "observe":
+                produced[q].add(stage); sites[q].add(site)
+            elif attr == "abstain":
+                declared[q].add(stage)
+            else:
+                read[q].add(stage); sites[q].add(site)
+
+    # VERDICTS are produced too: a decision produces its own quantity, a
+    # consequence produces its effect, and both DECLARE what they consume.
+    from . import adjudicate, evaluate
+    importlib.import_module("tools.omr.staged.adjudicators")
+    importlib.import_module("tools.omr.staged.consequences")
+    importlib.import_module("tools.omr.staged.inferences")
+    for quantity, spec in adjudicate.REGISTRY.items():
+        produced[quantity].add("ADJUDICATE")
+        for want in spec.wants:
+            declared[want].add("ADJUDICATE")
+    for rule in evaluate.RULES:
+        produced[rule.effect].add("EVALUATE")
+        declared[rule.cause].add("EVALUATE")
+    from . import infer
+    for rule in getattr(infer, "RULES", []):
+        for q in getattr(rule, "reads", ()):
+            read[q].add("INFER")
+
+    rows = []
+    for _, q in sorted(by_attr.items(), key=lambda kv: kv[1]):
+        p, d, r = produced.get(q, set()), declared.get(q, set()), read.get(q, set())
+        if not p and not d:
+            state = "GHOST"
+        elif not r:
+            state = "UNREAD"
+        elif not (r - {"GATHER"}):
+            state = "GATHER_ONLY"
+        else:
+            state = "LIVE"
+        rows.append({"quantity": q, "state": state, "produced": sorted(p),
+                     "declared": sorted(d), "read": sorted(r),
+                     "sites": sorted(sites.get(q, ()))[:4]})
+
+    return {
+        "rows": rows,
+        "unresolved": unresolved,
+        "controls": {
+            "read_accessors": sorted(read_at),
+            "write_accessors": sorted(write_at),
+            "quantities": len(by_attr),
+            "with_a_producer": sum(1 for r in rows if r["produced"]),
+            "with_a_reader": sum(1 for r in rows if r["read"]),
+            "quantity_stage_read_pairs": sum(len(v) for v in read.values()),
+            "files_walked": len(files),
+        },
+    }
+
+
+def _report(s: dict, check: bool) -> int:
+    rows = s["rows"]
+    print("═══ DOES EVERY QUANTITY REACH A CONSUMER? ═══════════════════════")
+    bad = [r for r in rows if r["state"] != "LIVE"]
+    for state, blurb in (("GHOST", "in Q, produced by nothing and declared by nobody"),
+                         ("UNREAD", "produced, and NOTHING anywhere reads it"),
+                         ("GATHER_ONLY", "read only inside GATHER")):
+        group = [r for r in rows if r["state"] == state]
+        print(f"\n{state} — {blurb} ({len(group)})")
+        if not group:
+            print("   none")
+        for r in group:
+            mark = "  " if r["quantity"] in KNOWN_GAPS else "⚠️"
+            print(f" {mark} {r['quantity']:30} produced {','.join(r['produced']) or '—':22}"
+                  f" read {','.join(r['read']) or '—'}")
+
+    unaccounted = [r["quantity"] for r in bad if r["quantity"] not in KNOWN_GAPS]
+    reported = {r["quantity"] for r in bad}
+    stale = [q for q in KNOWN_GAPS if q not in reported]
+
+    c = s["controls"]
+    print("\n── POSITIVE CONTROLS (a zero means the question did not run) ──")
+    for k in ("quantities", "with_a_producer", "with_a_reader",
+              "quantity_stage_read_pairs", "files_walked"):
+        print(f"   {k:24} {c[k]}")
+    print(f"   read accessors derived   {len(c['read_accessors'])} {c['read_accessors']}")
+    print(f"   write accessors derived  {len(c['write_accessors'])} {c['write_accessors']}")
+    print(f"   call sites unresolved    {len(s['unresolved'])}")
+
+    # ⚠️⚠️ THE MODULE ROSTER, WHICH THIS CHECK PROMISED TO ENFORCE AND DID
+    # NOT. `NOT_A_STAGE`'s own comment says *"every `.py` under `staged/` must
+    # be in one list or the other, and `--check` fails otherwise"* — and until
+    # 2026-09-17 `unaccounted_modules()` was called by NOTHING but
+    # `test_staged_reach.py:61`, so the CHECK exited 0 on an unregistered
+    # module while the docstring said it would not. `STAGE_OF_FILE` is a HAND
+    # LIST keyed on filename, so an unregistered staged module makes every
+    # quantity only it reads read as UNREAD — the exact silent failure this
+    # roster exists to prevent. CLAUDE.md's *a rule described in a docstring
+    # and never built*, inside a derived check; found by the
+    # measurement-meaning audit, which tripped it with its own new module.
+    orphan_modules = unaccounted_modules()
+
+    print(f"\n── {len(bad)} not LIVE, {len(unaccounted)} unaccounted, "
+          f"{len(stale)} stale gap entries, "
+          f"{len(orphan_modules)} unregistered modules")
+    for q in unaccounted:
+        print(f"   ⚠️ UNACCOUNTED {q}")
+    for q in stale:
+        print(f"   ⚠️ STALE GAP   {q} — nothing reports it any more; delete the entry")
+    for m in orphan_modules:
+        print(f"   ⚠️ UNREGISTERED MODULE {m} — put it in `STAGE_OF_FILE` or "
+              f"`NOT_A_STAGE`; until then every quantity only it reads counts "
+              f"as UNREAD")
+
+    if c["with_a_reader"] == 0 or c["quantity_stage_read_pairs"] == 0:
+        print("\n⚠️ POSITIVE CONTROL AT ZERO — the question did not run.")
+        return 2
+    return 1 if check and (unaccounted or stale or orphan_modules) else 0
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--check", action="store_true")
+    args = ap.parse_args(argv)
+    s = survey()
+    if args.json:
+        print(json.dumps(s, indent=2))
+        return 0
+    return _report(s, args.check)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

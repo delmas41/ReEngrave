@@ -1,0 +1,368 @@
+{
+ "label": "litolff",
+ "seed": 0,
+ "per_stratum": 10,
+ "probe": "probe_two_stems_as_one.py",
+ "available": {
+  "both_ends": 10
+ },
+ "question": "is this ONE stem or TWO fused stems?",
+ "verdicts_allowed": [
+  "one_stem",
+  "two_stems",
+  "cannot_tell",
+  "other_ink"
+ ],
+ "rows": [
+  {
+   "subject": "glyph/3/0/10/4/1",
+   "stem": "obs:022913",
+   "t": 0.401,
+   "stem_h": 476.0,
+   "head_h": 102.0,
+   "end_gap_heads": 1.873,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    237.0,
+    402.0,
+    176.0,
+    102.0
+   ],
+   "stem_box": [
+    312.0,
+    262.0,
+    31.0,
+    476.0
+   ],
+   "head_page_box": [
+    1204.3275,
+    1957.315,
+    1232.0475,
+    1973.38
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.76,
+   "_over": [
+    1.373,
+    2.294
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/4/1/2/13/8",
+   "stem": "obs:036429",
+   "t": 0.572,
+   "stem_h": 527.0,
+   "head_h": 141.0,
+   "end_gap_heads": 1.599,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    98.0,
+    334.0,
+    149.0,
+    141.0
+   ],
+   "stem_box": [
+    223.0,
+    103.0,
+    31.0,
+    527.0
+   ],
+   "head_page_box": [
+    2314.435,
+    2440.605,
+    2337.9025,
+    2462.8125
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 5.27,
+   "_over": [
+    1.638,
+    1.099
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/4/0/7/11/10",
+   "stem": "obs:036054",
+   "t": 0.58,
+   "stem_h": 654.0,
+   "head_h": 177.0,
+   "end_gap_heads": 1.551,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    373.0,
+    489.0,
+    150.0,
+    177.0
+   ],
+   "stem_box": [
+    350.0,
+    198.0,
+    31.0,
+    654.0
+   ],
+   "head_page_box": [
+    2091.7475,
+    1481.0175,
+    2115.3725,
+    1508.895
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 6.54,
+   "_over": [
+    1.644,
+    1.051
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/0/9/1/3",
+   "stem": "obs:022865",
+   "t": 0.223,
+   "stem_h": 546.0,
+   "head_h": 80.0,
+   "end_gap_heads": 1.525,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    347.0,
+    509.0,
+    141.0,
+    80.0
+   ],
+   "stem_box": [
+    381.0,
+    427.0,
+    45.0,
+    546.0
+   ],
+   "head_page_box": [
+    689.6525,
+    1817.1675,
+    711.86,
+    1829.7675
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 5.46,
+   "_over": [
+    1.025,
+    4.8
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/1/2/14/3",
+   "stem": "obs:023062",
+   "t": 0.331,
+   "stem_h": 658.0,
+   "head_h": 153.0,
+   "end_gap_heads": 1.422,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    179.0,
+    304.0,
+    154.0,
+    153.0
+   ],
+   "stem_box": [
+    175.0,
+    163.0,
+    25.0,
+    658.0
+   ],
+   "head_page_box": [
+    2174.745,
+    2621.12,
+    2198.615,
+    2644.835
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 6.58,
+   "_over": [
+    0.922,
+    2.379
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/0/2/4/9",
+   "stem": "obs:022559",
+   "t": 0.311,
+   "stem_h": 553.0,
+   "head_h": 130.0,
+   "end_gap_heads": 1.323,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    144.0,
+    578.0,
+    151.0,
+    130.0
+   ],
+   "stem_box": [
+    134.0,
+    471.0,
+    32.0,
+    553.0
+   ],
+   "head_page_box": [
+    1189.68,
+    754.035,
+    1213.4625,
+    774.51
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 5.53,
+   "_over": [
+    0.829,
+    2.45
+   ],
+   "_n_claimants": 2
+  },
+  {
+   "subject": "glyph/4/1/1/14/0",
+   "stem": "obs:036366",
+   "t": 0.639,
+   "stem_h": 488.0,
+   "head_h": 134.0,
+   "end_gap_heads": 1.313,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    136.0,
+    285.0,
+    147.0,
+    134.0
+   ],
+   "stem_box": [
+    261.0,
+    40.0,
+    25.0,
+    488.0
+   ],
+   "head_page_box": [
+    2491.42,
+    2296.8875,
+    2514.5725,
+    2317.9925
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.88,
+   "_over": [
+    1.828,
+    0.813
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/4/1/3/14/13",
+   "stem": "obs:036510",
+   "t": 0.645,
+   "stem_h": 533.0,
+   "head_h": 160.0,
+   "end_gap_heads": 1.181,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    143.0,
+    380.0,
+    167.0,
+    160.0
+   ],
+   "stem_box": [
+    267.0,
+    116.0,
+    32.0,
+    533.0
+   ],
+   "head_page_box": [
+    2492.5225,
+    2578.85,
+    2518.825,
+    2604.05
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 5.33,
+   "_over": [
+    1.65,
+    0.681
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "t": 0.504,
+   "stem_h": 279.0,
+   "head_h": 121.0,
+   "end_gap_heads": 1.145,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    635.0,
+    526.0,
+    344.0,
+    121.0
+   ],
+   "stem_box": [
+    635.0,
+    446.0,
+    51.0,
+    279.0
+   ],
+   "head_page_box": [
+    976.0125,
+    2601.845,
+    1030.1925,
+    2620.9025
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 2.79,
+   "_over": [
+    0.661,
+    0.645
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/1/0/9/0/6",
+   "stem": "obs:003254",
+   "t": 0.712,
+   "stem_h": 457.0,
+   "head_h": 121.0,
+   "end_gap_heads": 1.087,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    1558.0,
+    804.0,
+    130.0,
+    121.0
+   ],
+   "stem_box": [
+    1632.0,
+    539.0,
+    52.0,
+    457.0
+   ],
+   "head_page_box": [
+    915.302734375,
+    2782.97265625,
+    937.7734375,
+    2803.8876953125
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 5.02,
+   "_over": [
+    2.19,
+    0.587
+   ],
+   "_n_claimants": 1
+  }
+ ]
+}

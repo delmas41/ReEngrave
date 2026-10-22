@@ -1,0 +1,5 @@
+tag=7ea27a4b pages=88 drop=0 rows
+read pass: 88 pages from cache, 973 admissible labels, 0 withheld
+24 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Cer', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+contextual in 4s available=True reason=None reference=17 slots
+wrote benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/7ea27a4b.json

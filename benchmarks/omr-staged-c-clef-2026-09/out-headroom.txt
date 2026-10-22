@@ -1,0 +1,14 @@
+=== Litolff Beethoven 5 p1-p4 ===
+  clef verdicts          : {'decided': 69, 'abstained': 3, 'narrowed': 3}
+  non-decided reasons    : {'no_candidates': 3, 'margin_below_floor': 3}
+  staves dropping a C clef: 1
+  abstaining staves ALSO dropping a C clef: 0
+  abstaining staves with a LOCATOR reading: 0
+
+=== Breitkopf Brahms 1 p0-p3 ===
+  clef verdicts          : {'decided': 97}
+  non-decided reasons    : {}
+  staves dropping a C clef: 8
+  abstaining staves ALSO dropping a C clef: 0
+  abstaining staves with a LOCATOR reading: 0
+

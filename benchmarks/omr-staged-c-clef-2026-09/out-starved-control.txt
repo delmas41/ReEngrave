@@ -1,0 +1,28 @@
+=== Litolff Beethoven 5 p1-p4 ===
+  staves the probe calls STARVED (by the INCUMBENT rule): 1
+    staff/3/1/6            clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+  positive control -- staves the probe calls SERVED (sample of 5):
+    staff/1/0/0            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+    staff/1/0/1            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+    staff/1/0/10           clef_glyph_obs=['clefF'] clef_verdict=('decided', 'scored', 'bass')
+    staff/1/0/11           clef_glyph_obs=['clefF'] clef_verdict=('decided', 'scored', 'bass')
+    staff/1/0/2            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+
+=== Breitkopf Brahms 1 p0-p3 ===
+  staves the probe calls STARVED (by the INCUMBENT rule): 8
+    staff/0/0/11           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+    staff/0/0/12           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'tenor')  -> DISAGREE
+    staff/1/0/11           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+    staff/1/1/10           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+    staff/2/1/12           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'tenor')  -> DISAGREE
+    staff/3/0/11           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+    staff/3/1/11           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'alto')  -> DISAGREE
+    staff/3/1/12           clef_glyph_obs=[]     clef_verdict=('decided', 'scored', 'tenor')  -> DISAGREE
+  positive control -- staves the probe calls SERVED (sample of 5):
+    staff/0/0/13           clef_glyph_obs=['clefF'] clef_verdict=('decided', 'scored', 'bass')
+    staff/0/0/2            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+    staff/0/0/4            clef_glyph_obs=['clefF'] clef_verdict=('decided', 'scored', 'bass')
+    staff/0/0/5            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+    staff/1/0/0            clef_glyph_obs=['clefG'] clef_verdict=('decided', 'scored', 'treble')
+
+RESULT: the gather-side drop is confirmed on all 9 staves (no clef_glyph row on any of them), AND all 9 carry a decided clef verdict anyway -- so no staff is left without a clef. The brief's 'a whole staff of missing music' is REFUTED; the locator is carrying this population alone.

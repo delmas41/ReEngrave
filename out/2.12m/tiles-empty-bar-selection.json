@@ -1,0 +1,324 @@
+[
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/1/6/0/5",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   1191.236328125,
+   5322.40625,
+   1246.6484375,
+   5351.80859375
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/9/1/6/0/7 (other staff staff/9/1/5 empty), owner page box [1190.859375, 5356.708984375, 1229.30859375, 5387.99609375]",
+  "owner_bbox_page": [
+   1190.859375,
+   5356.708984375,
+   1229.30859375,
+   5387.99609375
+  ],
+  "category": "empty_bar",
+  "n": 1
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/1/9/6/3",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   3953.6725,
+   5964.0,
+   4006.5375,
+   5984.4375
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/5/1/9/6/8 (other staff staff/5/1/8 empty), owner page box [3946.5875, 6027.4925, 3986.645, 6062.645]",
+  "owner_bbox_page": [
+   3946.5875,
+   6027.4925,
+   3986.645,
+   6062.645
+  ],
+  "category": "empty_bar",
+  "n": 2
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/0/6/8/2",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   5275.525,
+   1944.05,
+   5330.8,
+   1972.925
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/9/0/6/8/13 (other staff staff/9/0/5 empty), owner page box [5277.45, 1980.9, 5313.475, 2011.15]",
+  "owner_bbox_page": [
+   5277.45,
+   1980.9,
+   5313.475,
+   2011.15
+  ],
+  "category": "empty_bar",
+  "n": 3
+ },
+ {
+  "doc": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 4,
+  "subject": "glyph/4/1/7/7/2",
+  "record": "litolff-p1p4",
+  "mark_bbox_page": [
+   1573.44,
+   3111.48,
+   1579.52,
+   3118.68
+  ],
+  "read_before": "abstained/stem_contradicts_class_side",
+  "read_after": "decided other_staff_bar_empty: owner glyph/4/1/7/7/0 (other staff staff/4/1/6 empty), owner page box [1560.96, 3131.64, 1587.2, 3154.36]",
+  "owner_bbox_page": [
+   1560.96,
+   3131.64,
+   1587.2,
+   3154.36
+  ],
+  "category": "empty_bar",
+  "n": 4
+ },
+ {
+  "doc": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 12,
+  "subject": "glyph/12/0/0/7/9",
+  "record": "litolff-whole-1009",
+  "mark_bbox_page": [
+   1419.055,
+   379.705,
+   1443.1525,
+   385.5325
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/12/0/0/7/0 (other staff staff/12/0/1 empty), owner page box [1418.74, 353.56, 1446.145, 374.98]",
+  "owner_bbox_page": [
+   1418.74,
+   353.56,
+   1446.145,
+   374.98
+  ],
+  "category": "empty_bar",
+  "n": 5
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/0/6/4/5",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   3158.125,
+   1923.7,
+   3213.125,
+   1953.675
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/9/0/6/4/9 (other staff staff/9/0/5 empty), owner page box [3160.875, 1977.325, 3199.1, 2009.775]",
+  "owner_bbox_page": [
+   3160.875,
+   1977.325,
+   3199.1,
+   2009.775
+  ],
+  "category": "empty_bar",
+  "n": 6
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 18,
+  "subject": "glyph/18/0/9/1/28",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   1943.9501953125,
+   2528.58447265625,
+   1996.4873046875,
+   2558.7578125
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/18/0/9/1/5 (other staff staff/18/0/8 empty), owner page box [1947.14501953125, 2581.4765625, 1984.77294921875, 2616.974609375]",
+  "owner_bbox_page": [
+   1947.14501953125,
+   2581.4765625,
+   1984.77294921875,
+   2616.974609375
+  ],
+  "category": "empty_bar",
+  "n": 7
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 4,
+  "subject": "glyph/4/0/9/8/8",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   4419.9,
+   2567.625,
+   4470.775,
+   2598.15
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/4/0/9/8/4 (other staff staff/4/0/8 empty), owner page box [4418.25, 2617.95, 4454.275, 2649.575]",
+  "owner_bbox_page": [
+   4418.25,
+   2617.95,
+   4454.275,
+   2649.575
+  ],
+  "category": "empty_bar",
+  "n": 8
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "subject": "glyph/19/1/8/6/5",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   4162.225,
+   5900.45,
+   4214.475,
+   5929.325
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/19/1/8/6/0 (other staff staff/19/1/7 empty), owner page box [4158.375, 5945.825, 4196.05, 5978.275]",
+  "owner_bbox_page": [
+   4158.375,
+   5945.825,
+   4196.05,
+   5978.275
+  ],
+  "category": "empty_bar",
+  "n": 9
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 3,
+  "subject": "glyph/3/0/2/7/0",
+  "record": "brahms-p0p3",
+  "mark_bbox_page": [
+   4458.395,
+   1197.92,
+   4468.6625,
+   1209.02
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/3/0/2/7/1 (other staff staff/3/0/1 empty), owner page box [4443.965, 1217.0675, 4480.3175, 1229.0]",
+  "owner_bbox_page": [
+   4443.965,
+   1217.0675,
+   4480.3175,
+   1229.0
+  ],
+  "category": "empty_bar",
+  "n": 10
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 3,
+  "subject": "glyph/3/1/5/8/8",
+  "record": "brahms-p0p3",
+  "mark_bbox_page": [
+   4739.4,
+   5164.8,
+   4748.475,
+   5174.15
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/3/1/5/8/7 (other staff staff/3/1/4 empty), owner page box [4721.525, 5185.425, 4760.575, 5218.15]",
+  "owner_bbox_page": [
+   4721.525,
+   5185.425,
+   4760.575,
+   5218.15
+  ],
+  "category": "empty_bar",
+  "n": 11
+ },
+ {
+  "doc": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 2,
+  "subject": "glyph/2/1/6/6/7",
+  "record": "litolff-p1p4",
+  "mark_bbox_page": [
+   1468.6275,
+   3071.85,
+   1475.085,
+   3078.465
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/2/1/6/6/8 (other staff staff/2/1/5 empty), owner page box [1456.815, 3084.765, 1481.8575, 3105.3975]",
+  "owner_bbox_page": [
+   1456.815,
+   3084.765,
+   1481.8575,
+   3105.3975
+  ],
+  "category": "empty_bar",
+  "n": 12
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 3,
+  "subject": "glyph/3/1/9/0/5",
+  "record": "brahms-p0p3",
+  "mark_bbox_page": [
+   1165.208984375,
+   5897.0,
+   1219.74169921875,
+   5913.39794921875
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/3/1/9/0/4 (other staff staff/3/1/8 empty), owner page box [1164.4462890625, 5920.6435546875, 1202.5810546875, 5953.439453125]",
+  "owner_bbox_page": [
+   1164.4462890625,
+   5920.6435546875,
+   1202.5810546875,
+   5953.439453125
+  ],
+  "category": "empty_bar",
+  "n": 13
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/1/6/3/4",
+  "record": "brahms-whole-1009",
+  "mark_bbox_page": [
+   2628.125,
+   5302.85,
+   2681.475,
+   5331.175
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided other_staff_bar_empty: owner glyph/9/1/6/3/5 (other staff staff/9/1/5 empty), owner page box [2627.025, 5350.7, 2661.95, 5382.05]",
+  "owner_bbox_page": [
+   2627.025,
+   5350.7,
+   2661.95,
+   5382.05
+  ],
+  "category": "empty_bar",
+  "n": 14
+ }
+]

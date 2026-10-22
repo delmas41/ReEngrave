@@ -1,0 +1,46 @@
+{
+ "date": "2026-10-15",
+ "who": "Sean",
+ "raw_answer": "1. 8,8,8,8 2. 2 3. 8 rest 4. whole rest 5. 4,4",
+ "tally": {
+  "controls_1_and_5": "right",
+  "tile_2": "half: base wrong, fix 2 and fix 3 right",
+  "tile_3": "eighth rest boxed as a note: base and fix 3 both wrong",
+  "tile_4": "whole rest boxed as a note: base and fix 3 both wrong"
+ },
+ "tiles": [
+  {
+   "n": 1,
+   "role": "control",
+   "sean": "8,8,8,8",
+   "agrees": true
+  },
+  {
+   "n": 2,
+   "role": "changed",
+   "sean": "2 (half)",
+   "agrees": true,
+   "note": "tile 2 a half: base quarter WRONG; fix 2 and fix 3 half RIGHT"
+  },
+  {
+   "n": 3,
+   "role": "changed",
+   "sean": "8 rest",
+   "agrees": false,
+   "note": "an eighth REST boxed as a note: base quarter, fix 3 eighth; a note where the page has a rest, wrong both (roadmap 2.142)"
+  },
+  {
+   "n": 4,
+   "role": "changed",
+   "sean": "whole rest",
+   "agrees": false,
+   "note": "a whole REST boxed as a note: base half, fix 3 whole; wrong both, fix 3 did not take it out of the bar (roadmap 2.142)"
+  },
+  {
+   "n": 5,
+   "role": "control",
+   "sean": "4,4",
+   "agrees": true
+  }
+ ]
+}

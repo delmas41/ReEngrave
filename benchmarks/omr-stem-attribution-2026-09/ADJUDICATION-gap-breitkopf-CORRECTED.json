@@ -1,0 +1,24 @@
+{
+  "label": "Breitkopf Brahms 1 pp.0-3 — far-from-an-end census, AFTER the zoom pass",
+  "supersedes": "ADJUDICATION-gap-breitkopf.json",
+  "why_a_second_pass": "The 2026-09-18 handoff records that at tile magnification an adjudicator read two heads WRONG and a wide strip corrected both. It happened again, to me: on the 560-px sheet I called G02 a misattribution and G07 a head at an end. Re-rendered at 3x with 5 staff spaces of pad, G02 is a textbook stem-up beamed note whose stroke ENDS inside the head box, and G07's ink is most likely an eighth REST. Both verdicts are corrected here. The first-pass file is kept, not overwritten — the correction is the finding.",
+  "trigger": "The zoom was not routine. It was run because my G02 verdict disagreed with the geometry the record holds for that pair (x-overlap 0.73 of the stroke width, gap 0.19 head-heights), and one of the two had to be wrong. It was me.",
+  "corrections": [
+    {"tile": "G02", "first_pass": "head_part_way_along", "corrected": "head_at_an_end", "note": "the blue stroke descends from the beam and its lower end lies INSIDE the red head box — a stem-up beamed eighth. My 'the boxes merely graze' reading was false; they overlap over 73% of the stroke's width."},
+    {"tile": "G07", "first_pass": "head_at_an_end", "corrected": "cannot_tell", "note": "at 3x the boxed ink sits among eighth rests and most likely IS one; I cannot separate a small head from a rest here."},
+    {"tile": "G00", "first_pass": "head_part_way_along", "corrected": "head_part_way_along_BUT_A_LEGITIMATE_CHORD", "note": "⚠️ the stroke's top end is at a notehead ABOVE the red head and its bottom at the beam — a stem-down CHORD, and the red head is a lower member sitting legitimately mid-stroke. The record did not attach the upper member to the stroke, so the pair presents as SOLO. The end rule would refuse a real chord note here."},
+    {"tile": "G06", "first_pass": "head_part_way_along", "corrected": "head_part_way_along", "note": "CONFIRMED at 3x and it is the clearest case on the sheet: the stroke is the FLAGGED UP-STEM of the note BELOW (beside the sf), and the red head sits in its middle on its own ledger line. A genuine misattribution."}
+  ],
+  "final_tally": {
+    "FAR_stratum_n": 8,
+    "settled_by_print": 2,
+    "genuine_misattribution": 1,
+    "legitimate_chord_inner_head": 1,
+    "cannot_tell": 6,
+    "END_control_n": 8,
+    "END_control_head_at_an_end": 8,
+    "END_control_cannot_tell": 0
+  },
+  "what_this_settles": "The END control is 8 of 8, so the crops CAN adjudicate the easy case and the plate is not the limit — the difficulty is specific to the far-from-an-end population, which is 6 of 8 cannot_tell. Of the two the print does settle, the proposed rule is right once and wrong once.",
+  "the_decisive_one_is_G00": "⚠️⚠️ The rule was scoped to strokes carrying exactly ONE head, on the reasoning that a chord is then impossible and the documented double-stop regression therefore unreachable BY CONSTRUCTION. G00 refutes that: a real chord whose other member's box does not overlap the stroke presents as SOLO. The structural chord-safety the design rested on does not hold, and the regression class is reachable."
+}

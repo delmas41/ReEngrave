@@ -1,0 +1,5 @@
+# nothing here — out/print/ is TRACKED on purpose.
+# ⚠️ `.gitignore:112` at the repo root excludes `benchmarks/**/crops/`, and a
+# previous session's commit message said its crops "are committed under
+# `crops/`" when they had never entered the tree at all. Crops in this
+# benchmark go to `out/print/`, which nothing ignores.

@@ -1,0 +1,126 @@
+{
+ "key_signature": {
+  "staff/0/0/0": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/1": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/2": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/3": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/4": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/5": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/6": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/7": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/8": {
+   "outcome": "decided",
+   "value": 0,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/9": {
+   "outcome": "decided",
+   "value": 0,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/10": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/11": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/12": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/13": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/14": {
+   "outcome": "decided",
+   "value": -1,
+   "reason": "fitted"
+  },
+  "staff/0/0/15": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/16": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  },
+  "staff/0/0/17": {
+   "outcome": "decided",
+   "value": -3,
+   "reason": "fitted_by_template"
+  }
+ },
+ "accidental": [
+  {
+   "subject": "glyph/0/0/15/1/1",
+   "value": "b",
+   "reason": "from_key_signature"
+  },
+  {
+   "subject": "glyph/0/0/15/6/2",
+   "value": "b",
+   "reason": "from_key_signature"
+  },
+  {
+   "subject": "glyph/0/0/15/6/3",
+   "value": "b",
+   "reason": "from_key_signature"
+  },
+  {
+   "subject": "glyph/0/0/15/6/4",
+   "value": "b",
+   "reason": "from_key_signature"
+  },
+  {
+   "subject": "glyph/0/0/16/1/1",
+   "value": "b",
+   "reason": "from_key_signature"
+  },
+  {
+   "subject": "glyph/0/0/17/1/1",
+   "value": "b",
+   "reason": "from_key_signature"
+  }
+ ]
+}

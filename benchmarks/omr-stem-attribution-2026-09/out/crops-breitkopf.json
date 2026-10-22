@@ -1,0 +1,549 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "seed": 20260921,
+ "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "strata_available": {
+  "END": 982,
+  "MID": 39
+ },
+ "pad_x_spaces": 7.0,
+ "pad_y_spaces": 7.0,
+ "sheets": [
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-0.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-1.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-2.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-3.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-4.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-breitkopf/sheet-5.png"
+ ],
+ "index": [
+  {
+   "tile": "T00",
+   "stratum": "MID",
+   "subject": "glyph/3/1/13/9/3",
+   "frac": 0.0606,
+   "stem": "obs:054149",
+   "stem_box_canonical": [
+    191.0,
+    423.0,
+    18.0,
+    396.0
+   ],
+   "frame_delta_grey": 194.9,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4867.2,
+    7008.8,
+    4903.8,
+    7039.3
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T01",
+   "stratum": "END",
+   "subject": "glyph/1/0/9/0/6",
+   "frac": 0.0311,
+   "stem": "obs:021498",
+   "stem_box_canonical": [
+    621.0,
+    107.0,
+    12.0,
+    273.0
+   ],
+   "frame_delta_grey": 134.3,
+   "frame_ok": true,
+   "head_box_page_px": [
+    989.2,
+    2679.6,
+    1027.5,
+    2714.3
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "T02",
+   "stratum": "MID",
+   "subject": "glyph/1/0/9/3/11",
+   "frac": 0.0917,
+   "stem": "obs:021527",
+   "stem_box_canonical": [
+    1640.0,
+    515.0,
+    19.0,
+    349.0
+   ],
+   "frame_delta_grey": 187.3,
+   "frame_ok": true,
+   "head_box_page_px": [
+    3470.1,
+    2764.2,
+    3508.8,
+    2792.0
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "T03",
+   "stratum": "MID",
+   "subject": "glyph/0/0/11/6/13",
+   "frac": 0.0542,
+   "stem": "obs:006251",
+   "stem_box_canonical": [
+    1731.0,
+    676.0,
+    15.0,
+    323.0
+   ],
+   "frame_delta_grey": 203.7,
+   "frame_ok": true,
+   "head_box_page_px": [
+    5280.8,
+    6025.7,
+    5318.9,
+    6061.1
+   ],
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "T04",
+   "stratum": "MID",
+   "subject": "glyph/2/1/11/0/14",
+   "frac": 0.3405,
+   "stem": "obs:035595",
+   "stem_box_canonical": [
+    1428.0,
+    312.0,
+    22.0,
+    210.0
+   ],
+   "frame_delta_grey": 134.1,
+   "frame_ok": true,
+   "head_box_page_px": [
+    1198.0,
+    6603.0,
+    1228.7,
+    6663.3
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T05",
+   "stratum": "MID",
+   "subject": "glyph/1/1/3/3/6",
+   "frac": 0.1135,
+   "stem": "obs:021904",
+   "stem_box_canonical": [
+    675.0,
+    484.0,
+    20.0,
+    348.0
+   ],
+   "frame_delta_grey": 171.5,
+   "frame_ok": true,
+   "head_box_page_px": [
+    3002.8,
+    4910.5,
+    3042.7,
+    4944.0
+   ],
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "T06",
+   "stratum": "MID",
+   "subject": "glyph/3/0/8/3/13",
+   "frac": 0.2557,
+   "stem": "obs:053331",
+   "stem_box_canonical": [
+    270.0,
+    445.0,
+    36.0,
+    309.0
+   ],
+   "frame_delta_grey": 98.3,
+   "frame_ok": true,
+   "head_box_page_px": [
+    2267.0,
+    2373.0,
+    2300.0,
+    2419.2
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T07",
+   "stratum": "MID",
+   "subject": "glyph/2/0/10/4/7",
+   "frac": 0.2739,
+   "stem": "obs:035149",
+   "stem_box_canonical": [
+    765.0,
+    323.0,
+    6.0,
+    188.0
+   ],
+   "frame_delta_grey": 207.4,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4296.1,
+    2860.0,
+    4335.8,
+    2888.1
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T08",
+   "stratum": "END",
+   "subject": "glyph/1/0/13/0/5",
+   "frac": 0.9013,
+   "stem": "obs:021727",
+   "stem_box_canonical": [
+    1406.0,
+    170.0,
+    9.0,
+    152.0
+   ],
+   "frame_delta_grey": 185.5,
+   "frame_ok": true,
+   "head_box_page_px": [
+    1417.5,
+    3810.3,
+    1457.0,
+    3840.9
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T09",
+   "stratum": "END",
+   "subject": "glyph/1/1/8/0/11",
+   "frac": 0.9198,
+   "stem": "obs:022012",
+   "stem_box_canonical": [
+    1468.0,
+    305.0,
+    12.0,
+    212.0
+   ],
+   "frame_delta_grey": 181.9,
+   "frame_ok": true,
+   "head_box_page_px": [
+    1205.8,
+    6072.2,
+    1243.8,
+    6102.5
+   ],
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "T10",
+   "stratum": "END",
+   "subject": "glyph/3/0/2/2/13",
+   "frac": 0.9051,
+   "stem": "obs:053136",
+   "stem_box_canonical": [
+    400.0,
+    182.0,
+    18.0,
+    295.0
+   ],
+   "frame_delta_grey": 87.4,
+   "frame_ok": true,
+   "head_box_page_px": [
+    1758.5,
+    1003.7,
+    1807.3,
+    1037.5
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T11",
+   "stratum": "END",
+   "subject": "glyph/0/0/10/1/2",
+   "frac": 0.0581,
+   "stem": "obs:006141",
+   "stem_box_canonical": [
+    906.0,
+    686.0,
+    19.0,
+    353.0
+   ],
+   "frame_delta_grey": 159.5,
+   "frame_ok": true,
+   "head_box_page_px": [
+    2402.9,
+    5564.7,
+    2443.8,
+    5603.4
+   ],
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "T12",
+   "stratum": "END",
+   "subject": "glyph/0/0/11/1/13",
+   "frac": 0.0691,
+   "stem": "obs:006208",
+   "stem_box_canonical": [
+    1358.0,
+    677.0,
+    19.0,
+    369.0
+   ],
+   "frame_delta_grey": 183.5,
+   "frame_ok": true,
+   "head_box_page_px": [
+    2549.0,
+    6013.0,
+    2590.3,
+    6050.1
+   ],
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "T13",
+   "stratum": "END",
+   "subject": "glyph/3/0/10/7/4",
+   "frac": 0.9053,
+   "stem": "obs:053413",
+   "stem_box_canonical": [
+    1457.0,
+    460.0,
+    22.0,
+    375.0
+   ],
+   "frame_delta_grey": 146.0,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4439.2,
+    2954.6,
+    4477.4,
+    2989.2
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "T14",
+   "stratum": "END",
+   "subject": "glyph/2/1/12/0/9",
+   "frac": 0.0731,
+   "stem": "obs:035621",
+   "stem_box_canonical": [
+    822.0,
+    193.0,
+    17.0,
+    260.0
+   ],
+   "frame_delta_grey": 149.2,
+   "frame_ok": true,
+   "head_box_page_px": [
+    967.1,
+    6791.9,
+    1007.9,
+    6825.5
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "T15",
+   "stratum": "MID",
+   "subject": "glyph/1/0/13/3/18",
+   "frac": 0.7403,
+   "stem": "obs:021743",
+   "stem_box_canonical": [
+    433.0,
+    391.0,
+    22.0,
+    283.0
+   ],
+   "frame_delta_grey": 117.6,
+   "frame_ok": true,
+   "head_box_page_px": [
+    3140.6,
+    3791.6,
+    3170.8,
+    3828.7
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T16",
+   "stratum": "MID",
+   "subject": "glyph/1/0/11/2/3",
+   "frac": 0.2511,
+   "stem": "obs:021645",
+   "stem_box_canonical": [
+    1142.0,
+    591.0,
+    15.0,
+    229.0
+   ],
+   "frame_delta_grey": 223.1,
+   "frame_ok": true,
+   "head_box_page_px": [
+    2769.1,
+    3283.8,
+    2805.6,
+    3314.9
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T17",
+   "stratum": "END",
+   "subject": "glyph/3/1/11/9/2",
+   "frac": 0.0602,
+   "stem": "obs:054050",
+   "stem_box_canonical": [
+    894.0,
+    171.0,
+    18.0,
+    440.0
+   ],
+   "frame_delta_grey": 139.4,
+   "frame_ok": true,
+   "head_box_page_px": [
+    5062.0,
+    6460.3,
+    5098.6,
+    6493.3
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T18",
+   "stratum": "MID",
+   "subject": "glyph/3/1/12/8/3",
+   "frac": 0.2667,
+   "stem": "obs:054097",
+   "stem_box_canonical": [
+    713.0,
+    489.0,
+    18.0,
+    225.0
+   ],
+   "frame_delta_grey": 202.7,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4524.1,
+    6819.3,
+    4562.0,
+    6850.6
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T19",
+   "stratum": "MID",
+   "subject": "glyph/3/0/3/7/9",
+   "frac": 0.3075,
+   "stem": "obs:053195",
+   "stem_box_canonical": [
+    1455.0,
+    583.0,
+    22.0,
+    226.0
+   ],
+   "frame_delta_grey": 192.0,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4443.4,
+    1319.5,
+    4483.3,
+    1349.4
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "T20",
+   "stratum": "END",
+   "subject": "glyph/2/0/9/0/11",
+   "frac": 0.9144,
+   "stem": "obs:035048",
+   "stem_box_canonical": [
+    1349.0,
+    312.0,
+    17.0,
+    257.0
+   ],
+   "frame_delta_grey": 128.6,
+   "frame_ok": true,
+   "head_box_page_px": [
+    1293.2,
+    2701.8,
+    1334.5,
+    2736.5
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T21",
+   "stratum": "END",
+   "subject": "glyph/3/1/9/9/3",
+   "frac": 0.0558,
+   "stem": "obs:053947",
+   "stem_box_canonical": [
+    880.0,
+    319.0,
+    21.0,
+    493.0
+   ],
+   "frame_delta_grey": 161.0,
+   "frame_ok": true,
+   "head_box_page_px": [
+    5060.3,
+    5977.2,
+    5096.7,
+    6009.1
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T22",
+   "stratum": "MID",
+   "subject": "glyph/3/1/10/8/3",
+   "frac": 0.0737,
+   "stem": "obs:053997",
+   "stem_box_canonical": [
+    1309.0,
+    531.0,
+    21.0,
+    346.0
+   ],
+   "frame_delta_grey": 196.4,
+   "frame_ok": true,
+   "head_box_page_px": [
+    4724.2,
+    6333.9,
+    4760.3,
+    6363.0
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "T23",
+   "stratum": "END",
+   "subject": "glyph/1/0/13/3/2",
+   "frac": 0.0499,
+   "stem": "obs:021748",
+   "stem_box_canonical": [
+    1386.0,
+    580.0,
+    18.0,
+    341.0
+   ],
+   "frame_delta_grey": 146.8,
+   "frame_ok": true,
+   "head_box_page_px": [
+    3404.1,
+    3792.4,
+    3443.4,
+    3825.9
+   ],
+   "staff_space_px": 27.5
+  }
+ ]
+}

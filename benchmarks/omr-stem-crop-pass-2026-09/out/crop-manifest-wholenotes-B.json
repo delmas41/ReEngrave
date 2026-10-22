@@ -1,0 +1,451 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3 (ADDED population, not the pre-registered sample)",
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "dpi": 600,
+ "frame_control": [
+  {
+   "page": 0,
+   "staff": "staff/0/0/5",
+   "ok": true,
+   "contrast": 193.25
+  },
+  {
+   "page": 1,
+   "staff": "staff/1/0/0",
+   "ok": true,
+   "contrast": 205.29
+  },
+  {
+   "page": 2,
+   "staff": "staff/2/0/4",
+   "ok": true,
+   "contrast": 178.9
+  },
+  {
+   "page": 3,
+   "staff": "staff/3/0/5",
+   "ok": true,
+   "contrast": 227.42
+  }
+ ],
+ "px_per_space": 100.0,
+ "pad_x_spaces": 2.2,
+ "pad_y_spaces": 5.0,
+ "crop_reach_note": "each tile spans 10.0 staff spaces vertically (5.0 either side of the head centre) and 4.4 horizontally plus the head's own width, so a stem of the usual 3.5 spaces is fully inside it and an absence in the tile IS an absence in that window",
+ "tiles": [
+  {
+   "id": "V001",
+   "subject": "glyph/2/0/4/3/11",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "glyph": 11
+   }
+  },
+  {
+   "id": "V002",
+   "subject": "glyph/0/0/5/7/1",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.0,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 1
+   }
+  },
+  {
+   "id": "V003",
+   "subject": "glyph/0/0/3/0/17",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.25,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 3,
+    "cell": 0,
+    "glyph": 17
+   }
+  },
+  {
+   "id": "V004",
+   "subject": "glyph/1/0/0/4/35",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 0,
+    "cell": 4,
+    "glyph": 35
+   }
+  },
+  {
+   "id": "V005",
+   "subject": "glyph/0/0/5/7/0",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.0,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 0
+   }
+  },
+  {
+   "id": "V006",
+   "subject": "glyph/0/0/5/7/2",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.0,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 2
+   }
+  },
+  {
+   "id": "V007",
+   "subject": "glyph/2/0/5/2/11",
+   "kind": "added",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 2,
+    "glyph": 11
+   }
+  },
+  {
+   "id": "V008",
+   "subject": "glyph/2/0/0/1/11",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 0,
+    "cell": 1,
+    "glyph": 11
+   }
+  },
+  {
+   "id": "V009",
+   "subject": "glyph/1/0/5/1/33",
+   "kind": "added",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.5,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 33
+   }
+  },
+  {
+   "id": "V010",
+   "subject": "glyph/0/0/4/7/3",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.5,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 4,
+    "cell": 7,
+    "glyph": 3
+   }
+  },
+  {
+   "id": "V011",
+   "subject": "glyph/1/0/5/1/23",
+   "kind": "added",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.5,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 23
+   }
+  },
+  {
+   "id": "V012",
+   "subject": "glyph/3/0/5/3/10",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.75,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 5,
+    "cell": 3,
+    "glyph": 10
+   }
+  },
+  {
+   "id": "V013",
+   "subject": "glyph/2/1/1/3/24",
+   "kind": "added",
+   "bucket": "NO component overlaps the head at all",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 1,
+    "cell": 3,
+    "glyph": 24
+   }
+  },
+  {
+   "id": "V014",
+   "subject": "glyph/0/0/1/0/30",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.0,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 1,
+    "cell": 0,
+    "glyph": 30
+   }
+  },
+  {
+   "id": "V015",
+   "subject": "glyph/0/0/11/7/1",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.25,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 1
+   }
+  },
+  {
+   "id": "V016",
+   "subject": "glyph/3/0/8/4/10",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.5,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 8,
+    "cell": 4,
+    "glyph": 10
+   }
+  },
+  {
+   "id": "V017",
+   "subject": "glyph/1/0/5/1/24",
+   "kind": "added",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.5,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 24
+   }
+  },
+  {
+   "id": "V018",
+   "subject": "glyph/2/0/4/3/1",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "glyph": 1
+   }
+  },
+  {
+   "id": "V019",
+   "subject": "glyph/1/0/5/0/14",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.5,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 0,
+    "glyph": 14
+   }
+  },
+  {
+   "id": "V020",
+   "subject": "glyph/2/0/5/2/13",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 2,
+    "glyph": 13
+   }
+  },
+  {
+   "id": "V021",
+   "subject": "glyph/3/1/9/8/17",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeOnLine",
+   "width_cap_recovered": null,
+   "staff_spacing": 27.75,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 9,
+    "cell": 8,
+    "glyph": 17
+   }
+  },
+  {
+   "id": "V022",
+   "subject": "glyph/0/0/11/7/0",
+   "kind": "added",
+   "bucket": "ADDED",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": null,
+   "staff_spacing": 32.25,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 0
+   }
+  },
+  {
+   "id": "V023",
+   "subject": "glyph/1/1/11/1/23",
+   "kind": "added",
+   "bucket": "NO component overlaps the head at all",
+   "claims": {},
+   "read_direction": null,
+   "cls": "noteheadWholeInSpace",
+   "width_cap_recovered": false,
+   "staff_spacing": 27.25,
+   "where": {
+    "page": 1,
+    "system": 1,
+    "staff": 11,
+    "cell": 1,
+    "glyph": 23
+   }
+  }
+ ]
+}

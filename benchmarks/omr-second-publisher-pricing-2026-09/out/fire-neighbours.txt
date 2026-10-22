@@ -1,0 +1,29 @@
+overlap threshold IoU >= 0.1
+
+glyph/1/0/13/0/29          step  +5.15  seen_ONLY_here
+glyph/1/0/2/5/32           step +15.56  also_seen_by_another_staff
+      IoU 0.33  glyph/1/0/1/5/3            notehead:noteheadBlackOnLine
+glyph/1/1/5/7/11           step  -7.10  also_seen_by_another_staff
+      IoU 0.69  glyph/1/1/6/7/3            notehead:noteheadHalfInSpace
+glyph/2/1/6/0/10           step  -7.54  seen_ONLY_here
+glyph/2/1/6/0/8            step  -7.55  seen_ONLY_here
+glyph/3/0/6/0/12           step  -7.55  also_seen_by_another_staff
+      IoU 0.13  glyph/3/0/7/0/9            rest:rest8th
+glyph/3/0/6/0/16           step  -7.63  also_seen_by_another_staff
+      IoU 0.13  glyph/3/0/7/0/2            rest:rest8th
+glyph/3/0/6/4/12           step  -7.62  also_seen_by_another_staff
+      IoU 0.11  glyph/3/0/7/4/3            rest:rest8th
+glyph/3/0/6/4/8            step  -7.57  also_seen_by_another_staff
+      IoU 0.11  glyph/3/0/7/4/0            rest:rest8th
+glyph/3/0/6/8/1            step  -7.48  also_seen_by_another_staff
+      IoU 0.57  glyph/3/0/7/8/0            rest:restWhole
+glyph/3/1/7/9/15           step  -7.63  seen_ONLY_here
+glyph/3/1/7/9/9            step  -7.61  also_seen_by_another_staff
+      IoU 0.11  glyph/3/1/8/9/8            rest:rest8th
+
+SUMMARY: {'seen_ONLY_here': 4, 'also_seen_by_another_staff': 8}
+
+  `also_seen_by_another_staff`  the ink is read elsewhere too, so dropping this copy does not lose it
+  `seen_ONLY_here`              this is the ONLY reading of that ink; dropping it drops the ink
+
+wrote -> benchmarks/omr-second-publisher-pricing-2026-09/out/fire-neighbours.json

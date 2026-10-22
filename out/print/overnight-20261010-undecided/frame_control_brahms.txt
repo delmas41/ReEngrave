@@ -1,0 +1,12 @@
+[brahms1-breitkopf] page 13 (system 1): staff-line contrast 0.679 on the lines; -0.527 with every line moved half a space (control must collapse)
+    clef boxes on the page: 47; median dark share inside 0.48 vs 0.16 moved 1.5 widths right; true > moved on 47 of 47
+    drawn note boxes on the system: 160; median dark share inside 0.85 vs 0.19 moved 1.5 widths right; true > moved on 160 of 160
+    control crop: out/print/overnight-20261010-undecided/control_clef_brahms_p13_s1.png  (clef glyph/13/1/12/0/0, dark share 0.50 in the box, 0.39 moved)
+[brahms1-breitkopf] page 22 (system 0): staff-line contrast 0.886 on the lines; -0.710 with every line moved half a space (control must collapse)
+    clef boxes on the page: 30; median dark share inside 0.57 vs 0.30 moved 1.5 widths right; true > moved on 29 of 30
+    drawn note boxes on the system: 83; median dark share inside 0.85 vs 0.19 moved 1.5 widths right; true > moved on 83 of 83
+    control crop: out/print/overnight-20261010-undecided/control_clef_brahms_p22_s0.png  (clef glyph/22/0/10/0/2, dark share 0.61 in the box, 0.51 moved)
+[brahms1-breitkopf] page 16 (system 0): staff-line contrast 0.733 on the lines; -0.576 with every line moved half a space (control must collapse)
+    clef boxes on the page: 60; median dark share inside 0.50 vs 0.17 moved 1.5 widths right; true > moved on 60 of 60
+    drawn note boxes on the system: 76; median dark share inside 0.86 vs 0.24 moved 1.5 widths right; true > moved on 75 of 76
+    control crop: out/print/overnight-20261010-undecided/control_clef_brahms_p16_s0.png  (clef glyph/16/0/13/0/4, dark share 0.56 in the box, 0.44 moved)

@@ -1,0 +1,14 @@
+{
+ "beams_ours": 183,
+ "beams_truth": 183,
+ "alters_ours": 44,
+ "alters_truth": 100,
+ "unbalanced": 0,
+ "parts_beam_sequence_exact": 18,
+ "parts_alter_sequence_exact": 5,
+ "verovio_ours": {
+  "pages": 3,
+  "flag": 4,
+  "beam": 58
+ }
+}

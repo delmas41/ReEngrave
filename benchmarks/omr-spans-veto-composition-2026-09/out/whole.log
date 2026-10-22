@@ -1,0 +1,99 @@
+pdf=beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf pages=88 dpi=600 veto=report cache=benchmarks/omr-spans-veto-composition-2026-09/out/cache600
+  page 0: 0 staves, 0 labels
+  page 1: 12 staves, 12 labels
+  page 2: 22 staves, 14 labels
+  page 3: 19 staves, 11 labels
+  page 4: 22 staves, 13 labels
+  page 5: 16 staves, 8 labels
+  page 6: 22 staves, 12 labels
+  page 7: 22 staves, 14 labels
+  page 8: 20 staves, 11 labels
+  page 9: 22 staves, 12 labels
+  page 10: 22 staves, 14 labels
+  page 11: 20 staves, 10 labels
+  page 12: 23 staves, 14 labels
+  page 13: 22 staves, 14 labels
+  page 14: 23 staves, 14 labels
+  page 15: 22 staves, 14 labels
+  page 16: 22 staves, 13 labels
+  page 17: 20 staves, 15 labels
+  page 18: 19 staves, 11 labels
+  page 19: 20 staves, 10 labels
+  page 20: 16 staves, 8 labels
+  page 21: 20 staves, 12 labels
+  page 22: 17 staves, 7 labels
+  page 23: 21 staves, 11 labels
+  page 24: 22 staves, 14 labels
+  page 25: 19 staves, 10 labels
+  page 26: 18 staves, 10 labels
+  page 27: 16 staves, 8 labels
+  page 28: 20 staves, 9 labels
+  page 29: 19 staves, 11 labels
+  page 30: 20 staves, 11 labels
+  page 31: 19 staves, 5 labels
+  page 32: 20 staves, 16 labels
+  page 33: 18 staves, 10 labels
+  page 34: 22 staves, 14 labels
+  page 35: 21 staves, 12 labels
+  page 36: 20 staves, 12 labels
+  page 37: 23 staves, 5 labels
+  page 38: 24 staves, 12 labels
+  page 39: 19 staves, 7 labels
+  page 40: 21 staves, 9 labels
+  page 41: 19 staves, 7 labels
+  page 42: 16 staves, 3 labels
+  page 43: 15 staves, 5 labels
+  page 44: 17 staves, 17 labels
+  page 45: 17 staves, 12 labels
+  page 46: 17 staves, 12 labels
+  page 47: 17 staves, 9 labels
+  page 48: 17 staves, 12 labels
+  page 49: 17 staves, 12 labels
+  page 50: 17 staves, 11 labels
+  page 51: 17 staves, 12 labels
+  page 52: 17 staves, 11 labels
+  page 53: 17 staves, 12 labels
+  page 54: 17 staves, 12 labels
+  page 55: 17 staves, 12 labels
+  page 56: 19 staves, 11 labels
+  page 57: 24 staves, 16 labels
+  page 58: 17 staves, 12 labels
+  page 59: 17 staves, 0 labels
+  page 60: 17 staves, 11 labels
+  page 61: 17 staves, 10 labels
+  page 62: 17 staves, 12 labels
+  page 63: 23 staves, 10 labels
+  page 64: 17 staves, 12 labels
+  page 65: 16 staves, 11 labels
+  page 66: 17 staves, 12 labels
+  page 67: 17 staves, 11 labels
+  page 68: 17 staves, 11 labels
+  page 69: 17 staves, 12 labels
+  page 70: 17 staves, 12 labels
+  page 71: 17 staves, 12 labels
+  page 72: 17 staves, 12 labels
+  page 73: 17 staves, 10 labels
+  page 74: 17 staves, 12 labels
+  page 75: 17 staves, 10 labels
+  page 76: 17 staves, 12 labels
+  page 77: 17 staves, 12 labels
+  page 78: 17 staves, 12 labels
+  page 79: 17 staves, 12 labels
+  page 80: 17 staves, 11 labels
+  page 81: 17 staves, 9 labels
+  page 82: 17 staves, 11 labels
+  page 83: 17 staves, 12 labels
+  page 84: 17 staves, 12 labels
+  page 85: 17 staves, 10 labels
+  page 86: 16 staves, 12 labels
+  page 87: 17 staves, 12 labels
+read 88 pages in 912s (86 read, 2 cached)
+30 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Ccr.', 'Cer', 'Cer.', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Ol.', 'Or.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'Tiny', 'Tump.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+[spans-off] available=True reason=None in 4s reference=17 slots vetoes=109
+  wrote benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-off.json
+30 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Ccr.', 'Cer', 'Cer.', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Ol.', 'Or.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'Tiny', 'Tump.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+[spans-on] available=True reason=None in 4s reference=17 slots vetoes=18
+  wrote benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (86 pages read, 2 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-off.json
+  benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-on.json

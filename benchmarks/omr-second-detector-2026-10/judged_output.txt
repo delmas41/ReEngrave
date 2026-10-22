@@ -1,0 +1,36 @@
+== off litolff
+2.98-review                                0         0         0         0         0         4
+2.99-review                                1         0         0         0         5         2
+dynamic-not-a-head-review                  0         0         0         0         0         8
+rhythm-leftovers-2                         1         0         0         0         3         1
+rhythm-leftovers-3                         0         0         0         0         4         0
+rhythm-leftovers-review                    0         0         0         0         5         0
+stem-finder/round2                         0         0         0         0         0         1
+TOTAL                                      3         0         0         0       106        73
+== off brahms
+2.97-review-3                              0         0         0         0         0         5
+2.98-review                                0         0         0         0         0         8
+2.99-review                                0         0         0         0         4         0
+dynamic-not-a-head-review                  0         0         0         0         0         1
+rhythm-leftovers-2                         0         0         0         0         5         0
+rhythm-leftovers-3                         1         0         2         0         0         0
+rhythm-leftovers-review                    3         0         0         0         2         0
+TOTAL                                     16         1        10         1        68        96
+== on litolff
+2.98-review                                0         0         0         0         0         4
+2.99-review                                1         0         0         0         5         2
+dynamic-not-a-head-review                  0         0         0         0         0         8
+rhythm-leftovers-2                         1         0         0         0         3         1
+rhythm-leftovers-3                         0         0         0         0         4         0
+rhythm-leftovers-review                    0         0         0         0         5         0
+stem-finder/round2                         0         0         0         0         0         1
+TOTAL                                      3         0         0         0       106        73
+== on brahms
+2.97-review-3                              0         0         0         0         0         5
+2.98-review                                0         0         0         0         0         8
+2.99-review                                0         0         0         0         4         0
+dynamic-not-a-head-review                  0         0         0         0         0         1
+rhythm-leftovers-2                         0         0         0         0         5         0
+rhythm-leftovers-3                         1         0         2         0         0         0
+rhythm-leftovers-review                    3         0         0         0         2         0
+TOTAL                                     16         1        10         1        68        96

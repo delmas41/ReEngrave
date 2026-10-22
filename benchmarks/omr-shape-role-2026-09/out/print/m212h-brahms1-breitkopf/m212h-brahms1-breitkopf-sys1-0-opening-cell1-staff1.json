@@ -1,0 +1,13 @@
+{
+  "cell_subject": "cell/1/0/1/1",
+  "staff_subject": "staff/1/0/1",
+  "bbox_page_px": [
+    1830.0,
+    712.0,
+    2488.0,
+    1039.0
+  ],
+  "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+  "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell1-staff1.png",
+  "VERDICT_none_yet": null
+}

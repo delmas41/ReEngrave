@@ -1,0 +1,816 @@
+[
+ {
+  "staff": 0,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 8,
+  "prefit_clusters": 17,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957,
+   1244,
+   1559
+  ]
+ },
+ {
+  "staff": 1,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 6,
+  "prefit_clusters": 12,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 2,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 6,
+  "prefit_clusters": 12,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 3,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 6,
+  "prefit_clusters": 12,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 4,
+  "clef": "treble",
+  "truth": -1,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 1,
+    "fifths": -1
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 1,
+   "fifths": -1
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 9,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957,
+   1176,
+   1471,
+   1495
+  ]
+ },
+ {
+  "staff": 5,
+  "clef": "treble",
+  "truth": -1,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 1,
+    "fifths": -1
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 1,
+   "fifths": -1
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 9,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957,
+   1176,
+   1471,
+   1495
+  ]
+ },
+ {
+  "staff": 6,
+  "clef": "bass",
+  "truth": -3,
+  "locator": {},
+  "template": {
+   "bass": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 7,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   116,
+   219,
+   294,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 7,
+  "clef": "bass",
+  "truth": -3,
+  "locator": {},
+  "template": {
+   "bass": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 7,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   116,
+   219,
+   294,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 8,
+  "clef": "treble",
+  "truth": 0,
+  "locator": {},
+  "template": {
+   "treble": {
+    "n": 0,
+    "fifths": 0
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 0,
+   "fifths": 0
+  },
+  "verdict": 0,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 5,
+  "prefit_clusters": 9,
+  "prefit_sized_x": [
+   113,
+   193,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 9,
+  "clef": "treble",
+  "truth": 0,
+  "locator": {},
+  "template": {
+   "treble": {
+    "n": 0,
+    "fifths": 0
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 0,
+   "fifths": 0
+  },
+  "verdict": 0,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 5,
+  "prefit_clusters": 9,
+  "prefit_sized_x": [
+   113,
+   193,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 10,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 6,
+  "prefit_clusters": 12,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 11,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 6,
+  "prefit_clusters": 12,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 12,
+  "clef": "bass",
+  "truth": -3,
+  "locator": {},
+  "template": {
+   "bass": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 7,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   116,
+   219,
+   294,
+   503,
+   875,
+   947,
+   957
+  ]
+ },
+ {
+  "staff": 13,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 9,
+  "prefit_clusters": 16,
+  "prefit_sized_x": [
+   113,
+   193,
+   503,
+   875,
+   947,
+   957,
+   1176,
+   1471,
+   1497
+  ]
+ },
+ {
+  "staff": 14,
+  "clef": "treble",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": -3,
+    "accidental": "b"
+   },
+   "alto": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   },
+   "tenor": {
+    "n": 1,
+    "fifths": -1,
+    "accidental": "b"
+   }
+  },
+  "template": {
+   "treble": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 1,
+   "fifths": -1,
+   "accidental": "b"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -1,
+  "verdict_reason": "fitted",
+  "prefit_sized": 8,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   113,
+   503,
+   874,
+   945,
+   954,
+   1176,
+   1473,
+   1497
+  ]
+ },
+ {
+  "staff": 15,
+  "clef": "alto",
+  "truth": -3,
+  "locator": {
+   "treble": {
+    "n": 2,
+    "fifths": 2,
+    "accidental": "#"
+   },
+   "bass": {
+    "n": 2,
+    "fifths": 2,
+    "accidental": "#"
+   },
+   "alto": {
+    "n": 2,
+    "fifths": 2,
+    "accidental": "#"
+   }
+  },
+  "template": {
+   "alto": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": {
+   "n": 2,
+   "fifths": 2,
+   "accidental": "#"
+  },
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 7,
+  "prefit_clusters": 14,
+  "prefit_sized_x": [
+   603,
+   703,
+   874,
+   945,
+   951,
+   1176,
+   1471
+  ]
+ },
+ {
+  "staff": 16,
+  "clef": "bass",
+  "truth": -3,
+  "locator": {},
+  "template": {
+   "bass": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 9,
+  "prefit_clusters": 19,
+  "prefit_sized_x": [
+   116,
+   219,
+   294,
+   503,
+   875,
+   947,
+   957,
+   1176,
+   1471
+  ]
+ },
+ {
+  "staff": 17,
+  "clef": "bass",
+  "truth": -3,
+  "locator": {},
+  "template": {
+   "bass": {
+    "n": 3,
+    "fifths": -3
+   }
+  },
+  "locator_at_clef": null,
+  "template_at_clef": {
+   "n": 3,
+   "fifths": -3
+  },
+  "verdict": -3,
+  "verdict_reason": "fitted_by_template",
+  "prefit_sized": 10,
+  "prefit_clusters": 19,
+  "prefit_sized_x": [
+   116,
+   219,
+   294,
+   503,
+   875,
+   947,
+   954,
+   1176,
+   1471,
+   1508
+  ]
+ }
+]

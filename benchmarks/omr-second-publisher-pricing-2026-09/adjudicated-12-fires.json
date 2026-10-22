@@ -1,0 +1,207 @@
+{
+ "_what": "Every cell `OMR_WHOLE_REST_INK` fires on for Breitkopf & Hartel Brahms 1 mvt 1, pdf pages 0-3, adjudicated against the print by rendering each one at 600 dpi (the gather's own DPI) with this staff's five lines and the step-5.5 whole-rest tick drawn on it.",
+ "_record": "library/_shared-records/brahms1-breitkopf-p0-p3.record.json",
+ "_record_md5": "52b98f1cdfee3b39f10e56c592828ea4",
+ "_reproduce": "probe/whole_rest_reach.py --crops-for, then probe/whole_rest_crops.py",
+ "_frame_control": "whole_rest_crops.py checks each page's Q.STAFF_LINES against the ink under them before writing a crop; it passed at +133 to +229 grey levels on all three pages that carry a fire.",
+ "_caveats": [
+  "This is ONE reader's adjudication, this session's, against the print. It is not Sean's.",
+  "`record_corroboration` is INDEPENDENT of the crop: it is what the record's OWN detections on the neighbouring staff call the same ink, found by page-pixel overlap with no class matching. It agrees with the crop verdict on 8 of 12. On the other 4 no other staff detected the ink at all, so it can neither confirm nor contradict.",
+  "`exporter_state` is read off the record's saved `glyph_owner` / `pitch` / `duration` verdicts and is a LOWER BOUND on the cost; the A/B arm is what measures the file."
+ ],
+ "_tally": {
+  "whole_rest": 1,
+  "eighth_rest_on_the_staff_below": 8,
+  "real_notehead_on_a_neighbouring_staff": 2,
+  "time_signature_digit": 1,
+  "TOTAL": 12,
+  "_compare_litolff": "25 fires, 25 of 25 hand-adjudicated whole rests, 0 real notes (benchmarks/omr-note-where-silence-2026-09/adjudicated-25-fires.json)"
+ },
+ "fires": [
+  {
+   "subject": "glyph/1/0/13/0/29",
+   "witness": "slot",
+   "staff_step": 5.15,
+   "height_spaces": 0.75,
+   "aspect": 1.74,
+   "detector_class": "noteheadHalfInSpace",
+   "conf": 0.26,
+   "verdict": "time_signature_digit",
+   "note": "The top arc of the printed `6` of the `6/8` time signature on the Kontrabass staff, at the head of the first bar. Not a whole rest and not a note.",
+   "record_corroboration": "seen_ONLY_here",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/1/0/2/5/32",
+   "witness": "neighbouring_bar",
+   "staff_step": 15.56,
+   "height_spaces": 0.43,
+   "aspect": 3.02,
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.27,
+   "verdict": "real_notehead_on_a_neighbouring_staff",
+   "note": "The lower sliver of a real black notehead belonging to the staff ABOVE, 7.8 staff spaces over this staff's bottom line. Exported from this staff as G6.",
+   "record_corroboration": "glyph/1/0/1/5/3 noteheadBlackOnLine at IoU 0.33 -- the staff above read the same ink",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/1/1/5/7/11",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.1,
+   "height_spaces": 0.82,
+   "aspect": 2.0,
+   "detector_class": "noteheadHalfInSpace",
+   "conf": 0.33,
+   "verdict": "real_notehead_on_a_neighbouring_staff",
+   "note": "A REAL HOLLOW NOTEHEAD WITH AN AUGMENTATION DOT on the staff BELOW. This is the one fire that would have deleted printed music, and the only thing that stops it is a DIFFERENT mechanism -- the 2026-09-11 ownership contest already refuses it as `owned_by_another_staff`. Neither of this rule's own two witnesses declined it.",
+   "record_corroboration": "glyph/1/1/6/7/3 noteheadHalfInSpace at IoU 0.69 -- the staff below read the same ink as a notehead",
+   "exporter_state": "owned_by_another_staff"
+  },
+  {
+   "subject": "glyph/2/1/6/0/10",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.54,
+   "height_spaces": 0.44,
+   "aspect": 1.73,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.4,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below. Exported from this staff as E3.",
+   "record_corroboration": "seen_ONLY_here",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/2/1/6/0/8",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.55,
+   "height_spaces": 0.42,
+   "aspect": 1.76,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.51,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below. Exported from this staff as E3.",
+   "record_corroboration": "seen_ONLY_here",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/0/12",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.55,
+   "height_spaces": 0.45,
+   "aspect": 1.69,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.54,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the Trompeten staff below the Hoerner staff it is filed under.",
+   "record_corroboration": "glyph/3/0/7/0/9 rest8th at IoU 0.13 -- the staff below read the same ink AS AN EIGHTH REST",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/0/16",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.63,
+   "height_spaces": 0.37,
+   "aspect": 2.17,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.33,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below.",
+   "record_corroboration": "glyph/3/0/7/0/2 rest8th at IoU 0.13",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/4/12",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.62,
+   "height_spaces": 0.38,
+   "aspect": 1.84,
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.42,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below.",
+   "record_corroboration": "glyph/3/0/7/4/3 rest8th at IoU 0.11",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/4/8",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.57,
+   "height_spaces": 0.43,
+   "aspect": 1.7,
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.54,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below.",
+   "record_corroboration": "glyph/3/0/7/4/0 rest8th at IoU 0.11",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/8/1",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.48,
+   "height_spaces": 0.4,
+   "aspect": 2.58,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.55,
+   "verdict": "whole_rest",
+   "note": "A GENUINE WHOLE REST -- a small filled rectangle hanging under a staff line in an otherwise empty bar. THE ONLY ONE OF THE TWELVE. It stands on the staff BELOW the one it is filed under, so even the rule's one correct catch is not a catch on its own staff.",
+   "record_corroboration": "glyph/3/0/7/8/0 restWhole at IoU 0.57 -- the staff below read the same ink AS A WHOLE REST",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/1/7/9/15",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.63,
+   "height_spaces": 0.37,
+   "aspect": 2.24,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.32,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below.",
+   "record_corroboration": "seen_ONLY_here",
+   "exporter_state": "writable"
+  },
+  {
+   "subject": "glyph/3/1/7/9/9",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.61,
+   "height_spaces": 0.39,
+   "aspect": 1.67,
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.39,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below.",
+   "record_corroboration": "glyph/3/1/8/9/8 rest8th at IoU 0.11",
+   "exporter_state": "writable"
+  }
+ ],
+ "near_misses_looked_at": [
+  {
+   "subject": "glyph/3/0/9/1/2",
+   "excess_over_the_cut": 0.073,
+   "refused_by": "min aspect 1.51 < 1.63",
+   "witness": "slot",
+   "staff_step": 5.27,
+   "verdict": "whole_rest",
+   "note": "A REAL WHOLE REST IN A TACET BAR, at the slot, REFUSED. Its detection box clips the rest's left half, so its aspect reads 1.51 against the shipped 1.63 floor. The record writes it into the file as an EIGHTH NOTE C5 -- a pitched note where the page prints silence, which is Sean's original observation, standing un-repaired on this publisher."
+  },
+  {
+   "subject": "glyph/1/0/7/1/16",
+   "excess_over_the_cut": 0.1374,
+   "refused_by": "min aspect 1.41 < 1.63",
+   "witness": "neighbouring_bar",
+   "staff_step": -5.44,
+   "verdict": "time_signature_digit",
+   "note": "The top-left of the `8` of a stacked `6/8` on a neighbouring staff. Correctly refused."
+  },
+  {
+   "subject": "glyph/3/0/6/3/6",
+   "excess_over_the_cut": 0.0571,
+   "refused_by": "min aspect 1.54 < 1.63",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.59,
+   "verdict": "eighth_rest_on_the_staff_below",
+   "note": "The upper hook of an eighth rest on the staff below -- the same population as eight of the twelve fires, on the refusing side of the cut. Correctly refused, and it shows the cut is not separating a population, only slicing one."
+  }
+ ]
+}

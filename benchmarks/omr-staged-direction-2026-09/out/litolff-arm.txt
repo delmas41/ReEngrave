@@ -1,0 +1,18 @@
+========================================================================
+REACH: 42 word-shaped candidates, 2 accepted by the lexicon
+  rungs that ran  : ['surya', 'tesseract']
+  refusal reasons : {'no_reading': 40, 'no_ink': 812, 'not_in_lexicon': 2}
+  provenance      : 6b7471ed9b7bc1637949be9591f25f7cc064244a, dirty=False
+========================================================================
+
+ACCEPTED WORDS
+  texts     : [('cresc.', 1), ('Cresc.', 1)]
+  category  : {'dynamic': 2}
+  placement : {'below': 2}   (margin: 0 by construction)
+  won by    : {'surya': 2}
+  per page  : {'2': 2}
+
+DECISION
+  853 verdicts, 2 words decided
+    decided    no_words                 851
+    decided    in_lexicon               2

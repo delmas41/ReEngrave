@@ -1,0 +1,18 @@
+PLATE lit: rho (wide-rule scale / bar scale) over 34 bars: median 0.998, min 0.923, max 1.083; bars with |rho-1| > 3%: 17
+  group  bin                       n d(wide, same px)   d(wide_rule)    rule-same
+  kept   rho<0.97 (smaller)       11         -0.072         -0.089       -0.017
+  kept   rho>1.03 (larger)        11         +0.021         -0.023       -0.043
+  kept   |rho-1|<=3%              22         -0.007         -0.005       +0.002
+  lost   rho<0.97 (smaller)        5         +0.081         -0.028       -0.109
+  lost   rho>1.03 (larger)         4         +0.151         +0.285       +0.134
+  lost   |rho-1|<=3%               8         +0.105         +0.046       -0.059
+  lost, all bars: d(wide same px) +0.109   d(wide_rule) +0.081   share of the rule's gain that is NOT context (rule - same px) / rule: -35%
+PLATE bra: rho (wide-rule scale / bar scale) over 44 bars: median 1.000, min 0.929, max 1.071; bars with |rho-1| > 3%: 24
+  group  bin                       n d(wide, same px)   d(wide_rule)    rule-same
+  kept   rho<0.97 (smaller)        9         +0.036         +0.019       -0.017
+  kept   rho>1.03 (larger)        37         +0.028         -0.044       -0.072
+  kept   |rho-1|<=3%              34         +0.010         +0.007       -0.004
+  lost   rho<0.97 (smaller)        6         +0.092         +0.188       +0.096
+  lost   rho>1.03 (larger)         6         +0.062         +0.078       +0.016
+  lost   |rho-1|<=3%               8         +0.056         +0.156       +0.100
+  lost, all bars: d(wide same px) +0.069   d(wide_rule) +0.142   share of the rule's gain that is NOT context (rule - same px) / rule: 52%

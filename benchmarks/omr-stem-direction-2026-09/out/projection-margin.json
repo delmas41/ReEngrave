@@ -1,0 +1,41 @@
+{
+ "n": 102,
+ "agree": 68,
+ "disagree": 34,
+ "convention AGREES": {
+  "n": 68,
+  "loser_side_median_spaces": -0.24,
+  "loser_side_p90_spaces": 0.06,
+  "margin_median_spaces": 3.06,
+  "share_loser_over_1_space": 0.0
+ },
+ "convention DISAGREES": {
+  "n": 34,
+  "loser_side_median_spaces": -0.215,
+  "loser_side_p90_spaces": -0.04,
+  "margin_median_spaces": 2.095,
+  "share_loser_over_1_space": 0.0
+ },
+ "sweep": {
+  "0.5": {
+   "kept": 102,
+   "convention_agrees": 0.6667
+  },
+  "1.0": {
+   "kept": 102,
+   "convention_agrees": 0.6667
+  },
+  "1.5": {
+   "kept": 102,
+   "convention_agrees": 0.6667
+  },
+  "2.0": {
+   "kept": 102,
+   "convention_agrees": 0.6667
+  },
+  "3.0": {
+   "kept": 102,
+   "convention_agrees": 0.6667
+  }
+ }
+}

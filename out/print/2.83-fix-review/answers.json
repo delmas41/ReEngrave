@@ -1,0 +1,593 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "via": "cloud coordination session (tiles shown in MANIFEST order, numbered 1-10: tile_01, tile_02, tile_03, control_1, tile_04, tile_05, tile_06, tile_07, tile_08, control_2)",
+ "words": "1. 4  2. 8  3. 8  4. 8  5. 8  6. 4  7. 2  8. part of an accidental  9. 4  10. dot 4",
+ "order": [
+  "tile_01",
+  "tile_02",
+  "tile_03",
+  "control_1",
+  "tile_04",
+  "tile_05",
+  "tile_06",
+  "tile_07",
+  "tile_08",
+  "control_2"
+ ],
+ "answers": {
+  "tile_01": {
+   "shown_as": 1,
+   "sean": "4",
+   "sean_reads": "quarter",
+   "verbatim": "1. 4",
+   "key": "glyph/3/1/4/12/3",
+   "movement": "litolff",
+   "pdf_page": 3,
+   "class": "half_gone",
+   "v5_reading": "decided:hollow_head_bare_stem{0}",
+   "fix_reading": "decided:head_and_marks{0}",
+   "main": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- stacked head duplicate"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- stacked head duplicate"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hollow_head_bare_stem",
+     "undotted": 2.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "half"
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- stacked head duplicate"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  },
+  "tile_02": {
+   "shown_as": 2,
+   "sean": "8",
+   "sean_reads": "eighth",
+   "verbatim": "2. 8",
+   "key": "glyph/13/0/0/8/12",
+   "movement": "litolff",
+   "pdf_page": 13,
+   "class": "flag_back",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "decided:hooks_counted{1}",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "quarter (1 beat)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  },
+  "tile_03": {
+   "shown_as": 3,
+   "sean": "8",
+   "sean_reads": "eighth",
+   "verbatim": "3. 8",
+   "key": "glyph/11/0/2/0/16",
+   "movement": "brahms",
+   "pdf_page": 11,
+   "class": "flag_back",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "decided:hooks_counted{1}",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "quarter (1 beat)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  },
+  "control_1": {
+   "shown_as": 4,
+   "sean": "8",
+   "sean_reads": "eighth",
+   "verbatim": "4. 8",
+   "key": "glyph/0/0/9/4/4",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "class": "control:flagged",
+   "v5_reading": "['right', ['head_and_marks', 1]]",
+   "fix_reading": "['right', ['head_and_marks', 1]]",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "v5_score": "RIGHT",
+   "fix": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  },
+  "tile_04": {
+   "shown_as": 5,
+   "sean": "8",
+   "sean_reads": "eighth",
+   "verbatim": "5. 8",
+   "key": "glyph/11/0/2/0/22",
+   "movement": "brahms",
+   "pdf_page": 11,
+   "class": "flag_back",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "decided:hooks_counted{1}",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "quarter (1 beat)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "kept",
+    "status_reason": [
+     "eighth (0.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "undotted": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  },
+  "tile_05": {
+   "shown_as": 6,
+   "sean": "4",
+   "sean_reads": "quarter",
+   "verbatim": "6. 4",
+   "key": "glyph/4/0/7/7/10",
+   "movement": "litolff",
+   "pdf_page": 4,
+   "class": "half_gone",
+   "v5_reading": "decided:hollow_head_bare_stem{0}",
+   "fix_reading": "narrowed:head_fill_from_ink{0}",
+   "main": {
+    "status": "narrowed",
+    "status_reason": [
+     "length still open: half (2 beats) | quarter (1 beat) | whole (4 beats) -- head fill from ink"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "head_fill_from_ink",
+     "candidates_undotted": [
+      1.0,
+      2.0,
+      4.0
+     ]
+    }
+   },
+   "main_score": "NARROWED-IN",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "half (2 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hollow_head_bare_stem",
+     "undotted": 2.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "half"
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "narrowed",
+    "status_reason": [
+     "length still open: half (2 beats) | quarter (1 beat) | whole (4 beats) -- head fill from ink"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "head_fill_from_ink",
+     "candidates_undotted": [
+      1.0,
+      2.0,
+      4.0
+     ]
+    }
+   },
+   "fix_score": "NARROWED-IN"
+  },
+  "tile_06": {
+   "shown_as": 7,
+   "sean": "2",
+   "sean_reads": "half",
+   "verbatim": "7. 2",
+   "key": "glyph/10/1/4/8/7",
+   "movement": "litolff",
+   "pdf_page": 10,
+   "class": "hollow_narrowed",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "narrowed:head_fill_from_ink{0}",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "half (2 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "hollow_head_bare_stem",
+     "undotted": 2.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "half"
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "quarter (1 beat)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "WRONG",
+   "fix": {
+    "status": "narrowed",
+    "status_reason": [
+     "length still open: half (2 beats) | quarter (1 beat) | whole (4 beats) -- head fill from ink"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "head_fill_from_ink",
+     "candidates_undotted": [
+      1.0,
+      2.0,
+      4.0
+     ]
+    }
+   },
+   "fix_score": "NARROWED-IN"
+  },
+  "tile_07": {
+   "shown_as": 8,
+   "sean": "part of an accidental",
+   "sean_reads": "not a note",
+   "verbatim": "8. part of an accidental",
+   "key": "glyph/19/0/9/0/15",
+   "movement": "brahms",
+   "pdf_page": 19,
+   "class": "hollow_narrowed",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "narrowed:head_fill_from_ink{0}",
+   "main": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- belongs to a nearer staff"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- belongs to a nearer staff"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "fix": {
+    "status": "refused",
+    "status_reason": [
+     "not a notehead -- belongs to a nearer staff"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "head_fill_from_ink",
+     "candidates_undotted": [
+      1.0,
+      2.0,
+      4.0
+     ]
+    }
+   }
+  },
+  "tile_08": {
+   "shown_as": 9,
+   "sean": "4",
+   "sean_reads": "quarter",
+   "verbatim": "9. 4",
+   "key": "glyph/11/1/8/16/3",
+   "movement": "litolff",
+   "pdf_page": 11,
+   "class": "disputed",
+   "v5_reading": "decided:head_and_marks{0}",
+   "fix_reading": "narrowed:tip_readers_disagree{0,1}",
+   "main": {
+    "status": "narrowed",
+    "status_reason": [
+     "length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flag ink unread"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "flag_ink_unread",
+     "candidates_undotted": [
+      0.25,
+      0.5
+     ]
+    }
+   },
+   "main_score": "NARROWED-OUT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "quarter (1 beat)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "RIGHT",
+   "fix": {
+    "status": "narrowed",
+    "status_reason": [
+     "length still open: quarter (1 beat) | eighth (0.5 beats) -- tip readers disagree"
+    ],
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "tip_readers_disagree",
+     "candidates_undotted": [
+      0.5,
+      1.0
+     ]
+    }
+   },
+   "fix_score": "NARROWED-IN"
+  },
+  "control_2": {
+   "shown_as": 10,
+   "sean": "dot 4",
+   "sean_reads": "dotted quarter",
+   "verbatim": "10. dot 4",
+   "key": "glyph/0/0/11/3/12",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "class": "control:bare",
+   "v5_reading": "['right', ['head_and_marks', 0]]",
+   "fix_reading": "['right', ['head_and_marks', 0]]",
+   "main": {
+    "status": "kept",
+    "status_reason": [
+     "1.5-beat (1.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 1,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "main_score": "RIGHT",
+   "v5": {
+    "status": "kept",
+    "status_reason": [
+     "1.5-beat (1.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 1,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "v5_score": "RIGHT",
+   "fix": {
+    "status": "kept",
+    "status_reason": [
+     "1.5-beat (1.5 beats)"
+    ],
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "undotted": 1.0,
+     "dots": 1,
+     "beam_levels": 0,
+     "head_fill": null
+    }
+   },
+   "fix_score": "RIGHT"
+  }
+ },
+ "summary": "0 new wrong decisions. Newly RIGHT against the v5 arm: tile_01 (half -> quarter), tile_02, tile_03, tile_04 (quarter -> eighth, hooks counted). v5 WRONG -> fix NARROWED with his answer inside: tile_05 (quarter), tile_06 (half; main had decided the half, right). Small loss against v5: tile_08 (a right decided quarter -> narrowed {0,1} tip_readers_disagree; main was narrowed {1,2}, answer out). Neutral: tile_07 is not a note (part of an accidental) and is REFUSED in main, v5 and the fix (notehead_is_not_a_notehead, belongs_to_a_nearer_staff): the refusal is right, its reason is the geometry's. Controls hold (control_1 eighth, control_2 dotted quarter).",
+ "base_is": "the manifest's base_reading is the v5 arm (28f1bda4); main (8be6cf5f) is shown beside it; the fix is e9c8c202"
+}

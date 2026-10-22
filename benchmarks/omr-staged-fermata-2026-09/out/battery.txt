@@ -1,0 +1,25 @@
+ARM 0 positive control: SURVIVED  (expected SURVIVED)
+RED: GATHER: fermatas never typed
+RED: GATHER: routed to the articulation prefix
+RED: a fermata may no longer hang over a REST
+RED: containment branch deleted — everything falls to nearest
+RED: the two branches report the SAME reason
+RED: no_carrier refusal deleted
+RED: EXPORT: placement pass NOT CALLED
+RED: EXPORT: kwarg never reaches the renderer
+RED: hoist reads only the chord's FIRST head
+RED: EXPORT: a REST can no longer carry one
+RED: the balance is told what it wants to hear
+RED: every stem points UP
+RED: direction from ONE head, not the stems whole group (the double stop)
+RED: opposing stems no longer abstain — the last one read wins
+RED: the divisi guard never conflicts
+RED: a blocked head is no longer reported as separated
+RED: the duplicated rests are not named
+RED: EXPORT: the voices verdict is never read
+RED: EXPORT: the arc pairing is handed an EMPTY voice map again
+RED: the balance forgets the duplicated rests
+MUTATION DID NOT APPLY: 'a string that is not in this file'
+NOT APPLIED: HARNESS CONTROL (must say NOT APPLIED)
+ M tools/omr/tests/test_staged_export.py
+⚠️ TREE DIRTY

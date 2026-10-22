@@ -1,0 +1,1119 @@
+{
+  "families": [
+    {
+      "family": "accidental",
+      "quantity": "accidental_owner",
+      "detector_glyphs": 23,
+      "cv_glyphs": 23,
+      "ink_rows": 46,
+      "written": 18,
+      "decided": 20,
+      "abstained": {
+        "no_candidate": 3
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "detector_glyphs": 1,
+      "cv_glyphs": 0,
+      "ink_rows": 1,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "detector_glyphs": 57,
+      "cv_glyphs": 0,
+      "ink_rows": 57,
+      "written": 0,
+      "decided": 54,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 432,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`direction` decided 432 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "detector_glyphs": 147,
+      "cv_glyphs": 0,
+      "ink_rows": 147,
+      "written": 75,
+      "decided": 432,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "fermata",
+      "quantity": "fermata_owner",
+      "detector_glyphs": 83,
+      "cv_glyphs": 0,
+      "ink_rows": 83,
+      "written": 76,
+      "decided": 83,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "detector_glyphs": 133,
+      "cv_glyphs": 0,
+      "ink_rows": 133,
+      "written": 0,
+      "decided": 54,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "detector_glyphs": 372,
+      "cv_glyphs": 0,
+      "ink_rows": 372,
+      "written": 341,
+      "decided": 445,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "emitted"
+    },
+    {
+      "family": "ornament",
+      "quantity": "ornament_owner",
+      "detector_glyphs": 1,
+      "cv_glyphs": 0,
+      "ink_rows": 1,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "no_notehead": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "rest",
+      "quantity": "rest",
+      "detector_glyphs": 317,
+      "cv_glyphs": 0,
+      "ink_rows": 317,
+      "written": 313,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "abstained"
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "detector_glyphs": 5,
+      "cv_glyphs": 0,
+      "ink_rows": 5,
+      "written": 3,
+      "abstentions_name_no_family": true,
+      "decided": 5,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "detector_glyphs": 70,
+      "cv_glyphs": 0,
+      "ink_rows": 70,
+      "written": 44,
+      "abstentions_name_no_family": true,
+      "decided": 70,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "detector_glyphs": 36,
+      "cv_glyphs": 0,
+      "ink_rows": 36,
+      "written": 0,
+      "decided": 3,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    }
+  ],
+  "accidental_reading": {
+    "printed_glyphs_detected": 23,
+    "key_signature_glyphs_detected_and_owned_elsewhere": 133,
+    "gathered": 23,
+    "owner_decided": 20,
+    "applied": 18,
+    "abstained_ambiguous": 0,
+    "no_candidate": 3,
+    "no_unit": 0,
+    "no_evidence": 0,
+    "refused_not_an_accidental": 0,
+    "is_a_key_signature_marker": 0,
+    "head_belongs_to_a_nearer_staff": 0,
+    "heads_owned": 20,
+    "heads_contradicted": 0,
+    "owners_sharing_a_head": 0,
+    "applied_on_a_doubled_copy": 0,
+    "unowned": 2,
+    "carried_in_bar": 11,
+    "pitches_altered_by_the_key": 94,
+    "printed_glyphs_read_into_a_verdict": 31,
+    "heads_balanced": true,
+    "unaccounted": 0
+  },
+  "unclaimed_classes": {
+    "ottavaBracket": 4
+  },
+  "detected_and_unrepresented": {},
+  "detected_and_unrepresented_total": 0,
+  "decided_and_unwritten": {},
+  "decided_and_unwritten_total": 0,
+  "decided_uncounted": [],
+  "abstained_without_a_family": {},
+  "status_census": {
+    "emitted": [
+      "accidental",
+      "clef",
+      "dynamic",
+      "fermata",
+      "key",
+      "note",
+      "slur",
+      "tie",
+      "time"
+    ],
+    "decided_but_unwritten": [
+      "direction"
+    ],
+    "decided_uncounted": [],
+    "abstained": [
+      "articulation",
+      "ornament",
+      "rest",
+      "tuplet",
+      "wedge"
+    ],
+    "stub": [],
+    "starved": [],
+    "NO_QUANTITY": [],
+    "unaccounted": [],
+    "n_families": 15,
+    "n_filed": 15,
+    "balanced": true
+  },
+  "family_refusals": {
+    "ledger_is_not_a_ledger": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 27,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 27,
+      "balanced": true
+    },
+    "accidental_is_not_an_accidental": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 23,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 23,
+      "balanced": true
+    },
+    "rest_is_not_a_rest": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 317,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 317,
+      "balanced": true
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 0,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 0,
+      "balanced": true
+    },
+    "arc_is_not_an_arc": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 75,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 75,
+      "balanced": true
+    },
+    "dynamic_is_not_a_dynamic": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 147,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 147,
+      "balanced": true
+    },
+    "articulation_is_not_an_articulation": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 0,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 0,
+      "balanced": true
+    },
+    "flag_is_not_a_flag": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 4,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 4,
+      "balanced": true
+    },
+    "keysig_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 133,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 133,
+      "balanced": true
+    },
+    "tuplet_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 0,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 0,
+      "balanced": true
+    }
+  },
+  "inferred_clefs": [],
+  "written": {
+    "arc_notes_reachable_at_a_stem": 320,
+    "tie_links_marked": 44,
+    "tie_links_crossing_a_barline": 44,
+    "tie_chains_marked": 35,
+    "tie_spans_marked": 44,
+    "tie_chains_over_two_notes": 9,
+    "slur_spans_marked": 3,
+    "tie_arcs_naming_an_already_named_pair": 12,
+    "tacet_bars_padded": 0,
+    "tacet_bars_not_padded_without_meter": 0,
+    "tacet_spans_declined_unidentified_part": 0,
+    "bars_with_events": 432,
+    "bars_with_events_without_a_meter": 0,
+    "bars_judged_by_a_carried_meter": 0,
+    "measure_rests_read": 215,
+    "fermatas": 76,
+    "rests": 98,
+    "notes": 341,
+    "articulations": 0,
+    "dot_role_articulations": 0,
+    "ornaments": 0,
+    "beams": 173,
+    "beamed_events": 173,
+    "pitches_altered_by_the_key": 94,
+    "ties": 44,
+    "bars_held_out_sum": 4,
+    "notes_held_out_sum": 12,
+    "unread_bar_marks_written": 4,
+    "dynamics": 75,
+    "accidentals_printed": 18,
+    "slurs": 3,
+    "empty_bars_sized_by_a_carried_meter": 0,
+    "bars_held_out_sum_on_a_doubled_staff": 0,
+    "bars_held_out_unread_mark": 0,
+    "notes_held_out_unread_mark": 0,
+    "bars_held_out_unread_mark_on_a_doubled_staff": 0,
+    "two_voice_bars_held_out_by_unread_mark": 0,
+    "bars_with_a_possible_unread_mark": 0,
+    "parts": 18,
+    "divisions": 4
+  },
+  "part_join": {
+    "unidentified_parts": [],
+    "held_out_staves": 0,
+    "join_decided": "ordinal",
+    "join_used": "ordinal",
+    "join_reason": "ordinal",
+    "systems": [
+      "0/0",
+      "1/0",
+      "2/0"
+    ],
+    "staves_per_system": [
+      18
+    ],
+    "parts": 18,
+    "fragmented": false
+  },
+  "measure_numbering": {
+    "systems": [
+      {
+        "system": "0/0",
+        "page": 0,
+        "system_index": 0,
+        "bars": 7,
+        "staves_deciding": 18,
+        "readings": [
+          7
+        ],
+        "offset": 0
+      },
+      {
+        "system": "1/0",
+        "page": 1,
+        "system_index": 0,
+        "bars": 9,
+        "staves_deciding": 18,
+        "readings": [
+          9
+        ],
+        "offset": 7
+      },
+      {
+        "system": "2/0",
+        "page": 2,
+        "system_index": 0,
+        "bars": 8,
+        "staves_deciding": 18,
+        "readings": [
+          8
+        ],
+        "offset": 16
+      }
+    ],
+    "document_bars": 24,
+    "scheme": "document",
+    "printed_bar_check": {
+      "systems": [
+        {
+          "system": "0/0",
+          "printed": null,
+          "file_number": null,
+          "state": "abstained",
+          "reason": "no_reading"
+        },
+        {
+          "system": "1/0",
+          "printed": 31,
+          "file_number": 8,
+          "state": "disagree",
+          "delta": 23
+        },
+        {
+          "system": "2/0",
+          "printed": 71,
+          "file_number": 17,
+          "state": "disagree",
+          "delta": 54
+        }
+      ],
+      "agree": 0,
+      "disagree": 2,
+      "abstained": 1
+    }
+  },
+  "tacet_padding": {
+    "tacet_bar_total": 0,
+    "parts_tacet_somewhere": 0,
+    "bars_padded": 0,
+    "bars_not_padded_without_meter": 0,
+    "bars_not_padded_without_a_number": 0,
+    "balanced": true,
+    "spans": []
+  },
+  "notes_not_written": {
+    "not_a_notehead:clipped_fragment": 7,
+    "owned_by_another_staff": 4,
+    "owner_not_read": 11,
+    "duration_narrowed": 1,
+    "bar_does_not_add_up": 12
+  },
+  "notes_not_written_total": 35,
+  "bars_held_out_sum": {
+    "bars": 4,
+    "bars_on_a_doubled_staff": 0,
+    "of_bars_with_events": 432,
+    "bars_with_events_without_a_meter": 0,
+    "bars_judged_by_a_carried_meter": 0,
+    "fraction": 0.009259259259259259,
+    "noteheads_and_rests": 12,
+    "held": [
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 1,
+        "cell": 1,
+        "measure": 18,
+        "part": "P2",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 8,
+        "want_quarters": 2.0,
+        "divisions": 4,
+        "voices": [
+          {
+            "units": 6,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 1,
+        "cell": 3,
+        "measure": 20,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 8,
+        "want_quarters": 2.0,
+        "divisions": 4,
+        "voices": [
+          {
+            "units": 4,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 5,
+        "cell": 1,
+        "measure": 18,
+        "part": "P6",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 8,
+        "want_quarters": 2.0,
+        "divisions": 4,
+        "voices": [
+          {
+            "units": 6,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 6,
+        "cell": 1,
+        "measure": 18,
+        "part": "P7",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": false,
+        "want_units": 8,
+        "want_quarters": 2.0,
+        "divisions": 4,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      }
+    ]
+  },
+  "possibly_unread_mark": {
+    "bars": 0,
+    "holds_out": false,
+    "of_bars_with_events": 432,
+    "marked": []
+  },
+  "bars_held_out_unread_mark": {
+    "bars": 0,
+    "bars_on_a_doubled_staff": 0,
+    "of_bars_with_events": 432,
+    "fraction": 0.0,
+    "noteheads_and_rests": 0,
+    "held": []
+  },
+  "unread_bar_marks": {
+    "words": {
+      "unread": "unread",
+      "bar_does_not_add_up": "unread",
+      "possibly_unread_mark": "unread",
+      "meter_return_not_read": "meter?"
+    },
+    "color": "#D00000",
+    "unread": 0,
+    "held_out_sum": 4,
+    "held_out_unread_mark": 0,
+    "written": 4
+  },
+  "meter_returns_not_read": 0,
+  "notes_not_written_by_system": {
+    "1/0": {
+      "not_a_notehead:clipped_fragment": 3
+    },
+    "2/0": {
+      "owned_by_another_staff": 4,
+      "owner_not_read": 11,
+      "not_a_notehead:clipped_fragment": 4,
+      "duration_narrowed": 1,
+      "bar_does_not_add_up": 12
+    }
+  },
+  "arcs_not_written": {
+    "tie_spelling_differs": 3,
+    "tie_pair_runs_off_the_system": 7,
+    "tie_pair_no_head_near_the_arc": 4
+  },
+  "tie_pairing": "record",
+  "tie_contradictions": [
+    {
+      "start": "glyph/1/0/6/3/3",
+      "stop": "glyph/1/0/6/4/1",
+      "pitches": [
+        "B3",
+        "Bb3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/0/6/3/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/7/3/3",
+      "stop": "glyph/1/0/7/4/1",
+      "pitches": [
+        "B3",
+        "Bb3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/0/7/3/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/16/3/3",
+      "stop": "glyph/1/0/16/4/1",
+      "pitches": [
+        "B3",
+        "Bb3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/0/16/3/2"
+      ]
+    }
+  ],
+  "tie_links": [
+    {
+      "start": "glyph/2/0/0/6/0",
+      "stop": "glyph/2/0/0/7/1",
+      "pitch": "F5",
+      "arcs": [
+        "glyph/2/0/0/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/1/6/0",
+      "stop": "glyph/2/0/1/7/1",
+      "pitch": "F5",
+      "arcs": [
+        "glyph/2/0/1/6/1"
+      ]
+    },
+    {
+      "start": "glyph/2/0/2/6/0",
+      "stop": "glyph/2/0/2/7/1",
+      "pitch": "F5",
+      "arcs": [
+        "glyph/2/0/2/6/1"
+      ]
+    },
+    {
+      "start": "glyph/2/0/3/6/0",
+      "stop": "glyph/2/0/3/7/1",
+      "pitch": "F5",
+      "arcs": [
+        "glyph/2/0/3/6/1"
+      ]
+    },
+    {
+      "start": "glyph/0/0/4/3/0",
+      "stop": "glyph/0/0/4/4/1",
+      "pitch": "E4",
+      "arcs": [
+        "glyph/0/0/4/3/2",
+        "glyph/0/0/4/4/3"
+      ]
+    },
+    {
+      "start": "glyph/2/0/4/6/1",
+      "stop": "glyph/2/0/4/7/2",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/2/0/4/6/2"
+      ]
+    },
+    {
+      "start": "glyph/0/0/5/3/0",
+      "stop": "glyph/0/0/5/4/1",
+      "pitch": "E4",
+      "arcs": [
+        "glyph/0/0/5/3/2",
+        "glyph/0/0/5/4/3"
+      ]
+    },
+    {
+      "start": "glyph/2/0/5/6/0",
+      "stop": "glyph/2/0/5/7/1",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/2/0/5/6/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/0/6",
+      "stop": "glyph/1/0/6/1/0",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/6/0/5"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/1/0",
+      "stop": "glyph/1/0/6/2/1",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/6/1/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/4/1",
+      "stop": "glyph/1/0/6/5/0",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/6/4/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/5/0",
+      "stop": "glyph/1/0/6/6/1",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/6/5/1",
+        "glyph/1/0/6/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/6/6/0",
+      "stop": "glyph/2/0/6/7/1",
+      "pitch": "F2",
+      "arcs": [
+        "glyph/2/0/6/6/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/7/0/6",
+      "stop": "glyph/1/0/7/1/0",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/7/0/5"
+      ]
+    },
+    {
+      "start": "glyph/1/0/7/1/0",
+      "stop": "glyph/1/0/7/2/1",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/7/1/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/7/4/1",
+      "stop": "glyph/1/0/7/5/0",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/7/4/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/7/5/0",
+      "stop": "glyph/1/0/7/6/1",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/7/5/1",
+        "glyph/1/0/7/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/7/6/0",
+      "stop": "glyph/2/0/7/7/1",
+      "pitch": "F2",
+      "arcs": [
+        "glyph/2/0/7/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/8/6/1",
+      "stop": "glyph/2/0/8/7/1",
+      "pitch": "D5",
+      "arcs": [
+        "glyph/2/0/8/6/0"
+      ]
+    },
+    {
+      "start": "glyph/2/0/9/6/1",
+      "stop": "glyph/2/0/9/7/1",
+      "pitch": "D5",
+      "arcs": [
+        "glyph/2/0/9/6/0"
+      ]
+    },
+    {
+      "start": "glyph/0/0/13/3/0",
+      "stop": "glyph/0/0/13/4/2",
+      "pitch": "D4",
+      "arcs": [
+        "glyph/0/0/13/3/2",
+        "glyph/0/0/13/4/3"
+      ]
+    },
+    {
+      "start": "glyph/1/0/13/1/0",
+      "stop": "glyph/1/0/13/2/2",
+      "pitch": "C5",
+      "arcs": [
+        "glyph/1/0/13/1/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/13/5/0",
+      "stop": "glyph/1/0/13/6/5",
+      "pitch": "D5",
+      "arcs": [
+        "glyph/1/0/13/5/1"
+      ]
+    },
+    {
+      "start": "glyph/2/0/13/6/0",
+      "stop": "glyph/2/0/13/7/1",
+      "pitch": "F4",
+      "arcs": [
+        "glyph/2/0/13/6/2"
+      ]
+    },
+    {
+      "start": "glyph/0/0/14/3/0",
+      "stop": "glyph/0/0/14/4/1",
+      "pitch": "D4",
+      "arcs": [
+        "glyph/0/0/14/3/3",
+        "glyph/0/0/14/4/4"
+      ]
+    },
+    {
+      "start": "glyph/1/0/14/0/6",
+      "stop": "glyph/1/0/14/1/0",
+      "pitch": "Eb4",
+      "arcs": [
+        "glyph/1/0/14/0/3"
+      ]
+    },
+    {
+      "start": "glyph/1/0/14/1/0",
+      "stop": "glyph/1/0/14/2/1",
+      "pitch": "Eb4",
+      "arcs": [
+        "glyph/1/0/14/1/1",
+        "glyph/1/0/14/2/6"
+      ]
+    },
+    {
+      "start": "glyph/1/0/14/3/1",
+      "stop": "glyph/1/0/14/4/1",
+      "pitch": "D4",
+      "arcs": [
+        "glyph/1/0/14/3/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/14/5/0",
+      "stop": "glyph/1/0/14/6/2",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/0/14/5/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/14/6/2",
+      "stop": "glyph/1/0/14/7/3",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/0/14/6/1"
+      ]
+    },
+    {
+      "start": "glyph/2/0/14/6/0",
+      "stop": "glyph/2/0/14/7/1",
+      "pitch": "F4",
+      "arcs": [
+        "glyph/2/0/14/6/2"
+      ]
+    },
+    {
+      "start": "glyph/0/0/15/3/0",
+      "stop": "glyph/0/0/15/4/1",
+      "pitch": "D3",
+      "arcs": [
+        "glyph/0/0/15/3/3",
+        "glyph/0/0/15/4/3"
+      ]
+    },
+    {
+      "start": "glyph/1/0/15/0/6",
+      "stop": "glyph/1/0/15/1/0",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/0/15/0/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/15/1/0",
+      "stop": "glyph/1/0/15/2/2",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/0/15/1/1",
+        "glyph/1/0/15/2/3"
+      ]
+    },
+    {
+      "start": "glyph/1/0/15/5/0",
+      "stop": "glyph/1/0/15/6/1",
+      "pitch": "D4",
+      "arcs": [
+        "glyph/1/0/15/5/1",
+        "glyph/1/0/15/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/15/6/0",
+      "stop": "glyph/2/0/15/7/1",
+      "pitch": "F3",
+      "arcs": [
+        "glyph/2/0/15/6/1"
+      ]
+    },
+    {
+      "start": "glyph/0/0/16/3/0",
+      "stop": "glyph/0/0/16/4/1",
+      "pitch": "D2",
+      "arcs": [
+        "glyph/0/0/16/3/3",
+        "glyph/0/0/16/4/3"
+      ]
+    },
+    {
+      "start": "glyph/1/0/16/0/6",
+      "stop": "glyph/1/0/16/1/0",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/16/0/5"
+      ]
+    },
+    {
+      "start": "glyph/1/0/16/1/0",
+      "stop": "glyph/1/0/16/2/1",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/16/1/1"
+      ]
+    },
+    {
+      "start": "glyph/1/0/16/4/1",
+      "stop": "glyph/1/0/16/5/0",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/16/4/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/16/5/0",
+      "stop": "glyph/1/0/16/6/1",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/16/5/1",
+        "glyph/1/0/16/6/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/16/6/0",
+      "stop": "glyph/2/0/16/7/1",
+      "pitch": "F2",
+      "arcs": [
+        "glyph/2/0/16/6/1"
+      ]
+    },
+    {
+      "start": "glyph/0/0/17/3/0",
+      "stop": "glyph/0/0/17/4/1",
+      "pitch": "D3",
+      "arcs": [
+        "glyph/0/0/17/3/2"
+      ]
+    },
+    {
+      "start": "glyph/2/0/17/6/0",
+      "stop": "glyph/2/0/17/7/1",
+      "pitch": "F2",
+      "arcs": [
+        "glyph/2/0/17/6/2"
+      ]
+    }
+  ],
+  "arcs_not_written_total": 14,
+  "articulations_not_written": {},
+  "articulations_not_written_total": 0,
+  "articulation_balance": {
+    "marks_in_log": 0,
+    "written": 0,
+    "not_written": 0,
+    "balanced": true
+  },
+  "dot_role_not_placed": {
+    "abstained_dot_role_ambiguous": 3
+  },
+  "dot_role_not_placed_total": 3,
+  "dot_role_balance": {
+    "population": 4,
+    "attached_augmentation": 1,
+    "written_staccato": 0,
+    "attached_staccato_before_hold_out": 0,
+    "not_placed": 3,
+    "balanced": true
+  },
+  "ornaments_not_written": {
+    "ornament_no_notehead": 1
+  },
+  "ornaments_not_written_total": 1,
+  "ornament_balance": {
+    "marks_in_log": 1,
+    "written": 0,
+    "not_written": 1,
+    "balanced": true
+  },
+  "wedges_not_written": {},
+  "wedges_not_written_total": 0,
+  "wedge_balance": {
+    "rows_in_log": 0,
+    "decided": 0,
+    "abstained": 0,
+    "written": 0,
+    "not_written": 0,
+    "balanced": true
+  },
+  "direction_words_not_written": {
+    "cell_not_in_any_part": 0,
+    "placed_but_not_rendered": 0
+  },
+  "direction_words_not_written_total": 0,
+  "direction_balance": {
+    "words_decided": 0,
+    "placed": 0,
+    "written": 0,
+    "not_written": 0,
+    "balanced": true
+  },
+  "fermatas_not_written": {
+    "fermata_owning_glyph_not_written": 1
+  },
+  "fermatas_not_written_total": 1,
+  "fermata_balance": {
+    "marks_in_log": 83,
+    "written": 76,
+    "duplicated_across_voices": 0,
+    "not_written": 1,
+    "absorbed_by_a_shared_event": 6,
+    "balanced": true
+  },
+  "balance": {
+    "events_in_log": 689,
+    "noteheads_in_log": 372,
+    "rests_in_log": 317,
+    "events_written": 654,
+    "rests_duplicated_across_voices": 0,
+    "notes_doubled_to_condensed_slot": 0,
+    "events_not_written": 35,
+    "balanced": true
+  }
+}

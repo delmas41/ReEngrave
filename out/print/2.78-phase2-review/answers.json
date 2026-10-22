@@ -1,0 +1,80 @@
+{
+ "judge": "sean",
+ "date": "2026-10-10",
+ "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+ "answers": {
+  "1": {
+   "sean": "half",
+   "sean_quarters": 2.0,
+   "ours_stem_value_after": 2.0,
+   "verdict": "right"
+  },
+  "2": {
+   "sean": "eighth (2 eighths on one beam)",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 0.5,
+   "verdict": "right"
+  },
+  "3": {
+   "sean": "half",
+   "sean_quarters": 2.0,
+   "ours_stem_value_after": 2.0,
+   "verdict": "right"
+  },
+  "4": {
+   "sean": "dotted half",
+   "sean_quarters": 3.0,
+   "ours_stem_value_after": 3.0,
+   "verdict": "right"
+  },
+  "5": {
+   "sean": "16th",
+   "sean_quarters": 0.25,
+   "ours_stem_value_after": 0.5,
+   "verdict": "wrong"
+  },
+  "6": {
+   "sean": "eighth",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 1.0,
+   "verdict": "wrong"
+  },
+  "7": {
+   "sean": "eighth",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 0.5,
+   "verdict": "right"
+  },
+  "8": {
+   "sean": "half, tremolo slash",
+   "sean_quarters": 2.0,
+   "ours_stem_value_after": 2.0,
+   "verdict": "right"
+  },
+  "9": {
+   "sean": "eighth",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 0.5,
+   "verdict": "right"
+  },
+  "10": {
+   "sean": "eighth",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 0.5,
+   "verdict": "right"
+  },
+  "11": {
+   "sean": "eighth",
+   "sean_quarters": 0.5,
+   "ours_stem_value_after": 0.5,
+   "verdict": "right"
+  },
+  "12": {
+   "sean": "dotted quarter",
+   "sean_quarters": 1.5,
+   "ours_stem_value_after": 1.5,
+   "verdict": "right"
+  }
+ },
+ "summary": "10 of 12 right after 2.78; wrong: 5, 6"
+}

@@ -1,0 +1,6 @@
+{
+ "question": "Is the thing in the blue box a notehead? If not, what is it?",
+ "tiles": 12,
+ "blue": "the box asked about",
+ "nothing_else_drawn": true
+}

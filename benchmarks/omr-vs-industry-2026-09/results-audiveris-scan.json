@@ -1,0 +1,178 @@
+{
+  "pooled": {
+    "n_rows": 10,
+    "omr_ed": 27934,
+    "omr_ned": 0.7918698265109423
+  },
+  "rows": {
+    "bach-brandenburg3-mvt1-468678-p1": {
+      "error": "no MusicXML produced (rc=1)",
+      "input_dpi": 478,
+      "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering \u2014 COMPLETION of the parked row",
+      "note": "Audiveris 5.11 internal NPE (Measure.purgeVoices null) during its own processing \u2014 transcription never completes; not recoverable from outside.",
+      "seconds": 60.1,
+      "status": "failed"
+    },
+    "beethoven-sym5-mvt1-575951-p1": {
+      "input_dpi": 424,
+      "label": "Beethoven 5 / same plates, high-res + text layer",
+      "omr_ed": 1288,
+      "omr_ned": 0.7268623024830699,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-575951-p1/page.mxl",
+      "pred_symbols": 708,
+      "seconds": 102.2,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 589,
+        "entire staff insert/delete": 513,
+        "wrong direction": 16,
+        "wrong keysig": 15,
+        "wrong note": 119
+      },
+      "truth_symbols": 1064
+    },
+    "beethoven-sym5-mvt1-575951-p2": {
+      "input_dpi": 424,
+      "label": "Beethoven 5 / same plates, high-res + text layer \u2014 p.2",
+      "omr_ed": 4450,
+      "omr_ned": 0.7937923653228683,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-575951-p2/page.mxl",
+      "pred_symbols": 2602,
+      "seconds": 60.2,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 2130,
+        "entire staff insert/delete": 401,
+        "wrong lyric": 62,
+        "wrong note": 1208,
+        "wrong note head": 412
+      },
+      "truth_symbols": 3004
+    },
+    "beethoven-sym5-mvt1-984073-p1": {
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal",
+      "omr_ed": 1521,
+      "omr_ned": 0.8492462311557789,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-984073-p1/page-600.mxl",
+      "pred_symbols": 727,
+      "seconds": 30.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 607,
+        "entire staff insert/delete": 513,
+        "wrong note": 125,
+        "wrong note head": 202,
+        "wrong timesig": 22
+      },
+      "truth_symbols": 1064
+    },
+    "beethoven-sym5-mvt1-984073-p2": {
+      "input_dpi": 600,
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal \u2014 p.2, first two-system row",
+      "omr_ed": 4584,
+      "omr_ned": 0.8510954326030449,
+      "pred_path": "out/audiveris-scan/beethoven-sym5-mvt1-984073-p2/page.mxl",
+      "pred_symbols": 2382,
+      "seconds": 36.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 2272,
+        "entire staff insert/delete": 682,
+        "wrong direction": 56,
+        "wrong note": 1036,
+        "wrong note head": 356
+      },
+      "truth_symbols": 3004
+    },
+    "brahms-sym1-mvt1-317803-p1": {
+      "input_dpi": 435,
+      "label": "Brahms 1 / Breitkopf Samtliche Werke / dense",
+      "note": "Needed Audiveris's per-step timeout raised (-constant org.audiveris.omr.sheet.SheetStub.stepTimeOut=900; default 120 s dies in CURVES on this page) and the same makeNotation=False music21 pass-through as Dvorak.",
+      "omr_ed": 3687,
+      "omr_ned": 0.9268,
+      "pred_path": "out/audiveris-scan/brahms-sym1-mvt1-317803-p1/brahms-retry/page.norm.musicxml",
+      "pred_symbols": 1895,
+      "seconds": null,
+      "status": "ok",
+      "truth_symbols": 2083
+    },
+    "brahms-sym1-mvt1-317803-p2": {
+      "input_dpi": 435,
+      "label": "Brahms 1 / Breitkopf / dense, page 2",
+      "note": "makeNotation=False pass-through plus ONE inexpressible duration snapped to the nearest expressible value (Audiveris overfull-measure junk musicdiff cannot type).",
+      "omr_ed": 4641,
+      "omr_ned": 0.7479,
+      "pred_path": "out/audiveris-scan/brahms-sym1-mvt1-317803-p2/page.norm2.musicxml",
+      "pred_symbols": 2806,
+      "seconds": null,
+      "status": "ok",
+      "truth_symbols": 3399
+    },
+    "dvorak-sym9-mvt1-405834-p5": {
+      "input_dpi": 481,
+      "label": "Dvorak 9 / Simrock 1894 / the one 1:1 page",
+      "note": "Audiveris export triggers a music21 makeTies crash (overfull measure 9); scored via a music21 pass-through re-serialization with makeNotation=False, which adds/removes no symbols.",
+      "omr_ed": 777,
+      "omr_ned": 0.5381,
+      "pred_path": "out/audiveris-scan/dvorak-sym9-mvt1-405834-p5/page.norm.musicxml",
+      "pred_symbols": 652,
+      "seconds": null,
+      "status": "ok",
+      "truth_symbols": 792
+    },
+    "dvorak-sym9-mvt1-405834-p6": {
+      "input_dpi": 444,
+      "label": "Dvorak 9 / Simrock 1894 \u2014 p.6 (printed p.184), the 1:1 pairing continued",
+      "omr_ed": 2753,
+      "omr_ned": 0.7317916002126529,
+      "pred_path": "out/audiveris-scan/dvorak-sym9-mvt1-405834-p6/page.mxl",
+      "pred_symbols": 1740,
+      "seconds": 42.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 400,
+        "wrong flag/beam": 151,
+        "wrong note": 1952,
+        "wrong note head": 118,
+        "wrong timesig": 30
+      },
+      "truth_symbols": 2022
+    },
+    "mahler-sym5-mvt1-local-p2": {
+      "input_dpi": 522,
+      "label": "Mahler 5 / Edition Peters / densest, anacrusis",
+      "omr_ed": 1120,
+      "omr_ned": 0.6534422403733956,
+      "pred_path": "out/audiveris-scan/mahler-sym5-mvt1-local-p2/page.mxl",
+      "pred_symbols": 566,
+      "seconds": 60.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 218,
+        "entire staff insert/delete": 649,
+        "wrong direction": 90,
+        "wrong note": 94,
+        "wrong timesig": 30
+      },
+      "truth_symbols": 1148
+    },
+    "mahler-sym5-mvt1-local-p3": {
+      "input_dpi": 522,
+      "label": "Mahler 5 / Edition Peters \u2014 p.3 (printed p.4), tacet-suppressed lineup",
+      "omr_ed": 3113,
+      "omr_ned": 0.8604201216141515,
+      "pred_path": "out/audiveris-scan/mahler-sym5-mvt1-local-p3/page.mxl",
+      "pred_symbols": 1370,
+      "seconds": 45.1,
+      "status": "ok",
+      "top_categories": {
+        "entire measure insert/delete": 971,
+        "entire staff insert/delete": 1674,
+        "wrong keysig": 32,
+        "wrong note": 337,
+        "wrong timesig": 26
+      },
+      "truth_symbols": 2248
+    }
+  }
+}

@@ -1,0 +1,31 @@
+FAMILY note   deciding quantity pitch  (a consequence or gather only — no adjudicator owns this quantity)
+POPULATION (its own ink): 2347   via {'detector_class': 2347}
+INK      Q.INK rows 7093 over 1183 cells; the population occupies 814 cells, 814 of which carry ink rows
+
+         rows = every verdict row this stage wrote (what it DID); STAND = subjects whose FINAL answer it owns.
+stage        quantity                   rows    dec   narr   abst  STAND  directions
+EVALUATE     accidental                  419    419      0      0    419  {'first_answer': 419}
+   reasons: [('decided/from_key_signature', 419)]
+ADJUDICATE   duration                   2347   1990    357      0   2292  {'first_answer': 2347}
+   reasons: [('decided/head_and_marks', 1990), ('narrowed/beams_ambiguous', 357)]
+EVALUATE     duration                     55     55      0      0     55  {'changed_the_value': 50, 'collapsed_a_narrowing': 5}
+   reasons: [('decided/meter_reconciliation', 55)]
+ADJUDICATE   glyph_owner                 464    458      0      6    464  {'first_answer': 464}
+   reasons: [('decided/distance', 331), ('decided/ladder', 107), ('decided/range_veto', 20), ('abstained/tied', 6)]
+ADJUDICATE   notehead_is_a_whole_rest   2347   2347      0      0   2347  {'first_answer': 2347}
+   reasons: [('decided/not_rest_shaped', 2202), ('decided/not_where_a_whole_rest_can_hang', 120), ('decided/shape_and_position_agree', 25)]
+EVALUATE     pitch                      2327   2327      0      0   2141  {'first_answer': 2141, 'changed_the_value': 186}
+   reasons: [('decided/position_and_clef', 2113), ('decided/reowned', 214)]
+ADJUDICATE   stem_direction             2347   1443      0    904   2347  {'first_answer': 2347}
+   reasons: [('decided/stem_projection', 1443), ('abstained/no_stem', 793), ('abstained/stems_disagree', 111)]
+
+EXPORT   read_from_the_exporter
+         written   {'notes': 965}
+         refused (NOTES AND RESTS together for three of these reasons — see the docstring):
+             staff_not_identified               783
+             duration_narrowed                  335
+             no_pitch                           205
+             owned_by_another_staff             173
+             ink_is_a_whole_rest                25
+         balance (the EXPORTER's own equality, which it raises on): balanced=True
+             events_in_log 2993 = written 1472 + not_written 1521

@@ -1,0 +1,128 @@
+[
+  {
+    "label": "bach-wtc",
+    "page": 5,
+    "may": {
+      "systems": 5,
+      "staves": 10,
+      "measures": 32,
+      "noteheads": 445
+    },
+    "now": {
+      "systems": 5,
+      "staves": 10,
+      "measures": 28,
+      "noteheads": 496,
+      "pitched_pct": 100.0,
+      "timed_pct": 100.0,
+      "clef_sources": {
+        "DEFAULTED": 6,
+        "detector": 4
+      },
+      "consistency_flags": {},
+      "seconds": 41.5
+    }
+  },
+  {
+    "label": "handel-leadsheet",
+    "page": 10,
+    "may": {
+      "systems": 3,
+      "staves": 15,
+      "measures": 60,
+      "noteheads": 298
+    },
+    "now": {
+      "systems": 3,
+      "staves": 15,
+      "measures": 55,
+      "noteheads": 421,
+      "pitched_pct": 100.0,
+      "timed_pct": 100.0,
+      "clef_sources": {
+        "DEFAULTED": 10,
+        "cv_locator": 3,
+        "detector": 2
+      },
+      "consistency_flags": {
+        "rhythm_sum_warning": 7
+      },
+      "seconds": 79.7
+    }
+  },
+  {
+    "label": "handel-reduction",
+    "page": 20,
+    "may": {
+      "systems": 2,
+      "staves": 12,
+      "measures": 108,
+      "noteheads": 476
+    },
+    "now": {
+      "systems": 2,
+      "staves": 12,
+      "measures": 96,
+      "noteheads": 2799,
+      "pitched_pct": 100.0,
+      "timed_pct": 100.0,
+      "clef_sources": {
+        "DEFAULTED": 12
+      },
+      "consistency_flags": {},
+      "seconds": 293.0
+    }
+  },
+  {
+    "label": "ravel-bolero",
+    "page": 10,
+    "may": {
+      "systems": 3,
+      "staves": 32,
+      "measures": 112,
+      "noteheads": 1052
+    },
+    "now": {
+      "systems": 2,
+      "staves": 32,
+      "measures": 192,
+      "noteheads": 1129,
+      "pitched_pct": 100.0,
+      "timed_pct": 100.0,
+      "clef_sources": {
+        "detector": 20,
+        "DEFAULTED": 10,
+        "cv_locator": 2
+      },
+      "consistency_flags": {
+        "rhythm_sum_warning": 40
+      },
+      "seconds": 243.1
+    }
+  },
+  {
+    "label": "beethoven-5",
+    "page": 15,
+    "may": {
+      "systems": 2,
+      "staves": 18,
+      "measures": 98,
+      "noteheads": 904
+    },
+    "now": {
+      "systems": 2,
+      "staves": 19,
+      "measures": 274,
+      "noteheads": 4843,
+      "pitched_pct": 100.0,
+      "timed_pct": 100.0,
+      "clef_sources": {
+        "DEFAULTED": 19
+      },
+      "consistency_flags": {
+        "phase1_warning": 46
+      },
+      "seconds": 613.3
+    }
+  }
+]

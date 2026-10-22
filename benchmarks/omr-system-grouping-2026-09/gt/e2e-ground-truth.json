@@ -1,0 +1,55 @@
+{
+  "comment": [
+    "End-to-end ground truth for the left-edge system-split fix (cue A,",
+    "OMR_LEFT_EDGE_SPLIT — tools/omr/system_grouping.py). Four scanned pages,",
+    "three publishers, where the wide connectivity window MERGES two stacked",
+    "systems and only the narrow left-edge barline scan recovers the break.",
+    "Every number below was read off the page by eye (system count from the",
+    "left brackets, measure count from the printed barlines, verified against",
+    "a barline overlay at 600 dpi) on 2026-09-01. The schubert sys-0 count is",
+    "15, not the 14 a first 110-dpi thumbnail count gave — recount before",
+    "'fixing' it.",
+    "",
+    "Consumed by tools/omr/tests/test_left_edge_split_e2e.py. Paths are",
+    "relative to tools.library.score_library.editions_root(). ORCHESTRAL",
+    "SCORES ONLY — do not add Nottebohm or other mixed text/music sources."
+  ],
+  "pages": {
+    "eroica-p36": {
+      "pdf_rel": "beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "page": 36,
+      "dpi": 600,
+      "systems": 2,
+      "staves_per_system": [11, 11],
+      "measures_per_system": [8, 8],
+      "notes": "Litolff 1870, printed p.141 (mvt 2). The over-merge cue A discovered during Phase 1 (fix/PHASE1_RESULTS.md): bridging ink between the systems fakes a connection. Merged, the page reads as one 22-staff system of 6-10 measures."
+    },
+    "schubert8-p23": {
+      "pdf_rel": "schubert/symphony-8-d-759/schubert--symphony-8-d-759--breitkopf-hartel-s-parti--imslp1017902.pdf",
+      "page": 23,
+      "dpi": 600,
+      "systems": 2,
+      "staves_per_system": [14, 14],
+      "measures_per_system": [15, 13],
+      "notes": "Breitkopf & Härtel parts edition, printed p.20. Sweep fix [28] -> [14, 14]. At 300 dpi one sys-0 barline is missed (14 measures); 600 dpi reads all 15."
+    },
+    "schumann3-p14": {
+      "pdf_rel": "schumann/symphony-3-op97/schumann--symphony-3-op97--peters-1887--imslp13086.pdf",
+      "page": 14,
+      "dpi": 600,
+      "systems": 2,
+      "staves_per_system": [13, 13],
+      "measures_per_system": [12, 9],
+      "notes": "Peters 1887, printed p.15. Sweep fix [26] -> [13, 13]."
+    },
+    "b9-p60": {
+      "pdf_rel": "beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+      "page": 60,
+      "dpi": 600,
+      "systems": 2,
+      "staves_per_system": [12, 12],
+      "measures_per_system": [13, 14],
+      "notes": "Litolff 1870, printed p.124 (mvt 2). One of the three known GT over-merge failures (FIX_PLAN.md: bridging 324 at the true break). System 2's strings are V1/V2/Va/Bassi — the Bassi share one staff, so 12 staves, not 13."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "min_stem_spaces": 1.75,
+ "groups": {
+  "DECIDED": {
+   "n": 1443,
+   "median": 3.937,
+   "with_stem_ink": 1443,
+   "share": 1.0
+  },
+  "no_stem": {
+   "n": 793,
+   "median": 3.875,
+   "with_stem_ink": 760,
+   "share": 0.9584
+  },
+  "stems_disagree": {
+   "n": 111,
+   "median": 3.937,
+   "with_stem_ink": 111,
+   "share": 1.0
+  }
+ }
+}

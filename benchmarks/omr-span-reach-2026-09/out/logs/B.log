@@ -1,0 +1,19 @@
+
+beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf: 88 pages in 82s -> 2 span(s) [[0, 43], [44, 87]]
+   pages 0-43 (44p) peak sizes [0, 6, 7, 8, 9, 10, 11, 12]
+   pages 44-87 (44p) peak sizes [10, 15, 16, 17]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.json
+
+dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf: 80 pages in 282s -> 1 span(s) [[0, 79]]
+   pages 0-79 (80p) peak sizes [0, 14, 15, 27, 30]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/dvorak--symphony-9-op95--simrock-1894--imslp405834.json
+
+beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf: 89 pages in 339s -> 1 span(s) [[0, 88]]
+   pages 0-88 (89p) peak sizes [7, 8, 9, 10, 11, 12, 13]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.json
+
+brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf: 86 pages in 344s -> 2 span(s) [[0, 44], [45, 85]]
+   pages 0-44 (45p) peak sizes [10, 11, 12, 13, 14]
+   pages 45-85 (41p) peak sizes [10, 11, 12, 13, 14, 16, 17, 27, 28]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.json
+STREAM B DONE

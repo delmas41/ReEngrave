@@ -1,0 +1,106 @@
+[
+ {
+  "tile": 1,
+  "kind": "wedge_no_head_abstained",
+  "mark": "glyph/24/1/10/2/16",
+  "class": "augmentationDot",
+  "before": "augmentation",
+  "after": "wedge_without_a_head"
+ },
+ {
+  "tile": 2,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/1/8/16",
+  "class": "articStaccatoAbove",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 3,
+  "kind": "wedge_no_head_abstained",
+  "mark": "glyph/24/1/13/8/14",
+  "class": "augmentationDot",
+  "before": "dot_role_ambiguous",
+  "after": "wedge_without_a_head"
+ },
+ {
+  "tile": 4,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/5/5/18",
+  "class": "articStaccatoBelow",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 5,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/6/8/15",
+  "class": "articStaccatoBelow",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 6,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/0/5/6/14",
+  "class": "articStaccatoBelow",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 7,
+  "kind": "CONTROL_detector_staccatissimo",
+  "mark": "glyph/24/0/11/8/5",
+  "class": "articStaccatissimoBelow",
+  "before": null,
+  "after": null
+ },
+ {
+  "tile": 8,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/0/6/21",
+  "class": "articStaccatoAbove",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 9,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/2/5/17",
+  "class": "articStaccatoAbove",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 10,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/12/4/12",
+  "class": "articStaccatoAbove",
+  "before": "staccato",
+  "after": "staccatissimo"
+ },
+ {
+  "tile": 11,
+  "kind": "CONTROL_round_staccato",
+  "mark": "glyph/24/1/6/8/18",
+  "class": "articStaccatoBelow",
+  "before": "staccato",
+  "after": "staccato"
+ },
+ {
+  "tile": 12,
+  "kind": "wedge_no_head_abstained",
+  "mark": "glyph/24/1/13/4/8",
+  "class": "augmentationDot",
+  "before": "augmentation",
+  "after": "wedge_without_a_head"
+ },
+ {
+  "tile": 13,
+  "kind": "changed_staccato_to_staccatissimo",
+  "mark": "glyph/24/1/5/8/21",
+  "class": "articStaccatoBelow",
+  "before": "staccato",
+  "after": "staccatissimo"
+ }
+]

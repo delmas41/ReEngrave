@@ -1,0 +1,66 @@
+{
+ "roadmap_item": "2.74",
+ "dpi": 600,
+ "heads": [
+  {
+   "tile": "brahms_02.png",
+   "cell": "cell/0/0/11/3",
+   "pdf_page_index": 0,
+   "bracketed": [
+    3356,
+    5921,
+    3502,
+    5950
+   ],
+   "what": "a CV beam stroke the 2.74 tests keep (thick, straight, on two stems) that overlaps >= 25% with thin straight ink the same tests refuse"
+  },
+  {
+   "tile": "brahms_05.png",
+   "cell": "cell/0/0/0/5",
+   "pdf_page_index": 0,
+   "bracketed": [
+    4440,
+    1665,
+    4582,
+    1695
+   ],
+   "what": "a CV beam stroke the 2.74 tests keep (thick, straight, on two stems) that overlaps >= 25% with thin straight ink the same tests refuse"
+  },
+  {
+   "tile": "brahms_11.png",
+   "cell": "cell/1/1/11/3",
+   "pdf_page_index": 1,
+   "bracketed": [
+    3111,
+    6876,
+    3327,
+    6893
+   ],
+   "what": "a CV beam stroke the 2.74 tests keep (thick, straight, on two stems) that overlaps >= 25% with thin straight ink the same tests refuse"
+  },
+  {
+   "tile": "litolff_01.png",
+   "cell": "cell/2/0/4/5",
+   "pdf_page_index": 2,
+   "bracketed": [
+    1123,
+    1056,
+    1184,
+    1066
+   ],
+   "what": "a CV beam stroke the 2.74 tests keep (thick, straight, on two stems) that overlaps >= 25% with thin straight ink the same tests refuse"
+  },
+  {
+   "tile": "litolff_05.png",
+   "cell": "cell/2/1/8/5",
+   "pdf_page_index": 2,
+   "bracketed": [
+    1233,
+    3236,
+    1348,
+    3247
+   ],
+   "what": "a CV beam stroke the 2.74 tests keep (thick, straight, on two stems) that overlaps >= 25% with thin straight ink the same tests refuse"
+  }
+ ]
+}

@@ -1,0 +1,670 @@
+[
+ {
+  "doc": "litolff",
+  "cell": "cell/1/0/3/0",
+  "before": [
+   "ff"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/1/0/10/0",
+  "before": [
+   "f",
+   "ff",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/1/0/10/6",
+  "before": [
+   "p",
+   "p"
+  ],
+  "after": [
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/1/0/11/0",
+  "before": [
+   "f",
+   "ff",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/1/0/11/6",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/0/1",
+  "before": [],
+  "after": [
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/1/2",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/3/1",
+  "before": [
+   "p"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/4/1",
+  "before": [
+   "f"
+  ],
+  "after": [
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/4/5",
+  "before": [
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/4/15",
+  "before": [],
+  "after": [
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/5/5",
+  "before": [
+   "f"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/5/15",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/7/1",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": true
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/7/2",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/8/2",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/8/9",
+  "before": [],
+  "after": [
+   "fp"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/9/2",
+  "before": [
+   "f",
+   "ff"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/0/9/9",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/1/7",
+  "before": [
+   "f"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/1/9",
+  "before": [
+   "f"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/2/7",
+  "before": [
+   "f",
+   "sf"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/5/9",
+  "before": [],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/5/10",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/6/9",
+  "before": [
+   "f",
+   "sf"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/6/10",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/7/4",
+  "before": [
+   "f"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/8/4",
+  "before": [
+   "sf",
+   "sf",
+   "f"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/8/7",
+  "before": [],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/9/7",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/9/8",
+  "before": [
+   "sf",
+   "f"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/9/9",
+  "before": [],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/2/1/10/9",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "sf"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/4/3",
+  "before": [
+   "f",
+   "f",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/4/14",
+  "before": [],
+  "after": [
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/5/14",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/6/3",
+  "before": [
+   "f",
+   "f",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/8/3",
+  "before": [
+   "f",
+   "f",
+   "f",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/10/3",
+  "before": [
+   "f",
+   "ff",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "litolff",
+  "cell": "cell/3/0/10/14",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/1/0",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/2/0",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/3/0",
+  "before": [
+   "f",
+   "fp"
+  ],
+  "after": [
+   "fp"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/6/0",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/10/0",
+  "before": [
+   "f",
+   "f",
+   "mp",
+   "ff"
+  ],
+  "after": [
+   "ff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/0/0/12/0",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/2/1",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/3/1",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/5/1",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/6/1",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/9/1",
+  "before": [
+   "fp"
+  ],
+  "after": [
+   "f",
+   "fp"
+  ],
+  "judged_before": true
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/9/3",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/11/0",
+  "before": [],
+  "after": [
+   "fff"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/11/1",
+  "before": [
+   "f",
+   "f",
+   "p"
+  ],
+  "after": [
+   "f",
+   "p"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/11/3",
+  "before": [],
+  "after": [
+   "fp"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/12/0",
+  "before": [
+   "fff"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/12/1",
+  "before": [
+   "f",
+   "p",
+   "fp"
+  ],
+  "after": [
+   "f",
+   "fp"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/0/12/3",
+  "before": [
+   "pp"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/1/8/1",
+  "before": [],
+  "after": [
+   "pp"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/1/9/1",
+  "before": [
+   "pp"
+  ],
+  "after": [],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/1/9/6",
+  "before": [
+   "pp"
+  ],
+  "after": [
+   "ppp"
+  ],
+  "judged_before": false
+ },
+ {
+  "doc": "brahms",
+  "cell": "cell/1/1/10/6",
+  "before": [
+   "p",
+   "fp",
+   "fp"
+  ],
+  "after": [],
+  "judged_before": false
+ }
+]

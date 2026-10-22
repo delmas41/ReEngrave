@@ -1,0 +1,349 @@
+{
+  "roadmap_item": "2.26",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5fc918451950b02c/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260929.record.json",
+  "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "question": "Does a bare parenthetical crook ('(C)' / '(Es)') with no instrument word, on a staff immediately below a decided Horn staff at the SAME slot region, ALWAYS mean 'this staff is the Horn pair's other crook, continuing the label above it' -- never an unrelated instrument's own independent crook annotation?",
+  "crops": [
+    {
+      "n": 1,
+      "file": "o226-01.png",
+      "page": 7,
+      "system": 0,
+      "note": "clean pair -- Hr. decides, (Es) abstains",
+      "rows": [
+        {
+          "staff": "staff/7/0/4",
+          "ordinal": 4,
+          "lines": [
+            1692,
+            1720,
+            1748,
+            1775,
+            1804
+          ],
+          "spacing": 28.0,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        },
+        {
+          "staff": "staff/7/0/5",
+          "ordinal": 5,
+          "lines": [
+            1918,
+            1945,
+            1972,
+            1999,
+            2018
+          ],
+          "spacing": 25.0,
+          "margin_text": "(Es)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "o226-02.png",
+      "page": 20,
+      "system": 0,
+      "note": "clean pair, second occurrence order (5,6 not 4,5)",
+      "rows": [
+        {
+          "staff": "staff/20/0/5",
+          "ordinal": 5,
+          "lines": [
+            1808,
+            1836,
+            1862,
+            1890,
+            1918
+          ],
+          "spacing": 27.5,
+          "margin_text": "(C) Hr",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        },
+        {
+          "staff": "staff/20/0/6",
+          "ordinal": 6,
+          "lines": [
+            2087,
+            2116,
+            2143,
+            2171,
+            2199
+          ],
+          "spacing": 28.0,
+          "margin_text": "(Es)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "o226-03.png",
+      "page": 15,
+      "system": 1,
+      "note": "clean pair, another page",
+      "rows": [
+        {
+          "staff": "staff/15/1/5",
+          "ordinal": 5,
+          "lines": [
+            5114,
+            5142,
+            5169,
+            5196,
+            5221
+          ],
+          "spacing": 26.75,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        },
+        {
+          "staff": "staff/15/1/6",
+          "ordinal": 6,
+          "lines": [
+            5333,
+            5360,
+            5388,
+            5415,
+            5443
+          ],
+          "spacing": 27.5,
+          "margin_text": "(Es)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "o226-04.png",
+      "page": 22,
+      "system": 0,
+      "note": "clean pair, another page",
+      "rows": [
+        {
+          "staff": "staff/22/0/4",
+          "ordinal": 4,
+          "lines": [
+            1748,
+            1777,
+            1804,
+            1829,
+            1857
+          ],
+          "spacing": 27.25,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        },
+        {
+          "staff": "staff/22/0/5",
+          "ordinal": 5,
+          "lines": [
+            1987,
+            2013,
+            2043,
+            2068,
+            2099
+          ],
+          "spacing": 28.0,
+          "margin_text": "(Es)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "o226-05.png",
+      "page": 9,
+      "system": 1,
+      "note": "ONLY ONE horn staff gathered here -- no partner to eliminate against, ambiguous_pairing alone",
+      "rows": [
+        {
+          "staff": "staff/9/1/5",
+          "ordinal": 5,
+          "lines": [
+            5125,
+            5152,
+            5179,
+            5207,
+            5234
+          ],
+          "spacing": 27.25,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "o226-06.png",
+      "page": 23,
+      "system": 1,
+      "note": "ONLY ONE horn staff gathered here -- second instance",
+      "rows": [
+        {
+          "staff": "staff/23/1/5",
+          "ordinal": 5,
+          "lines": [
+            5227,
+            5254,
+            5282,
+            5310,
+            5338
+          ],
+          "spacing": 27.75,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "abstained",
+          "slot_reason": "ambiguous_pairing"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "o226-07.png",
+      "page": 26,
+      "system": 1,
+      "note": "BOTH staves read only a bare crook -- (C) then (Es), neither resolves",
+      "rows": [
+        {
+          "staff": "staff/26/1/5",
+          "ordinal": 5,
+          "lines": [
+            5177,
+            5205,
+            5232,
+            5259,
+            5287
+          ],
+          "spacing": 27.5,
+          "margin_text": "(C)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        },
+        {
+          "staff": "staff/26/1/6",
+          "ordinal": 6,
+          "lines": [
+            5458,
+            5485,
+            5512,
+            5539,
+            5568
+          ],
+          "spacing": 27.5,
+          "margin_text": "(Es)",
+          "instrument": null,
+          "instrument_outcome": "abstained",
+          "instrument_reason": "not_in_lexicon",
+          "slot_outcome": "abstained",
+          "slot_reason": "unnamed_in_short_system"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "o226-08.png",
+      "page": 2,
+      "system": 1,
+      "note": "REFERENCE system (widest, 14 staves) -- both staves read IN FULL, 'Hr.' present on both, and this is the lineup every other system is judged against",
+      "rows": [
+        {
+          "staff": "staff/2/1/5",
+          "ordinal": 5,
+          "lines": [
+            5215,
+            5243,
+            5270,
+            5298,
+            5324
+          ],
+          "spacing": 27.25,
+          "margin_text": "(C) Hr.",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "decided",
+          "slot_reason": "named"
+        },
+        {
+          "staff": "staff/2/1/6",
+          "ordinal": 6,
+          "lines": [
+            5411,
+            5438,
+            5465,
+            5493,
+            5520
+          ],
+          "spacing": 27.25,
+          "margin_text": "Hr. (Es)",
+          "instrument": "Horn",
+          "instrument_outcome": "decided",
+          "instrument_reason": "label",
+          "slot_outcome": "decided",
+          "slot_reason": "named"
+        }
+      ],
+      "question": "bare crook '(C)'/'(Es)' with no 'Hr.' always continues the Horn staff above it, and the crook text itself picks which of the two reference Horn slots -- yes / no / sometimes",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

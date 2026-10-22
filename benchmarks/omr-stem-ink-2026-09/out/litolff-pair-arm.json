@@ -1,0 +1,16 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "control": {
+  "cells_shared": 783,
+  "cells_identical": 783,
+  "stems_recut": 1920,
+  "stems_record": 1920
+ },
+ "gained": {
+  "no_stem": 73
+ },
+ "cost": {
+  "new_strokes": 244,
+  "on_an_accidental": 56
+ }
+}

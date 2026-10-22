@@ -1,0 +1,545 @@
+Processing `/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly'
+Parsing...
+Interpreting music...
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:252:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:50:17: warning: barcheck failed at: 3/8
+      r8 ces''4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:72:21: warning: barcheck failed at: 1/2
+      <c'' e''>4 r4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:124:20: warning: barcheck failed at: 1/2
+      <ees e'>4 r4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:35:55: warning: barcheck failed at: 5/8
+      r8 <g' ces'' ces'' ees'' ees''>4 <ees'' g''>4-. 
+                                                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:125:10: warning: barcheck failed at: 3/4
+      e4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:163:35: warning: barcheck failed at: 3/4
+      <c'' e''>4 <g' c'' e''>4 r4 
+                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:178:22: warning: barcheck failed at: 3/4
+      c''4-. c''4 r4 
+                     |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:215:18: warning: barcheck failed at: 3/4
+      c''4 r4 r4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:43: warning: unterminated tie
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4
+                                          ~-. r4 r4 b'4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:43: warning: unterminated tie
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4
+                                          ~-. r4 r4 b'4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:43: warning: unterminated tie
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4
+                                          ~-. r4 r4 b'4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:43: warning: unterminated tie
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4
+                                          ~-. r4 r4 b'4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:51:28: warning: barcheck failed at: 1/8
+      <e'' g''>4-. c''4 r4 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:15:49: warning: barcheck failed at: 1/4
+    <ces'' ees''>4 <ces'' ees''>4 fis'''4 r4 r4 
+                                                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:73:27: warning: barcheck failed at: 1/4
+      <a' f''>4-. r4 c''4 
+                          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:87:40: warning: barcheck failed at: 1/4
+      <f' a'>4 g'4 <a' f''>4-. c''4 r4 
+                                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:200:29: warning: barcheck failed at: 1/4
+      e''4 d'4 c''4-. r4 r4 
+                            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:289:33: warning: barcheck failed at: 1/4
+      a'4 <g' aes'>4 c''4 r4 r4 
+                                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:64: warning: unterminated tie
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4
+                                                               ~-. r4 r4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:328:57: warning: unterminated tie
+      <d' f' a'>4 <bes bes d' ees' f'>4 c'4 a4 <g ees'>4
+                                                        ~-. r4 r4 <g bes c' d'>4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:328:57: warning: unterminated tie
+      <d' f' a'>4 <bes bes d' ees' f'>4 c'4 a4 <g ees'>4
+                                                        ~-. r4 r4 <g bes c' d'>4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:36:28: warning: barcheck failed at: 3/8
+      <e'' g''>4-. c''4 r4 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:362:41: warning: unterminated tie
+    a,4 e4 r8 <ees ges>4 <ees ges>4 ees4
+                                        ~ r4 ees4 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:110:17: warning: barcheck failed at: 1/2
+      e4 <c e>4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:143:67: warning: barcheck failed at: 1/2
+    <c'' e''>4 <f' g' c'' e''>4 e'4-. g'4~ <g' c''>4 <f' a' c''>4 
+                                                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:164:26: warning: barcheck failed at: 1/2
+      <c'' f''>4 c''4 r4 
+                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:179:26: warning: barcheck failed at: 1/2
+      <c'' f''>4 c''4 r4 
+                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:216:24: warning: barcheck failed at: 1/2
+      <c' c'>4-. r4 r4 
+                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:57: warning: barcheck failed at: 1/2
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4~-. r4 r4 b'4 
+                                                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:344:14: warning: barcheck failed at: 1/2
+      d'4 r4 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:237:50: warning: barcheck failed at: 3/4
+      <a, c>4 <f g>4 <e g>4 <a, e g>4 b,4 c4 c4~ 
+                                                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:74: warning: barcheck failed at: 3/4
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4~-. r4 r4 
+                                                                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:237:48: warning: unterminated tie
+      <a, c>4 <f g>4 <e g>4 <a, e g>4 b,4 c4 c4
+                                               ~ |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:362:51: warning: barcheck failed at: 7/8
+    a,4 e4 r8 <ees ges>4 <ees ges>4 ees4~ r4 ees4 
+                                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:144:17: warning: barcheck failed at: 1/4
+    e'4-. r4 r4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:309:21: warning: barcheck failed at: 1/4
+    <f e'>4 c''4 r4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:238:20: warning: barcheck failed at: 1/2
+      <e a>4 r4 e4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:275:32: warning: barcheck failed at: 1/2
+      <g e' b' g''>4-. r4 c''4 
+                               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:329:20: warning: barcheck failed at: 1/2
+      <g ees'>4 r4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:363:14: warning: barcheck failed at: 5/8
+    e4 r4 r4 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:310:9: warning: barcheck failed at: 3/4
+    g'2 
+        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:53:15: warning: barcheck failed at: 3/8
+      r1 c''4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:38:15: warning: barcheck failed at: 5/8
+      r1 c''4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:112:19: warning: barcheck failed at: 3/4
+      r1 <c e g>4 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:166:23: warning: barcheck failed at: 3/4
+      r1 <f' a' c''>4 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:181:23: warning: barcheck failed at: 3/4
+      r1 <f' a' c''>4 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:218:40: warning: barcheck failed at: 3/4
+      r1 <d' f' f' a' a' c'' d'' e''>4 
+                                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:364:11: warning: barcheck failed at: 7/8
+    r1 g4 
+          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:312:14: warning: barcheck failed at: 1/4
+    <f' g'>2 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:146:20: warning: barcheck failed at: 1/2
+    r1 <e' f' a'>4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:256:13: warning: barcheck failed at: 1/2
+      c4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:240:21: warning: barcheck failed at: 3/4
+      r1 <c e e g>4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:277:22: warning: barcheck failed at: 3/4
+      r1 <f' f' b'>4 
+                     |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:313:9: warning: barcheck failed at: 3/4
+    f'2 
+        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:315:19: warning: barcheck failed at: 1/2
+    <b, b, c>4 c4 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:316:32: warning: barcheck failed at: 1/8
+    b,8( d,8 <b, b,>8 d,8 d,8) 
+                               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:366:18: warning: barcheck failed at: 5/8
+    e4 g4( bes4) 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:317:24: warning: barcheck failed at: 3/4
+    b8( f'8 b8 f'8 b8) 
+                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:350:12: warning: barcheck failed at: 3/4
+      bes4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:295:25: warning: barcheck failed at: 1/8
+      r8 g''4 g''4 g''4 
+                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:351:15: warning: barcheck failed at: 1/4
+      d'4 d'4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:318:28: warning: barcheck failed at: 1/2
+    e'8( b8 e'8 b8 e'8 b8) 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:58:12: warning: barcheck failed at: 5/8
+      c''4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:280:25: warning: barcheck failed at: 5/8
+      r8 g''4 g''4 g''4 
+                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:335:12: warning: barcheck failed at: 3/4
+      bes4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:43:12: warning: barcheck failed at: 7/8
+      c''4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:297:10: warning: barcheck failed at: 1/4
+      b4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:319:27: warning: barcheck failed at: 1/4
+    d'8 e'8 b8 e'8 a8 e'8 
+                          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:353:16: warning: barcheck failed at: 3/8
+      <g' a'>8 
+               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:367:18: warning: barcheck failed at: 3/8
+    e2 r1 <d d>4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:80:30: warning: barcheck failed at: 1/2
+      <e' g' b' d'' f''>4 r1 
+                             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:281:19: warning: barcheck failed at: 1/2
+      b4 b4 b4 b8 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:282:10: warning: barcheck failed at: 3/4
+      b4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:59:17: warning: barcheck failed at: 1/8
+      r4 r1 g'4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:338:16: warning: barcheck failed at: 1/8
+      <g' a'>8 
+               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:44:17: warning: barcheck failed at: 3/8
+      r4 r1 g'4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:299:10: warning: barcheck failed at: 3/8
+      b8 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:284:10: warning: barcheck failed at: 7/8
+      b8 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:300:13: warning: barcheck failed at: 7/8
+      a4 b4 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:354:18: warning: barcheck failed at: 7/8
+      r1 g'4 a'4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:60:13: warning: barcheck failed at: 3/8
+      r4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:285:13: warning: barcheck failed at: 3/8
+      a4 b4 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:45:13: warning: barcheck failed at: 5/8
+      r4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:339:18: warning: barcheck failed at: 5/8
+      r1 g'4 a'4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:82:23: warning: barcheck failed at: 3/4
+      <e' g' f''>4 r1 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:97:23: warning: barcheck failed at: 1/2
+      <e' g' f''>4 r1 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:370:18: warning: barcheck failed at: 5/8
+    <d e>1 e4 r1 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:154:13: warning: barcheck failed at: 3/4
+    f''4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:371:18: warning: barcheck failed at: 1/8
+    e4 r1 <d e>4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:373:27: warning: barcheck failed at: 7/8
+    a,4( <bes, bes,>4 c4) 
+                          |
+Preprocessing graphical objects...
+Interpreting music...
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:252:10: warning: barcheck failed at: 1/4
+      e4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:50:17: warning: barcheck failed at: 3/8
+      r8 ces''4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:72:21: warning: barcheck failed at: 1/2
+      <c'' e''>4 r4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:124:20: warning: barcheck failed at: 1/2
+      <ees e'>4 r4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:35:55: warning: barcheck failed at: 5/8
+      r8 <g' ces'' ces'' ees'' ees''>4 <ees'' g''>4-. 
+                                                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:125:10: warning: barcheck failed at: 3/4
+      e4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:163:35: warning: barcheck failed at: 3/4
+      <c'' e''>4 <g' c'' e''>4 r4 
+                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:178:22: warning: barcheck failed at: 3/4
+      c''4-. c''4 r4 
+                     |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:215:18: warning: barcheck failed at: 3/4
+      c''4 r4 r4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:51:28: warning: barcheck failed at: 1/8
+      <e'' g''>4-. c''4 r4 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:15:49: warning: barcheck failed at: 1/4
+    <ces'' ees''>4 <ces'' ees''>4 fis'''4 r4 r4 
+                                                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:73:27: warning: barcheck failed at: 1/4
+      <a' f''>4-. r4 c''4 
+                          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:87:40: warning: barcheck failed at: 1/4
+      <f' a'>4 g'4 <a' f''>4-. c''4 r4 
+                                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:200:29: warning: barcheck failed at: 1/4
+      e''4 d'4 c''4-. r4 r4 
+                            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:289:33: warning: barcheck failed at: 1/4
+      a'4 <g' aes'>4 c''4 r4 r4 
+                                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:36:28: warning: barcheck failed at: 3/8
+      <e'' g''>4-. c''4 r4 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:110:17: warning: barcheck failed at: 1/2
+      e4 <c e>4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:143:67: warning: barcheck failed at: 1/2
+    <c'' e''>4 <f' g' c'' e''>4 e'4-. g'4~ <g' c''>4 <f' a' c''>4 
+                                                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:164:26: warning: barcheck failed at: 1/2
+      <c'' f''>4 c''4 r4 
+                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:179:26: warning: barcheck failed at: 1/2
+      <c'' f''>4 c''4 r4 
+                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:216:24: warning: barcheck failed at: 1/2
+      <c' c'>4-. r4 r4 
+                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:308:57: warning: barcheck failed at: 1/2
+    ees''4 <ces'' ees''>4 <g e' e' ees''>4~-. r4 r4 b'4 
+                                                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:344:14: warning: barcheck failed at: 1/2
+      d'4 r4 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:237:50: warning: barcheck failed at: 3/4
+      <a, c>4 <f g>4 <e g>4 <a, e g>4 b,4 c4 c4~ 
+                                                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:274:74: warning: barcheck failed at: 3/4
+      c''4 aes'4 <c'' ees''>4 <c'' ees''>4 <g e' e' b' b' g''>4~-. r4 r4 
+                                                                         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:362:51: warning: barcheck failed at: 7/8
+    a,4 e4 r8 <ees ges>4 <ees ges>4 ees4~ r4 ees4 
+                                                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:144:17: warning: barcheck failed at: 1/4
+    e'4-. r4 r4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:309:21: warning: barcheck failed at: 1/4
+    <f e'>4 c''4 r4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:238:20: warning: barcheck failed at: 1/2
+      <e a>4 r4 e4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:275:32: warning: barcheck failed at: 1/2
+      <g e' b' g''>4-. r4 c''4 
+                               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:329:20: warning: barcheck failed at: 1/2
+      <g ees'>4 r4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:363:14: warning: barcheck failed at: 5/8
+    e4 r4 r4 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:310:9: warning: barcheck failed at: 3/4
+    g'2 
+        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:53:15: warning: barcheck failed at: 3/8
+      r1 c''4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:38:15: warning: barcheck failed at: 5/8
+      r1 c''4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:112:19: warning: barcheck failed at: 3/4
+      r1 <c e g>4 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:166:23: warning: barcheck failed at: 3/4
+      r1 <f' a' c''>4 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:181:23: warning: barcheck failed at: 3/4
+      r1 <f' a' c''>4 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:218:40: warning: barcheck failed at: 3/4
+      r1 <d' f' f' a' a' c'' d'' e''>4 
+                                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:364:11: warning: barcheck failed at: 7/8
+    r1 g4 
+          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:312:14: warning: barcheck failed at: 1/4
+    <f' g'>2 
+             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:146:20: warning: barcheck failed at: 1/2
+    r1 <e' f' a'>4 
+                   |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:256:13: warning: barcheck failed at: 1/2
+      c4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:240:21: warning: barcheck failed at: 3/4
+      r1 <c e e g>4 
+                    |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:277:22: warning: barcheck failed at: 3/4
+      r1 <f' f' b'>4 
+                     |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:313:9: warning: barcheck failed at: 3/4
+    f'2 
+        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:315:19: warning: barcheck failed at: 1/2
+    <b, b, c>4 c4 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:316:32: warning: barcheck failed at: 1/8
+    b,8( d,8 <b, b,>8 d,8 d,8) 
+                               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:366:18: warning: barcheck failed at: 5/8
+    e4 g4( bes4) 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:317:24: warning: barcheck failed at: 3/4
+    b8( f'8 b8 f'8 b8) 
+                       |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:350:12: warning: barcheck failed at: 3/4
+      bes4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:295:25: warning: barcheck failed at: 1/8
+      r8 g''4 g''4 g''4 
+                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:351:15: warning: barcheck failed at: 1/4
+      d'4 d'4 
+              |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:318:28: warning: barcheck failed at: 1/2
+    e'8( b8 e'8 b8 e'8 b8) 
+                           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:58:12: warning: barcheck failed at: 5/8
+      c''4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:280:25: warning: barcheck failed at: 5/8
+      r8 g''4 g''4 g''4 
+                        |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:335:12: warning: barcheck failed at: 3/4
+      bes4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:43:12: warning: barcheck failed at: 7/8
+      c''4 
+           |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:297:10: warning: barcheck failed at: 1/4
+      b4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:319:27: warning: barcheck failed at: 1/4
+    d'8 e'8 b8 e'8 a8 e'8 
+                          |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:353:16: warning: barcheck failed at: 3/8
+      <g' a'>8 
+               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:367:18: warning: barcheck failed at: 3/8
+    e2 r1 <d d>4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:80:30: warning: barcheck failed at: 1/2
+      <e' g' b' d'' f''>4 r1 
+                             |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:281:19: warning: barcheck failed at: 1/2
+      b4 b4 b4 b8 
+                  |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:282:10: warning: barcheck failed at: 3/4
+      b4 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:59:17: warning: barcheck failed at: 1/8
+      r4 r1 g'4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:338:16: warning: barcheck failed at: 1/8
+      <g' a'>8 
+               |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:44:17: warning: barcheck failed at: 3/8
+      r4 r1 g'4 
+                |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:299:10: warning: barcheck failed at: 3/8
+      b8 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:284:10: warning: barcheck failed at: 7/8
+      b8 
+         |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:300:13: warning: barcheck failed at: 7/8
+      a4 b4 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:354:18: warning: barcheck failed at: 7/8
+      r1 g'4 a'4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:60:13: warning: barcheck failed at: 3/8
+      r4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:285:13: warning: barcheck failed at: 3/8
+      a4 b4 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:45:13: warning: barcheck failed at: 5/8
+      r4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:339:18: warning: barcheck failed at: 5/8
+      r1 g'4 a'4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:82:23: warning: barcheck failed at: 3/4
+      <e' g' f''>4 r1 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:97:23: warning: barcheck failed at: 1/2
+      <e' g' f''>4 r1 
+                      |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:370:18: warning: barcheck failed at: 5/8
+    <d e>1 e4 r1 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:154:13: warning: barcheck failed at: 3/4
+    f''4 r1 
+            |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:371:18: warning: barcheck failed at: 1/8
+    e4 r1 <d e>4 
+                 |
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.ly:373:27: warning: barcheck failed at: 7/8
+    a,4( <bes, bes,>4 c4) 
+                          |
+MIDI output to `/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.midi'...
+Finding the ideal number of pages...
+Fitting music on 1 page...
+Drawing systems...
+Converting to `/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/transcription-overnight-progress-426c90/benchmarks/omr-timesig-2026-09/out/beet3_common-4-4.pdf'...
+Success: compilation successfully completed

@@ -1,0 +1,118 @@
+{
+  "candidate_list": [
+    "12/16",
+    "12/4",
+    "12/8",
+    "2/2",
+    "2/4",
+    "3/2",
+    "3/4",
+    "3/8",
+    "4/2",
+    "4/4",
+    "5/4",
+    "5/8",
+    "6/16",
+    "6/4",
+    "6/8",
+    "7/4",
+    "7/8",
+    "9/16",
+    "9/4",
+    "9/8"
+  ],
+  "dossiers": {
+    "n_works": 97,
+    "starting_meters": {
+      "3/4": 30,
+      "4/4": 20,
+      "2/4": 15,
+      "2/2": 14,
+      "6/8": 5,
+      "3/8": 4,
+      "5/4": 4,
+      "12/8": 2,
+      "6/4": 2,
+      "4/8": 1
+    },
+    "all_meters": {
+      "3/4": 64,
+      "4/4": 50,
+      "2/4": 39,
+      "2/2": 24,
+      "6/8": 18,
+      "6/4": 18,
+      "9/4": 14,
+      "5/4": 7,
+      "3/8": 5,
+      "12/8": 5,
+      "3/2": 4,
+      "5/2": 4,
+      "9/8": 3,
+      "4/8": 1
+    },
+    "starting_covered": 96,
+    "works_missing_starting_meter": [
+      "dvorak-sym9-mvt1"
+    ],
+    "works_missing_some_meter": {
+      "dvorak-sym9-mvt1": [
+        "4/8"
+      ],
+      "holst-planets-full": [
+        "5/2",
+        "5/2"
+      ],
+      "holst-planets-mvt1": [
+        "5/2",
+        "5/2"
+      ]
+    }
+  },
+  "library_reference": {
+    "n_files": 1745,
+    "n_unreadable": 54,
+    "meters": {
+      "4/4": 740,
+      "3/4": 317,
+      "2/4": 221,
+      "6/8": 154,
+      "2/2": 79,
+      "3/8": 56,
+      "9/8": 29,
+      "12/8": 28,
+      "6/4": 22,
+      "3/2": 12,
+      "5/4": 8,
+      "4/8": 8,
+      "4/2": 6,
+      "12/16": 3,
+      "6/16": 3,
+      "24/16": 1,
+      "2/8": 1,
+      "7/8": 1,
+      "7/4": 1,
+      "4/16": 1
+    },
+    "symbols": {
+      "cut": 79,
+      "common": 646
+    },
+    "covered": 1680,
+    "total_read": 1691,
+    "outside_candidate_list": [
+      "bach/bach-prelude-bwv860/bach--bach-prelude-bwv860--bwv860--gradus-assets.musicxml: 24/16",
+      "chaminade/lc4999596/chaminade--lc4999596--lanneau-dargent--gradus-assets.mxl: 2/8",
+      "debussy/debussy-images-book-1-1-reflets-dans-leau/debussy--debussy-images-book-1-1-reflets-dans-leau--images--gradus-assets.musicxml: 4/8",
+      "dvorak/symphony-9/dvorak--symphony-9--mvt1--gradus-assets.musicxml: 4/8",
+      "dvorak/symphony-9/dvorak--symphony-9--mvt1--gradus.mxl: 4/8",
+      "hensel/6-lieder/hensel--6-lieder--wanderlied--gradus-assets.mxl: 4/8",
+      "mahler/lieder-eines-fahrenden-gesellen/mahler--lieder-eines-fahrenden-gesellen--wenn-mein-schatz-hochzeit-macht--gradus-assets.mxl: 4/8",
+      "wolf/eichendorff-lieder/wolf--eichendorff-lieder--der-glucksritter--gradus-assets.mxl: 4/8",
+      "wolf/eichendorff-lieder/wolf--eichendorff-lieder--unfall--gradus-assets.mxl: 4/8",
+      "wolf/eichendorff-lieder/wolf--eichendorff-lieder--waldmadchen--gradus-assets.mxl: 4/16",
+      "wolf/morike-lieder/wolf--morike-lieder--nimmersatte-liebe--gradus-assets.mxl: 4/8"
+    ],
+    "n_outside": 11
+  }
+}

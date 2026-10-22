@@ -1,0 +1,18 @@
+{
+ "source": "Sean 2026-10-20",
+ "verbatim": "2.179 - 1-4.8 5.4 6.2 7.8 8.8 9.2 10. 8 rest 11.4 12. Part of a quarter rest",
+ "answers": {
+  "1": "eighth note",
+  "2": "eighth note",
+  "3": "eighth note",
+  "4": "eighth note",
+  "5": "quarter note",
+  "6": "half note",
+  "7": "eighth note",
+  "8": "eighth note",
+  "9": "half note",
+  "10": "eighth rest",
+  "11": "quarter note",
+  "12": "part of a quarter rest"
+ }
+}

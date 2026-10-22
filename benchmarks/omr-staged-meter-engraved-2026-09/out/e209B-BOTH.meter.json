@@ -1,0 +1,23 @@
+[
+  {
+    "subject": "system/0/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/1/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  }
+]

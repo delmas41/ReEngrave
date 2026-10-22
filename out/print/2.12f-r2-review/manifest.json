@@ -1,0 +1,300 @@
+{
+ "dpi": 600,
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1881,
+    758,
+    1936,
+    768
+   ],
+   "subject": "glyph/3/0/1/2/14",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/3/0/1/2/8 (gap 0.70 heads)",
+   "read_after": "abstained: stem_direction_unread (nearest head glyph/3/0/1/2/8, gap 0.70 heads, stem None)",
+   "category": "stem_unread",
+   "frame_control": {
+    "ink_ratio": 382.22,
+    "centroid_offset": [
+     0.0,
+     0.02
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "pdf_page_index": 9,
+   "page_box_600dpi": [
+    1703,
+    4518,
+    1757,
+    4531
+   ],
+   "subject": "glyph/9/1/3/1/23",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/9/1/3/1/5 (gap 4.61 heads)",
+   "read_after": "decided: owner glyph/9/1/3/1/13 (stem up, notehead side below, rule stem_side, gap 1.63 heads)",
+   "category": "two_voice",
+   "frame_control": {
+    "ink_ratio": 9.81,
+    "centroid_offset": [
+     0.02,
+     0.02
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "pdf_page_index": 17,
+   "page_box_600dpi": [
+    5116,
+    5514,
+    5171,
+    5543
+   ],
+   "subject": "glyph/17/1/7/5/9",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/17/1/7/5/3 (gap 1.73 heads)",
+   "read_after": "abstained: stem_direction_unread (nearest head glyph/17/1/7/5/3, gap 1.73 heads, stem None)",
+   "category": "stem_unread",
+   "frame_control": {
+    "ink_ratio": 4.31,
+    "centroid_offset": [
+     0.03,
+     0.09
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "pdf_page_index": 18,
+   "page_box_600dpi": [
+    3736,
+    6943,
+    3790,
+    6950
+   ],
+   "subject": "glyph/18/1/12/5/17",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/18/1/12/5/1 (gap 6.01 heads)",
+   "read_after": "abstained: stem_contradicts_class_side (nearest head glyph/18/1/12/5/1, gap 6.01 heads, stem down)",
+   "category": "stem_side",
+   "frame_control": {
+    "ink_ratio": 7.05,
+    "centroid_offset": [
+     0.0,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "pdf_page_index": 19,
+   "page_box_600dpi": [
+    3698,
+    1447,
+    3708,
+    1461
+   ],
+   "subject": "glyph/19/0/3/6/15",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/19/0/3/6/11 (gap 0.28 heads)",
+   "read_after": "NARROWED: heads_about_equally_near",
+   "category": "narrowed",
+   "frame_control": {
+    "ink_ratio": 7.53,
+    "centroid_offset": [
+     0.0,
+     0.03
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "pdf_page_index": 23,
+   "page_box_600dpi": [
+    5138,
+    5653,
+    5193,
+    5684
+   ],
+   "subject": "glyph/23/1/7/9/4",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/23/1/7/9/0 (gap 5.04 heads)",
+   "read_after": "abstained: stem_contradicts_class_side (nearest head glyph/23/1/7/9/2, gap 2.22 heads, stem up)",
+   "category": "stem_side",
+   "frame_control": {
+    "ink_ratio": 2.55,
+    "centroid_offset": [
+     0.03,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "pdf_page_index": 10,
+   "page_box_600dpi": [
+    2061,
+    387,
+    2091,
+    392
+   ],
+   "subject": "glyph/10/0/0/10/6",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/10/0/0/10/1",
+   "read_after": "NARROWED: heads_about_equally_near",
+   "category": "narrowed_litolff",
+   "frame_control": {
+    "ink_ratio": 36.84,
+    "centroid_offset": [
+     0.01,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "pdf_page_index": 11,
+   "page_box_600dpi": [
+    1985,
+    1447,
+    2000,
+    1468
+   ],
+   "subject": "glyph/11/0/3/2/5",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/11/0/3/2/6 (gap 2.97 heads)",
+   "read_after": "decided: owner glyph/11/0/3/2/1 (stem up, notehead side below, rule notehead_side, gap 0.12 heads)",
+   "category": "moved_touching",
+   "frame_control": {
+    "ink_ratio": 2.86,
+    "centroid_offset": [
+     0.04,
+     0.08
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "pdf_page_index": 24,
+   "page_box_600dpi": [
+    1737,
+    5210,
+    1791,
+    5239
+   ],
+   "subject": "glyph/24/1/4/1/0",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/24/1/4/1/1 (gap 0.87 heads)",
+   "read_after": "decided: owner glyph/24/1/4/1/4 (stem down, notehead side above, rule stem_side, gap 5.82 heads)",
+   "category": "moved_other",
+   "frame_control": {
+    "ink_ratio": 3.77,
+    "centroid_offset": [
+     0.03,
+     0.02
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "pdf_page_index": 10,
+   "page_box_600dpi": [
+    1627,
+    4792,
+    1640,
+    4811
+   ],
+   "subject": "glyph/10/1/3/1/4",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/10/1/3/1/7 (gap 3.22 heads)",
+   "read_after": "decided: owner glyph/10/1/3/1/3 (stem up, notehead side below, rule notehead_side, gap 0.28 heads)",
+   "category": "moved_touching",
+   "frame_control": {
+    "ink_ratio": 3.33,
+    "centroid_offset": [
+     0.07,
+     0.13
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "pdf_page_index": 5,
+   "page_box_600dpi": [
+    5247,
+    6248,
+    5303,
+    6278
+   ],
+   "subject": "glyph/5/1/10/9/6",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/5/1/10/9/3 (gap 2.23 heads)",
+   "read_after": "decided: owner glyph/5/1/10/9/1 (stem down, notehead side above, rule notehead_side, gap 0.13 heads)",
+   "category": "moved_touching",
+   "frame_control": {
+    "ink_ratio": 3.11,
+    "centroid_offset": [
+     0.02,
+     0.08
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "pdf_page_index": 25,
+   "page_box_600dpi": [
+    1259,
+    3326,
+    1271,
+    3344
+   ],
+   "subject": "glyph/25/0/11/0/14",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "decided: owner glyph/25/0/11/0/4 (gap 0.32 heads)",
+   "read_after": "decided: owner glyph/25/0/11/0/4 (stem down, notehead side above, rule notehead_side, gap 0.32 heads)",
+   "category": "control",
+   "frame_control": {
+    "ink_ratio": 11.01,
+    "centroid_offset": [
+     0.0,
+     0.05
+    ],
+    "passes": true
+   }
+  }
+ ],
+ "frame_control": {
+  "tiles": 12,
+  "ratio_threshold": 1.5,
+  "centroid_offset_max": 0.3,
+  "real_box_passes": 12,
+  "SHIFTED_(40,40)px_box_passes(control, must be low)": 2
+ }
+}

@@ -1,0 +1,197 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "what": "heads whose notehead_class is a WHOLE note and which the pipeline nevertheless gives a stem direction. Either the direction is wrong or the class is - the print says which.",
+ "added_mid_pass": true,
+ "not_part_of_the_preregistered_sample": true,
+ "projection": 8,
+ "borrow": 0,
+ "n": 5,
+ "rows": [
+  {
+   "subject": "glyph/2/0/3/1/18",
+   "read_direction": "down",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 1,
+    "glyph": 18
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    638.4675,
+    858.7075,
+    669.3375,
+    878.08
+   ],
+   "bbox_canonical": [
+    149.0,
+    741.0,
+    196.0,
+    123.0
+   ],
+   "staff_key": "staff/2/0/3",
+   "staff_lines": [
+    836.0,
+    852.0,
+    868.0,
+    883.0,
+    899.0
+   ],
+   "staff_spacing": 15.75,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/2/0/3/1/21",
+   "read_direction": "down",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 1,
+    "glyph": 21
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    638.625,
+    874.4575,
+    669.18,
+    893.515
+   ],
+   "bbox_canonical": [
+    150.0,
+    841.0,
+    194.0,
+    121.0
+   ],
+   "staff_key": "staff/2/0/3",
+   "staff_lines": [
+    836.0,
+    852.0,
+    868.0,
+    883.0,
+    899.0
+   ],
+   "staff_spacing": 15.75,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/2/1/4/13/1",
+   "read_direction": "down",
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 4,
+    "cell": 13,
+    "glyph": 1
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    2327.0,
+    2707.1025,
+    2348.735,
+    2726.475
+   ],
+   "bbox_canonical": [
+    0.0,
+    407.0,
+    138.0,
+    123.0
+   ],
+   "staff_key": "staff/2/1/4",
+   "staff_lines": [
+    2706.0,
+    2721.0,
+    2737.0,
+    2753.0,
+    2769.0
+   ],
+   "staff_spacing": 15.75,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/4/1/7/7/8",
+   "read_direction": "down",
+   "where": {
+    "page": 4,
+    "system": 1,
+    "staff": 7,
+    "cell": 7,
+    "glyph": 8
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    1468.0,
+    3155.0,
+    1492.16,
+    3177.4
+   ],
+   "bbox_canonical": [
+    0.0,
+    575.0,
+    151.0,
+    140.0
+   ],
+   "staff_key": "staff/4/1/7",
+   "staff_lines": [
+    3127.0,
+    3143.0,
+    3159.0,
+    3175.0,
+    3191.0
+   ],
+   "staff_spacing": 16.0,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/4/1/10/2/3",
+   "read_direction": "down",
+   "where": {
+    "page": 4,
+    "system": 1,
+    "staff": 10,
+    "cell": 2,
+    "glyph": 3
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    748.16,
+    3562.44,
+    776.0,
+    3577.96
+   ],
+   "bbox_canonical": [
+    1.0,
+    609.0,
+    174.0,
+    97.0
+   ],
+   "staff_key": "staff/4/1/10",
+   "staff_lines": [
+    3529.0,
+    3545.0,
+    3561.0,
+    3577.0,
+    3593.0
+   ],
+   "staff_spacing": 16.0,
+   "path": "projection",
+   "direction": "down"
+  }
+ ],
+ "frame_control_excluded": {
+  "staff": "staff/3/1/7",
+  "n": 3,
+  "subjects": [
+   "glyph/3/1/7/17/3",
+   "glyph/3/1/7/17/5",
+   "glyph/3/1/7/17/6"
+  ],
+  "contrast": -5.4,
+  "why": "the page-wide frame control REFUSED this staff (-5.4 grey levels, against +46..+221 for every other staff in this set). Diagnosed by rendering a full-width strip at the claimed rows: the staff IS there, but it TILTS across the page while Q.STAFF_LINES stores one constant comb, so by mid-page the claimed rows sit about half a space off the print - the warp OMR_CELL_LINE_TRACE exists to correct per CELL. These three heads are NOT adjudicated. The strip is committed as out/print/frame-refusal-staff-3-1-7.png."
+ }
+}

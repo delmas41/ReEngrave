@@ -1,0 +1,81 @@
+[
+  {
+    "subject": "system/0/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    }
+  },
+  {
+    "subject": "system/1/0",
+    "outcome": "decided",
+    "reason": "change_only",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "from_cell": 3,
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "support": 68.0,
+          "staves_reading_it": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ],
+          "bars_fit": 1,
+          "bars_contradict": 2
+        }
+      ]
+    },
+    "detail": {
+      "opening_unknown_because": "no_evidence",
+      "n_changes": 1
+    }
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  }
+]

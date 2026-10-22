@@ -1,0 +1,14 @@
+Litolff Beethoven 5 pp.1-4: 793 heads abstain `no_stem`
+re-cut in 15s
+cells censused: 1183   EXCLUDED for drift: 0
+
+== why each of the 793 heads has no stem
+reason                                              n    share
+too WIDE (w > 0.6 spaces)                         237   29.9%
+too SHORT (h < 2.0 spaces)                        199   25.1%
+NO component overlaps the head at all             167   21.1%
+a component WAS accepted (pair rule dropped it)     73    9.2%
+at a CELL EDGE (0.8 spaces)                        70    8.8%
+too TALL (h > 8.0 spaces)                          47    5.9%
+
+wrote benchmarks/omr-stem-ink-2026-09/out/litolff-rejections.json

@@ -1,0 +1,29 @@
+# Training-time requirements for the DeepScoresV2 -> YOLOv8 pipeline.
+#
+# This is a thin layer on top of the project's main requirements. Install
+# alongside `backend/requirements.txt` (which already has pillow, numpy,
+# opencv-python, etc.):
+#
+#     pip install -r tools/omr/training/requirements-training.txt
+#
+# Pin minor version on ultralytics — the API has been stable since 8.4 but
+# the YOLOv8-OBB and YOLOv10 backends sometimes shift kwargs. 8.4.x is the
+# series the wrapper code was written against.
+
+ultralytics>=8.4.50,<8.5.0
+
+# torch is pulled transitively by ultralytics; specifying it explicitly
+# would force a CUDA build choice we don't want to bake in here. Let
+# ultralytics' install profile pick the right wheel for the host
+# (CPU / CUDA 11.8 / CUDA 12.1 / MPS).
+#
+# If you need a specific CUDA build, install torch first per
+# https://pytorch.org/get-started/locally/, THEN install ultralytics.
+
+# YAML parser for data.yaml. PyYAML is in the main requirements but
+# repeated here for the training-only install path.
+PyYAML>=6.0
+
+# Pillow is in the main requirements; repeated for the smoke-test path
+# in train_yolo.py (which draws synthetic training images).
+Pillow>=9.0

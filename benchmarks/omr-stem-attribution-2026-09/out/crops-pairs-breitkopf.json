@@ -1,0 +1,746 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "seed": 20260921,
+ "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "pairs_available": {
+  "END": 982,
+  "MID": 39
+ },
+ "affine_residual_px": {
+  "mean": 0.0,
+  "max": 0.0,
+  "n": 3337
+ },
+ "pad_x_spaces": 7.0,
+ "pad_y_spaces": 7.0,
+ "sheets": [
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-0.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-1.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-2.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-3.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-4.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-pairs-breitkopf/sheet-5.png"
+ ],
+ "index": [
+  {
+   "tile": "P00",
+   "stratum": "MID",
+   "subject": "glyph/3/1/13/9/3",
+   "stem": "obs:054148",
+   "cell": "cell/3/1/13/9",
+   "frac": 0.2511,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    314.0,
+    391.0,
+    4.0,
+    223.0
+   ],
+   "frame_delta_grey": 198.0,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4902.1,
+    7008.5,
+    4903.2,
+    7070.4
+   ],
+   "head_box_page_px": [
+    4867.2,
+    7008.8,
+    4903.8,
+    7039.3
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P01",
+   "stratum": "END",
+   "subject": "glyph/1/0/9/0/6",
+   "stem": "obs:021498",
+   "cell": "cell/1/0/9/0",
+   "frac": 0.0311,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    621.0,
+    107.0,
+    12.0,
+    273.0
+   ],
+   "frame_delta_grey": 132.5,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    990.4,
+    2692.0,
+    997.4,
+    2852.6
+   ],
+   "head_box_page_px": [
+    989.2,
+    2679.6,
+    1027.5,
+    2714.3
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "P02",
+   "stratum": "MID",
+   "subject": "glyph/1/0/9/3/11",
+   "stem": "obs:021526",
+   "cell": "cell/1/0/9/3",
+   "frac": 0.2723,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1765.0,
+    486.0,
+    11.0,
+    224.0
+   ],
+   "frame_delta_grey": 186.0,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    3505.0,
+    2761.4,
+    3508.0,
+    2822.5
+   ],
+   "head_box_page_px": [
+    3470.1,
+    2764.2,
+    3508.8,
+    2792.0
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "P03",
+   "stratum": "MID",
+   "subject": "glyph/0/0/11/6/13",
+   "stem": "obs:006250",
+   "cell": "cell/0/0/11/6",
+   "frac": 0.2854,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1842.0,
+    633.0,
+    6.0,
+    212.0
+   ],
+   "frame_delta_grey": 205.1,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    5317.2,
+    6022.6,
+    5319.2,
+    6095.5
+   ],
+   "head_box_page_px": [
+    5280.8,
+    6025.7,
+    5318.9,
+    6061.1
+   ],
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "P04",
+   "stratum": "MID",
+   "subject": "glyph/2/1/11/0/14",
+   "stem": "obs:035595",
+   "cell": "cell/2/1/11/0",
+   "frac": 0.3405,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1428.0,
+    312.0,
+    22.0,
+    210.0
+   ],
+   "frame_delta_grey": 130.5,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    1210.4,
+    6604.6,
+    1219.2,
+    6688.5
+   ],
+   "head_box_page_px": [
+    1198.0,
+    6603.0,
+    1228.7,
+    6663.3
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P05",
+   "stratum": "MID",
+   "subject": "glyph/1/1/3/3/6",
+   "stem": "obs:021903",
+   "cell": "cell/1/1/3/3",
+   "frac": 0.2661,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    781.0,
+    474.0,
+    17.0,
+    186.0
+   ],
+   "frame_delta_grey": 170.8,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    3036.1,
+    4912.3,
+    3041.2,
+    4968.5
+   ],
+   "head_box_page_px": [
+    3002.8,
+    4910.5,
+    3042.7,
+    4944.0
+   ],
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "P06",
+   "stratum": "MID",
+   "subject": "glyph/3/0/8/3/13",
+   "stem": "obs:053331",
+   "cell": "cell/3/0/8/3",
+   "frac": 0.2557,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    270.0,
+    445.0,
+    36.0,
+    309.0
+   ],
+   "frame_delta_grey": 97.6,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    2278.2,
+    2374.4,
+    2288.2,
+    2459.3
+   ],
+   "head_box_page_px": [
+    2267.0,
+    2373.0,
+    2300.0,
+    2419.2
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P07",
+   "stratum": "MID",
+   "subject": "glyph/2/0/10/4/7",
+   "stem": "obs:035149",
+   "cell": "cell/2/0/10/4",
+   "frac": 0.2739,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    765.0,
+    323.0,
+    6.0,
+    188.0
+   ],
+   "frame_delta_grey": 206.7,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4332.3,
+    2857.4,
+    4334.2,
+    2918.2
+   ],
+   "head_box_page_px": [
+    4296.1,
+    2860.0,
+    4335.8,
+    2888.1
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P08",
+   "stratum": "END",
+   "subject": "glyph/1/0/13/0/5",
+   "stem": "obs:021727",
+   "cell": "cell/1/0/13/0",
+   "frac": 0.9013,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1406.0,
+    170.0,
+    9.0,
+    152.0
+   ],
+   "frame_delta_grey": 182.1,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    1452.3,
+    3745.0,
+    1457.6,
+    3834.5
+   ],
+   "head_box_page_px": [
+    1417.5,
+    3810.3,
+    1457.0,
+    3840.9
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P09",
+   "stratum": "END",
+   "subject": "glyph/1/1/8/0/11",
+   "stem": "obs:022012",
+   "cell": "cell/1/1/8/0",
+   "frac": 0.9198,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1468.0,
+    305.0,
+    12.0,
+    212.0
+   ],
+   "frame_delta_grey": 184.9,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    1241.0,
+    6007.7,
+    1245.9,
+    6094.3
+   ],
+   "head_box_page_px": [
+    1205.8,
+    6072.2,
+    1243.8,
+    6102.5
+   ],
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "P10",
+   "stratum": "END",
+   "subject": "glyph/3/0/2/2/13",
+   "stem": "obs:053136",
+   "cell": "cell/3/0/2/2",
+   "frac": 0.9051,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    400.0,
+    182.0,
+    18.0,
+    295.0
+   ],
+   "frame_delta_grey": 85.6,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    1799.0,
+    946.5,
+    1804.0,
+    1028.4
+   ],
+   "head_box_page_px": [
+    1758.5,
+    1003.7,
+    1807.3,
+    1037.5
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P11",
+   "stratum": "END",
+   "subject": "glyph/0/0/10/1/2",
+   "stem": "obs:006141",
+   "cell": "cell/0/0/10/1",
+   "frac": 0.0581,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    906.0,
+    686.0,
+    19.0,
+    353.0
+   ],
+   "frame_delta_grey": 162.4,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    2401.9,
+    5577.5,
+    2408.0,
+    5690.5
+   ],
+   "head_box_page_px": [
+    2402.9,
+    5564.7,
+    2443.8,
+    5603.4
+   ],
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "P12",
+   "stratum": "END",
+   "subject": "glyph/0/0/11/1/13",
+   "stem": "obs:006208",
+   "cell": "cell/0/0/11/1",
+   "frac": 0.0691,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1358.0,
+    677.0,
+    19.0,
+    369.0
+   ],
+   "frame_delta_grey": 184.3,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    2550.0,
+    6023.3,
+    2556.1,
+    6142.3
+   ],
+   "head_box_page_px": [
+    2549.0,
+    6013.0,
+    2590.3,
+    6050.1
+   ],
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "P13",
+   "stratum": "END",
+   "subject": "glyph/3/0/10/7/4",
+   "stem": "obs:053413",
+   "cell": "cell/3/0/10/7",
+   "frac": 0.9053,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1457.0,
+    460.0,
+    22.0,
+    375.0
+   ],
+   "frame_delta_grey": 146.2,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4473.0,
+    2879.3,
+    4479.0,
+    2981.5
+   ],
+   "head_box_page_px": [
+    4439.2,
+    2954.6,
+    4477.4,
+    2989.2
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "P14",
+   "stratum": "END",
+   "subject": "glyph/2/1/12/0/9",
+   "stem": "obs:035621",
+   "cell": "cell/2/1/12/0",
+   "frac": 0.0731,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    822.0,
+    193.0,
+    17.0,
+    260.0
+   ],
+   "frame_delta_grey": 145.3,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    968.3,
+    6801.1,
+    975.1,
+    6904.9
+   ],
+   "head_box_page_px": [
+    967.1,
+    6791.9,
+    1007.9,
+    6825.5
+   ],
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "P15",
+   "stratum": "MID",
+   "subject": "glyph/1/0/13/3/18",
+   "stem": "obs:021743",
+   "cell": "cell/1/0/13/3",
+   "frac": 0.7403,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    433.0,
+    391.0,
+    22.0,
+    283.0
+   ],
+   "frame_delta_grey": 113.2,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    3143.1,
+    3752.5,
+    3149.1,
+    3830.3
+   ],
+   "head_box_page_px": [
+    3140.6,
+    3791.6,
+    3170.8,
+    3828.7
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P16",
+   "stratum": "MID",
+   "subject": "glyph/1/0/11/2/3",
+   "stem": "obs:021645",
+   "cell": "cell/1/0/11/2",
+   "frac": 0.2511,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1142.0,
+    591.0,
+    15.0,
+    229.0
+   ],
+   "frame_delta_grey": 223.7,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    2802.0,
+    3283.5,
+    2806.2,
+    3346.5
+   ],
+   "head_box_page_px": [
+    2769.1,
+    3283.8,
+    2805.6,
+    3314.9
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P17",
+   "stratum": "END",
+   "subject": "glyph/3/1/11/9/2",
+   "stem": "obs:054050",
+   "cell": "cell/3/1/11/9",
+   "frac": 0.0602,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    894.0,
+    171.0,
+    18.0,
+    440.0
+   ],
+   "frame_delta_grey": 145.6,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    5063.1,
+    6469.5,
+    5068.1,
+    6591.6
+   ],
+   "head_box_page_px": [
+    5062.0,
+    6460.3,
+    5098.6,
+    6493.3
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P18",
+   "stratum": "MID",
+   "subject": "glyph/3/1/12/8/3",
+   "stem": "obs:054097",
+   "cell": "cell/3/1/12/8",
+   "frac": 0.2667,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    713.0,
+    489.0,
+    18.0,
+    225.0
+   ],
+   "frame_delta_grey": 199.5,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4557.1,
+    6818.5,
+    4562.0,
+    6880.3
+   ],
+   "head_box_page_px": [
+    4524.1,
+    6819.3,
+    4562.0,
+    6850.6
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P19",
+   "stratum": "MID",
+   "subject": "glyph/3/0/3/7/9",
+   "stem": "obs:053195",
+   "cell": "cell/3/0/3/7",
+   "frac": 0.3075,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1455.0,
+    583.0,
+    22.0,
+    226.0
+   ],
+   "frame_delta_grey": 191.4,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4476.1,
+    1315.3,
+    4482.2,
+    1377.5
+   ],
+   "head_box_page_px": [
+    4443.4,
+    1319.5,
+    4483.3,
+    1349.4
+   ],
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "P20",
+   "stratum": "END",
+   "subject": "glyph/2/0/9/0/11",
+   "stem": "obs:035048",
+   "cell": "cell/2/0/9/0",
+   "frac": 0.9144,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1349.0,
+    312.0,
+    17.0,
+    257.0
+   ],
+   "frame_delta_grey": 140.3,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    1326.3,
+    2599.2,
+    1335.0,
+    2730.3
+   ],
+   "head_box_page_px": [
+    1293.2,
+    2701.8,
+    1334.5,
+    2736.5
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P21",
+   "stratum": "END",
+   "subject": "glyph/3/1/9/9/3",
+   "stem": "obs:053947",
+   "cell": "cell/3/1/9/9",
+   "frac": 0.0558,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    880.0,
+    319.0,
+    21.0,
+    493.0
+   ],
+   "frame_delta_grey": 163.5,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    5059.2,
+    5985.5,
+    5065.0,
+    6122.3
+   ],
+   "head_box_page_px": [
+    5060.3,
+    5977.2,
+    5096.7,
+    6009.1
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P22",
+   "stratum": "MID",
+   "subject": "glyph/3/1/10/8/3",
+   "stem": "obs:053996",
+   "cell": "cell/3/1/10/8",
+   "frac": 0.2709,
+   "n_stems_on_this_head": 2,
+   "stem_box_canonical": [
+    1431.0,
+    495.0,
+    15.0,
+    227.0
+   ],
+   "frame_delta_grey": 193.6,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    4758.1,
+    6331.4,
+    4762.3,
+    6394.4
+   ],
+   "head_box_page_px": [
+    4724.2,
+    6333.9,
+    4760.3,
+    6363.0
+   ],
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "P23",
+   "stratum": "END",
+   "subject": "glyph/1/0/13/3/2",
+   "stem": "obs:021748",
+   "cell": "cell/1/0/13/3",
+   "frac": 0.0499,
+   "n_stems_on_this_head": 1,
+   "stem_box_canonical": [
+    1386.0,
+    580.0,
+    18.0,
+    341.0
+   ],
+   "frame_delta_grey": 151.0,
+   "frame_ok": true,
+   "stem_box_page_px": [
+    3405.1,
+    3804.5,
+    3410.1,
+    3898.3
+   ],
+   "head_box_page_px": [
+    3404.1,
+    3792.4,
+    3443.4,
+    3825.9
+   ],
+   "staff_space_px": 27.5
+  }
+ ]
+}

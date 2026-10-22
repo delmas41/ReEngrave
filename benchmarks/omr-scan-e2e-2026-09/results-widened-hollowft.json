@@ -1,0 +1,3230 @@
+{
+  "protocol": {
+    "pipeline": "tools.omr.transcribe at CLI defaults",
+    "dpi": 600,
+    "dossier": null,
+    "why_no_dossier": "data/dossiers/ is generated from the same Gradus MusicXML used here as truth, so --dossier would hand the run its own answer key",
+    "conf_threshold": 0.25,
+    "imgsz": null,
+    "read_direction_text": null,
+    "why_read_direction_text": "null = pass None to transcribe, i.e. the pipeline default (ON since 2026-09-02), which is what `pipeline: CLI defaults` promises; the former `false` pinned the reader OFF while claiming defaults. Force either arm on one tree with scan_eval.py --direction-text / --no-direction-text."
+  },
+  "generated_by": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py",
+  "pooled_withheld_because": null,
+  "pooled": {
+    "omr_ned": 0.8575298072504777,
+    "omr_ed": 35458,
+    "truth_symbols": 23377,
+    "pred_symbols": 17972,
+    "categories": {
+      "wrong note": 8781,
+      "wrong note head": 802,
+      "wrong flag/beam": 270,
+      "wrong dot": 97,
+      "wrong tuplet": 2,
+      "wrong accidental": 16,
+      "wrong tie": 25,
+      "wrong articulation": 9,
+      "wrong ornament": 16,
+      "wrong lyric": 15,
+      "wrong clef": 88,
+      "wrong timesig": 203,
+      "wrong keysig": 274,
+      "wrong tempo": 4,
+      "wrong barline": 19,
+      "wrong direction": 292,
+      "wrong dynamic": 223,
+      "wrong crescendo": 16,
+      "wrong diminuendo": 17,
+      "wrong slur": 105,
+      "wrong fingered tremolo": 2,
+      "entire measure insert/delete": 14301,
+      "entire staff insert/delete": 9877,
+      "wrong staff group": 4
+    }
+  },
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1.widened-hollowft",
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal",
+      "dpi": 600,
+      "work_id": "beethoven--symphony-5",
+      "imslp_id": "984073",
+      "pdf_page_index": 1,
+      "window": [
+        1,
+        16
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 30.9,
+      "truth": {
+        "parts": 18,
+        "measures": 16,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 12
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 12,
+        "measures": 16
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 12,
+        "n_printed_staves": 12,
+        "pooled": {
+          "exact": {
+            "truth": 147,
+            "omr": 109,
+            "matched": 83,
+            "recall": 0.5646,
+            "precision": 0.7615
+          },
+          "step": {
+            "truth": 147,
+            "omr": 109,
+            "matched": 95,
+            "recall": 0.6463,
+            "precision": 0.8716
+          },
+          "with_duration": {
+            "truth": 147,
+            "omr": 109,
+            "matched": 64,
+            "recall": 0.4354,
+            "precision": 0.5872
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Clarinetti in B",
+            "exact": {
+              "truth": 18,
+              "omr": 11,
+              "matched": 7,
+              "recall": 0.3889,
+              "precision": 0.6364
+            },
+            "step": {
+              "truth": 18,
+              "omr": 11,
+              "matched": 7,
+              "recall": 0.3889,
+              "precision": 0.6364
+            },
+            "with_duration": {
+              "truth": 18,
+              "omr": 11,
+              "matched": 7,
+              "recall": 0.3889,
+              "precision": 0.6364
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 20,
+              "omr": 4,
+              "matched": 1,
+              "recall": 0.05,
+              "precision": 0.25
+            },
+            "step": {
+              "truth": 20,
+              "omr": 4,
+              "matched": 3,
+              "recall": 0.15,
+              "precision": 0.75
+            },
+            "with_duration": {
+              "truth": 20,
+              "omr": 4,
+              "matched": 1,
+              "recall": 0.05,
+              "precision": 0.25
+            }
+          },
+          {
+            "staff": "Corni in Es",
+            "exact": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Trombe in C",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Timpani in C.G.",
+            "exact": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 27,
+              "omr": 23,
+              "matched": 20,
+              "recall": 0.7407,
+              "precision": 0.8696
+            },
+            "step": {
+              "truth": 27,
+              "omr": 23,
+              "matched": 23,
+              "recall": 0.8519,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 27,
+              "omr": 23,
+              "matched": 17,
+              "recall": 0.6296,
+              "precision": 0.7391
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 28,
+              "omr": 21,
+              "matched": 18,
+              "recall": 0.6429,
+              "precision": 0.8571
+            },
+            "step": {
+              "truth": 28,
+              "omr": 21,
+              "matched": 18,
+              "recall": 0.6429,
+              "precision": 0.8571
+            },
+            "with_duration": {
+              "truth": 28,
+              "omr": 21,
+              "matched": 14,
+              "recall": 0.5,
+              "precision": 0.6667
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 26,
+              "omr": 25,
+              "matched": 6,
+              "recall": 0.2308,
+              "precision": 0.24
+            },
+            "step": {
+              "truth": 26,
+              "omr": 25,
+              "matched": 10,
+              "recall": 0.3846,
+              "precision": 0.4
+            },
+            "with_duration": {
+              "truth": 26,
+              "omr": 25,
+              "matched": 6,
+              "recall": 0.2308,
+              "precision": 0.24
+            }
+          },
+          {
+            "staff": "Violoncello",
+            "exact": {
+              "truth": 19,
+              "omr": 15,
+              "matched": 5,
+              "recall": 0.2632,
+              "precision": 0.3333
+            },
+            "step": {
+              "truth": 19,
+              "omr": 15,
+              "matched": 12,
+              "recall": 0.6316,
+              "precision": 0.8
+            },
+            "with_duration": {
+              "truth": 19,
+              "omr": 15,
+              "matched": 5,
+              "recall": 0.2632,
+              "precision": 0.3333
+            }
+          },
+          {
+            "staff": "Basso",
+            "exact": {
+              "truth": 9,
+              "omr": 7,
+              "matched": 6,
+              "recall": 0.6667,
+              "precision": 0.8571
+            },
+            "step": {
+              "truth": 9,
+              "omr": 7,
+              "matched": 6,
+              "recall": 0.6667,
+              "precision": 0.8571
+            },
+            "with_duration": {
+              "truth": 9,
+              "omr": 7,
+              "matched": 6,
+              "recall": 0.6667,
+              "precision": 0.8571
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "beethoven-sym5-mvt1-984073-p1.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth.musicxml",
+        "omr_ned": 0.6924816280384398,
+        "omr_ed": 1225,
+        "pred_symbols": 705,
+        "truth_symbols": 1064,
+        "categories": {
+          "wrong note": 151,
+          "wrong note head": 30,
+          "wrong flag/beam": 7,
+          "wrong ornament": 3,
+          "wrong clef": 8,
+          "wrong timesig": 2,
+          "wrong keysig": 21,
+          "wrong tempo": 1,
+          "wrong direction": 16,
+          "wrong dynamic": 9,
+          "entire measure insert/delete": 464,
+          "entire staff insert/delete": 513
+        }
+      }
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2.widened-hollowft",
+      "label": "Beethoven 5 / Litolff-family / low-res bitonal \u2014 p.2, first two-system row",
+      "dpi": 600,
+      "work_id": "beethoven--symphony-5",
+      "imslp_id": "984073",
+      "pdf_page_index": 2,
+      "window": [
+        17,
+        48
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 381.1,
+      "truth": {
+        "parts": 18,
+        "measures": 32,
+        "measure_numbers": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 2,
+        "staves": 22
+      },
+      "detected": {
+        "systems": 2,
+        "staves": 22,
+        "measures": 16
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 11,
+        "n_printed_staves": 11,
+        "pooled": {
+          "exact": {
+            "truth": 601,
+            "omr": 452,
+            "matched": 339,
+            "recall": 0.5641,
+            "precision": 0.75
+          },
+          "step": {
+            "truth": 601,
+            "omr": 452,
+            "matched": 399,
+            "recall": 0.6639,
+            "precision": 0.8827
+          },
+          "with_duration": {
+            "truth": 601,
+            "omr": 452,
+            "matched": 264,
+            "recall": 0.4393,
+            "precision": 0.5841
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 38,
+              "omr": 29,
+              "matched": 14,
+              "recall": 0.3684,
+              "precision": 0.4828
+            },
+            "step": {
+              "truth": 38,
+              "omr": 29,
+              "matched": 18,
+              "recall": 0.4737,
+              "precision": 0.6207
+            },
+            "with_duration": {
+              "truth": 38,
+              "omr": 29,
+              "matched": 10,
+              "recall": 0.2632,
+              "precision": 0.3448
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 52,
+              "omr": 41,
+              "matched": 36,
+              "recall": 0.6923,
+              "precision": 0.878
+            },
+            "step": {
+              "truth": 52,
+              "omr": 41,
+              "matched": 37,
+              "recall": 0.7115,
+              "precision": 0.9024
+            },
+            "with_duration": {
+              "truth": 52,
+              "omr": 41,
+              "matched": 27,
+              "recall": 0.5192,
+              "precision": 0.6585
+            }
+          },
+          {
+            "staff": "Clarinetti in B",
+            "exact": {
+              "truth": 48,
+              "omr": 36,
+              "matched": 22,
+              "recall": 0.4583,
+              "precision": 0.6111
+            },
+            "step": {
+              "truth": 48,
+              "omr": 36,
+              "matched": 26,
+              "recall": 0.5417,
+              "precision": 0.7222
+            },
+            "with_duration": {
+              "truth": 48,
+              "omr": 36,
+              "matched": 20,
+              "recall": 0.4167,
+              "precision": 0.5556
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 52,
+              "omr": 33,
+              "matched": 5,
+              "recall": 0.0962,
+              "precision": 0.1515
+            },
+            "step": {
+              "truth": 52,
+              "omr": 33,
+              "matched": 8,
+              "recall": 0.1538,
+              "precision": 0.2424
+            },
+            "with_duration": {
+              "truth": 52,
+              "omr": 33,
+              "matched": 2,
+              "recall": 0.0385,
+              "precision": 0.0606
+            }
+          },
+          {
+            "staff": "Corni in Es",
+            "exact": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 26,
+              "recall": 0.5652,
+              "precision": 0.7647
+            },
+            "step": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 26,
+              "recall": 0.5652,
+              "precision": 0.7647
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 21,
+              "recall": 0.4565,
+              "precision": 0.6176
+            }
+          },
+          {
+            "staff": "Trombe in C",
+            "exact": {
+              "truth": 22,
+              "omr": 19,
+              "matched": 5,
+              "recall": 0.2273,
+              "precision": 0.2632
+            },
+            "step": {
+              "truth": 22,
+              "omr": 19,
+              "matched": 5,
+              "recall": 0.2273,
+              "precision": 0.2632
+            },
+            "with_duration": {
+              "truth": 22,
+              "omr": 19,
+              "matched": 5,
+              "recall": 0.2273,
+              "precision": 0.2632
+            }
+          },
+          {
+            "staff": "Timpani in C.G.",
+            "exact": {
+              "truth": 11,
+              "omr": 13,
+              "matched": 2,
+              "recall": 0.1818,
+              "precision": 0.1538
+            },
+            "step": {
+              "truth": 11,
+              "omr": 13,
+              "matched": 2,
+              "recall": 0.1818,
+              "precision": 0.1538
+            },
+            "with_duration": {
+              "truth": 11,
+              "omr": 13,
+              "matched": 2,
+              "recall": 0.1818,
+              "precision": 0.1538
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 86,
+              "omr": 77,
+              "matched": 42,
+              "recall": 0.4884,
+              "precision": 0.5455
+            },
+            "step": {
+              "truth": 86,
+              "omr": 77,
+              "matched": 62,
+              "recall": 0.7209,
+              "precision": 0.8052
+            },
+            "with_duration": {
+              "truth": 86,
+              "omr": 77,
+              "matched": 36,
+              "recall": 0.4186,
+              "precision": 0.4675
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 86,
+              "omr": 70,
+              "matched": 42,
+              "recall": 0.4884,
+              "precision": 0.6
+            },
+            "step": {
+              "truth": 86,
+              "omr": 70,
+              "matched": 54,
+              "recall": 0.6279,
+              "precision": 0.7714
+            },
+            "with_duration": {
+              "truth": 86,
+              "omr": 70,
+              "matched": 36,
+              "recall": 0.4186,
+              "precision": 0.5143
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 76,
+              "omr": 63,
+              "matched": 17,
+              "recall": 0.2237,
+              "precision": 0.2698
+            },
+            "step": {
+              "truth": 76,
+              "omr": 63,
+              "matched": 23,
+              "recall": 0.3026,
+              "precision": 0.3651
+            },
+            "with_duration": {
+              "truth": 76,
+              "omr": 63,
+              "matched": 8,
+              "recall": 0.1053,
+              "precision": 0.127
+            }
+          },
+          {
+            "staff": "Violoncello e Basso",
+            "exact": {
+              "truth": 84,
+              "omr": 37,
+              "matched": 18,
+              "recall": 0.2143,
+              "precision": 0.4865
+            },
+            "step": {
+              "truth": 84,
+              "omr": 37,
+              "matched": 26,
+              "recall": 0.3095,
+              "precision": 0.7027
+            },
+            "with_duration": {
+              "truth": 84,
+              "omr": 37,
+              "matched": 18,
+              "recall": 0.2143,
+              "precision": 0.4865
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "beethoven-sym5-mvt1-984073-p2.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.truth.musicxml",
+        "omr_ned": 0.8862040479140851,
+        "omr_ed": 4291,
+        "pred_symbols": 1838,
+        "truth_symbols": 3004,
+        "categories": {
+          "wrong note": 615,
+          "wrong note head": 230,
+          "wrong flag/beam": 21,
+          "wrong dot": 1,
+          "wrong accidental": 3,
+          "wrong tie": 7,
+          "wrong ornament": 7,
+          "wrong clef": 6,
+          "wrong timesig": 20,
+          "wrong keysig": 19,
+          "wrong direction": 6,
+          "wrong dynamic": 42,
+          "wrong slur": 3,
+          "entire measure insert/delete": 1760,
+          "entire staff insert/delete": 1551
+        }
+      }
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1.widened-hollowft",
+      "label": "Beethoven 5 / same plates, high-res + text layer",
+      "dpi": 600,
+      "work_id": "beethoven--symphony-5",
+      "imslp_id": "575951",
+      "pdf_page_index": 0,
+      "window": [
+        1,
+        16
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 36.9,
+      "truth": {
+        "parts": 18,
+        "measures": 16,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 12
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 12,
+        "measures": 16
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 12,
+        "n_printed_staves": 12,
+        "pooled": {
+          "exact": {
+            "truth": 147,
+            "omr": 150,
+            "matched": 84,
+            "recall": 0.5714,
+            "precision": 0.56
+          },
+          "step": {
+            "truth": 147,
+            "omr": 150,
+            "matched": 94,
+            "recall": 0.6395,
+            "precision": 0.6267
+          },
+          "with_duration": {
+            "truth": 147,
+            "omr": 150,
+            "matched": 66,
+            "recall": 0.449,
+            "precision": 0.44
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Clarinetti in B",
+            "exact": {
+              "truth": 18,
+              "omr": 7,
+              "matched": 5,
+              "recall": 0.2778,
+              "precision": 0.7143
+            },
+            "step": {
+              "truth": 18,
+              "omr": 7,
+              "matched": 7,
+              "recall": 0.3889,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 18,
+              "omr": 7,
+              "matched": 5,
+              "recall": 0.2778,
+              "precision": 0.7143
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 20,
+              "omr": 15,
+              "matched": 6,
+              "recall": 0.3,
+              "precision": 0.4
+            },
+            "step": {
+              "truth": 20,
+              "omr": 15,
+              "matched": 6,
+              "recall": 0.3,
+              "precision": 0.4
+            },
+            "with_duration": {
+              "truth": 20,
+              "omr": 15,
+              "matched": 6,
+              "recall": 0.3,
+              "precision": 0.4
+            }
+          },
+          {
+            "staff": "Corni in Es",
+            "exact": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 1,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Trombe in C",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Timpani in C.G.",
+            "exact": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 4,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 27,
+              "omr": 30,
+              "matched": 21,
+              "recall": 0.7778,
+              "precision": 0.7
+            },
+            "step": {
+              "truth": 27,
+              "omr": 30,
+              "matched": 25,
+              "recall": 0.9259,
+              "precision": 0.8333
+            },
+            "with_duration": {
+              "truth": 27,
+              "omr": 30,
+              "matched": 21,
+              "recall": 0.7778,
+              "precision": 0.7
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 28,
+              "omr": 27,
+              "matched": 5,
+              "recall": 0.1786,
+              "precision": 0.1852
+            },
+            "step": {
+              "truth": 28,
+              "omr": 27,
+              "matched": 8,
+              "recall": 0.2857,
+              "precision": 0.2963
+            },
+            "with_duration": {
+              "truth": 28,
+              "omr": 27,
+              "matched": 5,
+              "recall": 0.1786,
+              "precision": 0.1852
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 26,
+              "omr": 26,
+              "matched": 7,
+              "recall": 0.2692,
+              "precision": 0.2692
+            },
+            "step": {
+              "truth": 26,
+              "omr": 26,
+              "matched": 12,
+              "recall": 0.4615,
+              "precision": 0.4615
+            },
+            "with_duration": {
+              "truth": 26,
+              "omr": 26,
+              "matched": 5,
+              "recall": 0.1923,
+              "precision": 0.1923
+            }
+          },
+          {
+            "staff": "Violoncello",
+            "exact": {
+              "truth": 19,
+              "omr": 21,
+              "matched": 11,
+              "recall": 0.5789,
+              "precision": 0.5238
+            },
+            "step": {
+              "truth": 19,
+              "omr": 21,
+              "matched": 15,
+              "recall": 0.7895,
+              "precision": 0.7143
+            },
+            "with_duration": {
+              "truth": 19,
+              "omr": 21,
+              "matched": 10,
+              "recall": 0.5263,
+              "precision": 0.4762
+            }
+          },
+          {
+            "staff": "Basso",
+            "exact": {
+              "truth": 9,
+              "omr": 14,
+              "matched": 7,
+              "recall": 0.7778,
+              "precision": 0.5
+            },
+            "step": {
+              "truth": 9,
+              "omr": 14,
+              "matched": 7,
+              "recall": 0.7778,
+              "precision": 0.5
+            },
+            "with_duration": {
+              "truth": 9,
+              "omr": 14,
+              "matched": 7,
+              "recall": 0.7778,
+              "precision": 0.5
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "beethoven-sym5-mvt1-575951-p1.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth.musicxml",
+        "omr_ned": 0.766016713091922,
+        "omr_ed": 1375,
+        "pred_symbols": 731,
+        "truth_symbols": 1064,
+        "categories": {
+          "wrong note": 156,
+          "wrong note head": 66,
+          "wrong flag/beam": 5,
+          "wrong ornament": 3,
+          "wrong clef": 8,
+          "wrong timesig": 6,
+          "wrong keysig": 28,
+          "wrong tempo": 1,
+          "wrong direction": 16,
+          "wrong dynamic": 9,
+          "entire measure insert/delete": 564,
+          "entire staff insert/delete": 513
+        }
+      }
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2.widened-hollowft",
+      "label": "Beethoven 5 / same plates, high-res + text layer \u2014 p.2",
+      "dpi": 600,
+      "work_id": "beethoven--symphony-5",
+      "imslp_id": "575951",
+      "pdf_page_index": 1,
+      "window": [
+        17,
+        48
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 74.9,
+      "truth": {
+        "parts": 18,
+        "measures": 32,
+        "measure_numbers": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 2,
+        "staves": 22
+      },
+      "detected": {
+        "systems": 2,
+        "staves": 22,
+        "measures": 17
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 11,
+        "n_printed_staves": 11,
+        "pooled": {
+          "exact": {
+            "truth": 601,
+            "omr": 495,
+            "matched": 393,
+            "recall": 0.6539,
+            "precision": 0.7939
+          },
+          "step": {
+            "truth": 601,
+            "omr": 495,
+            "matched": 450,
+            "recall": 0.7488,
+            "precision": 0.9091
+          },
+          "with_duration": {
+            "truth": 601,
+            "omr": 495,
+            "matched": 339,
+            "recall": 0.5641,
+            "precision": 0.6848
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 38,
+              "omr": 25,
+              "matched": 19,
+              "recall": 0.5,
+              "precision": 0.76
+            },
+            "step": {
+              "truth": 38,
+              "omr": 25,
+              "matched": 19,
+              "recall": 0.5,
+              "precision": 0.76
+            },
+            "with_duration": {
+              "truth": 38,
+              "omr": 25,
+              "matched": 14,
+              "recall": 0.3684,
+              "precision": 0.56
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 52,
+              "omr": 47,
+              "matched": 29,
+              "recall": 0.5577,
+              "precision": 0.617
+            },
+            "step": {
+              "truth": 52,
+              "omr": 47,
+              "matched": 46,
+              "recall": 0.8846,
+              "precision": 0.9787
+            },
+            "with_duration": {
+              "truth": 52,
+              "omr": 47,
+              "matched": 28,
+              "recall": 0.5385,
+              "precision": 0.5957
+            }
+          },
+          {
+            "staff": "Clarinetti in B",
+            "exact": {
+              "truth": 48,
+              "omr": 41,
+              "matched": 29,
+              "recall": 0.6042,
+              "precision": 0.7073
+            },
+            "step": {
+              "truth": 48,
+              "omr": 41,
+              "matched": 38,
+              "recall": 0.7917,
+              "precision": 0.9268
+            },
+            "with_duration": {
+              "truth": 48,
+              "omr": 41,
+              "matched": 24,
+              "recall": 0.5,
+              "precision": 0.5854
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 52,
+              "omr": 37,
+              "matched": 21,
+              "recall": 0.4038,
+              "precision": 0.5676
+            },
+            "step": {
+              "truth": 52,
+              "omr": 37,
+              "matched": 29,
+              "recall": 0.5577,
+              "precision": 0.7838
+            },
+            "with_duration": {
+              "truth": 52,
+              "omr": 37,
+              "matched": 21,
+              "recall": 0.4038,
+              "precision": 0.5676
+            }
+          },
+          {
+            "staff": "Corni in Es",
+            "exact": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 32,
+              "recall": 0.6957,
+              "precision": 0.9412
+            },
+            "step": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 32,
+              "recall": 0.6957,
+              "precision": 0.9412
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 34,
+              "matched": 24,
+              "recall": 0.5217,
+              "precision": 0.7059
+            }
+          },
+          {
+            "staff": "Trombe in C",
+            "exact": {
+              "truth": 22,
+              "omr": 16,
+              "matched": 11,
+              "recall": 0.5,
+              "precision": 0.6875
+            },
+            "step": {
+              "truth": 22,
+              "omr": 16,
+              "matched": 11,
+              "recall": 0.5,
+              "precision": 0.6875
+            },
+            "with_duration": {
+              "truth": 22,
+              "omr": 16,
+              "matched": 11,
+              "recall": 0.5,
+              "precision": 0.6875
+            }
+          },
+          {
+            "staff": "Timpani in C.G.",
+            "exact": {
+              "truth": 11,
+              "omr": 16,
+              "matched": 4,
+              "recall": 0.3636,
+              "precision": 0.25
+            },
+            "step": {
+              "truth": 11,
+              "omr": 16,
+              "matched": 4,
+              "recall": 0.3636,
+              "precision": 0.25
+            },
+            "with_duration": {
+              "truth": 11,
+              "omr": 16,
+              "matched": 4,
+              "recall": 0.3636,
+              "precision": 0.25
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 86,
+              "omr": 75,
+              "matched": 60,
+              "recall": 0.6977,
+              "precision": 0.8
+            },
+            "step": {
+              "truth": 86,
+              "omr": 75,
+              "matched": 64,
+              "recall": 0.7442,
+              "precision": 0.8533
+            },
+            "with_duration": {
+              "truth": 86,
+              "omr": 75,
+              "matched": 52,
+              "recall": 0.6047,
+              "precision": 0.6933
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 86,
+              "omr": 79,
+              "matched": 59,
+              "recall": 0.686,
+              "precision": 0.7468
+            },
+            "step": {
+              "truth": 86,
+              "omr": 79,
+              "matched": 63,
+              "recall": 0.7326,
+              "precision": 0.7975
+            },
+            "with_duration": {
+              "truth": 86,
+              "omr": 79,
+              "matched": 56,
+              "recall": 0.6512,
+              "precision": 0.7089
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 76,
+              "omr": 84,
+              "matched": 20,
+              "recall": 0.2632,
+              "precision": 0.2381
+            },
+            "step": {
+              "truth": 76,
+              "omr": 84,
+              "matched": 31,
+              "recall": 0.4079,
+              "precision": 0.369
+            },
+            "with_duration": {
+              "truth": 76,
+              "omr": 84,
+              "matched": 8,
+              "recall": 0.1053,
+              "precision": 0.0952
+            }
+          },
+          {
+            "staff": "Violoncello e Basso",
+            "exact": {
+              "truth": 84,
+              "omr": 41,
+              "matched": 30,
+              "recall": 0.3571,
+              "precision": 0.7317
+            },
+            "step": {
+              "truth": 84,
+              "omr": 41,
+              "matched": 37,
+              "recall": 0.4405,
+              "precision": 0.9024
+            },
+            "with_duration": {
+              "truth": 84,
+              "omr": 41,
+              "matched": 29,
+              "recall": 0.3452,
+              "precision": 0.7073
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "beethoven-sym5-mvt1-575951-p2.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.truth.musicxml",
+        "omr_ned": 0.8758815232722144,
+        "omr_ed": 4347,
+        "pred_symbols": 1959,
+        "truth_symbols": 3004,
+        "categories": {
+          "wrong note": 656,
+          "wrong note head": 196,
+          "wrong flag/beam": 17,
+          "wrong accidental": 1,
+          "wrong tie": 3,
+          "wrong articulation": 2,
+          "wrong ornament": 2,
+          "wrong clef": 7,
+          "wrong timesig": 20,
+          "wrong keysig": 28,
+          "wrong direction": 24,
+          "wrong dynamic": 48,
+          "wrong slur": 3,
+          "entire measure insert/delete": 1789,
+          "entire staff insert/delete": 1551
+        }
+      }
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5.widened-hollowft",
+      "label": "Dvorak 9 / Simrock 1894 / the one 1:1 part-staff pair",
+      "dpi": 600,
+      "work_id": "dvorak--symphony-9",
+      "imslp_id": "405834",
+      "pdf_page_index": 4,
+      "window": [
+        1,
+        8
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 49.4,
+      "truth": {
+        "parts": 15,
+        "measures": 8,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 15
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 15,
+        "measures": 8
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 15,
+        "n_printed_staves": 15,
+        "pooled": {
+          "exact": {
+            "truth": 96,
+            "omr": 110,
+            "matched": 81,
+            "recall": 0.8438,
+            "precision": 0.7364
+          },
+          "step": {
+            "truth": 96,
+            "omr": 110,
+            "matched": 81,
+            "recall": 0.8438,
+            "precision": 0.7364
+          },
+          "with_duration": {
+            "truth": 96,
+            "omr": 110,
+            "matched": 60,
+            "recall": 0.625,
+            "precision": 0.5455
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 16,
+              "omr": 18,
+              "matched": 15,
+              "recall": 0.9375,
+              "precision": 0.8333
+            },
+            "step": {
+              "truth": 16,
+              "omr": 18,
+              "matched": 15,
+              "recall": 0.9375,
+              "precision": 0.8333
+            },
+            "with_duration": {
+              "truth": 16,
+              "omr": 18,
+              "matched": 8,
+              "recall": 0.5,
+              "precision": 0.4444
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 21,
+              "omr": 21,
+              "matched": 20,
+              "recall": 0.9524,
+              "precision": 0.9524
+            },
+            "step": {
+              "truth": 21,
+              "omr": 21,
+              "matched": 21,
+              "recall": 1.0,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 21,
+              "omr": 21,
+              "matched": 17,
+              "recall": 0.8095,
+              "precision": 0.8095
+            }
+          },
+          {
+            "staff": "Clarinetti in A",
+            "exact": {
+              "truth": 4,
+              "omr": 2,
+              "matched": 2,
+              "recall": 0.5,
+              "precision": 1.0
+            },
+            "step": {
+              "truth": 4,
+              "omr": 2,
+              "matched": 2,
+              "recall": 0.5,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 4,
+              "omr": 2,
+              "matched": 0,
+              "recall": 0.0,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 10,
+              "omr": 12,
+              "matched": 10,
+              "recall": 1.0,
+              "precision": 0.8333
+            },
+            "step": {
+              "truth": 10,
+              "omr": 12,
+              "matched": 10,
+              "recall": 1.0,
+              "precision": 0.8333
+            },
+            "with_duration": {
+              "truth": 10,
+              "omr": 12,
+              "matched": 8,
+              "recall": 0.8,
+              "precision": 0.6667
+            }
+          },
+          {
+            "staff": "Corni I.II. in E",
+            "exact": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Corni III.IV. in C",
+            "exact": {
+              "truth": 6,
+              "omr": 3,
+              "matched": 3,
+              "recall": 0.5,
+              "precision": 1.0
+            },
+            "step": {
+              "truth": 6,
+              "omr": 3,
+              "matched": 3,
+              "recall": 0.5,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 6,
+              "omr": 3,
+              "matched": 1,
+              "recall": 0.1667,
+              "precision": 0.3333
+            }
+          },
+          {
+            "staff": "Trombe in E",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Tromboni I.II.",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Trombone basso",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Tympani A.E.H.",
+            "exact": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 3,
+              "matched": 0,
+              "recall": null,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 14,
+              "omr": 19,
+              "matched": 14,
+              "recall": 1.0,
+              "precision": 0.7368
+            },
+            "step": {
+              "truth": 14,
+              "omr": 19,
+              "matched": 14,
+              "recall": 1.0,
+              "precision": 0.7368
+            },
+            "with_duration": {
+              "truth": 14,
+              "omr": 19,
+              "matched": 8,
+              "recall": 0.5714,
+              "precision": 0.4211
+            }
+          },
+          {
+            "staff": "Violoncello",
+            "exact": {
+              "truth": 17,
+              "omr": 18,
+              "matched": 2,
+              "recall": 0.1176,
+              "precision": 0.1111
+            },
+            "step": {
+              "truth": 17,
+              "omr": 18,
+              "matched": 2,
+              "recall": 0.1176,
+              "precision": 0.1111
+            },
+            "with_duration": {
+              "truth": 17,
+              "omr": 18,
+              "matched": 0,
+              "recall": 0.0,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Contrabasso",
+            "exact": {
+              "truth": 8,
+              "omr": 11,
+              "matched": 8,
+              "recall": 1.0,
+              "precision": 0.7273
+            },
+            "step": {
+              "truth": 8,
+              "omr": 11,
+              "matched": 8,
+              "recall": 1.0,
+              "precision": 0.7273
+            },
+            "with_duration": {
+              "truth": 8,
+              "omr": 11,
+              "matched": 6,
+              "recall": 0.75,
+              "precision": 0.5455
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "dvorak-sym9-mvt1-405834-p5.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.truth.musicxml",
+        "omr_ned": 0.4381443298969072,
+        "omr_ed": 680,
+        "pred_symbols": 760,
+        "truth_symbols": 792,
+        "categories": {
+          "wrong note": 473,
+          "wrong note head": 10,
+          "wrong flag/beam": 32,
+          "wrong dot": 7,
+          "wrong accidental": 2,
+          "wrong tie": 3,
+          "wrong articulation": 4,
+          "wrong clef": 3,
+          "wrong timesig": 2,
+          "wrong keysig": 2,
+          "wrong tempo": 1,
+          "wrong direction": 6,
+          "wrong dynamic": 14,
+          "wrong crescendo": 1,
+          "wrong diminuendo": 6,
+          "wrong slur": 16,
+          "entire measure insert/delete": 98
+        }
+      }
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6.widened-hollowft",
+      "label": "Dvorak 9 / Simrock 1894 \u2014 p.6 (printed p.184), the 1:1 pairing continued",
+      "dpi": 600,
+      "work_id": "dvorak--symphony-9",
+      "imslp_id": "405834",
+      "pdf_page_index": 5,
+      "window": [
+        9,
+        15
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 40.6,
+      "truth": {
+        "parts": 15,
+        "measures": 7,
+        "measure_numbers": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 15
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 15,
+        "measures": 7
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 15,
+        "n_printed_staves": 15,
+        "pooled": {
+          "exact": {
+            "truth": 226,
+            "omr": 239,
+            "matched": 181,
+            "recall": 0.8009,
+            "precision": 0.7573
+          },
+          "step": {
+            "truth": 226,
+            "omr": 239,
+            "matched": 203,
+            "recall": 0.8982,
+            "precision": 0.8494
+          },
+          "with_duration": {
+            "truth": 226,
+            "omr": 239,
+            "matched": 77,
+            "recall": 0.3407,
+            "precision": 0.3222
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "Flauti",
+            "exact": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 33,
+              "recall": 0.8462,
+              "precision": 0.8049
+            },
+            "step": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 37,
+              "recall": 0.9487,
+              "precision": 0.9024
+            },
+            "with_duration": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 10,
+              "recall": 0.2564,
+              "precision": 0.2439
+            }
+          },
+          {
+            "staff": "Oboi",
+            "exact": {
+              "truth": 40,
+              "omr": 36,
+              "matched": 24,
+              "recall": 0.6,
+              "precision": 0.6667
+            },
+            "step": {
+              "truth": 40,
+              "omr": 36,
+              "matched": 33,
+              "recall": 0.825,
+              "precision": 0.9167
+            },
+            "with_duration": {
+              "truth": 40,
+              "omr": 36,
+              "matched": 6,
+              "recall": 0.15,
+              "precision": 0.1667
+            }
+          },
+          {
+            "staff": "Clarinetti in A",
+            "exact": {
+              "truth": 16,
+              "omr": 11,
+              "matched": 11,
+              "recall": 0.6875,
+              "precision": 1.0
+            },
+            "step": {
+              "truth": 16,
+              "omr": 11,
+              "matched": 11,
+              "recall": 0.6875,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 16,
+              "omr": 11,
+              "matched": 7,
+              "recall": 0.4375,
+              "precision": 0.6364
+            }
+          },
+          {
+            "staff": "Fagotti",
+            "exact": {
+              "truth": 3,
+              "omr": 4,
+              "matched": 2,
+              "recall": 0.6667,
+              "precision": 0.5
+            },
+            "step": {
+              "truth": 3,
+              "omr": 4,
+              "matched": 2,
+              "recall": 0.6667,
+              "precision": 0.5
+            },
+            "with_duration": {
+              "truth": 3,
+              "omr": 4,
+              "matched": 2,
+              "recall": 0.6667,
+              "precision": 0.5
+            }
+          },
+          {
+            "staff": "Corni I.II. in E",
+            "exact": {
+              "truth": 16,
+              "omr": 17,
+              "matched": 12,
+              "recall": 0.75,
+              "precision": 0.7059
+            },
+            "step": {
+              "truth": 16,
+              "omr": 17,
+              "matched": 16,
+              "recall": 1.0,
+              "precision": 0.9412
+            },
+            "with_duration": {
+              "truth": 16,
+              "omr": 17,
+              "matched": 12,
+              "recall": 0.75,
+              "precision": 0.7059
+            }
+          },
+          {
+            "staff": "Corni III.IV. in C",
+            "exact": {
+              "truth": 8,
+              "omr": 8,
+              "matched": 8,
+              "recall": 1.0,
+              "precision": 1.0
+            },
+            "step": {
+              "truth": 8,
+              "omr": 8,
+              "matched": 8,
+              "recall": 1.0,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 8,
+              "omr": 8,
+              "matched": 5,
+              "recall": 0.625,
+              "precision": 0.625
+            }
+          },
+          {
+            "staff": "Trombe in E",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Tromboni I.II.",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Trombone basso",
+            "exact": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "step": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            },
+            "with_duration": {
+              "truth": 0,
+              "omr": 0,
+              "matched": 0,
+              "recall": null,
+              "precision": null
+            }
+          },
+          {
+            "staff": "Tympani A.E.H.",
+            "exact": {
+              "truth": 12,
+              "omr": 4,
+              "matched": 4,
+              "recall": 0.3333,
+              "precision": 1.0
+            },
+            "step": {
+              "truth": 12,
+              "omr": 4,
+              "matched": 4,
+              "recall": 0.3333,
+              "precision": 1.0
+            },
+            "with_duration": {
+              "truth": 12,
+              "omr": 4,
+              "matched": 2,
+              "recall": 0.1667,
+              "precision": 0.5
+            }
+          },
+          {
+            "staff": "Violino I",
+            "exact": {
+              "truth": 15,
+              "omr": 23,
+              "matched": 13,
+              "recall": 0.8667,
+              "precision": 0.5652
+            },
+            "step": {
+              "truth": 15,
+              "omr": 23,
+              "matched": 13,
+              "recall": 0.8667,
+              "precision": 0.5652
+            },
+            "with_duration": {
+              "truth": 15,
+              "omr": 23,
+              "matched": 4,
+              "recall": 0.2667,
+              "precision": 0.1739
+            }
+          },
+          {
+            "staff": "Violino II",
+            "exact": {
+              "truth": 15,
+              "omr": 25,
+              "matched": 15,
+              "recall": 1.0,
+              "precision": 0.6
+            },
+            "step": {
+              "truth": 15,
+              "omr": 25,
+              "matched": 15,
+              "recall": 1.0,
+              "precision": 0.6
+            },
+            "with_duration": {
+              "truth": 15,
+              "omr": 25,
+              "matched": 2,
+              "recall": 0.1333,
+              "precision": 0.08
+            }
+          },
+          {
+            "staff": "Viola",
+            "exact": {
+              "truth": 17,
+              "omr": 21,
+              "matched": 16,
+              "recall": 0.9412,
+              "precision": 0.7619
+            },
+            "step": {
+              "truth": 17,
+              "omr": 21,
+              "matched": 16,
+              "recall": 0.9412,
+              "precision": 0.7619
+            },
+            "with_duration": {
+              "truth": 17,
+              "omr": 21,
+              "matched": 2,
+              "recall": 0.1176,
+              "precision": 0.0952
+            }
+          },
+          {
+            "staff": "Violoncello",
+            "exact": {
+              "truth": 21,
+              "omr": 22,
+              "matched": 14,
+              "recall": 0.6667,
+              "precision": 0.6364
+            },
+            "step": {
+              "truth": 21,
+              "omr": 22,
+              "matched": 17,
+              "recall": 0.8095,
+              "precision": 0.7727
+            },
+            "with_duration": {
+              "truth": 21,
+              "omr": 22,
+              "matched": 10,
+              "recall": 0.4762,
+              "precision": 0.4545
+            }
+          },
+          {
+            "staff": "Contrabasso",
+            "exact": {
+              "truth": 24,
+              "omr": 27,
+              "matched": 23,
+              "recall": 0.9583,
+              "precision": 0.8519
+            },
+            "step": {
+              "truth": 24,
+              "omr": 27,
+              "matched": 23,
+              "recall": 0.9583,
+              "precision": 0.8519
+            },
+            "with_duration": {
+              "truth": 24,
+              "omr": 27,
+              "matched": 11,
+              "recall": 0.4583,
+              "precision": 0.4074
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "dvorak-sym9-mvt1-405834-p6.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml",
+        "omr_ned": 0.7741290691033695,
+        "omr_ed": 2711,
+        "pred_symbols": 1480,
+        "truth_symbols": 2022,
+        "categories": {
+          "wrong note": 1927,
+          "wrong note head": 106,
+          "wrong flag/beam": 56,
+          "wrong dot": 34,
+          "wrong tuplet": 2,
+          "wrong accidental": 2,
+          "wrong tie": 4,
+          "wrong articulation": 1,
+          "wrong clef": 2,
+          "wrong timesig": 34,
+          "wrong keysig": 4,
+          "wrong direction": 2,
+          "wrong dynamic": 33,
+          "wrong crescendo": 1,
+          "wrong diminuendo": 2,
+          "wrong slur": 5,
+          "wrong fingered tremolo": 2,
+          "entire measure insert/delete": 494
+        }
+      }
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1.widened-hollowft",
+      "label": "Brahms 1 / Breitkopf Samtliche Werke / dense, engraved twin",
+      "dpi": 600,
+      "work_id": "brahms--symphony-1",
+      "imslp_id": "317803",
+      "pdf_page_index": 0,
+      "window": [
+        1,
+        7
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 57.5,
+      "truth": {
+        "parts": 21,
+        "measures": 7,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 14
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 14,
+        "measures": 8
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.widened-hollowft.omr.musicxml",
+      "notes": {
+        "positional": true,
+        "n_pred_parts": 14,
+        "n_printed_staves": 14,
+        "pooled": {
+          "exact": {
+            "truth": 505,
+            "omr": 460,
+            "matched": 361,
+            "recall": 0.7149,
+            "precision": 0.7848
+          },
+          "step": {
+            "truth": 505,
+            "omr": 460,
+            "matched": 389,
+            "recall": 0.7703,
+            "precision": 0.8457
+          },
+          "with_duration": {
+            "truth": 505,
+            "omr": 460,
+            "matched": 295,
+            "recall": 0.5842,
+            "precision": 0.6413
+          }
+        },
+        "per_staff": [
+          {
+            "staff": "2 Floten",
+            "exact": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 38,
+              "recall": 0.8261,
+              "precision": 0.7755
+            },
+            "step": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 43,
+              "recall": 0.9348,
+              "precision": 0.8776
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 29,
+              "recall": 0.6304,
+              "precision": 0.5918
+            }
+          },
+          {
+            "staff": "2 Oboen",
+            "exact": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 41,
+              "recall": 0.8913,
+              "precision": 0.8367
+            },
+            "step": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 43,
+              "recall": 0.9348,
+              "precision": 0.8776
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 49,
+              "matched": 40,
+              "recall": 0.8696,
+              "precision": 0.8163
+            }
+          },
+          {
+            "staff": "2 Klarinetten in B",
+            "exact": {
+              "truth": 46,
+              "omr": 46,
+              "matched": 43,
+              "recall": 0.9348,
+              "precision": 0.9348
+            },
+            "step": {
+              "truth": 46,
+              "omr": 46,
+              "matched": 43,
+              "recall": 0.9348,
+              "precision": 0.9348
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 46,
+              "matched": 41,
+              "recall": 0.8913,
+              "precision": 0.8913
+            }
+          },
+          {
+            "staff": "2 Fagotte",
+            "exact": {
+              "truth": 46,
+              "omr": 47,
+              "matched": 39,
+              "recall": 0.8478,
+              "precision": 0.8298
+            },
+            "step": {
+              "truth": 46,
+              "omr": 47,
+              "matched": 43,
+              "recall": 0.9348,
+              "precision": 0.9149
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 47,
+              "matched": 37,
+              "recall": 0.8043,
+              "precision": 0.7872
+            }
+          },
+          {
+            "staff": "Kontrafagott",
+            "exact": {
+              "truth": 42,
+              "omr": 26,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.4615
+            },
+            "step": {
+              "truth": 42,
+              "omr": 26,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.4615
+            },
+            "with_duration": {
+              "truth": 42,
+              "omr": 26,
+              "matched": 6,
+              "recall": 0.1429,
+              "precision": 0.2308
+            }
+          },
+          {
+            "staff": "4 Horner in C 1./2.",
+            "exact": {
+              "truth": 14,
+              "omr": 13,
+              "matched": 7,
+              "recall": 0.5,
+              "precision": 0.5385
+            },
+            "step": {
+              "truth": 14,
+              "omr": 13,
+              "matched": 7,
+              "recall": 0.5,
+              "precision": 0.5385
+            },
+            "with_duration": {
+              "truth": 14,
+              "omr": 13,
+              "matched": 7,
+              "recall": 0.5,
+              "precision": 0.5385
+            }
+          },
+          {
+            "staff": "4 Horner in Es 3./4.",
+            "exact": {
+              "truth": 14,
+              "omr": 15,
+              "matched": 9,
+              "recall": 0.6429,
+              "precision": 0.6
+            },
+            "step": {
+              "truth": 14,
+              "omr": 15,
+              "matched": 11,
+              "recall": 0.7857,
+              "precision": 0.7333
+            },
+            "with_duration": {
+              "truth": 14,
+              "omr": 15,
+              "matched": 8,
+              "recall": 0.5714,
+              "precision": 0.5333
+            }
+          },
+          {
+            "staff": "2 Trompeten in C",
+            "exact": {
+              "truth": 4,
+              "omr": 5,
+              "matched": 0,
+              "recall": 0.0,
+              "precision": 0.0
+            },
+            "step": {
+              "truth": 4,
+              "omr": 5,
+              "matched": 0,
+              "recall": 0.0,
+              "precision": 0.0
+            },
+            "with_duration": {
+              "truth": 4,
+              "omr": 5,
+              "matched": 0,
+              "recall": 0.0,
+              "precision": 0.0
+            }
+          },
+          {
+            "staff": "Pauken in C u.G",
+            "exact": {
+              "truth": 42,
+              "omr": 16,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.75
+            },
+            "step": {
+              "truth": 42,
+              "omr": 16,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.75
+            },
+            "with_duration": {
+              "truth": 42,
+              "omr": 16,
+              "matched": 6,
+              "recall": 0.1429,
+              "precision": 0.375
+            }
+          },
+          {
+            "staff": "1. Violine",
+            "exact": {
+              "truth": 39,
+              "omr": 44,
+              "matched": 16,
+              "recall": 0.4103,
+              "precision": 0.3636
+            },
+            "step": {
+              "truth": 39,
+              "omr": 44,
+              "matched": 16,
+              "recall": 0.4103,
+              "precision": 0.3636
+            },
+            "with_duration": {
+              "truth": 39,
+              "omr": 44,
+              "matched": 12,
+              "recall": 0.3077,
+              "precision": 0.2727
+            }
+          },
+          {
+            "staff": "2. Violine",
+            "exact": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 33,
+              "recall": 0.8462,
+              "precision": 0.8049
+            },
+            "step": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 37,
+              "recall": 0.9487,
+              "precision": 0.9024
+            },
+            "with_duration": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 29,
+              "recall": 0.7436,
+              "precision": 0.7073
+            }
+          },
+          {
+            "staff": "Bratsche",
+            "exact": {
+              "truth": 46,
+              "omr": 50,
+              "matched": 19,
+              "recall": 0.413,
+              "precision": 0.38
+            },
+            "step": {
+              "truth": 46,
+              "omr": 50,
+              "matched": 32,
+              "recall": 0.6957,
+              "precision": 0.64
+            },
+            "with_duration": {
+              "truth": 46,
+              "omr": 50,
+              "matched": 13,
+              "recall": 0.2826,
+              "precision": 0.26
+            }
+          },
+          {
+            "staff": "Violoncell",
+            "exact": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 29,
+              "recall": 0.7436,
+              "precision": 0.7073
+            },
+            "step": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 38,
+              "recall": 0.9744,
+              "precision": 0.9268
+            },
+            "with_duration": {
+              "truth": 39,
+              "omr": 41,
+              "matched": 28,
+              "recall": 0.7179,
+              "precision": 0.6829
+            }
+          },
+          {
+            "staff": "Kontrabass",
+            "exact": {
+              "truth": 42,
+              "omr": 18,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.6667
+            },
+            "step": {
+              "truth": 42,
+              "omr": 18,
+              "matched": 12,
+              "recall": 0.2857,
+              "precision": 0.6667
+            },
+            "with_duration": {
+              "truth": 42,
+              "omr": 18,
+              "matched": 6,
+              "recall": 0.1429,
+              "precision": 0.3333
+            }
+          }
+        ]
+      },
+      "omr_ned": {
+        "name": "brahms-sym1-mvt1-317803-p1.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth.musicxml",
+        "omr_ned": 0.9209327258107746,
+        "omr_ed": 3436,
+        "pred_symbols": 1648,
+        "truth_symbols": 2083,
+        "categories": {
+          "wrong note": 809,
+          "wrong note head": 6,
+          "wrong flag/beam": 9,
+          "wrong dot": 6,
+          "wrong accidental": 3,
+          "wrong tie": 1,
+          "wrong clef": 13,
+          "wrong timesig": 7,
+          "wrong keysig": 39,
+          "wrong tempo": 1,
+          "wrong barline": 4,
+          "wrong direction": 88,
+          "wrong dynamic": 26,
+          "wrong slur": 40,
+          "entire measure insert/delete": 1383,
+          "entire staff insert/delete": 1001
+        }
+      }
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p2.widened-hollowft",
+      "label": "Brahms 1 / Breitkopf Samtliche Werke \u2014 p.2, meter change + suppressed trumpet staff",
+      "dpi": 600,
+      "work_id": "brahms--symphony-1",
+      "imslp_id": "317803",
+      "pdf_page_index": 1,
+      "window": [
+        8,
+        22
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 181.3,
+      "truth": {
+        "parts": 21,
+        "measures": 15,
+        "measure_numbers": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 2,
+        "staves": 27
+      },
+      "detected": {
+        "systems": 2,
+        "staves": 27,
+        "measures": 8
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.widened-hollowft.omr.musicxml",
+      "notes": null,
+      "omr_ned": {
+        "name": "brahms-sym1-mvt1-317803-p2.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
+        "omr_ned": 0.9479239971850809,
+        "omr_ed": 6735,
+        "pred_symbols": 3706,
+        "truth_symbols": 3399,
+        "categories": {
+          "wrong note": 1688,
+          "wrong note head": 104,
+          "wrong flag/beam": 30,
+          "wrong dot": 40,
+          "wrong accidental": 4,
+          "wrong tie": 5,
+          "wrong articulation": 1,
+          "wrong lyric": 9,
+          "wrong clef": 21,
+          "wrong timesig": 42,
+          "wrong keysig": 30,
+          "wrong barline": 15,
+          "wrong direction": 13,
+          "wrong dynamic": 28,
+          "wrong crescendo": 14,
+          "wrong diminuendo": 8,
+          "wrong slur": 20,
+          "entire measure insert/delete": 3893,
+          "entire staff insert/delete": 770
+        }
+      }
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2.widened-hollowft",
+      "label": "Mahler 5 / Edition Peters / densest, anacrusis",
+      "dpi": 600,
+      "work_id": "mahler--symphony-5",
+      "imslp_id": null,
+      "pdf_page_index": 1,
+      "window": [
+        0,
+        8
+      ],
+      "leading_pickup": true,
+      "confidence": "verified",
+      "seconds": 38.8,
+      "truth": {
+        "parts": 38,
+        "measures": 9,
+        "measure_numbers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 17
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 17,
+        "measures": 9
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.widened-hollowft.omr.musicxml",
+      "notes": null,
+      "omr_ned": {
+        "name": "mahler-sym5-mvt1-local-p2.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+        "omr_ned": 0.7122128174123338,
+        "omr_ed": 1178,
+        "pred_symbols": 506,
+        "truth_symbols": 1148,
+        "categories": {
+          "wrong note": 86,
+          "wrong note head": 26,
+          "wrong dot": 8,
+          "wrong ornament": 1,
+          "wrong clef": 7,
+          "wrong timesig": 34,
+          "wrong keysig": 53,
+          "wrong direction": 90,
+          "wrong dynamic": 2,
+          "entire measure insert/delete": 222,
+          "entire staff insert/delete": 649
+        }
+      }
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3.widened-hollowft",
+      "label": "Mahler 5 / Edition Peters \u2014 p.3 (printed p.4), tacet-suppressed lineup",
+      "dpi": 600,
+      "work_id": "mahler--symphony-5",
+      "imslp_id": null,
+      "pdf_page_index": 2,
+      "window": [
+        9,
+        16
+      ],
+      "leading_pickup": false,
+      "confidence": "verified",
+      "seconds": 38.7,
+      "truth": {
+        "parts": 38,
+        "measures": 8,
+        "measure_numbers": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 1,
+        "staves": 13
+      },
+      "detected": {
+        "systems": 1,
+        "staves": 13,
+        "measures": 8
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.widened-hollowft.omr.musicxml",
+      "notes": null,
+      "omr_ned": {
+        "name": "mahler-sym5-mvt1-local-p3.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml",
+        "omr_ned": 0.8932066781807715,
+        "omr_ed": 3103,
+        "pred_symbols": 1226,
+        "truth_symbols": 2248,
+        "categories": {
+          "wrong note": 625,
+          "wrong note head": 22,
+          "wrong flag/beam": 16,
+          "wrong dot": 1,
+          "wrong tie": 1,
+          "wrong clef": 10,
+          "wrong timesig": 29,
+          "wrong keysig": 39,
+          "wrong direction": 13,
+          "wrong dynamic": 12,
+          "wrong diminuendo": 1,
+          "wrong slur": 6,
+          "entire measure insert/delete": 654,
+          "entire staff insert/delete": 1674
+        }
+      }
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1.widened-hollowft",
+      "label": "Bach Brandenburg 3 / Edition Peters / 300 dpi, +1 numbering \u2014 COMPLETION of the parked row",
+      "dpi": 600,
+      "work_id": "bach--concerto-3",
+      "imslp_id": "468678",
+      "pdf_page_index": 0,
+      "window": [
+        1,
+        10
+      ],
+      "leading_pickup": true,
+      "confidence": "verified",
+      "seconds": 61.9,
+      "truth": {
+        "parts": 11,
+        "measures": 10,
+        "measure_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "repeats_stripped": 0
+      },
+      "printed": {
+        "systems": 2,
+        "staves": 24
+      },
+      "detected": {
+        "systems": 6,
+        "staves": 24,
+        "measures": 29
+      },
+      "truth_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+      "pred_xml": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.widened-hollowft.omr.musicxml",
+      "notes": null,
+      "omr_ned": {
+        "name": "bach-brandenburg3-mvt1-468678-p1.widened-hollowft",
+        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.widened-hollowft.omr.musicxml",
+        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/scan-rebaseline/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+        "omr_ned": 0.9159724217178972,
+        "omr_ed": 6377,
+        "pred_symbols": 3413,
+        "truth_symbols": 3549,
+        "categories": {
+          "wrong note": 1595,
+          "wrong note head": 6,
+          "wrong flag/beam": 77,
+          "wrong accidental": 1,
+          "wrong tie": 1,
+          "wrong articulation": 1,
+          "wrong lyric": 6,
+          "wrong clef": 3,
+          "wrong timesig": 7,
+          "wrong keysig": 11,
+          "wrong direction": 18,
+          "wrong slur": 12,
+          "entire measure insert/delete": 2980,
+          "entire staff insert/delete": 1655,
+          "wrong staff group": 4
+        }
+      }
+    }
+  ]
+}

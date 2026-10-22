@@ -1,0 +1,299 @@
+{
+ "label": "breitkopf",
+ "seed": 20260920,
+ "question": "is the vertical stroke under the marked head THIS head's stem, or does it belong to another note?",
+ "verdicts_allowed": [
+  "this_heads_stem",
+  "another_notes_stem",
+  "cannot_tell",
+  "not_a_notehead"
+ ],
+ "dpi": 600,
+ "pad_y_spaces": 6.0,
+ "px_per_space": 100.0,
+ "resample": "NEAREST",
+ "written": 40,
+ "refused": [],
+ "tiles": [
+  {
+   "id": "8e31138916",
+   "subject": "glyph/0/0/10/1/16",
+   "stem": "obs:006137",
+   "stratum": "chord_interior",
+   "frame_delta": 187.6
+  },
+  {
+   "id": "13a3c2fd4a",
+   "subject": "glyph/0/0/2/0/14",
+   "stem": "obs:005882",
+   "stratum": "chord_interior",
+   "frame_delta": 202.4
+  },
+  {
+   "id": "3c0af1b50d",
+   "subject": "glyph/0/0/4/3/1",
+   "stem": "obs:005957",
+   "stratum": "chord_interior",
+   "frame_delta": 219.3
+  },
+  {
+   "id": "55ce8e6288",
+   "subject": "glyph/0/0/4/3/7",
+   "stem": "obs:005957",
+   "stratum": "chord_interior",
+   "frame_delta": 219.3
+  },
+  {
+   "id": "38a83470ae",
+   "subject": "glyph/0/0/4/4/9",
+   "stem": "obs:005959",
+   "stratum": "chord_interior",
+   "frame_delta": 219.3
+  },
+  {
+   "id": "a62682e4fd",
+   "subject": "glyph/0/0/5/2/16",
+   "stem": "obs:005975",
+   "stratum": "chord_interior",
+   "frame_delta": 193.3
+  },
+  {
+   "id": "474ebee769",
+   "subject": "glyph/0/0/5/3/15",
+   "stem": "obs:005977",
+   "stratum": "chord_interior",
+   "frame_delta": 193.3
+  },
+  {
+   "id": "911ecf5d4a",
+   "subject": "glyph/0/0/5/7/2",
+   "stem": "obs:005986",
+   "stratum": "chord_interior",
+   "frame_delta": 193.3
+  },
+  {
+   "id": "794580b89c",
+   "subject": "glyph/0/0/8/5/5",
+   "stem": "obs:006049",
+   "stratum": "chord_interior",
+   "frame_delta": 216.7
+  },
+  {
+   "id": "871c2fea48",
+   "subject": "glyph/1/0/0/4/33",
+   "stem": "obs:021146",
+   "stratum": "chord_interior",
+   "frame_delta": 205.3
+  },
+  {
+   "id": "72baa33100",
+   "subject": "glyph/1/0/0/4/33",
+   "stem": "obs:021151",
+   "stratum": "chord_interior",
+   "frame_delta": 205.3
+  },
+  {
+   "id": "1a8de25c38",
+   "subject": "glyph/1/0/0/4/42",
+   "stem": "obs:021146",
+   "stratum": "chord_interior",
+   "frame_delta": 205.3
+  },
+  {
+   "id": "ee669d2f0f",
+   "subject": "glyph/1/0/0/4/42",
+   "stem": "obs:021151",
+   "stratum": "chord_interior",
+   "frame_delta": 205.3
+  },
+  {
+   "id": "1b9a50fbc3",
+   "subject": "glyph/1/0/2/0/41",
+   "stem": "obs:021239",
+   "stratum": "chord_interior",
+   "frame_delta": 155.0
+  },
+  {
+   "id": "0c7b992270",
+   "subject": "glyph/1/0/6/1/17",
+   "stem": "obs:021431",
+   "stratum": "chord_interior",
+   "frame_delta": 235.6
+  },
+  {
+   "id": "dfcb936af8",
+   "subject": "glyph/2/0/7/2/25",
+   "stem": "obs:035007",
+   "stratum": "chord_interior",
+   "frame_delta": 117.5
+  },
+  {
+   "id": "f15bbcb85b",
+   "subject": "glyph/2/0/8/0/13",
+   "stem": "obs:035020",
+   "stratum": "chord_interior",
+   "frame_delta": 146.2
+  },
+  {
+   "id": "23494ceeb4",
+   "subject": "glyph/2/0/8/1/4",
+   "stem": "obs:035023",
+   "stratum": "chord_interior",
+   "frame_delta": 146.2
+  },
+  {
+   "id": "7de022555a",
+   "subject": "glyph/3/0/3/3/7",
+   "stem": "obs:053177",
+   "stratum": "chord_interior",
+   "frame_delta": 197.3
+  },
+  {
+   "id": "839a01371d",
+   "subject": "glyph/3/1/11/1/18",
+   "stem": "obs:054016",
+   "stratum": "chord_interior",
+   "frame_delta": 168.3
+  },
+  {
+   "id": "3104199f21",
+   "subject": "glyph/0/0/6/3/3",
+   "stem": "obs:006000",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 208.8
+  },
+  {
+   "id": "a2d921eb17",
+   "subject": "glyph/1/0/1/0/16",
+   "stem": "obs:021190",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 208.2
+  },
+  {
+   "id": "77bcb3a61d",
+   "subject": "glyph/1/0/1/0/30",
+   "stem": "obs:021194",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 208.2
+  },
+  {
+   "id": "6d4481e8e3",
+   "subject": "glyph/2/0/1/2/5",
+   "stem": "obs:034898",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 189.3
+  },
+  {
+   "id": "ff489f20df",
+   "subject": "glyph/2/0/4/3/11",
+   "stem": "obs:034959",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 178.9
+  },
+  {
+   "id": "5905548462",
+   "subject": "glyph/2/0/5/5/9",
+   "stem": "obs:034977",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 149.2
+  },
+  {
+   "id": "1fab8679fe",
+   "subject": "glyph/2/1/3/2/8",
+   "stem": "obs:035418",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 111.5
+  },
+  {
+   "id": "a33551cb53",
+   "subject": "glyph/3/0/10/8/9",
+   "stem": "obs:053417",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 214.3
+  },
+  {
+   "id": "62be83a95f",
+   "subject": "glyph/3/0/10/9/7",
+   "stem": "obs:053427",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 214.3
+  },
+  {
+   "id": "1af34bc971",
+   "subject": "glyph/3/0/11/7/10",
+   "stem": "obs:053463",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 223.2
+  },
+  {
+   "id": "b576b928cc",
+   "subject": "glyph/3/0/11/7/11",
+   "stem": "obs:053462",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 223.2
+  },
+  {
+   "id": "66ccbe16ae",
+   "subject": "glyph/3/0/11/8/25",
+   "stem": "obs:053469",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 223.2
+  },
+  {
+   "id": "4bcec4f0d7",
+   "subject": "glyph/3/0/3/4/5",
+   "stem": "obs:053180",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 197.3
+  },
+  {
+   "id": "c08c4f9651",
+   "subject": "glyph/3/0/3/8/5",
+   "stem": "obs:053198",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 197.3
+  },
+  {
+   "id": "1e0651fd12",
+   "subject": "glyph/3/1/1/2/8",
+   "stem": "obs:053601",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 210.0
+  },
+  {
+   "id": "3a0d456670",
+   "subject": "glyph/3/1/10/2/20",
+   "stem": "obs:053972",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 143.6
+  },
+  {
+   "id": "9085779b55",
+   "subject": "glyph/3/1/3/1/7",
+   "stem": "obs:053685",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 203.7
+  },
+  {
+   "id": "a1f80d1ee2",
+   "subject": "glyph/3/1/3/6/5",
+   "stem": "obs:053705",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 203.7
+  },
+  {
+   "id": "0031e086eb",
+   "subject": "glyph/3/1/3/8/8",
+   "stem": "obs:053713",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 203.7
+  },
+  {
+   "id": "407e5780a9",
+   "subject": "glyph/3/1/9/8/8",
+   "stem": "obs:053939",
+   "stratum": "far_with_a_better_claimant",
+   "frame_delta": 229.7
+  }
+ ]
+}

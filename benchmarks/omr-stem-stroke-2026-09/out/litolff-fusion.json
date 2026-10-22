@@ -1,0 +1,47 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "cells": 1183,
+ "drift": 0,
+ "components": 6128,
+ "comps_per_cell": {
+  "median": 4,
+  "mean": 5.18,
+  "p90": 10,
+  "max": 24
+ },
+ "height_spaces": {
+  "median": 4.18,
+  "p90": 12.0,
+  "max": 15.956,
+  "over_cap": 1866
+ },
+ "width_spaces": {
+  "median": 0.26,
+  "p90": 0.5,
+  "over_cap": 374
+ },
+ "heads_per_component": {
+  "0": 4128,
+  "1": 1413,
+  "2": 441,
+  "3": 115,
+  "4": 31
+ },
+ "what_it_is": {
+  "covers NO notehead": 4128,
+  "covers 1 notehead, >= 2 spaces tall": 1125,
+  "covers 2+ noteheads (a MERGE across notes)": 587,
+  "covers 1 notehead, shorter than 2 spaces": 288
+ },
+ "blamed": {
+  "WIDE+TALL, 0 head(s)": 71,
+  "TALL, 0 head(s)": 1759,
+  "WIDE, 0 head(s)": 88,
+  "WIDE+TALL, 2+ head(s)": 5,
+  "WIDE, 1 head(s)": 98,
+  "TALL, 1 head(s)": 20,
+  "WIDE, 2+ head(s)": 108,
+  "TALL, 2+ head(s)": 7,
+  "WIDE+TALL, 1 head(s)": 4
+ }
+}

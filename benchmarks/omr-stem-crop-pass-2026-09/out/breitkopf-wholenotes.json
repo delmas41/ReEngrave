@@ -1,0 +1,834 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "what": "heads whose notehead_class is a WHOLE note and which the pipeline nevertheless gives a stem direction. Either the direction is wrong or the class is - the print says which.",
+ "added_mid_pass": true,
+ "not_part_of_the_preregistered_sample": true,
+ "projection": 17,
+ "borrow": 6,
+ "n": 23,
+ "rows": [
+  {
+   "subject": "glyph/0/0/1/0/30",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 1,
+    "cell": 0,
+    "glyph": 30
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    1502.669921875,
+    2035.279296875,
+    1548.40234375,
+    2065.33203125
+   ],
+   "bbox_canonical": [
+    649.0,
+    593.0,
+    105.0,
+    69.0
+   ],
+   "staff_key": "staff/0/0/1",
+   "staff_lines": [
+    1969.0,
+    2001.0,
+    2032.0,
+    2064.0,
+    2097.0
+   ],
+   "staff_spacing": 32.0,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/3/0/17",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 3,
+    "cell": 0,
+    "glyph": 17
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    1500.927734375,
+    2805.408203125,
+    1546.224609375,
+    2836.767578125
+   ],
+   "bbox_canonical": [
+    645.0,
+    591.0,
+    104.0,
+    72.0
+   ],
+   "staff_key": "staff/0/0/3",
+   "staff_lines": [
+    2741.0,
+    2774.0,
+    2805.0,
+    2837.0,
+    2870.0
+   ],
+   "staff_spacing": 32.25,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/4/7/3",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 4,
+    "cell": 7,
+    "glyph": 3
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5427.325,
+    3137.275,
+    5472.175,
+    3170.1
+   ],
+   "bbox_canonical": [
+    121.0,
+    607.0,
+    138.0,
+    101.0
+   ],
+   "staff_key": "staff/0/0/4",
+   "staff_lines": [
+    3070.0,
+    3102.0,
+    3135.0,
+    3167.0,
+    3200.0
+   ],
+   "staff_spacing": 32.5,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/5/7/0",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 0
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5424.48,
+    3581.7200000000003,
+    5470.56,
+    3614.04
+   ],
+   "bbox_canonical": [
+    114.0,
+    896.0,
+    144.0,
+    101.0
+   ],
+   "staff_key": "staff/0/0/5",
+   "staff_lines": [
+    3487.0,
+    3518.0,
+    3550.0,
+    3582.0,
+    3615.0
+   ],
+   "staff_spacing": 32.0,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/5/7/1",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 1
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5425.76,
+    3549.72,
+    5470.24,
+    3574.68
+   ],
+   "bbox_canonical": [
+    118.0,
+    796.0,
+    139.0,
+    78.0
+   ],
+   "staff_key": "staff/0/0/5",
+   "staff_lines": [
+    3487.0,
+    3518.0,
+    3550.0,
+    3582.0,
+    3615.0
+   ],
+   "staff_spacing": 32.0,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/5/7/2",
+   "read_direction": "up",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 5,
+    "cell": 7,
+    "glyph": 2
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5426.4,
+    3548.44,
+    5470.24,
+    3587.16
+   ],
+   "bbox_canonical": [
+    120.0,
+    792.0,
+    137.0,
+    121.0
+   ],
+   "staff_key": "staff/0/0/5",
+   "staff_lines": [
+    3487.0,
+    3518.0,
+    3550.0,
+    3582.0,
+    3615.0
+   ],
+   "staff_spacing": 32.0,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/0/0/11/7/0",
+   "read_direction": "down",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 0
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5424.765,
+    6088.155,
+    5475.72,
+    6119.4375
+   ],
+   "bbox_canonical": [
+    114.0,
+    878.0,
+    158.0,
+    97.0
+   ],
+   "staff_key": "staff/0/0/11",
+   "staff_lines": [
+    5998.0,
+    6030.0,
+    6062.0,
+    6093.0,
+    6127.0
+   ],
+   "staff_spacing": 32.25,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/0/0/11/7/1",
+   "read_direction": "down",
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 1
+   },
+   "cls": "noteheadWholeInSpace",
+   "bbox_page_px": [
+    5425.7325,
+    6057.5175,
+    5470.8825,
+    6085.2525
+   ],
+   "bbox_canonical": [
+    117.0,
+    783.0,
+    140.0,
+    86.0
+   ],
+   "staff_key": "staff/0/0/11",
+   "staff_lines": [
+    5998.0,
+    6030.0,
+    6062.0,
+    6093.0,
+    6127.0
+   ],
+   "staff_spacing": 32.25,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/1/0/0/4/35",
+   "read_direction": "up",
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 0,
+    "cell": 4,
+    "glyph": 35
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    3631.359375,
+    618.0322265625,
+    3704.3701171875,
+    649.91015625
+   ],
+   "bbox_canonical": [
+    144.0,
+    639.0,
+    213.0,
+    93.0
+   ],
+   "staff_key": "staff/1/0/0",
+   "staff_lines": [
+    562.0,
+    589.0,
+    616.0,
+    643.0,
+    671.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/1/0/5/0/14",
+   "read_direction": "up",
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 0,
+    "glyph": 14
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    984.49951171875,
+    1876.4677734375,
+    1037.45361328125,
+    1910.00537109375
+   ],
+   "bbox_canonical": [
+    611.0,
+    390.0,
+    90.0,
+    57.0
+   ],
+   "staff_key": "staff/1/0/5",
+   "staff_lines": [
+    1757.0,
+    1785.0,
+    1812.0,
+    1839.0,
+    1867.0
+   ],
+   "staff_spacing": 27.5,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/2/0/0/1/11",
+   "read_direction": "down",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 0,
+    "cell": 1,
+    "glyph": 11
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    1719.0966796875,
+    429.92529296875,
+    1764.94921875,
+    463.5830078125
+   ],
+   "bbox_canonical": [
+    74.0,
+    129.0,
+    94.0,
+    69.0
+   ],
+   "staff_key": "staff/2/0/0",
+   "staff_lines": [
+    530.0,
+    557.0,
+    584.0,
+    611.0,
+    639.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "projection",
+   "direction": "down"
+  },
+  {
+   "subject": "glyph/2/0/4/3/1",
+   "read_direction": "up",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "glyph": 1
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    3395.263671875,
+    1508.90234375,
+    3439.443359375,
+    1535.5625
+   ],
+   "bbox_canonical": [
+    237.0,
+    538.0,
+    116.0,
+    70.0
+   ],
+   "staff_key": "staff/2/0/4",
+   "staff_lines": [
+    1413.0,
+    1439.0,
+    1467.0,
+    1494.0,
+    1522.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/2/0/4/3/11",
+   "read_direction": "up",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "glyph": 11
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    3399.453125,
+    1501.28515625,
+    3439.443359375,
+    1513.853515625
+   ],
+   "bbox_canonical": [
+    248.0,
+    518.0,
+    105.0,
+    33.0
+   ],
+   "staff_key": "staff/2/0/4",
+   "staff_lines": [
+    1413.0,
+    1439.0,
+    1467.0,
+    1494.0,
+    1522.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/2/0/5/2/13",
+   "read_direction": "up",
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 2,
+    "glyph": 13
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    2730.97607421875,
+    1668.78515625,
+    2775.0849609375,
+    1701.94287109375
+   ],
+   "bbox_canonical": [
+    161.0,
+    568.0,
+    145.0,
+    109.0
+   ],
+   "staff_key": "staff/2/0/5",
+   "staff_lines": [
+    1605.0,
+    1632.0,
+    1659.0,
+    1686.0,
+    1714.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/3/0/5/3/10",
+   "read_direction": "up",
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 5,
+    "cell": 3,
+    "glyph": 10
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    2267.825,
+    1740.275,
+    2302.235,
+    1768.025
+   ],
+   "bbox_canonical": [
+    230.0,
+    610.0,
+    124.0,
+    100.0
+   ],
+   "staff_key": "staff/3/0/5",
+   "staff_lines": [
+    1682.0,
+    1709.0,
+    1737.0,
+    1765.0,
+    1793.0
+   ],
+   "staff_spacing": 27.75,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/3/0/8/4/10",
+   "read_direction": "up",
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 8,
+    "cell": 4,
+    "glyph": 10
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    2902.0,
+    2424.7,
+    2937.475,
+    2449.45
+   ],
+   "bbox_canonical": [
+    880.0,
+    628.0,
+    129.0,
+    90.0
+   ],
+   "staff_key": "staff/3/0/8",
+   "staff_lines": [
+    2362.0,
+    2389.0,
+    2416.0,
+    2444.0,
+    2472.0
+   ],
+   "staff_spacing": 27.5,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/3/1/9/8/17",
+   "read_direction": "up",
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 9,
+    "cell": 8,
+    "glyph": 17
+   },
+   "cls": "noteheadWholeOnLine",
+   "bbox_page_px": [
+    4408.73,
+    6100.9625,
+    4453.4075,
+    6135.65
+   ],
+   "bbox_canonical": [
+    172.0,
+    735.0,
+    161.0,
+    125.0
+   ],
+   "staff_key": "staff/3/1/9",
+   "staff_lines": [
+    6063.0,
+    6091.0,
+    6119.0,
+    6146.0,
+    6174.0
+   ],
+   "staff_spacing": 27.75,
+   "path": "projection",
+   "direction": "up"
+  },
+  {
+   "subject": "glyph/1/0/5/1/23",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 23
+   },
+   "cls": "noteheadWholeInSpace",
+   "conf": null,
+   "bbox_page_px": [
+    1874.0166015625,
+    1647.642578125,
+    1914.4990234375,
+    1672.060546875
+   ],
+   "bbox_canonical": [
+    137.0,
+    2.0,
+    126.0,
+    76.0
+   ],
+   "staff_key": "staff/1/0/5",
+   "staff_lines": [
+    1757.0,
+    1785.0,
+    1812.0,
+    1839.0,
+    1867.0
+   ],
+   "staff_spacing": 27.5,
+   "path": "borrow",
+   "direction": "up",
+   "read_direction": null
+  },
+  {
+   "subject": "glyph/1/0/5/1/24",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 24
+   },
+   "cls": "noteheadWholeInSpace",
+   "conf": null,
+   "bbox_page_px": [
+    1874.6591796875,
+    1841.701171875,
+    1915.462890625,
+    1869.6533203125
+   ],
+   "bbox_canonical": [
+    139.0,
+    606.0,
+    127.0,
+    87.0
+   ],
+   "staff_key": "staff/1/0/5",
+   "staff_lines": [
+    1757.0,
+    1785.0,
+    1812.0,
+    1839.0,
+    1867.0
+   ],
+   "staff_spacing": 27.5,
+   "path": "borrow",
+   "direction": "up",
+   "read_direction": null
+  },
+  {
+   "subject": "glyph/1/0/5/1/33",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 1,
+    "glyph": 33
+   },
+   "cls": "noteheadWholeInSpace",
+   "conf": null,
+   "bbox_page_px": [
+    1876.265625,
+    1821.138671875,
+    1915.462890625,
+    1850.0546875
+   ],
+   "bbox_canonical": [
+    144.0,
+    542.0,
+    122.0,
+    90.0
+   ],
+   "staff_key": "staff/1/0/5",
+   "staff_lines": [
+    1757.0,
+    1785.0,
+    1812.0,
+    1839.0,
+    1867.0
+   ],
+   "staff_spacing": 27.5,
+   "path": "borrow",
+   "direction": "up",
+   "read_direction": null
+  },
+  {
+   "subject": "glyph/1/1/11/1/23",
+   "bucket": "NO component overlaps the head at all",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 1,
+    "system": 1,
+    "staff": 11,
+    "cell": 1,
+    "glyph": 23
+   },
+   "cls": "noteheadWholeInSpace",
+   "conf": null,
+   "bbox_page_px": [
+    1532.87890625,
+    6645.0,
+    1581.55126953125,
+    6663.9462890625
+   ],
+   "bbox_canonical": [
+    168.0,
+    0.0,
+    149.0,
+    58.0
+   ],
+   "staff_key": "staff/1/1/11",
+   "staff_lines": [
+    6754.0,
+    6780.0,
+    6807.0,
+    6835.0,
+    6863.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "borrow",
+   "direction": "up",
+   "read_direction": null
+  },
+  {
+   "subject": "glyph/2/0/5/2/11",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 2,
+    "glyph": 11
+   },
+   "cls": "noteheadWholeInSpace",
+   "conf": null,
+   "bbox_page_px": [
+    2731.58447265625,
+    1511.2099609375,
+    2772.04296875,
+    1537.67529296875
+   ],
+   "bbox_canonical": [
+    163.0,
+    50.0,
+    133.0,
+    87.0
+   ],
+   "staff_key": "staff/2/0/5",
+   "staff_lines": [
+    1605.0,
+    1632.0,
+    1659.0,
+    1686.0,
+    1714.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "borrow",
+   "direction": "up",
+   "read_direction": null
+  },
+  {
+   "subject": "glyph/2/1/1/3/24",
+   "bucket": "NO component overlaps the head at all",
+   "width_cap_recovered": false,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 1,
+    "cell": 3,
+    "glyph": 24
+   },
+   "cls": "noteheadWholeOnLine",
+   "conf": null,
+   "bbox_page_px": [
+    2516.6125,
+    4562.2,
+    2558.5775,
+    4584.0
+   ],
+   "bbox_canonical": [
+    105.0,
+    1120.0,
+    154.0,
+    80.0
+   ],
+   "staff_key": "staff/2/1/1",
+   "staff_lines": [
+    4366.0,
+    4393.0,
+    4420.0,
+    4448.0,
+    4475.0
+   ],
+   "staff_spacing": 27.25,
+   "path": "borrow",
+   "direction": "down",
+   "read_direction": null
+  }
+ ]
+}

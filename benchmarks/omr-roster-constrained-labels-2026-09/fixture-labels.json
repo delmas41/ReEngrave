@@ -1,0 +1,960 @@
+[
+ {
+  "work": "beethoven-sym3-mvt1",
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "Bb Clarinet 1"
+   },
+   {
+    "staff_index": 5,
+    "text": "Bb Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "Eb Horn 1"
+   },
+   {
+    "staff_index": 9,
+    "text": "Eb Horn 2"
+   },
+   {
+    "staff_index": 10,
+    "text": "Eb Horn 3"
+   },
+   {
+    "staff_index": 11,
+    "text": "Bb Trumpet 1"
+   },
+   {
+    "staff_index": 12,
+    "text": "Bb Trumpet 2"
+   },
+   {
+    "staff_index": 13,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 14,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 16,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 17,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 18,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "beethoven-sym5-mvt1",
+  "n_staves": 18,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "Bb Clarinet"
+   },
+   {
+    "staff_index": 5,
+    "text": "Bb Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "Eb Horn 1"
+   },
+   {
+    "staff_index": 9,
+    "text": "Eb Horn 2"
+   },
+   {
+    "staff_index": 10,
+    "text": "C Trumpet 1"
+   },
+   {
+    "staff_index": 11,
+    "text": "C Trumpet 2"
+   },
+   {
+    "staff_index": 12,
+    "text": "C, G Timpani"
+   },
+   {
+    "staff_index": 13,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 14,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 15,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 16,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 17,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "brahms-sym1-mvt1",
+  "n_staves": 21,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "Bb Clarinet 1"
+   },
+   {
+    "staff_index": 5,
+    "text": "Bb Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "Contrabassoon"
+   },
+   {
+    "staff_index": 9,
+    "text": "C Horn 1"
+   },
+   {
+    "staff_index": 10,
+    "text": "C Horn 2"
+   },
+   {
+    "staff_index": 11,
+    "text": "Eb Horn 3"
+   },
+   {
+    "staff_index": 12,
+    "text": "Eb Horn 4"
+   },
+   {
+    "staff_index": 13,
+    "text": "C Trumpet 1"
+   },
+   {
+    "staff_index": 14,
+    "text": "C Trumpet 2"
+   },
+   {
+    "staff_index": 15,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 16,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 17,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 18,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 19,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 20,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "brahms-sym4-mvt1",
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "A Clarinet 1"
+   },
+   {
+    "staff_index": 5,
+    "text": "A Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "E Horn 1"
+   },
+   {
+    "staff_index": 9,
+    "text": "E Horn 2"
+   },
+   {
+    "staff_index": 10,
+    "text": "C Horn 3"
+   },
+   {
+    "staff_index": 11,
+    "text": "C Horn 4"
+   },
+   {
+    "staff_index": 12,
+    "text": "E Trumpet 1"
+   },
+   {
+    "staff_index": 13,
+    "text": "E Trumpet 2"
+   },
+   {
+    "staff_index": 14,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 16,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 17,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 18,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 19,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "bruckner-sym5-mvt1",
+  "n_staves": 25,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "Bb Clarinet 1"
+   },
+   {
+    "staff_index": 5,
+    "text": "Bb Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "F Horn 1"
+   },
+   {
+    "staff_index": 9,
+    "text": "F Horn 2"
+   },
+   {
+    "staff_index": 10,
+    "text": "F Horn 3"
+   },
+   {
+    "staff_index": 11,
+    "text": "F Horn 4"
+   },
+   {
+    "staff_index": 12,
+    "text": "F Trumpet 1"
+   },
+   {
+    "staff_index": 13,
+    "text": "F Trumpet 2"
+   },
+   {
+    "staff_index": 14,
+    "text": "F Trumpet 3"
+   },
+   {
+    "staff_index": 15,
+    "text": "Alto Trombone"
+   },
+   {
+    "staff_index": 16,
+    "text": "Tenor Trombone"
+   },
+   {
+    "staff_index": 17,
+    "text": "Bass Trombone"
+   },
+   {
+    "staff_index": 18,
+    "text": "Bass Tuba"
+   },
+   {
+    "staff_index": 19,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 20,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 21,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 22,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 23,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 24,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "dvorak-sym9-mvt4",
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flutes"
+   },
+   {
+    "staff_index": 1,
+    "text": "Oboes"
+   },
+   {
+    "staff_index": 2,
+    "text": "A Clarinet"
+   },
+   {
+    "staff_index": 3,
+    "text": "Bassoons"
+   },
+   {
+    "staff_index": 5,
+    "text": "E Horn"
+   },
+   {
+    "staff_index": 6,
+    "text": "Horn in E \u266d"
+   },
+   {
+    "staff_index": 7,
+    "text": "E Trumpet"
+   },
+   {
+    "staff_index": 8,
+    "text": "C Trumpet"
+   },
+   {
+    "staff_index": 9,
+    "text": "E \u266d Trumpet"
+   },
+   {
+    "staff_index": 10,
+    "text": "Trombone"
+   },
+   {
+    "staff_index": 11,
+    "text": "ss Trombone"
+   },
+   {
+    "staff_index": 12,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 13,
+    "text": "rash Cymbal"
+   },
+   {
+    "staff_index": 14,
+    "text": "Violins I"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violins II"
+   },
+   {
+    "staff_index": 16,
+    "text": "Violas"
+   },
+   {
+    "staff_index": 17,
+    "text": "Violoncellos"
+   },
+   {
+    "staff_index": 18,
+    "text": "Contrabasses"
+   }
+  ]
+ },
+ {
+  "work": "mahler-sym5-mvt1",
+  "n_staves": 38,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Piccolo"
+   },
+   {
+    "staff_index": 1,
+    "text": "Vier Fl\u00f6ten."
+   },
+   {
+    "staff_index": 2,
+    "text": "Vier Fl\u00f6ten."
+   },
+   {
+    "staff_index": 3,
+    "text": "Drei Hoboen."
+   },
+   {
+    "staff_index": 4,
+    "text": "Drei Hoboen."
+   },
+   {
+    "staff_index": 5,
+    "text": "English Horn"
+   },
+   {
+    "staff_index": 6,
+    "text": "rei Klarinetten in A"
+   },
+   {
+    "staff_index": 7,
+    "text": "rei Klarinetten in A"
+   },
+   {
+    "staff_index": 8,
+    "text": "Bass Clarinet"
+   },
+   {
+    "staff_index": 9,
+    "text": "C Clarinet"
+   },
+   {
+    "staff_index": 10,
+    "text": "Zwei Fagotte."
+   },
+   {
+    "staff_index": 11,
+    "text": "Contrafagotte."
+   },
+   {
+    "staff_index": 12,
+    "text": "Sechs H\u00f6rner in F."
+   },
+   {
+    "staff_index": 13,
+    "text": "Sechs H\u00f6rner in F."
+   },
+   {
+    "staff_index": 14,
+    "text": "Sechs H\u00f6rner in F."
+   },
+   {
+    "staff_index": 15,
+    "text": "F Trumpet"
+   },
+   {
+    "staff_index": 16,
+    "text": "F Trumpet"
+   },
+   {
+    "staff_index": 17,
+    "text": "ier Trompeten in B."
+   },
+   {
+    "staff_index": 18,
+    "text": "ier Trompeten in B."
+   },
+   {
+    "staff_index": 19,
+    "text": "Drei Posaunen."
+   },
+   {
+    "staff_index": 20,
+    "text": "Drei Posaunen."
+   },
+   {
+    "staff_index": 21,
+    "text": "Tuba."
+   },
+   {
+    "staff_index": 22,
+    "text": "Pauken."
+   },
+   {
+    "staff_index": 23,
+    "text": "Becken."
+   },
+   {
+    "staff_index": 24,
+    "text": "Grosse Trommel."
+   },
+   {
+    "staff_index": 25,
+    "text": "Kleine Trommel."
+   },
+   {
+    "staff_index": 26,
+    "text": "Tamtam."
+   },
+   {
+    "staff_index": 27,
+    "text": "Violin"
+   },
+   {
+    "staff_index": 28,
+    "text": "Erste Violinen."
+   },
+   {
+    "staff_index": 29,
+    "text": "Zweite Violinen."
+   },
+   {
+    "staff_index": 30,
+    "text": "Zweite Violinen."
+   },
+   {
+    "staff_index": 31,
+    "text": "Zweite Violinen."
+   },
+   {
+    "staff_index": 32,
+    "text": "Violen."
+   },
+   {
+    "staff_index": 33,
+    "text": "Violen."
+   },
+   {
+    "staff_index": 34,
+    "text": "Violoncelle."
+   },
+   {
+    "staff_index": 35,
+    "text": "Violoncelle."
+   },
+   {
+    "staff_index": 36,
+    "text": "B\u00e4sse."
+   },
+   {
+    "staff_index": 37,
+    "text": "B\u00e4sse."
+   }
+  ]
+ },
+ {
+  "work": "mozart-sym40-mvt1",
+  "n_staves": 11,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flauto."
+   },
+   {
+    "staff_index": 1,
+    "text": "Oboi."
+   },
+   {
+    "staff_index": 2,
+    "text": "larinetti in B."
+   },
+   {
+    "staff_index": 3,
+    "text": "Fagotti."
+   },
+   {
+    "staff_index": 4,
+    "text": "Corno in B."
+   },
+   {
+    "staff_index": 5,
+    "text": "Corno in G."
+   },
+   {
+    "staff_index": 6,
+    "text": "Violino I."
+   },
+   {
+    "staff_index": 7,
+    "text": "Violino II."
+   },
+   {
+    "staff_index": 8,
+    "text": "Viola."
+   },
+   {
+    "staff_index": 9,
+    "text": "Violoncello."
+   },
+   {
+    "staff_index": 10,
+    "text": "Contrabasso."
+   }
+  ]
+ },
+ {
+  "work": "mozart-sym41-mvt1",
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flauto"
+   },
+   {
+    "staff_index": 1,
+    "text": "Oboe I"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe II"
+   },
+   {
+    "staff_index": 3,
+    "text": "Fagotto I"
+   },
+   {
+    "staff_index": 4,
+    "text": "Fagotto II"
+   },
+   {
+    "staff_index": 5,
+    "text": "Corno I in C"
+   },
+   {
+    "staff_index": 6,
+    "text": "Corno II in C"
+   },
+   {
+    "staff_index": 7,
+    "text": "Corno I in F"
+   },
+   {
+    "staff_index": 8,
+    "text": "Corno II in F"
+   },
+   {
+    "staff_index": 9,
+    "text": "Clarino I in C"
+   },
+   {
+    "staff_index": 10,
+    "text": "Clarino II in C"
+   },
+   {
+    "staff_index": 11,
+    "text": "mpani in C\u2013G"
+   },
+   {
+    "staff_index": 12,
+    "text": "Violino I"
+   },
+   {
+    "staff_index": 13,
+    "text": "Violino II"
+   },
+   {
+    "staff_index": 14,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 16,
+    "text": "Basso"
+   }
+  ]
+ },
+ {
+  "work": "tchaikovsky-sym4-mvt2",
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "text": "Flute 1"
+   },
+   {
+    "staff_index": 1,
+    "text": "Flute 2"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboe 1"
+   },
+   {
+    "staff_index": 3,
+    "text": "Oboe 2"
+   },
+   {
+    "staff_index": 4,
+    "text": "B \u266d Clarinet 1"
+   },
+   {
+    "staff_index": 5,
+    "text": "B \u266d Clarinet 2"
+   },
+   {
+    "staff_index": 6,
+    "text": "Bassoon 1"
+   },
+   {
+    "staff_index": 7,
+    "text": "Bassoon 2"
+   },
+   {
+    "staff_index": 8,
+    "text": "F Horn 1"
+   },
+   {
+    "staff_index": 9,
+    "text": "F Horn 2"
+   },
+   {
+    "staff_index": 10,
+    "text": "F Horn 3"
+   },
+   {
+    "staff_index": 11,
+    "text": "F Horn 4"
+   },
+   {
+    "staff_index": 12,
+    "text": "F Trumpet 1"
+   },
+   {
+    "staff_index": 13,
+    "text": "F Trumpet 2"
+   },
+   {
+    "staff_index": 14,
+    "text": "Timpani"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violin 1"
+   },
+   {
+    "staff_index": 16,
+    "text": "Violin 2"
+   },
+   {
+    "staff_index": 17,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 18,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 19,
+    "text": "Contrabass"
+   }
+  ]
+ },
+ {
+  "work": "tchaikovsky-sym6-mvt2",
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 1,
+    "text": "Flauti"
+   },
+   {
+    "staff_index": 2,
+    "text": "Oboi"
+   },
+   {
+    "staff_index": 3,
+    "text": "larinetti in A"
+   },
+   {
+    "staff_index": 4,
+    "text": "Fagotti"
+   },
+   {
+    "staff_index": 5,
+    "text": "orni in F I II"
+   },
+   {
+    "staff_index": 6,
+    "text": "ni in F III IV"
+   },
+   {
+    "staff_index": 7,
+    "text": "Trombe in A"
+   },
+   {
+    "staff_index": 8,
+    "text": "Alto e Tenore"
+   },
+   {
+    "staff_index": 9,
+    "text": "mbone Basso"
+   },
+   {
+    "staff_index": 10,
+    "text": "Tuba"
+   },
+   {
+    "staff_index": 11,
+    "text": "ani in A.D.E."
+   },
+   {
+    "staff_index": 12,
+    "text": "Violino I"
+   },
+   {
+    "staff_index": 13,
+    "text": "Violino II"
+   },
+   {
+    "staff_index": 14,
+    "text": "Viola"
+   },
+   {
+    "staff_index": 15,
+    "text": "Violoncello"
+   },
+   {
+    "staff_index": 16,
+    "text": "Basso"
+   }
+  ]
+ }
+]

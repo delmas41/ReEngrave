@@ -1,0 +1,10 @@
+ 1 litolff  cell/2/0/7/1     None       last night [] -> today ['p'] | Sean: Dynamics are underneath - cresc. (and an f in the next bar) | worse
+ 2 litolff  cell/3/0/7/14    None       last night [] -> today ['p'] | Sean: p, and dolce as the expression | better
+ 3 brahms   cell/0/0/1/0     Oboe       last night [] -> today ['f'] | Sean: f legato underneath belongs to the staff in blue | better
+ 4 brahms   cell/0/0/9/0     Violin     last night ['f'] -> today ['f', 'p', 'f'] | Sean: f espr. e legato underneath belongs to the staff in blue | worse
+ 5 brahms   cell/0/0/12/0    Cello      last night [] -> today ['f', 'f'] | Sean: f espr. e legato underneath (same as 4) | mixed
+ 6 brahms   cell/0/0/12/1    Cello      last night [] -> today ['p'] | Sean: A legato that crosses a barline. No dynamic markings | worse
+ 7 brahms   cell/0/0/13/0    Contrabass last night [] -> today ['f'] | Sean: f pesante; a larger marking underneath, Un poco sostenuto (expression/tempo, owner unclear without page context), not a dynamic | better
+ 8 brahms   cell/0/0/13/1    Contrabass last night [] -> today ['p'] | Sean: None | worse
+ 9 brahms   cell/1/0/9/1     Violin     last night ['fp'] -> today ['fp', 'p'] | Sean: p | mixed
+10 brahms   cell/1/0/10/3    Violin     last night [] -> today ['f'] | Sean: None -- only espr. | worse

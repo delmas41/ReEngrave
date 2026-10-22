@@ -1,0 +1,7125 @@
+{
+ "report": {
+  "label": "Beethoven 5 mvt 1 (Litolff scan), 20261013-night",
+  "run": {
+   "tree": "ca46eae4; the export, LilyPond and this report were re-run on tree d5ba473c",
+   "landings": [
+    "139 commits (merges left out); the newest 15:",
+    "ca46eae4 ROADMAP 2.114: claim the second (hollow-only) detector at GATHER; Sean's interior-white rule",
+    "14cd2946 ROADMAP 2.113: claim the clutter count (measure before a remove-what's-known view)",
+    "a31a2cca ROADMAP 2.112: claim the test-set leakage audit (2.110 found TEST cells in training)",
+    "2892eb71 hand_truth inventory: declare v24 (2.4b hollow4 TRAIN, single-family:hollow, not admitted) -- fixes test_every_label_version_on_disk_has_a_declared_tier",
+    "4863f784 Docs: ROADMAP START HERE landing order, version_memory for 2.108",
+    "6d9f9207 Rebuild judged-tiles index after merging main",
+    "d10affe3 2.108: Sean's answers on the blind tiles; FINDINGS, DECISIONS, ROADMAP",
+    "abec2a05 ROADMAP 2.111: park the plate's-own notehead template idea (Sean: keep the idea)",
+    "753e5dd7 2.108: off-staff reach 6 spaces (Sean: go with 6); re-measure, blind tiles, DECISIONS line",
+    "bb0be121 ROADMAP 2.110: claim the training-scale check (Sean: start with the training size check)",
+    "ad26d0d1 ROADMAP START HERE: Sean wants to revisit 2.4b hollow heads next session; ideas to weigh (two detectors, complete cells, combined round, resolution)",
+    "04592685 2.108: FINDINGS, ROADMAP row, version_memory",
+    "6f6c71c9 2.108: staged reach reads the vertical band only (record STAFF_EXTENT is the detector span; it refused 14 real Brahms p1 heads); prune-off-staff; probes + tiles",
+    "e450e31a Docs: ROADMAP 2.107 landed, START HERE landing order, version_memory",
+    "db798ecc Rebuild judged-tiles index after merging main"
+   ],
+   "flags": [
+    "OMR_SURYA_KEEP_ALIVE=0"
+   ],
+   "weights": "--weights auto (weight routing off)",
+   "pages": "1-16",
+   "wall": "55 min (gather through INFER; exit 0)",
+   "musicxml": {
+    "status": "yes",
+    "detail": "3.8 MB"
+   },
+   "lilypond": {
+    "written": "yes",
+    "compiled": "yes",
+    "warnings": 25
+   },
+   "guards": {
+    "judged": "right 107, wrong 12, narrowed 4, abstained 1, not_found 13, unscored 97 (Sean's past answers on the tiles that fall on this record)",
+    "check_open": "192 open findings (tree-level, same for both movements)"
+   }
+  },
+  "provenance": {
+   "commit": "ca46eae46c630707ae597b9db8a14c9cdb5fba75",
+   "dirty": false,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "0"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "movements": null,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": true,
+     "pages": "1-16",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": true,
+     "through": "infer",
+     "weights": "auto",
+     "work_id": null
+    }
+   }
+  },
+  "export": {
+   "families": [
+    {
+     "family": "accidental",
+     "ink_rows": 1508,
+     "cv_rows": 1508,
+     "decided": 648,
+     "abstained": 860,
+     "written": 358,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "articulation",
+     "ink_rows": 465,
+     "cv_rows": 0,
+     "decided": 13,
+     "abstained": 5,
+     "written": 3,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "clef",
+     "ink_rows": 513,
+     "cv_rows": 0,
+     "decided": 328,
+     "abstained": 14,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "direction",
+     "ink_rows": 0,
+     "cv_rows": 75,
+     "decided": 5376,
+     "abstained": 1,
+     "written": 74,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "dynamic",
+     "ink_rows": 1589,
+     "cv_rows": 16,
+     "decided": 5342,
+     "abstained": 35,
+     "written": 558,
+     "of_which_guessed_blue": 35,
+     "status": "emitted"
+    },
+    {
+     "family": "fermata",
+     "ink_rows": 178,
+     "cv_rows": 0,
+     "decided": 156,
+     "abstained": 22,
+     "written": 77,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "key",
+     "ink_rows": 542,
+     "cv_rows": 0,
+     "decided": 331,
+     "abstained": 195,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "note",
+     "ink_rows": 11399,
+     "cv_rows": 0,
+     "decided": 15091,
+     "abstained": 0,
+     "written": 6573,
+     "of_which_guessed_blue": 1701,
+     "status": "emitted"
+    },
+    {
+     "family": "ornament",
+     "ink_rows": 3,
+     "cv_rows": 0,
+     "decided": 2,
+     "abstained": 1,
+     "written": 1,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "rest",
+     "ink_rows": 2873,
+     "cv_rows": 0,
+     "decided": 0,
+     "abstained": 0,
+     "written": 2168,
+     "of_which_guessed_blue": 54,
+     "status": "abstained"
+    },
+    {
+     "family": "slur",
+     "ink_rows": 1225,
+     "cv_rows": 0,
+     "decided": 1055,
+     "abstained": 0,
+     "written": 184,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "tie",
+     "ink_rows": 1419,
+     "cv_rows": 0,
+     "decided": 1582,
+     "abstained": 0,
+     "written": 219,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "time",
+     "ink_rows": 82,
+     "cv_rows": 0,
+     "decided": 31,
+     "abstained": 0,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "tuplet",
+     "ink_rows": 13,
+     "cv_rows": 0,
+     "decided": 3,
+     "abstained": 9,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "wedge",
+     "ink_rows": 0,
+     "cv_rows": 5,
+     "decided": 5,
+     "abstained": 0,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "decided_but_unwritten"
+    }
+   ],
+   "events": {
+    "name": "notes and rests (events)",
+    "in": 14272,
+    "plus_added": 125,
+    "doubled_to_condensed_slot": 415,
+    "rests_duplicated_across_voices": 2,
+    "written": 8324,
+    "not_written": 6073,
+    "relocated": 0,
+    "balance": {
+     "name": "export: events in the log -> file",
+     "in": 14397,
+     "outs": {
+      "written": 8324,
+      "not written (reasons below)": 6073
+     },
+     "out_total": 14397,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "events in the log + rests read off unboxed ink = events written (net of doubled and duplicated copies) + events not written; the exporter's own `balance`, re-checked here"
+    }
+   },
+   "family_refusals": {
+    "ledger_is_not_a_ledger": {
+     "kept": 1761,
+     "refused": 5919,
+     "abstained": 21,
+     "refused_reasons": {
+      "inside_the_staff": 5199,
+      "on_a_staff_line": 693,
+      "tall_not_a_rung": 2,
+      "no_head_on_the_rung": 25
+     }
+    },
+    "accidental_is_not_an_accidental": {
+     "kept": 1508,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "rest_is_not_a_rest": {
+     "kept": 2275,
+     "refused": 598,
+     "abstained": 0,
+     "refused_reasons": {
+      "rest_off_center": 58,
+      "rest_in_a_key_signature_slot": 23,
+      "rest_is_a_barline": 90,
+      "rest_is_a_meter_digit": 8,
+      "rest_touches_two_staff_lines": 98,
+      "rest_has_a_stem": 120,
+      "rest_is_a_duplicate_box": 104,
+      "rest_clipped_by_crop": 75,
+      "rest_outside_its_staff": 7,
+      "rest_overlaps_a_notehead": 12,
+      "rest_on_a_dynamic_letter": 2,
+      "rest_is_a_slashed_stem": 1
+     }
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+     "kept": 1876,
+     "refused": 21,
+     "abstained": 0,
+     "refused_reasons": {
+      "in_a_key_signature_slot": 21
+     }
+    },
+    "arc_is_not_an_arc": {
+     "kept": 2141,
+     "refused": 503,
+     "abstained": 0,
+     "refused_reasons": {
+      "ink_is_a_staff_line": 502,
+      "in_a_key_signature_slot": 1
+     }
+    },
+    "dynamic_is_not_a_dynamic": {
+     "kept": 1589,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "articulation_is_not_an_articulation": {
+     "kept": 7,
+     "refused": 11,
+     "abstained": 0,
+     "refused_reasons": {
+      "ledger_between_staff_and_note": 11
+     }
+    },
+    "flag_is_not_a_flag": {
+     "kept": 252,
+     "refused": 2,
+     "abstained": 0,
+     "refused_reasons": {
+      "in_a_key_signature_slot": 2
+     }
+    },
+    "keysig_marker_is_not_a_marker": {
+     "kept": 528,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "tuplet_marker_is_not_a_marker": {
+     "kept": 13,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    }
+   },
+   "not_written_reasons": {
+    "not_a_rest:rest_off_center": 58,
+    "not_a_rest:rest_in_a_key_signature_slot": 23,
+    "not_a_rest:rest_is_a_barline": 90,
+    "ink_is_a_whole_rest": 109,
+    "not_a_notehead:too_narrow": 258,
+    "not_a_rest:rest_is_a_meter_digit": 8,
+    "not_a_rest:rest_touches_two_staff_lines": 98,
+    "not_a_notehead:clipped_fragment": 342,
+    "not_a_notehead:stacked_head_duplicate": 448,
+    "owned_by_another_staff": 1331,
+    "duration_narrowed": 311,
+    "not_a_rest:rest_has_a_stem": 120,
+    "not_a_notehead:notehead_is_a_duplicate_box": 257,
+    "not_a_rest:rest_is_a_duplicate_box": 104,
+    "not_a_notehead:on_a_dynamic_letter": 64,
+    "rest_duration_abstained": 98,
+    "not_a_rest:rest_clipped_by_crop": 75,
+    "not_a_rest:rest_outside_its_staff": 7,
+    "not_a_notehead:is_a_beam_piece": 19,
+    "not_a_rest:rest_overlaps_a_notehead": 12,
+    "not_a_notehead:belongs_to_a_nearer_staff": 41,
+    "not_a_rest:rest_on_a_dynamic_letter": 2,
+    "not_a_notehead:tremolo_slash_crosses_stem": 61,
+    "not_a_notehead:is_a_clef": 30,
+    "rest_duration_narrowed": 22,
+    "no_pitch": 95,
+    "not_a_notehead:head_cut_piece": 17,
+    "not_a_notehead:notehead_in_a_key_signature_slot": 12,
+    "owner_not_read": 9,
+    "not_a_rest:rest_is_a_slashed_stem": 1,
+    "mark_group_duplicate": 145,
+    "chord_value_undecided": 98,
+    "bar_does_not_add_up": 1673,
+    "unread_gap_in_partial_bar": 35
+   },
+   "arcs_not_written": {
+    "not_an_arc:ink_is_a_staff_line": 502,
+    "kind_same_pitch_accidental_unread": 5,
+    "not_an_arc:in_a_key_signature_slot": 1,
+    "kind_stack_slur_over_two_same_pitch_notes": 2,
+    "tie_ends_in_two_voices": 2,
+    "tie_pitch_contradiction": 24,
+    "arc_binds_fewer_than_two_notes": 685,
+    "tie_spelling_differs": 4,
+    "tie_pair_no_start_head": 101,
+    "tie_pair_no_head_near_the_arc": 189,
+    "tie_pair_no_pair_at_one_position": 76,
+    "tie_pair_no_stop_head": 68,
+    "tie_pair_enters_from_previous_system": 61,
+    "tie_pair_runs_off_the_system": 45,
+    "tie_pair_narrowed": 49,
+    "tie_pair_not_adjacent": 65,
+    "tie_pair_spans_a_whole_bar": 11,
+    "tie_end_not_in_file": 36,
+    "bar_does_not_add_up": 51,
+    "arc_ends_in_one_chord": 73
+   },
+   "other_balances": [
+    {
+     "name": "articulation_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 18,
+      "written": 3,
+      "not_written": 15
+     }
+    },
+    {
+     "name": "direction_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "words_decided": 74,
+      "placed": 63,
+      "written": 74,
+      "not_written": 0
+     }
+    },
+    {
+     "name": "dot_role_balance",
+     "balanced_as_reported": false,
+     "detail": {
+      "population": 601,
+      "attached_augmentation": 15,
+      "written_staccato": 364,
+      "attached_staccato_before_hold_out": 410,
+      "not_placed": 241
+     }
+    },
+    {
+     "name": "fermata_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 178,
+      "written": 77,
+      "duplicated_across_voices": 0,
+      "not_written": 66,
+      "absorbed_by_a_shared_event": 35
+     }
+    },
+    {
+     "name": "ornament_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 3,
+      "written": 1,
+      "not_written": 2
+     }
+    },
+    {
+     "name": "wedge_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "rows_in_log": 5,
+      "decided": 5,
+      "abstained": 0,
+      "written": 0,
+      "not_written": 5
+     }
+    }
+   ],
+   "status_census_balanced": true
+  },
+  "bars": {
+   "total_bars_in_file": 6060,
+   "bars_with_notes_from_the_page": 5022,
+   "held_out_does_not_add_up": 705,
+   "held_out_unread_mark": 0,
+   "partial_bars": 156,
+   "partial_bars_stay_held_by_reason": {
+    "voice_overfull": 191,
+    "short_without_an_unread_symbol": 412,
+    "nothing_before_or_after_the_gap": 43
+   },
+   "unread_empty_padded": 691,
+   "tacet_bars_padded_with_rests": 347,
+   "unread_marks_in_file": 1552,
+   "meter_carried": 0,
+   "meter_missing": 0,
+   "states_from_the_file": {
+    "unread, empty": 691,
+    "written plain": 3559,
+    "held out": 705,
+    "partial": 156,
+    "written with guesses": 949
+   },
+   "states_checks": [
+    {
+     "name": "partial bars: file vs exporter",
+     "file": 156,
+     "exporter": 156,
+     "agrees": true
+    },
+    {
+     "name": "held-out bars (named + doubled-staff copies): file vs exporter",
+     "file": 705,
+     "exporter": 705,
+     "agrees": true
+    },
+    {
+     "name": "unread-empty bars: file vs exporter",
+     "file": 691,
+     "exporter": 691,
+     "agrees": true
+    }
+   ],
+   "repeated_bar_numbers": [],
+   "bars_on_repeated_numbers": 0,
+   "held_out_by_reason": {
+    "does not add up": 646
+   }
+  },
+  "bar_balance": {
+   "name": "bars",
+   "in": 6060,
+   "outs": {
+    "unread, empty": 691,
+    "written plain": 3559,
+    "held out": 705,
+    "partial": 156,
+    "written with guesses": 949
+   },
+   "out_total": 6060,
+   "imbalance": 0,
+   "balanced": true,
+   "note": "parts x measures in the MusicXML = the bar states"
+  },
+  "unread_marks": {
+   "red_marks_written": 1552,
+   "empty": 691,
+   "held_out_sum": 705,
+   "held_out_unread_mark": 0,
+   "partial_gaps_marked": 156,
+   "unread_gaps_written": 158,
+   "equation": {
+    "empty + held_out + partial": 1552,
+    "written": 1552
+   },
+   "balanced": true
+  },
+  "funnels": [
+   {
+    "name": "noteheads: how long",
+    "family": "note",
+    "meaning": "duration",
+    "gloss": "each detected notehead box: is it a real notehead, and what length is it",
+    "boxes": 11399,
+    "added_without_a_box": 0,
+    "refused": {
+     "too_narrow": 258,
+     "clipped_fragment": 342,
+     "stacked_head_duplicate": 448,
+     "notehead_is_a_duplicate_box": 257,
+     "on_a_dynamic_letter": 64,
+     "is_a_beam_piece": 19,
+     "belongs_to_a_nearer_staff": 41,
+     "tremolo_slash_crosses_stem": 61,
+     "is_a_clef": 30,
+     "head_cut_piece": 17,
+     "notehead_in_a_key_signature_slot": 12
+    },
+    "refused_total": 1549,
+    "kept": 9850,
+    "decided": 8190,
+    "narrowed": 343,
+    "abstained": 1317,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 7822,
+     "narrowed": 711,
+     "abstained": 1317
+    },
+    "then": {
+     "stays": 9324,
+     "revised by EVALUATE": 158,
+     "settled by EVALUATE": 195,
+     "settled by INFER": 173
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 7664,
+     "EVALUATE": 353,
+     "INFER": 173
+    },
+    "guessed_at_glyph_level": 2370,
+    "top_reasons": [
+     [
+      "abstained: owned_by_another_staff",
+      1317
+     ],
+     [
+      "narrowed: beam_discounted_uncertain",
+      262
+     ],
+     [
+      "narrowed: beams_ambiguous",
+      54
+     ],
+     [
+      "narrowed: head_fill_from_ink",
+      18
+     ],
+     [
+      "narrowed: beam_certain_not_joined",
+      5
+     ],
+     [
+      "narrowed: flag_ink_unread",
+      2
+     ],
+     [
+      "narrowed: flags_disagree",
+      2
+     ]
+    ],
+    "balance": {
+     "name": "noteheads: how long",
+     "in": 11399,
+     "outs": {
+      "refused: too_narrow": 258,
+      "refused: clipped_fragment": 342,
+      "refused: stacked_head_duplicate": 448,
+      "refused: notehead_is_a_duplicate_box": 257,
+      "refused: on_a_dynamic_letter": 64,
+      "refused: is_a_beam_piece": 19,
+      "refused: belongs_to_a_nearer_staff": 41,
+      "refused: tremolo_slash_crosses_stem": 61,
+      "refused: is_a_clef": 30,
+      "refused: head_cut_piece": 17,
+      "refused: notehead_in_a_key_signature_slot": 12,
+      "decided": 8190,
+      "narrowed": 343,
+      "abstained": 1317,
+      "no verdict": 0
+     },
+     "out_total": 11399,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "noteheads: how long (stage flow)",
+     "in": 9850,
+     "outs": {
+      "stays": 9324,
+      "revised by EVALUATE": 158,
+      "settled by EVALUATE": 195,
+      "settled by INFER": 173
+     },
+     "out_total": 9850,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "noteheads: which pitch",
+    "family": "note",
+    "meaning": "pitch",
+    "gloss": "the same boxes: which line or space, and so which note name",
+    "boxes": 11399,
+    "added_without_a_box": 0,
+    "refused": {
+     "too_narrow": 258,
+     "clipped_fragment": 342,
+     "stacked_head_duplicate": 448,
+     "notehead_is_a_duplicate_box": 257,
+     "on_a_dynamic_letter": 64,
+     "is_a_beam_piece": 19,
+     "belongs_to_a_nearer_staff": 41,
+     "tremolo_slash_crosses_stem": 61,
+     "is_a_clef": 30,
+     "head_cut_piece": 17,
+     "notehead_in_a_key_signature_slot": 12
+    },
+    "refused_total": 1549,
+    "kept": 9850,
+    "decided": 9755,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 95,
+    "adjudicate_said": {
+     "decided": 9755
+    },
+    "then": {
+     "stays": 8539,
+     "revised by EVALUATE": 1216
+    },
+    "by_stage_decided": {
+     "EVALUATE": 9755
+    },
+    "guessed_at_glyph_level": 2358,
+    "top_reasons": [],
+    "balance": {
+     "name": "noteheads: which pitch",
+     "in": 11399,
+     "outs": {
+      "refused: too_narrow": 258,
+      "refused: clipped_fragment": 342,
+      "refused: stacked_head_duplicate": 448,
+      "refused: notehead_is_a_duplicate_box": 257,
+      "refused: on_a_dynamic_letter": 64,
+      "refused: is_a_beam_piece": 19,
+      "refused: belongs_to_a_nearer_staff": 41,
+      "refused: tremolo_slash_crosses_stem": 61,
+      "refused: is_a_clef": 30,
+      "refused: head_cut_piece": 17,
+      "refused: notehead_in_a_key_signature_slot": 12,
+      "decided": 9755,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 95
+     },
+     "out_total": 11399,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "noteheads: which pitch (stage flow)",
+     "in": 9755,
+     "outs": {
+      "stays": 8539,
+      "revised by EVALUATE": 1216
+     },
+     "out_total": 9755,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "rests",
+    "family": "rest",
+    "meaning": "duration",
+    "gloss": "each detected rest box: is it a real rest, and what length",
+    "boxes": 2873,
+    "added_without_a_box": 125,
+    "refused": {
+     "rest_off_center": 58,
+     "rest_in_a_key_signature_slot": 23,
+     "rest_is_a_barline": 90,
+     "rest_is_a_meter_digit": 8,
+     "rest_touches_two_staff_lines": 98,
+     "rest_has_a_stem": 120,
+     "rest_is_a_duplicate_box": 104,
+     "rest_clipped_by_crop": 75,
+     "rest_outside_its_staff": 7,
+     "rest_overlaps_a_notehead": 12,
+     "rest_on_a_dynamic_letter": 2,
+     "rest_is_a_slashed_stem": 1
+    },
+    "refused_total": 598,
+    "kept": 2275,
+    "decided": 2280,
+    "narrowed": 22,
+    "abstained": 98,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 2280,
+     "abstained": 98,
+     "narrowed": 22
+    },
+    "then": {
+     "revised by EVALUATE": 1151,
+     "stays": 1249
+    },
+    "by_stage_decided": {
+     "EVALUATE": 1276,
+     "ADJUDICATE": 1004
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: rest_stands_where_no_rest_hangs",
+      98
+     ],
+     [
+      "narrowed: rest_slot_contradicts_class",
+      22
+     ]
+    ],
+    "balance": {
+     "name": "rests",
+     "in": 2998,
+     "outs": {
+      "refused: rest_off_center": 58,
+      "refused: rest_in_a_key_signature_slot": 23,
+      "refused: rest_is_a_barline": 90,
+      "refused: rest_is_a_meter_digit": 8,
+      "refused: rest_touches_two_staff_lines": 98,
+      "refused: rest_has_a_stem": 120,
+      "refused: rest_is_a_duplicate_box": 104,
+      "refused: rest_clipped_by_crop": 75,
+      "refused: rest_outside_its_staff": 7,
+      "refused: rest_overlaps_a_notehead": 12,
+      "refused: rest_on_a_dynamic_letter": 2,
+      "refused: rest_is_a_slashed_stem": 1,
+      "decided": 2280,
+      "narrowed": 22,
+      "abstained": 98,
+      "no verdict": 0
+     },
+     "out_total": 2998,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "rests (stage flow)",
+     "in": 2400,
+     "outs": {
+      "revised by EVALUATE": 1151,
+      "stays": 1249
+     },
+     "out_total": 2400,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "accidentals",
+    "family": "accidental",
+    "meaning": "accidental_owner",
+    "gloss": "sharps/flats/naturals: which notehead they belong to",
+    "boxes": 1508,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 1508,
+    "decided": 648,
+    "narrowed": 0,
+    "abstained": 860,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "abstained": 860,
+     "decided": 648
+    },
+    "then": {
+     "stays": 1508
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 648
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_candidate",
+      717
+     ],
+     [
+      "abstained: is_a_key_signature_marker",
+      123
+     ],
+     [
+      "abstained: ambiguous_height",
+      14
+     ],
+     [
+      "abstained: head_belongs_to_a_nearer_staff",
+      6
+     ]
+    ],
+    "balance": {
+     "name": "accidentals",
+     "in": 1508,
+     "outs": {
+      "decided": 648,
+      "narrowed": 0,
+      "abstained": 860,
+      "no verdict": 0
+     },
+     "out_total": 1508,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "accidentals (stage flow)",
+     "in": 1508,
+     "outs": {
+      "stays": 1508
+     },
+     "out_total": 1508,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "slurs",
+    "family": "slur",
+    "meaning": "arc_kind",
+    "gloss": "curved lines read as slurs",
+    "boxes": 1225,
+    "added_without_a_box": 0,
+    "refused": {
+     "ink_is_a_staff_line": 5
+    },
+    "refused_total": 5,
+    "kept": 1220,
+    "decided": 1213,
+    "narrowed": 0,
+    "abstained": 7,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 1213,
+     "abstained": 7
+    },
+    "then": {
+     "stays": 1220
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 1213
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: same_pitch_accidental_unread",
+      5
+     ],
+     [
+      "abstained: stack_slur_over_two_same_pitch_notes",
+      2
+     ]
+    ],
+    "balance": {
+     "name": "slurs",
+     "in": 1225,
+     "outs": {
+      "refused: ink_is_a_staff_line": 5,
+      "decided": 1213,
+      "narrowed": 0,
+      "abstained": 7,
+      "no verdict": 0
+     },
+     "out_total": 1225,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "slurs (stage flow)",
+     "in": 1220,
+     "outs": {
+      "stays": 1220
+     },
+     "out_total": 1220,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "ties",
+    "family": "tie",
+    "meaning": "arc_kind",
+    "gloss": "curved lines read as ties",
+    "boxes": 1419,
+    "added_without_a_box": 0,
+    "refused": {
+     "ink_is_a_staff_line": 497,
+     "in_a_key_signature_slot": 1
+    },
+    "refused_total": 498,
+    "kept": 921,
+    "decided": 921,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 921
+    },
+    "then": {
+     "stays": 921
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 921
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [],
+    "balance": {
+     "name": "ties",
+     "in": 1419,
+     "outs": {
+      "refused: ink_is_a_staff_line": 497,
+      "refused: in_a_key_signature_slot": 1,
+      "decided": 921,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 0
+     },
+     "out_total": 1419,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "ties (stage flow)",
+     "in": 921,
+     "outs": {
+      "stays": 921
+     },
+     "out_total": 921,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "articulations",
+    "family": "articulation",
+    "meaning": "articulation_owner",
+    "gloss": "staccato dots, accents, tenuto: which note",
+    "boxes": 465,
+    "added_without_a_box": 0,
+    "refused": {
+     "ledger_between_staff_and_note": 11
+    },
+    "refused_total": 11,
+    "kept": 454,
+    "decided": 3,
+    "narrowed": 1,
+    "abstained": 3,
+    "no_verdict": 447,
+    "adjudicate_said": {
+     "abstained": 3,
+     "decided": 3,
+     "narrowed": 1
+    },
+    "then": {
+     "stays": 7
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 3
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      3
+     ],
+     [
+      "narrowed: heads_about_equally_near",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "articulations",
+     "in": 465,
+     "outs": {
+      "refused: ledger_between_staff_and_note": 11,
+      "decided": 3,
+      "narrowed": 1,
+      "abstained": 3,
+      "no verdict": 447
+     },
+     "out_total": 465,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "articulations (stage flow)",
+     "in": 7,
+     "outs": {
+      "stays": 7
+     },
+     "out_total": 7,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "fermatas",
+    "family": "fermata",
+    "meaning": "fermata_owner",
+    "gloss": "fermatas: which note",
+    "boxes": 178,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 178,
+    "decided": 156,
+    "narrowed": 0,
+    "abstained": 22,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 156,
+     "abstained": 22
+    },
+    "then": {
+     "stays": 178
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 156
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_carrier",
+      21
+     ],
+     [
+      "abstained: owned_by_another_staff",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "fermatas",
+     "in": 178,
+     "outs": {
+      "decided": 156,
+      "narrowed": 0,
+      "abstained": 22,
+      "no verdict": 0
+     },
+     "out_total": 178,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "fermatas (stage flow)",
+     "in": 178,
+     "outs": {
+      "stays": 178
+     },
+     "out_total": 178,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "ornaments",
+    "family": "ornament",
+    "meaning": "ornament_owner",
+    "gloss": "trills, turns, tremolo",
+    "boxes": 3,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 3,
+    "decided": 2,
+    "narrowed": 0,
+    "abstained": 1,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "abstained": 1,
+     "decided": 2
+    },
+    "then": {
+     "stays": 3
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 2
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "ornaments",
+     "in": 3,
+     "outs": {
+      "decided": 2,
+      "narrowed": 0,
+      "abstained": 1,
+      "no verdict": 0
+     },
+     "out_total": 3,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "ornaments (stage flow)",
+     "in": 3,
+     "outs": {
+      "stays": 3
+     },
+     "out_total": 3,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "hairpins",
+    "family": "wedge",
+    "meaning": "wedge_anchor",
+    "gloss": "crescendo/diminuendo wedges",
+    "boxes": 0,
+    "added_without_a_box": 5,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 0,
+    "decided": 5,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 5
+    },
+    "then": {
+     "stays": 5
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 5
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [],
+    "balance": {
+     "name": "hairpins",
+     "in": 5,
+     "outs": {
+      "decided": 5,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 0
+     },
+     "out_total": 5,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "hairpins (stage flow)",
+     "in": 5,
+     "outs": {
+      "stays": 5
+     },
+     "out_total": 5,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   }
+  ],
+  "units": [
+   {
+    "name": "clefs",
+    "quantity": "clef",
+    "gloss": "one per staff and system",
+    "boxes_for_context": 513,
+    "verdicts": 331,
+    "by_category": {
+     "read": 317,
+     "narrowed": 3,
+     "guessed (INFER)": 11
+    },
+    "adjudicate_said": {
+     "decided": 317,
+     "narrowed": 10,
+     "abstained": 4
+    },
+    "then": {
+     "stays": 320,
+     "settled by INFER": 11
+    },
+    "reasons": {
+     "read": [
+      [
+       "scored",
+       317
+      ]
+     ],
+     "narrowed": [
+      [
+       "margin_below_floor",
+       3
+      ]
+     ],
+     "guessed (INFER)": [
+      [
+       "clef_from_other_systems",
+       11
+      ]
+     ]
+    },
+    "balance": {
+     "name": "clefs",
+     "in": 331,
+     "outs": {
+      "read": 317,
+      "narrowed": 3,
+      "guessed (INFER)": 11
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "clefs (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 320,
+      "settled by INFER": 11
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "key signatures",
+    "quantity": "key_signature",
+    "gloss": "one per staff and system",
+    "boxes_for_context": 542,
+    "verdicts": 331,
+    "by_category": {
+     "read": 136,
+     "guessed (INFER)": 195
+    },
+    "adjudicate_said": {
+     "decided": 136,
+     "abstained": 195
+    },
+    "then": {
+     "stays": 136,
+     "settled by INFER": 195
+    },
+    "reasons": {
+     "read": [
+      [
+       "markers",
+       89
+      ],
+      [
+       "fitted_no_markers",
+       47
+      ]
+     ],
+     "guessed (INFER)": [
+      [
+       "key_from_document_majority",
+       158
+      ],
+      [
+       "key_from_other_systems",
+       37
+      ]
+     ]
+    },
+    "balance": {
+     "name": "key signatures",
+     "in": 331,
+     "outs": {
+      "read": 136,
+      "guessed (INFER)": 195
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "key signatures (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 136,
+      "settled by INFER": 195
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "meters (time signatures)",
+    "quantity": "meter",
+    "gloss": "one per system",
+    "boxes_for_context": 82,
+    "verdicts": 31,
+    "by_category": {
+     "read": 1,
+     "carried": 30
+    },
+    "adjudicate_said": {
+     "decided": 31
+    },
+    "then": {
+     "stays": 31
+    },
+    "reasons": {
+     "read": [
+      [
+       "voted",
+       1
+      ]
+     ],
+     "carried": [
+      [
+       "carried",
+       30
+      ]
+     ]
+    },
+    "balance": {
+     "name": "meters (time signatures)",
+     "in": 31,
+     "outs": {
+      "read": 1,
+      "carried": 30
+     },
+     "out_total": 31,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "meters (time signatures) (stage flow)",
+     "in": 31,
+     "outs": {
+      "stays": 31
+     },
+     "out_total": 31,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "instrument names",
+    "quantity": "instrument",
+    "gloss": "one per staff",
+    "boxes_for_context": 0,
+    "verdicts": 331,
+    "by_category": {
+     "read": 203,
+     "abstained": 128
+    },
+    "adjudicate_said": {
+     "decided": 203,
+     "abstained": 128
+    },
+    "then": {
+     "stays": 331
+    },
+    "reasons": {
+     "read": [
+      [
+       "label",
+       199
+      ],
+      [
+       "roster",
+       4
+      ]
+     ],
+     "abstained": [
+      [
+       "no_evidence",
+       127
+      ],
+      [
+       "not_in_lexicon",
+       1
+      ]
+     ]
+    },
+    "balance": {
+     "name": "instrument names",
+     "in": 331,
+     "outs": {
+      "read": 203,
+      "abstained": 128
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "instrument names (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 331
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "direction words",
+    "quantity": "direction",
+    "gloss": "words like cresc., dolce, one per word",
+    "boxes_for_context": 0,
+    "verdicts": 5377,
+    "by_category": {
+     "decided, other reason": 5376,
+     "abstained": 1
+    },
+    "adjudicate_said": {
+     "decided": 5376,
+     "abstained": 1
+    },
+    "then": {
+     "stays": 5377
+    },
+    "reasons": {
+     "decided, other reason": [
+      [
+       "no_words",
+       5302
+      ],
+      [
+       "in_lexicon",
+       74
+      ]
+     ],
+     "abstained": [
+      [
+       "held_back",
+       1
+      ]
+     ]
+    },
+    "balance": {
+     "name": "direction words",
+     "in": 5377,
+     "outs": {
+      "decided, other reason": 5376,
+      "abstained": 1
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "direction words (stage flow)",
+     "in": 5377,
+     "outs": {
+      "stays": 5377
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "dynamic words",
+    "quantity": "dynamic",
+    "gloss": "p, f, sf ... letters spelled into a word; the boxes are the letters",
+    "boxes_for_context": 1589,
+    "verdicts": 5377,
+    "by_category": {
+     "decided, other reason": 5342,
+     "narrowed": 17,
+     "abstained": 18
+    },
+    "adjudicate_said": {
+     "decided": 5342,
+     "narrowed": 17,
+     "abstained": 18
+    },
+    "then": {
+     "stays": 5377
+    },
+    "reasons": {
+     "decided, other reason": [
+      [
+       "no_letters",
+       4723
+      ],
+      [
+       "spelled",
+       505
+      ],
+      [
+       "owned_elsewhere",
+       114
+      ]
+     ],
+     "narrowed": [
+      [
+       "unspellable",
+       17
+      ]
+     ],
+     "abstained": [
+      [
+       "unspellable",
+       18
+      ]
+     ]
+    },
+    "balance": {
+     "name": "dynamic words",
+     "in": 5377,
+     "outs": {
+      "decided, other reason": 5342,
+      "narrowed": 17,
+      "abstained": 18
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "dynamic words (stage flow)",
+     "in": 5377,
+     "outs": {
+      "stays": 5377
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "tuplet ratios",
+    "quantity": "tuplet_ratio",
+    "gloss": "the 3 over a triplet",
+    "boxes_for_context": 13,
+    "verdicts": 12,
+    "by_category": {
+     "abstained": 9,
+     "decided, other reason": 3
+    },
+    "adjudicate_said": {
+     "abstained": 9,
+     "decided": 3
+    },
+    "then": {
+     "stays": 12
+    },
+    "reasons": {
+     "abstained": [
+      [
+       "wrong_member_count",
+       9
+      ]
+     ],
+     "decided, other reason": [
+      [
+       "bracket",
+       3
+      ]
+     ]
+    },
+    "balance": {
+     "name": "tuplet ratios",
+     "in": 12,
+     "outs": {
+      "abstained": 9,
+      "decided, other reason": 3
+     },
+     "out_total": 12,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "tuplet ratios (stage flow)",
+     "in": 12,
+     "outs": {
+      "stays": 12
+     },
+     "out_total": 12,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   }
+  ],
+  "quantities": {
+   "accidental": {
+    "n": 4190,
+    "decided": 4190,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 4190
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "accidental_is_not_an_accidental": {
+    "n": 1508,
+    "decided": 1508,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1508
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "accidental_owner": {
+    "n": 1508,
+    "decided": 648,
+    "narrowed": 0,
+    "abstained": 860,
+    "decided_by_stage": {
+     "ADJUDICATE": 648
+    },
+    "top_reasons": [
+     [
+      "abstained: no_candidate",
+      717
+     ],
+     [
+      "abstained: is_a_key_signature_marker",
+      123
+     ],
+     [
+      "abstained: ambiguous_height",
+      14
+     ],
+     [
+      "abstained: head_belongs_to_a_nearer_staff",
+      6
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_candidate": "p1 sys0 staff2 cell6 glyph0",
+     "abstained: is_a_key_signature_marker": "p1 sys0 staff8 cell0 glyph12",
+     "abstained: ambiguous_height": "p2 sys1 staff10 cell2 glyph3",
+     "abstained: head_belongs_to_a_nearer_staff": "p3 sys1 staff1 cell14 glyph0"
+    }
+   },
+   "arc_is_not_an_arc": {
+    "n": 2644,
+    "decided": 2644,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2644
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "arc_kind": {
+    "n": 2644,
+    "decided": 2637,
+    "narrowed": 0,
+    "abstained": 7,
+    "decided_by_stage": {
+     "ADJUDICATE": 2637
+    },
+    "top_reasons": [
+     [
+      "abstained: same_pitch_accidental_unread",
+      5
+     ],
+     [
+      "abstained: stack_slur_over_two_same_pitch_notes",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: same_pitch_accidental_unread": "p1 sys0 staff3 cell10 glyph0",
+     "abstained: stack_slur_over_two_same_pitch_notes": "p14 sys1 staff4 cell14 glyph0"
+    }
+   },
+   "arc_owner": {
+    "n": 2644,
+    "decided": 2644,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2644
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "arpeggiato_is_not_an_arpeggiato": {
+    "n": 1897,
+    "decided": 1897,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1897
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "articulation_is_not_an_articulation": {
+    "n": 18,
+    "decided": 18,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 18
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "articulation_owner": {
+    "n": 18,
+    "decided": 13,
+    "narrowed": 2,
+    "abstained": 3,
+    "decided_by_stage": {
+     "ADJUDICATE": 13
+    },
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      3
+     ],
+     [
+      "narrowed: heads_about_equally_near",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_notehead": "p3 sys0 staff0 cell1 glyph9",
+     "narrowed: heads_about_equally_near": "p10 sys0 staff0 cell10 glyph6"
+    }
+   },
+   "clef": {
+    "n": 331,
+    "decided": 328,
+    "narrowed": 3,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 317,
+     "INFER": 11
+    },
+    "top_reasons": [
+     [
+      "narrowed: margin_below_floor",
+      3
+     ]
+    ],
+    "example_of_reason": {
+     "narrowed: margin_below_floor": "p4 sys0 staff9"
+    }
+   },
+   "direction": {
+    "n": 5377,
+    "decided": 5376,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 5376
+    },
+    "top_reasons": [
+     [
+      "abstained: held_back",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: held_back": "p5 sys0 staff4 cell2"
+    }
+   },
+   "dot_role": {
+    "n": 601,
+    "decided": 458,
+    "narrowed": 0,
+    "abstained": 143,
+    "decided_by_stage": {
+     "ADJUDICATE": 458
+    },
+    "top_reasons": [
+     [
+      "abstained: dot_role_ambiguous",
+      125
+     ],
+     [
+      "abstained: on_a_stroke",
+      12
+     ],
+     [
+      "abstained: no_notehead_or_rest_in_cell",
+      4
+     ],
+     [
+      "abstained: on_a_barline",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: dot_role_ambiguous": "p1 sys0 staff3 cell0 glyph9",
+     "abstained: on_a_stroke": "p2 sys0 staff8 cell5 glyph8",
+     "abstained: no_notehead_or_rest_in_cell": "p3 sys1 staff0 cell1 glyph1",
+     "abstained: on_a_barline": "p2 sys0 staff3 cell2 glyph4"
+    }
+   },
+   "duration": {
+    "n": 14397,
+    "decided": 12018,
+    "narrowed": 584,
+    "abstained": 1795,
+    "decided_by_stage": {
+     "ADJUDICATE": 10205,
+     "EVALUATE": 1638,
+     "INFER": 175
+    },
+    "top_reasons": [
+     [
+      "abstained: owned_by_another_staff",
+      1500
+     ],
+     [
+      "narrowed: beam_discounted_uncertain",
+      395
+     ],
+     [
+      "abstained: rest_stands_where_no_rest_hangs",
+      166
+     ],
+     [
+      "abstained: not_a_note_mark",
+      129
+     ],
+     [
+      "narrowed: head_fill_from_ink",
+      82
+     ],
+     [
+      "narrowed: beams_ambiguous",
+      61
+     ],
+     [
+      "narrowed: rest_slot_contradicts_class",
+      34
+     ],
+     [
+      "narrowed: beam_certain_not_joined",
+      7
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: owned_by_another_staff": "p1 sys0 staff4 cell3 glyph1",
+     "narrowed: beam_discounted_uncertain": "p1 sys0 staff7 cell1 glyph1",
+     "abstained: rest_stands_where_no_rest_hangs": "p2 sys0 staff1 cell15 glyph2",
+     "abstained: not_a_note_mark": "p1 sys0 staff6 cell6 glyph1",
+     "narrowed: head_fill_from_ink": "p2 sys0 staff2 cell1 glyph16",
+     "narrowed: beams_ambiguous": "p2 sys0 staff10 cell1 glyph6",
+     "narrowed: rest_slot_contradicts_class": "p2 sys1 staff10 cell0 glyph13",
+     "narrowed: beam_certain_not_joined": "p2 sys0 staff3 cell1 glyph13"
+    }
+   },
+   "dynamic": {
+    "n": 5377,
+    "decided": 5342,
+    "narrowed": 17,
+    "abstained": 18,
+    "decided_by_stage": {
+     "ADJUDICATE": 5342
+    },
+    "top_reasons": [
+     [
+      "abstained: unspellable",
+      18
+     ],
+     [
+      "narrowed: unspellable",
+      17
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: unspellable": "p2 sys1 staff1 cell9",
+     "narrowed: unspellable": "p2 sys0 staff8 cell9"
+    }
+   },
+   "dynamic_anchor": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "dynamic_is_not_a_dynamic": {
+    "n": 1589,
+    "decided": 1589,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1589
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "empty_bar_whole_rest": {
+    "n": 355,
+    "decided": 115,
+    "narrowed": 0,
+    "abstained": 240,
+    "decided_by_stage": {
+     "ADJUDICATE": 115
+    },
+    "top_reasons": [
+     [
+      "abstained: not_found_by_search",
+      240
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: not_found_by_search": "p1 sys0 staff3 cell6"
+    }
+   },
+   "endings": {
+    "n": 31,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 31,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_bracket",
+      30
+     ],
+     [
+      "abstained: span_not_at_barlines",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_bracket": "p1 sys0",
+     "abstained: span_not_at_barlines": "p12 sys1"
+    }
+   },
+   "event": {
+    "n": 5134,
+    "decided": 5134,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 5134
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "fermata_owner": {
+    "n": 178,
+    "decided": 156,
+    "narrowed": 0,
+    "abstained": 22,
+    "decided_by_stage": {
+     "ADJUDICATE": 156
+    },
+    "top_reasons": [
+     [
+      "abstained: no_carrier",
+      21
+     ],
+     [
+      "abstained: owned_by_another_staff",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_carrier": "p1 sys0 staff3 cell1 glyph0",
+     "abstained: owned_by_another_staff": "p9 sys0 staff4 cell5 glyph2"
+    }
+   },
+   "flag_is_not_a_flag": {
+    "n": 254,
+    "decided": 254,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 254
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "glyph_owner": {
+    "n": 9423,
+    "decided": 9301,
+    "narrowed": 0,
+    "abstained": 122,
+    "decided_by_stage": {
+     "ADJUDICATE": 9295,
+     "UNATTRIBUTED": 6
+    },
+    "top_reasons": [
+     [
+      "abstained: tied",
+      104
+     ],
+     [
+      "abstained: stem_disagrees",
+      13
+     ],
+     [
+      "abstained: far_no_rungs",
+      4
+     ],
+     [
+      "abstained: ledger_witnesses_disagree",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: tied": "p1 sys0 staff10 cell0 glyph0",
+     "abstained: stem_disagrees": "p6 sys0 staff0 cell8 glyph9",
+     "abstained: far_no_rungs": "p6 sys0 staff4 cell8 glyph3",
+     "abstained: ledger_witnesses_disagree": "p13 sys1 staff7 cell9 glyph4"
+    }
+   },
+   "group_symbol": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "head_stem": {
+    "n": 11399,
+    "decided": 8074,
+    "narrowed": 575,
+    "abstained": 2750,
+    "decided_by_stage": {
+     "ADJUDICATE": 8074
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      2750
+     ],
+     [
+      "narrowed: unison_two_voices",
+      467
+     ],
+     [
+      "narrowed: two_stems",
+      108
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "narrowed: unison_two_voices": "p1 sys0 staff2 cell0 glyph3",
+     "narrowed: two_stems": "p1 sys0 staff2 cell2 glyph2"
+    }
+   },
+   "instrument": {
+    "n": 331,
+    "decided": 203,
+    "narrowed": 0,
+    "abstained": 128,
+    "decided_by_stage": {
+     "ADJUDICATE": 203
+    },
+    "top_reasons": [
+     [
+      "abstained: no_evidence",
+      127
+     ],
+     [
+      "abstained: not_in_lexicon",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_evidence": "p2 sys0 staff7",
+     "abstained: not_in_lexicon": "p6 sys1 staff7"
+    }
+   },
+   "key_signature": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 136,
+     "INFER": 195
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "keysig_marker_is_not_a_marker": {
+    "n": 528,
+    "decided": 528,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 528
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "ledger_is_not_a_ledger": {
+    "n": 7701,
+    "decided": 7680,
+    "narrowed": 0,
+    "abstained": 21,
+    "decided_by_stage": {
+     "ADJUDICATE": 7680
+    },
+    "top_reasons": [
+     [
+      "abstained: rung_without_boxed_head",
+      21
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: rung_without_boxed_head": "p3 sys1 staff0 cell6 glyph11"
+    }
+   },
+   "marking": {
+    "n": 74,
+    "decided": 74,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 74
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "measure_partition": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "meter": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "movement_spans": {
+    "n": 1,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_boundary_detected",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_boundary_detected": "document"
+    }
+   },
+   "notehead_is_a_whole_rest": {
+    "n": 11399,
+    "decided": 11399,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 11399
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "notehead_is_an_eighth_rest": {
+    "n": 301,
+    "decided": 14,
+    "narrowed": 0,
+    "abstained": 287,
+    "decided_by_stage": {
+     "ADJUDICATE": 14
+    },
+    "top_reasons": [
+     [
+      "abstained: no_ink_under_box",
+      219
+     ],
+     [
+      "abstained: not_refused_as_too_narrow",
+      43
+     ],
+     [
+      "abstained: claimed_by_another_class",
+      20
+     ],
+     [
+      "abstained: shape_cannot_tell",
+      5
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_ink_under_box": "p1 sys0 staff2 cell0 glyph9",
+     "abstained: not_refused_as_too_narrow": "p1 sys0 staff9 cell0 glyph12",
+     "abstained: claimed_by_another_class": "p2 sys0 staff9 cell2 glyph11",
+     "abstained: shape_cannot_tell": "p10 sys1 staff8 cell3 glyph3"
+    }
+   },
+   "notehead_is_not_a_notehead": {
+    "n": 11399,
+    "decided": 11399,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 11399
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "notehead_position": {
+    "n": 4196,
+    "decided": 2031,
+    "narrowed": 0,
+    "abstained": 2165,
+    "decided_by_stage": {
+     "ADJUDICATE": 2031
+    },
+    "top_reasons": [
+     [
+      "abstained: ledger_not_read",
+      2165
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: ledger_not_read": "p1 sys0 staff0 cell3 glyph1"
+    }
+   },
+   "onset_column": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "ornament_owner": {
+    "n": 3,
+    "decided": 2,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 2
+    },
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_notehead": "p4 sys0 staff9 cell1 glyph4"
+    }
+   },
+   "part_key": {
+    "n": 1,
+    "decided": 1,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "part_name": {
+    "n": 203,
+    "decided": 203,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 203
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "part_partition": {
+    "n": 1,
+    "decided": 1,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "pedal_owner": {
+    "n": 14,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 14,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_brace",
+      14
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_brace": "p2 sys0 staff10 cell0 glyph8"
+    }
+   },
+   "pitch": {
+    "n": 13603,
+    "decided": 13603,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 13603
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "printed_bar_number": {
+    "n": 31,
+    "decided": 27,
+    "narrowed": 0,
+    "abstained": 4,
+    "decided_by_stage": {
+     "ADJUDICATE": 27
+    },
+    "top_reasons": [
+     [
+      "abstained: no_reading",
+      3
+     ],
+     [
+      "abstained: not_numeric",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_reading": "p1 sys0",
+     "abstained: not_numeric": "p14 sys1"
+    }
+   },
+   "repeat_barline": {
+    "n": 31,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 31,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_reading",
+      31
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_reading": "p1 sys0"
+    }
+   },
+   "rest_is_not_a_rest": {
+    "n": 2873,
+    "decided": 2873,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2873
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "slot_index": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 305,
+     "INFER": 26
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "staff_group": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "staff_ordinal": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "stem_direction": {
+    "n": 11399,
+    "decided": 8581,
+    "narrowed": 0,
+    "abstained": 2818,
+    "decided_by_stage": {
+     "ADJUDICATE": 8581
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      2185
+     ],
+     [
+      "abstained: stems_disagree",
+      633
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "abstained: stems_disagree": "p1 sys0 staff2 cell0 glyph3"
+    }
+   },
+   "stem_head_contact": {
+    "n": 5377,
+    "decided": 3542,
+    "narrowed": 0,
+    "abstained": 1835,
+    "decided_by_stage": {
+     "ADJUDICATE": 3542
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      1662
+     ],
+     [
+      "abstained: no_heads_read",
+      173
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell1",
+     "abstained: no_heads_read": "p1 sys0 staff0 cell0"
+    }
+   },
+   "stem_value": {
+    "n": 11399,
+    "decided": 2970,
+    "narrowed": 166,
+    "abstained": 8263,
+    "decided_by_stage": {
+     "ADJUDICATE": 2970
+    },
+    "top_reasons": [
+     [
+      "abstained: lone_head",
+      3853
+     ],
+     [
+      "abstained: no_stem",
+      2750
+     ],
+     [
+      "abstained: not_a_member",
+      1085
+     ],
+     [
+      "abstained: ambiguous_stem",
+      575
+     ],
+     [
+      "narrowed: stem_levels_unread",
+      164
+     ],
+     [
+      "narrowed: stem_values_open",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: lone_head": "p1 sys0 staff2 cell0 glyph8",
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "abstained: not_a_member": "p1 sys0 staff3 cell3 glyph2",
+     "abstained: ambiguous_stem": "p1 sys0 staff2 cell0 glyph3",
+     "narrowed: stem_levels_unread": "p2 sys1 staff4 cell1 glyph0",
+     "narrowed: stem_values_open": "p5 sys0 staff2 cell5 glyph2"
+    }
+   },
+   "system_key": {
+    "n": 31,
+    "decided": 30,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 30
+    },
+    "top_reasons": [
+     [
+      "abstained: one_staff_only",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: one_staff_only": "p5 sys1"
+    }
+   },
+   "system_membership": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "system_staff_count": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "tie_pair": {
+    "n": 2644,
+    "decided": 419,
+    "narrowed": 49,
+    "abstained": 2176,
+    "decided_by_stage": {
+     "ADJUDICATE": 419
+    },
+    "top_reasons": [
+     [
+      "abstained: not_a_tie",
+      1057
+     ],
+     [
+      "abstained: not_an_arc",
+      503
+     ],
+     [
+      "abstained: no_head_near_the_arc",
+      189
+     ],
+     [
+      "abstained: no_start_head",
+      101
+     ],
+     [
+      "abstained: no_pair_at_one_position",
+      76
+     ],
+     [
+      "abstained: no_stop_head",
+      68
+     ],
+     [
+      "abstained: not_adjacent",
+      65
+     ],
+     [
+      "abstained: enters_from_previous_system",
+      61
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: not_a_tie": "p1 sys0 staff2 cell3 glyph0",
+     "abstained: not_an_arc": "p1 sys0 staff1 cell7 glyph1",
+     "abstained: no_head_near_the_arc": "p1 sys0 staff2 cell14 glyph1",
+     "abstained: no_start_head": "p1 sys0 staff2 cell9 glyph1",
+     "abstained: no_pair_at_one_position": "p2 sys0 staff0 cell6 glyph0",
+     "abstained: no_stop_head": "p2 sys0 staff3 cell6 glyph0",
+     "abstained: not_adjacent": "p3 sys0 staff1 cell1 glyph7",
+     "abstained: enters_from_previous_system": "p2 sys0 staff5 cell0 glyph4"
+    }
+   },
+   "tuplet_marker_is_not_a_marker": {
+    "n": 13,
+    "decided": 13,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 13
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "tuplet_ratio": {
+    "n": 12,
+    "decided": 3,
+    "narrowed": 0,
+    "abstained": 9,
+    "decided_by_stage": {
+     "ADJUDICATE": 3
+    },
+    "top_reasons": [
+     [
+      "abstained: wrong_member_count",
+      9
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: wrong_member_count": "p5 sys0 staff8 cell6"
+    }
+   },
+   "unboxed_ink_is_a_rest": {
+    "n": 1656,
+    "decided": 1377,
+    "narrowed": 0,
+    "abstained": 279,
+    "decided_by_stage": {
+     "ADJUDICATE": 1377
+    },
+    "top_reasons": [
+     [
+      "abstained: shape_cannot_tell",
+      185
+     ],
+     [
+      "abstained: claimed_by_another_class",
+      82
+     ],
+     [
+      "abstained: in_the_header",
+      10
+     ],
+     [
+      "abstained: head_beside_it",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: shape_cannot_tell": "p1 sys0 staff3 cell6 glyph350000",
+     "abstained: claimed_by_another_class": "p1 sys0 staff2 cell0 glyph350000",
+     "abstained: in_the_header": "p4 sys1 staff3 cell8 glyph350000",
+     "abstained: head_beside_it": "p4 sys1 staff1 cell9 glyph350000"
+    }
+   },
+   "unread_mark": {
+    "n": 5377,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 5377,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_ink_component_rows",
+      5377
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_ink_component_rows": "p1 sys0 staff0 cell0"
+    }
+   },
+   "voices": {
+    "n": 5377,
+    "decided": 5023,
+    "narrowed": 0,
+    "abstained": 354,
+    "decided_by_stage": {
+     "ADJUDICATE": 5023
+    },
+    "top_reasons": [
+     [
+      "abstained: nothing_to_split",
+      243
+     ],
+     [
+      "abstained: no_voice_convention_fits",
+      111
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: nothing_to_split": "p1 sys0 staff2 cell8",
+     "abstained: no_voice_convention_fits": "p1 sys0 staff2 cell0"
+    }
+   },
+   "wedge_anchor": {
+    "n": 5,
+    "decided": 5,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 5
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   }
+  },
+  "glyph_verdict_crosscheck": {
+   "accidental_owner": {
+    "name": "verdicts on glyphs: accidental_owner",
+    "in": 1508,
+    "outs": {
+     "in a row above": 1508,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 1508,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "arc_kind": {
+    "name": "verdicts on glyphs: arc_kind",
+    "in": 2644,
+    "outs": {
+     "in a row above": 2141,
+     "on a refused box": 503,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 2644,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "fermata_owner": {
+    "name": "verdicts on glyphs: fermata_owner",
+    "in": 178,
+    "outs": {
+     "in a row above": 178,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 178,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "ornament_owner": {
+    "name": "verdicts on glyphs: ornament_owner",
+    "in": 3,
+    "outs": {
+     "in a row above": 3,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 3,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "articulation_owner": {
+    "name": "verdicts on glyphs: articulation_owner",
+    "in": 18,
+    "outs": {
+     "in a row above": 7,
+     "on a refused box": 11,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 18,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "duration": {
+    "name": "verdicts on glyphs: duration",
+    "in": 14397,
+    "outs": {
+     "in a row above": 12250,
+     "on a refused box": 2147,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 14397,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "wedge_anchor": {
+    "name": "verdicts on glyphs: wedge_anchor",
+    "in": 5,
+    "outs": {
+     "in a row above": 5,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 5,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "pitch": {
+    "name": "verdicts on glyphs: pitch",
+    "in": 13603,
+    "outs": {
+     "in a row above": 9755,
+     "on a refused box": 1539,
+     "on a box of a kind no row covers, or unplaced": 2309
+    },
+    "out_total": 13603,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   }
+  },
+  "refusals_vs_export_drops": [
+   {
+    "reason": "not_a_notehead:belongs_to_a_nearer_staff",
+    "record_refused": 41,
+    "export_dropped": 41,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:clipped_fragment",
+    "record_refused": 342,
+    "export_dropped": 342,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:head_cut_piece",
+    "record_refused": 17,
+    "export_dropped": 17,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:is_a_beam_piece",
+    "record_refused": 19,
+    "export_dropped": 19,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:is_a_clef",
+    "record_refused": 30,
+    "export_dropped": 30,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:notehead_in_a_key_signature_slot",
+    "record_refused": 12,
+    "export_dropped": 12,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:notehead_is_a_duplicate_box",
+    "record_refused": 257,
+    "export_dropped": 257,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:on_a_dynamic_letter",
+    "record_refused": 64,
+    "export_dropped": 64,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:stacked_head_duplicate",
+    "record_refused": 448,
+    "export_dropped": 448,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:too_narrow",
+    "record_refused": 258,
+    "export_dropped": 258,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:tremolo_slash_crosses_stem",
+    "record_refused": 61,
+    "export_dropped": 61,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_clipped_by_crop",
+    "record_refused": 75,
+    "export_dropped": 75,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_has_a_stem",
+    "record_refused": 120,
+    "export_dropped": 120,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_in_a_key_signature_slot",
+    "record_refused": 23,
+    "export_dropped": 23,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_barline",
+    "record_refused": 90,
+    "export_dropped": 90,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_duplicate_box",
+    "record_refused": 104,
+    "export_dropped": 104,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_meter_digit",
+    "record_refused": 8,
+    "export_dropped": 8,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_slashed_stem",
+    "record_refused": 1,
+    "export_dropped": 1,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_off_center",
+    "record_refused": 58,
+    "export_dropped": 58,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_on_a_dynamic_letter",
+    "record_refused": 2,
+    "export_dropped": 2,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_outside_its_staff",
+    "record_refused": 7,
+    "export_dropped": 7,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_overlaps_a_notehead",
+    "record_refused": 12,
+    "export_dropped": 12,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_touches_two_staff_lines",
+    "record_refused": 98,
+    "export_dropped": 98,
+    "agrees": true
+   }
+  ],
+  "guessed": {
+   "written_blue": {
+    "notes": 1701,
+    "rests": 54,
+    "dynamics": 35,
+    "total": 1790
+   },
+   "by_rule_other": {
+    "collapse_bare_stem_by_bar": 100,
+    "collapse_duration_to_barline": 1,
+    "collapse_narrowed_by_bar": 60,
+    "dynamic_with_an_unread_letter": 35,
+    "fill_clef_gap": 189,
+    "fill_part_key": 1005,
+    "reconcile_duration": 212
+   },
+   "kept_notes_in_partial_bars_blue": {
+    "onset_from_partial_bar_prefix": 65,
+    "onset_from_partial_bar_suffix": 123
+   },
+   "record": {
+    "infer_verdicts_standing": 407,
+    "by_infer_rule": {
+     "collapse_duration_by_column": 4,
+     "collapse_duration_to_barline": 3,
+     "collapse_slot_index_to_family_block": 26,
+     "fill_clef_gap": 11,
+     "fill_part_key": 195,
+     "collapse_bare_stem_by_bar": 102,
+     "collapse_narrowed_by_bar": 66
+    },
+    "candidates_per_infer_guess": {
+     "2": 203,
+     "3": 4,
+     "0": 199,
+     "4": 1
+    },
+    "support_gap_of_infer_guess": {
+     "gap 1": 177,
+     "tie": 31,
+     "one candidate": 199
+    },
+    "durations_guessed_at_glyph_level": 2162,
+    "durations_guessed_by_the_bar_sum_only": 214
+   },
+   "margins": {
+    "refusals_total": 31768,
+    "with_a_margin": 408,
+    "without_a_margin": 31360,
+    "groups": [
+     {
+      "decider": "adjudicate_unboxed_ink_is_a_rest",
+      "reason": "shape_cannot_tell",
+      "outcome": "abstained",
+      "unit": "mixed (spaces, steps, column share)",
+      "short_of_the_cut": 185,
+      "n": 185,
+      "tercile_lo": 0.37,
+      "tercile_hi": 1.3,
+      "near": 59,
+      "middle": 65,
+      "far": 61,
+      "median_abs": 0.55,
+      "min_abs": 0.009,
+      "closest_call": {
+       "margin": -0.009,
+       "at": "p16 sys1 staff7 cell5 glyph350000"
+      }
+     },
+     {
+      "decider": "adjudicate_duration",
+      "reason": "head_fill_from_ink",
+      "outcome": "narrowed",
+      "unit": "mixed (window share, readings, staff spaces)",
+      "short_of_the_cut": 101,
+      "n": 124,
+      "tercile_lo": 0.23,
+      "tercile_hi": 1.0,
+      "near": 41,
+      "middle": 65,
+      "far": 18,
+      "median_abs": 0.71,
+      "min_abs": 0.0,
+      "closest_call": {
+       "margin": 0.0,
+       "at": "p5 sys0 staff4 cell15 glyph3"
+      }
+     },
+     {
+      "decider": "adjudicate_unboxed_ink_is_a_rest",
+      "reason": "claimed_by_another_class",
+      "outcome": "abstained",
+      "unit": "share of the cluster covered",
+      "short_of_the_cut": 81,
+      "n": 82,
+      "tercile_lo": 0.054,
+      "tercile_hi": 0.101,
+      "near": 27,
+      "middle": 29,
+      "far": 26,
+      "median_abs": 0.083,
+      "min_abs": 0.0,
+      "closest_call": {
+       "margin": -0.0,
+       "at": "p16 sys1 staff3 cell7 glyph350000"
+      }
+     },
+     {
+      "decider": "adjudicate_clef",
+      "reason": "margin_below_floor",
+      "outcome": "narrowed",
+      "unit": "None",
+      "short_of_the_cut": 0,
+      "n": 10,
+      "tercile_lo": 0.0,
+      "tercile_hi": 0.0,
+      "near": 7,
+      "middle": 0,
+      "far": 3,
+      "median_abs": 0.0,
+      "min_abs": 0.0,
+      "closest_call": {
+       "margin": 0.0,
+       "at": "p4 sys0 staff8"
+      }
+     },
+     {
+      "decider": "adjudicate_narrow_box_is_an_eighth_rest",
+      "reason": "shape_cannot_tell",
+      "outcome": "abstained",
+      "unit": "mixed (staff spaces, staff steps, pieces)",
+      "short_of_the_cut": 5,
+      "n": 5,
+      "tercile_lo": 0.26,
+      "tercile_hi": 1.83,
+      "near": 1,
+      "middle": 3,
+      "far": 1,
+      "median_abs": 1.83,
+      "min_abs": 0.1,
+      "closest_call": {
+       "margin": -0.1,
+       "at": "p10 sys1 staff8 cell3 glyph3"
+      }
+     },
+     {
+      "decider": "adjudicate_unboxed_ink_is_a_rest",
+      "reason": "head_beside_it",
+      "outcome": "abstained",
+      "unit": "staff spaces to the head on the right",
+      "short_of_the_cut": 2,
+      "n": 2,
+      "tercile_lo": 0.13,
+      "tercile_hi": 0.32,
+      "near": 0,
+      "middle": 2,
+      "far": 0,
+      "median_abs": 0.32,
+      "min_abs": 0.13,
+      "closest_call": {
+       "margin": -0.13,
+       "at": "p5 sys0 staff6 cell5 glyph350000"
+      }
+     }
+    ]
+   }
+  },
+  "unknown": {
+   "unread_marks_red": 1552,
+   "staves_held_out_unidentified": 0,
+   "unidentified_parts": 0,
+   "noteheads_staff_not_identified": null,
+   "noteheads_owner_not_read": 9,
+   "noteheads_no_pitch": 95,
+   "notes_whose_length_is_undecided": {
+    "narrowed": 311,
+    "rest abstained": 98,
+    "chord undecided": 98
+   },
+   "adjudication_missing_evidence": {
+    "accidental_staff_position": 433,
+    "arc_box": 6959,
+    "aug_dot": 11525,
+    "beam_stem_join": 411,
+    "beam_stroke_ink": 3968,
+    "cell_box": 189,
+    "cell_staff_space": 35,
+    "clef_position": 40,
+    "clef_seed": 331,
+    "dot_stroke_ink": 447,
+    "dynamic_band_position": 33,
+    "event": 243,
+    "far_head_owner_ledger": 5098,
+    "flag": 8885,
+    "glyph_band_distance": 6884,
+    "glyph_box": 915,
+    "glyph_ladder": 4838,
+    "glyph_owner": 24643,
+    "head_line_cut": 10667,
+    "head_stem_reach": 6254,
+    "human_box_verdict": 39846,
+    "keysig_clef_fit": 375,
+    "keysig_marker_is_not_a_marker": 123,
+    "keysig_template_fit": 143,
+    "ledger_owner_density": 4838,
+    "letter_look_cover": 12627,
+    "meter_ocr": 4,
+    "meter_ocr_at_bar": 31,
+    "notehead_class": 3974,
+    "notehead_letter_ink": 9835,
+    "notehead_position": 976,
+    "notehead_staff_position": 5224,
+    "notehead_stem_cross_ink": 5671,
+    "rest": 14444,
+    "stacked_head_fit": 6606,
+    "stem_slash": 2447,
+    "tuplet_ratio": 12595
+   }
+  },
+  "definition_of_done": {
+   "staves_named": 203,
+   "staves_not_named_abstained": 128,
+   "staves_held_out": 0,
+   "parts_in_file": 12,
+   "clefs": {
+    "read": 317,
+    "narrowed": 3,
+    "guessed (INFER)": 11
+   },
+   "keys": {
+    "read": 136,
+    "guessed (INFER)": 195
+   },
+   "meters": {
+    "read": 1,
+    "carried": 30
+   },
+   "inferred_clefs": 11,
+   "unread_marks": 1552,
+   "musicxml": {
+    "status": "yes",
+    "detail": "3.8 MB"
+   },
+   "lilypond": {
+    "written": "yes",
+    "compiled": "yes",
+    "warnings": 25
+   }
+  },
+  "detected_then_dropped": {
+   "classes_no_family_reads": {
+    "arpeggiato": 1897,
+    "stringsDownBow": 3,
+    "caesura": 3,
+    "segno": 1
+   },
+   "detected_and_unrepresented": {},
+   "decided_and_unwritten": {
+    "wedge": 5
+   },
+   "unexplained_ink_rows_Q_INK": 5377,
+   "boxes_total": 37137
+  },
+  "cleanup": {
+   "per_page": {
+    "1": {
+     "red": 35,
+     "blue": 19,
+     "items": 54
+    },
+    "2": {
+     "red": 90,
+     "blue": 147,
+     "items": 237
+    },
+    "3": {
+     "red": 54,
+     "blue": 90,
+     "items": 144
+    },
+    "4": {
+     "red": 106,
+     "blue": 184,
+     "items": 290
+    },
+    "5": {
+     "red": 99,
+     "blue": 114,
+     "items": 213
+    },
+    "6": {
+     "red": 102,
+     "blue": 141,
+     "items": 243
+    },
+    "7": {
+     "red": 122,
+     "blue": 84,
+     "items": 206
+    },
+    "8": {
+     "red": 99,
+     "blue": 130,
+     "items": 229
+    },
+    "9": {
+     "red": 73,
+     "blue": 47,
+     "items": 120
+    },
+    "10": {
+     "red": 109,
+     "blue": 96,
+     "items": 205
+    },
+    "11": {
+     "red": 81,
+     "blue": 69,
+     "items": 150
+    },
+    "12": {
+     "red": 98,
+     "blue": 123,
+     "items": 221
+    },
+    "13": {
+     "red": 135,
+     "blue": 100,
+     "items": 235
+    },
+    "14": {
+     "red": 125,
+     "blue": 155,
+     "items": 280
+    },
+    "15": {
+     "red": 122,
+     "blue": 193,
+     "items": 315
+    },
+    "16": {
+     "red": 104,
+     "blue": 91,
+     "items": 195
+    }
+   },
+   "worst_pages": [
+    {
+     "page": 15,
+     "red": 122,
+     "blue": 193,
+     "items": 315
+    },
+    {
+     "page": 4,
+     "red": 106,
+     "blue": 184,
+     "items": 290
+    },
+    {
+     "page": 14,
+     "red": 125,
+     "blue": 155,
+     "items": 280
+    },
+    {
+     "page": 6,
+     "red": 102,
+     "blue": 141,
+     "items": 243
+    },
+    {
+     "page": 2,
+     "red": 90,
+     "blue": 147,
+     "items": 237
+    }
+   ],
+   "worst_staves": [
+    {
+     "instrument": "Viola",
+     "page": 15,
+     "red": 13,
+     "blue": 39,
+     "items": 52
+    },
+    {
+     "instrument": "Viola",
+     "page": 4,
+     "red": 9,
+     "blue": 41,
+     "items": 50
+    },
+    {
+     "instrument": "Viola",
+     "page": 6,
+     "red": 9,
+     "blue": 41,
+     "items": 50
+    },
+    {
+     "instrument": "Bassoon",
+     "page": 16,
+     "red": 10,
+     "blue": 39,
+     "items": 49
+    },
+    {
+     "instrument": "Bassoon",
+     "page": 15,
+     "red": 11,
+     "blue": 33,
+     "items": 44
+    }
+   ],
+   "per_part": {
+    "Flute": {
+     "notes_plain": 362,
+     "notes_guessed": 152,
+     "rests": 229,
+     "unread_marks": 131,
+     "bars_unread_empty": 68,
+     "bars_written_plain": 287,
+     "bars_held_out": 48,
+     "bars_partial": 15,
+     "bars_written_with_guesses": 87,
+     "events_held_out": 148,
+     "rows_in_unread_gaps": 5
+    },
+    "Oboe": {
+     "notes_plain": 356,
+     "notes_guessed": 145,
+     "rests": 235,
+     "unread_marks": 125,
+     "bars_written_plain": 288,
+     "bars_held_out": 64,
+     "bars_written_with_guesses": 92,
+     "bars_unread_empty": 49,
+     "bars_partial": 12,
+     "events_held_out": 185,
+     "rows_in_unread_gaps": 1
+    },
+    "Clarinet": {
+     "notes_plain": 578,
+     "notes_guessed": 72,
+     "rests": 194,
+     "unread_marks": 147,
+     "bars_held_out": 62,
+     "bars_written_plain": 330,
+     "bars_unread_empty": 68,
+     "bars_partial": 17,
+     "bars_written_with_guesses": 28,
+     "events_held_out": 199,
+     "rows_in_unread_gaps": 3
+    },
+    "Bassoon": {
+     "notes_plain": 423,
+     "notes_guessed": 300,
+     "rests": 143,
+     "unread_marks": 136,
+     "bars_partial": 18,
+     "bars_unread_empty": 52,
+     "bars_written_plain": 221,
+     "bars_held_out": 66,
+     "bars_written_with_guesses": 148,
+     "events_held_out": 173,
+     "rows_in_unread_gaps": 2
+    },
+    "Horn": {
+     "notes_plain": 336,
+     "notes_guessed": 50,
+     "rests": 272,
+     "unread_marks": 111,
+     "bars_unread_empty": 47,
+     "bars_written_plain": 372,
+     "bars_partial": 13,
+     "bars_held_out": 50,
+     "bars_written_with_guesses": 23,
+     "events_held_out": 124,
+     "rows_in_unread_gaps": 3
+    },
+    "Trumpet": {
+     "notes_plain": 351,
+     "notes_guessed": 30,
+     "rests": 334,
+     "unread_marks": 104,
+     "bars_unread_empty": 70,
+     "bars_written_plain": 389,
+     "bars_partial": 8,
+     "bars_written_with_guesses": 12,
+     "bars_held_out": 26,
+     "events_held_out": 66,
+     "rows_in_unread_gaps": 1
+    },
+    "Timpani": {
+     "notes_plain": 158,
+     "notes_guessed": 21,
+     "rests": 363,
+     "unread_marks": 109,
+     "bars_written_plain": 382,
+     "bars_unread_empty": 64,
+     "bars_partial": 5,
+     "bars_held_out": 40,
+     "bars_written_with_guesses": 14,
+     "events_held_out": 68,
+     "rows_in_unread_gaps": 0
+    },
+    "Violin [P8]": {
+     "notes_plain": 633,
+     "notes_guessed": 245,
+     "rests": 112,
+     "unread_marks": 105,
+     "bars_written_plain": 260,
+     "bars_unread_empty": 28,
+     "bars_held_out": 62,
+     "bars_written_with_guesses": 140,
+     "bars_partial": 15,
+     "events_held_out": 190,
+     "rows_in_unread_gaps": 4
+    },
+    "Violin [P9]": {
+     "notes_plain": 598,
+     "notes_guessed": 210,
+     "rests": 109,
+     "unread_marks": 127,
+     "bars_written_plain": 252,
+     "bars_held_out": 70,
+     "bars_unread_empty": 45,
+     "bars_partial": 12,
+     "bars_written_with_guesses": 126,
+     "events_held_out": 169,
+     "rows_in_unread_gaps": 6
+    },
+    "Viola": {
+     "notes_plain": 370,
+     "notes_guessed": 285,
+     "rests": 119,
+     "unread_marks": 158,
+     "bars_written_with_guesses": 126,
+     "bars_held_out": 73,
+     "bars_unread_empty": 67,
+     "bars_written_plain": 221,
+     "bars_partial": 18,
+     "events_held_out": 178,
+     "rows_in_unread_gaps": 6
+    },
+    "Cello": {
+     "notes_plain": 330,
+     "notes_guessed": 147,
+     "rests": 170,
+     "unread_marks": 172,
+     "bars_held_out": 70,
+     "bars_written_with_guesses": 84,
+     "bars_written_plain": 250,
+     "bars_partial": 21,
+     "bars_unread_empty": 80,
+     "events_held_out": 147,
+     "rows_in_unread_gaps": 4
+    },
+    "Contrabass": {
+     "notes_plain": 323,
+     "notes_guessed": 98,
+     "rests": 235,
+     "unread_marks": 129,
+     "bars_written_plain": 307,
+     "bars_unread_empty": 112,
+     "bars_held_out": 15,
+     "bars_written_with_guesses": 69,
+     "bars_partial": 2,
+     "events_held_out": 26,
+     "rows_in_unread_gaps": 0
+    }
+   },
+   "items_total": 3337,
+   "pages": 16
+  },
+  "examples": [
+   {
+    "count": 1317,
+    "reason": "noteheads: how long: abstained: owned_by_another_staff",
+    "example": "p1 sys0 staff4 cell3 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 717,
+    "reason": "accidentals: abstained: no_candidate",
+    "example": "p1 sys0 staff2 cell6 glyph0",
+    "source": "record"
+   },
+   {
+    "count": 646,
+    "reason": "bar held out: does not add up",
+    "example": "p1 sys0 staff0 cell3 (bar 4, part P1)",
+    "source": "export"
+   },
+   {
+    "count": 497,
+    "reason": "ties: refused, ink_is_a_staff_line",
+    "example": "p1 sys0 staff1 cell7 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 448,
+    "reason": "noteheads: how long: refused, stacked_head_duplicate",
+    "example": "p1 sys0 staff3 cell7 glyph2",
+    "source": "record"
+   },
+   {
+    "count": 412,
+    "reason": "bar stays held: short_without_an_unread_symbol",
+    "example": "p2 sys0 staff0 cell5 (bar 22, part P1)",
+    "source": "export"
+   },
+   {
+    "count": 342,
+    "reason": "noteheads: how long: refused, clipped_fragment",
+    "example": "p1 sys0 staff3 cell3 glyph2",
+    "source": "record"
+   },
+   {
+    "count": 262,
+    "reason": "noteheads: how long: narrowed: beam_discounted_uncertain",
+    "example": "p1 sys0 staff7 cell1 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 258,
+    "reason": "noteheads: how long: refused, too_narrow",
+    "example": "p1 sys0 staff2 cell0 glyph9",
+    "source": "record"
+   },
+   {
+    "count": 257,
+    "reason": "noteheads: how long: refused, notehead_is_a_duplicate_box",
+    "example": "p1 sys0 staff8 cell14 glyph5",
+    "source": "record"
+   }
+  ]
+ },
+ "previous": {
+  "label": "Beethoven 5 mvt 1 (Litolff scan), 20261011-night",
+  "run": {
+   "tree": "cb73dde2",
+   "flags": [
+    "OMR_SURYA_KEEP_ALIVE=0"
+   ],
+   "weights": "--weights auto (weight routing off)",
+   "pages": "1-16",
+   "wall": "52 min (gather through INFER; exit 0)",
+   "musicxml": {
+    "status": "yes"
+   },
+   "lilypond": {
+    "written": "yes",
+    "compiled": "yes",
+    "warnings": 30
+   },
+   "guards": {
+    "judged": "right 99, wrong 12, narrowed 6, abstained 1, not_found 19, unscored 97 (Sean's past answers on the tiles that fall on this record)"
+   }
+  },
+  "provenance": {
+   "commit": "cb73dde2af02db7344d42163a2380db0f6553b1f",
+   "dirty": false,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "0"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "movements": null,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": true,
+     "pages": "1-16",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": true,
+     "through": "infer",
+     "weights": "auto",
+     "work_id": null
+    }
+   }
+  },
+  "export": {
+   "families": [
+    {
+     "family": "accidental",
+     "ink_rows": 1508,
+     "cv_rows": 1508,
+     "decided": 648,
+     "abstained": 860,
+     "written": 314,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "articulation",
+     "ink_rows": 465,
+     "cv_rows": 0,
+     "decided": 13,
+     "abstained": 5,
+     "written": 3,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "clef",
+     "ink_rows": 513,
+     "cv_rows": 0,
+     "decided": 328,
+     "abstained": 14,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "direction",
+     "ink_rows": 0,
+     "cv_rows": 70,
+     "decided": 5377,
+     "abstained": 0,
+     "written": 68,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "dynamic",
+     "ink_rows": 1573,
+     "cv_rows": 0,
+     "decided": 5344,
+     "abstained": 33,
+     "written": 511,
+     "of_which_guessed_blue": 0,
+     "status": "emitted"
+    },
+    {
+     "family": "fermata",
+     "ink_rows": 178,
+     "cv_rows": 0,
+     "decided": 156,
+     "abstained": 22,
+     "written": 74,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "key",
+     "ink_rows": 542,
+     "cv_rows": 0,
+     "decided": 327,
+     "abstained": 194,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "note",
+     "ink_rows": 11399,
+     "cv_rows": 0,
+     "decided": 15100,
+     "abstained": 0,
+     "written": 5782,
+     "of_which_guessed_blue": 0,
+     "status": "emitted"
+    },
+    {
+     "family": "ornament",
+     "ink_rows": 3,
+     "cv_rows": 0,
+     "decided": 2,
+     "abstained": 1,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "decided_but_unwritten"
+    },
+    {
+     "family": "rest",
+     "ink_rows": 2873,
+     "cv_rows": 0,
+     "decided": 0,
+     "abstained": 0,
+     "written": 1876,
+     "of_which_guessed_blue": 0,
+     "status": "abstained"
+    },
+    {
+     "family": "slur",
+     "ink_rows": 1225,
+     "cv_rows": 0,
+     "decided": 1057,
+     "abstained": 0,
+     "written": 166,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "tie",
+     "ink_rows": 1419,
+     "cv_rows": 0,
+     "decided": 1580,
+     "abstained": 0,
+     "written": 215,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "time",
+     "ink_rows": 82,
+     "cv_rows": 0,
+     "decided": 31,
+     "abstained": 0,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "tuplet",
+     "ink_rows": 13,
+     "cv_rows": 0,
+     "decided": 3,
+     "abstained": 9,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "emitted"
+    },
+    {
+     "family": "wedge",
+     "ink_rows": 0,
+     "cv_rows": 5,
+     "decided": 5,
+     "abstained": 0,
+     "written": 0,
+     "of_which_guessed_blue": null,
+     "status": "decided_but_unwritten"
+    }
+   ],
+   "events": {
+    "name": "notes and rests (events)",
+    "in": 14272,
+    "plus_added": 0,
+    "doubled_to_condensed_slot": 302,
+    "rests_duplicated_across_voices": 1,
+    "written": 7355,
+    "not_written": 6917,
+    "relocated": 0,
+    "balance": {
+     "name": "export: events in the log -> file",
+     "in": 14272,
+     "outs": {
+      "written": 7355,
+      "not written (reasons below)": 6917
+     },
+     "out_total": 14272,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "events in the log + rests read off unboxed ink = events written (net of doubled and duplicated copies) + events not written; the exporter's own `balance`, re-checked here"
+    }
+   },
+   "family_refusals": {
+    "ledger_is_not_a_ledger": {
+     "kept": 1761,
+     "refused": 5919,
+     "abstained": 21,
+     "refused_reasons": {
+      "inside_the_staff": 5199,
+      "on_a_staff_line": 693,
+      "tall_not_a_rung": 2,
+      "no_head_on_the_rung": 25
+     }
+    },
+    "accidental_is_not_an_accidental": {
+     "kept": 1508,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "rest_is_not_a_rest": {
+     "kept": 2395,
+     "refused": 478,
+     "abstained": 0,
+     "refused_reasons": {
+      "rest_off_center": 58,
+      "rest_touches_two_staff_lines": 98,
+      "rest_has_a_stem": 121,
+      "rest_is_a_duplicate_box": 106,
+      "rest_clipped_by_crop": 75,
+      "rest_outside_its_staff": 7,
+      "rest_overlaps_a_notehead": 12,
+      "rest_is_a_slashed_stem": 1
+     }
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+     "kept": 1897,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "arc_is_not_an_arc": {
+     "kept": 2141,
+     "refused": 503,
+     "abstained": 0,
+     "refused_reasons": {
+      "ink_is_a_staff_line": 503
+     }
+    },
+    "dynamic_is_not_a_dynamic": {
+     "kept": 1573,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "articulation_is_not_an_articulation": {
+     "kept": 7,
+     "refused": 11,
+     "abstained": 0,
+     "refused_reasons": {
+      "ledger_between_staff_and_note": 11
+     }
+    },
+    "flag_is_not_a_flag": {
+     "kept": 254,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "keysig_marker_is_not_a_marker": {
+     "kept": 528,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    },
+    "tuplet_marker_is_not_a_marker": {
+     "kept": 13,
+     "refused": 0,
+     "abstained": 0,
+     "refused_reasons": {}
+    }
+   },
+   "not_written_reasons": {
+    "not_a_rest:rest_off_center": 58,
+    "ink_is_a_whole_rest": 110,
+    "not_a_notehead:too_narrow": 258,
+    "not_a_rest:rest_touches_two_staff_lines": 98,
+    "not_a_notehead:clipped_fragment": 342,
+    "not_a_notehead:stacked_head_duplicate": 467,
+    "owned_by_another_staff": 1333,
+    "duration_narrowed": 354,
+    "not_a_rest:rest_has_a_stem": 121,
+    "not_a_notehead:notehead_is_a_duplicate_box": 257,
+    "not_a_rest:rest_is_a_duplicate_box": 106,
+    "not_a_notehead:on_a_dynamic_letter": 59,
+    "rest_duration_abstained": 98,
+    "not_a_rest:rest_clipped_by_crop": 75,
+    "not_a_rest:rest_outside_its_staff": 7,
+    "not_a_rest:rest_overlaps_a_notehead": 12,
+    "not_a_notehead:is_a_beam_piece": 11,
+    "not_a_notehead:belongs_to_a_nearer_staff": 41,
+    "not_a_notehead:tremolo_slash_crosses_stem": 61,
+    "not_a_notehead:is_a_clef": 30,
+    "rest_duration_narrowed": 22,
+    "no_pitch": 95,
+    "not_a_notehead:head_cut_piece": 17,
+    "owner_not_read": 9,
+    "staff_not_identified": 133,
+    "not_a_rest:rest_is_a_slashed_stem": 1,
+    "mark_group_duplicate": 146,
+    "chord_value_undecided": 98,
+    "bar_does_not_add_up": 2498
+   },
+   "arcs_not_written": {
+    "not_an_arc:ink_is_a_staff_line": 503,
+    "kind_same_pitch_accidental_unread": 5,
+    "kind_stack_slur_over_two_same_pitch_notes": 2,
+    "tie_ends_in_two_voices": 2,
+    "tie_pitch_contradiction": 23,
+    "arc_binds_fewer_than_two_notes": 690,
+    "tie_spelling_differs": 4,
+    "tie_pair_no_start_head": 101,
+    "tie_pair_no_head_near_the_arc": 189,
+    "tie_pair_no_pair_at_one_position": 75,
+    "tie_pair_no_stop_head": 67,
+    "tie_pair_enters_from_previous_system": 61,
+    "tie_pair_runs_off_the_system": 45,
+    "tie_pair_narrowed": 45,
+    "tie_pair_not_adjacent": 65,
+    "tie_pair_spans_a_whole_bar": 11,
+    "tie_end_not_in_file": 37,
+    "bar_does_not_add_up": 65,
+    "arc_ends_in_one_chord": 71
+   },
+   "other_balances": [
+    {
+     "name": "articulation_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 18,
+      "written": 3,
+      "not_written": 15
+     }
+    },
+    {
+     "name": "direction_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "words_decided": 70,
+      "placed": 60,
+      "written": 68,
+      "not_written": 2
+     }
+    },
+    {
+     "name": "dot_role_balance",
+     "balanced_as_reported": false,
+     "detail": {
+      "population": 601,
+      "attached_augmentation": 15,
+      "written_staccato": 351,
+      "attached_staccato_before_hold_out": 410,
+      "not_placed": 254
+     }
+    },
+    {
+     "name": "fermata_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 178,
+      "written": 74,
+      "duplicated_across_voices": 0,
+      "not_written": 69,
+      "absorbed_by_a_shared_event": 35
+     }
+    },
+    {
+     "name": "ornament_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "marks_in_log": 3,
+      "written": 0,
+      "not_written": 3
+     }
+    },
+    {
+     "name": "wedge_balance",
+     "balanced_as_reported": true,
+     "detail": {
+      "rows_in_log": 5,
+      "decided": 5,
+      "abstained": 0,
+      "written": 0,
+      "not_written": 5
+     }
+    }
+   ],
+   "status_census_balanced": true
+  },
+  "bars": {
+   "total_bars_in_file": 6060,
+   "bars_with_notes_from_the_page": 4841,
+   "held_out_does_not_add_up": 1044,
+   "held_out_unread_mark": 0,
+   "partial_bars": null,
+   "partial_bars_stay_held_by_reason": null,
+   "unread_empty_padded": 680,
+   "tacet_bars_padded_with_rests": 539,
+   "unread_marks_in_file": 1724,
+   "meter_carried": 0,
+   "meter_missing": 0,
+   "states_from_the_file": {
+    "held out": 1044,
+    "written plain": 4336,
+    "unread, empty": 680
+   },
+   "states_checks": [
+    {
+     "name": "held-out bars (named + doubled-staff copies): file vs exporter",
+     "file": 1044,
+     "exporter": 1044,
+     "agrees": true
+    },
+    {
+     "name": "unread-empty bars: file vs exporter",
+     "file": 680,
+     "exporter": 680,
+     "agrees": true
+    }
+   ],
+   "repeated_bar_numbers": [],
+   "bars_on_repeated_numbers": 0,
+   "held_out_by_reason": {
+    "does not add up": 988
+   }
+  },
+  "bar_balance": {
+   "name": "bars",
+   "in": 6060,
+   "outs": {
+    "held out": 1044,
+    "written plain": 4336,
+    "unread, empty": 680
+   },
+   "out_total": 6060,
+   "imbalance": 0,
+   "balanced": true,
+   "note": "parts x measures in the MusicXML = the bar states"
+  },
+  "unread_marks": {
+   "red_marks_written": 1724,
+   "empty": 680,
+   "held_out_sum": 1044,
+   "held_out_unread_mark": 0,
+   "partial_gaps_marked": null,
+   "unread_gaps_written": null,
+   "equation": {
+    "empty + held_out + partial": 1724,
+    "written": 1724
+   },
+   "balanced": true
+  },
+  "funnels": [
+   {
+    "name": "noteheads: how long",
+    "family": "note",
+    "meaning": "duration",
+    "gloss": "each detected notehead box: is it a real notehead, and what length is it",
+    "boxes": 11399,
+    "added_without_a_box": 0,
+    "refused": {
+     "too_narrow": 258,
+     "clipped_fragment": 342,
+     "stacked_head_duplicate": 467,
+     "notehead_is_a_duplicate_box": 257,
+     "on_a_dynamic_letter": 59,
+     "is_a_beam_piece": 11,
+     "belongs_to_a_nearer_staff": 41,
+     "tremolo_slash_crosses_stem": 61,
+     "is_a_clef": 30,
+     "head_cut_piece": 17
+    },
+    "refused_total": 1543,
+    "kept": 9856,
+    "decided": 8145,
+    "narrowed": 392,
+    "abstained": 1319,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 7825,
+     "narrowed": 712,
+     "abstained": 1319
+    },
+    "then": {
+     "stays": 9371,
+     "revised by EVALUATE": 165,
+     "settled by EVALUATE": 186,
+     "settled by INFER": 134
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 7660,
+     "EVALUATE": 351,
+     "INFER": 134
+    },
+    "guessed_at_glyph_level": 2335,
+    "top_reasons": [
+     [
+      "abstained: owned_by_another_staff",
+      1319
+     ],
+     [
+      "narrowed: beam_discounted_uncertain",
+      306
+     ],
+     [
+      "narrowed: beams_ambiguous",
+      57
+     ],
+     [
+      "narrowed: head_fill_from_ink",
+      21
+     ],
+     [
+      "narrowed: beam_certain_not_joined",
+      5
+     ],
+     [
+      "narrowed: flags_disagree",
+      2
+     ],
+     [
+      "narrowed: flag_ink_unread",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "noteheads: how long",
+     "in": 11399,
+     "outs": {
+      "refused: too_narrow": 258,
+      "refused: clipped_fragment": 342,
+      "refused: stacked_head_duplicate": 467,
+      "refused: notehead_is_a_duplicate_box": 257,
+      "refused: on_a_dynamic_letter": 59,
+      "refused: is_a_beam_piece": 11,
+      "refused: belongs_to_a_nearer_staff": 41,
+      "refused: tremolo_slash_crosses_stem": 61,
+      "refused: is_a_clef": 30,
+      "refused: head_cut_piece": 17,
+      "decided": 8145,
+      "narrowed": 392,
+      "abstained": 1319,
+      "no verdict": 0
+     },
+     "out_total": 11399,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "noteheads: how long (stage flow)",
+     "in": 9856,
+     "outs": {
+      "stays": 9371,
+      "revised by EVALUATE": 165,
+      "settled by EVALUATE": 186,
+      "settled by INFER": 134
+     },
+     "out_total": 9856,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "noteheads: which pitch",
+    "family": "note",
+    "meaning": "pitch",
+    "gloss": "the same boxes: which line or space, and so which note name",
+    "boxes": 11399,
+    "added_without_a_box": 0,
+    "refused": {
+     "too_narrow": 258,
+     "clipped_fragment": 342,
+     "stacked_head_duplicate": 467,
+     "notehead_is_a_duplicate_box": 257,
+     "on_a_dynamic_letter": 59,
+     "is_a_beam_piece": 11,
+     "belongs_to_a_nearer_staff": 41,
+     "tremolo_slash_crosses_stem": 61,
+     "is_a_clef": 30,
+     "head_cut_piece": 17
+    },
+    "refused_total": 1543,
+    "kept": 9856,
+    "decided": 9761,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 95,
+    "adjudicate_said": {
+     "decided": 9761
+    },
+    "then": {
+     "stays": 8544,
+     "revised by EVALUATE": 1217
+    },
+    "by_stage_decided": {
+     "EVALUATE": 9761
+    },
+    "guessed_at_glyph_level": 2330,
+    "top_reasons": [],
+    "balance": {
+     "name": "noteheads: which pitch",
+     "in": 11399,
+     "outs": {
+      "refused: too_narrow": 258,
+      "refused: clipped_fragment": 342,
+      "refused: stacked_head_duplicate": 467,
+      "refused: notehead_is_a_duplicate_box": 257,
+      "refused: on_a_dynamic_letter": 59,
+      "refused: is_a_beam_piece": 11,
+      "refused: belongs_to_a_nearer_staff": 41,
+      "refused: tremolo_slash_crosses_stem": 61,
+      "refused: is_a_clef": 30,
+      "refused: head_cut_piece": 17,
+      "decided": 9761,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 95
+     },
+     "out_total": 11399,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "noteheads: which pitch (stage flow)",
+     "in": 9761,
+     "outs": {
+      "stays": 8544,
+      "revised by EVALUATE": 1217
+     },
+     "out_total": 9761,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "rests",
+    "family": "rest",
+    "meaning": "duration",
+    "gloss": "each detected rest box: is it a real rest, and what length",
+    "boxes": 2873,
+    "added_without_a_box": 0,
+    "refused": {
+     "rest_off_center": 58,
+     "rest_touches_two_staff_lines": 98,
+     "rest_has_a_stem": 121,
+     "rest_is_a_duplicate_box": 106,
+     "rest_clipped_by_crop": 75,
+     "rest_outside_its_staff": 7,
+     "rest_overlaps_a_notehead": 12,
+     "rest_is_a_slashed_stem": 1
+    },
+    "refused_total": 478,
+    "kept": 2395,
+    "decided": 2275,
+    "narrowed": 22,
+    "abstained": 98,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 2275,
+     "abstained": 98,
+     "narrowed": 22
+    },
+    "then": {
+     "stays": 1315,
+     "revised by EVALUATE": 1080
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 1195,
+     "EVALUATE": 1080
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: rest_stands_where_no_rest_hangs",
+      98
+     ],
+     [
+      "narrowed: rest_slot_contradicts_class",
+      22
+     ]
+    ],
+    "balance": {
+     "name": "rests",
+     "in": 2873,
+     "outs": {
+      "refused: rest_off_center": 58,
+      "refused: rest_touches_two_staff_lines": 98,
+      "refused: rest_has_a_stem": 121,
+      "refused: rest_is_a_duplicate_box": 106,
+      "refused: rest_clipped_by_crop": 75,
+      "refused: rest_outside_its_staff": 7,
+      "refused: rest_overlaps_a_notehead": 12,
+      "refused: rest_is_a_slashed_stem": 1,
+      "decided": 2275,
+      "narrowed": 22,
+      "abstained": 98,
+      "no verdict": 0
+     },
+     "out_total": 2873,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "rests (stage flow)",
+     "in": 2395,
+     "outs": {
+      "stays": 1315,
+      "revised by EVALUATE": 1080
+     },
+     "out_total": 2395,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "accidentals",
+    "family": "accidental",
+    "meaning": "accidental_owner",
+    "gloss": "sharps/flats/naturals: which notehead they belong to",
+    "boxes": 1508,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 1508,
+    "decided": 648,
+    "narrowed": 0,
+    "abstained": 860,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "abstained": 860,
+     "decided": 648
+    },
+    "then": {
+     "stays": 1508
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 648
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_candidate",
+      717
+     ],
+     [
+      "abstained: is_a_key_signature_marker",
+      123
+     ],
+     [
+      "abstained: ambiguous_height",
+      14
+     ],
+     [
+      "abstained: head_belongs_to_a_nearer_staff",
+      6
+     ]
+    ],
+    "balance": {
+     "name": "accidentals",
+     "in": 1508,
+     "outs": {
+      "decided": 648,
+      "narrowed": 0,
+      "abstained": 860,
+      "no verdict": 0
+     },
+     "out_total": 1508,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "accidentals (stage flow)",
+     "in": 1508,
+     "outs": {
+      "stays": 1508
+     },
+     "out_total": 1508,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "slurs",
+    "family": "slur",
+    "meaning": "arc_kind",
+    "gloss": "curved lines read as slurs",
+    "boxes": 1225,
+    "added_without_a_box": 0,
+    "refused": {
+     "ink_is_a_staff_line": 5
+    },
+    "refused_total": 5,
+    "kept": 1220,
+    "decided": 1213,
+    "narrowed": 0,
+    "abstained": 7,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 1213,
+     "abstained": 7
+    },
+    "then": {
+     "stays": 1220
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 1213
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: same_pitch_accidental_unread",
+      5
+     ],
+     [
+      "abstained: stack_slur_over_two_same_pitch_notes",
+      2
+     ]
+    ],
+    "balance": {
+     "name": "slurs",
+     "in": 1225,
+     "outs": {
+      "refused: ink_is_a_staff_line": 5,
+      "decided": 1213,
+      "narrowed": 0,
+      "abstained": 7,
+      "no verdict": 0
+     },
+     "out_total": 1225,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "slurs (stage flow)",
+     "in": 1220,
+     "outs": {
+      "stays": 1220
+     },
+     "out_total": 1220,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "ties",
+    "family": "tie",
+    "meaning": "arc_kind",
+    "gloss": "curved lines read as ties",
+    "boxes": 1419,
+    "added_without_a_box": 0,
+    "refused": {
+     "ink_is_a_staff_line": 498
+    },
+    "refused_total": 498,
+    "kept": 921,
+    "decided": 921,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 921
+    },
+    "then": {
+     "stays": 921
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 921
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [],
+    "balance": {
+     "name": "ties",
+     "in": 1419,
+     "outs": {
+      "refused: ink_is_a_staff_line": 498,
+      "decided": 921,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 0
+     },
+     "out_total": 1419,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "ties (stage flow)",
+     "in": 921,
+     "outs": {
+      "stays": 921
+     },
+     "out_total": 921,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "articulations",
+    "family": "articulation",
+    "meaning": "articulation_owner",
+    "gloss": "staccato dots, accents, tenuto: which note",
+    "boxes": 465,
+    "added_without_a_box": 0,
+    "refused": {
+     "ledger_between_staff_and_note": 11
+    },
+    "refused_total": 11,
+    "kept": 454,
+    "decided": 3,
+    "narrowed": 1,
+    "abstained": 3,
+    "no_verdict": 447,
+    "adjudicate_said": {
+     "abstained": 3,
+     "decided": 3,
+     "narrowed": 1
+    },
+    "then": {
+     "stays": 7
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 3
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      3
+     ],
+     [
+      "narrowed: heads_about_equally_near",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "articulations",
+     "in": 465,
+     "outs": {
+      "refused: ledger_between_staff_and_note": 11,
+      "decided": 3,
+      "narrowed": 1,
+      "abstained": 3,
+      "no verdict": 447
+     },
+     "out_total": 465,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "articulations (stage flow)",
+     "in": 7,
+     "outs": {
+      "stays": 7
+     },
+     "out_total": 7,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "fermatas",
+    "family": "fermata",
+    "meaning": "fermata_owner",
+    "gloss": "fermatas: which note",
+    "boxes": 178,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 178,
+    "decided": 156,
+    "narrowed": 0,
+    "abstained": 22,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 156,
+     "abstained": 22
+    },
+    "then": {
+     "stays": 178
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 156
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_carrier",
+      21
+     ],
+     [
+      "abstained: owned_by_another_staff",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "fermatas",
+     "in": 178,
+     "outs": {
+      "decided": 156,
+      "narrowed": 0,
+      "abstained": 22,
+      "no verdict": 0
+     },
+     "out_total": 178,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "fermatas (stage flow)",
+     "in": 178,
+     "outs": {
+      "stays": 178
+     },
+     "out_total": 178,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "ornaments",
+    "family": "ornament",
+    "meaning": "ornament_owner",
+    "gloss": "trills, turns, tremolo",
+    "boxes": 3,
+    "added_without_a_box": 0,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 3,
+    "decided": 2,
+    "narrowed": 0,
+    "abstained": 1,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "abstained": 1,
+     "decided": 2
+    },
+    "then": {
+     "stays": 3
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 2
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      1
+     ]
+    ],
+    "balance": {
+     "name": "ornaments",
+     "in": 3,
+     "outs": {
+      "decided": 2,
+      "narrowed": 0,
+      "abstained": 1,
+      "no verdict": 0
+     },
+     "out_total": 3,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "ornaments (stage flow)",
+     "in": 3,
+     "outs": {
+      "stays": 3
+     },
+     "out_total": 3,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   },
+   {
+    "name": "hairpins",
+    "family": "wedge",
+    "meaning": "wedge_anchor",
+    "gloss": "crescendo/diminuendo wedges",
+    "boxes": 0,
+    "added_without_a_box": 5,
+    "refused": {},
+    "refused_total": 0,
+    "kept": 0,
+    "decided": 5,
+    "narrowed": 0,
+    "abstained": 0,
+    "no_verdict": 0,
+    "adjudicate_said": {
+     "decided": 5
+    },
+    "then": {
+     "stays": 5
+    },
+    "by_stage_decided": {
+     "ADJUDICATE": 5
+    },
+    "guessed_at_glyph_level": 0,
+    "top_reasons": [],
+    "balance": {
+     "name": "hairpins",
+     "in": 5,
+     "outs": {
+      "decided": 5,
+      "narrowed": 0,
+      "abstained": 0,
+      "no verdict": 0
+     },
+     "out_total": 5,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "boxes + symbols added without a box = refused + decided + narrowed + abstained + no verdict"
+    },
+    "stage_balance": {
+     "name": "hairpins (stage flow)",
+     "in": 5,
+     "outs": {
+      "stays": 5
+     },
+     "out_total": 5,
+     "imbalance": 0,
+     "balanced": true,
+     "note": "what ADJUDICATE said about the symbols that have a verdict = how each was left after EVALUATE and INFER"
+    }
+   }
+  ],
+  "units": [
+   {
+    "name": "clefs",
+    "quantity": "clef",
+    "gloss": "one per staff and system",
+    "boxes_for_context": 513,
+    "verdicts": 331,
+    "by_category": {
+     "read": 317,
+     "narrowed": 3,
+     "guessed (INFER)": 11
+    },
+    "adjudicate_said": {
+     "decided": 317,
+     "narrowed": 10,
+     "abstained": 4
+    },
+    "then": {
+     "stays": 320,
+     "settled by INFER": 11
+    },
+    "reasons": {
+     "read": [
+      [
+       "scored",
+       317
+      ]
+     ],
+     "narrowed": [
+      [
+       "margin_below_floor",
+       3
+      ]
+     ],
+     "guessed (INFER)": [
+      [
+       "clef_from_other_systems",
+       11
+      ]
+     ]
+    },
+    "balance": {
+     "name": "clefs",
+     "in": 331,
+     "outs": {
+      "read": 317,
+      "narrowed": 3,
+      "guessed (INFER)": 11
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "clefs (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 320,
+      "settled by INFER": 11
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "key signatures",
+    "quantity": "key_signature",
+    "gloss": "one per staff and system",
+    "boxes_for_context": 542,
+    "verdicts": 331,
+    "by_category": {
+     "read": 137,
+     "abstained": 4,
+     "guessed (INFER)": 190
+    },
+    "adjudicate_said": {
+     "decided": 137,
+     "abstained": 194
+    },
+    "then": {
+     "stays": 141,
+     "settled by INFER": 190
+    },
+    "reasons": {
+     "read": [
+      [
+       "markers",
+       90
+      ],
+      [
+       "fitted_no_markers",
+       47
+      ]
+     ],
+     "abstained": [
+      [
+       "disagrees_with_document",
+       3
+      ],
+      [
+       "mixed_marker_kinds",
+       1
+      ]
+     ],
+     "guessed (INFER)": [
+      [
+       "key_from_document_majority",
+       153
+      ],
+      [
+       "key_from_other_systems",
+       37
+      ]
+     ]
+    },
+    "balance": {
+     "name": "key signatures",
+     "in": 331,
+     "outs": {
+      "read": 137,
+      "abstained": 4,
+      "guessed (INFER)": 190
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "key signatures (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 141,
+      "settled by INFER": 190
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "meters (time signatures)",
+    "quantity": "meter",
+    "gloss": "one per system",
+    "boxes_for_context": 82,
+    "verdicts": 31,
+    "by_category": {
+     "read": 1,
+     "carried": 30
+    },
+    "adjudicate_said": {
+     "decided": 31
+    },
+    "then": {
+     "stays": 31
+    },
+    "reasons": {
+     "read": [
+      [
+       "voted",
+       1
+      ]
+     ],
+     "carried": [
+      [
+       "carried",
+       30
+      ]
+     ]
+    },
+    "balance": {
+     "name": "meters (time signatures)",
+     "in": 31,
+     "outs": {
+      "read": 1,
+      "carried": 30
+     },
+     "out_total": 31,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "meters (time signatures) (stage flow)",
+     "in": 31,
+     "outs": {
+      "stays": 31
+     },
+     "out_total": 31,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "instrument names",
+    "quantity": "instrument",
+    "gloss": "one per staff",
+    "boxes_for_context": 0,
+    "verdicts": 331,
+    "by_category": {
+     "read": 200,
+     "abstained": 131
+    },
+    "adjudicate_said": {
+     "decided": 200,
+     "abstained": 131
+    },
+    "then": {
+     "stays": 331
+    },
+    "reasons": {
+     "read": [
+      [
+       "label",
+       199
+      ],
+      [
+       "roster",
+       1
+      ]
+     ],
+     "abstained": [
+      [
+       "no_evidence",
+       127
+      ],
+      [
+       "not_in_lexicon",
+       4
+      ]
+     ]
+    },
+    "balance": {
+     "name": "instrument names",
+     "in": 331,
+     "outs": {
+      "read": 200,
+      "abstained": 131
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "instrument names (stage flow)",
+     "in": 331,
+     "outs": {
+      "stays": 331
+     },
+     "out_total": 331,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "direction words",
+    "quantity": "direction",
+    "gloss": "words like cresc., dolce, one per word",
+    "boxes_for_context": 0,
+    "verdicts": 5377,
+    "by_category": {
+     "decided, other reason": 5377
+    },
+    "adjudicate_said": {
+     "decided": 5377
+    },
+    "then": {
+     "stays": 5377
+    },
+    "reasons": {
+     "decided, other reason": [
+      [
+       "no_words",
+       5307
+      ],
+      [
+       "in_lexicon",
+       70
+      ]
+     ]
+    },
+    "balance": {
+     "name": "direction words",
+     "in": 5377,
+     "outs": {
+      "decided, other reason": 5377
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "direction words (stage flow)",
+     "in": 5377,
+     "outs": {
+      "stays": 5377
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "dynamic words",
+    "quantity": "dynamic",
+    "gloss": "p, f, sf ... letters spelled into a word; the boxes are the letters",
+    "boxes_for_context": 1573,
+    "verdicts": 5377,
+    "by_category": {
+     "decided, other reason": 5344,
+     "narrowed": 15,
+     "abstained": 18
+    },
+    "adjudicate_said": {
+     "decided": 5344,
+     "narrowed": 15,
+     "abstained": 18
+    },
+    "then": {
+     "stays": 5377
+    },
+    "reasons": {
+     "decided, other reason": [
+      [
+       "no_letters",
+       4727
+      ],
+      [
+       "spelled",
+       502
+      ],
+      [
+       "owned_elsewhere",
+       115
+      ]
+     ],
+     "narrowed": [
+      [
+       "unspellable",
+       15
+      ]
+     ],
+     "abstained": [
+      [
+       "unspellable",
+       18
+      ]
+     ]
+    },
+    "balance": {
+     "name": "dynamic words",
+     "in": 5377,
+     "outs": {
+      "decided, other reason": 5344,
+      "narrowed": 15,
+      "abstained": 18
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "dynamic words (stage flow)",
+     "in": 5377,
+     "outs": {
+      "stays": 5377
+     },
+     "out_total": 5377,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   },
+   {
+    "name": "tuplet ratios",
+    "quantity": "tuplet_ratio",
+    "gloss": "the 3 over a triplet",
+    "boxes_for_context": 13,
+    "verdicts": 12,
+    "by_category": {
+     "abstained": 9,
+     "decided, other reason": 3
+    },
+    "adjudicate_said": {
+     "abstained": 9,
+     "decided": 3
+    },
+    "then": {
+     "stays": 12
+    },
+    "reasons": {
+     "abstained": [
+      [
+       "wrong_member_count",
+       9
+      ]
+     ],
+     "decided, other reason": [
+      [
+       "bracket",
+       3
+      ]
+     ]
+    },
+    "balance": {
+     "name": "tuplet ratios",
+     "in": 12,
+     "outs": {
+      "abstained": 9,
+      "decided, other reason": 3
+     },
+     "out_total": 12,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    },
+    "stage_balance": {
+     "name": "tuplet ratios (stage flow)",
+     "in": 12,
+     "outs": {
+      "stays": 12
+     },
+     "out_total": 12,
+     "imbalance": 0,
+     "balanced": true,
+     "note": ""
+    }
+   }
+  ],
+  "quantities": {
+   "accidental": {
+    "n": 4155,
+    "decided": 4155,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 4155
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "accidental_is_not_an_accidental": {
+    "n": 1508,
+    "decided": 1508,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1508
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "accidental_owner": {
+    "n": 1508,
+    "decided": 648,
+    "narrowed": 0,
+    "abstained": 860,
+    "decided_by_stage": {
+     "ADJUDICATE": 648
+    },
+    "top_reasons": [
+     [
+      "abstained: no_candidate",
+      717
+     ],
+     [
+      "abstained: is_a_key_signature_marker",
+      123
+     ],
+     [
+      "abstained: ambiguous_height",
+      14
+     ],
+     [
+      "abstained: head_belongs_to_a_nearer_staff",
+      6
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_candidate": "p1 sys0 staff2 cell6 glyph0",
+     "abstained: is_a_key_signature_marker": "p1 sys0 staff8 cell0 glyph12",
+     "abstained: ambiguous_height": "p2 sys1 staff10 cell2 glyph3",
+     "abstained: head_belongs_to_a_nearer_staff": "p3 sys1 staff1 cell14 glyph0"
+    }
+   },
+   "arc_is_not_an_arc": {
+    "n": 2644,
+    "decided": 2644,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2644
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "arc_kind": {
+    "n": 2644,
+    "decided": 2637,
+    "narrowed": 0,
+    "abstained": 7,
+    "decided_by_stage": {
+     "ADJUDICATE": 2637
+    },
+    "top_reasons": [
+     [
+      "abstained: same_pitch_accidental_unread",
+      5
+     ],
+     [
+      "abstained: stack_slur_over_two_same_pitch_notes",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: same_pitch_accidental_unread": "p1 sys0 staff3 cell10 glyph0",
+     "abstained: stack_slur_over_two_same_pitch_notes": "p14 sys1 staff4 cell14 glyph0"
+    }
+   },
+   "arc_owner": {
+    "n": 2644,
+    "decided": 2644,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2644
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "arpeggiato_is_not_an_arpeggiato": {
+    "n": 1897,
+    "decided": 1897,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1897
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "articulation_is_not_an_articulation": {
+    "n": 18,
+    "decided": 18,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 18
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "articulation_owner": {
+    "n": 18,
+    "decided": 13,
+    "narrowed": 2,
+    "abstained": 3,
+    "decided_by_stage": {
+     "ADJUDICATE": 13
+    },
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      3
+     ],
+     [
+      "narrowed: heads_about_equally_near",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_notehead": "p3 sys0 staff0 cell1 glyph9",
+     "narrowed: heads_about_equally_near": "p10 sys0 staff0 cell10 glyph6"
+    }
+   },
+   "clef": {
+    "n": 331,
+    "decided": 328,
+    "narrowed": 3,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 317,
+     "INFER": 11
+    },
+    "top_reasons": [
+     [
+      "narrowed: margin_below_floor",
+      3
+     ]
+    ],
+    "example_of_reason": {
+     "narrowed: margin_below_floor": "p4 sys0 staff9"
+    }
+   },
+   "direction": {
+    "n": 5377,
+    "decided": 5377,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 5377
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "dot_role": {
+    "n": 601,
+    "decided": 458,
+    "narrowed": 0,
+    "abstained": 143,
+    "decided_by_stage": {
+     "ADJUDICATE": 458
+    },
+    "top_reasons": [
+     [
+      "abstained: dot_role_ambiguous",
+      125
+     ],
+     [
+      "abstained: on_a_stroke",
+      12
+     ],
+     [
+      "abstained: no_notehead_or_rest_in_cell",
+      4
+     ],
+     [
+      "abstained: on_a_barline",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: dot_role_ambiguous": "p1 sys0 staff3 cell0 glyph9",
+     "abstained: on_a_stroke": "p2 sys0 staff8 cell5 glyph8",
+     "abstained: no_notehead_or_rest_in_cell": "p3 sys1 staff0 cell1 glyph1",
+     "abstained: on_a_barline": "p2 sys0 staff3 cell2 glyph4"
+    }
+   },
+   "duration": {
+    "n": 14272,
+    "decided": 11957,
+    "narrowed": 649,
+    "abstained": 1666,
+    "decided_by_stage": {
+     "ADJUDICATE": 10379,
+     "EVALUATE": 1442,
+     "INFER": 136
+    },
+    "top_reasons": [
+     [
+      "abstained: owned_by_another_staff",
+      1500
+     ],
+     [
+      "narrowed: beam_discounted_uncertain",
+      446
+     ],
+     [
+      "abstained: rest_stands_where_no_rest_hangs",
+      166
+     ],
+     [
+      "narrowed: head_fill_from_ink",
+      94
+     ],
+     [
+      "narrowed: beams_ambiguous",
+      64
+     ],
+     [
+      "narrowed: rest_slot_contradicts_class",
+      34
+     ],
+     [
+      "narrowed: beam_certain_not_joined",
+      7
+     ],
+     [
+      "narrowed: flags_disagree",
+      3
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: owned_by_another_staff": "p1 sys0 staff4 cell3 glyph1",
+     "narrowed: beam_discounted_uncertain": "p1 sys0 staff7 cell1 glyph1",
+     "abstained: rest_stands_where_no_rest_hangs": "p2 sys0 staff1 cell15 glyph2",
+     "narrowed: head_fill_from_ink": "p2 sys0 staff1 cell5 glyph13",
+     "narrowed: beams_ambiguous": "p2 sys0 staff10 cell1 glyph6",
+     "narrowed: rest_slot_contradicts_class": "p2 sys1 staff10 cell0 glyph13",
+     "narrowed: beam_certain_not_joined": "p2 sys0 staff3 cell1 glyph13",
+     "narrowed: flags_disagree": "p12 sys1 staff1 cell9 glyph0"
+    }
+   },
+   "dynamic": {
+    "n": 5377,
+    "decided": 5344,
+    "narrowed": 15,
+    "abstained": 18,
+    "decided_by_stage": {
+     "ADJUDICATE": 5344
+    },
+    "top_reasons": [
+     [
+      "abstained: unspellable",
+      18
+     ],
+     [
+      "narrowed: unspellable",
+      15
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: unspellable": "p2 sys1 staff1 cell9",
+     "narrowed: unspellable": "p2 sys0 staff8 cell9"
+    }
+   },
+   "dynamic_anchor": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "dynamic_is_not_a_dynamic": {
+    "n": 1573,
+    "decided": 1573,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1573
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "empty_bar_whole_rest": {
+    "n": 355,
+    "decided": 115,
+    "narrowed": 0,
+    "abstained": 240,
+    "decided_by_stage": {
+     "ADJUDICATE": 115
+    },
+    "top_reasons": [
+     [
+      "abstained: not_found_by_search",
+      240
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: not_found_by_search": "p1 sys0 staff3 cell6"
+    }
+   },
+   "endings": {
+    "n": 31,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 31,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_bracket",
+      30
+     ],
+     [
+      "abstained: span_not_at_barlines",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_bracket": "p1 sys0",
+     "abstained: span_not_at_barlines": "p12 sys1"
+    }
+   },
+   "event": {
+    "n": 5134,
+    "decided": 5134,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 5134
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "fermata_owner": {
+    "n": 178,
+    "decided": 156,
+    "narrowed": 0,
+    "abstained": 22,
+    "decided_by_stage": {
+     "ADJUDICATE": 156
+    },
+    "top_reasons": [
+     [
+      "abstained: no_carrier",
+      21
+     ],
+     [
+      "abstained: owned_by_another_staff",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_carrier": "p1 sys0 staff3 cell1 glyph0",
+     "abstained: owned_by_another_staff": "p9 sys0 staff4 cell5 glyph2"
+    }
+   },
+   "flag_is_not_a_flag": {
+    "n": 254,
+    "decided": 254,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 254
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "glyph_owner": {
+    "n": 9423,
+    "decided": 9316,
+    "narrowed": 0,
+    "abstained": 107,
+    "decided_by_stage": {
+     "ADJUDICATE": 9310,
+     "UNATTRIBUTED": 6
+    },
+    "top_reasons": [
+     [
+      "abstained: tied",
+      89
+     ],
+     [
+      "abstained: stem_disagrees",
+      13
+     ],
+     [
+      "abstained: far_no_rungs",
+      4
+     ],
+     [
+      "abstained: ledger_witnesses_disagree",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: tied": "p1 sys0 staff10 cell0 glyph0",
+     "abstained: stem_disagrees": "p6 sys0 staff0 cell8 glyph9",
+     "abstained: far_no_rungs": "p6 sys0 staff4 cell8 glyph3",
+     "abstained: ledger_witnesses_disagree": "p13 sys1 staff7 cell9 glyph4"
+    }
+   },
+   "group_symbol": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "head_stem": {
+    "n": 11399,
+    "decided": 8074,
+    "narrowed": 575,
+    "abstained": 2750,
+    "decided_by_stage": {
+     "ADJUDICATE": 8074
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      2750
+     ],
+     [
+      "narrowed: unison_two_voices",
+      465
+     ],
+     [
+      "narrowed: two_stems",
+      110
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "narrowed: unison_two_voices": "p1 sys0 staff2 cell0 glyph3",
+     "narrowed: two_stems": "p1 sys0 staff2 cell2 glyph2"
+    }
+   },
+   "instrument": {
+    "n": 331,
+    "decided": 200,
+    "narrowed": 0,
+    "abstained": 131,
+    "decided_by_stage": {
+     "ADJUDICATE": 200
+    },
+    "top_reasons": [
+     [
+      "abstained: no_evidence",
+      127
+     ],
+     [
+      "abstained: not_in_lexicon",
+      4
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_evidence": "p2 sys0 staff7",
+     "abstained: not_in_lexicon": "p6 sys1 staff7"
+    }
+   },
+   "key_signature": {
+    "n": 331,
+    "decided": 327,
+    "narrowed": 0,
+    "abstained": 4,
+    "decided_by_stage": {
+     "ADJUDICATE": 137,
+     "INFER": 190
+    },
+    "top_reasons": [
+     [
+      "abstained: disagrees_with_document",
+      3
+     ],
+     [
+      "abstained: mixed_marker_kinds",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: disagrees_with_document": "p8 sys0 staff8",
+     "abstained: mixed_marker_kinds": "p13 sys1 staff10"
+    }
+   },
+   "keysig_marker_is_not_a_marker": {
+    "n": 528,
+    "decided": 528,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 528
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "ledger_is_not_a_ledger": {
+    "n": 7701,
+    "decided": 7680,
+    "narrowed": 0,
+    "abstained": 21,
+    "decided_by_stage": {
+     "ADJUDICATE": 7680
+    },
+    "top_reasons": [
+     [
+      "abstained: rung_without_boxed_head",
+      21
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: rung_without_boxed_head": "p3 sys1 staff0 cell6 glyph11"
+    }
+   },
+   "marking": {
+    "n": 70,
+    "decided": 70,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 70
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "measure_partition": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "meter": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "movement_spans": {
+    "n": 1,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_boundary_detected",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_boundary_detected": "document"
+    }
+   },
+   "notehead_is_a_whole_rest": {
+    "n": 11399,
+    "decided": 11399,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 11399
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "notehead_is_an_eighth_rest": {
+    "n": 301,
+    "decided": 15,
+    "narrowed": 0,
+    "abstained": 286,
+    "decided_by_stage": {
+     "ADJUDICATE": 15
+    },
+    "top_reasons": [
+     [
+      "abstained: no_ink_under_box",
+      219
+     ],
+     [
+      "abstained: not_refused_as_too_narrow",
+      43
+     ],
+     [
+      "abstained: claimed_by_another_class",
+      19
+     ],
+     [
+      "abstained: shape_cannot_tell",
+      5
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_ink_under_box": "p1 sys0 staff2 cell0 glyph9",
+     "abstained: not_refused_as_too_narrow": "p1 sys0 staff9 cell0 glyph12",
+     "abstained: claimed_by_another_class": "p2 sys0 staff9 cell2 glyph11",
+     "abstained: shape_cannot_tell": "p10 sys1 staff8 cell3 glyph3"
+    }
+   },
+   "notehead_is_not_a_notehead": {
+    "n": 11399,
+    "decided": 11399,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 11399
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "notehead_position": {
+    "n": 4196,
+    "decided": 2031,
+    "narrowed": 0,
+    "abstained": 2165,
+    "decided_by_stage": {
+     "ADJUDICATE": 2031
+    },
+    "top_reasons": [
+     [
+      "abstained: ledger_not_read",
+      2165
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: ledger_not_read": "p1 sys0 staff0 cell3 glyph1"
+    }
+   },
+   "onset_column": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "ornament_owner": {
+    "n": 3,
+    "decided": 2,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 2
+    },
+    "top_reasons": [
+     [
+      "abstained: no_notehead",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_notehead": "p4 sys0 staff9 cell1 glyph4"
+    }
+   },
+   "part_key": {
+    "n": 1,
+    "decided": 1,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "part_name": {
+    "n": 200,
+    "decided": 200,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 200
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "part_partition": {
+    "n": 1,
+    "decided": 1,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 1
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "pedal_owner": {
+    "n": 14,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 14,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_brace",
+      14
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_brace": "p2 sys0 staff10 cell0 glyph8"
+    }
+   },
+   "pitch": {
+    "n": 13612,
+    "decided": 13612,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "EVALUATE": 13612
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "printed_bar_number": {
+    "n": 31,
+    "decided": 27,
+    "narrowed": 0,
+    "abstained": 4,
+    "decided_by_stage": {
+     "ADJUDICATE": 27
+    },
+    "top_reasons": [
+     [
+      "abstained: no_reading",
+      3
+     ],
+     [
+      "abstained: not_numeric",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_reading": "p1 sys0",
+     "abstained: not_numeric": "p14 sys1"
+    }
+   },
+   "repeat_barline": {
+    "n": 31,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 31,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_reading",
+      31
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_reading": "p1 sys0"
+    }
+   },
+   "rest_is_not_a_rest": {
+    "n": 2873,
+    "decided": 2873,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 2873
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "slot_index": {
+    "n": 331,
+    "decided": 325,
+    "narrowed": 5,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 304,
+     "INFER": 21
+    },
+    "top_reasons": [
+     [
+      "narrowed: family_block_not_forced",
+      5
+     ],
+     [
+      "abstained: unnamed_in_short_system",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "narrowed: family_block_not_forced": "p8 sys0 staff8",
+     "abstained: unnamed_in_short_system": "p11 sys0 staff1"
+    }
+   },
+   "staff_group": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "staff_ordinal": {
+    "n": 331,
+    "decided": 331,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 331
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "stem_direction": {
+    "n": 11399,
+    "decided": 8581,
+    "narrowed": 0,
+    "abstained": 2818,
+    "decided_by_stage": {
+     "ADJUDICATE": 8581
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      2185
+     ],
+     [
+      "abstained: stems_disagree",
+      633
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "abstained: stems_disagree": "p1 sys0 staff2 cell0 glyph3"
+    }
+   },
+   "stem_head_contact": {
+    "n": 5377,
+    "decided": 3542,
+    "narrowed": 0,
+    "abstained": 1835,
+    "decided_by_stage": {
+     "ADJUDICATE": 3542
+    },
+    "top_reasons": [
+     [
+      "abstained: no_stem",
+      1662
+     ],
+     [
+      "abstained: no_heads_read",
+      173
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_stem": "p1 sys0 staff0 cell1",
+     "abstained: no_heads_read": "p1 sys0 staff0 cell0"
+    }
+   },
+   "stem_value": {
+    "n": 11399,
+    "decided": 2954,
+    "narrowed": 164,
+    "abstained": 8281,
+    "decided_by_stage": {
+     "ADJUDICATE": 2954
+    },
+    "top_reasons": [
+     [
+      "abstained: lone_head",
+      3867
+     ],
+     [
+      "abstained: no_stem",
+      2750
+     ],
+     [
+      "abstained: not_a_member",
+      1089
+     ],
+     [
+      "abstained: ambiguous_stem",
+      575
+     ],
+     [
+      "narrowed: stem_levels_unread",
+      162
+     ],
+     [
+      "narrowed: stem_values_open",
+      2
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: lone_head": "p1 sys0 staff2 cell0 glyph8",
+     "abstained: no_stem": "p1 sys0 staff0 cell3 glyph1",
+     "abstained: not_a_member": "p1 sys0 staff3 cell3 glyph2",
+     "abstained: ambiguous_stem": "p1 sys0 staff2 cell0 glyph3",
+     "narrowed: stem_levels_unread": "p2 sys1 staff4 cell1 glyph0",
+     "narrowed: stem_values_open": "p5 sys0 staff2 cell5 glyph2"
+    }
+   },
+   "system_key": {
+    "n": 31,
+    "decided": 30,
+    "narrowed": 0,
+    "abstained": 1,
+    "decided_by_stage": {
+     "ADJUDICATE": 30
+    },
+    "top_reasons": [
+     [
+      "abstained: one_staff_only",
+      1
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: one_staff_only": "p5 sys1"
+    }
+   },
+   "system_membership": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "system_staff_count": {
+    "n": 31,
+    "decided": 31,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 31
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "tie_pair": {
+    "n": 2644,
+    "decided": 423,
+    "narrowed": 45,
+    "abstained": 2176,
+    "decided_by_stage": {
+     "ADJUDICATE": 423
+    },
+    "top_reasons": [
+     [
+      "abstained: not_a_tie",
+      1059
+     ],
+     [
+      "abstained: not_an_arc",
+      503
+     ],
+     [
+      "abstained: no_head_near_the_arc",
+      189
+     ],
+     [
+      "abstained: no_start_head",
+      101
+     ],
+     [
+      "abstained: no_pair_at_one_position",
+      75
+     ],
+     [
+      "abstained: no_stop_head",
+      67
+     ],
+     [
+      "abstained: not_adjacent",
+      65
+     ],
+     [
+      "abstained: enters_from_previous_system",
+      61
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: not_a_tie": "p1 sys0 staff2 cell3 glyph0",
+     "abstained: not_an_arc": "p1 sys0 staff1 cell7 glyph1",
+     "abstained: no_head_near_the_arc": "p1 sys0 staff2 cell14 glyph1",
+     "abstained: no_start_head": "p1 sys0 staff2 cell9 glyph1",
+     "abstained: no_pair_at_one_position": "p2 sys0 staff0 cell6 glyph0",
+     "abstained: no_stop_head": "p2 sys0 staff3 cell6 glyph0",
+     "abstained: not_adjacent": "p3 sys0 staff1 cell1 glyph7",
+     "abstained: enters_from_previous_system": "p2 sys0 staff5 cell0 glyph4"
+    }
+   },
+   "tuplet_marker_is_not_a_marker": {
+    "n": 13,
+    "decided": 13,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 13
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   },
+   "tuplet_ratio": {
+    "n": 12,
+    "decided": 3,
+    "narrowed": 0,
+    "abstained": 9,
+    "decided_by_stage": {
+     "ADJUDICATE": 3
+    },
+    "top_reasons": [
+     [
+      "abstained: wrong_member_count",
+      9
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: wrong_member_count": "p5 sys0 staff8 cell6"
+    }
+   },
+   "unread_mark": {
+    "n": 5377,
+    "decided": 0,
+    "narrowed": 0,
+    "abstained": 5377,
+    "decided_by_stage": {},
+    "top_reasons": [
+     [
+      "abstained: no_ink_component_rows",
+      5377
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: no_ink_component_rows": "p1 sys0 staff0 cell0"
+    }
+   },
+   "voices": {
+    "n": 5377,
+    "decided": 5023,
+    "narrowed": 0,
+    "abstained": 354,
+    "decided_by_stage": {
+     "ADJUDICATE": 5023
+    },
+    "top_reasons": [
+     [
+      "abstained: nothing_to_split",
+      243
+     ],
+     [
+      "abstained: no_voice_convention_fits",
+      111
+     ]
+    ],
+    "example_of_reason": {
+     "abstained: nothing_to_split": "p1 sys0 staff2 cell8",
+     "abstained: no_voice_convention_fits": "p1 sys0 staff2 cell0"
+    }
+   },
+   "wedge_anchor": {
+    "n": 5,
+    "decided": 5,
+    "narrowed": 0,
+    "abstained": 0,
+    "decided_by_stage": {
+     "ADJUDICATE": 5
+    },
+    "top_reasons": [],
+    "example_of_reason": {}
+   }
+  },
+  "glyph_verdict_crosscheck": {
+   "accidental_owner": {
+    "name": "verdicts on glyphs: accidental_owner",
+    "in": 1508,
+    "outs": {
+     "in a row above": 1508,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 1508,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "arc_kind": {
+    "name": "verdicts on glyphs: arc_kind",
+    "in": 2644,
+    "outs": {
+     "in a row above": 2141,
+     "on a refused box": 503,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 2644,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "fermata_owner": {
+    "name": "verdicts on glyphs: fermata_owner",
+    "in": 178,
+    "outs": {
+     "in a row above": 178,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 178,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "ornament_owner": {
+    "name": "verdicts on glyphs: ornament_owner",
+    "in": 3,
+    "outs": {
+     "in a row above": 3,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 3,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "articulation_owner": {
+    "name": "verdicts on glyphs: articulation_owner",
+    "in": 18,
+    "outs": {
+     "in a row above": 7,
+     "on a refused box": 11,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 18,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "duration": {
+    "name": "verdicts on glyphs: duration",
+    "in": 14272,
+    "outs": {
+     "in a row above": 12251,
+     "on a refused box": 2021,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 14272,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "wedge_anchor": {
+    "name": "verdicts on glyphs: wedge_anchor",
+    "in": 5,
+    "outs": {
+     "in a row above": 5,
+     "on a refused box": 0,
+     "on a box of a kind no row covers, or unplaced": 0
+    },
+    "out_total": 5,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   },
+   "pitch": {
+    "name": "verdicts on glyphs: pitch",
+    "in": 13612,
+    "outs": {
+     "in a row above": 9761,
+     "on a refused box": 1533,
+     "on a box of a kind no row covers, or unplaced": 2318
+    },
+    "out_total": 13612,
+    "imbalance": 0,
+    "balanced": true,
+    "note": "every standing glyph verdict of the quantity, accounted for"
+   }
+  },
+  "refusals_vs_export_drops": [
+   {
+    "reason": "not_a_notehead:belongs_to_a_nearer_staff",
+    "record_refused": 41,
+    "export_dropped": 41,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:clipped_fragment",
+    "record_refused": 342,
+    "export_dropped": 342,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:head_cut_piece",
+    "record_refused": 17,
+    "export_dropped": 17,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:is_a_beam_piece",
+    "record_refused": 11,
+    "export_dropped": 11,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:is_a_clef",
+    "record_refused": 30,
+    "export_dropped": 30,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:notehead_is_a_duplicate_box",
+    "record_refused": 257,
+    "export_dropped": 257,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:on_a_dynamic_letter",
+    "record_refused": 59,
+    "export_dropped": 59,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:stacked_head_duplicate",
+    "record_refused": 467,
+    "export_dropped": 467,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:too_narrow",
+    "record_refused": 258,
+    "export_dropped": 258,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_notehead:tremolo_slash_crosses_stem",
+    "record_refused": 61,
+    "export_dropped": 61,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_clipped_by_crop",
+    "record_refused": 75,
+    "export_dropped": 75,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_has_a_stem",
+    "record_refused": 121,
+    "export_dropped": 121,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_duplicate_box",
+    "record_refused": 106,
+    "export_dropped": 106,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_is_a_slashed_stem",
+    "record_refused": 1,
+    "export_dropped": 1,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_off_center",
+    "record_refused": 58,
+    "export_dropped": 58,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_outside_its_staff",
+    "record_refused": 7,
+    "export_dropped": 7,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_overlaps_a_notehead",
+    "record_refused": 12,
+    "export_dropped": 12,
+    "agrees": true
+   },
+   {
+    "reason": "not_a_rest:rest_touches_two_staff_lines",
+    "record_refused": 98,
+    "export_dropped": 98,
+    "agrees": true
+   }
+  ],
+  "guessed": {
+   "written_blue": {
+    "notes": null,
+    "rests": null,
+    "dynamics": null,
+    "total": null
+   },
+   "by_rule_other": {},
+   "kept_notes_in_partial_bars_blue": {},
+   "record": {
+    "infer_verdicts_standing": 358,
+    "by_infer_rule": {
+     "collapse_duration_by_column": 4,
+     "collapse_duration_to_barline": 3,
+     "collapse_slot_index_to_family_block": 21,
+     "fill_clef_gap": 11,
+     "fill_part_key": 190,
+     "collapse_bare_stem_by_bar": 129
+    },
+    "candidates_per_infer_guess": {
+     "2": 159,
+     "3": 4,
+     "0": 194,
+     "4": 1
+    },
+    "support_gap_of_infer_guess": {
+     "gap 1": 138,
+     "tie": 26,
+     "one candidate": 194
+    },
+    "durations_guessed_at_glyph_level": 2121,
+    "durations_guessed_by_the_bar_sum_only": 213
+   },
+   "margins": {
+    "refusals_total": 31375,
+    "with_a_margin": 10,
+    "without_a_margin": 31365,
+    "groups": [
+     {
+      "decider": "adjudicate_clef",
+      "reason": "margin_below_floor",
+      "outcome": "narrowed",
+      "unit": "None",
+      "short_of_the_cut": 0,
+      "n": 10,
+      "tercile_lo": 0.0,
+      "tercile_hi": 0.0,
+      "near": 7,
+      "middle": 0,
+      "far": 3,
+      "median_abs": 0.0,
+      "min_abs": 0.0,
+      "closest_call": {
+       "margin": 0.0,
+       "at": "p4 sys0 staff8"
+      }
+     }
+    ]
+   }
+  },
+  "unknown": {
+   "unread_marks_red": 1724,
+   "staves_held_out_unidentified": 6,
+   "unidentified_parts": 0,
+   "noteheads_staff_not_identified": 133,
+   "noteheads_owner_not_read": 9,
+   "noteheads_no_pitch": 95,
+   "notes_whose_length_is_undecided": {
+    "narrowed": 354,
+    "rest abstained": 98,
+    "chord undecided": 98
+   },
+   "adjudication_missing_evidence": {
+    "accidental_staff_position": 432,
+    "arc_box": 7040,
+    "aug_dot": 11643,
+    "beam_stem_join": 416,
+    "beam_stroke_ink": 4058,
+    "cell_box": 189,
+    "cell_staff_space": 35,
+    "clef_position": 40,
+    "clef_seed": 331,
+    "dot_stroke_ink": 447,
+    "dynamic_band_position": 33,
+    "event": 243,
+    "far_head_owner_ledger": 5098,
+    "flag": 9010,
+    "glyph_band_distance": 6884,
+    "glyph_box": 930,
+    "glyph_ladder": 4838,
+    "glyph_owner": 24655,
+    "head_line_cut": 10687,
+    "head_stem_reach": 6281,
+    "human_box_verdict": 39830,
+    "keysig_clef_fit": 375,
+    "keysig_marker_is_not_a_marker": 123,
+    "keysig_template_fit": 143,
+    "ledger_owner_density": 4838,
+    "meter_ocr": 4,
+    "meter_ocr_at_bar": 31,
+    "notehead_class": 3982,
+    "notehead_letter_ink": 9839,
+    "notehead_position": 975,
+    "notehead_staff_position": 5224,
+    "notehead_stem_cross_ink": 5687,
+    "rest": 14444,
+    "stacked_head_fit": 6620,
+    "stem_slash": 2459,
+    "tuplet_ratio": 12724
+   }
+  },
+  "definition_of_done": {
+   "staves_named": 200,
+   "staves_not_named_abstained": 131,
+   "staves_held_out": 6,
+   "parts_in_file": 12,
+   "clefs": {
+    "read": 317,
+    "narrowed": 3,
+    "guessed (INFER)": 11
+   },
+   "keys": {
+    "read": 137,
+    "abstained": 4,
+    "guessed (INFER)": 190
+   },
+   "meters": {
+    "read": 1,
+    "carried": 30
+   },
+   "inferred_clefs": 11,
+   "unread_marks": 1724,
+   "musicxml": {
+    "status": "yes"
+   },
+   "lilypond": {
+    "written": "yes",
+    "compiled": "yes",
+    "warnings": 30
+   }
+  },
+  "detected_then_dropped": {
+   "classes_no_family_reads": {
+    "arpeggiato": 1897,
+    "stringsDownBow": 3,
+    "caesura": 3,
+    "segno": 1
+   },
+   "detected_and_unrepresented": {},
+   "decided_and_unwritten": {
+    "ornament": 3,
+    "wedge": 5
+   },
+   "unexplained_ink_rows_Q_INK": 5377,
+   "boxes_total": 37121
+  },
+  "cleanup": {
+   "per_page": {
+    "1": {
+     "red": 46,
+     "blue": 0,
+     "items": 46
+    },
+    "2": {
+     "red": 102,
+     "blue": 0,
+     "items": 102
+    },
+    "3": {
+     "red": 65,
+     "blue": 0,
+     "items": 65
+    },
+    "4": {
+     "red": 117,
+     "blue": 0,
+     "items": 117
+    },
+    "5": {
+     "red": 117,
+     "blue": 0,
+     "items": 117
+    },
+    "6": {
+     "red": 114,
+     "blue": 0,
+     "items": 114
+    },
+    "7": {
+     "red": 154,
+     "blue": 0,
+     "items": 154
+    },
+    "8": {
+     "red": 95,
+     "blue": 0,
+     "items": 95
+    },
+    "9": {
+     "red": 81,
+     "blue": 0,
+     "items": 81
+    },
+    "10": {
+     "red": 117,
+     "blue": 0,
+     "items": 117
+    },
+    "11": {
+     "red": 80,
+     "blue": 0,
+     "items": 80
+    },
+    "12": {
+     "red": 101,
+     "blue": 0,
+     "items": 101
+    },
+    "13": {
+     "red": 133,
+     "blue": 0,
+     "items": 133
+    },
+    "14": {
+     "red": 123,
+     "blue": 0,
+     "items": 123
+    },
+    "15": {
+     "red": 153,
+     "blue": 0,
+     "items": 153
+    },
+    "16": {
+     "red": 126,
+     "blue": 0,
+     "items": 126
+    }
+   },
+   "worst_pages": [
+    {
+     "page": 7,
+     "red": 154,
+     "blue": 0,
+     "items": 154
+    },
+    {
+     "page": 15,
+     "red": 153,
+     "blue": 0,
+     "items": 153
+    },
+    {
+     "page": 13,
+     "red": 133,
+     "blue": 0,
+     "items": 133
+    },
+    {
+     "page": 16,
+     "red": 126,
+     "blue": 0,
+     "items": 126
+    },
+    {
+     "page": 14,
+     "red": 123,
+     "blue": 0,
+     "items": 123
+    }
+   ],
+   "worst_staves": [
+    {
+     "instrument": "Oboe",
+     "page": 8,
+     "red": 23,
+     "blue": 0,
+     "items": 23
+    },
+    {
+     "instrument": "Bassoon",
+     "page": 14,
+     "red": 19,
+     "blue": 0,
+     "items": 19
+    },
+    {
+     "instrument": "Violin [P9]",
+     "page": 5,
+     "red": 19,
+     "blue": 0,
+     "items": 19
+    },
+    {
+     "instrument": "Flute",
+     "page": 7,
+     "red": 18,
+     "blue": 0,
+     "items": 18
+    },
+    {
+     "instrument": "Timpani",
+     "page": 13,
+     "red": 18,
+     "blue": 0,
+     "items": 18
+    }
+   ],
+   "per_part": {
+    "Flute": {
+     "notes_plain": 466,
+     "notes_guessed": 0,
+     "rests": 361,
+     "unread_marks": 153,
+     "bars_held_out": 87,
+     "bars_written_plain": 352,
+     "bars_unread_empty": 66,
+     "events_held_out": 229
+    },
+    "Oboe": {
+     "notes_plain": 421,
+     "notes_guessed": 0,
+     "rests": 367,
+     "unread_marks": 143,
+     "bars_written_plain": 362,
+     "bars_held_out": 96,
+     "bars_unread_empty": 47,
+     "events_held_out": 272
+    },
+    "Clarinet": {
+     "notes_plain": 598,
+     "notes_guessed": 0,
+     "rests": 342,
+     "unread_marks": 158,
+     "bars_held_out": 86,
+     "bars_written_plain": 347,
+     "bars_unread_empty": 72,
+     "events_held_out": 255
+    },
+    "Bassoon": {
+     "notes_plain": 616,
+     "notes_guessed": 0,
+     "rests": 287,
+     "unread_marks": 163,
+     "bars_held_out": 106,
+     "bars_unread_empty": 57,
+     "bars_written_plain": 342,
+     "events_held_out": 283
+    },
+    "Horn": {
+     "notes_plain": 329,
+     "notes_guessed": 0,
+     "rests": 381,
+     "unread_marks": 135,
+     "bars_held_out": 84,
+     "bars_written_plain": 370,
+     "bars_unread_empty": 51,
+     "events_held_out": 202
+    },
+    "Trumpet": {
+     "notes_plain": 332,
+     "notes_guessed": 0,
+     "rests": 436,
+     "unread_marks": 120,
+     "bars_held_out": 49,
+     "bars_written_plain": 385,
+     "bars_unread_empty": 71,
+     "events_held_out": 132
+    },
+    "Timpani": {
+     "notes_plain": 150,
+     "notes_guessed": 0,
+     "rests": 469,
+     "unread_marks": 138,
+     "bars_held_out": 74,
+     "bars_written_plain": 367,
+     "bars_unread_empty": 64,
+     "events_held_out": 140
+    },
+    "Violin [P8]": {
+     "notes_plain": 818,
+     "notes_guessed": 0,
+     "rests": 219,
+     "unread_marks": 124,
+     "bars_written_plain": 381,
+     "bars_unread_empty": 31,
+     "bars_held_out": 93,
+     "events_held_out": 265
+    },
+    "Violin [P9]": {
+     "notes_plain": 756,
+     "notes_guessed": 0,
+     "rests": 239,
+     "unread_marks": 144,
+     "bars_held_out": 96,
+     "bars_written_plain": 361,
+     "bars_unread_empty": 48,
+     "events_held_out": 238
+    },
+    "Viola": {
+     "notes_plain": 593,
+     "notes_guessed": 0,
+     "rests": 278,
+     "unread_marks": 172,
+     "bars_written_plain": 333,
+     "bars_held_out": 104,
+     "bars_unread_empty": 68,
+     "events_held_out": 251
+    },
+    "Cello": {
+     "notes_plain": 367,
+     "notes_guessed": 0,
+     "rests": 366,
+     "unread_marks": 159,
+     "bars_held_out": 93,
+     "bars_written_plain": 346,
+     "bars_unread_empty": 66,
+     "events_held_out": 190
+    },
+    "Contrabass": {
+     "notes_plain": 336,
+     "notes_guessed": 0,
+     "rests": 394,
+     "unread_marks": 115,
+     "bars_written_plain": 390,
+     "bars_unread_empty": 95,
+     "bars_held_out": 20,
+     "events_held_out": 41
+    }
+   },
+   "items_total": 1724,
+   "pages": 16
+  },
+  "examples": [
+   {
+    "count": 1319,
+    "reason": "noteheads: how long: abstained: owned_by_another_staff",
+    "example": "p1 sys0 staff4 cell3 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 988,
+    "reason": "bar held out: does not add up",
+    "example": "p1 sys0 staff0 cell0 (bar 1, part P1)",
+    "source": "export"
+   },
+   {
+    "count": 717,
+    "reason": "accidentals: abstained: no_candidate",
+    "example": "p1 sys0 staff2 cell6 glyph0",
+    "source": "record"
+   },
+   {
+    "count": 498,
+    "reason": "ties: refused, ink_is_a_staff_line",
+    "example": "p1 sys0 staff1 cell7 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 467,
+    "reason": "noteheads: how long: refused, stacked_head_duplicate",
+    "example": "p1 sys0 staff3 cell7 glyph2",
+    "source": "record"
+   },
+   {
+    "count": 342,
+    "reason": "noteheads: how long: refused, clipped_fragment",
+    "example": "p1 sys0 staff3 cell3 glyph2",
+    "source": "record"
+   },
+   {
+    "count": 306,
+    "reason": "noteheads: how long: narrowed: beam_discounted_uncertain",
+    "example": "p1 sys0 staff7 cell1 glyph1",
+    "source": "record"
+   },
+   {
+    "count": 258,
+    "reason": "noteheads: how long: refused, too_narrow",
+    "example": "p1 sys0 staff2 cell0 glyph9",
+    "source": "record"
+   },
+   {
+    "count": 257,
+    "reason": "noteheads: how long: refused, notehead_is_a_duplicate_box",
+    "example": "p1 sys0 staff8 cell14 glyph5",
+    "source": "record"
+   },
+   {
+    "count": 123,
+    "reason": "accidentals: abstained: is_a_key_signature_marker",
+    "example": "p1 sys0 staff8 cell0 glyph12",
+    "source": "record"
+   }
+  ]
+ }
+}

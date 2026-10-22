@@ -1,0 +1,27 @@
+── ARC GRAMMAR (benchmarks/omr-arc-grammar-2026-09) ───────────
+  arc_box rows      : 2207   (Litolff p1-3: 779)
+  Q.STEM rows       : 2305   (Litolff: 1,920)
+  noteheads         : 3337   (Litolff: 2,347)
+  arc_kind values   : {'slur': 549, 'tie': 1658}
+
+── NOTE WHERE SILENCE (benchmarks/omr-note-where-silence-2026-09) ──
+  rest rows         : 1028   (its two cuts were derived from Litolff's 395 whole rests)
+  rest classes      : {'restWhole': 398, 'rest8th': 380, 'restQuarter': 238, 'restHBar': 4, 'rest16th': 4, 'restHalf': 3, 'rest64th': 1}
+  notehead classes  : {'noteheadBlackInSpace': 1656, 'noteheadBlackOnLine': 1425, 'noteheadHalfInSpace': 94, 'noteheadWholeInSpace': 75, 'noteheadHalfOnLine': 58, 'noteheadWholeOnLine': 29}
+  notehead_is_a_whole_rest TRUE: 12 of 3337
+
+── METER CARRY (the standing blocking objection) ──────────────
+  meter_glyph rows  : 197
+  meter_template    : 33
+  systems whose OPENING meter is NOT the printed 6/8: 6 of 7
+
+── DURATION MARKS (this document is the mark-RICH arm) ────────
+  flag rows         : 371   (CLAUDE.md records 371 here vs Litolff's 49)
+  aug_dot rows      : 656   (CLAUDE.md records 656 here vs Litolff's 35)
+
+── WHAT THIS RECORD CANNOT ANSWER ─────────────────────────────
+  fermata_mark         0   (Litolff p1-3: 67)
+  ornament_mark        7   (Litolff p1-3: 6)
+  direction_word      10   (Litolff p1-3: 6)
+  wedge_box           47   (Litolff p1-3: 0)
+  dynamic_letter     531   (Litolff p1-3: 485)

@@ -1,0 +1,32 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "min_arm": 1.25,
+ "groups": {
+  "DECIDED": {
+   "n": 1435,
+   "exactly_one": 938,
+   "both": 178,
+   "neither": 319,
+   "share_one": 0.6537,
+   "arm_median": 3.62,
+   "arm_over_8": 43
+  },
+  "no_stem": {
+   "n": 784,
+   "exactly_one": 472,
+   "both": 122,
+   "neither": 190,
+   "share_one": 0.602,
+   "arm_median": 4.56,
+   "arm_over_8": 80
+  },
+  "stems_disagree": {
+   "n": 111,
+   "exactly_one": 37,
+   "both": 72,
+   "neither": 2,
+   "share_one": 0.3333
+  }
+ },
+ "control_agreement": 0.9595
+}

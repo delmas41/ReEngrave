@@ -1,0 +1,291 @@
+{
+ "roadmap_item": "2.54",
+ "cache": "/tmp/brahms254_cache.json",
+ "record_provenance": "library/_shared-records/brahms1-breitkopf-mvt1-whole-20261001.record.json",
+ "dpi": 600,
+ "population": {
+  "total": 9
+ },
+ "crops": [
+  {
+   "n": 1,
+   "file": "2.54-tie-01.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/1/13",
+   "start": "glyph/3/1/13/1/3",
+   "stop": "glyph/3/1/13/1/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/3/1/13/1/11"
+   ],
+   "start_box": [
+    1472.6725,
+    7019.325,
+    1510.135,
+    7051.7925
+   ],
+   "stop_box": [
+    1677.19,
+    7019.88,
+    1715.7625,
+    7052.3475
+   ],
+   "frame_contrast": 173.83,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "file": "2.54-tie-02.png",
+   "kind": "linked",
+   "page": 1,
+   "staff": "staff/1/0/0",
+   "start": "glyph/1/0/0/0/7",
+   "stop": "glyph/1/0/0/0/10",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/1/0/0/0/33"
+   ],
+   "start_box": [
+    1470.50048828125,
+    489.02197265625,
+    1509.33349609375,
+    522.5595703125
+   ],
+   "stop_box": [
+    1566.40625,
+    489.02197265625,
+    1604.65087890625,
+    523.736328125
+   ],
+   "frame_contrast": 205.29,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "file": "2.54-tie-03.png",
+   "kind": "linked",
+   "page": 2,
+   "staff": "staff/2/0/6",
+   "start": "glyph/2/0/6/1/5",
+   "stop": "glyph/2/0/6/3/0",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/2/0/7/2/28"
+   ],
+   "start_box": [
+    1722.9990234375,
+    1946.40966796875,
+    1765.9248046875,
+    1978.60400390625
+   ],
+   "stop_box": [
+    3397.16796875,
+    1944.09375,
+    3436.77734375,
+    1978.37109375
+   ],
+   "frame_contrast": 123.37,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "file": "2.54-tie-04.png",
+   "kind": "linked",
+   "page": 1,
+   "staff": "staff/1/0/3",
+   "start": "glyph/1/0/3/0/4",
+   "stop": "glyph/1/0/3/0/5",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/1/0/2/0/13"
+   ],
+   "start_box": [
+    1473.4423828125,
+    1312.08740234375,
+    1512.86376953125,
+    1345.625
+   ],
+   "stop_box": [
+    1568.17138671875,
+    1311.4990234375,
+    1609.35791015625,
+    1345.625
+   ],
+   "frame_contrast": 201.13,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 5,
+   "file": "2.54-tie-05.png",
+   "kind": "linked",
+   "page": 1,
+   "staff": "staff/1/1/8",
+   "start": "glyph/1/1/8/0/9",
+   "stop": "glyph/1/1/8/1/2",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/1/1/8/0/19"
+   ],
+   "start_box": [
+    1375.8271484375,
+    6071.40673828125,
+    1415.47021484375,
+    6102.05859375
+   ],
+   "stop_box": [
+    1533.85888671875,
+    6069.849609375,
+    1573.71142578125,
+    6100.5556640625
+   ],
+   "frame_contrast": 82.22,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 6,
+   "file": "2.54-tie-06.png",
+   "kind": "linked",
+   "page": 1,
+   "staff": "staff/1/0/1",
+   "start": "glyph/1/0/1/0/15",
+   "stop": "glyph/1/0/1/0/18",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/1/0/1/0/28"
+   ],
+   "start_box": [
+    1471.0888671875,
+    746.71435546875,
+    1511.68701171875,
+    780.84033203125
+   ],
+   "stop_box": [
+    1565.81787109375,
+    744.94921875,
+    1605.82763671875,
+    779.66357421875
+   ],
+   "frame_contrast": 208.16,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 7,
+   "file": "2.54-tie-07.png",
+   "kind": "not_adjacent",
+   "page": 2,
+   "staff": "staff/2/0/7",
+   "start": "glyph/2/0/7/0/9",
+   "stop": "glyph/2/0/7/1/8",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/2/0/7/1/14"
+   ],
+   "start_box": [
+    942.111328125,
+    2122.486328125,
+    983.9521484375,
+    2157.18359375
+   ],
+   "stop_box": [
+    1722.0234375,
+    2120.703125,
+    1768.8515625,
+    2154.8486328125
+   ],
+   "frame_contrast": 117.47,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 8,
+   "file": "2.54-tie-08.png",
+   "kind": "not_adjacent",
+   "page": 0,
+   "staff": "staff/0/0/11",
+   "start": "glyph/0/0/11/1/13",
+   "stop": "glyph/0/0/11/2/3",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/0/0/11/1/22"
+   ],
+   "start_box": [
+    2548.9875,
+    6013.0125,
+    2590.2675,
+    6050.1
+   ],
+   "stop_box": [
+    2880.3025,
+    6011.7225,
+    2921.9049999999997,
+    6049.1325
+   ],
+   "frame_contrast": 191.27,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 9,
+   "file": "2.54-tie-09.png",
+   "kind": "not_adjacent",
+   "page": 1,
+   "staff": "staff/1/1/8",
+   "start": "glyph/1/1/8/3/2",
+   "stop": "glyph/1/1/8/3/1",
+   "pitches": [
+    "?",
+    "?"
+   ],
+   "arcs": [
+    "glyph/1/1/8/3/16"
+   ],
+   "start_box": [
+    2931.1748046875,
+    6052.2578125,
+    2971.97802734375,
+    6086.7138671875
+   ],
+   "stop_box": [
+    3190.19970703125,
+    6050.14208984375,
+    3228.5849609375,
+    6084.2958984375
+   ],
+   "frame_contrast": 82.22,
+   "question": "this arc is now REFUSED not_adjacent -- is S~E really NOT the same tie (something real sits between), or is this wrong?",
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": []
+}

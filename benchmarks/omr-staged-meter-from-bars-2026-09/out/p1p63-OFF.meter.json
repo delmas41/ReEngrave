@@ -1,0 +1,55 @@
+[
+  {
+    "subject": "system/1/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4",
+      "segments": [
+        {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 12
+    }
+  },
+  {
+    "subject": "system/63/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/63/1",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.286,
+      "n_staves_spoke": 2,
+      "n_staves_on_system": 7,
+      "would_have_been": "C"
+    }
+  },
+  {
+    "subject": "system/63/2",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.1,
+      "n_staves_spoke": 1,
+      "n_staves_on_system": 10,
+      "would_have_been": "C"
+    }
+  }
+]

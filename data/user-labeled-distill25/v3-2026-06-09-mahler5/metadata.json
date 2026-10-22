@@ -1,0 +1,602 @@
+{
+  "version_name": "v3-2026-06-09-mahler5",
+  "created_utc": "2026-07-10T21:12:37+00:00",
+  "labeler": "sean",
+  "description": "Mahler 5 draw-from-scratch batch, 35 cells",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-2026-06-09/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-2026-06-09/detections",
+    "manifest": "benchmarks/omr-labeling-2026-06-09/cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 35,
+    "n_v1_cells": 0,
+    "n_v2_cells": 35,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 237,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "accidentalSharp",
+    "articAccentAbove",
+    "articStaccatoBelow",
+    "augmentationDot",
+    "barlineSingle",
+    "clefF",
+    "clefG",
+    "dynamicCrescendoHairpin",
+    "dynamicDiminuendoHairpin",
+    "dynamicF",
+    "dynamicLetterF",
+    "dynamicLetterP",
+    "dynamicLetterS",
+    "dynamicP",
+    "flag8thUp",
+    "legerLine",
+    "noteheadBlackInSpace",
+    "noteheadBlackInSpaceSmall",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadHalfOnLineSmall",
+    "noteheadWhole",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine",
+    "numeral",
+    "numeral3",
+    "rest8th",
+    "restHalf",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "tie",
+    "tremolo3",
+    "tuplet2",
+    "tuplet3"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "mahler5-p10-sys0-s10-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "barlineSingle",
+        "noteheadBlackInSpaceSmall",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys1-s6-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "barlineSingle",
+        "dynamicDiminuendoHairpin",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys1-s9-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys2-s12-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicLetterP",
+        "noteheadHalfOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys3-s15-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p130-sys4-s21-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "dynamicDiminuendoHairpin",
+        "dynamicLetterF",
+        "dynamicLetterS",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys3-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p175-sys4-s12-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicLetterP",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p220-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p220-sys1-s3-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p220-sys1-s6-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p220-sys2-s10-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicLetterF",
+        "dynamicLetterS",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p220-sys2-s7-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 8,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "accidentalNatural",
+        "clefG",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s1-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s5-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "dynamicLetterP",
+        "noteheadHalfOnLine",
+        "restHalf",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys0-s8-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "noteheadHalfOnLine",
+        "noteheadHalfOnLineSmall",
+        "restWhole",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p25-sys1-s10-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p4-sys0-s1-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 20,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter",
+        "tuplet2",
+        "tuplet3"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p4-sys0-s3-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "numeral",
+        "numeral3",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p4-sys3-s10-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "accidentalSharp",
+        "dynamicDiminuendoHairpin",
+        "dynamicLetterF",
+        "noteheadWhole",
+        "noteheadWholeInSpace",
+        "tremolo3"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p4-sys3-s12-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "articAccentAbove",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p55-sys0-s10-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p55-sys0-s14-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p55-sys0-s4-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p55-sys0-s6-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterS",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p55-sys0-s8-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p7-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalSharp",
+        "clefG",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p7-sys0-s1-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 11,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "flag8thUp",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p7-sys0-s4-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "clefF",
+        "legerLine",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p7-sys0-s6-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "barlineSingle",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHalf",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p90-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicLetterF",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p90-sys0-s6-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler5-p90-sys0-s8-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicCrescendoHairpin",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "slur"
+      ]
+    }
+  ],
+  "rehearsal": {
+    "teacher": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+    "conf": 0.25,
+    "iou_vs_human": 0.2,
+    "teacher_boxes_added": 59,
+    "scope": "all",
+    "rule": "every teacher box no human box overlaps, on every cell \u2014 full distillation with human corrections layered on top. staff/staffLine never."
+  }
+}

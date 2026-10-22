@@ -1,0 +1,55 @@
+{
+ "record": "library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "record_md5": "7dbee148868c39634a20d5881143d3ee",
+ "staff": "staff/3/0/9",
+ "reader": "session-test",
+ "_README": [
+  "⚠️⚠️ THESE ARE A SESSION'S ACTIONS, NOT SEAN'S, AND THE READER SAYS SO.",
+  "`record.READERS.SESSION_TEST` is not a human witness: it read the RECORD,",
+  "so it is correlated with every machine row it cites in exactly the way",
+  "CLAUDE.md §10 warns about. Sean's rows would come off the PRINT and would",
+  "carry reader `sean`. Nothing here may be quoted as his adjudication.",
+  "",
+  "Every action below is justified from benchmarks/omr-notehead-funnel-2026-09/",
+  "FINDINGS.md, section 'Why the clef abstained — the one decision this all",
+  "hangs on', which measured: `Q.CLEF_GLYPH` abstained `no_detections` (the",
+  "detector drew NO clef-category box on this staff at all), and at the clef's",
+  "own x — page px 388–416, y 1828–1862 — it fired TWO `noteheadBlackOnLine`",
+  "boxes instead, glyph/3/0/9/0/1 (conf 0.64) and glyph/3/0/9/0/6 (conf 0.36).",
+  "Both boxes' `bbox_page_px` were re-read off the record for this file and",
+  "match: [388.5175, 1828.1925, 415.135, 1850.085] and",
+  "[388.2025, 1828.665, 415.765, 1861.5825].",
+  "",
+  "The consequence measured there: the clef verdict ABSTAINED `no_candidates`,",
+  "40 of this staff's 48 boxed noteheads were refused `no_pitch`, and 0 of 48",
+  "reached the file."
+ ],
+ "actions": [
+  {
+   "id": "act-0001",
+   "t": "2026-09-23T00:00:01+00:00",
+   "stage": "gather",
+   "kind": "delete_box",
+   "glyph": "glyph/3/0/9/0/1",
+   "bbox_page_px": [388.5175, 1828.1925, 415.135, 1850.085],
+   "note": "This is the upper half of the alto C-clef, not a notehead. It stands at the header x every other staff of this system prints its clef at, it is 4.5 staff spaces tall where a notehead is ~1, and the detector drew no clef box anywhere on this staff (funnel FINDINGS, 'Why the clef abstained')."
+  },
+  {
+   "id": "act-0002",
+   "t": "2026-09-23T00:00:02+00:00",
+   "stage": "gather",
+   "kind": "delete_box",
+   "glyph": "glyph/3/0/9/0/6",
+   "bbox_page_px": [388.2025, 1828.665, 415.765, 1861.5825],
+   "note": "The same ink, boxed a second time at conf 0.36 and 33 px tall. Two overlapping 'noteheads' at one x on the header column is the clef being read twice, not a chord."
+  },
+  {
+   "id": "act-0003",
+   "t": "2026-09-23T00:00:03+00:00",
+   "stage": "adjudicate",
+   "kind": "disagree",
+   "verdict": "vrd:176187",
+   "note": "The clef verdict ABSTAINED `no_candidates` on staff/3/0/9. The same part reads `alto` one system down on the same plate (staff/3/1/6), a clef is printed per system, and the ink at the header x is clef-sized. The disagreement is filed against the verdict and applies nothing: what to do about it is roadmap 2.10 and 2.11, not this pass."
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "subject": "system/0/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    }
+  },
+  {
+    "subject": "system/1/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  }
+]

@@ -1,0 +1,538 @@
+[
+  {
+    "row": "beethoven-sym5-mvt1-984073-p1",
+    "second_page": false,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      12
+    ],
+    "pred_parts": 12,
+    "truth_parts": 18,
+    "part_deficit": 6,
+    "pred_measures": [
+      16
+    ],
+    "truth_measures": [
+      16
+    ],
+    "entire_staff_ours": 513,
+    "entire_staff_audiveris": 513,
+    "entire_measure_ours": 429,
+    "entire_measure_audiveris": 607,
+    "slots_assigned": 12,
+    "staves_total": 12,
+    "distinct_slots": 12,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-984073-p2",
+    "second_page": true,
+    "mechanism": "stitched",
+    "n_systems": 2,
+    "system_sizes": [
+      11,
+      11
+    ],
+    "pred_parts": 11,
+    "truth_parts": 18,
+    "part_deficit": 7,
+    "pred_measures": [
+      31
+    ],
+    "truth_measures": [
+      32
+    ],
+    "entire_staff_ours": 1551,
+    "entire_staff_audiveris": 682,
+    "entire_measure_ours": 1670,
+    "entire_measure_audiveris": 2272,
+    "slots_assigned": 22,
+    "staves_total": 22,
+    "distinct_slots": 11,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-575951-p1",
+    "second_page": false,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      12
+    ],
+    "pred_parts": 12,
+    "truth_parts": 18,
+    "part_deficit": 6,
+    "pred_measures": [
+      16
+    ],
+    "truth_measures": [
+      16
+    ],
+    "entire_staff_ours": 513,
+    "entire_staff_audiveris": 513,
+    "entire_measure_ours": 526,
+    "entire_measure_audiveris": 589,
+    "slots_assigned": 12,
+    "staves_total": 12,
+    "distinct_slots": 12,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-575951-p2",
+    "second_page": true,
+    "mechanism": "stitched",
+    "n_systems": 2,
+    "system_sizes": [
+      11,
+      11
+    ],
+    "pred_parts": 11,
+    "truth_parts": 18,
+    "part_deficit": 7,
+    "pred_measures": [
+      32
+    ],
+    "truth_measures": [
+      32
+    ],
+    "entire_staff_ours": 1551,
+    "entire_staff_audiveris": 401,
+    "entire_measure_ours": 1849,
+    "entire_measure_audiveris": 2130,
+    "slots_assigned": 22,
+    "staves_total": 22,
+    "distinct_slots": 11,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    ]
+  },
+  {
+    "row": "dvorak-sym9-mvt1-405834-p5",
+    "second_page": false,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      15
+    ],
+    "pred_parts": 15,
+    "truth_parts": 15,
+    "part_deficit": 0,
+    "pred_measures": [
+      8
+    ],
+    "truth_measures": [
+      8
+    ],
+    "entire_staff_ours": 0,
+    "entire_staff_audiveris": 0,
+    "entire_measure_ours": 63,
+    "entire_measure_audiveris": 26,
+    "slots_assigned": 15,
+    "staves_total": 15,
+    "distinct_slots": 15,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    ]
+  },
+  {
+    "row": "dvorak-sym9-mvt1-405834-p6",
+    "second_page": true,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      15
+    ],
+    "pred_parts": 15,
+    "truth_parts": 15,
+    "part_deficit": 0,
+    "pred_measures": [
+      7
+    ],
+    "truth_measures": [
+      7
+    ],
+    "entire_staff_ours": 0,
+    "entire_staff_audiveris": 0,
+    "entire_measure_ours": 245,
+    "entire_measure_audiveris": 400,
+    "slots_assigned": 15,
+    "staves_total": 15,
+    "distinct_slots": 15,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    ]
+  },
+  {
+    "row": "brahms-sym1-mvt1-317803-p1",
+    "second_page": false,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      14
+    ],
+    "pred_parts": 14,
+    "truth_parts": 21,
+    "part_deficit": 7,
+    "pred_measures": [
+      8
+    ],
+    "truth_measures": [
+      7
+    ],
+    "entire_staff_ours": 1001,
+    "entire_staff_audiveris": 1001,
+    "entire_measure_ours": 1353,
+    "entire_measure_audiveris": 1734,
+    "slots_assigned": 14,
+    "staves_total": 14,
+    "distinct_slots": 14,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    ]
+  },
+  {
+    "row": "brahms-sym1-mvt1-317803-p2",
+    "second_page": true,
+    "mechanism": "stitch-REFUSED-count-mismatch",
+    "n_systems": 2,
+    "system_sizes": [
+      14,
+      13
+    ],
+    "pred_parts": 27,
+    "truth_parts": 21,
+    "part_deficit": -6,
+    "pred_measures": [
+      7,
+      8
+    ],
+    "truth_measures": [
+      15
+    ],
+    "entire_staff_ours": 715,
+    "entire_staff_audiveris": 143,
+    "entire_measure_ours": 3628,
+    "entire_measure_audiveris": 2481,
+    "slots_assigned": 27,
+    "staves_total": 27,
+    "distinct_slots": 14,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    ]
+  },
+  {
+    "row": "mahler-sym5-mvt1-local-p2",
+    "second_page": false,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      17
+    ],
+    "pred_parts": 17,
+    "truth_parts": 38,
+    "part_deficit": 21,
+    "pred_measures": [
+      9
+    ],
+    "truth_measures": [
+      9
+    ],
+    "entire_staff_ours": 649,
+    "entire_staff_audiveris": 649,
+    "entire_measure_ours": 199,
+    "entire_measure_audiveris": 218,
+    "slots_assigned": 17,
+    "staves_total": 17,
+    "distinct_slots": 17,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    ]
+  },
+  {
+    "row": "mahler-sym5-mvt1-local-p3",
+    "second_page": true,
+    "mechanism": "single-system",
+    "n_systems": 1,
+    "system_sizes": [
+      13
+    ],
+    "pred_parts": 13,
+    "truth_parts": 38,
+    "part_deficit": 25,
+    "pred_measures": [
+      8
+    ],
+    "truth_measures": [
+      8
+    ],
+    "entire_staff_ours": 1674,
+    "entire_staff_audiveris": 1674,
+    "entire_measure_ours": 662,
+    "entire_measure_audiveris": 971,
+    "slots_assigned": 13,
+    "staves_total": 13,
+    "distinct_slots": 13,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    ]
+  },
+  {
+    "row": "bach-brandenburg3-mvt1-468678-p1",
+    "second_page": false,
+    "mechanism": "stitched",
+    "n_systems": 2,
+    "system_sizes": [
+      12,
+      12
+    ],
+    "pred_parts": 12,
+    "truth_parts": 11,
+    "part_deficit": -1,
+    "pred_measures": [
+      11
+    ],
+    "truth_measures": [
+      10
+    ],
+    "entire_staff_ours": 286,
+    "entire_staff_audiveris": 0,
+    "entire_measure_ours": 1837,
+    "entire_measure_audiveris": 0,
+    "slots_assigned": 24,
+    "staves_total": 24,
+    "distinct_slots": 12,
+    "slot_collision_within_a_system": false,
+    "per_system_slots": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    ]
+  }
+]

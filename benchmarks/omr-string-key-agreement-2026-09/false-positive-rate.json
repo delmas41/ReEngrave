@@ -1,0 +1,212 @@
+{
+ "tally": {
+  "skipped_not_orchestral": 1593,
+  "decided:unanimous": 147,
+  "clean": 143,
+  "WITH_CONTRADICTIONS": 9,
+  "decided:majority": 5
+ },
+ "offenders": [
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/bach/b-minor-mass/bach--b-minor-mass--confiteor-et-expecto--gradus-assets.mxl",
+   "concert": 3,
+   "strength": "unanimous",
+   "nosig": false,
+   "n": 1,
+   "staves": [
+    [
+     3,
+     "Timpani",
+     1,
+     3
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/bach/b-minor-mass/bach--b-minor-mass--kyrie-eleison--gradus-assets-2.mxl",
+   "concert": 3,
+   "strength": "majority",
+   "nosig": false,
+   "n": 2,
+   "staves": [
+    [
+     2,
+     "Oboe d\u2019amore 1",
+     0,
+     3
+    ],
+    [
+     3,
+     "Oboe d\u2019amore 2",
+     0,
+     3
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/boulanger/d-un-matin-de-printemps/boulanger--d-un-matin-de-printemps--mvt1--gradus.mxl",
+   "concert": 0,
+   "strength": "majority",
+   "nosig": false,
+   "n": 1,
+   "staves": [
+    [
+     11,
+     "Bass Sarrusophone",
+     2,
+     0
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--mvt2--gradus.mxl",
+   "concert": -3,
+   "strength": "majority",
+   "nosig": false,
+   "n": 1,
+   "staves": [
+    [
+     6,
+     "Alto Flute",
+     -4,
+     -3
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--mvt3--gradus.mxl",
+   "concert": 0,
+   "strength": "majority",
+   "nosig": true,
+   "n": 6,
+   "staves": [
+    [
+     50,
+     "Harp 1",
+     -2,
+     0
+    ],
+    [
+     51,
+     "Harp 2",
+     3,
+     0
+    ],
+    [
+     59,
+     "Violins I",
+     -2,
+     0
+    ],
+    [
+     60,
+     "Violins II",
+     3,
+     0
+    ],
+    [
+     61,
+     "Violas",
+     -2,
+     0
+    ],
+    [
+     62,
+     "Violoncellos",
+     3,
+     0
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--mvt4--gradus.mxl",
+   "concert": 0,
+   "strength": "majority",
+   "nosig": false,
+   "n": 3,
+   "staves": [
+    [
+     6,
+     "Alto Flute",
+     -1,
+     0
+    ],
+    [
+     50,
+     "Harp 1",
+     -2,
+     0
+    ],
+    [
+     51,
+     "Harp 2",
+     3,
+     0
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/mozart/symphony-41-in-c-major-jupiter/mozart--symphony-41-in-c-major-jupiter--mvt2--gradus.mxl",
+   "concert": -1,
+   "strength": "unanimous",
+   "nosig": false,
+   "n": 2,
+   "staves": [
+    [
+     7,
+     "Corno I in F",
+     1,
+     0
+    ],
+    [
+     8,
+     "Corno II in F",
+     1,
+     0
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/mozart/symphony-41-in-c-major-jupiter/mozart--symphony-41-in-c-major-jupiter--mvt3--gradus.mxl",
+   "concert": -1,
+   "strength": "unanimous",
+   "nosig": false,
+   "n": 2,
+   "staves": [
+    [
+     7,
+     "Corno I in F",
+     1,
+     0
+    ],
+    [
+     8,
+     "Corno II in F",
+     1,
+     0
+    ]
+   ]
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/mozart/symphony-41-in-c-major-jupiter/mozart--symphony-41-in-c-major-jupiter--mvt4--gradus.mxl",
+   "concert": -1,
+   "strength": "unanimous",
+   "nosig": false,
+   "n": 2,
+   "staves": [
+    [
+     7,
+     "Corno I in F",
+     1,
+     0
+    ],
+    [
+     8,
+     "Corno II in F",
+     1,
+     0
+    ]
+   ]
+  }
+ ]
+}

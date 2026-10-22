@@ -1,0 +1,17 @@
+wrote /tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-scan-weights-round4-continue-074940/0c9aa586-b8a0-4373-bd76-267bd2481753/scratchpad/staged/brahms-p2-2sys.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'clef': 23, 'duration': 719, 'glyph_owner': 922, 'key_signature': 13, 'measure_partition': 27, 'meter': 1, 'part_partition': 1, 'slot_index': 27, 'staff_group': 27, 'staff_ordinal': 27, 'system_membership': 2, 'system_staff_count': 2}
+  abstained: {'arc_kind': {'not_implemented': 3951}, 'arc_owner': {'not_implemented': 3951}, 'articulation_owner': {'not_implemented': 3951}, 'clef': {'margin_below_floor': 4}, 'direction': {'not_implemented': 202}, 'duration': {'beams_ambiguous': 296}, 'dynamic': {'not_implemented': 202}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 27}, 'key_signature': {'no_evidence': 10, 'needs_clef': 4}, 'meter': {'no_evidence': 1}, 'wedge_anchor': {'not_implemented': 3951}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 27 facts, 23 witnesses, 27 uninformative, {'none': 4, 'single': 23, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 27 facts, 0 witnesses, 27 uninformative, {'none': 27, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 27 facts, 13 witnesses, 27 uninformative, {'none': 14, 'single': 13, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 27 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 10 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 27 facts, 27 witnesses, 27 uninformative, {'none': 0, 'single': 27, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 1458 fired, 3178 skipped
+── DECLARED STUBS: 6 decisions, 1 consequences

@@ -1,0 +1,41 @@
+{
+ "bare": {
+  "right": 1136,
+  "wrong": 307
+ },
+ "on_middle_line": {
+  "wrong": 5,
+  "right": 8
+ },
+ "bars": {
+  "contradicted": 194,
+  "obeys (0 contradictions)": 416
+ },
+ "gated": {
+  "gated_1": {
+   "fires": 792,
+   "right": 702,
+   "wrong": 90,
+   "accuracy": 0.8864,
+   "reach": 240
+  },
+  "gated_2": {
+   "fires": 457,
+   "right": 416,
+   "wrong": 41,
+   "accuracy": 0.9103,
+   "reach": 169
+  },
+  "gated_3": {
+   "fires": 234,
+   "right": 215,
+   "wrong": 19,
+   "accuracy": 0.9188,
+   "reach": 83
+  }
+ },
+ "baseline": {
+  "value": "down",
+  "accuracy": 0.5059
+ }
+}

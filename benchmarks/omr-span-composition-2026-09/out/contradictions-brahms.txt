@@ -1,0 +1,13 @@
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-off.json: 44 contradictions [('Timpani->Trombone', 6), ('Violin->Tuba', 6), ('Trombone->Tuba', 4), ('Trumpet->Tuba', 3), ('Horn->Tuba', 2), ('Clarinet->Horn', 2), ('Bassoon->Horn', 2), ('Horn->Trumpet', 2), ('Bass voice->Horn', 1), ('Viola->Flute', 1), ('Cello->Oboe', 1), ('Contrabass->Clarinet', 1), ('Flute->Bassoon', 1), ('Oboe->Contrabassoon', 1), ('Contrabass->Cello', 1), ('Contrabass->Oboe', 1), ('Oboe->Bassoon', 1), ('Clarinet->Contrabassoon', 1), ('Contrabassoon->Horn', 1), ('Oboe->Flute', 1), ('Clarinet->Oboe', 1), ('Bassoon->Clarinet', 1), ('Contrabassoon->Bassoon', 1), ('Trumpet->Horn', 1), ('Timpani->Tuba', 1)]
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json: 48 contradictions [('Trumpet->Horn', 7), ('Timpani->Trumpet', 6), ('Violin->Timpani', 6), ('Trombone->Tuba', 4), ('Trumpet->Tuba', 3), ('Clarinet->Horn', 2), ('Bassoon->Horn', 2), ('Horn->Trumpet', 2), ('Bass voice->Horn', 1), ('Viola->Flute', 1), ('Cello->Oboe', 1), ('Contrabass->Clarinet', 1), ('Flute->Bassoon', 1), ('Oboe->Contrabassoon', 1), ('Contrabass->Cello', 1), ('Contrabass->Oboe', 1), ('Oboe->Bassoon', 1), ('Clarinet->Contrabassoon', 1), ('Contrabassoon->Horn', 1), ('Oboe->Flute', 1), ('Clarinet->Oboe', 1), ('Bassoon->Clarinet', 1), ('Contrabassoon->Bassoon', 1), ('Timpani->Tuba', 1)]
+
+only in B (benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json):
+   p33 sy0 st5  Trumpet -> Horn
+   p33 sy1 st19  Trumpet -> Horn
+   p34 sy0 st5  Trumpet -> Horn
+   p34 sy1 st18  Trumpet -> Horn
+   p35 sy0 st5  Trumpet -> Horn
+   p35 sy1 st19  Trumpet -> Horn
+only in A (benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-off.json):
+   p1 sy1 st20  Horn -> Tuba
+   p21 sy1 st16  Horn -> Tuba

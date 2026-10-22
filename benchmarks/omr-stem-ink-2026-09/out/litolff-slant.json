@@ -1,0 +1,50 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "no_stem": 793,
+ "arms": {
+  "dilate 1px": {
+   "strokes": 2164,
+   "recovered": 73,
+   "rejections": {
+    "too SHORT": 1276,
+    "too TALL": 1866,
+    "too WIDE": 215,
+    "CELL EDGE": 607
+   },
+   "new_on_accidental": 0
+  },
+  "dilate 2px": {
+   "strokes": 2263,
+   "recovered": 76,
+   "rejections": {
+    "too SHORT": 1538,
+    "too TALL": 1869,
+    "too WIDE": 215,
+    "CELL EDGE": 606
+   },
+   "new_on_accidental": 216
+  },
+  "dilate 3px": {
+   "strokes": 2262,
+   "recovered": 76,
+   "rejections": {
+    "too SHORT": 1538,
+    "too TALL": 1869,
+    "too WIDE": 215,
+    "CELL EDGE": 607
+   },
+   "new_on_accidental": 216
+  },
+  "dilate 5px": {
+   "strokes": 2262,
+   "recovered": 77,
+   "rejections": {
+    "too SHORT": 1538,
+    "too TALL": 1869,
+    "too WIDE": 215,
+    "CELL EDGE": 607
+   },
+   "new_on_accidental": 216
+  }
+ }
+}

@@ -1,0 +1,46 @@
+incumbent admitted set: ['clefC', 'clefF', 'clefG', 'clefUnpitchedPercussion']
+
+=== Litolff Beethoven 5 p1-p4 ===
+  -- INCUMBENT --
+     cell-0 clef detections : 93
+     ADMITTED               : 91   {'clefG': 74, 'clefF': 17}
+     DROPPED                : 2   {'clefCAlto': 2}
+     staves with any clef detection in cell 0: 66
+     STAVES STARVED (0 admitted, >=1 dropped) : 1
+     ... a PITCHED clef would rescue           : 1
+         staff p3/s1/st6  dropped={'clefCAlto': 1}
+     (later cells, reported apart, NOT this lane): 18 {'clefG': 8, 'clefF': 10}
+  -- REPAIRED --
+     cell-0 clef detections : 93
+     ADMITTED               : 93   {'clefG': 74, 'clefF': 17, 'clefCAlto': 2}
+     DROPPED                : 0   {}
+     staves with any clef detection in cell 0: 66
+     STAVES STARVED (0 admitted, >=1 dropped) : 0
+     ... a PITCHED clef would rescue           : 0
+
+=== Breitkopf Brahms 1 p0-p3 ===
+  -- INCUMBENT --
+     cell-0 clef detections : 157
+     ADMITTED               : 143   {'clefG': 106, 'clefF': 37}
+     DROPPED                : 14   {'clefCAlto': 7, 'clefCTenor': 7}
+     staves with any clef detection in cell 0: 95
+     STAVES STARVED (0 admitted, >=1 dropped) : 8
+     ... a PITCHED clef would rescue           : 8
+         staff p0/s0/st11  dropped={'clefCAlto': 2}
+         staff p0/s0/st12  dropped={'clefCTenor': 1}
+         staff p1/s0/st11  dropped={'clefCAlto': 1}
+         staff p1/s1/st10  dropped={'clefCAlto': 2, 'clefCTenor': 1}
+         staff p2/s1/st12  dropped={'clefCTenor': 1}
+         staff p3/s0/st11  dropped={'clefCAlto': 1, 'clefCTenor': 1}
+         staff p3/s1/st11  dropped={'clefCTenor': 1}
+         staff p3/s1/st12  dropped={'clefCTenor': 1}
+     (later cells, reported apart, NOT this lane): 12 {'clefG': 1, 'clefF': 10, 'clefCTenor': 1}
+  -- REPAIRED --
+     cell-0 clef detections : 157
+     ADMITTED               : 157   {'clefG': 106, 'clefF': 37, 'clefCAlto': 7, 'clefCTenor': 7}
+     DROPPED                : 0   {}
+     staves with any clef detection in cell 0: 95
+     STAVES STARVED (0 admitted, >=1 dropped) : 0
+     ... a PITCHED clef would rescue           : 0
+
+positive control: 234 clef rows admitted -- probe is live.

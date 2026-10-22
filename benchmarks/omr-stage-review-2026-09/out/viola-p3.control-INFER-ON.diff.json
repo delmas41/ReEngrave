@@ -1,0 +1,1706 @@
+{
+ "diff": {
+  "control_same": 98999,
+  "control_differ": 69,
+  "control_absent": 0,
+  "control_extra": 0,
+  "changed": [
+   {
+    "subject": "glyph/2/0/9/15/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275728"
+    }
+   },
+   {
+    "subject": "glyph/2/1/7/7/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275748"
+    }
+   },
+   {
+    "subject": "glyph/2/1/7/7/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275729"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/2/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275749"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/2/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275750"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/6/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275751"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/6/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275752"
+    }
+   },
+   {
+    "subject": "glyph/4/0/0/12/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275730"
+    }
+   },
+   {
+    "subject": "glyph/4/0/0/12/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275731"
+    }
+   },
+   {
+    "subject": "glyph/4/0/1/12/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275732"
+    }
+   },
+   {
+    "subject": "glyph/4/0/1/12/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275733"
+    }
+   },
+   {
+    "subject": "glyph/4/0/2/1/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275753"
+    }
+   },
+   {
+    "subject": "glyph/4/0/8/2/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275754"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275755"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275756"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/13",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275757"
+    }
+   },
+   {
+    "subject": "glyph/5/0/6/4/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275758"
+    }
+   },
+   {
+    "subject": "glyph/5/0/6/4/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275759"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275734"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275735"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275736"
+    }
+   },
+   {
+    "subject": "glyph/6/1/9/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275760"
+    }
+   },
+   {
+    "subject": "glyph/8/1/2/3/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275761"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/17/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275762"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/18/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275737"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/18/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275738"
+    }
+   },
+   {
+    "subject": "glyph/8/1/7/16/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275763"
+    }
+   },
+   {
+    "subject": "glyph/8/1/8/14/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275764"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275765"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275766"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275767"
+    }
+   },
+   {
+    "subject": "glyph/9/0/4/3/18",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275739"
+    }
+   },
+   {
+    "subject": "glyph/9/0/6/4/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275768"
+    }
+   },
+   {
+    "subject": "glyph/9/0/10/3/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275769"
+    }
+   },
+   {
+    "subject": "glyph/10/0/4/6/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275770"
+    }
+   },
+   {
+    "subject": "glyph/10/0/4/6/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275771"
+    }
+   },
+   {
+    "subject": "glyph/10/1/0/11/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275772"
+    }
+   },
+   {
+    "subject": "glyph/11/1/6/16/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275773"
+    }
+   },
+   {
+    "subject": "glyph/11/1/7/14/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275774"
+    }
+   },
+   {
+    "subject": "glyph/11/1/7/16/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275775"
+    }
+   },
+   {
+    "subject": "glyph/11/1/9/14/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275776"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275740"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275741"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275742"
+    }
+   },
+   {
+    "subject": "glyph/12/0/3/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275743"
+    }
+   },
+   {
+    "subject": "glyph/12/0/3/9/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275744"
+    }
+   },
+   {
+    "subject": "glyph/12/1/1/10/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275777"
+    }
+   },
+   {
+    "subject": "glyph/12/1/3/10/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275778"
+    }
+   },
+   {
+    "subject": "glyph/12/1/5/11/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275779"
+    }
+   },
+   {
+    "subject": "glyph/12/1/5/11/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275780"
+    }
+   },
+   {
+    "subject": "glyph/13/0/0/4/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275781"
+    }
+   },
+   {
+    "subject": "glyph/13/0/0/4/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275782"
+    }
+   },
+   {
+    "subject": "glyph/13/0/7/10/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275783"
+    }
+   },
+   {
+    "subject": "glyph/13/0/7/10/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275784"
+    }
+   },
+   {
+    "subject": "glyph/13/0/9/3/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275745"
+    }
+   },
+   {
+    "subject": "glyph/15/0/8/17/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275785"
+    }
+   },
+   {
+    "subject": "glyph/15/1/6/11/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275786"
+    }
+   },
+   {
+    "subject": "glyph/15/1/8/11/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275787"
+    }
+   },
+   {
+    "subject": "glyph/15/1/8/17/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275746"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/12",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275788"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/15",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275789"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/20",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275790"
+    }
+   },
+   {
+    "subject": "glyph/16/0/8/8/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275791"
+    }
+   },
+   {
+    "subject": "glyph/16/0/9/8/11",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275792"
+    }
+   },
+   {
+    "subject": "glyph/16/1/2/5/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275793"
+    }
+   },
+   {
+    "subject": "glyph/16/1/2/5/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275794"
+    }
+   },
+   {
+    "subject": "glyph/16/1/3/5/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275795"
+    }
+   },
+   {
+    "subject": "glyph/16/1/3/5/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275796"
+    }
+   },
+   {
+    "subject": "glyph/16/1/6/5/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275747"
+    }
+   }
+  ],
+  "basis_names_human": [],
+  "human_rows_read": [],
+  "human_rows_unread": [],
+  "census_before": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 40,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "census_after": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 40,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "notes_before": 12375,
+  "notes_after": 12424,
+  "musicxml_identical": false,
+  "stage_summary": {
+   "_unread": {
+    "human_rows_no_stage_read": 0,
+    "human_rows_read": 0
+   },
+   "_export": {
+    "status_census_before": {
+     "emitted": [
+      "articulation",
+      "clef",
+      "dynamic",
+      "fermata",
+      "key",
+      "note",
+      "ornament",
+      "slur",
+      "tie",
+      "time",
+      "tuplet",
+      "wedge"
+     ],
+     "decided_but_unwritten": [],
+     "decided_uncounted": [],
+     "abstained": [
+      "direction",
+      "rest"
+     ],
+     "stub": [],
+     "starved": [],
+     "NO_QUANTITY": [],
+     "unaccounted": [],
+     "n_families": 14,
+     "n_filed": 14,
+     "balanced": true
+    },
+    "status_census_after": {
+     "emitted": [
+      "articulation",
+      "clef",
+      "dynamic",
+      "fermata",
+      "key",
+      "note",
+      "ornament",
+      "slur",
+      "tie",
+      "time",
+      "tuplet",
+      "wedge"
+     ],
+     "decided_but_unwritten": [],
+     "decided_uncounted": [],
+     "abstained": [
+      "direction",
+      "rest"
+     ],
+     "stub": [],
+     "starved": [],
+     "NO_QUANTITY": [],
+     "unaccounted": [],
+     "n_families": 14,
+     "n_filed": 14,
+     "balanced": true
+    }
+   }
+  }
+ },
+ "ingestion": {
+  "actions": [],
+  "controls": {
+   "actions": 0,
+   "rows_filed": 0,
+   "actions_refused": 0,
+   "frames_refused": 0,
+   "grids_refused": 0,
+   "sidecar_sha256": "7d357b0ef1f85ba71c5ccebb6671b0c34f4b3950f5b21d2af7b4a3d4e9dcd570",
+   "first_human_row_ordinal": 275756,
+   "provenance": {
+    "parent": {
+     "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+     "md5": "7dbee148868c39634a20d5881143d3ee",
+     "provenance": {
+      "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+      "dirty": true,
+      "settings": {
+       "env_overrides": {
+        "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+        "OMR_SURYA_KEEP_ALIVE": "0"
+       },
+       "args": {
+        "against": null,
+        "conf": 0.25,
+        "dpi": 600,
+        "imgsz": null,
+        "ink_rows": false,
+        "no_roster": false,
+        "no_weight_routing": false,
+        "ocr": true,
+        "pages": "1-16",
+        "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+        "route_weights": true,
+        "sheet": null,
+        "surya": true,
+        "weights": "auto",
+        "work_id": null
+       }
+      }
+     }
+    },
+    "sidecar": {
+     "path": null,
+     "sha256": "7d357b0ef1f85ba71c5ccebb6671b0c34f4b3950f5b21d2af7b4a3d4e9dcd570",
+     "actions": 0,
+     "staff": null,
+     "record_named_by_sidecar": null
+    },
+    "amended_at": "2026-09-23T15:58:23.747503-07:00"
+   }
+  }
+ },
+ "visibility": {
+  "quantities": [
+   "glyph_box",
+   "notehead_class",
+   "notehead_staff_position"
+  ],
+  "absent": {
+   "aug_dot": "read off the cell raster; not derivable from rows",
+   "beam_stroke": "read off the cell raster by line_detection; not derivable",
+   "flag": "read off the cell raster; not derivable from rows",
+   "glyph_band_distance": "produced by gather_ownership_evidence from the cell RASTER (a same-class overlap search); not derivable from rows, so a human box never enters glyph_owner's contest",
+   "glyph_conf": "a person produced no softmax; writing a number here would convert 'there is no such measurement' into a definite one",
+   "glyph_ladder": "produced by gather_ownership_evidence from the cell RASTER (a ledger-rung search); not derivable from rows"
+  },
+  "adjudicate_domain": {
+   "adjudicate_duration": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "notehead_class"
+   ],
+   "adjudicate_stem_direction": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "notehead_class"
+   ]
+  },
+  "adjudicate_wants": {
+   "adjudicate_clef": [
+    "notehead_staff_position"
+   ],
+   "adjudicate_glyph_owner": [
+    "notehead_staff_position"
+   ],
+   "adjudicate_arc_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_arc_kind": [
+    "glyph_box",
+    "notehead_staff_position"
+   ],
+   "adjudicate_articulation_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_wedge_anchor": [
+    "glyph_box"
+   ],
+   "adjudicate_fermata_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_ornament_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_duration": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_tuplet": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_onset_column": [
+    "glyph_box"
+   ],
+   "adjudicate_stem_direction": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "glyph_box",
+    "notehead_staff_position"
+   ]
+  },
+  "evaluate_cause": {},
+  "infer_reads": {
+   "Rule(inference=<Inference.COLLAPSE_DURATION_BY_COLUMN: 'collapse_duration_by_column'>, target='duration', reads=('onset_column', 'event', 'duration', 'glyph_box', 'glyph_owner'), scope=<Kind.SYSTEM: 'system'>, fn=<function collapse_duration_by_column at 0x13ca8ba60>, bound=\"It collapses a NARROWED duration to one of that reader's OWN candidates and nothing else; it acts only on an event that stands in a corroborated onset column k and has a next onset at some column m IN THE SAME BAR, and only on witnesses that span that same k to m; every independent witness must agree on one length, and one dissenter refuses the whole inference; where two candidates carry that length it refuses rather than choosing. It writes at most one verdict per glyph and reads no value it has written.\", sideways=True, why_witnesses_are_independent=\"Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, and that is checked rather than asserted: `independent_groups` partitions the witness verdicts by whether their provenance closures intersect, so two staves resting on a shared row count once. \u26a0\ufe0f It is ONE-SIDED -- disjoint closures prove the rows differ, they do NOT prove the readings fail independently, and two staves of one badly printed page share no row and still degrade together.\", forbids_argmax=True, stub=False, switch=Switch(env='OMR_INFER', fn=<function infer_enabled at 0x10616a820>))": [
+    "glyph_box"
+   ],
+   "Rule(inference=<Inference.COLLAPSE_DURATION_TO_BARLINE: 'collapse_duration_to_barline'>, target='duration', reads=('onset_column', 'event', 'duration', 'glyph_box', 'glyph_owner'), scope=<Kind.SYSTEM: 'system'>, fn=<function collapse_duration_to_barline at 0x13ca8baf0>, bound=\"It collapses a NARROWED duration to one of that reader's OWN candidates and nothing else; it acts only on an event that stands in a corroborated onset column k and has NO further onset in its bar, so it runs to the barline; its witnesses are the other staves standing at that same column k that ALSO have no further onset, so they run to the SAME barline; a witness whose own length reaches `Q.METER` through its provenance closure is REFUSED, so no borrowed length is one the meter handed out; every independent witness must agree on one length, one dissenter refuses the whole inference, and where two candidates carry that length it refuses rather than choosing. It writes at most one verdict per glyph and reads no value it has written.\", sideways=True, why_witnesses_are_independent=\"Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, checked by `independent_groups` against the provenance closures -- plus a SECOND refusal this rule needs and the column rule does not: a witness whose closure contains `Q.METER` is dropped, because a length the meter handed out is not a reading and borrowing it would launder the meter into an answer this rule claims not to read. \u26a0\ufe0f BOTH TESTS ARE ONE-SIDED, and here there is a NAMED correlation neither can see: the subject and its witness take their barline from the SAME CELL SEGMENTATION, so a bar cut in the wrong place is wrong for both together. That is the CONVENTION correlation CLAUDE.md records as real and unquantified, and it is one of the reasons this answer is BEST rather than FORCED.\", forbids_argmax=True, stub=False, switch=Switch(env='OMR_INFER', fn=<function infer_enabled at 0x10616a820>))": [
+    "glyph_box"
+   ]
+  }
+ }
+}

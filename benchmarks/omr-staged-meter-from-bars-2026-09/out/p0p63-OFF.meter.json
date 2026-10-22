@@ -1,0 +1,33 @@
+[
+  {
+    "subject": "system/63/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/63/1",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.286,
+      "n_staves_spoke": 2,
+      "n_staves_on_system": 7,
+      "would_have_been": "C"
+    }
+  },
+  {
+    "subject": "system/63/2",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.1,
+      "n_staves_spoke": 1,
+      "n_staves_on_system": 10,
+      "would_have_been": "C"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+ "beam_mate_majority": {
+  "fires": 531,
+  "right": 498,
+  "wrong": 33,
+  "accuracy": 0.9379,
+  "reach_on_no_stem": 167
+ },
+ "beam_mate_unanimous": {
+  "fires": 485,
+  "right": 477,
+  "wrong": 8,
+  "accuracy": 0.9835,
+  "reach_on_no_stem": 152
+ },
+ "baseline": {
+  "value": "down",
+  "accuracy": 0.5059
+ },
+ "funnel": {
+  "no_stem heads": 793,
+  "with a box": 793,
+  "in a cell holding a beam": 382,
+  "standing ON a beam": 245,
+  "with a decided mate on it": 167,
+  "whose mates AGREE": 152
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "pdf_page_index": 6,
+ "dpi": 600,
+ "question": "Is the note in the red brackets filled (black) or open (hollow) -- or is it not a note?",
+ "tiles": [
+  {
+   "n": 1,
+   "subject_2_23": "glyph/6/1/9/2/9",
+   "page_box": [
+    1018.575,
+    3345.62,
+    1024.875,
+    3365.15
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "file": "headfill_1.png"
+  },
+  {
+   "n": 2,
+   "subject_2_23": "glyph/6/0/3/8/19",
+   "page_box": [
+    1744.1025,
+    810.1475,
+    1797.3375,
+    874.25
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "file": "headfill_2.png"
+  },
+  {
+   "n": 3,
+   "subject_2_23": "glyph/6/1/11/5/3",
+   "page_box": [
+    1461.3975,
+    3565.5675,
+    1499.67,
+    3632.9775
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "file": "headfill_3.png"
+  },
+  {
+   "n": 4,
+   "subject_2_23": "glyph/6/0/0/9/1",
+   "page_box": [
+    1996.42,
+    441.98,
+    2019.515,
+    453.45000000000005
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "file": "headfill_4.png"
+  },
+  {
+   "n": 5,
+   "subject_2_23": "glyph/6/1/1/0/8",
+   "page_box": [
+    511.685,
+    2114.075,
+    533.695,
+    2135.155
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "file": "headfill_5.png"
+  },
+  {
+   "n": 6,
+   "subject_2_23": "glyph/6/0/8/3/4",
+   "page_box": [
+    999.405,
+    1586.7,
+    1019.0925,
+    1604.1825
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "file": "headfill_6.png"
+  }
+ ]
+}

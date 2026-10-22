@@ -1,0 +1,25 @@
+{
+ "changed": [],
+ "decided_population": {
+  "decided": 15
+ },
+ "fermata": {
+  "decided": 156,
+  "measured:above": 89,
+  "measured:below": 62,
+  "measured:level": 5,
+  "owner_identical": 178,
+  "side_agrees:False": 68,
+  "side_agrees:True": 88
+ },
+ "invariants": {
+  "base_decided_stays_decided": 15,
+  "decided_measured_side_equals_class": 15
+ },
+ "label": "litolff-whole",
+ "marks": 18,
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 3,
+  "decided/nearest_on_declared_side -> decided/nearest_on_declared_side": 15
+ }
+}

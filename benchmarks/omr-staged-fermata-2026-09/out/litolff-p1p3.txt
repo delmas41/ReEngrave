@@ -1,0 +1,23 @@
+record   : /tmp/ferm/staged.json
+provenance: commit=0982864e0f31eb98e9a5c82abf784960a9946c1e dirty=True
+  ⚠️ NOT A CLEAN TREE. Fine for a reach-and-result report; NOT usable as one arm of an A/B.
+
+── REACH ──
+  fermata glyphs, by CLASS: {'fermataAbove': 63}
+  cells holding one       : 46
+  confidence  min 0.254  med 0.807  max 0.911
+
+── ADJUDICATE ──
+  abstained  no_carrier             12
+  decided    contains_the_mark      51
+  carriers: {'rest': 26, 'notehead': 25}
+  ⚠️ A carrier that is a REST is the case an articulation rule structurally cannot reach.
+
+── EXPORT ──
+  <fermata> elements  : 37
+  balance             : {"marks_in_log": 63, "written": 37, "not_written": 13, "absorbed_by_a_shared_event": 13, "balanced": true}
+  not written         : {"fermata_no_carrier": 12, "fermata_owning_glyph_not_written": 1}
+
+── THE ADDITIVE CONTROL ──
+  with the fermatas removed, the two files are IDENTICAL  (529bc8832880 / 529bc8832880)
+  every OTHER counter moved: nothing

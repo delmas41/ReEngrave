@@ -1,0 +1,106 @@
+[
+  {
+    "id": "vrd:018722",
+    "subject": "system/0/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:001056",
+      "obs:001059",
+      "obs:001062",
+      "obs:001065",
+      "obs:001068",
+      "obs:001071",
+      "obs:001074",
+      "obs:001077",
+      "obs:001080",
+      "obs:001083",
+      "obs:001086",
+      "obs:001089",
+      "obs:001092",
+      "obs:001095",
+      "obs:001098",
+      "obs:001101",
+      "obs:001104",
+      "obs:001107",
+      "obs:001110",
+      "obs:001113",
+      "obs:001116",
+      "obs:001119",
+      "obs:001122"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    },
+    "n_considered": 186,
+    "n_basis": 458,
+    "n_correlated": 21
+  },
+  {
+    "id": "vrd:018723",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 1167,
+    "n_basis": 3723,
+    "n_correlated": 217
+  },
+  {
+    "id": "vrd:018724",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_glyph",
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 856,
+    "n_basis": 3406,
+    "n_correlated": 143
+  }
+]

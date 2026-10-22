@@ -1,0 +1,4 @@
+Litolff: 71 adjacent staff pairs; gap in staff spaces min 3.56 median 5.42 max 18.86
+  pairs where the NEXT staff's top line is within the cell's 4.0-space reach: 4 of 71
+Breitkopf: 93 adjacent staff pairs; gap in staff spaces min 2.23 median 4.77 max 13.45
+  pairs where the NEXT staff's top line is within the cell's 4.0-space reach: 35 of 93

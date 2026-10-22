@@ -1,0 +1,14 @@
+== ARM 0: POSITIVE CONTROL -- the clean tree must PASS ==
+   conv   exit 0  PASS
+   beam   exit 0  PASS
+   marg   exit 0  PASS
+   RED  exit  1  convention: swap the two legal cells
+   RED  exit  1  convention: the corner box read as a width box
+   RED  exit  2  convention: the staff key built with the KIND first
+   RED  exit  1  beam-mate: a MAJORITY of mates, not unanimity
+   RED  exit  1  beam-mate: the cell key by rsplit, losing the KIND
+   RED  exit  1  beam-mate: a head's x-centre test replaced by a box overlap
+   RED  exit  1  marginal: the overlap counted as marginal too
+
+== RESTORE VERIFIED: all 3 files byte-identical to the pre-battery snapshot ==
+== 8 of 8 arms behaved as required ==

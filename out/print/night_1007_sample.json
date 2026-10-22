@@ -1,0 +1,110 @@
+[
+ {
+  "n": 1,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/10/1/8/9/6",
+  "page": 10,
+  "kind": "owner",
+  "new": "NEW: belongs to staff 10 from the top of system 2 (NOT the one it is filed on)",
+  "base": "BASE: no answer (gave up)"
+ },
+ {
+  "n": 2,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/6/1/9/10/2",
+  "page": 6,
+  "kind": "far_changed",
+  "new": "NEW: in the space below the 1st ledger line below the staff",
+  "base": "BASE: in the space below the 2nd ledger line below the staff"
+ },
+ {
+  "n": 3,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/5/0/5/8/1",
+  "page": 5,
+  "kind": "far_changed",
+  "new": "NEW: in the space above the 2nd ledger line above the staff",
+  "base": "BASE: on the 3rd ledger line above the staff"
+ },
+ {
+  "n": 4,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/19/1/12/0/5",
+  "page": 19,
+  "kind": "far_newly",
+  "new": "NEW: in the space above the 2nd ledger line above the staff",
+  "base": "BASE: no answer (gave up: count_does_not_fit (gaps 0.98, 0.96, 0.6)"
+ },
+ {
+  "n": 5,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/7/0/6/5/13",
+  "page": 7,
+  "kind": "owner",
+  "new": "NEW: belongs to staff 6 from the top of system 1 (NOT the one it is filed on)",
+  "base": "BASE: no answer (gave up)"
+ },
+ {
+  "n": 6,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/6/1/10/1/2",
+  "page": 6,
+  "kind": "lines",
+  "new": "NEW: in staff space 4th from the bottom",
+  "base": "BASE: in the space just above the top line"
+ },
+ {
+  "n": 7,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/10/0/0/10/8",
+  "page": 10,
+  "kind": "far_newly",
+  "new": "NEW: on the 2nd ledger line above the staff",
+  "base": "BASE: no answer (gave up: count_does_not_fit (gaps 2.19 sp: a gap )"
+ },
+ {
+  "n": 8,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/23/1/9/5/5",
+  "page": 23,
+  "kind": "far_newly",
+  "new": "NEW: in the space below the 1st ledger line below the staff",
+  "base": "BASE: no answer (gave up: no_rungs)"
+ },
+ {
+  "n": 9,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/4/0/13/1/2",
+  "page": 4,
+  "kind": "far_changed",
+  "new": "NEW: in the space above the 2nd ledger line above the staff",
+  "base": "BASE: on the 3rd ledger line above the staff"
+ },
+ {
+  "n": 10,
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/13/1/0/13/11",
+  "page": 13,
+  "kind": "far_newly",
+  "new": "NEW: on the 3rd ledger line above the staff",
+  "base": "BASE: no answer (gave up: count_does_not_fit (gaps 1.26, 2.32 sp: )"
+ },
+ {
+  "n": 11,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/7/0/5/4/4",
+  "page": 7,
+  "kind": "lines",
+  "new": "NEW: on staff line 2nd from the bottom",
+  "base": "BASE: in staff space 1st from the bottom"
+ },
+ {
+  "n": 12,
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/25/0/3/8/4",
+  "page": 25,
+  "kind": "far_changed",
+  "new": "NEW: in the space above the 1st ledger line above the staff",
+  "base": "BASE: on the 2nd ledger line above the staff"
+ }
+]

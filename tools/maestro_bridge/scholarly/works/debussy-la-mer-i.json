@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_id": "debussy-la-mer-i",
+  "composer": "Claude Debussy",
+  "title": "La Mer, mvt 1 (De l'aube à midi sur la mer)",
+  "catalog": "L. 109",
+  "year_composed": 1905,
+  "source_citations": [
+    "Simon Trezise, Debussy: La Mer (Cambridge Music Handbooks, 1994)",
+    "Richard Parks, The Music of Claude Debussy (1989)",
+    "Jonathan Dunsby, 'The Formal Repeat' (Debussy/La Mer analysis)"
+  ],
+
+  "known_overall_key": "Db major",
+  "expected_measure_count": 141,
+  "expected_time_signature": "6/8",
+
+  "key_plan": [
+    {
+      "section": "introduction_tres_lent",
+      "measure_start": 1,
+      "measure_end": 30,
+      "key": "various",
+      "role": "Très lent — modal/pentatonic introduction (B minor / D-modal collections), oceanic timbral exploration with no firm tonic"
+    },
+    {
+      "section": "first_thematic_block",
+      "measure_start": 31,
+      "measure_end": 59,
+      "key": "various",
+      "role": "Allegro plus animé; principal theme presented in fragments, harmonically mobile through whole-tone and pentatonic regions"
+    },
+    {
+      "section": "central_db_major_arrival",
+      "measure_start": 60,
+      "measure_end": 105,
+      "key": "Db major",
+      "role": "Central section: Db major established as the work's home key, supported by long pedals and pentatonic theme statements"
+    },
+    {
+      "section": "build_to_climax",
+      "measure_start": 106,
+      "measure_end": 132,
+      "key": "various",
+      "role": "Modulating section building to the movement's climax — whole-tone collections prominent"
+    },
+    {
+      "section": "concluding_db_arrival",
+      "measure_start": 133,
+      "measure_end": 141,
+      "key": "Db major",
+      "role": "Movement-ending: full orchestra in Db major chord-cluster sonority — 'midi sur la mer' (noon over the sea)"
+    }
+  ],
+
+  "notable_cadences": [
+    { "measure": 30,  "type": "HC",  "key": "various", "basis": "End of introduction; preparatory dominant function (loose Db V function via Ab pedal)" },
+    { "measure": 105, "type": "PAC", "key": "Db major", "basis": "Cadence closing the central Db section — modal-tonal cadence rather than functional V-I" },
+    { "measure": 141, "type": "PAC", "key": "Db major", "basis": "Movement-final Db major cadence; sonorous rather than dramatic resolution" }
+  ],
+
+  "characteristic_features": [
+    "Tonal-modal-pentatonic-whole-tone synthesis characteristic of Debussy's mature style",
+    "Db major is the work's home key but is approached and left modally, not functionally — V-I dominant-tonic motion is rare",
+    "Heavy use of pedal points; thematic statements often float over unchanging bass",
+    "Form is loosely sonata-like (introduction–exposition–development–climax–arrival) but resists tonal-form labels"
+  ],
+
+  "common_omr_pitfalls": [
+    "Wide-range orchestral score with frequent timbral doublings — voice assignment is genuinely ambiguous even to humans",
+    "Frequent accidentals (whole-tone collections, modal inflections) make key-signature-based pitch inference unreliable",
+    "Long sustained notes (whole, double-whole) with cross-staff beaming — OMR may fragment these",
+    "Tied notes across measure boundaries are common — OMR often double-stops them"
+  ],
+
+  "_notes": "Curated 2026-05-24. Debussy's harmonic language predates tonal-function analysis — 'key' fields in this entry mark modal/pentatonic centers rather than functional tonics. Cross-check is least effective on Debussy because maestroAnalyst's Krumhansl-style key detection is tuned for functional tonality; 'various' is used liberally. Section boundaries follow Trezise (1994). Useful primarily as a regression baseline (catching gross misreads) rather than for fine-grained harmonic verification."
+}

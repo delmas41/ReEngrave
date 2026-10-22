@@ -1,0 +1,372 @@
+[
+ {
+  "tile": 1,
+  "doc": "litolff",
+  "head": "glyph/14/0/6/1/1",
+  "label": "Sean's tile 3 of the mark-group sheet",
+  "A": "staff 7: Timpani",
+  "B": "staff 6: Trumpet (Tr.)",
+  "size": [
+   1680,
+   2714
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 1105.0,
+   "ext_spaces": 6.307
+  },
+  "off": [
+   "decided",
+   "staff/14/0/6",
+   "distance"
+  ],
+  "on": [
+   "decided",
+   "staff/14/0/5",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/14/0/5",
+   "group_owner"
+  ],
+  "on_final": [
+   "decided",
+   "staff/14/0/5",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 2,
+  "doc": "litolff",
+  "head": "glyph/4/1/2/4/3",
+  "label": "Sean's tile 7 of the mark-group sheet",
+  "A": "staff 2: Oboe",
+  "B": "staff 3: Clarinet (Cl.)",
+  "size": [
+   1680,
+   2467
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 2518.0,
+   "ext_spaces": 5.254
+  },
+  "off": [
+   "decided",
+   "staff/4/1/2",
+   "distance"
+  ],
+  "on": [
+   "decided",
+   "staff/4/1/2",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/4/1/1",
+   "group_owner"
+  ],
+  "on_final": [
+   "decided",
+   "staff/4/1/2",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 3,
+  "doc": "litolff",
+  "head": "glyph/12/0/2/6/5",
+  "label": "ledgers could not read it: stem answers",
+  "A": "staff 3: Clarinet (Cl.)",
+  "B": "staff 4: Bassoon (Fag.)",
+  "size": [
+   1680,
+   2645
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 880.0,
+   "ext_spaces": 3.59
+  },
+  "off": [
+   "abstained",
+   null,
+   "far_no_rungs"
+  ],
+  "on": [
+   "decided",
+   "staff/12/0/3",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/12/0/3",
+   "group_owner"
+  ],
+  "on_final": [
+   "decided",
+   "staff/12/0/3",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 4,
+  "doc": "brahms",
+  "head": "glyph/15/0/4/2/4",
+  "label": "stem and ledger reading disagree: now abstains",
+  "A": "staff 6: \"(Es)\"",
+  "B": "staff 5: Horn ((C) Hr.)",
+  "size": [
+   1750,
+   3186
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 1756.0,
+   "ext_spaces": 2.025
+  },
+  "off": [
+   "decided",
+   "staff/15/0/4",
+   "ledger_note_first"
+  ],
+  "on": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ],
+  "off_final": [
+   "decided",
+   "staff/15/0/4",
+   "ledger_note_first"
+  ],
+  "on_final": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ]
+ },
+ {
+  "tile": 5,
+  "doc": "litolff",
+  "head": "glyph/4/1/0/12/3",
+  "label": "stem moves the head to the farther staff",
+  "A": "staff 2: Oboe",
+  "B": "staff 1: Flute",
+  "size": [
+   1680,
+   2467
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 2315.0,
+   "ext_spaces": 3.187
+  },
+  "off": [
+   "decided",
+   "staff/4/1/0",
+   "distance"
+  ],
+  "on": [
+   "decided",
+   "staff/4/1/1",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/4/1/0",
+   "distance"
+  ],
+  "on_final": [
+   "decided",
+   "staff/4/1/1",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 6,
+  "doc": "brahms",
+  "head": "glyph/4/0/11/9/5",
+  "label": "ledgers could not read it: stem answers",
+  "A": "staff 11: Violin (2.Viol.)",
+  "B": "staff 12: Viola",
+  "size": [
+   1750,
+   3627
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 2987.0,
+   "ext_spaces": 1.714
+  },
+  "off": [
+   "abstained",
+   null,
+   "far_no_rungs"
+  ],
+  "on": [
+   "decided",
+   "staff/4/0/10",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/4/0/10",
+   "group_owner"
+  ],
+  "on_final": [
+   "decided",
+   "staff/4/0/10",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 7,
+  "doc": "brahms",
+  "head": "glyph/11/0/3/0/11",
+  "label": "stem moves the head to the farther staff",
+  "A": "staff 3: Clarinet (Klar. (B))",
+  "B": "staff 4: Bassoon (Fag.)",
+  "size": [
+   1750,
+   3505
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 1155.0,
+   "ext_spaces": 2.79
+  },
+  "off": [
+   "decided",
+   "staff/11/0/3",
+   "distance"
+  ],
+  "on": [
+   "decided",
+   "staff/11/0/2",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/11/0/3",
+   "distance"
+  ],
+  "on_final": [
+   "decided",
+   "staff/11/0/2",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 8,
+  "doc": "brahms",
+  "head": "glyph/24/0/3/8/10",
+  "label": "stem and ledger reading disagree: now abstains",
+  "A": "staff 5: Contrabassoon",
+  "B": "staff 4: Bassoon (Fag.)",
+  "size": [
+   1756,
+   3632
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 1450.0,
+   "ext_spaces": 1.26
+  },
+  "off": [
+   "decided",
+   "staff/24/0/3",
+   "ledger_note_first"
+  ],
+  "on": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ],
+  "off_final": [
+   "decided",
+   "staff/24/0/3",
+   "ledger_note_first"
+  ],
+  "on_final": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ]
+ },
+ {
+  "tile": 9,
+  "doc": "brahms",
+  "head": "glyph/19/1/5/6/1",
+  "label": "stem moves the head to the farther staff",
+  "A": "staff 7: \"(Es)\"",
+  "B": "staff 6: Horn ((C) Hr.)",
+  "size": [
+   1750,
+   3353
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 5258.0,
+   "ext_spaces": 8.659
+  },
+  "off": [
+   "decided",
+   "staff/19/1/6",
+   "distance"
+  ],
+  "on": [
+   "decided",
+   "staff/19/1/5",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "decided",
+   "staff/19/1/6",
+   "distance"
+  ],
+  "on_final": [
+   "decided",
+   "staff/19/1/5",
+   "stem_toward_staff"
+  ]
+ },
+ {
+  "tile": 10,
+  "doc": "litolff",
+  "head": "glyph/16/0/2/15/2",
+  "label": "stem and ledger reading disagree: now abstains",
+  "A": "staff 4: \"Fug.\"",
+  "B": "staff 3: Clarinet (Cl.)",
+  "size": [
+   1680,
+   2508
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 755.0,
+   "ext_spaces": 2.172
+  },
+  "off": [
+   "decided",
+   "staff/16/0/3",
+   "ledger_note_first"
+  ],
+  "on": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ],
+  "off_final": [
+   "decided",
+   "staff/16/0/3",
+   "ledger_note_first"
+  ],
+  "on_final": [
+   "abstained",
+   null,
+   "stem_disagrees"
+  ]
+ }
+]

@@ -1,0 +1,70 @@
+MEASURED FACTS behind each stem image of ROADMAP 1.7 (stems). No conclusion is drawn here.
+
+=== image 1  Cause: run too wide  (b4087)
+    Two heads a third apart touch, and the stem finder sees ONE run about a space wide.
+    Sean's stem is 6.17 spaces tall with 2 head(s) on it, the closest two a third apart
+    the stem finder's run here was refused as TOO WIDE: 1.02 wide x 6.6 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 6.17 spaces (the finder needs 1.6): the stem is on the page
+    head q109: no stem attached (none was found); direction not read
+    head q117: no stem attached (none was found); direction not read
+    frame control: ink inside the bracket 0.81 vs moved 0.13
+
+=== image 2  Run too wide, with a beam  (b4119)
+    The same refusal. A beam box and a slur box of Sean's also touch this stem (the table in FINDINGS 8.4 holds the rates).
+    Sean's stem is 3.94 spaces tall with 2 head(s) on it, the closest two a third apart
+    the stem finder's run here was refused as TOO WIDE: 1.22 wide x 5.06 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 3.94 spaces (the finder needs 1.6): the stem is on the page
+    head q224: no stem attached (none was found); direction right
+    head q226: no stem attached (none was found); direction right
+    frame control: ink inside the bracket 0.95 vs moved 0.52
+
+=== image 3  Run too wide, low staff  (b4310)
+    The same fusing on staff 0.11 (it reads an alto clef): the loss is not confined to the top staves.
+    Sean's stem is 4.38 spaces tall with 2 head(s) on it, the closest two a third apart
+    the stem finder's run here was refused as TOO WIDE: 1.09 wide x 4.99 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 4.25 spaces (the finder needs 1.6): the stem is on the page
+    head q1319: no stem attached (none was found); direction not read
+    head q1322: attached its own stem; direction read
+    frame control: ink inside the bracket 0.93 vs moved 0.36
+
+=== image 4  Cause: pair rule  (b4064)
+    One head. A 2.4-space stroke 0.5 sp to its left, which lies on the accidental Sean boxed beside the head, pairs with the real stem under the 'accidental pair' rule, and the pair is dropped.
+    Sean's stem is 6.2 spaces tall with 1 head(s) on it
+    the stem finder's run here was refused as PAIRED WITH A NEIGHBOUR: 0.22 wide x 6.95 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 6.2 spaces (the finder needs 1.6): the stem is on the page
+    its pair partner: a 2.36-space stroke 0.49 spaces to the left; not one of Sean's stems; it lies on: accidental
+    head q975: no stem attached (none was found); direction right
+    frame control: ink inside the bracket 0.84 vs moved 0.21
+
+=== image 5  Pair rule, on a chord  (b4083)
+    A real stem found and then dropped as one half of a pair; its neighbour is lost to the too-wide run.
+    Sean's stem is 4.57 spaces tall with 2 head(s) on it, the closest two a third apart
+    the stem finder's run here was refused as PAIRED WITH A NEIGHBOUR: 0.16 wide x 4.65 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 4.55 spaces (the finder needs 1.6): the stem is on the page
+    its pair partner: a 2.23-space stroke 0.55 spaces to the right; not one of Sean's stems; it lies on: notehead
+    head q130: no stem attached (none was found); direction not read
+    head q135: no stem attached (none was found); direction not read
+    frame control: ink inside the bracket 0.84 vs moved 0.11
+
+=== image 6  Wrong stem: a flag's curve  (b4177)
+    The real stem was refused; the two heads took the rising curve of the flag, which stands against their right edge and lies on Sean's flag box, as their stem.
+    Sean's stem is 4.46 spaces tall with 2 head(s) on it, the closest two a third apart
+    the stem finder's run here was refused as TOO WIDE: 1.05 wide x 4.93 tall (staff spaces; it takes at most 0.6 wide)
+    the ink along Sean's stem is unbroken for 4.34 spaces (the finder needs 1.6): the stem is on the page
+    head q438: attached a stroke that is not Sean's stem; direction right
+    head q440: attached a stroke that is not Sean's stem; direction right
+    frame control: ink inside the bracket 0.93 vs moved 0.26
+
+=== image 7  Found, not attached  (q709)
+    The stem is found and stands against the head box, but the attach rule has no tolerance: no_stem.
+    Sean's stem is 6.92 spaces tall with 3 head(s) on it
+    head q703: attached its own stem; direction right
+    head q711: the stem we found stands 0.02 spaces from the head box; the attach rule takes only boxes that overlap
+    head q711: no stem attached although the stem was found; direction not read
+    head q712: attached its own stem; direction right
+    frame control: ink inside the bracket 0.67 vs moved 0.20
+
+=== image 8  Invented: not stems  (CELL:s0-st3-m0)
+    65 of the 68 'stems' that are not Sean's lie on a clef, key signature, digit, accidental, flag or rest.
+    5 of the 6 stems we found in this window are not Sean's: they stand on the clef and the key signature, where he drew no stem
+

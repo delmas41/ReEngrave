@@ -1,0 +1,196 @@
+[
+  {
+    "id": "vrd:036017",
+    "subject": "system/0/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        },
+        {
+          "from_cell": 6,
+          "numerator": 2,
+          "denominator": 2,
+          "raw": "C|",
+          "support": 74.0,
+          "staves_reading_it": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "bars_fit": 2,
+          "bars_contradict": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:012061",
+      "obs:012064",
+      "obs:012067",
+      "obs:012070",
+      "obs:012073",
+      "obs:012076",
+      "obs:012079",
+      "obs:012082",
+      "obs:012085",
+      "obs:012089",
+      "obs:012092",
+      "obs:012096",
+      "obs:012099",
+      "obs:012102",
+      "obs:012105",
+      "obs:012108",
+      "obs:012111",
+      "obs:012114",
+      "obs:012117",
+      "obs:012120",
+      "obs:012123",
+      "obs:012126",
+      "obs:012129",
+      "obs:012132"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 24
+    },
+    "n_considered": 1219,
+    "n_basis": 5010,
+    "n_correlated": 182
+  },
+  {
+    "id": "vrd:036018",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "carried",
+    "used": [
+      "vrd:036017"
+    ],
+    "missing": [],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": 2.0,
+    "supersedes": null,
+    "detail": {
+      "carried_from": "system/0/0",
+      "pages_since_read": 1,
+      "instead_of": "no_evidence",
+      "source_share": 1.0,
+      "source_staves_spoke": 24,
+      "support": 2.0,
+      "floor": 2.0,
+      "bars_agree": 3,
+      "bars_disagree": 2,
+      "bar_lengths_seen": {
+        "4.0": 3,
+        "3.5": 2
+      }
+    },
+    "n_considered": 1143,
+    "n_basis": 8572,
+    "n_correlated": 224
+  },
+  {
+    "id": "vrd:036019",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "carried",
+    "used": [
+      "vrd:036017"
+    ],
+    "missing": [],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": 8.0,
+    "supersedes": null,
+    "detail": {
+      "carried_from": "system/0/0",
+      "pages_since_read": 2,
+      "instead_of": "no_evidence",
+      "source_share": 1.0,
+      "source_staves_spoke": 24,
+      "support": 8.0,
+      "floor": 2.0,
+      "bars_agree": 7,
+      "bars_disagree": 0,
+      "bar_lengths_seen": {
+        "4.0": 7
+      }
+    },
+    "n_considered": 1058,
+    "n_basis": 12785,
+    "n_correlated": 252
+  }
+]

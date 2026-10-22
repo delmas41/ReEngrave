@@ -1,0 +1,5073 @@
+{
+ "question": "every miss of the 2.81 bare-stem rule, in context",
+ "images": [
+  {
+   "image": 1,
+   "file": "miss_01.png",
+   "kind": "tile",
+   "tile": "tile_04",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 20,
+   "crop_page_px": [
+    1762,
+    3366,
+    2587,
+    3751
+   ],
+   "scale": 1.212,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.873
+    ],
+    "same_boxes_moved_diagonally": [
+     0.297
+    ],
+    "stroke_boxes_ink_inside": [
+     0.358,
+     0.477
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.122,
+     0.115
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.62,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/20/0/11/2/3",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "top",
+      "right": 0.2587,
+      "left": 0.0
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8638,
+      "box_spaces": [
+       1.35,
+       1.2
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:603254",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "up",
+      "stems_attached": 1,
+      "beams_not_by_ink": 2,
+      "beams_not_by_ink_why": {
+       "too_thin": 2
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 2,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": true,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 4,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 3.89,
+     "nearest_stroke_to_stem_tip_spaces": 3.63
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:606901",
+     "reader": "detector",
+     "refused_by": "far_side_of_the_head",
+     "word": "on the far side of the head",
+     "thickness_ratio": 1.348,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.3322,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 10.36,
+     "height_spaces": 1.33,
+     "slope_deg_est": 5.6,
+     "centre_vs_head_spaces": 1.85,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.41,
+     "on_a_staff_line": false,
+     "page_box": [
+      1909.5,
+      3611.9,
+      2194.4,
+      3648.5
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:606902",
+     "reader": "detector",
+     "refused_by": "far_side_of_the_head",
+     "word": "on the far side of the head",
+     "thickness_ratio": 1.304,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0047,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 10.39,
+     "height_spaces": 0.75,
+     "slope_deg_est": 2.5,
+     "centre_vs_head_spaces": 2.31,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.88,
+     "on_a_staff_line": false,
+     "page_box": [
+      1909.5,
+      3632.8,
+      2195.3,
+      3653.5
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [
+    {
+     "stroke": "obs:606903",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.326,
+     "thickness_vs_cut": "1.33 vs 1.75",
+     "bow_spaces": 0.0034,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 10.2,
+     "height_spaces": 0.52,
+     "slope_deg_est": 1.2,
+     "centre_vs_head_spaces": -7.57,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.99,
+     "on_a_staff_line": false,
+     "page_box": [
+      1909.8,
+      3364.2,
+      2190.3,
+      3378.5
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:606904",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.348,
+     "thickness_vs_cut": "1.35 vs 1.75",
+     "bow_spaces": 0.0316,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 8.2,
+     "height_spaces": 0.84,
+     "slope_deg_est": 3.7,
+     "centre_vs_head_spaces": -7.78,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 4.2,
+     "on_a_staff_line": false,
+     "page_box": [
+      1964.5,
+      3354.0,
+      2190.0,
+      3377.1
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "windows": [
+    {
+     "rect": [
+      2197.2,
+      3505.8,
+      2221.9,
+      3547.1
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     3481.0,
+     3508.0,
+     3536.0,
+     3536.0,
+     3564.0
+    ],
+    "record_lines": [
+     3464.0,
+     3491.0,
+     3518.0,
+     3546.0,
+     3574.0
+    ],
+    "space_px": 27.5
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_04",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 20,
+    "stratum": "A"
+   },
+   "bar": {
+    "cell": 2,
+    "bars_in_system_incl_header_cell": 9,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 2,
+   "file": "miss_02.png",
+   "kind": "tile",
+   "tile": "tile_09",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 25,
+   "crop_page_px": [
+    1073,
+    3455,
+    2014,
+    3955
+   ],
+   "scale": 1.063,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.848
+    ],
+    "same_boxes_moved_diagonally": [
+     0.259
+    ],
+    "stroke_boxes_ink_inside": [
+     0.268,
+     0.342,
+     0.301,
+     0.283
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.099,
+     0.068,
+     0.088,
+     0.099
+    ],
+    "record_staff_lines_vs_local_ink_spaces": -0.11,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/25/0/12/1/0",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "top",
+      "right": 0.26,
+      "left": 0.0
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.825,
+      "box_spaces": [
+       1.3,
+       1.17
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:739139",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "up",
+      "stems_attached": 1,
+      "beams_not_by_ink": 2,
+      "beams_not_by_ink_why": {
+       "too_thin": 2
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 2,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": true,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 4,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 3.52,
+     "nearest_stroke_to_stem_tip_spaces": 3.32
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:744860",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.25,
+     "thickness_vs_cut": "1.25 vs 1.75",
+     "bow_spaces": 0.0015,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 17.21,
+     "height_spaces": 1.84,
+     "slope_deg_est": 5.1,
+     "centre_vs_head_spaces": -7.42,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.88,
+     "on_a_staff_line": false,
+     "page_box": [
+      1427.6,
+      3541.5,
+      1905.1,
+      3592.6
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:744861",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.208,
+     "thickness_vs_cut": "1.21 vs 1.75",
+     "bow_spaces": 0.1912,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 17.15,
+     "height_spaces": 1.05,
+     "slope_deg_est": 2.5,
+     "centre_vs_head_spaces": -7.9,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.37,
+     "on_a_staff_line": false,
+     "page_box": [
+      1427.8,
+      3539.0,
+      1903.7,
+      3568.1
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:744862",
+     "reader": "detector",
+     "refused_by": "far_side_of_the_head",
+     "word": "on the far side of the head",
+     "thickness_ratio": 1.25,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0183,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 18.02,
+     "height_spaces": 1.45,
+     "slope_deg_est": 3.7,
+     "centre_vs_head_spaces": 2.85,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.38,
+     "on_a_staff_line": false,
+     "page_box": [
+      1427.0,
+      3831.8,
+      1927.1,
+      3872.0
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:744863",
+     "reader": "detector",
+     "refused_by": "far_side_of_the_head",
+     "word": "on the far side of the head",
+     "thickness_ratio": 0.917,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0573,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 17.42,
+     "height_spaces": 0.65,
+     "slope_deg_est": 1.4,
+     "centre_vs_head_spaces": 3.25,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.78,
+     "on_a_staff_line": false,
+     "page_box": [
+      1428.1,
+      3854.0,
+      1911.5,
+      3872.0
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      1509.1,
+      3712.4,
+      1534.1,
+      3754.1
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     3647.0,
+     3674.0,
+     3702.0,
+     3730.0,
+     3758.0
+    ],
+    "record_lines": [
+     3650.0,
+     3677.0,
+     3705.0,
+     3732.0,
+     3761.0
+    ],
+    "space_px": 27.75
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_09",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 25,
+    "stratum": "A"
+   },
+   "bar": {
+    "cell": 1,
+    "bars_in_system_incl_header_cell": 10,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 3,
+   "file": "miss_03.png",
+   "kind": "tile",
+   "tile": "tile_27",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided; bar math later settled it: eighth",
+   "movement": "brahms",
+   "pdf_page": 24,
+   "crop_page_px": [
+    4452,
+    6736,
+    5335,
+    7143
+   ],
+   "scale": 1.133,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.787
+    ],
+    "same_boxes_moved_diagonally": [
+     0.283
+    ],
+    "stroke_boxes_ink_inside": [
+     0.488,
+     0.452
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.192,
+     0.156
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.04,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/24/1/12/7/3",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "top",
+      "right": 0.2901,
+      "left": 0.0467
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7376,
+      "box_spaces": [
+       1.43,
+       1.25
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:711503",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "up",
+      "stems_attached": 1,
+      "beams_not_by_ink": 0,
+      "beams_not_by_ink_why": {},
+      "beams_neighbour_staff": 2,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 3.93,
+     "nearest_stroke_to_stem_tip_spaces": 3.19
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:716690",
+     "reader": "detector",
+     "refused_by": "neighbour_staff_beam",
+     "word": "the next staff's beam",
+     "thickness_ratio": 3.273,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0022,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 1.94,
+     "height_spaces": 1.35,
+     "slope_deg_est": 18.0,
+     "centre_vs_head_spaces": -7.36,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.36,
+     "on_a_staff_line": false,
+     "page_box": [
+      4652.8,
+      6820.0,
+      4706.7,
+      6857.5
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:716691",
+     "reader": "detector",
+     "refused_by": "neighbour_staff_beam",
+     "word": "the next staff's beam",
+     "thickness_ratio": 3.174,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0109,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 2.35,
+     "height_spaces": 1.41,
+     "slope_deg_est": 16.1,
+     "centre_vs_head_spaces": -7.33,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.33,
+     "on_a_staff_line": false,
+     "page_box": [
+      4847.1,
+      6820.0,
+      4912.3,
+      6859.1
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      4937.8,
+      6972.1,
+      4962.8,
+      7013.7
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [
+    {
+     "cls": "flag8thUp",
+     "page": [
+      4808.2,
+      6951.0,
+      4840.1,
+      7037.3
+     ]
+    }
+   ],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     6932.0,
+     6959.0,
+     6987.0,
+     7015.0,
+     7043.0
+    ],
+    "record_lines": [
+     6931.0,
+     6958.0,
+     6986.0,
+     7014.0,
+     7042.0
+    ],
+    "space_px": 27.75
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_27",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 24,
+    "stratum": "A",
+    "later": "eighth"
+   },
+   "bar": {
+    "cell": 7,
+    "bars_in_system_incl_header_cell": 9,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 4,
+   "file": "miss_04.png",
+   "kind": "tile",
+   "tile": "tile_22",
+   "printed": "half",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "litolff",
+   "pdf_page": 15,
+   "crop_page_px": [
+    306,
+    1129,
+    767,
+    1342
+   ],
+   "scale": 2.169,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.806
+    ],
+    "same_boxes_moved_diagonally": [
+     0.132
+    ],
+    "stroke_boxes_ink_inside": [
+     0.94,
+     0.453
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.517,
+     0.08
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.13,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/15/0/5/0/6",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "top",
+      "right": 0.0041,
+      "left": 0.1282
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 0.851,
+      "ink_ring": 0.8099,
+      "box_spaces": [
+       1.52,
+       1.2
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:301878",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "up",
+      "stems_attached": 1,
+      "beams_not_by_ink": 0,
+      "beams_not_by_ink_why": {},
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 1,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 1,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 7.08,
+     "nearest_stroke_to_stem_tip_spaces": 7.12
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:301882",
+     "reader": "cv",
+     "refused_by": "tremolo_slash",
+     "word": "a tremolo slash",
+     "thickness_ratio": 4.129,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0284,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 1.9,
+     "height_spaces": 0.34,
+     "slope_deg_est": 0.0,
+     "centre_vs_head_spaces": -2.69,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 0.56,
+     "on_a_staff_line": false,
+     "page_box": [
+      403.2,
+      1234.8,
+      432.2,
+      1240.0
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:309495",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 1.448,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.2799,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 3.38,
+     "height_spaces": 0.89,
+     "slope_deg_est": 7.9,
+     "centre_vs_head_spaces": 0.74,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.86,
+     "on_a_staff_line": false,
+     "page_box": [
+      486.5,
+      1282.9,
+      538.0,
+      1296.4
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      555.0,
+      1190.4,
+      568.7,
+      1213.3
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     1199.0,
+     1214.0,
+     1214.0,
+     1246.0,
+     1246.0
+    ],
+    "record_lines": [
+     1197.0,
+     1212.0,
+     1226.0,
+     1244.0,
+     1258.0
+    ],
+    "space_px": 15.25
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_22",
+    "printed": "half",
+    "movement": "litolff",
+    "page": 15,
+    "stratum": "A"
+   },
+   "bar": {
+    "cell": 0,
+    "bars_in_system_incl_header_cell": 22,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 5,
+   "file": "miss_05.png",
+   "kind": "tile",
+   "tile": "tile_02",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "litolff",
+   "pdf_page": 10,
+   "crop_page_px": [
+    1339,
+    3334,
+    1811,
+    3554
+   ],
+   "scale": 2.119,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.882
+    ],
+    "same_boxes_moved_diagonally": [
+     0.297
+    ],
+    "stroke_boxes_ink_inside": [
+     0.813
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.182
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.0,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/10/1/9/7/5",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.8238,
+      "box_spaces": [
+       1.63,
+       1.31
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "one_stem": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:190611",
+     "reader": "detector",
+     "refused_by": "one_stem",
+     "word": "touches one stem",
+     "thickness_ratio": 2.5,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0053,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 8.11,
+     "height_spaces": 0.56,
+     "slope_deg_est": 0.0,
+     "centre_vs_head_spaces": -3.01,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.03,
+     "on_a_staff_line": true,
+     "page_box": [
+      1572.1,
+      3419.2,
+      1699.8,
+      3428.0
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     3408.0,
+     3424.0,
+     3440.0,
+     3455.0,
+     3472.0
+    ],
+    "record_lines": [
+     3408.0,
+     3424.0,
+     3440.0,
+     3455.0,
+     3471.0
+    ],
+    "space_px": 15.75
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_02",
+    "printed": "eighth",
+    "movement": "litolff",
+    "page": 10,
+    "stratum": "B"
+   },
+   "bar": {
+    "cell": 7,
+    "bars_in_system_incl_header_cell": 15,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 6,
+   "file": "miss_06.png",
+   "kind": "tile",
+   "tile": "tile_11",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 2,
+   "crop_page_px": [
+    2598,
+    2396,
+    3629,
+    2910
+   ],
+   "scale": 0.97,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.777
+    ],
+    "same_boxes_moved_diagonally": [
+     0.159
+    ],
+    "stroke_boxes_ink_inside": [
+     0.226,
+     0.199
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.377,
+     0.301
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.04,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/2/0/9/2/4",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7398,
+      "box_spaces": [
+       1.45,
+       1.24
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:070374",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.099,
+     "thickness_vs_cut": "1.10 vs 1.75",
+     "bow_spaces": 0.0768,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 2.7,
+     "height_spaces": 1.28,
+     "slope_deg_est": 20.5,
+     "centre_vs_head_spaces": 11.24,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.36,
+     "on_a_staff_line": false,
+     "page_box": [
+      3230.2,
+      2791.4,
+      3305.0,
+      2826.9
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:070375",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 1.524,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.3736,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 19.52,
+     "height_spaces": 2.43,
+     "slope_deg_est": 6.1,
+     "centre_vs_head_spaces": 10.44,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.56,
+     "on_a_staff_line": false,
+     "page_box": [
+      2763.2,
+      2753.3,
+      3305.0,
+      2820.9
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [],
+   "flag_boxes": [
+    {
+     "cls": "flag8thDown",
+     "page": [
+      3204.3,
+      2571.4,
+      3236.9,
+      2652.3
+     ]
+    },
+    {
+     "cls": "flag8thDown",
+     "page": [
+      3212.5,
+      2570.8,
+      3236.6,
+      2659.0
+     ]
+    }
+   ],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     2607.0,
+     2634.0,
+     2661.0,
+     2689.0,
+     2716.0
+    ],
+    "record_lines": [
+     2606.0,
+     2633.0,
+     2663.0,
+     2688.0,
+     2717.0
+    ],
+    "space_px": 27.75
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_11",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 2,
+    "stratum": "B"
+   },
+   "bar": {
+    "cell": 2,
+    "bars_in_system_incl_header_cell": 6,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 7,
+   "file": "miss_07.png",
+   "kind": "tile",
+   "tile": "tile_29",
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "litolff",
+   "pdf_page": 13,
+   "crop_page_px": [
+    1374,
+    2357,
+    1847,
+    2577
+   ],
+   "scale": 2.114,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.84
+    ],
+    "same_boxes_moved_diagonally": [
+     0.283
+    ],
+    "stroke_boxes_ink_inside": [
+     0.943
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.309
+    ],
+    "record_staff_lines_vs_local_ink_spaces": -0.06,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/13/1/2/9/1",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7832,
+      "box_spaces": [
+       1.43,
+       1.26
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "one_stem": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:259695",
+     "reader": "detector",
+     "refused_by": "one_stem",
+     "word": "touches one stem",
+     "thickness_ratio": 4.0,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0592,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 3.3,
+     "height_spaces": 0.61,
+     "slope_deg_est": 0.0,
+     "centre_vs_head_spaces": 3.6,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 0.64,
+     "on_a_staff_line": false,
+     "page_box": [
+      1582.0,
+      2496.3,
+      1634.0,
+      2505.9
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     2429.0,
+     2444.0,
+     2460.0,
+     2475.0,
+     2491.0
+    ],
+    "record_lines": [
+     2429.0,
+     2445.0,
+     2461.0,
+     2476.0,
+     2492.0
+    ],
+    "space_px": 15.75
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_29",
+    "printed": "eighth",
+    "movement": "litolff",
+    "page": 13,
+    "stratum": "B"
+   },
+   "bar": {
+    "cell": 9,
+    "bars_in_system_incl_header_cell": 17,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 8,
+   "file": "miss_08.png",
+   "kind": "tile",
+   "tile": "tile_07",
+   "printed": "eighth rest",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 7,
+   "crop_page_px": [
+    1609,
+    429,
+    2434,
+    901
+   ],
+   "scale": 1.212,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.781
+    ],
+    "same_boxes_moved_diagonally": [
+     0.267
+    ],
+    "stroke_boxes_ink_inside": [
+     0.15,
+     0.176
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.094,
+     0.18
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.36,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/7/0/0/2/10",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.7382,
+      "box_spaces": [
+       1.0,
+       0.91
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:221668",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 1.458,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.5437,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 11.0,
+     "height_spaces": 2.18,
+     "slope_deg_est": 9.4,
+     "centre_vs_head_spaces": -4.06,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.47,
+     "on_a_staff_line": false,
+     "page_box": [
+      1804.0,
+      512.0,
+      2106.5,
+      572.0
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:221669",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.458,
+     "thickness_vs_cut": "1.46 vs 1.75",
+     "bow_spaces": 0.4025,
+     "stems_at_its_ends": [
+      true,
+      false
+     ],
+     "width_spaces": 10.93,
+     "height_spaces": 1.95,
+     "slope_deg_est": 8.3,
+     "centre_vs_head_spaces": 5.05,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 3.66,
+     "on_a_staff_line": false,
+     "page_box": [
+      1804.5,
+      765.8,
+      2105.1,
+      819.4
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": []
+   },
+   "staff": {
+    "local_lines": [
+     610.0,
+     637.0,
+     637.0,
+     692.0,
+     692.0
+    ],
+    "record_lines": [
+     600.0,
+     627.0,
+     655.0,
+     682.0,
+     710.0
+    ],
+    "space_px": 27.5
+   },
+   "items": {
+    "kind": "tile",
+    "tile": "tile_07",
+    "printed": "eighth rest",
+    "movement": "brahms",
+    "page": 7,
+    "stratum": "B"
+   },
+   "bar": {
+    "cell": 2,
+    "bars_in_system_incl_header_cell": 9,
+    "printed_bar": null
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  },
+  {
+   "image": 9,
+   "file": "miss_09.png",
+   "kind": "hand-truth-beam",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    2923,
+    1355,
+    3890,
+    1809
+   ],
+   "scale": 1.034,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.911,
+     0.801,
+     0.787,
+     0.873,
+     0.947,
+     0.789
+    ],
+    "same_boxes_moved_diagonally": [
+     0.278,
+     0.09,
+     0.316,
+     0.29,
+     0.077,
+     0.238
+    ],
+    "stroke_boxes_ink_inside": [
+     0.463
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.288
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.06,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/0/3/11",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8899,
+      "box_spaces": [
+       1.36,
+       1.06
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 2,
+     "key": "glyph/0/0/0/3/4",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.776,
+      "box_spaces": [
+       1.28,
+       1.09
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 3,
+     "key": "glyph/0/0/0/3/5",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7471,
+      "box_spaces": [
+       1.31,
+       1.2
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 4,
+     "key": "glyph/0/0/0/3/6",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.844,
+      "box_spaces": [
+       1.32,
+       1.12
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 5,
+     "key": "glyph/0/0/0/3/9",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "bottom",
+      "right": 0.0,
+      "left": 0.0089
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9315,
+      "box_spaces": [
+       1.31,
+       1.06
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:008336",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 1,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 5.98,
+     "nearest_stroke_to_stem_tip_spaces": 0.0
+    },
+    {
+     "n": 6,
+     "key": "glyph/0/0/0/3/3",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "bottom",
+      "right": 0.0,
+      "left": 0.0089
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.7626,
+      "box_spaces": [
+       1.3,
+       1.11
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:008336",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 1,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 5.98,
+     "nearest_stroke_to_stem_tip_spaces": 0.0
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013178",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.3,
+     "thickness_vs_cut": "1.30 vs 1.75",
+     "bow_spaces": 0.0474,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 11.21,
+     "height_spaces": 0.81,
+     "slope_deg_est": 2.8,
+     "centre_vs_head_spaces": 3.46,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.07,
+     "on_a_staff_line": true,
+     "page_box": [
+      3102.9,
+      1634.8,
+      3464.5,
+      1660.9
+     ],
+     "for_heads": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      3468.0,
+      1572.6,
+      3497.0,
+      1620.9
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [
+     [
+      3313.9,
+      1632.0,
+      3466.2,
+      1662.7
+     ]
+    ],
+    "flag": [],
+    "stem": [
+     [
+      3313.0,
+      1500.1,
+      3324.9,
+      1660.8
+     ],
+     [
+      3313.0,
+      1500.1,
+      3324.9,
+      1660.8
+     ],
+     [
+      3385.3,
+      1484.6,
+      3398.2,
+      1654.0
+     ],
+     [
+      3385.3,
+      1484.6,
+      3398.2,
+      1654.0
+     ],
+     [
+      3457.5,
+      1467.5,
+      3466.9,
+      1644.6
+     ],
+     [
+      3457.5,
+      1467.5,
+      3466.9,
+      1644.6
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     1586.0,
+     1617.0,
+     1650.0,
+     1682.0,
+     1714.0
+    ],
+    "record_lines": [
+     1584.0,
+     1617.0,
+     1647.0,
+     1680.0,
+     1713.0
+    ],
+    "space_px": 32.25
+   },
+   "items": {
+    "kind": "hand-truth-beam",
+    "cell": "s0-st0-m3",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q75",
+     "q68",
+     "q69",
+     "q70",
+     "q73",
+     "q67"
+    ],
+    "truth_beam_ids": [
+     "q82"
+    ],
+    "truth_flag_ids": []
+   },
+   "bar": {
+    "cell": 3,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 3
+   },
+   "missed_beam": {
+    "beams": [
+     {
+      "side": "under the heads",
+      "width_spaces": 4.72,
+      "height_spaces": 0.95,
+      "slope_deg_est_(box_height_minus_half_a_space)": 5.4,
+      "own_staff_lines_inside_its_box": 1,
+      "centre_to_nearest_staff_line_spaces": 0.08,
+      "on_a_staff_line": true,
+      "centre_vs_staff": "inside the staff",
+      "record_stroke_on_it": {
+       "stroke": "obs:013178",
+       "iou": 0.39,
+       "refused_by": "too_thin",
+       "thickness_ratio": 1.3
+      },
+      "page_box": [
+       3313.9,
+       1632.0,
+       3466.2,
+       1662.7
+      ]
+     }
+    ],
+    "flags": []
+   }
+  },
+  {
+   "image": 10,
+   "file": "miss_10.png",
+   "kind": "hand-truth-beam",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    3457,
+    1356,
+    4441,
+    1809
+   ],
+   "scale": 1.016,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.967,
+     0.863,
+     0.856,
+     0.808,
+     0.975,
+     0.825
+    ],
+    "same_boxes_moved_diagonally": [
+     0.349,
+     0.11,
+     0.293,
+     0.339,
+     0.088,
+     0.264
+    ],
+    "stroke_boxes_ink_inside": [
+     0.284,
+     0.614
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.267,
+     0.261
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.03,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/0/4/9",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9542,
+      "box_spaces": [
+       1.31,
+       1.11
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 2,
+     "key": "glyph/0/0/0/4/2",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8258,
+      "box_spaces": [
+       1.28,
+       1.15
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 3,
+     "key": "glyph/0/0/0/4/8",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "bottom",
+      "right": 0.0,
+      "left": 0.0207
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.8381,
+      "box_spaces": [
+       1.35,
+       1.18
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:008343",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 1,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 5.48,
+     "nearest_stroke_to_stem_tip_spaces": 0.0
+    },
+    {
+     "n": 4,
+     "key": "glyph/0/0/0/4/6",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "bottom",
+      "right": 0.0,
+      "left": 0.0207
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7598,
+      "box_spaces": [
+       1.28,
+       1.23
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:008343",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 1,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 5.48,
+     "nearest_stroke_to_stem_tip_spaces": 0.0
+    },
+    {
+     "n": 5,
+     "key": "glyph/0/0/0/4/11",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9603,
+      "box_spaces": [
+       1.29,
+       1.07
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 6,
+     "key": "glyph/0/0/0/4/1",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8044,
+      "box_spaces": [
+       1.26,
+       1.09
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013179",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.095,
+     "thickness_vs_cut": "1.09 vs 1.75",
+     "bow_spaces": 0.0064,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 14.24,
+     "height_spaces": 0.7,
+     "slope_deg_est": 1.9,
+     "centre_vs_head_spaces": 4.35,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.01,
+     "on_a_staff_line": true,
+     "page_box": [
+      3561.7,
+      1670.0,
+      4021.0,
+      1692.5
+     ],
+     "for_heads": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    {
+     "stroke": "obs:013180",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 2.652,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0558,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 7.23,
+     "height_spaces": 0.72,
+     "slope_deg_est": 0.9,
+     "centre_vs_head_spaces": 3.36,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.04,
+     "on_a_staff_line": true,
+     "page_box": [
+      3871.0,
+      1637.7,
+      4104.2,
+      1660.9
+     ],
+     "for_heads": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      3945.8,
+      1578.7,
+      3974.9,
+      1627.1
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [
+     [
+      3865.7,
+      1632.0,
+      4016.0,
+      1665.0
+     ]
+    ],
+    "flag": [],
+    "stem": [
+     [
+      3867.3,
+      1510.1,
+      3879.9,
+      1659.1
+     ],
+     [
+      3867.3,
+      1510.1,
+      3879.9,
+      1659.1
+     ],
+     [
+      3935.4,
+      1485.5,
+      3944.7,
+      1657.5
+     ],
+     [
+      3935.4,
+      1485.5,
+      3944.7,
+      1657.5
+     ],
+     [
+      4002.5,
+      1476.2,
+      4012.8,
+      1650.8
+     ],
+     [
+      4002.5,
+      1476.2,
+      4012.8,
+      1650.8
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     1585.0,
+     1616.0,
+     1648.0,
+     1681.0,
+     1713.0
+    ],
+    "record_lines": [
+     1584.0,
+     1617.0,
+     1647.0,
+     1680.0,
+     1713.0
+    ],
+    "space_px": 32.25
+   },
+   "items": {
+    "kind": "hand-truth-beam",
+    "cell": "s0-st0-m4",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q93",
+     "q86",
+     "q92",
+     "q90",
+     "q95",
+     "q85"
+    ],
+    "truth_beam_ids": [
+     "q104"
+    ],
+    "truth_flag_ids": []
+   },
+   "bar": {
+    "cell": 4,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 4
+   },
+   "missed_beam": {
+    "beams": [
+     {
+      "side": "under the heads",
+      "width_spaces": 4.66,
+      "height_spaces": 1.02,
+      "slope_deg_est_(box_height_minus_half_a_space)": 6.4,
+      "own_staff_lines_inside_its_box": 1,
+      "centre_to_nearest_staff_line_spaces": 0.02,
+      "on_a_staff_line": true,
+      "centre_vs_staff": "inside the staff",
+      "record_stroke_on_it": {
+       "stroke": "obs:013180",
+       "iou": 0.48,
+       "refused_by": "decided_arc_ink",
+       "thickness_ratio": 2.652
+      },
+      "page_box": [
+       3865.7,
+       1632.0,
+       4016.0,
+       1665.0
+      ]
+     }
+    ],
+    "flags": []
+   }
+  },
+  {
+   "image": 11,
+   "file": "miss_11.png",
+   "kind": "hand-truth-beam",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    4011,
+    1790,
+    5012,
+    2238
+   ],
+   "scale": 0.999,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.831,
+     0.977,
+     0.749,
+     0.864,
+     0.959
+    ],
+    "same_boxes_moved_diagonally": [
+     0.219,
+     0.335,
+     0.333,
+     0.263,
+     0.216
+    ],
+    "stroke_boxes_ink_inside": [
+     0.216
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.167
+    ],
+    "record_staff_lines_vs_local_ink_spaces": -0.03,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/1/5/2",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8148,
+      "box_spaces": [
+       1.37,
+       1.25
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 2,
+     "key": "glyph/0/0/1/5/8",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9714,
+      "box_spaces": [
+       1.33,
+       1.01
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 3,
+     "key": "glyph/0/0/1/5/5",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7092,
+      "box_spaces": [
+       1.42,
+       1.15
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 4,
+     "key": "glyph/0/0/1/5/9",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.8398,
+      "box_spaces": [
+       1.32,
+       1.25
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 5,
+     "key": "glyph/0/0/1/5/4",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9493,
+      "box_spaces": [
+       1.35,
+       1.06
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 1,
+      "beams_not_by_ink_why": {
+       "too_thin": 1
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013190",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.15,
+     "thickness_vs_cut": "1.15 vs 1.75",
+     "bow_spaces": 0.0001,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 17.9,
+     "height_spaces": 1.12,
+     "slope_deg_est": 2.8,
+     "centre_vs_head_spaces": 4.42,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.0,
+     "on_a_staff_line": true,
+     "page_box": [
+      4108.6,
+      2077.2,
+      4681.4,
+      2113.0
+     ],
+     "for_heads": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [
+     [
+      4437.9,
+      2045.2,
+      4590.2,
+      2079.1
+     ]
+    ],
+    "flag": [],
+    "stem": [
+     [
+      4441.1,
+      1959.4,
+      4448.1,
+      2071.4
+     ],
+     [
+      4441.1,
+      1959.4,
+      4448.1,
+      2071.4
+     ],
+     [
+      4509.9,
+      1942.8,
+      4517.6,
+      2062.1
+     ],
+     [
+      4509.9,
+      1942.8,
+      4517.6,
+      2062.1
+     ],
+     [
+      4583.5,
+      1917.5,
+      4590.2,
+      2064.0
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     1968.0,
+     1999.0,
+     2032.0,
+     2064.0,
+     2095.0
+    ],
+    "record_lines": [
+     1969.0,
+     2001.0,
+     2032.0,
+     2064.0,
+     2097.0
+    ],
+    "space_px": 32.0
+   },
+   "items": {
+    "kind": "hand-truth-beam",
+    "cell": "s0-st1-m5",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q249",
+     "q255",
+     "q252",
+     "q256",
+     "q251"
+    ],
+    "truth_beam_ids": [
+     "b4130"
+    ],
+    "truth_flag_ids": []
+   },
+   "bar": {
+    "cell": 5,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 5
+   },
+   "missed_beam": {
+    "beams": [
+     {
+      "side": "under the heads",
+      "width_spaces": 4.76,
+      "height_spaces": 1.06,
+      "slope_deg_est_(box_height_minus_half_a_space)": 6.7,
+      "own_staff_lines_inside_its_box": 1,
+      "centre_to_nearest_staff_line_spaces": 0.06,
+      "on_a_staff_line": true,
+      "centre_vs_staff": "inside the staff",
+      "record_stroke_on_it": {
+       "stroke": "obs:013190",
+       "iou": 0.01,
+       "refused_by": "too_thin",
+       "thickness_ratio": 1.15
+      },
+      "page_box": [
+       4437.9,
+       2045.2,
+       4590.2,
+       2079.1
+      ]
+     }
+    ],
+    "flags": []
+   }
+  },
+  {
+   "image": 12,
+   "file": "miss_12.png",
+   "kind": "hand-truth-flag",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    4587,
+    1355,
+    5779,
+    1809
+   ],
+   "scale": 0.839,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.838
+    ],
+    "same_boxes_moved_diagonally": [
+     0.019
+    ],
+    "stroke_boxes_ink_inside": [],
+    "stroke_boxes_moved_diagonally": [],
+    "record_staff_lines_vs_local_ink_spaces": 0.0,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/0/6/6",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.7994,
+      "box_spaces": [
+       1.3,
+       1.11
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 0,
+      "beams_not_by_ink_why": {},
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 1,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [],
+   "strokes_off_the_picture": [
+    {
+     "stroke": "obs:013184",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 1.5,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.9548,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 15.63,
+     "height_spaces": 1.87,
+     "slope_deg_est": 5.8,
+     "centre_vs_head_spaces": 12.57,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 5.08,
+     "on_a_staff_line": false,
+     "page_box": [
+      4730.4,
+      1845.8,
+      5234.3,
+      1905.9
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "windows": [],
+   "flag_boxes": [
+    {
+     "cls": "flag8thDown",
+     "page": [
+      5280.1,
+      1549.5,
+      5313.8,
+      1645.7
+     ]
+    }
+   ],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [
+     [
+      5280.1,
+      1549.5,
+      5313.8,
+      1645.7
+     ]
+    ],
+    "stem": [
+     [
+      5274.2,
+      1466.6,
+      5281.8,
+      1652.3
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     1584.0,
+     1616.0,
+     1648.0,
+     1680.0,
+     1712.0
+    ],
+    "record_lines": [
+     1584.0,
+     1617.0,
+     1647.0,
+     1680.0,
+     1713.0
+    ],
+    "space_px": 32.25
+   },
+   "items": {
+    "kind": "hand-truth-flag",
+    "cell": "s0-st0-m6",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q132"
+    ],
+    "truth_beam_ids": [],
+    "truth_flag_ids": [
+     "q137"
+    ]
+   },
+   "bar": {
+    "cell": 6,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 6
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": [
+     {
+      "page_box": [
+       5280.1,
+       1549.5,
+       5313.8,
+       1645.7
+      ],
+      "centre_vs_staff": "inside the staff"
+     }
+    ]
+   }
+  },
+  {
+   "image": 13,
+   "file": "miss_13.png",
+   "kind": "hand-truth-flag",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    2016,
+    1742,
+    3045,
+    2208
+   ],
+   "scale": 0.972,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.849,
+     0.988
+    ],
+    "same_boxes_moved_diagonally": [
+     0.171,
+     0.106
+    ],
+    "stroke_boxes_ink_inside": [
+     0.142,
+     0.256
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.18,
+     0.15
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.03,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/1/1/2",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8199,
+      "box_spaces": [
+       1.29,
+       1.18
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 2,
+      "beams_not_by_ink_why": {
+       "too_thin": 2
+      },
+      "beams_neighbour_staff": 1,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 3,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    },
+    {
+     "n": 2,
+     "key": "glyph/0/0/1/1/13",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.9795,
+      "box_spaces": [
+       1.27,
+       1.02
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": null,
+      "stems_attached": 0,
+      "beams_not_by_ink": 2,
+      "beams_not_by_ink_why": {
+       "too_thin": 2
+      },
+      "beams_neighbour_staff": 1,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 3,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013185",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.5,
+     "thickness_vs_cut": "1.50 vs 1.75",
+     "bow_spaces": 0.0565,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 13.74,
+     "height_spaces": 2.89,
+     "slope_deg_est": 10.7,
+     "centre_vs_head_spaces": -2.13,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 2.68,
+     "on_a_staff_line": false,
+     "page_box": [
+      2112.6,
+      1838.1,
+      2552.3,
+      1930.6
+     ],
+     "for_heads": [
+      1,
+      2
+     ]
+    },
+    {
+     "stroke": "obs:013187",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.35,
+     "thickness_vs_cut": "1.35 vs 1.75",
+     "bow_spaces": 0.003,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 17.33,
+     "height_spaces": 0.98,
+     "slope_deg_est": 2.3,
+     "centre_vs_head_spaces": 4.5,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.01,
+     "on_a_staff_line": true,
+     "page_box": [
+      2112.6,
+      2081.0,
+      2667.2,
+      2112.4
+     ],
+     "for_heads": [
+      1,
+      2
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [
+    {
+     "stroke": "obs:013186",
+     "reader": "detector",
+     "refused_by": "neighbour_staff_beam",
+     "word": "the next staff's beam",
+     "thickness_ratio": 1.5,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.4465,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 13.92,
+     "height_spaces": 2.58,
+     "slope_deg_est": 9.3,
+     "centre_vs_head_spaces": 9.22,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 4.71,
+     "on_a_staff_line": false,
+     "page_box": [
+      2112.0,
+      2206.4,
+      2557.4,
+      2289.0
+     ],
+     "for_heads": [
+      1,
+      2
+     ]
+    }
+   ],
+   "windows": [],
+   "flag_boxes": [
+    {
+     "cls": "flag8thDown",
+     "page": [
+      2548.2,
+      1978.9,
+      2589.1,
+      2082.9
+     ]
+    }
+   ],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [
+     [
+      2544.5,
+      2002.0,
+      2586.2,
+      2102.1
+     ]
+    ],
+    "stem": [
+     [
+      2542.0,
+      1959.7,
+      2549.7,
+      2096.0
+     ],
+     [
+      2542.0,
+      1959.7,
+      2549.7,
+      2096.0
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     1970.0,
+     2001.0,
+     2034.0,
+     2065.0,
+     2097.0
+    ],
+    "record_lines": [
+     1969.0,
+     2001.0,
+     2032.0,
+     2064.0,
+     2097.0
+    ],
+    "space_px": 32.0
+   },
+   "items": {
+    "kind": "hand-truth-flag",
+    "cell": "s0-st1-m1",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q187",
+     "q197"
+    ],
+    "truth_beam_ids": [],
+    "truth_flag_ids": [
+     "q199"
+    ]
+   },
+   "bar": {
+    "cell": 1,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 1
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": [
+     {
+      "page_box": [
+       2544.5,
+       2002.0,
+       2586.2,
+       2102.1
+      ],
+      "centre_vs_staff": "inside the staff"
+     }
+    ]
+   }
+  },
+  {
+   "image": 14,
+   "file": "miss_14.png",
+   "kind": "hand-truth-flag",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    2998,
+    4872,
+    3965,
+    5403
+   ],
+   "scale": 1.034,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.843
+    ],
+    "same_boxes_moved_diagonally": [
+     0.11
+    ],
+    "stroke_boxes_ink_inside": [
+     0.252,
+     0.204,
+     0.193,
+     0.243
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.293,
+     0.071,
+     0.178,
+     0.352
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.03,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/9/3/3",
+     "tip_state": "not read (occupied: a beam-stroke box lies in the window)",
+     "tip": {
+      "end": "bottom"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.7979,
+      "box_spaces": [
+       1.25,
+       1.09
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "one_stem",
+      "value": "obs:009280",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 1,
+      "beams_not_by_ink": 4,
+      "beams_not_by_ink_why": {
+       "too_thin": 4
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 1,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": true,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 5,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 6.85,
+     "nearest_stroke_to_stem_tip_spaces": 0.0
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013264",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.211,
+     "thickness_vs_cut": "1.21 vs 1.75",
+     "bow_spaces": 0.0061,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 13.54,
+     "height_spaces": 0.88,
+     "slope_deg_est": 2.7,
+     "centre_vs_head_spaces": 7.61,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.0,
+     "on_a_staff_line": true,
+     "page_box": [
+      3110.4,
+      5246.7,
+      3547.0,
+      5275.1
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013265",
+     "reader": "detector",
+     "refused_by": "far_side_of_the_head",
+     "word": "on the far side of the head",
+     "thickness_ratio": 1.0,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.0434,
+     "stems_at_its_ends": [
+      false,
+      false
+     ],
+     "width_spaces": 2.01,
+     "height_spaces": 0.77,
+     "slope_deg_est": 16.1,
+     "centre_vs_head_spaces": -1.05,
+     "over_or_under_the_heads": "over",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 5.63,
+     "on_a_staff_line": false,
+     "page_box": [
+      3101.0,
+      4969.0,
+      3165.8,
+      4993.8
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013267",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.0,
+     "thickness_vs_cut": "1.00 vs 1.75",
+     "bow_spaces": 0.0026,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 13.56,
+     "height_spaces": 0.93,
+     "slope_deg_est": 3.1,
+     "centre_vs_head_spaces": 8.57,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.01,
+     "on_a_staff_line": true,
+     "page_box": [
+      3107.8,
+      5276.7,
+      3545.1,
+      5306.7
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013268",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.0,
+     "thickness_vs_cut": "1.00 vs 1.75",
+     "bow_spaces": 0.0046,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 13.43,
+     "height_spaces": 0.84,
+     "slope_deg_est": 2.8,
+     "centre_vs_head_spaces": 6.61,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.02,
+     "on_a_staff_line": true,
+     "page_box": [
+      3111.3,
+      5215.1,
+      3544.4,
+      5242.2
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [
+    {
+     "stroke": "obs:013266",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.053,
+     "thickness_vs_cut": "1.05 vs 1.75",
+     "bow_spaces": null,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 1.48,
+     "height_spaces": 0.42,
+     "slope_deg_est": 8.5,
+     "centre_vs_head_spaces": 14.31,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 5.73,
+     "on_a_staff_line": false,
+     "page_box": [
+      3501.2,
+      5470.2,
+      3549.0,
+      5483.7
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "windows": [
+    {
+     "rect": [
+      3467.0,
+      5149.6,
+      3496.1,
+      5198.0
+     ],
+     "read": false
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [
+     [
+      3459.5,
+      5125.2,
+      3506.6,
+      5228.1
+     ]
+    ],
+    "stem": [
+     [
+      3459.5,
+      5019.3,
+      3466.9,
+      5224.2
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     5163.0,
+     5195.0,
+     5228.0,
+     5261.0,
+     5292.0
+    ],
+    "record_lines": [
+     5162.0,
+     5195.0,
+     5226.0,
+     5259.0,
+     5291.0
+    ],
+    "space_px": 32.25
+   },
+   "items": {
+    "kind": "hand-truth-flag",
+    "cell": "s0-st9-m3",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q1009"
+    ],
+    "truth_beam_ids": [],
+    "truth_flag_ids": [
+     "q1041"
+    ]
+   },
+   "bar": {
+    "cell": 3,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 3
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": [
+     {
+      "page_box": [
+       3459.5,
+       5125.2,
+       3506.6,
+       5228.1
+      ],
+      "centre_vs_staff": "inside the staff"
+     }
+    ]
+   }
+  },
+  {
+   "image": 15,
+   "file": "miss_15.png",
+   "kind": "hand-truth-flag",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    3001,
+    5372,
+    3961,
+    5820
+   ],
+   "scale": 1.042,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.792
+    ],
+    "same_boxes_moved_diagonally": [
+     0.276
+    ],
+    "stroke_boxes_ink_inside": [
+     0.295,
+     0.302
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.219,
+     0.273
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.03,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/10/3/4",
+     "tip_state": "read: no flag ink in the window",
+     "tip": {
+      "end": "bottom",
+      "right": 0.2693,
+      "left": 0.0304
+     },
+     "head": {
+      "class": "noteheadBlackOnLine",
+      "ink_center": 1.0,
+      "ink_ring": 0.7639,
+      "box_spaces": [
+       1.34,
+       1.13
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": true,
+     "head_stem": {
+      "outcome": "decided",
+      "reason": "stem_by_side",
+      "value": "obs:009763",
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 2,
+      "beams_not_by_ink": 2,
+      "beams_not_by_ink_why": {
+       "too_thin": 2
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 0,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": true,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 2,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "stem_length_spaces": 3.78,
+     "nearest_stroke_to_stem_tip_spaces": 0.12
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013279",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.211,
+     "thickness_vs_cut": "1.21 vs 1.75",
+     "bow_spaces": 0.0042,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 13.73,
+     "height_spaces": 0.72,
+     "slope_deg_est": 2.0,
+     "centre_vs_head_spaces": 5.03,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.03,
+     "on_a_staff_line": true,
+     "page_box": [
+      3109.0,
+      5668.4,
+      3548.4,
+      5691.4
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013280",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.211,
+     "thickness_vs_cut": "1.21 vs 1.75",
+     "bow_spaces": 0.0116,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 13.7,
+     "height_spaces": 0.7,
+     "slope_deg_est": 2.0,
+     "centre_vs_head_spaces": 4.04,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.02,
+     "on_a_staff_line": true,
+     "page_box": [
+      3110.3,
+      5637.4,
+      3548.7,
+      5659.8
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [],
+   "windows": [
+    {
+     "rect": [
+      3467.1,
+      5553.5,
+      3495.9,
+      5601.5
+     ],
+     "read": true
+    }
+   ],
+   "flag_boxes": [],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [
+     [
+      3461.2,
+      5527.3,
+      3506.9,
+      5630.6
+     ]
+    ],
+    "stem": [
+     [
+      3463.1,
+      5530.8,
+      3467.9,
+      5631.3
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     5551.0,
+     5583.0,
+     5615.0,
+     5648.0,
+     5679.0
+    ],
+    "record_lines": [
+     5550.0,
+     5582.0,
+     5614.0,
+     5646.0,
+     5678.0
+    ],
+    "space_px": 32.0
+   },
+   "items": {
+    "kind": "hand-truth-flag",
+    "cell": "s0-st10-m3",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q1194"
+    ],
+    "truth_beam_ids": [],
+    "truth_flag_ids": [
+     "b4274"
+    ]
+   },
+   "bar": {
+    "cell": 3,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 3
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": [
+     {
+      "page_box": [
+       3461.2,
+       5527.3,
+       3506.9,
+       5630.6
+      ],
+      "centre_vs_staff": "inside the staff"
+     }
+    ]
+   }
+  },
+  {
+   "image": 16,
+   "file": "miss_16.png",
+   "kind": "hand-truth-unboxed-flag",
+   "tile": null,
+   "printed": "eighth",
+   "we_read": "eighth | quarter, left undecided",
+   "movement": "brahms",
+   "pdf_page": 0,
+   "crop_page_px": [
+    2535,
+    4901,
+    3503,
+    5400
+   ],
+   "scale": 1.033,
+   "frame_control": {
+    "heads_ink_inside_bracket": [
+     0.833
+    ],
+    "same_boxes_moved_diagonally": [
+     0.12
+    ],
+    "stroke_boxes_ink_inside": [
+     0.273,
+     0.335,
+     0.375
+    ],
+    "stroke_boxes_moved_diagonally": [
+     0.136,
+     0.212,
+     0.123
+    ],
+    "record_staff_lines_vs_local_ink_spaces": 0.06,
+    "map_drift_px": 0.0,
+    "ok": true
+   },
+   "heads": [
+    {
+     "n": 1,
+     "key": "glyph/0/0/9/2/2",
+     "tip_state": "no decided stem",
+     "tip": {
+      "head_stem": "abstained",
+      "why": "no_stem"
+     },
+     "head": {
+      "class": "noteheadBlackInSpace",
+      "ink_center": 1.0,
+      "ink_ring": 0.8131,
+      "box_spaces": [
+       1.3,
+       1.24
+      ],
+      "whole_rest_test": "decided"
+     },
+     "stem_decided": false,
+     "head_stem": {
+      "outcome": "abstained",
+      "reason": "no_stem",
+      "value": null,
+      "candidates": []
+     },
+     "verdict": {
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "candidates": [
+       {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       },
+       {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      ]
+     },
+     "detail": {
+      "beam_side": "down",
+      "stems_attached": 0,
+      "beams_not_by_ink": 3,
+      "beams_not_by_ink_why": {
+       "too_thin": 3
+      },
+      "beams_neighbour_staff": 0,
+      "beams_decided_arc": 1,
+      "beams_far_side": 0,
+      "beams_beyond_stem": 0,
+      "beyond_stem_kept_no_other_mark": false,
+      "beams_ledger_line": 0,
+      "beams_slash": 0,
+      "levels_certain": 0,
+      "levels_possible": 0,
+      "head_is_open": false,
+      "yolo_beams": 4,
+      "cv_beams": 0,
+      "dots_attached": 0,
+      "flags_attached": 0
+     },
+     "nearest_stroke_to_stem_tip_spaces": null
+    }
+   ],
+   "strokes_drawn": [
+    {
+     "stroke": "obs:013261",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.053,
+     "thickness_vs_cut": "1.05 vs 1.75",
+     "bow_spaces": 0.0026,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 12.96,
+     "height_spaces": 0.68,
+     "slope_deg_est": 2.1,
+     "centre_vs_head_spaces": 8.52,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.0,
+     "on_a_staff_line": true,
+     "page_box": [
+      2677.4,
+      5282.1,
+      3095.4,
+      5304.1
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013262",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.211,
+     "thickness_vs_cut": "1.21 vs 1.75",
+     "bow_spaces": 0.0161,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 12.76,
+     "height_spaces": 0.67,
+     "slope_deg_est": 2.0,
+     "centre_vs_head_spaces": 7.54,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.01,
+     "on_a_staff_line": true,
+     "page_box": [
+      2679.7,
+      5250.9,
+      3091.2,
+      5272.5
+     ],
+     "for_heads": [
+      1
+     ]
+    },
+    {
+     "stroke": "obs:013263",
+     "reader": "detector",
+     "refused_by": "too_thin",
+     "word": "too thin",
+     "thickness_ratio": 1.158,
+     "thickness_vs_cut": "1.16 vs 1.75",
+     "bow_spaces": 0.0001,
+     "stems_at_its_ends": [
+      true,
+      true
+     ],
+     "width_spaces": 12.86,
+     "height_spaces": 0.59,
+     "slope_deg_est": 1.6,
+     "centre_vs_head_spaces": 6.53,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 1,
+     "centre_to_nearest_line_spaces": 0.0,
+     "on_a_staff_line": true,
+     "page_box": [
+      2678.4,
+      5219.6,
+      3093.2,
+      5238.6
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "strokes_off_the_picture": [
+    {
+     "stroke": "obs:013260",
+     "reader": "detector",
+     "refused_by": "decided_arc_ink",
+     "word": "ink of a slur/tie we found",
+     "thickness_ratio": 1.421,
+     "thickness_vs_cut": null,
+     "bow_spaces": 0.2972,
+     "stems_at_its_ends": [
+      false,
+      true
+     ],
+     "width_spaces": 12.12,
+     "height_spaces": 1.74,
+     "slope_deg_est": 6.9,
+     "centre_vs_head_spaces": 13.56,
+     "over_or_under_the_heads": "under",
+     "own_staff_lines_inside_its_box": 0,
+     "centre_to_nearest_line_spaces": 5.04,
+     "on_a_staff_line": false,
+     "page_box": [
+      2707.4,
+      5427.6,
+      3098.3,
+      5483.7
+     ],
+     "for_heads": [
+      1
+     ]
+    }
+   ],
+   "windows": [],
+   "flag_boxes": [
+    {
+     "cls": "flag8thDown",
+     "page": [
+      3004.5,
+      5130.9,
+      3042.2,
+      5223.5
+     ]
+    }
+   ],
+   "truth_boxes": {
+    "beam": [],
+    "flag": [],
+    "stem": [
+     [
+      2996.5,
+      5020.0,
+      3002.6,
+      5220.0
+     ]
+    ]
+   },
+   "staff": {
+    "local_lines": [
+     5164.0,
+     5196.0,
+     5229.0,
+     5262.0,
+     5293.0
+    ],
+    "record_lines": [
+     5162.0,
+     5195.0,
+     5226.0,
+     5259.0,
+     5291.0
+    ],
+    "space_px": 32.25
+   },
+   "items": {
+    "kind": "hand-truth-unboxed-flag",
+    "cell": "s0-st9-m2",
+    "printed": "eighth",
+    "movement": "brahms",
+    "page": 0,
+    "truth_ids": [
+     "q975"
+    ],
+    "truth_beam_ids": [],
+    "truth_flag_ids": []
+   },
+   "bar": {
+    "cell": 2,
+    "bars_in_system_incl_header_cell": 8,
+    "printed_bar": 2
+   },
+   "missed_beam": {
+    "beams": [],
+    "flags": []
+   }
+  }
+ ]
+}

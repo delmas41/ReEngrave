@@ -1,0 +1,3956 @@
+"""Notehead PRECISION on the staged path — ROADMAP 2.4a.
+
+⚠️ TWO FILTERS EXIST, MEASURED, AND NEITHER IS CALLED FROM `tools/omr/staged/`.
+Verified 2026-09-22 (`git log --all --oneline -S` on both names under
+`staged/` returns nothing; `git log --all --oneline -S` under `tools/omr/`
+finds only their `transcribe.py` definitions and call sites):
+`transcribe._drop_clipped_notehead_fragments` (a notehead-shaped sliver flush
+against a measure cell's crop boundary — the neighbouring staff's ink bleeding
+into this cell's padding) and `transcribe._drop_unladdered_noteheads` (a
+low-confidence notehead standing outside its own staff, with not one ledger
+rung joining it to that staff). CLAUDE.md's own §1c records both as
+legacy-only. The LEGACY PATH IS FROZEN (`docs/DECISIONS.md` 2026-09-22), so
+this ports the two filters as an ADJUDICATE decision rather than moving them,
+plus a third rule that was measured and never shipped anywhere: a
+`noteheadBlack*` box under 1.0 staff spaces wide
+(`benchmarks/omr-notehead-width-2026-09/FINDINGS.md`).
+
+⚠️ THE RECORD KEEPS THE ROW, WHICH THE LEGACY FILTERS DO NOT. Both legacy
+functions call `dets.remove(det)` — the glyph vanishes with no trace, which is
+exactly the ABSENT/DECLINED collapse this project's own record format exists
+to prevent. Here the glyph stays a `Q.GLYPH_BOX` row and this decision
+REFUSES it with a named reason; `export._place_notes` is the one place that
+acts on the refusal, and it counts what it drops.
+
+⚠️ THE POPULATION Q.GLYPH_LADDER COVERS IS NOT THE POPULATION THIS RULE NEEDS,
+AND THAT IS WORTH RECORDING RATHER THAN SILENTLY WORKING AROUND.
+`gather_ownership_evidence` files `Q.GLYPH_LADDER` ONLY for a glyph inside a
+CROSS-STAFF CONTEST (`subjects_from=Q.GLYPH_BAND_DISTANCE` on
+`adjudicate_glyph_owner`) — same CATEGORY (ROADMAP 2.6; it was the smufl NAME
+until 2026-09-23), different staff, overlapping ink. The
+legacy `_drop_unladdered_noteheads` population is a letter bowl, a key-
+signature flat's loop, a bare ledger line: ink detected ONCE, on no other
+staff, so it never forms a contest and `Q.GLYPH_LADDER` is never gathered for
+it. Reusing that quantity would silently narrow the rule to a population it
+was never built for. This decision instead reads the quantities every
+notehead glyph carries UNCONDITIONALLY — `Q.GLYPH_BOX` (canonical AND page
+frame), `Q.CELL_BOX`, `Q.CELL_STAFF_SPACE`, `Q.NOTEHEAD_STAFF_POSITION`,
+`Q.GLYPH_CONF` — and re-derives the ladder search itself, with every
+threshold IMPORTED from `tools.omr.transcribe`, never restated. This is
+ADJUDICATE reading GATHER's existing facts more thoroughly, not a GATHER
+change: no new producer, no new row, and `readjudicate.py` prices it exactly.
+
+⚠️ THE EDGE TEST RUNS IN PAGE FRAME, NOT CANONICAL, AND THAT IS AN EXACT
+SUBSTITUTION, NOT AN APPROXIMATION. The legacy rule compares a canonical
+`y_canonical` / `y_canonical + height_canonical` against `cell.image.shape[0]`
+— the crop's own canonical pixel height, which the frozen staged record does
+not carry (only the cell's PAGE rectangle, `Q.CELL_BOX`). But `gather._page_box`
+maps canonical -> page by a single per-cell affine transform (divide by
+`upscale_factor`), so canonical row 0 maps EXACTLY to the cell's own page-frame
+top edge and canonical row `img_h` maps EXACTLY to its page-frame bottom edge —
+verified independently by `benchmarks/omr-notehead-width-2026-09/FINDINGS.md`
+§0, which cross-checked the same two box conventions on 5,684 boxes and found
+them agreeing to 0.0000-0.0142 STAFF SPACES (i.e. the residual is float
+rounding, not a frame mismatch). Testing edge-coincidence against `Q.CELL_BOX`
+in page pixels is therefore the SAME comparison the legacy rule makes, in a
+frame the record actually carries.
+
+⚠️ ROADMAP 2.30 — `notehead_is_a_duplicate_box`, and the question it does
+NOT answer. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §17's
+whole-movement funnel found many bars held out by ONE spurious extra event
+that nothing refused (class `X`: Litolff 155 bars, 253 released by that fix
+alone; Brahms 229, 453). ROADMAP 2.15 already measured and shipped the fix
+for the SAME mechanism (one physical mark, boxed twice by a SHATTERING
+plate, CLAUDE.md §10) on the REST family
+(`family_precision.adjudicate_rest_is_not_a_rest`); this module had no
+equivalent for noteheads, so a duplicated notehead box was never refused —
+"the value existed and nothing read it" (`feedback_value_computed_and_
+unread`). `_notehead_duplicate_box_refusal` below ports 2.15's SAME-CLASS
+rule (same IoU floor, same priority tie-break) to `Q.NOTEHEAD_CLASS`.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: whether a
+REST box and a NOTEHEAD box overlapping at or above the same IoU floor are
+ALSO one mark read twice (a cross-FAMILY duplicate, not just within one
+family) is not measured here — no crop in §17c's or §14's evidence shows a
+rest box and a notehead box on the same ink, only single-family pairs (rest/
+rest) and single mis-boxings with no second box at all (§17c: "two quarter
+rests boxed as heads" — one box, wrong class, nothing to compare against).
+Building a cross-family refusal now would be a GUESS, not a connection.
+**Sean: where a rest-class box and a notehead-class box in one cell overlap
+at 2.15's measured floor, is that the same one-mark-twice-boxed mechanism
+(refuse both, CLAUDE.md rule 8), or does it need its own measurement?** NOT
+CONFIRMED, NOT BUILT.
+"""
+
+from __future__ import annotations
+
+import os
+from typing import Any, Dict, List, Optional, Tuple
+
+from ... import transcribe as _legacy
+from ..adjudicate import Evidence, Mode, Ruling, decision
+from .. import geometry as _geom
+from .. import margins as _margins
+from .. import record as R
+from ..record import ABSTAIN, Kind, Q, Scope
+# ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
+# through a dotted relative path: `wiring.details` matches detail keys by bare
+# substring, and a dot followed by the module's first three letters reads as
+# a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is.
+from . import ownership as _ledger
+from . import key_slots as _key_slots
+from . import head_rest_shape as _head_rest_shape
+from . import head_on_mark as _head_on_mark
+from . import inside_meter as _inside_meter
+from . import claimed_by as _claimed_by
+from . import letter_cover as _letter_cover
+from .. import head_oval as _head_oval
+_OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
+cell_rungs = _ledger.cell_rungs
+cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
+ladder_side = _ledger.ladder_side
+ledger_direction = _ledger.ledger_direction
+# ROADMAP 2.6f: the SAME two-pass discount `glyph_owner` uses, so a rung
+# that is another candidate's own ledger structure cannot be credited here
+# and refused there.
+ladder_sides_with_discount = _ledger.ladder_sides_with_discount
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Thresholds — IMPORTED from the legacy path, never restated, so the two
+# cannot drift. `benchmarks/omr-notehead-width-2026-09/FINDINGS.md`'s 1.0
+# staff-space width floor has no home in `transcribe.py` (it was measured and
+# never shipped anywhere), so it alone is a new constant, named after the
+# benchmark that measured it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A notehead sliver cut off by the cell crop boundary: under this height, at
+#: the crop's own edge. `transcribe._CLIPPED_NOTEHEAD_MAX_SPACES`.
+CLIPPED_NOTEHEAD_MAX_SPACES = float(_legacy._CLIPPED_NOTEHEAD_MAX_SPACES)
+
+#: How close a box's edge must sit to the cell's own page-frame edge to count
+#: as "cut off by the crop", in PAGE pixels. ⚠️ NOT a restatement of
+#: `transcribe._CELL_EDGE_TOLERANCE_PX` (1 CANONICAL px) — that quantity has
+#: no meaning in a frame this record does not carry the canonical height for.
+#: The two frames are exactly affine-related per cell (see the module
+#: docstring), so a small page-pixel tolerance is the equivalent test; this
+#: is comfortably larger than the floating-point residual the affine map
+#: leaves (0.0000-0.0142 staff spaces, i.e. well under a page pixel at any
+#: DPI this project reads) and comfortably smaller than any genuine margin a
+#: real notehead leaves a crop edge.
+CELL_EDGE_TOLERANCE_PAGE_PX = 1.0
+
+#: A `noteheadBlack*` box under this many staff spaces wide is not a
+#: notehead. `benchmarks/omr-notehead-width-2026-09/FINDINGS.md` §2-3: costs
+#: 0 of 103 print-confirmed noteheads on two publishers (Litolff 0.42%,
+#: Breitkopf 0.67% of the `decided` population, both under a pre-registered
+#: 2% bar), catches 39 of 46 print-confirmed non-noteheads. ⚠️ RESTRICTED TO
+#: `noteheadBlack*`: the FINDINGS' own §6 measures the under-floor count as
+#: ZERO for every Half and Whole class on both plates — the contamination
+#: there is a class-identity fault (mostly not whole/half notes at all, per
+#: the crop pass), not a narrow one, and this rule has no opinion on it.
+TOO_NARROW_MIN_SPACES = 1.0
+TOO_NARROW_CLASS_PREFIX = "noteheadblack"
+
+#: A low-confidence outside-staff notehead with no ledger rung.
+#: `transcribe._UNLADDERED_NOTEHEAD_MAX_CONF`.
+UNLADDERED_MAX_CONF = float(_legacy._UNLADDERED_NOTEHEAD_MAX_CONF)
+#: `transcribe._LEDGER_RUNG_EXPECTED_SLACK` — a note ON the k-th ledger line
+#: measures ~k.0 spacings past the staff edge, not k.5; truncation without
+#: this reads that as needing no rung.
+LEDGER_RUNG_EXPECTED_SLACK = float(_legacy._LEDGER_RUNG_EXPECTED_SLACK)
+#: `transcribe._LEDGER_RUNG_Y_TOL_SPACES`.
+LEDGER_RUNG_Y_TOL_SPACES = float(_legacy._LEDGER_RUNG_Y_TOL_SPACES)
+#: `transcribe._LEDGER_RUNG_MIN_X_OVERLAP`.
+LEDGER_RUNG_MIN_X_OVERLAP = float(_legacy._LEDGER_RUNG_MIN_X_OVERLAP)
+
+#: ⚠️⚠️ MEASURED AND HELD BACK, 2026-09-22, ON THE ACCEPTANCE DOCUMENTS
+#: THEMSELVES — `benchmarks/omr-notehead-precision-2026-09/`. Joined against
+#: the stem-crop-pass's blind print verdicts (the only place "is this a
+#: notehead" has a truth value): `unladdered` catches 0 of 34 (Litolff) / 2 of
+#: 44 (Breitkopf) print-confirmed non-noteheads and COSTS 4 of 29 / 4 of 74
+#: print-confirmed REAL noteheads — net NEGATIVE, worse than a coin flip,
+#: where `too_narrow` on the identical join reproduces the prior 0-cost / ~40-
+#: caught result almost exactly. Every traced cost is the SAME mechanism: the
+#: note's own ledger rung was never DETECTED anywhere in its cell (verified by
+#: hand for two cases — zero `ledgerLine` glyphs at all in that cell) — a
+#: detection-recall gap the legacy rule's own comment already names
+#: ("ledger recall is imperfect, so real notes with ZERO found rungs exist"),
+#: sharper here because these are LOW-CONFIDENCE SCAN glyphs, not the
+#: confidence>=0.82 engraved population that comment was written against.
+#: ⚠️ THIS TASK CARRIES NO FLAG (`docs/DECISIONS.md` convention: a default is
+#: a decision, not a code path to leave switchable), so there is no way to
+#: ship this LIVE and revert it later without a code change — and "print
+#: before default" (the ten rules, §5) means a rule that costs more real notes
+#: than it catches on the two ACCEPTANCE documents may not go live on the
+#: strength of its legacy ancestry alone. So the rule is fully BUILT, TESTED
+#: and MEASURED, and its finding is recorded in `detail` on every notehead
+#: (`unladdered_signal`) — but it does NOT set `value=True`. See
+#: `adjudicate_notehead_is_not_a_notehead`'s docstring and the 2.4a report for
+#: what would need to change before this could ship: the ledger search is
+#: SAME-CELL ONLY (a simplification stated in `_ledger_rungs_in_cell`'s own
+#: docstring); a PAGE-FRAME, cross-cell search — using `bbox_page_px`, which
+#: every glyph already carries, exactly as `Q.ONSET_COLUMN` had to for the
+#: identical cross-cell frame reason — is the next thing to try, unbuilt and
+#: unmeasured here.
+UNLADDERED_SHIPS = False
+
+#: Above this staff position (half-step units, top line = 0), a note is
+#: standing on the bottom line of a normal 5-line staff.
+_STAFF_BOTTOM_POSITION = 8.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.7b — `belongs_to_a_nearer_staff`, Sean's convention (2026-09-27):
+# *"notes should never be that far away from a staff unless there are ledger
+# lines close to the staff connecting the note conceptually to the staff."*
+#
+# ⚠️ NOT `unladdered` RE-ENABLED, AND THE DIFFERENCE IS THE WHOLE DESIGN.
+# `unladdered` (held back above) asks only *is there a rung?* and was measured
+# net negative because ledger RECALL fails on scans: a real note whose rung the
+# detector never boxed looked unladdered. This rule asks a question with a
+# SECOND witness from a different source — the page's own staff geometry: the
+# head is far from its filed staff AND another staff of the same system is
+# near it. A real high violin note with a missing rung is far from its staff
+# and near NOTHING, and this rule does not fire on it. The measurement is in
+# `benchmarks/omr-accidental-2026-09/FINDINGS.md` §2.7b.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A head whose centre is MORE than this many staff spaces outside the band of
+#: the staff it was filed on is "that far away" in Sean's sense.
+#:
+#: ⚠️ MEASURED on the Litolff acceptance record (FINDINGS §2.7b,
+#: `probe/nearer_staff.py`): Sean's six wrong-staff heads (crops 2, 4, 13, 20,
+#: 23, 26) stand **3.485-3.670** spaces from their filed staff; the eighteen
+#: heads of his twenty-one confirmed crops stand **0.000-2.440**. The empty
+#: interval is (2.44, 3.485) and 3.0 is its round middle — and it is also,
+#: on this plate, about half the gap between two staves (~5.9 spaces), so
+#: past it a head is on the other staff's side of the air. The population
+#: that crosses it falls off a cliff below 3.25 (4 heads in the 3.0 bin
+#: against 40 / 113 / 88 in 3.25 / 3.5 / 3.75), so the value is not on a slope.
+NEARER_STAFF_FILED_MIN_SPACES = 3.0
+
+#: ... AND another staff of the same system has a line within this many staff
+#: spaces of it (0 = inside that staff's band), nearer than the filed one.
+#:
+#: ⚠️ MEASURED: the six wrong-staff heads stand **2.291-2.588** spaces from
+#: the staff Sean put them on — low notes on ledger lines UNDER the staff
+#: above, not ink inside it — so the bound must pass 2.588; 2.75 is the
+#: quarter-space above it. The confirmed heads are nearer their own staff
+#: than any other by at least 1.19 spaces, so the `nearer than the filed
+#: one` clause alone already keeps all of them.
+NEARER_STAFF_NEAR_MAX_SPACES = 2.75
+
+#: A kept rung this close to the head's own centre is the head's OWN ledger
+#: line (a note standing on a ledger line) and joins it to NO staff in
+#: particular — between two staves it could be a rung of either.
+#:
+#: ⚠️ MEASURED on the Litolff arm (`probe/kept_rungs.py`): of 79 heads past
+#: both bands that the first cut KEPT on a rung, **43 were kept by a rung at
+#: 0.00-0.37 spaces from the head** (its own line; one of them the print
+#: check's own first kept crop, a note on a ledger above the staff BELOW it)
+#: and the rest stand at 0.63+ — the interval (0.37, 0.63) is empty, 0.5 is
+#: its middle. ⚠️ ROADMAP 2.6c: the number now LIVES in
+#: `ownership.OWN_LINE_MAX_SPACES`, read by the one ledger helper both this
+#: rule and `glyph_owner` ask; this name is kept so nothing that cites it
+#: breaks.
+OWN_LEDGER_MAX_SPACES = _OWN_LINE_MAX_SPACES
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12l — A PRINTED METER CHANGE'S DIGITS, BOXED AS NOTEHEADS.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §15b (ROADMAP 2.19):
+# on Breitkopf 317803 pdf p1 the 6/8 change at system/1/0 cell 1 is read by
+# NOTHING — `Q.METER_GLYPH` only ever fires on a `timeSig*`-classed box
+# (`gather._gather_meter_glyphs`), and on this plate the "6" and "8" are
+# boxed as `noteheadWhole*`/`noteheadBlack*` instead. 23 of the 26 `M`-only
+# held bars in FINDINGS §15c carry such a "head". Two failures compound: the
+# glyph is never a candidate for the meter reader AND, until this item, it
+# was WRITTEN as a real note in the exported file.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: how would a
+# human read this off the page? A printed meter change sits at ONE x, just
+# past a barline, and prints on EVERY staff of the system (CLAUDE.md §10) —
+# so two facts distinguish it from real ink: (1) on the STAFF that carries
+# it, the two digits sit close together in x (a template glyph, not two
+# independently-placed noteheads) and a SPECIFIC, narrow distance apart in y
+# (a fixed numeral pair, not a chosen interval); (2) the SAME pattern repeats
+# at the SAME cell on MOST OTHER staves of the system, because it is
+# engraving, not music -- a real chord's interval varies staff to staff (a
+# different chord for a different instrument), a time signature's does not.
+# Measured on the fixture above (`probe/meter_digit_2_12l.py`,
+# `benchmarks/omr-bar-sum-holdout-2026-09/out/print/meter-digit-2.12l-*`):
+# on 13 of 14 staves the "6" and "8" are boxed as two `noteheadWhole*`/
+# `noteheadBlack*` glyphs within 0.1 canonical staff spaces of each other in
+# x and 0.42-0.86 spaces apart in y, all within 0-2.2 spaces of the cell's
+# own left edge (the barline) -- staff 12's second digit falls under the
+# detector's confidence floor and is missed (a recall gap, not a shape
+# miss). ⚠️ THIS IS NOT THE "~2 spaces tall" HEIGHT THE BRIEF NAMED: the
+# detector's box is drawn around the ROUNDED PART of each digit it pattern-
+# matches to a hollow notehead template, not the numeral's full extent, and
+# measures 0.94-1.94 spaces tall on this fixture -- statistically the same as
+# a real notehead. Height is therefore NOT part of this rule; the position
+# pair (tight x, a specific narrow y-gap) and the cross-staff repetition are
+# what carry the whole claim. WHAT WOULD FALSIFY IT: a crop showing a real,
+# same-interval chord repeating at one x on most staves of a system (the
+# brief's own named risk) -- none seen on the two acceptance documents, but
+# not excluded by construction. NOT CONFIRMED WITH SEAN.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How close to the cell's own left edge (the barline) a meter-change digit
+#: sits, in canonical staff spaces. Measured 1.48-2.20 on the fixture above;
+#: this is a comfortable margin, not a fitted bound.
+METER_DIGIT_X_MAX_SPACES = 3.0
+
+#: The two digits of one meter change sit at nearly the SAME x -- a template
+#: glyph, not two independently-drawn noteheads. Measured x-gap 0.00-0.11.
+METER_DIGIT_PAIR_X_TOL_SPACES = 0.25
+
+#: ... and a SPECIFIC, narrow distance apart in y (centre to centre) -- the
+#: numeral pair's own fixed proportions. Measured 0.42-0.86 on 13 of 14
+#: staves of the one measured change; a real chord's interval is free to
+#: land here too (Sean's own risk, above), which is why this rule ALSO
+#: requires the cross-staff repetition below and never fires alone.
+METER_DIGIT_PAIR_Y_GAP_MIN_SPACES = 0.30
+METER_DIGIT_PAIR_Y_GAP_MAX_SPACES = 1.20
+
+#: How many OTHER staves of the system must show the same near-barline
+#: notehead-classed ink at this cell before the pattern counts as "printed
+#: on the system", not one staff's own chord.
+#:
+#: ─────────────────────────────────────────────────────────────────────────
+#: ROADMAP 2.46. THIS WAS THE BARE-MAJORITY FLOOR `rhythm._required_
+#: corroboration` (2.12j) USES FOR A VALUE CANDIDATE, CITED HERE FOR A
+#: WITNESS -- AND THE TWO ARE NOT THE SAME QUESTION. A value candidate has a
+#: SECOND, independent check backing it (the bars either fit its length or
+#: they don't); a digit witness has none -- cross-staff repetition is the
+#: WHOLE of its evidence, so it must lean on that evidence harder, not
+#: borrow a floor sized for a claim that gets corroborated twice over.
+#:
+#: The module docstring above named the exact falsifying case and marked it
+#: "NOT CONFIRMED WITH SEAN": *"a real, same-interval chord repeating at one
+#: x on most staves of a system."* `benchmarks/omr-meter-digits-2026-09/
+#: FINDINGS.md` ROADMAP 2.46 now measures it, print-verified, on the SAME
+#: whole-movement Brahms record `_meter_digit_witness_cells` reads
+#: (`library/_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.record
+#: .json`): of 5 distinct cells where this rule's geometry (tight x, a
+#: 0.30-1.20-space y-gap) recurred across a cross-staff quorum, only ONE is
+#: a real printed meter change (`page/1 system/0 cell/1`, the already-
+#: documented 6/8 return, 13 of 14 staves = 0.929 coverage) -- the other
+#: FOUR are a repeated note-plus-dot figure at `page/0 system/0 cell/3`
+#: (crop: `out/print/2.46/w_p0_s0_c3_staff*.png`, no digit ink of any kind,
+#: 8 of 14 = 0.571), the identical figure at `page/4 system/1 cell/5`
+#: (`w_p4_s1_c5_staff*.png`, 8 of 14 = 0.571), and two sub-floor candidates
+#: at a system's own opening ink (clef/key-signature accidentals,
+#: `w_p6_s0_c0_staff8.png`/`w_p6_s1_c0_staff0.png`, 1 of 12 and 5 of 11 --
+#: already excluded by EITHER floor, cited for completeness).
+#:
+#: 0.571 and 0.929 are far enough apart that the exact cut does not matter;
+#: `METER_DIGIT_QUORUM_COVERAGE` moves from the bare majority to 0.8 (a
+#: system-wide near-unanimity, matching CLAUDE.md §10's "printed... on
+#: EVERY staff of the system" for the closest confirmed analogue, a key
+#: change -- CONFIRMED for METER by Sean, 2026-09-30 (DECISIONS: a meter
+#: change is printed at one bar on every staff of the system); the 0.8 cut
+#: (not 1.0) leaves room for staves the DETECTOR misses, not for staves the
+#: print omits.
+#: This keeps the one real witness (0.929) and excludes both real-world
+#: false ones (0.571) with margin on both sides.
+#: ─────────────────────────────────────────────────────────────────────────
+METER_DIGIT_QUORUM_MIN_STAVES = 2
+METER_DIGIT_QUORUM_COVERAGE = 0.8
+
+#: Reason a refused notehead carries when it is a printed meter change's own
+#: digit. Read back by `rhythm._meter_digit_witness_cells` (ROADMAP 2.12l)
+#: to file the position as a witness the meter chain can see -- never a
+#: value, only a place. Naming it here, once, is what keeps the two
+#: modules from restating the string and drifting apart.
+METER_DIGIT_REASON = "is_a_meter_digit"
+
+
+def _required_meter_digit_quorum(total_staves: Optional[int]) -> int:
+    """`METER_DIGIT_QUORUM_MIN_STAVES`, raised on a system large enough that
+    two staves are no longer a meaningful fraction of it. `None` (staff count
+    undecided) falls back to the absolute floor alone -- an absent count is
+    not evidence the system is large."""
+    if not total_staves:
+        return METER_DIGIT_QUORUM_MIN_STAVES
+    return max(METER_DIGIT_QUORUM_MIN_STAVES,
+              round(METER_DIGIT_QUORUM_COVERAGE * total_staves))
+
+
+def _cell_staff_space_at(ev: Evidence, subject) -> Optional[float]:
+    """`Q.CELL_STAFF_SPACE` at an EXPLICIT cell subject, not `ev.subject`'s
+    own ancestry -- the cross-staff check needs another staff's own unit,
+    never this glyph's."""
+    rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=subject)
+    if not rows:
+        return None
+    try:
+        v = float(rows[-1].value)
+    except (TypeError, ValueError):
+        return None
+    return v if v > 0 else None
+
+
+def _meter_digit_pair_partner(ev: Evidence, box_row, spacing_canonical: float,
+                              detail: Dict[str, Any]) -> Optional[Any]:
+    """A second `notehead*` box on THIS staff's SAME cell, close in x and a
+    narrow, specific distance apart in y -- the candidate's own half of the
+    stacked pair. Returns the partner's own `Q.GLYPH_BOX` row, or None.
+
+    ⚠️ CHEAP: this cell's own glyphs only (`Q.GLYPH_BOX` at
+    `Scope.SELF_AND_DESCENDANTS` off the CELL, the same population
+    `_ledger_rungs_in_cell` already walks for the identical reason), never
+    the page. Called for every notehead-classed glyph, but the x-window gate
+    below narrows the population that reaches the loop body to the few boxes
+    standing near a cell's own left edge.
+    """
+    name0, x0, y0, w0, h0 = box_row.value
+    x0_sp = x0 / spacing_canonical
+    if not (0.0 <= x0_sp <= METER_DIGIT_X_MAX_SPACES):
+        return None
+    yc0 = (y0 + h0 / 2.0) / spacing_canonical
+    cell = ev.subject.at(Kind.CELL)
+    me = ev.subject.to_key()
+    best = None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject.to_key() == me:
+            continue
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        name1, x1, y1, w1, h1 = v
+        if not str(name1).lower().startswith("notehead"):
+            continue
+        x1_sp = x1 / spacing_canonical
+        if not (0.0 <= x1_sp <= METER_DIGIT_X_MAX_SPACES):
+            continue
+        if abs(x1_sp - x0_sp) > METER_DIGIT_PAIR_X_TOL_SPACES:
+            continue
+        yc1 = (y1 + h1 / 2.0) / spacing_canonical
+        y_gap = abs(yc1 - yc0)
+        if not (METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= y_gap
+                <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES):
+            continue
+        detail["meter_digit_pair_x_gap"] = round(abs(x1_sp - x0_sp), 3)
+        detail["meter_digit_pair_y_gap"] = round(y_gap, 3)
+        best = r
+        break
+    return best
+
+
+def _meter_digit_cross_staff_count(ev: Evidence) -> int:
+    """How many OTHER staves of this system show notehead-classed ink near
+    the LEFT edge of this glyph's own cell index -- the repetition
+    `_meter_digit_pair_partner`'s own staff cannot establish alone.
+
+    ⚠️ `Q.SYSTEM_STAFF_COUNT` ONLY, NEVER `ev.subjects(Kind.STAFF)`. The
+    latter walks the whole subject index and is cheap only where a decision
+    calls it once per SYSTEM (`ownership._belongs_to_a_nearer_staff`'s own
+    comment measures the cost of doing it per GLYPH); this decision runs on
+    every notehead-classed glyph in the document, so it never asks the index
+    at all -- `total_staves` bounds a plain `range()` instead, and a system
+    whose count is undecided is skipped outright (no guess at how many
+    staves to check) rather than answered from an unbounded walk.
+    """
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return 0
+    system = ev.subject.at(Kind.SYSTEM)
+    total = ev.verdict(Q.SYSTEM_STAFF_COUNT, subject=system)
+    n = total.value if total is not None and total.value else None
+    if not n:
+        return 0
+    cell_index = ev.subject.cell
+    if cell_index is None:
+        return 0
+    count = 0
+    for st in range(int(n)):
+        if st == staff.staff:
+            continue
+        other_cell = R.cell(staff.page, staff.system, st, cell_index)
+        sp = _cell_staff_space_at(ev, other_cell)
+        if sp is None:
+            continue
+        # ⚠️⚠️ A STACKED PAIR, NOT "ANY NEAR-BARLINE NOTE" — measured wrong
+        # on the fixture this rule was built against: the loose test (any
+        # notehead-classed box near the barline, no partner required) let a
+        # staff's own ORDINARY first note of the bar count toward another
+        # staff's quorum on two cells with NO printed meter change at all
+        # (`benchmarks/omr-bar-sum-holdout-2026-09/out/print/meter-digit-
+        # 2.12l-*`, cells 3 and 5 -- one lone staff each, no repetition).
+        # "Printed on the system" (CLAUDE.md §10) means the SAME shape
+        # repeats, not merely that some other staff also has ink near a
+        # barline, which is the ordinary case on most bars.
+        boxes = []
+        for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=other_cell):
+            v = r.value
+            if not isinstance(v, (list, tuple)) or len(v) != 5:
+                continue
+            name1, x1, y1, w1, h1 = v
+            if not str(name1).lower().startswith("notehead"):
+                continue
+            x1_sp = x1 / sp
+            if 0.0 <= x1_sp <= METER_DIGIT_X_MAX_SPACES:
+                boxes.append((x1_sp, (y1 + h1 / 2.0) / sp))
+        if _has_a_stacked_pair(boxes):
+            count += 1
+    return count
+
+
+def _has_a_stacked_pair(boxes) -> bool:
+    """`True` where two of `boxes` (each `(x_sp, y_centre_sp)`, already
+    filtered to the near-barline window) sit close in x and a narrow,
+    specific distance apart in y -- the SAME test `_meter_digit_pair_partner`
+    applies to the candidate's own staff, applied here to ANOTHER staff's
+    cell so the cross-staff count only credits a REPEATED PAIR, never a
+    lone note that merely happens to stand near the same barline."""
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            if abs(boxes[i][0] - boxes[j][0]) > METER_DIGIT_PAIR_X_TOL_SPACES:
+                continue
+            y_gap = abs(boxes[i][1] - boxes[j][1])
+            if (METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= y_gap
+                    <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES):
+                return True
+    return False
+
+
+def _is_a_meter_digit(ev: Evidence, box_row, spacing_canonical: float,
+                      detail: Dict[str, Any]) -> bool:
+    """ROADMAP 2.12l — see the module's own block comment above for the
+    signature and its measurement. Two gates, BOTH required: a stacked
+    partner on this glyph's OWN staff, and the same pattern repeated on a
+    QUORUM of the system's OTHER staves at the SAME cell (never on this
+    glyph's shape alone — CLAUDE.md's own guard against a real chord that
+    happens to repeat).
+    """
+    partner = _meter_digit_pair_partner(ev, box_row, spacing_canonical, detail)
+    if partner is None:
+        return False
+    others = _meter_digit_cross_staff_count(ev)
+    system = ev.subject.at(Kind.SYSTEM)
+    total = ev.verdict(Q.SYSTEM_STAFF_COUNT, subject=system)
+    total_staves = total.value if total is not None and total.value else None
+    detail["meter_digit_partner"] = partner.id
+    detail["meter_digit_other_staves"] = others
+    detail["meter_digit_quorum"] = _required_meter_digit_quorum(total_staves)
+    return others >= _required_meter_digit_quorum(total_staves)
+
+
+def _glyph_box_row(ev: Evidence):
+    rows = ev.rows(Q.GLYPH_BOX)
+    return rows[-1] if rows else None
+
+
+def _cell_staff_space(ev: Evidence) -> Optional[float]:
+    rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS)
+    if not rows:
+        return None
+    try:
+        v = float(rows[-1].value)
+    except (TypeError, ValueError):
+        return None
+    return v if v > 0 else None
+
+
+def _cell_box_page(ev: Evidence) -> Optional[List[float]]:
+    rows = ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_ANCESTORS)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)) \
+            or len(rows[-1].value) != 4:
+        return None
+    return [float(v) for v in rows[-1].value]
+
+
+def _clipped_fragment(ev: Evidence, box_row, spacing_canonical: float,
+                      detail: Dict[str, Any]) -> bool:
+    """A sliver cut off by the cell's own crop boundary — height AND edge."""
+    _name, _x, y_c, _w, h_c = box_row.value
+    h_spaces = h_c / spacing_canonical
+    detail["height_spaces"] = round(h_spaces, 3)
+    if h_spaces >= CLIPPED_NOTEHEAD_MAX_SPACES:
+        return False
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    cell_box = _cell_box_page(ev)
+    if not page_box or len(page_box) != 4 or cell_box is None:
+        # ⚠️ DECLINED, NOT DEFAULTED. Without a page frame for both the glyph
+        # and its cell the edge test cannot run, and a short notehead in the
+        # middle of a cell is "some other problem" this rule has no opinion
+        # on (`transcribe._CLIPPED_NOTEHEAD_MAX_SPACES`'s own docstring) — so
+        # the honest default is NOT clipped, never a guess either way.
+        return False
+    py0, py1 = page_box[1], page_box[3]
+    cy0, cy1 = cell_box[1], cell_box[3]
+    touching = (abs(py0 - cy0) <= CELL_EDGE_TOLERANCE_PAGE_PX
+                or abs(py1 - cy1) <= CELL_EDGE_TOLERANCE_PAGE_PX)
+    detail["edge_distance_page_px"] = round(
+        min(abs(py0 - cy0), abs(py1 - cy1)), 3)
+    return touching
+
+
+def _is_a_clef(ev: Evidence):
+    """ROADMAP 2.11 — this box is part of a clef the locator READ over it.
+
+    ⚠️ A CONNECT, NOT A GUESS, AND THE DISTINCTION IS THE WHOLE POINT. This
+    rule measures nothing and decides nothing on its own. It asks whether a
+    `Q.CLEF_LOCATED` row on this glyph's own STAFF NAMES this glyph as a box
+    it overrode — `gather._occupied_notehead_rows` put the subject key there,
+    from the detector ordinal the glyph subject is built from. If the clef was
+    not read, or was read without overriding anything, this returns None and
+    the glyph is judged on shape as before.
+
+    ⚠️ SCOPE IS `SELF_AND_ANCESTORS` BECAUSE THE ROW IS FILED ON THE STAFF.
+    At `EXACT` — the default — a GLYPH subject's query returns nothing and the
+    rule would fail SILENTLY, which is the failure mode CLAUDE.md §4b names
+    and `wiring --check` exists to catch.
+
+    ⚠️ IT DOES NOT ASK WHETHER THE STAFF'S `clef` VERDICT AGREES. That verdict
+    is an ADJUDICATE product of this same stage; reading it here would make
+    the refusal depend on decision order, and a located clef that loses the
+    clef contest still tells us what this ink is. The evidence is the READ,
+    not the winner.
+    """
+    me = ev.subject.to_key()
+    for r in ev.rows(Q.CLEF_LOCATED, scope=Scope.SELF_AND_ANCESTORS):
+        d = r.detail or {}
+        if me in (d.get("overrode_glyph_subjects") or ()):
+            return r
+    return None
+
+
+def _claim_refusal(claim, box_row) -> Ruling:
+    """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")`, the reason a LITERAL per owner (the vocabulary check reads it)."""
+    detail = {"class": box_row.value[0], **claim.detail}
+    if claim.by == "meter":
+        r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
+    elif claim.by == "clef":
+        r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
+                           band=None, would_choose=(True,))
+
+
+def _claim_narrowing(claim, used, detail) -> Ruling:
+    """ROADMAP 2.181: NARROWED {a notehead, the owner's ink} -- the notehead first, so it is written (blue, GUESSED)."""
+    cands = (R.Candidate(value=False, support=1.0), R.Candidate(value=True, support=1.0))
+    u = tuple(dict.fromkeys(tuple(used) + tuple(claim.used)))
+    if claim.by == "clef":
+        return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
+    if claim.by == "meter":
+        return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
+
+
+def _too_narrow(box_row, spacing_canonical: float,
+                detail: Dict[str, Any]) -> bool:
+    """A `noteheadBlack*` box under the measured width floor."""
+    name, _x, _y, w_c, _h = box_row.value
+    if not str(name).lower().startswith(TOO_NARROW_CLASS_PREFIX):
+        return False
+    w_spaces = w_c / spacing_canonical
+    detail["width_spaces"] = round(w_spaces, 3)
+    return w_spaces < TOO_NARROW_MIN_SPACES
+
+
+#: ROADMAP 2.59 (lane-dot-not-a-note, `OMR_DOT_FOLLOWS_NOTE`, default OFF).
+#: A notehead-class box no larger than this on BOTH sides, in staff spaces, is
+#: a DOT, whatever class the detector gave it. STATED BEFORE ANY COUNT: a
+#: printed dot is ~0.3-0.5 sp round (the detector's `augmentationDot` box is
+#: 13-15 px on a ~27 px staff space, 0.5 sp), a notehead is ~1.3 sp wide
+#: (CLAUDE.md §10) and `too_narrow`'s floor is 1.0 sp. 0.75 sp sits in the
+#: gap, and the test needs BOTH sides small so a real head clipped to a
+#: sliver (short but >= 1.0 wide) is never taken for one. It extends the
+#: refusal `too_narrow` makes for `noteheadBlack*` to the hollow classes.
+DOT_SIZED_MAX_SPACES = 0.75
+
+
+def _dot_sized(box_row, spacing_canonical: float,
+               detail: Dict[str, Any]) -> bool:
+    _name, _x, _y, w_c, h_c = box_row.value
+    w_sp, h_sp = w_c / spacing_canonical, h_c / spacing_canonical
+    detail["dot_size_spaces"] = [round(w_sp, 3), round(h_sp, 3)]
+    return w_sp <= DOT_SIZED_MAX_SPACES and h_sp <= DOT_SIZED_MAX_SPACES
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.77b -- a flat box lying INSIDE a read beam is that beam's ink.
+#
+# Sean (2026-10-09, `out/print/rhythm-leftovers-2` crop 7, Litolff p3
+# `glyph/3/0/7/4/13`): *"the red box is around a beam that connects 8th notes,
+# but is not a notehead."* The detector boxed `noteheadBlackInSpace`, 1.23 x
+# 0.69 spaces, over the end of a stem-down beam; 85% of the box lies inside the
+# beam's stroke, which the CV beam reader read (2.36 staff lines thick,
+# straight, a stem found at BOTH ends).
+#
+# ⚠️ FLATNESS ALONE IS NOT A TEST AND IS MEASURED NOT TO BE ONE. Print-confirmed
+# real heads are boxed as flat as 0.34 spaces (6 of 102 at or under 0.69: a head
+# the crop cut, a partial box over one head of a stack; `omr-notehead-width-
+# 2026-09` crop pass, whose adjudicator was a model reading the print, not
+# Sean), and Sean's own 361 hand-confirmed Brahms p0 boxes include four under
+# 0.8 (a dot, partial boxes over heads of stacks, one wide flat head). A height
+# floor would cost real notes, so the refusal needs the beam as a second
+# witness: the box lies in a stroke the beam reader read AND the box is flat.
+#
+# MEASURED (`FINDINGS.md` §16.7), every detector notehead box on Litolff p0-3
+# (1,286) and Brahms p0-1 (1,491): the share of a box inside a read beam stroke
+# is 0.21 at most over Sean's 361 hand-confirmed heads (Brahms p0); over the
+# boxes the beam strokes cover by 0.5 or more, the HEIGHTS fall in two groups,
+# 0.69 / 0.75 (the crop-7 box and one 4.1-spaces-wide box on a beam) and 1.10
+# and up (head-sized boxes under the bounding box of a SLOPED beam, which is
+# tall) -- nothing between 0.75 and 1.10. The cuts sit in those gaps.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's one
+# verdict: *all regular noteheads are the same size* (Sean, 2.39; the standard
+# head is `geometry.STANDARD_HEAD_HEIGHT_SPACES` tall), so a regular-head box
+# well under that, standing in a beam the CV reader read, is the beam's ink.
+# Falsified by a print-confirmed head that lies 70% inside a read beam stroke
+# and is boxed under 0.9 spaces tall.
+#
+# ⚠️ ONLY REGULAR HEADS (`geometry.is_regular_notehead`): a cue/grace head
+# (`*Small`) and a whole note are other populations this was not measured on.
+# ─────────────────────────────────────────────────────────────────────────────
+
+BEAM_PIECE_REASON = "is_a_beam_piece"
+
+#: ROADMAP 2.108 -- no staff within `geometry.OFF_STAFF_REACH_SPACES`.
+OFF_STAFF_REASON = "off_staff_glyph"
+#: The share of the box that must lie inside ONE read beam stroke.
+BEAM_PIECE_COVER_MIN = 0.7
+#: The box is no taller than this many staff spaces.
+BEAM_PIECE_HEIGHT_MAX_SPACES = 0.9
+
+
+def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
+                        detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`Ruling(True, "is_a_beam_piece")` where this regular-head box is flat and
+    lies inside a beam stroke the CV reader read, else None. ROADMAP 2.77b.
+
+    A stroke is READ as a beam by the same tests 2.74/2.77 apply in
+    `rhythm._not_a_beam_by_ink` (thick, straight, standing on stems -- a stem
+    found at both ends of it, or two read stems ending inside it); a stroke
+    with no ink row, or a test left unread, is not one (rule 8: the box is not
+    refused on a guess). Imported LAZILY: `rhythm` imports this module."""
+    name, x, y, w, h = box_row.value
+    if not _geom.is_regular_notehead(name) or spacing_canonical <= 0:
+        return None
+    height_spaces = h / spacing_canonical
+    # ROADMAP 2.105 (Sean's tile 6, Brahms `glyph/0/0/10/1/20`): flat OR wider
+    # than any head is printed (`PLAUSIBLE_HEAD_WIDTH_SPACES`) -- a box 2.35 x 1.65
+    # spaces, 94% inside a read sloped beam stroke, is two beams, and its HEIGHT
+    # is the sloped stroke's own. Same beam witness below, so a wide box that
+    # lies in no read beam is untouched.
+    if w <= 0 or h <= 0 or (
+            height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES
+            and w / spacing_canonical <= PLAUSIBLE_HEAD_WIDTH_SPACES[1]):
+        return None
+    from . import rhythm as _rh
+    cell = ev.subject.at(Kind.CELL)
+    strokes = ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=cell)
+    if not strokes:
+        return None
+    ink = {}
+    for r in ev.rows(Q.BEAM_STROKE_INK, scope=Scope.SELF_AND_ANCESTORS,
+                     subject=cell):
+        bid = (r.detail or {}).get("beam_row_id")
+        if bid:
+            ink[bid] = r
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    sep = (_rh.BEAM_STEMS_ENDING_SEPARATION_SPACES * spacing_canonical)
+    head = (float(x), float(y), float(w), float(h))
+    beam_heads = _rh._notehead_glyph_boxes(ev, cell, spacing_canonical)
+    for s in strokes:
+        sbox = _rh._xywh(s)
+        row = ink.get(s.id)
+        if sbox is None or row is None:
+            continue
+        d = row.detail or {}
+        ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
+        if ratio is None or sag is None \
+                or _rh.stroke_thin_by_ink(d, beam_heads, spacing_canonical) \
+                or sag > _rh.BEAM_SAGITTA_MAX_SPACES:
+            continue
+        ends = _rh.stroke_end_stems(d, beam_heads, spacing_canonical)
+        both_ends = (len(ends) == 2 and all(
+            isinstance(e, dict) and e.get("found") for e in ends))
+        if not both_ends and _rh._stems_ending_in(sbox, stems, sep) \
+                < _rh.BEAM_STEMS_ENDING_MIN:
+            continue
+        cover = _rh._covered_fraction(head, [sbox])
+        if cover < BEAM_PIECE_COVER_MIN:
+            continue
+        detail["beam_piece"] = {"stroke": s.id,
+                                "cover": round(cover, 3),
+                                "height_spaces": round(height_spaces, 3)}
+        # ROADMAP 2.106: how far over the coverage floor (>= 0 = refused by
+        # this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_beam_piece",
+                   used=(box_row.id, s.id, row.id), detail=detail),
+            margin=cover - BEAM_PIECE_COVER_MIN, axis="beam_cover_fraction",
+            unit="fraction of the box inside the beam stroke", band=None,
+            would_choose=(True,))
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON) -- an arc's tail at
+# the bar's left edge boxed as a notehead (Sean 2026-10-17, on the 2.160 sheets:
+# "almost entirely tie ends ... or a bar line").
+#
+# WHY IT WAS A HEAD (`benchmarks/omr-head-fill-2026-09/FINDINGS.md` 2.164): the
+# detector reads one bar's crop at a time, and a measure cell has no horizontal
+# padding, so a tie crossing a barline is CUT there: the previous bar's crop
+# boxes its left piece as the tie (that box ends at the barline), and this bar's
+# crop sees a short stroke at its left edge and boxes it as a head. The box is
+# head-sized (not `too_narrow`, not dot-sized), has no stem (so the 2.49/2.137
+# slash test is never asked), no rest box (2.142) and no rest shape (2.145).
+#
+# THREE WITNESSES, ALL REQUIRED, from three readers:
+#   1. POSITION -- the box starts within `head_oval.LEFT_EDGE_SPACES` of the
+#      cell's left edge (`Q.HEAD_OVAL` is filed only there; re-checked here).
+#   2. THE CUT ARC -- a tie/slur box (`Q.ARC_BOX`) filed in the PREVIOUS cell of
+#      the same staff ends within `ARC_CUT_AT_BARLINE_SPACES` of that cell's
+#      right edge (the crop cut it) and overlaps the head box's rows widened by
+#      `ARC_TAIL_ROW_SLACK_SPACES`. Structural (the crop edge), not fitted.
+#   3. NO OVAL -- `Q.HEAD_OVAL` (`head_oval.oval_width`, page raster): fewer than
+#      `ARC_TAIL_OVAL_MAX_SPACES` (half a standard head's width) of consecutive
+#      columns hold head-tall ink. A cut fitted on two plates, so it only
+#      REFUSES where all three agree, and a box holding a whole head is never
+#      refused; a box we cannot read (no oval row, no previous cell, no arc) is
+#      kept (rule 8).
+# ─────────────────────────────────────────────────────────────────────────────
+ARC_TAIL_REASON = "is_an_arc_tail"
+#: The previous bar's arc box ends this close to its own cell's right edge
+#: (staff spaces): the crop cut it. Measured 0.00-0.36 on the 226 candidates.
+ARC_CUT_AT_BARLINE_SPACES = 0.4
+#: The arc's rows must overlap the head box's rows widened by this much.
+ARC_TAIL_ROW_SLACK_SPACES = 0.5
+#: Half a standard head's width (`head_oval`'s convention, 1.25 sp).
+ARC_TAIL_OVAL_MAX_SPACES = 0.625
+
+
+def _arc_tail_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.164: the box is the tail of an arc the previous bar's crop cut at the barline, or `None` (keep it).
+    Reads rows only; every missing witness keeps the box."""
+    if not _head_oval.enabled():
+        return None
+    ovals = ev.rows(Q.HEAD_OVAL)
+    if not ovals:
+        return None
+    oval = ovals[-1]
+    od = oval.detail or {}
+    width = oval.value
+    sp = od.get("space_page_px")
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    cell_box = _cell_box_page(ev)
+    if width is None or not sp or not page_box or len(page_box) != 4 or not cell_box:
+        return None
+    if not _head_oval.box_at_left_edge(page_box, cell_box, sp):
+        return None
+    me = ev.subject
+    if me.cell is None or me.cell < 1:
+        return None                      # a system's first bar: the arc came from another system's crop
+    prev = R.cell(me.page, me.system, me.staff, me.cell - 1)
+    prev_box_rows = ev.rows(Q.CELL_BOX, subject=prev)
+    if not prev_box_rows or not isinstance(prev_box_rows[-1].value, (list, tuple)) \
+            or len(prev_box_rows[-1].value) != 4:
+        return None
+    prev_right = float(prev_box_rows[-1].value[2])
+    lo = float(page_box[1]) - ARC_TAIL_ROW_SLACK_SPACES * sp
+    hi = float(page_box[3]) + ARC_TAIL_ROW_SLACK_SPACES * sp
+    cut = None
+    for a in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=prev):
+        ab = (a.detail or {}).get("bbox_page_px")
+        if not ab or len(ab) != 4:
+            continue
+        to_edge = (prev_right - float(ab[2])) / sp
+        if abs(to_edge) > ARC_CUT_AT_BARLINE_SPACES:
+            continue
+        if float(ab[3]) < lo or float(ab[1]) > hi:
+            continue
+        if cut is None or abs(to_edge) < abs(cut[1]):
+            cut = (a, to_edge)
+    if cut is None:
+        return None
+    detail["arc_tail"] = {"oval_width_sp": width, "arc": cut[0].id, "arc_kind": cut[0].value,
+                          "arc_end_to_barline_sp": round(cut[1], 3),
+                          "left_gap_sp": round((float(page_box[0]) - float(cell_box[0])) / sp, 3)}
+    margin = (ARC_TAIL_OVAL_MAX_SPACES - float(width)) / ARC_TAIL_OVAL_MAX_SPACES
+    if margin <= 0:
+        detail["arc_tail"]["kept_holds_an_oval"] = True
+        return None
+    return _margins.attach(
+        Ruling(value=True, reason="is_an_arc_tail", used=(box_row.id, oval.id, cut[0].id), detail=detail),
+        margin=round(margin, 4), axis="oval_width_sp", unit="share of half a head's width", band=None,
+        would_choose=(True,))
+
+
+# ROADMAP 2.142 (flag `OMR_HEAD_IS_A_REST_TWIN`, default ON since 2026-10-16) -- a stemless
+# notehead box lying on a non-whole REST box's ink is that rest's ink.
+#
+# Sean (2026-10-15, `out/print/2.141-fix23-review` tile 3): an eighth REST boxed
+# `noteheadBlackOnLine` was written as a note. 27 Litolff boxes (20261014-night
+# record, streamed) are head boxes whose ink the detector ALSO boxed as a quarter/
+# eighth/sixteenth/32nd rest (>= 0.8 of the smaller box shared) and that nothing
+# refused; 20 of those rests were refused `rest_overlaps_a_notehead` / duplicate by
+# the HEAD'S presence, so the pair resolved to the wrong ink.
+#
+# TWO WITNESSES FROM TWO SOURCES: the detector's rest-class box (a second CLASS on
+# the same ink counts once -- it alone is NOT enough: 29 head boxes under a `beam`
+# box are slur-starts and real heads, benchmarks/omr-bar-sum-holdout-2026-09
+# FINDINGS 2.142) AND the stem finder's silence (a rest owns no stem; a stem touching
+# the box, any stem, declines the rule: rule 8).
+# CONVENTION ASSUMED: a black head with no stem touching it, on exactly a rest box's
+# ink, is the rest (a chord head carries its chord's stem). WHAT WOULD FALSIFY IT: a
+# print-confirmed stemless head with a rest box on it. NOT CONFIRMED with Sean beyond
+# his two tiles; blind tiles out/print/2.142-review.
+# ─────────────────────────────────────────────────────────────────────────────
+
+REST_TWIN_ENV = "OMR_HEAD_IS_A_REST_TWIN"
+REST_TWIN_REASON = "is_a_rest_twin"
+#: Share of the SMALLER box the two boxes must share: the floor `consequences.TWIN_BOX_MIN_OVERLAP`
+#: (2.98) measured on 30 Litolff pairs at 0.93-1.0. Restated, with its source, because
+#: `consequences` imports this package.
+REST_TWIN_COVER_MIN = 0.8
+#: Rest classes whose ink is a rest and nothing else. restWhole/restHalf are not here:
+#: `adjudicate_notehead_is_a_whole_rest` owns the whole rest.
+REST_TWIN_CLASSES = ("restQuarter", "rest8th", "rest16th", "rest32nd", "rest64th")
+
+
+def head_is_a_rest_twin_enabled() -> bool:
+    """`OMR_HEAD_IS_A_REST_TWIN`, default ON (Sean 2026-10-16, ROADMAP 2.142, tiles 12/12); only an explicit off-word disables."""
+    return os.environ.get(REST_TWIN_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+def _box_cover(a, b) -> float:
+    """Share of the SMALLER of two `(x, y, w, h)` boxes that both cover."""
+    iw = min(a[0] + a[2], b[0] + b[2]) - max(a[0], b[0])
+    ih = min(a[1] + a[3], b[1] + b[3]) - max(a[1], b[1])
+    small = min(a[2] * a[3], b[2] * b[3])
+    if iw <= 0 or ih <= 0 or small <= 0:
+        return 0.0
+    return iw * ih / small
+
+
+def _rest_twin_refusal(ev: Evidence, box_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`Ruling(True, "is_a_rest_twin")` where a non-whole rest box covers this stemless head box, else None."""
+    if not head_is_a_rest_twin_enabled():
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or box_row is None:
+        return None
+    v = box_row.value
+    head = (float(v[1]), float(v[2]), float(v[3]), float(v[4]))
+    for st in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        sv = st.value
+        if isinstance(sv, (list, tuple)) and len(sv) >= 4 and _geom.stem_touches_head(
+                tuple(float(x) for x in sv[:4]), head):
+            return None                      # a stem stands on it: not a rest (rule 8: no refusal on a guess)
+    rest_subjects = {r.subject for r in ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    best = None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        rv = r.value
+        if r.subject not in rest_subjects or not isinstance(rv, (list, tuple)) or len(rv) != 5 \
+                or rv[0] not in REST_TWIN_CLASSES:
+            continue
+        cover = _box_cover(head, (float(rv[1]), float(rv[2]), float(rv[3]), float(rv[4])))
+        if cover >= REST_TWIN_COVER_MIN and (best is None or cover > best[0]):
+            best = (cover, r)
+    if best is None:
+        return None
+    cover, r = best
+    detail["rest_twin"] = {"box": r.id, "class": r.value[0], "cover": round(cover, 3)}
+    return _margins.attach(
+        Ruling(value=True, reason="is_a_rest_twin", used=(box_row.id, r.id), detail=detail),
+        margin=cover - REST_TWIN_COVER_MIN, axis="rest_box_cover_fraction",
+        unit="fraction of the smaller box shared", band=None, would_choose=(True,))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.173 (Sean 2026-10-19 "Yes"; flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`, with `rhythm`'s whole-class fill/stem rule) -- WHOLE-CLASS BOXES ONLY.
+# 53 of 56 exported whole notes were not notes: meter digit loops and rest curls. Two CONNECTS, never a guess:
+#   (1) `on_a_read_meter`: this system's meter reader READ a meter at THIS cell (the opening `Q.METER_TEMPLATE`/`Q.METER_OCR` at cell 0, or a
+#       `*_AT_BAR` read whose cell is this one), and this whole-class box is that meter's ink: it lies on a detector `timeSig*` box (>= half of the
+#       smaller box shared), or it is one of the LEFTMOST stacked pair (same x, 0.3-1.2 spaces apart) of notehead-/timeSig-class boxes in the cell
+#       -- the printed numerals stand before every note of that bar. Without a meter read at this cell nothing fires.
+#   (2) `on_a_rest`: a rest-class box (any rest class, kept or refused) covers >= `WHOLE_ON_REST_COVER_MIN` of the smaller box.
+# CONVENTION ASSUMED: a printed meter stands before the first note of its bar; a rest and a whole note never share ink. WHAT WOULD FALSIFY IT: a real
+# whole note standing on a meter pair at a meter-change bar, or on a rest box (two voices). NOT CONFIRMED beyond the crops in `out/print/2.173-whole`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+WHOLE_REFUSALS_ENV = "OMR_WHOLE_NEEDS_HOLLOW_NO_STEM"
+METER_READ_REASON = "on_a_read_meter"
+ON_A_REST_REASON = "on_a_rest"
+#: share of the SMALLER box a rest box must cover: the rest-curl population measured 0.47-0.79 on 13 Brahms curls (a few as low as 0.05-0.25); a
+#: real whole's box never shares a rest's ink (a rest in another voice stands a space away). Stated before the count.
+WHOLE_ON_REST_COVER_MIN = 0.3
+
+
+def whole_refusals_enabled() -> bool:
+    return os.environ.get(WHOLE_REFUSALS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _meter_read_at_this_cell(ev: Evidence) -> Optional[Any]:
+    """A meter READ filed on a staff of this system for THIS cell index, or None (the row is the witness)."""
+    system = ev.subject.at(Kind.SYSTEM)
+    idx = ev.subject.cell
+    if system is None or idx is None:
+        return None
+    # literal reads, one per quantity (the wiring check recognises `ev.rows(Q.X, ...)` calls, not a loop over names)
+    if idx == 0:
+        for r in (ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS, subject=system)
+                  + ev.rows(Q.METER_OCR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)):
+            return r
+    for r in (ev.rows(Q.METER_TEMPLATE_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)
+              + ev.rows(Q.METER_OCR_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS, subject=system)):
+        if (r.detail or {}).get("cell") == idx:
+            return r
+    return None
+
+
+#: a printed meter is two numerals one above the other (6 over 8): its loops, boxed piecemeal, form a COLUMN of boxes at one x that spans more
+#: than a chord of whole notes can (a 4-note whole chord spans <= 2 spaces). Stated before the count; measured on 6 Brahms change-bar digits 3.2-3.9.
+METER_STACK_X_TOL_SPACES = 0.25
+METER_STACK_LINK_MAX_SPACES = 3.0
+METER_STACK_MIN_EXTENT_SPACES = 2.4
+
+
+def _meter_stack_witness(boxes, box_row, head, spacing: float):
+    """A column of >= 2 boxes (notehead-, timeSig- or rest-class, this box among them) at one x, linked by gaps <= 3 spaces, spanning >=
+    `METER_STACK_MIN_EXTENT_SPACES`, with NO other notehead-class box more than half a space to its left in the cell (the numerals stand before
+    every note of the bar). Returns ("stacked_column", a member row) or None."""
+    cand = [(b, r) for name, b, r in boxes if name.lower().startswith(("notehead", "timesig", "rest"))]
+    cand.append((head, box_row))
+
+    def xc(b):
+        return (b[0] + b[2] / 2.0) / spacing
+
+    group = [(head, box_row)]
+    changed = True
+    while changed:
+        changed = False
+        for b, r in cand:
+            if any(r is g[1] for g in group):
+                continue
+            if any(abs(xc(b) - xc(g[0])) <= METER_STACK_X_TOL_SPACES
+                   and abs((b[1] + b[3] / 2.0) - (g[0][1] + g[0][3] / 2.0)) / spacing <= METER_STACK_LINK_MAX_SPACES for g in group):
+                group.append((b, r))
+                changed = True
+    if len(group) < 2:
+        return None
+    top = min(g[0][1] for g in group)
+    bottom = max(g[0][1] + g[0][3] for g in group)
+    if (bottom - top) / spacing < METER_STACK_MIN_EXTENT_SPACES:
+        return None
+    gx = sum(xc(g[0]) for g in group) / len(group)
+    for name, b, r in boxes:
+        if name.lower().startswith("notehead") and not any(r is g[1] for g in group) and xc(b) < gx - 0.5:
+            return None
+    partner = next(g[1] for g in group if g[1] is not box_row)
+    return ("stacked_column", partner)
+
+
+def _page_x_centre(row) -> Optional[float]:
+    b = (row.detail or {}).get("bbox_page_px")
+    if isinstance(b, (list, tuple)) and len(b) == 4:
+        return (float(b[0]) + float(b[2])) / 2.0
+    return None
+
+
+def _meter_column_witness(ev: Evidence, box_row, head, spacing: float):
+    """The meter is printed at one x on every staff of the system: this box stands in the column of a `timeSig*` box another staff of this
+    system has at THIS cell index (page x of the centres within 0.8 of this box's width). A real note after the digits stands >= one
+    digit-width + a gap to the right. Returns ("meter_column_of_the_system", that row) or None."""
+    system = ev.subject.at(Kind.SYSTEM)
+    me = ev.subject.to_key()
+    idx = ev.subject.cell
+    mine = _page_x_centre(box_row)
+    if system is None or idx is None or mine is None or not head[2]:
+        return None
+    width_page = None
+    b = (box_row.detail or {}).get("bbox_page_px")
+    if isinstance(b, (list, tuple)) and len(b) == 4:
+        width_page = float(b[2]) - float(b[0])
+    if not width_page:
+        return None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=system):
+        rv = r.value
+        sub = r.subject
+        if r.subject.to_key() == me or sub.cell != idx or not (isinstance(rv, (list, tuple)) and len(rv) == 5):
+            continue
+        if not str(rv[0]).startswith("timeSig"):
+            continue
+        x = _page_x_centre(r)
+        if x is not None and abs(x - mine) <= 0.8 * width_page:
+            return ("meter_column_of_the_system", r)
+    return None
+
+
+def _whole_class_refusal(ev: Evidence, box_row, spacing: float, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`on_a_rest` / `on_a_read_meter` for a whole-class box, else None. Flag-gated; whole classes only."""
+    if not whole_refusals_enabled() or box_row is None:
+        return None
+    v = box_row.value
+    if not (isinstance(v, (list, tuple)) and len(v) == 5 and str(v[0]).startswith("noteheadWhole")):
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None or not spacing:
+        return None
+    me = ev.subject.to_key()
+    head = (float(v[1]), float(v[2]), float(v[3]), float(v[4]))
+    boxes = []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        rv = r.value
+        if r.subject.to_key() == me or not (isinstance(rv, (list, tuple)) and len(rv) == 5):
+            continue
+        boxes.append((str(rv[0]), (float(rv[1]), float(rv[2]), float(rv[3]), float(rv[4])), r))
+    best = None
+    for name, b, r in boxes:
+        if name.startswith("rest"):
+            c = _box_cover(head, b)
+            if c >= WHOLE_ON_REST_COVER_MIN and (best is None or c > best[0]):
+                best = (c, name, r)
+    if best is not None:
+        detail["whole_on_rest"] = {"box": best[2].id, "class": best[1], "cover": round(best[0], 3)}
+        return _margins.attach(
+            Ruling(value=True, reason="on_a_rest", used=(box_row.id, best[2].id), detail=detail),
+            margin=best[0] - WHOLE_ON_REST_COVER_MIN, axis="rest_box_cover_fraction",
+            unit="fraction of the smaller box shared", band=None, would_choose=(True,))
+    meter = _meter_read_at_this_cell(ev)
+    if meter is None:
+        return None
+    witness = None
+    for name, b, r in boxes:
+        if name.startswith("timeSig") and _box_cover(head, b) >= 0.5:
+            witness = ("timesig_box", r)
+            break
+    if witness is None:
+        cand = [(b, r) for name, b, r in boxes if name.lower().startswith(("notehead", "timesig"))]
+        cand.append((head, box_row))
+        pairs = []
+        for i in range(len(cand)):
+            for j in range(i + 1, len(cand)):
+                (a, ra), (b2, rb) = cand[i], cand[j]
+                xa, xb = (a[0] + a[2] / 2.0) / spacing, (b2[0] + b2[2] / 2.0) / spacing
+                gy = abs((a[1] + a[3] / 2.0) - (b2[1] + b2[3] / 2.0)) / spacing
+                if abs(xa - xb) <= METER_DIGIT_PAIR_X_TOL_SPACES and METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= gy <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES:
+                    pairs.append((min(xa, xb), ra, rb))
+        if pairs:
+            _x, ra, rb = min(pairs, key=lambda t: t[0])
+            if box_row is ra or box_row is rb:
+                witness = ("leftmost_stacked_pair", rb if ra is box_row else ra)
+    if witness is None:
+        witness = _meter_stack_witness(boxes, box_row, head, spacing)
+    if witness is None:
+        witness = _meter_column_witness(ev, box_row, head, spacing)
+    if witness is None:
+        return None
+    detail["whole_on_meter"] = {"read": meter.id, "by": witness[0], "partner": witness[1].id}
+    return Ruling(value=True, reason="on_a_read_meter", used=(box_row.id, meter.id, witness[1].id), detail=detail)
+
+
+#: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
+#: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
+#: imported: `family_precision` imports FROM this module
+#: (`HUMAN_OTHER_STAFF`, `HUMAN_REFUSAL_REASONS`), so the reverse import
+#: would be a cycle. A test pins the two constants equal so they cannot
+#: drift apart by an edit to one.
+NOTEHEAD_DUPLICATE_IOU_MIN = 0.02
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — the manager's
+#: own catch before merge: IoU alone is a REST threshold and is unsafe for
+#: noteheads, because a CHORD legitimately puts two same-class heads with
+#: touching or overlapping boxes right beside each other — a second (heads a
+#: half staff space apart vertically, set on opposite sides of the stem) or
+#: a third (one full space apart). Those are two real notes, not one mark
+#: twice. So a same-class pair is a duplicate only where the two boxes'
+#: CENTRES also sit at the same staff position AND the same x: a second is
+#: 0.5 space apart vertically, so 0.25 space is the midpoint between "one
+#: mark" and "the closest interval print actually uses"; 0.5 head widths is
+#: the matching horizontal half-tolerance. NOT CONFIRMED with Sean; falsified
+#: by a real duplicate crop whose two fragment centres sit farther apart
+#: than this in either axis.
+NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES = 0.25
+NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.40 — `same_side_second`. DECISIONS 2026-09-30, Sean: *"a second is
+# always on opposite sides of the stem"* (also `docs/engraving-conventions.md`
+# `[L19]`: a chordal second straddles the stem, higher right / lower left).
+# So two SAME-CLASS, OVERLAPPING notehead boxes on the SAME side of the ONE
+# stem they both attach to are never a real chord second -- a real second
+# always straddles -- and are one physical head boxed twice, the mechanism
+# Sean read on Litolff p3 ("it would often print 2 notes either on top of
+# each other or a second apart... a double box on a single note").
+#
+# ⚠️ NOT 2.30 WIDENED IN PLACE, AND THE STEM TEST IS WHY. 2.30's
+# `_same_mark_centres` has no stem at all -- it is a pure geometry gate (dy <
+# 0.25 sp, dx < half a head width) that cannot tell "one mark" from "a real
+# close interval" past that radius, so it stops at 0.25 sp on purpose (its
+# own docstring: 0.25 is the midpoint between one mark and the closest real
+# interval print uses -- a second, at 0.5 sp). This rule reaches further (up
+# to 0.75 sp, the midpoint between a second and a third) ONLY because the
+# stem test supplies the second, independent witness 2.30 does not have: a
+# real second's two heads are on OPPOSITE sides of their shared stem, by the
+# convention above, so "same side" is never a real interval at ANY distance
+# up to a third -- it is always one mark. Manager-checked crops A06 (dy
+# 0.53), A09 (0.32), A10 (0.745), A11 (0.49) are single heads boxed twice
+# read this way; A07 (dy 0.985, a real third) and A14/A16/A17/A18 (real
+# adjacent notes, no box overlap) stand, because 2.30/this rule both require
+# overlapping boxes and A07/A14-18 have none reaching the 0.75 sp gate or
+# lack it.
+#
+# ⚠️ WHERE THE STEM SIDE IS UNKNOWN (no `Q.STEM` row overlaps this glyph's own
+# box), THIS RULE DOES NOT REFUSE. A missing stem is a missing witness, not a
+# same-side one (CLAUDE.md rule 8: a fallback never converts "cannot tell"
+# into an answer) -- `_same_side_second` records the case in
+# `detail["same_side_signal"]` either way, so it is COUNTED rather than
+# silently dropped from the record.
+#
+# ⚠️⚠️ MANAGER REVIEW, POST-MERGE (S6, `cell/3/0/8/7`): THE FIRST BUILD CHOSE
+# THE SURVIVOR BY DETECTOR SCORE, AND THAT WAS WRONG. At 3x zoom the REFUSED
+# box sat on solid head ink and the KEPT box covered mostly blank paper plus
+# one staff line -- a score says nothing about which box the ink actually
+# supports. Fixed: the keep choice reads `Q.NOTEHEAD_INK`'s ERASED-raster
+# fill (`ink_net.best`, off `cell.image_no_staff` -- a staff line alone never
+# counts as ink there, unlike the combined `Q.NOTEHEAD_INK.value`) for BOTH
+# boxes and keeps the one with MORE head ink. Where either box carries no
+# ink witness at all, NEITHER is refused (rule 8) -- counted in
+# `same_side_signal.no_ink_witness`, never decided by falling back to score.
+# See `_notehead_ink_net`'s own docstring.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Halfway between a second (0.5 sp) and a third (1.0 sp), in half-steps: 1.5
+#: half-steps = 0.75 staff spaces. Sean set the boundary ("opposite sides of
+#: the stem") rather than measuring it on this population, so this is the
+#: stated midpoint, not a fitted bound.
+NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES = 0.75
+
+#: Reason a refused box carries under this rule -- kept apart from 2.30's
+#: `notehead_is_a_duplicate_box` so a census can tell the two mechanisms
+#: apart (CLAUDE.md §4d: `N must go down`, per named reason).
+NOTEHEAD_SAME_SIDE_REASON = "same_side_second"
+
+
+def _stem_xywh(row) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.STEM`'s own value shape, `[x, y, w, h]` -- `rhythm._xywh`'s exact
+    arithmetic, RESTATED rather than imported: `rhythm.py` already imports
+    THIS module (`from . import notehead_precision as _NP`), so the reverse
+    import would be a cycle -- the same reason `_notehead_box_iou` above
+    restates `family_precision`'s instead of importing it."""
+    v = row.value
+    if not isinstance(v, (list, tuple)) or len(v) < 4:
+        return None
+    return (float(v[0]), float(v[1]), float(v[2]), float(v[3]))
+
+
+def _stem_box_overlap(a, b) -> bool:
+    """`rhythm._boxes_overlap`'s exact test, restated for the same reason."""
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _stem_rows_on(box_xywh, stems) -> List[Any]:
+    """Every `Q.STEM` row (reduced to `(x, y, w, h)`) whose box overlaps
+    `box_xywh` -- `rhythm._stems_on`'s own test, over rows this module
+    already pulled for the cell rather than re-querying."""
+    out = []
+    for row in stems:
+        box = _stem_xywh(row)
+        if box is not None and _geom.stem_touches_head(box, box_xywh):
+            out.append((row, box))
+    return out
+
+
+def _same_side_candidates(ev: Evidence, cell, this_class: str, row,
+                          spacing_canonical: float):
+    """ROADMAP 2.40 ROUND 3 — the search body of `_notehead_same_side_
+    second_refusal`, EXTRACTED so it can be run on ANY box in the cell, not
+    only `ev.subject`'s own. `_would_survive_as_a_duplicate` below calls it
+    on a candidate's PARTNER to see whether the partner itself has a
+    same-side beater, without ever reading a verdict (rule 6: the same
+    pure re-check `_would_lose_to_2_30s_duplicate_rule` uses for 2.30).
+
+    Yields `(subj, other_row, other_ink, stem_row)` for every same-class,
+    overlapping, same-stem, same-side, within-gate candidate -- exactly
+    `_notehead_same_side_second_refusal`'s own filter chain, unchanged.
+    """
+    val = row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return
+    xywh = (float(val[1]), float(val[2]), float(val[3]), float(val[4]))
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    my_stems = _stem_rows_on(xywh, stems)
+    if not my_stems:
+        return
+    cx = xywh[0] + xywh[2] / 2.0
+    cy = xywh[1] + xywh[3] / 2.0
+    for subj, other_row in _cell_notehead_boxes(ev, cell).items():
+        if subj == row.subject:
+            continue
+        other_val = other_row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(val, other_val) <= 0.0:
+            continue
+        other_xywh = (float(other_val[1]), float(other_val[2]),
+                     float(other_val[3]), float(other_val[4]))
+        shared = None
+        for stem_row, stem_box in my_stems:
+            if _stem_box_overlap(stem_box, other_xywh):
+                shared = (stem_row, stem_box)
+                break
+        if shared is None:
+            continue
+        stem_row, stem_box = shared
+        scx = stem_box[0] + stem_box[2] / 2.0
+        this_side = cx >= scx
+        other_side = (other_xywh[0] + other_xywh[2] / 2.0) >= scx
+        if this_side != other_side:
+            continue
+        other_cy = other_xywh[1] + other_xywh[3] / 2.0
+        dy_spaces = abs(cy - other_cy) / spacing_canonical
+        if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
+            continue
+        other_ink = _notehead_ink_net(ev, subj)
+        yield subj, other_row, other_ink, stem_row, dy_spaces
+
+
+def _same_side_beater(ev: Evidence, cell, this_class: str, row,
+                      spacing_canonical: float):
+    """The `(row, stem_row)` this rule would keep OVER `row` -- the
+    same-side candidate with strictly more ink -- or `None`. `row`'s own
+    ink must also be readable; a missing witness on EITHER side answers
+    `None` here (the caller's own `no_ink_witness` counting happens once,
+    at the top level, not on every recursive hop)."""
+    this_ink = _notehead_ink_net(ev, row.subject)
+    if this_ink is None:
+        return None
+    best = None
+    for subj, other_row, other_ink, stem_row, _dy in _same_side_candidates(
+            ev, cell, this_class, row, spacing_canonical):
+        if other_ink is None:
+            continue
+        if other_ink > this_ink and (best is None or other_ink > best[2]):
+            best = (other_row, stem_row, other_ink)
+    return best
+
+
+def _would_survive_as_a_duplicate(ev: Evidence, cell, this_class: str, row,
+                                  spacing_canonical: float,
+                                  _seen: Optional[frozenset] = None) -> bool:
+    """ROADMAP 2.40 ROUND 3 — CONNECT ALL THE WAY DOWN, NOT ONE HOP. The
+    round-2 fix asked "is my chosen partner refused by 2.30 or 2.4a" but
+    missed a partner refused by a SECOND `same_side_second` hop against a
+    THIRD box (`cell/3/1/2/9`: glyph 2 lost to glyph 5, which itself lost
+    to glyph 3) -- round 2's fix let glyph 2 be refused anyway, because
+    glyph 5's OWN loss was never checked. This recurses the SAME pure
+    re-checks (2.30's gate, `too_narrow`, and this rule's own same-side
+    gate) along the whole chain, with a visited-set guard against a cycle
+    (two boxes each preferring the other on some third path -- unobserved
+    here, but a pure recursion must not spin forever on one if a future
+    page has one).
+    """
+    if _too_narrow(row, spacing_canonical, {}):
+        return False
+    if _would_lose_to_2_30s_duplicate_rule(ev, cell, this_class, row,
+                                           spacing_canonical):
+        return False
+    seen = _seen or frozenset()
+    if row.subject in seen:
+        return False        # a cycle -- cannot confirm either side survives
+    beater = _same_side_beater(ev, cell, this_class, row, spacing_canonical)
+    if beater is None:
+        return True
+    better_row, _stem_row, _ink = beater
+    return _would_survive_as_a_duplicate(
+        ev, cell, this_class, better_row, spacing_canonical,
+        seen | {row.subject})
+
+
+def _notehead_same_side_second_refusal(ev: Evidence, this_row,
+                                       spacing_canonical: float,
+                                       detail: Dict[str, Any]
+                                       ) -> Optional[Ruling]:
+    """ROADMAP 2.40: two same-class, overlapping notehead boxes on the SAME
+    side of the ONE stem they both attach to, within
+    `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES`, are one physical mark boxed
+    twice. See the module block comment above for why this reaches further
+    than 2.30's `_notehead_duplicate_box_refusal` and why a missing stem
+    abstains rather than refuses.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+
+    my_stems = _stem_rows_on(
+        (float(this_val[1]), float(this_val[2]), float(this_val[3]),
+         float(this_val[4])),
+        ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
+    if not my_stems:
+        # ⚠️ COUNTED, NOT REFUSED. The stem side cannot be read at all for
+        # this glyph, so the widening has nothing to stand on (rule 8).
+        detail["same_side_signal"] = {"no_stem_read": True}
+        return None
+
+    # ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6): the KEEP CHOICE reads INK, never
+    # detector score -- see `_notehead_ink_net`'s own docstring for why a
+    # score fallback is unsafe (it kept an empty box over a real head on
+    # the print). `this_ink` is fetched ONCE; a candidate with no ink
+    # witness on either side of the pair counts as `no_ink_witness` and is
+    # never refused (rule 8) -- the search still runs so the case is seen
+    # and recorded, it just decides nothing.
+    this_ink = _notehead_ink_net(ev, ev.subject)
+
+    better = None
+    better_stem = None
+    checked = 0
+    no_ink_witness = 0
+    partner_refused = 0
+    for subj, row, other_ink, stem_row, dy_spaces in _same_side_candidates(
+            ev, cell, this_class, this_row, spacing_canonical):
+        checked += 1
+        if this_ink is None or other_ink is None:
+            no_ink_witness += 1
+            continue         # no witness for this pair -- refuse neither
+        if other_ink > this_ink:
+            # ⚠️ MANAGER REVIEW ROUND 3 — CONNECT, DON'T GUESS (rule 6). The
+            # 3 real cases found in round 2 (`3/0/0/0`, `3/0/4/6`,
+            # `3/0/10/6`) each refused THIS box in favour of a "better"
+            # partner that was ITSELF refused by a DIFFERENT rule (2.30's
+            # `notehead_is_a_duplicate_box` or 2.4a's `too_narrow`) --
+            # leaving the one real mark with NO surviving box, worse than
+            # the doubled box this rule exists to fix.
+            #
+            # ⚠️⚠️ NOT `ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=
+            # subj)` -- TRIED FIRST, AND REFUSED BY THE FRAMEWORK'S OWN
+            # CIRCULARITY GUARD FOR GOOD REASON. `Evidence._admit` treats
+            # ANY read of this decision's OWN quantity as circular unless
+            # `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` has a registered `READINGS`
+            # entry (it has none, by design -- this quantity has no single
+            # "direct reading"), so the read always came back `None` --
+            # and reproducing it with a raw `ev.log.verdict()` bypass would
+            # make the answer depend on which of the pair `adjudicate.run`'s
+            # per-subject iteration happens to reach FIRST, which is an
+            # ORDERING ACCIDENT, not a fact about the page (confirmed while
+            # building the RED test: swapping the two glyphs' indices alone
+            # flipped the outcome). So this asks the SAME QUESTION 2.30 and
+            # 2.4a already answer, via their own PURE, subject-independent
+            # predicates instead of their composed verdicts --
+            # `_would_lose_to_2_30s_duplicate_rule` and `_too_narrow` --
+            # which give the identical answer regardless of iteration
+            # order, because neither reads anything through `Evidence` at
+            # all. ⚠️ ONE HOP WAS NOT ENOUGH (`cell/3/1/2/9`: a partner that
+            # itself loses a SECOND same-side hop to a third box) --
+            # `_would_survive_as_a_duplicate` recurses the whole chain.
+            if not _would_survive_as_a_duplicate(
+                    ev, cell, this_class, row, spacing_canonical):
+                partner_refused += 1
+                continue
+            better, better_stem = row, stem_row
+            detail["same_side_dy_spaces"] = round(dy_spaces, 3)
+            detail["same_side_this_ink"] = round(this_ink, 4)
+            detail["same_side_other_ink"] = round(other_ink, 4)
+
+    signal = {"candidates_checked": checked}
+    if no_ink_witness:
+        signal["no_ink_witness"] = no_ink_witness
+    if partner_refused:
+        signal["partner_refused"] = partner_refused
+    detail.setdefault("same_side_signal", signal)
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        # ⚠️ LITERAL, NOT THE CONSTANT: `brakes.vocabulary_gap` reads the
+        # `reason=` slot's AST (module docstring, "THE TWO REASONS ARE
+        # RETURNED AS LITERALS"); a name reference makes the whole MODULE
+        # read UNRESOLVED.
+        return Ruling(value=True, reason="same_side_second",
+                      used=(this_row.id, better.id, better_stem.id),
+                      detail=detail)
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.42 -- stacked heads on one stem: how many, and where.
+#
+# SUPERSEDES 2.40's `same_side_second` above (which the composed decision no
+# longer calls -- see `adjudicate_notehead_is_not_a_notehead`'s own call
+# site). 2.40 could only ask "is THIS box the SAME mark as ONE other box";
+# on `cell/3/1/2/9` (four overlapping boxes on one stem, two real heads a
+# third apart) that pair-wise question has no consistent answer -- box 2
+# loses to box 5, which itself loses to box 3, and round 2's fix needed a
+# whole recursive chain (`_would_survive_as_a_duplicate`) just to stop a
+# real head losing its only surviving box. 2.42 asks the question Sean's own
+# brief poses directly: *how many heads does this GROUP'S ink actually
+# support*, decided ONCE per group in GATHER (`gather.gather_stacked_head_
+# fit`, `Q.STACKED_HEAD_FIT`) and read here, never re-measured.
+#
+# 2.40's function above is RETAINED, UNWIRED: its own tests
+# (`test_staged_notehead_same_side_second.py`) are a real, print-checked
+# regression suite of the pair-wise mechanism and stay green as a record of
+# what was measured (CLAUDE.md §6c's mutation-battery precedent -- the
+# finding stands, the code is not deleted out from under its own proof).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Reason a refused box carries under ROADMAP 2.42 -- kept apart from 2.30's
+#: and 2.40's own reasons so a census can tell all three mechanisms apart
+#: (CLAUDE.md §4d: `N must go down`, per named reason).
+STACKED_HEAD_REASON = "stacked_head_duplicate"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.49 -- a stroke crossing a stem is a tremolo slash, not a
+# notehead (Sean, DECISIONS 2026-10-01: "a single notehead can't extend on
+# either side of the stem ... any time a stem has a diagonal ink slash that
+# could be confused with a notehead it must land on one side of the stem").
+# `gather.gather_notehead_stem_cross_ink` already measured, per
+# notehead-classed box, how much ink stands on either side of its matched
+# `Q.STEM` row's own centre x (`Q.NOTEHEAD_STEM_CROSS_INK`); this is
+# ADJUDICATE's half -- the floor, and the refusal.
+#
+# ⚠️ FOUND ON THE TREE (manager, 2026-10-01, Litolff `glyph/13/1/8/13/5`):
+# 2.42's own stacked-head keep-choice can pick a SLASH over the real open
+# head it crosses, because the slash's thin diagonal ink can out-score a
+# hollow head's own faint ring under `notehead_ink_under`. `_stacked_head_
+# group_rows`'s own callers below drop a tremolo-flagged candidate from the
+# group BEFORE the ink comparison, so a slash can never be chosen as the
+# slot's keeper and never costs a real head its only surviving box.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️⚠️ ROADMAP 2.49 REDESIGN (Sean, DECISIONS 2026-10-01, on manager crop
+#: `glyph/3/0/8/6/12`, a plain filled head whose own round oval pokes past
+#: its own attached stem): *"it should first be recognized as a thick
+#: diagonal line that crosses both sides of the stem significantly ...
+#: Those [false positives look like] a notehead and a ledger line. Those
+#: are at the end of a stem -- a trem slash wouldn't be and they primarily
+#: are on one side of the stem with a tiny bleed. Not to mention that it is
+#: round not a diagonal thick line."* Three tests, ALL required, in THIS
+#: order (shape first -- a round blob or a thin horizontal/vertical line is
+#: never a slash whatever its ink distribution says):
+#:
+#:   1. SHAPE   `_tremolo_shape_ok` -- the glyph's own ink (whole box,
+#:      beam-excluded) is a THICK DIAGONAL stroke: its principal-axis angle
+#:      sits well off both horizontal (a ledger) and vertical (a stem
+#:      fragment), it is clearly ELONGATED (not round), and it does not
+#:      FILL its own box the way a solid oval does.
+#:   2. CROSSING `_tremolo_crossing_ok` -- each side of the stem (beyond the
+#:      stem's own edges, never its centre line) holds a REAL SHARE of the
+#:      glyph's OWN total ink, not merely a dense fraction of a possibly
+#:      tiny sliver -- "a tiny bleed" must fail even where the sliver
+#:      itself reads 100% full.
+#:   3. POSITION `_tremolo_position_ok` -- the box sits on the stem's own
+#:      SHAFT, away from BOTH ends; a head always sits AT one end (where it
+#:      attaches), so a box centred near either end fails regardless of
+#:      shape or crossing.
+#: ─────────────────────────────────────────────────────────────────────────────
+
+#: Degrees off HORIZONTAL the stroke's own principal axis must clear on
+#: BOTH sides -- `[MIN, MAX]` keeps a thin horizontal ledger (angle ~0) and
+#: a near-vertical stem fragment (angle ~90) out, symmetric around a 45°
+#: diagonal. MEASURED on synthetic strokes built to the real proportions
+#: (`test_staged_tremolo_slash.py`): a 45°, thickness-24px/length-140px
+#: diagonal reads 44.3°; a horizontal ledger-like stroke reads 0.0°; a
+#: vertical stem-like stroke reads 89.2° -- the band is wide because a
+#: real slash is drawn at varying steepness, never because it was fitted
+#: to patch one case.
+SHAPE_ANGLE_MIN_DEG = 20.0
+SHAPE_ANGLE_MAX_DEG = 70.0
+
+#: sqrt(major variance / minor variance) of the ink mask. MEASURED on a
+#: clean synthetic stroke: a round filled notehead reads 1.3; a 45°,
+#: thickness-24px diagonal reads 5.87. ⚠️ REAL SCANNED INK READS LOWER ON
+#: BOTH SIDES than the clean synthetic (manager review, Litolff real
+#: re-gather): the confirmed-by-crop real slash `glyph/13/1/10/2/0` reads
+#: only 1.9 (anti-aliasing and fusion with nearby chord ink flatten it),
+#: and the real heads sampled read ~1.08-1.33. 1.8 sits just below the
+#: lowest confirmed real slash and above every confirmed real head
+#: measured so far -- a narrower real margin than the synthetic one, which
+#: is why CROSSING and POSITION carry real weight too rather than SHAPE
+#: alone.
+SHAPE_MIN_ELONGATION = 1.8
+
+#: ink pixels / the WHOLE box's own area. MEASURED: the same filled
+#: notehead reads 0.73 (a solid oval fills most of its own box); the
+#: diagonal stroke reads 0.22 (a thin stroke drawn inside a box sized to
+#: the DETECTOR's extent, not to the stroke's own width, fills much less of
+#: it). Set below the head's own number with real margin, above the
+#: stroke's.
+SHAPE_MAX_FILL = 0.55
+
+#: Each side (beyond the stem's own edges) must hold at least this SHARE of
+#: the glyph's own TOTAL ink (not a fraction of that side's own small area)
+#: -- Sean: "a tiny bleed" must fail even where the sliver itself is dense.
+#: A real slash splits roughly evenly across the stem it crosses; 0.30
+#: requires each side to carry close to a third of the whole stroke, far
+#: above what a round head's own curve pokes past its attached edge.
+CROSSING_MIN_SHARE = 0.30
+
+#: The box's own centre must sit at least this many BOX HEIGHTS from the
+#: NEAREST end of the matched `Q.STEM` row -- a notehead's own box is
+#: centred AT the end it attaches to (distance ~0); a slash sits along the
+#: shaft, clearly away from both ends. One box-height is the same unit
+#: `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`-style rules already use (the
+#: glyph's own detected size), not a separately fitted pixel count.
+POSITION_MIN_END_RATIO_BOX_HEIGHTS = 0.5
+
+#: Reason a refused box carries under ROADMAP 2.49 -- kept apart from every
+#: other mechanism here so a census can tell them apart (CLAUDE.md §4d).
+TREMOLO_SLASH_REASON = "tremolo_slash_crosses_stem"
+
+#: ON since 2026-10-01 (Sean: "Switch it on"), after he read every firing
+#: of the three-test rule on Litolff pp.1-3 plus his two named page-13 cases:
+#: 7 of 7 real slashes, a real head as control did not fire (DECISIONS
+#: 2026-10-01, ROADMAP 2.49). The signal stays recorded on every
+#: notehead-classed glyph that reaches a `Q.STEM` box
+#: (`detail["tremolo_slash_signal"]`).
+TREMOLO_SLASH_SHIPS = True
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.137 -- a slash is never oval, so it need not stand away from the
+# stem's ends. `OMR_SLASH_AT_STEM_END`, STAGED, default ON since 2026-10-15 (Sean: 5/5 fixed, 3/3 controls).
+#
+# Sean, 2026-10-15 (page-facts §1, general scope): *"They are never oval shaped
+# - always thick diagonal lines."* The 20261014-night records (FINDINGS 2.137)
+# keep print-confirmed tremolo slashes as noteheads (Brahms 35, Litolff 12).
+# Every one passes 2.49's CROSSING test (or 2.71's stroke witness) and fails
+# only what the convention does not ask for: POSITION (the first slash of a
+# stack sits 0.07-0.49 box-heights from the stem's tip, under the 0.5 floor) and
+# the 20-degree floor of SHAPE (Brahms slashes lie at 10-20 degrees). With the
+# flag on, a box whose own ink is NOT OVAL is refused as the slash it is,
+# without the position test, and its margin is filed.
+#
+# What decides and what only narrows (CLAUDE.md §4): "never oval, thick,
+# diagonal, across both sides of one stem" is the convention and decides. The
+# numbers are 2.49's existing cut-offs (elongation, fill ceiling) plus two
+# measured on these two plates only (angle band, fill floor); they are filed as
+# margins; Sean read the tiles and landed it ON (tile 9, a deformed half note, is refused and accepted).
+SLASH_AT_STEM_END_ENV = "OMR_SLASH_AT_STEM_END"
+#: degrees off horizontal. A slash crosses a stem sideways: the confirmed ones
+#: read 10.3-34.8; a quarter rest's zigzag reads 64-67 and is not asked.
+NOT_OVAL_ANGLE_MIN_DEG = 10.0
+NOT_OVAL_ANGLE_MAX_DEG = 45.0
+#: "thick": a thin slur or beam sliver boxed as a head fills ~0.07; the
+#: confirmed slashes fill 0.26-0.55.
+NOT_OVAL_MIN_FILL = 0.15
+
+
+def slash_at_stem_end_enabled() -> bool:
+    """Default ON (Sean 2026-10-15, ROADMAP 2.137): a deny-list -- only an explicit off-word restores the old reader."""
+    return os.environ.get(SLASH_AT_STEM_END_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
+
+
+def _not_oval_slack(cross_detail: Dict[str, Any]
+                    ) -> Tuple[Optional[str], Optional[float]]:
+    """`(tightest axis, signed slack as a fraction of its cut)` of the
+    NOT-OVAL shape witness on one box's own ink, or `(None, None)` where GATHER
+    read no shape. >= 0 on every axis = a thick diagonal, not an oval."""
+    angle = cross_detail.get("angle_deg")
+    elong = cross_detail.get("elongation")
+    fill = cross_detail.get("fill")
+    if angle is None or elong is None or fill is None:
+        return None, None
+    return _margins.tightest((
+        ("angle_floor", (angle - NOT_OVAL_ANGLE_MIN_DEG) / NOT_OVAL_ANGLE_MIN_DEG),
+        ("angle_ceiling", (NOT_OVAL_ANGLE_MAX_DEG - angle) / NOT_OVAL_ANGLE_MAX_DEG),
+        ("elongation", (elong - SHAPE_MIN_ELONGATION) / SHAPE_MIN_ELONGATION),
+        ("fill_ceiling", (SHAPE_MAX_FILL - fill) / SHAPE_MAX_FILL),
+        ("fill_floor", (fill - NOT_OVAL_MIN_FILL) / NOT_OVAL_MIN_FILL)))
+
+
+def _slash_at_stem_end(ev: Evidence, subject, box_xywh,
+                       cross_detail: Optional[Dict[str, Any]]
+                       ) -> Optional[Dict[str, Any]]:
+    """The flagged witness (2.137) for one notehead-classed box on a matched
+    stem: `{"fires", "via", "margin", "axis", ...}`, or `None` where no shape
+    was read (a box this cannot read is not one it clears). Reads rows only.
+
+    FIRES when the box's ink is NOT OVAL (`_not_oval_slack` >= 0) AND the
+    stroke crosses the stem: each side holds `CROSSING_MIN_SHARE` of the
+    glyph's own ink, or GATHER's `Q.STEM_SLASH` read a passing stroke under
+    the box (which already means both sides reach). POSITION is not asked."""
+    if cross_detail is None:
+        return None
+    axis, slack = _not_oval_slack(cross_detail)
+    if slack is None:
+        return None
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    via = "crossing_share" if crossing_ok else None
+    if via is None and _slash_read_under_box(
+            ev, subject, box_xywh, need_position=False) is not None:
+        via = "stem_slash_stroke"
+    if via == "crossing_share":
+        share_slack = (min(cross_detail["left_share"], cross_detail["right_share"])
+                       - CROSSING_MIN_SHARE) / CROSSING_MIN_SHARE
+        if share_slack < slack:
+            axis, slack = "crossing_share", share_slack
+    return {"fires": bool(via is not None and slack >= 0.0), "via": via,
+            "margin": round(slack, 4), "axis": axis, "crossing_ok": crossing_ok,
+            "angle_deg": cross_detail.get("angle_deg"),
+            "elongation": cross_detail.get("elongation"),
+            "fill": cross_detail.get("fill")}
+
+
+def _notehead_stem_cross_detail(ev: Evidence, subject) -> Optional[Dict[str, Any]]:
+    """`Q.NOTEHEAD_STEM_CROSS_INK`'s own `detail` for `subject`, or `None`
+    where GATHER filed no row (no overlapping stem, or no area to split --
+    see the quantity's own docstring). Read, never re-derived (CLAUDE.md
+    rule 6): the raster split and the shape read both already happened in
+    GATHER."""
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=subject)
+    if not rows:
+        return None
+    return rows[-1].detail or {}
+
+
+def _tremolo_shape_ok(cross_detail: Dict[str, Any]) -> Optional[bool]:
+    """TEST 1, SHAPE: a thick diagonal stroke, not round, not a thin
+    horizontal/vertical line. `None` (not False) where GATHER could not
+    read a shape at all (too little ink, `SHAPE_MIN_INK_PX`) -- a shape
+    this test cannot read is not one it clears."""
+    angle = cross_detail.get("angle_deg")
+    elong = cross_detail.get("elongation")
+    fill = cross_detail.get("fill")
+    if angle is None or elong is None or fill is None:
+        return None
+    return (SHAPE_ANGLE_MIN_DEG <= angle <= SHAPE_ANGLE_MAX_DEG
+           and elong >= SHAPE_MIN_ELONGATION
+           and fill <= SHAPE_MAX_FILL)
+
+
+def _tremolo_crossing_ok(cross_detail: Dict[str, Any]) -> Optional[bool]:
+    """TEST 2, CROSSING: each side holds a real SHARE of the glyph's own
+    total ink -- never a fraction of that side's own (possibly tiny) area.
+    `None` where GATHER found no ink to share at all."""
+    left_share = cross_detail.get("left_share")
+    right_share = cross_detail.get("right_share")
+    if left_share is None or right_share is None:
+        return None
+    return (left_share >= CROSSING_MIN_SHARE
+           and right_share >= CROSSING_MIN_SHARE)
+
+
+def _tremolo_position_ok(box_xywh: Tuple[float, float, float, float],
+                         stem_xywh: Tuple[float, float, float, float]
+                         ) -> Optional[bool]:
+    """TEST 3, POSITION: away from BOTH ends of the matched stem, in box
+    heights. `None` where the box carries no height to measure against."""
+    x, y, w, h = box_xywh
+    sx, sy, sw, sh = stem_xywh
+    if h <= 0:
+        return None
+    cy = y + h / 2.0
+    dist_top = cy - sy
+    dist_bottom = (sy + sh) - cy
+    nearest = min(dist_top, dist_bottom)
+    return (nearest / h) >= POSITION_MIN_END_RATIO_BOX_HEIGHTS
+
+
+def _tremolo_stem_box(ev: Evidence, cell, stem_id: Optional[str]
+                      ) -> Optional[Tuple[float, float, float, float]]:
+    """The exact `Q.STEM` row GATHER matched (named by id in the cross-ink
+    row's own `detail["stem"]`), read back from this cell's rows -- never
+    re-matched by overlap a second time (CLAUDE.md rule 6)."""
+    if stem_id is None:
+        return None
+    for r in ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if r.id == stem_id:
+            return _stem_xywh(r)
+    return None
+
+
+#: ROADMAP 2.71 -- a second witness that this box IS the tremolo slash:
+#: GATHER's own `Q.STEM_SLASH` reading (a thick angled stroke followed out of
+#: BOTH sides of one stem, joined to no other) stands inside the box. The box
+#: must hold at least this share of the slash's CENTRE LINE and be no more than
+#: this many times the stroke's own area (length x thickness; a head with a
+#: slash across it is a bigger box
+#: and is not asked), and must sit away from both stem ends (the same POSITION
+#: test as above: a head sits AT an end, never on the shaft).
+SLASH_READ_COVER_MIN = 0.6
+SLASH_READ_BOX_MAX_FOOTPRINTS = 4.0
+
+
+def _slash_read_under_box(ev: Evidence, subject, box_xywh,
+                          need_position: bool = True
+                          ) -> Optional[Tuple[Any, Dict[str, Any]]]:
+    """`(Q.STEM_SLASH row, stroke)` where a PASSING slash read by GATHER lies
+    inside `box_xywh` (a notehead-classed box, canonical cell px) on the shaft
+    of the stem it was read on; else `None`. ROADMAP 2.71. Reads the row,
+    never the raster -- the one place a slash is named is `gather.stem_slashes`.
+    """
+    cell = subject.at(Kind.CELL)
+    rows = ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    if not rows:
+        return None
+    x, y, w, h = box_xywh
+    for r in rows:
+        stem_xywh = _tremolo_stem_box(ev, cell, (r.detail or {}).get("stem_row_id"))
+        for s in (r.detail or {}).get("strokes") or ():
+            b = s.get("box")
+            if s.get("reason") is not None or not isinstance(b, (list, tuple)) \
+                    or len(b) != 4 or stem_xywh is None:
+                continue
+            line = s.get("centreline")
+            thick = float(s.get("thickness_px") or 0.0)
+            if not (isinstance(line, (list, tuple)) and len(line) == 4):
+                continue
+            lx0, ly0, lx1, ly1 = (float(v) for v in line)
+            # the share of the stroke's CENTRE LINE inside the box: a box
+            # covers a slash by covering where it runs, not the empty corners
+            # of the rectangle that bounds an angled stroke
+            n = 9
+            inside = sum(
+                1 for i in range(n)
+                if x <= lx0 + (lx1 - lx0) * i / (n - 1.0) <= x + w
+                and y <= ly0 + (ly1 - ly0) * i / (n - 1.0) <= y + h)
+            if inside / float(n) < SLASH_READ_COVER_MIN:
+                continue
+            area = max(1e-6, ((lx1 - lx0) ** 2 + (ly1 - ly0) ** 2) ** 0.5 * thick)
+            if (w * h) > SLASH_READ_BOX_MAX_FOOTPRINTS * area:
+                continue
+            if not need_position or _tremolo_position_ok(box_xywh, stem_xywh):
+                return r, s
+    return None
+
+
+def _is_tremolo_slash(ev: Evidence, subject) -> bool:
+    """Do ALL THREE of `subject`'s own tests pass -- the same tests
+    `_tremolo_slash_crosses_stem` makes for `ev.subject`, asked here of any
+    OTHER glyph in a stacked group so a slash can never be chosen as that
+    group's keeper (see the module-section comment above).
+
+    ⚠️ `TREMOLO_SLASH_SHIPS` GATES THIS TOO, not only the direct refusal --
+    the whole mechanism is held back to a true no-op while unshipped (see
+    that constant's own docstring); a stacked group's keep-choice must not
+    quietly change on a signal nobody has agreed to trust yet.
+    """
+    if not TREMOLO_SLASH_SHIPS:
+        return False
+    box_row = None
+    for r in ev.rows(Q.GLYPH_BOX, subject=subject):
+        box_row = r
+    if box_row is None or not isinstance(box_row.value, (list, tuple)) \
+            or len(box_row.value) != 5:
+        return False
+    box_xywh = tuple(float(v) for v in box_row.value[1:])
+    # ROADMAP 2.71: the same second witness `_tremolo_slash_crosses_stem`
+    # takes, so a stacked group's keep-choice never picks a read slash.
+    if _slash_read_under_box(ev, subject, box_xywh) is not None:
+        return True
+    cross_detail = _notehead_stem_cross_detail(ev, subject)
+    if cross_detail is None:
+        return False
+    cell = subject.at(Kind.CELL)
+    stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
+    if stem_xywh is None:
+        return False
+    shape_ok = _tremolo_shape_ok(cross_detail)
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    position_ok = _tremolo_position_ok(box_xywh, stem_xywh)
+    if shape_ok and crossing_ok and position_ok:
+        return True
+    # ROADMAP 2.137 (flag, default OFF): the same witness the direct refusal
+    # takes, so a stacked group's keep-choice never picks a slash either.
+    if slash_at_stem_end_enabled():
+        alt = _slash_at_stem_end(ev, subject, box_xywh, cross_detail)
+        return bool(alt is not None and alt["fires"])
+    return False
+
+
+def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
+                                detail: Dict[str, Any]
+                                ) -> Optional[Ruling]:
+    """ROADMAP 2.49 -- all three tests (SHAPE, CROSSING, POSITION), in that
+    order, over THIS box's own ink and its matched `Q.STEM` row. Reads
+    `Q.NOTEHEAD_STEM_CROSS_INK`/`Q.STEM` (GATHER) -- never re-measures the
+    raster. `None` where GATHER filed no cross-ink row at all (no stem
+    reached this box, or the box does not extend far enough past the stem
+    on one side to ask the question): a box this rule cannot address is
+    not a box it clears.
+
+    ⚠️ `TREMOLO_SLASH_SHIPS = False` (see its own docstring): the SIGNAL is
+    computed and recorded on every call that reaches it, exactly as
+    `_unladdered` does; it never sets `value=True` while the constant is
+    `False`. These tests assert the SIGNAL, not a refusal, the same
+    discipline `TestUnladdered` uses.
+    """
+    # ⚠️ ROADMAP 2.71 -- THE SECOND WITNESS, FIRST. GATHER's `Q.STEM_SLASH`
+    # followed a thick angled stroke out of both sides of one stem; if that
+    # stroke is what this box covers (and the box stands on the shaft, away
+    # from both ends), the box is the slash whatever the cell's own ink split
+    # said -- Litolff p6 `glyph/6/1/11/3/3`, a slash kept as a black head
+    # because the split read it round. It is a witness, never a fallback: the
+    # three-test reading below still runs and still records its signal.
+    if TREMOLO_SLASH_SHIPS and isinstance(this_row.value, (list, tuple)) \
+            and len(this_row.value) == 5:
+        read = _slash_read_under_box(
+            ev, this_row.subject,
+            tuple(float(v) for v in this_row.value[1:]))
+        if read is not None:
+            slash_row, stroke = read
+            detail["tremolo_slash_signal"] = {
+                "read_by": "stem_slash", "angle_deg": stroke.get("angle_deg"),
+                "thickness_ratio": stroke.get("thickness_ratio"),
+                "would_fire": True}
+            return Ruling(value=True, reason="tremolo_slash_crosses_stem",
+                          used=(this_row.id, slash_row.id), detail=detail)
+    cross_detail = _notehead_stem_cross_detail(ev, this_row.subject)
+    if cross_detail is None:
+        return None
+    shape_ok = _tremolo_shape_ok(cross_detail)
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    box_row = this_row
+    box_xywh = tuple(float(v) for v in box_row.value[1:]) \
+        if isinstance(box_row.value, (list, tuple)) and len(box_row.value) == 5 \
+        else None
+    cell = this_row.subject.at(Kind.CELL)
+    stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
+    position_ok = (_tremolo_position_ok(box_xywh, stem_xywh)
+                  if box_xywh is not None and stem_xywh is not None else None)
+    would_fire = bool(shape_ok and crossing_ok and position_ok)
+    detail["tremolo_slash_signal"] = {
+        "angle_deg": cross_detail.get("angle_deg"),
+        "elongation": cross_detail.get("elongation"),
+        "fill": cross_detail.get("fill"),
+        "left_share": cross_detail.get("left_share"),
+        "right_share": cross_detail.get("right_share"),
+        "shape_ok": shape_ok, "crossing_ok": crossing_ok,
+        "position_ok": position_ok, "would_fire": would_fire}
+    if not would_fire and TREMOLO_SLASH_SHIPS and box_xywh is not None \
+            and slash_at_stem_end_enabled():
+        # ROADMAP 2.137: not oval + across the stem; position recorded, not
+        # asked. A near miss files its margin on the KEPT head too (2.106).
+        alt = _slash_at_stem_end(ev, this_row.subject, box_xywh, cross_detail)
+        if alt is not None:
+            detail["tremolo_slash_signal"]["at_stem_end"] = alt
+            if alt["fires"]:
+                rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK,
+                               subject=this_row.subject)
+                used = (this_row.id, rows[-1].id) if rows else (this_row.id,)
+                return _margins.attach(
+                    Ruling(value=True, reason="tremolo_slash_crosses_stem",
+                           used=used, detail=detail),
+                    margin=alt["margin"], axis=alt["axis"],
+                    unit="fraction of the cut", band=None,
+                    would_choose=(True,), refused_via=alt["via"])
+    if not would_fire or not TREMOLO_SLASH_SHIPS:
+        return None
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=this_row.subject)
+    used = (this_row.id, rows[-1].id) if rows else (this_row.id,)
+    # ⚠️ LITERAL, NOT THE CONSTANT ABOVE — `brakes.vocabulary_gap`'s AST
+    # walk over `reason=` needs a string literal to resolve every reason a
+    # `Ruling` here can carry; `STACKED_HEAD_REASON`/`NOTEHEAD_SAME_SIDE_
+    # REASON` keep the same split (constant for the `reasons=` DECLARATION,
+    # literal at the return) for the same reason.
+    return Ruling(value=True, reason="tremolo_slash_crosses_stem", used=used,
+                  detail=detail)
+
+
+def _stacked_head_group_rows(ev: Evidence, cell, stem_id: str, side: str,
+                             slot: int):
+    """Every OTHER notehead glyph in this cell whose own `Q.STACKED_HEAD_FIT`
+    row names the SAME (stem, side, slot) -- the population competing to be
+    the one surviving box for that fitted head."""
+    out = []
+    for r in ev.rows(Q.STACKED_HEAD_FIT, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        rd = r.detail or {}
+        if rd.get("stem") != stem_id or rd.get("side") != side:
+            continue
+        rv = r.value
+        if not isinstance(rv, (list, tuple)) or len(rv) != 4:
+            continue
+        if rv[1] != slot:
+            continue
+        out.append(r)
+    return out
+
+
+#: A head reads FILLED where every raster reading's centre window is at least
+#: this solid -- above Sean's filled Brahms floor (0.85) and below the solid
+#: mode (>= 0.95) of both scans; ink between the two cuts decides nothing.
+FILLED_CENTER_MIN = 0.9
+
+
+def _is_hollow_class(name) -> bool:
+    n = str(name)
+    return n.startswith("noteheadHalf") or n.startswith("noteheadWhole")
+
+
+def _hollow_ink_reading(ev: Evidence, subject) -> Optional[bool]:
+    """What the head's own ink says of its fill, `Q.NOTEHEAD_INK` read at
+    `subject`'s box: `True` decisively hollow (`rhythm`'s 2.23 test, now off
+    the line's rows too), `False` solidly filled on every raster read, `None`
+    where it says neither or says nothing."""
+    from . import rhythm as _rhythm      # a call-time import: rhythm imports us
+    rows = ev.rows(Q.NOTEHEAD_INK, subject=subject)
+    if not rows:
+        return None
+    d = rows[-1].detail or {}
+    if _rhythm._ink_reads_decisively_hollow(d):
+        return True
+    centers = []
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
+        c = ((d.get(key) or {}).get("windows") or {}).get("center")
+        if c is not None:
+            centers.append(c)
+    if centers and min(centers) >= FILLED_CENTER_MIN:
+        return False
+    return None
+
+
+_SURVIVES = object()
+
+
+def _earlier_rules_heir(ev: Evidence, cell, rival_row, spacing: float):
+    """ROADMAP 2.73 -- the rules that run BEFORE 2.42 in this decision (too
+    narrow; 2.30's same-mark rule; a cut head's piece) may already have refused
+    `rival_row`. Returns `_SURVIVES` if none did; else the box that keeps the
+    rival's mark (2.30's winner, the cut head's keeper), or `None` where the
+    rival is simply not a head (too narrow) and nothing inherits.
+
+    PURE (rows only), the same reason `_would_survive_as_a_duplicate` is.
+    Without it 2.42 chose a box refused a rule earlier as its slot's keeper and
+    deleted the box that stood: Brahms 317803 pdf 0, `glyph/0/0/4/4/2`, a head
+    lost to a rival 2.30 had refused in its favour.
+    """
+    val = rival_row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return _SURVIVES
+    if _too_narrow(rival_row, spacing, {}):
+        return None
+    winner = _2_30_winner(ev, cell, val[0], rival_row, spacing)
+    if winner is not None:
+        return winner
+    standing = _head_cut_standing(ev, rival_row.subject, rival_row, spacing)
+    if standing is not None and standing[4] != rival_row.subject:
+        return standing[1]
+    return _SURVIVES
+
+
+def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """ROADMAP 2.42 -- is this box one of SEVERAL mapped to the SAME fitted
+    head slot in its stacked group, and not the one the ink best supports?
+
+    `Q.STACKED_HEAD_FIT` (GATHER) already decided how many heads the group
+    holds and matched every box in it to its nearest fitted slot; this
+    decision's whole job is the KEEP CHOICE among boxes sharing one slot --
+    exactly 2.40's own ink-not-score rule (manager review, S6), ported
+    rather than restated: `detail["ink"]` on each `Q.STACKED_HEAD_FIT` row
+    IS `notehead_ink_under`'s `best` fill at that box's own detected box,
+    filed once by GATHER, read never re-derived here (CLAUDE.md rule 6).
+
+    ⚠️ A GROUP WHERE THIS GLYPH'S OWN SLOT HOLDS ONLY ONE BOX never refuses
+    it -- that box already IS the fitted head's own keeper, whether or not
+    any OTHER slot in the group lost boxes. ⚠️ WHERE EITHER BOX IN A
+    CONTESTED SLOT CARRIES NO INK WITNESS, NEITHER IS REFUSED (rule 8) --
+    counted in `detail["stacked_head_signal"]["no_ink_witness"]`, never
+    decided by falling back to score or to glyph index.
+    """
+    fit_rows = ev.rows(Q.STACKED_HEAD_FIT)
+    if not fit_rows:
+        return None
+    fit = fit_rows[-1]
+    val = fit.value
+    if not isinstance(val, (list, tuple)) or len(val) != 4:
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    k, slot, pos_float, margin = val
+    fdetail = fit.detail or {}
+    stem_id = fdetail.get("stem")
+    side = fdetail.get("side")
+    group_rows = _stacked_head_group_rows(ev, cell, stem_id, side, slot)
+    # ⚠️ ROADMAP 2.49 -- a TREMOLO SLASH is dropped from the group BEFORE the
+    # ink comparison below, so it can never be chosen as this slot's keeper
+    # (manager, Litolff `glyph/13/1/8/13/5`: the slash's own ink out-scored
+    # the real open head it crossed). The slash itself is refused earlier,
+    # by `_tremolo_slash_crosses_stem`, on its OWN pass through the decision
+    # -- this filter only protects the OTHER members of its group.
+    group_rows = [r for r in group_rows if not _is_tremolo_slash(ev, r.subject)]
+    # ⚠️ ROADMAP 2.73 -- ONLY BOXES ON THIS HEAD COMPETE FOR ITS SLOT. The
+    # group is "every box on this stem, this side": it carries no test that two
+    # of its boxes stand on the SAME head, and the fit can call a group of two
+    # heads an octave apart ONE slot (the mean ink falls when the weaker head is
+    # added). Measured on Brahms 317803 pdf 0, five whole boxes of Sean's
+    # hand-labelled heads (IoU 0.99-1.0) were refused here in favour of the
+    # box of the OTHER head on the same stem, 3.5 staff spaces away. A box that
+    # neither overlaps nor abuts this one cannot be this head boxed twice.
+    cell_boxes = _cell_notehead_boxes(ev, cell)
+    this_box = cell_boxes.get(ev.subject)
+    spacing = _cell_staff_space(ev)
+    # ROADMAP 2.105: a box that is a beam's ink is no head and cannot be the
+    # slot's keeper (the shared twin ordering kept one: Sean's tile 6). A group
+    # whose every box is beam ink keeps none -- each is refused as a beam piece
+    # before this rule runs.
+    if spacing:
+        group_rows = [r for r in group_rows if r.subject == ev.subject
+                      or r.subject not in cell_boxes
+                      or _beam_piece_refusal(ev, cell_boxes[r.subject],
+                                             spacing, {}) is None]
+    if this_box is not None and spacing:
+        mine = this_box.value
+        group_rows = [
+            r for r in group_rows
+            if r.subject == ev.subject
+            or (r.subject in cell_boxes
+                and isinstance(cell_boxes[r.subject].value, (list, tuple))
+                and len(cell_boxes[r.subject].value) == 5
+                and (_boxes_on_one_head(mine, cell_boxes[r.subject].value,
+                                        spacing)
+                     or not (_plausible_head_box(mine, spacing)
+                             and _plausible_head_box(
+                                 cell_boxes[r.subject].value, spacing))))]
+    signal: Dict[str, Any] = {
+        "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
+        "margin": margin, "candidates_at_slot": len(group_rows)}
+    if fdetail.get("near_miss") and not fdetail.get("second_head_by"):
+        # ROADMAP 2.129/2.106 -- a refusal says how close it came: the pair the
+        # fit considered and how far its ink was from two heads tall.
+        signal["near_miss"] = fdetail["near_miss"]
+    detail["stacked_head_signal"] = signal
+    if len(group_rows) <= 1:
+        return None                 # the only box mapped to this slot
+    inks = [((r.detail or {}).get("ink"), r) for r in group_rows]
+    if any(i is None for i, _r in inks):
+        signal["no_ink_witness"] = True
+        return None                 # cannot tell -- refuse neither (rule 8)
+    # ⚠️ ROADMAP 2.73 -- SHAPE BEFORE INK. `ink` is `max(centre, ring)` of the
+    # box's OWN window, and a box that is half a ring has the higher ring
+    # fraction by construction: the partial box beat the whole one on Sean's
+    # half notes. The boxes within `HEAD_SHAPE_MARGIN` of the most head-shaped
+    # one are the contenders; the ink chooses among THEM, as before.
+    if spacing:
+        shapes = {}
+        for _i, r in inks:
+            bx = cell_boxes.get(r.subject)
+            v = bx.value if bx is not None else None
+            shapes[r.subject] = (_box_shape(v, spacing)
+                                 if isinstance(v, (list, tuple))
+                                 and len(v) == 5 else None)
+        known = [x for x in shapes.values() if x is not None]
+        if known:
+            top = max(known)
+            contenders = [(i, r) for i, r in inks
+                          if shapes[r.subject] is not None
+                          and shapes[r.subject] >= top - HEAD_SHAPE_MARGIN]
+            if contenders:
+                signal["shape_contenders"] = len(contenders)
+                inks = contenders
+    # ⚠️ ROADMAP 2.73 -- ONE HEAD, TWO CLASSES: THE INK DECIDES WHICH. The
+    # detector often boxes one head twice, `noteheadBlack*` and `noteheadHalf*`
+    # (Litolff: 9 refused half boxes on one page lost to a black keeper). `ink`
+    # above is `max(centre, ring)`, which is higher for the filled box by
+    # construction. Where the contenders disagree on class, the head's own ink
+    # -- measured off the line's rows, `rhythm._ink_reads_decisively_hollow` --
+    # names the class: hollow ink keeps the hollow-class box, solid ink the
+    # black-class one. Ink that is neither (or a pair whose boxes read
+    # differently) leaves the ink choice above untouched (rule 8).
+    classes = {_is_hollow_class(cell_boxes[r.subject].value[0])
+               for _i, r in inks if r.subject in cell_boxes
+               and isinstance(cell_boxes[r.subject].value, (list, tuple))}
+    if len(classes) == 2:
+        reads = {_hollow_ink_reading(ev, r.subject) for _i, r in inks}
+        if len(reads) == 1 and None not in reads:
+            want_hollow = reads.pop()
+            keep = [(i, r) for i, r in inks if r.subject in cell_boxes
+                    and _is_hollow_class(cell_boxes[r.subject].value[0])
+                    == want_hollow]
+            if keep:
+                signal["class_decided_by_ink"] = ("hollow" if want_hollow
+                                                  else "filled")
+                inks = keep
+    best_ink, best_row = max(inks, key=lambda t: t[0])
+    if best_row.subject == ev.subject:
+        return None                 # this box IS the slot's own keeper
+    # ⚠️ ROADMAP 2.73 -- THE SLOT'S WINNER MAY HAVE BEEN REFUSED, a rule earlier,
+    # IN FAVOUR OF THIS VERY BOX. Then this box is the mark's one keeper: 2.30
+    # kept it and refused the winner, and refusing it here for that same winner
+    # leaves no box on the head (Brahms 317803 pdf 0, `glyph/0/0/4/4/2`). That
+    # circle, and only that one, is broken here; every other loser of an
+    # earlier rule still takes the slot as before -- an earlier version of this
+    # change let a refused winner shield EVERY box (a beam sliver boxed as a
+    # head on Litolff survived by it), and the crops said no.
+    if spacing and best_row.subject in cell_boxes:
+        heir = _earlier_rules_heir(ev, cell, cell_boxes[best_row.subject],
+                                   spacing)
+        if heir is not _SURVIVES and heir is not None \
+                and heir.subject == ev.subject \
+                and (_head_box_excess(mine, spacing)
+                     <= _head_box_excess(cell_boxes[best_row.subject].value,
+                                         spacing)):
+            signal["winner_refused_in_favour_of_this_box"] = best_row.id
+            return None
+    detail["duplicate_of"] = best_row.id
+    detail["stacked_head_this_ink"] = (fdetail or {}).get("ink")
+    detail["stacked_head_other_ink"] = best_ink
+    return Ruling(value=True, reason="stacked_head_duplicate",
+                  used=(this_row.id, fit.id, best_row.id), detail=detail)
+
+
+def _notehead_box_iou(a: Any, b: Any) -> float:
+    """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
+    SAME cell's canonical frame. ROADMAP 2.47bc: the arithmetic itself now
+    lives once, in `geometry.box_iou` (shared with `structure.py` — see that
+    module's own section comment); kept under this name here because 2.30's
+    same-class rule and existing tests both call it this way."""
+    return _geom.box_iou(a, b)
+
+
+def _notehead_duplicate_priority(row) -> Tuple[float, int]:
+    """Higher wins: detector confidence first, then the LOWER glyph index —
+    `family_precision._rest_duplicate_priority`'s tie-break, so two glyphs
+    evaluating each other always agree on which one survives."""
+    score = row.score if row.score is not None else 0.0
+    idx = row.subject.glyph if row.subject.glyph is not None else 0
+    return (score, -idx)
+
+
+def _notehead_ink_net(ev: Evidence, subject) -> Optional[float]:
+    """The staff-line-ERASED ink fraction (`Q.NOTEHEAD_INK.detail.ink_net.
+    best`) inside THIS glyph's own box, or `None` where no such witness is
+    on the record.
+
+    ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6, `cell/3/0/8/7`): the KEPT box read
+    mostly blank paper while the REFUSED box sat on the real head, because
+    the first build chose by DETECTOR SCORE -- a score says nothing about
+    which box the ink actually supports, and a staff line under an empty
+    box can look like "something is there" on the RAW raster. `ink_net` is
+    `Q.NOTEHEAD_INK`'s own ERASED-raster reading (`cell.image_no_staff`,
+    `gather.gather_notehead_ink`'s own two-raster discipline) -- a staff
+    line crossing an otherwise blank box is never counted as ink here,
+    unlike `Q.NOTEHEAD_INK.value` itself, which takes `max(raw, net)` and
+    so CAN be inflated by a staff line alone.
+
+    ⚠️ READ, NEVER RE-DERIVED (CLAUDE.md rule 6): `Q.NOTEHEAD_INK` is
+    GATHERED once per notehead-classed glyph, at that glyph's own
+    (re-centred, where 2.39b found one) box -- exactly the box this rule
+    is asking about. No second ink measurement is taken here.
+    """
+    rows = ev.rows(Q.NOTEHEAD_INK, subject=subject)
+    if not rows:
+        return None
+    net = (rows[-1].detail or {}).get("ink_net")
+    if not isinstance(net, dict) or net.get("best") is None:
+        return None
+    try:
+        return float(net["best"])
+    except (TypeError, ValueError):
+        return None
+
+
+def _same_mark_centres(a: Any, b: Any, spacing_canonical: float) -> bool:
+    """Are two `Q.GLYPH_BOX` VALUE tuples' CENTRES close enough to be one
+    physical mark rather than two chord members? See
+    `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`'s own docstring for why."""
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    dy_spaces = abs((y0a + ha / 2.0) - (y0b + hb / 2.0)) / spacing_canonical
+    if dy_spaces >= NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES:
+        return False
+    head_width = (wa + wb) / 2.0
+    if head_width <= 0:
+        return False
+    dx = abs((x0a + wa / 2.0) - (x0b + wb / 2.0))
+    return dx < NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS * head_width
+
+
+def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every notehead glyph's `Q.GLYPH_BOX` row in THIS glyph's own cell,
+    keyed by subject — including this glyph's own.
+    `family_precision._cell_rest_boxes`'s rule, ported: SAME CELL ONLY, the
+    crop that makes a cell wide enough to hold a note also holds the ink a
+    duplicate detection would fragment.
+    """
+    notehead_subjects = {
+        r.subject for r in
+        ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                subject=cell)}
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject in notehead_subjects:
+            out[r.subject] = r
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.73 -- one HEAD, one box: a head cut by a line, and the keep choice
+# between boxes on one head.
+#
+# Sean (2026-10-09): *"half notes, especially ones that are on lines or ledger
+# lines, get split up into two smaller boxes instead of one large box around
+# the notehead. I think the way the boxes are automatically choosing the
+# hollow noteheads is off."* Measured on his 27 hand-labelled half heads
+# (Brahms 317803 pdf 0): the keep choices below preferred a PARTIAL box
+# (half a ring, ~0.6 sp tall) over the whole one because the partial box's
+# `max(centre, ring)` ink fraction is higher, refused a head's only whole box
+# in favour of a box on ANOTHER head that merely stood on the same stem, and
+# kept two halves of one head as two heads. See `benchmarks/omr-head-fill-
+# 2026-09/FINDINGS.md` Sec.8.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box is "head-shaped" to the degree it fills the standard head extent
+#: (`geometry.STANDARD_HEAD_*_SPACES`): `min(1, h/std_h) * min(1, w/std_w)`.
+#: Between two boxes on one head the more head-shaped one is kept unless the
+#: two differ by less than this -- then the INK decides, as before. 0.15: a
+#: box 0.7 sp tall (half a ring) scores about 0.55 against a whole box's
+#: 0.9-1.0; neither number is fitted to a tile, it is the smallest gap that
+#: never separates two boxes that both cover the head.
+HEAD_SHAPE_MARGIN = 0.15
+
+#: Two boxes are on ONE head only if they overlap or stand no farther apart
+#: than this (staff spaces) in either axis -- the halves of a cut head abut at
+#: the line. A box on the same stem and side but a third or an octave away is a
+#: different head, however the stacked-head fit slotted it.
+SAME_HEAD_MAX_GAP_SPACES = 0.15
+
+#: A whole detector box on a cut head: its centre lies this near the rebuilt
+#: head's centre vertically (a chord's neighbour a second away is 0.5 sp off,
+#: and is another head). A partial box with no cut row of its own is allowed a
+#: little more, being off-centre by construction.
+HEAD_CUT_WHOLE_MAX_DY_SPACES = 0.25
+HEAD_CUT_PARTIAL_MAX_DY_SPACES = 0.35
+
+HEAD_CUT_REASON = "head_cut_piece"
+
+
+def _box_shape(box_value, spacing: float) -> float:
+    """How head-shaped a `Q.GLYPH_BOX` value `(class, x, y, w, h)` is -- see
+    `HEAD_SHAPE_MARGIN`. 1.0 for a box at least a standard head in both
+    extents."""
+    if spacing is None or spacing <= 0:
+        return 0.0
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    return (min(1.0, h_sp / _geom.STANDARD_HEAD_HEIGHT_SPACES)
+            * min(1.0, w_sp / _geom.STANDARD_HEAD_WIDTH_SPACES))
+
+
+#: A box a notehead could be: 0.8-2.1 staff spaces wide, 0.5-1.6 tall. The
+#: detector's real heads sit well inside (Brahms and Litolff medians 1.3-1.5 sp
+#: wide; the 99th percentile of kept boxes 1.6-2.1); a beam fragment boxed as a
+#: head is 2.4-6.6 sp wide.
+PLAUSIBLE_HEAD_WIDTH_SPACES = (0.8, 2.1)
+PLAUSIBLE_HEAD_HEIGHT_SPACES = (0.5, 1.6)
+
+
+def _plausible_head_box(box_value, spacing: float) -> bool:
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    return (PLAUSIBLE_HEAD_WIDTH_SPACES[0] <= w_sp <= PLAUSIBLE_HEAD_WIDTH_SPACES[1]
+            and PLAUSIBLE_HEAD_HEIGHT_SPACES[0] <= h_sp
+            <= PLAUSIBLE_HEAD_HEIGHT_SPACES[1])
+
+
+def _head_box_excess(box_value, spacing: float) -> float:
+    """ROADMAP 2.105(b): how far (staff spaces, summed over both axes) a box
+    lies OUTSIDE the plausible-head ranges; 0.0 for a plausible one. Lets two
+    rules that both choose one keeper of a mark order its boxes the same way:
+    a plausible box beats an implausible one, and of two implausible boxes the
+    nearer to a head keeps it."""
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    lo_w, hi_w = PLAUSIBLE_HEAD_WIDTH_SPACES
+    lo_h, hi_h = PLAUSIBLE_HEAD_HEIGHT_SPACES
+    return (max(0.0, lo_w - w_sp, w_sp - hi_w)
+            + max(0.0, lo_h - h_sp, h_sp - hi_h))
+
+
+def _boxes_on_one_head(a, b, spacing: float) -> bool:
+    """Do two `Q.GLYPH_BOX` values overlap, or stand within
+    `SAME_HEAD_MAX_GAP_SPACES` of each other in both axes?"""
+    gap = SAME_HEAD_MAX_GAP_SPACES * spacing
+    ax, ay, aw, ah = (float(v) for v in a[1:5])
+    bx, by, bw, bh = (float(v) for v in b[1:5])
+    dx = max(ax, bx) - min(ax + aw, bx + bw)
+    dy = max(ay, by) - min(ay + ah, by + bh)
+    return dx <= gap and dy <= gap
+
+
+def _head_cut_row_of(ev: Evidence, subject):
+    rows = ev.rows(Q.HEAD_LINE_CUT, subject=subject)
+    return rows[-1] if rows else None
+
+
+def _head_cut_standing(ev: Evidence, subject, this_row, spacing: float):
+    """ROADMAP 2.73 -- who keeps the head `subject`'s box stands on, when a line
+    cuts it? `None` where `subject` is on no cut head, else
+    `(cut_row, keeper_row, keeper_kind, member_count)`.
+
+    PURE: it reads rows and nothing else, so another decision (2.42's slot
+    competition) can ask whether a rival box would be refused here without
+    reading a verdict, whose value would depend on which box the per-subject
+    iteration reached first (`_would_survive_as_a_duplicate`'s own reason).
+
+    `Q.HEAD_LINE_CUT` (GATHER) files, on a box that is half a hollow head, the
+    standard head box centred on the line, having found the mirror hole in the
+    ink. Every box standing on that head is one mark boxed more than once:
+
+      * a detector box that is itself head-shaped (a WHOLE box: at least 0.85
+        of the standard head, centred within `HEAD_CUT_WHOLE_MAX_DY_SPACES` of
+        the rebuilt centre) KEEPS the head -- the detector's own geometry, and
+        among several the one with the most erased-raster ink;
+      * otherwise the piece carrying a cut row with the highest
+        `_notehead_duplicate_priority` keeps it (its position is already the
+        line's, `gather_notehead_positions`);
+      * any other box on the head -- a partial with no row of its own, within
+        `HEAD_CUT_PARTIAL_MAX_DY_SPACES` of the centre -- is refused.
+
+    A chord's neighbour (a second away) is not on this head and is untouched.
+    Some box always keeps the head: the last box on it is never refused.
+    """
+    cell = subject.at(Kind.CELL)
+    this_val = this_row.value
+    if cell is None or not isinstance(this_val, (list, tuple)) \
+            or len(this_val) != 5:
+        return None
+    boxes = _cell_notehead_boxes(ev, cell)
+
+    def centre(v):
+        return (float(v[1]) + float(v[3]) / 2.0,
+                float(v[2]) + float(v[4]) / 2.0)
+
+    def rebuilt(cr):
+        rx, ry, rw, rh = (float(q) for q in cr.value)
+        return rx + rw / 2.0, ry + rh / 2.0, rw
+
+    # the cut head this box stands on, if any
+    own_cut = ev.rows(Q.HEAD_LINE_CUT, subject=subject)
+    cr = own_cut[-1] if own_cut else None
+    if cr is None:
+        tx, ty = centre(this_val)
+        for subj in boxes:
+            if subj == subject:
+                continue
+            other = _head_cut_row_of(ev, subj)
+            if other is None or not isinstance(other.value, (list, tuple)):
+                continue
+            rcx, rcy, rw = rebuilt(other)
+            if (abs(ty - rcy) <= HEAD_CUT_PARTIAL_MAX_DY_SPACES * spacing
+                    and abs(tx - rcx) <= 0.5 * rw):
+                cr = other
+                break
+    if cr is None or not isinstance(cr.value, (list, tuple)):
+        return None
+    rcx, rcy, rw = rebuilt(cr)
+
+    members = []        # (subject, box row, rank, ink)
+    for subj, brow in boxes.items():
+        v = brow.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        cx, cy = centre(v)
+        carries = _head_cut_row_of(ev, subj)
+        if carries is not None and isinstance(carries.value, (list, tuple)):
+            ocx, ocy, _ow = rebuilt(carries)
+            if (abs(ocy - rcy) <= HEAD_CUT_WHOLE_MAX_DY_SPACES * spacing
+                    and abs(ocx - rcx) <= 0.5 * rw):
+                members.append((subj, brow, 1, None))
+            continue
+        if abs(cx - rcx) > 0.5 * rw:
+            continue
+        if (_box_shape(v, spacing) >= 0.85
+                and abs(cy - rcy) <= HEAD_CUT_WHOLE_MAX_DY_SPACES * spacing):
+            members.append((subj, brow, 2, _notehead_ink_net(ev, subj)))
+        elif abs(cy - rcy) <= HEAD_CUT_PARTIAL_MAX_DY_SPACES * spacing:
+            members.append((subj, brow, 0, None))
+    if not any(m[0] == subject for m in members):
+        return None
+    wholes = [m for m in members if m[2] == 2]
+    if wholes:
+        # a whole detector box keeps the head; the most erased-raster ink wins
+        # between several, an unreadable ink ranking last, then the detector
+        # score and the lower glyph index (`_notehead_duplicate_priority`)
+        keeper = max(wholes, key=lambda m: (
+            (-1.0 if m[3] is None else m[3]),)
+            + _notehead_duplicate_priority(m[1]))
+        kind = "whole_box"
+    else:
+        pieces = [m for m in members if m[2] == 1]
+        if not pieces:
+            return None
+        keeper = max(pieces, key=lambda m: _notehead_duplicate_priority(m[1]))
+        kind = "cut_piece"
+    return cr, keeper[1], kind, len(members), keeper[0]
+
+
+def _head_cut_piece_refusal(ev: Evidence, this_row, spacing: float,
+                            detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.73 -- is this box one PIECE of a head the ink shows a line
+    cutting, where another box on the same head keeps it? See
+    `_head_cut_standing`. A box that IS the keeper gets `detail["head_cut_
+    signal"]` and no ruling -- the caller then skips 2.30/2.42 for it, since a
+    box one decision has chosen to keep must not be refused by another."""
+    standing = _head_cut_standing(ev, ev.subject, this_row, spacing)
+    if standing is None:
+        return None
+    cr, keeper_row, kind, n_members, keeper_subject = standing
+    cd = cr.detail or {}
+    detail["head_cut_signal"] = {
+        "keeper": keeper_row.id, "keeper_kind": kind, "members": n_members,
+        "head_line_cut": cr.id,
+        # the evidence the reading rested on, carried to the verdict so a
+        # reader of the record sees WHY this was one head without opening the
+        # GATHER row
+        "line_half_step": cd.get("line_half_step"),
+        "line_half_step_float": cd.get("line_half_step_float"),
+        "holes": cd.get("holes"), "area_ratio": cd.get("area_ratio"),
+        "line_ink": cd.get("line_ink"), "detector_box": cd.get("detector_box")}
+    if keeper_subject == ev.subject:
+        return None
+    detail["duplicate_of"] = keeper_row.id
+    return Ruling(value=True, reason="head_cut_piece",
+                  used=(this_row.id, keeper_row.id, cr.id), detail=detail)
+
+
+def _is_refused_as_a_cut_piece(ev: Evidence, row, spacing: float) -> bool:
+    """Would `_head_cut_piece_refusal` refuse the box `row` -- asked of a RIVAL
+    box, by rows alone (see `_head_cut_standing`)."""
+    standing = _head_cut_standing(ev, row.subject, row, spacing)
+    return standing is not None and standing[4] != row.subject
+
+
+def _other_keeps_the_mark(this_val, this_row, other_val, other_row,
+                          spacing: float) -> bool:
+    """Of two same-class boxes on one mark, does OTHER keep it? ROADMAP 2.73:
+    the more head-shaped one, where the two differ by more than
+    `HEAD_SHAPE_MARGIN`; else the higher detector score (then the lower glyph
+    index), exactly 2.30's own priority before this item.
+
+    ROADMAP 2.105(b), FIRST: a box nearer a head's plausible size keeps the
+    mark over one farther from it (`_head_box_excess`). Shape saturates at a
+    standard head, so an over-wide box that merged a neighbour's ink TIED a
+    clean head and won on detector score -- and 2.42, choosing by ink, took the
+    clean one: each refused the other and the head had NO box (14 mutual
+    circles, 33 slot groups on Litolff 984073; Sean's tiles 2.88 round 2)."""
+    if spacing:
+        e_this = _head_box_excess(this_val, spacing)
+        e_other = _head_box_excess(other_val, spacing)
+        if e_this != e_other:
+            return e_other < e_this
+    d_shape = _box_shape(other_val, spacing) - _box_shape(this_val, spacing)
+    if d_shape > HEAD_SHAPE_MARGIN:
+        return True
+    if d_shape < -HEAD_SHAPE_MARGIN:
+        return False
+    return (_notehead_duplicate_priority(other_row)
+            > _notehead_duplicate_priority(this_row))
+
+
+def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
+                                    spacing_canonical: float,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """ROADMAP 2.30: is this box the SAME physical mark as another notehead
+    glyph the detector boxed in this cell?
+
+    SAME CLASS ONLY, unlike `family_precision._duplicate_box_refusal`
+    (which also refuses a DIFFERENT-class rest pair, because a rest's class
+    disagreement leaves no value worth protecting). A different-class
+    notehead pair (`noteheadBlack` vs `noteheadHalf`) is a chord member's
+    VALUE disagreement — FINDINGS §17c's "role twins", 2.12g's open
+    question — and refusing both here would discard a real note, not
+    settle a "cannot tell". So this rule does not compare across classes at
+    all; see the module docstring for the cross-FAMILY (rest-vs-notehead)
+    question left for Sean.
+
+    ⚠️ IoU ALONE IS UNSAFE HERE (caught before merge): a CHORD legitimately
+    puts two same-class heads with touching or overlapping boxes beside
+    each other (a second, a third). `_same_mark_centres` is a SECOND,
+    independent gate — both boxes' centres must sit at the same staff
+    position AND the same x — and BOTH IoU and the centre test must agree
+    before a box is refused.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+
+    better = None
+    for subj, row in _cell_notehead_boxes(ev, cell).items():
+        if subj == ev.subject:
+            continue
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(this_val, other_val) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(this_val, other_val, spacing_canonical):
+            continue
+        # ⚠️ ROADMAP 2.73 -- SHAPE BEFORE SCORE. Two same-class boxes on one
+        # mark: the more head-shaped (a whole head against half a ring) is the
+        # keeper whatever the detector's confidence; within `HEAD_SHAPE_MARGIN`
+        # of each other the confidence decides, as before.
+        if _other_keeps_the_mark(this_val, this_row, other_val, row,
+                                 spacing_canonical):
+            better = row
+
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        return Ruling(value=True, reason="notehead_is_a_duplicate_box",
+                      used=(this_row.id, better.id), detail=detail)
+    return None
+
+
+def _2_30_winner(ev: Evidence, cell, this_class: str, candidate_row,
+                 spacing_canonical: float):
+    """The box 2.30 keeps over `candidate_row`, or `None` where 2.30 does not
+    refuse it -- `_would_lose_to_2_30s_duplicate_rule`, naming the winner (the
+    highest `_notehead_duplicate_priority` among the boxes that beat it)."""
+    cand_val = candidate_row.value
+    if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
+        return None
+    best = None
+    for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
+        if subj2 == candidate_row.subject:
+            continue
+        val2 = row2.value
+        if not isinstance(val2, (list, tuple)) or len(val2) != 5:
+            continue
+        if val2[0] != this_class:
+            continue
+        if _notehead_box_iou(cand_val, val2) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(cand_val, val2, spacing_canonical):
+            continue
+        if _other_keeps_the_mark(cand_val, candidate_row, val2, row2,
+                                 spacing_canonical):
+            if best is None or (_notehead_duplicate_priority(row2)
+                                > _notehead_duplicate_priority(best)):
+                best = row2
+    return best
+
+
+def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
+                                        candidate_row, spacing_canonical: float
+                                        ) -> bool:
+    """ROADMAP 2.40 ROUND 3 — would `_notehead_duplicate_box_refusal` (2.30)
+    refuse `candidate_row` against SOME OTHER same-class box in this cell?
+
+    A PURE re-check, not a query of 2.30's own composed verdict: it re-runs
+    2.30's own gates (`_notehead_box_iou` ≥ `NOTEHEAD_DUPLICATE_IOU_MIN`,
+    `_same_mark_centres`) and priority (`_notehead_duplicate_priority`) --
+    the SAME functions 2.30 itself calls, cited not restated -- against
+    `candidate_row` directly, so the answer does not depend on whether
+    `candidate_row`'s own subject has been PROCESSED yet in this quantity's
+    per-subject iteration (see `_notehead_same_side_second_refusal`'s own
+    comment on why a verdict read would be order-dependent here).
+    `candidate_row.subject` is excluded from its own search, matching 2.30's
+    own `if subj == ev.subject: continue`.
+    """
+    cand_val = candidate_row.value
+    if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
+        return False
+    for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
+        if subj2 == candidate_row.subject:
+            continue
+        val2 = row2.value
+        if not isinstance(val2, (list, tuple)) or len(val2) != 5:
+            continue
+        if val2[0] != this_class:
+            continue
+        if _notehead_box_iou(cand_val, val2) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(cand_val, val2, spacing_canonical):
+            continue
+        if _other_keeps_the_mark(cand_val, candidate_row, val2, row2,
+                                 spacing_canonical):
+            return True
+    return False
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.47c — THE SAME INK, BOXED ONCE AS A `timeSig*` DIGIT AND AGAIN AS
+# A NOTEHEAD.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b (crop-verified,
+# `out/print/brahms-plus1/E_wholenote_decided_meter_m8_P4.png`) and
+# `benchmarks/omr-measure-partition-2026-09/FINDINGS.md` §10c/§11c
+# (crop-verified twice, `out/print/2.47b/brahms-p0-sys0-staff3-tail-dup.png`
+# and the current-gather `brahms-p0-sys0-tail-20261001.png`) both name the
+# SAME mechanism on Brahms 1/i p0's cautionary "9/8": one digit's ink is
+# boxed TWICE by the detector, once correctly as `timeSig8` (confidence
+# 0.663-0.9+) and again as `noteheadWholeInSpace` (confidence as low as
+# 0.267 — the open-bowl shape a round numeral shares with a hollow head),
+# at IoU 0.94-0.96 both times measured. This is distinct from 2.30's
+# same-CLASS duplicate (`_notehead_duplicate_box_refusal`, which never
+# compares against a different class) and from 2.12l's `is_a_meter_digit`
+# (a PAIR of notehead-classed boxes near a cell's LEFT edge forming the two
+# digits of a change — this is ONE box, cross-FAMILY, and the duplicate can
+# sit anywhere in the cell, including the RIGHT edge where a cautionary
+# change prints just ahead of the barline it warns about).
+#
+# The module docstring above (ROADMAP 2.30 section) already named this exact
+# question for a REST/notehead pair and left it "ASSUMED, NOT CONFIRMED,
+# NOT BUILT" pending a crop. For a notehead/`timeSig*` pair the crop already
+# exists, twice over, from unrelated lanes measuring something else and
+# landing on the same ink — so this is not a guess (rule 6): the convention
+# ("one printed digit, one box drawn twice") is established by print, not
+# assumed to make a rule fire.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a real
+# notehead standing near a meter digit (e.g. the first note of the bar,
+# printed just after a cautionary signature) is a DIFFERENT box on
+# DIFFERENT ink and so shares little area with the digit's own box — IoU
+# alone, at a high floor, is the only gate this rule needs for that reason,
+# unlike 2.30 which also needs a centre test to tell a duplicate from a
+# real chord second (two SAME-class heads deliberately placed close
+# together). A `timeSig*` box and a real notehead box are never placed to
+# overlap on purpose, so no second gate is built here. NOT CONFIRMED WITH
+# SEAN: whether this generalises to a `clef*` or `keySignature*` box
+# boxed twice as a notehead the same way (no crop yet shows that pairing).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ROADMAP 2.47bc: this constant and the IoU arithmetic it gates both moved
+#: to `geometry.py` (`TIMESIG_DIGIT_DUPLICATE_IOU_MIN`, `box_iou`,
+#: `is_timesig_digit_ink`) so `structure._trailing_cell_is_cautionary_only`
+#: (ROADMAP 2.47b) can ask the SAME question without importing this module
+#: (see `geometry.py`'s own section comment for why that import would
+#: cycle). Re-exported under its original name here -- nothing below, and
+#: no existing test, needs to change which name it reads.
+TIMESIG_DIGIT_DUPLICATE_IOU_MIN = _geom.TIMESIG_DIGIT_DUPLICATE_IOU_MIN
+
+#: Reason a refused notehead carries when it is a `timeSig*` box's own ink,
+#: boxed twice — kept apart from `notehead_is_a_duplicate_box` (2.30, SAME
+#: class only) and `is_a_meter_digit` (2.12l, a PAIR of notehead-classed
+#: boxes) so a census can tell the three mechanisms apart (CLAUDE.md §4d).
+TIMESIG_DIGIT_DUPLICATE_REASON = "is_a_time_signature_digit"
+
+
+def _cell_timesig_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every `timeSig*`-classed glyph's `Q.GLYPH_BOX` row in THIS glyph's own
+    cell, keyed by subject. `_cell_notehead_boxes`'s rule, ported for the
+    other family: SAME CELL ONLY (the cell this glyph's own box is filed on
+    is the SAME staff's own cell — a `timeSig*` box elsewhere never enters
+    this search)."""
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if not str(v[0]).lower().startswith("timesig"):
+            continue
+        out[r.subject] = r
+    return out
+
+
+def _timesig_digit_duplicate_refusal(ev: Evidence, this_row,
+                                     detail: Dict[str, Any]
+                                     ) -> Optional[Ruling]:
+    """ROADMAP 2.47c: is this notehead-classed box the SAME ink as a
+    `timeSig*`-classed box the detector drew in this glyph's own cell? See
+    the module section comment above for the measurement and why IoU alone
+    (no centre test, unlike 2.30) is the whole gate.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+
+    best = None
+    best_iou = 0.0
+    for subj, row in _cell_timesig_boxes(ev, cell).items():
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        iou = _notehead_box_iou(this_val, other_val)
+        if iou > best_iou:
+            best_iou = iou
+            best = row
+
+    if best is None or best_iou <= TIMESIG_DIGIT_DUPLICATE_IOU_MIN:
+        return None
+    detail["timesig_digit_of"] = best.id
+    detail["timesig_digit_iou"] = round(best_iou, 3)
+    detail["timesig_digit_class"] = best.value[0]
+    return Ruling(value=True, reason="is_a_time_signature_digit",
+                  used=(this_row.id, best.id), detail=detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A notehead box lying ON a detected dynamic letter's box, whose ink is the
+# letter's stroke and not a filled head of its own, is the letter's ink
+# (Sean 2026-10-09, `out/print/2.73-review` tile 10: "Not a note - dynamic p")
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGED, ADJUDICATE. The bowl of a printed `p` (of `p cresc.`) was boxed as a
+# quarter head and read as one; the hook of an `f`, and the whole body of an
+# `f` on Brahms, are boxed the same way. ONE INK, ONE MARK: the detector ALSO
+# drew a `dynamic{F,P,M,S,Z,R}` box on that ink.
+#
+# ⚠️ THE FIRST BUILD DECIDED ON BOXES (head inside letter box, a 3-space CV stem
+# spares it, a letter box over 3.6 x 4.6 spaces spares it) AND WAS WRONG, per
+# Sean on the blind tiles: two small notes just to the right of an `sf` lie
+# inside the `sf`'s wide box, the CV stem rows miss one of them, and the box
+# says nothing about whose ink it is. The letter's box is wider than its ink.
+# SO THE QUESTION IS ASKED OF THE INK, filed by GATHER (`gather_notehead_
+# letter_ink`, `Q.NOTEHEAD_LETTER_INK`, one row per head lying at least 0.2
+# inside a letter box), and this reads it:
+#   * `disc_spaces` -- the widest filled disc inside the head box. A notehead is
+#     a filled blob: 1.13-1.27 on every real head measured beside a letter
+#     (the two notes at `sf`, a note under an `f`, a Brahms beamed head); an
+#     `f`'s hook or top is a stroke: 0.74-0.84 on all six measured.
+#     Below `DYNAMIC_LETTER_STROKE_DISC_SPACES` the ink is a stroke: the letter's.
+#   * `letter_ink_share` -- how much of the LETTER box's ink the head box holds.
+#     A `p`'s bowl is a filled blob as thick as a head (disc 1.09-1.24), so the
+#     disc cannot tell it from a head; it is most of the `p` (0.60-0.62), where
+#     a note beside an `sf` is a sliver of that wide box (0.11-0.22). At or
+#     above `DYNAMIC_LETTER_BODY_SHARE` the head IS the letter.
+# Neither reads a stem, so nothing here depends on a normal-size stem (a cue or
+# grace head with a short stem is kept whenever its blob is filled), and the
+# thresholds sit mid-gap of the measured populations (strokes 0.74-0.84 /
+# heads 1.13-1.27; slivers 0.08-0.22 / bodies 0.60-0.86), in staff spaces and
+# fractions, never pixels. The numbers are in `benchmarks/omr-notehead-
+# precision-2026-09/FINDINGS.md`.
+#
+# THE TEST IS STILL OVERLAP, never proximity: the head box must lie at least
+# `DYNAMIC_LETTER_HEAD_ON_MIN` inside the letter's box (contact is 0.0-0.3).
+#
+# ONE GUARD ON THE LETTER, NOT THE HEAD: an `f` box narrower than
+# `DYNAMIC_F_MIN_W_SPACES` is not an `f` (Brahms `glyph/1/0/7/0/13`, a beam's
+# tail boxed `dynamicF` at 0.43 under a real beamed head: 1.49 wide against
+# 1.96-2.88 for all 12 of Sean's hand-labelled `f`s; a `p` is 1.46-1.85).
+#
+# WHERE THE LETTER LIVES: page-wide in GATHER (the detector files it under the
+# cell it was cut from, often the next staff's -- tile 10's `p` is
+# `glyph/2/0/3/1/6`, its bowl-head `glyph/2/0/2/1/12`).
+#
+# Not a word reader: a head on a direction word's letters (the `c` of `cresc.`)
+# is a different question, reported and not refused (see the FINDINGS).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Fraction of the HEAD box's area that lies inside a letter box.
+DYNAMIC_LETTER_HEAD_ON_MIN = 0.4
+#: Widest filled disc (staff spaces) below which a head's ink is a stroke.
+DYNAMIC_LETTER_STROKE_DISC_SPACES = 0.9
+#: Share of the letter box's ink the head box holds, at or above which the head
+#: is the letter's body.
+DYNAMIC_LETTER_BODY_SHARE = 0.4
+#: An `f` box narrower than this is not an `f`.
+DYNAMIC_F_MIN_W_SPACES = 1.7
+
+DYNAMIC_LETTER_REASON = "on_a_dynamic_letter"
+
+
+def _on_a_dynamic_letter_refusal(ev: Evidence, box_row,
+                                 detail: Dict[str, Any]) -> Optional[Ruling]:
+    """See the section comment above. Reads `Q.NOTEHEAD_LETTER_INK`, the one
+    row GATHER files per head lying on a letter box; no row means the head is
+    clear of every letter (or the page had no raster), and nothing is decided."""
+    rows = ev.rows(Q.NOTEHEAD_LETTER_INK)
+    if not rows:
+        return None
+    row = rows[-1]
+    d = row.detail or {}
+    try:
+        disc = float(row.value)
+        share = float(d["letter_ink_share"])
+        on = float(d["head_in_letter"])
+    except (TypeError, ValueError, KeyError):
+        return None
+    if on < DYNAMIC_LETTER_HEAD_ON_MIN:
+        return None
+    signal: Dict[str, Any] = {
+        "dynamic_letter": d.get("letter"), "letter": d.get("letter_class"),
+        "head_in_letter": round(on, 3), "disc_spaces": round(disc, 3),
+        "letter_ink_share": round(share, 3),
+        "letter_w_spaces": d.get("letter_w_spaces"),
+        "letter_h_spaces": d.get("letter_h_spaces")}
+    w_sp = d.get("letter_w_spaces")
+    if d.get("letter_class") == "dynamicF" and w_sp is not None \
+            and float(w_sp) < DYNAMIC_F_MIN_W_SPACES:
+        signal["spared"] = "letter_box_too_narrow_for_an_f"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    if disc < DYNAMIC_LETTER_STROKE_DISC_SPACES:
+        signal["why"] = "stroke_not_a_filled_head"
+    elif share >= DYNAMIC_LETTER_BODY_SHARE:
+        signal["why"] = "head_holds_the_letters_body"
+    else:
+        signal["spared"] = "a_filled_head_of_its_own"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    detail.update(signal)
+    # ⚠️ A LITERAL, not `DYNAMIC_LETTER_REASON`: `brakes.vocabulary_gap` reads the
+    # `reason=` slot's AST and a computed one leaves the whole module unresolved.
+    return Ruling(value=True, reason="on_a_dynamic_letter",
+                  used=(box_row.id, row.id), detail=detail)
+
+
+def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
+    """Every `ledgerLine` glyph's canonical `(x0, x1, y_centre)` in this cell.
+
+    ⚠️ SAME CELL ONLY, not the legacy rule's whole-page search. A staff's
+    own ledger rungs for a note it printed are cut into that SAME cell — the
+    padding that makes the crop wide enough to hold the note also holds its
+    rungs — so this is a faithful narrowing, not a different question, and it
+    avoids re-deriving a page-wide affine map this decision has no need of.
+
+    ⚠️⚠️ ROADMAP 3.4g — A REFUSED RUNG IS NOT COUNTED, AND THIS IS THE ONLY
+    LADDER IN THE PIPELINE WHERE THAT IS POSSIBLE. GATHER's own ladder
+    (`Q.GLYPH_LADDER`, `gather._observe_ladder`) records `expected` and
+    `found` as COUNTS and names none of the rung glyphs it matched, so no
+    later stage can tell which glyph a `found` rung was — the rung -> glyph
+    join does not exist on the record and a refusal cannot reach it without a
+    GATHER change. Here the join is trivial because the rungs ARE glyph
+    subjects: `adjudicate_ledger_is_not_a_ledger` runs before this decision
+    (`adjudicate.ORDER`) and a rung it condemned is skipped.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    out: List[Tuple[float, float, float]] = []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if str(v[0]) != "ledgerLine":
+            continue
+        refused = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=r.subject)
+        if refused is not None and refused.value is True:
+            continue
+        x_c, y_c, w_c, h_c = v[1], v[2], v[3], v[4]
+        out.append((x_c, x_c + w_c, y_c + h_c / 2.0))
+    return out
+
+
+def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
+                detail: Dict[str, Any]) -> bool:
+    """A low-confidence notehead outside the staff with NO ledger rung.
+
+    ⚠️ `found == 0`, not "incomplete" — the legacy rule's own condition
+    (`transcribe._drop_unladdered_noteheads`: `if found == 0: dets.remove`).
+    An incomplete but non-empty ladder is left alone; this is deliberately
+    the more conservative of the two shapes the legacy comment considers.
+    """
+    conf_rows = ev.rows(Q.GLYPH_CONF)
+    if not conf_rows:
+        return False
+    try:
+        conf = float(conf_rows[-1].value)
+    except (TypeError, ValueError):
+        return False
+    if conf >= UNLADDERED_MAX_CONF:
+        return False
+
+    pos_rows = ev.rows(Q.NOTEHEAD_STAFF_POSITION)
+    if not pos_rows:
+        return False
+    try:
+        pos_float = float(pos_rows[-1].value)
+    except (TypeError, ValueError):
+        return False
+    if 0.0 <= pos_float <= _STAFF_BOTTOM_POSITION:
+        return False               # inside the staff band -- no ladder needed
+
+    half_step = spacing_canonical / 2.0
+    _name, x_c, y_c, w_c, h_c = box_row.value
+    y_center = y_c + h_c / 2.0
+    if pos_float < 0.0:
+        dist_spaces = abs(pos_float) / 2.0
+        anchor = y_center - pos_float * half_step        # canonical top line
+        sign = -1.0
+    else:
+        dist_spaces = (pos_float - _STAFF_BOTTOM_POSITION) / 2.0
+        anchor = y_center - (pos_float - _STAFF_BOTTOM_POSITION) * half_step
+        sign = 1.0
+    n_expected = int(dist_spaces + LEDGER_RUNG_EXPECTED_SLACK)
+    detail["ledger_expected"] = n_expected
+    if n_expected <= 0:
+        return False
+
+    rungs = _ledger_rungs_in_cell(ev)
+    tol = LEDGER_RUNG_Y_TOL_SPACES * spacing_canonical
+    min_overlap = LEDGER_RUNG_MIN_X_OVERLAP * max(1.0, w_c)
+    x0, x1 = x_c, x_c + w_c
+    found = 0
+    for k in range(1, n_expected + 1):
+        want_y = anchor + sign * k * spacing_canonical
+        for rx0, rx1, ry in rungs:
+            if abs(ry - want_y) > tol:
+                continue
+            if min(rx1, x1) - max(rx0, x0) < min_overlap:
+                continue
+            found += 1
+            break
+    detail["ledger_found"] = found
+    return found == 0
+
+
+def _band_spaces(y: float, line_ys, spacing: float) -> Optional[float]:
+    """Distance from `y` to a staff's five-line band, in its staff spaces.
+
+    ⚠️ GATHER's own arithmetic (`gather._band_distance_spaces`), CALLED, not
+    restated, so this rule's distance and the contest's `Q.GLYPH_BAND_DISTANCE`
+    are one number and cannot drift.
+    """
+    from ..gather import _band_distance_spaces
+    try:
+        ys = [float(v) for v in line_ys]
+        sp = float(spacing)
+    except (TypeError, ValueError):
+        return None
+    if len(ys) < 2 or sp <= 0:
+        return None
+    return _band_distance_spaces(y, ys, sp)
+
+
+def _staff_geometry(ev: Evidence, staff) -> Optional[Tuple[List[float],
+                                                           float, List[str]]]:
+    lines = ev.rows(Q.STAFF_LINES, subject=staff)
+    spacing = ev.rows(Q.STAFF_SPACING, subject=staff)
+    if not lines or not spacing:
+        return None
+    try:
+        ys = sorted(float(v) for v in lines[-1].value)
+        sp = float(spacing[-1].value)
+    except (TypeError, ValueError):
+        return None
+    if len(ys) < 2 or sp <= 0:
+        return None
+    return ys, sp, [lines[-1].id, spacing[-1].id]
+
+
+def _page_staff_bands(ev: Evidence, page) -> List[Tuple[float, float, float,
+                                                         float, float]]:
+    """`geometry.staff_bands`-shaped `(x0, x1, top, bottom, spacing)` for every
+    staff of `page`, off the record's own `Q.STAFF_LINES` / `Q.STAFF_SPACING`
+    (page frame). A staff missing either is left out -- it has no band to
+    measure from. `ev.subjects` is cached on the frozen log, and this runs only
+    for a box past the reach, so it is not a per-head walk.
+
+    ⚠️ THE X EXTENT IS DELIBERATELY NOT READ. `Q.STAFF_EXTENT` is the staff
+    DETECTOR's span and it is not the staff's printed end: on Brahms 317803
+    pdf 1 it stops at x=4290-4335 on staves whose lines run to x~5500, and a
+    first cut that measured "past the staff's end" refused 14 real heads
+    standing on those staves (`glyph/1/1/11/7/1`, a plain head on the line).
+    A staged cell is a staff band plus a pad cut at the staff's own bars, so a
+    head's x is already the staff's; the vertical band is the whole question
+    here (GATHER's own `_band_distance_spaces`)."""
+    inf = float("inf")
+    out = []
+    for st in ev.subjects(Kind.STAFF):
+        if st.page != page:
+            continue
+        geo = _staff_geometry(ev, st)
+        if geo is None:
+            continue
+        out.append((-inf, inf, geo[0][0], geo[0][-1], geo[1]))
+    return out
+
+
+def _off_staff_glyph_refusal(ev: Evidence, box_row,
+                             detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.108 -- `Ruling(True, "off_staff_glyph")` where this head stands
+    `geometry.OFF_STAFF_REACH_SPACES` or more from EVERY staff of its page, at
+    its own x (title text, a word in the margin, a page number). `None`
+    otherwise; the nearest-staff distance rides on `detail["off_staff_signal"]`
+    whenever it was measured.
+
+    The cheap test first: the head's distance from its FILED staff (the same
+    arithmetic as `Q.GLYPH_BAND_DISTANCE`). Within the reach there is nothing to
+    ask. Past it the page's other staves are swept, because a head filed on
+    one staff may stand beside another's ledger lines (a cell's pad reaches the
+    next staff -- see `_belongs_to_a_nearer_staff`).
+
+    The ledger lines name the owner (CLAUDE.md §5): a kept rung in the head's
+    cell overlapping its x and within that distance of it keeps the head
+    whatever its distance -- the reach is a cut-off measured on two plates and
+    may only refuse what no ladder vouches for. Missing geometry never refuses
+    (rule 8: a missing number is not "far")."""
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    staff = ev.subject.at(Kind.STAFF)
+    if not page_box or len(page_box) != 4 or staff is None:
+        return None
+    mine = _staff_geometry(ev, staff)
+    if mine is None:
+        return None
+    cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+    cy = (float(page_box[1]) + float(page_box[3])) / 2.0
+    ys, sp, _used = mine
+    filed = _band_spaces(cy, ys, sp)
+    if filed is None or filed < _geom.OFF_STAFF_REACH_SPACES:
+        return None
+    bands = _page_staff_bands(ev, staff.page)
+    nearest = _geom.distance_to_staff_spaces(cx, cy, bands)
+    if nearest is None:
+        return None            # no staff measured at all: nothing is "far"
+    signal: Dict[str, Any] = {"nearest_spaces": round(nearest, 3),
+                              "filed_spaces": round(filed, 3),
+                              "reach_spaces": _geom.OFF_STAFF_REACH_SPACES}
+    detail["off_staff_signal"] = signal
+    if nearest < _geom.OFF_STAFF_REACH_SPACES:
+        return None
+    # a kept ledger rung near the head vouches for it (the ladder names the owner)
+    spacing = _cell_staff_space(ev)
+    _name, x_c, y_c, w_c, h_c = box_row.value
+    if spacing:
+        y_mid = y_c + h_c / 2.0
+        for rx0, rx1, ry in _ledger_rungs_in_cell(ev):
+            if min(rx1, x_c + w_c) - max(rx0, x_c) > 0 and abs(ry - y_mid) <= (
+                    nearest * spacing + h_c):
+                signal["spared"] = "a_kept_ledger_rung_near"
+                return None
+    return _margins.attach(
+        Ruling(value=True, reason="off_staff_glyph",
+               used=(box_row.id,), detail=detail),
+        margin=_geom.off_staff_margin(nearest),
+        axis="nearest_staff_spaces", unit="staff spaces",
+        band=None, would_choose=(True,))
+
+
+def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
+                               detail: Dict[str, Any]
+                               ) -> Optional[Tuple[str, List[str]]]:
+    """ROADMAP 2.7b — `(near staff key, rows used)` where this head is far
+    from the staff it was filed on, joined to it by no kept rung, and close to
+    another staff of its system. `None` otherwise (and the facts it measured
+    are left in `detail["nearer_staff_signal"]` either way).
+
+    Four conditions, ALL in the PAGE frame (`Q.STAFF_LINES`, `Q.STAFF_SPACING`
+    and `bbox_page_px`, the three facts every staff and glyph carries):
+
+      1. the head's centre is more than `NEARER_STAFF_FILED_MIN_SPACES` outside
+         the band of its FILED staff (CLAUDE.md §10: the cell pad is 4-6
+         spaces and reaches the next staff's ink — the pad is what put it
+         here, not the engraver);
+      2. another staff of the SAME system has a line within
+         `NEARER_STAFF_NEAR_MAX_SPACES` of it, and is nearer than the filed
+         one;
+      3. the ledger lines do NOT name the filed staff: Sean's exception is a
+         LADDER from the filed staff that reaches the note, asked of
+         `ownership.ledger_direction` — the one helper `glyph_owner` asks
+         too (ROADMAP 2.6c) — over the KEPT rungs of the head's cell and the
+         near staff's same-index cell (3.4g-2's `ledger_is_not_a_ledger`
+         VERDICTS are read, never the raw boxes, so a staff-line fragment
+         cannot vouch for the note; the head's OWN ledger line says the note
+         stands on a ledger, not whose; one stray rung, such as a chord-
+         mate's own line, is not a ladder);
+      4. the near staff does NOT hold a twin of this ink: a glyph carrying a
+         `Q.GLYPH_BAND_DISTANCE` row that names the near staff is inside
+         `glyph_owner`'s contest (ROADMAP 2.6), which decides who owns it and
+         DROPS the loser there. Refusing it here as well would be two answers
+         to one question — and would drop the winner too if the contest kept
+         it on this staff. So this rule YIELDS, and says so in `detail`.
+
+    ⚠️ DROPPED, NEVER RELOCATED (CLAUDE.md §10). The head is refused on the
+    staff it was filed on; nothing is added to the near staff. Where the near
+    staff's own cell did not detect the ink (no twin), the note goes missing
+    rather than being written a staff too high at the wrong pitch — Sean's
+    trade: a missing note is visible as a gap, a wrong one has to be hunted.
+    """
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    staff = ev.subject.at(Kind.STAFF)
+    if not page_box or len(page_box) != 4 or staff is None:
+        return None
+    mine = _staff_geometry(ev, staff)
+    if mine is None:
+        return None
+    ys, sp, used = mine
+    y = (float(page_box[1]) + float(page_box[3])) / 2.0
+    filed = _band_spaces(y, ys, sp)
+    if filed is None:
+        return None
+    signal: Dict[str, Any] = {"filed_spaces": round(filed, 3)}
+    detail["nearer_staff_signal"] = signal
+    if filed <= NEARER_STAFF_FILED_MIN_SPACES:
+        return None
+
+    # ⚠️ THE ADJACENT STAFF ON THE HEAD'S OWN SIDE, AND ONLY THAT ONE. Staff
+    # indices run down the system in page order, so the only staff that can
+    # be nearer than the filed one lies on the side the head stands on, and
+    # the nearest of those is the adjacent one. NOT `ev.subjects(Kind.
+    # STAFF)`: `Log._index` clears that cache on every verdict write, so a
+    # per-head call walks the whole index once per head — measured, the
+    # Litolff whole-movement ADJUDICATE ran past 31 CPU-minutes against ~20.
+    # A system's top staff has no staff above it; a bottom staff's
+    # neighbour below is simply absent from the record, which is the truth.
+    if staff.staff is None or (y < ys[0] and staff.staff == 0):
+        return None
+    other = R.staff(staff.page, staff.system,
+                    staff.staff - 1 if y < ys[0] else staff.staff + 1)
+    geo = _staff_geometry(ev, other)
+    if geo is None:
+        return None
+    d = _band_spaces(y, geo[0], geo[1])
+    if d is None:
+        return None
+    near = (d, other, geo[2])
+    signal["near_staff"] = near[1].to_key()
+    signal["near_spaces"] = round(near[0], 3)
+    if near[0] > NEARER_STAFF_NEAR_MAX_SPACES or near[0] >= filed:
+        return None
+
+    # ── 3. the ledger lines name the FILED staff: Sean's exception ─────────
+    # ⚠️⚠️ ROADMAP 2.6c (second half): ASKED OF THE ONE HELPER `glyph_owner`
+    # asks (`ownership.ledger_direction`), never re-derived here, so the two
+    # decisions cannot credit a rung differently. The first cut kept a head
+    # on ANY kept rung lying between it and the filed staff, and Sean's
+    # 2.7b.8 verdicts found that wrong three times in six: #4 and #22 were
+    # kept by a CHORD-MATE's own ledger (the near staff's second rung, beyond
+    # the head) with the filed staff's own inner rungs all absent; #10 (the
+    # `s` of *sempre*) by two real rungs of the filed staff that END 1.37
+    # spaces short of it. A rung now vouches for the filed staff only as part
+    # of a LADDER from that staff that reaches the note (FINDINGS §2.6c.2).
+    # Rungs are read from the head's cell AND the near staff's same-index
+    # cell -- one bar, both pads -- with their 3.4g-2 verdicts.
+    #
+    # ⚠️ ROADMAP 2.39: for a REGULAR notehead (`geometry.is_regular_
+    # notehead`), the x-window used to search for a ladder is the STANDARD
+    # box (this staff's OWN spacing `sp`, already read above by
+    # `_staff_geometry` -- never re-derived, never defaulted), not the raw
+    # detector box -- the same reasoning as GATHER's ledger readers: a
+    # Brahms sliver or a Litolff merged box is not the head's true ink
+    # width. A whole note, grace/cue head, or any class this round did not
+    # measure keeps the raw box (item 5). `sp` is guaranteed non-None here
+    # (`mine = _staff_geometry(...)` above already returned `None` --
+    # abstain-equivalent -- otherwise), so this never needs its own
+    # fallback.
+    class_name = box_row.value[0] if box_row.value else None
+    if _geom.is_regular_notehead(class_name):
+        cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+        # ⚠️ ROADMAP 2.39b: GATHER's own matched-window search, read (never
+        # re-run -- CLAUDE.md rule 6) and applied to the SAME `sp` this
+        # staff's own spacing already is -- `dx_spaces`/`dy_spaces` are
+        # frame-agnostic ratios, so multiplying by THIS frame's own
+        # spacing carries them correctly from the canonical frame the
+        # search ran in to this page-frame `cx`. Only `cx` moves here: the
+        # ladder x-window is the only thing this rule reads off the
+        # returned box (`_, _` below), so a `dy` shift would move nothing
+        # a caller can see and is left out rather than computed for no
+        # reason. A head whose search declined or never ran (no measured
+        # line grid, not a regular class) keeps the un-shifted detector
+        # centre, exactly as before this round.
+        recentred = ev.rows(Q.NOTEHEAD_RECENTRE)
+        if recentred:
+            dx_sp = recentred[-1].value[0]
+            cx = cx + dx_sp * sp
+        x0, x1, _, _ = _geom.standard_head_box(cx, y, sp)
+    else:
+        x0, x1 = float(page_box[0]), float(page_box[2])
+    cell = ev.subject.at(Kind.CELL)
+    near_cell = R.cell(cell.page, cell.system, near[1].staff, cell.cell)
+    # ⚠️ ROADMAP 2.6d: `cv_rungs` is the SAME second reader `glyph_owner`
+    # merges in -- a step the detector drew no `ledgerLine` box on, read
+    # off the ink instead. One pool, so the two decisions cannot credit a
+    # rung differently. ⚠️ THE COUNT IS READ HERE TOO, DIRECTLY, and not
+    # only inside `cv_rungs` (an aliased cross-module call `inventory
+    # --check`'s AST walk does not follow, unlike the local helpers below
+    # it -- CLAUDE.md §4d's third blind spot, hit again): `signal` is where
+    # every fact this decision measured but did not act on already lives.
+    cv_rows = ev.rows(Q.LEDGER_RUNG_INK)
+    signal["cv_rung_ink_rows"] = len(cv_rows)
+    rungs = cell_rungs(ev, (cell, near_cell)) + cv_rungs(ev)
+    filed_side, near_side = ladder_sides_with_discount((
+        (staff.to_key(), y, x0, x1, ys, sp, rungs),
+        (near[1].to_key(), y, x0, x1, geo[0], geo[1], rungs)))
+    reading = ledger_direction((filed_side, near_side))
+    signal["ledger"] = reading.summary()
+    signal["kept_rungs_toward_filed"] = filed_side.n_toward
+    if filed_side.refused:
+        signal["refused_rungs_toward_filed"] = dict(filed_side.refused)
+    if reading.winner == staff.to_key():
+        return None
+
+    # ── 4. a twin on the near staff: `glyph_owner` decides, not this ───────
+    if near[1].to_key() in contested_by:
+        signal["yields_to_glyph_owner"] = True
+        return None
+    return near[1].to_key(), used + near[2]
+
+
+#: The two reasons a HUMAN row can refuse a box, and they are kept apart
+#: because they are different claims about the page. ⚠️ ROADMAP 3.4g: every
+#: per-family refusal declares BOTH, so a reader of a census can tell *there
+#: is nothing here* from *there is something here and it is not this staff's*.
+HUMAN_NOT_A_SYMBOL = "human_not_a_symbol"
+HUMAN_OTHER_STAFF = "human_other_staff"
+HUMAN_REFUSAL_REASONS = (HUMAN_NOT_A_SYMBOL, HUMAN_OTHER_STAFF)
+
+
+def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
+                        contested: Optional[bool] = None
+                        ) -> Optional[Tuple[Any, str]]:
+    """A human looked at this box and said the ink is not that kind of symbol.
+
+    Returns `(row, reason)` — one of `HUMAN_REFUSAL_REASONS` — or None.
+
+    ⚠️⚠️ ROADMAP 3.4 — THE ONE READ THAT MAKES A CORRECTION A WITNESS RATHER
+    THAN A NOTE. `review/human_evidence.py` files `Q.HUMAN_BOX_VERDICT` on the
+    glyph subject the detector already owns; this is the only place in the
+    pipeline that acts on it. Everything else a review pass produces is
+    reported and applied by nobody, which is the design: a stance on a VERDICT
+    is never read by a stage at all.
+
+    ⚠️ DELIBERATELY ITS OWN FUNCTION AND NOT A BRANCH IN THE BODY, so that
+    roadmap 2.11's `is_a_clef` refusal — the other new reason this decision is
+    about to grow, from a different lane on a different branch — lands beside
+    it rather than through it.
+
+    ⚠️ THREE OF THE FIVE LABELS, AND THE OTHER TWO ARE DECLINED HERE ON
+    PURPOSE (ROADMAP 3.4c, Sean: *"and to label boxes as nothing or belongs to
+    another staff etc."*). The value vocabulary is
+    `review/human_evidence.HUMAN_BOX_LABELS` and it is parsed by that module's
+    `human_says`, never by a second `split(":")` here:
+
+      `not_a_symbol`              ✅ refuse. There is no symbol here.
+      `duplicate_of:<glyph>`      ✅ refuse. One piece of ink is one note, and
+                                     the twin he named is the one that keeps
+                                     it. ⚠️ THIS DECISION DOES NOT CHECK THAT
+                                     THE TWIN SURVIVES — if the human names a
+                                     box that is itself refused, both go and
+                                     the ink is lost. `rerun.py` measures the
+                                     note count, which is where that would
+                                     show; a rule that kept one of a pair
+                                     alive would be a rule nobody has written.
+      `is_a:<non-notehead>`       ✅ refuse, `detail.human_says` naming the
+                                     class. He looked at the print and said it
+                                     is a clef; a clef is not a notehead.
+      `is_a:<notehead class>`     ❌ NOT a refusal. black -> half is a
+                                     disagreement about WHICH head, not about
+                                     whether there is one, and answering it
+                                     here would delete the note instead of
+                                     re-reading it. `ingest` files the new
+                                     class as a human BOX of its own, so
+                                     `adjudicate_duration` decides on that
+                                     subject; the machine's head stands beside
+                                     it and `rerun.py` reports both.
+      `owner:<staff>`             ❌ a different question entirely — that is
+                                     `ownership._human_owner`'s: he named a
+                                     staff, and the contest awards it there.
+      `owner:other`               ✅ refuse, reason `human_other_staff`.
+                                     ⚠️ ROADMAP 3.4g, SEAN 2026-09-23 ON HIS
+                                     OWN MARKS: *"'belongs to violin' were
+                                     about the fact that they belonged to a
+                                     different staff"* — the point was NOT
+                                     THIS STAFF and naming the neighbour was
+                                     incidental. So the answer that names no
+                                     staff is the honest spelling of what he
+                                     meant, and it says exactly one thing:
+                                     not here. ⚠️ DROPPED, NEVER RELOCATED
+                                     (CLAUDE.md §10) — and it cannot go to
+                                     `glyph_owner`, which must return a STAFF
+                                     KEY, so `ownership._human_owner` skips
+                                     it by name and this is where it lands.
+      `redrawn`                   ❌ the box is in the wrong PLACE, and what to
+                                     do with the machine's own box is a
+                                     decision nobody has taken. Reported by
+                                     `review/feedback.py` as a human row that
+                                     reached no verdict rather than quietly
+                                     read as a refusal.
+
+    ⚠️ IT DOES NOT WEIGH ANYTHING. A human reading the print is not a term
+    beside the width floor; he is the ground the width floor was measured
+    against (`benchmarks/omr-notehead-width-2026-09`, 255 print-adjudicated
+    boxes). So this is tested FIRST and returns the row that said so.
+    """
+    from ..review.human_evidence import (NOTEHEAD_PREFIX as _HEAD,
+                                         OWNER_OTHER as _OTHER,
+                                         human_says as _says)
+    mine = ev.subject.at(Kind.STAFF)
+    mine = mine.to_key() if mine is not None else None
+    # ⚠️⚠️ ROADMAP 3.4g. A NAMED OWNER IS A REFUSAL **ONLY WHERE THE
+    # OWNERSHIP CONTEST CANNOT HEAR IT**, and the test is the record's own.
+    # `adjudicate_glyph_owner`'s domain is `subjects_from=
+    # Q.GLYPH_BAND_DISTANCE`, the CONTESTED population — so a glyph carrying
+    # a band row is one that decision WILL decide, and reading the same row
+    # here as well would file two answers to one question and rename its
+    # export bucket from `owned_by_another_staff` (which says WHICH staff) to
+    # a reason that does not. A glyph carrying NO band row is one `glyph_owner`
+    # never sees at all: on Sean's Viola pass both of the boxes he marked
+    # *belongs to Violin II* were ACCIDENTALS, and an accidental is never in
+    # that contest, so his reading reached nothing. Here it reaches a refusal.
+    # ⚠️ AND NEVER WHERE HE NAMED **THIS** STAFF: `human_evidence._twin_on`
+    # records that the commonest `own_box` is a human pulling a glyph BACK to
+    # the staff it was cut from, which is the opposite claim.
+    # ⚠️ `contested` IS THE CALLER'S READ, PASSED IN, NOT TAKEN HERE. Each
+    # consumer module has to read `Q.GLYPH_BAND_DISTANCE` at its own site or
+    # `inventory --check` reports the declaration as inert — it follows helper
+    # calls only inside the decision's OWN module — and a declared input the
+    # tool cannot see is how a `wants` entry comes to mean nothing. Default
+    # `None` reads the rows here, for a caller that has not looked.
+    band = (bool(ev.rows(Q.GLYPH_BAND_DISTANCE)) if contested is None
+            else bool(contested))
+    rows = []
+    for r in ev.rows(Q.HUMAN_BOX_VERDICT):
+        verb, arg = _says(getattr(r, "value", None))
+        if verb == "not_a_symbol" or verb == "duplicate_of":
+            rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
+        elif verb == "owner" and arg == _OTHER:
+            rows.append((r, verb, arg, HUMAN_OTHER_STAFF))
+        elif verb == "owner" and arg and arg != mine and not band:
+            rows.append((r, verb, arg, HUMAN_OTHER_STAFF))
+        elif verb == "is_a" and not str(arg or "").startswith(_HEAD):
+            rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
+    if not rows:
+        return None
+    row, verb, arg, reason = rows[-1]
+    detail["human_reader"] = row.reader
+    detail["human_row"] = row.id
+    # ⚠️ WHAT HE SAID, IN HIS OWN SPELLING, ON THE VERDICT'S OWN DETAIL. A
+    # refusal that records only *a human refused this* cannot be turned into a
+    # fix; a refusal that records *a human says this is a clefCAlto* can.
+    detail["human_says"] = (f"{verb}:{arg}" if arg is not None else verb)
+    # ⚠️ The sidecar and the action id travel WITH the row, so the feedback
+    # file can name the click that produced a refusal without re-reading the
+    # sidecar and hoping the ids still line up.
+    for k in ("sidecar", "action", "note"):
+        if k in (row.detail or {}):
+            detail[f"human_{k}"] = row.detail[k]
+    return row, reason
+
+
+@decision(
+    quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
+    # asks the same `ownership.ledger_direction` helper `glyph_owner` does,
+    # over the same merged (detector + CV) rung pool.
+    # ⚠️ ROADMAP 2.30 adds `Q.NOTEHEAD_CLASS` for the SAME reason
+    # `family_precision`'s rest decision declares `Q.REST` explicitly
+    # despite `subjects_from` already naming it: `_cell_notehead_boxes`
+    # reads it over the whole CELL (`Scope.SELF_AND_DESCENDANTS`), a wider
+    # read than `subjects_from` covers.
+    composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
+                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
+                  Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
+                  Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+                  Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS,
+                  # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
+                  # staves this system has, and nothing else this decision
+                  # already declares carries that fact.
+                  Q.SYSTEM_STAFF_COUNT,
+                  # ⚠️ ROADMAP 2.39b: `_belongs_to_a_nearer_staff`'s ladder
+                  # x-window re-centres on GATHER's own matched-window
+                  # search where one exists (`Q.GLYPH_BOX`'s own detector
+                  # centre otherwise) -- see its own comment.
+                  Q.NOTEHEAD_RECENTRE,
+                  # A head whose ink is a detected dynamic letter's stroke
+                  # (`_on_a_dynamic_letter_refusal`).
+                  Q.NOTEHEAD_LETTER_INK,
+                  # ROADMAP 2.107: a head whose ink the second look read as
+                  # dynamic letters (`letter_cover.refuse_head_on_a_read_letter`).
+                  Q.LETTER_LOOK_COVER,
+                  # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
+                  # stacked group -- see `_stacked_head_duplicate_refusal`'s
+                  # own docstring. SUPERSEDES 2.40's pair-wise use of
+                  # `Q.STEM`/`Q.NOTEHEAD_INK` here -- both are DROPPED from
+                  # this decision's own declaration (2.40's function that
+                  # read them directly is retained but no longer CALLED from
+                  # this body, so the two would otherwise be dead
+                  # declarations -- `staged.inventory`'s own "inert
+                  # declaration" test, corrected rather than excused). 2.40's
+                  # own unit tests still exercise `_notehead_same_side_
+                  # second_refusal` directly, with its own `Evidence`, which
+                  # declares them itself.
+                  Q.STACKED_HEAD_FIT,
+                  # ⚠️ ROADMAP 2.73: GATHER's own reading of a hollow head a
+                  # line cuts in two (the mirror hole found in the ink) and
+                  # `Q.NOTEHEAD_INK`, whose `ink_net` the keep choice between
+                  # boxes on one head reads -- see `_head_cut_piece_refusal`.
+                  Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
+                  # ⚠️ ROADMAP 2.49: GATHER's own ink split by stem x -- see
+                  # `_tremolo_slash_crosses_stem`'s own docstring.
+                  Q.NOTEHEAD_STEM_CROSS_INK,
+                  # ⚠️ ROADMAP 2.77b: the beam strokes the CV reader read and
+                  # their ink rows -- see `_beam_piece_refusal`.
+                  Q.BEAM_STROKE, Q.BEAM_STROKE_INK,
+                  # ⚠️ ROADMAP 2.49 REDESIGN -- RE-ADDED. 2.42's own comment
+                  # above notes `Q.STEM` was dropped when 2.40's pair-wise
+                  # rule was superseded; the POSITION test
+                  # (`_tremolo_position_ok`) now reads the matched `Q.STEM`
+                  # row's own canonical box directly (`_tremolo_stem_box`),
+                  # so the declaration is live again, for a different reader.
+                  Q.STEM,
+                  # ⚠️ ROADMAP 2.71: GATHER's read tremolo slash -- the second
+                  # witness `_tremolo_slash_crosses_stem` takes.
+                  Q.STEM_SLASH,
+                  # ROADMAP 2.164: the head-oval reading and the previous bar's
+                  # arc box cut at the barline -- `_arc_tail_refusal`.
+                  Q.HEAD_OVAL, Q.ARC_BOX,
+                  # ROADMAP 2.177: the meter's claimed area -- `inside_meter.read`.
+                  Q.CLAIMED_AREA),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
+          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
+          Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
+          Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
+          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
+          Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
+          Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
+          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR),
+    subjects_from=Q.NOTEHEAD_CLASS,
+    reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
+                                     "too_narrow", "is_a_dot", "on_a_barline",
+                                     TREMOLO_SLASH_REASON,
+                                     "notehead_is_a_duplicate_box",
+                                     NOTEHEAD_SAME_SIDE_REASON,
+                                     STACKED_HEAD_REASON,
+                                     HEAD_CUT_REASON,
+                                     "belongs_to_a_nearer_staff",
+                                     "is_a_meter_digit",
+                                     "notehead_in_a_key_signature_slot",
+                                     TIMESIG_DIGIT_DUPLICATE_REASON,
+                                     DYNAMIC_LETTER_REASON,
+                                     BEAM_PIECE_REASON,
+                                     REST_TWIN_REASON,
+                                     "on_a_read_meter", "on_a_rest", "inside_the_meter",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
+                                     "is_a_rest_shape",
+                                     ARC_TAIL_REASON,
+                                     "on_the_staffs_leading_barline",
+                                     "on_another_symbols_box",
+                                     OFF_STAFF_REASON,
+                                     "notehead",
+                                     ABSTAIN.NO_STAFF_GEOMETRY),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
+    """Is this glyph the detector called a notehead actually something else?
+
+    ⚠️ THREE MEASURED RULES SHIP, A FOURTH IS MEASURED AND HELD BACK, AND A
+    HUMAN'S OWN READING OUTRANKS ALL OF THEM — none of them a GATHER filter.
+    See the module docstring for where each threshold comes from and why the
+    held-back one does not set the value.
+
+    -1. `human_not_a_symbol` (roadmap 3.4) — a `Q.HUMAN_BOX_VERDICT` row
+       reading `not_a_symbol`, filed by `review/human_evidence.py` from a
+       review pass. Tested FIRST and OUTSIDE the geometry gate; see
+       `_human_not_a_symbol`.
+    0. `is_a_clef` (ROADMAP 2.11) — the CV clef locator READ a clef on this
+       very box's ink, having found the box too small to be what the ink is
+       (Sean, 2026-09-23). This rule MEASURES NOTHING: it reads the
+       `overrode_glyph_subjects` the read itself named, so the refusal and the
+       read can never disagree. It runs before the measured rules because it
+       is backed by a positive identification rather than by a shape that
+       looks wrong, and after the human because a human looked at the print.
+
+    1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
+       boundary: a neighbouring staff's ink bleeding into this cell's
+       padding, read as a hollow notehead because a flat sliver has that
+       shape (`transcribe._drop_clipped_notehead_fragments`).
+    2. `too_narrow` — a `noteheadBlack*` box under 1.0 staff spaces wide,
+       measured against the print on two publishers and costing 0 of 103
+       confirmed real noteheads (`omr-notehead-width-2026-09`), REPRODUCED
+       here on the same crop-pass join (0 of 103 confirmed heads cost,
+       ~40 confirmed non-noteheads caught).
+    3. `unladdered` (`UNLADDERED_SHIPS = False`, see its own constant for the
+       measurement) — a low-confidence notehead standing outside the staff
+       with not one ledger rung joining it to that staff
+       (`transcribe._drop_unladdered_noteheads`). MEASURED NET NEGATIVE on
+       the two acceptance documents: costs 4 of 29 / 4 of 74 confirmed real
+       noteheads against 0 of 34 / 2 of 44 confirmed non-noteheads caught.
+       Its signal is still COMPUTED and recorded in `detail["unladdered_
+       signal"]` on every notehead so the finding stays on the record and a
+       future session can re-enable it once a page-frame, cross-cell ledger
+       search is built and re-measured — it does not set `value=True`.
+    2b. `belongs_to_a_nearer_staff` (ROADMAP 2.7b, SHIPS) — Sean's
+       convention: a head more than `NEARER_STAFF_FILED_MIN_SPACES` outside
+       its filed staff, joined to it by no KEPT rung, with another staff of
+       its system nearer and within `NEARER_STAFF_NEAR_MAX_SPACES`, is that
+       staff's note and not this one's. It is NOT `unladdered` re-enabled:
+       that rule's single witness (a rung) failed on ledger recall; this one
+       adds the page's own staff geometry as a second, independent witness,
+       and a note far from its staff but near no other is untouched. It YIELDS
+       to `glyph_owner` wherever the near staff holds a twin (see
+       `_belongs_to_a_nearer_staff`). Dropped, never relocated.
+    2c. `notehead_is_a_duplicate_box` (ROADMAP 2.30, SHIPS) — CONVENTION
+       ESTABLISHED: two boxes in one cell with IoU at or above
+       `NOTEHEAD_DUPLICATE_IOU_MIN` AND centres within
+       `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`/`_DX_HEAD_WIDTHS`
+       (`_same_mark_centres`) are one physical mark read twice, the SAME
+       geometric fact ROADMAP 2.15 measured and shipped for rests
+       (`family_precision.REST_DUPLICATE_IOU_MIN`, same value, cited not
+       restated) — CLAUDE.md §10's SHATTERING plate fragments a filled
+       rectangle's ink regardless of which family the detector calls it,
+       and a notehead is that page's most common filled rectangle. THE
+       CENTRE TEST IS NOT OPTIONAL: IoU alone would also fire on a real
+       CHORD, whose same-class heads sit right beside each other with
+       touching or overlapping boxes (a second, a third) — two real notes,
+       not one mark. SAME CLASS ONLY: the higher-confidence box survives,
+       the lower-confidence one is refused. A DIFFERENT-class overlapping
+       pair (`noteheadBlack` vs `noteheadHalf`) is left alone here — that
+       is a chord member's VALUE disagreement, FINDINGS §17c's "2.12g's
+       role twins", recorded as an open question there and not settled by
+       refusing both (unlike a rest, where a class disagreement has no
+       value left to protect). Whether a cross-FAMILY pair (a rest box and
+       a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
+       CONFIRMED, and not built — see the module docstring's question to
+       Sean.
+    2d. `same_side_second` (ROADMAP 2.40, SUPERSEDED BY 2.42, NOT CALLED) —
+       DECISIONS 2026-09-30, Sean: "a second is always on opposite sides of
+       the stem." Widened 2.30 for the ONE case of two same-class,
+       overlapping boxes sharing a stem's SAME side. Its function
+       (`_notehead_same_side_second_refusal`) is RETAINED, unwired, for its
+       own print-checked regression tests; see 2e below for what replaced it
+       in production and why (`cell/3/1/2/9`'s four-box group has no
+       consistent PAIR-WISE answer).
+    2e. `stacked_head_duplicate` (ROADMAP 2.42, SHIPS) — how many heads does
+       a whole GROUP of overlapping same-stem boxes hold, decided ONCE in
+       GATHER (`gather.gather_stacked_head_fit`, `Q.STACKED_HEAD_FIT` — a
+       bounded 1/2/3-head ink fit over the group's own standard-head-box
+       template, the fewest count that explains the ink with a stated
+       margin) and read here, never re-measured. Where more than one box in
+       the group maps to the SAME fitted head, the one with MORE ink
+       (`Q.STACKED_HEAD_FIT.detail["ink"]`, `notehead_ink_under`'s own
+       staff-line-erased fill — 2.40's ink-not-score keep rule, ported) is
+       kept and the rest refused; where either box in a contested slot
+       carries no ink witness, NEITHER is refused (rule 8). A slot held by
+       only one box is untouched. See `_stacked_head_duplicate_refusal`'s
+       own docstring and the module's 2.42 section comment.
+    2g. `head_cut_piece` (ROADMAP 2.73, SHIPS, runs BEFORE 2.30/2.42) -- Sean
+       (2026-10-09): a half note on a staff or ledger line is boxed as pieces,
+       not as one head. GATHER (`gather.gather_head_line_cut`,
+       `Q.HEAD_LINE_CUT`) finds, in the ink, the two half-holes either side of
+       the line and files the standard head box centred on it; every box on
+       that head is then one mark boxed more than once. A whole detector box
+       keeps the head (most erased-raster ink between several); with none, the
+       piece with the best detector score keeps it, positioned on the line.
+       The two older keep choices below now put SHAPE before INK for the same
+       reason (`HEAD_SHAPE_MARGIN`): half a ring has the higher ring fraction
+       by construction, and ink alone kept it over the whole head; and 2.42's
+       group competes only among boxes on ONE head (`_boxes_on_one_head`), not
+       among every box on the stem and side -- two real heads an octave apart
+       were one "slot" and one lost its whole box.
+    2f. `is_a_time_signature_digit` (ROADMAP 2.47c, SHIPS) — a notehead-
+       classed box at IoU > `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` (0.9) against
+       a `timeSig*`-classed box in the SAME cell is that digit's own ink,
+       boxed twice, not a head (CLAUDE.md §10's SHATTERING-plate shape,
+       here cross-FAMILY rather than 2.30's same-class notehead pair).
+       IoU alone is the whole gate — unlike 2.30, no centre test is needed,
+       because a `timeSig*` box and a real nearby notehead are never drawn
+       to share 90% of their area by chance. Crop-verified twice, on two
+       unrelated lanes that independently landed on the same Brahms p0
+       cautionary 9/8 (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+       §21b, `benchmarks/omr-measure-partition-2026-09/FINDINGS.md`
+       §10c/§11c). See the module's own 2.47c section comment for the
+       measurement and what is NOT yet confirmed (a `clef*`/`keySignature*`
+       pairing, generalising past `timeSig*`).
+
+    ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
+    `notehead` — not an abstention. Geometry was available and was tested;
+    silence would read as "we could not tell" when the honest claim is "we
+    looked and found nothing wrong with it", the same distinction
+    `adjudicate_notehead_is_a_whole_rest` draws for the identical reason.
+
+    ⚠️ ABSTAINS ONLY WHEN THE UNIT ITSELF IS MISSING (`Q.CELL_STAFF_SPACE`),
+    which every rule above needs to convert a canonical pixel distance into
+    staff spaces. A missing PAGE frame (needed only by `clipped_fragment`)
+    does not abstain the whole decision — it just cannot condemn on that one
+    rule, and `too_narrow` still runs.
+    """
+    box_row = _glyph_box_row(ev)
+
+    # ⚠️⚠️ ROADMAP 3.4, AND IT IS FIRST — BEFORE THE GEOMETRY GATE. Every
+    # other rule here abstains `no_staff_geometry` when the cell cannot supply
+    # a unit, and that is right for a rule that measures. A human did not
+    # measure: he looked at the print. Putting this test after the gate would
+    # have thrown his reading away on exactly the cells where the machine can
+    # say least, which is where he is worth most.
+    human_detail: Dict[str, Any] = {}
+    human = _human_not_a_symbol(ev, human_detail)
+    if human is not None:
+        human_row, human_reason = human
+        if box_row is not None and isinstance(box_row.value, (list, tuple)) \
+                and len(box_row.value) == 5:
+            human_detail["class"] = box_row.value[0]
+        # ⚠️ THE TWO REASONS ARE RETURNED AS LITERALS, not as the variable the
+        # parser handed back. `brakes.vocabulary_gap` reads the `reason=`
+        # slot's AST to ask whether every DECLARED reason is one a `Ruling`
+        # here can actually carry, and a computed reason makes the whole
+        # MODULE unresolved — every decision in it. The branch is the price
+        # of keeping that check able to fail.
+        if human_reason == HUMAN_OTHER_STAFF:
+            return Ruling(value=True, reason="human_other_staff",
+                          used=(human_row.id,), detail=human_detail)
+        return Ruling(value=True, reason="human_not_a_symbol",
+                      used=(human_row.id,), detail=human_detail)
+
+    if box_row is None or not isinstance(box_row.value, (list, tuple)) \
+            or len(box_row.value) != 5:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+
+    # ⚠️ BEFORE THE STAFF-SPACE GUARD, because this rule needs no unit at all:
+    # it cites a row that already did the geometry. Putting it after would
+    # make a clef-box refusal depend on a measurement it does not use.
+    # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE consult of the claimed-area register, where `is_a_clef`
+    # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
+    # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
+    claim = _claimed_by.consult(ev, box_row, head=True) if _claimed_by.enabled() else None
+    if claim is not None and claim.refuse:
+        return _claim_refusal(claim, box_row)
+    clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
+    if clef_row is not None:
+        return Ruling(
+            value=True, reason="is_a_clef",
+            used=(clef_row.id, box_row.id),
+            detail={"class": box_row.value[0],
+                    "clef_read": clef_row.value,
+                    "clef_frame": clef_row.frame,
+                    "clef_symmetry": clef_row.score})
+
+    # ROADMAP 2.100: nothing but a clef stands before a key signature's
+    # accidentals (Sean, 2026-10-12). A notehead-named box in the signature's
+    # slots is a flat's bowl boxed under a second name. It needs no unit of
+    # its own beyond the cell's (`key_slots.key_slot_occupant` returns `None`
+    # without one), so it sits before the guard like `is_a_clef`.
+    in_key = _key_slots.key_slot_occupant(ev, box_row)
+    if in_key is not None:
+        return Ruling(value=True, reason="notehead_in_a_key_signature_slot",
+                      used=(box_row.id,) + in_key["used"],
+                      detail={"class": box_row.value[0], **in_key["detail"]})
+
+    spacing = _cell_staff_space(ev)
+    if spacing is None:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+
+    detail: Dict[str, Any] = {"class": box_row.value[0]}
+    used = [box_row.id]
+
+    # ⚠️ COMPUTED UNCONDITIONALLY, BEFORE THE SHIPPED RULES RETURN, so the
+    # measurement stays on the record even where a shipped rule already
+    # condemns the glyph for a different reason (the two populations
+    # overlap: 5 of 205 / 2 of 134 `unladdered`-flagged glyphs on the two
+    # documents are ALSO `too_narrow`).
+    ladder_detail: Dict[str, Any] = {}
+    would_unladder = _unladdered(ev, box_row, spacing, ladder_detail)
+    if ladder_detail:
+        detail["unladdered_signal"] = {"would_fire": would_unladder,
+                                       **ladder_detail}
+
+    # ROADMAP 2.108 (Sean 2026-10-13): a head with no staff anywhere near is
+    # not music. Before the shape rules: it is the stronger, simpler fact.
+    off_staff = _off_staff_glyph_refusal(ev, box_row, detail)
+    if off_staff is not None:
+        return off_staff
+
+    if _clipped_fragment(ev, box_row, spacing, detail):
+        return Ruling(value=True, reason="clipped_fragment",
+                      used=tuple(used), detail=detail)
+    if _too_narrow(box_row, spacing, detail):
+        # ROADMAP 2.106: how far under the width floor (positive = refused
+        # by this much). One line, no declared abstention band.
+        return _margins.attach(
+            Ruling(value=True, reason="too_narrow",
+                   used=tuple(used), detail=detail),
+            margin=TOO_NARROW_MIN_SPACES - detail["width_spaces"],
+            axis="width_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
+    # ROADMAP 2.59: the hollow classes `too_narrow` does not reach. AFTER the
+    # two shape rules above so every box they already refuse keeps its reason.
+    if _ledger.dot_follows_note_enabled() \
+            and _dot_sized(box_row, spacing, detail):
+        # a dot-sized mark ON a barline's column is stray ink on the line, not
+        # a dot (Sean 2026-10-07, Brahms `5/1/1/2/17`): a different claim
+        page_box = (box_row.detail or {}).get("bbox_page_px")
+        cell_box = _cell_box_page(ev)
+        w_c = box_row.value[3]
+        if page_box and len(page_box) == 4 and cell_box and w_c:
+            sp_page = spacing * (page_box[2] - page_box[0]) / w_c
+            if _ledger.mark_on_a_barline(page_box, cell_box, sp_page):
+                detail["barline_edges_page"] = [cell_box[0], cell_box[2]]
+                return Ruling(value=True, reason="on_a_barline",
+                              used=tuple(used), detail=detail)
+        return _margins.attach(
+            Ruling(value=True, reason="is_a_dot",
+                   used=tuple(used), detail=detail),
+            margin=DOT_SIZED_MAX_SPACES - max(detail["dot_size_spaces"]),
+            axis="larger_side_spaces", unit="staff spaces", band=None,
+            would_choose=(True,))
+    # ROADMAP 2.77b: a flat regular-head box lying inside a read beam stroke is
+    # that beam's ink (Sean, crop 7). Its own helper; one call.
+    beam_piece = _beam_piece_refusal(ev, box_row, spacing, detail)
+    if beam_piece is not None:
+        return beam_piece
+    # ROADMAP 2.142 (default OFF): a stemless head box on a non-whole rest box's ink is the rest.
+    rest_twin = _rest_twin_refusal(ev, box_row, detail)
+    if rest_twin is not None:
+        return rest_twin
+    # ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF): a box of ANY head class whose own ink lies inside the meter's claimed area.
+    in_meter = (None if _claimed_by.enabled()
+                else _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=True))
+    if in_meter is not None:
+        detail.update(in_meter.detail)
+        return _margins.attach(
+            Ruling(value=True, reason="inside_the_meter", used=in_meter.used, detail=detail),
+            margin=in_meter.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
+            would_choose=(True,))
+    # ROADMAP 2.173 (flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`): a whole-class box on a rest's ink or on a READ meter's ink.
+    whole_refusal = _whole_class_refusal(ev, box_row, spacing, detail)
+    if whole_refusal is not None:
+        return whole_refusal
+    # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
+    # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).
+    if _head_rest_shape.enabled():
+        _cell = ev.subject.at(Kind.CELL)
+        got = _head_rest_shape.read_head_ink(
+            ev, _cell, box_row,
+            ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=_cell)
+            if _cell is not None else ())
+        if got is not None:
+            detail["rest_shape"] = _head_rest_shape.rest_shape_detail(got)
+            return _margins.attach(
+                Ruling(value=True, reason="is_a_rest_shape",
+                       used=(box_row.id, got.cluster.id), detail=detail),
+                margin=got.margin, axis=got.axis or "rest_shape",
+                unit="mixed (spaces, steps, column share)", band=None,
+                would_choose=(True,))
+    # ROADMAP 2.176 (flag `OMR_HEAD_ON_ANOTHER_MARK`, default ON): a head box on the system's leading
+    # barline, inside a clef box, or on an accidental / curled-rest box the detector scored as high.
+    on_mark = None if _claimed_by.enabled() else _head_on_mark.read(ev, box_row, spacing, _cell_box_page(ev), detail)
+    if on_mark is not None:
+        if on_mark.leading:
+            return _margins.attach(
+                Ruling(value=True, reason="on_the_staffs_leading_barline", used=on_mark.used, detail=detail),
+                margin=on_mark.margin, axis=on_mark.axis, unit="staff spaces", band=None, would_choose=(True,))
+        return _margins.attach(
+            Ruling(value=True, reason="on_another_symbols_box", used=on_mark.used, detail=detail),
+            margin=on_mark.margin, axis=on_mark.axis, unit="fraction of the box shared", band=None,
+            would_choose=(True,))
+    # ROADMAP 2.164 (flag `OMR_ARC_TAIL_NOT_A_HEAD`, default ON): a head box at the
+    # bar's left edge sitting where the previous bar's crop cut a tie/slur, with no
+    # head-tall ink across half a head's width, is that arc's tail. After the shape
+    # rules (each keeps its own reason) and before every same-mark rule.
+    arc_tail = _arc_tail_refusal(ev, box_row, detail)
+    if arc_tail is not None:
+        return arc_tail
+    # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
+    # box is not a note regardless of what else is in the cell) and BEFORE
+    # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
+    # mark as another notehead box", it is not a notehead AT ALL, and must
+    # be refused on its own ink before the stacked-head keep-choice ever
+    # gets a chance to pick it over the real head it crosses (manager,
+    # Litolff `glyph/13/1/8/13/5`).
+    tremolo = _tremolo_slash_crosses_stem(ev, box_row, detail)
+    if tremolo is not None:
+        return tremolo
+    # ⚠️ ROADMAP 2.30. AFTER THE SHAPE RULES (a sliver or too-narrow box is
+    # not a note regardless of what else is in the cell) and BEFORE the
+    # meter-digit / ownership rules below, which both ask what this ink
+    # MEANS — this rule only asks whether it is the SAME ink as another
+    # notehead box already in the cell. `Q.NOTEHEAD_CLASS` and `Q.GLYPH_BOX`
+    # are both already filed at GATHER; nothing here re-derives a value.
+    # ⚠️ ROADMAP 2.73, BEFORE 2.30/2.42: a head a line cuts in two is the SAME
+    # ink boxed as pieces, and the pair-wise and slot-wise keep choices below
+    # compare ink in windows of the pieces' own sizes -- the partial box wins
+    # them. One decision per head, from the ink's own mirror hole, first.
+    cut_piece = _head_cut_piece_refusal(ev, box_row, spacing, detail)
+    if cut_piece is not None:
+        return cut_piece
+    # a box this decision just chose to KEEP as its head's one box is not then
+    # refused by the older same-mark rules, which compare it with the pieces
+    # this one already settled (Brahms 317803 pdf 0: both boxes of a cut head
+    # were refused, one by each rule, and the head was lost)
+    keeps_a_cut_head = "head_cut_signal" in detail
+    dup = (None if keeps_a_cut_head
+           else _notehead_duplicate_box_refusal(ev, box_row, spacing, detail))
+    if dup is not None:
+        return dup
+    # ⚠️ ROADMAP 2.42. AFTER 2.30's narrower same-mark test (which already
+    # caught the dy < 0.25 sp case above and returned) and BEFORE the meter-
+    # digit / ownership rules below, for the same reason 2.30 runs there: this
+    # only asks whether the ink is the SAME mark, never what it means.
+    # SUPERSEDES 2.40's pair-wise `same_side_second` (no longer called here --
+    # see `_stacked_head_duplicate_refusal`'s own module-section comment for
+    # why one group rule replaces it rather than the two competing).
+    stacked = (None if keeps_a_cut_head
+               else _stacked_head_duplicate_refusal(ev, box_row, detail))
+    if stacked is not None:
+        return stacked
+    # ⚠️ ROADMAP 2.47c. AFTER 2.30/2.42's same-FAMILY same-mark tests
+    # (which both only compare within the notehead class) and BEFORE
+    # 2.12l's meter-digit PAIR test below — this is a third, narrower
+    # same-ink question: is this box the SAME ink as a `timeSig*` box
+    # drawn in this cell, never what either box MEANS. See the module's
+    # own section comment above `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` for the
+    # crop evidence (two independent lanes, same Brahms p0 cautionary 9/8).
+    timesig_dup = _timesig_digit_duplicate_refusal(ev, box_row, detail)
+    if timesig_dup is not None:
+        return timesig_dup
+    # A notehead box lying ON a detected dynamic letter's box is that letter's
+    # ink (Sean 2026-10-09, `out/print/2.73-review` tile 10). Same-ink family,
+    # so it sits with the other "is this ink already another mark" questions
+    # and before the ones that ask what it MEANS.
+    on_letter = _on_a_dynamic_letter_refusal(ev, box_row, detail)
+    if on_letter is not None:
+        return on_letter
+    # ROADMAP 2.107: the same refusal for ink the detector never boxed as a
+    # letter but the second look READ as one (library-checked) -- GATHER
+    # filed `Q.LETTER_LOOK_COVER` on the head.
+    cover_row, cover_share = _letter_cover.cover_of(
+        ev.rows(Q.LETTER_LOOK_COVER), detail)
+    if _letter_cover.refuses(cover_share):
+        detail["read_by"] = "letter_look"
+        return _letter_cover.with_margin(
+            Ruling(value=True, reason="on_a_dynamic_letter",
+                   used=(box_row.id, cover_row.id), detail=detail),
+            cover_share, would_choose="notehead")
+    # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
+    # not a note at all regardless of what else prints at this x) and BEFORE
+    # the ownership contest (a meter digit is nobody's note, so there is
+    # nothing for `glyph_owner` to arbitrate). See the module's own block
+    # comment above `METER_DIGIT_X_MAX_SPACES` for the signature and its
+    # measurement, and `detail` for what the two gates found either way.
+    meter_digit_detail: Dict[str, Any] = {}
+    if _is_a_meter_digit(ev, box_row, spacing, meter_digit_detail):
+        detail.update(meter_digit_detail)
+        partner_id = meter_digit_detail.get("meter_digit_partner")
+        return Ruling(value=True, reason="is_a_meter_digit",
+                      used=tuple(used + ([partner_id] if partner_id else [])),
+                      detail=detail)
+    if meter_digit_detail:
+        detail["meter_digit_signal"] = meter_digit_detail
+    # ⚠️ ROADMAP 2.7b. AFTER THE SHAPE RULES: a sliver or a too-narrow box is
+    # not a note at all, which is the load-bearing thing to say about it;
+    # this rule says the ink IS a note, and another staff's. The contest
+    # domain is read HERE, at the decision's own site, and passed in (the
+    # reason `_human_not_a_symbol` gives): the rule must yield to
+    # `glyph_owner` wherever the near staff holds a twin.
+    contested_by = {(r.detail or {}).get("candidate")
+                    for r in ev.rows(Q.GLYPH_BAND_DISTANCE)}
+    nearer = _belongs_to_a_nearer_staff(ev, box_row, contested_by, detail)
+    if nearer is not None:
+        near_key, geo_used = nearer
+        return Ruling(value=True, reason="belongs_to_a_nearer_staff",
+                      used=tuple(used + geo_used), detail=detail)
+    if UNLADDERED_SHIPS and would_unladder:
+        return Ruling(value=True, reason="unladdered",
+                      used=tuple(used), detail=detail)
+    # ROADMAP 2.181: a claim holds this box but is too weak to refuse it -- no other rule refused it either, so it is
+    # NARROWED {notehead, the owner's ink}, the notehead first (written, blue), never refused on a guess.
+    if claim is not None and not claim.refuse:
+        detail.update(claim.detail)
+        return _claim_narrowing(claim, used, detail)
+    return Ruling(value=False, reason="notehead", used=tuple(used),
+                  detail=detail)
+

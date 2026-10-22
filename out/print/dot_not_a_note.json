@@ -1,0 +1,172 @@
+[
+ {
+  "n": 1,
+  "kind": "twin_moved",
+  "doc": "brahms",
+  "page": 7,
+  "subject": "glyph/7/1/0/9/9",
+  "dot": "glyph/7/1/1/9/10",
+  "head": "glyph/7/1/1/9/8",
+  "caps": [
+   "BEFORE: the notehead-shaped box (blue) was given to Flute (system 2, staff 1 from the top), by which staff is nearer.",
+   "AFTER: it goes with the dot it overlaps, to Oboe (system 2, staff 2 from the top).",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 2,
+  "kind": "role_read",
+  "doc": "brahms",
+  "page": 18,
+  "subject": "glyph/18/1/12/6/18",
+  "dot": "glyph/18/1/12/6/18",
+  "head": "glyph/18/1/12/6/19",
+  "caps": [
+   "BEFORE: the dot's note belongs to another staff, so the dot could not find it -- \"cannot tell\" whether it lengthens a note.",
+   "AFTER: it lengthens the note to its left, a note of the Contrabass staff.",
+   "BEFORE: the dot belongs to Cello (system 2, staff 13 from the top), by which staff is nearer.",
+   "AFTER: it belongs to Contrabass (system 2, staff 14 from the top), the staff of the note it trails.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 3,
+  "kind": "role_read",
+  "doc": "brahms",
+  "page": 5,
+  "subject": "glyph/5/0/1/5/32",
+  "dot": "glyph/5/0/1/5/32",
+  "head": "glyph/5/0/1/5/23",
+  "caps": [
+   "BEFORE: the dot's note belongs to another staff, so the dot could not find it -- \"cannot tell\" whether it lengthens a note.",
+   "AFTER: it lengthens the note to its left, a note of the Clarinet staff.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 4,
+  "kind": "role_read",
+  "doc": "brahms",
+  "page": 10,
+  "subject": "glyph/10/1/2/2/7",
+  "dot": "glyph/10/1/2/2/7",
+  "head": "glyph/10/1/2/2/4",
+  "caps": [
+   "BEFORE: the dot's note belongs to another staff, so the dot could not find it -- \"cannot tell\" whether it lengthens a note.",
+   "AFTER: it lengthens the note to its left, a note of the Bassoon staff.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 5,
+  "kind": "role_read",
+  "doc": "lito",
+  "page": 12,
+  "subject": "glyph/12/1/6/2/9",
+  "dot": "glyph/12/1/6/2/9",
+  "head": "glyph/12/1/6/2/1",
+  "caps": [
+   "BEFORE: the dot's note belongs to another staff, so the dot could not find it -- \"cannot tell\" whether it lengthens a note.",
+   "AFTER: it lengthens the note to its left, a note of the unnamed-staff staff.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 6,
+  "kind": "role_read",
+  "doc": "brahms",
+  "page": 3,
+  "subject": "glyph/3/1/12/6/6",
+  "dot": "glyph/3/1/12/6/6",
+  "head": "glyph/3/1/12/6/7",
+  "caps": [
+   "BEFORE: the dot's note belongs to another staff, so the dot could not find it -- \"cannot tell\" whether it lengthens a note.",
+   "AFTER: it lengthens the note to its left, a note of the Contrabass staff.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 7,
+  "kind": "owner_moved",
+  "doc": "brahms",
+  "page": 17,
+  "subject": "glyph/17/0/1/3/7",
+  "dot": "glyph/17/0/1/3/7",
+  "head": "glyph/17/0/1/3/1",
+  "caps": [
+   "BEFORE: the dot belongs to Flute (system 1, staff 1 from the top), by which staff is nearer.",
+   "AFTER: it belongs to Oboe (system 1, staff 2 from the top), the staff of the note it trails.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 8,
+  "kind": "owner_moved",
+  "doc": "lito",
+  "page": 4,
+  "subject": "glyph/4/1/2/5/8",
+  "dot": "glyph/4/1/2/5/8",
+  "head": "glyph/4/1/2/5/3",
+  "caps": [
+   "BEFORE: the dot belongs to Oboe (system 2, staff 2 from the top), by which staff is nearer.",
+   "AFTER: it belongs to Clarinet (system 2, staff 3 from the top), the staff of the note it trails.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 9,
+  "kind": "owner_moved",
+  "doc": "brahms",
+  "page": 16,
+  "subject": "glyph/16/1/10/4/3",
+  "dot": "glyph/16/1/10/4/3",
+  "head": "glyph/16/1/10/4/13",
+  "caps": [
+   "BEFORE: the dot belongs to Viola (system 2, staff 12 from the top), by which staff is nearer.",
+   "AFTER: it belongs to Violin (system 2, staff 11 from the top), the staff of the note it trails.",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 10,
+  "kind": "newly_refused",
+  "doc": "brahms",
+  "page": 5,
+  "subject": "glyph/5/1/1/2/17",
+  "dot": null,
+  "head": null,
+  "caps": [
+   "BEFORE: this box, 0.44 x 0.73 staff spaces, was kept as a noteheadHalfInSpace notehead.",
+   "AFTER: it is refused as a dot (a notehead is about 1.3 spaces wide, a dot 0.5).",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 11,
+  "kind": "twin_moved",
+  "doc": "brahms",
+  "page": 5,
+  "subject": "glyph/5/0/2/2/13",
+  "dot": "glyph/5/0/3/2/2",
+  "head": "glyph/5/0/3/2/0",
+  "caps": [
+   "BEFORE: the notehead-shaped box (blue) was given to Clarinet (system 1, staff 3 from the top), by which staff is nearer.",
+   "AFTER: it goes with the dot it overlaps, to Bassoon (system 1, staff 4 from the top).",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ },
+ {
+  "n": 12,
+  "kind": "twin_moved",
+  "doc": "brahms",
+  "page": 18,
+  "subject": "glyph/18/0/8/5/8",
+  "dot": "glyph/18/0/9/5/12",
+  "head": "glyph/18/0/9/5/8",
+  "caps": [
+   "BEFORE: the notehead-shaped box (blue) was given to Timpani (system 1, staff 9 from the top), by which staff is nearer.",
+   "AFTER: it goes with the dot it overlaps, to Violin (system 1, staff 10 from the top).",
+   "Orange = the dot; green box = its note; blue box = a notehead-shaped box on the same ink; grey outline = the staff the dot was filed on; green outline = its note's staff."
+  ]
+ }
+]

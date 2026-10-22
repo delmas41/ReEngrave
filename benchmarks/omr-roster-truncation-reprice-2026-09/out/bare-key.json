@@ -1,0 +1,279 @@
+{
+ "n_labels": 1422,
+ "n_bare": 15,
+ "by_source": {
+  "mahler5-local-scan": 1,
+  "brahms1-breitkopf-scan": 14
+ },
+ "adjacency": {
+  "SPLIT": 11,
+  "unanimous": 4
+ },
+ "rows": [
+  {
+   "source": "mahler5-local-scan",
+   "page": 109,
+   "staff": 8,
+   "text": "in F 1 2",
+   "neighbours": [
+    [
+     -1,
+     "F-H\u00f6rner 2 4 6",
+     "Horn"
+    ],
+    [
+     1,
+     "in B 3 4 Tromp. 3 4",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 0,
+   "staff": 5,
+   "text": "in C  \\frac{1}{2}",
+   "neighbours": [
+    [
+     -1,
+     "Kontrafagott",
+     "Contrabassoon"
+    ]
+   ],
+   "verdict": "unanimous -> Contrabassoon"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 0,
+   "staff": 6,
+   "text": "in Es  \\frac{3}{4}",
+   "neighbours": [
+    [
+     1,
+     "2 Trompeten in C",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "unanimous -> Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 1,
+   "staff": 5,
+   "text": "(C)",
+   "neighbours": [
+    [
+     -1,
+     "K-Fag.",
+     "Contrabassoon"
+    ]
+   ],
+   "verdict": "unanimous -> Contrabassoon"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 1,
+   "staff": 6,
+   "text": "(Es)",
+   "neighbours": [
+    [
+     1,
+     "Trpt.",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "unanimous -> Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 1,
+   "staff": 19,
+   "text": "(C)",
+   "neighbours": [
+    [
+     -1,
+     "K-Fag.",
+     "Contrabassoon"
+    ],
+    [
+     1,
+     "Hr. (Es)",
+     "Horn"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Contrabassoon / +1Horn"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 10,
+   "staff": 6,
+   "text": "(Es)",
+   "neighbours": [
+    [
+     -1,
+     "(C) Hr.",
+     "Horn"
+    ],
+    [
+     1,
+     "Trpt. (C)",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 10,
+   "staff": 19,
+   "text": "(Es)",
+   "neighbours": [
+    [
+     -1,
+     "(C) Hr.",
+     "Horn"
+    ],
+    [
+     1,
+     "Trpt. (C)",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 20,
+   "staff": 6,
+   "text": "(Es)",
+   "neighbours": [
+    [
+     -1,
+     "(C) Hr",
+     "Horn"
+    ],
+    [
+     1,
+     "Pk.",
+     "Timpani"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Timpani"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 20,
+   "staff": 18,
+   "text": "(Es)",
+   "neighbours": [
+    [
+     -1,
+     "(C) Hr.",
+     "Horn"
+    ],
+    [
+     1,
+     "1.Viol.",
+     "Violin"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Violin"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 48,
+   "staff": 5,
+   "text": "(C)",
+   "neighbours": [
+    [
+     -1,
+     "K.Fag.",
+     "Contrabassoon"
+    ],
+    [
+     1,
+     "(E) Hr.",
+     "Horn"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Contrabassoon / +1Horn"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 57,
+   "staff": 6,
+   "text": "(E)",
+   "neighbours": [
+    [
+     -1,
+     "(C) Hr.",
+     "Horn"
+    ],
+    [
+     1,
+     "Trpt. (C)",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 57,
+   "staff": 19,
+   "text": "(E)",
+   "neighbours": [
+    [
+     -1,
+     ". (C) Hr.",
+     "Horn"
+    ],
+    [
+     1,
+     "Trpt. (C)",
+     "Trumpet"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Horn / +1Trumpet"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 76,
+   "staff": 5,
+   "text": "(C)",
+   "neighbours": [
+    [
+     -1,
+     "K-Fag",
+     "Contrabassoon"
+    ],
+    [
+     1,
+     "(Es) Hr.",
+     "Horn"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Contrabassoon / +1Horn"
+  },
+  {
+   "source": "brahms1-breitkopf-scan",
+   "page": 85,
+   "staff": 5,
+   "text": "(C)",
+   "neighbours": [
+    [
+     -1,
+     "K:Fag.",
+     "Contrabassoon"
+    ],
+    [
+     1,
+     "(F) Hr.",
+     "Horn"
+    ]
+   ],
+   "verdict": "SPLIT -> -1Contrabassoon / +1Horn"
+  }
+ ]
+}

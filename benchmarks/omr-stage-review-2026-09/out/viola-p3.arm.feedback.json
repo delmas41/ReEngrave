@@ -1,0 +1,525 @@
+{
+ "what_this_is": "Roadmap 3.4, the stage review. One entry per review action: the human row it became, every verdict whose evidence names that row, and what the rule that wrote each verdict declares about itself. A human row that reached nothing is listed under `reached_nothing` \u2014 that is a finding about the pipeline, not a gap in this file. A disagreement NEVER changes a verdict.",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "sidecar": "benchmarks/omr-stage-review-2026-09/out/viola-p3.sidecar.json",
+ "provenance": {
+  "parent": {
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+   "md5": "7dbee148868c39634a20d5881143d3ee",
+   "provenance": {
+    "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+    "dirty": true,
+    "settings": {
+     "env_overrides": {
+      "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+      "OMR_SURYA_KEEP_ALIVE": "0"
+     },
+     "args": {
+      "against": null,
+      "conf": 0.25,
+      "dpi": 600,
+      "imgsz": null,
+      "ink_rows": false,
+      "no_roster": false,
+      "no_weight_routing": false,
+      "ocr": true,
+      "pages": "1-16",
+      "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "route_weights": true,
+      "sheet": null,
+      "surya": true,
+      "weights": "auto",
+      "work_id": null
+     }
+    }
+   }
+  },
+  "sidecar": {
+   "path": "benchmarks/omr-stage-review-2026-09/out/viola-p3.sidecar.json",
+   "sha256": "fc1a32684f5792cc6b100bdfa29fb790405aee0d9efbff3f8b3951ad632edb3d",
+   "actions": 3,
+   "staff": "staff/3/0/9",
+   "record_named_by_sidecar": "library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json"
+  },
+  "amended_at": "2026-09-23T16:12:22.872792-07:00"
+ },
+ "counts": {
+  "actions": 3,
+  "human_rows": 3,
+  "actions_refused": 0,
+  "actions_that_reached_nothing": 1,
+  "verdicts_naming_a_human_row": 2,
+  "verdicts_changed": 2,
+  "notes_before": 12375,
+  "notes_after": 12375
+ },
+ "per_stage": {
+  "ADJUDICATE": {
+   "verdicts_naming_a_human_row": 2,
+   "verdicts_that_WEIGHED_one": 2,
+   "by_decider": {
+    "adjudicate_notehead_is_not_a_notehead": 2
+   }
+  },
+  "EVALUATE": {
+   "verdicts_naming_a_human_row": 0,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {}
+  },
+  "INFER": {
+   "verdicts_naming_a_human_row": 0,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {}
+  }
+ },
+ "what_a_human_box_can_and_cannot_reach": {
+  "quantities": [
+   "glyph_box",
+   "notehead_class",
+   "notehead_staff_position"
+  ],
+  "absent": {
+   "aug_dot": "read off the cell raster; not derivable from rows",
+   "beam_stroke": "read off the cell raster by line_detection; not derivable",
+   "flag": "read off the cell raster; not derivable from rows",
+   "glyph_band_distance": "produced by gather_ownership_evidence from the cell RASTER (a same-class overlap search); not derivable from rows, so a human box never enters glyph_owner's contest",
+   "glyph_conf": "a person produced no softmax; writing a number here would convert 'there is no such measurement' into a definite one",
+   "glyph_ladder": "produced by gather_ownership_evidence from the cell RASTER (a ledger-rung search); not derivable from rows"
+  },
+  "adjudicate_domain": {
+   "adjudicate_duration": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "notehead_class"
+   ],
+   "adjudicate_stem_direction": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "notehead_class"
+   ]
+  },
+  "adjudicate_wants": {
+   "adjudicate_clef": [
+    "notehead_staff_position"
+   ],
+   "adjudicate_glyph_owner": [
+    "notehead_staff_position"
+   ],
+   "adjudicate_arc_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_arc_kind": [
+    "glyph_box",
+    "notehead_staff_position"
+   ],
+   "adjudicate_articulation_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_wedge_anchor": [
+    "glyph_box"
+   ],
+   "adjudicate_fermata_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_ornament_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_duration": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_tuplet": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_onset_column": [
+    "glyph_box"
+   ],
+   "adjudicate_stem_direction": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "glyph_box",
+    "notehead_staff_position"
+   ]
+  },
+  "evaluate_cause": {},
+  "infer_reads": {
+   "Rule(inference=<Inference.COLLAPSE_DURATION_BY_COLUMN: 'collapse_duration_by_column'>, target='duration', reads=('onset_column', 'event', 'duration', 'glyph_box', 'glyph_owner'), scope=<Kind.SYSTEM: 'system'>, fn=<function collapse_duration_by_column at 0x3005c1940>, bound=\"It collapses a NARROWED duration to one of that reader's OWN candidates and nothing else; it acts only on an event that stands in a corroborated onset column k and has a next onset at some column m IN THE SAME BAR, and only on witnesses that span that same k to m; every independent witness must agree on one length, and one dissenter refuses the whole inference; where two candidates carry that length it refuses rather than choosing. It writes at most one verdict per glyph and reads no value it has written.\", sideways=True, why_witnesses_are_independent=\"Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, and that is checked rather than asserted: `independent_groups` partitions the witness verdicts by whether their provenance closures intersect, so two staves resting on a shared row count once. \u26a0\ufe0f It is ONE-SIDED -- disjoint closures prove the rows differ, they do NOT prove the readings fail independently, and two staves of one badly printed page share no row and still degrade together.\", forbids_argmax=True, stub=False, switch=Switch(env='OMR_INFER', fn=<function infer_enabled at 0x105ede700>))": [
+    "glyph_box"
+   ],
+   "Rule(inference=<Inference.COLLAPSE_DURATION_TO_BARLINE: 'collapse_duration_to_barline'>, target='duration', reads=('onset_column', 'event', 'duration', 'glyph_box', 'glyph_owner'), scope=<Kind.SYSTEM: 'system'>, fn=<function collapse_duration_to_barline at 0x3005c19d0>, bound=\"It collapses a NARROWED duration to one of that reader's OWN candidates and nothing else; it acts only on an event that stands in a corroborated onset column k and has NO further onset in its bar, so it runs to the barline; its witnesses are the other staves standing at that same column k that ALSO have no further onset, so they run to the SAME barline; a witness whose own length reaches `Q.METER` through its provenance closure is REFUSED, so no borrowed length is one the meter handed out; every independent witness must agree on one length, one dissenter refuses the whole inference, and where two candidates carry that length it refuses rather than choosing. It writes at most one verdict per glyph and reads no value it has written.\", sideways=True, why_witnesses_are_independent=\"Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, checked by `independent_groups` against the provenance closures -- plus a SECOND refusal this rule needs and the column rule does not: a witness whose closure contains `Q.METER` is dropped, because a length the meter handed out is not a reading and borrowing it would launder the meter into an answer this rule claims not to read. \u26a0\ufe0f BOTH TESTS ARE ONE-SIDED, and here there is a NAMED correlation neither can see: the subject and its witness take their barline from the SAME CELL SEGMENTATION, so a bar cut in the wrong place is wrong for both together. That is the CONVENTION correlation CLAUDE.md records as real and unquantified, and it is one of the reasons this answer is BEST rather than FORCED.\", forbids_argmax=True, stub=False, switch=Switch(env='OMR_INFER', fn=<function infer_enabled at 0x105ede700>))": [
+    "glyph_box"
+   ]
+  }
+ },
+ "actions": {
+  "act-0001": {
+   "action": {
+    "id": "act-0001",
+    "kind": "delete_box",
+    "stage": "gather",
+    "subject": "glyph/3/0/9/0/1",
+    "rows": [
+     "obs:174395"
+    ],
+    "absent": {},
+    "refused": null,
+    "note": "This is the upper half of the alto C-clef, not a notehead. It stands at the header x every other staff of this system prints its clef at, it is 4.5 staff spaces tall where a notehead is ~1, and the detector drew no clef box anywhere on this staff (funnel FINDINGS, 'Why the clef abstained').",
+    "detail": {
+     "reader": "session-test",
+     "rows_before_replay": [
+      "obs:275756"
+     ]
+    }
+   },
+   "human_rows": [
+    {
+     "id": "obs:174395",
+     "subject": "glyph/3/0/9/0/1",
+     "quantity": "human_box_verdict",
+     "reader": "session-test",
+     "frame": "review:box",
+     "value": "not_a_symbol"
+    }
+   ],
+   "verdicts_that_named_it": [
+    {
+     "verdict": "vrd:177911",
+     "subject": "glyph/3/0/9/0/1",
+     "quantity": "notehead_is_not_a_notehead",
+     "stage": "ADJUDICATE",
+     "outcome": "decided",
+     "value": true,
+     "reason": "human_not_a_symbol",
+     "decider": "adjudicate_notehead_is_not_a_notehead",
+     "how_the_human_row_reached_it": "used",
+     "declares": {
+      "stage": "ADJUDICATE",
+      "quantity": "notehead_is_not_a_notehead",
+      "wants": [
+       "glyph_box",
+       "cell_box",
+       "cell_staff_space",
+       "notehead_staff_position",
+       "glyph_conf",
+       "human_box_verdict"
+      ],
+      "reasons": [
+       "clipped_fragment",
+       "too_narrow",
+       "notehead",
+       "human_not_a_symbol",
+       "no_staff_geometry",
+       "not_implemented"
+      ],
+      "checkable": "uncheckable",
+      "checked_by": [],
+      "implicates": [],
+      "composed_from": [
+       "glyph_box",
+       "cell_box",
+       "cell_staff_space",
+       "notehead_staff_position",
+       "glyph_conf",
+       "human_box_verdict"
+      ],
+      "subjects_from": [
+       "notehead_class"
+      ],
+      "mode": "additive",
+      "stub": false,
+      "conventions": []
+     },
+     "in_basis": [
+      "obs:174395"
+     ],
+     "in_used": [
+      "obs:174395"
+     ],
+     "other_rows_it_used": []
+    }
+   ],
+   "reached_nothing": false
+  },
+  "act-0002": {
+   "action": {
+    "id": "act-0002",
+    "kind": "delete_box",
+    "stage": "gather",
+    "subject": "glyph/3/0/9/0/6",
+    "rows": [
+     "obs:174396"
+    ],
+    "absent": {},
+    "refused": null,
+    "note": "The same ink, boxed a second time at conf 0.36 and 33 px tall. Two overlapping 'noteheads' at one x on the header column is the clef being read twice, not a chord.",
+    "detail": {
+     "reader": "session-test",
+     "rows_before_replay": [
+      "obs:275757"
+     ]
+    }
+   },
+   "human_rows": [
+    {
+     "id": "obs:174396",
+     "subject": "glyph/3/0/9/0/6",
+     "quantity": "human_box_verdict",
+     "reader": "session-test",
+     "frame": "review:box",
+     "value": "not_a_symbol"
+    }
+   ],
+   "verdicts_that_named_it": [
+    {
+     "verdict": "vrd:177914",
+     "subject": "glyph/3/0/9/0/6",
+     "quantity": "notehead_is_not_a_notehead",
+     "stage": "ADJUDICATE",
+     "outcome": "decided",
+     "value": true,
+     "reason": "human_not_a_symbol",
+     "decider": "adjudicate_notehead_is_not_a_notehead",
+     "how_the_human_row_reached_it": "used",
+     "declares": {
+      "stage": "ADJUDICATE",
+      "quantity": "notehead_is_not_a_notehead",
+      "wants": [
+       "glyph_box",
+       "cell_box",
+       "cell_staff_space",
+       "notehead_staff_position",
+       "glyph_conf",
+       "human_box_verdict"
+      ],
+      "reasons": [
+       "clipped_fragment",
+       "too_narrow",
+       "notehead",
+       "human_not_a_symbol",
+       "no_staff_geometry",
+       "not_implemented"
+      ],
+      "checkable": "uncheckable",
+      "checked_by": [],
+      "implicates": [],
+      "composed_from": [
+       "glyph_box",
+       "cell_box",
+       "cell_staff_space",
+       "notehead_staff_position",
+       "glyph_conf",
+       "human_box_verdict"
+      ],
+      "subjects_from": [
+       "notehead_class"
+      ],
+      "mode": "additive",
+      "stub": false,
+      "conventions": []
+     },
+     "in_basis": [
+      "obs:174396"
+     ],
+     "in_used": [
+      "obs:174396"
+     ],
+     "other_rows_it_used": []
+    }
+   ],
+   "reached_nothing": false
+  },
+  "act-0003": {
+   "action": {
+    "id": "act-0003",
+    "kind": "disagree",
+    "stage": "adjudicate",
+    "subject": "staff/3/0/9",
+    "rows": [
+     "obs:174397"
+    ],
+    "absent": {},
+    "refused": null,
+    "note": "The clef verdict ABSTAINED `no_candidates` on staff/3/0/9. The same part reads `alto` one system down on the same plate (staff/3/1/6), a clef is printed per system, and the ink at the header x is clef-sized. The disagreement is filed against the verdict and applies nothing: what to do about it is roadmap 2.10 and 2.11, not this pass.",
+    "detail": {
+     "reader": "session-test",
+     "rows_before_replay": [
+      "obs:275758"
+     ]
+    }
+   },
+   "human_rows": [
+    {
+     "id": "obs:174397",
+     "subject": "staff/3/0/9",
+     "quantity": "human_verdict_stance",
+     "reader": "session-test",
+     "frame": "review:verdict",
+     "value": "disagree"
+    }
+   ],
+   "verdicts_that_named_it": [],
+   "reached_nothing": true
+  }
+ },
+ "reached_nothing": [
+  "act-0003"
+ ],
+ "refused": [],
+ "disagreements": [
+  {
+   "action": "act-0003",
+   "stance": "disagree",
+   "note": "The clef verdict ABSTAINED `no_candidates` on staff/3/0/9. The same part reads `alto` one system down on the same plate (staff/3/1/6), a clef is printed per system, and the ink at the header x is clef-sized. The disagreement is filed against the verdict and applies nothing: what to do about it is roadmap 2.10 and 2.11, not this pass.",
+   "verdict": "vrd:176187",
+   "refused": null,
+   "subject": "staff/3/0/9",
+   "quantity": "clef",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates",
+   "decider": "adjudicate_clef",
+   "margin": null,
+   "declares": {
+    "stage": "ADJUDICATE",
+    "quantity": "clef",
+    "wants": [
+     "clef_glyph",
+     "clef_position",
+     "clef_located",
+     "clef_seed",
+     "notehead_staff_position",
+     "instrument",
+     "keysig_clef_fit"
+    ],
+    "reasons": [
+     "scored",
+     "no_candidates",
+     "margin_below_floor",
+     "all_candidates_excluded",
+     "not_implemented"
+    ],
+    "checkable": "mixed",
+    "checked_by": [
+     "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef) -- \u26a0\ufe0f DECLARED AND NOT IMPLEMENTED, and it cannot be here: it needs the INSTRUMENT, which abstains on 22 of 22 and 27 of 27 staves of the two scanned pages measured. `inventory --check` lists it",
+     "the glyph stands ON this staff: a measure cell is the staff plus four staff spaces of air, so a neighbour's clef lands in it -- and unlike the range test this needs NO identity",
+     "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
+     "continuity: a part's clef is stable across systems unless a change is printed"
+    ],
+    "implicates": [
+     "clef",
+     "instrument",
+     "notehead_staff_position",
+     "key_signature"
+    ],
+    "composed_from": [
+     "clef_glyph",
+     "clef_position",
+     "clef_located",
+     "clef_seed"
+    ],
+    "subjects_from": [],
+    "mode": "competitive",
+    "stub": false,
+    "conventions": []
+   },
+   "rows_it_used": [],
+   "rows_it_was_handed": 5,
+   "verdict_now": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "no_candidates",
+    "decider": "adjudicate_clef"
+   },
+   "verdict_was_changed_by_this": false
+  }
+ ],
+ "verdicts_changed": [
+  {
+   "subject": "glyph/3/0/9/0/1",
+   "quantity": "notehead_is_not_a_notehead",
+   "stage": "ADJUDICATE",
+   "before": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "notehead"
+   },
+   "after": {
+    "outcome": "decided",
+    "value": true,
+    "reason": "human_not_a_symbol",
+    "id": "vrd:177911"
+   }
+  },
+  {
+   "subject": "glyph/3/0/9/0/6",
+   "quantity": "notehead_is_not_a_notehead",
+   "stage": "ADJUDICATE",
+   "before": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "notehead"
+   },
+   "after": {
+    "outcome": "decided",
+    "value": true,
+    "reason": "human_not_a_symbol",
+    "id": "vrd:177914"
+   }
+  }
+ ],
+ "export": {
+  "notes_before": 12375,
+  "notes_after": 12375,
+  "staff_census_before": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 40,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "staff_census_after": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "not_a_notehead:human_not_a_symbol": 2,
+    "no_pitch": 38,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  }
+ },
+ "control": {
+  "standing_verdicts_identical": 99066,
+  "standing_verdicts_differ": 2,
+  "absent_from_the_rebuild": 0,
+  "new_in_the_rebuild": 0,
+  "\u26a0\ufe0f": "with an EMPTY sidecar `differ`, `absent` and `new` must all be 0; anything else makes every number here a measurement of the harness"
+ }
+}

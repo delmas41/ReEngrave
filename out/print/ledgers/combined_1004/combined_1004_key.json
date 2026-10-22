@@ -1,0 +1,429 @@
+[
+ {
+  "n": 1,
+  "subject": "glyph/3/0/0/2/4",
+  "ours": -6,
+  "reference_as_scored": [
+   -7
+  ],
+  "reference_vs_sean": -7,
+  "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)",
+  "std_box_used": false,
+  "box_used": [
+   830.01,
+   382.73,
+   853.88,
+   404.58
+  ],
+  "detector_box": [
+   830.01,
+   382.73,
+   853.88,
+   404.585
+  ],
+  "gate": {
+   "passed": false,
+   "iou_open": 0.35,
+   "offset_open_sp": 0.42
+  },
+  "counted": 3,
+  "thrown": 0,
+  "pixel_check_lines": [
+   {
+    "kind": "orange",
+    "y": 428.5,
+    "moved_px": 0,
+    "on_ink": true,
+    "ridge_on": 29,
+    "ridge_off": 4,
+    "near_on": 0.88,
+    "near_off": 0.0,
+    "near_side": "right",
+    "stub_on": 0.44,
+    "stub_off": 0.0,
+    "span_on": 0.72,
+    "span_off": 0.1,
+    "stub_side": "right"
+   },
+   {
+    "kind": "orange",
+    "y": 416.0,
+    "moved_px": 1,
+    "on_ink": true,
+    "ridge_on": 29,
+    "ridge_off": 23,
+    "near_on": 1.0,
+    "near_off": 0.62,
+    "near_side": "right",
+    "stub_on": 0.69,
+    "stub_off": 0.31,
+    "span_on": 0.62,
+    "span_off": 0.57,
+    "stub_side": "right"
+   },
+   {
+    "kind": "orange",
+    "y": 395.0,
+    "moved_px": 0,
+    "on_ink": false,
+    "ridge_on": 30,
+    "ridge_off": 23,
+    "near_on": 1.0,
+    "near_off": 0.88,
+    "near_side": "right",
+    "stub_on": 0.69,
+    "stub_off": 0.44,
+    "span_on": 0.65,
+    "span_off": 0.6,
+    "stub_side": "right"
+   }
+  ],
+  "pixel_check_box_used": {
+   "blob_in_box": 0.54,
+   "box_is_ink": 0.64,
+   "d_left": 6.0,
+   "d_right": 6.1,
+   "d_top": -2.7,
+   "d_bottom": 7.4,
+   "blob_wh_px": [
+    25,
+    33
+   ]
+  },
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.03636363636363636
+  },
+  "reads": {
+   "M0": {
+    "pos": -4,
+    "v": "wrong"
+   },
+   "E1": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E2": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E3": {
+    "pos": -6,
+    "v": "wrong"
+   }
+  }
+ },
+ {
+  "n": 2,
+  "subject": "glyph/3/0/0/2/9",
+  "ours": -6,
+  "reference_as_scored": [
+   -5
+  ],
+  "reference_vs_sean": -5,
+  "reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+  "std_box_used": false,
+  "box_used": [
+   830.48,
+   397.92,
+   854.19,
+   417.76
+  ],
+  "detector_box": [
+   830.475,
+   397.92,
+   854.19,
+   417.76
+  ],
+  "gate": {
+   "passed": false,
+   "iou_open": 0.39,
+   "offset_open_sp": 0.5
+  },
+  "counted": 2,
+  "thrown": 1,
+  "pixel_check_lines": [
+   {
+    "kind": "orange",
+    "y": 428.5,
+    "moved_px": 0,
+    "on_ink": true,
+    "ridge_on": 29,
+    "ridge_off": 4,
+    "near_on": 0.75,
+    "near_off": 0.0,
+    "near_side": "right",
+    "stub_on": 0.38,
+    "stub_off": 0.0,
+    "span_on": 0.74,
+    "span_off": 0.1,
+    "stub_side": "right"
+   },
+   {
+    "kind": "orange",
+    "y": 415.0,
+    "moved_px": 0,
+    "on_ink": true,
+    "ridge_on": 29,
+    "ridge_off": 23,
+    "near_on": 1.0,
+    "near_off": 0.62,
+    "near_side": "right",
+    "stub_on": 0.62,
+    "stub_off": 0.31,
+    "span_on": 0.64,
+    "span_off": 0.62,
+    "stub_side": "right"
+   },
+   {
+    "kind": "magenta",
+    "y": 397.5,
+    "moved_px": 0,
+    "on_ink": false,
+    "label": "thrown: other note's ink",
+    "ridge_on": 30,
+    "ridge_off": 23,
+    "near_on": 1.0,
+    "near_off": 0.75,
+    "near_side": "right",
+    "stub_on": 0.62,
+    "stub_off": 0.38,
+    "span_on": 0.69,
+    "span_off": 0.64,
+    "stub_side": "right"
+   }
+  ],
+  "pixel_check_box_used": {
+   "blob_in_box": 0.5,
+   "box_is_ink": 0.69,
+   "d_left": 5.5,
+   "d_right": 6.8,
+   "d_top": -9.9,
+   "d_bottom": 1.2,
+   "blob_wh_px": [
+    26,
+    32
+   ]
+  },
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.03636363636363636
+  },
+  "reads": {
+   "M0": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E1": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E2": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E3": {
+    "pos": -6,
+    "v": "wrong"
+   }
+  }
+ },
+ {
+  "n": 3,
+  "subject": "glyph/3/0/8/6/10",
+  "ours": null,
+  "reference_as_scored": [
+   10
+  ],
+  "reference_vs_sean": 10,
+  "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "std_box_used": true,
+  "box_used": [
+   1539.84,
+   1718.26,
+   1563.09,
+   1737.16
+  ],
+  "detector_box": [
+   1539.915,
+   1717.4,
+   1563.01,
+   1738.015
+  ],
+  "gate": {
+   "passed": true,
+   "iou_open": 0.81,
+   "offset_open_sp": 0.01
+  },
+  "counted": 0,
+  "thrown": 1,
+  "pixel_check_lines": [
+   {
+    "kind": "magenta",
+    "y": 1725.0,
+    "moved_px": -5,
+    "on_ink": false,
+    "label": "thrown: the head's own outline",
+    "ridge_on": 19,
+    "ridge_off": 35,
+    "near_on": 0.38,
+    "near_off": 0.0,
+    "near_side": "right",
+    "stub_on": 0.0,
+    "stub_off": 0.0,
+    "span_on": 0.44,
+    "span_off": 0.67,
+    "stub_side": "left"
+   }
+  ],
+  "pixel_check_box_used": {
+   "blob_in_box": 0.95,
+   "box_is_ink": 0.79,
+   "d_left": -0.8,
+   "d_right": 0.9,
+   "d_top": -2.3,
+   "d_bottom": 0.8,
+   "blob_wh_px": [
+    26,
+    23
+   ]
+  },
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.13513513513513514
+  },
+  "reads": {
+   "M0": {
+    "pos": null,
+    "v": "abstain"
+   },
+   "E1": {
+    "pos": null,
+    "v": "abstain"
+   },
+   "E2": {
+    "pos": null,
+    "v": "abstain"
+   },
+   "E3": {
+    "pos": null,
+    "v": "abstain"
+   }
+  }
+ },
+ {
+  "n": 4,
+  "subject": "glyph/3/0/0/6/2",
+  "ours": -6,
+  "reference_as_scored": [
+   -4
+  ],
+  "reference_vs_sean": -6,
+  "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+  "std_box_used": false,
+  "box_used": [
+   1535.73,
+   397.3,
+   1556.04,
+   416.52
+  ],
+  "detector_box": [
+   1535.73,
+   397.3,
+   1556.035,
+   416.52
+  ],
+  "gate": {
+   "passed": false,
+   "iou_open": 0.44,
+   "offset_open_sp": 0.4
+  },
+  "counted": 2,
+  "thrown": 1,
+  "pixel_check_lines": [
+   {
+    "kind": "orange",
+    "y": 434.0,
+    "moved_px": 0,
+    "on_ink": true,
+    "ridge_on": 29,
+    "ridge_off": 5,
+    "near_on": 1.0,
+    "near_off": 0.38,
+    "near_side": "right",
+    "stub_on": 0.56,
+    "stub_off": 0.19,
+    "span_on": 0.72,
+    "span_off": 0.53,
+    "stub_side": "right"
+   },
+   {
+    "kind": "orange",
+    "y": 414.5,
+    "moved_px": 0,
+    "on_ink": true,
+    "ridge_on": 35,
+    "ridge_off": 17,
+    "near_on": 1.0,
+    "near_off": 0.88,
+    "near_side": "right",
+    "stub_on": 0.94,
+    "stub_off": 0.44,
+    "span_on": 0.72,
+    "span_off": 0.61,
+    "stub_side": "right"
+   },
+   {
+    "kind": "magenta",
+    "y": 398.5,
+    "moved_px": 0,
+    "on_ink": true,
+    "label": "thrown: other note's ink",
+    "ridge_on": 34,
+    "ridge_off": 18,
+    "near_on": 1.0,
+    "near_off": 0.62,
+    "near_side": "right",
+    "stub_on": 0.81,
+    "stub_off": 0.31,
+    "span_on": 0.75,
+    "span_off": 0.5,
+    "stub_side": "right"
+   }
+  ],
+  "pixel_check_box_used": {
+   "blob_in_box": 0.43,
+   "box_is_ink": 0.63,
+   "d_left": 3.3,
+   "d_right": 8.0,
+   "d_top": -10.3,
+   "d_bottom": 8.5,
+   "blob_wh_px": [
+    26,
+    39
+   ]
+  },
+  "frame_control": {
+   "on": 0.972972972972973,
+   "off": 0.02702702702702703
+  },
+  "reads": {
+   "M0": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E1": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E2": {
+    "pos": -6,
+    "v": "wrong"
+   },
+   "E3": {
+    "pos": -6,
+    "v": "wrong"
+   }
+  }
+ }
+]

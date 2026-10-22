@@ -1,0 +1,514 @@
+{
+  "family": "rest",
+  "pages": "1",
+  "label_a": "production",
+  "label_b": "candidate",
+  "record_a": "benchmarks/omr-weights-ab-2026-09/out/production-vs-candidate/rec-production.json",
+  "record_b": "benchmarks/omr-weights-ab-2026-09/out/production-vs-candidate/rec-candidate.json",
+  "gather": {
+    "rest16th": {
+      "a": 3,
+      "b": 3,
+      "delta": 0
+    },
+    "rest8th": {
+      "a": 127,
+      "b": 128,
+      "delta": 1
+    },
+    "restHBar": {
+      "a": 1,
+      "b": 1,
+      "delta": 0
+    },
+    "restHalf": {
+      "a": 2,
+      "b": 2,
+      "delta": 0
+    },
+    "restQuarter": {
+      "a": 92,
+      "b": 91,
+      "delta": -1
+    },
+    "restWhole": {
+      "a": 125,
+      "b": 125,
+      "delta": 0
+    }
+  },
+  "adjudicate": {
+    "duration": {
+      "verdicts": [
+        {
+          "key": [
+            "abstained",
+            null,
+            "rest_stands_where_no_rest_hangs"
+          ],
+          "a": 23,
+          "b": 23,
+          "delta": 0
+        },
+        {
+          "key": [
+            "abstained",
+            null,
+            "unreadable_rest"
+          ],
+          "a": 1,
+          "b": 1,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            [
+              [
+                "beam_levels",
+                0
+              ],
+              [
+                "beats",
+                0.25
+              ],
+              [
+                "dots",
+                0
+              ],
+              [
+                "is_rest",
+                true
+              ],
+              [
+                "written",
+                0.25
+              ]
+            ],
+            "rest_class"
+          ],
+          "a": 3,
+          "b": 3,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            [
+              [
+                "beam_levels",
+                0
+              ],
+              [
+                "beats",
+                0.5
+              ],
+              [
+                "dots",
+                0
+              ],
+              [
+                "is_rest",
+                true
+              ],
+              [
+                "written",
+                0.5
+              ]
+            ],
+            "rest_class"
+          ],
+          "a": 127,
+          "b": 128,
+          "delta": 1
+        },
+        {
+          "key": [
+            "decided",
+            [
+              [
+                "beam_levels",
+                0
+              ],
+              [
+                "beats",
+                1.0
+              ],
+              [
+                "dots",
+                0
+              ],
+              [
+                "is_rest",
+                true
+              ],
+              [
+                "written",
+                1.0
+              ]
+            ],
+            "rest_class"
+          ],
+          "a": 92,
+          "b": 91,
+          "delta": -1
+        },
+        {
+          "key": [
+            "decided",
+            [
+              [
+                "beam_levels",
+                0
+              ],
+              [
+                "beats",
+                2.0
+              ],
+              [
+                "dots",
+                0
+              ],
+              [
+                "is_rest",
+                true
+              ],
+              [
+                "written",
+                2.0
+              ]
+            ],
+            "rest_class"
+          ],
+          "a": 2,
+          "b": 2,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            [
+              [
+                "beam_levels",
+                0
+              ],
+              [
+                "beats",
+                4.0
+              ],
+              [
+                "dots",
+                0
+              ],
+              [
+                "is_rest",
+                true
+              ],
+              [
+                "written",
+                4.0
+              ]
+            ],
+            "rest_class"
+          ],
+          "a": 102,
+          "b": 102,
+          "delta": 0
+        }
+      ],
+      "abstentions": []
+    },
+    "glyph_owner": {
+      "verdicts": [
+        {
+          "key": [
+            "decided",
+            "staff/1/0/0",
+            "distance"
+          ],
+          "a": 1,
+          "b": 1,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/0/1",
+            "distance"
+          ],
+          "a": 1,
+          "b": 1,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/0/1",
+            "hairpin_separates"
+          ],
+          "a": 5,
+          "b": 5,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/0/3",
+            "distance"
+          ],
+          "a": 6,
+          "b": 6,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/0/8",
+            "distance"
+          ],
+          "a": 12,
+          "b": 12,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/1/0",
+            "distance"
+          ],
+          "a": 2,
+          "b": 2,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/1/5",
+            "distance"
+          ],
+          "a": 11,
+          "b": 11,
+          "delta": 0
+        },
+        {
+          "key": [
+            "decided",
+            "staff/1/1/6",
+            "distance"
+          ],
+          "a": 8,
+          "b": 8,
+          "delta": 0
+        }
+      ],
+      "abstentions": []
+    },
+    "rest_is_not_a_rest": {
+      "verdicts": [
+        {
+          "key": [
+            "decided",
+            false,
+            "rest"
+          ],
+          "a": 314,
+          "b": 313,
+          "delta": -1
+        },
+        {
+          "key": [
+            "decided",
+            true,
+            "rest_is_a_duplicate_box"
+          ],
+          "a": 36,
+          "b": 37,
+          "delta": 1
+        }
+      ],
+      "abstentions": []
+    }
+  },
+  "cross_reference": {
+    "production": {
+      "cells_matched": 7,
+      "rows": [
+        {
+          "cell": "cell/1/0/0/1",
+          "class": "restQuarter",
+          "record_surviving": 2,
+          "sean_tp": 1,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/0/1",
+          "class": "rest8th",
+          "record_surviving": 3,
+          "sean_tp": 3,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/1",
+          "class": "restQuarter",
+          "record_surviving": 3,
+          "sean_tp": 2,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/1",
+          "class": "rest8th",
+          "record_surviving": 3,
+          "sean_tp": 3,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/5",
+          "class": "rest8th",
+          "record_surviving": 1,
+          "sean_tp": 1,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/2/2",
+          "class": "restWhole",
+          "record_surviving": 1,
+          "sean_tp": 0,
+          "sean_fp": 0,
+          "sean_unsure": 2
+        },
+        {
+          "cell": "cell/1/0/2/2",
+          "class": "rest8th",
+          "record_surviving": 1,
+          "sean_tp": 1,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/2/5",
+          "class": "rest8th",
+          "record_surviving": 4,
+          "sean_tp": 4,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/3/4",
+          "class": "restQuarter",
+          "record_surviving": 1,
+          "sean_tp": 0,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/9/5",
+          "class": "rest8th",
+          "record_surviving": 2,
+          "sean_tp": 2,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        }
+      ],
+      "totals": {
+        "record_surviving": 21,
+        "sean_tp": 17,
+        "best_case_matched": 17
+      }
+    },
+    "candidate": {
+      "cells_matched": 7,
+      "rows": [
+        {
+          "cell": "cell/1/0/0/1",
+          "class": "restQuarter",
+          "record_surviving": 2,
+          "sean_tp": 1,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/0/1",
+          "class": "rest8th",
+          "record_surviving": 3,
+          "sean_tp": 3,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/1",
+          "class": "restQuarter",
+          "record_surviving": 3,
+          "sean_tp": 2,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/1",
+          "class": "rest8th",
+          "record_surviving": 3,
+          "sean_tp": 3,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/1/5",
+          "class": "rest8th",
+          "record_surviving": 1,
+          "sean_tp": 1,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/2/2",
+          "class": "restWhole",
+          "record_surviving": 1,
+          "sean_tp": 0,
+          "sean_fp": 0,
+          "sean_unsure": 2
+        },
+        {
+          "cell": "cell/1/0/2/2",
+          "class": "rest8th",
+          "record_surviving": 1,
+          "sean_tp": 1,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/2/5",
+          "class": "rest8th",
+          "record_surviving": 4,
+          "sean_tp": 4,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/3/4",
+          "class": "restQuarter",
+          "record_surviving": 1,
+          "sean_tp": 0,
+          "sean_fp": 1,
+          "sean_unsure": 0
+        },
+        {
+          "cell": "cell/1/0/9/5",
+          "class": "rest8th",
+          "record_surviving": 2,
+          "sean_tp": 2,
+          "sean_fp": 0,
+          "sean_unsure": 0
+        }
+      ],
+      "totals": {
+        "record_surviving": 21,
+        "sean_tp": 17,
+        "best_case_matched": 17
+      }
+    }
+  }
+}

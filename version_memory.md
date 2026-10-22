@@ -1,0 +1,6366 @@
+
+# ReEngrave — Version Memory
+
+A running log of changes made to this project, newest first. Updated after
+every commit alongside CLAUDE.md and PROJECT_BRIEF.md. Frozen 2026-09-22 with
+the move to ROADMAP/DECISIONS; **un-frozen 2026-10-07** (Sean, DECISIONS):
+the gap is covered by one bridge entry summarised from ROADMAP's START HERE
+blocks, and every commit from 2026-10-07 on gets its own entry again. The
+ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
+measurement; this file is the WHEN and WHAT of each commit.
+
+## 2026-10-21 -- Overnight 20261020-night + START HERE after 2026-10-21
+Docs only. Overnight on main f1db97989 (through infer), compared with 20261018-night: Litolff notes in file 6,626 -> 8,887, Brahms 11,991 -> 15,165; held-out bars 0 (red bars 508 / 650); judged Brahms right 129 -> 142, wrong 31 -> 21. New ROADMAP START HERE block "after 2026-10-21" consolidates 2.162-2.181 landed, 2.174/2.182 parked, and the ranked next steps; PROJECT_BRIEF "Where things stand (2026-10-21)" added; CLAUDE rule 7 gained "check a count before it opens a lane" (f1db97989).
+
+## 2026-10-20 -- ROADMAP 2.173 LANDED ON: red bars + whole-note refusals
+STAGED EXPORT + ADJUDICATE, `OMR_RED_BARS` and `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM` default ON (explicit 0/false/no/off disables). A bar that does not add up is written with what was read, each note in its own status colour, one red bracket "does not add up: should hold X, counted Y"; reported as `bars_written_red`, never counted in "bars add up". A whole value needs a hollow head with no stem; a whole-class box on a read meter or a rest is refused (wholes Litolff 2 -> 0, Brahms 53 -> 4). Merged with 2.172 follow-up (`_detector_view_census`). Findings `benchmarks/omr-red-bars-2026-10/FINDINGS.md`. Next: 2.175 on red bars, 2.176, overnight re-gather.
+## 2026-10-19 -- ROADMAP 2.172 follow-up: wiring gaps closed by a real reader
+
+`export._detector_view_census` (in `export.coverage` as `detector_views`) now reads Q.GLYPH_BOX `view`, `phases_found`, `candidate_class`, `box_canonical`: kept boxes by view and family, phases_found distribution, refused near-misses by class. Their 4 KNOWN_GAPS entries are removed; `staged.check` 197 -> 193. Reporting only, no decision changed.
+
+## 2026-10-19 -- ROADMAP 2.172 LANDED ON: `OMR_DETECTOR_VIEWS` default ON, small view only
+Sean "Yes" to "may the smaller detector view land ON as the default?". `detector_views.enabled()` now defaults on (explicit 0/false/no/off disables; OFF is byte-identical to the previous feed); default parts are the 8 px anti-aliased 3-phase-median small view, close view only via `OMR_DETECTOR_VIEWS_WHICH`. Takes effect at the next full gather. Sizes NOT CONFIRMED beyond two plates. `benchmarks/omr-detector-view-2026-10/FINDINGS.md`.
+
+## 2026-10-19 -- ROADMAP 2.172 BUILT, OFF: the detector looks at each symbol family at its own size
+STAGED GATHER, flag `OMR_DETECTOR_VIEWS` (+ `_PARTS`, `_PHASES`, `_WHICH`), default OFF. `detector_views.py`, `YoloDetector.detect_view`, `gather.gather_detector_views`, `READERS.DETECTOR_VIEW`. 8 px anti-aliased view for dots/flags/rests, 22 px for black heads, 3-phase median, family-aware merge; no production box changes. The small view helps (Litolff +19 rests, Brahms +27 notes), the close view does not (false heads, one quarter rest made a note). Findings and 12 blind tiles in `benchmarks/omr-detector-view-2026-10/` and `out/print/2.172-review/`.
+
+## 2026-10-19 -- ROADMAP 2.171 DONE: why a wider detector crop reads better (study, no product code)
+STAGED GATHER read-only. `probe/2.171/` + `benchmarks/omr-detector-crop-mechanism-2026-10/FINDINGS.md` + 6 crops `out/print/2.171/`. The shipped feed was rebuilt letterbox-only and reproduces the record conf (61/61 Litolff, 121/121 Brahms, max diff 0.0005). One variable at a time on 63 Litolff + 124 Brahms symbols: scale is the strongest lever (and the 16 px is one number for dots, flags, rests and heads), context ink helps Brahms but equals a blank canvas on Litolff, `imgsz_for_cell` rounding gives the 2.167d wide pass an accidental 0.92-1.08 rescale, and a sub-pixel shift alone flips 8-10% of 0.25+ boxes. No fix built.
+
+## 2026-10-19 -- ROADMAP 2.170 LANDED ON (Sean "2 yes"): OMR_BEAM_REFUSED_OFF_THE_TIP + OMR_BEAM_NOT_ON_SYSTEM_ARC default ON; the head-fill guard (DECIDED black on a main-detector box) rides the first flag. Built as follows (was: built OFF, branch `lane-2.170-shattered-beams`)
+
+STAGED ADJUDICATE `rhythm.adjudicate_duration`: `OMR_BEAM_REFUSED_OFF_THE_TIP` (default OFF; `_no_beam_at_the_stem_tip`). Cause count on 20261018-night: the narrowed-beam heads are mostly unbeamed notes held by strokes they correctly refused (1,319 Brahms / 279 Litolff), not shattered beams (17 / 10). Measured on the exported file (whole-record replay, Brahms p0-8 only): Litolff notes 6,626 -> 6,639, Brahms p0-8 3,543 -> 3,591; judged 3 narrowed -> right, 0 right -> wrong. 12 blind tiles `out/print/2.170-review/`. `benchmarks/omr-beams-shattered-2026-10/FINDINGS.md`.
+
+## 2026-10-18 -- ROADMAP 2.169 + 2.168 LANDED ON (Sean "Yes" to "Land 2.169 and 2.168 ON?")
+STAGED GATHER (`line_detection.stem_pair_at_head_enabled`) + EVALUATE/EXPORT (`consequences.bar_disagrees_blue_enabled`): `OMR_STEM_PAIR_AT_HEAD` and `OMR_BAR_DISAGREES_BLUE` now default ON (unset = ON; explicit `0/false/no/off` disables). 2.169: a stroke ending at a notehead is never pair-deleted (Litolff 346 / Brahms 280 no-stem heads gain a stem). 2.168: decided notes the bar disputes keep their value and are written blue (GUESSED). `OMR_STEM_NOTEHEAD_GATE` stays OFF. Merged lane-2.169 then lane-2.168; flags doc rows updated.
+
+## 2026-10-18 -- ROADMAP 2.166 LANDED: OMR_SYSTEM_ARCS default ON (Sean "1. Land on"); ink erase stays OFF
+Lane `lane-2.166-system-arcs` merged normally. STAGED GATHER `arcs_system.gather_system_arcs` files `Q.SYSTEM_ARC` (ties/slurs read once per staff across the system, cut pieces joined, ends anchored), consumed by `adjudicate_tie_pair` / `adjudicate_arc_kind`. `arcs_system.enabled()` is True when unset (explicit `0/false/no/off/""` disables); the stroke erase is split behind new `OMR_SYSTEM_ARCS_ERASE` (`erase_enabled()`), default OFF, because it perturbs the Brahms pdf 1 beam reader. Set 2: 10/10 ties right, 0 judged right->wrong. Flags doc rows and tests updated.
+
+## 2026-10-17 -- Session close-out (usage limit): START HERE block names 2.162 / 2.165 / 2.166 in flight on their branches; Sean's bar-lengthen rule in CLAUDE §4
+
+Manager session start-here-go 10-16→17. Lanes stopped by the weekly usage limit with no replay running; each resumes from its branch per the ROADMAP START HERE block.
+
+## 2026-10-17 -- ROADMAP 2.161 + 2.164 LANDED: OMR_HEAD_STEM_BRIDGE and OMR_ARC_TAIL_NOT_A_HEAD default ON (Sean "Yes both on")
+Lane branches `lane-2.161-box-stem-halves` then `lane-2.164-tie-ends-as-heads` merged with main (gather.py kept both; ROADMAP,
+FINDINGS kept both sides, 2.164 renumbered omr-head-fill Sec.18; judged-tiles.json rebuilt, 1,200 tiles). STAGED GATHER +
+ADJUDICATE: 2.161 makes a stem the head's own at 2.148's first step when the head's ink runs into it on the engraving side
+(Set G 3/3 halves, both controls right; reach Litolff 8 / Brahms 0); 2.164 refuses a left-edge head box on a tie/slur the
+previous bar's crop cut that holds < half a head of head-tall ink (Set H 18/18 tie ends; reach Litolff 7 / Brahms 12).
+`rhythm.head_stem_bridge_enabled()` and `head_oval.enabled()` return True when unset (explicit `0/false/no/off/""` turns
+each off); both flag tests assert the new default and the off-words; flags doc rows "default ON, Sean 2026-10-17".
+
+## 2026-10-17 -- ROADMAP 2.163 audit done: docs/override-map-2026-10-17.md (read-only)
+Every STAGED override / supersede site, bar-length consumer and note-to-note copy mapped per stage against CLAUDE §3/§4, the
+reading order and the 2026-10-17 ruling; 5 dependency cycles; 10 ranked violations (top: `_admitted` lets the bar shorten a
+DECIDED quarter to an eighth with no flag or beam seen -- 126 / 283 `reconcile_duration` guesses last night are its upper
+bound; the meter vote counting a narrowed note is 2.162's). §11: one shared "may this step change that verdict?" guard in
+`Log.record` plus one `bar_length(cell)` helper, instead of per-rule guards. No code changed; no DECISIONS line.
+
+## 2026-10-17 -- ROADMAP 2.159 LANDED: OMR_HEAD_FILL_LOCATED_BOX default ON (Sean "Yes to both")
+STAGED GATHER `head_interior_white_located` + ADJUDICATE `rhythm.adjudicate_duration` first step: the 2.148 slit is also read on the head box an earlier reader located; a half only where that box holds the detector centre, the 2.23 window agrees, the box is not refused, the head has its own stem, and it does not lie on a dynamic letter or under slash ink; never calls a head black. Lane branch merged with main (2.158 ON); `rhythm.head_fill_located_enabled()` returns True when unset (explicit `0/false/no/off/""` disables); flag test asserts the new default and off-words; no older module needed setUpModule. Sean's 8 tiles: 4/4 Litolff halves right, 2 Brahms changes were non-notes (ff, tremolo slashes) now guarded, both controls right; reach Litolff 4 / Brahms 0. Slit share separates hollow/black with 0 errors on judged heads; 2.23 centre ink only at ~0.93; whole-head ink % worst (16 Litolff errors). Remaining misses = box-size gate / no stem touching box -> 2.161. Fast tier 8,384 passed; staged.check 192. judged-tiles.json rebuilt (1,175 tiles).
+
+## 2026-10-17 -- ROADMAP 2.158 LANDED: OMR_LONE_EVENT_FILLS_BAR default ON (Sean "2.258 on", a typo for 2.158)
+STAGED INFER `collapse_narrowed_by_bar` (`inferences.lone_event_decline`). Lane branch merged with main; `consequences.lone_event_fills_bar_enabled()` returns True when the env is unset (explicit `0/false/no/off/""` turns it off); the 2.158 flag test asserts the new default and the off-words. Sean's 21 tiles: 18 of 19 guesses right (17 Litolff halves, 1 Brahms dotted half in 6/8), both controls right; tile 14 wrong from a GATHER fault (a tie's tail boxed as a head) -- the narrow-only low-ink guard is 2.160. Flag docs, ROADMAP, DECISIONS, FINDINGS §2.158 updated.
+
+## 2026-10-16 -- ROADMAP 2.155 LANDED: OMR_STEM_AT_BAR_EDGE default ON (Sean "Yes")
+STAGED GATHER `line_detection.detect_stems`. Lane branch merged with main (2.154, 2.156 park); `stem_at_bar_edge_enabled()` now returns True when the env is unset (explicit `0/false/no/off/""` turns it off). The 2.155 flag test asserts the new default and the off-words. Sean's 40 tiles: 25/5/10 -> 33/5/2 (right/wrong/narrowed); with 2.153 on, 33 Litolff: 5/3/25 -> 29/1/3. 2.153 stays OFF. Flag docs, ROADMAP 2.155, DECISIONS line. FINDINGS section 10.
+
+## 2026-10-16 -- 2.155: a found stem may continue a beam level, never start one (Sean "Yes"; branch, flag still OFF for the landing agent)
+
+`line_detection.detect_lines`: a stroke only the rescued stems anchor is kept only where it continues a stroke the other stems make
+(shared columns, within one staff-line thickness) and is merged into it. Checked with no page gather: 39 of Sean's 40 tiles' cells
+unchanged (tile 4 blocked); 2.155b tile 13 replayed -> 0.5, right, neighbours unchanged. 40 tiles, defaults: base 25/5/10 -> 33/5/2.
+Reach: 1 Litolff cell gains a continued stroke. Fast tier 8,340 passed, check 192. Beam FINDINGS 10.12.
+
+## 2026-10-16 -- 2.155 tightened (Sean "Tighten"): a rescued edge stem touches no other head and anchors no new beam (branch, OFF)
+
+Merged main (2.154 arm a ON). `line_detection`: `_run_ends_at_a_head` refuses a run overlapping a second head box (tile 9);
+`detect_lines` keeps rescued stems out of `detect_beams`' anchors (tile 4). Sean's 20 tiles, shipped defaults: base 12 right / 3
+wrong, tightened 14 / 4 (grace notes and a flat); 2.153 rule ON (Litolff 14): 4 / 1 -> 11 / 0. Reach Litolff 158 stems, Brahms 6,
+no beam stroke changed. Brahms 2.153-rule gathers cut by Sean. 20 tiles `out/print/2.155b-review/`. Beam FINDINGS 10.9-10.10.
+## 2026-10-16 -- ROADMAP 2.157 LANDED: replay harness dangling ids fixed (tooling, Sean)
+STAGED review harness, no pipeline output change. `review.rerun.remap_row_ids` re-points every row id a rebuilt GATHER row carries (raises `DanglingRowId` on an id it cannot map); `record.ROW_ID_PREFIXES` / `is_row_id`, and `Log._next_id` refuses any other prefix. Old harness moved 32 judged tiles and 1,828 of 17,175 first duration verdicts on replay at the records' own commit; fixed harness 0. Test `tests/test_rerun_dangling_ids_2_157.py`. Known gap: `diff_records` does not remap ids. ROADMAP 2.157 LANDED; DECISIONS line; holdout FINDINGS 2.157.
+
+## 2026-10-16 -- ROADMAP 2.154 LANDED: OMR_BAR_SUM_CONFIRM_ONLY arm a ON, arm b OFF (Sean)
+STAGED EVALUATE + INFER. Lane branch merged with main; `consequences.bar_sum_confirm_only()` now returns `narrowed` when the env is unset (explicit `0/off/false/no/""` turns it off; `all` = arm b, opt-in). Tests assert the new default and the off-words; six older modules that assert the pre-2.154 bar picks (2.81, 2.97, 2.136, candidates, reconcile-what-is-in-the-bar, stem-tip hooks) now pin the flag `off` in `setUpModule`; flag docs read "default ON (arm a), Sean 2026-10-16". ROADMAP 2.154 LANDED; DECISIONS line; holdout FINDINGS 2.154.
+
+## 2026-10-16 -- ROADMAP 2.154 built OFF on its branch (OMR_BAR_SUM_CONFIRM_ONLY)
+STAGED EVALUATE + INFER, default OFF: `narrowed` (arm a) stops `reconcile_duration` and both INFER `*_by_bar` rules choosing among a narrowing's candidates; `all` (arm b) also stops `reconcile_duration` moving a decided value. Judged tiles: 18 bar picks, 18 right, all -> narrowed in both arms, 0 made wrong; 23 blind tiles out (`out/print/2.154-review/`). Not merged; holdout FINDINGS 2.154.
+## 2026-10-16 -- 2.155: a stem at the bar's edge that ends in its head is a stem (`OMR_STEM_AT_BAR_EDGE`, default OFF; lane branch, not landed)
+
+STAGED GATHER `line_detection.detect_stems` repair `edge_head`: the 2.153 tiles 4/14/16 notes had no stem because the barline filter
+(`RUN_AT_CELL_EDGE`, 0.8 space) refused their full-length up-stems; a run whose end stands in a head box inside the cell is now kept
+when the flag is on. Re-gather of Litolff p1/p2/p10 with the 2.153 rule ON: the three decide eighths by ADJUDICATE. Reach (no
+re-gather, OFF faithful on every cell): Litolff 190 stems / 70 new joins, Brahms 6 / 2. 20 blind tiles `out/print/2.155-review/`
+unanswered. Bar-sum trace for 2.154: an unboxed beamed head in each bar. benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 10.
+
+## 2026-10-16 -- evening session: 2.151 + 2.150b landed ON; 2.152 study parked; 2.153 parked OFF; 2.154 opened
+
+- 2.151 (`OMR_DOT_BOXED_AS_A_HEAD` ON, 95685746): a dot the detector boxed as a small notehead counts as the head's augmentation dot; tiles recut to one set (31) after a 38-vs-20 mismatch.
+- 2.150 / 2.150b (989dba7f): rest ink test `OMR_REST_STROKE_INTO_HEAD` ON (GATHER `Q.REST_INK_CONTACT` + ADJUDICATE refusal `rest_stroke_into_a_head`); width floor `OMR_REST_WIDTH_FLOOR` OFF/parked.
+- 2.152 (f949248f, study): gather by zoom layers -- parked by Sean; findings in benchmarks/gather-zoom-layers-2026-10/.
+- 2.153 (merged OFF): attribution of 31 judged value errors; `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` OFF after Sean's tiles (bar sum picked from its narrowing) -> 2.154 opened.
+
+## 2026-10-16 -- day session: 2.145, 2.146, 2.148 landed ON; 2.143/2.144 parked; reading-order rule; 2.149 audit; 2.150/2.151 opened
+- 2.145 `OMR_HEAD_INK_IS_A_REST` ON (merge 50451189 / flip 1088dbe3). 2.143 landed OFF with a review-index use (4fe6f169, a9005bba). 2.144 parked OFF on its branch.
+- 2.146 beams globally: research FINDINGS omr-beam-confirm §9 (f93ed7eb); `OMR_STEM_TIP_DECIDES_BEAM` ON (4d207dd2).
+- 2.148 notehead first: GATHER `head_interior_white` + ADJUDICATE `OMR_HEAD_FILL_FIRST` ON (b32387a1).
+- Sean's reading order for every note decision (98a2c442); 2.149 audit (b062eee8); 2.150 rests / 2.151 aug dots claimed (6753c4d2).
+
+## 2026-10-16 -- ROADMAP 2.140 landed ON (OMR_BEAM_STEM_LEVELS)
+STAGED GATHER + ADJUDICATE, `OMR_BEAM_STEM_LEVELS` default ON (`gather.beam_stem_levels_gather_enabled`, `rhythm.beam_stem_levels_enabled`; explicit `0/false/no/off` disables). Sean 2026-10-16: 14 tiles, 27 right, 5 narrowed, 0 wrong after the round-2 fix; cut-offs fitted to Sean's tiles; a third publisher not yet checked. `Q.BEAM_STEM_LEVELS` rows exist only after a re-gather; without them ADJUDICATE is unchanged from off. Merged `lane-2.140-second-beam` over 2.141/2.142 (only `docs/flags-2026-09.md` conflicted).
+
+## 2026-10-16 -- ROADMAP 2.141 fix 2 landed ON (OMR_OWN_STEM_UNISON_BOTH)
+STAGED ADJUDICATE, `rhythm.unison_both_stems_enabled` default ON (explicit `0/false/no/off` disables). Brahms all-on arm: 6 verdicts changed, none of Sean's 9 judged bars; the one changed value is a C clef boxed as a note (Sean: "Tile fix is a c clef"), opened as ROADMAP 2.144. Fix 3 stays OFF, W2 OFF. Reaches records at the next re-gather.
+
+## 2026-10-15 -- Land 2.139 ON; record 2.141 fix-2/3 tiles
+
+STAGED ADJUDICATE + LilyPond: `OMR_DYNAMIC_LEXICON_WORD` default ON (`text.dynamic_lexicon_word_enabled`; explicit `0/false/no/off` disables), Sean's tiles 8/8 (`out/print/2.139-review/answers.json`). 2.141 fix-2/3 tiles recorded (`out/print/2.141-fix23-review/answers.json`): fix 2 to be switched ON after the Brahms all-on arm shows no damage, fix 3 stays OFF; rests boxed as heads added to ROADMAP 2.142. Flags rows, FINDINGS, ROADMAP, DECISIONS updated.
+
+## 2026-10-15 -- manager close-out: START HERE block, 2.141 status
+Docs only. New START HERE block at the top of ROADMAP (today's landings 2.134/2.135/2.109/2.126/2.137/2.136, what is waiting on Sean, the ranked queue 2.141 -> 2.140 -> 2.138 -> 2.139, process lessons). Row 2.141 marked diagnosis done on branch `lane-2.141-litolff-w2` (189abd26). Fast tier on main f4ed3de1 rerun by the manager after the two landings: 8,099 passed, 0 failed.
+
+## 2026-10-15 -- ROADMAP 2.137 landed ON (tremolo slash at the stem end)
+STAGED ADJUDICATE, `OMR_SLASH_AT_STEM_END` default ON (`notehead_precision.slash_at_stem_end_enabled`; explicit `0/false/no/off` disables): a non-oval box crossing a stem is refused as a slash without 2.49's position test. 49 slashes stood as heads (Brahms 37, Litolff 12). Sean's 10 tiles: 5/5 fixed, 3/3 controls, tile 9 (deformed half note) refused and accepted. Land merge 6643c70e. Reaches records at the next re-decide/re-gather.
+
+## 2026-10-15 -- ROADMAP 2.136 landed, flag split (land merge dfba2439)
+Merged lane-2.136-step2 (head ffb82ac0), then split its one flag (Sean 2026-10-15). `OMR_INFER_CARRIED_METER_FIX` is default ON, W1 only (`infer.carried_meter_fix_enabled`, read in `inferences._printed_meter_roots`; deny-list). `OMR_INFER_LEDGER_OWNER_HEADS` is default OFF, W2 only (`infer.ledger_owner_heads_enabled`, read in `inferences.solve_bare_stem_bar`, passed to `consequences._bar_heads_are_clean`); held for 2.141 (Litolff tiles 6 and 10). Takes effect when records are re-decided and at the next re-gather; no gather run. Fast tier 8093 passed, check 192.
+
+## 2026-10-15 -- ROADMAP 2.126 landed, two switches ON (land merge abb02244)
+Merged lane-2.126-beam-flag (head 6046e2fb). `OMR_BEAM_JOIN_LINE_BRIDGE` and `OMR_HOOKS_LINE_BRIDGE` now default ON (`gather.beam_join_line_bridge_enabled`, `gather.hooks_line_bridge_enabled`, deny-list like `OMR_TIP_UNBLOCKED`); Sean's 9 tiles 9/9. `thin_run_stack` and `pair_flag_curve` stay OFF. GATHER readers: they reach records only at the next re-gather. Tests: tools/omr/tests/test_staged_beam_flag_2_126.py (default ON, off-word restores).
+
+## 2026-10-15 -- ROADMAP 2.109 landed (land merge 6dbf600c)
+Merged lane-2.109-lily-marks (head 84a25e57): the STAGED LilyPond writer (`tools/omr/staged/lilypond.py`) writes staccato/staccatissimo/tenuto/accent/marcato and dynamics (read plain, guessed blue `dyn.`) with a marks ledger of what is not written; no flag; tests in test_staged_lilypond_marks_2_109.py; FINDINGS in benchmarks/omr-lily-export-2026-10. Sean "Yes land"; his 6 crops (out/print/2.109-review/answers.json) found every placed mark right; misses go to 2.138, the marc. word read as a dyn. to 2.139.
+
+## 2026-10-15 -- ROADMAP 2.134 + 2.135 landed (land merge 96cf4872)
+Merged lane-2.135-balance-row (report section-9 "refusal vs exporter drop" row counts refusals read as rests; tests in test_regather_report.py; no flag) and lane-2.134-cascade (diagnosis only: probe, out/2.134, FINDINGS 2.134, out/print/2.134-review tiles + answers.json; no tools/ change). Sean: "Yes". Follow-up 2.136.
+
+## 2026-10-15 -- ROADMAP 2.133 landed, switch OFF
+Merged lane-2.133-staccatissimo-tip into main with `OMR_MARK_SHAPE_LINE_REMOVED` default OFF (measurement-only reader; output unchanged with the flag off; OFF test in test_staged_mark_shape_line_removed_2_133.py). Sean: "After all our open lanes land"; tiles not yet judged.
+
+## 2026-10-15 -- ROADMAP 2.132 landed, switch OFF
+Merged lane-2.132-hollow-stacked into main with `OMR_STACKED_HOLLOW_PAIR` default OFF (output unchanged with the flag off; OFF test in test_staged_stacked_hollow_pair_2_132.py). Sean: "After all our open lanes land"; tiles not yet judged, so the default waits for them.
+
+## 2026-10-15 -- ROADMAP 2.132 built, flag OFF (hollow stacked heads)
+STAGED GATHER `gather.stacked_hollow_pair_enabled` / `fit_hollow_stacked_pair` / `_hollow_pair_from_page`, `OMR_STACKED_HOLLOW_PAIR` default OFF (Sean has not seen the tiles). A hollow group the 2.129 fit reads as k=1 is two heads where both slots of a third read hollow on the PAGE raster (line rows left out) and a stem at an edge reaches both heads and runs >= 1.5 spaces past the pair; the stem excludes the "8" of a printed 9/8 (the 2.129 "bass clef", a crop shows it) and the real bass clef. Brahms: 18 of 19 refused chords kept, pdf 0 truth byte-identical; Litolff pp0-3 7 groups kept (unconfirmed). Cost: ties 41 -> 38 on Litolff (tie pairing abstains on a chord). 15 tiles in `out/print/2.132-review/`. Check 192.
+
+## 2026-10-14 -- ROADMAP 2.131 landed ON (staccato vs staccatissimo)
+STAGED GATHER `Q.MARK_SHAPE` (`gather.mark_shape`), ADJUDICATE wedge reading in `rhythm.py` (`staccatissimo_shape_enabled`), EXPORT `<staccatissimo/>`. `OMR_STACCATISSIMO_SHAPE` default ON (Sean: "1"); `0/off` disables. A wedge (h/w, taper, pointing at a head) is a staccatissimo and never an augmentation dot; no head to point at -> abstains. Sean's 13 tiles: 8/8 changed marks right, control right; misses (tile 3, tile 11) go to 2.133. Findings: `benchmarks/omr-staccatissimo-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.129 LANDED ON (filled stacked heads)
+STAGED GATHER `gather.stacked_second_head_enabled`, `OMR_STACKED_SECOND_HEAD` default ON (explicit `0/false/no/off` disables). Sean: "1 land". Brahms p0 truth: 5/5 lost second heads recovered, 0 false keeps; his 15 tiles right (tile 9, a real hollow second head, still refused -> new ROADMAP 2.132). Docs: flags row, ROADMAP 2.129/2.132, DECISIONS. Tests: default-ON check, OFF tests set the flag off explicitly.
+
+## 2026-10-14 -- ROADMAP 2.129 BUILT, OFF: stacked chord heads (a third's second head)
+STAGED GATHER `gather.fit_stacked_head_count` / `gather_stacked_head_fit`, `OMR_STACKED_SECOND_HEAD` (default OFF). The stack fit's mean gate turned away the second head of two touching heads a third apart (5 of 5 on Sean's Brahms pdf 0, each refused `stacked_head_duplicate`); it is now kept where the detector's boxes stand a third apart, both slots hold ink >= 0.75 and the ink column is >= 1.6 spaces tall (filled heads only). Truth pdf 0: 5/5 recovered, 0 lost, 0 new duplicates; Litolff 0-3 unchanged. Near-miss recorded on every close refusal. Tiles `out/print/2.129-review/`. `benchmarks/omr-stacked-heads-2026-10/FINDINGS.md`. Lesson: a threshold set on the page raster lost 3 of 5 in the cell raster; a second witness (the boxes' spread) was needed.
+## 2026-10-14 -- ROADMAP 2.130 LANDED ON (open heads on a stem are halves)
+STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default ON (`rhythm.open_head_on_stem_enabled`; explicit `0/false/no/off` disables). Sean: "Yes". His 15 tiles (answers in `out/print/2.130-review/answers.json`): no stemmed head is a whole any more; exact or blue-including-truth 2, 5, 13, 6, 7, 8; the rest are missing dots (1, 4, 11, 12, 14 plain 2.0; 9, 15 blue {1,2} without 1.5), tile 10 an accidental boxed as a head.
+
+## 2026-10-14 -- ROADMAP 2.128 LANDED ON (the dot-to-head join reads the dot's staff position)
+STAGED ADJUDICATE, `OMR_DOT_POSITION_JOIN` default ON (`aug_dot_join.dot_position_join_enabled`; explicit `0/false/no/off` disables). Sean: "Yes"; check 193 -> 192; his 12 tiles 9/9 admitted dots right after the tile-1 boundary fix, controls right. C50 index row corrected to "above by default, below for the lower voice/lower note of a second". Tests: OFF controls set the env explicitly; RED-first default-ON class added.
+
+## 2026-10-14 -- ROADMAP 2.122 + 2.123 LANDED (export ledger balances; bar lists keyed by page/system/cell + ordinal)
+STAGED EXPORT bookkeeping, `tools/omr/staged/export.py` + `regather_report.py`; MusicXML/.ly unchanged. 2.122: the 92 uncounted Brahms boxes were 2.80b eighth rests written, now counted as reinstated refusals (ledger 3,407). 2.123: held-out/partial/unread bar lists carry bar_key (page, system, cell) + file ordinal; repeated printed numbers stay distinct; exporter raises if a list names a bar twice. Sean: "Yes". `benchmarks/omr-export-ledger-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.118 LANDED: detailed stage-by-stage re-gather report (Sean: "Land 2.118 once tests pass")
+
+Every overnight compare now writes a report per movement: bars by state, a per-symbol funnel GATHER -> EXPORT that must balance, guess certainty, cleanup per page/part, regression guards and night-over-night movers. Built on the existing readout/inventory/export-report tools. It found 2.122-2.125 (ledger imbalances). FINDINGS in `benchmarks/omr-regather-report-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.115 LANDED, switched ON: part-boxed notehead re-centre (Sean: "Land 2.115 on")
+
+STAGED GATHER. `gather.recentre_part_boxed_on_page` re-centres a notehead box drawn on only part of the head on the page raster (staff-line rows left out) before `Q.NOTEHEAD_INK` reads its inside; `OMR_RECENTRE_PART_BOXED` now defaults ON (`=0` turns it off). Sean's 6 blind tiles: 3 changed heads all moved toward his answer, 2 black controls right, 1 was a tremolo slash (not a note). Caveat: windows chosen on the same two pages. Fast tier 7796 passed; check open=192 (not up). `benchmarks/omr-head-recentre-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.116 LANDED: STAGED LilyPond export balanced again (Sean: "Land 2.116")
+
+- STAGED, EXPORT. `lilypond.to_lilypond` adds `provenance["unboxed_rests_placed"]` (2.99) to the log side of its balance check, as `export.to_musicxml` did; the `Unbalanced` raise stays. Broken by 8b69501f (2.99); the 2026-10-13 overnight exported no .ly. Tests `test_staged_unboxed_rest_2_99.py`, slow `test_staged_lilypond_whole_movement_2_116.py`. FINDINGS `benchmarks/omr-lily-export-2026-10`.
+
+## 2026-10-13 -- ROADMAP 2.107 LANDED with blue `dyn.` only (Sean: "land with blue dyn only")
+
+- STAGED, INFER + EXPORT. `collapse_dynamic_by_ink` moved from `ALWAYS_ON` to default-OFF research flag `OMR_DYNAMIC_INK_PICK` (allow-list; `docs/flags-2026-09.md`): the ink pick was wrong on 2 of 2 narrowed tiles (`mp` for `pp`, `mf` for `sf`). A narrowed dynamic exports only as a blue `dyn.` with every candidate and the ink scores in the `reengrave:guessed` carrier. `test_dynamic_guess_2_107.py` + `test_infer_stage.py` updated. Opened ROADMAP 2.109 (STAGED LilyPond writes no dynamics). Fast tier 7,751 passed; check 192, margins 0; judged index rebuilt.
+## 2026-10-13 -- Brahms 317803 pdf 0 hand truth complete (Sean)
+
+- `data/hand-truth/pages/imslp317803/0.json` 1,352 -> 1,566 boxes; remaining in-progress cells are words only. DECISIONS line.
+
+## 2026-10-13 -- manager session end: START HERE written
+
+- ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
+## 2026-10-13 -- ROADMAP 2.107 dynamic letters the detector never boxed are READ, library-checked (branch `lane-2.107-dynamic-letters`, NOT merged; Sean judges `out/print/2.107-review/` first)
+
+- STAGED, GATHER + ADJUDICATE. Sean on 2.90 tile 9 (Litolff p2 `sf`, boxed note + two `rest16th`): *"sf should be read as a dynamic - it is letters"*. New `staged/letter_look.py` (pure) + `gather.gather_letter_look` (after the rescue, before every `detections` reader): the SAME detector (new `YoloDetector.detect_image`) is shown the staff-line-erased ink of a head/rest group at a two-scale probe, then five scales under two erasures; a letter needs >= 0.7 on >= 4 looks and the tight erasure's agreement; the string must be a `dynamics` entry of the 2.67 terms library; an unread letter beside a read one is an open slot (NARROWED, never guessed). Read letters are appended as `dynamic*` detections under `READERS.LETTER_LOOK` (`gather_dynamic_letters` now attributes each letter to the reader that boxed it); `Q.LETTER_LOOK_COVER` on the head/rest boxes they explain; `adjudicators/letter_cover.py` + a few lines in `notehead_precision` / `family_precision` refuse them (`on_a_dynamic_letter`, `rest_on_a_dynamic_letter`, margin recorded). `staged/letter_look_report.py` reads a record and counts what the look did.
+- Reach: Litolff 16 pp 3 read + 2 narrowed of 1,528 groups (14 heads/rests refused), Brahms 27 pp 1 of 6,018, Dvorak (held out) 1 + 1, Schumann / Tchaikovsky 0. Small re-gathers base vs arm on one tree: Litolff pp.1-3 differ in exactly tile 9; Brahms pp.0-1 zero. The tile 9 and p10 `sf` come out narrowed (`mf/rf/sf`), so EXPORT writes none; an INFER collapse by the document's own tally is the open step (Sean's yes).
+- 52 tests (`test_letter_look_2026_10_13.py`, RED on `origin/main`: the modules do not exist); fast tier 7,719 passed; `staged.check` 192 (unchanged), margins part 0. Tiles `out/print/2.107-review/` (11).
+- Same day, after Sean judged the tiles: tile 8 (Brahms `ff` decided `f`) fixed -- `regions_from` splits a cluster showing two same-class boxes at one scale, `_remnant_slots` narrows a read letter with letter-sized ink beside it; a NARROWED dynamic is now INFER-collapsed by `collapse_dynamic_by_ink` to the candidate the ink's own score (`letter_look.slot_evidence`, lower of two erasures, via `completion_support` in `adjudicate_dynamic`) favours, or left for EXPORT's blue `dyn.`; EXPORT writes it blue with an `<other-direction>reengrave:guessed` carrier (`_dynamic_guess`, `dynamics_guess`), counted in `guessed.dynamics`. The ink picks `mp`/`mf` where the print is `pp`/`sf` (tiles 10/11): reported, not tuned. 14 + 55 tests; `test_infer_stage` now lists three unflagged rules; judged index rebuilt.
+
+## 2026-10-13 -- ROADMAP 2.106 steps 1-2: margins on threshold refusals + the index of Sean's judged tiles (`lane-2.106-margins-index`, NOT merged)
+
+- Step 1 (STAGED, bookkeeping, no decision changes): `tools/omr/staged/margins.py` (slack/attach helpers, registry of which reasons are threshold vs structural, the AST count of threshold returns with no margin, a record-level `audit`, and `redecide`/`compare` for the no-change proof). Margins filed on `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_notehead_is_not_a_notehead` (`too_narrow`, `is_a_dot` returns only) and `adjudicate_duration` (the three 2.70/2.88 hollow-head returns only). `Verdict.margin` is signed (>=0 cleared the cut, <0 declined short); axis, unit, declared band (None where the cut has none) and the would-be value ride in `detail` -- not `Verdict.candidates`, because an ABSTAINED verdict may not carry candidates and a dozen consumers read `candidates` as "narrowed". New check part `staged.margins` (open=0; total stays 192). Proof: Litolff 20261011-night re-decided base vs arm, 171,392 verdicts, signatures identical; threshold verdicts without a margin 504 -> 0.
+- Step 2: `tools/omr/staged/judged.py`, `benchmarks/acceptance/judged-tiles.json` (600 tiles, 49 galleries, every `out/print/**/answers.json` joined to its manifest; Sean's words kept verbatim beside a conservative parse), and a streaming re-scorer for 6 GB records. Baselines on the 20261011-night records in `benchmarks/acceptance/judged-baseline-20261011-night.*.json`.
+- Tests: `tools/omr/tests/test_margins_2_106.py`, `test_judged_index_2_106.py`.
+
+## 2026-10-13 -- housekeeping: CLAUDE.md cut from 6,174 to ~1,850 words (`housekeeping-claude-md`, NOT merged -- Sean reviews first)
+
+- Sean: "make Claude.md much more concise ... don't want to lose specific knowledge." No product code, no test runs. The detail moved, not deleted, into six focused docs: `docs/running.md` (setup, worktree symlinks, every CLI, small/full re-gathers, web app internals, deployment), `docs/staged-internals.md` (two readers, record model, adjudicators, EVALUATE/INFER/EXPORT, derived checks), `docs/page-facts.md` (the full engraving/plate facts with Sean's quotes and dates, plus the 2026-10-12/13 rulings), `docs/measuring.md` (acceptance set, A/B rules, tests, flags), `docs/data-sources.md`, `docs/detector.md`.
+- CLAUDE.md now holds: the product and definition of done, the ten rules, the stage model, a new §4 of Sean's 2026-10-12/13 output rules (READ/GUESSED-blue/UNREAD, eighth only on evidence, tuplet only when seen, clef-then-key order, 95% not fixed), the seven page conventions that cost lanes weekly, how a session works (worktrees, lean-lane and machine-load caps, evidence, landing, tests), and an index of where everything else lives.
+- Every old section/bullet is mapped in `docs/claude-md-migration-2026-10-13.md` (kept / moved / dropped with reason). PROJECT_BRIEF's five pointers into old CLAUDE.md sections repointed. Old section numbers cited in ROADMAP/DECISIONS lines resolve through the migration table.
+
+## 2026-10-13 -- docs-only landings: ROADMAP 2.96, ROADMAP 2.101, the inference-principles plan (`land-docs-2026-10-13`)
+
+- Sean, 2026-10-13: "Land the docs only branches." Each branch was checked docs-only first (diff of tools/, backend/, frontend/ against origin/main empty). Merges: `lane-2.96-held-funnel` `34265e13`, `lane-2.101-held-out` `cf5729cb`, `lane-infer-principles` `8560bb16`.
+- 2.96: why bars are held out (minimal-cause funnel over the 20261011-night records), findings in `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`, probes, Sean's 15 tile answers in `out/print/2.96-review/`. 2.101: held-out check on Dvorak 8 / Schumann 2 / Tchaikovsky 4, `benchmarks/omr-held-out-2026-10/FINDINGS.md` (now linked both ways with `FINDINGS-2.102.md`), Sean's 17 answers in `out/print/2.101-review/`. Plan: `docs/plan-2026-10-12-inference-principles.md`, status header added (proposal, superseded in part by the no-hidden-guesses decision).
+- Conflicts (ROADMAP, DECISIONS, version_memory, 2.96 FINDINGS) were all append-vs-append; both sides kept, no line dropped. Only exception: ROADMAP 2.101 row, where the branch's row (Sean's answers) replaced main's older 'in flight' row, and the branch's older 2.100 row was dropped in favour of main's landed one.
+
+## 2026-10-12 -- ROADMAP 2.101 held-out check (lane-2.101-held-out)
+
+Diagnosis only, no product code. Three non-Litolff/Breitkopf scans (Dvorak 8 Novello, Schumann 2 Peters, Tchaikovsky 4 Jurgenson), base vs arm gathers; probes, FINDINGS and 17 blind tiles in `benchmarks/omr-held-out-2026-10/` and `out/print/2.101-review/`. ROADMAP 2.101 updated.
+Sean's 17 tile answers scored (answers.json, FINDINGS, DECISIONS): rests 8/8 and whole-bar rests 2/2 right; 2.81 wrong on a tuplet and a quarter; hollow-head half wrong on a C meter and tremolo slashes.
+
+---
+
+⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
+carries the dependency, not the heading.** Parallel sessions dated their own
+blocks by their own reckoning; the GATHER-coverage entry stands above the
+`Q.EVENT` one because it *builds on* it, generalising the chord gap that block
+found. Headings are left as each session wrote them — rewriting another
+session's dated claim to tidy a sort would be the ledger overwriting the tree.
+⚠️ *(This note previously pointed at "the two 09-10 entries". The session that
+wrote them re-dated its own blocks to `2026-09-09 (night)` in the same commits
+that landed on main, so that wording is gone — corrected here rather than left
+pointing at headings no longer in the file.)*
+
+---
+
+## 2026-10-13 -- ROADMAP 2.4b hollow-head run: graft KILLED (branch `lane-2.4b-hollow`, not merged; weights NOT switched)
+
+- Detector only; no GATHER/ADJUDICATE/EVALUATE/INFER code touched. New: `data/user-labeled/v24-2026-10-13-hollow4-train` (not in the catalog), `recompute_line_space.py`, `complete_with_teacher.py`, `train_2.4b.sh`, `run_2.4b_ab.sh`, `score_ab.py`, `FINDINGS.md` under `benchmarks/omr-labeling-hollow4-2026-10/`.
+- Litolff TEST (59 heads): production 72.9% / 88.9%; graft shift 0 = production exactly (v24 or control); shift 0.9 61.0% / 97.4% and Brahms 18/27; raw fine-tune 91.5% but deletes beams/ledgers and doubles 8-eye boxes. Gain is in the features, not the rows.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.4b hollow-head labelling batch BUILT, awaiting Sean (branch `lane-2.4b-hollow`, not merged)
+
+- STAGED + the detector; no GATHER/ADJUDICATE/EVALUATE/INFER code touched, nothing trained.
+- New `benchmarks/omr-labeling-hollow4-2026-10/` (train batch, 100 cells, 9 presses) and `benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/` (104 cells, Litolff idx 1, TEST truth): `build_batch.py`, `cut_pool.sh`, `cut_pool2.sh`, `size_the_miss.py` (controls: self-match 27/27, shifted 0/27), `count_hollow.py`, `contact_sheet.py`, `brahms0-miss.json`.
+- Findings: production hollow rows trained on hollow3 via v19-v21 (not Jurgenson v12); Brahms p0 hollow recall 27/27 at 0.25 and 0.10; the hollow2 counter-ranker failed its print check and is not used to select.
+
+---
+
+## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
+
+- `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
+- `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
+- Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
+## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
+
+## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)
+
+- STAGED EXPORT. `export.guess_of` classifies each written symbol READ / GUESSED from its verdict's `decider` chain (any `infer:*`, EVALUATE `reconcile_duration`, or a pitch/accidental resting on an inferred clef/key) and carries the superseded narrowing's candidates; MusicXML gets `color` on `<note>` plus a `<notations><other-notation>` JSON carrier; LilyPond (`staged/lilypond.py`, a marked renderer over the frozen legacy one) gets `\tweak color`, a rest override and a header legend; `report["guessed"]` counts per family and per rule. No decision changed: both night records re-export byte-identical minus the flags. Tests: `tools/omr/tests/test_staged_guess_flag_2_103.py` (RED first, READ controls). FINDINGS: `benchmarks/omr-staged-export-2026-09/FINDINGS.md` §7.
+
+---
+## 2026-10-12 -- ROADMAP 2.100 only a clef stands before a key signature's accidentals (branch `lane-2.100-key-order`, NOT merged, Sean judges the tiles)
+
+- STAGED ADJUDICATE. New `adjudicators/key_slots.py` (the header's key window: clef edge to the key run's last box, the run being `header._marker_run`'s own rule; one unboxed slot bridged for KEY-class boxes; a REST-class box on the next slot's x within 0.2 spaces); `adjudicate_rest_is_not_a_rest` and `adjudicate_notehead_is_not_a_notehead` refuse a box in it (`rest_in_a_key_signature_slot`, `notehead_in_a_key_signature_slot`). No flag, no GATHER change. Small re-gathers: Litolff p1-3 5 rest8th refused, 3 bars released, held 115 -> 111, 0 newly overfull, 0 key verdicts changed; Brahms p0-1 0 reach. 22 tests RED-first (`test_staged_key_slots_2_100.py`). Half (2) (the fixed order) measured, not built: see ROADMAP 2.100 and `benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §2.100. Tiles `out/print/2.100-review/` (13, answers only in manifest.json). `staged.check` 192 = base. ROUND 2 (Sean: tiles 3 and 13 are time signatures, the rest key accidentals): any non-structural class in the key slots is refused (`in_a_key_signature_slot` on the flag / arpeggiato / arc decisions; a `timeSig` in its own key slots leaves `movement.py`'s meter statement via `key_slots.meter_rows_outside_key_slots`); a rest box on the sibling staves' `timeSig` column is `rest_is_a_meter_digit`. Litolff p1-3 11 refused, held 115 -> 108, 0 newly overfull, 0 meter/key verdicts changed; Brahms p0-1 7 refused, 0 changed. Tiles `out/print/2.100-review-2/`. SEAN ANSWERED (2026-10-12): all 7 refusals and 3 kept eighth-rest controls right; control tile 1 wrong (a kept `restQuarter` box is a barline, pre-existing). A tie/arpeggiato/rest refusal cannot add a key accidental (key count comes only from `Q.KEYSIG_MARKER` rows, `gather.py:10061`).
+
+---
+## 2026-10-12 -- ROADMAP 2.67b the terms library wired into the direction reader, with limits (branch `lane-2.67b-terms-wiring`, LANDED on main 2026-10-12, Sean: "Yes to all")
+
+- STAGED only; LEGACY unchanged (no scope passed). `direction_lexicon.lookup(text, scope=)` + `LexiconScope`/`scope_for`; `direction_text.read_directions(lexicon_scope=)`; `gather_direction_words(roster=, work_id=)` builds the scope from the work id and the margin labels gathered so far and files it on every word; `adjudicators/text._held_back` (wrong family / heading out of place, positive evidence only, abstain `held_back`); export `direction_words_held_back`; `pipeline`/`__main__` forward `--work-id` to gather. Data: `data/musical-terms/composer-languages.json`; `musical_terms` gains `composer_languages`, `edition_languages`, `FAMILY_OF`, `is_heading`.
+- 12 tests (`test_direction_terms_scope_2_67b.py`), each of six limits broken in turn turns one red. Fast tier green; `check` 192 open on branch and on main `4275d7c3` alike. Re-decided `20261011-night`: 0 held on both; one-page gathers: Brahms p1 / Litolff p3 no library words, Mahler 5 Peters p6 `mit dem Bogen` x2 (one held: `Bässe` named a voice). Crops `out/print/2.67b/`.
+- Round 2: `identity._is_the_orchestral_bass` (an ambiguous bass label read as the voice, with string staves above and none below, is the Contrabass; reason `orchestral_bass`); the library re-copied from Gradus main `333423c66` (generated from `42a4c57ed`, 1,760 terms: + `Ein`, `Schritt`, `Kondukt`, `Geschlagen`, `Mit dem Bogen geschlagen`); `mit-dem-bogen-geschlagen` strings-only; `CONNECTIVE_MAX_LETTERS` (a lone `general` word of <=4 letters is glue, `loco`/`vide` excepted). Mahler 5 Peters p4+p6: `Bässe` -> Contrabass, 0 held, `mit dem Bogen geschlagen` read whole.
+
+## 2026-10-12 -- ROADMAP 2.95 a word printed between two braced staves names both (branch `lane-2.95-bracket-label`, LANDED on main 2026-10-12, Sean: "Land 2.95")
+
+- STAGED and LEGACY (the margin reader is shared). Brahms `(C)` / `Hr.` / `(Es)`: Surya read `Hr.` and `_surya_worker._assign` dropped it or gave it to a tick 2 px nearer, so horn staves read a bare crook no lexicon names. `_surya_worker._between` reports blocks centred within 0.15 of the gap between adjacent ticks (assignment unchanged); `staff_labels_surya.spread_shared_words` completes a bare-crook staff with the word only if it is a lexicon hit and both flanking staves are bare crooks (or one already holds it); `StaffLabel.shared_word` + `Q.MARGIN_LABEL` detail `shared_word`; completed text is word-first (`Hr. (C)` / `Hr. (Es)`) because `lookup` reads a crook only after the word (`(C) Hr.` -> offset 1, wrong; fix is 2.94's; Horn offsets are never consumed on STAGED, 0 key/clef verdict changes on the 47). No flag. Convention CONFIRMED by Sean 2026-10-12 (*"the bracket makes them all horns"*, DECISIONS); the brace itself is not read (extent = the two staves the word sits between; probe: 47 of 47 completions in a visibly braced pair, no horn brace over 2 staves in either movement). Reach: Brahms 47 staves (fresh Surya read of pdf 1-26), Litolff 0. Base vs arm re-adjudication of the 10-11 night records (identity chain, record streamed): Brahms `instrument` decided 635 -> 682, `slot_index` decided 690 -> 691, 0 decided values changed; Litolff identical; base rebuild reproduces the saved record 1,382 of 1,382. Fast tier 7,444 passed, `check` 192. FINDINGS `omr-staff-identity-2026-09` 2.95; `probe_shared_word_2_95.py`.
+
+
+## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, LANDED on main 2026-10-12, Sean: "Land 2.94 with the (C) Hr. fix")
+
+`work_roster.recover_worn` + `decide(named_in_system=)` + `identity._names_in_system`: a short token one letter off exactly one alias, instrument held by name in the catalog roster and absent from the system's other labels, is named (`recovered_worn`). Lexicon unchanged. Night records: Litolff 3 staves named, Brahms 1, 0 names changed, 4 of 4 print-checked. Tests `test_staged_worn_label.py`. FINDINGS §2.94. Also `instruments.parse_leading_crook`: `(C) Hr.` -> 0, `(Es) Hr.` -> 3 (was the horn default 1; LEGACY `StaffLabel.fifths_offset` changes for those labels); Brahms key chain re-decided, 0 of 1,436 verdicts moved; `test_lookup_leading_crook.py`, `test_instruments.py` updated.
+## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`, LANDED on main 2026-10-12, Sean: "Land 2.93 once it's green")
+
+- STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
+
+## 2026-10-12 -- ROADMAP 2.98 a lone whole rest is the bar even where the meter is not read (branch `lane-2.98-whole-rest-bar`, LANDED on main 2026-10-12, Sean: "Land")
+STAGED. `export._lone_whole_rest_is_the_bar` (EXPORT and `lilypond.py`): a lone dotless `restWhole` is marked a measure rest and sized to the `<time>` the file has in force; `consequences._whole_rest_ink_twin`: a second box on the rest's own ink decided a whole rest no longer blocks `size_measure_rest`. Litolff held 1,044 -> 1,012 (merged tree 1,085 -> 1,053), Brahms 2,553 -> 2,125 (identical on the merged tree), `bars add up` overfull 0, engraved control identical. Tests `test_staged_whole_rest_bar_2_98.py`, FINDINGS 2.98, 12 tiles. Sean: 12 of 12 tiles whole-bar rests, tiles 7-12 6/8.
+## 2026-10-12 -- ROADMAP 2.99 eighth and quarter rests the detector never boxed are read from the ink (branch `lane-2.99-unboxed-rests`, LANDED on main 2026-10-12, Sean: "Land 2.99"; tiles 7 of 8 decided right, tile 10 a slur end now refused, tile 6 a known miss; key-flat-as-rest: see 2.100)
+
+GATHER `gather_unboxed_rest_ink` (`Q.UNBOXED_REST_SHAPE`, ordinal 350000+) -> ADJUDICATE `adjudicate_unboxed_ink_is_a_rest` (`adjudicators/unboxed_rest.py`, no bar read) -> EVALUATE `size_unboxed_rest` -> EXPORT writes the rest; the accounting equality gained `unboxed_rests_placed`. Litolff p1-3: 16 decided, 10 bars released, held 122 -> 115; Brahms p0-1: 4 decided, 1 released. 3 bars newly overfull, explained (key-flat boxed as rest8th; cross-staff chord). 30 tests. `staged.check` 192 = base. Tiles `out/print/2.99-review/`. FINDINGS 2.99.
+
+---
+
+## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
+
+- Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
+## 2026-10-12 -- ROADMAP 2.96 why bars are held out now (branch `lane-2.96-held-funnel`, not merged)
+
+- Diagnosis only, STAGED, EXPORT-only; no product code changed. `benchmarks/omr-bar-sum-holdout-2026-09/probe/held_funnel_2_96.py` (reuses 2.22's dump and its control, adds ink pieces, dot rows, cell widths, per-event verdict flags), `classify_held_2_96.py` (evidenced vs arithmetic fixes, exhaustive partition asserted to sum, wrong-meter negative control), `summarise_2_96.py`, `n_shape_2_96.py`, `tiles_2_96.py`; results in `out/2.96/`; 15 tiles in `out/print/2.96-review/`. FINDINGS 2.96, ROADMAP 2.96. Top evidenced causes: narrowed heads the bar lands (792), a lone whole rest left at 4 beats (458), unboxed rest ink (448); the dot, head-fill and beam rows are not causes without a record row. Fast tier and `check` not run (no `tools/` change).
+
+## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
+
+- Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
+
+## 2026-10-11 -- ROADMAP 2.88 half notes 2.83 left narrowed (branch `lane-2.88-halves`, LANDED on main 2026-10-11, Sean: "Yes")
+
+- STAGED, ADJUDICATE only (`rhythm.adjudicate_duration`): a hollow head whose stem tip the tip reader cannot tell is a half on the head's own firm reading (two rasters, ring - centre >= 0.2, head-shaped box, filed cannot-tell, no flag/beam/dispute). 17 Litolff heads narrowed -> decided half (rule reads the RAW raster firmly after Sean's 14 tiles; fast tier 7,410 passed), nothing else moves; Sean's judged halves 18/18, quarters and the 2.83 tile-6 fragment unchanged; Brahms hand truth unchanged. 13 new tests (`test_staged_hollow_tip_unread_2_88.py`, RED first on `51a01593`). 14 blind tiles `out/print/2.88-review/`. FINDINGS `omr-missing-notes-2026-09` 21.
+## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
+
+STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so
+`group_chords_in_measure`'s divisi guard fires; `_settle_divisi_pairs` keeps them only in bars where every chord has a decided direction and the two streams carry equal
+time (the unconditional version held out 5 written Litolff bars), `_voice_split` falls back to 2.21 rule 1 on the exporter's own events where `Q.VOICES` did not part a pair;
+one stem is never split. Counters `part_join.divisi_at_export`, `written.two_voice_bars_from_exporter_stems`. Reach: opposite-direction refused chords Litolff 2/49,
+Brahms 39/178. Brahms two-voice bars 1 -> 7 (pitched 6990 unchanged), Litolff 1 -> 2 (pitched 5563 -> 5551: 2 mistimed fused bars now held out); engraved DEAD, identical.
+Fast tier 7,408 passed, `check` 192. Test `test_staged_divisi_carry_2026_10_11.py` (RED first with the facts patched off: 5 fail). Probes `probe/2.90_*.py`; 10 blind tiles `out/print/2.90-review/`. FINDINGS `omr-head-fill-2026-09` Sec.14.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.89 EXPORT stops mode-voting a chord (branch `lane-2.89-chord-export`, LANDED on main 2026-10-11, Sean: "Land")
+
+`staged/export.py`: heads of a chord whose written values disagree are refused as `chord_value_undecided` instead of being written at the mode.
+Litolff whole 49 chords/109 heads, p1-3 6/15, Brahms p1 13/29; engraved 0 (unchanged). Test `test_staged_chord_value_vote_2026_10_11.py` (RED first on the
+old tree); `test_stage_review_evidence` price test updated. Sean's 11 tiles: 6 one voice, 5 two voices (2.90 carries stem direction to EXPORT). Fast tier 7,398 passed, `check` 192. `probe/2.89_tiles.py`; 11 blind tiles `out/print/2.89-review/`. FINDINGS `omr-head-fill-2026-09` Sec.13.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+`reconcile_duration` no longer lengthens a note to land a short bar where the bar
+holds ink no standing glyph explains (a missed rest fills the same gap; Brahms
+Contrabass bar 13 was written as a quarter where the print has a second eighth
+rest). New GATHER row `Q.CELL_INK_PIECES` (`gather_cell_ink_pieces`, reader
+`CV_INK_PIECES`) + EVALUATE `_missed_rest_witness`; a shortening is unaffected;
+no ink reading refuses (rule 8). `d04fd058` (meter in force at the bar for
+`reconcile_duration` / `reinstate_rest_between_staves`) cherry-picked as the
+base. Brahms p0-1: 1 bar changed (Contrabass 13); Litolff p1-3: 0. Does not
+fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
+`staged.check` 192 = base. FINDINGS §2.80.
+
+---
+---
+
+## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+Sean (tile 1): *"It is an 8th note rest"*. A narrow notehead-classed box refused
+`too_narrow` is read as an eighth rest where its ink says so, never off the bar:
+GATHER `gather_narrow_box_shape` (`Q.NARROW_BOX_SHAPE`) -> ADJUDICATE
+`adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+`adjudicators/narrow_rest.py`) -> EVALUATE `size_reinstated_rest` -> EXPORT
+writes a rest. Brahms p0-1: 243 `too_narrow`, 2 become rests; Contrabass bar 13
+adds up with no note changed. Litolff p1-3: 20, 0. DECISIONS line added. 20
+tests. `staged.check` 192 = base. Tiles `out/print/2.80-review-2/`. FINDINGS 2.80b.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.81 phase 2: a bare stem is a quarter, as a labelled likelihood settled by the bar (branch `lane-2.81-phase2`, LANDED on main 2026-10-11, Sean: "Yes")
+
+- STAGED, ADJUDICATE + INFER. `OMR_BARE_STEM_BAR` is default ON (deny-list, Sean's "Yes" after his 14 tiles: the 6 settled heads 6/6 right); `OMR_BARE_STEM_RANK` stays OFF. A control arm with both off reproduces every standing duration on the two small re-gathers.
+- ADJUDICATE `adjudicate_duration` (`beam_discounted_uncertain`): `OMR_BARE_STEM_RANK` ranks the quarter above the eighth where the head's own stem is decided, its tip window reads clean and no refused stroke stands at the tip (`_refused_stroke_at_tip`); details `bare_stem_evidence_holds` / `_tip_window_clean` / `_refused_stroke_at_tip` / `_likelihood` written either way. Decides nothing. It moves `reconcile_duration`'s sums (2.80's): five Brahms pdf 1 bars change answer, so it ships OFF.
+- INFER `collapse_bare_stem_by_bar` (`OMR_BARE_STEM_BAR`, new `Inference` member): one staff's bar, decided notes fixed, every narrowing free over its own candidates, the printed meter must be landed exactly and every landing must agree on the member, whose tip window must read clean. Follows `Q.METER`'s `used` chain to the printed template/glyph/OCR rows (the verdict's basis holds the durations). Reads `Q.METER`: bar-fill is not a legitimate score for it.
+- Sean's page (Brahms pdf 0), 49 judged members: decided right 33 / wrong 0 / narrowed 16 (base 0 / 0 / 49). Count pages: Brahms pdf 1 0 of 47, Litolff pdf 3 7 of 13.
+- Tests: `tools/omr/tests/test_staged_bare_stem_2_81.py` (27, RED on the old tree first). Docs: two rows in `docs/flags-2026-09.md`. Probes `benchmarks/omr-missing-notes-2026-09/probe/l281p2_*.py`; tiles `out/print/2.81-phase2-review/`.
+
+---
+
+
+## 2026-10-11 -- ROADMAP 2.12m articulation owners LANDED on main (Sean: "Land", after 2.83; branch `lane-2.12g-long-stem` 56f637f1)
+
+- STAGED, ADJUDICATE, `adjudicate_articulation_owner` + `reconcile_articulation_twins` (run after ARTICULATION_OWNER): a mark at a long chord stem's tip is the chord's; one notehead with a stem up AND down is two voices (a mark on either side is its); a mark between two staves is the noted staff's when the other staff's bar is empty (whole rest, no note); one printed mark decided in two cells keeps one owner -- duplicates dropped, the more specific rule wins, an equal tie goes to the LOWER staff (Sean's confirmed convention). Sean's blind tiles across the item: every real mark right since round 1. Brahms whole on the 10-09 record: +5 +11 +9 decided, 0 marks with two owners. 2.83 touched no stem-direction or ownership code. On the landing merge: `check` 192 -> 192, fast tier 7,332 passed, 0 failed. FINDINGS `omr-shape-role-2026-09` Part 12.
+
+## 2026-10-11 -- 2.83 landed: the flag at the stem tip
+
+- `Q.STEM_TIP_INK` reads the flag's shape from the tip with the old window as a second witness; a decline never becomes 'no flag'; 2.70 halves only on a normal-sized head box. Sean's 24 tiles 0 wrong. Cost (18 Litolff halves narrowed) -> 2.88.
+
+## 2026-10-11 -- docs: coordination record (cloud session; no code change)
+
+- Sean asked for one view of cloud vs Mac work. Found and fixed a ROADMAP number clash (2.84 claimed by both `lane-tenuto-ledger` and `lane-stem-finder`; the stem finder became 2.87) and set one landing order, which held: q883 -> crops-bar-drift -> 2.84 -> 2.87 -> 2.13b -> 2.85, all on main.
+- Sean's blind answers on 2.83 recorded on `lane-2.83-flag-tip` (`d4c327c3`: 5 right / 2 narrowed / 3 wrong); fix requested.
+- ROADMAP: START HERE status line; 2.83 row (tile results); 2.86 row PARKED (measured dead on its lane). PROJECT_BRIEF: "Where things stand (2026-10-11)" and how the work is split between Mac and cloud sessions. CLAUDE.md section 13: claim a ROADMAP number on main before building; what a cloud session can and cannot do. DECISIONS: the two coordination lessons.
+- 11 finished sessions archived (their work verified on GitHub first).
+
+## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
+
+- STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
+  - `volta_bracket.py` files `Q.VOLTA_BRACKET`;
+  - the numeral reader files `Q.VOLTA_NUMERAL` (Surya first, Tesseract as the fallback);
+  - `repeat_dots.py` files `Q.REPEAT_DOTS`.
+- Two new decisions in `adjudicators/repeats.py`: `Q.REPEAT_BARLINE` and `Q.ENDINGS`.
+- EXPORT: `_EndingPlan` numbers the 2nd ending with the 1st ending's numbers, the print's way, and writes `<ending>`/`<repeat>`. The 2.13 printed-number check now compares against the number the file writes.
+- Brahms A/B (one record, one tree): the drift after p10 drops by 2, as predicted.
+- 25 new tests; the export tests were run RED on origin/main first. `staged.check` 192 = base.
+- Sean, blind tiles 5 of 5; keep the print's numbers (no suffix on the 1st-ending bars). FINDINGS `benchmarks/omr-repeats-endings-2026-10/FINDINGS.md`.
+
+
+## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (LANDED on main, Sean: "Yes")
+
+- Census of every 2.13 read on both acceptance movements against the plate (84 systems; frame control re-reads the record 84/84). Tesseract: Brahms 13 right / **22 wrong** of 35 decided (bold 1→4, leading 1 lost to the bracket curl, 6-space crop clips the third digit); Litolff 21 / 7.
+- `bar_number_text.read_crops_surya` (8-space crop, 60 px pad, 2x, 16 tokens) via `gather._printed_bar_numbers_surya`, filed under `READERS.SURYA`; `gather()` passes `surya=surya_fallback`. Shipped function on the real raster: Brahms 32 / 0 wrong, Litolff 27 / 0. No cascade (Tesseract where Surya is silent: 5 right / 7 wrong). No new flag; ADJUDICATE/EXPORT untouched.
+- `printed_bar_check`: deltas now clean steps (Brahms −2 at 194, −3 at 215; Litolff −1 at 171, −2 at 430). Tests RED first (10/10), `check` 192 unchanged. FINDINGS `omr-bar-number-2026-09` §7; crops for Sean in `out/print/2.13b-bar-number/`.
+- Sean confirmed all 84 plate-reading tiles the same day (DECISIONS); the counts stand against print truth.
+
+## 2026-10-11 — 2.87 the stem finder LANDED on main, switch ON on STAGED
+
+- Sean: *"Land switch on"*. `219301ba`: `STEM_FINDER_STAGED_DEFAULT` = thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head; `OMR_STEM_FINDER` unset -> that set on STAGED, set -> exactly the list; LEGACY's default stays empty (frozen). `head_contact` built, OFF. Tests RED first (6 of 7).
+- Control: Brahms acceptance_quick re-gather with the env UNSET on the committed tree (clean): Q.STEM rows identical to the measured arm `f1` on pdf 0 and 1 (326, 648); base differs (358 vs 326). Sean's page: 227/234 found, 18 not stems, 320/335 heads on the right stem, 0 narrowed.
+- 2.83 trial merge on top: only `omr-missing-notes-2026-09/FINDINGS.md` conflicts (two section 18s: keep both, renumber 2.83's); code auto-merges, 153 tests pass. 2.83 must re-measure with the stem finder on.
+
+## 2026-10-11 — 2.87 round 2: `head_contact` and `one_stem_per_head` (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- STAGED ADJUDICATE only, no GATHER change. Two new names on the `OMR_STEM_FINDER` allow-list (default empty): `head_contact` -> new quantity `Q.STEM_HEAD_CONTACT` (`stem_value.adjudicate_stem_head_contact`, cell-level verdict listing the strokes that touch no notehead; a stroke cut by the crop edge is not judged), read by `rhythm._not_a_decided_arc`, `_not_the_neighbours_beam`, `_not_a_beam_by_ink` and `family_precision` rest-has-a-stem / slashed-stem; `one_stem_per_head` inside `adjudicate_head_stem` (reasons `stem_by_one_per_head`, `unison_two_voices`).
+- CONVENTION (Sean 2026-10-11): every stem touches a notehead; every black head has one stem except a unison, whose two stems go in different directions. FINDINGS `hand-truth-score-2026-10` 9.7. `staged.check` open 192 -> 192. Measured on re-adjudicated `f1` records: Sean's page heads right 319 -> 320 of 335 (`q1322` decided); `head_contact` negative on Litolff p3 (two eighths narrowed), 0 on Brahms p1.
+- Fence: `adjudicate_duration` body and `_attached_flags` untouched (lane 2.83); only the decorator's `wants`/`composed_from` gained `Q.STEM_HEAD_CONTACT`.
+
+- Round 2 (Sean, 9 tiles): unison 5/5 right, controls 2/2; tiles 5-6 eighths -> `head_contact` wrong on both, stays OFF; `one_stem_per_head` confirmed.
+
+## 2026-10-11 — 2.87 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
+- Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.
+- Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
+- Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
+- Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
+- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 = the boxed mark is a notehead (his truth gives `q1322` two real stems; first misread as notehead ink, corrected) -> 227 of 245 stem strokes real, 18 not. FINDINGS 9.6; DECISIONS. Not landed.
+- Sean: add the 7 stems to his hand truth -> `b4352`-`b4358` (234 stems; INVENTORY regenerated). Re-scored base -> arm: found 175 -> 227 of 234, invented 66 -> 18, heads right 218 -> 319 of 335.
+
+## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
+
+- `lane-tenuto-ledger` (`cc58e6bc`) merged (Sean: "land"). STAGED, ADJUDICATE: `adjudicate_articulation_is_not_an_articulation` refuses an `articTenuto*` dash lying between a head of its bar and the staff that OWNS that head (`ledger_between_staff_and_note`), abstains where that owner is unread; moved after `Q.GLYPH_OWNER` in ORDER. Census: 42 tenuto boxes on both whole movements, 0 real tenutos. Sean's 12 blind tiles: 0 wrong, mirror below the staff holds. 23 tests (RED 10 on origin/main). FINDINGS `benchmarks/omr-tenuto-ledger-2026-10/` §6.
+- Next in the landing order: 2.85 repeats/endings -> stem finder 2.87 -> 2.83 -> 2.12m (Sean put 2.85 after tenuto, 2026-10-11).
+
+## 2026-10-11 -- crops-bar-drift landed on main
+
+- 5 crops under `out/print/bar-drift/` (Brahms 317803 pdf p10/p11, bar-number drift) and Sean's two DECISIONS lines: 1st-ending bars are uncounted (188 -> 194 -> 205); the courtesy key signature at p11 is not a bar. Crops and DECISIONS only, no code.
+- Next in the landing order: tenuto 2.84 (`lane-tenuto-ledger`, Mac session) -> stem finder 2.87 -> 2.83 -> 2.12m.
+
+## 2026-10-11 -- q883 landed on main (PR #68, merge `dc6f90d9`)
+
+- Sean's blind answers now on main: 2.78 phase 2, 2.12f r2, 2.75 chords, rhythm-leftovers-3, 2.79, 2.12m (3 right, 2 wrong of 5 decided -- not landing as built), 2.84 tenuto tiles (0 tenutos: 5 ledgers, 6 other ink); ROADMAP rows 2.85 and 2.86; box `q883` removed from `data/hand-truth/pages/imslp317803/0.json` (a staff line, not a beam).
+- Coordination: 2.84 = tenuto (`lane-tenuto-ledger`); the stem finder is renumbered 2.87. Agreed landing order: q883 -> crops-bar-drift -> tenuto 2.84 -> stem finder 2.87 -> 2.83 -> 2.12m.
+- Checks (cloud, no library/weights/skimage): answers.json and hand-truth JSON parse; hand-truth tests 54 passed, 86 failed (missing `skimage`), 1 skipped -- identical counts on bare origin/main.
+
+## 2026-10-10 (evening) — q883 crop for Sean; blind-tile gallery
+
+- `out/print/2.82/q883-for-sean.png`: Sean's beam box `q883` redrawn in red over the 2.82 truth crop, sent to Sean to confirm it is a staff line, not a beam (truth slip; not yet removed from `data/hand-truth/pages/imslp317803/0.json`).
+- The 43 waiting blind tiles (2.78, 2.12f, 2.75, rhythm-leftovers-3, 2.79) published to Sean as a private answer gallery; answers come back through the page's store and get filed into each set's answers.json.
+- Sean judged the 12 2.78 phase-2 tiles: 10 right, 2 wrong (5: 16ths written as eighths; 6: eighths written as quarters -- the stem value sided with the wrong head). `out/print/2.78-phase2-review/answers.json`; DECISIONS line.
+- Brahms bar-number drift traced (diagnosis only, no code): candidates = first-ending bars counted (p10 s1, +2) and a courtesy key after p11 s1's last barline kept as a bar (+1); Litolff = a stray barline column (p6 s1, p13-14). Question to Sean pending.
+- Sean answered the other 31 gallery tiles: 2.12f 6/6 decided right (2 and 9 first mis-scored, corrected), 3 marks are ledger lines; Sean's articulation-side convention recorded (notehead side, except two voices or a long chord stem -> stem side); 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
+- Sean: q883 is not a beam -> removed from his Brahms page (1,345 boxes); INVENTORY regenerated.
+- Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
+- Sean's 21 gallery answers (2026-10-11): 2.12m 3 right / 2 wrong of 5 decided (it picked the upper staff's stem-down chord; the accent was the lower chord's) -> not landing as built; 2.84 tenuto tiles: 0 tenutos, 5 ledgers, 6 other ink (E, beam, half note, p, slur, accent area); mirror confirmed. answers.json in both review dirs.
+
+## 2026-10-10 (night) — 2.12m built on lane: an articulation at a long chord stem's tip
+
+- `lane-2.12g-long-stem` (not merged; the brief's "2.12g" is taken, row is 2.12m): `adjudicate_articulation_owner` decides `stem_tip_of_long_chord` for Sean's 2.12f tile-6 case (a chord stem reaching a ledger head, the mark at its tip) on positive evidence only; every other `stem_contradicts_class_side` stays abstained with the failed condition named. Research on stem-side placement (Gould 2nd-hand, Dorico, LilyPond source) in FINDINGS `omr-shape-role-2026-09` Part 12. 11 RED-first tests; `check` 192 -> 192. Needs the Mac readjudication + blind tiles.
+- Measured on the Mac (base `40ab373a` vs arm `46914018`, four shared records): Brahms whole 5 of 28 `stem_contradicts_class_side` marks now decided `stem_tip_of_long_chord` (the tile-6 control among them, decided to the chord below), 0 other rows changed; control `glyph_owner` short of N of N identically in both trees (`reconcile_group_owners`); 9 blind tiles `out/print/2.12m-review/` for Sean; new `select_artic_2_12m_tiles.py`. FINDINGS Part 12 §7.
+- Sean scored the 9 tiles (up-stem 3 right, down-stem 2 wrong); the misses are a two-voice test gap, not the stem reader (§8c). Upper-half/stem-up checked on 101 orchestral encodings: not reliable alone (§8d). Sean's "one head, stems up and down = two voices" built (`787fa6af`): 11 more Brahms marks decided, 10 blind tiles `out/print/2.12m-shared-head-review/` -- Sean 10 of 10 right; `check` 192 -> 192; fast tier 7,131 passed, 0 failed.
+- Sean's empty-bar rule built (`408398f6`): a mark between two staves is the noted staff's when the other staff's bar holds no note and a whole rest; 9 Brahms + 1 Litolff whole marks decided, 0 other rows changed; Sean 13 of 13 right (tile 5 a ledger line, not a tenuto). FINDINGS Part 12 §10.
+- Merged origin/main (`aed05e48`: 2.84, 2.87, 2.13b; merge moved 1 saved-record row, same head). One printed mark with two owners -> the loser dropped (`b1c0061f`, `reconcile_articulation_twins`, run after ARTICULATION_OWNER): 0 two-owner marks left; Brahms 2 duplicates, 4 losers, 4 opposite-side ties unowned; 6 blind tiles. FINDINGS Part 12 §11.
+- Sean confirmed the lower-staff convention (between two staves, nothing more specific -> the lower staff's), built `70e56c10` as the twin tie-breaker: the 4 Brahms ties now go to the copies Sean named. FINDINGS Part 12 §11a.
+
+## 2026-10-10 (night) — 1.7 stems landed
+
+- `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
+
+
+## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
+
+- 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
+- 2.81 measured (~0.76, below 95%) and its misses imaged; 2.83 (flag tip) and 1.7-stems (stem measurement) running at session end. ROADMAP START HERE names the next session's plan.
+## 2026-10-11 (day) — 2.83 flag-tip: Sean's blind answers recorded
+
+- `out/print/2.83-review/answers.json` (branch `lane-2.83-flag-tip`, not merged to main): arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow).
+
+## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
+
+- `tools/omr/hand_truth/score.py` scores a record against Sean's hand-labelled page at GATHER+ADJUDICATE, with controls that fail; first score on Brahms 317803 pdf 0 in `benchmarks/hand-truth-score-2026-10/`.
+
+## 2026-10-10 (day) — 2.79 landed: a whole-bar rest takes the meter of its own bar
+
+- `size_measure_rest` reads `meter_at` the bar; `_bar_holds_out` holds out a lone rest of the wrong length. The 29 overfull Brahms bars are gone. `fd440b1b`. The sibling-rules commit `d04fd058` is held for Sean.
+
+## 2026-10-10 (morning) — overnight `20261010-night` read; START HERE
+
+- Re-gather of main `26fdb4d0` vs `20261009-all`: GATHER identical; notes to file Litolff 5,589 (+482), Brahms 7,189 (+1,706); 29 overfull Brahms bars (bars 10-14, rests sized 9/8 under 6/8) -- control broken, item to open. `benchmarks/acceptance/overnight/20261010-night/SUMMARY.md`.
+
+## 2026-10-10 (night) — 2.77 landed with Sean's round-2 fixes
+
+- Rhythm leftovers + 2.77b: a beam piece is not a head; a sloped beam keeps its stems; a head's copy owned by another staff abstains. `f25b674c`; `check` 192. Next: the overnight `20261010-night`.
+
+## 2026-10-10 (night) — 2.75 landed: tie vs slur by Sean's rules
+
+- `adjudicate_arc_kind`: two-note same pitch = tie, chords by top/bottom notes, stacked = nearer is the tie; a head's refused half-boxes read with it. Sean's tiles 9/10 + 2/2. `8768808a`; `check` 192.
+
+## 2026-10-10 (night) — 2.78 landed: one stem, one value
+
+- `Q.HEAD_STEM` + `Q.STEM_VALUE` (`adjudicators/stem_value.py`), EVALUATE `share_stem_value`; slash reader widened. Sean's 14 stems 12 right / 1 narrowed / 0 wrong. `b4073e38`.
+
+## 2026-10-09 (night) — 2.12f landed: an articulation's owner faces it across the notehead
+
+- `adjudicate_articulation_owner`: nearest head whose notehead side faces the mark (opposite the stem; two voices -> stem side), suffix side recorded beside the measured side; Brahms 89 marks moved (86 to the touching head). `d4084863`. Sean's tiles for round 2 pending.
+
+## 2026-10-09 (evening session) — 2.78 confirmed, 2.61d landed, lanes 2.78 and 2.12f sent
+
+- Sean confirmed 2.78 (*"one stem one value, no exceptions"*, DECISIONS). Lane `lane-2.78-one-stem-one-value` sent for Phase 1 only (population + blind tiles; no rule until Sean says which head is wrong); lane `lane-2.12f-artic-side` sent (Sean's pick).
+- 2.61d: `header._staff_reading` abstains `keysig_fit_unknown` where the settled clef's own fit threw, instead of a false `run_fits_no_slot_table` contradiction; reuses `clef._unknown_fit_candidates` (now subject-explicit). Reach zero on both `20261009-all` records; `check` 193.
+
+## 2026-10-09 (session end) — 2.76 and 2.71 landed; Sean's labels 1,342 boxes on main
+
+- 2.76 `Q.NOTEHEAD_LETTER_INK` (a head box that is a dynamic letter's stroke/body is refused); 2.71 `Q.STEM_SLASH` (tremolo slash is its own mark).
+- In flight: 2.75 (tie/slur chord rule), 2.77 rhythm leftovers. New todo 2.78 (one stem, one value -- confirm with Sean).
+
+## 2026-10-09 (night) — 2.73 landed: hollow heads cut by a line
+
+- `Q.HEAD_LINE_CUT`, head-shaped duplicate keep, ink names the fill (cut 0.75), stem-tip window ignores grazing boxes and line rows.
+  Sean's 27 hand half heads 27/27; 8 Litolff halves 6 half + 2 narrowed. Fast 6,684 passed; check 193.
+
+## 2026-10-09 (night) — 2.68 dynamics stack landed; 2.75 opened
+
+- `sempre più p`; one letter-hiding rule at both sites; dynamics owned by the staff printed above them; twin boxes = one letter; note anchor
+  (`Q.DYNAMIC_ANCHOR`, unread until export -> check 193, Sean accepted). Sean's bars 17/20 + 9/10. Fast 6,625 passed. `dimin` in the lexicon.
+- 2.75 opened (tie vs slur by Sean's two-note and stacked-arc rules); 2.67 terms held for the Gradus review.
+
+## 2026-10-09 (evening) — 2.72 landed: meter 9/8 and the bar-9 6/8 change
+
+- Denominator re-read from its own half; courtesy past the last barline is cautionary; `locate_meter_by_halves` at bar heads;
+  `OMR_METER_TEMPLATE_AT_BAR` default ON (Sean). Fast 6,534 passed; check 192.
+
+## 2026-10-09 (evening) — 2.74 landed: a beam joins two stems, straight, thicker than a hairpin
+
+- `Q.BEAM_STROKE_INK` + ADJUDICATE refusals (thin / bowed / one stem); `line_detection.detect_beams(rescue_tall)` for beam+hairpin fusions.
+  Sean's 22 heads 20 right / 0 wrong. Fast 6,511 passed; check 192.
+
+## 2026-10-09 (afternoon) — 2.69 landed (hooks counted; flag-tip dot); 1.7 hand truth merged; 2.65 judged; dimin.
+
+- 2.69 (`lane-2.69-flag-hooks` 41637029): `gather.stem_tip_hooks` + `rhythm._stem_tip_hook_count` (a seen hook rules out the head value; counted ->
+  decided; uncounted -> narrowed over levels >= 1); `Q.DOT_STROKE_INK` / `CV_DOT_STROKE` (a dot box mostly on a stroke is not a dot). Sean's 22
+  heads 12 -> 18 right. Fast 6,474 passed; check 192.
+- 1.7 merged (`tools/omr/hand_truth/`, Sean's Brahms 317803 pdf 0 labels, 887 boxes). `dimin` in the lexicon. 2.65: 22 beam/flag heads, 6 head-fill,
+  8 held bars, 10 dynamics bars judged blind by Sean; rows 2.69-2.74 opened from his rulings (DECISIONS 2026-10-09).
+
+## 2026-10-09 — ROADMAP 0.9: nine slow-tier failures on main, bisected and closed
+
+- Seven `TestTheEngravedTier` tests asserted the reason words 2.9 (`c3035ad5f`) folded into `fitted_no_markers`: re-posed on value + reason +
+  the reader in `Verdict.used`. `test_a_literal_score_is_seen_too` predates 2.55's `RESCUE_LOWCONF` reader: checks both sites now.
+- `capture.report` graded a `UNIT` quantity's detail keys as a location (`Q.CELL_STAFF_SPACE.half_step`, read by `adjudicate_meter` since
+  2.12l `dc84dff14`), crediting `time` with a staff-relative fact it lacks; UNIT quantities are now skipped. `check` 192 unchanged.
+
+## 2026-10-09 (later) — 2.68: part names never pair; Sean's deductive word-letter rule; landed
+
+- `consequences.pair_word_and_dynamic` skips category `part` words (`Basso p` on the 10-09 re-gather).
+- GATHER `Q.DYNAMIC_LETTER_NEIGHBOURS` (`READERS.CV_LETTER_NEIGHBOURS`, `gather.letter_ink_beside`: letter ink within
+  0.5 spaces on the letter's line, every detected glyph blanked); `adjudicate_dynamic` drops a dynamic letter only when
+  it is inside a lexicon-accepted word AND has a letter beside it; counted once, after ownership. Brahms p3: 4 letters
+  removed, three `più f` markings. Fast tier 6,375 passed; `check` 192. On main `8a74cf73`.
+- Docs: CLAUDE.md §4c lists the new EVALUATE rule (an old audit aside trimmed to keep the word count), PROJECT_BRIEF
+  status 10-09, ROADMAP START HERE with tonight's re-gather commands.
+
+## 2026-10-09 — all-stages re-gather `20261009-all` and its comparison
+
+- 2.68 landed on main (`db1772bb..00473387`). Both movements re-gathered through INFER (45 / 121 min);
+  `benchmarks/acceptance/overnight/compare_20261009.sh` compares first two stages with `20261008-night` and all stages
+  with the 09-30 acceptance; `SUMMARY.md` beside the results. Records not adopted.
+
+## 2026-10-08 (night) — 2.66 landed on main; ROADMAP 2.68 word + dynamic pairing (branch)
+
+- 2.66 fast-forwarded onto main (`96049f83..db1772bb`).
+- 2.68: `Q.MARKING` + EVALUATE `consequences.pair_word_and_dynamic` (same staff/bar, same line, nothing between,
+  <= 1.5 spaces, ambiguous -> unpaired; a dynamic inside the word's box is its letter); `export._place_markings`
+  writes a pair as one `<direction>` (`<words>` + `<dynamics>`, print order). Fixes the first real page needed:
+  `adjudicate_dynamic` keeps each run's `letters`; a dynamic letter inside a read word is that word's
+  (`_inside_a_read_word`); gather joins a reading to its candidate by `DirectionText.candidate_index`.
+  Brahms p3: both `più f` paired and exported as one direction. `check` 192 -> 192.
+
+## 2026-10-08 (late) — ROADMAP 2.66 placement and word + dynamic
+
+- A tempo or technique word in the gap between two staves of a system is the LOWER staff's
+  (`direction_text._give_tempo_to_the_staff_below`, `ABOVE_STAFF_TERMS`; Sean on three tiles). A word with a
+  detected dynamic beside it is re-read from one crop over both and joined only if the lexicon accepts the same
+  terms plus a dynamic (9 joined on the 10 pages). Joining by position was built, measured and removed
+  (`f Adagio.`, `a 2 f`); ROADMAP 2.68 opened for a later pairing stage. Placement research (agent, read-only):
+  `benchmarks/omr-direction-text-2026-09/PLACEMENT-CONVENTIONS.md`.
+
+## 2026-10-08 (evening) — ROADMAP 2.66: direction-word boxes on scans; 2.67 terms library opened
+
+- **2.66 (STAGED, `tools/omr/direction_text.py`)**: `find_candidates(refine_boxes=True)`, passed by
+  `read_directions(scan_order=True)` and the staged gather's pre-check; the legacy reader keeps its boxes.
+  Stem stubs (thin strokes running into erased ink) are not letters; oversized ink on a word's own line
+  joins the word (>= 1 space wide, never >= 90% inside a dynamic box); a grown edge loses any barline
+  crossing the line; sibling windows are filed at the echoed word's x. 10 review pages 93 -> 97 words
+  (`pizz.` x2, `Adagio.`, `cresc.`), none lost, same time. Tiles `out/print/2.66/`, FINDINGS
+  `omr-direction-text-2026-09` (2.66 section), tests `test_direction_word_boxes_2026_10_08.py` (12).
+- **2.67 opened** (Sean): a large multilingual terms library with abbreviations, built on the Gradus
+  dictionary; the Gradus half is an agent's branch in `gradus-vercel`, not pushed.
+
+## 2026-10-08 — ROADMAP 1.7: main merged into the hand-truth branch (PR #63)
+
+`main` moved 27 commits (integration C and the direction-text lane); the only conflicts
+were the two append-only ledgers, resolved by keeping every entry of both sides
+(DECISIONS: main's lines, then 1.7's; this file: 1.7's entries above main's). The merge
+took CLAUDE.md to 6,010 words, so 1.7's §9 sentence was shortened back under the cap
+(5,996). Hand-truth, annotate-server and training-pipeline tests 130 passed;
+`inventory --check` clean; `staged.check` 192. **Merged again** the same evening (main had
+moved 5 more commits, ROADMAP 0.8): the same append-only ledgers plus PROJECT_BRIEF's
+"Updated" line (main's wording kept); CLAUDE.md came to 6,006, so 1.7's §9 sentence was
+cut to one clause (5,999).
+
+---
+
+## 2026-10-08 — ROADMAP 1.7: test pages the current weights never saw
+
+Sean asked whether the hand-truth work overlaps the current weights; it did — production's
+training corpus held cells of three of the four planned test pages. Decided (DECISIONS): the
+test pages are now Brahms 317803 pdf 0, Litolff 984073 pdf 2 (replacing pdf 1) and Dvořák
+405834 pdf 4, none of which holds a cell production trained on; the two acceptance count
+pages stay, and the inventory now names, per held-out page, exactly which cells production
+trained on (`held_out_cells_trained_by_production`: 19 on Brahms pdf 1, 7 on Litolff pdf 3 —
+an earlier 23 / 14 counted a cell once per label version) so the scorer can report them
+apart. `held-out.json` holds the five pages. New inventory test run RED against the previous
+commit first.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7 (C): label a page cell by cell into page pixels; Claude's check; perfect eyes; bar-by-bar LilyPond review
+
+**`tools/omr/hand_truth/` gains `session.py`, `bench.py`, `checks.py`, `perfect_eyes.py`,
+`review.py`; `annotate/server.py` gains `--page-store` (one hook after a save, `text`/`noise`
+in the picker in that mode only; the 52 existing server tests unchanged and green).**
+`session new` cuts a page with the product path's own `extract_measures` (cell rect =
+`bbox_page_px`) and adds margin/top/bottom region cells for every other bit of ink, then
+queues pre-fills — Sean's old labels re-projected through `recut_cells`' exact frame check
+(newest version first, wrong frames refused) and the detector, deduped per page. The bench
+bridge keeps detection ids = page ids, folds each save back idempotently (confirm / reject /
+fix / draw / remove, staff-line checks, the `all-ink` stamp) and refreshes overlapping
+cells, so one mark is one box. `checks.run_all` raises the fixed-check flags once (never
+again after Sean resolves one); `session raise` files the visual pass's flags; `advance`
+refuses `checked` with any flag, pre-fill or unswept cell, and `verified` without every
+printed bar marked ok on the current labels. `perfect_eyes` runs `pipeline.run_staged`
+with a detector stand-in returning the page's boxes (ran end to end here on a synthetic
+page in 3.8 s). `review` slices each bar by ordinal (clef/key/time carried; a part of the
+wrong length shown NOT ALIGNED), renders with `musicxml2ly` + `lilypond -dcrop`, serves the
+marks. `benchmarks/hand-truth-sessions/` gitignored (regenerable). 20 new tests, RED first;
+ten mechanisms broken in memory each turned a test red. `staged.check` unchanged at 192.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7: hand-truth store, completeness, training export, inventory and weights lineage (A, B)
+
+**New package `tools/omr/hand_truth/` (no product-path code touched).** `store.py`: one
+JSON per printed page under `data/hand-truth/pages/`, every box in page pixels, each cell
+recording its exact page rectangle so cell <-> page is an exact map and a mark in two
+padded cells is one box; pre-fills wait in a queue until Sean confirms or fixes them; only
+Sean may write truth; `labeling -> checked -> verified`, one step at a time.
+`completeness.py`: a family is complete only when every cell was inspected for it (old
+partial passes such as "hollow noteheads" complete nothing); the ink-coverage control lists
+every unboxed ink component (staff lines removed first, specks counted). `export_yolo.py`:
+page boxes -> YOLO cell labels in the existing vocabulary; refuses held-out and unchecked
+pages, skips cells not swept for every bit of ink. `inventory.py`: generates
+`data/hand-truth/INVENTORY.json` (`--check`), including the weights lineage declared in
+`data/hand-truth/weights-lineage.json` (`--verify-checkpoints` reads the `.pt` train_args on
+a machine with weights). Measured: production's features trained on 3,871 label-file boxes
++ 3,417 teacher boxes; three of the four held-out pages were already trained on; adjudication
+files: 10 Sean, 7 Claude, 9 unrecorded; one v22 cell (`dvorak9-p19-sys0-s0-m0`) holds 7
+drawn boxes with no pass stamp. Held-out list decided by Sean (DECISIONS). 26 new tests,
+run RED against the tree without the package first; four mechanisms broken in memory each
+turned their test red. `staged.check` unchanged at 192.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7 (STAGED, measurement): hand-labeled page truth — inventory and plan
+
+**Plan only; no code.** `docs/plan-2026-10-08-hand-labeled-truth.md` inventories every
+hand label in the tree and how it is used, and Sean accepted its plan the same day
+(DECISIONS 2026-10-08). Measured: 670 cells across 85 pages carry some hand label;
+none is complete for every class and no page is complete (110 cells, v22, are drawn
+from scratch over a recorded 27-class palette; 264 "complete" round-3 cells are
+hand-labeled only for hollow heads / rests / accidentals / clefs); the two count
+pages are 19/210 and 7/408 cells touched, and those cells sit in production's
+training split. No benchmark scores a scan against hand symbols — every music-level
+scan number comes from an MXL. Decisions: every bit of ink boxed, page-pixel
+storage, one cell at a time with pre-fills, first pages first across publishers,
+every box also training data, Verovio engraved control kept. Open: the held-out
+page list. Added ROADMAP 1.7, a DECISIONS line, and a CLAUDE.md §9 pointer.
+
+**Same day, second commit:** Sean added the review loop — after a page is labeled,
+Claude double-checks it (fixed consistency checks, then a visual pass; flags only,
+Sean decides each), then the hand boxes are run through the STAGED pipeline in
+place of the detector and rendered with LilyPond beside the print, one measure at a
+time, for Sean to mark ok / label wrong / reader wrong (plan C5, C6; DECISIONS).
+A page is truth only once every measure is ok.
+
+---
+
+## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
+
+Sean went through four batches, and the roadmap rows now match his answers
+(DECISIONS 2026-10-08).
+
+- **39 rows are `done`.** Each status now opens with "done (`<sha>`; closed
+  with Sean 2026-10-08 in the 0.8 close-or-keep pass)". The lane's text is
+  kept after it.
+- **2 rows are KEPT OPEN**, each stating what remains:
+  - 2.26b: no run has shown the bare-crook rule reach a record.
+  - 2.13: the whole-movement check, plus one Tesseract misread.
+- **New row 2.65:** Sean's print check, one tile at a time, of the 09-29
+  rhythm connections (40 tiles never judged by him), plus 2.23's 6 tiles and
+  its never-asked head-fill convention.
+
+The triage report gained a close-or-keep section. No code changed.
+
+## 2026-10-08 — ROADMAP 0.8 follow-up: Sean's "Yes to all"
+
+DECISIONS 2026-10-08:
+- **Dropped:** 2.6h and 3.2c (dead at zero).
+- **Dropped as superseded:** the 2.21 draft, 2.44, 2.44c and 2.44d. Each
+  roadmap row now opens with `dropped (...)`.
+- **2.51 evidence landed** from `lane-2.51-unboxed-ink` `78d05d85`: four
+  scripts under `benchmarks/omr-ink-gather-2026-09/unboxed-2.51/`, the
+  FINDINGS section, and two sheets in `out/print/2.51/`. Its FINDINGS section
+  was §14 on the branch; it is renumbered §15 here because main's §14 is 2.52.
+  2.52's pointer to it, which said "not on this tree", now points to §15.
+- **2.53 write-up landed** from `lane-2.53-unboxed-bars` `ad41435b`. The lane
+  wrote it as its ROADMAP row; it is now FINDINGS §16 (rule 9), with two
+  sheets in `out/print/2.53/`. The branch's re-gathered
+  `benchmarks/acceptance/quick/` outputs were NOT landed. Its "recommendation,
+  not built" is annotated as later built by 2.55.
+
+No code changed.
+
+## 2026-10-08 — ROADMAP 0.8: the "built, not merged" rows triaged against the tree
+
+**Sean: "Can you start 2. Sort the built not merged."** A docs-only commit:
+no code, no run, no measurement. Fetched the full history and every `origin/*`
+branch, then checked each branch named by an open Phase 2/3 row against
+`origin/main` 6e96227b (`merge-base --is-ancestor`, `git cherry`, the first
+landing merge, whether that merge was empty, whether the added functions are
+still on main).
+
+- **41 rows said "not merged" for work that is on main.** Each now has a bold
+  `MERGED to main (<sha>, tree-verified 2026-10-08)` prefix, with the lane's
+  text kept after it. Six flags those rows call OFF are default ON today
+  (`OMR_CELL_LINE_FIND`, `OMR_OWNER_FROM_STAVES`,
+  `OMR_FARHEAD_OWNER_LEDGERS`, `OMR_MARK_GROUPS`, `OMR_DOT_FOLLOWS_NOTE`,
+  `OMR_STEM_OWNER`).
+- **Nine rows are genuinely not on main:**
+  - Superseded: the 2.21 first draft, 2.44, 2.44c, 2.44d.
+  - Dead at zero, recommended drop: 2.6h, 3.2c.
+  - Evidence only, recommended land: 2.51, 2.53.
+  - Parked by Sean: 2.48.
+  These rows got a prefix saying so. Nothing was dropped: each drop needs
+  Sean and a DECISIONS line.
+- New: `docs/triage-2026-10-08-built-not-merged.md`, ROADMAP row 0.8 and a
+  START HERE block. CLAUDE.md §5a: how to fetch every branch in a shallow
+  cloud clone, and the fact that "not merged" is a claim to check.
+
+## 2026-10-08 — INTEGRATION C: eight audit follow-up lanes (Sonnet), one landing
+
+**Sean: "clean up the worktrees and send out agents for the follow-ups - use
+sonnet agents."** Worktrees of the 10-07 lanes removed (all clean, all
+landed). Eight lanes off `main` 69c425e8 (which had taken the other
+session's stem-owner landing overnight), each measuring its own baseline
+first, each verified again on the merged tree.
+
+- **3.6b `lane-3.6b-deps-docker` (71520b04):** python-multipart 0.0.20,
+  python-jose 3.5.0, requests 2.32.5, pillow 11.3.0; passlib + bcrypt 3.2.2
+  replaced by direct `bcrypt` (cost 12, 72-byte truncation as passlib did; a
+  hash from the old stack verifies, 6 tests); `node:22-alpine` + `npm ci`
+  (build verified); backend image non-root (uid 10001) with
+  `--proxy-headers`; nginx `client_max_body_size 60m` and `X-Forwarded-*`.
+  Images not built here. Found: no root `.dockerignore`, so every backend
+  build shipped `library/` (6.4 GB) and `benchmarks/` to the daemon —
+  added at integration. **Existing volumes need a one-time `chown`.**
+- **3.6c `lane-3.6c-auth-limits` (d065fd08):** logout blacklists both
+  tokens' jtis; the refresh cookie's path is `/api/auth` (was
+  `/api/auth/refresh`, which the browser never sent to logout; old path
+  expired on every set; still httpOnly); eight more routes rate-limited
+  with the numbers in `core/config.py`; limiter keys on the first
+  `X-Forwarded-For` hop only under `TRUST_PROXY_HEADERS` (default off; prod
+  must set it). 15 tests RED first.
+- **3.6d `lane-frontend-dead-code` (f3952e18):** four unimported components
+  and `declarations.d.ts` deleted (−776 lines); `verovio`/`pdfjs-dist`
+  uninstalled by npm; `vite build` passes; the stale `optimizeDeps.exclude`
+  dropped at integration. FOUND: `tsc --noEmit` has ~70 pre-existing errors
+  on main — the type check was never a clean gate (new todo 3.6f).
+- **3.6e `lane-audiveris-rename` (ff1b89b5):** `omr_confidence`,
+  `min_omr_confidence`, `omr_failure`; `AudiverisResult` gone; frontend
+  types match; a schema change riding 3.6's DB drop.
+- **2.61b `lane-gather-followups` (39664e3e):** `OMR_OWNER_FROM_STAVES` and
+  `OMR_DIRECTION_TEXT` each read at ONE site (`gather.owner_from_staves_enabled`,
+  `gather.direction_text_enabled`); the four `_stub_*` sites file
+  `READER_UNAVAILABLE` + `detail.error` when a reader's import throws
+  (`NOT_IMPLEMENTED` stays for the genuinely unwritten); three dead locals
+  gone. 13 tests, 7 RED first. Lesson: `wiring.details` matches a detail key
+  by bare substring, so a COMMENT containing `.own` read as a consumer of
+  `Q.GLYPH_BAND_DISTANCE.own` (CLAUDE.md §4d's third blind spot, bitten).
+- **2.61c `lane-clef-candidate-abstained` (4167dbbd):** `adjudicate_clef`
+  treats a candidate whose fit abstained as UNKNOWN — neither eliminated
+  nor supported — using a worst-case margin (each unknown credited
+  `W_KEYSIG_FIT`; the winner's own fit term dropped where fitters + unknowns
+  could cover all four clefs); under `MARGIN_FLOOR` the verdict NARROWS with
+  the unknown as a candidate; a strongly decided clef is unchanged. 8 tests,
+  5 RED first. Same pattern remains in `header.py:~366` (todo 2.61d).
+- **0.6b `lane-pyflakes-and-paths` (4d0705fe):** five unused locals, the
+  `tally` loop shadow, the mis-read `noqa` comment, `app_client` /
+  `fake_pipeline` into `backend/tests/conftest.py`, `/Users/seanjohnson`
+  literals behind `REENGRAVE_SCORES_DIR` / `REENGRAVE_WEIGHTS_DIR` /
+  `REENGRAVE_LIBRARY_DIR` with the literals as defaults. Four stray F841/F401
+  findings outside every fence fixed at integration (`ownership.py`,
+  `check_helpers.py`, `musicxml_builder.py`, `score_comparison.py`).
+- **3.0b `lane-legacy-constants-pin` (b0104579):** 90 tests pin the 18
+  constants, 36 functions (existence, callability, parameter names) and 35
+  pure examples STAGED takes from the frozen legacy modules; a failure names
+  the staged consumer; proven RED on a mutated constant and a renamed
+  parameter. Stricter than the call sites need; fine while LEGACY is frozen.
+
+Verified on the merged tree: see the integration commit message for the
+fast-tier, `staged.check` and backend numbers.
+## 2026-10-08 — ROADMAP 3.5 (STAGED): the CLI-summary tests follow the tree
+
+**`claude/jolly-kilby-67143e`.** Four slow-tier tests in
+`tools/omr/tests/test_staged_cli_pdf.py` (ROADMAP 3.3's `_render_pdf` /
+`_print_accounting_summary` tests) had failed on `origin/main` since 3.5
+(`135b7a60`, 2026-09-28) rewrote the accounting summary to two lines
+(`unread bars ("unread", read NOTHING): N` and `held-out bars ("unread"):
+N`, off `report["unread_bar_marks"]`) and made a held-out bar a red marked
+rest in the `.ly`, without touching the tests; the file is slow because its
+text names `.pdf`, so the fast tier never showed them (2.64 flagged them
+2026-10-07). The 3.5 row says done and the wording is the intended one, so
+the tests were updated, not the code (rule 10): expected words and counts
+are read off the exporter's own report, the underfull-bar LilyPond test
+asserts the marked rest and a CLEAN compile, and the bar-check parser's
+"can fail" control (rule 7) now runs on a hand-broken `.ly`. RED 4/8 →
+GREEN 9/9; `staged.check` 192 → 192; `staged/lilypond.py` untouched.
+
+---
+
+## 2026-10-07 — ROADMAP 2.61 (STAGED): GATHER handlers abstain, never default
+
+**`lane-gather-abstain` (Opus, c8feea00; rule 8 made structural in GATHER).**
+Twelve `except Exception` handlers in `staged/gather.py` turned a reader's
+crash into a default (`header_cells = {}`, `stems = []`, `facts = {}`,
+`metrics = None`, a bare `return`, a `continue`) or, worse, into a false
+finding (`no_staff_geometry`, `no_clusters`, `no_detections`,
+`not_in_catalog`). Each now files an Abstention with
+`reason=READER_UNAVAILABLE` and the exception class in `detail.error`, on
+the subject and quantity the reader owned: the low-confidence rescue's stem
+witness (`GLYPH_BOX`), the clef locator (`CLEF_LOCATED`), the key-signature
+header and per-candidate fits (`KEYSIG_RUN_POSITION`, `KEYSIG_CLEF_FIT`), the
+keysig template (`KEYSIG_TEMPLATE_FIT`), the meter template
+(`METER_TEMPLATE`), meter OCR at bars, the margin-label rung probes
+(`MARGIN_LABEL`, error carried) and the catalog identity
+(`DOCUMENT_IDENTITY`). The brief asked for the class name as the reason;
+`Log.abstain` checks reasons against the closed `ABSTAIN` vocabulary and
+`record.py` was outside the fence, so the class rides in `detail.error`, the
+same shape the sixteen handlers that already abstained use. Where a crash
+was already written as a false claim the reason is corrected and the row
+count is unchanged; records are bit-identical when nothing raises (nine
+positive controls). 20 tests, 11 RED on the unrepaired tree. Left by design:
+`_in_hairpin_band` (a detail key, no quantity), the scan gate (the reader
+still runs), and the four `_stub_*` import-failure paths that record
+`NOT_IMPLEMENTED` — there a real defect still counts as build progress.
+(Numbered 2.61: another session took 2.60 for `arc_is_not_an_arc` today.)
+
+---
+
+## 2026-10-07 — ROADMAP 0.2c: five default-ON flags promoted
+
+**`lane-0.2c-promote` (Sonnet, 7b0ae721).** `OMR_SLOT_FAMILY_BLOCK`,
+`OMR_CLEF_GAP` (infer.py), `OMR_METER_CARRY`, `OMR_METER_FROM_BARS`
+(adjudicators/rhythm.py) and `OMR_SLOT_CONSTRAINTS` (adjudicators/identity.py):
+the environment reads, the `*_ENV` constants and the OFF code paths are gone;
+the behaviour is the old ON default. The two INFER rules register with a new
+`infer.ALWAYS_ON` switch; `OMR_INFER` only ever gated the two duration rules
+(its own comment says so), so no surviving setting changes behaviour — only
+the all-off combination `test_infer_bypass` used to reach is gone, and that
+test now reaches the no-rule state over a registry without the always-on
+rules. Staged `OMR_*` env names 23 → 18. Twelve OFF-path tests deleted with
+the paths; six `TestTheBarsMayNameTheMeter` tests that isolated the bars rung
+by switching the carry off now use a nearer decoy read meter; the bare-crook
+fixtures put the tacet Oboi between the Horns and the Fagotti so score order
+alone no longer forces the staff. `docs/flags-2026-09.md` rows read
+`promoted — REMOVED 2026-10-07`; `test_flag_triage` now checks a REMOVED row
+is unread. Fast tier 6,001 → 5,989, `check` 192 unchanged. Lesson: removing
+a flag removes the isolation arm other tests relied on — expect fixture
+rewrites, not just deletions. About 17 archived benchmark scripts still set
+the removed names; they are inert.
+
+---
+
+## 2026-10-07 — ROADMAP 3.6: the web app hardened before any deploy
+
+**`lane-webapp-hardening` (Opus; the audit's §3A list).** Scores, Gradus
+scores and comparison sessions now have an owner (`user_id`, FK, indexed),
+and every `/api/scores*`, `/api/diffs/*`, export, Gradus, compare and
+checkout route answers 404 for another user's item (never 403, so a
+foreign id reads like a missing one). The learning report counts only the
+caller's scores; the fine-tuning export is admin-only. The `StaticFiles`
+mount at `/uploads` is gone: a route serves a file only with a one-hour
+HMAC-SHA256 signed URL the API returns (`pdf_url`, `pdf_snippet_url`,
+`musicxml_snippet_url`, `xml_url`; `backend/core/signed_urls.py`), and
+`DiffCard` uses those instead of building `/uploads/...` itself. Gradus and
+compare uploads are stored `<uuid>_<basename>` behind an extension
+allowlist; every upload is capped at `MAX_UPLOAD_BYTES` (50 MB, 413 above).
+Forgot-password returns the token only with `EXPOSE_RESET_TOKEN`. The app
+refuses to start with the default `SECRET_KEY` unless `ALLOW_DEFAULT_SECRET`
+(set in the dev compose only); the refresh cookie's `secure` flag follows
+`COOKIE_SECURE`; `admin_emails` has no personal default. lilypond and
+musicxml2ly time out at 300 s, rsvg-convert and inkscape at 60 s.
+**Schema change with no migration: `docker compose down && docker volume rm
+reengrave_db && docker compose up -d`.** 21 new tests
+(`backend/tests/test_webapp_hardening.py`), all RED on main first — user B
+listed and decided user A's score, unsigned `/uploads` answered 200, Gradus
+wrote outside its directory, `dev_token` was in the body. Backend 140
+passed with the same three pre-existing failures. CONVENTION ASSUMED (not
+confirmed with Sean): the knowledge base (patterns, auto-accept rules) stays
+shared across users, as auto-accept already reads it globally. Not done:
+dependency pins, nginx body cap, logout token blacklist, rate limits beyond
+the three auth routes.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4g: the derived checks share their gap helpers
+
+**`lane-check-helpers` (Sonnet, 40960d9a).** New `tools/omr/staged/check_helpers.py`
+(registered in `reach.NOT_A_STAGE` so `unaccounted_modules()` does not flag
+it) holds `gap_key` / `unaccounted` / `stale_gaps` with the module's
+`KNOWN_GAPS` passed in, and `q_name` / `attr_tail`; `capture`, `inventory`,
+`trace` and `wiring` keep same-named one-line wrappers, `capture` and
+`gather_coverage` alias the two AST helpers — 15 definitions became 5 plus
+11 wrappers. `trace.stale_gaps` keeps table order (`ordered=True`); the
+others sort, as before. NOT unified, bodies differ: `_quantities` in
+capture / gather_coverage / wiring / health (four different questions) and
+`gather_coverage.unaccounted` (legacy event keys, returns a dict). Five new
+tests check each wrapper against the helper on its own table. The first
+test draft used `ast.parse` and moved `source_text_tests` to 47; rewritten
+to build nodes directly, back to 46. `check` 192 identical throughout; fast
+tier 6,006 passed.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4a DONE: the shared staged test fixture module
+
+**`lane-0.4a-fixtures` (Sonnet, e7aa9fd0).** `tools/omr/tests/_staged_fixtures.py`
+(uncollected, no slow-tier trigger text) holds `fresh_log()`; the four
+byte-identical `def _log(): return Log()` copies in `test_staged_c_clef`,
+`test_staged_clef`, `test_staged_clef_human_box` and
+`test_staged_clef_offstaff` became one aliased import (+18/−18 lines). The
+survey found no other unifiable helper: the remaining 19 `_log` and 8
+`_record` helpers each build a scene or record shape of their own. No test
+added, removed or changed; fast tier 6,001 passed and `check` 192 unchanged.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4f: a one-command re-measure for `durations.json`
+
+**`lane-durations-recipe` (Sonnet, a342293a).** `durations.json` was a one-off
+from 9ee9d99c (2026-09-22) with no producing script, which is why 168 of 299
+test files have never been measured. `tools/omr/tests/measure_durations.py`
+runs the full suite in-process with a small plugin, sums setup+call+teardown
+per file into the committed shape (same `measured_on` header), refuses a
+dirty tree and `-m`, and lists all-skipped files under
+`unmeasured_all_skipped` instead of recording a skip as fast. Smoke-tested
+here on two files only; **the real measurement needs Sean's library, weights
+and venvs and is not done** — `python3 -m tools.omr.tests.measure_durations`
+from a clean main, then commit the file. CLAUDE.md §6c names it.
+## 2026-10-07 — manager session (notation-tile-fixes): far-head + line chain, mark identity, dots, arcs
+
+Landed on main through 10-07 (all GATHER+ADJUDICATE, details in ROADMAP START HERE and
+`benchmarks/omr-local-staff-2026-09/FINDINGS.md`): the note-first far-head reader chain (2.56-2.57c,
+edge-vs-through, per-bar grid, edge-merge fix, `flank_refine_bounded` 2.59 far-head), the cell line finder
+2.57 (`OMR_CELL_LINE_FIND` ON), owner-from-staves 2.56c (ON) and its speed fixes (Log subject cache;
+correlated-groups pairwise), mark identity (`OMR_MARK_GROUPS`, `OMR_RELOCATE_AT_EXPORT`, OFF), the export
+`cell_past_the_last_bar` accounting fix, arc owner `ends_on_noteheads`, dots 2.59 (`OMR_DOT_FOLLOWS_NOTE`
+ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007-night` scored on
+`lane-night-1007-read`. Sean's rulings recorded in DECISIONS 10-04..10-07.
+Later 10-07: far-head `lane-farhead-2-9` landed (look for a hidden ledger only where it must be, by its
+jutting ends; accent strokes are not ledgers; Sean: his tiles 2 and 9 right). Fast 6,112 passed, check 192.
+Then `OMR_FARHEAD_OWNER_LEDGERS` and `OMR_MARK_GROUPS` switched default ON (Sean); re-gather `20261007-day` started.
+10-08: numerals not noteheads (`numeral_shaped`), staccato from any staff's note (Sean 9/9) landed; far-head reader beats geometry 10:1 on Sean's tiles (the independent check extrapolated ledgers).
+10-08 later: stem owner ON (Sean 10/10); direction words on scans (Surya width cap + 20 s guard, ~17 s/page), finder + lexicon fixes, word+dynamic joined into one marking; ~93/113 words, no wrong readings.
+
+---
+
+## 2026-10-07 — RECORD-DUMP TRIAGE (audit report §3E): six uncited dumps untracked
+
+**A read-only survey (Sonnet) of the 38 tracked data dumps over 3 MB (247.6
+MB), then Sean: "do whatever you think is best for lane 7".** One file is an
+INPUT (`benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930b.record.json`,
+named by `benchmarks/acceptance/manifest.json`); 28 are evidence a FINDINGS,
+a benchmark script or the acceptance tooling reads (174 MB, kept, rule 7);
+9 are uncited outputs. The six clear-cut ones, plus the Litolff twin of the
+timestamped MusicXML the new ignore rule caught, are untracked (~39 MB off
+the checkout): `engraved-p0p2-20260929b`, `engraved-p1`, `engraved-p2` records,
+`omr-no-ink-lie-2026-09/out/litolff-p1-repaired.record.json`,
+`omr-owner-domain-2026-09/out/brahms1-breitkopf-whole.json`, and the
+timestamped `brahms1-breitkopf-whole-movement-20260923T163805Z.musicxml` and
+`beethoven5-litolff-whole-movement-20260923T025457Z.musicxml`.
+Three weak candidates stay. `.gitignore` now ignores the engraved
+benchmark's `out/**/*.record.json` with the seven kept records negated by
+name, so the directory cannot regrow without a decision. History is not
+rewritten, so `.git` does not shrink.
+
+**Files touched:** `.gitignore`, `docs/audit-2026-10-07-code-cleaning.md`,
+`ROADMAP.md`, `version_memory.md`, seven `git rm --cached`.
+
+---
+
+## 2026-10-07 — AUDIT FOLLOW-UP: docs un-frozen, the slow-tier text rule fixed, ignored files untracked, branches pruned
+
+**Sean, on the audit's open question: "Unfreeze and update so that all docs
+are up to date. Can we move on the .pdf issues and clean up of gitignore and
+unmerged branches?"** Branch `lane-audit-2026-10-07`, PR #59.
+
+- **Docs.** `PROJECT_BRIEF.md` and this file un-frozen (DECISIONS
+  2026-10-07); CLAUDE.md's frozen list and §13 session-end rule updated;
+  `PROJECT_STATUS.md` and `NOTES.md` stay frozen with a refreshed banner.
+  `PROJECT_BRIEF.md` gains "Where things stand (2026-10-07)".
+- **The slow-tier text rule** (`tools/omr/tests/conftest.py`). Before: a file
+  was slow if its measured duration was over the line OR its text contained
+  `library/`, `omr-weights`, a venv or a `.pdf"` path, comments included.
+  After: a file `durations.json` has measured is fast or slow by that
+  measurement alone; only an UNMEASURED file is judged by its content, and
+  comments/docstrings do not count. Measured on the tree before the change:
+  56 files matched the text rule; 7 matched only in comments or docstrings;
+  32 were measured fast and slow by text alone. CLAUDE.md §6c updated.
+  The enlarged tier found one test the slow tier had been failing since
+  10-06: `test_cell_line_localization::test_displacement_beyond_the_bound_is_refused`
+  pinned the comb-slide bound that ROADMAP 2.57 (`OMR_CELL_LINE_FIND`,
+  default ON since 10-06) replaces on purpose; it now pins that path with
+  the flag OFF, and the flag's stale "default OFF" comment in
+  `tools/omr/measure_extractor.py` says ON. Four `test_positional_store`
+  tests need `ijson`, an optional dependency this container lacked.
+- **Ignored-but-tracked files** (45, `git ls-files -ci --exclude-standard`):
+  one page thumbnail untracked; the other 44 are the raw data of documented
+  results — 11 `omr-clef-demo/*.omr.json` cited by its results file, 17
+  crops under three 2026-08/09 benchmark directories, and the 16 noise-floor
+  arm outputs behind the "±6 edits" figure CLAUDE.md §6b quotes — and are
+  kept, with negation rules so the ignore rules and the tree agree (0 after).
+- **Remote branches, half done**: the 67 unmerged branches with no commit
+  since 2026-10-04 now each have a verified copy at `archive/<name>` (the
+  session proxy allows pushes to `refs/heads/*` only, so a bare
+  `refs/archive/*` namespace was refused; a branch under `archive/` keeps
+  every commit reachable and out of the way). **Deleting the 403 originals
+  (336 merged into `main` + the 67 archived) was blocked by the cloud
+  session's permission system ("unverifiable deletion scope") and waits on
+  Sean** — the recipe, derivable from the remote alone, is in the audit
+  report §3F. Branches active since 2026-10-04 are untouched either way.
+
+**Files touched:** `CLAUDE.md`, `PROJECT_BRIEF.md`, `PROJECT_STATUS.md`,
+`NOTES.md`, `version_memory.md`, `docs/DECISIONS.md`, `ROADMAP.md`,
+`tools/omr/tests/conftest.py`, `.gitignore` and the untracked paths.
+
+---
+
+## 2026-10-07 — AUDIT AND CLEANING RUN (ROADMAP 0.4d, 0.6)
+
+**Four Sonnet readers, Fable analysis; nothing in GATHER or ADJUDICATE
+moved; every derived-check count identical before and after except the one
+meant to drop.** Report: `docs/audit-2026-10-07-code-cleaning.md`. Two
+commits on `lane-audit-2026-10-07` (PR #59): `8bbc6c8c` (ROADMAP 0.4d: 55
+mutation batteries to `benchmarks/_archive/`, `check` 247 → 192) and
+`35c44ba2` (dead `_corroborate` block in `adjudicators/rhythm.py`; the
+duplicated `relocate_at_export_enabled` in `export.py`; three uncalled
+functions; 86 unused imports outside legacy and tests; three annotation-only
+names imported; CLAUDE.md §4c derives the adjudicator count — the text said
+28, the tree has 51 — and §5a says a cloud clone is shallow; the
+`OMR_OWNER_FROM_STAVES` flags row; README rewritten). Fast tier 4,580 passed
+before and after; backend 119 passed with the two pre-existing stub failures
+and one that needs the `lilypond` binary.
+
+Found and NOT changed (report §3): the web app's security items (no owner on
+`Score`, `/uploads` unauthenticated, two upload routes join the client's
+filename, forgot-password returns the token, a working default JWT secret,
+dependency advisories); nine `promote` flags still read in staged; ~20
+GATHER exception handlers that default instead of abstaining; 98.7 MB of
+tracked record dumps; 102 benchmark directories without a `FINDINGS.md`.
+
+---
+
+## 2026-09-22 → 2026-10-07 — BRIDGE: what landed while this file was frozen
+
+**Summarised from ROADMAP's stacked START HERE blocks, the phase tables and
+DECISIONS — not from commit messages, and not per commit.** Newest first.
+Where the blocks disagree with each other the disagreement is kept, not
+resolved.
+
+**2026-10-06 → 07, overnight**
+- Mark identity landed behind `OMR_RELOCATE_AT_EXPORT` and `OMR_MARK_GROUPS`,
+  both OFF (ROADMAP 2.58/2.58b).
+- The owner-from-staves speed fix landed with verdicts bit-identical;
+  ROADMAP 2.57c (the edge-merge fix) brought back 4 of 5 lost heads.
+- Overnight `TAG=20261007-night` (main `3aef0c7d`, through adjudicate): bars
+  ≥0.4 sp off the ink 21 → 0 on Litolff and 1 → 0 on Brahms; far heads
+  decided 2,021/4,286 (from 1,903/4,055). Open: Brahms ran 175 min (was
+  107), and through-or-edge on the reader-independent grid reads 82.8% on
+  Litolff against 85.2% for plain geometry.
+
+**2026-10-06, day (`lane-lines-combined`, `87d17c00`)**
+- The far-head chain landed: note-first reader, text is not a ledger,
+  not-a-note gate, edge-vs-through (Sean 24/24), the far-head per-bar grid,
+  and `OMR_FARHEAD_OWNER_LEDGERS` (OFF).
+- ROADMAP 2.57 `OMR_CELL_LINE_FIND` landed (Sean: "working perfectly"; 29
+  one-line-off Litolff bars → 0). `OMR_OWNER_FROM_STAVES` (2.56c) merged
+  separately as `d9c09b88`; both became default ON on Sean's instruction.
+- Slur-not-ledger was not adopted (refused real ledgers on 6 of 12 tiles);
+  nine stranded pieces were retired (DECISIONS 2026-10-06).
+
+**2026-10-05 → 06, overnight**
+- Sean's far-head reading order (DECISIONS 2026-10-05): a line can only be
+  "on the edge of the box or running through the box".
+- The chain `lane-farhead-note-first` → `lane-ledger-not-text` →
+  `lane-farhead-not-a-note`, plus `lane-owner-by-ledgers` (ROADMAP 2.56b),
+  combined as `lane-night-1005-combined`; on `TAG=20261006-night-combined`
+  the through-or-edge rule held on 94.6% / 98.1% of decided far heads (was
+  57% / 59%), with decided far heads 1,903/4,055 (from 2,830/6,628).
+- Ownership moves with no twin box are dropped (114 Litolff, 365 Brahms);
+  left as Sean's call.
+
+**2026-10-04**
+- The far-head ledger reader `tools/omr/annotate/ledger_grid.py` and the
+  page-standard head box `standard_head_box.py` landed, keyword-gated, OFF,
+  not wired into STAGED. Litolff far heads (n=44) went 25/14/5 → 40/3/1
+  across the day; Brahms stayed 11/0/0.
+- ROADMAP 2.56 wired the reader as arm E3 (`OMR_FARHEAD_LEDGER`, default ON)
+  on the then-unmerged `lane-farhead-wire-staged`.
+- A scorer frame error (undeskewed render against deskewed boxes) was found
+  and fixed by `lane-jut-from-ink`.
+
+**2026-10-01**
+- Seven merges, all STAGED and first-two-stages: 2.47b/2.47c, 2.49 (tremolo
+  slash, ON), 2.12g (a detector change), 2.52, 2.55 ON, 2.54. ROADMAP 2.48
+  (comb) parked and 2.50 dropped. Sean's ledger rules are in DECISIONS
+  2026-10-01. No overnight run; fast tier 4,274 passed, `check` 250 (was 245).
+
+**2026-09-30**
+- ROADMAP 1.5 (`staged.readout`), 1.6/1.6b (small re-gather, GATHER+ADJUDICATE
+  default) and CLAUDE.md §6b's "every test is first-two-stages" rule landed;
+  2.33b, 2.39/2.39b, 2.42, 2.43 landed; 2.38c and 2.41 findings only.
+- The first overnight records had no `--weights auto` and were renamed
+  `*.NO-WEIGHTS`; the re-run `20260930b` replaced them. Cleanup count 1.4
+  deferred (Sean: "still too far away").
+
+**2026-09-28 → 29**
+- Merged 09-28: ROADMAP 0.2b (flag enforcement, `OMR_RESEARCH`), 3.1b, 3.3
+  (both halves, `--pdf`), 3.3c, 3.5, 4.1, 4.2, 4.2b; 3.4 (stage review) had
+  merged 09-23. Landed: 2.6c–2.6f, 2.10b, 2.17–2.19, 2.22, 2.25–2.27, 2.29,
+  2.30, 2.33, 2.34, 2.36–2.38b, 3.2b. Built but dead at zero, not merged:
+  3.2c, 2.6h.
+- Weights (DECISIONS 2026-09-29): keep production; class deletion is
+  last-layer only; ledger lines are "a CV job". ROADMAP 1.3
+  (`tools.omr.acceptance`) done; the 09-29 acceptance table gives Litolff
+  notes written 3,867 → 4,885 and Brahms 3,529 → 5,501.
+
+**Numbers at the end of the window, as the blocks state them**: fast tier
+4,542 passed and `check` 247 (the 10-06 block); the far-head truth set
+10-06 → 07 night Litolff 37/1/3, Brahms 11/0/0 (the 10-07 block). The 10-06
+day block gives 39/0/2 and 10/0/1, the 10-04 block 36/1/4 and 11/0/0, and
+fast tier 4,526 with `check` 250 earlier the same day.
+
+---
+
+## 2026-09-22 (evening) — IDENTITY IS GATHERED, AND THE KEY SIGNATURE READS IT
+
+**Sean's ruling above, built and measured — and he flipped the consumer ON
+the same evening** (*"flip OMR_ENGRAVED_KEYSIG on by default"*). Two flags,
+**BOTH DEFAULT ON**, both DENY-list: `OMR_DOCUMENT_IDENTITY` (his instruction
+that the printing be gathered in the first stage) and `OMR_ENGRAVED_KEYSIG`
+(the consumer). ⚠️⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS BELOW** — n is
+still 1 document, 1 renderer, no print consulted. It rests on the rule being
+ONE-SIDED, verified at the flip by `test_keysig_second_reader.py`, whose
+fixtures file no domain row, passing **unmodified**. Findings:
+[benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S OWN WARNING IS REFUTED AND SEAN'S OFF-HAND GUESS IS RIGHT.**
+It called `image_type` *"almost certainly wrong about the engraved
+population"*; he said *"or maybe they are all scans because they came from
+IMSLP"*. Measured over **all 289 committed editions in 16 s** (no weights, no
+gather): the label and the container measurement agree **279 of 279 wherever
+the label exists** — 272/272 `Normal Scan` scanned, 7/7 `Typeset` engraved,
+and those seven are modern re-engravings, which is what the word means on
+IMSLP. **The label's failing is ABSENCE, not error**: its only gap is the 10
+editions carrying no label, split 7 / 3, all three engraved ones being local
+files rather than IMSLP downloads.
+
+⚠️⚠️ **SO THE REASON TO KEY ON THE MEASUREMENT IS STRUCTURAL AND STRONGER: the
+engraved fixture the fix is proven on is a RENDER in no catalog**, so
+`gather_document_identity` ABSTAINS `not_in_catalog` on it while the container
+reader answers `engraved`. **A domain filed as a FIELD of the catalog row
+would have had a reach of ZERO on the one input that matters.** That is why
+they are two quantities.
+
+⚠️ **`Q.INPUT_DOMAIN` was ALREADY DECLARED and CLAIM-classified**, produced by
+nothing and reported a GHOST by `reach --check` every run. This session
+reached the same design independently and declared it a SECOND time; the
+derived checks caught the duplicate. *"Roughly half of it already exists"* was
+true of more than the brief's own table named.
+
+**GATHER**: `publisher_year` (195/289 — Sean asked for the year by name),
+`plate` (177), `has_text_layer` (289) now filed; `gather_input_domain` is the
+new producer at `source_kind: "container"` — a **fourth kind**, named
+deliberately, with `catalog`'s independence from print quality and none of its
+dependence on the file having been catalogued. A page that is neither
+raster-dominant nor drawing-rich abstains `ABSTAIN.NO_DOMAIN_SIGNAL`.
+`positional_store._edition_projection` unifies two lookups that had hand-listed
+one field tuple twice.
+
+**MEASURED**, one gather adjudicated twice (3 pages, 54 staff-systems, 50
+decided; canonical `readjudicate --control` **688 of 688** first): key
+signature **right 26 → 47, wrong 24 → 3**. ⚠️⚠️ **It reproduces the 09-22
+handoff's own table from a fresh gather and a different scorer** —
+`fitted_by_template` **20/0**, `fitted` **6/24** — and **the template is 67 of
+67 right wherever it speaks**. The 3 that remain wrong are template SILENCES,
+not errors. In the file: bars exact **313 → 322 of 360**, **4 parts better, 0
+worse**, `<alter>` 44 → 67, `<fifths> -3` landing on the truth's 14.
+**CONTROL: of 29 quantities exactly 2 move.**
+
+**ONE-SIDED**: a scan, an abstention, no identity row and the flag off all
+fall through unchanged. Proved on a real scan gather —
+`scan_is_untouched.py` shows OFF == ON **with a forged-engraved control that
+changes all 12 verdicts**, so the tier is a no-op there because the DOMAIN
+GATE stops it, not because the template is silent.
+
+⚠️ **THREE INSTRUMENT DEFECTS, all clean believable zeros**: the accuracy table
+read 0 right / 0 wrong on both arms because `str(Outcome.DECIDED)` is
+`'Outcome.DECIDED'`; **the derived-check control measured the SHELL** (zsh does
+not word-split an unquoted parameter, so eight checks "failed identically on
+both trees" — `${=t}` shows all eight pass); and the new test file skipped 5 of
+18 assertions on a `dirname` short by one.
+
+⚠️ **NOT ESTABLISHED**: n = 1 engraved document, 1 renderer, 24 bars; **no
+print consulted**; the scan side shown only to be a NO-OP; nothing reads
+`Q.DOCUMENT_IDENTITY` even now; no OMR-NED, deliberately.
+
+---
+
+## 2026-09-22 — SEAN'S RULING: identity is gathered first, and the key signature reads it
+
+**A decision and a work order. No code.** Sean, on being shown that
+`adjudicate_key_signature` prefers a reader right **6 of 30** over one right
+**20 of 20**, and that the cause is `erase_staff_lines` shaving 54-63% off each
+flat on ENGRAVED input while the same erasure HELPS on a scan:
+
+> *"if a page is engraved or a scan along with the publisher info and year —
+> whatever we have — should be gathered in the first stage — then we need to
+> make sure that the key signature is determined based on that info."*
+
+**Briefed for a new session:**
+[docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md).
+
+⚠️⚠️ **THE BRIEF EXISTS BECAUSE HALF THE JOB IS ALREADY BUILT AND SWITCHED
+OFF.** `gather_document_identity` shipped 2026-09-17 behind
+`OMR_DOCUMENT_IDENTITY` — **default OFF, producer-only, read by nothing** — and
+already files publisher / `work_id` / `image_type` / `imslp_id` /
+`edition_path`. **A session starting from the instruction alone would rebuild a
+shipped rung.**
+
+⚠️ **What is missing, measured against the committed catalog's 289 editions**:
+`publisher_year` (**195 of 289** — asked for by name), `plate` (177),
+`has_text_layer` (289), and a **MEASURED** engraved-vs-scan verdict.
+⚠️⚠️ **NOT `image_type`** — IMSLP's crowd-sourced label, which reads `Typeset`
+on **SEVEN of 289**. The measured test is `input_domain._classify_page`, gap
+**EMPTY over 147 probed pages**, abstaining on doubt, and **imported nowhere
+under `staged/`**. The two are kept APART on the record so a disagreement stays
+a fact.
+
+⚠️⚠️ **THE CONSUMER MUST BE ONE-SIDED**: prefer the template **only where the
+document is PROVED engraved**, leaving the precedence exactly as it ships
+everywhere else — the 20/20 is engraved-only, and on a scan the erasure works
+FOR the locator on a side **not measured for accuracy**. A GATHER change, so
+pricing needs two full re-gathers.
+
+---
+
+## 2026-09-22 (night) — four lanes, three refutations, one measured decision
+
+⚠️ Placed above the `no_ink` block on this file's CAUSAL-ORDER rule: it is the
+integration of that block and three sibling lanes.
+Handoff: [docs/handoff-2026-09-22-four-lanes-and-three-refutations.md](docs/handoff-2026-09-22-four-lanes-and-three-refutations.md).
+
+**Nothing was flipped. No default moved. No constant was tuned.**
+
+**LANE A — the ENGRAVED staged record, and the first reading accuracy the
+staged pipeline has ever had.** `trace.py` shipped saying it needed one;
+made. Pooled reading **F1 0.933**, **notehead recall 1.000 on all three
+pages**, shift-control 0.947 → 0.058. ⚠️⚠️ **THE DECISION FOR SEAN**:
+`adjudicate_key_signature` prefers the LOCATOR (**6 right / 24 wrong**) over
+the TEMPLATE (**20 / 0**), on a docstring premise — *"the locator loses
+accidentals to broken ink"* — refuted by a VECTOR RENDER. Mechanism measured:
+`min_height_spaces = 1.10` against flats reading **0.94 after `header_ink_mask`
+strips 54-63% of their height**. **91% of all note errors on 20 bars of 18
+parts are this fault.** ⚠️ **INFER has essentially no domain on engraved
+input** (`duration_narrowed` 0/0/3 against Breitkopf's 537). The 09-21
+`<beam>` emission is **exact**: 183/183, all 18 parts' sequence, Verovio
+re-rendering our file drawing the same `{flag: 4, beam: 58}`.
+
+**LANE D — the governing document's own §7 falsifier FIRES.** On the
+SHATTERING plate, **no ink-derived axis separates print-confirmed junk from
+noteheads as well as a feature of the BOX ALONE**, in every arm and both
+publishers (0.939 vs 0.747). ⚠️ Its **DIAGNOSIS stands; its REMEDY does not** —
+and it does not show the box is GOOD, only that the ink is not BETTER. The
+correction is at that document's head. ⚠️ The *"42.5% is mostly specks"* caveat
+**INVERTS between publishers** (66.9% Breitkopf, **3.8% Litolff** — the plate
+it was measured on).
+
+**LANE B — the chord/stroke join, REFUSED BY THE PRINT.** Reach **31 of 2,322
+(1.3%)**; of 17 settled, **2 are a real chord and 13 are NOT NOTEHEADS**;
+controls **12/15 with 0 wrong**. ⚠️ **The item was sized off a population two
+thirds too large** — its `73/98` never asks whether the shadow head is
+STEMLESS, and only 24/33 are.
+
+**LANE C — the "truncated" margin label is a BRACED-PAIR label.** The rule
+fires **zero times on all 209 Brahms labels**, and CLAUDE.md already said no
+lexicon can recover them. ⚠️⚠️ **`OMR_ROSTER_LABELS` governs the LEGACY reader
+ONLY** — one non-test caller — while staged identity calls `decide()`
+**ungated** with a roster the CLI supplies by default: the **INVERSE** of
+*shipped means the LEGACY path*, and the knobs row calling it *"deliberately
+dormant"* was false. Cost side now measured and **zero** (368,173-decision
+cross product byte-identical). Adjacency **refused 0 of 4**.
+
+**MANAGER — two instruments answering with definite answers they did not
+have.** The `no_ink` lie repaired (below), and **`score_reading.py` scored
+F1 0.000 for any page but the first** — a positional page lookup against a
+one-element list, plus a `staff_space_px` of **1.0** rescaling every tolerance
+~20×. Now looks up by field and RAISES, on the truth side too. ⚠️ It never
+showed because **every fixture the reading lane uses is `--pages 0`.**
+
+⚠️ **OPERATIONAL: subagents cannot write `.md` files — eight occurrences, four
+that night.** Every lane's `FINDINGS.md` was transposed at integration, with
+`[mgr]` marking what the managing session re-derived.
+
+---
+
+## 2026-09-22 — `no_ink` is a claim about the PAGE, and three readers made it about themselves
+
+**GATHER + the abstention vocabulary. No flag, no default moved, no decision
+touched** — verified: nothing in `tools/` reads `reason == no_ink` to decide
+anything (the grep returns the declaration, `gather_coverage`'s name-printer,
+`trace`'s own report, and four comments).
+
+**Reproduced before it was touched.** `trace --empty-claims` on the one record
+carrying an ink witness: **2,476 `no_ink` claims, ZERO of them the ink
+reader's own, 2,377 standing on a cell `Q.INK` sees ink in.**
+`dynamic_letter` 997 + `beam_stroke` 980 + `stem` 400 **sums to the
+contradicted total exactly.** `wedge_box` (74) and `margin_label` (25) are not
+contradicted and were left alone.
+
+**THE FINDING is the beam half.** A beam joins stem TIPS and `detect_beams`
+takes the strokes `detect_stems` returned, so split by the reader's own INPUT
+the 980 are **400 with no stem at all, 265 with exactly one, 315 with two or
+more** — **665 (67.9%) were never the beam reader's claim to make**, and the
+400 are **EXACTLY** the 400 cells `stem` itself refused, set for set. That
+silence is DERIVED. ⚠️ A second witness was already in the record and nobody
+had looked: `Q.BEAM_STROKE` has TWO producers (322 `cv_lines`, **536
+DETECTOR**), so on **274** cells it holds a detector beam beside a `cv_lines`
+refusal saying there is no ink, and on **195** of those the CV reader also
+found fewer than two stems — a beam cannot print without stems.
+
+Three words: `NO_GLYPH_OF_THIS_KIND`, `NO_LINE_ACCEPTED` (deliberately saying
+less than `Q.VERTICAL_RUN` could), `NO_STEMS_TO_JOIN` (a claim about our stem
+reading, not about the print).
+
+⚠️ **One existing test PINNED THE FAULT** and now pins the repair. ⚠️ **And a
+live blind spot in `wiring --check`**: named `n_detections`/`n_stems` the two
+new detail keys collided with unrelated keys elsewhere in `tools/` and the
+check passed listing neither; renamed `cell_n_*` it reports both, and both are
+now on `KNOWN_GAPS`. The tool is NOT changed — making the match
+quantity-aware moves 64 entries at once.
+
+⚠️ **Nothing was re-gathered**, so the findings' §7 is a **pre-registered
+prediction** (`2377 -> 0`, split 997 / 400 / 665 / 315) and not a measurement.
+12 new tests, **8 red on the unrepaired tree** with an md5-verified restore;
+1,848 passed / 0 failed on the affected surface; all nine derived checks exit
+0. **The repair improves no reading** — it stops three readers overclaiming.
+
+---
+## 2026-09-22 — the three channels, measured and then wired
+
+Sean: *"I thought we had figured out the instrument to line issue. Using the
+natural order of instruments, the list of instrumentation from the score or a
+dossier and the addition of any clefs that could be read as well as family
+brackets — would all add up to clarity of the instrumentation. Did we lose that
+at some point?"* — and, on being shown where the clef stands: *"the clef is a
+small part of deciding what the instrument is and we would need to be sure of
+the clef to have it impact the instrument. margin names, instrumentation lists
+from the doc or a dossier, Order, family brackets should all come first."*
+
+**REACH FIRST, and it refuted the intuitive part.** Measured on the staves
+whose instrument ABSTAINED, **ZERO GRAFTS in every arm on both documents**
+(`benchmarks/omr-instrument-channels-2026-09/`):
+
+| channel added | Litolff /25 | Breitkopf /40 |
+|---|--:|--:|
+| order alone | **0** | **38** |
+| + family block | **5** | 38 |
+| + clef | **18** | 38 |
+
+⚠️⚠️ **ORDER ALONE FORCES NOTHING ON THE DOCUMENT THAT NEEDS IT** — Litolff's
+unnamed staves are a TRAILING block with no named neighbour below, so the whole
+block slides — **and Breitkopf INVERTS it**, its unnamed staves being
+interleaved among named ones and bounded on both sides. *Neither document could
+have shown that on its own.*
+
+⚠️⚠️ **"A SLOT'S CLEF IS WHAT THE REFERENCE SYSTEM READ" IS REFUTED.** A slot's
+clef is constant on both plates for every instrument **except the Cello and the
+Bassoon**, which alternate bass/tenor as a matter of course — Breitkopf's
+reference reads its cello slot `tenor` and three later systems read the same
+slot `bass`, **all four at margin 4.5**. That premise makes **5 of Breitkopf's
+6 systems unsatisfiable**. Taking each slot's admissible clefs from the
+INSTRUMENT's own lexicon entry reaches the same 18 and is refused on no system
+of either document.
+
+⚠️ **A CLEF READING ON A NAMED STAFF CAN ONLY SUBTRACT.** On Litolff p2/s1 the
+Fagotti's FALSE `tenor` — the CV locator firing unopposed at exactly
+`MARGIN_FLOOR` — names a clef no slot admits, and **four forced staves are lost
+to one wrong reading on a staff the clef was never needed for.**
+
+⚠️ **PLACEMENT REACH IS NOT NAMING REACH.** Ten of Breitkopf's 38 placed staves
+land on reference slots the reader itself could not name. **That is the
+instrumentation list's first measured population** — and both catalog rosters
+name **no string instrument at all** (`string` survives only in the FAMILIES
+list), so a roster can name a Flöten slot and never a Kontrabass one.
+
+**WIRED** the same day at Sean's word (*"wire it all up"*):
+`OMR_SLOT_CONSTRAINTS`, **default ON**, deny-list OFF test.
+`adjudicate_slot_index` enumerates every strictly-increasing staff→slot map
+(`[C62]`) under the three channels and takes a slot only where every surviving
+map agrees; a channel that would empty the set is DROPPED for that system and
+named. Control **75 of 75** committed verdicts reproduced with both branches
+off; placements **IDENTICAL to the shipped path**, **0 grafts, 0 staves moved**
+on both documents (+3 gained on Breitkopf). What moves is the PROVENANCE:
+`forced_by_constraints` **0 → 13** against INFER's
+`the_short_block_is_condensed_at_its_foot` **15 → 2**.
+
+⚠️⚠️ **THE FIRST CUT WAS ADDITIVE IN ITS OWN TERMS AND STILL SUBTRACTED,
+THROUGH A RULE DOWNSTREAM OF IT.** Deciding two members of a block removed them
+from `inferences._block_members`, which requires the narrowings to cover
+`0..k-1`; the block then had holes, INFER skipped it whole, and **two Violas
+the shipped path places correctly came out narrowed**. Every aggregate looked
+fine — only the per-staff assertion *no staff the base DECIDED may come out
+differently* caught it. Repaired twice: the branch now FILTERS the block's
+narrowing instead of replacing it, and `_block_members` admits a member the
+page FORCED (*a member the page already settled is not a hole in the block*).
+
+⚠️ **All 12 parts were ALREADY NAMED before any of this** (`name_arm.py`, every
+arm), so `export._default_name`'s `Staff p1-s0-3` is **not** present on this
+record and this change does not address that symptom. What the placements buy
+is the hold-out: staves with no slot go **25 → 5**.
+
+⚠️ **NOT ESTABLISHED**: no print was consulted (correctness rests on the
+2026-09-14 and 2026-09-17 crop passes); Breitkopf is unscored; no export, no
+file, **no OMR-NED** (musicdiff does not score `<part-name>`); n = 2 documents,
+2 publishers, 8 pages, both scans. ⚠️ The battery's first run had **6
+survivors, every one a real test gap** — the outcome tests were blind to half
+the guards, because a channel silently dropped and a channel that added nothing
+leave the same verdict behind.
+
+---
+
+## 2026-09-21 (evening) — Sean's rule is ON by default; the sheet becomes a fallback
+
+Sean, in one sentence: *"Flip on the previous work and redo our work tonight to
+be an option to turn on when we can't get the info we need."* Two changes,
+pulling in opposite directions.
+
+**1. Per-rule switches in INFER.** `collapse_slot_index_to_family_block` — his
+own natural-order + family-block convention, scored **25 of 25 against the
+PRINT with ZERO grafts**, `staff_not_identified` 783 → 141 — was built
+2026-09-17 and left switched off **for a reason that was never about its own
+evidence**: it shared `OMR_INFER` with two DURATION rules, neither of which has
+had a single note checked against a page. *One switch, two evidential weights,
+and the stronger one lost.* Each rule now carries its own `Switch` (flag name +
+predicate as ONE object). `OMR_SLOT_FAMILY_BLOCK` default ON (deny-list);
+`OMR_INFER` default OFF (allow-list), now governing the two duration rules
+only. ⚠️ The predicates are written out **separately** and a shared helper was
+refused — the AST flag-direction scan finds flags by name, and a helper taking
+the name as a parameter would hide both.
+
+**MEASURED** base-vs-arm on ONE tree (`flip_arm.py`, the `-ink-identity` shared
+record): `slot_index` decided **55 → 70**, narrowed **20 → 5**, **15 inferred**.
+⚠️ **The control is the ZERO: 0 verdicts outside `slot_index` moved.** It
+reproduces the rule's own published funnel from a different record, tree and
+instrument. ⚠️ *"Off means ABSENT, not quiet"* is **restated**: it now reads
+*when NO RULE is enabled the key is absent*, derived off the switches.
+
+**2. A supplied clef speaks GAPS ONLY.** `adjudicate_clef` admitted a
+fact-sheet clef at `W_DOSSIER` **4.0, ABOVE `W_DETECTOR_HIGH` 3.0** — so it did
+not corroborate a read clef, it **replaced** it, silently, including where the
+reading was right and the sheet held a typo. Now admitted only where the
+detector and locator both said nothing (`adjudicate_key_signature` precedent).
+⚠️ **A refusal to speak, not a weight change.** The CARRY tier is untouched;
+the refusal is RECORDED on the verdict.
+
+Battery **20 arms / 20 RED / 0 survived**, restore hash-verified per subject.
+⚠️ Its first run had 2 survivors: one equivalent mutant (named and replaced)
+and one real gap (the supplied clef's weight was never asserted).
+
+⚠️⚠️ **TWO INSTRUMENT FINDINGS.** (a) The field was first called `gate`, and
+`wiring --check` then reported the unrelated detail key `Q.DIRECTION_WORD.gate`
+as CLOSED — **a one-word identifier can falsely close a KNOWN_GAPS entry**,
+because that question matches detail keys by bare name. Fixed by renaming to
+`switch` and **re-measuring back to 64/0**, not by deleting the gap.
+(b) **A control probe destroyed every uncommitted file in the worktree**
+(`git checkout-index -a -f` overwrites ALL tracked files, not the two stashed).
+Recovered by replaying the session transcript — ⚠️ **which faithfully
+re-applied two deliberate red-proof MUTATIONS whose `cp`-based undos were not
+replayable.** *A recovery that replays writes will replay your mutations too.*
+
+⚠️ **NOT ESTABLISHED**: no print was consulted this evening; no export, no
+file, no OMR-NED; **Breitkopf has NO population for the flipped rule** (0
+abstentions); and **the two changes INTERACT unmeasured** — both assign
+instruments to lines, and no record carries a `clef_seed` row.
+
+[benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md)
+
+## 2026-09-18 — ASK FIRST: the convention before the mechanism (standing rule)
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it depends on no
+entry below it. ⚠️ The block beneath still reads *"(latest)"* — left exactly as
+its author wrote it, per this file's own rule that rewriting another session's
+heading is the ledger overwriting the tree. The DATE is what orders them.
+
+**Documentation only. No code, no test, no benchmark, no measurement** — `git
+diff --numstat` is five prose files and one new doc, additions only, zero
+deletions.
+
+**What Sean asked for:** *"I want to make sure that in our process of building
+out that the agent takes one moment before building to ask me what I or a human
+would do to get the information, or what are the main conventions of engraving
+that apply to the current job. Many times I feel like the agent is building in
+a counter-intuitive way, or blind to obvious conventions."*
+
+**The rule, in three parts, before the first line of code:** (1) how would a
+HUMAN get this off the page; (2) what ENGRAVING CONVENTION governs it — an
+engraver does not place ink freely, and a convention is usually rigid enough to
+be a **search constraint rather than a statistic**; (3) **ASK SEAN**, one line.
+
+**Why it is a measured claim and not an exhortation.** The argument is this
+repository's own record: at least a dozen of the largest wins on file ARE
+conventions, and most were found only AFTER a mechanism had been built the
+other way, measured, tuned and defended —
+
+- [x] the whole rest that means **THE BAR** whatever the meter — 1,251 attribute
+      errors, and OMR-NED charged **nothing** for one of them
+- [x] the dot that sits a space HIGHER on a line note — 52 at 0.00 / 52 at
+      +0.50, **nothing between +0.57 and +3.75**
+- [x] a slur drawn OVER its notes and a hairpin BETWEEN them — a perfectly good
+      overlap test scoring **0 of 4**
+- [x] the beam that runs stem-to-stem — engraved fixture **12 of 7 → 16 of 16**
+- [x] the cautionary meter that governs no bar — false changes **10 → 3**
+- [x] the key change printed at ONE bar on EVERY staff — **7 of 7** flips stopped
+- [x] ⚠️⚠️ and the sharpest: `_pair_ties_in_cell`'s own docstring states *"real
+      tied notes are at the same y-position by definition"* and **NEITHER
+      PAIRING RULE EVER USED IT**, with the empty interval that would have
+      proved it (0.168 vs 0.435 spaces) measurable from day one
+
+**The guard shipped WITH the rule, because it makes confident wrongness
+cheaper.** A convention is a HYPOTHESIS AND A CHEAP TEST, never a licence: the
+doc's §3 records the conventions this repo has **refuted**, including Sean's
+own S4 (refuted at full width, SIDE flat at −0.001 / −0.030) and the
+label-splitting rule that is a property of the ENCODING not the engraving
+(74/74 on Beethoven, **+2,181 edits on Dvořák**). The tell that a convention is
+real is a **measured empty interval**; the tell that it is a story is a smooth
+slope with a threshold fitted into it.
+
+**And the unattended case, which is where this rule would otherwise rot.**
+A cloud session or overnight run has nobody to ask, so *could not ask* must
+never become *did not think about it*: write **CONVENTION ASSUMED / WHAT WOULD
+FALSIFY IT / NOT CONFIRMED WITH SEAN** at the top of the brief and proceed —
+the ABSENT/DECLINED discipline `record.py` enforces on the pipeline, applied to
+the people building it.
+
+**Files touched:**
+
+- [x] `docs/ask-first-conventions.md` — **NEW**, the canonical statement: the
+      rule, the evidence table, the guard, the unattended case, the handoff
+      requirement, and the failure family it joins
+- [x] `CLAUDE.md` — prominent block at the head, above the 2026-09-10 target
+      block, so it is the first thing a session reads after the stack; plus a
+      sibling cross-reference inside *A PREMISE ENCODED IN A REFUSAL OUTLIVES
+      ITS REASON*, which it is close enough to be confused with and whose
+      repair differs (*why does this rule still refuse?* against *why was this
+      mechanism ever aimed here?*)
+- [x] `PROJECT_BRIEF.md` — a permanent section in plain language, placed above
+      every dated note rather than among them
+- [x] `PROJECT_STATUS.md`, `NOTES.md` — the pointer at the head of each
+- [x] `docs/handoff-2026-09-17-infer-rule-two.md` — the pointer, as a **dated
+      addition changing none of its findings**, because CLAUDE.md names that
+      file as START HERE and a pointer nobody reaches is not a pointer
+
+⚠️ **OLDER HANDOFFS ARE DELIBERATELY NOT RETROFITTED** — a dated record is what
+that session knew on that day. The one exception above is stated in the doc as
+an exception rather than left for a reader to notice.
+
+⚠️ **NOT DONE, and it is the obvious next question:** there is **no derived
+check** for this. Every other discipline in this repo eventually got one
+(`wiring.py`, `no_producer.py`, `capture.py`, `test_flag_default_direction.py`),
+and this one is enforced by prose alone — which this file's own history says is
+the weaker instrument. Whether a brief without a stated convention can be made
+to fail something is unscoped.
+
+---
+
+## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived
+instrument and depends on no entry below it. No other session's block was
+re-dated or re-sorted.
+
+Sean asked three questions about one family's ink and then said they should be
+asked of every kind: do we record the SHAPE with a confidence, the POSITION
+against the staff grid as a separate scoreless fact, and WHICH RASTER it was
+measured on? `tools/omr/staged/capture.py`, in the shape of its four siblings
+— derived from `record.Q`, `adjudicate.REGISTRY`, `evaluate.RULES`,
+`export.FAMILIES` and the AST of `gather.py`; positive controls on every
+question; `--check` exits 2 on a control at zero BEFORE it reads a finding.
+**The tool is the count — no figure is restated here.**
+
+**The exemplar is real and serves three families.** A notehead's class carries
+the detector's score; its staff-grid position is a SEPARATE row from a
+DIFFERENT reader with `score=None`; `restate_pitch` combines them. ⚠️ **A
+position may not be a field on the shape row** — `correlated_groups` calls one
+reader's rows on one crop ONE SIGNAL and `tally` takes the strongest term, so
+it is absorbed. That makes it a missing CATEGORY, not a missing wire.
+
+⚠️ **A side off the class name is not a ruler**: `fermataBelow` states a side
+and fails together with the classification it is derived from.
+
+⚠️ **"Erased" is not one image.** Three erased rasters exist
+(`staff_line_removal`'s binary, `header_ink_mask`'s own erasure, and none), six
+readers choose between them by a SILENT runtime fallback, and only `Q.STEM` /
+`Q.BEAM_STROKE` record which answered. `gather_key_signature` runs two readers
+on ONE crop on OPPOSITE rasters. The standing *never erase for the detector*
+rule is untouched and derives correctly.
+
+**Two modelling bugs of the tool's own first run are pinned as regressions**,
+because both produced a plausible table: `restate_pitch` and `move_glyph` both
+declare `effect=Q.PITCH`, so a dict keyed on the effect kept the second and the
+exemplar family reported no shape and no position; and keying position on *does
+this decision read a position quantity* gave `slur`/`tie` a MEASURED position
+off the NOTEHEADS' positions, contradicting the module's own gap text.
+
+⚠️ **INSTRUMENT FINDING: `gather_coverage` reports five quantities as having no
+reader** (`ARC_BOX`, `ARTICULATION_MARK`, `FERMATA_MARK`, `ORNAMENT_MARK`,
+`REST`) because their `reader`/`score` arrive through a `**common` dict.
+Reusing that walker would have reported five families as capturing no shape
+confidence.
+
+⚠️⚠️ **Committing the tool broke `wiring --check` — the FOURTH member of a
+family `wiring` documents.** An auditor names a detail key without consuming
+it, like a gap list, a test and a benchmark probe — but lives in the same tree
+as real consumers, so `staff_lines_erased` read as consumed and two live gaps
+went STALE. Repaired with a module-level `DERIVED_CHECK = True`, read from the
+AST. **The control was run first**: `wiring` exits 0 on the base and 1 with the
+module added; `gather_coverage` exits 2 on both, which is what pre-existing
+looks like. `reach.NOT_A_STAGE` gained the module too, its own guard working.
+
+⚠️⚠️ **TWO CORRECTIONS ARRIVED MID-TASK AND BOTH NARROWED THE POSITION
+QUESTION.** Sean withdrew, in two steps, every exemption: first the families
+whose CLASS NAME states a side, then any exemption argued from the aggregate.
+Final ruling: *"Theoretically every position can at some point contribute even
+if that is not with our current pipeline... for testing we need to hold on to
+everything because we can't yet know all of what will be helpful."* **Every
+family without a staff-grid position is a finding**; `KNOWN_GAPS` holds reasons
+a gap EXISTS and a test bans exemption language outright. ⚠️ **Scoped to
+DISCOVERY** — the cost to watch is 0.6 MB/page (Litolff) and 3.1 MB/page
+(Breitkopf) for the ink layer alone, against records already in the hundreds.
+
+Two gradings survive because they are NOT exemptions: **LOCATION vs POSITION**
+(a staff-space float composes across documents; page pixels and canonical-cell
+boxes do not — the latter because two staves' canonical frames coincide BY
+CONSTRUCTION) and the class-name **side**, which fails together with the
+classification it is read off. ⚠️ `placement` had been wrongly folded into
+`side` and is now reported apart: it is derived from the BAND by measurement,
+the opposite provenance, and the conflation made `direction` report *"the class
+name states a SIDE"* about a word that is not in the class space at all.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS**, which is the consumer the
+aggregate question needs. `data/` holds no store of measured geometry, and
+`publisher` appears in **NO code** in `gather.py` while the catalog carries it
+on **231 of 235 editions (212 distinct)** — on `entries`, NOT on the `editions`
+map, so a reader going to `editions` would conclude the fact was absent.
+
+⚠️ **A THIRD DERIVATION BUG, the `**common` trap in a second form**: `gather.py`
+binds `shared:` and `detail:` as ANNOTATED assignments, and an
+`ast.Assign`-only walk resolved neither — so `Q.DIRECTION_WORD` came back
+without `bbox_page_px`/`placement` and the location grading reported two
+families as carrying no page location. Found by reading the emitted detail
+lists against the source.
+
+Battery **34 arms, 34 as expected, restore VERIFIED**; its first run found
+**three genuine test gaps**, one being this session's own *a test asserting a
+list is EMPTY cannot detect a computation that always returns empty*, and a
+later arm SURVIVED because its target test could not reach the probe at all.
+
+⚠️ **A FOURTH QUESTION arrived mid-task and is wired in: RESOLUTION**
+(`A-INK-2`). `OMR_DPI` is a CONSTANT and `render_page(..., dpi=dpi)` takes it
+from an argument no call site derives from the PDF — while a SCANNED plate has
+a native resolution and a VECTOR page has none. **Nothing anywhere reads the
+native size**, and `input_domain._classify_page` — the shipped
+`OMR_WEIGHT_ROUTING` classifier — already opens the very dict that carries it
+and reads only `bbox` and `Filter`. Reported with the keys it DOES see read
+beside it, so the zero is the walker working. ⚠️ The table separates
+`letterboxed` from `direct_pixels` so the measured `OMR_IMGSZ` result — a fact
+about the DETECTOR's letterboxing and anchors — cannot be quoted against the
+readers it says nothing about.
+
+⚠️ **NOT ESTABLISHED**: nothing gathered, exported or measured on a page; the
+two declared tables are guarded but a WRONG classification would pass; the
+raster answer is static code, so nothing says how often a fallback takes which
+branch; and whether a position fact would HELP any family is unmeasured. The
+ranked next work — a position fact for the meter, and the two-pass read — is
+scoped and deliberately not built.
+
+---
+
+## 2026-09-17 (later) — the p0p3 experiment RAN, and the empty cell is still empty
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it follows the
+`2026-09-17 — the carry's DOMAIN ... is 5 of 7` entry below, whose named
+instrument it uses. No other session's block was re-dated or re-sorted.
+
+The experiment the three-shape taxonomy named — `p0p3` at `--bar-beats 3.0` —
+was run on the shared Breitkopf record (md5 `52b98f1c…` verified against the
+receipt before a byte was read), tree `ab448cc8`, clean. Instrument
+`rest_sizing_arm.py` per `9e175f2d`: ADJUDICATE-stage, no re-gather, and its
+reading rule followed — **the per-system table, not the reach header**, which
+counts abstentions and reads 0 on this document.
+
+**7 systems, 7 DECIDED, 0 abstained, and the two arms are BYTE-IDENTICAL**
+(both exports md5 `420136cb`; the JSONs differ in the `env` line and nowhere
+else). `system/0/0` votes `6/8` — correct. `system/1/0` votes the misread
+`9/4`. Five read `change_only` `4/4`. **No system reads `carried`.**
+
+**So a VOTED misread exists on that page and does NOT propagate** — the carry
+accepts it nowhere. That is the flag behaving correctly and therefore **not**
+the hazard case, so the cell stays empty: filling it needs a document where the
+carry **ACCEPTS** a misread.
+
+⚠️ Two limits recorded with the result rather than left implicit:
+*asked-and-refused* is **INFERRED** from `_change_only` being the third rung,
+not observed — a refused carry and an unasked carry both fall through to the
+identical `change_only` with `support: None`, so this arm does **not** escape
+the ambiguity `9e175f2d` named for `local_arm.sh`. And ⚠️⚠️ **the fixture
+PR #39 names is not what the shared record produces now**: re-adjudicated on
+today's tree `system/0/0` reads `6/8`, is correct, and nothing abstains, where
+that PR — reading committed fixtures across five generations — reports it
+reading `C` at `voted`. Not a refutation of its argument; a warning that the
+two artefacts differ.
+
+⚠️ Independent of the flag: at the printed 3.0, **1,079 of 1,099 rests are not
+the bar length** (433 at 0.5, 366 at 4.0, 20 correct), `notes_not_written_total`
+**876** — identical in both arms. The meter carry is not the lever on that page;
+nothing abstains for it to act on.
+
+Both exports are committed although identical: **git stores one blob for
+identical content** (verified — both paths resolve to one object), so it costs
+nothing and a checkout can verify the byte-identity with `md5` rather than
+trusting it.
+
+⚠️ **The two stale work orders this result created were retired in the same
+commit** — CLAUDE.md and the handoff §9.1 both still *named* the experiment as
+the thing to do. That is the third time in one day this project's
+`fixed-then-kept-open-in-prose` pattern has been caught in text written hours
+earlier by the same session now fixing it.
+
+PR #48, and the documentation commit that follows it.
+## 2026-09-17 — INFER gains a SECOND rule: the bucket the first one declined by design
+
+⚠️ Placed BELOW the p0p3 entry above deliberately. That block claims
+the head on the file's CAUSAL-ORDER rule with a stated reason, and this
+one is an independent thread — the INFER stage, not the meter — so it
+breaks no chain by sitting here and re-sorting it would only disturb
+one.
+
+`collapse_duration_to_barline`, no flag, `tools/omr/staged/inferences.py`.
+The first rule's funnel stopped at *no next onset in this bar* with a comment
+saying *"its length is the bar's — which is the METER, which this rule may not
+read"*. **Right about the meter, wrong about the neighbour**: a staff standing
+at the same onset column with nothing after it has already measured the same
+gap and called it something. The barline is a system-wide event, so both notes
+end at the same instant.
+
+**INFER 7 → 17** on the shared Litolff record (control first: 16,773 of 16,773
+verdicts reproduced exactly). Reach: of 356 narrowed durations standing in a
+column, **165 end at a column (rule 1) and 190 run to the barline (rule 2)**.
+
+⚠️ **The guard that makes it legal is a computation, not a declaration.**
+`size_measure_rest` and `reconcile_duration` both hand a duration out FROM the
+meter and both put the meter row in their `basis`, so a witness whose
+provenance closure contains `Q.METER` is REFUSED — via
+`Log.quantities_in_closure`, the primitive `adjudicate.py` already uses for
+circularity. It fires on 3 subjects, refusing 2, 2 and 3 witnesses.
+
+⚠️ **The `191` in the first rule's findings is NOT this rule's population**: it
+is *no next COLUMNED onset* = **190 barline + 1 UNKNOWN**. The endpoint is now
+a PAIR, because deriving "barline" from *no later columned event* would hand a
+note whose successor missed every column a neighbour's whole-bar length. Rule 1
+is behaviourally unchanged.
+
+⚠️⚠️ **It also found the stage's OWN self-check silently circular since
+2026-09-15.** `probe/self_check.py` restated `OMR_METER_FROM_BARS`'s default as
+`"0"` against an allow-list while the owning predicate is `"1"` against a
+deny-list — so with the variable unset the pipeline had the flag ON and the
+check printed `'0' -> ok`, the guard failing exactly as written to prevent.
+Repaired by importing `rhythm.meter_from_bars_enabled()`. **INFER's only
+truth-free self-check now correctly REFUSES under current defaults**, which is
+the honest state rather than a regression.
+
+⚠️ The registered rules had **no unit fixture at all** — the harness tests
+install one-off rules — so either could have stopped firing with the suite
+green. 23 tests now build the smallest system the rules can walk. Battery **14
+arms, 14 red**, restore verified; its first run's 2 survivors were one
+mis-aimed arm and one real test gap, both closed.
+
+⚠️ **Not established**: accuracy — none of the 10 checked against a print; no
+export arm, so *"10 inferred"* is not *"10 reached the file"*; n = 1 document.
+The largest remaining stop is `COLUMN_MIN_INDEPENDENT_WITNESSES` at **71**,
+the stage's one unmeasured constant.
+[benchmarks/omr-infer-barline-2026-09/FINDINGS.md](benchmarks/omr-infer-barline-2026-09/FINDINGS.md)
+
+---
+
+## 2026-09-16 (docs) — the meter-carry ledger reconciled with the tree, and PR #43 merged
+
+No code. A check-in found three claims the tree contradicts, all in the
+section of the handoffs headed *what is waiting for Sean*:
+
+- Both 09-16 handoffs list `OMR_METER_CARRY` as *"still off"*. It has been
+  ON since 09-15 (`rhythm.py:1016`, deny-list). Corrected in place at both.
+- Both name *"the arm on `p0p3` with `--bar-beats 3.0`"* as the experiment
+  that closes the cost question. **It ran on 2026-09-15 and has been on main
+  since `328c7ac0`** — `benchmarks/omr-meter-carry-brahms-2026-09/`: carry
+  asked on 5 of 7 systems, refused on all 5, four exports byte-identical,
+  candidate `4/4` never the voted `9/4`. CLAUDE.md cited it zero times; PR #43
+  independently reproduced its 5-of-7 census by AST. The 09-16 handoff's own
+  §7 pattern (a brief overtaken by work already on main), a fourth time.
+- CLAUDE.md's *"REACH IS ZERO"* section: heading corrected, PR #43's
+  refutation merged (`52b13f39`, its `version_memory` conflict resolved by
+  keeping both entries), and a stamp added that the arm PR #43 asks for is the
+  one above. Pointers stamped at the START HERE block, the `OMR_METER_CARRY`
+  knobs row, the abstains-and-misreads section and the cautionary-arbiter tail.
+
+What stands after the reconciliation: the misread does not propagate on
+Breitkopf (structurally, via `_meter_in_force_at_end`); the benefit on Litolff
+p1-3 is 1 of 5 → 5 of 5 systems, 298 wrong→exact / 0 exact→wrong; and the open
+decision is the **form-borrowing rule** (bars name 3.0 at +7.0 and cannot spell
+6/8), not the flip. ⚠️ All seven derived checks exit 0 on this tree; the full
+suite was not run.
+
+## 2026-09-17 — the carry's DOMAIN on the Breitkopf record is 5 of 7, not zero
+
+**A correction to yesterday's entry, on this repo's own rule that the tree
+outranks the ledger — including when the ledger is mine.** No code under
+`tools/` changed; nothing was gathered, exported or scored.
+
+Yesterday's pricing-arm entry read Breitkopf Brahms 1 p0-3's
+`decided 7 of 7  {'voted': 2, 'change_only': 5}` and concluded **"neither flag
+has a domain on this document"**, reasoning that `_meter_fallbacks` is reached
+only from failure paths and nothing failed. The premise is right and the
+inference runs backwards: **`change_only` is itself a fallback rung — the THIRD
+of three** (`_carry_meter` → `_meter_from_bars` → `_change_only`) — so a
+`change_only` verdict is positive evidence that the fallbacks ran and that the
+carry was asked first. **Domain: 5 of 7 systems**, the flag's first reach number
+on a document that misreads its meter.
+
+- `probe/carry_domain.py` derives it by AST rather than by grep, because
+  `_change_only` has two call sites and the inference holds only through
+  `_meter_from_bars` being called from nowhere else. It closes the transitive
+  set to a fixpoint and REFUSES if any rung becomes reachable from outside it.
+- ⚠️ **The shared Breitkopf record is the OFF arm, not a measurement.** Its
+  `tools/` tree has both meter flags **defaulting to `"0"`**, and
+  `_carry_meter` returns `None` before reading any evidence when the flag is
+  off. The shared-records write-up's §3 is STAMPED with that rather than
+  rewritten. Its reason column doubles as the reach figure.
+- ⚠️ **The pricing arm cannot separate the two readings and that is its
+  defect, now priced.** Identical ON/OFF arms are what you get whether the
+  carry was never asked or asked five times and refused five times;
+  `local_arm.sh` prints no per-system carry outcome.
+- **The arm that would price it needs no re-gather** — the flags are
+  ADJUDICATE-stage, so `rest_sizing_arm.py` over the shared record
+  (`--bar-beats 3.0`) answers it in minutes. ⚠️ Read its per-system table, not
+  its reach header, which counts abstentions and reads 0 here — inviting the
+  very misreading this entry corrects.
+- Mutation battery **5 arms, all red, positive control green**, byte snapshot
+  per target on disk, in-flight sentinel, restores VERIFIED — and it refuses to
+  start against a dirty tree, because it mutates production code.
+- ⚠️ Independent corroboration worth having: the probe reads the census
+  `{'voted': 2, 'change_only': 5}` out of the shared record's committed table,
+  and the desktop arm printed the identical dict from a fresh gather on a
+  different tree. **Two sources, one census** — which no single artefact
+  establishes.
+
+## 2026-09-16 (late) — the meter carry's cost side, measured at last, and rescued from an ended session
+
+`OMR_METER_CARRY` has been ON by default since 2026-09-15 (verified at the
+predicate, not in prose: `os.environ.get(METER_CARRY_ENV, "1") ... not in`,
+a deny-list, and `meter_carry_enabled()` is True with the env unset). Its row
+in CLAUDE.md nonetheless said the cost arm was *"written and **never run**"*.
+
+**It had been run.** Session `meter-pricing-abstaining-a5daee` ran
+`local_arm.sh` on the ABSTAINING document — Litolff Beethoven 5 mvt 1, pdf
+p1-3, 34 min, exit 0, tree `916cfcb6`, `tools/` byte-identical across both arms
+— and **ended before committing**, leaving the result in two transcripts and a
+worktree. Recovered and committed on its behalf, credited to it:
+
+* systems decided **1 of 5 → 5 of 5** (`carried` ×4, support +6.0/+13.0/+9.0/+18.0)
+* `<time>` **28 → 54, all `2/4` in both arms** — the one figure re-derived here
+  from the committed exports rather than relayed
+* bars that add up **54.4% → 81.2%** like-for-like over the 1,109 bars in BOTH
+  arms, **298 wrong→exact, 0 exact→wrong**
+
+⚠️ **The raw 90.8% is not quotable** — it includes 1,159 tacet bars the ON arm
+adds that are exact by construction. The measuring session flagged that against
+its own result unprompted, and the warning is recorded beside the number.
+
+⚠️ **The carry was never handed a misread on that document.** Litolff p1-3
+holds two (`would_have_been` `C` and `4/4`, both 4.0 on a 2/4 page) and both are
+SUPPRESSED by the coverage gate BEFORE the carry runs. *"The carry handled it"*
+and *"the carry never saw it"* produce an identical file, so the distinction had
+to be written down.
+
+**The taxonomy is the durable part, and its third cell is empty:** a misread
+VOTED with an abstaining neighbour (Brahms `p0p3`, 2 systems, no propagation);
+abstaining with misreads SUPPRESSED (Litolff p1-3, propagates only the correct
+meter); and **a VOTED misread propagating across many systems — neither
+document supplies it.** The experiment that fills it is named: the arm on
+`p0p3` with `--bar-beats 3.0`.
+
+Also fixed: `docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md`
+contradicted itself. PR #44 corrected §6 when PR #39 refuted *"the flag waits on
+a corpus"* and left §9.1 saying *"blocked on a CORPUS … nothing on this machine
+settles it"* — in the section headed WHAT IS WAITING FOR SEAN, the one most
+likely to be read as a work order.
+
+⚠️ The two `.json` records (82 MB + 83 MB) are deliberately NOT committed, per
+`benchmarks/omr-shared-records-2026-09/`: record machine-local, everything
+derived committed. ⚠️ The two exports are MISNAMED `brahms1-*` and hold a
+LITOLFF run — the arm fixes its output name regardless of document. Kept under
+the arm's own name so nothing that reads them breaks, with the trap stated at
+the top of the write-up.
+
+PRs #45. See
+`benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_litolff-p1-p3.md`.
+
+---
+
+## 2026-09-16 — Surya measured, both OCR rungs DEFAULT ON, and the reader nobody was asking about
+
+The experiment §9 of the scope pre-registered, run on Sean's machine with the
+machine taken exclusively. **Both OCR rungs now default ON** (`--no-surya` /
+`--no-ocr`, absence is ON) — Sean's call, on the pre-registered rule.
+
+- **The record was fixed FIRST, because the flip was unsafe without it.**
+  `gather_margin_labels` wrote `reader=text_layer, reason=no_ink` for four
+  different facts. It now spells them apart: `READER_UNAVAILABLE` (a
+  requested rung is missing, or was installed and threw), `OUT_OF_SCOPE` (no
+  rung was asked), `NO_INK` (every asked rung ran and read nothing). An
+  observation names the rung that actually read it, via a `sources`
+  out-parameter beside `tiers` — a per-page COUNT cannot say which staff a
+  rung read, and list order is an implementation detail, not a join.
+  ⚠️ **The old fault, in the wild:** the committed Brahms record carries 97
+  labels all filed under `text_layer`, on a PDF with **no text layer on any
+  of its four pages**.
+- **Cost: 17.8 / 17.9 s per page attributable**, two independent runs, 12
+  page-runs each, no detector. **The model load is NOT shared between
+  spawns** — the second call in one process costs **+0.12 s MORE** — so the
+  cost is per spawn. **It does not scale with the page**: 12 staves/1 system
+  and 22 staves/2 systems both cost ~17 s.
+- **In a real gather: 93 s/page, 20.5% of it**, six ABAB arms,
+  drift-corrected. ⚠️ Every successive arm was slower in BOTH conditions
+  **while machine load fell** — that drift is +93 s per arm position and was
+  first mistaken for a noise floor; once modelled the real scatter is ±25 s.
+  The drift's cause is unknown.
+- **Accuracy: 50 of 50 labels correct**, against a truth assembled from
+  hand-read suppression lists plus `works.json`'s hand-confirmed names.
+  ⚠️ `printed-lineups.json` was deliberately NOT used: its own provenance
+  says its names came from the OCR's read of page 1.
+- ⚠️⚠️ **THE FINDING THE EXPERIMENT WAS NOT ASKED FOR.** `OMR_DIRECTION_TEXT`
+  — on by default since 2026-09-02, never priced on a scan — costs **~267
+  s/page on the same document and yields SIX accepted words**, 2.9× the flag
+  under discussion. The `LD` arm (labels on, directions off) is **faster than
+  every other arm, including both that carry no label reader at all.** Its
+  engraved value (144 edits) is not in question.
+- ⚠️ **A pre-registered hypothesis was REFUTED**, which is why it was written
+  first: the ~300 s the attributable figure does not explain is NOT downstream
+  work. The arms do near-identical work — ~100 extra decisions out of
+  eighteen thousand. The surviving candidate is that a spawn costs more from
+  a multi-GB gather process than from a small probe. Unmeasured.
+- **Five instrument defects, all of one family** — computing the wrong thing
+  while looking fine. The scope's own census `grep` inverts after the record
+  fix; the census's first draft printed `census OK: 0` off a wrong indent;
+  the in-flight gate failed closed, then open (macOS truncates `comm` to 15
+  chars), then right; `case` matched `L*` before `LD`, so the decomposition
+  arm ran as a duplicate — caught only because the arm prints its own
+  configuration, and kept as a third L arm, which is what revealed the drift.
+- ⚠️ **An operational hazard:** an arm left an orphaned `llama-server` and a
+  LIVE SENTINEL behind despite `OMR_SURYA_KEEP_ALIVE=0`. The next arm's
+  precheck caught it and refused to run. A run can be contaminated by the
+  previous run's leak.
+
+Findings: `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-16 — The staged Surya opt-in scoped: the figure it rested on was never measured
+
+Sean asked whether to opt Surya in for the staged pipeline, what it adds per
+page, what the alternatives are, and whether to train an in-house OCR instead.
+Scoped remotely, **no arm run** — every figure read off committed artefacts and
+the tree at `da2c9c1`. Full reading: [docs/scope-surya-staged-optin-2026-09-16.md](docs/scope-surya-staged-optin-2026-09-16.md).
+
+- **Only the staged CLI opts Surya out.** `transcribe` has `surya_fallback=True`
+  and `OMR_DIRECTION_TEXT` has been on since 09-02; `run_staged` is the one
+  place `surya_fallback=False, ocr_fallback=False`.
+- ⚠️⚠️ **The "~75% of a whole-work run" cited by `staged/__main__.py` and
+  CLAUDE.md does not exist anywhere in CLAUDE.md.** Its only timing table gives
+  49% spawn-and-kill / 23% resident, and neither is a gather. Both citations
+  corrected in this commit; the default is NOT changed.
+- **The one same-pages pair says +282 s over 4 pages (+17.8%, ~70 s/page)** —
+  `omr-cleanup-count-2026-09` vs `omr-part-join-phase2-2026-09` `run_gather.sh`,
+  2026-09-11. n=1, different trees, same day as the shared-server queueing, and
+  ~200 s of it is unexplained against the ~65–80 s the spawn arithmetic predicts.
+- **Surya is spawned TWICE per staged page and `--surya` off stops one.**
+  `gather_direction_words` runs last on every page and `default_readers`
+  appends Surya whenever `available()` — no flag. The "time it adds" memory
+  most plausibly belongs to the direction-text flag, flipped on 09-02.
+- **`--ocr` alone is the wrong default; reordering the cascade is a trap.**
+  Staged has no vision rung and identity takes a matched label straight
+  through `lookup`, so Tesseract's in-word-and-resolving misreads ARE the
+  graft. With `OMR_LABEL_MERGE_QUALITY` on (default since 09-06) there is no
+  early return between the free rungs, so Tesseract-first saves zero spawns
+  and its strict-tie rule would keep Tesseract's text over Surya's.
+- **A prerequisite before any flip:** `gather_margin_labels` stamps every
+  label `READERS.TEXT_LAYER` and every empty staff `NO_INK` whichever rung ran,
+  so the record cannot tell a venv-less machine from a page with no labels —
+  the green-check-that-reached-nothing shape, verbatim.
+- **Train our own OCR: no.** Surya's misses are crop clipping, lexicon
+  single-slips, decoder runaway and running-order reasoning — none of them
+  character recognition; and the project's eleven fine-tune arms on ~600
+  cells deleted whole classes. Cheap and well-aimed instead: crop width
+  w20→w26, dynamics templates rendered from the `Bravura.otf` already in
+  `symbol_library/`, and the roster veto wired into staged (`Q.ROSTER_ENTRY`
+  has no producer).
+- **Decision: conditional YES, both flags together, Surya-first untouched,
+  after the record fix and a `--check`-gated ABAB experiment** whose
+  pre-registered flip/keep rules are in the doc's §9. The flip itself is
+  Sean's call. Start prompt for the next local session: §11.
+
+## 2026-09-16 (later) — The document that ABSTAINS *and* MISREADS was already in the corpus
+
+**The entry above ended by naming what `OMR_METER_CARRY` waits for — a document
+that abstains AND misreads — and asserting that no document has both halves.
+That was refuted the same day by looking rather than gathering, and the
+correction is the finding.** Findings:
+`benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md`.
+
+**`p0p3` — Breitkopf Brahms 1 mvt 1 — has had both halves the whole time**, in
+**11 of 11 committed arms across 5 generations**: `system/0/0` reads `C` (4.0
+quarters) at `voted` on a movement the committed dossier says is 6/8 (3.0), and
+`system/3/0` abstains.
+
+**⚠️ And the newest generation is the DISCRIMINATING case, not the Andante's
+safe-but-blind one.** The misread `C` is carried onto `system/3/0` and refused
+at support **−8.0** against a floor of 2.0, `bars_agree 0 / disagree 9`,
+`bar_lengths_seen {3.0: 8, 5.0: 1}` — **the bars positively name 3.0, which IS
+6/8.** First observation in this thread of the bar arbitration doing the job
+the flag was held off for rather than falling silent. **⚠️ It does not price
+the flip**: a 2-system fixture says nothing about propagation across a
+movement.
+
+**⚠️ The actionable finding: the bars have the answer and cannot SPELL it.**
+The BARS arm reaches length **3.0 at +7.0** against a floor of 4.0 and abstains
+`bars_name_a_length_without_a_form`, because the only borrow source is the
+system that misread `C`. **The form-borrowing rule is what stands between the
+pipeline and the correct meter here** — and it is right to refuse.
+
+**Reported apart:** `brahms1scan` also qualifies and is weaker (bars refuse at
+−1.0 naming 4.0, neither truth nor misread). Litolff `p012` hides a
+**suppressed** misread — `would_have_been: "C"` on a 2/4 document, held back by
+`too_few_staves_read_it` — reported and never scored as a reading.
+
+**⚠️ Three faults in the probe, two found by a row that was MISSING.** A filter
+on `quantity == "meter"` read **12 records as zero rows** because a second
+committed reduction shape has no such key, and it took out Litolff `p012`, the
+abstaining document — the tell was four truth-carrying fixtures appearing in
+none of the four buckets. A per-document truth table falsely flagged
+`brahms1eng`, whose `9/8` opening is the printed one-bar 9/8 `TRUTH_CHANGES`
+records. The first glob covered 68 of 105 records.
+
+**Battery 5 arms, all red, positive control first, restore verified**, byte
+snapshot on disk plus an in-flight sentinel. ⚠️ Its first run reported 3
+survivors and **all three were the battery's own faults**: a comparator reading
+only the headline bucket, an arm that could never fire (deleted rather than
+tested around), and an arm that was a **no-op because `{}` is falsy** — the
+`_carry_meter` hazard arriving in the instrument.
+
+⚠️ Nothing gathered, no print consulted, no OMR-NED; n = 2 fixtures, 1
+document, 1 publisher.
+
+---
+
+## 2026-09-16 — The pricing arm RAN, its reach is ZERO, and two instruments were wrong
+
+**The arm.** `benchmarks/omr-meter-corroboration-2026-09/local_arm.sh`, recorded
+here as *"written and never run"* since the 09-15 default flip, was run by Sean
+on his own machine (Breitkopf Brahms 1 mvt 1, pdf 0-3). Raw output committed at
+`out/local/RUN_2026-09-16_brahms1.md` with its provenance.
+
+**Every reported number is identical in both arms — a REACH ZERO, not a null
+cost.** The meter is decided on **7 systems of 7** (`voted` 2, `change_only` 5)
+with no abstention, and `_meter_fallbacks` is reached only when a system's own
+reading FAILED. Neither flag has a domain here; `carry sources SKIPPED = 0`
+says the same of `A-METER-6`. **`OMR_METER_CARRY`'s cost side is still
+unpriced** and this run must not be quoted as the measurement it was meant to
+take.
+
+**The instrument was checked before the zero was believed**, because under a
+default-ON flag an OFF arm that fails to express itself IS the ON arm — the
+hazard this ledger already records twice. Four checks: bash (not zsh), an
+explicit prefix assignment per arm (not a pop), the arm's own header printing
+`=0 =0` / `=1 =1`, and the stamped tree `0ea7a726` differing from the tip in no
+file under `tools/`.
+
+**⚠️ The arm did not declare itself DEAD at zero reach**, where every sibling
+probe in this thread does. Recorded, not repaired.
+
+**⚠️ The bar-fill half is VOID: it scored Brahms against Beethoven's bar.**
+`bar_fill.py --bar-beats` defaulted to **2.0** (Litolff 2/4) and the arm never
+passed it; Brahms 1 mvt 1 is **6/8 = 3.0**. The 96.3% OVERFULL / 0.6% exact is
+the constant, and the giveaway is 684 bars at exactly 3.0 — the right length —
+counted OVERFULL. **REPAIRED as a refusal:** `--bar-beats` is now REQUIRED in
+the probe and `$4` REQUIRED in the arm, since a default converts *"I do not
+know this document's bar length"* into a definite answer.
+
+**⚠️ CLAUDE.md described that probe as reading *"the `<time>` the same file
+declares"*. It never did.** On a 2/4 document the constant and the declaration
+coincide, which is why the claim survived one document. Corrected at the site.
+
+**Two things the run does establish, both in BOTH arms and therefore not the
+flip's:** `<time>` reads `{6/8: 97, 9/4: 14, 4/4: 83}` on a movement printing
+6/8 plus one 9/8 bar — 97 declarations the page does not print, identical with
+the flags off, so it is `OMR_METER_SEGMENTS` + `change_only` and the 09-15
+flags are **acquitted**; and the bar-fill denominator is the PART JOIN, with
+**3407 of 4225 bars (80.6%) tacet padding** across **97 fragment parts**, so no
+bar-fill figure here is comparable to Litolff's 38.0% → 69.2% at any
+`--bar-beats`.
+
+**⚠️ What the flag is actually waiting for, named at last: a document that
+ABSTAINS *and* MISREADS.** Litolff abstains on 6 of 7 systems but its one read
+meter is correct; Breitkopf misreads badly but abstains nowhere. The two halves
+of the hazard have never been present in one document, and every "n = 1" in
+this thread was about the wrong axis.
+
+**A stale default claim fixed, and made un-driftable.**
+`tools/omr/staged/ASSUMPTIONS.md` still said `OMR_METER_CARRY (default `0`)`
+and `OMR_METER_FROM_BARS (default `0`)` beside the very functions that
+implement them — a claim about the code in front of you, false since 09-15.
+Corrected, and `test_flag_default_direction.py` gained
+`TestTheProseAgreesWithThePredicate`, which parses the prose claims and
+compares them against the AST-derived default rather than a second written
+list. **Mutation battery 3 arms, all red** (wrong prose; a neutered regex,
+caught by the positive control; a claim naming a flag no predicate reads), and
+the first attempt at arm 2 was a **BAD ANCHOR** that silently did not apply —
+found and re-run rather than reported as a pass.
+
+---
+
+## 2026-09-15 (later) — The phantom-note rule, verified independently and put behind a flag
+
+A verification pass was dispatched to land `claude/note-where-silence-opened`
+and found **the branch was already fully contained in `main`** — PR #32 merged
+it hours earlier, `git rev-list --count origin/main..origin/claude/note-where-
+silence-opened` is **0**. So the job became verification of shipped code
+instead, which is the more useful half.
+
+**EVERY LOAD-BEARING CLAIM REPRODUCED**, by re-running rather than reading:
+the record's md5 matches the artefact's own stamp; the fire set re-derived from
+the shipped constants is **identical to `adjudicated-25-fires.json` subject for
+subject with zero measurement drift**; the witnesses re-derive (**shape 148,
+slot 310, together 25** of 2,347 noteheads) and the shipped cuts are confirmed
+to be the p05/p95 of the document's own 395 `restWhole` glyphs; **all 25 fires
+were re-cropped from the PDF by a second instrument and 25 of 25 are a filled
+rectangle at the whole-rest slot, not one oval notehead**; the cause reproduces
+on the Flauti tacet run (`restWhole` h=0.67/asp 2.33 beside
+`noteheadBlackInSpace` h=0.79/asp 2.22 — same ink, two class names); the
+mutation battery is **11 of 11 red** including its positive control; the four
+`--check` tools exit 0; and the one failing test is **pre-existing**, confirmed
+by checking it out at the merge base *and* at `main` in the same environment.
+
+**SHIPPED: `OMR_WHOLE_REST_INK`, default ON** — the behaviour that already
+shipped, now reversible in one word. ⚠️ It is the **one staged repair behind a
+flag, because it is the one that DELETES music**: 22 pitched notes removed from
+a file, on **n = 1 document, 1 publisher, 4 pages**, with **two of six cuts on
+a plateau one step wide or less**. Off restores the pre-2026-09-15 exporter
+exactly and leaves the verdict DECIDED and on the record, so the evidence is
+never thrown out with the behaviour. Deny-list, as a default-ON flag must be.
+
+⚠️ **TWO LEDGER DEFECTS, NEITHER BEHAVIOURAL, both the shape this file exists
+to catch.** The commit message states the crops *"are committed under
+`crops/`"* — `.gitignore:112` excludes `benchmarks/**/crops/` and always did,
+so they were never in the tree (the README is correct and treats them as
+regenerable). And the adjudicator's comment says a `Q.REST` row carries no page
+box; **all 646 rest rows in the record carry `detail.bbox_page_px`** and
+`gather.py`'s emit site passes it. The code reads `Q.GLYPH_BOX` and is right
+either way. *The tree outranks the ledger, including a ledger written as a
+commit message inside it.*
+
+---
+
+## 2026-09-15 — Six jobs in parallel: five landed, and five of six reports were wrong about the tree
+
+A managing session ran six agents down
+[docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
+§8, fenced their file lanes by function name before dispatch, and verified every
+result against the tree rather than its report. Full reading:
+[docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md).
+
+**Landed** (five branches, merged into `integrate-2026-09-15`):
+
+- **`Q.NOTEHEAD_IS_A_WHOLE_REST`** — Sean's last open observation. Notes
+  **1618 → 1596, 22 removed / 0 added**, on **25 of 25 hand-adjudicated crops**.
+  ⚠️ **18 of his 26 named bars were the OPPOSITE fault — real notes in bars whose
+  other music was never read** — so a repair that emptied all 26 would have
+  deleted 18 real notes. A REFUSAL to write a note, never a manufactured rest.
+- **The part join end to end** — **75 fragments → 37 parts, 12 grafts → 0**,
+  reproducing its probe in every cell (50/50/0/25) with the arms differing on 28
+  of 75. ⚠️ Sean's §5.2 decision is now *37 parts with the graft gone*, not
+  *75 fragments*.
+- **`system_bar_starts`** — a measure numbered by the DOCUMENT's bar sequence.
+  90 of 1,183 renumbered, byte-identical once the numbers are normalised away.
+  ⚠️ **`tools/omr/export.py` already did this** and says so at `export.py:3871`.
+- **S4 REFUTED AT FULL WIDTH, S6 recorded not gated.** ⚠️ Sean: *"don't give up
+  — adjust the rules to be broader."* Widened to 420 arcs with contact dropped,
+  **SIDE is flat and the sweep never clears p = 0.079.** ⚠️⚠️ **The joint result
+  is the headline: `OMR_ARC_RECLASS` scores BELOW its own baseline alone (0.5043
+  vs 0.5275) and reaches 0.750 in concurrence with S6, p = 0.0104.** The refusal
+  stands; it was refused for what it COSTS and this is what it is WORTH.
+- **`tools/omr/no_producer.py`** — 9,143 parameters → **2 findings** in 2.8 s,
+  the discriminator being *a layer ABSTAINS when the value is absent*.
+  ⚠️ **A third instance: `dossier`** — the staged pipeline can receive neither a
+  roster nor a dossier.
+
+⚠️⚠️ **THE PATTERN OF THE DAY: FIVE OF SIX AGENT REPORTS CONTAINED A CLAIM THE
+TREE CONTRADICTED**, every one caught by a one-line check and none by reading
+the report — two naming the manager's own branch, one reporting a completed pass
+that was **staged and never committed**, one an A/B launched against uncommitted
+code, one the **safety evidence for a note-DELETING change existing only in a
+transcript**. **A final report is a ledger, and the tree outranks it.**
+⚠️ The manager's own instruments failed the same way twice: `timeout` (which
+macOS lacks) exited 0 having run nothing, and `| tail` swallowed a failure's
+exit code.
+
+⚠️ **The merged tree is the one thing no agent ran.** Its four non-zero derived
+checks **exit non-zero identically on `origin/main`** — pre-existing, and the
+control was run before any conclusion was drawn.
+
+⚠️⚠️ **THE STANDING GAP, FOUND INDEPENDENTLY BY THREE JOBS: there is no
+Breitkopf Brahms 1 staged record on this machine.** Everything above is
+**n = 1 document, 1 publisher, 4 pages**, on the low-res bitonal Litolff
+`984073`.
+## 2026-09-16 — the meter thread's blocker was never the corpus
+
+`benchmarks/omr-meter-fixture-pool-2026-09/`, no code outside `benchmarks/`.
+Scoped while answering *"should I render `beethoven-sym5-mvt4` bar 364?"*, and
+the answer changed the question.
+
+Every meter write-up ends on **n** — *"n = 1 piece of music"*, *"n = 4
+documents"* — and each names ONE candidate second document by hand. **Measured:
+97 committed dossiers, 97 carrying a `meter_changes` field, 32 works with a real
+mid-movement change, 143 changes.**
+
+⚠️ **It needs no `library/`, no weights and no LilyPond.** `data/dossiers/*.json`
+are committed and carry the meter, measure count and every change per work — so
+this is answerable in a cloud container, which
+`docs/cloud-session-capabilities-2026-09-09.md` did not record and now does.
+
+⚠️ **The shape split is the result, not the count.** A change that alters the bar
+LENGTH can be arbitrated by bar sums; one that does not cannot — structurally,
+not by degradation. Split on that predicate: **143 length changes, 7 ENGRAVING
+changes across 7 works**, of which `brahms-sym1-mvt4` m392 ("the designed limit")
+is one. **Six are unrendered.**
+
+⚠️ **It re-reads the ranked next work.** `beethoven-sym5-mvt4` m364 is
+**4/4 → 2/2** — the designed-limit shape, not the 155/209 shape — so a
+bar-weighing term is INERT there by construction and any zero is the premise,
+not a measurement. ⚠️ And a **cheaper fixture was never considered**:
+`beethoven-sym1-mvt1` **m13**, the same 4/4 → 2/2 at bar thirteen.
+
+⚠️ **A third class fell out that is not a change at all**: 9 identical
+restatements (`2/4 → 2/4`), the population `_meter_changes`' "against the meter
+IN FORCE" rule exists to suppress. Folded in, the engraving pool reads 16 and
+two thirds is an encoding artefact.
+
+⚠️ **What it does NOT establish**: nothing rendered, gathered or scored; a
+dossier is an ENCODING truth not a PAGE truth; **edition coverage and legibility
+are both unchecked**; Holst `-full` overlaps its `-mvt*` entries so 32 is not 32
+distinct pieces. **The blocker is now a claim about editions and legibility,
+which is checkable, rather than about the corpus, which is refuted.**
+
+⚠️⚠️ **THE EDITION HALF WAS THEN CHECKED THE SAME DAY AND IT DID NOT NEED THE
+DESKTOP EITHER — 23 of 23 HELD, 0 not held.** `data/score-library/catalog.json`
+is committed (1980 entries, 228 works with an edition) and records every held
+edition's path, publisher and scan type; only the PDF bytes are gitignored. The
+9 works the id rule cannot reach ABSTAIN and are reported, never forced — the
+`OMR_WORK_ID` two-id-space trap. ⚠️ **"n = 1 publisher" is refuted harder than
+"n = 1 piece"**: all six unrendered engraving-shape fixtures are held across
+FOUR publishers (Litolff ×3, Bruckneraga, Simrock, plus the measured Breitkopf),
+two of them plates this thread has never touched. ⚠️ `beethoven-sym9-mvt4`
+carries **14 length changes AND the engraving change in one movement**. ⚠️ Still
+unestablished: legibility (`Normal Scan` is IMSLP's label, not a measurement),
+whether the file is on disk, and **which PDF page a given bar falls on** — that
+needs a hand-verified window row and is the real remaining cost.
+
+---
+
+## 2026-09-15 — the cautionary's arbiter: MEASURED AND REFUSED
+
+`claude/meter-cautionary-arbiter`, merged. **No file under `tools/` is touched**
+(`git diff base..HEAD -- tools/` is EMPTY) — no rule, no flag, no test in the
+suite. The substitution the meter thread wanted (the template reader's `score`
+in place of the silent bar math) is **refuted, not merely unbuilt**.
+
+* **The score is monotone in window width BY CONSTRUCTION.**
+  `locate_time_signature` is `matchTemplate` + `minMaxLoc`, a maximum over every
+  x in the strip with no normalisation for trial count. Over the base branch's
+  own 1,612 committed windows re-read at 4 and 8 spaces: **968 rise, 0 fall**.
+  The opening is read at **16.0** spaces and a cautionary at **4.0**, so the
+  comparison is a maximum over a subset against a maximum over a superset.
+* **The same-frame repair is BLIND.** On Brahms 1 / Breitkopf p.45, a movement
+  start whose print was looked at (*Adagio*, a common-time `C` on 16 staves), a
+  4-space bar head reads **0 of 16** where 14 spaces reads **16 of 16** — an
+  opening meter sits 10-12 staff spaces in, behind the clef and key signature.
+  It does **not** argue against `OMR_METER_TEMPLATE_AT_BAR`: a mid-staff CHANGE
+  has no clef in front of it.
+* **The absolute score does not separate.** TRUE header readings 0.5563-0.6850
+  against FALSE reaching **0.6318**, 9 of 191 false at or above the weakest
+  true. `head_last` — the cautionary's own cell — is the worst bar-head
+  population (2.62% vs `head_mid`'s 0.84%, max 0.6141, above the true minimum).
+* **The "one shared quantity" is TWO READERS**, derived from source:
+  `staves_reading_it` ← `Q.METER_GLYPH` (detector digit stacks),
+  `n_staves_spoke` ← `Q.METER_TEMPLATE` (NCC over a header window). "9 against
+  10" compares a detector count with a template count — *incoherent*, not merely
+  unfavourable.
+* **Reach is ZERO**: 0 of 68 committed `*.meter.json` carry a template score,
+  with `raw` on 66 as the grep's positive control. No cautionary has ever been
+  scored by that reader.
+* **The premise check FIRED and finding p.45 is the result.** Over 18
+  continuation header systems the SHIPPED vote declares a meter on none, while a
+  fixed 3-staff quorum would fire falsely on 4 — one with **7 staves** agreeing
+  on `C`. **Do not port `METER_TEMPLATE_AT_BAR_MIN_STAVES = 3` into the header
+  frame**; the shipped vote survives on a FRACTION, not a count.
+
+Mutation battery **8 arms, 8 red, 0 survivors**. ⚠️ A battery was killed mid-arm
+and **left its subject mutated** — the byte snapshot died with the process, and
+`git status` could not distinguish it from a legitimate edit; an impossible zero
+in a later probe run is what found it. New clause: *a mutation battery must
+leave the tree as it FOUND it — which is not the same as leaving it as GIT has
+it, and an interrupted battery obeys neither.* Repaired with an in-flight
+sentinel that refuses to start a run and names each file at risk.
+
+⚠️ `FINDINGS.md` was written by the managing session because the harness refused
+the subagent permission to create a report file — returned as text and written
+verbatim, rather than buried in a module docstring (the shape this repo already
+paid for once) or slipped past the guard with a heredoc.
+
+⚠️ Also corrected in four places: the example Breitkopf Brahms 1 path in both
+local arms and both FINDINGS, which read `symphony-1/…--breitkopf--…` where the
+catalog holds `symphony-1-op68/…--breitkopf-hartel-brahms--…`.
+
+---
+
+## 2026-09-15 — meter corroboration, and both meter flags default ON
+
+`OMR_METER_CARRY` and `OMR_METER_FROM_BARS` default **ON** (Sean's call),
+converted from allow-lists to deny-lists. ⚠️ The derived flag-direction guard
+**could not see either flag** — `test_flag_default_direction.py` matches a
+membership test and both were `== "1"` — so the guard built for this hazard was
+blind to the two flags that had it; it now reads 12 ON / 10 OFF.
+
+`A-METER-6`: an uncorroborated meter change **governs its own system and is not
+carried off it**. It gates the document-wide claim only; the change still
+reaches the file on its own system, to the byte.
+`METER_CHANGE_MIN_STAVES = 2`, asserted equal to
+`key_signature_corroboration.MIN_WITNESSES`.
+
+⚠️⚠️ **The briefed veto was REFUSED, and the reach figures behind it were the
+MANAGER'S ERROR**: `benchmarks/omr-staged-meter-boundary-2026-09/out/` holds
+SEVEN GENERATIONS of six fixtures and the `m2…m7` files were deduped as if they
+were repeat runs of one tree. Deduped on the newest generation instead, TRUE
+changes read `staves = [1, 21, 23, 24]` and FALSE `[1×8, 9, 19]` — **the
+populations overlap at 1**, the claimed empty interval does not exist, the two
+"TRUE" segments at 9 and 19 staves are CAUTIONARIES that `TRUTH_CHANGES` records
+as `None`, and refusing one-staff changes would have deleted Litolff p.62's
+printed `3/4`, the one true meter change this project has found on a scan.
+*A reach measurement must name its generation.*
+
+Measured, newest generation, deduped: 7 change segments, 3 corroborated /
+4 confined; every TRUE change still in `segments` 4 of 4; a corroborated carry
+moves 0 of 3 (positive control), an uncorroborated carry 4 of 4. ⚠️ One
+confinement swaps one wrong answer for another (Breitkopf p1 carries `4/4`
+before, the misread `9/4` after). ⚠️ **No end-to-end arm ran** —
+`benchmarks/omr-meter-corroboration-2026-09/local_arm.sh` is written and never
+executed; the cost of the flip is unpriced.
+
+Found on the way: both segment builders hand-listed their fields, so the flag
+reached one of two (now `_segment_from_change`, with a source-level anti-drift
+assertion); and a surviving mutation arm exposed `{}` and `{"segments": []}`
+being returned as though they were meters — the contract is now stated on the
+way out, *a meter or nothing*. 15 mutation arms all red; suite 3810 passed /
+2 pre-existing failures; `health`, `inventory`, `gather_coverage` all 0.
+
+---
+
+## 2026-09-15 — `OMR_METER_TEMPLATE_AT_BAR` (default OFF)
+
+The template reader, aimed at mid-staff bar heads as well as the header, so a
+printed meter CHANGE is not left to the detector alone. New
+`Q.METER_TEMPLATE_AT_BAR` (separate from `Q.METER_TEMPLATE` so the opening vote
+cannot see it), `gather.gather_meter_at_bars`, and a marked consumer block in
+`rhythm._meter_changes` admitting a reading only on a 3-staff consensus.
+
+⚠️ **The briefed design assumption was refuted**: a detection does not name a
+handful of candidate bars — **38 of 51 columns (74.5%)** on Brahms 1 /
+Breitkopf p1-3 are candidates — so the safety was moved from candidacy to
+acceptance. Empty-window false-positive rate measured without weights over
+**1,612 mid-staff windows on 10 real scanned pages of 2 publishers** printing no
+meter change: **16 / 2 / 0** spurious columns at a 1 / 2 / 3-staff quorum.
+⚠️ That quorum is safe at a 4-space window and **not at 8**. ⚠️ `min_score` was
+not moved: the false answers thin smoothly with no gap, and the positive
+control's minimum (0.542) sits BELOW the worst false answer (0.6141).
+**Nothing priced** — a GATHER change needs two full re-gathers; `local_arm.py`
+does them. 33 tests, 15/15 mutation arms red.
+
+---
+
+## 2026-09-15 — the meter cautionary as a competing candidate: measured, refused on n
+
+`benchmarks/omr-meter-cautionary-2026-09/`, **no code outside `benchmarks/`**.
+Reach: **3 cautionaries on 1 piece of music** across 67 committed arms and 6
+fixtures. **No common currency** between a cautionary and the opening it
+announces, and the one shared quantity (staves) prefers the WRONG reading
+10-to-9 on the only contested pair. **The cell-0 alternative is refuted**: the
+detector's digit reader forms an opening stack on 1 of 6 systems (an implausible
+`1/1`), is silent at both printed meters, and produces 67 spurious `4/4` stacks.
+**Corrects boundary §4c**: its fill-an-abstention route has reach 1, not 0, and
+that one instance is wrong. Verdict DON'T SHIP; the shortlist for a second
+document is derived from 97 dossiers × 235 catalog editions, led by
+`beethoven-sym5-mvt4` bar 364.
+
+⚠️ Its write-up was stranded in a Python module docstring because the subagent
+was refused permission to create a report file; extracted verbatim to
+`FINDINGS.md` and the module deleted.
+
+---
+
+## 2026-09-15 — tacet spans padded (repair 3 of 3), and it reaches zero bars
+
+`tools/omr/staged/export.py`: `_tacet_walk` / `_pad_tacet_span` / `_tacet_report`.
+A part tacet on a system now writes that system's bars as full-measure rests at
+the document-numbered positions repair (2) settled, sized by the system's own
+`Q.METER`, asked per BAR. **Where the meter is unknown the bar is NOT written**
+and is counted (`tacet_bars_not_padded_without_meter`), because a MusicXML rest
+must carry a `<duration>` and the fallback is 4.0 quarters — twice the bar on a
+2/4 movement — and nothing forces a tacet bar to exist at all. Padding is gated
+on the numbering: when `_document_bar_offsets` refused there is no number line,
+and `report["tacet_padding"]["refused"]` says so with `tacet_bar_total: null`.
+`empty_bars_padded` and `tacet_bars_padded` stay separate counters.
+
+MEASURED on Litolff Beethoven 5 pp.1-4 (`benchmarks/omr-tacet-padding-2026-09/`):
+149 tacet bars across 4 of 12 parts, **0 padded / 149 refused** — the one system
+with a meter is the one no part is tacet on. A labelled COUNTERFACTUAL arm with
+2/4 supplied pads all 149, takes every part from 111/93/16 to **111**, measures
+1183 → 1332, and lifts "parts returned when asking the score for bars 70-72"
+from 8 of 12 to 12 of 12. Controls: existing measures byte-identical and in
+order, deleting exactly the inserted blocks restores the base byte for byte,
+music21 note sequence per part unchanged, with positive controls on each.
+Mutation battery 12 arms, all red, 0 survivors.
+
+Suite 3788 passed (2 pre-existing `test_direction_text` failures, missing
+`.venv-surya`); `health --check`, `inventory --check`, `gather_coverage` all 0.
+Not established: nothing was padded on this document; no print consulted; no
+OMR-NED; and the arm pads the committed record's STALE 12-part join, which
+predates the slot-index short-system rule.
+
+---
+
+## 2026-09-15 — Phase 2 obs. 3: the artefact is NOT stale for 20 of 25 phantom notes
+
+`benchmarks/omr-phantom-notes-2026-09/` + `tools/omr/tests/test_contest_join.py`.
+**No change to `tools/omr/*.py` outside that one test file.**
+
+* **`probe/contest_join.py`** — joins the 18 print-silent bars to
+  `omr-staged-dedupe-2026-09/out/pairs-p1-p4.json` on `(page, system, staff,
+  cell)`. **11 of 13 bars / 20 of 25 notes hold no cross-staff notehead
+  contest**, so the dedupe repair cannot have touched them; the cross-tab
+  reproduces FINDINGS §4's 8/14/3 exactly from an independently computed step.
+  Controls: cell-index agreement (857/857, 0 differ) and the hand-named `ffff`
+  cells re-found through the same index. `--check`.
+* **`probe/padding_ink.py`** — what the print holds in the measure cell's
+  PADDING, which `print_ink.census` never looks at. Reports its own reach; its
+  first run's `above: nothing` on staff 0 was a truncated crop, not an empty
+  page.
+* **`FINDINGS_2026-09-15_STALENESS.md`** — closes §7.1 without the re-export and
+  **corrects §4**: the 14 outside-the-staff notes are NOT the dedupe repair's
+  target population, and 5 of them stand above the TOP staff, where the
+  "padding from a neighbour" account has no neighbour. §5 ranks three separate
+  repairs and records why nothing shipped.
+* **`mutants.py`** — 9 arms, all red, 0 survived, restoring from an in-memory
+  snapshot and verifying it.
+
+⚠️ CLAUDE.md's own phantom-notes section, written the day before, claimed the 14
+were "exactly that repair's target population". That claim is **corrected in
+place** rather than quietly dropped.
+
+Suite: 2 failed / 3781 passed / 67 skipped — the 2 pre-existing.
+`health --check`, `inventory --check`, `gather_coverage` all 0.
+
+---
+
+## 2026-09-14 — `<measure number=N>` names one instant in every part
+
+⚠️ This entry and the phantom-notes entry below it were produced by two agents
+running CONCURRENTLY from the same `main` (`ce7b8ba7`) and are INDEPENDENT —
+neither builds on the other, and they touch disjoint files. They are ordered
+here by nothing more than which is a code change.
+
+`tools/omr/staged/export.py`: new `_document_bar_offsets(parts)`; `_part_xml`
+takes an `offsets` argument; `StaffRun` gains `n_measures_decided`;
+`to_musicxml` reports `measure_numbering`. No flag. **No music changes — one
+attribute moves.**
+
+Was: `_part_xml` counted `number += 1` down each part from its own first bar,
+so a part tacet on a system skipped those bars and every later number in it was
+short by that system's length. On Litolff Beethoven 5 pp.1-4, page 4's first
+system opened at measure **64 or 82 depending on the part**; Verovio reported
+`Mismatching measure number 87`.
+
+Now: systems in reading order, each contributing the bar count its own staves
+agree on (over runs whose `measure_partition` DECIDED — an abstention is not a
+vote for zero), and a measure is `offset + i + 1`. Three conditions refuse the
+scheme for the WHOLE file and fall back to the previous per-part count, naming
+the reason: `no_staff_decided_its_bar_count`,
+`staves_disagree_about_the_bar_count`, `a_part_holds_two_runs_on_one_system`.
+A majority vote is deliberately refused (INFER-stage work).
+
+Measured, one artefact numbered twice (the shipped rule called over StaffRuns
+rebuilt from the committed system map — no staged record is committed and a
+cloud container has no weights):
+- 90 of 1,183 measures move (7.6%), 30 each on P9-P11, zero on the other nine
+- ambiguous measure numbers **30 → 0**; 0 instants carry more than one number
+  (music21 read-back, not inspection)
+- identical-music controls: byte-identical outside `number=`, files DO differ
+  with it in, incumbent scheme reproduces the committed file byte for byte;
+  parsed, the same 1,986-event note sequence per part
+- mutation battery 10 arms, all red, positive control green
+
+Also: `benchmarks/omr-cleanup-count-2026-09/export_arm.py` builds its system map
+through the shipped rule rather than restating the per-part count (its
+map-vs-file assertion: 4 problems under the old formula, 0 under the new).
+
+Tests: `tools/omr/tests/test_staged_measure_numbering.py` (13). Full suite
+3773 passed / 2 failed / 67 skipped — the two are the known
+`test_direction_text.py::TestReaderSelection` baseline failures (no
+`.venv-surya`). `health --check`, `inventory --check`, `gather_coverage` all 0.
+
+Findings: `benchmarks/omr-measure-numbering-2026-09/FINDINGS.md`.
+
+⚠️ Process: the mutation battery's first run reverted the uncommitted change it
+had just certified, because it ended with a checkout from HEAD. Batteries now
+restore from their own pre-run snapshot and verify it; commit a checkpoint
+before running one.
+
+---
+
+## 2026-09-14 — phantom notes: Sean's obs. 3 opened, and it is two faults
+
+**No code outside `benchmarks/`** — `git diff --name-only -- tools/` is empty.
+
+* Added `benchmarks/omr-phantom-notes-2026-09/` — FINDINGS, README, 8 probes,
+  recorded output. Everything reads COMMITTED artefacts only; this ran in a
+  cloud container with no weights, no `library/` and no staged record.
+* **`probe/extract_crops.py` recovers the printed page from the side-by-side
+  HTML artefact's data-URI PNGs** — the route by which a container with no
+  `library/` can still adjudicate against the print.
+* **Reproduced** the handoff's population at 117 / 43 / 26 (it says 118/44/26;
+  the 26 agrees to the unit) with all six named bars exact.
+* **Refuted the population's shape**: against the print on p4/s0, the filter
+  catches 3 of 11 offending bars and mis-attributes 10 of its own 13.
+* **Partitioned the fault**: 25 phantom notes → **8 at the whole rest's slot,
+  14 outside the staff, 3 elsewhere**. The brief's mechanism is confirmed on
+  crops of `P1 m85/m88/m89` and is a third of the problem; the larger half is
+  cross-staff padding ink.
+* **Scoped and did not merge** `claude/note-where-silence-is-printed` — its rule
+  reaches at most 8 of 25 notes and clears at most 6 of 13 bars.
+* Ranked next: **one re-export of the shared record on current main** (no
+  weights) to see how much the dedupe repair already fixed. ⚠️ That re-export
+  **cannot be run in a cloud container** — `library/_shared-records/` is absent
+  and the record is nowhere on disk — so it needs a machine that holds it.
+* Suite 3,690 passed / 63 skipped with `tools/` untouched, plus the two known
+  `test_direction_text.py::TestReaderSelection` failures. No mutation battery —
+  no rule shipped.
+
+---
+
+## 2026-09-14 — The slot index: verifying a rule that was described in bold and never built
+
+**What:** picked up the Phase 2 handoff's ranked next work (§8.1) — the
+`claude/slot-index-by-name` WIP left unverified at a usage cap. Merged it onto
+current main (242 commits had landed), ran the suite and the controls nobody had
+run, and **measured it against hand-read print truth**.
+
+**The defect it repairs:** `adjudicate_slot_index`'s docstring stated the
+short-system name rule IN BOLD and the function returned the staff's ordinal on
+every path — including a branch labelled `reason="named"`.
+
+**Measured** on Beethoven 5 / Litolff pp.1-4 (7 systems, 75 staves) from two
+committed independent sources — the hand-read `printed-lineups.json` and the
+reader's own `margin-label-reach.log` (50 labels / 75 staves):
+
+| | placed | correct | wrong | abstained |
+|---|--:|--:|--:|--:|
+| ordinal (incumbent) | 75 | 63 | **12** | 0 |
+| name rule | 50 | 50 | **0** | 25 |
+
+⚠️ **The cross-tab is the result and "it fixes 12" would be false**: 3 repaired,
+**9 grafts become abstentions**, **16 correct-by-position placements withdrawn**,
+0 new grafts.
+
+⚠️⚠️ **The measurement refuted the code's own docstring** — `_forced_pairing`
+called the repeated-name case *"the common case and not a corner"*; it fires **0
+times** over all 75 staves, and so does condition (b). Structural: the only
+repeated reference name is `Violin` and no short system reads a violin label.
+**The docstring is corrected in the tree**, not just in findings.
+
+⚠️ Also recorded, not fixed: the reference reads slot 11 as **`Bass voice`** for
+a printed `Basso.` — inert here, and it belongs to the lexicon channel.
+
+**Files:** `tools/omr/staged/adjudicators/identity.py` (merged WIP + docstring
+correction), `tools/omr/tests/test_staged_slot_by_name.py`,
+`benchmarks/omr-slot-index-2026-09/` (probe, FINDINGS, out/), CLAUDE.md,
+PROJECT_BRIEF.md, this file.
+
+**Suite:** 3,760 passed; 2 failed, both `test_direction_text.py::TestReaderSelection`
+and both **pre-existing on origin/main**, verified in a clean worktree.
+
+**Not done:** the end-to-end arm (`slot_arm.py`) — needs weights and library a
+cloud container does not have. n = 1 document, 1 publisher, 4 pages.
+
+---
+
+## 2026-09-10 — arcs reach the file, and a dotted rest is dotted
+
+Two items from the two 09-10 handoffs' ranked/parked lists, taken together.
+
+**1. `<slur>` and `<tied>` reach the staged file (no flag).**
+`staged/export.py` read `Q.ARC_KIND` and emitted **zero** `<slur>` — the arcs
+decided for a day with no route to a file, the same
+*value-existed-and-nothing-read-it* shape found and fixed for the dynamics the
+day before. `Q.CELL_BOX` is now gathered (the cell's own page rectangle, which
+`gather_detections` had read and thrown away since page boxes arrived), and
+`_place_arcs` / `_pair_arcs` place each arc by its OWNER and merge across
+barlines by CALLING `_merge_arcs_across_barlines`, `_noteheads_under` and
+`_number_spans` rather than porting them — so the three measured constants stay
+in one place. Litolff Beethoven 5 p1-3: `<slur>` **0 → 46**, `<tied>` **0 → 98**,
+notes/rests identical, files byte-identical outside the arc elements, music21
+reads back exactly 23 Slur objects.
+⚠️ **76% of merged arcs bind fewer than two noteheads and are refused** — a
+READING shortfall, not an export one. ⚠️ **The counter said 55 slurs where the
+file held 23** until it was moved from where the mark is SET to where the
+ELEMENT is written; `voicing._chord_span_states` drops a span whose ends share a
+chord, silently, two modules away. Four such accounting holes found, all four
+counted, the PARTITION asserted rather than any one of them.
+⚠️ Two of nine mutation arms survived the first run and both were *a test named
+for a hazard it does not reach* — a corners-vs-width frame error that every
+span-COUNTING assertion accepted, and marking every chord member on
+single-note fixtures.
+
+**2. The dotted REST (handoff §5.1, parked and unclaimed by both sessions).**
+`_rest_ruling` read `Q.AUG_DOT` on the rest's own glyph subject — the notehead
+fault, one branch over. Not a new rule: `_pair_dots_to_targets` has always
+scored `noteheads + rests` as one pool under the same constants, so the staged
+reader was diverging from the paid-for rule. Five mutation arms red.
+⚠️ **On a real scan NOTHING MOVED — and the zero is about REACH**: 20 `aug_dot`
+rows over three pages. ⚠️⚠️ Its positive control (all dots off) moves **exactly
+one verdict**, which is the probe's whole dynamic range there: it rules out a
+dead probe and cannot detect a regression smaller than one verdict. It is CONSISTENCY, not payoff (1 rest dot in 848 rows
+across three documents) and must not be quoted as a reading gain; the cost on a
+dot-rich page is unmeasured and wants Breitkopf Brahms 1.
+
+---
+
+## 2026-09-10 — ⚠️ a correction to my own §5.5: the gate was not crying wolf
+
+`health --check` went red on main while this handoff landed. I reported it
+rather than patching it (it was the arc session's on both counts) and they have
+since fixed it — verified at `origin/main` in a throwaway worktree, **exit 0**.
+
+⚠️ **But my FRAMING of it was wrong and is corrected in the handoff.** I called
+it *"a gate whose own docstring says it undercounts, going red on code that is
+correct"* — a false positive, the corrosive kind. It is better described as
+**a gate correctly reporting that a claim was IMPLICIT**. Both halves matter:
+the tests DID establish `arc_kind` deciding (`Ruling.narrow` sets `value=None`
+unconditionally, so on this API a non-DECIDED verdict never carries a value —
+checked), but only through an API invariant a reader must already know. The
+classifier was right about the TEXT, which is the job its docstring reserves
+for itself, and the `grep` it tells you to run is what resolved it.
+
+⚠️ **And the fix I suggested first was the worse one, for a reason I had not
+checked**: "teach the classifier that asserting a `value` is deciding" would
+have credited ABSTENTION tests (`assertIsNone(v.value)`, three files) as
+decides and WEAKENED the gate — a suggestion aimed at making a red gate green.
+
+**The lesson, which outlives the incident:** a check that says a claim is
+implicit is not a false positive. Verifying it by hand and concluding "the code
+is fine, the gate is noisy" is how a working gate stops being read.
+
+---
+
+## 2026-09-10 — handoff: the duration reader, and the decisions left open
+
+`docs/handoff-2026-09-10-the-duration-reader.md` is the new entry point;
+CLAUDE.md's START HERE repointed at it. It carries the three duration entries
+below as one arc — `A-DUR-8` closed, two scan arms, three instrument defects —
+and its **§5 is the part a fresh session needs**: the decisions nobody has
+ruled on.
+
+* ⚠️ **§5.1 the dotted REST**, parked and unclaimed by both sessions: the same
+  fault fixed for noteheads, one branch over, worth **1 dot of 848**, and the
+  asymmetry is now WORSE than the consistent gap it replaced.
+* **§5.2** whether closing `A-DUR-8` re-opens the bar-sum family (the standing
+  objection is a scanned publisher misreading meter GLYPHS — a READING problem).
+* **§5.3** a shared name for a fault three sessions hit in one day: a per-staff
+  or per-cell quantity used as if it were system-wide. ⚠️ `coverage()` cannot
+  see one of its shapes — a quantity can be gathered in the WRONG FRAME and
+  look fed.
+* **§5.4** `Evidence` caching its own row queries.
+
+---
+
+## 2026-09-10 — merged to main: the notations half of the staged exporter
+
+**`claude/staged-pipeline-progress-bf3b29` landed.** The block below is that
+work as it was written on the branch; this heading records the merge, the two
+tidy-ups that were held for it, and what is left.
+
+- **Tidy-ups done at merge time, both tracked from the day they arose**: the
+  meter/boundary session's `NOTES.md` entry about `decided_but_unwritten` is
+  REMOVED (its fix is now on main, so the note and the fix arrive together —
+  deleting it earlier would have been *fixed-then-kept-open* in reverse), and
+  the `ARC_KIND.md` citation in CLAUDE.md is now a LINK, with its
+  "deliberately un-linked, not on main yet" clause removed in the same edit.
+- ⚠️ **NOT DONE, and deliberately**: the arc EXPORT. `arc_kind` and
+  `arc_owner` decide, and `<slur>` / `<tied>` still reach no file — the arcs
+  report `decided_uncounted`, which is the report saying it cannot tell. It
+  needs `_merge_arcs_across_barlines`'s three measured constants first, because
+  **32 of 199 arcs (16.1%) cross a barline** and emitting each half separately
+  writes two slurs where the music has one. ⚠️ OMR-NED would score that as an
+  improvement.
+- ⚠️ **Also open, unclaimed by two sessions**: `_rest_ruling` reads `Q.AUG_DOT`
+  on the rest's own glyph, so **a dotted rest is read as undotted** — the fault
+  fixed for noteheads, one branch over, which makes the asymmetry now WORSE
+  than the consistent gap it replaced. Worth **1 dot of 848** on three
+  documents, so near-zero payoff; the duration-reader session measured it and
+  neither session claimed it.
+
+## 2026-09-09 (late night, 5) — the exporter reads nine quantities, and three defects behind that
+
+**Branch `claude/staged-pipeline-progress-bf3b29`.** The staged exporter was
+the bottleneck, not the decisions: it read nine quantities and emitted **zero**
+of all nine `<notations>` / `<direction>` children.
+
+- **Dynamics reach the file.** `adjudicate_dynamic` stopped being a stub on
+  2026-09-09 and decides; `grep '<dynamics' staged/export.py` was **0**. *The
+  value existed and nothing read it*, inside the architecture built to stop it.
+  `_place_directions` mirrors `_place_notes` and renders through the LEGACY
+  `_mxl_direction` / `_mxl_empty_measure`, which already take `(x, kind, text)`.
+  **MEASURED, one gather exported twice** (Beethoven 5 / Litolff 984073
+  `--pages 2`): `<dynamics>` **0 → 80**, notes 589 and rests 228 identical,
+  balance holds, and with the `<direction>` lines removed the two files are
+  **byte-identical**; music21 reads back 80 Dynamic objects on 11 parts.
+- ⚠️⚠️ **`decided_but_unwritten` WAS UNREACHABLE.** `elif decided:` consumed
+  every decided family, so the fourth branch only ever saw `decided == 0` — the
+  guard on a dead branch, and a decision that reached no file read as
+  `decided`. Found by the A/B, not by review, and **independently derived by
+  the meter/boundary session from the control flow**. Repaired, plus
+  `decided_uncounted` for a family with no counter.
+- ⚠️ **Two headlines, because they are two faults:** `detected_and_unrepresented`
+  (a RECORD gap — no quantity, a stub, a starved stub) and
+  `decided_and_unwritten` (an EXPORT gap). Keeping them apart is why the first
+  fell ~284 glyphs on beet5-p3 the day `dynamic` started deciding with nothing
+  exported.
+- ⚠️ **And `status_census` because BOTH are filters** — raised by the
+  meter/boundary session against this fix, and right: a filter cannot say where
+  a family WENT. The census is a PARTITION over every row, with an
+  `unaccounted` bucket a test requires to be empty. ⚠️ Its first draft
+  double-counted an unknown status; a balance check that lies is worse than
+  none.
+- ⚠️ **The hairpins were counted twice.** `dynamicCrescendoHairpin` starts with
+  `dynamic`, so both the `dynamic` and `wedge` families claimed it — the fault
+  `gather_glyph_families` is routed by CLASS to prevent, one module over.
+  `_claims` is now longest-prefix-wins, derived.
+- **`arc_kind` and `arc_owner` filled** — 199 arcs decide on that page. THREE
+  stubs remain; only `direction` is still input-starved.
+  - The DETECTOR'S CLASS decides and the position grammar only RECORDS,
+    honouring `OMR_ARC_RECLASS`'s measured refusal. **And the record now
+    supports that refusal independently**: grammar available on 81 of 199,
+    agreeing **42** and disagreeing **39** — a coin flip — with 28 of the 39 in
+    the expensive tie→slur direction.
+  - ⚠️⚠️ **The arbiter is silent where it is most needed** — the meter
+    session's principle, tested here: grammar-MISSING arcs have median
+    confidence **0.408** against **0.563** available, and among those it can
+    speak about, DISAGREEMENT tracks confidence hard (**0.391** vs **0.694**).
+    So the 51.9% agreement rate is an average over two populations and a future
+    pricing must stratify. **Not gated on: n = 1 page.**
+  - `arc_owner` moves **12 of 199**, and **every move is to an ADJACENT
+    staff** — ±1, six each way, zero exceptions. Nothing in the rule knows
+    about adjacency. Moved arcs sit 3.80–9.24 spaces from their own heads (6
+    of 12 cover nothing there); arcs that stay sit at a median 0.530.
+  - ⚠️ **`gather_glyph_families` was gathering in a frame that could not
+    answer**: canonical coordinates only, so `arc_owner`'s declared input was
+    present and could not answer its own cross-staff question — the fault
+    `Q.ONSET_COLUMN` paid for. **A quantity can be gathered in the WRONG FRAME
+    and look fed**; `coverage()` reports it as `stub`, not `starved`.
+  - ⚠️ **Two mutations survived the first eleven `arc_owner` tests** and that is
+    the finding: no fixture exercised a near rival or a head whose owner
+    differed from its subject — precisely the population the rule exists for.
+- ⚠️ **`<part-group>` scoped and NOT built.** `group_symbol` abstains
+  `no_identity` on 22 of 22 staves because `instrument` abstains `no_evidence`.
+  Zero reach — measure REACH before accuracy.
+- ⚠️ **The arc EXPORT is a separate unit**, and the number says so: **32 of 199
+  arcs (16.1%)** begin at their cell's left edge, the cross-barline signature.
+  Emitting each half as its own `<slur>` writes two where the music has one,
+  and OMR-NED would not catch it — the metric is symmetric and the legacy
+  slur work's first cut LOWERED pooled OMR-NED while RAISING the edit count.
+- ⚠️ **The dot path went LIVE under this exporter** (duration-reader session's
+  merge): `Q.DURATION` now carries `dots` where zero did before, and
+  `_place_notes` takes `max(dur["dots"], derived_dots)`. Checked on a fresh
+  run: **0 disagreements over 865 decided durations** between `dots` and what
+  `written` implies. ⚠️ Only 1 of 865 carried a dot — a scan fires ~35 dots
+  over 2347 noteheads against 157 over 1118 engraved — so that run is a weak
+  exercise and four tests are the real guard.
+
+
+## 2026-09-09 (late night, 4) — the SECOND PUBLISHER, and it corrects arm 1
+
+Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves), the
+outstanding unknown from the first scan arm. Truth read off the encoding
+(`6/8`, one bar of `9/8` at m8, `6/8`) with its placement corroborated by our
+segmentation matching the window EXACTLY on pages 1-3. Control **4365 of 4365**.
+
+* **IT HOLDS AND IS FAR LARGER**: per-staff readings right **42 → 108 of 493**.
+  With the rule OFF **not one of eight assessable bars is right**, four reading
+  exactly **4.0 in a 6/8 movement** — a beam missed. With it on, six of eight.
+* ⚠️⚠️ **IT CORRECTS ARM 1'S GENERALISATION.** "The marks half does nothing on a
+  scan" was about THAT DOCUMENT: Litolff `984073` is catalogued *low-res
+  bitonal* and fires 49 flags / 35 dots; Breitkopf fires **371 / 656**, and
+  there the marks half alone is worth **+13** where on Litolff it was **0**.
+  One more publisher was enough to break a claim generalised from one.
+* ⚠️ **The halves are SUPER-ADDITIVE** — +15 and +13 alone, **+66** together —
+  and the mechanism is the bar: a bar is right only when every note in it is.
+* ⚠️ Costs larger too: 27 right → wrong against 93 the other way (3.4:1), and
+  the contradiction rate **27.5%** against 18.9% (Litolff) and 2.7% (engraved):
+  three points, ordered by ink quality. ⚠️ And 108 of 493 is **22%** — a large
+  RELATIVE gain on a page still mostly wrong.
+* ⚠️ The `9/8` bar the fixture was chosen for is **unassessable**: 23 staves,
+  23 different lengths.
+* ⚠️ **No arm has priced a WRONG stem directly.** The contradiction rate says
+  one of two readings is wrong without saying which; settling it needs per-note
+  truth on a scan, which nothing in this repo has.
+
+---
+
+## 2026-09-09 (late night, 3) — the SCAN arm: the two halves come apart
+
+The unknown the two duration fixes were landed with, measured. Litolff
+Beethoven 5 mvt1, pdf pages 1-4 (12/22/19/22 staves), windows hand-verified in
+`benchmarks/omr-scan-e2e-2026-09/works.json`, 2/4 throughout so every bar's
+truth is 2.0.
+
+* **ONE gather, four adjudications** (`readjudicate.py`) so the arms carry no
+  detector jitter — and `--control` reproduces the pipeline's own record
+  exactly first: **2993 of 2993** duration verdicts on the scan, 1356 of 1356
+  on the engraving, 0 differ, 0 extra.
+* **The STEM tier is the whole gain on a scan** (per-staff readings right
+  401 → 430 of 733). **The MARKS half does nothing there** (401 → 401), because
+  the detector fires **49 flag boxes and 35 dots over 2347 noteheads** against
+  134 and 157 over 1118 engraved. A DETECTION limit, not a rule limit — the
+  same shape already recorded for hairpins.
+* ⚠️⚠️ **IT IS NOT FREE.** 0 bars go right → wrong, but that is the cross-staff
+  quorum working: underneath, **54 readings go wrong → right and 26 go RIGHT →
+  wrong**. A 2:1 trade, where on the engraving every move went one way. Adding
+  the marks to the stem tier costs one net reading.
+* ⚠️ **A false-attachment probe that needs no truth file**: a note under a beam
+  carries no flag, so a notehead with both is a contradiction. Engraved **3 of
+  112** flagged notes; scan **7 of 37** — 2.7% vs **18.9%**. Real and bounded.
+  **No gate added** — gating on print quality would be fitted to one scan of
+  one publisher, against a cost of one reading in 733.
+* ⚠️⚠️ **The BAR-level figures of this arm were wrong when first published**
+  (44/43 → 49/48): the probes keyed a bar on `(page, cell)` and a cell index
+  RESTARTS at 0 on each system of a page, so two bars were merged into one
+  pseudo-bar and scored. Four pages of a UNIFORM-meter document could not
+  expose it; the first fixture whose truth is not uniform did. Corrected to
+  **71/67 → 78/74**; direction unchanged, and the merged version had also been
+  hiding losses (one bar dropping out of the quorum where there are four).
+  Per-staff readings were keyed on the full event subject and did not move.
+* ⚠️ A second publisher's scan is still unmeasured, and this thread already has
+  a result that held on a second document and broke on a second publisher's
+  scan. The scan's bar sums were **already nearly right where assessable at
+  all** (67/71 → 74/78); what moved is how MANY bars can speak.
+* ⚠️ Two caches were written for `_cell_boxes` and both were deleted: a module
+  dict keyed on `id(log)` went red in a minute (CPython recycles an id), and
+  `Log` has `__slots__` so nothing can hang off it. The ~5-minute cost of one
+  scan re-adjudication is RECORDED in the docstring instead; the fix, if it is
+  ever needed, is `Evidence` caching its own row queries for every decision.
+
+---
+
+## 2026-09-09 (late night, 2) — a MARK must be attached to its notehead
+
+The second of `A-DUR-8`'s two faults, and the same family as the first: a mark
+the page prints is gathered, and the decision that needs it looks in the wrong
+place. **`A-DUR-8` is now CLOSED on this document** — the fixture reads
+**16 assessable bars, all 16 correct**, from 12/7 before either fix.
+
+* **`Q.FLAG` and `Q.AUG_DOT` are gathered on the MARK's own glyph subject and
+  were read on the NOTEHEAD's** — 134 and 157 rows reaching ZERO durations, 0
+  durations carrying a dot, `beam_evidence == "flag"` 0 times. Now 112 flags
+  attached (109 deciding) and 157 dots.
+* A flag hangs on a STEM, which on this path beats the legacy x-centre rule —
+  `_flag_for_notehead`'s own reason for not using it (a 0-stem detector) is
+  stale here. ⚠️ A second bug in the same two lines: `levels = len(flags)`
+  counts GLYPHS, and one `flag16thUp` is one glyph and TWO levels.
+* ⚠️⚠️ **`Q.CELL_STAFF_SPACE` is new because the dot window needed a unit that
+  was not on the record, and it is NOT a constant.** `Q.STAFF_SPACING` is the
+  PAGE's; `CANONICAL_STAFF_SPAN_PX / 4 = 100` is only the nominal, because
+  `_upscale_to_canonical` scales a too-wide cell by WIDTH — **184 of 368 cells
+  read 100 px and the other 184 read 38.5-56**. Gathered where `_cell_grid`
+  already computes it; where no unit exists the dot is DECLINED.
+* The dot claim is RECIPROCAL (this head must be the dot's best target), which
+  is what makes a per-glyph decision safe where the legacy rule assigns
+  globally. `DOT_ABOVE/BELOW_NOTE_MAX_SPACES` had sat in the staged module,
+  measured and justified, **used by nothing in it**.
+* ⚠️ Seven mutation arms red; an EIGHTH survived and **the rule was deleted,
+  not the test** (`if not attached_stems: return` was a second spelling of the
+  `any()` one line below). ⚠️ An existing test was **passing for free** —
+  `test_a_dot_adds_half_of_what_stands` asserted the right arithmetic on a
+  fixture that wrote the dot onto the NOTEHEAD's subject, a shape `gather`
+  never produces.
+* ⚠️ **CLOSED ON ONE ENGRAVED DOCUMENT — do not tune the meter floors on it.**
+  Every attachment rides on classical-CV stems and detector boxes and a scan
+  has fewer and worse of both; all three rules are additive, so the floor is
+  the old behaviour, but the scan gain is unmeasured and so is whether a WRONG
+  stem can hand a note a flag it has not got. That arm is next.
+
+---
+
+## 2026-09-09 (late night) — a note is joined to its beam by its STEM
+
+⚠️ **INDEPENDENT of the two meter blocks it now sits above** (the CAUTIONARY
+rule and the scan-side bookkeeping fix, both landed on main in parallel). This
+touches `adjudicate_duration` and they touch `_meter_changes`; the merge was
+textually clean and the fixture was re-measured on the merged tree.
+
+Acts on `benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md` §6, which
+separated the wrong bar sums into two independent faults and asked for them to
+be worked apart. **Fault 1 fixed, Fault 2 diagnosed to one cause.** Staged path
+only — `tools/omr/rhythm.py` untouched, so no engraved or scan figure moves.
+
+* `_stem_joined` / `_boxes_overlap` in `staged/adjudicators/rhythm.py`. A beam
+  stroke runs from the FIRST stem it joins to the LAST and a stem stands at the
+  SIDE of its notehead, so the outer note of every beamed group has its centre
+  ~half a notehead width past the stroke's end — 114 narrowed durations on the
+  engraved Beethoven 5 iv fixture, overshoot clustering at 0.35-0.47 widths.
+  ⚠️ **`Q.STEM` was declared in `wants` and `composed_from`, had its own
+  `KNOWN_GAPS` entry, and was read by nothing.** That entry is deleted;
+  `inventory --check` and `health --check` exit 0.
+* Assessable bars **12 → 14**, correct **7 → 10**, `narrowed` **147 → 29**, no
+  bar right-to-wrong. The candidate-policy question dissolves — under the stem
+  tier `top` and `lowest` agree on every bar, where §6 measured them differing.
+* Additive, never subtractive; attachment is BOX OVERLAP with no constant (the
+  two separations measured at 35 px and 94 px of empty margin). Stem-only
+  refused. The y guard is unexercised by the fixture and is tested directly,
+  with its positive control inside the test. Four mutation arms red.
+* ⚠️ **Fault 2, diagnosed and NOT fixed: `Q.FLAG` and `Q.AUG_DOT` are gathered
+  on the MARK's own glyph subject and read on the NOTEHEAD's**, so 134 flag and
+  157 dot rows reach zero durations. Confirmed against the truth encoding —
+  m211 reads 6.0 where the truth is 100 eighths (missing flag), m207/m208 read
+  2.0 where 8 parts play a dotted half (missing dot). The staged module's own
+  dot-window constants are used by nothing in it. Next unit of work.
+* `benchmarks/omr-staged-duration-beams-2026-09/` — FINDINGS, four probes and
+  their outputs. `A-DUR-8` updated in place; CLAUDE.md gains a section.
+
+## 2026-09-09 — `Q.METER`'s segments reach the file
+
+The top-ranked item of `docs/handoff-2026-09-09-the-boundary-measured.md` §5.
+Three gaps found by `grep` and left unbuilt, which are one piece of work.
+
+**What was wrong.** The staged export took ONE meter per staff-run, so a
+printed mid-system meter change could not reach a MusicXML file at all — and
+`record.meter_at`, whose docstring says it *is* how a bar's meter is read, was
+called by nothing but its own tests. The carry took its source's OPENING and
+deleted its segments. And a system whose meter came from a READ change could
+be neither a carry nor a form source.
+
+**What it is worth, engraved** (controlled A/B on saved records): Brahms 1 iv's
+cut-common — read on 24 staves of 24 at support 74.0 — went from reaching NO
+file to `{4/4(common): 24, 2/2(cut): 24}`; Litolff's printed `3/4` moved from
+measure 8, the first bar of its system, to **measure 16, its ninth**, where the
+hand-read truth puts it.
+
+⚠️⚠️ **THE CAUTIONARY HALF OF THIS ENTRY WAS A DUPLICATE AND HAS BEEN DROPPED
+— see the entry above.** A sibling session reached the same finding
+independently, from the same Brahms page 0 courtesy, and landed first.
+**Theirs is kept and is the better rule on REACH**: it discriminates on the
+LAST CELL of each staff and so catches the Breitkopf scan's courtesy too,
+which mine explicitly could not — that degenerate final cell holds five
+detections, so nothing lies left of the glyph and the left-fraction reads
+0.000 there. Theirs also carries an escape mine lacked (a last-cell candidate
+whose OWN BAR FITS is still a change).
+
+⚠️ The measurement is NOT lost, and it is worth more as a second reading than
+as a second implementation: scored per reading, the corpus's one visible
+cautionary sits at **1.000 on all 19 staves (38 rows, min = median = max)**
+against **≤ 0.118 for every other segment, true or false**. Two sessions, two
+discriminators — ink-position and cell-ordinal — one conclusion. Recorded in
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
+
+⚠️ **`git log --all -S` BEFORE BUILDING would not have caught this** — the
+sibling's commit did not exist when this work started. What would have caught
+it sooner is that both sessions were named in the same handoff's §5.
+
+**Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9
+unchanged.** 1 of 9 false segments removed, 0 of 4 true positives lost. ⚠️ The
+scan being untouched is the expected result — its false segments all read
+0.000, at the head of their bars, so they are misreads and no placement rule
+can reach them.
+
+`OMR_METER_SEGMENTS` gates the export half only; the other two travel behind
+the existing meter flags. The cautionary rule is unflagged.
+
+⚠️⚠️ **FLIPPED ON THE SAME DAY (Sean), and the flip OVERRIDES the standing
+objection rather than resolving it.** It shipped off on **n** — the mechanism
+was never in doubt, the scan's READING was — and that objection is now priced:
+on Brahms 1 / Breitkopf p.1-2 the default takes `<time>` elements from **41 to
+138** (`4/4` 13 → 96 from the five spurious one-staff changes, plus 14 spurious
+`9/8` from the courtesy the rule cannot reach on that degenerate cell), so **a
+scan can now export a meter change its page does not print**. Every engraved
+fixture gains only correct changes and 4 of 9 boundary records are
+byte-identical either way. The lever is the meter GLYPH readers. ⚠️ The OFF
+test is a **deny-list**: with the default on, the allow-list form the other
+default-on flags use would let an empty value or a typo silently restore the
+bug — caught by a test written for the flip, which failed on its first run.
+
+⚠️⚠️ **AND THAT TEST THEN FOUND FIVE SHIPPED FLAGS WITH THE SAME FAULT.**
+`OMR_SLOT_STITCH`, `OMR_MOVEMENT_REFERENCE`, `OMR_ROSTER` and
+`OMR_LABEL_MERGE_QUALITY` were default-ON allow-lists — a typo or an empty
+value silently turned a shipped default OFF. `OMR_INSTRUMENT_CLEF_DEFAULT`
+(both reads) was the MIRROR: default-OFF written as a deny-list, so a typo
+switched it ON. All six sites corrected; the convention is now a section of
+CLAUDE.md and a DERIVED guard,
+`tools/omr/tests/test_flag_default_direction.py` (9 default-ON, 10
+default-OFF, all consistent). ⚠️ The guard decides default-ON by EVALUATING
+the predicate on its own default rather than reading the default string —
+`OMR_CHOIR_GROUPING` and `OMR_BRACKET_COLUMNS` default to `""` and are ON, and
+a first version reported both as faults. ⚠️ Its positive control earned its
+keep on the first run: the AST descent stepped THROUGH `environ.get` onto
+`os.environ`, so the scan matched nothing and both real assertions passed
+vacuously — the third vacuous-check instance recorded in this file.
+
+⚠️⚠️ **THREE CLAIMS OF MY OWN, CORRECTED IN FLIGHT, and the first is the one
+worth carrying.** The first measurement arm came back BYTE-IDENTICAL to its
+baseline — while five unit tests and three mutation arms were green. `gather`
+files `Q.METER_GLYPH` on the **STAFF** with the bar in `detail["cell"]`; my
+fixture filed it on a **GLYPH**, and `subject.at(Kind.CELL)` returns None for a
+staff, so the rule read no boxes on any real page. **A fixture that does not
+match GATHER tests the test**, and the pre-existing
+`TestAMeterChangeIsReadFromTheInk` fixture had the same mismatch, which is why
+the bug had somewhere to hide. The shape is now asserted against the gather
+site by AST. Then: a cautionary belongs to a READING, not to a cell. And
+*"both cautionaries read 1.000"* was a probe bug — it pooled every staff at a
+cell instead of the staves that READ the segment; the corpus holds exactly
+one. **What caught all three was a number that did not move, and a number that
+was too good.**
+
+⚠️ **`inventory._HELPER_DEPTH` 3 → 6 WAS ALSO REVERTED, and the sibling's fix
+is the better one.** Both sessions hit the same inert-`wants` report from the
+same cause; I raised the checker's depth (measured first: 17 inert at 3, 16 at
+4, 15 at 5 and every depth beyond, so nothing standing was retired), they
+moved the READ up a level so the chain matches every other fact the function
+uses. Theirs is right — *the fix is the one the check was pointing at, not a
+workaround* — and the carry's cell-count read now follows it, so the
+instrument is left as every other session expects it.
+
+Also: `report_boundary.py --tally` can now read the
+committed `.meter.json` reduction, so the published baseline is checkable on a
+fresh clone with no weights.
+
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`. Suite 3419 passed.
+
+---
+
+## 2026-09-09 (night) — the engraved render, DENSE texture: bar sums are wrong on perfect ink
+
+Sean: *"now do the engraved render to settle it"*. ⚠️ **A SIBLING SESSION DID
+THE SAME THING IN PARALLEL AND LANDED FIRST** — see the entry below, which is
+the fuller account of the boundary (two engraved fixtures, a second document
+AND publisher, no suppression needed). **Their `_meter_from_letter` and its ten
+tests supersede this session's independent `_CHANGE_LETTERS` fix, which was
+DELETED** along with four of its five tests; theirs is better, because it
+abstains on a staff reading BOTH letters and mine did not. What is recorded
+here is only what does NOT duplicate theirs.
+
+⚠️ **The duplicated work was still worth one thing:** this session's five
+letter tests were written against its OWN implementation and then run GREEN
+against the sibling's — two independent readings of one hole, agreeing. The one
+test they did not cover (a staff carrying a letter AND digits at the same bar;
+digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
+
+- ⚠️⚠️ **THE COMPLEMENTARY FINDING, AND IT QUALIFIES THEIRS: BAR SUMS ARE WRONG
+  ON PERFECT INK WHEN THE TEXTURE IS DENSE.** Their fixture is the sparse
+  Scherzo recall (m172+, 3/4) and its bars read **7 fit / 2 not**. This one is
+  the **dense tutti** at bars 203-218, where all 23 parts play in every bar —
+  and the sums come out **5.0, 4.5, 5.0, 4.5** against a truth of 4/4, with
+  **3.5 at 18 of 23 staves** and **6.0 at 20 of 23** on the middle system.
+  Not one bar of the last system is right.
+- **So more witnesses is not better.** The intuition behind
+  `METER_CARRY_MIN_STAVES_PER_BAR` — that a bar many staves agree on is
+  trustworthy — fails exactly where the staves are most numerous: these are
+  CONFIDENT wrong readings and the cross-staff majority passes them. Recorded
+  as `A-DUR-8`.
+- ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
+  missing ink. A shortfall would suggest missed ink; an excess suggests the
+  duration reader composing something twice or reading a written value too
+  long. **A diagnosis to open, not a conclusion.**
+- ⚠️⚠️ **AND THE CARRY'S COST SIDE IS MEASURED AT LAST.** `A-DUR-2` says in its
+  own words that *"only the BENEFIT is measured — the cost of a wrong revert is
+  not"*. On the bar-155 engraving a **correct** carry is refused: 4 bars agree,
+  4 disagree, support **+1.0** against a floor of 2.0. A direct consequence of
+  the above, and the reason ⚠️ **the meter floors must NOT be tuned against
+  this** — it would be fitting a constant to a broken input.
+- ✅ Where the bars ARE read right, both mechanisms behave, independently: on
+  the bar-155 fixture the carry brings the new **3/4** forward at **+5.0 (4
+  agree / 0 disagree)** and the bar reader derives the same 3/4 at **+4.0**,
+  borrowing the spelling from the system that read it.
+- ⚠️ **A courtesy signature at a system boundary is a structural case nothing
+  had shown.** At bar 155 the change falls on a system break, so LilyPond
+  prints the new `3/4` at the END of the preceding system as well as at the
+  start of the new one. A change reader that trusts the cell a glyph stands in
+  would propose the change one bar early. It does not fire here, and nothing in
+  the rule prevents it.
+- ⚠️ **Two fixture mistakes, caught by looking, each recorded in the code that
+  allowed it.** (1) `hide_change_signature.py`'s `--marker` was a DEFAULT, and
+  `\time 3/4` is the CHANGE at bar 155 but the OPENING at bar 203 — so the 209
+  run hid the carry's own source and left the change printed, inverting the
+  experiment; the tell was `system/0/0` abstaining where it had to read 3/4.
+  Now REQUIRED. (2) A top-margin heuristic for locating movement starts missed
+  p.17, the one known boundary — that print does not indent one. Discarded.
+- ⚠️⚠️ **AND THE WRONG SUMS WERE THEN DIAGNOSED, OFFLINE ON THE SAVED RECORD —
+  TWO INDEPENDENT FAULTS.** (1) **A NARROWED duration is collapsed to its top
+  candidate, and it biases LONG.** 77 of 428 duration verdicts on the dense
+  page (18%) are `narrowed`/`beams_ambiguous`, **every one with the candidate
+  set `(1.0, 0.5)`**; `Ruling.narrow` orders by support so `candidates[0]` is
+  1.0, and `_bar_lengths_for` takes exactly that — *"it is one of these"*
+  consumed as if it had decided, always the longer note. That is this repo's
+  own anti-pattern and `Evidence.admitted`'s docstring says so in as many
+  words. Page 2, truth 4/4: `candidates[0]` → 1 assessable / **0 correct**;
+  lowest → 4 / **4 correct** (up to 22/23); dropped → 1 / 0.
+  ⚠️ **"Take the lowest" is NOT the fix** — on the mixed page it is WORSE
+  (2 correct of 4 against 3 of 5). A policy that fixes one page and breaks
+  another is a fudge that fits; the table establishes the MECHANISM and its
+  DIRECTION only. The repair is upstream: `beam_evidence:
+  "none_over_this_note"` with `yolo_kept: 0` **on a clean engraving** is a
+  beam-detection failure, and a note whose beam is missed reads too long.
+  (2) **A separate confident wrongness no candidate policy touches** — page 1
+  cells 4 and 5 read **3.5 at 17 of 23** and **6.0 at 20 of 23** against a
+  truth of 4.0, wrong under both policies. Two-thirds of staves agreeing on 6.0
+  is a shared systematic misread, not ambiguity. **Work the two separately.**
+- `benchmarks/omr-staged-meter-engraved-2026-09/` — `render_meter_change.py`
+  (the `excerpt` recipe without its one-page shrink, which exists for an
+  EXPORTER reason that does not apply when the question is per-SYSTEM),
+  `hide_change_signature.py`, `probe_narrowed_policy.py` (takes any staged
+  record), and `FINDINGS.md`.
+
+---
+
+## 2026-09-09 — Re-measured on the DURATION work, and the discrimination widened
+
+⚠️ **A FIGURE THIS SESSION RECORDED HAS MOVED, UPWARD, AND THE REASON IS A
+DEPENDENCY THE DESIGN PREDICTS.** A sibling session landed the upstream beam
+repair (a note joined to its beam by its STEM, and a MARK attached to its
+notehead — 272 lines of `rhythm.py`). Bar sums are the meter mechanisms' second
+witness, so better durations make the bars speak more clearly.
+
+Re-running every arm: the boundary page now reads `{3.0: 8, 5.0: 1}` where it
+read `{3.0: 7, 5.0: 2}`, so the TRUE carry goes **+6.0 → +8.0** while the false
+one is unchanged at **−8.0** — **the swing widens 14.0 → 16.0.** The six-fixture
+tally is identical to the row. ⚠️ The `+6.0` entries below are left as measured;
+a recorded transition is a frozen fact and this is a new measurement, not a
+correction of an old one.
+
+---
+
+## 2026-09-10 — The meter arc closed, and a handoff that says what is on main
+
+**What:** `docs/handoff-2026-09-10-the-meter-arc-closed.md`, and CLAUDE.md's
+START HERE repointed at it. No code change.
+
+The arc that ran from *"the bars can name a LENGTH"* through the boundary
+measurement to the `9/4` is finished, and the entry point now states it in one
+place: what shipped (three default-on rules, false meter changes **10 → 3**, no
+true change lost), what is measured (true meter **+8.0** against a false
+**−8.0**, and the second document/publisher SPLIT), what is refused (three
+routes for the `9/4`, each with the measurement that killed it), and what is
+ranked next.
+
+⚠️ **Its §7 exists because "what landed" was wrong twice in conversation.**
+Every row is checked against `origin/main` rather than remembered: the three
+gaps this benchmark reported ARE on main (export consumes `record.meter_at`,
+the carry takes the source's END meter, `METER_SOURCE_REASONS`), while the
+sibling session's dynamics/census/`ARC_KIND.md` work is on its branch only.
+
+⚠️ **AND IT CORRECTS ME ABOUT MY OWN NOTES.md ENTRY.** I called the
+`decided_but_unwritten` note stale; checked against main it is **accurate** —
+the branch order there still lets `elif decided:` swallow every decided family,
+so the status is still unreachable on main. It becomes stale when the sibling
+branch lands, and that branch's owner is tracking its removal. ⚠️ The check that
+found this was a grep returning **0** for a heading that contains backticks:
+a miss reading exactly like a clean result, which is the ninth instance of
+that family today and the reason §7 exists at all.
+
+---
+
+## 2026-09-09 — The `9/4`: three routes measured and refused, and the hazard that outlasts them
+
+**What:** no code change. `probe_cautionary_arbiter.py`, the full diagnosis of
+the last scan fault of the meter arc, and the reason each route is refused.
+
+Brahms 1 / Breitkopf p.1 prints `9/8` on every staff and the template reader
+votes **`9/4`** — the numerator right, the denominator wrong, and `9/8` not
+even the runner-up on 11 of 14 staves.
+
+1. **Staff-line removal is tearing the digits apart. REFUTED.** The crop does
+   look shredded (the `9` reads as a `U`, the `8` as an `A`) and the locator
+   deliberately uses `image_no_staff`. Scoring BOTH variants of every header:
+   page 1 still reads `9/4` with the lines INTACT, at lower scores.
+2. **`score_margin` separates a good vote from a bad one. REFUTED, and the
+   more useful negative.** It is computed by the locator, written by GATHER
+   onto every row, and **read by nothing** — so it looks like a free
+   discriminator. Over 8 system votes on 4 documents: TRUE 0.0681-0.3840,
+   FALSE 0.0675. **A gap of 0.0006.** A gate on it would have looked
+   principled and done nothing.
+3. **The CAUTIONARY plus the BARS settle it with no threshold. REFUTED on its
+   PRECONDITION, which was measured before anything was built.** The design
+   was sound — the cautionary one system earlier reads `9/8` on nine staves
+   from the DETECTOR's digit pairs, an independent reader, and Sean's ordering
+   says arithmetic that checks itself arbitrates between two readings (9.0 ql
+   against 4.5). **But on the exact system that votes `9/4`, not one of its
+   seven bars clears the cross-staff quorum.**
+
+⚠️⚠️ **THE HAZARD IS WORTH MORE THAN THE THREE DEAD ROUTES: the case that most
+needs an arbiter is the case where the arbiter is silent.** A page whose meter
+the reader mangles is a page whose ink is degraded, and the same degradation
+stops its bars from summing. **The bars are not an independent umpire over a
+bad reading — they fail together with it.** That bounds `OMR_METER_CARRY`,
+`OMR_METER_FROM_BARS` and the change detector's bar terms alike, and it is why
+all three fail SAFE rather than usefully on a bad page. *"The bars will catch
+it" is not a design.*
+
+⚠️ **And no structural signal catches this one either: the wrong reading is
+UNANIMOUS** across all 10 staves that spoke, so coverage and agreement floors
+both pass. Cross-staff agreement is not independent evidence when every staff
+feeds the SAME reader the SAME typeface.
+
+**What DOES separate is the absolute score** — TRUE 0.656-0.781, FALSE 0.514,
+**nothing between 0.531 and 0.656** against a `min_score` of **0.50**. Not
+taken: that constant is `time_signature_locator`'s, shared with the legacy
+`transcribe` path and set on an 11-source corpus; 7 correct / 1 wrong over 4
+documents is a fraction of the evidence behind it, and pricing a change means
+re-running the eleven-work engraved benchmark and the 20-row scan gate.
+
+⚠️ Confirms the segments session landed and closed all three gaps this
+benchmark reported (export consumes `record.meter_at`; the carry takes the
+source's END meter; `METER_SOURCE_REASONS` replaces the voted-only gate).
+**Nothing yet reads the recorded `cautionary`** — the abstaining-system half of
+route 3 needs no arbitration and stays available, at reach ZERO on this corpus.
+
+---
+
+## 2026-09-09 — A CAUTIONARY is not a change: the engraved arms go clean
+
+**What:** `_meter_changes` now separates a CAUTIONARY (courtesy) time signature
+from a change, and records it on the meter's value
+(`tools/omr/staged/adjudicators/rhythm.py`, `A-METER-5`), plus
+`TestACautionaryIsNotAChange` (8 tests, 6 mutation arms).
+
+**Why:** an engraver announcing a new meter prints it **twice** — once after
+the final barline of the system that is ending, once at the head of the system
+that begins. **The first governs no bar.** Nothing knew that: any glyph past
+cell 0 was a change, so both printings of Brahms 1 mvt 1 proposed one at page
+0's last cell (support **57.0** engraved on 19 staves, **26.5** scanned), and
+the segment would re-size a bar the cautionary does not govern.
+
+⚠️ **THE RULE WAS CHECKED AGAINST THE CORPUS BEFORE IT WAS WRITTEN**, which is
+what separates it from a story that fits: **all four TRUE changes sit at a
+non-last cell** (Litolff p.62 cell 8 of 13, Brahms 1 i cell 1 of 8, Beethoven 5
+iv cell 3 of 9, Brahms 1 iv cell 6 of 8) and **both cautionaries at a last
+cell**. The Litolff headline result is not at a last cell and is untouched.
+A last-cell candidate whose own bar FITS is still a change — the one thing that
+can tell a genuine last-bar change from a courtesy.
+
+⚠️ **RECORDED, NOT DISCARDED**, because it is the document's own answer to the
+next thing this benchmark gets wrong: the cautionary ending page 0 reads
+**`9/8` on 9 staves**, while the opening it announces is voted **`9/4`** at
+0.500-0.531. ⚠️ It is EVIDENCE and not an answer — the same scan records
+another at support **3.5 on ONE staff** out of spurious `timeSig4`s.
+
+**Both meter fixes together: false meter changes 10 → 3 across the six
+fixtures, every true change still found, and the ENGRAVED arms are now clean —
+4 printed, 4 found, 0 false.**
+
+⚠️ **A seventh mutation SURVIVED** (`any` staff at its last cell instead of
+`all`) and a test was written to distinguish them rather than leaving an
+unexercised gate: a cautionary is a SYSTEM-WIDE event, so a staff that still
+has a bar after the glyph contradicts it, and the safe reading keeps the
+change. ⚠️ **`inventory._never_read` then caught the call chain** — it follows
+a decision's helpers to depth 3 and the new read sat at depth 4, so
+`measure_partition` reported as an inert `wants` entry. The chain really was
+one link longer than every other fact that function uses; the fetch moved
+beside `_bar_lengths_for`, behaviour verified identical by re-running both
+cautionary arms.
+
+Suite **3415 passed, 11 skipped**.
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
+
+---
+
+## 2026-09-09 — The scan side of the meter, opened: five of nine false changes were BOOKKEEPING
+
+**What:** `_meter_changes` now compares a candidate against the meter **in
+force** rather than against the system's OPENING
+(`tools/omr/staged/adjudicators/rhythm.py`), plus
+`TestAChangeIsAgainstTheMeterInFORCE` (5 tests, 4 mutation arms).
+
+**Why:** the boundary work measured that the second-publisher block is READING
+— a Breitkopf scan of the same 22 bars proposed **8 false meter changes** where
+the engraved arm proposed 1. Opening it showed **more than half was not a
+reading fault at all**: five of the eight were ONE system proposing `4/4` at
+five consecutive bars. Each candidate was tested against the (misread) opening
+`9/4`, and nothing compared it to the segment already accepted.
+
+⚠️ **The same comparison was losing a real change in the other direction.** A
+movement going `3/4 → 4/4 → 3/4` recorded the departure and dropped the
+RETURN, because the return equals the opening — Beethoven 9's finale does that
+repeatedly (17 changes, `3/4 → 2/4 → 3/4 → 4/4 → 3/4 …`) and nothing in this
+corpus would have surfaced it.
+
+**Measured:** false segments across the two scanned pages **9 → 4**, no true
+change lost, **every engraved row identical to the row** — the control that
+says this is a bookkeeping repair, not a tightening.
+
+⚠️ **TWO HYPOTHESES WERE REFUTED FIRST, both by fixing the population rather
+than the number.** *"A stack is two digits aligned in x and adjacent in y"* —
+TRUE `dy` 32-548 against FALSE 26-555, complete overlap. *"The false ones sit
+at `x_canonical == 0`"* — decisive-looking in a per-cell table, and **1 of 110
+TRUE vs 4 of 50 FALSE** once restricted to clean two-digit stacks; the first
+table had pooled contaminated groups of three and four digits and reported
+their min. Neither table was wrong about its numbers, only about what they
+were numbers of.
+
+⚠️ **The first test harness failed for the wrong reason** — it gave both digits
+the same `y_center` and the same subject, so no pair formed and every assertion
+failed on something unrelated to the rule. That is one edit away from being
+"fixed" by weakening the assertion, so the harness now says so in a comment.
+
+**Still wrong on the scan, measured and not fixed:** the opening `9/8` is voted
+**`9/4`** (the header template reader returns `[9, 4]` on 10 staves at
+**0.500-0.531** against a `min_score` of 0.50, where page 0's correct `6/8`
+reads 0.656-0.750 on 14 of 14); the CAUTIONARY is read as a change on the
+system printing it, on both printings; and the real change to `6/8` is missed.
+⚠️⚠️ **The first two share a repair, and the document already holds the
+answer**: the cautionary at the end of page 0 is the same meter as page 1's
+opening and the DETECTOR reads it correctly as `9` over `8` on 10 and 20
+staves. Feeding a cautionary forward is carry/borrow, so it belongs to the
+queued segments session rather than to a new reader.
+
+Suite **3407 passed, 11 skipped**.
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
+
+---
+
+*(Two sessions inserted here on the same day. They are INDEPENDENT — the
+boundary measurement did not need the fallback-ordering fix and vice versa —
+and they compose: the ordering fix is what lets a REFUSED carry give way to the
+bars, and the boundary fixtures are what say whether either is right. Neither
+block has been rewritten to tidy the sort.)*
+
+## 2026-09-09 — The meter boundary, MEASURED: two mechanisms told apart, and a `C` change that reached nothing
+
+**What:** `benchmarks/omr-staged-meter-boundary-2026-09/` — engraved fixtures
+carrying a REAL meter change, four arms over each, the reports and the
+controls; plus `rhythm._meter_from_letter` (no flag) and
+`TestAMeterChangeIsReadFromTheInk` (10 tests, 8 mutation arms).
+
+**Why it was blocking:** `OMR_METER_CARRY` and `OMR_METER_FROM_BARS` were
+indistinguishable. The only movement boundary on the Litolff Beethoven is
+page 17, whose bars are noise — it refuses the WRONG meter and the CORRECT one
+too. A mechanism that refuses everything cannot be told from one that refuses
+the right thing.
+
+**The route, from `omr-staged-meter-carry-2026-09` §11 and unspent until now:**
+render a real change ENGRAVED, so legibility is not the confound.
+`beethoven-sym5-mvt4` is 4/4 → 3/4 at bar 155 → 4/4 at 209. ⚠️ **The structure
+is an engraving convention, not an ablation** — a signature is printed at the
+CHANGE and at nothing after it, so a system wholly inside the new meter prints
+none and abstains honestly.
+
+**Measured** — the same page, asked twice, only the preceding page differing:
+the TRUE meter carries at **+6.0** (7 bars fit / 2 not), the FALSE one is
+refused at **−8.0** (0 / 9). In the file, whole rests written at 4.0 ql inside
+a 3.0 ql bar **196 → 38**, measure rests **305 → 463**, and the CARRY and BARS
+exports **byte-identical**.
+
+**Then the second document and publisher, same session.** Brahms 1 mvt 1 prints
+`6/8`, ONE bar of `9/8`, then `6/8` — and the Breitkopf scan of that music was
+already in the scan gate with a **hand-verified window**, so the same 22 bars
+run ENGRAVED and SCANNED differing only in the printing.
+**ENGRAVED 4 printed changes / 4 found / 1 false; SCANNED 2 / 1 / 9.**
+⚠️ **It holds on a second DOCUMENT and not on a second PUBLISHER'S SCAN, and
+the pair says the block is READING** — the scan votes `9/4` for the `9/8`,
+misses the change, and proposes five spurious `4/4` changes just over the
+floor, while its bar segmentation is right.
+
+**The fix it found:** a meter change engraved as a common-time `C` was detected
+on **23 staves of 23** and proposed nothing — `_meter_from_digits` needs two
+stacked digits and says so in its own comment. `Q.METER_GLYPH` already carried
+`letter=True`, written by GATHER and read by nothing; and the change detector
+had **no unit tests at all**. ⚠️ It produces a false change on one Litolff scan
+page from a 0.377-confidence glyph, reported rather than gated — the hazard is
+`METER_CHANGE_FLOOR`, and the p.62 `3/4` this project celebrates rests on the
+same one-staff property.
+
+**Three things worth carrying:**
+* ⚠️ **A duration-level A/B across meter arms is invalid by construction** — a
+  decided meter is consumed by `size_measure_rest` and `reconcile_duration`,
+  and 159 of 314 duration verdicts move on one page. Control on the meter
+  decision's own `bar_lengths_seen`, written before any consequence runs.
+* ⚠️ **Bar assessability falls with DENSITY, not with print quality** — 100% /
+  100% / 78% / **33%** as events per bar go 1.0 / 1.5 / 3.1 / **4.5**. These
+  mechanisms are strongest where the music is sparse.
+* ⚠️ **Score LENGTH and FORM apart.** `C` and `¢` are both 4.0 quarter notes,
+  so a bar-sum mechanism gets the length right and the engraving wrong;
+  musicdiff charges `symbol=` at three edits per staff.
+
+**⚠️ AND THE LARGEST GAP OF THE THREAD, FOUND AND DELIBERATELY NOT BUILT:**
+`Q.METER` carries `segments` and **nothing downstream reads them**.
+`staged/export.py:210` takes one meter per system run, and `record.meter_at` —
+whose own docstring says it *is* how a bar's meter is read — is called by
+nothing but its own tests. The `¢` sits on the record at 24 of 24 staves,
+support 74.0, and the exported file declares `<time>` once per part at measure
+1. **The mid-system change machinery two sessions built cannot currently
+produce a file.** Two siblings share the cause: `_carry_meter` takes a source's
+OPENING and drops its segments, and a `change_only` system can be neither a
+carry nor a form source. One fix, three symptoms — **queued as its own
+session** at Sean's direction, because it needs its own measurement and the
+nine false scan segments above would propagate forward under it.
+
+⚠️ Re-measured on the merged tree (27+ commits, 221 changed lines of
+`rhythm.py`, 404 of `gather.py`) — identical on every arm. Suite **3395 passed,
+11 skipped**. Handoff:
+[docs/handoff-2026-09-09-the-boundary-measured.md](docs/handoff-2026-09-09-the-boundary-measured.md).
+
+---
+
+## 2026-09-09 (night) — the boundary case, found; and a refusal that was blocking every rung behind it
+
+Sean: *"go find that movement boundary on a page that reads well"*. Done, and
+the answer changed the question.
+
+- ✅ **"A MOVEMENT BOUNDARY" WAS THE WRONG NAME FOR THE OPEN CASE.**
+  `adjudicate_meter` never asks whether a movement started — only whether the
+  carried meter FITS. So the case needed is *a page whose carried meter is
+  WRONG and whose bars read well*, and this document has one: **p.63**,
+  mid-Finale, where the last READ meter is p.1's `2/4` and the print is `3/4`.
+  The carry is refused at **−6.0** (1 agree / 8 disagree) and **−7.0** (0/8),
+  and the same bars name **3.0 at +5.0**. ⚠️ **That is the discrimination the
+  *Andante* could not give** — there the refusal is SAFE but not
+  discriminating, because that page refuses the correct meter too.
+- ⚠️⚠️ **AND ON THIS DOCUMENT NO MOVEMENT-START PAGE READS WELL.** All three
+  were located by rendering page tops — **p.17** *Andante* 3/8, **p.32**
+  Scherzo 3/4 (*"Allegro ♩=96"*, full instrument names, a printed 3/4),
+  **p.44** Finale 4/4 — and all three fail: assessable bars 4/1/2, 2/3/8 and
+  **0**. p.32's best system reads 3.0 ×4 against 2.0 ×2 and 5.0 ×2 → support
+  **0**, under the floor. ⚠️ **The two failures have OPPOSITE causes, which is
+  why this looks structural**: a movement opening is either sparse — most
+  instruments resting, and a lone whole rest may never corroborate a meter —
+  or a dense tutti, the texture this reader is worst at. Both ends of the
+  distribution are bad pages. **The remaining route is the ENGRAVED one**
+  (`orchestral_eval` on `beethoven--symphony-5--mvt4`), unspent.
+- ⚠️ A top-margin heuristic was tried first for locating movement starts and
+  **missed p.17**, the one known boundary — this print does not indent a
+  movement start. Discarded rather than trusted.
+- ⚠️⚠️ **THE HUNT FOUND A BUG: A REFUSAL WAS BLOCKING THE RUNGS BEHIND IT.**
+  With BOTH flags on, p.63 abstained `carry_outweighed_by_the_bars` —
+  *identical to carry-only* — while the same page off the carry named length
+  3.0. `adjudicate_meter` chained its fallbacks with `or`, and **`_carry_meter`
+  returns a truthy `Ruling` when it DECIDES and also when the bars OUTWEIGH
+  it**, so the chain stopped at a refusal: the bar reader was unreachable
+  behind the refusal it had itself caused, at exactly the case both mechanisms
+  exist for. ⚠️ **Half the gap predates `OMR_METER_FROM_BARS`** — `_change_only`
+  sat behind the same `or`, so a refused carry also suppressed a meter change
+  printed on its own system.
+- **`_meter_fallbacks`** replaces the chain and orders the rungs by what each
+  KNOWS, never by which is newer: (1) a carry the bars corroborated — it names
+  an engraving that was READ; (2) this system's own bars — self-checking
+  arithmetic, which outranks a carry those same bars just refused; (3) a change
+  printed on this system; (4) failing all three, the **most informative refusal
+  rather than the last one tried** — one naming the bar length beats one naming
+  only the carry's support, which beats a bare "nothing here".
+- **Measured on p.63, both flags**: `63/0` `carry_outweighed_by_the_bars` −6.0
+  → **`bars_name_a_length_without_a_form`, length 3.0, +5.0**; `63/2` −7.0 →
+  **length 3.0, +4.0**; `63/1` **unchanged**, because with 2 assessable bars
+  the carry's refusal really is the most informative thing available.
+- **Controls, all measured, all clean**: carry-only on p.63 **identical** to
+  before the fix; `--pages 0-2` with either flag **identical**; the *Andante*
+  with both flags on **still refuses all three systems** (−3.0,
+  `carry_not_corroborated`, −1.0) — the bars are now asked there and still name
+  nothing, which is the mechanism working rather than being bypassed.
+- **Two more mutation arms** (11 total): reverting to the `or`-chain turns 3
+  tests RED, and reporting the LAST refusal instead of the most informative
+  turns 3 RED.
+- Suite **3376 passed / 11 skipped / 0 failed**, source md5 checked identical
+  before and after the run; `inventory --check` and `health --check` both 0.
+- Five documents carried the superseded *"a movement boundary on a page that
+  READS WELL is unmeasured"* claim and **all five were updated together** —
+  CLAUDE.md, both handoffs, `ASSUMPTIONS.md` (A-DUR-2 and A-DUR-7) and
+  `omr-staged-meter-carry-2026-09/FINDINGS.md` — because one fact held in
+  several places is how a figure goes stale in three of four of them.
+
+---
+## 2026-09-09 — Cross-staff simultaneity: the column through a system
+
+**What:** `Q.ONSET_COLUMN` and `adjudicate_onset_column` (scope `Kind.SYSTEM`,
+`Mode.ADDITIVE`) — which events of DIFFERENT staves sound at the same instant.
+The item ranked first by
+`docs/exploration-what-is-on-the-page-2026-09-09.md`, now on the record.
+
+**Why it was not merely unimplemented:** `Q.GLYPH_BOX` carried only a CANONICAL
+x, measured inside one cell rescaled so the staff span is constant — so two
+staves' canonical frames coincide by construction and agreeing there means
+nothing. `gather_detections` now carries `bbox_page_px` / `x_center_page` /
+`y_center_page` beside it; a cell that cannot supply one gets a `frame_note`
+and **no page fields**, never a fallback to the canonical x.
+
+**Measured** on the committed Brahms 1 / Breitkopf transcription (51 bars, 6
+systems, 3,006 events — no weights needed), against a **circular-shift null**
+that keeps every within-staff interval and every chord and destroys only the
+phase: columns needed **1,483 vs 2,409** (1.62×), corroboration **0.498 vs
+0.292** (1.71×), events standing alone **744 vs 1,706** (2.29×).
+
+⚠️ **The rate rises with density while the information falls** — sparse bars
+2.06×, dense 1.52× — so `events_per_space` travels on every bar of the
+verdict. ⚠️ **The residual does NOT separate** (0.0734 vs 0.0704) and cannot,
+since a column is built to lie within the tolerance; a claim that it did was
+carried over from the nearest-neighbour probe and is corrected in the
+quantity's own docstring.
+
+⚠️⚠️ **A bug reached a measurement and was caught by a number that was too
+good.** `Subject.glyph` counts within its CELL, so keying the page-x lookup on
+that ordinal is right at `Kind.CELL` and wrong at `Kind.SYSTEM`. It reported a
+plausible 1,062 columns at 76.6% corroborated; the tell was that **699 of 814
+had a residual of exactly zero**. A plausible aggregate is not evidence that
+its parts are real.
+
+**Files touched:** `tools/omr/staged/record.py`, `tools/omr/staged/gather.py`,
+`tools/omr/staged/adjudicate.py`,
+`tools/omr/staged/adjudicators/rhythm.py`,
+`tools/omr/tests/test_staged_onset_column.py` (15 tests; the ordinal-collision
+guard mutation-tested — restoring the old key turns four red),
+`benchmarks/omr-onset-columns-2026-09/` (harness, null comparison, FINDINGS,
+`out/`), CLAUDE.md, PROJECT_BRIEF.md, this file.
+
+**Not done, deliberately:** nothing consumes the verdict — no export, no other
+decision, no metric. n = 1 document, 1 publisher, 3 pages.
+⚠️ **INDEPENDENT of the bar-sum entry below, and CONCURRENT with it.**
+Neither builds on the other; both touch
+`tools/omr/staged/adjudicators/rhythm.py` and git merged them without a
+conflict there. ⚠️ The suite figure quoted above was measured BEFORE that
+merge — see the re-run recorded with the merge commit.
+
+## 2026-09-09 (night) — the bars may name a LENGTH; only ink may name the ENGRAVING
+
+The first ranked task of `docs/handoff-2026-09-09-meter-as-a-range-fact.md` §5
+— *"If there is no meter glyph then we have to deal with bar sums... We have 12
+systems and 10 of them say 4/4 for 6 measures"* — built as
+**`OMR_METER_FROM_BARS`, default `0`**.
+
+- ⚠️⚠️ **THE SPLIT IS THE RESULT, and it is narrower than "a run proposes a
+  meter".** This project already separates a meter's NUMBERS from its GLYPH
+  (`export.py` refuses `raw` because `_propagated_meter` synthesises it).
+  **What is new is that a bar sum does not determine the NUMBERS either**: 2.0
+  quarter-notes is `2/4` **and** `4/8`; 3.0 is `3/4`, `6/8` **and** `12/16`. So
+  the bars name the **LENGTH**; the ENGRAVING is borrowed from a system that
+  actually READ one **of that length**; and where none exists the decision
+  abstains **`bars_name_a_length_without_a_form`**, recording the length, the
+  support and every spelling it could be.
+- ⚠️ **The LETTER is never borrowed.** `raw` reaches `staged.export` as
+  `symbol="common"` / `"cut"` — a positive claim that a `C` is PRINTED on a
+  system that printed nothing we could read. Borrowed meters are spelled in
+  digits and the source's own `raw` is recorded beside the answer.
+- ⚠️ **"FOR 6 MEASURES" IS NOT A RUN**, and consecutiveness was measured before
+  it was designed away. Over 20 systems on 15 pages the longest CONSECUTIVE
+  run of assessable bars is **5** where the meter is read, **3** where it is
+  wanted and **1** on the dense finale pages — a run breaks on an
+  *unassessable* bar, which measures the page's legibility and not its meter.
+  The terms ACCUMULATE instead (+1.0 / −1.0 against `METER_FROM_BARS_FLOOR`
+  4.0), with no run-length constant.
+- ⚠️⚠️ **IT CANNOT CROSS A MOVEMENT BOUNDARY, which is why it is a different
+  mechanism from the carry and not a second copy.** Every term comes from bars
+  inside ONE system. The *Andante*'s four assessable bars read four different
+  lengths and it scores **−2.0**, with no special case anywhere.
+- **Measured** (Beethoven 5 / Litolff `984073`, carry OFF): `--pages 0-2` takes
+  both continuation systems from abstaining to **`derived_from_bars` 2/4** at
+  **+6.0** (8+/2−) and **+7.0** (8+/1−); `--pages 1,17` leaves all three
+  *Andante* systems **unchanged**; `--pages 1,63` records **length 3.0, forms
+  `3/4` `6/8` `12/16`** on two systems the pipeline previously had nothing to
+  say about — **truth `3/4`** — while correctly refusing to borrow the `2/4`
+  standing in front of them. Flag-off matches the artefact committed before
+  this session on every subject, outcome, reason and value.
+- **In the file**, pages 0-2: `empty_bars_padded_without_meter` **47 → 0**,
+  `measure_rests_read` 92 → **169**, `written.notes` 648 → 665,
+  `duration_narrowed` 163 → 146.
+- ⚠️⚠️ **AND THOSE ARE THE CARRY'S OWN NUMBERS, TO THE UNIT.** On this document
+  the DECIDED branch never fires on a system the carry does not already serve,
+  so **this is not a gain on top of the carry and must not be reported as
+  one.** What is new is the ABSTAINING branch, and *what each mechanism can be
+  wrong about*: the carry reaches across a movement boundary, this cannot.
+  **The case that separates them — a boundary on a page that READS WELL — is
+  still unmeasured, and is now the top task.**
+- ✅ **The `3/4` on p.63 was written up as an inference and then hand-read.**
+  The pages were rendered and looked at, because that row is what the
+  abstaining branch rests on: **p.62 prints `147` at top-left and p.63 prints
+  `160`**, and the reference's 3/4 runs bars 155-208.
+- ⚠️ **A MUTATION SURVIVED, AND THE RULE WAS DELETED RATHER THAN THE TEST
+  PATCHED.** `METER_FROM_BARS_MIN_ASSESSABLE = 4` was written on
+  `METER_CARRY_MIN_BARS`'s two-questions reasoning and **cannot bind**: a bar
+  is worth 1.0, so a floor of 4.0 already implies four assessable bars.
+  *A gate that cannot fire reads to the next person as a protection that is
+  not there.*
+- ⚠️ **CORRECTS `A-DUR-6`: the double barline is NOT the cheap independent
+  reader that entry calls it.** `Q.BARLINE_COLUMN` is a per-staff **count of
+  cells cut**, and no barline-type classification exists anywhere in the repo
+  (NOTES.md item 5, which is why `<repeat>` is dropped). It needs new CV *and*
+  a new gathered quantity.
+- **Nine mutation arms**, clearing `~/Library/Caches/com.apple.python/<abs
+  path>/` between each; eight turned tests RED and the ninth is the deleted
+  constant above.
+- ⚠️⚠️ **TWO HARNESS FAULTS THAT EACH PRODUCED A CLEAN, BELIEVABLE RESULT.**
+  (1) The first flag-on arm came back **byte-identical to the control** —
+  exactly what a mechanism with no reach looks like. It was **zsh**: `env $3`
+  does not word-split an unquoted expansion, so `env` set one variable
+  `OMR_METER_FROM_BARS="1 OMR_METER_CARRY=0"` and the flag was off in the arm
+  that existed to turn it on. Use `${=3}`. The tell was that a probe reading
+  the live log had said `+6` an hour earlier on the same tree.
+  (2) The first full suite failed `test_a_CLOSED_gap_must_LEAVE_the_list`
+  naming *"meter declares 'dossier_fact'"* — i.e. claiming this change had
+  silently CLOSED a `KNOWN_GAPS` entry. It had not: **editing a source file
+  while the suite runs breaks `inspect.getsource`**, because `linecache`
+  re-reads by mtime under an already-imported module. Re-run on a frozen tree
+  (md5 the file) before believing a stale-gap failure — it names a gap and a
+  quantity, so it reads as a real regression.
+- ⚠️ **A worktree needs FOUR symlinks** — `library`,
+  `tools/omr/training/data/weights`, `.venv-surya`, `.venv-omrned` — and the
+  `.venv-surya` one **FAILS** a `test_direction_text.py` reader-selection test
+  rather than skipping it.
+- Suite **3297 passed / 11 skipped / 0 failed** on a frozen tree;
+  `inventory --check` and `health --check` both exit 0.
+- `tools/omr/staged/adjudicators/rhythm.py` (`_bars_opinion`,
+  `_form_for_length`, `_meter_from_bars`), `ASSUMPTIONS.md` **A-DUR-7**,
+  `benchmarks/omr-staged-meter-from-bars-2026-09/`,
+  `docs/handoff-2026-09-09-bars-name-a-length.md`.
+
+---
+
+## 2026-09-09 — works.json's `staves` shape: derived, not a second hand list
+
+The upstream half of the mahler-p2 defect, and ⚠️ **a sibling session shipped
+most of it first** (`e9c82c82`, on main). Its writer and server are the base
+here, not something merged over — and its `arity_problems` is the strongest
+thing in this area and is untouched: an allow-list can only carry a field that
+is PRESENT, while asking `run_ledger.expand_lineup` at WRITE time catches one
+that is ABSENT, which is the failure that actually cost a page.
+
+⚠️⚠️ **WHAT IT DID WAS ANSWER A HAND LIST WITH A HAND LIST, AND
+`ARITY_FIELDS = ("lines", "printed_staves")` WAS ALREADY INCOMPLETE ON THE DAY
+IT LANDED.** Measured against origin/main's own tree, not inferred:
+
+- **`beethoven-sym5-mvt1-984073-p1` was still refused** — it carries `clef` and
+  `key` on all twelve staves, under `scan_eval`'s own rule 2 (*THE PAGE IS THE
+  TRUTH, NOT THE FILE*, which says in as many words that this is why the file
+  holds those columns). So the only tool allowed to write `works.json` still
+  could not re-merge a sixth of the file it had written.
+- **Bach's grand staff never reached the UI at all** — `research_proposal`
+  named `lines` and dropped `printed_staves`. With `arity_problems` now live,
+  that row would be REFUSED with no way for a human to satisfy it.
+- **`api_adopt` still rebuilt `{name, parts}`** — a 575951 twin adopting its
+  finished map loses the fields the twin was just confirmed to carry.
+- **Neither field was shown to the human confirming it** — `lines` was read in
+  the UI only on `unrepresentable_printed_staves` rows.
+
+**The repair** (`benchmarks/omr-scan-e2e-2026-09/staves_schema.py`, beside
+`works.json` and `page_normalise.py`). `merge_additions` keeps every name its
+tests assert on and the first three are now thin:
+
+- `arity_fields()` **DERIVED BY AST** from `run_ledger.expand_lineup` — the
+  same function `arity_problems` already refuses to second-guess, read one
+  level up. `ARITY_FIELDS = staves_schema.arity_fields()`.
+- `RECORDED_ONLY` — facts no consumer reads YET, with reasons. What reads
+  those twelve clef/key readings today is a **duplicate** of them, a literal in
+  `omr-first-run-2026-08/eval_first_run.py`.
+- `VALIDATORS` + `unvalidated()` — *"allowed is not unchecked"* kept and
+  extended to every optional key. ⚠️ **A derived list needs that and a hand
+  list did not**: a hand list and its validators are edited together; a derived
+  one can grow a field on its own.
+- `unaccounted()`, and `project() -> (entry, dropped)` with the drop PRINTED
+  (`proposed x21/21`), so a misspelled `linnes` on one entry of twenty-one is
+  visible rather than equivalent to no flag.
+
+⚠️ It deliberately does NOT derive the allow-list from `works.json` — that
+would make "the committed rows conform" prove nothing and bless the first typo
+committed. ⚠️ And `arity_fields()` RAISES rather than returning empty: an empty
+derivation is not a smaller schema, it is a silent one — the allow-list narrows
+to `name`+`parts`, `project()` drops `lines: 1` again and `problems()` refuses
+the committed file, both original faults at once wearing the old behaviour's
+face.
+
+⚠️⚠️ **A TEST OF THE FIRST FIX WENT VACUOUS UNDER THIS CHANGE AND WAS
+REPAIRED, NOT DELETED.** `test_build_cache_still_computes_lines` asserted the
+string `"lines"` appeared anywhere in `build_cache.py`; once
+`research_proposal` stopped naming the field literally, two unrelated literals
+in `_one_line_bands` — **crop geometry, nothing to do with the map** — kept it
+green. It now asks the function's OUTPUT, and covers `printed_staves`, the
+field that was actually being dropped.
+
+**Pinned:** `tools/omr/tests/test_staves_schema.py`, 24 tests. **Five go red
+against origin/main's tree**, the decisive one being
+`test_THE_WRITER_ACCEPTS_EVERY_ROW_IT_HAS_ALREADY_WRITTEN` — not synthetic,
+every committed map through the writer's own front door. ⚠️ Three vacuity traps
+needed their own demonstrations: replacing the AST call with the CORRECT
+`frozenset({"lines","printed_staves"})` literal left the whole file green until
+`test_arity_fields_FOLLOWS_the_consumer_file` existed; the conformance tests
+would prove nothing if the allow-list were read back out of `works.json`; and
+the `staves_for_works_json` branch passes on the pre-fix tree, so a test written
+only against it would have proved nothing about the fallback that had the drop.
+
+**Tests:** 118 passed across every works.json / staves-map consumer; two
+independent full `tools/omr` runs earlier on this branch, 3293 and 3294 passed,
+1 failed — `test_direction_text::test_the_env_var_restricts_the_rungs`, the
+documented worktree trap (no `.venv-surya`, so the rung list is empty).
+
+**Not verified:** nothing merged into the real `works.json`; no pooled figure
+moved and none was measured.
+
+---
+
+## 2026-09-09 — four parallel sessions merged, and the merge is where two findings changed
+
+Four sessions that had been running concurrently were landed onto one branch.
+Three of the four merges needed a real decision rather than a text resolution,
+and **two claims were only falsifiable once the trees were together** — the
+literal case for this repo's standing rule that a change is measured on the
+MERGED tree.
+
+**What landed** (in merge order):
+
+1. `reengraved-meter-carry-0c9da4` — the staged pipeline gets an **EXPORTER**
+   (`staged/export.py` — the handoff's *"⚠️ there is NO EXPORTER"* is closed),
+   a **derived inventory** (`staged/inventory.py`), a **health report**
+   (`staged/health.py`), the GATHER pass for five families read by nothing, the
+   meter carry, and `Q.EVENT` (chord grouping happening after the stage that
+   needed it).
+   ⚠️ **This session pushed one more commit WHILE the merge was in progress**
+   (`d0da5f00`), and it SUPERSEDES the meter-carry conclusion the first four
+   commits landed. The carry is no longer a gate that had to ship OFF for want
+   of a movement-boundary detector: it arrives as a CANDIDATE and the bars it
+   claims to govern confirm or refuse it, so **the boundary problem dissolved
+   with no detector anywhere** — all three systems of Beethoven 5 p.17 (the
+   *Andante*, a new movement in 3/8) refuse the carried 2/4. It is merged.
+   ⚠️⚠️ **AND THEN A SECOND COMMIT (`dfaaa71b`) CORRECTED THAT CLAIM, after
+   Sean pushed back — *"Did we solve this? It feels a ways out to me."*** The
+   Andante refusal is **SAFE but NOT DISCRIMINATING**: page 17 refuses the
+   CORRECT 3/8 too (−1.0, −1.0), so it is a page that refuses everything, not
+   a boundary being detected. What stands is narrower and still real — **where
+   the bars can speak they discriminate both ways** (true meter +14/+7/+16
+   against the wrong one −12/−9/−14 on the three well-read systems), and a
+   page that cannot speak abstains. **A movement boundary on a page that reads
+   well remains UNMEASURED**, and that — not `n` — is now the blocking
+   objection to the default.
+   ⚠️ A **fourth** commit (`8ace2b79`) then went looking for that missing case
+   and FOUND one — Beethoven 5 mvt 4 changes 4/4 → 3/4 mid-system on Litolff
+   p.62 — and reports that it still does not settle the rule: the printed 3/4
+   **is not read** (the glyph route is closed on this edition too), the **bar
+   sums DO see it** (9 of 16 staves agree on 3.0, the new meter — the thesis
+   working), but the proposed discriminator needs two dissenters and only one
+   clears quorum. Parked for a design pass, not built. Documentation only. Checked before believing it was finished: that worktree is clean
+   and the commit is on `origin`.
+   ⚠️ It **subsumes `reengraved-staged-pipeline-068163` entirely** — that
+   branch's tip is an ancestor — so that branch was NOT merged separately.
+2. `brave-diffie-f56a0c` — the staves-map WRITER carries the arity fields, and
+   the arity question is asked BEFORE the write.
+3. `gracious-kare-2cddc3` — dynamics enter the staged pipeline; `OMR_CV_HAIRPINS`
+   re-priced (its stale-pricing prediction REFUTED, the answer changed anyway).
+4. `gather-stage-coverage-qp6j01` — `staged/gather_coverage.py`, the derived
+   answer to "what does the reader actually write down".
+
+**⚠️ THE THREE SEMANTIC CONFLICTS, and why concatenating would have shipped
+bugs:**
+
+- **Two sessions gathered the SAME two quantities from the SAME reader.**
+  `gather_glyph_families` (session 1) and `gather_dynamic_letters` /
+  `gather_wedge_boxes` (session 3) both observed `Q.DYNAMIC_LETTER` and
+  `Q.WEDGE_BOX` as `READERS.DETECTOR`. Keeping both would put **two rows from
+  one reader on one glyph** — the "two rows from one reader are ONE signal"
+  fault, arrived at by accident, and named in session 3's own comment.
+  Resolved by OWNERSHIP: the dynamics rungs own both (they carry the band
+  offset a per-cell frame cannot express, and the CV rung); `glyph_families`
+  keeps rests, arcs and articulations.
+- **`subjects_from` vs the wider `reasons` tuple** in `adjudicate_dynamic`.
+  Both kept, and the composition was **checked rather than assumed**:
+  `subjects_for` reads `log.all_rows()` and an abstention IS a row, so session
+  3's deliberate row-for-every-cell still yields a subject for a bar with no
+  letter of its own. The comment claiming otherwise was corrected, not shipped.
+- **Four tests then failed, every one at a seam, every one asserting a truth
+  the merge changed.** They were updated to the merged truth and re-run RED.
+
+**⚠️⚠️ FINDING 1 — `Q.DYNAMIC` GRADUATED, so it must LEAVE the stub roster.**
+`test_the_five_previously_unnamed_stubs_are_named_now` failed because
+`adjudicate_dynamic` is implemented. A roster that keeps a graduated entry
+describes history rather than the pipeline — the same fault
+`export_coverage`'s `test_the_inventory_has_no_stale_entries` exists to
+prevent — so the entry was removed AND its graduation pinned by a new test.
+
+**⚠️⚠️ FINDING 2 — "ALL SIX STUBS ARE STARVED AT GATHER" IS NO LONGER TRUE OF
+THE MERGED TREE, AND THE FINDING IS CORROBORATED RATHER THAN OVERTURNED.**
+Session 4 measured, on its own branch, that all six declared stubs wanted a
+measurement no gatherer emitted — *"a stub is two repairs, not one"* — and
+named four of them **NAMING gaps, cheap, the ink is already in the log**.
+Sessions 1 and 3 then landed **exactly those four gatherers**, without having
+read that finding. Measured on the merged tree:
+
+| stub | starved on its own branch | starved MERGED | closed by |
+|---|---|---|---|
+| `arc_kind`, `arc_owner` | `ARC_BOX` | **fed** | `gather_glyph_families` |
+| `articulation_owner` | `ARTICULATION_MARK` | **fed** | `gather_glyph_families` |
+| `dynamic` | `DYNAMIC_LETTER` | **fed, and NOT A STUB** | `gather_dynamic_letters` + `adjudicate_dynamic` |
+| `wedge_anchor` | `WEDGE_BOX` | **fed** | `gather_wedge_boxes` |
+| `direction` | `DIRECTION_WORD` | **still starved** | — |
+
+- `dynamic` is the only one of the six that got BOTH repairs, and the only one
+  that now decides anything — the finding holding exactly as stated.
+- The four that got only the gatherer are still stubs abstaining honestly,
+  which is what a half-repair was predicted to produce.
+- **The work plan changes**: four of the five remaining stubs are now ONE
+  repair each (write the adjudicator, the evidence is waiting); `direction`
+  alone is still two, and it is the one already named as the sole READING gap.
+- ⚠️ **Found by a TEST, not by re-reading prose** — it failed with `5 != 6`
+  exactly as its own docstring promised, and now pins both halves.
+
+**Documentation kept coherent**: the superseded claim was stated in **four
+places** (CLAUDE.md ×2, this file ×2, `FINDINGS.md`) — the exact
+restated-figure-goes-stale hazard CLAUDE.md warns about. CLAUDE.md and
+FINDINGS.md were corrected in place; the two dated entries in this file were
+**left standing with a pointer**, because a dated measurement is a frozen fact
+and is never rewritten.
+
+⚠️ The committed `out/gather-coverage.json` is likewise left as session 4
+measured it, and is now a BRANCH measurement rather than the tree's state; run
+`python3 -m tools.omr.staged.gather_coverage` for the current answer.
+
+---
+
+## 2026-09-09 — GATHER-stage coverage: the tool stands, its first draft was stale on arrival
+
+⚠️⚠️ **THE CORRECTION IS THE ENTRY — AND IT DID NOT ARRIVE BEFORE THE MERGE.**
+PR #24 was merged at its pre-repair commit while this correction sat on the
+branch, so main carried the stale claims and the buggy guard until this landed
+as a follow-up. *A correction that is not merged is not a correction.* This work was
+done on a branch while **31 commits landed on main**, and in that window
+parallel sessions found the same gaps and FIXED them: `Q.EVENT` (*"which
+glyphs of a bar sound TOGETHER — one event, N noteheads"*) closes the chord
+finding, `Q.REST` closes the rest finding, and `gather_glyph_families` closes
+four of the five naming gaps. **The tool was right; its documentation asserted
+open gaps that were closed** — *fixed-then-kept-open-in-prose*, the third
+instance recorded in CLAUDE.md, caught by a trial merge rather than by review.
+
+- **The derived tool, `python3 -m tools.omr.staged.gather_coverage`.** New:
+  `tools/omr/staged/gather_coverage.py`,
+  `tools/omr/tests/test_staged_gather_coverage.py` (12 tests),
+  [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
+  and its committed output.
+- **On the merged tree: `record.Q` declares 66 and a gatherer OBSERVES 37**;
+  2 declared-and-only-abstained; 6 declared-ungathered; **1 decision still
+  starved** (`DIRECTION`, whose gatherer is itself a stub) where the first
+  draft measured six.
+- **7 legacy event keys still have no name** (was 11): `voices`/`voice_index`,
+  `stem_direction`, `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`.
+  ⚠️ `Q.ARC_OWNER` already depends on `voices`, since MusicXML pairs `<slur>`
+  WITHIN a `<voice>`.
+- **15 of 35 detector families have no gather quantity** (was 16), led by
+  `accidental` (8) — deliberate, recorded in `FAMILY_Q_IS_ELSEWHERE`:
+  `Q.ACCIDENTAL` is an EVALUATE consequence, and an in-bar accidental is
+  **SCOPE, not a mark** (it holds to the barline), a span the record cannot
+  hold.
+- **⚠️⚠️ THE ANTI-DRIFT GUARD HAD THE BUG IT EXISTS TO PREVENT.** It compared
+  names for exact equality, so the legacy key `events` never matched `Q.EVENT`
+  — singular against plural — and the stale claim reached a PR body, CLAUDE.md,
+  PROJECT_BRIEF and a findings file. `rest` sat at `None` after `Q.REST`
+  landed, same class. Repaired with `q_covering()` (normalising, and
+  deliberately NOT a substring test — `stem_direction` would false-match
+  `Q.STEM`), a guard that asks the vocabulary instead of trusting the family
+  table, and a third that evicts a stale exemption. **An anti-drift check is
+  itself an artefact that drifts.**
+- **What caught it was a DIFFERENT test** — the stub-starvation guard failing
+  with *"ARC_KIND is no longer input-starved"* during a trial merge — not the
+  guard whose job it was.
+- **⚠️ No overlap with `staged/inventory.py`** (landed on main the same day):
+  that inventories the 21 DECISIONS, this the gather-stage QUANTITIES, the
+  legacy event vocabulary and the detector class space.
+- **⚠️ No arm was run and no page was read.** Measure REACH before accuracy.
+- **Companion exploration, reasoned from the PAGE**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md).
+  ⚠️ Its headline **survives the merge and is sharpened by it**: `Q.EVENT` is
+  scoped `Kind.CELL`, so simultaneity is now read WITHIN a staff and still
+  nowhere ACROSS staves — the only large source of REDUNDANT evidence on a
+  page. Also: `_mxl_empty_measure` cannot tell SILENT from UNREAD; and its own
+  first draft named `breath`/`glissando` as detector families from memory when
+  neither is in the class space.
+
+**Files touched:** `tools/omr/staged/gather_coverage.py` (new),
+`tools/omr/tests/test_staged_gather_coverage.py` (new),
+`benchmarks/omr-gather-coverage-2026-09/` (new),
+`docs/exploration-what-is-on-the-page-2026-09-09.md` (new), CLAUDE.md,
+PROJECT_BRIEF.md, version_memory.md.
+---
+
+
+## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
+
+Sean: *"I want to make sure we don't get stuck in binary on or off ... If the
+measure is what we think it is - does the math of the notes make sense. If not
+then the meter should decrease in probability."*
+
+- **The carry is now a CANDIDATE the bars judge.** `carried_from_read_meter`
+  **+1.0**, each bar that FITS **+1.0**, each that does not **−1.0**, against
+  `METER_CARRY_FLOOR` 2.0 and `METER_CARRY_MIN_BARS` 2.
+- ⚠️⚠️ **CORRECTED SAME DAY — the boundary problem is NOT solved.** Sean:
+  *"It feels a ways out to me."* Right: the control I had not run is whether
+  page 17 would refuse the CORRECT meter too. **It does** — `3/8`, the meter
+  it prints, scores −1.0 and is refused as firmly as the wrong `2/4` at −3.0.
+  Its durations are noise and a noisy page refuses everything, so the Andante
+  refusal is SAFE but not discriminating. What IS established: **where the
+  bars can speak they discriminate both ways** (true meter +14/+7/+16, wrong
+  meter −12/−9/−14 on three well-read systems). **A movement boundary on a
+  well-read page — the case actually claimed — is unmeasured.**
+- ⚠️ The first run of that control keyed bars by SYSTEM and dropped the PAGE,
+  merging page 1's systems into page 17's and appearing to show the mechanism
+  carrying a wrong meter onto the Andante. Caught because it contradicted the
+  live run's own recorded detail. **Check a probe against the pipeline's own
+  record before believing it.**
+- The original (overstated) claim, kept for the record: measured
+  on Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth
+  2/4) carry at **+7.0** and **+8.0**; **all three systems of page 17 — the
+  *Andante*, a NEW MOVEMENT in 3/8 — REFUSE the carried 2/4** (−3.0, −1.0, and
+  one on too-few-bars). The new movement's bars simply contradict the old
+  movement's meter.
+- File effect, pages 0-2: whole rests at 4.0 ql inside a 2.0 ql bar
+  **194 → 70**, `written.notes` 648 → 665 against `duration_narrowed`
+  163 → 146, `empty_bars_padded_without_meter: 47` gone,
+  `reconcile_duration` **13 → 47**. Control: `no_pitch` 54 → 54.
+- ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars
+  outweigh ANY carry, no carry outweighs the bars — asserted on the constants
+  so a sweep breaking it fails even when every behavioural test passes. The
+  weights themselves are symmetric and **declared unmeasured** (both
+  asymmetries are arguable; n=2 separates under every ratio).
+- ⚠️ **Not a probability**, and the ban is narrower than it reads:
+  `adjudicate` forbids them because calibrated IDENTITY probabilities measured
+  ECE 0.1277, failing worst at the top of the range — but that was diagnosed
+  as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable with no truth
+  file. **So this family could be genuinely calibrated from the score library
+  alone.** Nothing does that yet; it is the open route.
+- ⚠️ **A LEAK FOUND AND CLOSED.** At first one *Andante* system carried at
+  support exactly +2.0 — a single bar summing to 2.0, landing on the floor.
+  Fixed with a SEPARATE `METER_CARRY_MIN_BARS` rather than a higher floor,
+  because `A-CLEF-6` records that one constant carrying two jobs makes a sweep
+  move both behaviours at once.
+- ⚠️ **A LONE WHOLE REST IS NEVER READ** — it stands for the bar whatever the
+  meter and its 4.0 is our own default (left in, 13 of 17 agreeing bars vote
+  4.0 on the Andante); it is also what `size_measure_rest` supersedes, so
+  touching it makes the record report a real fixpoint.
+- **`rule(single_pass=True)` / `Verdict.single_pass_revision`** — the
+  pipeline's ONE sanctioned loop, declared PER RULE. Corroboration makes the
+  meter depend on the durations `reconcile_duration` rewrites, and
+  `UphillConsequence` refused it. Unrolled it is a straight line — "vote once,
+  repair once" — and the BOUND is what makes it safe. Sean's call; the guard
+  escalated exactly as its own message instructs, and its text now names the
+  exemption. A-DUR-3.
+- ⚠️⚠️ **AN OPERATIONAL TRAP THAT INVALIDATED A MUTATION RUN.** macOS system
+  Python caches bytecode OUTSIDE the tree, in
+  `~/Library/Caches/com.apple.python/<abs path>/`; `find . -name __pycache__`
+  never sees it. A reverted mutation stayed live — `grep` showed `-1.0` while
+  `import` returned `-0.0` on a file whose md5 matched `inspect.getsource`.
+  **Clear that path between mutation arms.** Same family as the cached
+  `scan_eval` A/B.
+- Suite **3,286 passed / 9 skipped / 0 failed**; `inventory --check` and
+  `health --check` exit 0. Still default `0` — on **n** (one document), not on
+  the hazard.
+
+---
+
+## 2026-09-09 (night) — Q.EVENT: the chord was grouped after the stage that needed it
+
+Sean: *"determining when notes and voices and chords line up should be very
+early in the process."* Right, and the record said so three ways.
+
+- **The defect.** `grep -rn chord tools/omr/staged/` outside `export.py`
+  returned NOTHING and the record held no chord/event/onset/voicing quantity
+  at all; `group_chords_in_measure` was called only from `export._events`, at
+  serialisation time. So every stage before EXPORT counted each chord member
+  as a separate time-advancing event — including
+  `consequences.reconcile_duration`, the pipeline's own bar-sum check.
+  ⚠️ **It failed SILENTLY**: an inflated total simply never equals the meter,
+  so the rule did nothing and said nothing.
+- **Measured** on Beethoven 5 / Litolff: page 17 is **38.2% chord bars**, and
+  ungrouped the bars landing exactly on the printed meter fall **18 → 13** —
+  28% of the evidence destroyed before any consumer sees it. The inflation is
+  not a constant to subtract: 13 distinct values, 0.125 to 6.0 ql.
+- **`Q.EVENT`** — a CELL-scoped decision, which glyphs of a bar sound
+  together. ⚠️ A VERDICT, not a measurement: `GLYPH_BOX` already carried every
+  glyph's x (the ingredient was on the record and nothing read it), but
+  "these are simultaneous" is an interpretation under a tolerance. A rest is
+  its own event. `EVENT_X_TOLERANCE_WIDTHS = 0.6` is not a new constant — it
+  is the legacy default, adaptive to the bar's own notehead width.
+- **`reconcile_duration` sums EVENTS**, taking the MODE where a chord's
+  members disagree. ⚠️ No event verdict means **no repair**, not a fall back
+  to the old sum: a bar whose grouping is unknown is a bar whose sum is
+  unknown. Effect: page 1 fires **13 → 16**; page 17 is 0 → 0 because with the
+  carry off it has no meter at all.
+- ⚠️ **The two groupings do NOT agree and I could not make them.** 24 chord
+  members here against the exporter's 16 (172 against 102 on p17); most is a
+  POPULATION difference (every notehead READ vs only those WRITABLE), and two
+  explanations for the 1-and-7 residual were tested and **refuted** — the
+  tolerance base (identical numbers) and narrowed durations (overshoots, 24
+  and 115). The exporter's population sits BETWEEN, so the boundary is its own
+  filter chain, not the clustering. **RULE parity is pinned instead.** This
+  argues for the exporter consuming the verdict — the next step, now evidenced
+  as necessary rather than tidy.
+- ⚠️⚠️ **A field that claimed a check that never ran.** The first draft wrote
+  `divisi_guard: "ran"` wherever `Q.STEM` rows merely EXISTED; the guard is not
+  built. Caught by reading the field's own output on a real page. Now
+  `divisi_guard: "not_implemented"` with `stem_evidence` reporting the input's
+  state — and `stem_evidence: read` on some cells means the guard is buildable.
+- The architecture caught one of my errors: `implicates` omitted `Q.EVENT` and
+  `test_a_failed_check_implicates_the_decision_ITSELF` failed. A bar that does
+  not sum may hold two notes I wrongly merged.
+- 12 tests, each run RED under three mutations. Suite **3,280 passed / 9
+  skipped / 0 failed**; `inventory --check` and `health --check` exit 0.
+  `benchmarks/omr-staged-event-grouping-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-09 (night) — the meter carry: measured on both sides, shipped OFF
+
+- **`OMR_METER_CARRY`** (staged pipeline, default `0`). A meter is a fact of
+  the MOVEMENT, printed at its start and nowhere else, so the staged pipeline
+  had no meter from a movement's second page onward while the answer sat in
+  the same log one page earlier. A system whose own meter decision ABSTAINED
+  now takes the last meter that was READ. ⚠️ **Never chains onto a carry** —
+  only a `voted` verdict is a source, so `pages_since_read` is the true
+  distance back to ink.
+- **BENEFIT**, Beethoven 5 / Litolff `984073` `--pages 0-2`: page 1 decides
+  `2/4` from 12 of 12 staves, both page-2 systems take it. **123 whole rests
+  stop being 4.0 quarters of silence in a 2.0-quarter bar**; 22 notes with NO
+  duration at all get one; `written.notes` 646 → 664 against
+  `not_written.duration_narrowed` 165 → 147 — the same 18, agreeing to the
+  unit; `written.empty_bars_padded_without_meter: 47` disappears as a field.
+  Exactly two quantities move, `meter` (2) and `duration` (111), all on page 2.
+- **CONTROLS.** Flag-off reproduces all 4,498 pre-change verdicts exactly
+  (which also proves the run deterministic, so the delta is attributable);
+  `no_pitch` 54 → 54 and `detected_and_unrepresented` 659 → 659 both unchanged,
+  because a meter says nothing about pitch and reads no new ink.
+  - ⚠️ **THE `659 → 659` IS NO LONGER REPRODUCIBLE, AND THE FIGURE IS LEFT
+    STANDING ANYWAY.** It was a CONTROL THAT DID NOT MOVE, which is the safe
+    usage and is why the conclusion above is unaffected — but
+    `detected_and_unrepresented` counts only `NO_QUANTITY`/`starved`/`stub`,
+    and on 2026-09-09 `dynamic`, `arc_kind` and `arc_owner` stopped being
+    stubs, so the same run now reports a smaller number for reasons that have
+    nothing to do with the meter. Re-derive it before reusing it as a control;
+    `status_census` is the field that cannot move this way. History is not
+    rewritten here — the number was true of the tree that produced it.
+- ⚠️ **A −1 was chased rather than rounded off**: rests 433 → 432. Not a lost
+  rest — P4 m44 had been PADDED because its only note had no duration, and the
+  note is now written. One of the 18 recoveries, arriving in the rest column.
+- ⚠️⚠️ **WHY IT IS OFF — the hazard is on the same document.** Page 17 is the
+  *Andante con moto*, a NEW MOVEMENT printing `3/8` on every staff, and all
+  three of its systems abstain `no_evidence`: the template reader RAN on all 20
+  staves and declined `below_threshold`, because Litolff sets `3` over `8` as
+  heavy nearly-touching digits. `3/8` IS in `DEFAULT_METERS`, so it is a
+  reading failure, not a missing template. A carry therefore does not merely
+  RISK crossing a movement boundary here — it **does**, and holds `2/4` for the
+  rest of the movement.
+- ⚠️ **Four guards measured, all four refused.** *"A movement start reads SOME
+  meter"* is **INVERTED** (continuations p14-16 read 1-4 spurious `C`/`4/4`;
+  the movement start reads 0). Key signatures are too noisy on a scan (p14/s1
+  reads {−5, −3, −1, 2}; the Andante's true −4 appears nowhere on p17). The
+  printed TEMPO HEADING is the right signal but `direction` yields **0 decided
+  verdicts**. A DISTANCE BOUND is arithmetically impossible: movement 1
+  occupies 16 pages, so any bound under 16 truncates a legitimate carry and any
+  bound of 16 or more reaches the Andante. **The blocking input is a
+  MOVEMENT-START signal, not a threshold.**
+- `Evidence.subjects(kind)` — structural subject enumeration, no quantity and
+  no declaration check, because "what pages are there" is layout and not
+  evidence. Reading a value off one is still checked.
+- Tests: `TestTheMeterCarry` (6) + `TestEvidenceSubjectsIsStructural`, each run
+  RED under two mutations before being believed — the no-chain rule is pinned
+  by a test that fails when the `voted`-only line is removed. `A-DUR-2` in
+  `tools/omr/staged/ASSUMPTIONS.md`;
+  `benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-09 (evening) — the clef's neighbour, the meter's missing half, and three wrong inferences
+
+- **`Q.CLEF_POSITION`** — where each clef glyph stands on THIS staff, in
+  half-spaces from the top line. Five of six abstaining staves were an exact
+  `{treble: 3.0, bass: 3.0}` tie caused by a NEIGHBOURING staff's clef landing
+  in the cell's four spaces of padding. Clef decided 20→21 of 22 and 23→27 of
+  27; pitches 835→881 and 1,329→1,470; `no_pitch` 67→54 and 75→**0**.
+  ⚠️ Two controls: 19/19 decided staves unchanged (0 would flip), and the
+  REGISTER of the newly-decided staves matches the established bass staves.
+- ⚠️ **The structural finding is bigger than the fix**: every `CLEF_GLYPH` row
+  on a staff shares reader+frame+quantity, so `tally` counts them as ONE
+  correlated group and takes the strongest term. **No refinement of the
+  detector's own evidence can break a clef contest** — a tie-breaker must come
+  from another reader, which is why the position is a GEOMETRY row.
+- **`METER_COVERAGE_FLOOR`** — the half of the legacy meter rule the staged
+  vote had dropped. Agreement was divided by the staves that SPOKE, so 3 of 11
+  shipped a 4/4 at share 1.0 on a page that prints no time signature (truth
+  2/4, 18 parts). Coverage and agreement now report apart, with their own
+  reasons. ⚠️ It bore on `size_measure_rest` from the same day: with a WRONG
+  meter that consequence fired and laundered the error into a `measure="yes"`
+  claim; now the system abstains and `measure_rests_read` goes 19 → 0.
+- ⚠️ **A second meter fault filed, not fixed**: Brahms p2 reads `9/4` where the
+  truth is `9/8` — the denominator digit, at NCC 0.42–0.53, with `9/8` a
+  candidate and not even the runner-up. Never tune this family on one edition.
+- **`probe_beam_mix.py`** — CV, YOLO and the bar sum together. The bar sum can
+  settle only 13 and 6 of 142 and 296 narrowed notes, because half the bars
+  have no meter.
+
+⚠️⚠️ **THREE OF MY OWN INFERENCES WERE WRONG, each one step from being
+reported.** (1) The written-range test as the fix for an abstaining clef — it
+needs the instrument, which abstains on 22/22 and 27/27 staves. (2) "The
+staff-line erasure is destroying the beam rung" — 98 strokes against 609, and
+rendering ONE CELL killed it: 557 of the 609 (91%) sit on a staff line. (3)
+"Durations are systematically doubled" — the bar sum counted every chord member
+separately; 83 of the 94 4.0-bars are a lone whole rest. **A number large
+enough to be convincing is not evidence about its own cause.**
+
+---
+
+## 2026-09-09 (later) — GATHER: the five families detected and read by nothing, and rests end to end
+
+The lever the morning's tools identified, taken. Five notation families reached
+`GLYPH_BOX` and no typed row, so four stubs could not have been filled where
+they stood and rests had nowhere to go at all.
+
+- **`gather.gather_glyph_families`** — one typed row per glyph for rests, arcs,
+  wedges, dynamic letters and articulation marks. `Q.REST` is new; the other
+  four quantities existed and were observed by nothing. ⚠️ Routed by CLASS,
+  never by the detector's `category`: `dynamicDiminuendoHairpin` is a WEDGE
+  wearing the `dynamic` category and prefix, and all ten `artic*` classes carry
+  category `ornament`.
+- **The stubs abstain on their own population now.** `arc_owner` ran on every
+  subject at its scope — 2,728 abstentions on one page around 199 real
+  subjects. With `subjects_from` it is 199, and `wedge_anchor` writes NOTHING
+  on a page that prints no hairpin.
+- **Rests reach the file.** `adjudicate_duration`'s domain is the tuple
+  `(notehead_class, rest)` — one question for two kinds of ink. Values from
+  `rhythm._REST_DURATIONS`, imported; `restHBar` abstains `unreadable_rest`.
+- **The bar convention is a CONSEQUENCE**, `size_measure_rest` (meter →
+  duration, CELL). All six priced cases hold, including firing in 4/4 where the
+  number does not move and refusing a lone quarter rest.
+- ⚠️ **It exposed a real hazard in `reconcile_duration`**: a lone 4.0 whole rest
+  in a 2/4 bar would land exactly at 2.0 and be UNIQUE — the right number by
+  the wrong reasoning, exported as a HALF rest with a `<type>`. Rests excluded.
+  ⚠️ And a second latent bug came with the second writer: reconcile summed
+  every verdict ROW, so a superseded duration would double-count.
+- ⚠️ **The derived unclaimed-class check found a DETECTOR fault nobody was
+  looking for**: `arpeggiato` 98 + 86 over two pages, median 56×388 and 40×243
+  boxes at confidence 0.39 and 0.35 — a stem or a barline, not an arpeggio
+  sign. Not excused into `NOT_NOTATION`, because that would hide it.
+- **Three checks fired on this work**: ten now-stale `KNOWN_GAPS` entries were
+  evicted; a latent `NameError` in `_problems` surfaced the moment a domain was
+  not directly gathered; and `test_an_unsatisfiable_want_is_reported` followed
+  its own written instruction and became a test of the DISTINCTION.
+
+Rests written 209+19 and 338+11 of 228 and 350; bars padded because we read
+nothing 148 → 48 and 60 → 4; detected-and-unrepresented 761 → 533 and
+1,270 → 920. Both balance, both parse under music21.
+
+---
+
+## 2026-09-09 — the staged pipeline gets an inventory, an EXPORTER and a health report; and the record turns out not to hold rests
+
+The three ranked tasks of `docs/handoff-2026-09-09-staged-accounting.md`, done
+in order, plus the open defect its §6 filed. **No benchmark was run as a goal**
+— the metric is retired (Sean, 2026-09-08) and the runs here are controls, not
+scores.
+
+- **`tools/omr/staged/inventory.py`** — the 21 decisions, DERIVED from
+  `adjudicate.REGISTRY`, `ORDER`, `evaluate.RULES`, `groups`' redundancies,
+  `legacy.EXTRACTED_QUANTITIES` and the AST of `gather.py`. Nothing typed.
+  `--check` is non-zero on a broken invariant; `--run` folds in what each
+  decision actually did on a page.
+- **`tools/omr/staged/export.py`** — the staged path **can produce a file**,
+  and the CLI wires it as `--musicxml`. Four real conductor's pages export and
+  all four parse under music21. Not a port: it takes `tools/omr/export.py`'s
+  POSITIONS and reuses its pure renderers, and restates every rule that has to
+  be re-derived on a different input, each with a test.
+- **`tools/omr/staged/health.py`** — per decision: is there a test saying it
+  DECIDES, one saying it ABSTAINS, one saying it RECORDS. Sean's bar, applied
+  literally.
+
+**⚠️ WHAT DOING THEM FOUND**
+
+- **2,541 detected glyphs the record cannot carry**, pooled over four pages —
+  and **838 of them are RESTS, which have no quantity at all**: no `Q.REST`,
+  no adjudicator, no stub, no `wants`, so unlike the stubs nothing declares the
+  absence. Detected-then-dropped, inside the architecture built to stop it,
+  third instance after `Ruling.detail` and the starved stubs.
+- **Five of the six stubs are starved one stage earlier** — `arc_box`,
+  `articulation_mark`, `wedge_box`, `dynamic_letter` are observed by nothing,
+  so writing those adjudicators would still produce nothing. The next work is
+  in GATHER, the thinnest stage by tests (27 against RECORD's 261).
+  ⚠️ *(merge note, 2026-09-09 — all four ARE observed in the merged tree, by
+  this session's own `gather_glyph_families` plus the dynamics session's two
+  rungs. Only `direction` is still starved. Left standing as measured.)*
+- **`tuplet_ratio`'s missing row is THE PAGE**, with a positive control on the
+  same tree and weights (Beethoven 5 / Litolff `984073` `--pages 2`: 1 marker,
+  1 ratio). ⚠️ The SILENCE is a real hole and is not tuplet-specific: an empty
+  `subjects_from` domain writes nothing at all, which is not an abstention.
+- **The redundancy layer's `checked_nothing` was the fixture** — but the
+  handoff's control page was off by one. ⚠️ And **Brahms p2 is two systems and
+  still checks nothing**: `_slot_fact` keys on the system's staff count, so the
+  redundancy layer inherits the ordinal join's refusal exactly.
+- **The exporter's accounting control RAISES** rather than returning a flag
+  (`symbol_ledger.coverage_check` tried the flag and was read by nobody). It
+  balances on all four pages and reveals **595 notes held in the record and
+  absent from the file**, 441 of them a NARROWED duration the exporter
+  deliberately refuses to collapse.
+- **A `wants` entry a decision never reads is INERT**, found by a test that
+  asserted the opposite and failed. Ten decisions have one; `glyph_owner`
+  declares `glyph_conf` and never reads it — the standing
+  `_dedupe_cross_staff_detections` observation, reproduced.
+- ⚠️ **Two of the new checks were wrong when first written and both reported a
+  clean ZERO**: a literal-argument AST matcher missed
+  `for quantity, kind in ((Q.STEM, …), …)`, and the inert-`wants` check saw the
+  decorator (where `wants` lives) as the body. Both are recorded in the code.
+- ⚠️ **The health report said "EMPTY CELLS: none" once by accident** — one
+  over-broad attribution clause made every decision look covered. A check that
+  cannot fail is worse than no check; removed and pinned.
+- **The §6 defect is fixed**: `build_cache.research_proposal` sorted `parts`
+  under a comment justifying it by a rule removed the SAME DAY, whose own last
+  sentence said the opposite. The unsorted proposal reproduces `works.json`
+  exactly on all five folded entries across three rows; the sorted one
+  disagreed on the three that came back named Piccolo. Four tests, all run RED
+  with the fix reverted.
+- **Handoff counts corrected**: "153 tests" is **226**.
+
+---
+
+## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
+
+- **Cloud-session capability established by inventory, not memory**:
+  [docs/cloud-session-capabilities-2026-09-09.md](docs/cloud-session-capabilities-2026-09-09.md).
+  A web container clones the repo and nothing else — `omr-weights/` and
+  `library/` are both gitignored, so no transcription, no `scan_eval`, no
+  `orchestral_eval`. **The line is exact: a change acting on an already-made
+  transcription can be measured there; a change acting on the PAGE cannot.**
+- **⚠️ musicdiff runs NATIVELY in a cloud container and the four-symlink
+  workaround does not apply.** CLAUDE.md's OMR-NED section exists because the
+  desktop host is Python 3.9; a cloud box is **3.11**, so `pip install music21
+  musicdiff` is the whole setup. Verified end-to-end on a committed pair
+  (beet5-p1-shift09 vs truth: **0.7152 / 1286 edits**). ⚠️ Run
+  `_omrned_worker.py` from ANY directory but the repo root — `tools/omr/types.py`
+  shadows the stdlib `types` and fails circularly inside `weakref`, which is
+  precisely why that worker is documented as never importing from `tools.*`.
+- **⚠️ THREE SCAN-GATE ROWS ARE FULLY REPRODUCIBLE FROM COMMITTED FILES.**
+  Brahms 1 / Breitkopf p1-p3: the transcription (`…hollow2…/transcription.json`,
+  3 pages, 83 staves, 10,523 detections), its truth (`reference.mxl`) and the
+  hand-verified windows (`works.json`) are all in git, so
+  **transcription → export → musicdiff → OMR-NED closes without weights.**
+  ⚠️ `cells/` is still gitignored — coordinates yes, rasters no. ⚠️ One row is
+  not the gate (and the gate's own noise floor is ±6 edits).
+- **The dynamics finding was REPRODUCED rather than quoted**: that committed
+  transcription carries **265 dynamic-letter detections and ZERO of either
+  hairpin class**, and its export emits **159 `<dynamics>` and 0 `<wedge>`**. So
+  the ledger's `hairpin matched_exact = 0` is not an instrument artefact — the
+  detector sees the letters and is blind to the wedges, confirmed end to end
+  with no weights present.
+- ⚠️ Checked and NOT a finding: `mahler_p11_finetuned.omr.json` carries
+  `dynamicLetterP` (the coarse 136-207 block), but `class_aliases.ALIASES` maps
+  all six `dynamicLetter*` → `dynamic*`, so that artefact is pre-fix raw model
+  output rather than a live gap.
+
+- **Follow-up (Sean: "not sure our primary issue is the hairpins or the letters
+  or both — we will need both read and able to interact in the adjudication
+  stage"). Answer: BOTH, and they are the same size.** On the assessable rows
+  the absolute miss counts are within 10% of each other — letters **127
+  missing**, hairpins **140 missing** — while the recalls (0.714 vs 0.000) give
+  the opposite answer. ⚠️ Quoting either figure alone inverts the conclusion,
+  which is why the question had no stable answer. Different KINDS: letters are a
+  precision/placement problem (186 spurious, 73 wrong-text), hairpins a pure
+  recall one (0 spurious — we are silent, not wrong).
+- **⚠️⚠️ The obvious adjudication check was measured and is REACH-LIMITED, and
+  the sweep is the result rather than any single rate.** New probe
+  `benchmarks/omr-dynamics-coupling-2026-09/probe_letter_wedge_coupling.py`,
+  on the one committed reference encoding (Brahms 1, 21 parts, 1173
+  `<dynamics>`, 683 hairpins): "a crescendo runs quiet → loud" is **exact at
+  ±1 measure (34/34)** and **wrong 31.8% of the time at ±4**, reach 5.0% →
+  19.3%. So the coupling is real and strictly LOCAL — keep it at ±1 and
+  ABSTAIN beyond, additive evidence only, never a veto (`groups.py`: a wrong
+  `reading` manufactures disagreement out of correct engraving).
+  ⚠️ An earlier pass of this probe quoted "wrong three times in ten" from a
+  single ASYMMETRIC window; that is a point on the curve, not a property of the
+  rule, and the docstring now says so.
+- **⚠️ The interaction that IS strong runs the direction you would not guess.**
+  `hairpin_detection.BAND_TOP/BOTTOM_SPACES` (0.3–6.0 below the bottom line) is
+  the SAME band the letters occupy (+0.0..+5.6, per the band study) — but the
+  hairpin reader works in **page pixels per staff**, so attribution is right by
+  construction, while the letters go through per-measure cells and lose **24% to
+  the staff above**. **The hairpin reader's band discipline is the fix for the
+  letters' placement problem**, not the reverse. Structural, so it does not
+  decay with distance the way the direction check does.
+- Corollary for the staged pipeline: gather both observations in ONE band frame
+  and they meet at `Q.GLYPH_OWNER` — already a real adjudicator, not a stub. The
+  two readers are genuinely independent (YOLO letters, classical-CV wedges), so
+  the ancestor-closure rule admits them as corroboration rather than collapsing
+  them to `SINGLE`.
+
+- **Scoped, nothing measured new**:
+  [docs/scope-dynamics-reading-2026-09-09.md](docs/scope-dynamics-reading-2026-09-09.md).
+  Every figure is read off a committed artefact; no benchmark arm was run.
+- **The two halves separate cleanly in the symbol ledger** (20-row scan gate):
+  `hairpin` **matched_exact = 0** with 0 spurious beside it — on every row whose
+  parts join we emit no wedge at all — while `dynamic` (letters) reads 244
+  matched_exact + 73 attribute-error against 127 missing, ≈71% truth-side
+  recall. ⚠️ **They had been filed as one problem, which is why neither moved.**
+- **"They're just alphabet letters, use a text tool" is half right.** They are
+  SMuFL music-font glyphs (`dynamicForte` U+E522), not text-font letters, and
+  `direction_text.py` already runs Surya + Tesseract by default and
+  *deliberately refuses* them — its own gate is a 181-word musical lexicon, and
+  a single character has no lexicon to be gated by. The tool genuinely missing
+  is the third one: **`symbol_library/` holds 38 Bravura templates and not one
+  dynamic glyph**, while `glyphnames.json` carries all 42 including the
+  COMPOSITES (`dynamicFF`, `dynamicSforzando`) — which would dissolve the
+  letter-assembly problem rather than improve it.
+- **⚠️ The `OMR_CV_HAIRPINS` pricing is STALE BY ONE DAY, in the direction that
+  matters.** The flag is off because it costs OMR-NED, but its own docstring
+  attributes half the cost (+37 of +76 edits) to Brahms 1 p2 — a row where
+  `_stitch_slots` REFUSED, so no hairpin could pair whatever the anchor picked.
+  That arm ran **2026-09-07**; `OMR_SLOT_STITCH` went default ON **2026-09-08**
+  and Brahms p2 is *the* row it repairs (27 fragments → 14 parts, 0% → 100%
+  correspondence). **The top action is a re-run, not new code** — and it is
+  ranked first precisely because the prediction could be wrong.
+- **Staged pipeline**: `Q.DYNAMIC`, `Q.DIRECTION` and `Q.WEDGE_ANCHOR` are all
+  three declared stubs, and ⚠️ **nothing is behind them** — `Q.DYNAMIC_LETTER`
+  and `Q.WEDGE_BOX` are declared in `record.py` and emitted by no gatherer. The
+  declared composition is already right, and `Q.GLYPH_OWNER` is the one piece
+  that is NOT a stub — so gathering the letters hands the placement fix to a
+  real ownership adjudicator instead of bolting the band rule into
+  `_dedupe_cross_staff_detections` by hand.
+- Four refusals recorded so they are not re-tried: confidence as a filter (233
+  of 911 good letters lost to remove half of 35 bad), a band GATE (under-emits
+  on both arms), a cross-staff column vote (deletes the soloist-against-section
+  `p`), and OCR on single letters.
+
+---
+
+## 2026-09-08 — `OMR_CV_HAIRPINS` re-priced, and dynamics enter the staged pipeline
+
+**The hairpin re-run (Task 1).** Two fresh `scan_eval` arms over the 20-row gate
+on the current default tree. ⚠️ **The prediction that motivated it was WRONG.**
+`docs/scope-dynamics-reading-2026-09-09.md` §4 argued the 2026-09-07 pricing was
+stale because Brahms 1 p2 supplied +37 of the +76 and `_stitch_slots` REFUSED on
+it; `OMR_SLOT_STITCH` went default ON the next day. The stitch flag DID repair
+that row — `stitch` verdict now `joined`, OFF-arm edits 6547 → 6335 — and **the
+hairpin cost on it is unchanged at +37**. Summed +82 against +76, same
+11 worse / 8 unchanged / 1 better. Neither arm cached (36m31s, 30m57s; validity
+20/20 rows differ only in CV hairpins).
+
+**The bucket split** the flag's docstring asked for refutes its own explanation:
++28 of Brahms p2's +37 is `entire measure insert/delete` **on a row whose parts
+join**, so the structural half was never the refusal — it is amplification.
+`beethoven-984073-p4` is the pure case: truth carries no hairpin, one invented,
++7 edits, zero wedge-bucket movement. Over the 12 moved rows: wedge +35,
+structural +69, other −22.
+
+⚠️⚠️ **And the symbol ledger says the opposite of OMR-NED.** Same two arms,
+accounting control passing on both: `hairpin` **matched_exact 0 → 97**, missing
+**323 → 187**, spurious 4 → 57, with 13 of 15 other families identical to the
+row. 136 truth hairpins recovered on a family whose recall was 0.000 with ZERO
+spurious. **Recommendation: default it ON — left OFF pending Sean's call**,
+since every default flip here is his and this one buys recall with 53 spurious
+wedges. `mahler-p4` (27 truth hairpins, 7 read, 0 paired) is where an anchor
+investigation starts, not Brahms p2.
+
+**Dynamics into the staged pipeline (Task 2).** `Q.DYNAMIC_LETTER` and
+`Q.WEDGE_BOX` were declared and emitted by no gatherer. Both are now gathered,
+**in page pixels against the staff's own bottom line** — the frame
+`hairpin_detection` already uses, and the reason the two families become
+comparable at all. `READERS.CV_HAIRPINS` is a new reader rather than a mode of
+`CV_LINES`. `adjudicate_dynamic` is implemented and **the fix is the ownership
+query, not the spelling**: a letter belongs to the cell whose STAFF
+`Q.GLYPH_OWNER` names, whatever cell it was cut from. An unspellable run
+`narrow`s rather than abstaining. Guarded by `test_staged_dynamics.py`, every
+central assertion run RED under a mutation first.
+
+**Partial letter runs (Task 3).** `OMR_PARTIAL_DYNAMICS`, default `off`,
+byte-identical to main. ⚠️ **Corrects a standing note**: the dropped population
+is "dominated by a lone `s`" on the 11-page band corpus and NOT on Brahms 1 /
+Breitkopf, where 15 of 20 dropped runs are a prefix of nothing and look like
+`ppmsf`. Priced over the 20-row gate with `probe/reexport_arm.py`: `complete`
++15 edits, `other` +30, **not one row better**. Refused, and re-priceable on the
+staged path where ownership is decided before the word is spelled.
+
+---
+
+## 2026-09-08 — works.json: mahler p2's four one-line percussion staves, and the row that closed cause D into cause B
+
+- **`test_works_json_staff_lineup.py` had two tests failing on `main`, and it
+  was a DATA defect, not a code one.** `1cf44dbc` added mahler p2's
+  hand-confirmed 21-entry `staves` map — closing cause D, the scan gate 20/20
+  mapped — but the map lists PRINTED staves and the page prints four one-line
+  percussion rules, so `expand_lineup` read 21 five-line slots against our 17
+  parts and the arity gate refused. **The row moved from cause D straight into
+  cause B; the bucket total never moved, only its label.**
+- **Fixed with four `lines: 1` fields** on `Becken`, `Grosse Trommel`,
+  `Kleine Trommel`, `Tamtam`. ⚠️ **`Pauken` is a five-line staff and is not
+  flagged** — the one entry a name-matching rule would get wrong. Neither the
+  identity nor the count was inferred from names: `page.n_staves_note` names
+  the rules in prose and `condensation.staves_as_printed` carries `lines` for
+  all 21 entries independently, and after the fix every one of the 21 agrees.
+  ⚠️ The prose says FIVE rules and four entries are flagged — the fifth is the
+  combined-player staff the reference has no part for, so it is not a lineup
+  entry (21 − 4 = 17 = `page.n_staves`).
+- **Controlled A/B, same tree, only `works.json` differing** (record:
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json`): joined rows
+  **16 → 17 of 20**, pooled `part_unresolved` **7,985 → 7,266 (−719)**, p2's
+  `uncorresponded` **771 → 52**. **Exactly one row changes**, the other 19
+  identical outcome for outcome, and pooled musicdiff is identical between
+  arms — a live control, since `works.json` cannot reach it.
+- ⚠️ **The row gains no new symbols.** The same 527 truth / 244 predicted enter
+  both arms and `coverage.balanced` is `True` in both; 194 predicted symbols
+  stop owning a row of their own and become a truth row's PARTNER. The 771 → 52
+  fall is that pairing, not new evidence.
+- ⚠️ **The 52 that remain are the right 52**: 13 rows each on truth parts 23-26
+  (`Becken.`, `Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`) — a clef, a key,
+  a time signature and 10 rests apiece. A five-line staff detector cannot find
+  a single printed rule, so that music is genuinely unread and the field says
+  so instead of joining it to something.
+- ⚠️⚠️ **AND IT WILL RECUR — the writer cannot carry the field.**
+  `merge_additions.shape_problems` refuses any key beyond `name`/`parts`, and
+  the confirmation UI proposes none (p2's additions row is `{name, parts,
+  proposed, verdict}`), while `build_cache.py:496` computes `"lines":
+  spec.get("lines", 5)` and it is dropped on the way out — the
+  computed-and-unread pattern again. **Not fixed here**: it changes a writer's
+  contract and the additions schema, and no unmapped row remains to exercise
+  it. The next row mapped through that path with one-line percussion lands
+  unflagged and its whole page unassessable, with the test as the only alarm —
+  after the human pass is spent.
+- **⚠️ THE GENERATOR GAP IS CLOSED TOO (same day).** The deferral in the
+  bullet above was reversed: *"no unmapped row remains to exercise it"* argues
+  for a cheap fix, not against one, because the failure costs a HUMAN
+  CONFIRMATION PASS rather than compute. Four projections between
+  `build_cache` (which computes `lines`) and `works.json` each dropped it —
+  the UI's row seed, the UI's `staves_for_works_json`, `check_row`'s fallback,
+  and `shape_problems`' refusal of any key but `name`/`parts`. Now: the two
+  arity fields are allowed and **validated** (`lines` must be 1 or 5,
+  `printed_staves` a positive int, no entry both a one-line rule and several
+  printed staves, unknown keys still refuse); the projection is written ONCE as
+  `merge_additions._entry_for_works_json` and **imported by the UI** so the two
+  cannot drift.
+- **The guard now runs at the WRITER.** `arity_problems(row, staves)` asks of
+  the map about to be written exactly what `test_works_json_staff_lineup.py`
+  asks of the file, calling `run_ledger.expand_lineup` rather than recomputing
+  it, and abstaining on non-uniform pages as the test does. ⚠️ The point is
+  WHEN it fires: a data test fires after a 21-staff human pass is spent.
+- **⚠️ Retrospective control:** dry-run against today's additions file, the
+  guard refuses **all five** rows whose entries predate the field (mahler
+  p2-p5 and bach) — the whole population that had the defect, not just the row
+  that was noticed. Behaviour changes for none of them (all already refuse on
+  *"already carries a map"*), and a stale `staves_for_works_json` from the old
+  UI now fails loudly instead of writing an unflagged map.
+- **Five mutants, each red on exactly the intended test**, and the decisive
+  test is not synthetic — it feeds `arity_problems` mahler p2's map *as
+  `1cf44dbc` merged it*. `TestAOneLineRuleSurvivesTheWholeWritePath` proves the
+  chain rather than the links, against a control removing only that field.
+- ⚠️ **One existing test was left alone rather than loosened**:
+  `test_the_confirmation_ui_asks_it_too` asserts a literal import string that a
+  tidy parenthesised import broke, so the import was written back out as single
+  lines. A guard is not relaxed to suit a later edit.
+- **Files touched:** `benchmarks/omr-scan-e2e-2026-09/works.json` (4 fields),
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md` (§7),
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json` (new),
+  `benchmarks/omr-staves-map-2026-09/merge_additions.py`,
+  `benchmarks/omr-staves-map-2026-09/server.py`,
+  `tools/omr/tests/test_staves_map_validation.py`,
+  `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
+
+---
+
+## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
+
+- **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse
+  (−240 raw / −2,278 page-normalised); flipped once the separated `entire
+  staff` bucket showed its 3 rows own **46.3% of the unassessable symbol
+  mass**, so the cost of `off` is a blocked measurement rather than a foregone
+  score, and once the blast radius was shown confined to rows the ordinal join
+  has ALREADY refused (**10 of 11 exports byte-identical**; Brahms p2's 27
+  fragments → 14 continuous parts, 0% → 100% ledger correspondence).
+  ⚠️ The flag site's docstring still carried the refuted *"it still costs more
+  OMR-NED"* claim a day after CLAUDE.md was corrected.
+- **⚠️ The canary recommended for that flip could not reach it.**
+  `label_contradiction` is computed in the contextual pass; the flag is read in
+  `export.py`, strictly downstream — identical on and off **by construction**.
+  Recommended before checking; the check was one grep. Its QUESTION does reach
+  the join: `slot_stitch_canary.py` asks whether the staves a stitched part is
+  built from carry margin labels that AGREE — **30 parts with evidence, 0
+  disagreements**, `no_evidence` reported apart, positive control printed.
+- **Causes B and C closed by DATA, not code**: `one_line: true` (nine
+  percussion entries) and `printed_staves: 2` (bach's cembalo) are now fields
+  in `works.json`, each asserted against the derivable count and pinned by
+  `test_works_json_staff_lineup.py` (run RED against two mutants).
+  Rows with a resolved part join over the 11 committed pairs: **7 → 9 → 10**;
+  on the 20-row gate pooled `part_unresolved` **14,992 → 7,985**. Only cause D
+  (mahler p2's missing lineup) remains.
+- **`rhythm._drop_implausible_meters`** — unconditional. `_is_propagatable_meter`
+  names `1/4` as garbage in its own docstring and was consulted only for
+  VOTING eligibility, never for whether a staff may KEEP a reading: **4 of 227
+  staves and 45 of 2,538 measures**, all `1/4`, across three publishers.
+  ⚠️ **Its payoff arrived through a channel not being measured** — 0 rests,
+  4 notes re-read `16th` → `eighth`, `rhythm_sum_warnings` 48 → 39 — via the
+  meter→rhythm loop. The 37 wrongly-sized rests belong to two parked guards
+  (a lone dissenter, 7; three corroborating dissenters, 30).
+- **The pattern of the day, recorded as such**: four of five findings were *the
+  value existed and nothing read it*, two of them inside the measuring
+  instruments. Big-picture handoff:
+  [docs/handoff-2026-09-08-big-picture.md](docs/handoff-2026-09-08-big-picture.md).
+
+---
+
+## 2026-09-08 (evening) — Step 4 separated the `entire staff` bucket; Step 3's measure-rest convention fixed
+
+- **STEP 4: `entire staff` is FOUR problems, not three, and only one is the
+  reader's.** A derived classifier over three hand-verified `works.json` facts
+  accounts for the bucket to the symbol — 14,992 vs 14,992 pooled
+  `part_unresolved`, 0 rows `unexplained`: **A** `_stitch_slots` refusing (3
+  rows, 6,937 symbol rows, 46.3%, the reader); **B** the lineup naming one-line
+  percussion staves (3 rows, 32.1%, the ledger's arity gate, and the arithmetic
+  is exact to the staff on all three); **C** one lineup entry covering two
+  printed staves (bach's cembalo, 16.5%); **D** no lineup at all (mahler p2,
+  5.1%) — which the handoff had silently inside the bucket and which is not a
+  reading fault. Cause A's three rows are exactly `OMR_SLOT_STITCH`'s measured
+  reach; its **n** objection is unchanged.
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md`.
+- **The symbol ledger was losing 1,771 truth symbols, and its own control said
+  so to nobody.** `coverage_check()` reported `balanced=False` on 9 of 20 rows,
+  was written into the summary JSON and read by nothing — Class C inside the
+  instrument built to make the metric legible. Its rest rule was **98.5%
+  wrong**: it dropped every rest of a condensed staff, where 1,050 of 1,066 are
+  the all-parts-rest case an engraver prints. Fixed with a new
+  `absorbed_by_condensation` outcome; controlled A/B: unbalanced 9 → 0,
+  `rest.type` 471 → 963, `rest.duration_ql` 471 → 942, **every non-rest figure
+  identical to the unit**.
+- **STEP 3: a whole-rest glyph is not four quarters of silence.** The previous
+  diagnosis (`_measure_rest_beats` fed `None`) was wrong — that function is
+  never CALLED for these bars, and the measure carries its meter. The fault is
+  the convention. `export._is_lone_measure_rest` routes a lone whole rest
+  through the measure-rest path; 558 of 618 wrong rest durations (90.3%) are
+  such a bar. ⚠️ Restricted to the **whole**-rest glyph after the first cut
+  inflated single detected QUARTER rests into full bars and cost 34 edits on
+  `brahms-sym4-mvt1`.
+- **⚠️ OMR-NED cannot see it, on either family** — engraved 0.12138/2532 in both
+  arms in all 23 categories, scan gate 34,963 edits in both arms on all 11 rows
+  — while the ledger records `rest.type` 933 → 10 and `rest.duration_ql` 328 → 4
+  on the engraved eleven with every non-rest family identical. The positive
+  control: six works' rest `<duration>` values MOVED (Beethoven 3's whole rests
+  4.0 → 3.0 in 3/4, matching truth).
+- **⚠️ The "residual is a METER problem" conclusion was itself an artefact, and
+  was corrected the same hour.** Per row, every movement-OPENING page reads its
+  meter on 100% of staves and every CONTINUATION page reads almost none —
+  correct, because a meter is printed at a movement's start and `transcribe`
+  carries it forward, but **the gate transcribes ONE PAGE PER ROW so the carry
+  has no previous page**. Pages 1-2 in one call: page 2 goes 0 → 20 of 22
+  staves with a meter, parts 12 → 34 of 34, and **218 of 255 lone whole rests
+  come out at the printed 2/4 length**. So the rest fix is worth MORE in
+  production than the benchmark can show. ⚠️ **The standing hazard: the gate's
+  one-page cut silently disables every page-spanning mechanism.** What remains
+  is 4 staves of 34 reading 4/4 on a 2/4 movement — a vote/override question,
+  37 rests. `benchmarks/omr-rests-2026-09/FINDINGS.md` §7-§13.
+
+---
+
+## 2026-09-08 (night) — Steps 1 and 2 CLOSED; Step 4 promoted ahead of Step 3
+
+Handoff: [docs/handoff-2026-09-08-night-step4-then-step3.md](docs/handoff-2026-09-08-night-step4-then-step3.md).
+
+- **The Viola question is ANSWERED**: `detail.n_accidentals` is **1** — a
+  detection shortfall, not the alto slot table, corroborated from inside the
+  same run (two staves that found 3 boxes read −3; the Clarinet found 1 and is
+  correctly −1). Underneath it, **`staged/gather.py` imports
+  `locate_key_signature` and nothing else** — `key_signature_template`, measured
+  11 of 12 on that exact page against the locator's 2 of 12, is referenced
+  nowhere under `tools/omr/staged/`. Parked **D20**.
+  `benchmarks/omr-staged-shadow-2026-09/FINDINGS.md`.
+
+- **Step 2 CLOSED** — `benchmarks/omr-staged-shadow-2026-09/STEP2_2026-09-08.md`.
+  The divergence table **was blind to 99.3% of what staged decides** (12 of 20
+  quantities, 18,177 of 18,302 verdicts) because `divergence()` iterates
+  `legacy.items()`; now `staged_only` + `coverage`. **4 of 16 "disagreements"
+  were NARROWED verdicts** read as DIFFER with legacy's answer inside the
+  candidate set; now `NEW_NARROWING`. The list is ranked by staves touched with
+  each row's `basis` closure translated to quantities.
+
+- **GROUPS exercised for the first time, and "run a multi-system page" was
+  NECESSARY AND NOT SUFFICIENT.** `_slot_fact` puts the system's staff count in
+  the fact key deliberately, so a 14+13 page corroborates nothing BY
+  CONSTRUCTION. The 11+11 control works: `clef_across_systems` 8 unanimous +
+  **1 split**, `staff_group` 11 unanimous, `checked_nothing` 4 of 6 → 2 of 6.
+  **Its first catch, adjudicated by Sean against the print**: the Fagotti staff
+  opens in bass, goes to a C clef, returns to bass two bars later — yielding a
+  `clef_locator` **false positive** (it fired `tenor` on cell 0, which prints a
+  bass clef, unopposed because the detector read nothing) and **a mid-staff clef
+  change neither pipeline can express** (`Q.CLEF` is staff-scoped; no arm reads
+  past cell 0).
+
+- ⚠️ **THE STAGED PIPELINE CANNOT BE SCORED — IT HAS NO EXPORTER.** Both
+  instruments take MusicXML on both sides; staged produces none and has no
+  `pages` key. `git log --all -S` finds no bridge on any branch and nothing
+  outside `tools/omr/staged/` and its tests imports it. "Never scored" is a
+  missing component, not an oversight.
+
+- ⚠️ **Step 3 opened and is BLOCKED BY STEP 4, measured**: only **416 of 4,239
+  rest rows are assessable (9.8%)**, from 2 of 11 rows, because the part join
+  fails on the other nine. Still, the first look found the mechanism: **139 of
+  173 rest duration errors are one thing** — a whole-measure rest emitted as a
+  literal whole note (4.0 ql) regardless of meter, so a 4/8 bar comes out twice
+  over-full. **The sizing code is correct and simply not fed**; the exporter
+  writes `<time>4/8</time>` into a part and then a 4.0-quarter rest into its
+  2.0-quarter bars. NOT FIXED — priced on the wrong corpus.
+  `benchmarks/omr-rests-2026-09/FINDINGS.md`.
+
+- **`tools/omr/key_consensus.py`** (new, wired into nothing, parked **D21**):
+  concert key by consensus over concert-pitch staves, written key per staff by
+  deduction through `fifths_offset`. Flags the Viola from 3 witnesses without
+  being told. False positives on already-correct data **15.1% → 5.9%** over 152
+  orchestral encodings, the whole gap being one defect (`unpitched` honoured
+  only half — a drum has no key). Found four transposing instruments the
+  lexicon calls concert pitch: **Alto Flute (in G), Oboe d'amore (in A), Bass
+  Sarrusophone (in B♭)** — recorded, NOT fixed, because a lexicon change is
+  global. `benchmarks/omr-string-key-agreement-2026-09/FINDINGS.md`.
+
+- **`claude/rescue-midstaff-key-lilypond`** — mid-staff KEY changes reaching the
+  LilyPond exporter, rescued from **uncommitted** working-tree changes in a
+  stale worktree; it exists nowhere else in history. ⚠️ Not merge-ready (its
+  `export_coverage.py` hunk targets the `VISIBLE` list `74aa7272` deleted).
+
+---
+
+## 2026-09-08 (evening) — Step 2 opened: the first shadow run on real ink
+
+- **The staged pipeline ran against the existing one on a real scanned page**
+  for the first time (Beethoven 5 / Litolff, `pdf_page_index` 1, 12 staves).
+  **agree 50, differ 4, new_abstention 20, new_decision 0, legacy_only 0** over
+  74 rows. **JOIN CONTROL: `staff_ordinal` 12 of 12** — the subject keys line
+  up, which is what makes the rest readable.
+- **`4e089e00` — the CLI gathered TWICE.** `--against` re-ran
+  prepare/gather/adjudicate and built the divergence table from a SECOND log,
+  so `result["adjudication"]` and `result["divergence"]` described different
+  passes of a detector with documented run-to-run jitter — contradicting
+  `pipeline.py`'s own docstring, where "one gather, jitter cancels exactly" is
+  given as the reason shadow mode exists. Also doubled every `--against` run.
+  ⚠️ The table is now built **immediately after ADJUDICATE, before GROUPS and
+  EVALUATE**: a consequence may restate a value, and building it later would
+  compare legacy against post-consequence values while calling them decisions.
+- ⚠️ **`be76d961` — the two paths stated the same fact in different shapes and
+  `==` never noticed.** `key_signature`: legacy writes
+  `{'sharps':0,'flats':2,…}`, staged returns `int(fifths)`; a dict never equals
+  an int, so **every decided key-signature row was DIFFER by construction —
+  including perfect agreement.** `instrument` had the same defect **latently**
+  (`{"name":…}` vs name+family+more), found by asking what each adjudicator
+  returns rather than by reading a table. `NOT_COMPARABLE` is now a counted
+  first-class outcome — the symbol ledger's principle, that `uncorresponded`
+  and `not_assessable` are counted and never absorbed.
+  ⚠️ **The guard points the other way**: an adapter may only re-express a unit,
+  never make two different readings look equal. A false DIFFER gets
+  investigated; a false AGREE does not.
+- **The result, stated honestly.** All four `differ` rows are key signatures.
+  Against the dossier's written keys joined through `works.json`: staged right
+  on 3, legacy on 0. ⚠️ **But that is not "3/4 vs 0/4"** — staged decided only
+  **4 of 12** staves and declined 8, while legacy decided all 12 and is wrong
+  on every one checkable. **`NEW_ABSTENTION` is a feature that scores as a
+  loss**, exactly as designed.
+- ⚠️ **OPEN: the Viola.** Hypothesis (Sean) that the alto clef fired a wrong
+  signal is **FALSIFIED — the clef read `alto` correctly** — and his correction
+  is the right one: an alto clef changes *where* accidentals are drawn, not
+  *how many*; a non-transposing viola in C minor is −3 like everyone else.
+  Correct clef, correct slot table, still −1. `detail.n_accidentals` splits it:
+  **1** = only one flat found (detection shortfall, the fit may not infer);
+  **3** = all found and mis-fitted (a real alto slot-table bug). Different
+  fixes. First job on the next session.
+- ⚠️ **A coordinator-written probe produced a false finding.** It indexed
+  record rows on `'row_id'` when the serialised key is `'id'`, so the index was
+  empty, every lookup missed, and the basis walk returned `Counter()`
+  regardless of content — briefly "showing" that a key-signature verdict rested
+  on nothing. *A zero is a suspect.* The corrected probe prints `len(by)` and
+  `len(basis)` as positive controls.
+- **Branch audit — nothing needed merging.** `agitated-bassi` and
+  `dynamics-letters-clef-approach` are **0 ahead of main**; `compassionate-kilby`
+  and `slot-group-mapping` **do not exist on origin at all** and may hold
+  review-ready work only on the Mac. ⚠️ The first pass read "634 ahead, no merge
+  base" — **artefacts of a shallow clone**, corrected with `--unshallow`.
+- **`49247b6f` — CLAUDE.md contradicted itself** about whether the `Tp.` fix is
+  in main. It is. `fixed-then-kept-open-in-prose`, second recorded instance, and
+  worse than a stale sentence because naming a branch as the place to get
+  something is a work order.
+- **Still not measured anywhere on this branch**: no `orchestral_eval`, no
+  `scan_eval`, no OMR-NED. Handoff:
+  [docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md).
+
+---
+
+## 2026-09-08 — The tenth export gap, and the hole in the check built to catch them
+
+- **`<ornaments>` was never emitted.** `grep -c ornaments tools/omr/export.py`
+  was 0 while the detector fires `ornamentTrill`/`Turn`/`TurnInverted`/`Mordent`
+  freely. Same shape as the nine forensic "detected then dropped" bugs.
+  `transcribe._attach_ornaments_in_cell` (beside `_attach_articulations_in_cell`)
+  → `voicing` → `export._mxl_ornament_elements`. `<ornaments>` sits between
+  `<tuplet>` and `<articulations>` in one `<notations>`; music21 10.5 round-trips
+  both `Trill` and `Tremolo`.
+- ⚠️ **THE HANDOFF TABLE DOUBLE-COUNTED, AND CONFIRMING IT INVERTED THE JOB.**
+  It listed `<ornaments>` (truth 12 engraved) and `tremolo` (truth 12) as two
+  gaps. They are one: `beethoven-sym3-mvt1` is the ONLY one of the eleven
+  benchmark truths carrying ornaments, and its 12 `<ornaments>` contain 12
+  `<tremolo type="single">1</tremolo>` and nothing else. Pinned by
+  `test_the_engraved_ornaments_are_ALL_tremolo`.
+- ⚠️ **SO THE ENGRAVED GAP DOES NOT CLOSE, AND IT IS NOW A DETECTION PROBLEM.**
+  Census over the committed transcriptions: **ZERO `tremolo1`–`5` detections**
+  against a positive control of 34,115 detections walked across 11 files, and
+  none of the ornament detections is on a benchmark work. The export half is
+  closed and the engraved count will stay at 0 until the detector fires. Filed
+  in `KNOWN_GAPS` with the evidence, so
+  `test_the_inventory_has_no_stale_entries` evicts it the day a detection lands.
+- ⚠️ **The class IS taught, it just does not fire.** Independently checked while
+  verifying the above: `tremolo2` and friends appear as **hand-labeled** boxes in
+  `benchmarks/omr-labeling-*/verdicts/*.verdict.json` (46 occurrences over 8
+  files) with `human_category: ornament`. So this is not an absent class in the
+  label corpus — it is a class the corpus carries and the checkpoint does not
+  produce. That is a narrower and more actionable statement than "no detections".
+- **LilyPond gets the four ornament marks and NOT tremolo, deliberately.**
+  LilyPond's `c4:32` is a *duration subdivision*, so a wrong mapping writes a
+  different RHYTHM rather than a different mark. Hairpin precedent; reason
+  recorded rather than the construct approximated.
+- **`export_coverage`'s element set is now DERIVED from the truth files.** The
+  hand-written 19-name `VISIBLE` dict is deleted — an element in neither
+  `VISIBLE` nor `KNOWN_GAPS` failed nothing, which is precisely the blindness the
+  module exists to remove. Scope is now: inside `<measure>` (structural — the
+  header lives outside it) → categorical → **rollup to the shallowest missing
+  ancestor** → a 3-name `NOT_NOTATION` deny-list. That answers the docstring's
+  own objection to deriving ("55 elements, ignored, then deleted"): on the
+  committed 11-work fixture copy, 88 in-measure elements → 40 categorical → 19
+  heads → **16 reported**, the rollup doing 21 of the 24 reductions and the
+  deny-list only 3.
+- **The decisive RED:** reinstating the pre-2026-09-08 allow-list makes
+  `test_ornaments_IS_one_of_them` fail — the old check does not report
+  `<ornaments>` on the real committed truth pool. It reported 5 elements and was
+  blind to 15.
+- **14 new `KNOWN_GAPS` entries**, every one a gap that had been reported by
+  nothing. Largest after `<stem>` is **`<transpose>` at 92**.
+- ⚠️ **Two self-inflicted faults caught by the discipline, both worth keeping.**
+  A reach probe read `bbox_page` as `[x0,y0,x1,y1]` when it is `[x,y,w,h]`, so
+  every median notehead width was negative and nothing said so — the probe now
+  asserts that quantity is positive before using it. And
+  `test_the_rollup_walks_more_than_one_level` PASSED under the mutation it was
+  written to catch (chained immediate-parent rollup gives the same answer);
+  rewritten to the one distinguishing case and re-run red.
+- **`stale_entries` had to be redefined.** `expected − missing` meant three
+  different things; `grace`/`unpitched` are gaps on scan truths and absent from
+  engraved ones, so without this the suite would go red on a machine with
+  fixtures for a non-defect. It now asks our own output.
+- ⚠️ **`TestTheRepositoryItself` skips wherever fixtures are absent — the one
+  test that would have looked never ran.** New `TestTheCommittedFixtureCopy`
+  runs on a clean clone, asserting on the tables only, never on the exporter.
+- **Measured with the symbol ledger, not OMR-NED** (handoff §2: musicdiff
+  attribution is void — amplification differs 6×–2× by error kind and one changed
+  `<type>` scores ZERO on 10 of 20 files). On the committed Breitkopf Brahms 1
+  transcription: `<ornaments>` 0 → 4, ledger `ornament` rows none →
+  `{'trill-mark': 4}`, **non-ornament rows 6,086 → 6,086 identical** (additive).
+  Reach 4 of 8 trills find a notehead; confidence does not separate the two
+  groups.
+- **Parked, observation kept:** `arpeggiato` at 856 detections (99 on three
+  Brahms pages) — a different element (`<arpeggiate/>`, not inside `<ornaments>`)
+  and the rate looks like over-detection.
+- `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS = 1.0` is **declared UNMEASURED** — unlike
+  the articulation constant beside it, there is no corpus to sweep it on.
+- ⚠️ **NOT MEASURED, and no number is claimed:** this container has no weights,
+  no fixtures and no venvs, so no `orchestral_eval`, no `scan_eval`, no OMR-NED.
+  `test_score_language.py` is **unverified here** (corpus-wide, does not finish);
+  it passed on the clean-`HEAD` baseline and this change touches neither it nor
+  its subjects. Full suite on the final tree: 2,948 passed, 64 skipped, 2 failed
+  — the two being the documented `.venv-surya` `TestReaderSelection` pair,
+  failing on clean `HEAD` too.
+- **Files:** `transcribe.py`, `voicing.py`, `export.py`, `export_coverage.py`,
+  `class_aliases.py`, `score_translation.py`, 4 test files;
+  `benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md`
+  and `probe-ornaments-2026-09-08/`.
+
+---
+
+## 2026-09-06 — The prior may not overturn a label the system contradicts
+
+- **`Tp.` exported as a second trumpet on Beethoven 5 / Litolff, with a CORRECT
+  lexicon.** `lookup('Tp.')` returns Timpani at `high`; the alias is declared
+  ambiguous (Timpani in the German/Italian tradition, Trumpet in the English),
+  so the slot goes to `score_layouts.resolve_ambiguous_label`; the canonical
+  layout puts the timpani AFTER the trombones while this edition prints it
+  BETWEEN the trumpets and the trombones; the aligner is monotone, so staff 8
+  took the second trumpet slot. Being ambiguous had also withdrawn the PIN that
+  would have taught the aligner the print's order.
+- **Third instance of the ambiguous-alias family** (after `c0a80ae7` and
+  `fa8258c1`) and **the first whose fault is in the prior rather than in a
+  consumer of it** — so, unlike the other two, no lexicon change was involved.
+- **The fix uses evidence already on the page**: `Tr.` stands four staves up on
+  the same system, and an engraver does not name one section with two different
+  abbreviations on one system. The positional prior may not move a staff onto an
+  instrument a different alias on the same system already names.
+- ⚠️ **Asymmetric on purpose** — it refuses only an OVERTURN and never removes
+  the lexicon's own answer. `Tr. Bas.` forces this: both its candidates are
+  separately named on its system, so excluding every clashing candidate would
+  leave nothing and break a reading that is already right.
+- **Measured** over the 1422-label margin corpus
+  (`probe_ambiguous_cooccurrence.py`, committed): 86 of 158 ambiguous-alias
+  occurrences clash; hand-adjudicated, the rule keeps or restores the right
+  answer in **86 of 86** and blocks a correct overturn in **0**.
+- ⚠️ **The control is `basso`, and it passes because every clash is Handel's.**
+  `c0a80ae7`'s Contrabass overturn is untouched — no orchestral page in the
+  corpus names Contrabass twice. The probe FAILS if an orchestral source ever
+  joins that list. Handel's *Messiah* prints `BASSO` (the bass voice) and
+  `Bassi` (the string basses) on one page and needs both first answers as they
+  stand.
+- **Same-tree A/B on `--pages 23,44`**, against the hand-read lineup: 24/29 →
+  **26/29**, the 17-staff finale system **16/17 → 17/17 exact**, `Timpani ->
+  Trumpet` ×2 gone, no other confusion moved. Exactly 3 staff records change,
+  all slot 8, all `Trumpet(score_order_ambiguity)` → `Timpani(label)`.
+- ⚠️⚠️ **REACH, measured on all three regimes: the bug lives in exactly one, and
+  it is NOT the web app's.** `--pages 0-4` (what `local_omr.py:233` actually
+  transcribes, default 5) is **byte-identical, 0 records** — movements 1-3 give
+  an 11-slot reference with no trombones and the timpani at slot 6, so nothing
+  overturns. `--pages 23,44` (a window SPANNING the movement boundary) is where
+  it fires. 88 pages is a no-op again. **So this is not a fix to the default
+  web-app path** and must not be sold as one; its reach is the CLI and any run
+  with `OMR_MAX_PAGES` raised — the whole-work case the project is for. It ships
+  because it is correct and **proven inert in the other two regimes**.
+- ⚠️ **Three cells, not two:** narrow-at-the-front ≠ narrow-anywhere. They differ
+  in whether the window crosses a movement boundary, which is what exposes this
+  class of bug. Scored only on pages 0-4 and only on the whole work, this fix
+  measures zero — twice.
+- ⚠️⚠️ **SCOPE: that figure is about NARROW page sets.** The committed 88-page
+  artefact (`out/whole-report2.extract.json`) already has slot 8 = Timpani and
+  `ambiguous_labels_resolved = 1`, so the guard is a **no-op** there — with a
+  whole work voting, the layout fit proposes Timpani or abstains. Third time
+  page-set size has changed an identity result; score identity work on BOTH a
+  narrow set and the 88-page extract.
+- ⚠️ **The 7 residual errors on that 88-page run are MIS-SLOTTING, not
+  mis-naming** (800/807; `Violin -> Trombone` ×4, `Viola -> Trombone` ×2,
+  `Timpani -> Trombone` ×1; 17-staff systems 663/663). All carry
+  `instrument_source: label`: the strings land on slots 9/10/11 — the finale's
+  trombone slots — and inherit a name stamped per SLOT. Cello 15 / Contrabass 16
+  are right, so it is an off-by-three in the monotone DP over a reduced system.
+  `slots.align` / `assign_slots`, not the movement reference and not the veto.
+  **Owned by the `sad-austin-7e16e7` session as of 2026-09-06.**
+- **Files:** `tools/omr/contextual.py`,
+  `tools/omr/tests/test_contextual_ambiguity_uniqueness.py` (every test run RED
+  with the guard removed),
+  `benchmarks/omr-absent-instrument-veto-2026-09/probe/probe_ambiguous_cooccurrence.py`.
+
+---
+
+## 2026-09-05 — Scan: where the pipeline decides without a probability
+
+- The clef session found a lot being lost because a staff's clef was either
+  SELECTED or DISCARDED, with nothing between. This scans the rest of
+  `tools/omr/` (57 modules, 31,346 lines) for the same shape and answers by
+  taxonomy: [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
+  Sibling of the 2026-09-04 "detector was right, output was wrong" taxonomy —
+  that one asks where a signal was read and lost, this one where a degree of
+  belief was formed and thrown away.
+- **Five classes**: (A) never formed — a boolean veto with no score behind it;
+  (B) formed then quantised; (C) formed, kept, consumed by nobody; (D) used only
+  as an exclusive evidence tier or a raw argmax; (E) all-or-nothing structural
+  refusals.
+- **Two headline Class-C findings.** `export.py` mentions `confidence` exactly
+  once and that occurrence is a COMMENT — every detection confidence is
+  discarded at the export boundary, and across the pipeline confidence reaches a
+  decision at only four places. And the five internal-consistency checks compute
+  a graded confidence nothing reads: only `rhythm_sum_warning` is consumed at
+  all, as a boolean presence count for a UI percentage in
+  `backend/modules/local_omr.py`.
+- **Measured, not assumed** — probed 29 stored transcription JSONs for real
+  firing rates. On one real scanned document (Breitkopf Brahms 1, 3 pages, 83
+  staves) **85 warnings fire and all are inert**: 78 `rhythm_sum`, 4
+  `time_signature_disagreement`, 2 `clef_register`, 1 `key_signature`.
+  ⚠️ Volume is uneven and the doc says so: `measure_count_warning` fired ZERO
+  times across all 29 files (corroborating majority-steering's 0-of-27-systems),
+  while the high-volume check is the one carrying no confidence field at all.
+- **Handed to the clef session**: `clef_correction` decides on range fit alone
+  behind two hard `return None` cutoffs and never reads `clef_register_warning`
+  (grep count 0), which fires on the same page dict from an independent
+  direction and — crucially — needs no instrument label, the evidence that
+  survives where 29 of 29 unresolved non-treble scan staves have no label
+  printed at all.
+- Ranked 7-item shortlist with blast radius per item, naming which harness can
+  price each one and whether that harness can SEE it. Negatives recorded too, so
+  the next pass does not re-walk them (the abstain-on-near-even-split rule, the
+  pairwise dedupe structure, and `CV_CONFIDENCE = 0.99`, which looks like a fake
+  probability and is a deliberate sentinel).
+- ⚠️ **No arm was run** — the OMR weights are gitignored and absent from the
+  container. Nothing in the document is a benchmark result, and it says so.
+
+- ⚠️ **RECONCILED THE SAME DAY, and the scan was partly wrong.** Sean asked that
+  nothing be built without consulting the other sessions first. Cross-session
+  messaging turned out to be unavailable (no reachable peers across the
+  cloud/bridge boundary; a test send failed), so the consultation was done by
+  reading committed work — and `claude/staff-identity-layer-2026-09-05` had
+  already run the experiment the scan's recommendations assume is worth running.
+  It came back NEGATIVE: neither P(name) nor P(set) calibrates (ECE 0.1277 /
+  0.1301, n=197), failing worst where a consumer would set its bar. Its
+  pre-registered standard — an uncalibrated probability is worse than none —
+  is adopted by the scan.
+- The scan's `coverage`-into-`slots` item is **demoted** (same evidence family,
+  same corpus) and its clef item **re-framed**: KC-3 showed `clef_correction`'s
+  FILL path reaches 34 of 396 staves because it fires only where no clef was
+  read, so the reachable question is the OVERRIDE gate, whose
+  `sources.get(slot) == "label"` conjunct is unsatisfiable on scans. ⚠️ The
+  "just swap the conjunct" framing was WITHDRAWN the same day on merging with
+  Sean's own handoff, which carries held-out evidence that the label gate earns
+  its keep; what survives is that `clef_register_warning` names no instrument
+  and so does not carry that hazard — and that its REACH must be measured
+  before its accuracy.
+- Written at a path another agent can be pointed at:
+  [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
+
+**Files touched:** `docs/handoff-probability-gates-2026-09-05.md` (new),
+`docs/handoff-probability-gates-2026-09-05.md` (new),
+`CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
+
+---
+
+## 2026-09-05 — The last margin-label gap closed: a whole system's margin as one label
+
+- The lexicon sweep's last open item — Beethoven 5's 17-staff margin resolving to
+  *Piccolo*, Mahler 5's 19-staff margin to *Trombone* — was a reader/assignment
+  fault, confirmed by re-reading the exact pages with the raw per-block Surya
+  output surfaced for the first time. Both pages: Surya returns **exactly one
+  OCR block for the whole crop**, every instrument name on the page glommed into
+  one block, where a healthy read splits one block per staff.
+- `_assign` was never wrong about WHICH staff the block's centroid landed
+  nearest — the input it was handed was already garbage, and nothing recorded a
+  block's own SIZE to say so. `_surya_worker._lines_with_boxes` now keeps each
+  block's height (already had the polygon, wasn't reading its y-extent),
+  threaded to `_assign`, which drops a block taller than half the SYSTEM's own
+  tick span before the nearest-tick test rather than forcing it onto whichever
+  staff it lands nearest. Scale-invariant on purpose: the ratio is to the crop's
+  own span, not a pixel count.
+- **Measured, not guessed**: both bad blocks sit at 1.04× the span (crop padding
+  pushes them slightly past 1.0); all 17 blocks Surya correctly split on
+  Boléro's own dense page — 16 of 19 staves correctly named, the SAME kind of
+  system a runaway block would target — sit at 1.5–4.7%. A ~22× gap with the
+  0.5 threshold in the middle of it.
+- ⚠️ **The first regression test attempt passed whether the fix worked or not.**
+  It asserted no returned label exceeded some LENGTH, but the real defect
+  concatenates many instrument names into one long STRING specifically because
+  the block spans many staves' worth of *text*, not just height — a single huge
+  GLYPH is one character, tall without being long. Constructed a synthetic
+  crop instead, asserted on staff ASSIGNMENT directly, and ran it red (gate
+  disabled: `{0: 'Ob.', 2: 'X'}`) before green (gate on: `{0: 'Ob.'}`) to prove
+  it exercises the mechanism.
+- Full suite 2058 → **2059 passed, 0 failed**. Both known-bad pages now report
+  no label (honest abstention) rather than a confident wrong instrument; the
+  known-good Boléro page is byte-identical.
+  [benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
+
+---
+
+## 2026-09-04 — acting on the split: hairpins and a fermata reach the file, and the arc verdict
+
+Worked the three items the reading/translation split identified.
+
+**1a. HAIRPINS — the ninth export gap, closed on the export side.** `score_translation` priced
+what `KNOWN_GAPS` said could not be priced: 9 read across three works, every one discarded,
+against 17 `<wedge>` of truth. `export.measure_wedges` emits each as the SPAN it is (opening +
+`stop`, with a `number` so overlapping spans stay pairable), through `measure_directions` — the
+ONE place both emitters ask what a measure carries; slurs live at four call sites and this does
+not add a fifth. **0 → 18 wedges against 17 of truth; Tchaikovsky 6 exact at 6/6.** Control: only
+the three works with hairpins change, the other eight are BYTE-IDENTICAL, and the diff is purely
+additive. ⚠️ **Costs +11 OMR-NED edits and ships anyway**, but unlike the articulations precedent
+the cause is diagnosed: Tchaikovsky (exact detection) IMPROVES −3, and Mahler pays +12 for two
+known mechanisms — a hairpin crossing a barline exported as two, and one landing on the staff
+below its own.
+
+**1b. THE LOST FERMATA — found by arithmetic, not by reading code.** Beethoven 5 detected 36,
+truth 36, exported 35; `export_coverage` cannot see that (it fires only on truth-some/ours-zero).
+One query localised it: every part has a fermata at m2 and m5 except P7. Its `restWhole` does not
+become an event, so that bar takes the eventless branch — the SAME branch as the directions, one
+layer down, and `annotate_fermatas` already documents that an orchestral fermata is usually over
+a whole-bar REST. Now **36 of 36**, and it **IMPROVES** the metric: 0.0595 → 0.0556, −5 edits.
+
+**2. ARCS — the verdict, and a lever I nearly rebuilt.** ⚠️ `00b68e24` on
+`claude/export-accents-arcs` already built the tie/slur position-grammar veto, measured it on
+BOTH families and shipped it default-off (engraved neutral, scan REFUSED). Found by
+`git log --all -S` before starting. The reading score adds why it could not have paid: a family
+whose F1 climbs with the centre tolerance is FOUND AND LOOSELY PLACED, not missed. **Ties
+0.260 → 0.504** at 2 spaces (mostly there); **slurs 0.518 → 0.631**, barely moving — real
+absences, 16 of 40 with no arc within TWO spaces while the 24 found sit at a median 0.09. So
+slurs are a DETECTION gap, ties a LOCALISATION gap, and neither is a labelling gap. ⚠️ Also
+corrected: yesterday's "24 slur arcs lost to `beam`" was a large CV beam box whose CENTRE fell
+within tolerance, not a class confusion.
+
+**3. DYNAMICS RE-ATTRIBUTION — hold stands, case stronger.** With hairpins now exported their
+placement is measurable, and it is the same mechanism: **three of Mahler's four hairpins are
+filed under staff 18 and stand in staff 17's band**, which is half the +12 above. A second symbol
+family the rule would fix. ⚠️ It does not change the verdict — the blocker was never the engraved
+case (already positive, 52 → 83 staves exact) but that the scan arm cannot see attribution at
+all: 7 of 11 pages abstain on the staff→part join, and resolving them needs hand-verified
+`staves[].parts` rows. Human input, not another measurement.
+
+---
+
+## 2026-09-04 — reading and reproduction, measured apart (an exact page truth, for free)
+
+Sean asked whether we test the ability to READ a page or to REPRODUCE one, and whether there is
+a way to know exactly what is on a page. There is, for pages we render, and it costs nothing:
+Verovio draws MusicXML directly and with `svgBoundingBoxes` emits a `<rect>` per notation object
+in the same frame as the glyph, plus every glyph's SMuFL codepoint. Image and inventory from one
+act, no labeling. `tools/omr/page_truth.py` + `score_reading.py` + `score_translation.py`,
+harness and findings in `benchmarks/omr-reading-vs-reproduction-2026-09/`.
+
+- ⚠️ **A PAGE TRUTH IS NOT AN ENCODING TRUTH, and the gap is the point.** Brahms fixture against
+  the file it was rendered from: dynamics 19 glyphs vs 19 `<dynamics>` (agree), G clefs **28**
+  vs **14** `<sign>G</sign>`, slurs **82 arcs** vs **164 `<slur>` tags**. A clef is printed at
+  every system and declared once; MusicXML writes a slur at each end.
+- **STAGE 1 — reading F1 0.919** over 11 engraved works / 3220 scoreable symbols, beside OMR-NED
+  0.1306 on the same works. The decomposition is the value: **noteheads 0.999 (856 of 856)**,
+  rests 0.993, time-sig digits 0.997, flags 0.992, clefs 0.969. **So the engraved residual is
+  NOT a failure to see notes.** It is ties **0.260**, slurs **0.518** (24 arcs lost to `beam`,
+  the only real class confusion), and dynamic letters **0.552** at precision 0.421 — the same
+  over-emission `omr-dynamics-band-2026-09` measured from the other end.
+- ⚠️⚠️ **A NEAR-MISS, CAUGHT BY AN EXISTING NUMBER RATHER THAN BY THE NEW TOOL.** `accidental`
+  scored recall 0.257 and was about to be written up as the largest reading gap. It is not a
+  pipeline result: **Verovio draws one accidental per `<alter>`, not per `<accidental>`** —
+  Brahms 1 has 54 `<accidental>` and 149 `<alter>` and it drew 149; Beethoven 5 has ZERO
+  `<accidental>` and 13 `<alter>` and it drew 13. `<alter>` is the SOUNDING alteration, which a
+  key signature already supplies, so the render carries accidentals no engraver would print. The
+  tell was a contradiction with OMR-NED's `wrong pitch`, which is ZERO on these works and cannot
+  be if a reader is missing three quarters of the accidentals. `page_truth.render_fidelity` now
+  measures the disagreement per work and declares the family unreliable; `score_reading` marks it
+  `(RENDER)` and excludes it. Including it gave 0.898; excluding it, **0.919**.
+- **STAGE 2 — the funnel prices the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
+  un-priceable from that inventory. It is now: **9 hairpins read across three works and every one
+  discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6, Brahms 4 2-of-5) — half reading, half
+  export, and the export half is free. Plus a **NEW** one nothing else can see: Beethoven 5
+  detects 36 fermatas, truth has 36, **35** reach the file. `export_coverage` fires only on the
+  categorical case (truth some, ours zero), so 35-of-36 was invisible.
+- ⚠️ **The stages read different images on purpose** — stage 1 a Verovio render whose ink is
+  known, stage 2 the LilyPond fixtures the headline uses — so their per-family counts are NOT
+  comparable to each other. ⚠️ **Neither says anything about scans**; no public symbol-level
+  ground truth for real printed scans exists to borrow (DeepScoresV2 rendered, MUSCIMA++
+  handwritten).
+- **Controls**: matched on CENTRES not IoU (learned boxes vs exact ones would measure box style),
+  and pooled F1 moves only 0.846→0.876 across 0.25–1.5 spaces of tolerance; re-rendered at
+  600 dpi (45 px/space vs 22) Brahms 1 goes 0.854→0.868 and Tchaikovsky 4 0.787→0.789, so the
+  figure is not a resolution artefact.
+- ⚠️ **TWO FRAME ERRORS IT FOUND IN ITSELF, both caught the same way — the symbol COUNTS agreed
+  almost exactly while NOTHING matched positionally, which is the signature of a coordinate error
+  and never of a recognition result.** (1) Verovio wraps the page in `<g class="page-margin"
+  transform="translate(500,500)">`; missing it put the whole truth 62.5 px off against a 22.5 px
+  staff space — noteheads 259 vs 259, matched ZERO at every tolerance. (2) A glyph's anchor is
+  not its centre — SMuFL puts a flat's origin at the staff position it alters — so a synthesised
+  square box scored a correctly read key signature at **F1 0.078**; calibrating each glyph's box
+  from Verovio's own single-glyph rects took it to **0.990**. A third was avoided by checking:
+  reading extents off the `<defs>` outlines is wrong because those paths use RELATIVE curve
+  commands, which put noteheads 0.66 spaces right of Verovio's own rect for the same glyph.
+- Coordinate chain verified end to end rather than assumed: librsvg maps CSS px to PDF pt at
+  72/96 and a pt rasterises at dpi/72, so image px = css px x dpi/96 — exact at both 300 and 600.
+
+---
+
+## 2026-09-04 — a bar we found nothing in now keeps its marks (the predicted bug, fixed)
+
+`export.py`'s whole-measure-rest branch never calls `_mxl_voice_events` — the only other
+`<direction>` emitter — so `measure_directions()` was computed, assigned to `_dyn`, and never
+used. BOTH MusicXML measure emitters had it, identically. Fixed with `_mxl_directions_only`,
+called from both: marks go in x order at the head of the bar, ahead of the rest, because a
+`<direction>` carries no duration and applies where it sits.
+
+- ⚠️ **This is the bug CLAUDE.md has been carrying as a PREDICTION** — that the 11-work engraved
+  benchmark provably cannot see it (0 triggering bars, measured both ways) and that a SCANNED
+  work would be where it finally triggers, because a staff genuinely rests through a marked bar
+  and the detector finds nothing in it. It does: **14 dynamics on scans, 0 on the engraved
+  eleven**, and the attribution was exact before the fix (`words formed − words in an eventless
+  measure == words exported`, all 11 pages, to the mark) and is exact after it (376 formed → 376
+  exported).
+- **CONTROL: the eleven engraved works export BYTE-IDENTICALLY.** Which is the same fact as the
+  benchmark not seeing the bug — so it cannot guard the repair either.
+  `TestEventlessMeasureKeepsItsMarks` does (8 tests), including a **source-level anti-drift test
+  asserting BOTH MusicXML emitters call it**, verified to fail when either call site is removed.
+  The LilyPond branch is deliberately excluded from that guard.
+- ⚠️ **IT MAKES SCAN OMR-NED SLIGHTLY WORSE AND SHIPPED ANYWAY.** Mahler p2 0.7122 → 0.7148
+  (+5 edits), Beethoven 984073-p1 0.6925 → 0.6949 (+5), Mahler p3 0.8921 → **0.8916** (+3),
+  Beethoven 984073-p2 0.8859 → 0.8860 (+3). The marks are not wrong — a spot check shows a
+  recovered `f` on a bar that is otherwise a whole-measure rest, the predicted shape exactly.
+  These pages score 0.69–0.89, i.e. their bars barely pair, so a correct symbol added to a bar
+  already charged delete-whole-plus-insert-whole raises a charge being levied whole. **Same call
+  as the articulations fix** (−122 across works that segment, +219 on boulanger alone, shipped
+  with the counter-argument beside it).
+- ⚠️ Found on the way, NOT fixed: the **LilyPond** exporter never calls `measure_directions` at
+  all, so it drops dynamics on *every* measure. A wider gap, and invisible to `export_coverage`,
+  which compares MusicXML.
+- Landed on an isolated branch while another session had uncommitted `export.py` work in flight
+  (cross-staff ARC attribution, hunks at 567/1337/2435) — different concern, non-overlapping
+  regions; checked across all 84 worktrees before touching the file.
+
+---
+
+## 2026-09-04 — dynamics letters: a placement band exists, and re-attribution works on engravings only
+
+Sean asked whether dynamics letters should be read the way clefs are. Measured, not reasoned
+about: `benchmarks/omr-dynamics-band-2026-09/`.
+
+**Half of the clef approach transfers, and not the famous half.** Geometry-instead-of-
+classification does NOT apply — alto and tenor are one glyph on two lines, but a `p` is a `p` at
+any height, and the horizontal assembly it does need (`f`+`f` → `ff`) already exists in
+`export.measure_dynamics`. The clef LOCATOR does not apply either: it exists because the model
+is blind to clefs on scans, and the detector is not blind to dynamics — 1246 letters over 18
+pages. What transfers is **POSITION BEFORE SHAPE**, and `measure_dynamics` uses no vertical
+information at all.
+
+- **The band is real and holds across 9 publishers** (Breitkopf, Durand, Eulenburg, Jurgenson,
+  Litolff, Novello, Peters, Simrock, Universal): 73% of letters stand in their own staff's band,
+  24% in the band of the staff **immediately above — distance exactly 1, no exceptions**, which
+  is the cell padding confirming itself. Pooled widest empty interval **−3.04 .. −0.52 spaces**,
+  and the lower edge is a **plateau** (−1.5 .. +0.25 changes nothing on either scored arm).
+- ⚠️ **A GATE IS THE WRONG FIX**; an out-of-band letter is usually not junk but the neighbour's
+  ink through this cell's padding, and deleting it loses the mark. **83% of re-attributed letters
+  are the target staff's SOLE evidence** — because `_dedupe_cross_staff_detections` already
+  removed the twin BY DISTANCE and kept the lower staff's copy, the same failure the ledger-ladder
+  work found for noteheads. So the fix belongs in that function as another evidence tier, not in
+  a filter after it.
+- **Engraved (canonical 11): re-attribution is a clear win** — over-emission 1.19 → 1.04, staves
+  exact by word **52 → 83 of 107**, no work worse.
+- ⚠️⚠️ **SCANS: IT DOES NOTHING — 16 → 16 staves exact by word** (11 pages, 5 publishers,
+  hand-verified windows). The engraved result does not carry, and the table says why: on real
+  scans we **under**-emit (376 words against 491, 0.77), so the dominant dynamics error there is
+  a mark never found, not a mark on the wrong staff. Measured, **NOT shipped** — the next step is
+  why scans under-emit, not a wider band sweep.
+- ⚠️ **THEN ANSWERED, same day (`--funnel`): "reads them but doesn't write them" is REAL and is
+  the MINORITY.** Of the 129-mark scan shortfall: **14 are computed and thrown away** by the
+  eventless-measure branch — `measure_directions()` is called, assigned to `_dyn`, and never
+  used, in BOTH of `export.py`'s measure emitters. This is the bug CLAUDE.md records the 11-work
+  engraved benchmark cannot see, and which it predicted a SCANNED work would finally trigger:
+  **it does — 14 on scans against 0 on the engraved eleven**, and the attribution is exact
+  (`words formed − words in an eventless measure == words exported` on all 11 pages, to the
+  mark). A further ≤31 are the same family one step earlier: 49 detected letters in runs that
+  spell no dynamic, discarded whole, 15 of them a lone `s` (an `sf` whose `f` was missed). The
+  rest were never read — and **137 of the shortfall is the two Beethoven 5 p.2 scans alone**;
+  across the other nine pages we emit 191 against a truth of 183, over-emitting slightly exactly
+  like the engraved arm. ⚠️ So "scans under-emit" was too broad a claim and is corrected here.
+  NOT fixed — the eventless-measure branch is a two-site change in `export.py` and is left for
+  the session working that file.
+- ⚠️ Refuted: **confidence** as a filter. Priced as the trade rather than by comparing medians —
+  removing half the unattributable letters costs **233 of 911** good ones.
+- ⚠️ The probe restates `measure_dynamics`'s joining rule in page pixels (re-attribution moves a
+  letter into a staff whose cell it was never cut into) and **cross-checks itself against the
+  real function on every page**. That check earned its keep: the first version compared box
+  CENTRES where the exporter compares LEFT and TOP edges and disagreed on 4 of 11 scanned pages.
+  A second self-caught flaw: the dedupe keyed on distance could merge the two letters of one
+  `ff`, which a word COUNT cannot see — fixed by keying on the source cell, and a word-CONTENT
+  check added, which cut the engraved claim from 92/107 to a truthful 83/107.
+
+---
+
+## 2026-09-04 — the class space spells 32 glyphs twice, and consumers read one spelling
+
+Asked whether dynamics letters should be read the way clefs are. Looking for the dynamics
+consumers turned up a separate, live fault first: the 208-class vocabulary is **two annotation
+sets concatenated** — fine at ids 0-135 (`dynamicF`, `articStaccatoAbove`, `tupletBracket`),
+coarse at 136-207 (`dynamicLetterF`, `articulationStaccato`, `tupleBracket`). Forty classes
+carry the SAME name at both ids so a name lookup sees both; **thirty-two do not**, and every
+consumer in this pipeline was written against the fine spelling.
+
+- A detection at id 192 was a forte `export._DYNAMIC_LETTER` could not spell — the letter never
+  joined a word and the mark was dropped with no warning anywhere. The same fault as
+  `fingering3`/`tuplet3`. Confirmed **mechanically**, by asking each class-name consumer what it
+  returns for both spellings, not by reading: 6 dynamic letters, 5 articulations, `tuple`/
+  `tupleBracket`, `arpeggio`/`legerLine`.
+- ⚠️ **It cost nothing when found** — the coarse block fires **zero** times across 3 engraved
+  fixtures and 29 scanned pages of 9 publishers. What makes it live is the LABELING side: 26 of
+  the hollow campaign's hand-drawn boxes are classed `dynamicLetterF`/`P`/`S` and
+  `data/user-labeled/catalog.yaml` carries the coarse spelling at ids 190-195, so the next
+  fine-tune trains ids the exporter cannot read.
+- Renamed at the ONE place the model's own `names` are read (`yolo_detector._ensure_loaded`), so
+  every consumer downstream sees a single spelling and no call site knows.
+- ⚠️ **Only 11 EXACT TWINS are renamed, and the abstentions are asserted rather than merely
+  documented.** A coarser name is not a synonym: `numeral4` is NOT `timeSig4` (one numeral class
+  covers meters, tuplet digits, fingerings and measure numbers — and CLAUDE.md records five
+  spurious `timeSig4` on barline fragments shipping a 2/4 page as common time, 390 bar-check
+  failures against 164 for no meter at all); `articulationStaccato` states no SIDE, which
+  `_attach_articulations_in_cell` requires geometry to agree with; `tuple` no NUMBER; `clefC` no
+  LINE, and already resolves to alto by documented design with `resolve_clef` measuring the line
+  anyway. Those 21 sit in `COARSER_THAN_CANONICAL` with what closing each would take, and
+  `unaccounted()` fails the suite on any name in neither table — so a checkpoint with a wider
+  class space is a loud failure, not a silent drop.
+- One consumer spelling fix beside it: `noteheadFullSmall` (`full` is the coarse spelling of
+  `black`) reached `rhythm._NOTEHEAD_INTRINSIC` with a category and NO duration. Fixed as a
+  prefix, not a rename — it states no staff position and does not need one, since pitch comes
+  from the note's y against the grid.
+- **CONTROL**: re-transcribing the same scanned page across the change leaves every musical field
+  identical — same detections, classes, boxes, structure; the only differing leaves in the whole
+  JSON are the four wall-clock timings. Suite 2010 passed / 4 skipped.
+## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
+
+Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
+(`system_grouping._choir_grouping_enabled`, opt-out 0/false/no/off): cue B
+(pair-local left-edge merge) + cue C (grouped-system open-score guard),
+diagnosed and priced on `claude/bach-choir-grouping` — Bach 6→2 systems
+[12,12], 122→11 cells vs true 10, row 0.9241→0.8152; byte-identical on the
+10 pooled scan rows, the 11-work engraved benchmark, and the boulanger
+canary; 969-page probe hand-adjudicated 10/10 changed pages toward truth, 0
+false merges. The Bach row's `pooled` flag flips back to true in the same
+event — a BENCHMARK BOUNDARY: the pool is 11 rows under the composed
+default config (tilt ON × choir ON) from the re-stamp onward, and no pooled
+figure crosses the boundary. The re-stamp run (one fresh default-config
+pass, all 11 rows, graft weights) stamps the new canonical figure; recorded
+in the addendum beside WIDENED_BASELINE_2026-09-04.md when it lands.
+
+## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
+
+Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now
+defaults ON (`measure_extractor._cell_line_trace_enabled`, opt-out via
+`0/false/no/off`). Deployed default-config scan baseline moves to the
+flag-on arm's figures: **pooled 0.8345 / 28849 over the 10-row pool** (was
+0.8387 / 29082 flag-off; same graft weights — the flag is the only
+variable, and the harness is byte-deterministic). Engraved figures
+unchanged (no-op by construction, byte-identical A/B). Flag tests updated
+to pin the new default; the flag-OFF contract every labeled batch depends
+on (grid = `staff.line_ys - y0`) is still pinned via explicit `0`. Blast
+radius recorded in the knobs table (key-sig slot-fit interaction, net −15;
++2..+7 noise on three low-exposure rows). Evidence:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md`.
+
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
+## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
+
+Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
+`claude/scan-gate-rows`, stories in scan-e2e VERIFICATION.md), the first
+widened baselines measured for both checkpoints (merge `04eb8050`,
+WIDENED_BASELINE_2026-09-04.md — the ship decision HOLDS on the deeper
+gate), and then, at Sean's decision, the Bach stress row was excluded from
+the default pooled figure via a new `"pooled": false` row flag in works.json
++ scan_eval.py support (stress rows run and report per-row, never pool).
+Rationale: its OMR-NED measures page-structure parsing (122 detected
+measures vs 10) and whole-measure amplification there charges recognition
+improvements as regressions — the Boulanger call, repeated. **Canonical
+scan-gate baselines: prior-prod (hollow-ft) 0.8457 / 29081; production
+(hollow-graft-shift09) 0.8387 / 29082, over 10 pooled rows.** All pre-widening
+figures (0.7517 / 0.7493) are 5-row history; no comparison crosses either
+boundary. Validation: the pool-exclusion logic re-scored the committed
+widened-graft fixtures and reproduced the recorded 10-row figures.
+
+## 2026-09-04 — Design note: position grammar over the mark alphabet
+
+Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
+lines) generalized into a written principle:
+[docs/position-grammar-confusables-2026-09-04.md](docs/position-grammar-confusables-2026-09-04.md).
+Engraved music reuses a tiny mark alphabet — dot, stroke, wedge, arc, bowl,
+digit — and identity is position grammar over the staff lattice, not shape;
+the detector proposes ink events with a class PRIOR, a downstream layer
+assigns or vetoes identity. Nine shipped precedents cited with their numbers;
+six design rules (class space stays 208 / families closed under
+confusability / veto-impossible-first / anchors before grammar /
+matches-nothing-is-an-output / never tune positionally on one edition); an
+inventory of the confusable families with measured discriminators; and the
+next six opportunities each tied to an existing measured hook. First
+consumer: the round-6 specialist/labeling campaign via family closures and
+adjudication-batch shape.
+
+## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
+
+**Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
+on the ~750-cell scan-label corpus deletes whole classes — tie/slur/beam/
+augmentationDot/accidentalFlat/restWhole/ledgerLine go to exactly zero — under
+every method tried (eleven arms: the ship's own recipe, no-warmup, low LR,
+freeze, plain controls, teacher rehearsal/distillation at two confidences).
+The fix that survived is surgery, not training: keep only the hollow
+fine-tune's seven notehead-class head rows (`model.22.cv3.{0,1,2}.2` is the
+only per-class place in a YOLOv8 head), graft them onto production, and bake a
+per-class confidence floor into those rows' biases (`--bias-shift 0.9` ≈
+raising only those classes' threshold 0.25 → 0.45, since the pipeline has one
+global threshold).
+
+**What:** `transcribe.DEFAULT_WEIGHTS` — the scan side of weight routing —
+now points at `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(byte-identical to `omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt`,
+sha256 `2cb6eb3e…3126`; copies in both `omr-weights/` and
+`tools/omr/training/data/weights/`). The engraved side (`ENGRAVED_WEIGHTS`)
+is untouched. First checkpoint in three rounds to beat the 09-03 production
+on every measure of all three gate axes: half-noteheads 27 → 31,
+pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782, dense notehead
+recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 with 4 of 5
+rows improving, 28 classes held with 0 collapsed; element counts move toward
+truth on ties (60 → 97 of 271) and rests (577 → 589 of 972). The ship was
+gated on a fresh determinism probe: the scan-e2e harness is byte-deterministic
+(identical outputs across runs, worktrees and days — noise floor exactly
+0.0000), so the delta is a real property of the weights. Sean approved the
+ship 2026-09-04.
+
+**Records:** `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`
+(lands with branch `claude/scan-weights-round4-continue-074940`) and
+`benchmarks/omr-scan-e2e-2026-09/DETERMINISM_2026-09-04.md` (branch
+`claude/scan-e2e-determinism`). The prior scan production
+(`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`) stays on disk under its own
+name — in-flight benchmark branches that pin "production" by explicit path
+are unaffected, and their recorded 0.7517 baseline still names that file. The
+web-app container picks the repoint up on its next
+`docker compose build backend`.
+
+---
+## 2026-09-04 — round 5: the fine-tune deletes CLASSES, and the fix is head surgery
+
+- **"Every fine-tune degrades the base" turned out to mean whole class families going to
+  exactly zero.** Not suppression and not a threshold artifact — every fine-tune's MEDIAN
+  CONFIDENCE IS HIGHER than production's (0.669-0.698 vs 0.604) while raw detections fall
+  3204 → 806-1365. tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+  accidentalFlat 80→0, restWhole 396→0, ledgerLine 288→14, with noteheads holding at
+  80-100%. The corpus is the mechanism: 3871 human boxes contain **0 `beam` and 5
+  `ledgerLine`**, and only 164 of 591 cells ever saw a rich palette.
+- ⚠️ **`beam` and `ledgerLine` are CONSUMED by the pipeline**, against what the labeling
+  policy assumed. `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam
+  overlaps (worth 0.1917 → 0.1861) and the ledger-ladder arbitration reads `ledgerLine`
+  detections directly (0.1506 → 0.1431). Both rules were dead on every round-3/4/5
+  candidate, silently, because neither has a test that fails when its input vanishes.
+  That is now gate axis 3.
+- ⚠️ **`restWhole` was nearly exempted from that gate on prose.** 396 over five pages
+  reads as absurd and the round-2 audit names it a slur-arc false-positive mode. Counted:
+  those pages carry **801 resting bars** and production reads 108/88/11/96/93 — under the
+  printed count on every page. The exemption is gone.
+- **ELEVEN METHOD ARMS, ALL DEAD.** The 896 ship's recipe on the new labels (the control
+  round 4 never ran), warmup off, warmup off + lr 1e-5, low LR, a frozen backbone, a
+  matched no-teacher control, and teacher rehearsal in both scopes at conf 0.50 and 0.25.
+  The pre-hollow BASE loses nothing, so it is caused by the fine-tune, not inherited.
+  **More labeling will not fix it** — round 4 tested that by hand (3%) and round 5 tested
+  the perfect version with 3417 teacher boxes (nothing).
+- **The fix is surgery.** A YOLOv8 head is per-class in exactly one place —
+  `model.22.cv3.{0,1,2}.2`, one weight row and one bias per class — so
+  `merge_class_head.py` restores the base's rows for classes the corpus does not teach,
+  and `--bias-shift` bakes a per-class confidence floor into the rows that stay. Seconds
+  on a Mac, no GPU.
+- **`d25e0_graftprod_shift0.9.pt` beats production on every measure of ALL THREE AXES** —
+  half-noteheads 27 → 31, pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782,
+  step 0.6463 → 0.6939, dense notehead recall 0.941 → 1.000, pooled scan-e2e OMR-NED
+  0.7517 → **0.7493**, class space 28 with 0 collapsed. First candidate in three rounds
+  to clear all three. **Not shipped — the live repoint is Sean's call.**
+- ⚠️ **Shift 1.5 has the best axis-2 number (0.7420) and is the worst checkpoint in the
+  table** — 17 half-noteheads against production's 27, exact recall below production's.
+  The floor went past the false positives into the true ones. Read alone, axis 2 would
+  have shipped it.
+- Rig faults worth not repeating: **v2/v3/v4 store cell images as SYMLINKS** (a `cp -R`
+  into a cloud tarball ships 101 of 136 dense cells as dangling links, skipped as
+  "corrupt image/label"); never overwrite a running bash script; the 208-class space has
+  **40 duplicated names**; 2× dense oversampling is now 43/57 hollow-MAJORITY and the
+  ship's 69/31 ratio needs **6×**.
+- GPU spend **$0.37**, box destroyed. Full account:
+  `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`; handoff
+  `docs/handoff-2026-09-04-round5-class-collapse.md`.
+---
+
+## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
+
+Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —
+both in `catalog-versions.txt`, both in the round-4 training run at the time — at 0.52sp and
+0.54sp tall, inside the measured clipped-fragment band (0.29–0.56sp, from
+`transcribe._drop_clipped_notehead_fragments`) and under the genuine-notehead floor (0.60+).
+That discriminator was measured once, on the DETECTOR's output, and had never been applied to
+hand-drawn labels — which see the identical ambiguous ink.
+
+- ⚠️ **Height alone reads "rest"; WHERE in the cell is the fact that settles it.** A first pass
+  measured height only and concluded both were rests. Rendered crops (both sessions,
+  independently) show the labeled box capturing only a thin sliver at the cell's own TOP edge,
+  of a much larger shape that belongs to the staff ABOVE — not a symbol in this measure at all.
+  Likely correction: delete, not relabel. Sean's call — the cells are the reference corpus.
+- **Shipped as the auditor's third check**, needing no image at all (manifest geometry only:
+  `cell_canonical_h`, staff lines, the label's own bbox) — the first of the three that reaches
+  the four `hollow2-2026-09` batches whose `cells/` was never re-cut on this machine.
+  ⚠️ **The edge tolerance is NOT the original 1px** (that only holds for a model's box, which is
+  pixel-flush with the crop cut) — a hand-drawn box leaves 0.07–0.28sp of margin around the
+  visible sliver, so the check uses `CELL_EDGE_TOLERANCE_SPACES = 0.5`.
+- **Validated exactly like the other two**: finds the 2 known cases and nothing else on their
+  batches; run over the full campaign (1666 labels, 15 batches, 8 never part of this tool's
+  development) it finds the SAME two and adds **zero** false positives, including the corrected
+  Brahms batch.
+- Credit: scanned-weights session, for finding the two live cells and for the missing
+  WHERE-in-the-cell field that corrected their own first (height-only) read.
+
+## 2026-09-03 — the ledger-zone auditor's raw flag rate is an UPPER BOUND, not the defect rate
+
+The scanned-weights session ran the auditor on Simrock/Dvořák 9 (110 cells, labeled entirely
+after the tool existed — a genuine out-of-sample test) and reported it flagged 7 of 102
+ledger-zone labels (6.9%, matching Brahms). Adjudicated by hand: 6 false positives, 1 real —
+**true rate ~0.9%, an order of magnitude below the raw flag**. The one real error was worth
+having; nobody would have looked for it otherwise.
+
+- **The false-positive mechanism, independently reproduced on the actual pixels**: a printed
+  ledger line survives staff-line removal and print-merges into the SAME connected component
+  as the notehead beside it, pulling `blob_centre`'s centroid toward the rung by up to a full
+  half-step — enough to flip the reported parity. Confirmed by rendering cells with the exact
+  known step positions overlaid (no algorithm, just pixels against arithmetic) — the same
+  standard the 6 Brahms corrections were already held to.
+- **Five candidate fixes were tried against BOTH the Brahms corrections and the Simrock false
+  positives; none generalises.** The literal fix as proposed (filter rows by local ink-run vs.
+  a multiple of box width) resolves Simrock 4/4 and breaks Brahms 0/6 — traced to WHY: it only
+  has room to detect the rung's excess where the human's box carries generous padding around
+  the head, and that convention differs by batch/labeler with no record of which is which.
+  A width-based reject flag looks clean on the 4 known Simrock false positives but also flags
+  40 of Brahms's 76 ledger-zone labels, all independently uncontested — width alone does not
+  discriminate. Numbers for all five in `LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md`.
+- **Shipped: `blob_centre` now returns the winning component's height/width in staff spaces**,
+  printed alongside every parity suspect — context for a human, explicitly NOT a filter or a
+  reweighting (no decision logic changed; the corrected Brahms batch still reports 0 suspects).
+- **Standing recommendation, now on two independent adjudications**: every candidate needs a
+  human looking at the actual ink against the known staff/ledger positions. Read a raw flag
+  rate as an upper bound on the true rate, not the rate itself, when the campaign-wide 19
+  parity candidates are eventually adjudicated.
+
+## 2026-09-03 — auditing the labels: ledger-zone parity and shape-vs-class
+
+Sean's 49-cell completion pass was audited before it went to training; 7 labels were corrected
+(committed with the labels in `4003743`). The two checks that found them are now a tool,
+`benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py`, because neither is covered by
+the inside-staff parity auditor and both generalise.
+
+- **Ledger-zone parity — measure the INK, never the BOX.** Out-of-staff noteheads are where the
+  click-to-box snap extrapolates the grid past the staff. Brahms: **6 suspect of 76 ledger-zone
+  labels (~8%)** against **0** inside-staff parity errors. ⚠️ A click-placed box inherits the
+  slot the snap chose, so its centre is biased toward the grid that placed it — the
+  scanned-weights session checked three of these at box centres, read the opposite parity on
+  two, and was wrong on both; rendering the cells with the grid drawn showed a printed line
+  through each head. Ink inside the HUMAN's box says the human is always right, ink inside the
+  PRE-FILL's box says the pre-fill is always right; only the blob on `*_nostaff.png` is
+  evidence. (Same trap already recorded from the snap-ledger work — and walked into anyway.)
+- **Shape vs class — a parity audit is blind to a wrong KIND.** The whole rest labeled
+  `noteheadBlackInSpace` measured **2.13 × 0.72 spaces, aspect 2.97:1** against a median black
+  notehead of **1.19 × 1.00, 1.19:1** (n=189), and sits INSIDE the staff, so no parity auditor
+  could reach it. Discriminator credit: the scanned-weights session.
+- **Validated both ways**: run on the pre-correction verdicts the tool reproduces exactly the 7
+  hand-made corrections (6 parity + 1 shape); on the corrected ones, 0.
+- **Campaign-wide (1666 human labels, 275 ledger-zone): 19 parity + 3 shape CANDIDATES**, i.e.
+  **6.9% of ledger-zone labels** — corroborating the Brahms 8% on eight batches the method was
+  never tuned on. ⚠️ Candidates for a human, not corrections: the tool writes nothing, and
+  `box_is_Npx_from_ink` is the row-level sanity check (a large value means the blob found may
+  not be the labeled glyph — `beet5-p6-sys0-s8-m13` at 106px is the weakest row).
+- ⚠️ **Run it from the MAIN checkout.** `cells/*.png` are gitignored, so from a worktree every
+  cell abstains — the same trap that makes `verdicts_to_yolo_labels` silently report 0 classes.
+
+## 2026-09-03 — Phase C ANSWERED: pre-filled boxes are a queue, not labels
+
+Sean labeled **49 cells completely and blind** in one sitting — the 25 pre-registered plus 24
+more. The pre-registered analysis is the committed one and it is negative.
+
+- **Pre-registered 25: exact 0.838, `labels` tier 0.849** over 74 boxes. Other 24 (also
+  out-of-sample, not pre-registered): 1.000 over 67. **Pooled out-of-sample 0.915 over 141.**
+  In-sample six, where the tiers were fitted: 0.961 / labels 1.000. The bar was set in advance
+  at ≳0.97; every honest reading is under it, so **the queue reading stands — now on
+  out-of-sample evidence rather than caution.** The in-sample 1.000 was six dense cells
+  describing themselves.
+- ⚠️ **The Phase A admission tiers were fitted to those six cells' error MODES, and a random
+  sample fails differently** — every policy lands 0.815–0.859 because the signals never fire:
+  `near` 0 on all 12 errors, `parity_ok` 1 on 10, `small` 0 on 11. Nothing for a confidence
+  band to separate. This is what pre-registration is for.
+- **The 12 errors:** 6 line/space flips where the box centre sits 23–51 px (¼–½ staff space)
+  off the hand-drawn box — both detector and reference name the position from a MISPLACED box
+  while the human labels the ink; **4 rest VALUE disagreements** (`restQuarter` vs the human's
+  `rest8th` at IoU 0.65–0.82 — same glyph, reference duration vs printed); 1 whole-rest read as
+  a notehead; 1 unmatched grace-sized box. **Rests are the weak class and were invisible
+  before**: out-of-sample noteheads **0.943**, rests **0.722** (0.500 on the registered set's
+  ten). The six dense cells print almost no rests.
+- ⚠️ **Phase A's reference-variant rule is a NO-OP under `hollow-ft`** — 0 overrides across all
+  141 boxes, because the detector's variant already agrees with the reference. It earned its
+  keep on the older weights (2 of 3 flips) and costs nothing, but it is not holding the number
+  up and cannot fix a flip caused by a misplaced box.
+- **Two alternative explanations ruled out before reporting:** the blind server's access log
+  shows all 49 cells saved through it (no hint contamination), and for every error there is NO
+  human box of the pre-fill's class overlapping the pre-fill box (so the greedy IoU-0.3 matcher
+  is not stealing a neighbour). The 0.838-vs-1.000 split between the two halves is real and
+  unexplained by box geometry (110×101 vs 112×112 px) or labeling order (fully interleaved,
+  16:06–17:05 vs 16:09–17:06).
+- **The 49 completely-labeled cells are this session's real yield** — blind, complete, and
+  exactly the rests-and-accidentals completeness `NEXT_ITERATION.md` step 1 asks for on this
+  batch. Re-conversion into a training version belongs to the labeling/training session
+  (`data/user-labeled/` is theirs).
+
+## 2026-09-03 — Phase C started, and the training session's finding corrects a Phase B claim
+
+- ⚠️ **CORRECTION to Phase B, from the training session's independent work.** "What it lost was
+  junk" was true of NOTEHEADS and over-general about everything else. `NEXT_ITERATION.md`
+  establishes that the hollow-family weights suppress **rests and accidentals**, and that the
+  cause is a LABELING gap: the completion pass over these cells labeled only black noteheads
+  and augmentation dots, so rests and accidentals trained as background. The same signature is
+  in the Phase B arm's own numbers, reported but not read — **rests fall 1380 → 951**. And the
+  missing-hint control is close to BLIND for rests, because `prefill_cell` drops rests from the
+  alignment on condensed staves and a conductor's page is full of them. The notehead half of
+  Phase B stands unchanged; the generalisation does not.
+- ⚠️ **A palette trap was caught before it could do damage, and it was the difference between
+  helping the next training run and harming it.** The batch's ACTIVE `batch_config.json` was a
+  stale 9-slot completion palette with **no `accidentalNatural`, slur, tie or hairpin** — while
+  the six already-complete cells contain 5 naturals, 8 slurs, 6 ties and 5 hairpins. Labeling
+  Phase C under it would have left all of those as background: precisely the mechanism
+  `NEXT_ITERATION.md` blames for the completeness regression. Swapped to the canonical 14-slot
+  `batch_config.completion.json` (the stale one backed up as `batch_config.stale-9slot.bak`).
+- ⚠️ **Even 14 slots is not the whole class space.** The six complete cells also hold `keyFlat`
+  ×3, `clefG`, `timeSig8`/`9`, `ornamentTrill`, `accidentalNaturalSmall` and two grace-sized
+  black heads — labeled through the FULL PICKER, which is what "complete" means. The protocol
+  now says so explicitly.
+- **The cells are dual-purpose**: Phase C's out-of-sample measurement AND step 1 of
+  `NEXT_ITERATION.md` for this batch (the rests/accidentals completion the next cloud run
+  needs). Serving blind on :5053 from a worktree that has `--blind`; ⚠️ a 5.5-hour-old server
+  on **:5051 is still serving this batch NON-blind with the stale palette in memory** (config
+  is read at startup) — it must not be used for this pass.
+
+---
+
+## 2026-09-03 — `Hr.` / `Trpt.`: the largest gap the lexicon sweep found, closed
+
+- The lexicon sweep two entries below left `Hr.` and `Trpt.` open on purpose —
+  "that is a third lexicon change and it deserves the same multi-edition
+  measurement rather than a ride on this one." Measured separately, same day:
+  `hr` (German/English *Hörner*) and `trpt` (a distinct 4-letter shorthand from
+  the `tpt` already in the table, not a typo of it) are **0/409** collisions
+  against every existing alias and **0/1271** touches on the reference
+  part-name corpus.
+- Against the same 1422-label margin dump: **24 labels, 13 distinct strings,
+  all Brahms 1 / Breitkopf horn and trumpet staves** — the true count; the "18"
+  first reported was a `.most_common(12)` display truncation, not the real one.
+  Every committed reader benchmark (`results*.json`, `score_readers.py`) is
+  byte-identical to before.
+- ⚠️ **The instrument NAME is right in all 13 strings; the transposition
+  offset is exact only where the printed key TRAILS the abbreviation**
+  (`Hr. (E)` → fifths_offset -4, correct). `(C) Hr.` — key BEFORE the noun —
+  falls back to Horn's positional default, because `_parse_bare_key` has only
+  ever read the token AFTER a match. **Not a new gap**: `A-Klar.` has resolved
+  to Clarinet with its default transposition rather than a parsed one since
+  2026-08-31, for every key-taking instrument in the table. The dossier join
+  pins on the unambiguous NAME, not the offset, so this doesn't cost a pin.
+- `benchmarks/omr-lexicon-2026-09/FINDINGS.md` and `CLAUDE.md`'s "Instrument
+  identity" section both updated in place rather than restated.
+
+---
+
+## 2026-09-03 — three margin labels the lexicon dropped, and three different faults
+
+- `scan_eval.py` over the five verified scan rows produced three strings
+  `instruments.lookup` could not match. Each turned out to be a different kind of fault, and
+  only one was a lexicon bug. Full reading:
+  [benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md).
+- **`Contrafagott` was one hole in a family of ~25.** A contrabassoon is printed as a BASSOON
+  name with a contra- qualifier, and both halves vary independently (four languages of noun ×
+  four of qualifier × the abbreviations a crowded margin uses), so the spellings are a CROSS
+  PRODUCT and the hand-list held six. ⚠️ The missing ones did not ABSTAIN — the bassoon noun
+  inside them matched on its own, so `Contra-Fagott` read as **Bassoon** and `C. Fagotto` as
+  Bassoon at HIGH confidence, enough to pin a staff to the wrong part. `_CONTRA_ALIASES` is now
+  DERIVED from the bassoon's own aliases (the `VOICE_QUALIFIERS` move); `contraf` stays listed
+  apart as a truncation. Matching is not loosened — every generated string still has to appear
+  word-bounded and exact.
+- **The live cost was on the scan benchmark's own Brahms edition, not on Mahler.** Breitkopf
+  abbreviates Kontrafagott `K. Fag.`, and ten of those staves were reading as Bassoon on a page
+  that also prints two real bassoon staves. The reported `Contrafagott` was the cousin that
+  happened to abstain and therefore got noticed.
+- **`Yiolino II.` was already fixed and unmerged** on `claude/zen-panini-fdc5ae` (`6bfed41`,
+  2026-09-02) — merged rather than rebuilt. Its decision: the OCR fold belongs in the lexicon,
+  admitted on RARITY not plausibility (`y` occurs only in `tympani`/`xylophone`, both of which
+  resolve on the exact pass), and common-letter pairs (a/u, b/h, c/e, n/m) are refused by name
+  at a priced cost of two real corpus reads.
+- **`in C \frac{1}{2}` was not a lexicon fault.** Surya writes a STACKED part number as a LaTeX
+  fraction; the digits are part numbers `normalize_label` already drops, the control word is not
+  and it dilutes `coverage`. Folded at the READER (`staff_labels_surya._plain_text`), because
+  LaTeX is Surya's output format and `_surya_worker` already unwraps that worker's HTML at the
+  same boundary. ⚠️ Measured over 1422 labels it changes **zero** resolutions — the two Brahms
+  strings are the HORN staves, and the page prints `Hörner` once braced across them, so
+  abstaining is correct and no lexicon can recover them.
+- **Validation, three corpora** (`benchmarks/omr-lexicon-2026-09/`): 1 of 1271 reference part
+  names changes; every committed reader benchmark is unchanged to the count; **12 of 1422 real
+  margin labels across 13 editions change, all in the intended direction**. New harness:
+  `read_margin_labels.py` (dump what the readers emit), `resolve_labels.py` (replay a dump
+  through two revisions' lexicons), `reference_part_names.py`.
+- **Found and NOT fixed, each its own bug:** `Hr.` and `Trpt.` resolve to nothing on 18 Brahms
+  labels; a whole system margin can arrive as ONE label and resolve to Piccolo.
+
+---
+
+## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
+
+- The old click-to-box snap extrapolated the parity grid beyond the staff at the staff
+  spacing, and real ledger pitch is a fact about the engraving (the snap-ledger work,
+  `benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`, branch `claude/peaceful-shamir-d12e52`) —
+  so some accepted suggestions carried the wrong OnLine/InSpace variant. Every out-of-staff
+  labeled notehead where the rung-anchored snap disagrees with the stored class was
+  re-adjudicated: 26 candidate rows (7 BROKE + 19 STILL WRONG) across the 10 hollow batches,
+  each examined on a rendered crop, the ambiguous ones settled by ink measurement.
+- **Three labels were wrong — all silent acceptances of the old grid's suggestion, all on the
+  Eulenburg Scheherazade batch:** `schehe-p3-sys0-s3-m3` OnLine→InSpace (the head hangs in
+  the space below its single ledger), `schehe-p4-sys0-s2-m0` InSpace→OnLine (the counter is
+  split into two white lobes by the 2nd ledger running through the head), and
+  `schehe-p3-sys0-s3-m0` OnLine→InSpace — FINDINGS §4's "unresolved" row, settled by
+  measurement: one connected counter, the single ledger tangent below the head at 1.25×
+  staff spacing (the wide Eulenburg first gap), and no ink where a second ledger would print.
+- **The other 23 candidates stand**, including every one of Sean's explicit `c`-press
+  overrides. Several were confirmed by ink profile rather than eye alone — e.g.
+  `mahler1-p3-sys0-s11-m5`, where the ledger band runs through the head with 37–55 px wings
+  but both grids read in_space because the cell's manifest staff lines sit ~40 px off the
+  ink at that x (the §6 warped-manifest family).
+- Corrected in BOTH verdict copies — the batch's `verdicts/` and the survey's
+  `v8-merged-verdicts/` that `build_v8.py` derived from them — as class strings only, boxes
+  untouched. Then v8 re-exported with the original converter arguments: the diff is exactly
+  three class ids (32↔34) on unchanged coordinates, plus the metadata timestamp.
+  `build_v8.py` was deliberately NOT re-run (it would silently pull the later Brahms
+  completion-sweep boxes into v8's membership), and the catalog was deliberately NOT rebuilt
+  from the worktree (its committed lists carry main-checkout absolute paths; training reads
+  `labels/*.txt` directly, so the correction is live for the next training run as-is).
+- Eval after the correction (shamir tooling over current verdicts): ink transitions
+  18 recovered / 7 broke → **21 / 4**; the 4 remaining breaks are FINDINGS §4's adjudicated
+  displaced-centre artifacts and the one tangent-merge reader miss, all with correct labels.
+
+## 2026-09-03 — Phase C registered: a blind, pre-registered sample to decide admission
+
+The measurement half is Sean's; everything around it is prepared, and two ways the number
+could have come out wrong are now closed by construction.
+
+- **`annotate.server --blind`** withholds the pre-fill from the UI entirely — no ghost hints,
+  no `prefill_status`, no queue order. ⚠️ **A human shown the hints cannot measure them**: the
+  score would report agreement with what the human was told. The existing `h` toggle is not a
+  substitute — hints render by DEFAULT and `Tab` to the next cell is a full page load, so the
+  toggle resets on every cell. The queue order is suppressed too, because "most left for me
+  first" leaks the same information one step removed. Verdict state is untouched; blind is
+  about what the human SEES. 1 new test asserts both payloads and that the cell set and order
+  are unchanged.
+- **`select_phase_c_cells.py` pre-registers the sample** (`PHASE_C_CELLS.json`): seeded
+  (20260903) so it cannot be re-rolled until it flatters something, excluding the six
+  already-complete cells, and recording each cell's pre-fill status, box count and admission
+  tier **before** any labeling — 25 cells, 74 boxes, 73 of them labels-tier. The list is
+  ORDERED and stopping early stays valid (a shuffle's prefix is a uniform sample), which is
+  why 25 are registered when 12–15 is the ask: 15 cells ≈ 50 boxes, 25 ≈ 74.
+  ⚠️ A random sample of orchestral cells is mostly SPARSE bars (1–6 boxes) against ~8 in the
+  six dense ones — that difference IS the bias being corrected. Four cells the pre-fill
+  abstains on are kept in: dropping them would quietly reintroduce the old bias.
+- ⚠️ **Caught before it could produce a damning wrong number: every registered cell already
+  has a verdict file** from the hollow sweep, so an unreached cell is not empty — it holds
+  hollow boxes and nothing else, and scoring every class against it charges each correctly
+  pre-filled black head as a false positive. `probe_admission.py` gained `--inspected-for`
+  (the guard `mxl_verdicts` already had), so both tools score exactly the cells that are
+  finished, at any point mid-labeling. It also gained `--transcription`, because which boxes
+  exist to be scored moves with the weights (Phase B) — score against the reading the sample
+  was registered against.
+- Protocol, including how to read the answer either way:
+  `benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md`.
+
+## 2026-09-03 — Round 3: completing the training cells (540 → 1322 boxes)
+
+- **The next-iteration plan's diagnosis was a minority of the problem, and measuring first
+  caught it.** `NEXT_ITERATION.md` said the 30-epoch cloud regression came from rests and
+  accidentals left unboxed. Running the production detector over the 198 cells that emit a
+  YOLO label and bucketing every detection by whether ANY pass had covered its class:
+  **41.2% (377 of 916) sat in never-boxed classes** — dynamics 165, slurs 99, ties 26,
+  clefs 29 — against 73 for rests+accidentals. **Dynamics + slurs are 3.6× the named gap.**
+  Labeling only what the plan named would have spent the GPU and hit the same wall.
+- **Work split by which labeler is good at which family**, not one method for everything:
+  Sean hand-labeled rests, accidentals and clefs (the round-2 audit measured the model
+  FP-prone exactly there); an audited model completion did dynamics, slurs and ties
+  (spot-checked 8/8 real per class) and later a black-notehead top-up. **760 human boxes
+  over 493 cells**, audited crop-by-crop with **zero label errors found**.
+- **Closing measurement, same 280 cells and same detector as the opening one:
+  uncovered ink 68.1% → 35.9%.** It also named the next gap rather than just scoring —
+  41% of the residue was black noteheads, unevenly covered (80 boxed on Litolff, ONE across
+  25 cells of v7), which is the dominant class training as background. Topped up.
+- **v13–v21 supersede v7/v8 in `catalog-versions.txt`.** 209 cells / 540 boxes → **280 /
+  1322 (+145%)**. The old versions come OUT rather than sitting alongside: they label the
+  same images less completely, and training on both teaches that the symbols the incomplete
+  copy omits are background — the regression being fixed.
+
+### Three bugs, each caught by diffing rather than by a clean-looking run
+
+- ⚠️ **The converter silently dropped all 445 model boxes.** `verdicts_to_yolo_labels` reads
+  a schema-v2 detection as `model_predicted_class` + `model_bbox`; the merge wrote
+  `smufl_name` + `bbox`, the shape the completion CANDIDATES use. The file parsed, the cells
+  counted, 911 of 1157 boxes were emitted, and the retrained mix would have carried LESS
+  completion than v8 while the round looked like progress. Fixed; now verified per version
+  as merged == emitted.
+- ⚠️ **A config is not a coverage record.** Brahms 1 was left to the session holding it,
+  whose palette lists rests and accidentals. Its VERDICTS showed 55 cells stamped
+  `hollow noteheads` and **zero stamped for any completion pass** — so its 11 cells in v8
+  would have re-imported the exact background bug through the one batch nobody swept.
+  What a pass covered is in `inspected_passes`; a palette only says what someone COULD box.
+- ⚠️ **A guard that abstains silently is indistinguishable from a guard that passed.** A new
+  size guard read `cell.staff_line_ys`; the field is `staff_line_ys_canonical`. getattr
+  returned None, every cell registered as "no geometry", the guard abstained on all 169
+  candidates and let through the 394×170 slur arc it was written to catch. Nothing errored;
+  the only tell was `dropped_size: 0` where a small positive number belonged. The abstention
+  path now COUNTS instead of returning True.
+
+### Also
+
+- **Sweeping cells that cannot become training data.** A cell only trains if it carries a
+  box (`_is_filled` is false for an inspected-empty cell, which emits no label and is not
+  used as background either). Pooling only box-carrying cells cut the remaining sweep from
+  328 cells to 152 with identical signal.
+- ⚠️ **Scan degradation has TWO directions and a naive probe sees one.** Asked whether a
+  batch was a bad scan, ink density, fragmentation and staff-line continuity all said
+  mid-pack — they only detect decay by BREAKING. This corpus decays by BLOOMING, and **a
+  bloomed staff line is perfectly CONTINUOUS, so it scores WELL on continuity while being
+  unreadable.** Every batch here is bloomed (lines at 0.20–0.27 of a staff space against a
+  clean 0.08–0.12).
+- **The three works asked for cannot be benchmark rows.** Mahler 1, Elgar 1 and La mer have
+  edition PDFs and ZERO reference encodings. Of the 27 works pairing a PDF with truth, every
+  one is German-published except Holst/Goodwin & Tabb, Tchaikovsky 4/Jurgenson and
+  Tchaikovsky 4/Heugel — drafted in `works-draft-nongerman.json`, held out of `works.json`
+  because scan_eval refuses a pooled figure while any row is `first_pass`. ⚠️ **The training
+  set covers Universal, Novello and Durand and this benchmark cannot validate them.**
+
+---
+
+## 2026-09-03 — Phase B: the pre-fill's precision follows the detector (0.88 → 0.96)
+
+- **"Pre-fill precision is downstream of recognition" is now TESTED, and true** — the measured
+  handoff's structural finding, and the reason Sean kept the approach open. A change of
+  WEIGHTS alone, with no pre-fill code touched, takes the six-cell figure **exact 0.880 →
+  0.961, kind 0.940 → 1.000**, the `labels` tier from 22 boxes to **44 of ~50** (still
+  precision 1.000), batch CONFLICTs 4 → **0**, TP/WRONG_CATEGORY 174/16 → **191/5**, extra
+  hints 200 → **58** and missing hints 20 → **15**.
+- **The arm is not the imgsz-2048 re-ship** — that checkpoint is not blessed yet (the cloud
+  run's directories hold per-epoch files and in-flight gate logs). It is the same shape of
+  change and was already available: the batch's committed `transcription.json` was made with
+  the PRE-hollow `imgsz2048-ft-30ep`, while scan-domain production is now `hollow-ft`.
+  `benchmarks/omr-prefill-admission-2026-09/rerun_on_weights.sh` runs one arm per checkpoint
+  against a symlinked scratch bench (nothing written inside the batch); add the re-ship column
+  when it lands.
+- ⚠️ **The objection is that hollow-ft simply detects less** (noteheads 4260 → 2419 on the same
+  three pages). The control that settles it asks the opposite question — the MISSING-hint
+  count, reference notes the reading never found — and it falls too (20 → 15; 4 → 3 on the six
+  cells), while page segmentation is byte-identical (706 measures, 83 staves). The pipeline's
+  own filters corroborate: unladdered noteheads dropped 1063 → 304, clipped fragments 259 →
+  104. Every channel moves the same way at once, which is what separates a recognition gain
+  from a threshold trade.
+- Both Phase A predictions confirmed: `s2-m2`'s conflict (called "a duplicate detection the
+  re-ship should clean up") is gone, and the labels tier's coverage climbed with the detector.
+- ⚠️ **A batch's hints AGE with the weights.** This batch's committed `prefill/` is a
+  checkpoint stale — the hints being labeled against are the 0.880 set. Refreshing is a
+  re-transcribe plus `mxl_verdicts --write-hints`, which writes `prefill/` only and leaves
+  `verdicts/` and `detections/` untouched (no human work, no detection id disturbed). Left to
+  the batch's owner: it is served live by another session.
+
+## 2026-09-03 — Phase A of the admission plan lands in the pre-fill
+
+Sean approved the widening plan; its pre-fill half shipped, measured on the six-cell A/B
+before and after, 206 tests green across the eight related suites.
+
+- **The on-line/in-space variant follows the reference on exact pairs**
+  (`expected_head_class(..., variant=)`, wired in `_decide`): the alignment key IS the
+  reference's staff position, so on an exactly-paired note the reference knows the variant at
+  the confidence of the pairing itself. Near pairs keep the detector's variant — measured, all
+  six near matches were exact-correct and the truth's parity is wrong there by construction.
+  Fixes 2 of 3 flips (six-cell exact **0.84 → 0.88**, kind unchanged), and it repairs the
+  misread-clef case's variant along the way (both cello heads sit in bass-staff SPACES; the
+  treble misreading had implied OnLine). Two test fixtures carried musically impossible
+  variant/pitch pairs (E5 "OnLine", D5 "InSpace" in treble) that the new rule exposed —
+  fixed to what the pitches actually print.
+- **Within-measure tie chains collapse by the reading** (`measure_align.collapse_tie_chains`,
+  run before the tremolo collapse): tied fragments become one head of the summed value only
+  where the reading placed ≤ 1 head at the position; a chain may enter tied from the previous
+  bar and leave tied onward; a total with no single written value (2.5 beats) is left as
+  written because the page prints it as tied heads. On the batch: conflicts 5 → 4 and missing
+  hints 22 → 20 — `s3-m6` resolved (its two hints pointed at blank paper); `s2-m2` STAYS
+  because the reading shows TWO heads at the position (a duplicate detection) and the gate
+  believes the reading — Phase B's re-ship is the expected resolver. The two accidental-glyph
+  conflicts remain deliberately.
+- **Every decision now carries an admission tier** — `admission: labels|queue` +
+  `admission_reasons` (near match / variant corrected / grace-sized head < 0.85× the cell's
+  median in both dims / cell-level: any flip demotes its whole cell) — and `--score` prints a
+  per-tier table. Six-cell result: **labels tier 22/22 = 1.000 exact** at 0.44 coverage,
+  queue 28 at 0.786. Stricter than the probe's 0.74-coverage composite because pre-fill time
+  has no human-calibrated parity. ⚠️ Metadata only: verdict-writing is unchanged and nothing
+  is auto-admitted until the random completion pass prices the tiers out-of-sample.
+
+## 2026-09-03 — the 9 inside-staff snap disagreements diagnosed: ideal staff lines vs tilted scans
+
+- **8 of the 9 flagged inside-staff labels sit in cells whose stored `staff_line_ys_canonical`
+  is 0.25–0.55 staff spaces off the printed lines**, and rebuilding the grid from the printed
+  ink reproduces Sean's class on all 8 (the 9th, beet5hr, is a tangent-note click ambiguity —
+  grid fine). The 3 hand-drawn beet5-p4-s14 disagreements from the 2026-08 batch are the same
+  defect. Record + scripts: `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`.
+- Cause is **phase-1's staff MODEL, not the cutter**: `Staff.line_ys` is five ideal horizontal
+  rows for the whole staff; the flagged scans' staves tilt/bow 8–17 page px across their
+  width; every measure cell inherits the same constants, so end-of-staff measures carry the
+  full residual. Reproduces byte-for-byte on today's code (modulo the two cutters' deliberate
+  pad difference). `line_wander_px` (7–10 px on every flagged staff) already measures the
+  departure but never reaches cells.json.
+- Campaign audit (all 225 inside-staff added labels vs ink-measured grids): 15 past the
+  0.25 sp flip line; box centres bounded ≤0.25 sp (a near-half-space grid error aliases the
+  box onto the other slot's true position — the CLASS flips, the position stays plausible).
+  **Two silent wrong labels found**: `brahms1-p2-sys1-s20-m6` HalfInSpace→HalfOnLine (in v8;
+  **fixed same day**, `3baadcd` — batch verdict + survey `v8-merged-verdicts` + v8 label line
+  30→28) and `lamer-p5-sys0-s2-m0` WholeOnLine→WholeInSpace (exported in v11 since `780cbf6`,
+  v9–v12 held out of the catalog; fix 32→34 in flight — three copies: batch verdicts, survey
+  `phase2-merged/lamer/verdicts` (v11's export source, a third edit-both trap), v11 labels).
+- **`pitch_resolver` eats the same defect**: on warped scans, end-of-staff measures resolve
+  pitches against a grid up to half a space off — step-off-by-one for whole bars. Engraved
+  benchmark blind (LilyPond pages are straight). Follow-up measurement (landing on
+  `claude/sad-austin-7e16e7`): per-line tracing REFUTED as the fix — it aliases 0.87 sp the
+  wrong way on the worst cell; a rigid 5-comb slide (< 1 spacing) reproduces all 7 flagged
+  cells within 0.04 sp (`OMR_CELL_LINE_TRACE`, default off). Scan e2e cost is 4 edits of 7894
+  because only 0.4% of its cells sit past the flip line vs 8–16% on deeper pages — **that
+  benchmark cannot price the defect**. The recut-compatibility concern DISSOLVED under
+  measurement: flag on/off leaves cell images, bbox and upscale byte-identical (360/360 on the
+  worst page), only the stored grid moves — one frame, two grids; fix = `recut_cells.frame_mismatch`
+  comparing the unlocalized grid. In-staff snap stays frozen (`test_ledger_snap.py`).
+
+## 2026-09-03 — the five CONFLICTs reviewed: ties and accidentals, not tremolos
+
+- **The measured handoff's hypothesis ("Breitkopf tremolo abbreviations") is refuted for all
+  five conflicts**, corrected in place in that handoff and recorded with the evidence in
+  `benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/CONFLICT_REVIEW.md`. Three
+  conflicts (2 on `s2-m2`, 1 on `s3-m6`) are the REFERENCE's tie-splits — one printed
+  dotted-half encoded as tied eighth+quarter+quarter, `<tie>` on every fragment, no
+  `<tremolo>` — so the hollow heads Sean had already boxed are right and the aligner was
+  fighting fragments (its two "missing" hints on `s3-m6` point at blank paper). Two
+  (`s26-m0`, `s15-m7`) are a flat's loop and a natural sign the base transcription misread as
+  hollow noteheads, over already-empty (correct) human verdicts. **Nothing needs re-clicking.**
+- Actionable residue: **tie chains need the reconcile-by-the-reading collapse tremolo already
+  gets** (collapse to one summed-value head only where the reading placed one head) — that
+  turns the three tie conflicts into confirmations. The two accidental fakes are the same
+  family as the admission probe's phantom TPs.
+- The optional `tremolo1`–`5` labeling pass gets **no support from this sample** — zero strokes
+  in the four cells; parked until a batch shows strokes the detector mishandles.
+- batch_config on Sean's Mac: the ACTIVE file is a STALE 9-class completion palette
+  (pre-`fd28a76`, missing slur/tie/hairpins); continuing completion work needs
+  `cp batch_config.completion.json batch_config.json` + server restart, not the hollow restore.
+
+## 2026-09-03 — PR #5 landed; pre-fill admission signals measured
+
+- **PR #5 (the pre-fill / labeling-system branch) is merged into main** — the branch had gone
+  CONFLICTING against main after the weight-routing commits; the one conflict was
+  `version_memory.md` (both sides' 2026-09-03 entries, resolved as a union, weight routing
+  first), 196 tests green on the merged tree, merged as `711d3ff`. The main checkout on Sean's
+  Mac still sits on the branch (now behind); `git pull` there when the cloud training session
+  is done with it.
+- **The pre-fill's 8 errors were separated by signals already in the records**
+  (`benchmarks/omr-prefill-admission-2026-09/`): the aligner's own confidence is the WRONG
+  admission axis — all six `near` matches are exact-correct (filtering them lowers precision
+  0.840 → 0.818) and `strength_exact` ranks the cleanest cell below every error cell. What
+  works: per-cell parity consistency (the one inconsistent cell holds 4 of 8 errors), a
+  < 0.85×-median size veto (2/2 grace heads deferred for 1 good box), and re-deriving the
+  on-line/in-space variant from the matched reference note rather than the detector (fixes
+  2 of 3 flips, zero regressions — the alignment key already trusts that position). Composite:
+  **37/37 exact at 0.74 coverage, in-sample** — a ceiling demonstration on the same biased
+  six cells, not a claim; the out-of-sample test is a random completion pass scored by
+  `probe_admission.py`, which reproduces the recorded 50/42/47 before it prices any policy.
+
+---
+
+## 2026-09-03 — The labeling survey widens: inventory, grace selector, click-first passes
+
+**Why:** Sean's direction — extend the proven single-symbol × publisher
+campaign toward every score element, with click-to-box as the standard.
+
+**What:** (1) `benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`
+generates `INVENTORY.md` — all 208 catalog classes + classless elements, each
+with an owner (detector / CV / template-reader / specialist-slot / parked),
+labeled-box counts, and publisher coverage; 106 detector-owned classes have
+zero boxes, and the `numeral*` family surfaced as genuinely unassessed.
+(2) `grace_score.py` — survey Row 2's selector (small solid head near a full
+head, all thresholds in staff spaces, PROVISIONAL until first real labels) —
+plus the honest first measurement in `GRACE_SELECTOR_2026-09-03.md`: the
+280-cell hollow pool cannot validate it (top-ranked candidates are fragments
+and dots), because cells selected FOR sparse sustained bars anti-correlate
+with ornamentation; next step is a cut from grace-rich movements.
+(3) The single-symbol pass UI now opens every cell **already in draw mode** —
+click the symbols directly, no per-cell "add missed" step (`cell.js`; Esc
+steps out; verdict hotkeys unaffected; 52 annotate tests green).
+(4) NOTES.md gained the 🅿️ PARKED item Sean asked not to lose: re-try the
+template-read elements (time signatures first) under the new labeling system,
+detector as an added voter, harness ready-made.
+
+## 2026-09-03 — Labeling UI: the click-to-box snap reads ledger rungs off the page
+
+**Why:** Sean reported the hollow-campaign defect that the single-symbol
+click-to-box sometimes suggested on-line for an in-space note — on ledger
+lines only, never inside the staff. Probing the 357 committed hollow-campaign
+labels confirmed it exactly: wrong-suggestion rate 4.6% inside the staff,
+3.3% at the 1st ledger, **38.1% / 39.3% at the 2nd and beyond**. Mechanism:
+inside the staff the snap grid anchors on the cell's own measured line
+positions, but beyond it extrapolated at the staff spacing — and measured
+ledger pitch is publisher-dependent in BOTH directions (Litolff ~1.10× the
+staff spacing, Peters/Breitkopf/Simrock ~0.975×), so no corrected constant
+can fix it (swept and refused: best variant recovers 3 of 29 wrongs).
+
+**What:** new `tools/omr/annotate/ledger_grid.py` measures the ledger rungs
+printed at the clicked x (thin bands of long ink spans; white gaps up to 0.9
+spaces bridged because a whole note's counter splits the one rung printed
+THROUGH it; the band's peak-span rows are what must be rung-thin), and
+`snap_to_staff` gained an optional `ledger_rungs=` that anchors the outside
+grid on them — line slots on the rungs, spaces on their midpoints, the old
+extrapolation past an incomplete ladder's reach and wherever no rungs were
+read. In-staff behaviour is byte-identical (0 changes across all 214
+in-staff labels) and every failure of the reader is an abstention back to
+the old grid. Measured on the labels: 2nd-ledger agreement 57.4% → 70.2%,
+16 rows recovered vs 7 "broken" — of which visual adjudication showed 2 are
+**wrong labels the old snap itself planted** (Sean accepted a wrong
+suggestion unnoticed; v8 data-quality follow-up), 3 are artifacts of judging
+at stored box centres that sit ON the old grid, 1 real miss, 1 unresolved.
+The unbiased hand-positioned subset: baseline 7/13 → ink 10/13. 3.4 ms per
+click. Guarded by `tools/omr/tests/test_ledger_snap.py` (8 tests: in-staff
+frozen, defect case flips, incomplete ladder abstains, reader reads through
+a hollow head, endpoint end-to-end). Probe + eval + refused alternatives:
+`benchmarks/omr-snap-ledger-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-03 — Scan vs engraved weight routing (on by default)
+
+**Why:** the hollow fine-tune ship left the two domains preferring different
+checkpoints — scans want the hollow weights (half-notes 8→27 on beet5-p1),
+digitally engraved input the prior production weights (11-work OMR-NED 0.1399
+vs 0.1421) — and one weights slot forced one side to pay the other's cost.
+
+**What:** when no weights are pinned (`--weights` / `OMR_WEIGHTS_PATH` /
+`weights=` all absent), `transcribe()` now classifies its input by where the
+ink comes from — a scanned page is one full-page raster image (total coverage
+≥ 0.95 on every scan measured), an engraved page is vector drawings (428–2058
+paths vs 0–4, gap empty over 147 probed pages) — and routes: scanned →
+hollow-ft, engraved → prior production, ambiguous/blank → default. Any scan
+page wins the document verdict (an IMSLP scan behind a digital cover is a
+scan); a missing engraved file falls back soft; explicit choice always skips
+classification. Verdict + evidence recorded in the result JSON as
+`weight_routing`. New: `tools/omr/input_domain.py`,
+`transcribe._route_weights`, env `OMR_WEIGHT_ROUTING` / `OMR_ENGRAVED_WEIGHTS`,
+35 tests. Costs ≤ 77 ms per document. Side effect: default engraved runs use
+the same weights the recorded accuracy headline was measured with, so the
+record describes shipped behavior again. Measurements + A/B verification:
+`benchmarks/omr-weight-routing-2026-09/FINDINGS.md`. The strategy decision —
+why exactly ONE fork, why publisher/era weights are deferred and what
+measured triggers reopen them, and the checklist future specialist weights
+must pass — is recorded in
+[docs/weight-routing-and-specialization-2026-09-03.md](docs/weight-routing-and-specialization-2026-09-03.md).
+
+## 2026-09-03 — pre-fill / labeling-system work
+
+- **the pre-fill has a number: precision 0.84 exact / 0.94 kind** — Sean labeled six Brahms
+  cells COMPLETELY by hand (every symbol, not just hollow heads) and `--score --score-classes
+  all` scored 50 pre-filled boxes against 94 human ones, 42 exactly right. Recall (0.447) is
+  meaningless and always will be: the pre-fill proposes only noteheads. Diagnosed box by box,
+  the 8 errors are **concentrated, not diffuse** — 2 grace notes (IoU 0.73-0.80, right place,
+  wrong size), 3 on-line/in-space flips (IoU 0.31-0.41, box half a notehead off) and 3
+  unmatched, with six of the eight inside two of the six cells; excluding grace, 44/50 = 0.88.
+  ⚠️ The sample is BIASED by my own cell choice — ranked by how much the pre-fill decided, so
+  the densest bars, where alignment slips most; n=50 gives ~0.71-0.93 at 95%. **Verdict: a
+  queue, not labels, today** — and the structural finding is that **six of eight errors are the
+  DETECTION's placement**, which the pre-fill inherits, so its precision is downstream of
+  recognition and should rise with the imgsz-2048 re-ship untouched.
+- **grace notes are a ceiling, not a bug, and two plausible fixes were refuted by measurement**
+  — the transcription holds **0 `Small` detections on any page** and the reference **0 grace
+  notes in 28,579**, so neither source knows. First guess (the pre-fill overwrote a `Small` the
+  detector gave) is false: `expected_head_class` already preserves size. Second guess
+  (`include_grace=True` so `<grace/>` supplies it) was implemented, **changed nothing**, and was
+  **reverted** rather than kept — it alters alignment for every cell and bought nothing
+  measurable. ⚠️ Recorded because `truth_tokens` justifies the skip on the grounds that "the
+  detector labels them `*Small`", which is FALSE on a scan and makes the skip harmful on the
+  first reference that does carry grace notes. Untried route: geometry — a grace head is
+  smaller than its neighbours (41×38 against 51-83 in the same cell).
+  Full writeup, the checklist state and six ideas for widening this:
+  `docs/handoff-2026-09-03-prefill-measured.md`.
+- **`--score` can now be widened past the batch's own pass, and refuses to be widened
+  misleadingly** — chasing the open checklist item "can pre-filled TPs be admitted without a
+  glance". Running `--score` on the Brahms batch answers **precision 0.60, recall 0.333 — over
+  5 pre-filled boxes against 9 human ones, in the four hollow-notehead classes only**, because
+  scoring was hard-filtered to the batch's `batch_config` pass. That batch is a single-symbol
+  hollow sweep, so the black heads and rests that make up the bulk of the 179 confirmations are
+  not in the comparison and no way of running it could put them there. `--score-classes
+  pass|all|<list>` widens it; ⚠️ **and widening is refused** unless `--cells` or
+  `--score-inspected-for PASS` restricts it to cells a human actually swept for those classes.
+  The trap is silent and would have looked like a verdict on the pre-fill: a hollow-only pass
+  drew no black noteheads, so scoring every class against it charges each correctly pre-filled
+  black head as a false positive, and the precision that comes out measures which pass the
+  human ran. `inspected_passes` is the evidence used, since it is stamped on the way out of a
+  cell and so means "looked and moved on" even where nothing was drawn. The default is
+  byte-identical to before (pinned by a test comparing it to the explicit `pass` spec), and the
+  report line now always names the classes and cell selection the number covers. 8 new tests,
+  191 green across the pre-fill, annotate and training suites.
+  **So the deciding number still needs Sean:** a handful of cells labeled COMPLETELY, then
+  `--score --score-classes all --score-inspected-for <that pass>`.
+- **a checked-out batch shows no music, and now there is a tool for it** —
+  `tools/omr/annotate/recut_cells.py`. Sean opened the Brahms batch and got a blank canvas.
+  `benchmarks/*/cells/` is gitignored (`.gitignore:77`) and **no batch has ever had a PNG
+  committed**, so a checkout that did not CUT a batch has its manifest, detections and
+  verdicts and not one image; the server answers 404 for every `/api/cell/{id}/image` and
+  the canvas draws nothing, with the sidebar, hotkeys and hints all working. It affects all
+  six hollow batches, not just Brahms. The tool re-renders only the ids `cells.json` already
+  holds, and **never writes `cells.json` or deletes anything** — the obvious repair, re-running
+  the cutter, is the dangerous one: `rank_and_trim.py` rewrites the manifest and deletes the
+  PNGs it did not keep, so it can renumber the cell set and orphan every verdict in a labeled
+  batch. ⚠️ **The frame is checked, not assumed.** Boxes are stored in the cell's CANONICAL
+  frame, so an image re-cut at a different padding puts every box in the batch somewhere else
+  on it and nothing downstream would say so. The two cutters disagree on padding on purpose
+  and the manifest does not record which was used — but it records `cell_canonical_w`/`_h` and
+  `staff_line_ys_canonical`, so the mode is DERIVED by cutting under each and keeping the one
+  the manifest agrees with; no match, no write (`--allow-partial` to write the rest anyway).
+  33 tests: the decisions with the cut injected, plus an end-to-end suite that cuts a
+  synthesized page, deletes the images and re-cuts them **byte-identically** under both modes.
+  ⚠️ That fixture crowds its staves to ~5 staff spaces on purpose — `measure_extractor` grows
+  the pad where the neighbour is over 6 spaces off, so the first draft (33 spaces apart) had
+  both modes returning the same height and could not have tested the detection at all.
+  Verified against the real Brahms batch here: it refuses with exit 1 and names the one
+  unfound PDF, because the score library is machine-local. Suite: 1752 passed, 4 pre-existing
+  failures (identical with the branch stashed), 2 collection errors from no music21.
+- **merged main's training gate; Brahms hints refreshed** — `origin/main` brought Sean's gate
+  run (`ef51612`, `benchmarks/omr-labeling-survey-2026-09/GATE_RESULTS.md`): hollow scan labels
+  PASS (half-note detection 8 → 25 on Beethoven, 9 → 23 on held-out Mahler, `with_duration`
+  recall 0.388 → 0.456); the dense-page narrowing belongs to the imgsz-640 fine-tune recipe,
+  not the labels, so **v8 stays out of the catalog** until an imgsz-matched fine-tune re-gates.
+  Zero conflicts with the branch. Then `prefill/` on the Brahms 1 / Breitkopf batch was
+  re-written with `--write-hints` so the committed hints carry the tremolo / tremolando
+  collapse and the red `CONFLICT` hints (it had been written from `73f9970`, before either):
+  all 57 files changed, totals identical to the handoff (179 TP, 10 relabels, 189 added, 22
+  missing, 200 extra, 5 conflicts — on **4 cells**, one carrying two), 5 abstentions unchanged.
+  ⚠️ The handoff's re-run command passed `--work-id brahms-sym1-mvt1` and the CLI refused it
+  with "no usable window rows": the window rows carry the LIBRARY id `brahms--symphony-1`,
+  not the dossier id. The runbook's form (no `--work-id`, one work per file) is right; the
+  handoff is corrected. 124 tests green across the pre-fill, drafter and annotate suites.
+- **session handoff written** — `docs/handoff-2026-09-03-prefill-session.md`: what the branch
+  built, the seven rules the pre-fill decides by, what is measured (Brahms 1: 51 of 56, 5
+  conflicts) and what is not (black heads and rests), Sean's checklist, and the environment
+  notes for a fresh cloud session. CLAUDE.md and PROJECT_BRIEF.md point at it. This session
+  ran out of context and closes here; the next one starts from that file.
+- **pre-fill: tremolando — two pitches alternating collapse to two heads** — Sean: "Tremolo
+  and tremolando". A reference run `A B A B …` (≥4 equal values, two pitches) is the page's
+  two-pitch tremolando: two heads, each written with the FIGURE's full value (a bar of
+  alternating sixteenths prints two whole notes joined by beams, not two halves). `tremolo_runs`
+  now reports a run's kind (`single` / `pair`); `collapse_tremolo_runs` emits one synthetic
+  note for a single-pitch run and two for a pair, each `duration_ql = total/2` with the type of
+  the full total, and only where the reading placed ≤1 head at each of the run's positions —
+  a page that printed the alternation out is left as written. Same conflict rule as the
+  single-pitch case. Brahms 1 dry run unchanged (51 of 56, 5 conflicts); 56 tests green.
+- **pre-fill: the READING decides whether a run is abbreviated; a hollow-vs-black conflict goes
+  to the human** — Sean's proposal: keep labeling a tremolo head as the hollow head it is (the
+  class space already has `tremolo1-5`/`tremoloMark` for the strokes) and let the MXL side
+  reconcile. Now a run of ≥3 repeated notes (any value: three eighths as much as six) is
+  collapsed to one note of its total value only where the reading placed ≤1 head at that
+  staff position, and left as written where the page printed them out. A black head read where
+  the collapsed reference says hollow is relabelled (the scan's usual miss); a HOLLOW head read
+  where the reference says black is neither trusted nor overruled — the detection stays pending
+  with `CONFLICT` in its note and a red hint. Brahms 1: 51 of 56, 5 conflicts for Sean's eyes.
+- **pre-fill: tremolo abbreviations, and the first score against Sean's boxes** — Sean had
+  labeled all four remaining hollow batches on main (55 Brahms verdict files, 14 hollow boxes).
+  Scored: of the pre-fill's hollow boxes 3 agreed, and where it disagreed the reference spells
+  a tremolo out as six repeated eighths where the page prints one hollow head with slashes —
+  the pre-fill had even relabelled two correctly detected hollow heads to black. A run of ≥3
+  repeated notes adding to a half or more is now ONE unit: a hollow head read over it keeps
+  its class (note says why), the run counts once for recall, and a missed run becomes one
+  hint typed as the abbreviation (`6× eighth → half.`). Brahms 1: 52 of 56 pre-filled.
+- **pre-fill run on the Brahms 1 batch from this session** (inputs pushed by Sean): 51 of 56
+  cells pre-filled, 179 TP, 15 relabels, 22 missing-note hints, 5 abstentions all on the right
+  bar. Three fixes on the way: a weighted LCS that tolerates a half-space of rounding but needs
+  at least one EXACT match before near ones count (a wrong bar's notes often sit a step away);
+  recall over the reference's NOTES, not its rests; a rests-only bar pre-fills with hints instead
+  of abstaining. `prefill/` (hints only) committed into the batch so labeling can start.
+- **pre-fill: the gate is recall of the reference, and neighbours' heads stay out of the
+  alignment** — a flute bar of 4 reference notes read 21 heads, 17 of them the oboe's and
+  piccolo's from the cell's padding (positions 7 spaces off the staff); only heads within the
+  reference's own vertical range align, and a bar passes when ≥ 50% of its reference notes
+  (and at least 2) are found. Also fixed: `bbox_page_px` is `[x0, y0, x1, y1]`, not
+  `[x, y, w, h]` — the x-scale into the batch frame and the width check were wrong.
+- **pre-fill: diagnostics for the abstentions** — `--debug-cell` prints both token sequences
+  and the geometry for a cell; every cell records a width ratio that says whether the batch
+  cell and the transcription measure are the same bar (the batch was cut by a separate
+  segmentation run). A reference part with no clef (percussion) falls back to step keys on
+  BOTH sides. Second Brahms run: 29 of 56 pre-filled.
+- **training: pre-fill aligns on STAFF POSITION, not pitch** — the reference's written clef
+  (now parsed by `musicxml_truth`, per note) places each truth note; a detection's position
+  comes from its box. Sean's first Brahms 1 run: 26 of 56 cells pre-filled, 30 abstained with
+  `0 of N matched` — the misread-clef signature. `--match step|exact` kept as options; the
+  summary now lists abstained cells with their match ratio.
+
+## 2026-09-02 — pre-fill / labeling-system work (this branch)
+
+- **training: draft fills an unnamed staff by ORDER** — on a shorter system, a staff the reader
+  could not name takes the only unused base entry between its paired neighbours (Sean's page 1
+  bottom system: the Kontrafagott between the Fagotte and the Hörner); two candidates → still
+  empty for the human. Brahms 1 batch draft now needs no hand edits.
+- **training: page-global staff numbering** — `transcribe` numbers `staff_index` across the
+  page; the draft summed bars per index across systems (page 1 of the Brahms batch came out
+  as 7 bars instead of 15) and the pre-fill joined a staff to the row by index. Both now go by
+  position within the system; a full-lineup system pairs by position with the reader's word as
+  a cross-check only. Found on Sean's first real draft of the Brahms 1 batch.
+- **training: `draft_windows.py` + `--write-hints`** — window rows are drafted from the
+  transcription and a base benchmark row (measure window chained page by page, staves paired
+  to parts by instrument name, everything marked `draft` with a `check` list); hints-only
+  mode writes `prefill/` without touching `verdicts/`. Runbook for the first real-batch
+  measurement (Brahms 1 / Breitkopf): `docs/runbook-prefill-brahms1.md`. Finding: the Mahler
+  batch cannot be scored — the library has no Adagietto reference.
+- **training: MXL-guided verdict pre-fill** — `tools/omr/training/mxl_verdicts.py`
+  (+ `measure_align.py`, `musicxml_truth.py`): the detector's boxes are confirmed or
+  relabelled by the reference encoding through per-measure sequence alignment; unmatched
+  detections stay pending, unmatched reference notes become ghost hints. Annotate server
+  serves `<bench>/prefill/`; the cell list gains a queue order and the cell page a hints
+  layer (`h`). `--score` measures the pre-fill against human verdicts. 43 new tests, full
+  annotate + training suites green. Not yet run on a real batch — that measurement is
+  Sean's next step on the Mahler 5 / Peters hollow batch.
+- **docs: status brief, project brief, version memory** — consolidated where
+  the labeling campaign, the movement-start data, the score-library ingest and
+  the MXL-guided auto-label training system stand; created `PROJECT_BRIEF.md`
+  and this file. No code change.
+- `6a17de7` docs: export-gap ordinal moves out of prose into the numbered list.
+- `b5b7db3` / `0a6382c` / `d282371` **eleven-work benchmark landed** — headline
+  3 → 11 works; `0.1306 / 2745` default (reader on), `0.1399 / 2915` reader off,
+  both on `44a1745`; boundary stamped and checked by `accuracy_record`.
+- `52e9945` labeling: Mahler 5 Adagietto (Peters) hollow batch — 49 boxes, 55/56 cells.
+- `2a8bf79` labeling survey: symbol × publisher-family plan; scope decision
+  PROVE-IT-FIRST (finish the 280 cut cells, one gated training run, extend only if it holds).
+- `54d19da` labeling: `batch_config.json` (single-symbol hollow pass) on all five round-2 batches.
+- `44a1745` scan-e2e: `works.json` pinned the direction reader off while claiming defaults; now pins `null`.
+- `fb4c500` … `59c1eca` labeling: hollow-notehead round 2 cut — five 56-cell batches
+  (Peters, Eulenburg, Litolff 4×, Breitkopf, Simrock); enclosed-counter ranker replaces
+  meter shortfall (did not transfer).
+- `fa9853a` labeling: round-1 hollow batch landed as `data/user-labeled/v7-2026-09-02-hollow`
+  (24 cells / 28 boxes); 116 of 117 model pre-labels were false.
+- `2b900c4` annotate: `inspected_passes` stamp — a swept-empty cell is provably distinct from a never-opened one.
+- `eb3530c` / `9b3cec4` / `6cad993` / `9998390` annotate UI: single-symbol pass mode —
+  click places a measured, staff-snapped box; tests 18 → 52.
+- `96df4fb` / `a907e41` / `f238ce9` export: a bar with no detected notes still carries its
+  `<direction>` and dynamics (eighth detected-then-dropped gap). Neutral on engraved pages by construction.
+- `4952005` direction text ON by default (−144 edits, stable across seven mains).
+- `de09383` / `fc073f2` finding: same scan page transcribed twice differs; isolated to
+  `contextual._labels_for_page`; geometry bit-identical with contextual off.
+- `d3d5ec5` export_coverage surveys all eleven works.
+- `bc4214d` gitignore: alternate `--work-dir` fixtures are scratch.
+
+## 2026-09-01 — pre-fill / labeling-system work (this branch)
+
+- Overnight generalization session: engraved corpus widened 3 → 10 (opened at ~2× the
+  incumbents' error), first five-row scan benchmark (pooled 0.7960), cut-common meter
+  bug fixed (3 wrong → 0), two key-signature vote bugs fixed, fermata render completed
+  in the Beethoven fixture (0.1519 → 0.0727). See `docs/overnight-2026-09-01-summary.md`.
+- Evening queue: edge fragments, dot height, YOLO beam stack, stem cap, beam-bar mask,
+  ledger evidence (Beethoven 81/81), viola double stops, slurs paired per staff,
+  Tesseract union rung, accuracy figure made single-sourced.
+
+---
+
+## 2026-09-03 — Diagnosed and addressed the failing `Deploy ReEngrave` GitHub Actions workflow
+
+**Why it was asked:** every one of 123 runs of `.github/workflows/deploy.yml`
+had failed since it was added on 2026-09-01.
+
+**Root causes found (two independent failures, one per job):**
+
+- [x] **Backend job (Docker build) — wrong build context.** The workflow ran
+  `docker build .` from inside `working-directory: backend`, so the build
+  context was `backend/`. But `backend/Dockerfile` (and `docker-compose.yml`,
+  which builds it correctly) both assume the context is the **repo root** —
+  `COPY backend/requirements.txt .` and `COPY tools/ ./tools/` need `tools/`
+  and a nested `backend/` folder to exist in the context, neither of which
+  exists inside `backend/` itself. Every run failed at `COPY tools/
+  ./tools/` with `"/tools": not found`.
+  **Fixed:** build from the repo root with `-f backend/Dockerfile .`
+  instead of `cd`-ing into `backend/` first.
+- [x] **Frontend job (Vercel) — missing repo secrets.** Failed immediately
+  with `Error: Input required and not supplied: vercel-token` — the
+  `VERCEL_TOKEN` GitHub Actions secret (and likely `VERCEL_ORG_ID` /
+  `VERCEL_PROJECT_ID`) was never configured for this repo. Same is true of
+  `RAILWAY_TOKEN` for the backend job, just masked by the Docker build
+  failing first.
+
+**Decision (asked Sean, he chose):** this workflow targets Vercel + Railway,
+but ReEngrave's actual production path is the self-hosted VPS
+(`scripts/deploy.sh` + `docker-compose.prod.yml` + Traefik) — Vercel/Railway
+were never the real deploy target. Rather than wire up the missing secrets,
+**disabled the workflow's automatic trigger** (`on: push` → `on:
+workflow_dispatch`, manual-only) so it stops failing loudly on every push,
+while fixing the Docker context bug anyway so it isn't left broken if it's
+ever triggered by hand or revisited later.
+
+**Files touched:** `.github/workflows/deploy.yml`.
+
+**Follow-up, not done here:** if Vercel/Railway deploys are ever wanted for
+real, the four secrets above still need to be added under repo Settings →
+Secrets and variables → Actions before a manual run would get past both
+jobs.
+
+---
+
+## 2026-09-03 — Added standing docs: `PROJECT_BRIEF.md` and this file
+
+Created per standing preference: CLAUDE.md, `PROJECT_BRIEF.md`, and
+`version_memory.md` should all exist and be kept current after every commit.
+`PROJECT_BRIEF.md` is the short "what is this project" overview;
+CLAUDE.md remains the full technical/working reference; this file is the
+running changelog.
+
+---
+
+*Earlier project history (OMR pipeline phases, benchmark results, the
+theory layer, etc.) predates this file and is not backfilled here — see
+[PROJECT_STATUS.md](PROJECT_STATUS.md) for the narrative history and
+`git log` for the full commit record.*
+
+## 2026-10-12 -- ROADMAP 2.100 half 1 LANDED on main (branch `lane-2.100-key-order` 0a839061, Sean: "Land 2.100")
+
+- Merged origin/main `fcacfa10` (docs-only conflicts, ROADMAP and version_memory). Fast tier 7,554 passed / 12 skipped; `check` 192 open, status ok. Half 2 (fixed-order read of the key's accidentals) remains open.
+
+## 2026-10-12 -- ROADMAP 2.102 (branch `lane-2.102-tuplet-meter-trem`, not merged)
+
+STAGED. `inferences.bar_has_tuplet`; `solve_bare_stem_bar` declines tuplet bars, unseparated columns,
+a bar a 3:2 group of three unknown stems would land, and never shortens a bare stem without its own
+stroke evidence (Sean's rule). `adjudicate_duration`: a head refused for tremolo slash / dynamic
+letter / `too_narrow` in a meter-sign column is `not_a_note_mark`. Tests `test_staged_tuplet_meter_trem_2_102.py`
+(RED-first); 2.81's eighth tests rewritten. Numbers: `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`.
+
+## 2026-10-13 -- ROADMAP 2.102 scored (lane-2.102-tuplet-meter-trem)
+Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answers.json`, `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`, DECISIONS 2026-10-13). Not-a-note refusals right; the three bar-math eighths were quarters, so narrowing them was right. No product code changed.
+
+## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
+Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.
+
+## 2026-10-13 -- ROADMAP 2.104 built (lane-2.104-flag-misses), NOT merged
+Judged flag-miss set is 2 heads (1 tip reader, 1 stem finder). `OMR_TIP_UNBLOCKED` (default OFF, `gather._observe_stem_tip_ink`) reads the flag shape again where a detection box made the tip `occupied`; 0 invented on Sean's hand truth, 0 judged quarters moved. 14 blind tiles `out/print/2.104-review/`; FINDINGS `omr-missing-notes-2026-09` §22; docs/flags row added. Awaiting Sean's tiles.
+## 2026-10-13 -- ROADMAP 2.97 landed (lane-2.97-narrowed-bars)
+STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evidence rule; missed flags go to 2.104). His review-3 tiles: eighths 2 of 2 right; of 4 newly held bars base was wrong on 3. `OMR_NARROWED_BAR` ships default OFF; EVALUATE `reconcile_duration` chord/joint settlement on. Litolff re-measure (flag_ink_unread as evidence): base 1,027 held / 5,937 notes, arm ON 1,018 / 5,994 (newly held 5), arm as shipped 1,033 / 5,916; Brahms not re-measured. Fast tier 7,622 passed, 12 skipped, 2 xfailed; `staged.check` 192 open. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` 2.97g, DECISIONS 2026-10-13.
+
+## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
+STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.
+
+## 2026-10-13 -- ROADMAP 2.105 landed (lane-2.105-not-a-note; Sean: "land 2.105")
+STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `rest_is_a_barline` (thin tall rest-class box on a cell edge): small re-gather Litolff 15 rests newly refused, Brahms 4. (b) 2.92: `notehead_precision._head_box_excess` orders twin boxes the same way in 2.30 and 2.42 (33 of 424 stacked-duplicate slot groups had no live box): Litolff 4 groups neither->one, 2 swapped, Brahms 1; Sean's five 2.88 heads were already kept via their Half-class twin. (a) 2.91 `sf` boxed as a note: no letter box, no box rule separates it, moved to ROADMAP 2.107 (read dynamic letters). Landing merged 2.106: `rest_is_a_barline` and the widened `is_a_beam_piece` file margins; `staged.margins` open=0 (17 threshold reasons, 5 deciders). 12 blind tiles `out/print/2.105-review/`. Tests `test_staged_not_a_note_2_105.py`. `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` 2.105.
+
+## 2026-10-13 -- OMR_TIP_UNBLOCKED default ON (ROADMAP 2.104)
+STAGED, GATHER (`gather._observe_stem_tip_ink`). Sean's blind answers on `out/print/2.104-review/` ("1.8 2.8 3.8 4.8 5. 8 6.8 7. 4 8. 8 9. 8 rest 10.8 11.4 12.8 13.8 14.4"): newly read flags 9 of 9 eighths right; controls 7, 11 (quarters) and 9 (eighth rest) right; tile 14 a quarter (right to stay unread); tile 5 an eighth we still miss (a miss, not a wrong). Then "go ahead switch on and land": flag is a deny-list default ON, `docs/flags-2026-09.md` and FINDINGS section 22 updated; six pre-2.104 `occupied` tests pinned with `OMR_TIP_UNBLOCKED=0`. Fast tier 7,630 passed, `staged.check` 192.
+
+## 2026-10-13 -- ROADMAP 2.4b re-assembly (reverse graft) KILLED
+STAGED detector, branch `lane-2.4b-hollow` (not merged, production weights NOT switched). Fine-tune + production class rows put back (arms A/B/C, v24 and control): rows restore nothing (beam 11 -> 13); damage is upstream -- conv weights moved < 2%, BatchNorm running stats 3-23%; restoring BN stats brings ledger lines/rests/dynamics back but loses the hollow gain (84.7%/83.6%) and beams/ties/timeSig stay damaged. v24 = +2-3 heads over its control. `benchmarks/omr-labeling-hollow4-2026-10/FINDINGS.md`.
+
+## 2026-10-13 -- ROADMAP 2.4b closed: BN-frozen fine-tune killed
+STAGED detector, branch `lane-2.4b-hollow`. 1 epoch from production with BatchNorm stats frozen (bit-identical to production): hollow 93.2%/89.2% but beams 0, ledger -92%, ties -72%, Brahms 24/27 -- same class deletion, in the conv weights. 2.4b KILLED; v24 labels stay test truth. FINDINGS in `benchmarks/omr-labeling-hollow4-2026-10/`.
+## 2026-10-13 -- every threshold refusal records its margin; judged-tile index (ROADMAP 2.106)
+STAGED, bookkeeping only (no decision changes). `staged/margins.py` + check part `staged.margins` (open=0): 15 threshold reasons over 4 deciders file `Verdict.margin`. `staged/judged.py` + `benchmarks/acceptance/judged-tiles.json` index Sean's judged tiles with a re-scorer: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`. Sean: "land 2.106".
+
+## 2026-10-13 -- ROADMAP 2.108 title text is not a notehead (lane-2.108-off-staff-glyphs, NOT merged; tiles with Sean)
+HAND-TRUTH pre-fill + STAGED ADJUDICATE. Cause: the hand-truth session cuts region cells (title, margin names, footer) and runs the detector on them; the staged gather never reaches them (farthest real glyph 5.5 spaces). `staged/geometry.py` `OFF_STAFF_REACH_SPACES=6` (Sean 10-13 "go with 6"; was 8) + `distance_to_staff_spaces`; `notehead_precision` reason `off_staff_glyph` (margin filed, registered in `margins.PARTIAL`); `hand_truth/session.py` never queues such a box and has `prune-off-staff` (dry run by default). At 6: Brahms pdf 0 committed queue 1,831 of 2,639 boxes off-staff; Sean's live queue 623 of 865; 0 of his labelled boxes caught (1,352 / 1,566). Staged small re-gathers at 6: Brahms 0-1 0 verdicts differ, 0 fire; Litolff 0-3 0 fire (524 differing verdicts = run-to-run obs-id/OCR noise). 10 blind tiles out/print/2.108-review/ await Sean. A first cut using `Q.STAFF_EXTENT` refused 14 real Brahms p1 heads (record extent is the detector span); now vertical band only. `omr-notehead-precision-2026-09/FINDINGS.md` 2.108; tests `test_off_staff_glyph_2_108.py`.
+
+## 2026-10-13 · 2.108 landed
+`OFF_STAFF_REACH_SPACES` 6.0: STAGED `off_staff_glyph` + hand-truth pre-fill + `prune-off-staff`. Sean's 10 blind tiles: all 6 refused boxes letters, 3 far-note controls kept, tile 9 a known harmless slip. FINDINGS in `benchmarks/omr-notehead-precision-2026-09`.
+
+## 2026-10-14 -- ROADMAP 2.117 partial bars (lane-2.117-partial-bars, NOT merged; crops with Sean)
+STAGED EXPORT, flag `OMR_PARTIAL_BARS` off|measure|1. A held bar keeps prefix + suffix around a red `unread` rest located by a refused glyph's box x; a short bar with no refused glyph stays held. Brahms 765/1,822 bars partial (+1,163 notes), Litolff 156/861 (+212); `bars_add_up` passes partial bars by construction so they are reported apart. FINDINGS in `benchmarks/omr-partial-bars-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.117 landed ON (partial bars + bracket for every unread bar)
+`OMR_PARTIAL_BARS` default on. A bar that does not add up keeps its prefix/suffix in blue; every unread bar (partial gap, held out whole, eventless) is an empty red `unread` bracket over an invisible `<forward>` / skip, never a rest; bars READ as silent (decided whole rest, tacet) keep their rest. Litolff 156 partial / 705 held, Brahms 765 / 1,057. Sean: "Land 2.117 on, use the bracket for held bars too". FINDINGS `benchmarks/omr-partial-bars-2026-10`.
+
+## 2026-10-14 -- ROADMAP 2.114 landed, switch OFF (second hollow-only detector at GATHER)
+STAGED GATHER + ADJUDICATE, flag `OMR_SECOND_HOLLOW_DETECTOR` default OFF (`gather.gather_second_hollow`, `staged/second_hollow.py`, 2.114 blocks in `rhythm.adjudicate_duration`, `Q.SECOND_HOLLOW`). Only hollow-head boxes are kept; OFF is byte-identical and never builds the detector; ON with `omr-weights/candidates/scale2110-OLD896-raw-2026-10-13.pt` (gitignored, machine-local) missing RAISES (new test). Clean Litolff hollow recall 74% -> 80%, Brahms 33/33, other glyphs identical; a second-only head needs a stem/dot witness. Fast tier 7,848 passed; `check` 192. Merge note: `benchmarks/acceptance/judged-tiles.json` is derived -- union then `judged build`.
+
+## 2026-10-14 -- ROADMAP 2.124 + 2.125 landed (dots counted once, dot family, carried-meter LilyPond rest ON)
+STAGED GATHER counts + LILYPOND EXPORT. 2.124: Litolff's doubled staccatos on condensed Cello/Bass copies counted once. 2.125: staccato boxes are a `dot` family (`Q.DOT_ROLE`), not undecided articulations (counts only). `OMR_LILY_CARRIED_METER_REST` default ON (Sean 2026-10-14): a whole-bar rest under a carried meter is the bar's length (`r2.` in 6/8); Brahms 20261013-night LilyPond warnings 445 -> 116. See benchmarks/omr-dots-articulations-2026-10/FINDINGS.md.
+
+## 2026-10-14 -- ROADMAP 2.127 built (dots seen beside a plain note narrow it; flag OFF)
+STAGED ADJUDICATE. The "1,108 / ~390 dotted notes written plain" was mostly ledger (duplicates, ghost heads, superseded `used`); the real wrong rhythms are ~65-95 Brahms notes beside an unplaced dot, 9 twin-boxed dots, and narrowings without a dotted candidate. `OMR_AUG_DOT_JOIN` (default OFF): `aug_dot_join.reconcile_unjoined_dots` narrows such notes to {plain, dotted}; `_attached_dots` merges twin boxes; `regather_report` has a `dots` row. Truth p0: written plain 5 -> 1. Tiles: `out/print/2.127-review/`. `benchmarks/omr-aug-dots-2026-10/FINDINGS.md`.
+
+## 2026-10-14 -- ROADMAP 2.121 landed ON (arc ink is not a beam)
+STAGED INFER, `OMR_ARC_INK_NOT_BEAM` default ON (`collapse_arc_ink_not_beam`): a bare stem whose only refused beam strokes are slur/tie ink or too thin/bowed collapses to the head's own unbeamed value, GUESSED (blue); never an eighth, no bar sum. Sean's 15 blind tiles: 9 of 13 changed notes exact, 0 quarters made eighths, both controls right; the 4 misses (2 missed dots, 1 extra dot, 1 Litolff half read black) are written blue and go to 2.127 / hollow-head work. Off-word turns it off. See benchmarks/omr-beam-confirm-2026-10/FINDINGS.md section 6.
+
+## 2026-10-14 -- ROADMAP 2.127 landed ON (a dot seen beside a plain note narrows it)
+STAGED ADJUDICATE, `OMR_AUG_DOT_JOIN` default ON (`aug_dot_join.reconcile_unjoined_dots`, twin-dot-box merge in `rhythm.py`; explicit `0/false/no/off` disables). Sean's 15 tiles: all 6 ambiguous-dot notes truly dotted (now blue plain/dotted), controls right. Follow-ups: staccato/staccatissimo dots decided as augmentation (role wrong, rhythm right); dotted halves read as quarter/whole (hollow-head work). `benchmarks/omr-aug-dots-2026-10/FINDINGS.md` section 6.
+
+## 2026-10-14 -- ROADMAP 2.130 built (dotted halves read as whole or quarter; flag OFF, tiles to Sean)
+STAGED ADJUDICATE `Q.DURATION`, `OMR_OPEN_HEAD_ON_STEM` default OFF (`rhythm.py`: `_stem_flush_to_head`, `_reads_filled`, block before the beam-conflict narrowings). A detector WHOLE-class head with a flush stem read is a half (decided; narrowed {quarter, half} where the ink reads filled); a flag on an OPEN-class head narrows half-first. Truth unchanged; Brahms pp 6/7/10: 16 whole-class heads -> half/dotted half, 2 black ones narrowed; 8 non-note boxes (clef/rest shapes) were already wrong. Open: black class on hollow cluster boxes (Litolff 2 of 50), stem-reader miss. FINDINGS `benchmarks/omr-dotted-halves-2026-10/`.
+
+## 2026-10-14 -- ROADMAP 2.128 built (a dot carries its staff position)
+STAGED GATHER: `Q.DOT_STAFF_POSITION` on every `Q.AUG_DOT` glyph, local at the dot's x (`_find_five_lines` over +-3 spaces; bar grid fallback says `cell_grid`), nearest staff, `off_staff`/`no_staff_geometry` abstentions with margin; `POSITION dot` left `capture.KNOWN_GAPS` (check 193 -> 192). STAGED ADJUDICATE behind `OMR_DOT_POSITION_JOIN` (default OFF): a dot on the wrong step is not a head's augmentation dot; a dot at exactly one head's dot step the box window missed is placed. Sean's Brahms p.0 labels: dots stand in a space (line head: 41 above / 19 below; space head: 54 of 56 same space), 3 of 120 on a line. Truth join 106 -> 110 right, unplaced 7 -> 2; Litolff no change. Awaiting tiles `out/print/2.128-review/`. FINDINGS text in the lane report (the Write tool refused the file).
+
+## 2026-10-15 -- ROADMAP 2.141 diagnosis landed; Sean's tiles 6/6 agree with W2
+STAGED INFER, no product code. `lane-2.141-litolff-w2` merged: FINDINGS 2.141 (causes of W2's Litolff tile 6 and 10 failures, fixes 2.141d proposed), probes, 6 blind tiles. Sean: tiles 1-4 quarters, 5-6 eighths, matching W2's settlements on all 6 (2 U, 2 T6, 2 controls) -- the shared causes did not make those bars wrong. W2 stays OFF until fixes 2.141d 1-3 land and pass tiles on both publishers. Answers in `out/print/2.141-review/answers.json`, indexed in `benchmarks/acceptance/judged-tiles.json`.
+
+## 2026-10-15 -- ROADMAP 2.141 fix 1 landed ON (beam-level stroke test)
+STAGED ADJUDICATE, `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM` default ON (`rhythm.beam_level_stroke_is_a_beam_enabled`; explicit `0/false/no/off` disables). A stroke the head's own stem runs past by more than 2.5 spaces is not a beam level. Sean's 13 tiles: 11 wrong values made right, 3 eighths narrowed (blue), 0 right made wrong; tiles 9/12/13 (a beam boxed as a head) are 2.142. Fixes 2 and 3 stay OFF pending `out/print/2.141-fix23-review/`. Reaches records at the next re-gather.
+
+## 2026-10-15 -- ROADMAP 2.138 landed ON (sub-floor staccatissimo wedge rescue)
+STAGED GATHER, `OMR_WEDGE_RESCUE` default ON (`gather.wedge_rescue_enabled`; explicit `0/false/no/off` disables): the detector re-run at floor 0.03 on head-bearing cells keeps a mark-class box that is a wedge (2.131 cut) with a head on its point's side, reader `yolo_rescue_wedge`. Sean's 10 tiles 10/10 (3 rescued misses, 4 new wedges, 2 controls); crop 6 (wedge on a staff line) stays unread. Reaches records at the next re-gather.
+
+
+## 2026-10-16 -- ROADMAP 2.142 landed ON (stemless head on a rest box's ink leaves the bar)
+STAGED ADJUDICATE, `OMR_HEAD_IS_A_REST_TWIN` default ON (`notehead_precision.head_is_a_rest_twin_enabled`; explicit `0/false/no/off` disables). Sean's 12 tiles agree 12/12 (10 rests taken out, 2 real-note controls kept). Beam cases were already refused; stale DURATION on refused boxes is ROADMAP 2.143. Reaches records at the next re-gather.
+
+## 2026-10-16 -- ROADMAP 2.153 (cell-level head value and beam count): attribution, reach, one fix built OFF
+STAGED ADJUDICATE, `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` default OFF (`rhythm._beam_levels(..., unjoined_possible=True)`): a beam stroke no stem reaches and the ink-join reader never read joined is a POSSIBLE level, not a certain one (narrows `beams_ambiguous`, equal support). Of Sean's 31 judged value errors 13 are right under main's defaults, 8 more become right at the next re-gather through 2.148 (its `interior_white` row is absent from the night records), 10 stay wrong. Found: slice replays through `review.rerun.rebuild_gather` leave `detail` ids dangling (use `probe/replay_util_2_153.py`). 18 blind tiles `out/print/2.153-review/`, not answered. Detail: holdout FINDINGS 2.153.
+
+## 2026-10-18 -- ROADMAP 2.162 landed ON (the bar never moves a decided note); 2.167 findings merged
+STAGED ADJUDICATE + EVALUATE, `OMR_NARROWED_BAR_LENGTH_UNKNOWN` default ON (`bar_length.narrowed_bar_length_unknown`; explicit `0/false/no/off` disables). A bar holding a narrowed note has a length range that may confirm a meter, never refute one; under the flag `reconcile_duration` never moves a DECIDED note anywhere. Brahms 6 systems return to the carried 6/8, 154 whole rests 4->3 beats; 0 decided notes moved by the bar (Litolff 60 / Brahms 100 declined). Judged Litolff 157/29/11 -> 155/31/11, Brahms 118/24/15 -> 122/28/7; losses are misread decided notes the bar had been fixing (2.168/2.169). 2.167 (why notes never reach the file) merged read-only.
+
+## 2026-10-19 -- ROADMAP 2.173 built OFF (a bar that does not add up is written in red, never held out)
+STAGED EXPORT, `OMR_RED_BARS` default OFF (`export.red_bars_enabled`). A bar 2.8 holds out and 2.117 cannot place is written with what was read (each event at its own value and READ/GUESSED status, no padding rest), every note red `#D00000` plus one red bracket "does not add up: should hold X, counted Y"; LilyPond keeps printed values (short = invisible skip, overfull = `\scaleDurations`; a per-staff `measureLength` was tried and fails because Timing is one score-wide clock). 20261018-night replay OFF->ON: Litolff notes 6,626->8,119 (624 bars red, 0 held), Brahms 11,991->14,842 (915 red, 0 held); OFF byte-identical to main; `bars_add_up_control` unchanged, red bars their own number `bars_written_red`. Findings `benchmarks/omr-red-bars-2026-10/FINDINGS.md`, crops `out/print/2.173/`.
+## 2026-10-19 -- ROADMAP 2.165 landed ON (the one-note correction, loosest arm)
+STAGED EVALUATE + EXPORT, `OMR_BAR_CORRECTS_ONE_NOTE` default ON in mode `loose_removed_boxes_ok` (`one_note.DEFAULT_MODE`; explicit `0/false/no/off` disables; `strict`/`relaxed`/`loose` select). The one note a bar disputes is changed to the bar's alternative and stays GUESSED (blue #1F6FEB, both candidates, reason `bar_corrects_one_note`). On the exported file the loosest arm changes 13 Litolff / 12 Brahms notes, 0 judged right->wrong; Sean's tiles 9/10 right. Also: stale comment in rhythm.py fixed (`OMR_BEAM_REFUSED_OFF_THE_TIP` is ON since 2ca6fc9a). Next: 2.174 decided quarters under seen beams, 2.173 red bars, 2.153 re-check.
+
+## 2026-10-20 -- ROADMAP 2.176 built OFF (non-notes written as notes)
+STAGED ADJUDICATE (notehead precision), `OMR_HEAD_ON_ANOTHER_MARK` default OFF (`adjudicators/head_on_mark.py`; reasons `on_the_staffs_leading_barline` and `on_another_symbols_box`). 2.174's "over half of Brahms's decided quarters are not notes" counted heads the gates already refuse (1,044 of 2,042, never written); on the heads that stay a random look finds 0 of 81 written Brahms and 9 of 110 held-bar heads non-notes. Refuses a head box at the left end of a system's first cell (system barline/brace, 0.5 sp, fitted on Brahms, NOT CONFIRMED) and a head inside a clef box the detector scored higher with no stem. Exported file Brahms 12,176 to 12,200 notes, held bars 890 to 882; Litolff 6,686 to 6,688; 0 of 39 refused boxes real; judged tiles identical. Accidental and curled-rest boxes tried and dropped (real Litolff heads). Tiles `out/print/2.176-review/`; `benchmarks/omr-non-notes-2026-10/FINDINGS.md`.
+
+## 2026-10-20 -- ROADMAP 2.176 landed ON (non-notes written as notes)
+STAGED ADJUDICATE (notehead precision), `OMR_HEAD_ON_ANOTHER_MARK` default ON (`head_on_mark.enabled`; explicit `0/false/no/off` disables). A head box on the system's leading barline/brace or inside a higher-scoring clef box with no stem is refused (unread, never re-valued). Sean's tiles: 9/9 refusals right (4 brackets, 5 clefs), controls right. Brahms notes 12,176 -> 12,200, Litolff +2, 0 real notes lost. Open: a meter numeral kept as a head in a first bar -> extend `on_a_read_meter` beyond whole-class boxes. `benchmarks/omr-non-notes-2026-10/FINDINGS.md`.
+## 2026-10-19 -- ROADMAP 2.175 built, OFF: one head with a stem each way is two notes (`OMR_UNISON_TWO_NOTES`)
+STAGED ADJUDICATE + EXPORT, branch `lane-2.175-unison-two-voices`, not landed. New `Q.UNISON_VOICES` (`adjudicators/unison_two.py`: each stem's own flag/beam, never a quarter by absence), `stem_value._one_stem_per_head` keeps a touching stem pair a unison, `adjudicate_event` keeps ONE event per head and carries each voice's value, `adjudicate_voices` stands it in two streams only where both sum alike, EXPORT (`export_unison.py`) writes the up note plus a down twin in bars the exporter keeps as two voices. Lesson: a second event for the head in Q.EVENT changed every single-stream bar sum (P4 bar 110), so the second voice lives in adjudicate_voices and EXPORT only. Litolff: 416 of 515 decided, 260 second-voice notes, held bars unchanged, judged 0 move. See benchmarks/omr-unison-two-voices-2026-10/FINDINGS.md.
+
+## 2026-10-20 -- ROADMAP 2.175 landed ON: one head with a stem each way is two notes
+STAGED ADJUDICATE + EXPORT, `OMR_UNISON_TWO_NOTES` default ON (`unison_two.enabled`; explicit `0/false/no/off` disables). Two voices, each valued from its own stem; a two-voice bar that does not add up is written red with both voices (2.173); an unread-stem note keeps voice 1, blue `voice_guessed`. Tests pinned OFF: see the landing commit. Evidence: `benchmarks/omr-unison-two-voices-2026-10/FINDINGS.md`.
+
+## 2026-10-20 -- ROADMAP 2.177 landed ON: the printed meter is one object (claimed-area step 1)
+STAGED GATHER + ADJUDICATE, `OMR_METER_OBJECT` default ON (`meter_object.enabled`; explicit `0/false/no/off` disables). `Q.CLAIMED_AREA` (owner meter) is the two numerals' measured ink box plus a stroke; a head or rest inside is refused `inside_the_meter`; the 18-space `key_slots.meter_column` rest rule is no longer consulted. Litolff 12/12, Brahms 52/56 found; Brahms +19 real rests; 2 Litolff key flats stay rests until claimed-area step 3 (Sean "a"). Next: 2.178 step 2. benchmarks/omr-meter-object-2026-10/FINDINGS.md
+
+## 2026-10-20 -- ROADMAP 2.179 landed ON: a stem always carries a head
+STAGED GATHER, `OMR_STEM_END_HEADS` default ON (`stem_end_heads.enabled`; explicit `0/false/no/off` disables). Where a kept stem has no head at its end, the detector is re-read at 0.05 on that cell and a head box at the stem's end (side from the stem direction) is added; a block rest box there is re-read as the black head; a stem inside a rest/flat/clef/dynamic does not count. Takes effect at the next full gather. Sean's tiles: 8/9 new boxes real notes, controls 3/3. `benchmarks/omr-unseen-symbols-2026-10/FINDINGS.md`.
+
+## 2026-10-20 -- ROADMAP 2.180 landed ON: a dot read as a wedge, beside a head, is its augmentation dot
+STAGED ADJUDICATE, `OMR_DOT_POSITION_OVER_WEDGE` default ON (`aug_dot_join.dot_position_over_wedge_enabled`; explicit `0/false/no/off` disables). In `rhythm.adjudicate_dot_role` -> `_wedge_beside_a_head`, a round dot on a staff line measured as a wedge, with one head to its left at that head's dot step, is that head's augmentation dot; a wedge pointing at a head is unchanged; never a second dot. Brahms exported: dotted notes 4,780 -> 4,819, red bars 860 -> 842, bars adding up +28, none shorter; Litolff byte-identical; judged 132/31 -> 140/23. Sean's tiles 8/9 changed right, controls 3/3. Findings: benchmarks/omr-augmentation-dots-2026-10/FINDINGS.md.
+
+## 2026-10-20 -- ROADMAP 2.181 landed ON: the claimed-area register (step 2)
+STAGED GATHER + ADJUDICATE, `OMR_CLAIMED_REGISTER` default ON (`claims.enabled`; explicit `0/false/no/off` disables, OFF byte-identical to before). One shared register Q.CLAIMED_AREA (owners clef, header column, meter); `adjudicators/claimed_by.consult` is the one consult in head and rest precision (refuse `claimed_by:<owner>` or narrow `claim_narrowed:<owner>`, blue). Litolff parity: 34/34 old refusals kept, 0 turned blue, 0 real notes lost; Sean's tiles kept 6 real items blue. Brahms v2 measured at the next overnight. Next: 2.178 step 3, key signature. benchmarks/omr-claims-register-2026-10/FINDINGS.md

@@ -1,0 +1,35 @@
+========================================================================
+/tmp/ttc/brm/staged.json  provenance: {'commit': 'c17664d6de0a8dbc68c848eeddf57c913e2ec4c5', 'dirty': True}
+── REACH (the exporter's own pairing, no export run) ──
+  arc_boxes                                          2207
+  arc_boxes_classed_tie                              1658
+  tie_chains                                         275
+  tie_chains_longer_than_two_notes                   82
+  tie_ends_landing_in_a_chord                        776
+  tie_ends_on_a_chord_member_that_is_NOT_lowest      436
+  tie_groups_after_the_merge                         1227
+  tie_groups_merged_from_two_halves                  329
+  tie_links                                          632
+  tie_links_crossing_a_barline                       140
+  tie_links_crossing_a_system_break                  2
+  chain length in NOTES -> how many: {2: 193, 3: 52, 4: 19, 5: 9, 9: 2}
+── EXPORT (what the report now says) ──
+  tie_links_marked                                   632
+  tie_chains_marked                                  275
+  tie_chains_over_two_notes                          82
+  tie_links_crossing_a_barline                       140
+  tie_links_crossing_a_system_break                  2
+  ties                                               349
+  tie_spans_marked                                   632
+  tie_starts_written_on_an_untied_note               103
+  tie_stops_written_on_an_untied_note                101
+  slurs                                              227
+  slur_spans_marked                                  272
+  notes                                              2687
+  rests                                              989
+  arcs_not_written: {'arc_binds_fewer_than_two_notes': 762, 'arc_ends_in_one_chord': 328}
+  balance holds: True  census unaccounted: []
+  census row: {'family': 'slur', 'detector_glyphs': 549, 'decided': 549, 'written': 227, 'status': 'emitted'}
+  census row: {'family': 'tie', 'detector_glyphs': 1658, 'decided': 1658, 'written': 349, 'status': 'emitted'}
+  abstained_without_a_family: {}
+  probe and exporter agree: True

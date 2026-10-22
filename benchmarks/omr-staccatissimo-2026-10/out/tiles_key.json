@@ -1,0 +1,79 @@
+{
+ "note": "hidden key; Sean's tiles carry no key",
+ "tiles": [
+  {
+   "tile": 1,
+   "kind": "new_wedge",
+   "head": "glyph/24/0/7/7/2",
+   "mark": "glyph/24/0/7/7/15",
+   "score": 0.203,
+   "class": "articStaccatissimoBelow",
+   "path": "art"
+  },
+  {
+   "tile": 2,
+   "kind": "new_wedge",
+   "head": "glyph/24/0/9/4/4",
+   "mark": "glyph/24/0/9/4/15",
+   "score": 0.074,
+   "class": "articStaccatissimoBelow",
+   "path": "art"
+  },
+  {
+   "tile": 3,
+   "kind": "miss_crop6_second_eighth_NOT_RESCUED",
+   "head": "glyph/24/0/1/5/8",
+   "mark": null
+  },
+  {
+   "tile": 4,
+   "kind": "miss_crop2_last_eighth",
+   "head": "glyph/24/1/2/3/0",
+   "mark": null
+  },
+  {
+   "tile": 5,
+   "kind": "miss_crop3_second_eighth",
+   "head": "glyph/24/0/1/4/10",
+   "mark": null
+  },
+  {
+   "tile": 6,
+   "kind": "new_wedge",
+   "head": "glyph/24/1/2/7/1",
+   "mark": "glyph/24/1/2/7/28",
+   "score": 0.148,
+   "class": "articStaccatissimoAbove",
+   "path": "art"
+  },
+  {
+   "tile": 7,
+   "kind": "miss_crop3_third_eighth",
+   "head": "glyph/24/0/1/4/11",
+   "mark": null
+  },
+  {
+   "tile": 8,
+   "kind": "control_plain_staccato",
+   "head": "glyph/24/0/12/2/13",
+   "mark": "glyph/24/0/12/2/10",
+   "class": "articStaccatoAbove"
+  },
+  {
+   "tile": 9,
+   "kind": "new_wedge",
+   "head": "glyph/24/1/2/7/2",
+   "mark": "glyph/24/1/2/7/27",
+   "score": 0.168,
+   "class": "articStaccatissimoAbove",
+   "path": "art"
+  },
+  {
+   "tile": 10,
+   "kind": "control_plain_staccato",
+   "head": "glyph/24/0/11/0/3",
+   "mark": "glyph/24/0/11/0/12",
+   "class": "articStaccatoBelow"
+  }
+ ]
+}

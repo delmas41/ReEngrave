@@ -1,0 +1,41 @@
+18 refusals, mode=report rule=span window=0 reference_size=17
+
+| page | sys | staff | slot | refused name | printed | verdict |
+|---|---|---|---|---|---|---|
+| 56 | 0 | 6 | 12 | Violin | Violin | **cost** |
+| 56 | 0 | 7 | 13 | Violin | Violin | **cost** |
+| 56 | 0 | 8 | 14 | Viola | Viola | **cost** |
+| 56 | 1 | 15 | 12 | Violin | Violin | **cost** |
+| 56 | 1 | 16 | 13 | Violin | Violin | **cost** |
+| 56 | 1 | 17 | 14 | Viola | Viola | **cost** |
+| 57 | 1 | 20 | 13 | Violin | Violin | **cost** |
+| 57 | 1 | 21 | 14 | Viola | Violin | **benefit** |
+| 57 | 1 | 22 | 15 | Cello | Viola | **benefit** |
+| 63 | 1 | 9 | 12 | Violin | Violin | **cost** |
+| 63 | 1 | 10 | 13 | Violin | Violin | **cost** |
+| 63 | 1 | 11 | 14 | Viola | Viola | **cost** |
+| 63 | 2 | 19 | 12 | Violin | Violin | **cost** |
+| 63 | 2 | 20 | 13 | Violin | Violin | **cost** |
+| 63 | 2 | 21 | 14 | Viola | Viola | **cost** |
+| 86 | 0 | 12 | 13 | Violin | Violin | **cost** |
+| 86 | 0 | 13 | 14 | Viola | Violin | **benefit** |
+| 86 | 0 | 14 | 15 | Cello | Viola | **benefit** |
+
+COST    (a name that would have been RIGHT) : 14
+BENEFIT (a name that would have been WRONG) : 4
+UNKNOWN                                     : 0
+
+  page 56: 6 cost, 0 benefit, 0 unknown
+  page 57: 1 cost, 2 benefit, 0 unknown
+  page 63: 6 cost, 0 benefit, 0 unknown
+  page 86: 1 cost, 2 benefit, 0 unknown
+
+on the same four pages, unlabelled staves given a name from a DIFFERENT FAMILY and NOT refused: 8
+  p57 sy0 st 5  Trumpet   on a Violin staff
+  p57 sy0 st 6  Trombone  on a Violin staff
+  p57 sy0 st 7  Trombone  on a Viola staff
+  p57 sy0 st 8  Trombone  on a Cello staff
+  p63 sy0 st 2  Horn      on a Violin staff
+  p63 sy0 st 3  Trombone  on a Violin staff
+  p63 sy0 st 4  Trombone  on a Viola staff
+  p63 sy0 st 5  Trombone  on a Cello staff

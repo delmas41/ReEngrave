@@ -1,0 +1,13 @@
+beethoven-sym3-mvt1.omr.json                     ties=   5 paired=   2 same=   0 DIFF=   2 unpaired=   3 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+beethoven-sym5-mvt1.omr.json                     ties=  17 paired=   8 same=   8 DIFF=   0 unpaired=   9 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+brahms-sym1-mvt1.omr.json                        ties=  88 paired=  43 same=  35 DIFF=   8 unpaired=  45 self=   0 Lchoice=   6 Rchoice=  12 rescuable=  0
+brahms-sym4-mvt1.omr.json                        ties=  15 paired=   1 same=   0 DIFF=   1 unpaired=  14 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+bruckner-sym5-mvt1.omr.json                      ties=  11 paired=   4 same=   3 DIFF=   1 unpaired=   7 self=   0 Lchoice=   0 Rchoice=   1 rescuable=  1
+dvorak-sym9-mvt4.omr.json                        ties=   0 paired=   0 same=   0 DIFF=   0 unpaired=   0 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+mahler-sym5-mvt1.omr.json                        ties=   5 paired=   2 same=   0 DIFF=   2 unpaired=   3 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+mozart-sym40-mvt1.omr.json                       ties=   0 paired=   0 same=   0 DIFF=   0 unpaired=   0 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+mozart-sym41-mvt1.omr.json                       ties=  12 paired=  10 same=   1 DIFF=   9 unpaired=   2 self=   0 Lchoice=   9 Rchoice=   0 rescuable=  0
+tchaikovsky-sym4-mvt2.omr.json                   ties=   0 paired=   0 same=   0 DIFF=   0 unpaired=   0 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+tchaikovsky-sym6-mvt2.omr.json                   ties=   2 paired=   0 same=   0 DIFF=   0 unpaired=   2 self=   0 Lchoice=   0 Rchoice=   0 rescuable=  0
+
+ pooled: DIFF_but_a_same_pitch_pair_was_in_range=1  DIFF_pitch=23  left_had_a_choice=15  paired=70  right_had_a_choice=13  same_pitch=47  ties=155  unpaired=85

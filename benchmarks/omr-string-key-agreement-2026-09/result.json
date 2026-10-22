@@ -1,0 +1,433 @@
+{
+ "n_files": 1745,
+ "tally": {
+  "too_few_string_parts": 1596,
+  "agrees": 142,
+  "DISAGREES": 7
+ },
+ "disagreeing": [
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/beethoven/symphony-7/beethoven--symphony-7--mvt2--gradus.mxl",
+   "n_string_parts": 6,
+   "n_measures_checked": 278,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "225",
+     "values": {
+      "Violin 1#P14": 3,
+      "Violin 2#P15": 3,
+      "Viola#P16": 3,
+      "Violoncello 1#P17": 3,
+      "Violoncello 2#P18": 0,
+      "Contrabass#P19": 3
+     }
+    },
+    {
+     "measure": "226",
+     "values": {
+      "Violin 1#P14": 3,
+      "Violin 2#P15": 3,
+      "Viola#P16": 3,
+      "Violoncello 1#P17": 3,
+      "Violoncello 2#P18": 0,
+      "Contrabass#P19": 3
+     }
+    },
+    {
+     "measure": "227",
+     "values": {
+      "Violin 1#P14": 3,
+      "Violin 2#P15": 3,
+      "Viola#P16": 3,
+      "Violoncello 1#P17": 3,
+      "Violoncello 2#P18": 0,
+      "Contrabass#P19": 3
+     }
+    },
+    {
+     "measure": "228",
+     "values": {
+      "Violin 1#P14": 3,
+      "Violin 2#P15": 3,
+      "Viola#P16": 3,
+      "Violoncello 1#P17": 3,
+      "Violoncello 2#P18": 0,
+      "Contrabass#P19": 3
+     }
+    },
+    {
+     "measure": "229",
+     "values": {
+      "Violin 1#P14": 3,
+      "Violin 2#P15": 3,
+      "Viola#P16": 3,
+      "Violoncello 1#P17": 3,
+      "Violoncello 2#P18": 0,
+      "Contrabass#P19": 3
+     }
+    }
+   ],
+   "n_disagreeing_measures": 23
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--full--gradus.mxl",
+   "n_string_parts": 5,
+   "n_measures_checked": 1537,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "215",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "216",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "217",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "218",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "219",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    }
+   ],
+   "n_disagreeing_measures": 171
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--mvt2--gradus.mxl",
+   "n_string_parts": 5,
+   "n_measures_checked": 141,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "30",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "31",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "32",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "33",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    },
+    {
+     "measure": "34",
+     "values": {
+      "Violins I#P60": 6,
+      "Violins II#P61": 6,
+      "Violas#P62": -3,
+      "Violoncellos#P63": -3,
+      "Contrabasses#P64": -3
+     }
+    }
+   ],
+   "n_disagreeing_measures": 55
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/holst/the-planets/holst--the-planets--mvt3--gradus.mxl",
+   "n_string_parts": 5,
+   "n_measures_checked": 296,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "1",
+     "values": {
+      "Violins I#P60": -2,
+      "Violins II#P61": 3,
+      "Violas#P62": -2,
+      "Violoncellos#P63": 3,
+      "Contrabasses#P64": 0
+     }
+    },
+    {
+     "measure": "2",
+     "values": {
+      "Violins I#P60": -2,
+      "Violins II#P61": 3,
+      "Violas#P62": -2,
+      "Violoncellos#P63": 3,
+      "Contrabasses#P64": 0
+     }
+    },
+    {
+     "measure": "3",
+     "values": {
+      "Violins I#P60": -2,
+      "Violins II#P61": 3,
+      "Violas#P62": -2,
+      "Violoncellos#P63": 3,
+      "Contrabasses#P64": 0
+     }
+    },
+    {
+     "measure": "4",
+     "values": {
+      "Violins I#P60": -2,
+      "Violins II#P61": 3,
+      "Violas#P62": -2,
+      "Violoncellos#P63": 3,
+      "Contrabasses#P64": 0
+     }
+    },
+    {
+     "measure": "5",
+     "values": {
+      "Violins I#P60": -2,
+      "Violins II#P61": 3,
+      "Violas#P62": -2,
+      "Violoncellos#P63": 3,
+      "Contrabasses#P64": 0
+     }
+    }
+   ],
+   "n_disagreeing_measures": 116
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+   "n_string_parts": 5,
+   "n_measures_checked": 416,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "132",
+     "values": {
+      "Violin#P20": -4,
+      "Erste Violinen.#P21": 4,
+      "Zweite Violinen.#P22": 4,
+      "Violen.#P23": -4,
+      "Violoncelle.#P24": -4
+     }
+    },
+    {
+     "measure": "133",
+     "values": {
+      "Violin#P20": -4,
+      "Erste Violinen.#P21": 4,
+      "Zweite Violinen.#P22": 4,
+      "Violen.#P23": -4,
+      "Violoncelle.#P24": -4
+     }
+    },
+    {
+     "measure": "134",
+     "values": {
+      "Violin#P20": -4,
+      "Erste Violinen.#P21": 4,
+      "Zweite Violinen.#P22": 4,
+      "Violen.#P23": -4,
+      "Violoncelle.#P24": -4
+     }
+    },
+    {
+     "measure": "135",
+     "values": {
+      "Violin#P20": -4,
+      "Erste Violinen.#P21": 4,
+      "Zweite Violinen.#P22": 4,
+      "Violen.#P23": -4,
+      "Violoncelle.#P24": -4
+     }
+    },
+    {
+     "measure": "136",
+     "values": {
+      "Violin#P20": -4,
+      "Erste Violinen.#P21": 4,
+      "Zweite Violinen.#P22": 4,
+      "Violen.#P23": -4,
+      "Violoncelle.#P24": -4
+     }
+    }
+   ],
+   "n_disagreeing_measures": 23
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/ravel/ravel-bolero/ravel--ravel-bolero--mvt1--gradus.mxl",
+   "n_string_parts": 5,
+   "n_measures_checked": 260,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "81",
+     "values": {
+      "1\"\u00b0 VIOLONS#P26": 0,
+      "2\u00b0* VIOLONS#P30": 0,
+      "ALTOS#P34": -3,
+      "VIOLONCELLES#P37": -3,
+      "CONTREBASSES#P41": -3
+     }
+    },
+    {
+     "measure": "82",
+     "values": {
+      "1\"\u00b0 VIOLONS#P26": 0,
+      "2\u00b0* VIOLONS#P30": 0,
+      "ALTOS#P34": -3,
+      "VIOLONCELLES#P37": -3,
+      "CONTREBASSES#P41": -3
+     }
+    },
+    {
+     "measure": "83",
+     "values": {
+      "1\"\u00b0 VIOLONS#P26": 0,
+      "2\u00b0* VIOLONS#P30": 0,
+      "ALTOS#P34": -3,
+      "VIOLONCELLES#P37": -3,
+      "CONTREBASSES#P41": -3
+     }
+    },
+    {
+     "measure": "84",
+     "values": {
+      "1\"\u00b0 VIOLONS#P26": 0,
+      "2\u00b0* VIOLONS#P30": 0,
+      "ALTOS#P34": -3,
+      "VIOLONCELLES#P37": -3,
+      "CONTREBASSES#P41": -3
+     }
+    },
+    {
+     "measure": "85",
+     "values": {
+      "1\"\u00b0 VIOLONS#P26": 0,
+      "2\u00b0* VIOLONS#P30": 0,
+      "ALTOS#P34": -3,
+      "VIOLONCELLES#P37": -3,
+      "CONTREBASSES#P41": -3
+     }
+    }
+   ],
+   "n_disagreeing_measures": 168
+  },
+  {
+   "path": "/Users/seanjohnson/Desktop/ReEngrave/library/reference/tchaikovsky/symphony-6-pathetique/tchaikovsky--symphony-6-pathetique--mvt1--gradus.musicxml",
+   "n_string_parts": 6,
+   "n_measures_checked": 354,
+   "status": "DISAGREES",
+   "disagreements": [
+    {
+     "measure": "161",
+     "values": {
+      "violin1#P14": 0,
+      "violin2#P15": 0,
+      "viola1#P16": 2,
+      "viola2#P17": 2,
+      "violoncello1#P18": 2,
+      "violoncello2#P19": 2
+     }
+    },
+    {
+     "measure": "162",
+     "values": {
+      "violin1#P14": 0,
+      "violin2#P15": 0,
+      "viola1#P16": 2,
+      "viola2#P17": 2,
+      "violoncello1#P18": 2,
+      "violoncello2#P19": 2
+     }
+    },
+    {
+     "measure": "163",
+     "values": {
+      "violin1#P14": 0,
+      "violin2#P15": 0,
+      "viola1#P16": 2,
+      "viola2#P17": 2,
+      "violoncello1#P18": 2,
+      "violoncello2#P19": 2
+     }
+    },
+    {
+     "measure": "164",
+     "values": {
+      "violin1#P14": 0,
+      "violin2#P15": 0,
+      "viola1#P16": 2,
+      "viola2#P17": 2,
+      "violoncello1#P18": 2,
+      "violoncello2#P19": 2
+     }
+    },
+    {
+     "measure": "165",
+     "values": {
+      "violin1#P14": 0,
+      "violin2#P15": 0,
+      "viola1#P16": 2,
+      "viola2#P17": 2,
+      "violoncello1#P18": 2,
+      "violoncello2#P19": 2
+     }
+    }
+   ],
+   "n_disagreeing_measures": 194
+  }
+ ]
+}

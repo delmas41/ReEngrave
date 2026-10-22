@@ -1,0 +1,12 @@
+record: 514 arc_box rows, 853 cell_box rows
+
+ON : <slur> 46  <tied> 98  slurs 23  ties 49
+     notes 1075  rests 432  parts 12
+     arcs not written (404): {'arc_binds_fewer_than_two_notes': 361, 'arc_ends_in_one_chord': 43}
+     balance: True
+
+OFF: <slur> 0  <tied> 0
+
+outside the arc elements, the two files are IDENTICAL
+notes  ON 1075 vs OFF 1075
+rests  ON 432 vs OFF 432

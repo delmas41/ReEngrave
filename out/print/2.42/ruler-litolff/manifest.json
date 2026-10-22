@@ -1,0 +1,512 @@
+[
+ {
+  "subject": "glyph/3/0/0/0/15",
+  "base": "D6",
+  "new": "C6",
+  "ink_rows": [
+   381,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/15-3-0-0-0.png"
+ },
+ {
+  "subject": "glyph/3/0/0/1/10",
+  "base": "D6",
+  "new": "C6",
+  "ink_rows": [
+   379,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/10-3-0-0-1.png"
+ },
+ {
+  "subject": "glyph/3/0/0/1/3",
+  "base": "G6",
+  "new": "A6",
+  "ink_rows": [
+   379,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-0-0-1.png"
+ },
+ {
+  "subject": "glyph/3/0/0/2/9",
+  "base": "E6",
+  "new": "D6",
+  "ink_rows": [
+   364,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/9-3-0-0-2.png"
+ },
+ {
+  "subject": "glyph/3/0/0/4/7",
+  "base": "E6",
+  "new": "D6",
+  "ink_rows": [
+   385,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/7-3-0-0-4.png"
+ },
+ {
+  "subject": "glyph/3/0/0/7/2",
+  "base": "B5",
+  "new": "A5",
+  "ink_rows": [
+   366,
+   660
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-0-7.png"
+ },
+ {
+  "subject": "glyph/3/0/1/3/10",
+  "base": "E5",
+  "new": "F5",
+  "ink_rows": [
+   507,
+   809
+  ],
+  "file": "out/print/2.42/ruler-litolff/10-3-0-1-3.png"
+ },
+ {
+  "subject": "glyph/3/0/1/3/8",
+  "base": "G5",
+  "new": "A5",
+  "ink_rows": [
+   507,
+   809
+  ],
+  "file": "out/print/2.42/ruler-litolff/8-3-0-1-3.png"
+ },
+ {
+  "subject": "glyph/3/0/1/4/13",
+  "base": "A5",
+  "new": "F5",
+  "ink_rows": [
+   511,
+   809
+  ],
+  "file": "out/print/2.42/ruler-litolff/13-3-0-1-4.png"
+ },
+ {
+  "subject": "glyph/3/0/1/6/2",
+  "base": "E5",
+  "new": "F5",
+  "ink_rows": [
+   509,
+   809
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-1-6.png"
+ },
+ {
+  "subject": "glyph/3/0/1/6/3",
+  "base": "G5",
+  "new": "A5",
+  "ink_rows": [
+   509,
+   809
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-0-1-6.png"
+ },
+ {
+  "subject": "glyph/3/0/2/3/10",
+  "base": "A4",
+  "new": "B4",
+  "ink_rows": [
+   637,
+   939
+  ],
+  "file": "out/print/2.42/ruler-litolff/10-3-0-2-3.png"
+ },
+ {
+  "subject": "glyph/3/0/3/5/10",
+  "base": "A3",
+  "new": "B3",
+  "ink_rows": [
+   777,
+   1079
+  ],
+  "file": "out/print/2.42/ruler-litolff/10-3-0-3-5.png"
+ },
+ {
+  "subject": "glyph/3/0/3/6/2",
+  "base": "A3",
+  "new": "B3",
+  "ink_rows": [
+   777,
+   1079
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-3-6.png"
+ },
+ {
+  "subject": "glyph/3/0/4/11/2",
+  "base": "C5",
+  "new": "D5",
+  "ink_rows": [
+   1021,
+   1218
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-4-11.png"
+ },
+ {
+  "subject": "glyph/3/0/4/12/3",
+  "base": "D5",
+  "new": "E5",
+  "ink_rows": [
+   1021,
+   1218
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-0-4-12.png"
+ },
+ {
+  "subject": "glyph/3/0/4/13/2",
+  "base": "G4",
+  "new": "A4",
+  "ink_rows": [
+   932,
+   1219
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-4-13.png"
+ },
+ {
+  "subject": "glyph/3/0/6/5/3",
+  "base": "B3",
+  "new": "A3",
+  "ink_rows": [
+   1211,
+   1513
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-0-6-5.png"
+ },
+ {
+  "subject": "glyph/3/0/8/7/9",
+  "base": "A4",
+  "new": "G4",
+  "ink_rows": [
+   1555,
+   1853
+  ],
+  "file": "out/print/2.42/ruler-litolff/9-3-0-8-7.png"
+ },
+ {
+  "subject": "glyph/3/0/9/5/2",
+  "base": "E3",
+  "new": "F3",
+  "ink_rows": [
+   1795,
+   2008
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-0-9-5.png"
+ },
+ {
+  "subject": "glyph/3/0/9/5/5",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   1795,
+   2008
+  ],
+  "file": "out/print/2.42/ruler-litolff/5-3-0-9-5.png"
+ },
+ {
+  "subject": "glyph/3/0/9/6/5",
+  "base": "E3",
+  "new": "D3",
+  "ink_rows": [
+   1711,
+   2008
+  ],
+  "file": "out/print/2.42/ruler-litolff/5-3-0-9-6.png"
+ },
+ {
+  "subject": "glyph/3/0/9/6/6",
+  "base": "E4",
+  "new": "D4",
+  "ink_rows": [
+   1711,
+   2008
+  ],
+  "file": "out/print/2.42/ruler-litolff/6-3-0-9-6.png"
+ },
+ {
+  "subject": "glyph/3/1/2/10/1",
+  "base": "B3",
+  "new": "C4",
+  "ink_rows": [
+   2548,
+   2841
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-2-10.png"
+ },
+ {
+  "subject": "glyph/3/1/2/10/2",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   2548,
+   2841
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-2-10.png"
+ },
+ {
+  "subject": "glyph/3/1/2/15/0",
+  "base": "B3",
+  "new": "A3",
+  "ink_rows": [
+   2548,
+   2841
+  ],
+  "file": "out/print/2.42/ruler-litolff/0-3-1-2-15.png"
+ },
+ {
+  "subject": "glyph/3/1/2/16/2",
+  "base": "E3",
+  "new": "F3",
+  "ink_rows": [
+   2548,
+   2836
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-2-16.png"
+ },
+ {
+  "subject": "glyph/3/1/2/16/3",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   2548,
+   2836
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-2-16.png"
+ },
+ {
+  "subject": "glyph/3/1/2/4/3",
+  "base": "B2",
+  "new": "C3",
+  "ink_rows": [
+   2552,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-2-4.png"
+ },
+ {
+  "subject": "glyph/3/1/2/5/0",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   2550,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/0-3-1-2-5.png"
+ },
+ {
+  "subject": "glyph/3/1/2/5/2",
+  "base": "E3",
+  "new": "F3",
+  "ink_rows": [
+   2550,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-2-5.png"
+ },
+ {
+  "subject": "glyph/3/1/2/6/1",
+  "base": "B3",
+  "new": "C4",
+  "ink_rows": [
+   2550,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-2-6.png"
+ },
+ {
+  "subject": "glyph/3/1/2/6/3",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   2550,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-2-6.png"
+ },
+ {
+  "subject": "glyph/3/1/2/7/1",
+  "base": "F3",
+  "new": "E3",
+  "ink_rows": [
+   2549,
+   2839
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-2-7.png"
+ },
+ {
+  "subject": "glyph/3/1/2/9/3",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   2548,
+   2846
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-2-9.png"
+ },
+ {
+  "subject": "glyph/3/1/3/0/6",
+  "base": "G4",
+  "new": "A4",
+  "ink_rows": [
+   2816,
+   3031
+  ],
+  "file": "out/print/2.42/ruler-litolff/6-3-1-3-0.png"
+ },
+ {
+  "subject": "glyph/3/1/3/2/3",
+  "base": "G4",
+  "new": "A4",
+  "ink_rows": [
+   2729,
+   3025
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-3-2.png"
+ },
+ {
+  "subject": "glyph/3/1/3/3/2",
+  "base": "G4",
+  "new": "F4",
+  "ink_rows": [
+   2812,
+   3030
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-3-3.png"
+ },
+ {
+  "subject": "glyph/3/1/4/1/1",
+  "base": "C5",
+  "new": "B4",
+  "ink_rows": [
+   3006,
+   3211
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-4-1.png"
+ },
+ {
+  "subject": "glyph/3/1/5/13/2",
+  "base": "F4",
+  "new": "G4",
+  "ink_rows": [
+   3156,
+   3368
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-5-13.png"
+ },
+ {
+  "subject": "glyph/3/1/5/15/2",
+  "base": "B4",
+  "new": "C5",
+  "ink_rows": [
+   3136,
+   3368
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-5-15.png"
+ },
+ {
+  "subject": "glyph/3/1/5/5/2",
+  "base": "A4",
+  "new": "G4",
+  "ink_rows": [
+   3158,
+   3368
+  ],
+  "file": "out/print/2.42/ruler-litolff/2-3-1-5-5.png"
+ },
+ {
+  "subject": "glyph/3/1/5/7/1",
+  "base": "A4",
+  "new": "B4",
+  "ink_rows": [
+   3147,
+   3368
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-5-7.png"
+ },
+ {
+  "subject": "glyph/3/1/6/1/0",
+  "base": "F4",
+  "new": "E4",
+  "ink_rows": [
+   3231,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/0-3-1-6-1.png"
+ },
+ {
+  "subject": "glyph/3/1/6/15/1",
+  "base": "G4",
+  "new": "A4",
+  "ink_rows": [
+   3292,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-6-15.png"
+ },
+ {
+  "subject": "glyph/3/1/6/17/1",
+  "base": "E4",
+  "new": "F4",
+  "ink_rows": [
+   3231,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-6-17.png"
+ },
+ {
+  "subject": "glyph/3/1/6/3/1",
+  "base": "F4",
+  "new": "G4",
+  "ink_rows": [
+   3231,
+   3530
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-6-3.png"
+ },
+ {
+  "subject": "glyph/3/1/6/4/1",
+  "base": "D4",
+  "new": "E4",
+  "ink_rows": [
+   3231,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-6-4.png"
+ },
+ {
+  "subject": "glyph/3/1/6/5/1",
+  "base": "E4",
+  "new": "D4",
+  "ink_rows": [
+   3231,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/1-3-1-6-5.png"
+ },
+ {
+  "subject": "glyph/3/1/6/6/3",
+  "base": "E4",
+  "new": "F4",
+  "ink_rows": [
+   3231,
+   3533
+  ],
+  "file": "out/print/2.42/ruler-litolff/3-3-1-6-6.png"
+ },
+ {
+  "subject": "glyph/3/1/7/17/6",
+  "base": "G3",
+  "new": "A3",
+  "ink_rows": [
+   3489,
+   3569
+  ],
+  "file": "out/print/2.42/ruler-litolff/6-3-1-7-17.png"
+ }
+]

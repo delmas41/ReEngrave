@@ -1,0 +1,85 @@
+{
+ "premise_systems_checked": 11,
+ "premise_adds": 0,
+ "ablation": {
+  "layouts, order only": [
+   0.2896551724137931,
+   0.7142857142857143
+  ],
+  "layouts + clef  (HELDOUT equiv)": [
+   0.8068965517241379,
+   0.8888888888888888
+  ],
+  "PAGE-1 ROSTER, order only": [
+   1.0,
+   0.8620689655172413
+  ],
+  "PAGE-1 ROSTER + clef": [
+   1.0,
+   0.903448275862069
+  ]
+ },
+ "rosters": {
+  "beethoven-sym5-mvt1-575951": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ],
+  "beethoven-sym5-mvt1-984073": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Bass voice"
+  ],
+  "brahms-sym1-mvt1-317803": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "dvorak-sym9-mvt1-405834": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Trombone",
+   "Trombone",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ]
+ }
+}

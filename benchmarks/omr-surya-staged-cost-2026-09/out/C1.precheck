@@ -1,0 +1,4 @@
+surya interpreter: yes
+llama.cpp backend: yes
+persistent server: no
+keep-alive default: off (OMR_SURYA_KEEP_ALIVE)

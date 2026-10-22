@@ -1,0 +1,263 @@
+{
+ "label": "breitkopf",
+ "seed": 0,
+ "per_stratum": 7,
+ "probe": "probe_two_stems_as_one.py",
+ "available": {
+  "both_ends": 7
+ },
+ "question": "is this ONE stem or TWO fused stems?",
+ "verdicts_allowed": [
+  "one_stem",
+  "two_stems",
+  "cannot_tell",
+  "other_ink"
+ ],
+ "rows": [
+  {
+   "subject": "glyph/1/0/3/4/0",
+   "stem": "obs:021335",
+   "t": 0.429,
+   "stem_h": 566.0,
+   "head_h": 98.0,
+   "end_gap_heads": 2.48,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    366.0,
+    387.0,
+    115.0,
+    98.0
+   ],
+   "stem_box": [
+    461.0,
+    193.0,
+    27.0,
+    566.0
+   ],
+   "head_page_box": [
+    3707.455078125,
+    1327.6533203125,
+    3746.8740234375,
+    1361.2451171875
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 7.12,
+   "_over": [
+    1.96,
+    2.313
+   ],
+   "_n_claimants": 2
+  },
+  {
+   "subject": "glyph/3/0/5/0/9",
+   "stem": "obs:053230",
+   "t": 0.54,
+   "stem_h": 498.0,
+   "head_h": 94.0,
+   "end_gap_heads": 2.436,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    880.0,
+    662.0,
+    107.0,
+    94.0
+   ],
+   "stem_box": [
+    970.0,
+    440.0,
+    16.0,
+    498.0
+   ],
+   "head_page_box": [
+    956.3828125,
+    1805.9970703125,
+    994.36572265625,
+    1839.365234375
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 6.38,
+   "_over": [
+    2.362,
+    1.936
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/0/6/4/6",
+   "stem": "obs:053277",
+   "t": 0.646,
+   "stem_h": 472.0,
+   "head_h": 116.0,
+   "end_gap_heads": 1.44,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    109.0,
+    497.0,
+    143.0,
+    116.0
+   ],
+   "stem_box": [
+    231.0,
+    250.0,
+    22.0,
+    472.0
+   ],
+   "head_page_box": [
+    2690.2475,
+    1982.9175,
+    2729.93,
+    2015.1075
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.72,
+   "_over": [
+    2.129,
+    0.94
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/1/10/2/16",
+   "stem": "obs:053975",
+   "t": 0.362,
+   "stem_h": 401.0,
+   "head_h": 108.0,
+   "end_gap_heads": 1.343,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    875.0,
+    527.0,
+    135.0,
+    108.0
+   ],
+   "stem_box": [
+    880.0,
+    436.0,
+    19.0,
+    401.0
+   ],
+   "head_page_box": [
+    2237.7470703125,
+    6354.0556640625,
+    2278.748046875,
+    6386.8564453125
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.39,
+   "_over": [
+    0.843,
+    1.87
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/0/1/0/7",
+   "stem": "obs:053097",
+   "t": 0.708,
+   "stem_h": 363.0,
+   "head_h": 92.0,
+   "end_gap_heads": 1.152,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    869.0,
+    648.0,
+    106.0,
+    92.0
+   ],
+   "stem_box": [
+    961.0,
+    437.0,
+    20.0,
+    363.0
+   ],
+   "head_page_box": [
+    952.47802734375,
+    912.02734375,
+    990.10595703125,
+    944.685546875
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.73,
+   "_over": [
+    2.293,
+    0.652
+   ],
+   "_n_claimants": 1
+  },
+  {
+   "subject": "glyph/3/0/7/0/8",
+   "stem": "obs:053295",
+   "t": 0.716,
+   "stem_h": 363.0,
+   "head_h": 96.0,
+   "end_gap_heads": 1.073,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    884.0,
+    653.0,
+    107.0,
+    96.0
+   ],
+   "stem_box": [
+    978.0,
+    441.0,
+    14.0,
+    363.0
+   ],
+   "head_page_box": [
+    957.802734375,
+    2255.80224609375,
+    995.78564453125,
+    2289.88037109375
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 4.68,
+   "_over": [
+    2.208,
+    0.573
+   ],
+   "_n_claimants": 2
+  },
+  {
+   "subject": "glyph/3/0/2/0/18",
+   "stem": "obs:053125",
+   "t": 0.472,
+   "stem_h": 198.0,
+   "head_h": 93.0,
+   "end_gap_heads": 1.005,
+   "interior_chord_member": false,
+   "n_mates": 0,
+   "head_box": [
+    873.0,
+    47.0,
+    102.0,
+    93.0
+   ],
+   "stem_box": [
+    961.0,
+    0.0,
+    14.0,
+    198.0
+   ],
+   "head_page_box": [
+    953.89794921875,
+    912.68408203125,
+    990.10595703125,
+    945.697265625
+   ],
+   "stratum": "both_ends",
+   "_len_spaces": 2.53,
+   "_over": [
+    0.505,
+    0.624
+   ],
+   "_n_claimants": 1
+  }
+ ]
+}

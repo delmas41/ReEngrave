@@ -1,0 +1,98 @@
+[
+ {
+  "n": 1,
+  "anchor": "b4087",
+  "cause": "Cause: run too wide",
+  "file": "stem_01.png",
+  "window_page_px": [
+   3918,
+   1421,
+   4370,
+   1685
+  ]
+ },
+ {
+  "n": 2,
+  "anchor": "b4119",
+  "cause": "Run too wide, with a beam",
+  "file": "stem_02.png",
+  "window_page_px": [
+   3166,
+   1920,
+   3614,
+   2176
+  ]
+ },
+ {
+  "n": 3,
+  "anchor": "b4310",
+  "cause": "Run too wide, low staff",
+  "file": "stem_03.png",
+  "window_page_px": [
+   2486,
+   5957,
+   2938,
+   6215
+  ]
+ },
+ {
+  "n": 4,
+  "anchor": "b4064",
+  "cause": "Cause: pair rule",
+  "file": "stem_04.png",
+  "window_page_px": [
+   2774,
+   4988,
+   3225,
+   5252
+  ]
+ },
+ {
+  "n": 5,
+  "anchor": "b4083",
+  "cause": "Pair rule, on a chord",
+  "file": "stem_05.png",
+  "window_page_px": [
+   4486,
+   1458,
+   4939,
+   1717
+  ]
+ },
+ {
+  "n": 6,
+  "anchor": "b4177",
+  "cause": "Wrong stem: a flag's curve",
+  "file": "stem_06.png",
+  "window_page_px": [
+   2322,
+   2699,
+   2773,
+   2957
+  ]
+ },
+ {
+  "n": 7,
+  "anchor": "q709",
+  "cause": "Found, not attached",
+  "file": "stem_07.png",
+  "window_page_px": [
+   4539,
+   3495,
+   4987,
+   3780
+  ]
+ },
+ {
+  "n": 8,
+  "anchor": "CELL:s0-st3-m0",
+  "cause": "Invented: not stems",
+  "file": "stem_08.png",
+  "window_page_px": [
+   1220,
+   2677,
+   1671,
+   2935
+  ]
+ }
+]

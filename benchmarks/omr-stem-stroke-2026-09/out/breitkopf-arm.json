@@ -1,0 +1,187 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "agree": 0.25,
+ "no_stem": 1529,
+ "plausible_heads": 953,
+ "thin_boxes": 576,
+ "restricted": {
+  "raw": {
+   "recovered": 535,
+   "agreement": {
+    "AGREES": 357,
+    "silent": 164,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9623
+  },
+  "side": {
+   "recovered": 532,
+   "agreement": {
+    "AGREES": 355,
+    "silent": 163,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9621
+  },
+  "side+end": {
+   "recovered": 531,
+   "agreement": {
+    "AGREES": 355,
+    "silent": 162,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9621
+  },
+  "side+end+legal": {
+   "recovered": 526,
+   "agreement": {
+    "AGREES": 354,
+    "silent": 159,
+    "disagrees": 13
+   },
+   "agreement_rate": 0.9646
+  },
+  "side+end@0.20": {
+   "recovered": 531,
+   "agreement": {
+    "AGREES": 355,
+    "silent": 162,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9621
+  },
+  "side+end@0.50": {
+   "recovered": 531,
+   "agreement": {
+    "AGREES": 355,
+    "silent": 162,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9621
+  },
+  "side+end@0.75": {
+   "recovered": 531,
+   "agreement": {
+    "AGREES": 355,
+    "silent": 162,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9621
+  }
+ },
+ "reference_restricted": {
+  "AGREES": 1476,
+  "silent": 276,
+  "disagrees": 27
+ },
+ "reference_restricted_rate": 0.982,
+ "record_strokes": 2305,
+ "off_strokes": 2305,
+ "reference": {
+  "AGREES": 1479,
+  "convention silent": 280,
+  "disagrees": 32
+ },
+ "reference_rate": 0.9788,
+ "width_cap_recovers": 345,
+ "variants": {
+  "raw": {
+   "on_strokes": 4462,
+   "added_strokes": 2157,
+   "recovered": 548,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 204,
+   "agreement": {
+    "AGREES": 362,
+    "convention silent": 172,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9628,
+   "circular": false
+  },
+  "side": {
+   "on_strokes": 3379,
+   "added_strokes": 1074,
+   "recovered": 544,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 200,
+   "agreement": {
+    "AGREES": 360,
+    "convention silent": 170,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9626,
+   "circular": false
+  },
+  "side+end": {
+   "on_strokes": 3320,
+   "added_strokes": 1015,
+   "recovered": 542,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 198,
+   "agreement": {
+    "AGREES": 360,
+    "convention silent": 168,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9626,
+   "circular": false
+  },
+  "side+end+legal": {
+   "on_strokes": 3275,
+   "added_strokes": 970,
+   "recovered": 532,
+   "shared_with_width_cap": 343,
+   "only_column_profile": 189,
+   "agreement": {
+    "AGREES": 358,
+    "convention silent": 161,
+    "disagrees": 13
+   },
+   "agreement_rate": 0.965,
+   "circular": true
+  },
+  "side+end@0.20": {
+   "on_strokes": 3285,
+   "added_strokes": 980,
+   "recovered": 542,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 198,
+   "agreement": {
+    "AGREES": 360,
+    "convention silent": 168,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9626,
+   "circular": false
+  },
+  "side+end@0.50": {
+   "on_strokes": 3344,
+   "added_strokes": 1039,
+   "recovered": 542,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 198,
+   "agreement": {
+    "AGREES": 360,
+    "convention silent": 168,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9626,
+   "circular": false
+  },
+  "side+end@0.75": {
+   "on_strokes": 3358,
+   "added_strokes": 1053,
+   "recovered": 542,
+   "shared_with_width_cap": 344,
+   "only_column_profile": 198,
+   "agreement": {
+    "AGREES": 360,
+    "convention silent": 168,
+    "disagrees": 14
+   },
+   "agreement_rate": 0.9626,
+   "circular": false
+  }
+ }
+}

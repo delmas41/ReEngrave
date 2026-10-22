@@ -1,0 +1,132 @@
+[
+ {
+  "n": 1,
+  "doc": "litolff",
+  "cell": "cell/1/0/3/0",
+  "staff_name": "Bassoon",
+  "before": [
+   "ff"
+  ],
+  "after": [],
+  "file": "dyn_01.png"
+ },
+ {
+  "n": 2,
+  "doc": "litolff",
+  "cell": "cell/1/0/10/0",
+  "staff_name": "Cello",
+  "before": [
+   "f",
+   "ff",
+   "f"
+  ],
+  "after": [
+   "ff"
+  ],
+  "file": "dyn_02.png"
+ },
+ {
+  "n": 3,
+  "doc": "litolff",
+  "cell": "cell/1/0/10/6",
+  "staff_name": "Cello",
+  "before": [
+   "p",
+   "p"
+  ],
+  "after": [
+   "p"
+  ],
+  "file": "dyn_03.png"
+ },
+ {
+  "n": 5,
+  "doc": "litolff",
+  "cell": "cell/1/0/11/6",
+  "staff_name": "Contrabass",
+  "before": [
+   "p"
+  ],
+  "after": [],
+  "file": "dyn_05.png"
+ },
+ {
+  "n": 6,
+  "doc": "litolff",
+  "cell": "cell/2/0/0/1",
+  "staff_name": "Flute",
+  "before": [],
+  "after": [
+   "p"
+  ],
+  "file": "dyn_06.png"
+ },
+ {
+  "n": 7,
+  "doc": "litolff",
+  "cell": "cell/2/0/1/2",
+  "staff_name": "Oboe",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "file": "dyn_07.png"
+ },
+ {
+  "n": 8,
+  "doc": "litolff",
+  "cell": "cell/2/0/3/1",
+  "staff_name": "Bassoon",
+  "before": [
+   "p"
+  ],
+  "after": [
+   "f"
+  ],
+  "file": "dyn_08.png"
+ },
+ {
+  "n": 39,
+  "doc": "brahms",
+  "cell": "cell/0/0/6/0",
+  "staff_name": "Horn",
+  "before": [
+   "f",
+   "f"
+  ],
+  "after": [
+   "f"
+  ],
+  "file": "dyn_39.png"
+ },
+ {
+  "n": 40,
+  "doc": "brahms",
+  "cell": "cell/0/0/10/0",
+  "staff_name": "Violin",
+  "before": [
+   "f",
+   "f",
+   "mp",
+   "ff"
+  ],
+  "after": [
+   "ff"
+  ],
+  "file": "dyn_40.png"
+ },
+ {
+  "n": 41,
+  "doc": "brahms",
+  "cell": "cell/1/0/2/1",
+  "staff_name": "Clarinet",
+  "before": [],
+  "after": [
+   "f"
+  ],
+  "file": "dyn_41.png"
+ }
+]

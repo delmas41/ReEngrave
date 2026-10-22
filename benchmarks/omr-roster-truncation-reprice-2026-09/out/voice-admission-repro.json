@@ -1,0 +1,1348 @@
+{
+ "n": 223,
+ "looks_vocal": 37,
+ "admits_voice": 38,
+ "misses": [
+  "ravel--bolero"
+ ],
+ "rows": [
+  {
+   "work_id": "bach--concerto-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bach--concerto-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bach--concerto-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bach--concerto-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bach--concerto-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bach--concerto-6",
+   "looks_vocal": false,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "bach--das-wohltemperierte-klavier-i",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bach--mass-in-b-minor",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "bach--matthauspassion",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "bach--suite-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--coriolan",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--egmont",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--missa-solemnis",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--piano-concerto-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--piano-concerto-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--piano-concerto-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-6",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-7",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-8",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--symphony-9",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "beethoven--violin-concerto-in-d-major",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "berlioz--harold-en-italie",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "berlioz--le-carnaval-romain",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "berlioz--symphony-fantastique",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bizet--suite-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bizet--symphony-in-c-major",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "borodin--in-the-steppes-of-central-asia",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "borodin--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "boulanger--faust-et-helene",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "brahms--academic-festival-overture",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--ein-deutsches-requiem",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--piano-concerto-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--piano-concerto-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--tragic-overture",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--variations-on-a-theme-by-haydn",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "brahms--violin-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "bruckner--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-6",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-7",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-8",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--symphony-9",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "bruckner--te-deum",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "chabrier--espana",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "chaminade--concertino-pour-flute",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "chausson--poeme",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "coleridge-taylor--ballade-op33",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "debussy--la-boite-a-joujoux",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "debussy--la-mer",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "debussy--nocturnes",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "debussy--prelude-a-l-apres-midi-d-un-faune",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dukas--l-apprenti-sorcier",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "dvorak--cello-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--serenade-for-strings",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--slavonic-dances",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--symphony-6",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--symphony-7",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--symphony-8",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "dvorak--symphony-9",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "elgar--cello-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "elgar--introduction-and-allegro",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "elgar--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "elgar--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "elgar--variations-on-an-original-theme-enigma",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "farrenc--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "farrenc--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "faure--pelleas-et-melisande",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "faure--requiem-op48",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "franck--le-chasseur-maudit",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "franck--symphony-in-d-minor",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "glazunov--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "grieg--holberg-suite",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "grieg--piano-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "grieg--suite-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "handel--music-for-the-royal-fireworks",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "handel--water-music",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--cello-concerto-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--die-schopfung-hob-xxi-2",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-100",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-101",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-102",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-103",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-104",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-45",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-88",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-92",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-94",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-95",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-96",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "haydn--symphony-99",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "holst--st-paul-s-suite-op29-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "holst--the-planets",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "lalo--symphony-espagnole",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mahler--das-lied-von-der-erde-gmw-49",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "mahler--lieder-eines-fahrenden-gesellen-gmw-10",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mahler--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mahler--symphony-2",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "mahler--symphony-3",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "mahler--symphony-4",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mahler--symphony-6",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "mahler--symphony-7",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "mahler--symphony-9",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "mendelssohn--a-midsummer-night-s-dream-incidental-music",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "mendelssohn--die-hebriden",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mendelssohn--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mendelssohn--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mendelssohn--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mendelssohn--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "mendelssohn--violin-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--clarinet-concerto-in-a-major",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--die-zauberflote",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--don-giovanni",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--eine-kleine-nachtmusik",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--le-nozze-di-figaro",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--piano-concerto-20",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--piano-concerto-21",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--piano-concerto-23",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--piano-concerto-24",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--requiem-in-d-minor",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-25",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-33",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-34",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-35",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-36",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-38",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-39",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-40",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-41",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mozart--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "mussorgsky--night-on-bald-mountain",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "mussorgsky--pictures-at-an-exhibition",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "nielsen--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "nielsen--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "prokofiev--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "rachmaninoff--isle-of-the-dead",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "rachmaninoff--piano-concerto-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "rachmaninoff--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "ravel--bolero",
+   "looks_vocal": true,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "ravel--daphnis-et-chloe",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "ravel--la-valse",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "ravel--le-tombeau-de-couperin",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "ravel--pavane-pour-une-infante-defunte",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "ravel--rapsodie-espagnole",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "respighi--fontane-di-roma",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "respighi--pini-di-roma",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "rimsky-korsakov--scheherazade",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "rossini--guillaume-tell",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "rossini--il-barbiere-di-siviglia",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "saint-saens--cello-concerto-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "saint-saens--danse-macabre",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "saint-saens--le-carnaval-des-animaux",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "saint-saens--piano-concerto-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "saint-saens--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--rosamunde",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--symphony-8",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schubert--symphony-9",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--cello-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--piano-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--symphony-3",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "schumann--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--finlandia",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--symphony-7",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--the-swan-of-tuonela-op22-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "sibelius--violin-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "smetana--ma-vlast-jb-1-112",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "smetana--prodana-nevesta-jb-1-100",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "smyth--the-wreckers",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--also-sprach-zarathustra",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--don-juan",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "strauss--don-quixote",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--ein-heldenleben",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "strauss--eine-alpensinfonie",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--elektra",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--till-eulenspiegels-lustige-streiche",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "strauss--tod-und-verklarung",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "stravinsky--petrushka",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "stravinsky--the-firebird-ballet",
+   "looks_vocal": false,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--1812-overture",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "tchaikovsky--piano-concerto-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--romeo-and-juliet-overture-fantasia",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--serenade-for-string-orchestra",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--swan-lake-ballet",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "tchaikovsky--symphony-1",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--symphony-2",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--symphony-4",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--symphony-5",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--symphony-6",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--the-nutcracker-suite",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "tchaikovsky--the-sleeping-beauty-suite",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "tchaikovsky--violin-concerto",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "verdi--requiem",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "vidal--178-basses",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "wagner--die-meistersinger-von-nurnberg-wwv-96",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "wagner--siegfried-idyll-wwv-103",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  },
+  {
+   "work_id": "wagner--tannhauser-wwv-70",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "wagner--tristan-und-isolde-wwv-90",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "weber--der-freischutz",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": true
+  },
+  {
+   "work_id": "weber--oberon-j-306",
+   "looks_vocal": true,
+   "admits_voice": true,
+   "complete": false
+  },
+  {
+   "work_id": "williams--fantasia-on-a-theme-by-thomas-tallis",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": false
+  },
+  {
+   "work_id": "williams--the-lark-ascending",
+   "looks_vocal": false,
+   "admits_voice": false,
+   "complete": true
+  }
+ ]
+}

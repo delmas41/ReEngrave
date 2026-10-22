@@ -1,0 +1,439 @@
+[
+ {
+  "tile": 1,
+  "file": "tile_01.png",
+  "plate": "lit",
+  "page": 1,
+  "system": 0,
+  "staff": 7,
+  "cell": 9,
+  "part": "Violin",
+  "family": "b",
+  "cause": "a note: the quarter-note head left of the rest was never boxed, so it is not in our count",
+  "want_quarters": 2.0,
+  "counted_quarters": 1.0,
+  "events": [
+   {
+    "kind": "rest",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 2,
+  "file": "tile_02.png",
+  "plate": "bra",
+  "page": 4,
+  "system": 0,
+  "staff": 12,
+  "cell": 2,
+  "part": "Cello",
+  "family": "b",
+  "cause": "notes: two heads were boxed but refused (duration not decided), so only one eighth is counted",
+  "want_quarters": 3.0,
+  "counted_quarters": 0.5,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "Eb4",
+    "status": "GUESSED",
+    "stem": "down"
+   }
+  ],
+  "not_written": [
+   {
+    "fate": "duration_narrowed",
+    "bbox_page": [
+     1816.72,
+     3334.8,
+     1854.5974999999999,
+     3367.7725
+    ]
+   },
+   {
+    "fate": "duration_narrowed",
+    "bbox_page": [
+     1651.8575,
+     3333.4375,
+     1690.0075,
+     3363.9575
+    ]
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "file": "tile_03.png",
+  "plate": "lit",
+  "page": 14,
+  "system": 0,
+  "staff": 2,
+  "cell": 4,
+  "part": "Clarinet",
+  "family": "b",
+  "cause": "a note: the first head on the staff was never boxed",
+  "want_quarters": 2.0,
+  "counted_quarters": 1.0,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "A5",
+    "status": "READ",
+    "stem": "up"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 4,
+  "file": "tile_04.png",
+  "plate": "bra",
+  "page": 10,
+  "system": 0,
+  "staff": 5,
+  "cell": 0,
+  "part": "Horn",
+  "family": "c",
+  "cause": "the flat sign before the chord was counted as a half note",
+  "want_quarters": 3.0,
+  "counted_quarters": 5.0,
+  "events": [
+   {
+    "kind": "rest",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "rest",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "Eb5",
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "chord",
+    "value": "h",
+    "quarters": 2.0,
+    "pitch": "B4",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "B4+Bb5",
+    "status": "READ",
+    "stem": "down"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 5,
+  "file": "tile_05.png",
+  "plate": "lit",
+  "page": 7,
+  "system": 0,
+  "staff": 6,
+  "cell": 0,
+  "part": "Timpani",
+  "family": "c",
+  "cause": "ink at the barline (the next bar's note) was counted as a half note in this bar",
+  "want_quarters": 2.0,
+  "counted_quarters": 4.0,
+  "events": [
+   {
+    "kind": "rest",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "GUESSED",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "GUESSED",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "GUESSED",
+    "stem": null
+   },
+   {
+    "kind": "chord",
+    "value": "h",
+    "quarters": 2.0,
+    "pitch": "C3",
+    "status": "GUESSED",
+    "stem": null
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 6,
+  "file": "tile_06.png",
+  "plate": "bra",
+  "page": 16,
+  "system": 1,
+  "staff": 10,
+  "cell": 4,
+  "part": "Violin",
+  "family": "c",
+  "cause": "one chord (two heads a second apart on one stem) was counted as two separate dotted halves",
+  "want_quarters": 3.0,
+  "counted_quarters": 6.0,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "h.",
+    "quarters": 3.0,
+    "pitch": "E#5",
+    "status": "READ",
+    "stem": "down"
+   },
+   {
+    "kind": "chord",
+    "value": "h.",
+    "quarters": 3.0,
+    "pitch": "D5",
+    "status": "READ",
+    "stem": "down"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 7,
+  "file": "tile_07.png",
+  "plate": "bra",
+  "page": 24,
+  "system": 1,
+  "staff": 4,
+  "cell": 5,
+  "part": "Contrabassoon",
+  "family": "d",
+  "cause": "both F2 notes have a flag on the page (eighths) but were read as quarters, with no blue mark",
+  "want_quarters": 3.0,
+  "counted_quarters": 4.0,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "F2",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "rest",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "rest",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "rest",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": null,
+    "status": "READ",
+    "stem": null
+   },
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "F2",
+    "status": "READ",
+    "stem": "up"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 8,
+  "file": "tile_08.png",
+  "plate": "bra",
+  "page": 8,
+  "system": 0,
+  "staff": 6,
+  "cell": 12,
+  "part": "Violin",
+  "family": "d",
+  "cause": "both notes carry a dot on the page (dotted quarters); the dots were not read",
+  "want_quarters": 3.0,
+  "counted_quarters": 2.0,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "C5",
+    "status": "READ",
+    "stem": "down"
+   },
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "Bb4",
+    "status": "READ",
+    "stem": "down"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 9,
+  "file": "tile_09.png",
+  "plate": "lit",
+  "page": 9,
+  "system": 0,
+  "staff": 10,
+  "cell": 1,
+  "part": null,
+  "family": "d",
+  "cause": "the first head belongs to the beamed group (an eighth) but was guessed a quarter",
+  "want_quarters": 2.0,
+  "counted_quarters": 2.5,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "F2",
+    "status": "GUESSED",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G2",
+    "status": "READ",
+    "stem": "up"
+   }
+  ],
+  "not_written": []
+ },
+ {
+  "tile": 10,
+  "file": "tile_10.png",
+  "plate": "bra",
+  "page": 3,
+  "system": 1,
+  "staff": 1,
+  "cell": 8,
+  "part": "Oboe",
+  "family": "a",
+  "cause": "looks like two oboe parts on one staff (stems up, stems down) added together as one; our reading, the least sure of the ten",
+  "want_quarters": 3.0,
+  "counted_quarters": 4.0,
+  "events": [
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "Ab4",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "Bb4",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "G4+C#5",
+    "status": "READ",
+    "stem": "up"
+   },
+   {
+    "kind": "chord",
+    "value": "q",
+    "quarters": 1.0,
+    "pitch": "B4+D5",
+    "status": "READ",
+    "stem": "down"
+   },
+   {
+    "kind": "chord",
+    "value": "8",
+    "quarters": 0.5,
+    "pitch": "C#5+Eb5",
+    "status": "READ",
+    "stem": "down"
+   }
+  ],
+  "not_written": []
+ }
+]

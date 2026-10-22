@@ -1,0 +1,79 @@
+[
+ {
+  "page": "beethoven5-575951 p1",
+  "family": "scan+textlayer",
+  "labels": 12,
+  "roster": true,
+  "changed": 1,
+  "diff": [
+   {
+    "staff": 11,
+    "text": "Basso.",
+    "off": "Bass voice",
+    "on": "Contrabass"
+   }
+  ]
+ },
+ {
+  "page": "ravel-bolero p1",
+  "family": "scan+textlayer",
+  "labels": 0,
+  "roster": true,
+  "changed": 0,
+  "diff": []
+ },
+ {
+  "page": "tchaikovsky-sym6-mvt2 (fixture)",
+  "family": "engraved",
+  "labels": 16,
+  "roster": true,
+  "changed": 5,
+  "diff": [
+   {
+    "staff": 3,
+    "text": "larinetti in A",
+    "off": null,
+    "on": "Clarinet"
+   },
+   {
+    "staff": 5,
+    "text": "orni in F I II",
+    "off": null,
+    "on": "Horn"
+   },
+   {
+    "staff": 8,
+    "text": "Alto e Tenore",
+    "off": "Tenor",
+    "on": null
+   },
+   {
+    "staff": 9,
+    "text": "mbone Basso",
+    "off": "Bass voice",
+    "on": "Trombone"
+   },
+   {
+    "staff": 16,
+    "text": "Basso",
+    "off": "Bass voice",
+    "on": "Contrabass"
+   }
+  ]
+ },
+ {
+  "page": "mozart-sym40-mvt1 (fixture)",
+  "family": "engraved",
+  "labels": 11,
+  "roster": true,
+  "changed": 1,
+  "diff": [
+   {
+    "staff": 2,
+    "text": "larinetti in B.",
+    "off": null,
+    "on": "Clarinet"
+   }
+  ]
+ }
+]

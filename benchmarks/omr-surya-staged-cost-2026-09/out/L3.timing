@@ -1,0 +1,15 @@
+arm=L3
+commit=4d25f991d7ab20ea7da5a912d62a3fc7b9e53357
+dirty=0
+flags=--surya --ocr
+OMR_DIRECTION_TEXT=1
+OMR_SURYA_KEEP_ALIVE=0
+start_epoch=1789544668
+start_utc=2026-09-16T07:44:28Z
+load_before=3.82 3.27 3.14
+end_epoch=1789547020
+end_utc=2026-09-16T08:23:40Z
+load_after=4.37 3.80 3.32
+exit=0
+  rungs: labels text_layer=on surya=on tesseract=on | directions OMR_DIRECTION_TEXT=1 surya=on tesseract=on
+census_exit=0

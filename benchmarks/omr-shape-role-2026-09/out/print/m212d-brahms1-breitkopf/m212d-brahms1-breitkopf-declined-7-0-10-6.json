@@ -1,0 +1,23 @@
+{
+  "subject": "system/7/0",
+  "quantity": "meter",
+  "cell_subject": "cell/7/0/10/6",
+  "staff_subject": "staff/7/0/10",
+  "declined_reason": "meter_change_not_system_wide",
+  "numerator": 4,
+  "denominator": 4,
+  "raw": "C",
+  "support": 3.0,
+  "staves_reading_it": [
+    10
+  ],
+  "bbox_page_px": [
+    3905.0,
+    3210.0,
+    4459.0,
+    3602.0
+  ],
+  "caveat": "the bracket is the CELL FRAME the reading was filed at, not the glyph itself -- Q.METER_GLYPH carries no page-pixel bbox for this family (see script docstring)",
+  "file": "m212d-brahms1-breitkopf-declined-7-0-10-6.png",
+  "VERDICT_none_yet": null
+}

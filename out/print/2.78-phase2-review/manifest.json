@@ -1,0 +1,938 @@
+{
+ "dpi": 600,
+ "note": "tiles cut from the gather's own deskewed raster; the bracket is the union of the stem box and its heads' boxes; ours is never shown to the judge",
+ "frame_control": [
+  {
+   "page": 7,
+   "frame_control": 167.28960081945587,
+   "shifted_half_space": -165.5033207028066,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 1,
+   "frame_control": 208.30382501041765,
+   "shifted_half_space": -206.53017435055867,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 2,
+   "frame_control": 128.5331104000677,
+   "shifted_half_space": -129.49252926125217,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 0,
+   "frame_control": 214.14267809284541,
+   "shifted_half_space": -212.16573425664467,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 3,
+   "frame_control": 116.69131189982238,
+   "shifted_half_space": -117.35441421977579,
+   "skew_correction_deg": 0.2499917447566986
+  },
+  {
+   "page": 6,
+   "frame_control": 96.86706644867154,
+   "shifted_half_space": -99.6196262294228,
+   "skew_correction_deg": 0.2499917447566986
+  },
+  {
+   "page": 5,
+   "frame_control": 205.6125761478212,
+   "shifted_half_space": -203.09383773414544,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 3,
+   "frame_control": 209.52325874924898,
+   "shifted_half_space": -208.78097648370078,
+   "skew_correction_deg": 0.0
+  }
+ ],
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "pdf_page_index": 7,
+   "page_box_600dpi": [
+    674,
+    972,
+    701,
+    1074
+   ],
+   "subject": [
+    "glyph/7/0/4/1/4",
+    "glyph/7/0/4/1/6",
+    "glyph/7/0/4/1/7"
+   ],
+   "stem_row": "obs:079080",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "BASE",
+   "picked_because": "BASE: two black-classed boxes and a half head on one stem become halves (Litolff p7, three heads)",
+   "read_ours": [
+    {
+     "head": "glyph/7/0/4/1/4",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/7/0/4/1/6",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/7/0/4/1/7",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "pdf_page_index": 1,
+   "page_box_600dpi": [
+    2235,
+    2368,
+    2277,
+    2453
+   ],
+   "subject": [
+    "glyph/1/0/7/13/0",
+    "glyph/1/0/7/13/3"
+   ],
+   "stem_row": "obs:004476",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "unchanged",
+   "cause_sub": "",
+   "picked_because": "CONTROL unchanged (beamed): both heads already read the same eighth",
+   "read_ours": [
+    {
+     "head": "glyph/1/0/7/13/0",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_agrees",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/1/0/7/13/3",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_agrees",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "pdf_page_index": 1,
+   "page_box_600dpi": [
+    1477,
+    2572,
+    1502,
+    2638
+   ],
+   "subject": [
+    "glyph/1/0/8/6/1",
+    "glyph/1/0/8/6/3"
+   ],
+   "stem_row": "obs:004618",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "unchanged",
+   "cause_sub": "",
+   "picked_because": "CONTROL unchanged (hollow): both heads already read the same half",
+   "read_ours": [
+    {
+     "head": "glyph/1/0/8/6/1",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_agrees",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/1/0/8/6/3",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_agrees",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    3396,
+    1592,
+    3444,
+    1798
+   ],
+   "subject": [
+    "glyph/2/0/5/3/5",
+    "glyph/2/0/5/3/10"
+   ],
+   "stem_row": "obs:016475",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "DOTS",
+   "picked_because": "DOTS: an undotted half takes the dotted half beside it (Brahms p2), hollow heads only",
+   "read_ours": [
+    {
+     "head": "glyph/2/0/5/3/5",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        3.0,
+        1,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/2/0/5/3/10",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        3.0,
+        1,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    2571,
+    6343,
+    2647,
+    6481
+   ],
+   "subject": [
+    "glyph/0/0/12/1/1",
+    "glyph/0/0/12/1/15"
+   ],
+   "stem_row": "obs:010525",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "LEVELS",
+   "picked_because": "LEVELS 2->1 on the OTHER plate (Brahms p0)",
+   "read_ours": [
+    {
+     "head": "glyph/0/0/12/1/1",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.25,
+       0,
+       2
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/0/0/12/1/15",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "pdf_page_index": 7,
+   "page_box_600dpi": [
+    1436,
+    374,
+    1458,
+    499
+   ],
+   "subject": [
+    "glyph/7/0/0/7/4",
+    "glyph/7/0/0/7/10"
+   ],
+   "stem_row": "obs:078468",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "LEVELS",
+   "picked_because": "LEVELS 1->0, the RISKY direction: the stem becomes a quarter because the tip-nearest head read no beam (Litolff p7)",
+   "read_ours": [
+    {
+     "head": "glyph/7/0/0/7/4",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        1.0,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/7/0/0/7/10",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        1.0,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    920,
+    1126,
+    943,
+    1246
+   ],
+   "subject": [
+    "glyph/3/0/5/2/2",
+    "glyph/3/0/5/2/8"
+   ],
+   "stem_row": "obs:037467",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "LEVELS",
+   "picked_because": "LEVELS 2->1: the second stem of tile 1's beamed pair (lower head read a 16th, the tip-nearest head an eighth)",
+   "read_ours": [
+    {
+     "head": "glyph/3/0/5/2/2",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.25,
+       0,
+       2
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/3/0/5/2/8",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "pdf_page_index": 6,
+   "page_box_600dpi": [
+    2277,
+    2877,
+    2316,
+    2946
+   ],
+   "subject": [
+    "glyph/6/1/6/10/6",
+    "glyph/6/1/6/10/7"
+   ],
+   "stem_row": "obs:059115",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "BASE",
+   "picked_because": "BASE: a decided black box beside a decided half head becomes a half (Litolff p6)",
+   "read_ours": [
+    {
+     "head": "glyph/6/1/6/10/6",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/6/1/6/10/7",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        2.0,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "pdf_page_index": 5,
+   "page_box_600dpi": [
+    1075,
+    809,
+    1099,
+    923
+   ],
+   "subject": [
+    "glyph/5/0/2/3/1",
+    "glyph/5/0/2/3/5"
+   ],
+   "stem_row": "obs:036733",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "NARROWED_TO_DECIDED",
+   "picked_because": "NARROWED->DECIDED: a head narrowed 16th|eighth beside a decided eighth (Litolff p5)",
+   "read_ours": [
+    {
+     "head": "glyph/5/0/2/3/1",
+     "class": "noteheadBlackOnLine",
+     "outcome": "narrowed",
+     "reason": "beams_ambiguous",
+     "values": [
+      [
+       0.25,
+       0,
+       2
+      ],
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/5/0/2/3/5",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "pdf_page_index": 5,
+   "page_box_600dpi": [
+    1652,
+    1581,
+    1677,
+    1674
+   ],
+   "subject": [
+    "glyph/5/0/6/8/0",
+    "glyph/5/0/6/8/2"
+   ],
+   "stem_row": "obs:037973",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "LEVELS",
+   "picked_because": "LEVELS 3->1: the far head read a 32nd, the tip-nearest head an eighth (Litolff p5)",
+   "read_ours": [
+    {
+     "head": "glyph/5/0/6/8/0",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.125,
+       0,
+       3
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/5/0/6/8/2",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "pdf_page_index": 6,
+   "page_box_600dpi": [
+    2076,
+    3432,
+    2123,
+    3506
+   ],
+   "subject": [
+    "glyph/6/1/10/9/5",
+    "glyph/6/1/10/9/9"
+   ],
+   "stem_row": "obs:060127",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "BASE+LEVELS+WHOLE",
+   "picked_because": "WHOLE: a whole-class box on the stem of a beamed eighth (Litolff p6): the confirmed rule 'whole notes never have stems'",
+   "read_ours": [
+    {
+     "head": "glyph/6/1/10/9/5",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       1
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_agrees",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/6/1/10/9/9",
+     "class": "noteheadWholeInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       4.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        0.5,
+        0,
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1472,
+    4494,
+    1512,
+    4625
+   ],
+   "subject": [
+    "glyph/3/1/2/1/5",
+    "glyph/3/1/2/1/7"
+   ],
+   "stem_row": "obs:049614",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "changed",
+   "cause_sub": "DOTS",
+   "picked_because": "DOTS: a filled quarter takes the dotted quarter beside it (Brahms p3), no hollow head",
+   "read_ours": [
+    {
+     "head": "glyph/3/1/2/1/5",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.5,
+       1,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        1.5,
+        1,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "head": "glyph/3/1/2/1/7",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       0
+      ]
+     ],
+     "stem_value_after": {
+      "outcome": "decided",
+      "reason": "stem_value_from_evidence",
+      "vals": [
+       [
+        1.5,
+        1,
+        0
+       ]
+      ]
+     }
+    }
+   ],
+   "slash_rows_on_stem": null
+  }
+ ]
+}

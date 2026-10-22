@@ -1,0 +1,20 @@
+{
+ "label": "Litolff",
+ "groups": {
+  "DECIDED": {
+   "n": 1011,
+   "paired": 816,
+   "share": 0.8071
+  },
+  "no_stem": {
+   "n": 496,
+   "paired": 469,
+   "share": 0.9456
+  },
+  "stems_disagree": {
+   "n": 109,
+   "paired": 78,
+   "share": 0.7156
+  }
+ }
+}

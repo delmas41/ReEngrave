@@ -1,0 +1,114 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "cells": 818,
+ "drift": 0,
+ "no_stem": 1529,
+ "rejected_components": {
+  "too SHORT": 1682,
+  "too WIDE": 288,
+  "too TALL": 1500,
+  "at a CELL EDGE": 254
+ },
+ "sweep": {
+  "0.1": {
+   "control": {
+    "reproduced": 3038,
+    "LOST": 54
+   },
+   "bands": 1103,
+   "heads_a_band_covers": 376,
+   "heads_a_band_covers_no_edge_filter": 549,
+   "share_of_no_stem": 0.2459,
+   "by_reason": {
+    "too SHORT -> none": 1680,
+    "too WIDE -> band": 213,
+    "too TALL -> none": 1376,
+    "too TALL -> band": 124,
+    "too WIDE -> none": 75,
+    "at a CELL EDGE -> none": 244,
+    "too SHORT -> band": 2,
+    "at a CELL EDGE -> band": 10
+   }
+  },
+  "0.15": {
+   "control": {
+    "reproduced": 3037,
+    "LOST": 55
+   },
+   "bands": 979,
+   "heads_a_band_covers": 375,
+   "heads_a_band_covers_no_edge_filter": 548,
+   "share_of_no_stem": 0.2453,
+   "by_reason": {
+    "too SHORT -> none": 1680,
+    "too WIDE -> band": 212,
+    "too TALL -> none": 1376,
+    "too TALL -> band": 124,
+    "too WIDE -> none": 76,
+    "at a CELL EDGE -> none": 244,
+    "too SHORT -> band": 2,
+    "at a CELL EDGE -> band": 10
+   }
+  },
+  "0.25": {
+   "control": {
+    "reproduced": 3036,
+    "LOST": 56
+   },
+   "bands": 915,
+   "heads_a_band_covers": 374,
+   "heads_a_band_covers_no_edge_filter": 548,
+   "share_of_no_stem": 0.2446,
+   "by_reason": {
+    "too SHORT -> none": 1680,
+    "too WIDE -> band": 212,
+    "too TALL -> none": 1376,
+    "too TALL -> band": 124,
+    "too WIDE -> none": 76,
+    "at a CELL EDGE -> none": 247,
+    "too SHORT -> band": 2,
+    "at a CELL EDGE -> band": 7
+   }
+  },
+  "0.4": {
+   "control": {
+    "reproduced": 3036,
+    "LOST": 56
+   },
+   "bands": 841,
+   "heads_a_band_covers": 374,
+   "heads_a_band_covers_no_edge_filter": 548,
+   "share_of_no_stem": 0.2446,
+   "by_reason": {
+    "too SHORT -> none": 1680,
+    "too WIDE -> band": 211,
+    "too TALL -> none": 1376,
+    "too TALL -> band": 124,
+    "too WIDE -> none": 77,
+    "at a CELL EDGE -> none": 249,
+    "too SHORT -> band": 2,
+    "at a CELL EDGE -> band": 5
+   }
+  },
+  "0.6": {
+   "control": {
+    "reproduced": 3035,
+    "LOST": 57
+   },
+   "bands": 781,
+   "heads_a_band_covers": 374,
+   "heads_a_band_covers_no_edge_filter": 548,
+   "share_of_no_stem": 0.2446,
+   "by_reason": {
+    "too SHORT -> none": 1681,
+    "too WIDE -> band": 211,
+    "too TALL -> none": 1377,
+    "too TALL -> band": 123,
+    "too WIDE -> none": 77,
+    "at a CELL EDGE -> none": 252,
+    "too SHORT -> band": 1,
+    "at a CELL EDGE -> band": 2
+   }
+  }
+ }
+}

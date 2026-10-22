@@ -1,0 +1,16 @@
+
+Litolff Beethoven 5 pp.1-4
+  barlines   joined   7   h min 8.18 median 8.59 max 12.01
+             `too TALL`              7 of 7  (100%)
+             spans the WHOLE cell    3 of 7  (43%)
+  stems      joined  20   h min 0.92 median 5.46 max 9.56
+             `too TALL`              1 of 20  (5%)
+             spans the WHOLE cell    0 of 20  (0%)
+
+Breitkopf Brahms 1 pp.0-3
+  barlines   joined  12   h min 9.49 median 12.00 max 13.94
+             `too TALL`             12 of 12  (100%)
+             spans the WHOLE cell   10 of 12  (83%)
+  stems      joined  38   h min 0.83 median 4.81 max 6.58
+             `too TALL`              0 of 38  (0%)
+             spans the WHOLE cell    0 of 38  (0%)

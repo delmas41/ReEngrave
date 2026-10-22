@@ -1,0 +1,297 @@
+{
+  "schema_version": 3,
+  "work_id": "tchaikovsky-sym4-mvt4",
+  "source": {
+    "kind": "musicxml",
+    "path": "/Users/seanjohnson/Desktop/gradus-vercel/public/scores/tchaikovsky-sym4-mvt4.mxl",
+    "generated_by": "tools.omr.training.build_dossiers"
+  },
+  "title": "Symphony No. 4",
+  "composer": "Peter Tchaikovsky",
+  "total_measures": 293,
+  "starting_meter": {
+    "beats": 2,
+    "beat_type": 2
+  },
+  "meter_changes": [
+    {
+      "measure": 1,
+      "beats": 2,
+      "beat_type": 2
+    },
+    {
+      "measure": 199,
+      "beats": 3,
+      "beat_type": 4
+    },
+    {
+      "measure": 223,
+      "beats": 2,
+      "beat_type": 2
+    }
+  ],
+  "constant_meter": false,
+  "parts": [
+    {
+      "slot": 0,
+      "name": "Piccolo",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 12,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 1,
+      "name": "Flute 1",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 2,
+      "name": "Flute 2",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 3,
+      "name": "Oboe 1",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 4,
+      "name": "Oboe 2",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 5,
+      "name": "B\u266d Clarinet 1",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": -2,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 6,
+      "name": "B\u266d Clarinet 2",
+      "written_clef": "treble",
+      "written_fifths": 1,
+      "transposition_semitones": -2,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 7,
+      "name": "Bassoon 1",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 8,
+      "name": "Bassoon 2",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 9,
+      "name": "Horn in F 1",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 10,
+      "name": "Horn in F 2",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 11,
+      "name": "Horn in F 3",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 12,
+      "name": "Horn in F 4",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": -7,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 13,
+      "name": "F Trumpet 1",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 5,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 14,
+      "name": "F Trumpet 2",
+      "written_clef": "treble",
+      "written_fifths": 0,
+      "transposition_semitones": 5,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 15,
+      "name": "Trombone 1",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 16,
+      "name": "Trombone 2",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 17,
+      "name": "Trombone 3",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 18,
+      "name": "Tuba",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 19,
+      "name": "Timpani",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 20,
+      "name": "Violin 1",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 21,
+      "name": "Violin 2",
+      "written_clef": "treble",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 22,
+      "name": "Viola",
+      "written_clef": "alto",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 23,
+      "name": "Violoncello",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": 0,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    },
+    {
+      "slot": 24,
+      "name": "Contrabass",
+      "written_clef": "bass",
+      "written_fifths": -1,
+      "transposition_semitones": -12,
+      "clef_changes": [],
+      "key_changes": [],
+      "measures": 293
+    }
+  ],
+  "clefs_used": [
+    "alto",
+    "bass",
+    "treble"
+  ],
+  "written_fifths_used": [
+    -1,
+    0,
+    1
+  ],
+  "n_parts": 25
+}

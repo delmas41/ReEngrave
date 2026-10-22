@@ -32,16 +32,7 @@ rules out -- it decides nothing for accidentals and for rests is preceded by the
   `leading_column` branch) are register internals lane 2.183 is editing, so an `ink` owner cannot be expressed without editing them.
 - Tests: `tools/omr/tests/test_staged_one_ink_2_186.py` (23, each refusal/keep has a control).
 
-## Measured by the shared lane report (`python3 -m tools.omr.staged.lane_report --flag OMR_ONE_INK_ONE_MARK`, frozen sample, re-gathered OFF and ON; Sean's 2026-10-21 rule)
-Files: `lane-report/report.txt`, `report.json`; tiles `out/print/2.186-one-ink-one-mark/` (seed 2188, orange box), key `out/print/2.186-key.json`.
-| plate (8 pages) | exported file, ON vs OFF | red bars | judged right->wrong |
-|---|---|---|---|
-| Litolff | rests +2, accidentals +21 -12, pitches ~37, blue marks +34 -2 | 0 -> 0 | 0 (233 tiles) |
-| Brahms | notes +2, rests +5, accidentals +201 -58, dots +1, ties +8 -12, slurs -4, pitches ~253, blue marks +201 -7, words +1 -4 | 166 -> 166 | 0 (232 tiles) |
-Not explained: Brahms ties/slurs/words/dots move though the flag touches only rests and accidentals. Ties follow pitch (an applied accidental changes the pitch a tie needs); words/dots/slurs have no mechanism in this lane. No OFF-vs-OFF re-gather control was run (the tool prints `OFF==record NOT CHECKED` in re-gather mode); if one shows the same movement it is gather non-determinism, not the flag. The OFF==stored control IS established for the replay below.
-A first version of the lane dropped the absorbed boxes, which shifted every later glyph index in the cell (a judged notehead tile went `not_found`, Litolff glyph/10/1/1/8/8); the report caught it. Now the absorbed box is KEPT at its index and refused (`rest_is_a_duplicate_box` / `one_ink_absorbed`); the sample shows 0 gone.
-
-## Background: Litolff whole-movement replay (first design, boxes dropped; superseded by the sample above), run before Sean's three-things rule; Brahms replay NOT run to the end: stopped on the coordinator's instruction)
+## Measured (Litolff whole-movement replay, run before Sean's three-things rule; Brahms replay NOT run to the end: stopped on the coordinator's instruction)
 Record 20261020-night, replay = stored gather rows + the same merge, ADJUDICATE..export (`replay_2_186.py`). CONTROL: flag OFF live verdicts equal the stored
 ones: rest_is_not_a_rest 2969/2969, accidental_owner 1508/1508, accidental 4323/4323, duration 14867/14867.
 | exported file, Litolff | OFF | ON |

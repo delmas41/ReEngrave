@@ -1,0 +1,18 @@
+== Sean's 10 judged bars
+1 litolff cell/2/0/7/1 Sean=[] main=['p'] B0=['p'] A2=[]*
+2 litolff cell/3/0/7/14 Sean=['p'] main=['p']* B0=['p']* A2=['p']*
+3 brahms cell/0/0/1/0 Sean=['f'] main=['f']* B0=['f', 'f'] A2=['f']*
+4 brahms cell/0/0/9/0 Sean=['f'] main=['f', 'p', 'f'] B0=['f']* A2=['f']*
+5 brahms cell/0/0/12/0 Sean=['f'] main=['f', 'f'] B0=['f', 'f'] A2=['f']*
+6 brahms cell/0/0/12/1 Sean=[] main=['p'] B0=[]* A2=[]*
+7 brahms cell/0/0/13/0 Sean=['f'] main=['f']* B0=['f']* A2=['f']*
+8 brahms cell/0/0/13/1 Sean=[] main=['p'] B0=[]* A2=[]*
+9 brahms cell/1/0/9/1 Sean=['p'] main=['fp', 'p'] B0=['fp'] A2=['f', 'fp']
+10 brahms cell/1/0/10/3 Sean=[] main=['f'] B0=<abstained> A2=[]*
+right (*): {'main': 3, 'B0': 5, 'A2': 9}
+== the 5 unjudged bars (letter-neighbour lane's)
+1 litolff cell/2/0/7/2 None main=['f'] B0=['f', 'f'] A2=['f']
+2 brahms cell/0/0/0/0 Flute main=[] B0=['f'] A2=['f']
+3 brahms cell/0/0/2/0 Clarinet main=['f'] B0=['f', 'f'] A2=['f']
+4 brahms cell/0/0/3/0 Bassoon main=['f', 'f'] B0=['f', 'fp'] A2=['fp']
+5 brahms cell/0/0/11/0 Viola main=[] B0=['f'] A2=['f']

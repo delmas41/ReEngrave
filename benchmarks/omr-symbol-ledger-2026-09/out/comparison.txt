@@ -1,0 +1,85 @@
+==========================================================================
+SHAPE OF THE ATTRIBUTION — the same 20 scan-gate pairs
+==========================================================================
+
+musicdiff (AllObjects): 74956 edits
+  in a bucket that names NO specific error     69349   92.5%
+  naming a specific symbol attribute            5607    7.5%
+
+symbol ledger: 29519 symbol rows
+  declared uncorresponded or ambiguous         17948   60.8%
+  corresponded and accounted for               11571   39.2%
+
+  ⚠️ The two percentages LOOK alike and are not the same quantity. musicdiff's
+     unnamed mass is what it CHARGED without diagnosing; the ledger's is what it
+     DECLINED to charge because the correspondence was not established.
+
+--------------------------------------------------------------------------
+WHAT EACH SAYS THE ERRORS ARE ABOUT
+--------------------------------------------------------------------------
+
+musicdiff buckets
+  entire measure insert/delete          29655  ← names nothing
+  wrong note                            22174  ← names nothing
+  entire staff insert/delete            17520  ← names nothing
+  wrong note head                        1788
+  wrong flag/beam                         688
+  wrong dynamic                           512
+  wrong keysig                            507
+  wrong direction                         500
+  wrong timesig                           468
+  wrong dot                               282
+  wrong slur                              220
+  wrong clef                              205
+
+ledger outcomes
+  uncorresponded:part_unresolved        14992
+  spurious                               3186
+  ambiguous                              2904
+  matched_attribute_error                2879
+  missing                                2783
+  matched_exact                          2723
+  uncorresponded:measure_unresolved        52
+
+ledger named attribute errors
+  note.pitch                             1034
+  note.pitch (single-key)                 622
+  rest.duration_ql                        471
+  rest.type                               471
+  note.duration_ql                        383
+  note.type                               371
+  note.duration_ql (single-key)           313
+  note.type (single-key)                  304
+  note.accidental                         162
+  note.accidental (single-key)             96
+  rest.duration_ql (single-key)            76
+  rest.type (single-key)                   72
+  key.fifths                               68
+  dynamic.text                             48
+  rest.dots (single-key)                   40
+  rest.dots                                36
+
+--------------------------------------------------------------------------
+PER ROW — where the join resolved, and where it did not
+--------------------------------------------------------------------------
+row                                     join  md edits  md unnamed  ledger rows  uncorresp
+bach-brandenburg3-mvt1-468678-p1          NO      6148        96%         2469      100%
+beethoven-sym5-mvt1-575951-p1            yes      1354        88%          467        0%
+beethoven-sym5-mvt1-575951-p2            yes      4408        93%         1286        0%
+beethoven-sym5-mvt1-575951-p3             NO      3172        90%         1994      100%
+beethoven-sym5-mvt1-575951-p4            yes      4714        96%         1675        2%
+beethoven-sym5-mvt1-984073-p1            yes      1273        88%          472        0%
+beethoven-sym5-mvt1-984073-p2            yes      4347        91%         1412        0%
+beethoven-sym5-mvt1-984073-p3             NO      3034        89%         1903      100%
+beethoven-sym5-mvt1-984073-p4            yes      4673        96%         1571        0%
+brahms-sym1-mvt1-317803-p1               yes      3431        93%         1161        1%
+brahms-sym1-mvt1-317803-p2                NO      6562        94%         3040      100%
+brahms-sym1-mvt1-317803-p3               yes      4573        91%         1399        0%
+brahms-sym1-mvt1-317803-p4               yes      7012        94%         2089        0%
+dvorak-sym9-mvt1-405834-p5               yes       661        85%          469        0%
+dvorak-sym9-mvt1-405834-p6               yes      2586        88%          757        0%
+dvorak-sym9-mvt1-405834-p7               yes      5698        88%         1769        0%
+mahler-sym5-mvt1-local-p2                 NO      1118        80%          771      100%
+mahler-sym5-mvt1-local-p3                 NO      3075        95%         1420      100%
+mahler-sym5-mvt1-local-p4                 NO      4149        95%         1889      100%
+mahler-sym5-mvt1-local-p5                 NO      2968        93%         1506      100%

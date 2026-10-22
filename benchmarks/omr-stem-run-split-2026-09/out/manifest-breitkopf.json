@@ -1,0 +1,68 @@
+{
+ "label": "breitkopf",
+ "seed": 0,
+ "question": "is this ONE stem or TWO fused stems?",
+ "verdicts_allowed": [
+  "one_stem",
+  "two_stems",
+  "cannot_tell",
+  "other_ink"
+ ],
+ "dpi": 600,
+ "pad_y_spaces": 6.0,
+ "px_per_space": 100.0,
+ "resample": "NEAREST",
+ "written": 7,
+ "refused": [],
+ "tiles": [
+  {
+   "id": "fe3c275eee",
+   "subject": "glyph/1/0/3/4/0",
+   "stem": "obs:021335",
+   "stratum": "both_ends",
+   "frame_delta": 201.1
+  },
+  {
+   "id": "7182cf7f91",
+   "subject": "glyph/3/0/5/0/9",
+   "stem": "obs:053230",
+   "stratum": "both_ends",
+   "frame_delta": 227.4
+  },
+  {
+   "id": "92191c2983",
+   "subject": "glyph/3/0/6/4/6",
+   "stem": "obs:053277",
+   "stratum": "both_ends",
+   "frame_delta": 229.2
+  },
+  {
+   "id": "d5512aa222",
+   "subject": "glyph/3/1/10/2/16",
+   "stem": "obs:053975",
+   "stratum": "both_ends",
+   "frame_delta": 143.6
+  },
+  {
+   "id": "b843e4adf0",
+   "subject": "glyph/3/0/1/0/7",
+   "stem": "obs:053097",
+   "stratum": "both_ends",
+   "frame_delta": 219.7
+  },
+  {
+   "id": "a58174bcb9",
+   "subject": "glyph/3/0/7/0/8",
+   "stem": "obs:053295",
+   "stratum": "both_ends",
+   "frame_delta": 233.7
+  },
+  {
+   "id": "926525d940",
+   "subject": "glyph/3/0/2/0/18",
+   "stem": "obs:053125",
+   "stratum": "both_ends",
+   "frame_delta": 191.5
+  }
+ ]
+}

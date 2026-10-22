@@ -1,0 +1,179 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "seed": 20260918,
+ "recovered": 345,
+ "strata": {
+  "agree": 193,
+  "disagree": 41,
+  "silent": 111
+ },
+ "sheets": [
+  "benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-0.png",
+  "benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-1.png",
+  "benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-2.png"
+ ],
+ "index": [
+  {
+   "i": 0,
+   "stratum": "agree",
+   "subject": "glyph/2/0/2/1/7",
+   "we_say": "up",
+   "convention": "up",
+   "frame_delta_grey": 96.9,
+   "frame_ok": true
+  },
+  {
+   "i": 1,
+   "stratum": "agree",
+   "subject": "glyph/3/0/9/7/0",
+   "we_say": "up",
+   "convention": "up",
+   "frame_delta_grey": 165.3,
+   "frame_ok": true
+  },
+  {
+   "i": 2,
+   "stratum": "agree",
+   "subject": "glyph/3/0/4/7/1",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 150.7,
+   "frame_ok": true
+  },
+  {
+   "i": 3,
+   "stratum": "agree",
+   "subject": "glyph/2/1/1/8/2",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 138.5,
+   "frame_ok": true
+  },
+  {
+   "i": 4,
+   "stratum": "agree",
+   "subject": "glyph/4/1/0/6/6",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 160.5,
+   "frame_ok": true
+  },
+  {
+   "i": 5,
+   "stratum": "agree",
+   "subject": "glyph/3/0/3/4/6",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 121.9,
+   "frame_ok": true
+  },
+  {
+   "i": 6,
+   "stratum": "disagree",
+   "subject": "glyph/2/1/2/9/7",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 176.9,
+   "frame_ok": true
+  },
+  {
+   "i": 7,
+   "stratum": "disagree",
+   "subject": "glyph/2/1/9/14/9",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 114.3,
+   "frame_ok": true
+  },
+  {
+   "i": 8,
+   "stratum": "disagree",
+   "subject": "glyph/3/0/1/7/3",
+   "we_say": "down",
+   "convention": "up",
+   "frame_delta_grey": 144.1,
+   "frame_ok": true
+  },
+  {
+   "i": 9,
+   "stratum": "disagree",
+   "subject": "glyph/2/0/0/1/3",
+   "we_say": "down",
+   "convention": "up",
+   "frame_delta_grey": 80.3,
+   "frame_ok": true
+  },
+  {
+   "i": 10,
+   "stratum": "disagree",
+   "subject": "glyph/4/1/2/11/2",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 133.3,
+   "frame_ok": true
+  },
+  {
+   "i": 11,
+   "stratum": "disagree",
+   "subject": "glyph/2/0/0/2/5",
+   "we_say": "down",
+   "convention": "up",
+   "frame_delta_grey": 101.1,
+   "frame_ok": true
+  },
+  {
+   "i": 12,
+   "stratum": "silent",
+   "subject": "glyph/3/0/9/7/4",
+   "we_say": "up",
+   "convention": null,
+   "frame_delta_grey": 180.5,
+   "frame_ok": true
+  },
+  {
+   "i": 13,
+   "stratum": "silent",
+   "subject": "glyph/4/1/7/2/4",
+   "we_say": "up",
+   "convention": null,
+   "frame_delta_grey": 84.2,
+   "frame_ok": true
+  },
+  {
+   "i": 14,
+   "stratum": "silent",
+   "subject": "glyph/2/1/1/7/5",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 167.1,
+   "frame_ok": true
+  },
+  {
+   "i": 15,
+   "stratum": "silent",
+   "subject": "glyph/3/0/3/3/7",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 86.6,
+   "frame_ok": true
+  },
+  {
+   "i": 16,
+   "stratum": "silent",
+   "subject": "glyph/4/0/8/0/5",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 149.6,
+   "frame_ok": true
+  },
+  {
+   "i": 17,
+   "stratum": "silent",
+   "subject": "glyph/2/1/9/10/8",
+   "we_say": "up",
+   "convention": null,
+   "frame_delta_grey": 101.7,
+   "frame_ok": true
+  }
+ ]
+}

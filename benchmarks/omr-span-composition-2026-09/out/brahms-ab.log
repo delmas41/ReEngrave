@@ -1,0 +1,34 @@
+=== ARM off  2026-09-06T21:56:34Z
+  wrote benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 86 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-on.json
+=== ARM refuse  2026-09-06T21:56:42Z
+  wrote benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 86 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-on.json
+=== ARM search  2026-09-06T21:56:51Z
+  wrote benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 86 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-off.json
+  benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json
+=== SCORING 2026-09-06T21:57:00Z
+arm                    spans  veto   IMPOSSIBLE  self-contradicting   detail
+fit-off                off    off            36                  44   28x Trombone(label), 8x Tuba(score_order)
+fit-off                off    on             14                  44   8x Tuba(score_order), 6x Trombone(label)
+fit-off                on     off           149                 167   79x Tuba(score_order), 70x Trombone(label)
+fit-off                on     on            133                 167   79x Tuba(score_order), 54x Trombone(label)
+
+fit-refuse             off    off            36                  44   28x Trombone(label), 8x Tuba(score_order)
+fit-refuse             off    on             14                  44   8x Tuba(score_order), 6x Trombone(label)
+fit-refuse             on     off            36                  44   28x Trombone(label), 8x Tuba(score_order)
+fit-refuse             on     on             14                  44   8x Tuba(score_order), 6x Trombone(label)
+
+fit-search             off    off            36                  44   28x Trombone(label), 8x Tuba(score_order)
+fit-search             off    on             14                  44   8x Tuba(score_order), 6x Trombone(label)
+fit-search             on     off             0                  48   
+fit-search             on     on              0                  48   
+
+staff records per arm: 1927
+=== DONE 2026-09-06T21:57:00Z

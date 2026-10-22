@@ -1,0 +1,11 @@
+========================================================================
+POSITIVE CONTROL: 2 `<words>` written (2 Q.DIRECTION_WORD rows in the record)
+========================================================================
+  words stripped from AFTER == BEFORE : True
+  <dynamics>  before 132  after 132  (must not move)
+  notes       before 1075  after 1075
+  rests       before 443  after 443
+  counter direction_words : 2
+  balance     : {'words_decided': 2, 'placed': 2, 'written': 2, 'not_written': 0, 'balanced': True}
+
+RESULT: PASS

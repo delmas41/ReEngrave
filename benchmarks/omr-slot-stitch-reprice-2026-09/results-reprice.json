@@ -1,0 +1,3573 @@
+{
+ "generated_by": "benchmarks/omr-slot-stitch-reprice-2026-09/reprice_arm.py",
+ "git_head": "832b7582",
+ "commission": "backlog A0b - re-price OMR_SLOT_STITCH against the page-normalised truth (Sean)",
+ "transform_version": "1.2.0",
+ "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part; any bar carrying an UNPITCHED (percussion) note takes the voice path, because a chord holds pitches and would drop it",
+ "era_warning": "the NORMALISED column is a SEPARATE BENCHMARK ERA and may not be differenced against any un-normalised figure. ON-vs-OFF WITHIN one column is the valid comparison: both cells share a truth, a tree and a transcription.",
+ "arms_share_one_transcription": "BY CONSTRUCTION - the flag is export-only. Proven executed by the prediction hashes differing on every reached row.",
+ "seconds": {
+  "export_and_normalise": 1.1,
+  "musicdiff_batch": 622.2
+ },
+ "reach": {
+  "n_reached": 3,
+  "reached_rows": [
+   "beethoven-sym5-mvt1-984073-p3",
+   "beethoven-sym5-mvt1-575951-p3",
+   "brahms-sym1-mvt1-317803-p2"
+  ],
+  "n_unreached": 17,
+  "why_unreached": {
+   "beethoven-sym5-mvt1-984073-p1": "single system - nothing to stitch",
+   "beethoven-sym5-mvt1-984073-p2": "ordinal join SUCCEEDS - flag never consulted",
+   "beethoven-sym5-mvt1-984073-p4": "ordinal join SUCCEEDS - flag never consulted",
+   "beethoven-sym5-mvt1-575951-p1": "single system - nothing to stitch",
+   "beethoven-sym5-mvt1-575951-p2": "ordinal join SUCCEEDS - flag never consulted",
+   "beethoven-sym5-mvt1-575951-p4": "ordinal join SUCCEEDS - flag never consulted",
+   "dvorak-sym9-mvt1-405834-p5": "single system - nothing to stitch",
+   "dvorak-sym9-mvt1-405834-p6": "single system - nothing to stitch",
+   "dvorak-sym9-mvt1-405834-p7": "ordinal join SUCCEEDS - flag never consulted",
+   "brahms-sym1-mvt1-317803-p1": "single system - nothing to stitch",
+   "brahms-sym1-mvt1-317803-p3": "ordinal join SUCCEEDS - flag never consulted",
+   "brahms-sym1-mvt1-317803-p4": "ordinal join SUCCEEDS - flag never consulted",
+   "mahler-sym5-mvt1-local-p2": "single system - nothing to stitch",
+   "mahler-sym5-mvt1-local-p3": "single system - nothing to stitch",
+   "mahler-sym5-mvt1-local-p4": "single system - nothing to stitch",
+   "mahler-sym5-mvt1-local-p5": "single system - nothing to stitch",
+   "bach-brandenburg3-mvt1-468678-p1": "ordinal join SUCCEEDS - flag never consulted"
+  }
+ },
+ "control_unreached_rows_must_be_identical": {
+  "rows": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p3",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p4",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p5",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "predictions_identical": true,
+    "raw_edits_identical": true,
+    "norm_edits_identical": true,
+    "PASS": true
+   }
+  ],
+  "PASS": true
+ },
+ "pooled_all_rows": {
+  "off_raw": {
+   "omr_ned": 0.8439475018306765,
+   "omr_ed": 74913,
+   "truth_symbols": 49846,
+   "pred_symbols": 38919,
+   "categories": {
+    "wrong note": 22153,
+    "wrong note head": 1788,
+    "wrong flag/beam": 689,
+    "wrong ornament": 43,
+    "wrong clef": 205,
+    "wrong timesig": 468,
+    "wrong keysig": 507,
+    "wrong tempo": 4,
+    "wrong direction": 500,
+    "wrong dynamic": 512,
+    "entire measure insert/delete": 29633,
+    "entire staff insert/delete": 17520,
+    "wrong accidental": 82,
+    "wrong tie": 68,
+    "wrong articulation": 55,
+    "wrong slur": 220,
+    "wrong lyric": 48,
+    "wrong dot": 282,
+    "wrong crescendo": 44,
+    "wrong diminuendo": 32,
+    "wrong tuplet": 12,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 42
+   },
+   "n_rows": 20
+  },
+  "on_raw": {
+   "omr_ned": 0.8415755663248056,
+   "omr_ed": 74673,
+   "truth_symbols": 49846,
+   "pred_symbols": 38884,
+   "categories": {
+    "wrong note": 21685,
+    "wrong note head": 1892,
+    "wrong flag/beam": 695,
+    "wrong ornament": 43,
+    "wrong clef": 181,
+    "wrong timesig": 448,
+    "wrong keysig": 520,
+    "wrong tempo": 4,
+    "wrong direction": 491,
+    "wrong dynamic": 514,
+    "entire measure insert/delete": 26908,
+    "entire staff insert/delete": 20384,
+    "wrong accidental": 79,
+    "wrong tie": 70,
+    "wrong articulation": 55,
+    "wrong slur": 219,
+    "wrong lyric": 48,
+    "wrong dot": 307,
+    "wrong crescendo": 41,
+    "wrong diminuendo": 31,
+    "wrong tuplet": 12,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 40
+   },
+   "n_rows": 20
+  }
+ },
+ "pooled_normalisable_rows_only": {
+  "off_raw": {
+   "omr_ned": 0.8468511888368677,
+   "omr_ed": 73798,
+   "truth_symbols": 48698,
+   "pred_symbols": 38446,
+   "categories": {
+    "wrong note": 22096,
+    "wrong note head": 1736,
+    "wrong flag/beam": 689,
+    "wrong ornament": 42,
+    "wrong clef": 200,
+    "wrong timesig": 440,
+    "wrong keysig": 460,
+    "wrong tempo": 4,
+    "wrong direction": 410,
+    "wrong dynamic": 509,
+    "entire measure insert/delete": 29450,
+    "entire staff insert/delete": 16871,
+    "wrong accidental": 82,
+    "wrong tie": 68,
+    "wrong articulation": 55,
+    "wrong slur": 220,
+    "wrong lyric": 48,
+    "wrong dot": 282,
+    "wrong crescendo": 44,
+    "wrong diminuendo": 32,
+    "wrong tuplet": 12,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 42
+   },
+   "n_rows": 19
+  },
+  "on_raw": {
+   "omr_ned": 0.8444362809812993,
+   "omr_ed": 73558,
+   "truth_symbols": 48698,
+   "pred_symbols": 38411,
+   "categories": {
+    "wrong note": 21628,
+    "wrong note head": 1840,
+    "wrong flag/beam": 695,
+    "wrong ornament": 42,
+    "wrong clef": 176,
+    "wrong timesig": 420,
+    "wrong keysig": 473,
+    "wrong tempo": 4,
+    "wrong direction": 401,
+    "wrong dynamic": 511,
+    "entire measure insert/delete": 26725,
+    "entire staff insert/delete": 19735,
+    "wrong accidental": 79,
+    "wrong tie": 70,
+    "wrong articulation": 55,
+    "wrong slur": 219,
+    "wrong lyric": 48,
+    "wrong dot": 307,
+    "wrong crescendo": 41,
+    "wrong diminuendo": 31,
+    "wrong tuplet": 12,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 40
+   },
+   "n_rows": 19
+  },
+  "off_norm": {
+   "omr_ned": 0.6464605779881181,
+   "omr_ed": 51360,
+   "truth_symbols": 41002,
+   "pred_symbols": 38446,
+   "categories": {
+    "wrong note": 25757,
+    "wrong note head": 1816,
+    "wrong flag/beam": 1175,
+    "wrong accidental": 303,
+    "wrong tie": 282,
+    "wrong ornament": 57,
+    "wrong lyric": 249,
+    "wrong timesig": 444,
+    "wrong keysig": 410,
+    "wrong tempo": 4,
+    "wrong direction": 840,
+    "wrong dynamic": 649,
+    "wrong slur": 327,
+    "entire measure insert/delete": 14640,
+    "wrong articulation": 123,
+    "wrong clef": 120,
+    "entire staff insert/delete": 3596,
+    "wrong dot": 382,
+    "wrong diminuendo": 36,
+    "wrong crescendo": 44,
+    "wrong tuplet": 48,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 52
+   },
+   "n_rows": 19
+  },
+  "on_norm": {
+   "omr_ned": 0.618060015362724,
+   "omr_ed": 49082,
+   "truth_symbols": 41002,
+   "pred_symbols": 38411,
+   "categories": {
+    "wrong note": 26514,
+    "wrong note head": 2122,
+    "wrong flag/beam": 1235,
+    "wrong accidental": 334,
+    "wrong tie": 316,
+    "wrong ornament": 57,
+    "wrong lyric": 276,
+    "wrong timesig": 448,
+    "wrong keysig": 453,
+    "wrong tempo": 4,
+    "wrong direction": 890,
+    "wrong dynamic": 687,
+    "wrong slur": 397,
+    "entire measure insert/delete": 13094,
+    "wrong articulation": 125,
+    "wrong clef": 124,
+    "wrong dot": 440,
+    "wrong diminuendo": 48,
+    "wrong crescendo": 54,
+    "wrong tuplet": 48,
+    "wrong fingered tremolo": 6,
+    "wrong barline": 52,
+    "entire staff insert/delete": 1358
+   },
+   "n_rows": 19
+  }
+ },
+ "pooled_reached_rows_only": {
+  "off_raw": {
+   "omr_ned": 0.9087864319817572,
+   "omr_ed": 12753,
+   "truth_symbols": 7667,
+   "pred_symbols": 6366,
+   "categories": {
+    "wrong note": 2717,
+    "wrong note head": 520,
+    "wrong flag/beam": 36,
+    "wrong accidental": 11,
+    "wrong tie": 10,
+    "wrong lyric": 24,
+    "wrong clef": 50,
+    "wrong timesig": 106,
+    "wrong keysig": 82,
+    "wrong dynamic": 42,
+    "wrong slur": 52,
+    "entire measure insert/delete": 8113,
+    "entire staff insert/delete": 892,
+    "wrong direction": 18,
+    "wrong dot": 43,
+    "wrong articulation": 1,
+    "wrong barline": 15,
+    "wrong crescendo": 14,
+    "wrong diminuendo": 7
+   },
+   "n_rows": 3
+  },
+  "on_raw": {
+   "omr_ned": 0.8939134162023146,
+   "omr_ed": 12513,
+   "truth_symbols": 7667,
+   "pred_symbols": 6331,
+   "categories": {
+    "wrong note": 2249,
+    "wrong note head": 624,
+    "wrong flag/beam": 42,
+    "wrong accidental": 8,
+    "wrong tie": 12,
+    "wrong lyric": 24,
+    "wrong clef": 26,
+    "wrong timesig": 86,
+    "wrong keysig": 95,
+    "wrong dynamic": 44,
+    "wrong slur": 51,
+    "entire measure insert/delete": 5388,
+    "entire staff insert/delete": 3756,
+    "wrong dot": 68,
+    "wrong articulation": 1,
+    "wrong barline": 13,
+    "wrong direction": 9,
+    "wrong crescendo": 11,
+    "wrong diminuendo": 6
+   },
+   "n_rows": 3
+  },
+  "off_norm": {
+   "omr_ned": 0.7423715095103197,
+   "omr_ed": 9172,
+   "truth_symbols": 5989,
+   "pred_symbols": 6366,
+   "categories": {
+    "wrong note": 2988,
+    "wrong note head": 362,
+    "wrong flag/beam": 127,
+    "wrong accidental": 44,
+    "wrong tie": 41,
+    "wrong articulation": 2,
+    "wrong ornament": 17,
+    "wrong lyric": 36,
+    "wrong clef": 8,
+    "wrong timesig": 92,
+    "wrong keysig": 70,
+    "wrong dynamic": 72,
+    "wrong slur": 42,
+    "entire measure insert/delete": 2926,
+    "entire staff insert/delete": 2238,
+    "wrong dot": 39,
+    "wrong direction": 37,
+    "wrong diminuendo": 9,
+    "wrong barline": 14,
+    "wrong crescendo": 8
+   },
+   "n_rows": 3
+  },
+  "on_norm": {
+   "omr_ned": 0.5595779220779221,
+   "omr_ed": 6894,
+   "truth_symbols": 5989,
+   "pred_symbols": 6331,
+   "categories": {
+    "wrong note": 3745,
+    "wrong note head": 668,
+    "wrong flag/beam": 187,
+    "wrong accidental": 75,
+    "wrong tie": 75,
+    "wrong articulation": 4,
+    "wrong ornament": 17,
+    "wrong lyric": 63,
+    "wrong clef": 12,
+    "wrong timesig": 96,
+    "wrong keysig": 113,
+    "wrong dynamic": 110,
+    "wrong slur": 112,
+    "entire measure insert/delete": 1380,
+    "wrong dot": 97,
+    "wrong direction": 87,
+    "wrong diminuendo": 21,
+    "wrong barline": 14,
+    "wrong crescendo": 18
+   },
+   "n_rows": 3
+  }
+ },
+ "transform_accounting": {
+  "what": "what page_normalise ADDS vs REMOVES, over the normalisable rows. Emitted from the harness so the findings' percentages are checkable against the artefact rather than re-derived by the reader.",
+  "off_arm": {
+   "pool_net": {
+    "added": 5777,
+    "removed": 28215,
+    "net": -22438,
+    "share_of_gross": 0.16995175335373028,
+    "ratio_to_removed": 0.20474924685451001
+   },
+   "row_gross": {
+    "added": 7769,
+    "removed": 30207,
+    "net": -22438,
+    "share_of_gross": 0.20457657467874446,
+    "ratio_to_removed": 0.2571920415797663
+   },
+   "quoted_in_findings": "pool_net.share_of_gross",
+   "per_bucket_pool_net": {
+    "entire measure insert/delete": {
+     "raw": 29450,
+     "norm": 14640,
+     "delta": -14810
+    },
+    "entire staff insert/delete": {
+     "raw": 16871,
+     "norm": 3596,
+     "delta": -13275
+    },
+    "wrong accidental": {
+     "raw": 82,
+     "norm": 303,
+     "delta": 221
+    },
+    "wrong articulation": {
+     "raw": 55,
+     "norm": 123,
+     "delta": 68
+    },
+    "wrong barline": {
+     "raw": 42,
+     "norm": 52,
+     "delta": 10
+    },
+    "wrong clef": {
+     "raw": 200,
+     "norm": 120,
+     "delta": -80
+    },
+    "wrong crescendo": {
+     "raw": 44,
+     "norm": 44,
+     "delta": 0
+    },
+    "wrong diminuendo": {
+     "raw": 32,
+     "norm": 36,
+     "delta": 4
+    },
+    "wrong direction": {
+     "raw": 410,
+     "norm": 840,
+     "delta": 430
+    },
+    "wrong dot": {
+     "raw": 282,
+     "norm": 382,
+     "delta": 100
+    },
+    "wrong dynamic": {
+     "raw": 509,
+     "norm": 649,
+     "delta": 140
+    },
+    "wrong fingered tremolo": {
+     "raw": 6,
+     "norm": 6,
+     "delta": 0
+    },
+    "wrong flag/beam": {
+     "raw": 689,
+     "norm": 1175,
+     "delta": 486
+    },
+    "wrong keysig": {
+     "raw": 460,
+     "norm": 410,
+     "delta": -50
+    },
+    "wrong lyric": {
+     "raw": 48,
+     "norm": 249,
+     "delta": 201
+    },
+    "wrong note": {
+     "raw": 22096,
+     "norm": 25757,
+     "delta": 3661
+    },
+    "wrong note head": {
+     "raw": 1736,
+     "norm": 1816,
+     "delta": 80
+    },
+    "wrong ornament": {
+     "raw": 42,
+     "norm": 57,
+     "delta": 15
+    },
+    "wrong slur": {
+     "raw": 220,
+     "norm": 327,
+     "delta": 107
+    },
+    "wrong tempo": {
+     "raw": 4,
+     "norm": 4,
+     "delta": 0
+    },
+    "wrong tie": {
+     "raw": 68,
+     "norm": 282,
+     "delta": 214
+    },
+    "wrong timesig": {
+     "raw": 440,
+     "norm": 444,
+     "delta": 4
+    },
+    "wrong tuplet": {
+     "raw": 12,
+     "norm": 48,
+     "delta": 36
+    }
+   }
+  },
+  "on_arm": {
+   "pool_net": {
+    "added": 7604,
+    "removed": 32080,
+    "net": -24476,
+    "share_of_gross": 0.191613748614051,
+    "ratio_to_removed": 0.23703241895261845
+   },
+   "row_gross": {
+    "added": 7833,
+    "removed": 32309,
+    "net": -24476,
+    "share_of_gross": 0.1951322804045638,
+    "ratio_to_removed": 0.24244018694481415
+   },
+   "quoted_in_findings": "pool_net.share_of_gross",
+   "per_bucket_pool_net": {
+    "entire measure insert/delete": {
+     "raw": 26725,
+     "norm": 13094,
+     "delta": -13631
+    },
+    "entire staff insert/delete": {
+     "raw": 19735,
+     "norm": 1358,
+     "delta": -18377
+    },
+    "wrong accidental": {
+     "raw": 79,
+     "norm": 334,
+     "delta": 255
+    },
+    "wrong articulation": {
+     "raw": 55,
+     "norm": 125,
+     "delta": 70
+    },
+    "wrong barline": {
+     "raw": 40,
+     "norm": 52,
+     "delta": 12
+    },
+    "wrong clef": {
+     "raw": 176,
+     "norm": 124,
+     "delta": -52
+    },
+    "wrong crescendo": {
+     "raw": 41,
+     "norm": 54,
+     "delta": 13
+    },
+    "wrong diminuendo": {
+     "raw": 31,
+     "norm": 48,
+     "delta": 17
+    },
+    "wrong direction": {
+     "raw": 401,
+     "norm": 890,
+     "delta": 489
+    },
+    "wrong dot": {
+     "raw": 307,
+     "norm": 440,
+     "delta": 133
+    },
+    "wrong dynamic": {
+     "raw": 511,
+     "norm": 687,
+     "delta": 176
+    },
+    "wrong fingered tremolo": {
+     "raw": 6,
+     "norm": 6,
+     "delta": 0
+    },
+    "wrong flag/beam": {
+     "raw": 695,
+     "norm": 1235,
+     "delta": 540
+    },
+    "wrong keysig": {
+     "raw": 473,
+     "norm": 453,
+     "delta": -20
+    },
+    "wrong lyric": {
+     "raw": 48,
+     "norm": 276,
+     "delta": 228
+    },
+    "wrong note": {
+     "raw": 21628,
+     "norm": 26514,
+     "delta": 4886
+    },
+    "wrong note head": {
+     "raw": 1840,
+     "norm": 2122,
+     "delta": 282
+    },
+    "wrong ornament": {
+     "raw": 42,
+     "norm": 57,
+     "delta": 15
+    },
+    "wrong slur": {
+     "raw": 219,
+     "norm": 397,
+     "delta": 178
+    },
+    "wrong tempo": {
+     "raw": 4,
+     "norm": 4,
+     "delta": 0
+    },
+    "wrong tie": {
+     "raw": 70,
+     "norm": 316,
+     "delta": 246
+    },
+    "wrong timesig": {
+     "raw": 420,
+     "norm": 448,
+     "delta": 28
+    },
+    "wrong tuplet": {
+     "raw": 12,
+     "norm": 48,
+     "delta": 36
+    }
+   }
+  },
+  "\u26a0\ufe0f_scope_changes_the_sign": "pool_net says the ON arm carries MORE added artefact than OFF (so the normalised comparison is not flattering ON); row_gross says the opposite. pool_net is quoted because the claim it supports is a POOLED one."
+ },
+ "reproduces_recorded_n1_measurement": {
+  "available": true,
+  "source": "benchmarks/omr-staff-structure-2026-09/FINDINGS.md section 4",
+  "entire_staff": {
+   "recorded": [
+    715,
+    1632
+   ],
+   "measured": [
+    715,
+    1632
+   ],
+   "EXACT": true
+  },
+  "parts": {
+   "recorded": [
+    27,
+    14
+   ],
+   "measured": [
+    27,
+    14
+   ],
+   "EXACT": true
+  },
+  "net_edits": {
+   "recorded": -216,
+   "measured": -214,
+   "EXACT": false,
+   "difference": 2
+  }
+ },
+ "dilution_control": {
+  "what": "OMR-NED is symmetric, so emitting FEWER symbols lowers it for free. If this were dilution, omr_ed would rise while the ratio fell.",
+  "pred_symbols_off": 38919,
+  "pred_symbols_on": 38884
+ },
+ "skipped": [],
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     12
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 12,
+    "on": 12
+   },
+   "sha": {
+    "transcription": "1d81072955a001f3",
+    "truth_raw": "c9f227524d5d67e8",
+    "pred_off": "d6c9ed62b5271ffa",
+    "pred_on": "d6c9ed62b5271ffa",
+    "truth_normalised": "31e2e9e0824ce20c"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 12,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p1|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth.musicxml",
+    "omr_ned": 0.7052631578947368,
+    "omr_ed": 1273,
+    "pred_symbols": 741,
+    "truth_symbols": 1064,
+    "categories": {
+     "wrong note": 182,
+     "wrong note head": 74,
+     "wrong flag/beam": 11,
+     "wrong ornament": 6,
+     "wrong clef": 12,
+     "wrong timesig": 6,
+     "wrong keysig": 18,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 9,
+     "entire measure insert/delete": 425,
+     "entire staff insert/delete": 513
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p1|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.4187256176853056,
+    "omr_ed": 644,
+    "pred_symbols": 741,
+    "truth_symbols": 797,
+    "categories": {
+     "wrong note": 165,
+     "wrong note head": 62,
+     "wrong flag/beam": 21,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong ornament": 2,
+     "wrong lyric": 33,
+     "wrong timesig": 6,
+     "wrong keysig": 24,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 14,
+     "wrong slur": 1,
+     "entire measure insert/delete": 294
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p1|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth.musicxml",
+    "omr_ned": 0.7052631578947368,
+    "omr_ed": 1273,
+    "pred_symbols": 741,
+    "truth_symbols": 1064,
+    "categories": {
+     "wrong note": 182,
+     "wrong note head": 74,
+     "wrong flag/beam": 11,
+     "wrong ornament": 6,
+     "wrong clef": 12,
+     "wrong timesig": 6,
+     "wrong keysig": 18,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 9,
+     "entire measure insert/delete": 425,
+     "entire staff insert/delete": 513
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p1|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.4187256176853056,
+    "omr_ed": 644,
+    "pred_symbols": 741,
+    "truth_symbols": 797,
+    "categories": {
+     "wrong note": 165,
+     "wrong note head": 62,
+     "wrong flag/beam": 21,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong ornament": 2,
+     "wrong lyric": 33,
+     "wrong timesig": 6,
+     "wrong keysig": 24,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 14,
+     "wrong slur": 1,
+     "entire measure insert/delete": 294
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     11
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 11,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "beb3e78ec5df807f",
+    "truth_raw": "bfbe9a87c35071cf",
+    "pred_off": "9eb09b14aab81647",
+    "pred_on": "9eb09b14aab81647",
+    "truth_normalised": "6dcf9a246aa61a91"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.2131,
+    "exact_duplication_share": 0.7869
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p2|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.truth.musicxml",
+    "omr_ned": 0.8697478991596639,
+    "omr_ed": 4347,
+    "pred_symbols": 1994,
+    "truth_symbols": 3004,
+    "categories": {
+     "wrong note": 756,
+     "wrong note head": 218,
+     "wrong flag/beam": 20,
+     "wrong accidental": 1,
+     "wrong tie": 3,
+     "wrong articulation": 1,
+     "wrong ornament": 6,
+     "wrong clef": 5,
+     "wrong timesig": 24,
+     "wrong keysig": 19,
+     "wrong direction": 18,
+     "wrong dynamic": 57,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1666,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p2|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.566350710900474,
+    "omr_ed": 2390,
+    "pred_symbols": 1994,
+    "truth_symbols": 2226,
+    "categories": {
+     "wrong note": 879,
+     "wrong note head": 200,
+     "wrong flag/beam": 49,
+     "wrong accidental": 10,
+     "wrong tie": 11,
+     "wrong articulation": 3,
+     "wrong ornament": 7,
+     "wrong lyric": 42,
+     "wrong clef": 2,
+     "wrong timesig": 24,
+     "wrong keysig": 30,
+     "wrong direction": 78,
+     "wrong dynamic": 77,
+     "wrong slur": 5,
+     "entire measure insert/delete": 973
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p2|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.truth.musicxml",
+    "omr_ned": 0.8697478991596639,
+    "omr_ed": 4347,
+    "pred_symbols": 1994,
+    "truth_symbols": 3004,
+    "categories": {
+     "wrong note": 756,
+     "wrong note head": 218,
+     "wrong flag/beam": 20,
+     "wrong accidental": 1,
+     "wrong tie": 3,
+     "wrong articulation": 1,
+     "wrong ornament": 6,
+     "wrong clef": 5,
+     "wrong timesig": 24,
+     "wrong keysig": 19,
+     "wrong direction": 18,
+     "wrong dynamic": 57,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1666,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p2|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.566350710900474,
+    "omr_ed": 2390,
+    "pred_symbols": 1994,
+    "truth_symbols": 2226,
+    "categories": {
+     "wrong note": 879,
+     "wrong note head": 200,
+     "wrong flag/beam": 49,
+     "wrong accidental": 10,
+     "wrong tie": 11,
+     "wrong articulation": 3,
+     "wrong ornament": 7,
+     "wrong lyric": 42,
+     "wrong clef": 2,
+     "wrong timesig": 24,
+     "wrong keysig": 30,
+     "wrong direction": 78,
+     "wrong dynamic": 77,
+     "wrong slur": 5,
+     "entire measure insert/delete": 973
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     8,
+     11
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": true,
+    "reached": true,
+    "why": "ordinal REFUSED, slot join supplies it - FLAG ACTS HERE"
+   },
+   "parts": {
+    "off": 19,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "845262df8fa815e8",
+    "truth_raw": "32669b24d9dc6724",
+    "pred_off": "047755748aadaa6b",
+    "pred_on": "da80a0a37f0833e5",
+    "truth_normalised": "cf9eb2401669a429"
+   },
+   "predictions_differ": true,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.1738,
+    "exact_duplication_share": 0.8262
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p3|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.truth.musicxml",
+    "omr_ned": 0.8705882352941177,
+    "omr_ed": 3034,
+    "pred_symbols": 1351,
+    "truth_symbols": 2134,
+    "categories": {
+     "wrong note": 439,
+     "wrong note head": 204,
+     "wrong flag/beam": 8,
+     "wrong accidental": 4,
+     "wrong tie": 3,
+     "wrong lyric": 6,
+     "wrong clef": 16,
+     "wrong timesig": 32,
+     "wrong keysig": 25,
+     "wrong dynamic": 10,
+     "wrong slur": 13,
+     "entire measure insert/delete": 2187,
+     "entire staff insert/delete": 87
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p3|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.6623738252697529,
+    "omr_ed": 1903,
+    "pred_symbols": 1351,
+    "truth_symbols": 1522,
+    "categories": {
+     "wrong note": 338,
+     "wrong note head": 146,
+     "wrong flag/beam": 26,
+     "wrong accidental": 13,
+     "wrong tie": 8,
+     "wrong articulation": 1,
+     "wrong ornament": 6,
+     "wrong lyric": 12,
+     "wrong clef": 2,
+     "wrong timesig": 22,
+     "wrong keysig": 20,
+     "wrong dynamic": 13,
+     "wrong slur": 5,
+     "entire measure insert/delete": 807,
+     "entire staff insert/delete": 484
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p3|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.truth.musicxml",
+    "omr_ned": 0.8674525589419206,
+    "omr_ed": 3017,
+    "pred_symbols": 1344,
+    "truth_symbols": 2134,
+    "categories": {
+     "wrong note": 400,
+     "wrong note head": 244,
+     "wrong flag/beam": 11,
+     "wrong accidental": 3,
+     "wrong tie": 3,
+     "wrong lyric": 6,
+     "wrong clef": 6,
+     "wrong timesig": 22,
+     "wrong keysig": 30,
+     "wrong dynamic": 11,
+     "wrong slur": 15,
+     "entire measure insert/delete": 1204,
+     "entire staff insert/delete": 1062
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p3|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.45882763433356594,
+    "omr_ed": 1315,
+    "pred_symbols": 1344,
+    "truth_symbols": 1522,
+    "categories": {
+     "wrong note": 402,
+     "wrong note head": 246,
+     "wrong flag/beam": 26,
+     "wrong accidental": 19,
+     "wrong tie": 12,
+     "wrong articulation": 2,
+     "wrong ornament": 6,
+     "wrong lyric": 24,
+     "wrong clef": 2,
+     "wrong timesig": 22,
+     "wrong keysig": 33,
+     "wrong dynamic": 15,
+     "wrong slur": 24,
+     "entire measure insert/delete": 482
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     11
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 11,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "01d82a1289973fc4",
+    "truth_raw": "a1a7c26c9ae326ca",
+    "pred_off": "05fa621b186eeb35",
+    "pred_on": "05fa621b186eeb35",
+    "truth_normalised": "c2ac2400fc2c84b7"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.4,
+    "exact_duplication_share": 0.6
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p4|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.truth.musicxml",
+    "omr_ned": 0.9009061114324273,
+    "omr_ed": 4673,
+    "pred_symbols": 2258,
+    "truth_symbols": 2929,
+    "categories": {
+     "wrong note": 738,
+     "wrong note head": 64,
+     "wrong flag/beam": 21,
+     "wrong accidental": 7,
+     "wrong tie": 6,
+     "wrong articulation": 5,
+     "wrong ornament": 2,
+     "wrong clef": 10,
+     "wrong timesig": 22,
+     "wrong keysig": 21,
+     "wrong direction": 33,
+     "wrong dynamic": 10,
+     "wrong slur": 2,
+     "entire measure insert/delete": 2355,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p4|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.5847953216374269,
+    "omr_ed": 2700,
+    "pred_symbols": 2258,
+    "truth_symbols": 2359,
+    "categories": {
+     "wrong note": 1121,
+     "wrong note head": 90,
+     "wrong flag/beam": 57,
+     "wrong dot": 1,
+     "wrong accidental": 24,
+     "wrong tie": 25,
+     "wrong articulation": 13,
+     "wrong ornament": 2,
+     "wrong lyric": 15,
+     "wrong clef": 11,
+     "wrong timesig": 22,
+     "wrong keysig": 31,
+     "wrong direction": 46,
+     "wrong dynamic": 18,
+     "wrong slur": 26,
+     "entire measure insert/delete": 1198
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-984073-p4|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.truth.musicxml",
+    "omr_ned": 0.9009061114324273,
+    "omr_ed": 4673,
+    "pred_symbols": 2258,
+    "truth_symbols": 2929,
+    "categories": {
+     "wrong note": 738,
+     "wrong note head": 64,
+     "wrong flag/beam": 21,
+     "wrong accidental": 7,
+     "wrong tie": 6,
+     "wrong articulation": 5,
+     "wrong ornament": 2,
+     "wrong clef": 10,
+     "wrong timesig": 22,
+     "wrong keysig": 21,
+     "wrong direction": 33,
+     "wrong dynamic": 10,
+     "wrong slur": 2,
+     "entire measure insert/delete": 2355,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-984073-p4|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.5847953216374269,
+    "omr_ed": 2700,
+    "pred_symbols": 2258,
+    "truth_symbols": 2359,
+    "categories": {
+     "wrong note": 1121,
+     "wrong note head": 90,
+     "wrong flag/beam": 57,
+     "wrong dot": 1,
+     "wrong accidental": 24,
+     "wrong tie": 25,
+     "wrong articulation": 13,
+     "wrong ornament": 2,
+     "wrong lyric": 15,
+     "wrong clef": 11,
+     "wrong timesig": 22,
+     "wrong keysig": 31,
+     "wrong direction": 46,
+     "wrong dynamic": 18,
+     "wrong slur": 26,
+     "entire measure insert/delete": 1198
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     12
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 12,
+    "on": 12
+   },
+   "sha": {
+    "transcription": "5f27e901e6bab1ef",
+    "truth_raw": "74b0beba42bb9574",
+    "pred_off": "9136e1b897dea441",
+    "pred_on": "9136e1b897dea441",
+    "truth_normalised": "d3ad0cb3f63cfff7"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 12,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p1|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth.musicxml",
+    "omr_ned": 0.7547380156075808,
+    "omr_ed": 1354,
+    "pred_symbols": 730,
+    "truth_symbols": 1064,
+    "categories": {
+     "wrong note": 176,
+     "wrong note head": 80,
+     "wrong flag/beam": 8,
+     "wrong ornament": 4,
+     "wrong clef": 8,
+     "wrong timesig": 8,
+     "wrong keysig": 21,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 10,
+     "entire measure insert/delete": 509,
+     "entire staff insert/delete": 513
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p1|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.4453176162409954,
+    "omr_ed": 680,
+    "pred_symbols": 730,
+    "truth_symbols": 797,
+    "categories": {
+     "wrong note": 194,
+     "wrong note head": 62,
+     "wrong flag/beam": 18,
+     "wrong accidental": 2,
+     "wrong tie": 9,
+     "wrong articulation": 1,
+     "wrong ornament": 1,
+     "wrong lyric": 30,
+     "wrong clef": 1,
+     "wrong timesig": 8,
+     "wrong keysig": 16,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 13,
+     "wrong slur": 2,
+     "entire measure insert/delete": 306
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p1|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth.musicxml",
+    "omr_ned": 0.7547380156075808,
+    "omr_ed": 1354,
+    "pred_symbols": 730,
+    "truth_symbols": 1064,
+    "categories": {
+     "wrong note": 176,
+     "wrong note head": 80,
+     "wrong flag/beam": 8,
+     "wrong ornament": 4,
+     "wrong clef": 8,
+     "wrong timesig": 8,
+     "wrong keysig": 21,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 10,
+     "entire measure insert/delete": 509,
+     "entire staff insert/delete": 513
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p1|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.4453176162409954,
+    "omr_ed": 680,
+    "pred_symbols": 730,
+    "truth_symbols": 797,
+    "categories": {
+     "wrong note": 194,
+     "wrong note head": 62,
+     "wrong flag/beam": 18,
+     "wrong accidental": 2,
+     "wrong tie": 9,
+     "wrong articulation": 1,
+     "wrong ornament": 1,
+     "wrong lyric": 30,
+     "wrong clef": 1,
+     "wrong timesig": 8,
+     "wrong keysig": 16,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 13,
+     "wrong slur": 2,
+     "entire measure insert/delete": 306
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     11
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 11,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "0cc6a592c19529bf",
+    "truth_raw": "0b0c1f4d6d3dcc85",
+    "pred_off": "2b7bc96ba336b309",
+    "pred_on": "2b7bc96ba336b309",
+    "truth_normalised": "d3878302450a49d8"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.2131,
+    "exact_duplication_share": 0.7869
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p2|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.truth.musicxml",
+    "omr_ned": 0.8704581358609794,
+    "omr_ed": 4408,
+    "pred_symbols": 2060,
+    "truth_symbols": 3004,
+    "categories": {
+     "wrong note": 679,
+     "wrong note head": 184,
+     "wrong flag/beam": 16,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong articulation": 3,
+     "wrong ornament": 4,
+     "wrong clef": 7,
+     "wrong timesig": 19,
+     "wrong keysig": 29,
+     "wrong direction": 12,
+     "wrong dynamic": 46,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1851,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p2|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.45310312645823614,
+    "omr_ed": 1942,
+    "pred_symbols": 2060,
+    "truth_symbols": 2226,
+    "categories": {
+     "wrong note": 630,
+     "wrong note head": 252,
+     "wrong flag/beam": 49,
+     "wrong accidental": 8,
+     "wrong tie": 20,
+     "wrong articulation": 5,
+     "wrong ornament": 8,
+     "wrong lyric": 45,
+     "wrong clef": 5,
+     "wrong timesig": 23,
+     "wrong keysig": 32,
+     "wrong direction": 54,
+     "wrong dynamic": 77,
+     "wrong slur": 4,
+     "entire measure insert/delete": 730
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p2|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.truth.musicxml",
+    "omr_ned": 0.8704581358609794,
+    "omr_ed": 4408,
+    "pred_symbols": 2060,
+    "truth_symbols": 3004,
+    "categories": {
+     "wrong note": 679,
+     "wrong note head": 184,
+     "wrong flag/beam": 16,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong articulation": 3,
+     "wrong ornament": 4,
+     "wrong clef": 7,
+     "wrong timesig": 19,
+     "wrong keysig": 29,
+     "wrong direction": 12,
+     "wrong dynamic": 46,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1851,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p2|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.45310312645823614,
+    "omr_ed": 1942,
+    "pred_symbols": 2060,
+    "truth_symbols": 2226,
+    "categories": {
+     "wrong note": 630,
+     "wrong note head": 252,
+     "wrong flag/beam": 49,
+     "wrong accidental": 8,
+     "wrong tie": 20,
+     "wrong articulation": 5,
+     "wrong ornament": 8,
+     "wrong lyric": 45,
+     "wrong clef": 5,
+     "wrong timesig": 23,
+     "wrong keysig": 32,
+     "wrong direction": 54,
+     "wrong dynamic": 77,
+     "wrong slur": 4,
+     "entire measure insert/delete": 730
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     8,
+     11
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": true,
+    "reached": true,
+    "why": "ordinal REFUSED, slot join supplies it - FLAG ACTS HERE"
+   },
+   "parts": {
+    "off": 19,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "70f8348fe8e4ef5a",
+    "truth_raw": "acf886abe058c28c",
+    "pred_off": "b6f352854b72a10d",
+    "pred_on": "06720d927e01359f",
+    "truth_normalised": "7feb2c0b36d50a8c"
+   },
+   "predictions_differ": true,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.1738,
+    "exact_duplication_share": 0.8262
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p3|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.truth.musicxml",
+    "omr_ned": 0.8811111111111111,
+    "omr_ed": 3172,
+    "pred_symbols": 1466,
+    "truth_symbols": 2134,
+    "categories": {
+     "wrong note": 449,
+     "wrong note head": 212,
+     "wrong flag/beam": 5,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong lyric": 12,
+     "wrong clef": 13,
+     "wrong timesig": 28,
+     "wrong keysig": 21,
+     "wrong direction": 5,
+     "wrong dynamic": 10,
+     "wrong slur": 13,
+     "entire measure insert/delete": 2309,
+     "entire staff insert/delete": 90
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p3|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.5900267737617135,
+    "omr_ed": 1763,
+    "pred_symbols": 1466,
+    "truth_symbols": 1522,
+    "categories": {
+     "wrong note": 301,
+     "wrong note head": 142,
+     "wrong flag/beam": 18,
+     "wrong dot": 1,
+     "wrong accidental": 12,
+     "wrong tie": 16,
+     "wrong ornament": 11,
+     "wrong lyric": 15,
+     "wrong timesig": 22,
+     "wrong keysig": 22,
+     "wrong direction": 5,
+     "wrong dynamic": 21,
+     "wrong diminuendo": 1,
+     "wrong slur": 6,
+     "entire measure insert/delete": 640,
+     "entire staff insert/delete": 530
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p3|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.truth.musicxml",
+    "omr_ned": 0.8820412716118238,
+    "omr_ed": 3163,
+    "pred_symbols": 1452,
+    "truth_symbols": 2134,
+    "categories": {
+     "wrong note": 371,
+     "wrong note head": 234,
+     "wrong flag/beam": 7,
+     "wrong tie": 4,
+     "wrong lyric": 6,
+     "wrong clef": 6,
+     "wrong timesig": 20,
+     "wrong keysig": 22,
+     "wrong dynamic": 7,
+     "wrong slur": 11,
+     "entire measure insert/delete": 1413,
+     "entire staff insert/delete": 1062
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p3|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.3934095494283793,
+    "omr_ed": 1170,
+    "pred_symbols": 1452,
+    "truth_symbols": 1522,
+    "categories": {
+     "wrong note": 355,
+     "wrong note head": 242,
+     "wrong flag/beam": 23,
+     "wrong dot": 1,
+     "wrong accidental": 15,
+     "wrong tie": 23,
+     "wrong ornament": 11,
+     "wrong lyric": 21,
+     "wrong timesig": 22,
+     "wrong keysig": 33,
+     "wrong direction": 5,
+     "wrong dynamic": 21,
+     "wrong diminuendo": 1,
+     "wrong slur": 25,
+     "entire measure insert/delete": 372
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     11
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 11,
+    "on": 11
+   },
+   "sha": {
+    "transcription": "d1af1bbefe355c91",
+    "truth_raw": "3b9eba91f7a8c4b3",
+    "pred_off": "4fd8901ce929a4ec",
+    "pred_on": "4fd8901ce929a4ec",
+    "truth_normalised": "fa26abab30f4a0ff"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "divisi_share": 0.4,
+    "exact_duplication_share": 0.6
+   },
+   "off_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p4|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.truth.musicxml",
+    "omr_ned": 0.881615859360389,
+    "omr_ed": 4714,
+    "pred_symbols": 2418,
+    "truth_symbols": 2929,
+    "categories": {
+     "wrong note": 800,
+     "wrong note head": 54,
+     "wrong flag/beam": 16,
+     "wrong accidental": 2,
+     "wrong tie": 5,
+     "wrong articulation": 7,
+     "wrong lyric": 3,
+     "wrong clef": 17,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 14,
+     "wrong dynamic": 18,
+     "wrong slur": 9,
+     "entire measure insert/delete": 2342,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "off_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p4|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.5398785848859117,
+    "omr_ed": 2579,
+    "pred_symbols": 2418,
+    "truth_symbols": 2359,
+    "categories": {
+     "wrong note": 1041,
+     "wrong note head": 94,
+     "wrong flag/beam": 50,
+     "wrong accidental": 9,
+     "wrong tie": 37,
+     "wrong articulation": 10,
+     "wrong lyric": 9,
+     "wrong clef": 16,
+     "wrong timesig": 22,
+     "wrong keysig": 23,
+     "wrong direction": 19,
+     "wrong dynamic": 24,
+     "wrong slur": 13,
+     "entire measure insert/delete": 1212
+    }
+   },
+   "on_raw": {
+    "name": "beethoven-sym5-mvt1-575951-p4|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.truth.musicxml",
+    "omr_ned": 0.881615859360389,
+    "omr_ed": 4714,
+    "pred_symbols": 2418,
+    "truth_symbols": 2929,
+    "categories": {
+     "wrong note": 800,
+     "wrong note head": 54,
+     "wrong flag/beam": 16,
+     "wrong accidental": 2,
+     "wrong tie": 5,
+     "wrong articulation": 7,
+     "wrong lyric": 3,
+     "wrong clef": 17,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 14,
+     "wrong dynamic": 18,
+     "wrong slur": 9,
+     "entire measure insert/delete": 2342,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "on_norm": {
+    "name": "beethoven-sym5-mvt1-575951-p4|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.5398785848859117,
+    "omr_ed": 2579,
+    "pred_symbols": 2418,
+    "truth_symbols": 2359,
+    "categories": {
+     "wrong note": 1041,
+     "wrong note head": 94,
+     "wrong flag/beam": 50,
+     "wrong accidental": 9,
+     "wrong tie": 37,
+     "wrong articulation": 10,
+     "wrong lyric": 9,
+     "wrong clef": 16,
+     "wrong timesig": 22,
+     "wrong keysig": 23,
+     "wrong direction": 19,
+     "wrong dynamic": 24,
+     "wrong slur": 13,
+     "entire measure insert/delete": 1212
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     15
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 15,
+    "on": 15
+   },
+   "sha": {
+    "transcription": "90405964b4f78435",
+    "truth_raw": "9725911496a63e74",
+    "pred_off": "8008cdccdb78116a",
+    "pred_on": "8008cdccdb78116a",
+    "truth_normalised": "703f1dde89a06b02"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p5|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.truth.musicxml",
+    "omr_ned": 0.4220945083014049,
+    "omr_ed": 661,
+    "pred_symbols": 774,
+    "truth_symbols": 792,
+    "categories": {
+     "wrong note": 500,
+     "wrong note head": 12,
+     "wrong flag/beam": 17,
+     "wrong dot": 6,
+     "wrong tie": 7,
+     "wrong articulation": 5,
+     "wrong clef": 3,
+     "wrong timesig": 2,
+     "wrong keysig": 2,
+     "wrong tempo": 1,
+     "wrong direction": 6,
+     "wrong dynamic": 13,
+     "wrong crescendo": 1,
+     "wrong diminuendo": 6,
+     "wrong slur": 17,
+     "entire measure insert/delete": 63
+    }
+   },
+   "off_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p5|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.page-normalised.truth.musicxml",
+    "omr_ned": 0.4220945083014049,
+    "omr_ed": 661,
+    "pred_symbols": 774,
+    "truth_symbols": 792,
+    "categories": {
+     "wrong note": 500,
+     "wrong note head": 12,
+     "wrong flag/beam": 17,
+     "wrong dot": 6,
+     "wrong tie": 7,
+     "wrong articulation": 5,
+     "wrong clef": 3,
+     "wrong timesig": 2,
+     "wrong keysig": 2,
+     "wrong tempo": 1,
+     "wrong direction": 6,
+     "wrong dynamic": 13,
+     "wrong crescendo": 1,
+     "wrong diminuendo": 6,
+     "wrong slur": 17,
+     "entire measure insert/delete": 63
+    }
+   },
+   "on_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p5|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.truth.musicxml",
+    "omr_ned": 0.4220945083014049,
+    "omr_ed": 661,
+    "pred_symbols": 774,
+    "truth_symbols": 792,
+    "categories": {
+     "wrong note": 500,
+     "wrong note head": 12,
+     "wrong flag/beam": 17,
+     "wrong dot": 6,
+     "wrong tie": 7,
+     "wrong articulation": 5,
+     "wrong clef": 3,
+     "wrong timesig": 2,
+     "wrong keysig": 2,
+     "wrong tempo": 1,
+     "wrong direction": 6,
+     "wrong dynamic": 13,
+     "wrong crescendo": 1,
+     "wrong diminuendo": 6,
+     "wrong slur": 17,
+     "entire measure insert/delete": 63
+    }
+   },
+   "on_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p5|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.page-normalised.truth.musicxml",
+    "omr_ned": 0.4220945083014049,
+    "omr_ed": 661,
+    "pred_symbols": 774,
+    "truth_symbols": 792,
+    "categories": {
+     "wrong note": 500,
+     "wrong note head": 12,
+     "wrong flag/beam": 17,
+     "wrong dot": 6,
+     "wrong tie": 7,
+     "wrong articulation": 5,
+     "wrong clef": 3,
+     "wrong timesig": 2,
+     "wrong keysig": 2,
+     "wrong tempo": 1,
+     "wrong direction": 6,
+     "wrong dynamic": 13,
+     "wrong crescendo": 1,
+     "wrong diminuendo": 6,
+     "wrong slur": 17,
+     "entire measure insert/delete": 63
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     15
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 15,
+    "on": 15
+   },
+   "sha": {
+    "transcription": "8629448cae57eff6",
+    "truth_raw": "130b7a5f598e6d6b",
+    "pred_off": "a7d7b2d3fafac72f",
+    "pred_on": "a7d7b2d3fafac72f",
+    "truth_normalised": "61aa2c26b8b0c395"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p6|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml",
+    "omr_ned": 0.7218339390550741,
+    "omr_ed": 2582,
+    "pred_symbols": 1555,
+    "truth_symbols": 2022,
+    "categories": {
+     "wrong note": 2035,
+     "wrong note head": 82,
+     "wrong flag/beam": 81,
+     "wrong dot": 46,
+     "wrong tuplet": 2,
+     "wrong tie": 4,
+     "wrong articulation": 1,
+     "wrong clef": 2,
+     "wrong timesig": 38,
+     "wrong direction": 2,
+     "wrong dynamic": 33,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 2,
+     "wrong slur": 4,
+     "wrong fingered tremolo": 2,
+     "entire measure insert/delete": 246
+    }
+   },
+   "off_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p6|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.page-normalised.truth.musicxml",
+    "omr_ned": 0.7218339390550741,
+    "omr_ed": 2582,
+    "pred_symbols": 1555,
+    "truth_symbols": 2022,
+    "categories": {
+     "wrong note": 2035,
+     "wrong note head": 82,
+     "wrong flag/beam": 81,
+     "wrong dot": 46,
+     "wrong tuplet": 2,
+     "wrong tie": 4,
+     "wrong articulation": 1,
+     "wrong clef": 2,
+     "wrong timesig": 38,
+     "wrong direction": 2,
+     "wrong dynamic": 33,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 2,
+     "wrong slur": 4,
+     "wrong fingered tremolo": 2,
+     "entire measure insert/delete": 246
+    }
+   },
+   "on_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p6|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml",
+    "omr_ned": 0.7218339390550741,
+    "omr_ed": 2582,
+    "pred_symbols": 1555,
+    "truth_symbols": 2022,
+    "categories": {
+     "wrong note": 2035,
+     "wrong note head": 82,
+     "wrong flag/beam": 81,
+     "wrong dot": 46,
+     "wrong tuplet": 2,
+     "wrong tie": 4,
+     "wrong articulation": 1,
+     "wrong clef": 2,
+     "wrong timesig": 38,
+     "wrong direction": 2,
+     "wrong dynamic": 33,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 2,
+     "wrong slur": 4,
+     "wrong fingered tremolo": 2,
+     "entire measure insert/delete": 246
+    }
+   },
+   "on_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p6|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.page-normalised.truth.musicxml",
+    "omr_ned": 0.7218339390550741,
+    "omr_ed": 2582,
+    "pred_symbols": 1555,
+    "truth_symbols": 2022,
+    "categories": {
+     "wrong note": 2035,
+     "wrong note head": 82,
+     "wrong flag/beam": 81,
+     "wrong dot": 46,
+     "wrong tuplet": 2,
+     "wrong tie": 4,
+     "wrong articulation": 1,
+     "wrong clef": 2,
+     "wrong timesig": 38,
+     "wrong direction": 2,
+     "wrong dynamic": 33,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 2,
+     "wrong slur": 4,
+     "wrong fingered tremolo": 2,
+     "entire measure insert/delete": 246
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     15
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 15,
+    "on": 15
+   },
+   "sha": {
+    "transcription": "48bf9b2ab484d403",
+    "truth_raw": "77437b6acf8e912d",
+    "pred_off": "92469ecc3ea40a63",
+    "pred_on": "92469ecc3ea40a63",
+    "truth_normalised": "0a51db6fae6110ee"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p7|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.truth.musicxml",
+    "omr_ned": 0.7119429143715573,
+    "omr_ed": 5687,
+    "pred_symbols": 3693,
+    "truth_symbols": 4295,
+    "categories": {
+     "wrong note": 4259,
+     "wrong note head": 92,
+     "wrong flag/beam": 235,
+     "wrong dot": 35,
+     "wrong tuplet": 8,
+     "wrong accidental": 20,
+     "wrong tie": 10,
+     "wrong articulation": 17,
+     "wrong ornament": 19,
+     "wrong clef": 9,
+     "wrong timesig": 38,
+     "wrong keysig": 18,
+     "wrong barline": 11,
+     "wrong direction": 66,
+     "wrong dynamic": 67,
+     "wrong crescendo": 21,
+     "wrong diminuendo": 7,
+     "wrong slur": 9,
+     "wrong fingered tremolo": 4,
+     "entire measure insert/delete": 742
+    }
+   },
+   "off_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p7|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.page-normalised.truth.musicxml",
+    "omr_ned": 0.7119429143715573,
+    "omr_ed": 5687,
+    "pred_symbols": 3693,
+    "truth_symbols": 4295,
+    "categories": {
+     "wrong note": 4259,
+     "wrong note head": 92,
+     "wrong flag/beam": 235,
+     "wrong dot": 35,
+     "wrong tuplet": 8,
+     "wrong accidental": 20,
+     "wrong tie": 10,
+     "wrong articulation": 17,
+     "wrong ornament": 19,
+     "wrong clef": 9,
+     "wrong timesig": 38,
+     "wrong keysig": 18,
+     "wrong barline": 11,
+     "wrong direction": 66,
+     "wrong dynamic": 67,
+     "wrong crescendo": 21,
+     "wrong diminuendo": 7,
+     "wrong slur": 9,
+     "wrong fingered tremolo": 4,
+     "entire measure insert/delete": 742
+    }
+   },
+   "on_raw": {
+    "name": "dvorak-sym9-mvt1-405834-p7|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.truth.musicxml",
+    "omr_ned": 0.7119429143715573,
+    "omr_ed": 5687,
+    "pred_symbols": 3693,
+    "truth_symbols": 4295,
+    "categories": {
+     "wrong note": 4259,
+     "wrong note head": 92,
+     "wrong flag/beam": 235,
+     "wrong dot": 35,
+     "wrong tuplet": 8,
+     "wrong accidental": 20,
+     "wrong tie": 10,
+     "wrong articulation": 17,
+     "wrong ornament": 19,
+     "wrong clef": 9,
+     "wrong timesig": 38,
+     "wrong keysig": 18,
+     "wrong barline": 11,
+     "wrong direction": 66,
+     "wrong dynamic": 67,
+     "wrong crescendo": 21,
+     "wrong diminuendo": 7,
+     "wrong slur": 9,
+     "wrong fingered tremolo": 4,
+     "entire measure insert/delete": 742
+    }
+   },
+   "on_norm": {
+    "name": "dvorak-sym9-mvt1-405834-p7|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.page-normalised.truth.musicxml",
+    "omr_ned": 0.7119429143715573,
+    "omr_ed": 5687,
+    "pred_symbols": 3693,
+    "truth_symbols": 4295,
+    "categories": {
+     "wrong note": 4259,
+     "wrong note head": 92,
+     "wrong flag/beam": 235,
+     "wrong dot": 35,
+     "wrong tuplet": 8,
+     "wrong accidental": 20,
+     "wrong tie": 10,
+     "wrong articulation": 17,
+     "wrong ornament": 19,
+     "wrong clef": 9,
+     "wrong timesig": 38,
+     "wrong keysig": 18,
+     "wrong barline": 11,
+     "wrong direction": 66,
+     "wrong dynamic": 67,
+     "wrong crescendo": 21,
+     "wrong diminuendo": 7,
+     "wrong slur": 9,
+     "wrong fingered tremolo": 4,
+     "entire measure insert/delete": 742
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     14
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 14,
+    "on": 14
+   },
+   "sha": {
+    "transcription": "3d349ceaeb4e42c0",
+    "truth_raw": "859af9913ce82f5a",
+    "pred_off": "26dadabcf84800fa",
+    "pred_on": "26dadabcf84800fa",
+    "truth_normalised": "5785dbee43e13e0b"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "divisi_share": 0.4082,
+    "exact_duplication_share": 0.5918
+   },
+   "off_raw": {
+    "name": "brahms-sym1-mvt1-317803-p1|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth.musicxml",
+    "omr_ned": 0.9183618843683083,
+    "omr_ed": 3431,
+    "pred_symbols": 1653,
+    "truth_symbols": 2083,
+    "categories": {
+     "wrong note": 834,
+     "wrong note head": 4,
+     "wrong flag/beam": 7,
+     "wrong dot": 4,
+     "wrong accidental": 3,
+     "wrong clef": 14,
+     "wrong timesig": 7,
+     "wrong keysig": 39,
+     "wrong tempo": 1,
+     "wrong barline": 3,
+     "wrong direction": 88,
+     "wrong dynamic": 31,
+     "wrong slur": 41,
+     "entire measure insert/delete": 1354,
+     "entire staff insert/delete": 1001
+    }
+   },
+   "off_norm": {
+    "name": "brahms-sym1-mvt1-317803-p1|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.48847019122609675,
+    "omr_ed": 1737,
+    "pred_symbols": 1653,
+    "truth_symbols": 1903,
+    "categories": {
+     "wrong note": 1011,
+     "wrong note head": 32,
+     "wrong flag/beam": 46,
+     "wrong dot": 17,
+     "wrong accidental": 24,
+     "wrong tie": 27,
+     "wrong lyric": 3,
+     "wrong clef": 3,
+     "wrong timesig": 7,
+     "wrong keysig": 15,
+     "wrong tempo": 1,
+     "wrong barline": 13,
+     "wrong direction": 127,
+     "wrong dynamic": 35,
+     "wrong slur": 81,
+     "entire measure insert/delete": 295
+    }
+   },
+   "on_raw": {
+    "name": "brahms-sym1-mvt1-317803-p1|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth.musicxml",
+    "omr_ned": 0.9183618843683083,
+    "omr_ed": 3431,
+    "pred_symbols": 1653,
+    "truth_symbols": 2083,
+    "categories": {
+     "wrong note": 834,
+     "wrong note head": 4,
+     "wrong flag/beam": 7,
+     "wrong dot": 4,
+     "wrong accidental": 3,
+     "wrong clef": 14,
+     "wrong timesig": 7,
+     "wrong keysig": 39,
+     "wrong tempo": 1,
+     "wrong barline": 3,
+     "wrong direction": 88,
+     "wrong dynamic": 31,
+     "wrong slur": 41,
+     "entire measure insert/delete": 1354,
+     "entire staff insert/delete": 1001
+    }
+   },
+   "on_norm": {
+    "name": "brahms-sym1-mvt1-317803-p1|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.48847019122609675,
+    "omr_ed": 1737,
+    "pred_symbols": 1653,
+    "truth_symbols": 1903,
+    "categories": {
+     "wrong note": 1011,
+     "wrong note head": 32,
+     "wrong flag/beam": 46,
+     "wrong dot": 17,
+     "wrong accidental": 24,
+     "wrong tie": 27,
+     "wrong lyric": 3,
+     "wrong clef": 3,
+     "wrong timesig": 7,
+     "wrong keysig": 15,
+     "wrong tempo": 1,
+     "wrong barline": 13,
+     "wrong direction": 127,
+     "wrong dynamic": 35,
+     "wrong slur": 81,
+     "entire measure insert/delete": 295
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     13,
+     14
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": true,
+    "reached": true,
+    "why": "ordinal REFUSED, slot join supplies it - FLAG ACTS HERE"
+   },
+   "parts": {
+    "off": 27,
+    "on": 14
+   },
+   "sha": {
+    "transcription": "f021ab4b0ac4e8ce",
+    "truth_raw": "605df37de8f4d380",
+    "pred_off": "a8ddb717c757402c",
+    "pred_on": "e1af2c27cd6a0460",
+    "truth_normalised": "43ac74e58045cb11"
+   },
+   "predictions_differ": true,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "divisi_share": 0.1143,
+    "exact_duplication_share": 0.8857
+   },
+   "off_raw": {
+    "name": "brahms-sym1-mvt1-317803-p2|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
+    "omr_ned": 0.9422855497985032,
+    "omr_ed": 6547,
+    "pred_symbols": 3549,
+    "truth_symbols": 3399,
+    "categories": {
+     "wrong note": 1829,
+     "wrong note head": 104,
+     "wrong flag/beam": 23,
+     "wrong dot": 43,
+     "wrong accidental": 6,
+     "wrong tie": 3,
+     "wrong articulation": 1,
+     "wrong lyric": 6,
+     "wrong clef": 21,
+     "wrong timesig": 46,
+     "wrong keysig": 36,
+     "wrong barline": 15,
+     "wrong direction": 13,
+     "wrong dynamic": 22,
+     "wrong crescendo": 14,
+     "wrong diminuendo": 7,
+     "wrong slur": 26,
+     "entire measure insert/delete": 3617,
+     "entire staff insert/delete": 715
+    }
+   },
+   "off_norm": {
+    "name": "brahms-sym1-mvt1-317803-p2|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.8478595626732368,
+    "omr_ed": 5506,
+    "pred_symbols": 3549,
+    "truth_symbols": 2945,
+    "categories": {
+     "wrong note": 2349,
+     "wrong note head": 74,
+     "wrong flag/beam": 83,
+     "wrong dot": 38,
+     "wrong accidental": 19,
+     "wrong tie": 17,
+     "wrong articulation": 1,
+     "wrong lyric": 9,
+     "wrong clef": 6,
+     "wrong timesig": 48,
+     "wrong keysig": 28,
+     "wrong barline": 14,
+     "wrong direction": 32,
+     "wrong dynamic": 38,
+     "wrong crescendo": 8,
+     "wrong diminuendo": 8,
+     "wrong slur": 31,
+     "entire measure insert/delete": 1479,
+     "entire staff insert/delete": 1224
+    }
+   },
+   "on_raw": {
+    "name": "brahms-sym1-mvt1-317803-p2|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
+    "omr_ned": 0.9133256417652149,
+    "omr_ed": 6333,
+    "pred_symbols": 3535,
+    "truth_symbols": 3399,
+    "categories": {
+     "wrong note": 1478,
+     "wrong note head": 146,
+     "wrong flag/beam": 24,
+     "wrong dot": 68,
+     "wrong accidental": 5,
+     "wrong tie": 5,
+     "wrong articulation": 1,
+     "wrong lyric": 12,
+     "wrong clef": 14,
+     "wrong timesig": 44,
+     "wrong keysig": 43,
+     "wrong barline": 13,
+     "wrong direction": 9,
+     "wrong dynamic": 26,
+     "wrong crescendo": 11,
+     "wrong diminuendo": 6,
+     "wrong slur": 25,
+     "entire measure insert/delete": 2771,
+     "entire staff insert/delete": 1632
+    }
+   },
+   "on_norm": {
+    "name": "brahms-sym1-mvt1-317803-p2|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.page-normalised.truth.musicxml",
+    "omr_ned": 0.6804012345679012,
+    "omr_ed": 4409,
+    "pred_symbols": 3535,
+    "truth_symbols": 2945,
+    "categories": {
+     "wrong note": 2988,
+     "wrong note head": 180,
+     "wrong flag/beam": 138,
+     "wrong dot": 96,
+     "wrong accidental": 41,
+     "wrong tie": 40,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 10,
+     "wrong timesig": 52,
+     "wrong keysig": 47,
+     "wrong barline": 14,
+     "wrong direction": 82,
+     "wrong dynamic": 74,
+     "wrong crescendo": 18,
+     "wrong diminuendo": 20,
+     "wrong slur": 63,
+     "entire measure insert/delete": 526
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     14
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 14,
+    "on": 14
+   },
+   "sha": {
+    "transcription": "b3d12678ce37207c",
+    "truth_raw": "d7b736793b81b364",
+    "pred_off": "88e871f1ad4e23c8",
+    "pred_on": "88e871f1ad4e23c8",
+    "truth_normalised": "1db300da0a967293"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "divisi_share": 0.1905,
+    "exact_duplication_share": 0.8095
+   },
+   "off_raw": {
+    "name": "brahms-sym1-mvt1-317803-p3|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.truth.musicxml",
+    "omr_ned": 0.8929478413752686,
+    "omr_ed": 4571,
+    "pred_symbols": 2388,
+    "truth_symbols": 2731,
+    "categories": {
+     "wrong note": 1003,
+     "wrong note head": 154,
+     "wrong flag/beam": 24,
+     "wrong dot": 78,
+     "wrong accidental": 8,
+     "wrong tie": 2,
+     "wrong clef": 10,
+     "wrong timesig": 20,
+     "wrong keysig": 27,
+     "wrong barline": 13,
+     "wrong direction": 18,
+     "wrong dynamic": 34,
+     "wrong crescendo": 6,
+     "wrong diminuendo": 1,
+     "wrong slur": 22,
+     "entire measure insert/delete": 1859,
+     "entire staff insert/delete": 1292
+    }
+   },
+   "off_norm": {
+    "name": "brahms-sym1-mvt1-317803-p3|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.6211481637821866,
+    "omr_ed": 2943,
+    "pred_symbols": 2388,
+    "truth_symbols": 2350,
+    "categories": {
+     "wrong note": 1298,
+     "wrong note head": 188,
+     "wrong flag/beam": 94,
+     "wrong dot": 107,
+     "wrong accidental": 43,
+     "wrong tie": 20,
+     "wrong articulation": 1,
+     "wrong lyric": 9,
+     "wrong clef": 6,
+     "wrong timesig": 26,
+     "wrong keysig": 15,
+     "wrong barline": 14,
+     "wrong direction": 40,
+     "wrong dynamic": 43,
+     "wrong crescendo": 9,
+     "wrong diminuendo": 3,
+     "wrong slur": 33,
+     "entire measure insert/delete": 994
+    }
+   },
+   "on_raw": {
+    "name": "brahms-sym1-mvt1-317803-p3|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.truth.musicxml",
+    "omr_ned": 0.8929478413752686,
+    "omr_ed": 4571,
+    "pred_symbols": 2388,
+    "truth_symbols": 2731,
+    "categories": {
+     "wrong note": 1003,
+     "wrong note head": 154,
+     "wrong flag/beam": 24,
+     "wrong dot": 78,
+     "wrong accidental": 8,
+     "wrong tie": 2,
+     "wrong clef": 10,
+     "wrong timesig": 20,
+     "wrong keysig": 27,
+     "wrong barline": 13,
+     "wrong direction": 18,
+     "wrong dynamic": 34,
+     "wrong crescendo": 6,
+     "wrong diminuendo": 1,
+     "wrong slur": 22,
+     "entire measure insert/delete": 1859,
+     "entire staff insert/delete": 1292
+    }
+   },
+   "on_norm": {
+    "name": "brahms-sym1-mvt1-317803-p3|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.6211481637821866,
+    "omr_ed": 2943,
+    "pred_symbols": 2388,
+    "truth_symbols": 2350,
+    "categories": {
+     "wrong note": 1298,
+     "wrong note head": 188,
+     "wrong flag/beam": 94,
+     "wrong dot": 107,
+     "wrong accidental": 43,
+     "wrong tie": 20,
+     "wrong articulation": 1,
+     "wrong lyric": 9,
+     "wrong clef": 6,
+     "wrong timesig": 26,
+     "wrong keysig": 15,
+     "wrong barline": 14,
+     "wrong direction": 40,
+     "wrong dynamic": 43,
+     "wrong crescendo": 9,
+     "wrong diminuendo": 3,
+     "wrong slur": 33,
+     "entire measure insert/delete": 994
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     14
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 14,
+    "on": 14
+   },
+   "sha": {
+    "transcription": "284f6c1beb83f37c",
+    "truth_raw": "84f39308c67f4022",
+    "pred_off": "8e24e2c520623f77",
+    "pred_on": "8e24e2c520623f77",
+    "truth_normalised": "c8f8df89c0a10132"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "divisi_share": 0.2653,
+    "exact_duplication_share": 0.7347
+   },
+   "off_raw": {
+    "name": "brahms-sym1-mvt1-317803-p4|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.truth.musicxml",
+    "omr_ned": 0.8652683528685996,
+    "omr_ed": 7013,
+    "pred_symbols": 3722,
+    "truth_symbols": 4383,
+    "categories": {
+     "wrong note": 1635,
+     "wrong note head": 106,
+     "wrong flag/beam": 38,
+     "wrong dot": 66,
+     "wrong accidental": 12,
+     "wrong tie": 7,
+     "wrong articulation": 11,
+     "wrong lyric": 3,
+     "wrong clef": 11,
+     "wrong timesig": 28,
+     "wrong keysig": 31,
+     "wrong direction": 7,
+     "wrong dynamic": 54,
+     "wrong slur": 26,
+     "entire measure insert/delete": 3118,
+     "entire staff insert/delete": 1860
+    }
+   },
+   "off_norm": {
+    "name": "brahms-sym1-mvt1-317803-p4|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.525574398249453,
+    "omr_ed": 3843,
+    "pred_symbols": 3722,
+    "truth_symbols": 3590,
+    "categories": {
+     "wrong note": 2064,
+     "wrong note head": 204,
+     "wrong flag/beam": 135,
+     "wrong dot": 125,
+     "wrong accidental": 90,
+     "wrong tie": 47,
+     "wrong articulation": 42,
+     "wrong lyric": 9,
+     "wrong clef": 14,
+     "wrong timesig": 38,
+     "wrong keysig": 25,
+     "wrong direction": 65,
+     "wrong dynamic": 44,
+     "wrong crescendo": 1,
+     "wrong slur": 57,
+     "entire measure insert/delete": 883
+    }
+   },
+   "on_raw": {
+    "name": "brahms-sym1-mvt1-317803-p4|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.truth.musicxml",
+    "omr_ned": 0.8652683528685996,
+    "omr_ed": 7013,
+    "pred_symbols": 3722,
+    "truth_symbols": 4383,
+    "categories": {
+     "wrong note": 1635,
+     "wrong note head": 106,
+     "wrong flag/beam": 38,
+     "wrong dot": 66,
+     "wrong accidental": 12,
+     "wrong tie": 7,
+     "wrong articulation": 11,
+     "wrong lyric": 3,
+     "wrong clef": 11,
+     "wrong timesig": 28,
+     "wrong keysig": 31,
+     "wrong direction": 7,
+     "wrong dynamic": 54,
+     "wrong slur": 26,
+     "entire measure insert/delete": 3118,
+     "entire staff insert/delete": 1860
+    }
+   },
+   "on_norm": {
+    "name": "brahms-sym1-mvt1-317803-p4|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.525574398249453,
+    "omr_ed": 3843,
+    "pred_symbols": 3722,
+    "truth_symbols": 3590,
+    "categories": {
+     "wrong note": 2064,
+     "wrong note head": 204,
+     "wrong flag/beam": 135,
+     "wrong dot": 125,
+     "wrong accidental": 90,
+     "wrong tie": 47,
+     "wrong articulation": 42,
+     "wrong lyric": 9,
+     "wrong clef": 14,
+     "wrong timesig": 38,
+     "wrong keysig": 25,
+     "wrong direction": 65,
+     "wrong dynamic": 44,
+     "wrong crescendo": 1,
+     "wrong slur": 57,
+     "entire measure insert/delete": 883
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     17
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 17,
+    "on": 17
+   },
+   "sha": {
+    "transcription": "f89df6274c0603c3",
+    "truth_raw": "d74c0a9963862f8b",
+    "pred_off": "c0901538967f19b3",
+    "pred_on": "c0901538967f19b3"
+   },
+   "predictions_differ": false,
+   "normalised": false,
+   "not_normalised_because": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "off_raw": {
+    "name": "mahler-sym5-mvt1-local-p2|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+    "omr_ned": 0.6878470080197409,
+    "omr_ed": 1115,
+    "pred_symbols": 473,
+    "truth_symbols": 1148,
+    "categories": {
+     "wrong note": 57,
+     "wrong note head": 52,
+     "wrong ornament": 1,
+     "wrong clef": 5,
+     "wrong timesig": 28,
+     "wrong keysig": 47,
+     "wrong direction": 90,
+     "wrong dynamic": 3,
+     "entire measure insert/delete": 183,
+     "entire staff insert/delete": 649
+    }
+   },
+   "on_raw": {
+    "name": "mahler-sym5-mvt1-local-p2|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+    "omr_ned": 0.6878470080197409,
+    "omr_ed": 1115,
+    "pred_symbols": 473,
+    "truth_symbols": 1148,
+    "categories": {
+     "wrong note": 57,
+     "wrong note head": 52,
+     "wrong ornament": 1,
+     "wrong clef": 5,
+     "wrong timesig": 28,
+     "wrong keysig": 47,
+     "wrong direction": 90,
+     "wrong dynamic": 3,
+     "entire measure insert/delete": 183,
+     "entire staff insert/delete": 649
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     13
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 13,
+    "on": 13
+   },
+   "sha": {
+    "transcription": "78039d1728c6d23b",
+    "truth_raw": "06a096988815cdd4",
+    "pred_off": "aff22565a23c4316",
+    "pred_on": "aff22565a23c4316",
+    "truth_normalised": "70618e18c88e35e9"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 38,
+    "n_output_parts": 15,
+    "divisi_share": 0.025,
+    "exact_duplication_share": 0.975
+   },
+   "off_raw": {
+    "name": "mahler-sym5-mvt1-local-p3|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml",
+    "omr_ned": 0.8863833477883781,
+    "omr_ed": 3066,
+    "pred_symbols": 1211,
+    "truth_symbols": 2248,
+    "categories": {
+     "wrong note": 603,
+     "wrong note head": 30,
+     "wrong flag/beam": 17,
+     "wrong dot": 1,
+     "wrong accidental": 1,
+     "wrong tie": 1,
+     "wrong clef": 10,
+     "wrong timesig": 30,
+     "wrong keysig": 34,
+     "wrong direction": 13,
+     "wrong dynamic": 20,
+     "wrong diminuendo": 1,
+     "wrong slur": 6,
+     "entire measure insert/delete": 625,
+     "entire staff insert/delete": 1674
+    }
+   },
+   "off_norm": {
+    "name": "mahler-sym5-mvt1-local-p3|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.7388754743014833,
+    "omr_ed": 2142,
+    "pred_symbols": 1211,
+    "truth_symbols": 1688,
+    "categories": {
+     "wrong note": 1312,
+     "wrong note head": 20,
+     "wrong flag/beam": 30,
+     "wrong dot": 5,
+     "wrong tuplet": 4,
+     "wrong accidental": 3,
+     "wrong tie": 2,
+     "wrong articulation": 4,
+     "wrong clef": 12,
+     "wrong timesig": 28,
+     "wrong keysig": 31,
+     "wrong direction": 55,
+     "wrong dynamic": 40,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 4,
+     "wrong slur": 6,
+     "entire measure insert/delete": 377,
+     "entire staff insert/delete": 207
+    }
+   },
+   "on_raw": {
+    "name": "mahler-sym5-mvt1-local-p3|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml",
+    "omr_ned": 0.8863833477883781,
+    "omr_ed": 3066,
+    "pred_symbols": 1211,
+    "truth_symbols": 2248,
+    "categories": {
+     "wrong note": 603,
+     "wrong note head": 30,
+     "wrong flag/beam": 17,
+     "wrong dot": 1,
+     "wrong accidental": 1,
+     "wrong tie": 1,
+     "wrong clef": 10,
+     "wrong timesig": 30,
+     "wrong keysig": 34,
+     "wrong direction": 13,
+     "wrong dynamic": 20,
+     "wrong diminuendo": 1,
+     "wrong slur": 6,
+     "entire measure insert/delete": 625,
+     "entire staff insert/delete": 1674
+    }
+   },
+   "on_norm": {
+    "name": "mahler-sym5-mvt1-local-p3|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.page-normalised.truth.musicxml",
+    "omr_ned": 0.7388754743014833,
+    "omr_ed": 2142,
+    "pred_symbols": 1211,
+    "truth_symbols": 1688,
+    "categories": {
+     "wrong note": 1312,
+     "wrong note head": 20,
+     "wrong flag/beam": 30,
+     "wrong dot": 5,
+     "wrong tuplet": 4,
+     "wrong accidental": 3,
+     "wrong tie": 2,
+     "wrong articulation": 4,
+     "wrong clef": 12,
+     "wrong timesig": 28,
+     "wrong keysig": 31,
+     "wrong direction": 55,
+     "wrong dynamic": 40,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 4,
+     "wrong slur": 6,
+     "entire measure insert/delete": 377,
+     "entire staff insert/delete": 207
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     18
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 18,
+    "on": 18
+   },
+   "sha": {
+    "transcription": "3b6c6bbf8d150d61",
+    "truth_raw": "bc7dc07c2831e30c",
+    "pred_off": "168ab2d59dc7fec8",
+    "pred_on": "168ab2d59dc7fec8",
+    "truth_normalised": "d1720e2fd916f4d1"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "divisi_share": 0.0408,
+    "exact_duplication_share": 0.9592
+   },
+   "off_raw": {
+    "name": "mahler-sym5-mvt1-local-p4|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.truth.musicxml",
+    "omr_ned": 0.9152878888153541,
+    "omr_ed": 4149,
+    "pred_symbols": 1663,
+    "truth_symbols": 2870,
+    "categories": {
+     "wrong note": 940,
+     "wrong note head": 20,
+     "wrong flag/beam": 2,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 6,
+     "wrong tie": 2,
+     "wrong articulation": 2,
+     "wrong clef": 16,
+     "wrong timesig": 34,
+     "wrong keysig": 44,
+     "wrong direction": 34,
+     "wrong dynamic": 33,
+     "wrong diminuendo": 6,
+     "wrong slur": 3,
+     "entire measure insert/delete": 1240,
+     "entire staff insert/delete": 1764
+    }
+   },
+   "off_norm": {
+    "name": "mahler-sym5-mvt1-local-p4|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.7815392109108622,
+    "omr_ed": 3209,
+    "pred_symbols": 1663,
+    "truth_symbols": 2443,
+    "categories": {
+     "wrong note": 1757,
+     "wrong note head": 22,
+     "wrong flag/beam": 21,
+     "wrong tuplet": 32,
+     "wrong accidental": 15,
+     "wrong tie": 9,
+     "wrong articulation": 17,
+     "wrong ornament": 1,
+     "wrong clef": 16,
+     "wrong timesig": 40,
+     "wrong keysig": 40,
+     "wrong direction": 131,
+     "wrong dynamic": 50,
+     "wrong diminuendo": 4,
+     "wrong slur": 2,
+     "entire measure insert/delete": 691,
+     "entire staff insert/delete": 361
+    }
+   },
+   "on_raw": {
+    "name": "mahler-sym5-mvt1-local-p4|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.truth.musicxml",
+    "omr_ned": 0.9152878888153541,
+    "omr_ed": 4149,
+    "pred_symbols": 1663,
+    "truth_symbols": 2870,
+    "categories": {
+     "wrong note": 940,
+     "wrong note head": 20,
+     "wrong flag/beam": 2,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 6,
+     "wrong tie": 2,
+     "wrong articulation": 2,
+     "wrong clef": 16,
+     "wrong timesig": 34,
+     "wrong keysig": 44,
+     "wrong direction": 34,
+     "wrong dynamic": 33,
+     "wrong diminuendo": 6,
+     "wrong slur": 3,
+     "entire measure insert/delete": 1240,
+     "entire staff insert/delete": 1764
+    }
+   },
+   "on_norm": {
+    "name": "mahler-sym5-mvt1-local-p4|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.page-normalised.truth.musicxml",
+    "omr_ned": 0.7815392109108622,
+    "omr_ed": 3209,
+    "pred_symbols": 1663,
+    "truth_symbols": 2443,
+    "categories": {
+     "wrong note": 1757,
+     "wrong note head": 22,
+     "wrong flag/beam": 21,
+     "wrong tuplet": 32,
+     "wrong accidental": 15,
+     "wrong tie": 9,
+     "wrong articulation": 17,
+     "wrong ornament": 1,
+     "wrong clef": 16,
+     "wrong timesig": 40,
+     "wrong keysig": 40,
+     "wrong direction": 131,
+     "wrong dynamic": 50,
+     "wrong diminuendo": 4,
+     "wrong slur": 2,
+     "entire measure insert/delete": 691,
+     "entire staff insert/delete": 361
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "reach": {
+    "n_systems": 1,
+    "staff_counts": [
+     17
+    ],
+    "ordinal_joins": false,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "single system - nothing to stitch"
+   },
+   "parts": {
+    "off": 17,
+    "on": 17
+   },
+   "sha": {
+    "transcription": "18e66d0412214ec1",
+    "truth_raw": "e7859e173b649285",
+    "pred_off": "0924edb9809d1f22",
+    "pred_on": "0924edb9809d1f22",
+    "truth_normalised": "a4d2323afdc53ba1"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "divisi_share": 0.006,
+    "exact_duplication_share": 0.994
+   },
+   "off_raw": {
+    "name": "mahler-sym5-mvt1-local-p5|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.truth.musicxml",
+    "omr_ned": 0.9298245614035088,
+    "omr_ed": 2968,
+    "pred_symbols": 1128,
+    "truth_symbols": 2064,
+    "categories": {
+     "wrong note": 414,
+     "wrong note head": 38,
+     "wrong flag/beam": 7,
+     "wrong dot": 2,
+     "wrong accidental": 4,
+     "wrong tie": 1,
+     "wrong ornament": 1,
+     "wrong clef": 12,
+     "wrong timesig": 28,
+     "wrong keysig": 37,
+     "wrong direction": 31,
+     "wrong dynamic": 32,
+     "wrong diminuendo": 2,
+     "wrong slur": 9,
+     "entire measure insert/delete": 1130,
+     "entire staff insert/delete": 1220
+    }
+   },
+   "off_norm": {
+    "name": "mahler-sym5-mvt1-local-p5|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.page-normalised.truth.musicxml",
+    "omr_ned": 0.8382513661202186,
+    "omr_ed": 2301,
+    "pred_symbols": 1128,
+    "truth_symbols": 1617,
+    "categories": {
+     "wrong note": 678,
+     "wrong note head": 38,
+     "wrong flag/beam": 12,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 4,
+     "wrong tie": 3,
+     "wrong clef": 8,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 64,
+     "wrong dynamic": 29,
+     "wrong diminuendo": 1,
+     "wrong slur": 9,
+     "entire measure insert/delete": 898,
+     "entire staff insert/delete": 504
+    }
+   },
+   "on_raw": {
+    "name": "mahler-sym5-mvt1-local-p5|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.truth.musicxml",
+    "omr_ned": 0.9298245614035088,
+    "omr_ed": 2968,
+    "pred_symbols": 1128,
+    "truth_symbols": 2064,
+    "categories": {
+     "wrong note": 414,
+     "wrong note head": 38,
+     "wrong flag/beam": 7,
+     "wrong dot": 2,
+     "wrong accidental": 4,
+     "wrong tie": 1,
+     "wrong ornament": 1,
+     "wrong clef": 12,
+     "wrong timesig": 28,
+     "wrong keysig": 37,
+     "wrong direction": 31,
+     "wrong dynamic": 32,
+     "wrong diminuendo": 2,
+     "wrong slur": 9,
+     "entire measure insert/delete": 1130,
+     "entire staff insert/delete": 1220
+    }
+   },
+   "on_norm": {
+    "name": "mahler-sym5-mvt1-local-p5|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.page-normalised.truth.musicxml",
+    "omr_ned": 0.8382513661202186,
+    "omr_ed": 2301,
+    "pred_symbols": 1128,
+    "truth_symbols": 1617,
+    "categories": {
+     "wrong note": 678,
+     "wrong note head": 38,
+     "wrong flag/beam": 12,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 4,
+     "wrong tie": 3,
+     "wrong clef": 8,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 64,
+     "wrong dynamic": 29,
+     "wrong diminuendo": 1,
+     "wrong slur": 9,
+     "entire measure insert/delete": 898,
+     "entire staff insert/delete": 504
+    }
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "work_id": "bach--concerto-3",
+   "pooled": true,
+   "reach": {
+    "n_systems": 2,
+    "staff_counts": [
+     12
+    ],
+    "ordinal_joins": true,
+    "slot_join_available": false,
+    "reached": false,
+    "why": "ordinal join SUCCEEDS - flag never consulted"
+   },
+   "parts": {
+    "off": 12,
+    "on": 12
+   },
+   "sha": {
+    "transcription": "e6f6d589ecaa0fed",
+    "truth_raw": "3ec6b1c88b18c870",
+    "pred_off": "d6cbe2fb41540d04",
+    "pred_on": "d6cbe2fb41540d04",
+    "truth_normalised": "b6a657683fcfa6bc"
+   },
+   "predictions_differ": false,
+   "normalised_truth_source": "reused from the OFF-arm scan_eval run",
+   "normalised": true,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 11,
+    "n_output_parts": 11,
+    "divisi_share": 0.0,
+    "exact_duplication_share": 1.0
+   },
+   "off_raw": {
+    "name": "bach-brandenburg3-mvt1-468678-p1|off|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+    "omr_ned": 0.804606726868211,
+    "omr_ed": 6148,
+    "pred_symbols": 4092,
+    "truth_symbols": 3549,
+    "categories": {
+     "wrong note": 3825,
+     "wrong note head": 4,
+     "wrong flag/beam": 133,
+     "wrong accidental": 6,
+     "wrong tie": 6,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 4,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 18,
+     "wrong slur": 16,
+     "entire measure insert/delete": 1812,
+     "entire staff insert/delete": 286
+    }
+   },
+   "off_norm": {
+    "name": "bach-brandenburg3-mvt1-468678-p1|off|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.-stitchoff.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.804606726868211,
+    "omr_ed": 6148,
+    "pred_symbols": 4092,
+    "truth_symbols": 3549,
+    "categories": {
+     "wrong note": 3825,
+     "wrong note head": 4,
+     "wrong flag/beam": 133,
+     "wrong accidental": 6,
+     "wrong tie": 6,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 4,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 18,
+     "wrong slur": 16,
+     "entire measure insert/delete": 1812,
+     "entire staff insert/delete": 286
+    }
+   },
+   "on_raw": {
+    "name": "bach-brandenburg3-mvt1-468678-p1|on|raw",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+    "omr_ned": 0.804606726868211,
+    "omr_ed": 6148,
+    "pred_symbols": 4092,
+    "truth_symbols": 3549,
+    "categories": {
+     "wrong note": 3825,
+     "wrong note head": 4,
+     "wrong flag/beam": 133,
+     "wrong accidental": 6,
+     "wrong tie": 6,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 4,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 18,
+     "wrong slur": 16,
+     "entire measure insert/delete": 1812,
+     "entire staff insert/delete": 286
+    }
+   },
+   "on_norm": {
+    "name": "bach-brandenburg3-mvt1-468678-p1|on|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.-stitchon.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-slotstitch-reprice/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.page-normalised.truth.musicxml",
+    "omr_ned": 0.804606726868211,
+    "omr_ed": 6148,
+    "pred_symbols": 4092,
+    "truth_symbols": 3549,
+    "categories": {
+     "wrong note": 3825,
+     "wrong note head": 4,
+     "wrong flag/beam": 133,
+     "wrong accidental": 6,
+     "wrong tie": 6,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 4,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 18,
+     "wrong slur": 16,
+     "entire measure insert/delete": 1812,
+     "entire staff insert/delete": 286
+    }
+   }
+  }
+ ]
+}

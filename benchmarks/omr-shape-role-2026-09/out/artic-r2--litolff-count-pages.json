@@ -1,0 +1,28 @@
+{
+ "fermata": {
+  "owner_identical": 63
+ },
+ "invariants": {
+  "decided_measured_side_equals_class": 1
+ },
+ "label": "litolff-small",
+ "marks": 2,
+ "moved": [],
+ "moved_owners": {
+  "n": 0,
+  "where": {}
+ },
+ "r2_by_rule_and_reason": {
+  "abstained:no_notehead": 1,
+  "decided:notehead_side": 1,
+  "decided:single_voice": 1
+ },
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 1,
+  "decided/nearest_on_declared_side -> decided/nearest_on_notehead_side (SAME head)": 1
+ },
+ "twins": {
+  "abstained": 1,
+  "decided": 1
+ }
+}

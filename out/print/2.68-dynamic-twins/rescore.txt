@@ -1,0 +1,22 @@
+id      doc      cell             Sean           B0                     ARM(cell)              ARM(by anchor)
+back1   litolff  cell/2/0/7/1     []             []                    *[]                    *[]*
+back2   litolff  cell/3/0/7/14    ['p']          ['p']                 *['p']                 *['p']*
+back3   brahms   cell/0/0/1/0     ['f']          ['f']                 *['f']                 *['f']*
+back4   brahms   cell/0/0/9/0     ['f']          ['f']                 *['f']                 *['f']*
+back5   brahms   cell/0/0/12/0    ['f']          ['f']                 *['f']                 *['f']*
+back6   brahms   cell/0/0/12/1    []             []                    *[]                    *[]*
+back7   brahms   cell/0/0/13/0    ['f']          ['f']                 *['f']                 *['f']*
+back8   brahms   cell/0/0/13/1    []             []                    *[]                    *[]*
+back9   brahms   cell/1/0/9/1     ['p']          ['f', 'fp']            ['f', 'p']             ['f', 'p'] 
+back10  brahms   cell/1/0/10/3    []             []                    *[]                    *[]*
+rev1    litolff  cell/1/0/3/0     []             []                    *[]                    *[]*
+rev2    litolff  cell/1/0/10/0    ['ff']         ['ff']                *['ff']                *['ff']*
+rev3    litolff  cell/1/0/10/6    ['p']          ['p']                 *['p']                 *['p']*
+rev5    litolff  cell/1/0/11/6    []             []                    *[]                    *[]*
+rev6    litolff  cell/2/0/0/1     ['p', 'f']     ['p']                  ['p']                  ['p'] 
+rev7    litolff  cell/2/0/1/2     ['f']          ['f']                 *['f']                 *['f']*
+rev8    litolff  cell/2/0/3/1     ['f']          ['f']                 *['f']                 *[] 
+rev39   brahms   cell/0/0/6/0     ['f']          ['f']                 *['f']                 *['f']*
+rev40   brahms   cell/0/0/10/0    ['f']          ['ff']                 ['ff']                 [None, 'ff'] 
+rev41   brahms   cell/1/0/2/1     ['f']          ['f']                 *['f']                 *['f']*
+right (*): {'B0': 17, 'ARM': 17, 'ANCHOR': 16} of 20

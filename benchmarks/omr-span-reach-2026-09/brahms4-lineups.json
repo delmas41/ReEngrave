@@ -1,0 +1,24 @@
+[
+ {
+  "first": 0, "last": 40, "size": 13,
+  "read_off": "page 0 system 0, out/crops-brahms4/p000_margin.png — 2 Flöten / 2 Oboen / 2 Klarinetten in A / 2 Fagotte / 4 Hörner (TWO staves, in E 1.2 and in C 3.4) / 2 Trompeten in E / Pauken in E u.H / 1.Violine / 2.Violine / Bratsche / Violoncell / Kontrabaß",
+  "lineup": ["Flute", "Oboe", "Clarinet", "Bassoon", "Horn", "Horn",
+             "Trumpet", "Timpani",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+ },
+ {
+  "first": 41, "last": 66, "size": 16,
+  "read_off": "page 41 system 0 (movement III opening) and confirmed unchanged at page 63, out/crops-brahms4/p041_margin.png + p063 — Große Flöte / Kleine Flöte / 2 Oboen / 2 Klarinetten in C / 2 Fagotte / Kontrafagott / 4 Hörner (two staves) / 2 Trompeten in C / Pauken / Triangel / five strings. ⚠️ THE PICCOLO IS THE SECOND STAFF, under the flute, not the first.",
+  "lineup": ["Flute", "Piccolo", "Oboe", "Clarinet", "Bassoon",
+             "Contrabassoon", "Horn", "Horn", "Trumpet", "Timpani",
+             "Triangle",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+ },
+ {
+  "first": 67, "last": 98, "size": 16,
+  "read_off": "page 67 system 0 (movement IV opening) and confirmed at pages 69 and 76, out/crops-brahms4/p067_margin.png — 2 Flöten / 2 Oboen / 2 Klarinetten in A / 2 Fagotte / Kontrafagott / 4 Hörner (two staves) / 2 Trompeten in E / 3 Posaunen (TWO staves) / Pauken / five strings",
+  "lineup": ["Flute", "Oboe", "Clarinet", "Bassoon", "Contrabassoon",
+             "Horn", "Horn", "Trumpet", "Trombone", "Trombone", "Timpani",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+ }
+]

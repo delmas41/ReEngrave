@@ -1,0 +1,187 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "agree": 0.25,
+ "no_stem": 793,
+ "plausible_heads": 749,
+ "thin_boxes": 44,
+ "restricted": {
+  "raw": {
+   "recovered": 343,
+   "agreement": {
+    "silent": 116,
+    "AGREES": 185,
+    "disagrees": 42
+   },
+   "agreement_rate": 0.815
+  },
+  "side": {
+   "recovered": 338,
+   "agreement": {
+    "silent": 114,
+    "AGREES": 185,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8259
+  },
+  "side+end": {
+   "recovered": 337,
+   "agreement": {
+    "silent": 113,
+    "AGREES": 185,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8259
+  },
+  "side+end+legal": {
+   "recovered": 325,
+   "agreement": {
+    "silent": 106,
+    "AGREES": 184,
+    "disagrees": 35
+   },
+   "agreement_rate": 0.8402
+  },
+  "side+end@0.20": {
+   "recovered": 337,
+   "agreement": {
+    "silent": 113,
+    "AGREES": 185,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8259
+  },
+  "side+end@0.50": {
+   "recovered": 337,
+   "agreement": {
+    "silent": 113,
+    "AGREES": 185,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8259
+  },
+  "side+end@0.75": {
+   "recovered": 338,
+   "agreement": {
+    "silent": 114,
+    "AGREES": 186,
+    "disagrees": 38
+   },
+   "agreement_rate": 0.8304
+  }
+ },
+ "reference_restricted": {
+  "disagrees": 37,
+  "silent": 499,
+  "AGREES": 901
+ },
+ "reference_restricted_rate": 0.9606,
+ "record_strokes": 1920,
+ "off_strokes": 1920,
+ "reference": {
+  "disagrees": 40,
+  "convention silent": 501,
+  "AGREES": 902
+ },
+ "reference_rate": 0.9575,
+ "width_cap_recovers": 217,
+ "variants": {
+  "raw": {
+   "on_strokes": 3313,
+   "added_strokes": 1393,
+   "recovered": 351,
+   "shared_with_width_cap": 214,
+   "only_column_profile": 137,
+   "agreement": {
+    "convention silent": 118,
+    "AGREES": 190,
+    "disagrees": 43
+   },
+   "agreement_rate": 0.8155,
+   "circular": false
+  },
+  "side": {
+   "on_strokes": 2501,
+   "added_strokes": 581,
+   "recovered": 346,
+   "shared_with_width_cap": 213,
+   "only_column_profile": 133,
+   "agreement": {
+    "convention silent": 116,
+    "AGREES": 190,
+    "disagrees": 40
+   },
+   "agreement_rate": 0.8261,
+   "circular": false
+  },
+  "side+end": {
+   "on_strokes": 2465,
+   "added_strokes": 545,
+   "recovered": 344,
+   "shared_with_width_cap": 212,
+   "only_column_profile": 132,
+   "agreement": {
+    "convention silent": 114,
+    "AGREES": 190,
+    "disagrees": 40
+   },
+   "agreement_rate": 0.8261,
+   "circular": false
+  },
+  "side+end+legal": {
+   "on_strokes": 2418,
+   "added_strokes": 498,
+   "recovered": 328,
+   "shared_with_width_cap": 203,
+   "only_column_profile": 125,
+   "agreement": {
+    "convention silent": 106,
+    "AGREES": 187,
+    "disagrees": 35
+   },
+   "agreement_rate": 0.8423,
+   "circular": true
+  },
+  "side+end@0.20": {
+   "on_strokes": 2451,
+   "added_strokes": 531,
+   "recovered": 343,
+   "shared_with_width_cap": 211,
+   "only_column_profile": 132,
+   "agreement": {
+    "convention silent": 114,
+    "AGREES": 190,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8297,
+   "circular": false
+  },
+  "side+end@0.50": {
+   "on_strokes": 2478,
+   "added_strokes": 558,
+   "recovered": 344,
+   "shared_with_width_cap": 212,
+   "only_column_profile": 132,
+   "agreement": {
+    "convention silent": 114,
+    "AGREES": 190,
+    "disagrees": 40
+   },
+   "agreement_rate": 0.8261,
+   "circular": false
+  },
+  "side+end@0.75": {
+   "on_strokes": 2491,
+   "added_strokes": 571,
+   "recovered": 346,
+   "shared_with_width_cap": 213,
+   "only_column_profile": 133,
+   "agreement": {
+    "convention silent": 116,
+    "AGREES": 191,
+    "disagrees": 39
+   },
+   "agreement_rate": 0.8304,
+   "circular": false
+  }
+ }
+}

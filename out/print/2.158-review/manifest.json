@@ -1,0 +1,112 @@
+{
+ "question": "What is the written value of the note in the blue box (2, 4, dotted 2 ...)?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "glyph": "glyph/14/1/3/11/4"
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/5/1/6/5/2"
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/11/0/2/12/2"
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "glyph": "glyph/3/1/2/17/6"
+  },
+  {
+   "n": 5,
+   "doc": "litolff",
+   "glyph": "glyph/14/1/3/12/1"
+  },
+  {
+   "n": 6,
+   "doc": "litolff",
+   "glyph": "glyph/14/0/3/3/6"
+  },
+  {
+   "n": 7,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/1/8/8"
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/11/1/7/8/2"
+  },
+  {
+   "n": 9,
+   "doc": "litolff",
+   "glyph": "glyph/9/0/3/2/8"
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "glyph": "glyph/15/1/7/8/4"
+  },
+  {
+   "n": 11,
+   "doc": "litolff",
+   "glyph": "glyph/9/0/4/2/8"
+  },
+  {
+   "n": 12,
+   "doc": "litolff",
+   "glyph": "glyph/11/0/1/10/7"
+  },
+  {
+   "n": 13,
+   "doc": "litolff",
+   "glyph": "glyph/10/0/3/2/1"
+  },
+  {
+   "n": 14,
+   "doc": "litolff",
+   "glyph": "glyph/5/1/4/2/1"
+  },
+  {
+   "n": 15,
+   "doc": "litolff",
+   "glyph": "glyph/14/0/3/5/0"
+  },
+  {
+   "n": 16,
+   "doc": "litolff",
+   "glyph": "glyph/9/1/7/1/3"
+  },
+  {
+   "n": 17,
+   "doc": "brahms",
+   "glyph": "glyph/12/0/2/6/9"
+  },
+  {
+   "n": 18,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/10/5/4"
+  },
+  {
+   "n": 19,
+   "doc": "litolff",
+   "glyph": "glyph/11/0/1/9/2"
+  },
+  {
+   "n": 20,
+   "doc": "litolff",
+   "glyph": "glyph/11/0/2/8/3"
+  },
+  {
+   "n": 21,
+   "doc": "litolff",
+   "glyph": "glyph/7/0/3/2/2"
+  }
+ ],
+ "blue": "the note asked about",
+ "nothing_else_drawn": true
+}

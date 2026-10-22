@@ -1,0 +1,54 @@
+{
+  "_what": "DECLARED training lineage of the detector weights, with the evidence for each edge. The inventory (python3 -m tools.omr.hand_truth.inventory) expands it into cells, pages and box origins; --verify-checkpoints compares it with each .pt file's own train_args on a machine that holds the weights. A declaration is a ledger: the checkpoint outranks it (CLAUDE.md rule 10).",
+  "weights": {
+    "deepscoresv2-yolov8l-8shards-100ep.pt": {
+      "parents": [],
+      "corpora": [{"name": "DeepScoresV2", "in_tree": false, "kind": "synthetic engraved pages (~16k train images)"}],
+      "evidence": "benchmarks/omr-phase3.3/comparison-trained-v3.md (starting weights row)"
+    },
+    "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt": {
+      "parents": ["deepscoresv2-yolov8l-8shards-100ep.pt"],
+      "corpora": [{"name": "DeepScoresV2", "in_tree": false, "kind": "same 16k/4k split at imgsz 2048, 30 epochs"}],
+      "train_data_hint": "deepscores",
+      "routes": "engraved pages (pre-hollow weights)",
+      "evidence": "benchmarks/omr-phase3.3/comparison-trained-v3.md"
+    },
+    "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt": {
+      "parents": ["deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"],
+      "corpora": [{"name": "ship-catalog", "in_tree": true, "root": "data/user-labeled",
+                   "versions": ["v1-2026-05-18-orchestral", "v2-2026-06-08-beet5", "v3-2026-06-09-mahler5",
+                                "v4-2026-06-10-la-mer", "v7-2026-09-02-hollow", "v8-2026-09-02-hollow2-5pub"],
+                   "epochs": 1, "kind": "dense base oversampled 2x, imgsz 896, epoch0 shipped"}],
+      "train_data_hint": "ship-catalog",
+      "evidence": "benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md (Members: v1-v4 + v7 + v8; from imgsz2048-ft-30ep)"
+    },
+    "round5-sweep/distill25/epoch0.pt": {
+      "parents": ["deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"],
+      "teacher": "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+      "corpora": [{"name": "distill25", "in_tree": true, "root": "data/user-labeled-distill25",
+                   "human_root": "data/user-labeled", "versions_from": "data/user-labeled-distill25/catalog-versions.txt",
+                   "epochs": 1, "kind": "human labels + every teacher box at conf 0.25 that no human box overlaps"}],
+      "train_data_hint": "cat-d25",
+      "evidence": "benchmarks/omr-labeling-survey-2026-09/run_method_sweep.sh (BASE_W, arm distill25); build_rehearsal_versions.py (TEACHER)"
+    },
+    "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt": {
+      "parents": ["round5-sweep/distill25/epoch0.pt", "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"],
+      "features_from": "round5-sweep/distill25/epoch0.pt",
+      "class_rows_from": {"deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt": 201, "round5-sweep/distill25/epoch0.pt": 7},
+      "corpora": [],
+      "production": "scan",
+      "evidence": "benchmarks/omr-weights-ab-2026-09/FINDINGS.md §5 (6 of 595 tensors differ from distill25/epoch0, all model.22.cv3.*.2)"
+    }
+  },
+  "kept_box_means": {
+    "_what": "What a model box KEPT in a version's label file means: was each one confirmed by a human, or only spot-checked? Per-version, with evidence.",
+    "per_box": {"versions": ["v1-2026-05-18-orchestral", "v2-2026-06-08-beet5", "v18-2026-09-03-complete-breitkopf", "v23-2026-09-04-arcs-reconcile"],
+                "evidence": "TP/FP verdicts per detection in the annotate UI; v18 = the completion-full pass (confirm with t, reject with f)"},
+    "spot_check": {"versions": ["v7-2026-09-02-hollow", "v8-2026-09-02-hollow2-5pub", "v9-2026-09-03-hollow3-mahler1", "v10-2026-09-03-hollow3-elgar1",
+                                "v11-2026-09-03-hollow3-lamer", "v12-2026-09-03-hollow3-tchaikovsky1-lowres",
+                                "v13-2026-09-03-complete-v7-beet5-bolero", "v14-2026-09-03-complete-litolff", "v15-2026-09-03-complete-peters",
+                                "v16-2026-09-03-complete-eulenburg", "v17-2026-09-03-complete-simrock", "v19-2026-09-03-complete-mahler1",
+                                "v20-2026-09-03-complete-elgar1", "v21-2026-09-03-complete-lamer"],
+                    "evidence": "benchmarks/omr-labeling-survey-2026-09/ROUND3_COMPLETENESS.md (dynamics/slurs/ties: MODEL, audited, spot-checked 8 per class); v7-v12 metadata descriptions ('audited model-completed black noteheads/dots')"}
+  }
+}

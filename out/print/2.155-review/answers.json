@@ -1,0 +1,1039 @@
+{
+ "answered": "2026-10-16",
+ "verbatim": "1.16 2.8 3.8 4.8 5.8 6. 16th grace note 7. 16 8.8 9.8 10.8 11. 16th grace note 12.8 13.16th grace note 14.4 15.8 16.8 17.8 18.flat accidental 19.8 20.4",
+ "question": "What is the written value of the note in the blue box (4, dotted 4, 8 ...)?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "brahms",
+   "glyph": "glyph/3/0/1/2/2",
+   "role": "rescued_joined",
+   "sean": "16",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.25,
+      "cands": []
+     },
+     "base_verdict": "narrowed_wrong",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 2,
+   "doc": "litolff",
+   "glyph": "glyph/2/0/8/16/2",
+   "role": "joined_control",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 3,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/8/5/1",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 4,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/8/0/6",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.125,
+       0.25
+      ]
+     },
+     "base_verdict": "right",
+     "arm_verdict": "narrowed_wrong"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.125,
+       0.25
+      ]
+     },
+     "base_verdict": "right",
+     "arm_verdict": "narrowed_wrong"
+    }
+   }
+  },
+  {
+   "n": 5,
+   "doc": "litolff",
+   "glyph": "glyph/3/0/8/4/0",
+   "role": "rescued_joined",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 6,
+   "doc": "brahms",
+   "glyph": "glyph/1/0/12/0/18",
+   "role": "rescued_unjoined",
+   "sean": "16th grace note",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "base_verdict": "narrowed_wrong",
+     "arm_verdict": "wrong"
+    }
+   }
+  },
+  {
+   "n": 7,
+   "doc": "brahms",
+   "glyph": "glyph/11/0/10/6/4",
+   "role": "rescued_joined",
+   "sean": "16",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.25,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.25,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 8,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/7/0/6",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 9,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/7/3/2",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "wrong"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "wrong"
+    }
+   }
+  },
+  {
+   "n": 10,
+   "doc": "litolff",
+   "glyph": "glyph/3/0/8/0/8",
+   "role": "rescued_joined",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 11,
+   "doc": "brahms",
+   "glyph": "glyph/1/0/9/0/28",
+   "role": "rescued_unjoined",
+   "sean": "16th grace note",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "base_verdict": "narrowed_wrong",
+     "arm_verdict": "wrong"
+    }
+   }
+  },
+  {
+   "n": 12,
+   "doc": "litolff",
+   "glyph": "glyph/2/0/1/15/7",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "wrong",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "wrong",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 13,
+   "doc": "brahms",
+   "glyph": "glyph/1/0/10/0/26",
+   "role": "rescued_unjoined",
+   "sean": "16th grace note",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       true
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       true
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "wrong",
+     "arm_verdict": "wrong"
+    }
+   }
+  },
+  {
+   "n": 14,
+   "doc": "litolff",
+   "glyph": "glyph/16/0/1/3/0",
+   "role": "rescued_unjoined",
+   "sean": "4",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "narrowed_right"
+    }
+   }
+  },
+  {
+   "n": 15,
+   "doc": "litolff",
+   "glyph": "glyph/2/1/7/3/1",
+   "role": "joined_control",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 16,
+   "doc": "litolff",
+   "glyph": "glyph/16/1/4/2/10",
+   "role": "rescued_unjoined",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "narrowed_right"
+    }
+   }
+  },
+  {
+   "n": 17,
+   "doc": "litolff",
+   "glyph": "glyph/1/0/10/0/2",
+   "role": "changed",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    },
+    "rule_2153_on": {
+     "base": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "decider": "adjudicate_duration",
+      "written": null,
+      "cands": [
+       0.5,
+       1.0
+      ]
+     },
+     "arm": {
+      "cls": "noteheadBlackOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "narrowed_right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 18,
+   "doc": "brahms",
+   "glyph": "glyph/9/1/3/3/15",
+   "role": "rescued_unjoined",
+   "sean": "flat accidental",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadHalfOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 2.0,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadHalfOnLine",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 2.0,
+      "cands": []
+     },
+     "base_verdict": "wrong",
+     "arm_verdict": "wrong"
+    }
+   }
+  },
+  {
+   "n": 19,
+   "doc": "litolff",
+   "glyph": "glyph/6/1/9/4/3",
+   "role": "rescued_joined",
+   "sean": "8",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 0.5,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  },
+  {
+   "n": 20,
+   "doc": "litolff",
+   "glyph": "glyph/15/0/0/5/0",
+   "role": "rescued_unjoined",
+   "sean": "4",
+   "scored": {
+    "defaults": {
+     "base": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "arm": {
+      "cls": "noteheadBlackInSpace",
+      "not_a_head": [
+       "decided",
+       false
+      ],
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "decider": "adjudicate_duration",
+      "written": 1.0,
+      "cands": []
+     },
+     "base_verdict": "right",
+     "arm_verdict": "right"
+    }
+   }
+  }
+ ],
+ "scoring": "score_2_155.py: decided = Sean -> right; narrowing holding Sean's value -> narrowed_right; no duration -> refused (right only for the flat); grace notes scored by written value (no reader marks a grace note)",
+ "counts": {
+  "defaults": {
+   "base": {
+    "narrowed_wrong": 3,
+    "right": 12,
+    "wrong": 3,
+    "narrowed_right": 2
+   },
+   "arm": {
+    "right": 12,
+    "narrowed_wrong": 1,
+    "wrong": 5,
+    "narrowed_right": 2
+   }
+  },
+  "rule_2153_on": {
+   "base": {
+    "right": 3,
+    "narrowed_right": 4,
+    "wrong": 1
+   },
+   "arm": {
+    "right": 6,
+    "narrowed_wrong": 1,
+    "wrong": 1
+   }
+  }
+ }
+}

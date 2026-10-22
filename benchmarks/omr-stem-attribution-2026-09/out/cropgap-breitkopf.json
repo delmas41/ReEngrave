@@ -1,0 +1,309 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "source": "record",
+ "gap_cut": 0.8,
+ "seed": 20260921,
+ "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "FAR_population_size": 8,
+ "cropped_all_of_FAR": true,
+ "affine_residual_px": {
+  "mean": 0.0,
+  "max": 0.0
+ },
+ "sheets": [
+  "benchmarks/omr-stem-attribution-2026-09/out/print-gap-breitkopf/sheet-0.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-gap-breitkopf/sheet-1.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-gap-breitkopf/sheet-2.png",
+  "benchmarks/omr-stem-attribution-2026-09/out/print-gap-breitkopf/sheet-3.png"
+ ],
+ "index": [
+  {
+   "tile": "G00",
+   "subject": "glyph/3/1/10/2/16",
+   "stem": "obs:053975",
+   "cell": "cell/3/1/10/2",
+   "gap_head_heights": 1.343,
+   "stroke_in_head_heights": 3.713,
+   "stem_box_canonical": [
+    880.0,
+    436.0,
+    19.0,
+    401.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 163.3,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G01",
+   "subject": "glyph/1/0/0/2/19",
+   "stem": "obs:021123",
+   "cell": "cell/1/0/0/2",
+   "gap_head_heights": 0.876,
+   "stroke_in_head_heights": 3.099,
+   "stem_box_canonical": [
+    620.0,
+    0.0,
+    30.0,
+    313.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 188.9,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G02",
+   "subject": "glyph/0/0/13/0/14",
+   "stem": "obs:006321",
+   "cell": "cell/0/0/13/0",
+   "gap_head_heights": 0.186,
+   "stroke_in_head_heights": 2.744,
+   "stem_box_canonical": [
+    1553.0,
+    408.0,
+    11.0,
+    236.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 173.5,
+   "frame_ok": true,
+   "staff_space_px": 32.0
+  },
+  {
+   "tile": "G03",
+   "subject": "glyph/0/0/9/0/7",
+   "stem": "obs:006055",
+   "cell": "cell/0/0/9/0",
+   "gap_head_heights": 0.193,
+   "stroke_in_head_heights": 3.67,
+   "stem_box_canonical": [
+    997.0,
+    282.0,
+    14.0,
+    323.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 171.6,
+   "frame_ok": true,
+   "staff_space_px": 32.25
+  },
+  {
+   "tile": "G04",
+   "subject": "glyph/1/1/8/5/5",
+   "stem": "obs:022057",
+   "cell": "cell/1/1/8/5",
+   "gap_head_heights": 0.279,
+   "stroke_in_head_heights": 3.033,
+   "stem_box_canonical": [
+    1525.0,
+    484.0,
+    23.0,
+    370.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 174.1,
+   "frame_ok": true,
+   "staff_space_px": 26.75
+  },
+  {
+   "tile": "G05",
+   "subject": "glyph/1/1/0/5/7",
+   "stem": "obs:021806",
+   "cell": "cell/1/1/0/5",
+   "gap_head_heights": 0.25,
+   "stroke_in_head_heights": 3.226,
+   "stem_box_canonical": [
+    113.0,
+    463.0,
+    22.0,
+    400.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 158.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G06",
+   "subject": "glyph/3/0/5/0/9",
+   "stem": "obs:053230",
+   "cell": "cell/3/0/5/0",
+   "gap_head_heights": 2.436,
+   "stroke_in_head_heights": 5.298,
+   "stem_box_canonical": [
+    970.0,
+    440.0,
+    16.0,
+    498.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 170.3,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G07",
+   "subject": "glyph/3/0/8/4/10",
+   "stem": "obs:053336",
+   "cell": "cell/3/0/8/4",
+   "gap_head_heights": 0.9,
+   "stroke_in_head_heights": 3.356,
+   "stem_box_canonical": [
+    931.0,
+    452.0,
+    33.0,
+    302.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 144.4,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G08",
+   "subject": "glyph/3/0/1/0/7",
+   "stem": "obs:053097",
+   "cell": "cell/3/0/1/0",
+   "gap_head_heights": 1.152,
+   "stroke_in_head_heights": 3.946,
+   "stem_box_canonical": [
+    961.0,
+    437.0,
+    20.0,
+    363.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 173.7,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G09",
+   "subject": "glyph/3/0/6/4/6",
+   "stem": "obs:053277",
+   "cell": "cell/3/0/6/4",
+   "gap_head_heights": 1.44,
+   "stroke_in_head_heights": 4.069,
+   "stem_box_canonical": [
+    231.0,
+    250.0,
+    22.0,
+    472.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 182.4,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G10",
+   "subject": "glyph/1/1/9/1/23",
+   "stem": "obs:022084",
+   "cell": "cell/1/1/9/1",
+   "gap_head_heights": 0.245,
+   "stroke_in_head_heights": 3.265,
+   "stem_box_canonical": [
+    904.0,
+    417.0,
+    18.0,
+    333.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 148.0,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G11",
+   "subject": "glyph/1/0/9/1/11",
+   "stem": "obs:021518",
+   "cell": "cell/1/0/9/1",
+   "gap_head_heights": 0.2,
+   "stroke_in_head_heights": 3.08,
+   "stem_box_canonical": [
+    804.0,
+    232.0,
+    21.0,
+    308.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 129.5,
+   "frame_ok": true,
+   "staff_space_px": 27.25
+  },
+  {
+   "tile": "G12",
+   "subject": "glyph/1/1/0/4/6",
+   "stem": "obs:021800",
+   "cell": "cell/1/1/0/4",
+   "gap_head_heights": 0.266,
+   "stroke_in_head_heights": 4.339,
+   "stem_box_canonical": [
+    967.0,
+    261.0,
+    25.0,
+    538.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 151.5,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G13",
+   "subject": "glyph/3/0/2/0/18",
+   "stem": "obs:053125",
+   "cell": "cell/3/0/2/0",
+   "gap_head_heights": 1.005,
+   "stroke_in_head_heights": 2.129,
+   "stem_box_canonical": [
+    961.0,
+    0.0,
+    14.0,
+    198.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 170.9,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  },
+  {
+   "tile": "G14",
+   "subject": "glyph/2/0/13/2/3",
+   "stem": "obs:035292",
+   "cell": "cell/2/0/13/2",
+   "gap_head_heights": 0.259,
+   "stroke_in_head_heights": 2.776,
+   "stem_box_canonical": [
+    1513.0,
+    421.0,
+    23.0,
+    322.0
+   ],
+   "stratum": "END",
+   "frame_delta_grey": 158.2,
+   "frame_ok": true,
+   "staff_space_px": 27.5
+  },
+  {
+   "tile": "G15",
+   "subject": "glyph/3/0/2/0/15",
+   "stem": "obs:053128",
+   "cell": "cell/3/0/2/0",
+   "gap_head_heights": 0.989,
+   "stroke_in_head_heights": 2.761,
+   "stem_box_canonical": [
+    961.0,
+    510.0,
+    11.0,
+    254.0
+   ],
+   "stratum": "FAR",
+   "frame_delta_grey": 171.3,
+   "frame_ok": true,
+   "staff_space_px": 27.75
+  }
+ ]
+}

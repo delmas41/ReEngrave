@@ -1,0 +1,21 @@
+staff records                              : 1616
+  on FULL systems (judgeable by the scorer): 807
+  on REDUCED systems                       : 809
+    of those, carrying NO label of their own: 371
+
+refusals landing on a judgeable staff      : 0
+refusals landing on a reduced system       : 18
+
+names given to an unlabelled staff on a reduced system:
+     92  Violin         (slot source: label)
+     81  Contrabass     (slot source: score_order_ambiguity)
+     58  Viola          (slot source: label)
+     49  Cello          (slot source: label)
+     21  Horn           (slot source: label)
+     21  Trumpet        (slot source: score_order_ambiguity)
+     19  Trumpet        (slot source: label)
+      7  Bassoon        (slot source: label)
+      6  Flute          (slot source: label)
+      6  Clarinet       (slot source: label)
+      6  Trombone       (slot source: label)
+      5  Oboe           (slot source: label)

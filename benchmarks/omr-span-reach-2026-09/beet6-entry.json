@@ -1,0 +1,34 @@
+{
+  "work": "beethoven--symphony-6",
+  "edition": "beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+  "provenance": "PRINT, read by eye off out/crops/p000,p027,p039,p042,p046,p054_margin.png. The reference encodings' per-movement part lists agree and are recorded below as CORROBORATION only.",
+  "entry_page": {
+    "Piccolo": 46,
+    "Trombone": 46,
+    "Timpani": 46,
+    "Tuba": 99999
+  },
+  "hand_read_systems": {
+    "0": "Flauti / Oboi / Clarinetti in B / Fagotti / Corni in F / Violino I / Violino II / Viola / Violoncello e Basso  (9)",
+    "27": "Fl / Ob / Cl / Fag / Cor / VnI / VnII / Vla / Vc / Bassi  (10, movement II)",
+    "39": "same 10, movement II ('Bassi.')",
+    "42": "same 10, movement III trio",
+    "46": "Flauto piccolo / Flauti / Oboi / Clarinetti in B / Fagotti / Corni in F / Trombe in Es / Timpani in C.F. / Tromboni Alto+Tenore / Violino I / Violino II / Viola / Violoncello e Basso  (13, movement IV 'Gewitter, Sturm')",
+    "54": "Fl.pic / Fl / Ob / Cl / Fag / Cor / Tr / Tp / Tb / 5 strings  (14) — 'Tb.' here is TROMBONI, in alto clef, not a tuba"
+  },
+  "why_these": {
+    "Piccolo/Trombone/Timpani": "page 46 is the first page of the fourth movement and the first page on which any of the three is printed; pages 0, 27, 39 and 42 print none of them. So a staff on a page before 46 named one of them is categorically wrong.",
+    "Tuba": "Beethoven 6 HAS NO TUBA, in any movement, so the entry page is unreachable and every Tuba name is impossible on every page. The largest system the document prints is the 14 hand-read at page 54 and it holds no tuba. ⚠️ This name is real and frequent in the run because Litolff abbreviates Tromboni as 'Tb.' and `instruments.lookup('Tb.')` returns Tuba at HIGH confidence — a lexicon collision of the same family as the documented 'Tr.' = Trombe/Tromboni one, not a slot-assignment error."
+  },
+  "corroboration_from_encodings": {
+    "note": "ENCODING evidence, kept apart from the print above on purpose.",
+    "mvt1": "no piccolo, trombone, timpani, trumpet, tuba",
+    "mvt2": "same",
+    "mvt3": "adds C Trumpet 1+2; still no piccolo/trombone/timpani/tuba",
+    "mvt4": "adds Piccolo, Eb Trumpets, Alto+Tenor Trombone, Timpani",
+    "mvt5": "keeps the trombones and trumpets; drops Piccolo and Timpani — the SHRINK direction the span rule is documented as blind to"
+  },
+  "deliberately_excluded": {
+    "Trumpet": "enters in movement III, whose first printed page was not hand-read. An entry page taken from the span profile would be inferred from the thing under test."
+  }
+}

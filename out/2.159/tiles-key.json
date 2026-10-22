@@ -1,0 +1,210 @@
+[
+ {
+  "tile": 1,
+  "file": "tile_01.png",
+  "doc": "brahms",
+  "subject": "glyph/18/1/9/6/15",
+  "why": "changed",
+  "page_box": [
+   4538.3671875,
+   6095.91552734375,
+   4570.91650390625,
+   6116.60107421875
+  ],
+  "blue_box_page_px": [
+   4531.5,
+   6089.1,
+   4588.9,
+   6136.5
+  ],
+  "blue_box_tile_px": [
+   273.0,
+   297.0,
+   387.8,
+   391.9
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 2,
+  "file": "tile_02.png",
+  "doc": "litolff",
+  "subject": "glyph/10/0/3/2/1",
+  "why": "changed",
+  "page_box": [
+   827.38,
+   865.285,
+   848.6425,
+   879.3025
+  ],
+  "blue_box_page_px": [
+   823.1,
+   854.2,
+   852.9,
+   883.2
+  ],
+  "blue_box_tile_px": [
+   236.2,
+   260.2,
+   325.9,
+   347.5
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 3,
+  "file": "tile_03.png",
+  "doc": "litolff",
+  "subject": "glyph/10/1/4/8/7",
+  "why": "control_half",
+  "page_box": [
+   1747.415,
+   2682.5925,
+   1771.985,
+   2699.13
+  ],
+  "blue_box_page_px": [
+   1743.5,
+   2678.7,
+   1775.9,
+   2703.1
+  ],
+  "blue_box_tile_px": [
+   236.2,
+   260.2,
+   333.6,
+   333.5
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 4,
+  "file": "tile_04.png",
+  "doc": "brahms",
+  "subject": "glyph/16/1/10/0/7",
+  "why": "changed",
+  "page_box": [
+   940.4482421875,
+   6314.583984375,
+   973.8779296875,
+   6338.896484375
+  ],
+  "blue_box_page_px": [
+   931.2,
+   6297.6,
+   983.2,
+   6345.7
+  ],
+  "blue_box_tile_px": [
+   273.0,
+   297.0,
+   377.1,
+   393.3
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 5,
+  "file": "tile_05.png",
+  "doc": "brahms",
+  "subject": "glyph/0/0/0/1/4",
+  "why": "control_black",
+  "page_box": [
+   2396.7675,
+   1533.8675,
+   2437.725,
+   1570.6325
+  ],
+  "blue_box_page_px": [
+   2389.9,
+   1527.0,
+   2444.5,
+   1577.5
+  ],
+  "blue_box_tile_px": [
+   273.0,
+   297.0,
+   382.2,
+   397.8
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 6,
+  "file": "tile_06.png",
+  "doc": "litolff",
+  "subject": "glyph/10/1/10/5/4",
+  "why": "changed",
+  "page_box": [
+   1232.16,
+   3619.64,
+   1250.24,
+   3630.36
+  ],
+  "blue_box_page_px": [
+   1225.5,
+   3606.1,
+   1255.7,
+   3634.3
+  ],
+  "blue_box_tile_px": [
+   236.2,
+   260.2,
+   327.1,
+   345.0
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 7,
+  "file": "tile_07.png",
+  "doc": "litolff",
+  "subject": "glyph/1/0/9/11/1",
+  "why": "changed",
+  "page_box": [
+   2050.8675,
+   2725.7425,
+   2069.1375,
+   2739.76
+  ],
+  "blue_box_page_px": [
+   2045.1,
+   2721.8,
+   2075.0,
+   2751.0
+  ],
+  "blue_box_tile_px": [
+   236.2,
+   260.2,
+   326.2,
+   347.9
+  ],
+  "blue_checked": true
+ },
+ {
+  "tile": 8,
+  "file": "tile_08.png",
+  "doc": "litolff",
+  "subject": "glyph/10/1/1/8/8",
+  "why": "changed",
+  "page_box": [
+   1741.9025,
+   2229.155,
+   1764.425,
+   2234.9825
+  ],
+  "blue_box_page_px": [
+   1738.0,
+   2219.5,
+   1768.4,
+   2244.6
+  ],
+  "blue_box_tile_px": [
+   236.2,
+   260.2,
+   327.4,
+   335.8
+  ],
+  "blue_checked": true
+ }
+]

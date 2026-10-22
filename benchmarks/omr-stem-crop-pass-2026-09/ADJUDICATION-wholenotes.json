@@ -1,0 +1,189 @@
+{
+  "label": "heads the record calls WHOLE and still gives a stem direction",
+  "what": "docs/engraving-conventions.md [C9 + L10] excludes whole notes throughout - a semibreve carries no stem. The registry files it ASSERTED WITH NO FIGURE. A contradiction has two readings and only the print separates them: the head is really WHOLE (the DIRECTION is false, and the convention holds) or it is really a HALF note (the CLASS is false and the convention is not what failed).",
+  "added_mid_pass": true,
+  "not_part_of_the_preregistered_sample": true,
+  "population": {
+    "litolff": 8,
+    "breitkopf": 23,
+    "total": 31,
+    "litolff_excluded_by_the_frame_control": 3
+  },
+  "adjudicated": {
+    "litolff": 5,
+    "breitkopf": 12
+  },
+  "not_reached": {
+    "breitkopf": [
+      "V003",
+      "V007",
+      "V008",
+      "V010",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V020",
+      "V021",
+      "V023"
+    ]
+  },
+  "headline": "NOT ONE of the 17 adjudicated heads is a whole note whose direction is the false claim. In 16 of 17 the CLASS is false \u2014 the box holds a staff-line gap (5), a time-signature digit 8 (8), a dotted HALF note with a printed stem (2), or a hairpin wedge (1). So this population is a `notehead_class` false-positive population and NOT a convention failure: the convention is neither contradicted nor confirmed by it.",
+  "method_warning": "\u26a0\ufe0f AT TILE MAGNIFICATION I READ TWO OF THESE WRONG AND THE WIDE STRIP CORRECTED BOTH \u2014 a time-signature digit 8 and a dotted half note both read as `a hollow head with no stem`. A crop centred on a head cannot tell you the head is a NUMERAL. Every verdict here rests on a full-width strip or a 4x zoom, never on the tile alone.",
+  "n": 17,
+  "rows": [
+    {
+      "id": "V001",
+      "publisher": "Breitkopf",
+      "print_shows": "dotted_half_note",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/2/0/4 cell 3",
+      "reason": "a dotted HOLLOW head with a clearly printed stem running UP at its RIGHT - a dotted HALF note, so the class is what is false and the direction is right"
+    },
+    {
+      "id": "V002",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/0/0/5 cell 7: a CAUTIONARY 9/8 after the system's final double barline",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V004",
+      "publisher": "Breitkopf",
+      "print_shows": "hairpin_or_beam_wedge",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/1/0/0 cell 4",
+      "reason": "a thick DIAGONAL wedge 2.68 spaces wide with no oval anywhere in it"
+    },
+    {
+      "id": "V005",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/0/0/5 cell 7, same printed 8, second counter",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V006",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/0/0/5 cell 7, same printed 8, third box on it",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V009",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/1/0/5 cell 1: the 8 of a printed 6/8",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V011",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/1/0/5 cell 1, same 8",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V015",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/0/0/11 cell 7: the same cautionary 9/8, the 8's counters",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V017",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/1/0/5 cell 1, same 8",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "V018",
+      "publisher": "Breitkopf",
+      "print_shows": "dotted_half_note",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/2/0/4 cell 3 - a SECOND box on the same printed head",
+      "reason": "a dotted HOLLOW head with a clearly printed stem running UP at its RIGHT - a dotted HALF note, so the class is what is false and the direction is right"
+    },
+    {
+      "id": "V019",
+      "publisher": "Breitkopf",
+      "print_shows": "possibly_a_real_whole_note",
+      "which_claim_is_false": "direction",
+      "confidence": "low",
+      "where": "staff/1/0/5 cell 0: a dotted HOLLOW head with ledger lines and a tie, and NO stem visible. The one candidate in this population for the class being RIGHT and the direction being the false one - marked LOW confidence because it was read at strip magnification only",
+      "reason": "staff/1/0/5 cell 0: a dotted HOLLOW head with ledger lines and a tie, and NO stem visible. The one candidate in this population for the class being RIGHT and the direction being the false one - marked LOW confidence because it was read at strip magnification only"
+    },
+    {
+      "id": "V022",
+      "publisher": "Breitkopf",
+      "print_shows": "time_signature_digit_8",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/0/0/11 cell 7, the other counter of that 8",
+      "reason": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+    },
+    {
+      "id": "W001",
+      "publisher": "Litolff",
+      "print_shows": "staff_line_gap",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/2/0/3 cell 1, inside a dense beamed group with `cresc.` printed below",
+      "reason": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-width strip; at tile magnification the gap's rounded white lens is indistinguishable from a whole note's counter"
+    },
+    {
+      "id": "W002",
+      "publisher": "Litolff",
+      "print_shows": "staff_line_gap",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/2/0/3 cell 1, the adjacent box in the same gap",
+      "reason": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-width strip; at tile magnification the gap's rounded white lens is indistinguishable from a whole note's counter"
+    },
+    {
+      "id": "W003",
+      "publisher": "Litolff",
+      "print_shows": "staff_line_gap",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/4/1/10 (Bassi.), a gap between two thick staff lines",
+      "reason": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-width strip; at tile magnification the gap's rounded white lens is indistinguishable from a whole note's counter"
+    },
+    {
+      "id": "W004",
+      "publisher": "Litolff",
+      "print_shows": "staff_line_gap",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/4/1/7, a gap inside a lattice of thick staff lines",
+      "reason": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-width strip; at tile magnification the gap's rounded white lens is indistinguishable from a whole note's counter"
+    },
+    {
+      "id": "W005",
+      "publisher": "Litolff",
+      "print_shows": "staff_line_gap",
+      "which_claim_is_false": "class",
+      "confidence": "high",
+      "where": "staff/2/1/4 (Cor.), a gap beside a barline",
+      "reason": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-width strip; at tile magnification the gap's rounded white lens is indistinguishable from a whole note's counter"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+[beethoven5-litolff] page 15 (system 1): staff-line contrast 0.420 on the lines; -0.295 with every line moved half a space (control must collapse)
+    clef boxes on the page: 25; median dark share inside 0.53 vs 0.28 moved 1.5 widths right; true > moved on 25 of 25
+    drawn note boxes on the system: 44; median dark share inside 0.85 vs 0.51 moved 1.5 widths right; true > moved on 44 of 44
+    control crop: out/print/overnight-20261010-undecided/control_clef_litolff_p15_s1.png  (clef glyph/15/1/6/0/0, dark share 0.61 in the box, 0.28 moved)

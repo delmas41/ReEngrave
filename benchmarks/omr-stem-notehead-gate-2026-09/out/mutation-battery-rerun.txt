@@ -1,0 +1,128 @@
+==============================================================================
+BASELINE (the positive control -- every arm is free if this is not green)
+==============================================================================
+  exit 0
+  117 passed, 5 warnings
+  arm:elif n_off != expect:
+  arm:if STEM_NOTEHEAD_GATE_ENV in
+  arm:if len(rescued) == 0 and len
+  arm:if lost:
+  arm:if n_heads == 0:
+  perbar:CLUSTER_SPACES = 0.9
+  perbar:len(got[s]) != n_bars[s] for
+  perbar:r["truth"] > 0 and r["on"] =
+
+------------------------------------------------------------------------------
+ARM [line]: the gate is applied to the PARTNER as well as the subject
+  expected: an accidental's stroke beside a real stem loses its only partner and SURVIVES as a false stem -- the form this lane rejected
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: `None` and `[]` become the same argument
+  expected: *no gate* and *the gate with nothing to protect* must stay different; collapsing them is this repo's own way of converting cannot-tell into a definite answer
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: the gate fires with the flag OFF
+  expected: flag-off must be byte-identical; a DATA-only gate makes the default path move and breaks every stem arm in this repo
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: the flag alone fires with no noteheads supplied
+  expected: the legacy `transcribe` path passes no detections and must stay unchanged BY CONSTRUCTION
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [line]: the flag defaults ON
+  expected: a default-OFF flag with an allow-list test -- the derived guard reads the predicate on its own default and must see the flip
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: the flag's OFF test becomes a DENY-list
+  expected: CLAUDE.md: a flag's OFF test must follow its DEFAULT -- a default-OFF deny-list is switched ON by a typo
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: notehead overlap becomes touching-counts
+  expected: a stroke merely TOUCHING a head's bounding box is not standing on it; the loose test protects the neighbour's strokes too
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [line]: the gate ignores y and matches on x alone
+  expected: every stroke in a head's COLUMN would claim it, including an accidental's strokes standing directly above or below the note
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [line]: `noteheads` is not forwarded from `detect_lines`
+  expected: the staged path reaches `detect_stems` only through `detect_lines`, so dropping the forward makes the gate silently inert in production while every direct-call test still passes
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: `gather()` stops handing the detections to the CV rung
+  expected: the gate has no data on the staged path and is silently the shipped rule -- the exact fault this lane exists to repair
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: a missing detector becomes an EMPTY head list
+  expected: `gather_detections(detector=None)` is a supported mode; turning it into *the gate with nothing to protect* is a different claim
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: the head boxes are read as CORNERS, not x/y/w/h
+  expected: the three-box-conventions trap: a corner box read as a width box gives a head far larger than the print and protects everything near it
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: every detection counts as a notehead
+  expected: an accidental, a rest and a clef would all protect a stroke; the gate's whole claim is that a NOTEHEAD is there
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [arm]: the faithfulness check cannot fail
+  expected: the OFF arm reproducing the shared record's 1,920 / 2,305 strokes is what makes any delta comparable to anything committed
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the one-sidedness check cannot fail
+  expected: the gate can only ever UN-condemn; a lost stroke means the relation was changed in a way this arm's author did not intend
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm accepts an inherited flag from the shell
+  expected: an inherited value makes both arms the same one -- the hazard this repo has paid for twice
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the positive control cannot fail
+  expected: two identical arms is what a flag that does not reach the code produces, and it would read as *the gate is harmless*
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: DEAD at zero noteheads becomes a clean exit
+  expected: with no noteheads the ON arm IS the OFF arm and a clean zero would read as *the gate changes nothing here*
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [perbar]: the per-bar probe scores a thickness whose cells != bars
+  expected: `ground-truth.json`'s own caveat: where the page re-segments, a cell index is not a bar number and the comparison is nonsense
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [perbar]: the composition check is silenced
+  expected: the gated COUNT equals the truth on the chord bar by coincidence -- four strokes on two printed objects -- and reporting the count alone would credit the gate with getting that bar right
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [perbar]: x-clustering uses a window wide enough to merge every stroke
+  expected: the composition statement is *four strokes are two objects*; a window that merges everything makes every bar read as one object
+  exit 0  -> RED
+
+==============================================================================
+RED 18   SURVIVED 3   BAD ANCHORS 0
+restore VERIFIED by md5: True
+  SURVIVOR [line] the flag alone fires with no noteheads supplied
+  SURVIVOR [line] notehead overlap becomes touching-counts
+  SURVIVOR [gather] every detection counts as a notehead

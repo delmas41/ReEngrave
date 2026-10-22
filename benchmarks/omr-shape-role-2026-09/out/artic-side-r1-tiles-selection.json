@@ -1,0 +1,194 @@
+[
+ {
+  "category": "relabel",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 18,
+  "subject": "glyph/18/0/2/0/7",
+  "mark_bbox_page": [
+   956.0126953125,
+   1099.62109375,
+   1006.634765625,
+   1128.80859375
+  ],
+  "read_before": "abstained: no_notehead (class articAccentAbove names above; no head on that side in this cell)",
+  "read_after": "abstained: suffix_contradicts_geometry (class names above; nearest in-cell head glyph/18/0/2/0/3, measured below the head, gap 1.19 heads; head glyph/18/0/2/0/3)",
+  "n": 1
+ },
+ {
+  "category": "relabel",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 23,
+  "subject": "glyph/23/1/3/4/5",
+  "mark_bbox_page": [
+   2936.095,
+   4869.26,
+   2988.5425,
+   4896.7325
+  ],
+  "read_before": "abstained: no_notehead (class articAccentAbove names above; no head on that side in this cell)",
+  "read_after": "abstained: suffix_contradicts_geometry (class names above; nearest in-cell head glyph/23/1/3/4/9, measured below the head, gap 1.18 heads; head glyph/23/1/3/4/9)",
+  "n": 2
+ },
+ {
+  "category": "control",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 11,
+  "subject": "glyph/11/0/4/3/11",
+  "mark_bbox_page": [
+   2294.625,
+   1660.4,
+   2308.1,
+   1679.1
+  ],
+  "read_before": "decided: owner glyph/11/0/4/3/0 (below, gap 0.20 heads)",
+  "read_after": "UNCHANGED",
+  "n": 3
+ },
+ {
+  "category": "litolff",
+  "doc": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 3,
+  "subject": "glyph/3/0/0/1/9",
+  "mark_bbox_page": [
+   708.695,
+   357.0,
+   766.2,
+   362.27
+  ],
+  "read_before": "abstained: no_notehead",
+  "read_after": "UNCHANGED (no_notehead)",
+  "n": 4
+ },
+ {
+  "category": "relabel",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "subject": "glyph/19/1/10/1/6",
+  "mark_bbox_page": [
+   1605.625,
+   6574.8,
+   1661.175,
+   6605.6
+  ],
+  "read_before": "abstained: no_notehead (class articAccentAbove names above; no head on that side in this cell)",
+  "read_after": "abstained: suffix_contradicts_geometry (class names above; nearest in-cell head glyph/19/1/10/1/4, measured below the head, gap 0.91 heads; head glyph/19/1/10/1/4)",
+  "n": 5
+ },
+ {
+  "category": "cross_staff",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/0/10/2/1",
+  "mark_bbox_page": [
+   2291.6425,
+   2938.0,
+   2342.98,
+   2965.4725
+  ],
+  "read_before": "abstained: no_notehead (no head in this cell)",
+  "read_after": "abstained: no_notehead -- UNCHANGED; a head on the declared side stands in another staff (glyph/9/0/9/2/1, gap 0.30 heads)",
+  "n": 6
+ },
+ {
+  "category": "far_pick",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 6,
+  "subject": "glyph/6/0/5/2/4",
+  "mark_bbox_page": [
+   2177.85,
+   2052.3575,
+   2192.83,
+   2073.7575
+  ],
+  "read_before": "decided: owner glyph/6/0/5/2/5 (gap 3.03 heads); a nearer head on the same side is glyph/6/0/5/2/0 (gap 0.26 heads)",
+  "read_after": "UNCHANGED (this lane records the nearer head, does not move the pick)",
+  "n": 7
+ },
+ {
+  "category": "relabel",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 25,
+  "subject": "glyph/25/1/9/8/7",
+  "mark_bbox_page": [
+   4620.45,
+   6505.0,
+   4647.95,
+   6509.4
+  ],
+  "read_before": "abstained: no_notehead (class articTenutoBelow names below; no head on that side in this cell)",
+  "read_after": "abstained: suffix_contradicts_geometry (class names below; nearest in-cell head glyph/25/1/9/8/4, measured above the head, gap 0.99 heads; head glyph/25/1/9/8/4)",
+  "n": 8
+ },
+ {
+  "category": "far_pick",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 10,
+  "subject": "glyph/10/0/5/4/1",
+  "mark_bbox_page": [
+   2906.6689453125,
+   1586.3857421875,
+   2960.1796875,
+   1614.9248046875
+  ],
+  "read_before": "decided: owner glyph/10/0/5/4/6 (gap 3.01 heads); a nearer head on the same side is glyph/10/0/5/4/5 (gap 0.10 heads)",
+  "read_after": "UNCHANGED (this lane records the nearer head, does not move the pick)",
+  "n": 9
+ },
+ {
+  "category": "far_pick",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 24,
+  "subject": "glyph/24/0/5/7/4",
+  "mark_bbox_page": [
+   4850.775,
+   1890.025,
+   4860.4,
+   1907.9
+  ],
+  "read_before": "decided: owner glyph/24/0/5/7/21 (gap 3.30 heads); a nearer head on the same side is glyph/24/0/5/7/6 (gap 0.40 heads)",
+  "read_after": "UNCHANGED (this lane records the nearer head, does not move the pick)",
+  "n": 10
+ },
+ {
+  "category": "relabel",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 2,
+  "subject": "glyph/2/1/8/0/14",
+  "mark_bbox_page": [
+   978.703125,
+   5950.423828125,
+   989.4873046875,
+   5967.5986328125
+  ],
+  "read_before": "abstained: no_notehead (class articStaccatissimoAbove names above; no head on that side in this cell)",
+  "read_after": "abstained: suffix_contradicts_geometry (class names above; nearest in-cell head glyph/2/1/8/0/4, measured below the head, gap 0.50 heads; head glyph/2/1/8/0/4)",
+  "n": 11
+ },
+ {
+  "category": "between",
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/0/7/6/14",
+  "mark_bbox_page": [
+   4606.494140625,
+   2227.38671875,
+   4666.822265625,
+   2244.14453125
+  ],
+  "read_before": "decided: owner glyph/5/0/7/6/0 by the class (below); another head on the other side is also within reach",
+  "read_after": "UNCHANGED (recorded: other_side_head_in_reach)",
+  "n": 12
+ }
+]

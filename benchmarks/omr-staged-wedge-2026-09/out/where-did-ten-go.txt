@@ -1,0 +1,5 @@
+46 decided hairpins:
+    16  ONE end reached a cell (counted as dropped)
+    13  both ends written, distinct notes
+    10  NEITHER end reached a cell
+     7  degenerate: one note, start == stop

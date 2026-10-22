@@ -1,0 +1,14 @@
+file                                            same  SPELL  STEP  WIDE   ?  WIDE-rescuable
+beethoven-sym3-mvt1.omr.json                       0      1     0     1   0               0
+beethoven-sym5-mvt1.omr.json                       8      0     0     0   0               0
+brahms-sym1-mvt1.omr.json                         35      8     0     0   0               0
+brahms-sym4-mvt1.omr.json                          0      0     0     1   0               0
+bruckner-sym5-mvt1.omr.json                        3      0     0     1   0               1
+dvorak-sym9-mvt4.omr.json                          0      0     0     0   0               0
+mahler-sym5-mvt1.omr.json                          0      2     0     0   0               0
+mozart-sym40-mvt1.omr.json                         0      0     0     0   0               0
+mozart-sym41-mvt1.omr.json                         1      0     8     1   0               0
+tchaikovsky-sym4-mvt2.omr.json                     0      0     0     0   0               0
+tchaikovsky-sym6-mvt2.omr.json                     0      0     0     0   0               0
+
+ pooled: SPELLING=11  STEP_APART=8  WIDE=4  WIDE_rescuable=1  same=47

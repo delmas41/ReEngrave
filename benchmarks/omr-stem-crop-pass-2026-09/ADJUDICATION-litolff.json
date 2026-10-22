@@ -1,0 +1,1150 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "adjudicator": "Claude Opus 5, by eye, on 600-dpi crops of the gather's own render",
+ "blind": "tile ids only; bucket, notehead class and control status were in a manifest that was NOT opened until after every verdict below was written",
+ "protocol": {
+  "stem_printed_*": "a stroke >=1.5 spaces attached at the head's side, OR the head unambiguously joined to a printed beam on that side",
+  "no_stem_printed": "hollow or filled head with >=2 spaces of clean white above AND below and no stroke at either edge",
+  "not_a_notehead": "the ink is clearly a rest, a barline, an accidental, script text, or a box on a vertical rule",
+  "cannot_tell": "everything else. NOT converted into a definite answer.",
+  "side": "which side of the head the stroke stands on - the direct test of Sean's convention",
+  "flags": "up_excluded/down_excluded = >=2 spaces of clean white on that side, so that direction is ruled out even where the stroke cannot be seen"
+ },
+ "n": 106,
+ "rows": [
+  {
+   "id": "L001",
+   "verdict": "stem_printed_up",
+   "side": "unclear",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "beam above with two descending verticals; the crosshair sits on the right vertical; box 2.05 spaces wide = a fused beamed pair, so the side cannot be assigned to one head"
+  },
+  {
+   "id": "L002",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "ZOOM: a vertical at the head's lower-LEFT drops ~0.5 space onto a beam band that stops short of the tile edge (so it is a beam, not a staff line)"
+  },
+  {
+   "id": "L003",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: three heads in a row; a vertical at the bracketed head's LEFT drops ~0.9 space to the band below"
+  },
+  {
+   "id": "L004",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "abuts_barline"
+   ],
+   "reason": "ZOOM: the only vertical is at the head's right and runs the FULL tile height (10 spaces) = a barline the head abuts; the head's left is fused into a mass"
+  },
+  {
+   "id": "L005",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "ZOOM: unmistakable HOLLOW head (wide open diagonal counter). A half note must carry a stem and none is visible at either side; ~2 spaces clean white above"
+  },
+  {
+   "id": "L006",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "clear vertical at the head's LEFT descending ~3.9 spaces"
+  },
+  {
+   "id": "L007",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "clear vertical descending ~2.7 spaces from the head's lower-LEFT, visible against the white gaps between staff lines"
+  },
+  {
+   "id": "L008",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "hollow",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "HOLLOW head (diagonal white counter); vertical at its LEFT descending through the staff band"
+  },
+  {
+   "id": "L009",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "fused mass; no stroke can be isolated"
+  },
+  {
+   "id": "L010",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "textbook: a printed BEAM above three heads with a vertical rising from each head's RIGHT edge to it"
+  },
+  {
+   "id": "L011",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a vertical at the head's RIGHT running up ~4 spaces and STOPPING at the head, so not a barline"
+  },
+  {
+   "id": "L012",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "thin vertical at the RIGHT running up ~4.7 spaces; a ledger line is printed under the head"
+  },
+  {
+   "id": "L013",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "vertical descending ~2.9 spaces from the oval's lower-LEFT; a key-signature flat stands immediately left, so the head/flat boundary is not crisp"
+  },
+  {
+   "id": "L014",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: header region, three identical hollow ovals stacked ~2 spaces apart; a FULL-HEIGHT vertical passes through all three at their left, so it is a barline and not a stem"
+  },
+  {
+   "id": "L015",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a solid rectangle ~1.35 x 0.5 spaces hanging BELOW a staff line, with no other ink anywhere in a 10-space window: a WHOLE REST"
+  },
+  {
+   "id": "L016",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [],
+   "reason": "the box sits on one of TWO full-height vertical rules with a round dot beside them: a repeat barline"
+  },
+  {
+   "id": "L017",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "head above the staff with a ledger line; a vertical at its LEFT descends into the staff band"
+  },
+  {
+   "id": "L018",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.45 x 1.3 spaces (taller than wide) sitting ON a full-height vertical rule"
+  },
+  {
+   "id": "L019",
+   "verdict": "no_stem_printed",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: one tilted HOLLOW head with its counter split by the head's own waist ink; clean white on all four sides for 2+ spaces and no stroke anywhere: reads as a WHOLE NOTE"
+  },
+  {
+   "id": "L020",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "vertical descending at the LEFT through the staff band; a flat stands to its left"
+  },
+  {
+   "id": "L021",
+   "verdict": "cannot_tell",
+   "side": "unclear",
+   "head_fill": null,
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a vertical spans ~6.4 spaces THROUGH the head, both above and below it, so it cannot be attributed as this head's stem"
+  },
+  {
+   "id": "L022",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid mass fused with the staff lines in a dense grid"
+  },
+  {
+   "id": "L023",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a blob 2.4 spaces tall = two fused heads; a short vertical stub above does not reach them"
+  },
+  {
+   "id": "L024",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "position_impossible"
+   ],
+   "reason": "ZOOM: head, then a SOLID 1.5 x 3-space block with no horizontal white gaps (so not ledger lines), then a narrow descender. Its own staff's top line is at the tile's bottom edge, so a notehead here would need ledger lines it does not have"
+  },
+  {
+   "id": "L025",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "header region; the box covers the upper-right arm of a key-signature accidental"
+  },
+  {
+   "id": "L026",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "hollow",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: unmistakable HOLLOW head; a vertical stands below its LEFT edge running ~1.8 spaces down. Wider than a stem should be (0.58 space) but the only candidate"
+  },
+  {
+   "id": "L027",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "position_impossible"
+   ],
+   "reason": "ZOOM: rounded top, solid straight-sided body, flared foot, narrow descender - not an ordinary head+stem, and I cannot name the glyph"
+  },
+  {
+   "id": "L028",
+   "verdict": "cannot_tell",
+   "side": "unclear",
+   "head_fill": null,
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 1.6 x 3.15 spaces; a vertical passes through it and extends past BOTH its top and bottom"
+  },
+  {
+   "id": "L029",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "dense fused region beside a barline"
+  },
+  {
+   "id": "L030",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "position_impossible"
+   ],
+   "reason": "a column of fused blobs with white specks, standing above its own staff"
+  },
+  {
+   "id": "L031",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "hollow",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "textbook: HOLLOW head with a clean open counter and a clean vertical at its RIGHT running up 2.5 spaces to a printed FERMATA"
+  },
+  {
+   "id": "L032",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a 1.5 x 2.6-space solid mass = head fused with something above"
+  },
+  {
+   "id": "L033",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "hollow-ish head in a dense grid; no stroke isolable"
+  },
+  {
+   "id": "L034",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a solid block filling exactly one staff space, flanked above and below by printed `f` dynamics"
+  },
+  {
+   "id": "L035",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "position_impossible"
+   ],
+   "reason": "blob above its own staff; no stroke isolable"
+  },
+  {
+   "id": "L036",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a solid rectangle 0.5 space tall hanging BELOW a staff line, with a second like it alongside: a WHOLE REST (second instance)"
+  },
+  {
+   "id": "L037",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "4.3 spaces of clean white ABOVE rules out an up-stem; below, the head is fused with a second head"
+  },
+  {
+   "id": "L038",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a 2.1 x 2.55-space fused mass hanging below the staff"
+  },
+  {
+   "id": "L039",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "an adjacent pair of heads above the staff; no stroke isolable"
+  },
+  {
+   "id": "L040",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "clear oval head; clean white above rules out an up-stem; below is the staff-line band"
+  },
+  {
+   "id": "L041",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "oval head with a slur above and a mass left; no stroke isolable"
+  },
+  {
+   "id": "L042",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "fused mass under a beam-and-stems rectangle"
+  },
+  {
+   "id": "L043",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a vertical descends ~1.0 space from the head's lower-LEFT before entering the staff band - short, but the direction is unambiguous"
+  },
+  {
+   "id": "L044",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a printed diagonal BEAM stands above, but no vertical reaches the head from it"
+  },
+  {
+   "id": "L045",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "a 1.75 x 2.65-space fused pair"
+  },
+  {
+   "id": "L046",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "head above the staff, a LEDGER-LINE stack below it, and a vertical at its LEFT descending to the staff's top line"
+  },
+  {
+   "id": "L047",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.5 x 1.05 spaces ON a full-height vertical crossing all five staff lines: a barline"
+  },
+  {
+   "id": "L048",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "diagonal script strokes with no oval anywhere in the box: dynamic/ornament ink"
+  },
+  {
+   "id": "L049",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "script letterforms with counters, standing above the staff: dynamic text"
+  },
+  {
+   "id": "L050",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid mass fused with the staff lines"
+  },
+  {
+   "id": "L051",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "a 1.9 x 1.9-space fused mass beside a barline"
+  },
+  {
+   "id": "L052",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "fused mass; the word `cresc.` is printed below"
+  },
+  {
+   "id": "L053",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "clear oval head; 3 spaces of clean white BELOW rule out a down-stem; above is the staff grid"
+  },
+  {
+   "id": "L054",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 2.55 x 2.65 spaces of fused ink"
+  },
+  {
+   "id": "L055",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a long clean vertical descends ~4 spaces at the head's LEFT, crossing the white gaps between staff lines"
+  },
+  {
+   "id": "L056",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a long clean vertical descends ~4 spaces at the head's LEFT"
+  },
+  {
+   "id": "L057",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "fused mass among accidentals and `cresc.` text"
+  },
+  {
+   "id": "L058",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "head above the staff; the stack of horizontal bars below it is LEDGER LINES, and a vertical at the head's LEFT descends past them to the staff"
+  },
+  {
+   "id": "L059",
+   "verdict": "cannot_tell",
+   "side": "unclear",
+   "head_fill": null,
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "the box holds fused ledger lines and the stem, NOT the head - the head stands above the box"
+  },
+  {
+   "id": "L060",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.4 x 1.35 spaces on a full-height vertical rule"
+  },
+  {
+   "id": "L061",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "clear oval head at the staff's bottom line; clean white below; fused with a neighbour above-left"
+  },
+  {
+   "id": "L062",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "clear oval head; clean white below; staff grid above"
+  },
+  {
+   "id": "L063",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 1.0 x 0.4 spaces - a horizontal SLIVER of a head, not the head; a `p cresc.` is printed above"
+  },
+  {
+   "id": "L064",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid mass fused with the staff lines"
+  },
+  {
+   "id": "L065",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "clear oval head; clean white below; barline right"
+  },
+  {
+   "id": "L066",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "a 1.35 x 1.95-space fused mass with white specks"
+  },
+  {
+   "id": "L067",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [],
+   "reason": "two full-height vertical rules with a round dot beside them: a repeat barline (second instance)"
+  },
+  {
+   "id": "L068",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "HOLLOW head; the only stroke at its left is a DIAGONAL, which a stem cannot be"
+  },
+  {
+   "id": "L069",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block filling one space in a dense grid"
+  },
+  {
+   "id": "L070",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block fused with the staff lines"
+  },
+  {
+   "id": "L071",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.55 x 1.4 spaces on a vertical stroke"
+  },
+  {
+   "id": "L072",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "hollow form with two counters; a diagonal beam below-right"
+  },
+  {
+   "id": "L073",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "abuts_barline"
+   ],
+   "reason": "the only vertical at the head's right runs the FULL tile height and is ~0.5 space wide: a barline the head abuts, not its stem"
+  },
+  {
+   "id": "L074",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "the vertical above belongs to the head ABOVE - it is that head's down-stem on its LEFT and stops ~1 space clear of this head"
+  },
+  {
+   "id": "L075",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "two fused heads; no stroke isolable"
+  },
+  {
+   "id": "L076",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block fused with the staff lines"
+  },
+  {
+   "id": "L077",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "2.8 spaces of clean white above rules out an up-stem; below, the head is fused with more ink"
+  },
+  {
+   "id": "L078",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 1.6 x 2.65 spaces of fused ink"
+  },
+  {
+   "id": "L079",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "head above the staff, ledger stack, and a clear vertical at its LEFT descending ~3.5 spaces; two sibling heads show the same"
+  },
+  {
+   "id": "L080",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "two adjacent heads; clean white below; `sf` printed left"
+  },
+  {
+   "id": "L081",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "clear oval head; clean white above; barline left"
+  },
+  {
+   "id": "L082",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: a diagonal chain of FOUR fused hollow heads; the box covers two of them. A vertical stands at the chain's top-right running up, but it cannot be assigned to the boxed heads"
+  },
+  {
+   "id": "L083",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "hollow form beside a barline; no stroke isolable"
+  },
+  {
+   "id": "L084",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block in a dense grid"
+  },
+  {
+   "id": "L085",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block fused with the staff lines"
+  },
+  {
+   "id": "L086",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.45 x 0.75 spaces on a full-height vertical rule: a barline"
+  },
+  {
+   "id": "L087",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "diagonal script strokes; printed `ff` letterforms above"
+  },
+  {
+   "id": "L088",
+   "verdict": "no_stem_printed",
+   "side": null,
+   "head_fill": "hollow",
+   "stroke": "none_visible",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: TWO hollow heads a third apart, both counters clearly open, no stroke at either side; a second identical pair stands 2 spaces below: reads as WHOLE-NOTE chords"
+  },
+  {
+   "id": "L089",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "solid block fused with the staff lines"
+  },
+  {
+   "id": "L090",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "a vertical descends ~2.8 spaces below a ledger stack; the box is 1.9 spaces wide = a fused pair, so the stroke sits at the RIGHT head's left"
+  },
+  {
+   "id": "L091",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a vertical runs from the head down 4+ spaces; it is NOT a barline because there is ~1.2 spaces of clean white above the head"
+  },
+  {
+   "id": "L092",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 2.1 spaces tall = head fused with the stem's top; a thin vertical continues ~2.8 spaces below at the LEFT"
+  },
+  {
+   "id": "L093",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "ZOOM: a vertical joins the head's upper-RIGHT and runs up through the staff grid; less crisp than L095/L104 but the same shape"
+  },
+  {
+   "id": "L094",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a fused column below the head, too wide (1.6 spaces) to be a stem"
+  },
+  {
+   "id": "L095",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "ZOOM: a broad vertical at the head's RIGHT runs up ~4 spaces and stops at the head. The inverted-U structure 2 spaces BELOW is unattached - it is what made this look like a right-and-down stem before the zoom"
+  },
+  {
+   "id": "L096",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "a 1.5 x 2.1-space mass; a thin vertical above stops ~0.9 space clear of it"
+  },
+  {
+   "id": "L097",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "fused mass among accidentals and `cresc.` text"
+  },
+  {
+   "id": "L098",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "solid block filling one space; fused glyphs below"
+  },
+  {
+   "id": "L099",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "clear oval head after a flat; ~0.5 space of ink below is not enough to call"
+  },
+  {
+   "id": "L100",
+   "verdict": "stem_printed_down",
+   "side": "left",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "moderate",
+   "flags": [],
+   "reason": "a block fused with two staff lines, with a vertical descending ~2.9 spaces at its LEFT; the instrument label `Basso` is printed above"
+  },
+  {
+   "id": "L101",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "high",
+   "flags": [],
+   "reason": "a 1.65 x 1.55-space fused mass in a dense grid"
+  },
+  {
+   "id": "L102",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "up_excluded"
+   ],
+   "reason": "head on the staff's top line with 4+ spaces of clean white above; box 1.45 x 0.7 spaces"
+  },
+  {
+   "id": "L103",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": null,
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.95 x 0.5 spaces, abutting an `sf` script glyph whose ascender reaches the same height"
+  },
+  {
+   "id": "L104",
+   "verdict": "stem_printed_up",
+   "side": "right",
+   "head_fill": "filled",
+   "stroke": "seen",
+   "confidence": "high",
+   "flags": [],
+   "reason": "ZOOM: a broad vertical at the head's RIGHT runs up ~4 spaces; the inverted-U below is unattached"
+  },
+  {
+   "id": "L105",
+   "verdict": "cannot_tell",
+   "side": null,
+   "head_fill": "filled",
+   "stroke": "unclear",
+   "confidence": "moderate",
+   "flags": [
+    "down_excluded"
+   ],
+   "reason": "adjacent pair of heads; clean white below; barline right"
+  },
+  {
+   "id": "L106",
+   "verdict": "not_a_notehead",
+   "side": null,
+   "head_fill": null,
+   "stroke": "none_visible",
+   "confidence": "high",
+   "flags": [
+    "box_odd"
+   ],
+   "reason": "box 0.77 x 1.2 spaces containing almost NO INK - a white gap beside a vertical rule"
+  }
+ ]
+}

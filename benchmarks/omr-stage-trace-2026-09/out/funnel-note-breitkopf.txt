@@ -1,0 +1,32 @@
+FAMILY note   deciding quantity pitch  (a consequence or gather only — no adjudicator owns this quantity)
+POPULATION (its own ink): 3337   via {'detector_class': 3337}
+INK      Q.INK rows 0 over 0 cells; the population occupies 643 cells, 0 of which carry ink rows
+         ⚠️ this record predates OMR_INK, so the ink layer is ABSENT and cannot witness anything here
+
+         rows = every verdict row this stage wrote (what it DID); STAND = subjects whose FINAL answer it owns.
+stage        quantity                   rows    dec   narr   abst  STAND  directions
+EVALUATE     accidental                  671    671      0      0    671  {'first_answer': 671}
+   reasons: [('decided/from_key_signature', 671)]
+ADJUDICATE   duration                   3337   2795    542      0   3304  {'first_answer': 3337}
+   reasons: [('decided/head_and_marks', 2795), ('narrowed/beams_ambiguous', 542)]
+EVALUATE     duration                     33     33      0      0     33  {'changed_the_value': 28, 'collapsed_a_narrowing': 5}
+   reasons: [('decided/meter_reconciliation', 33)]
+ADJUDICATE   glyph_owner                 617    617      0      0    617  {'first_answer': 617}
+   reasons: [('decided/distance', 338), ('decided/ladder', 244), ('decided/range_veto', 35)]
+ADJUDICATE   notehead_is_a_whole_rest   3337   3337      0      0   3337  {'first_answer': 3337}
+   reasons: [('decided/not_rest_shaped', 3227), ('decided/not_where_a_whole_rest_can_hang', 98), ('decided/shape_and_position_agree', 12)]
+EVALUATE     pitch                      3644   3644      0      0   3337  {'first_answer': 3337, 'changed_the_value': 305, 'restated_same_value': 2}
+   reasons: [('decided/position_and_clef', 3337), ('decided/reowned', 307)]
+ADJUDICATE   stem_direction             3337   1791      0   1546   3337  {'first_answer': 3337}
+   reasons: [('decided/stem_projection', 1791), ('abstained/no_stem', 1529), ('abstained/stems_disagree', 17)]
+
+EXPORT   read_from_the_exporter
+         written   {'notes': 2513}
+         refused (NOTES AND RESTS together for three of these reasons — see the docstring):
+             duration_narrowed                  537
+             owned_by_another_staff             293
+             written_value_fits_no_note         30
+             ink_is_a_whole_rest                12
+             rest_duration_abstained            4
+         balance (the EXPORTER's own equality, which it raises on): balanced=True
+             events_in_log 4365 = written 3489 + not_written 876

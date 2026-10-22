@@ -1,0 +1,34 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "groups": {
+  "DECIDED": {
+   "n": 1787,
+   "attached": 0.9396,
+   "one_way": 0.8204,
+   "stem_shaped": 0.7599,
+   "median_share": 0.941
+  },
+  "no_stem": {
+   "n": 1424,
+   "attached": 0.9094,
+   "one_way": 0.4565,
+   "stem_shaped": 0.3659,
+   "median_share": 0.744
+  },
+  "stems_disagree": {
+   "n": 17,
+   "attached": 0.8824,
+   "one_way": 0.6471,
+   "stem_shaped": 0.5294,
+   "median_share": 0.931
+  }
+ },
+ "no_stem_by_class": {
+  "noteheadBlackInSpace": 887,
+  "noteheadBlackOnLine": 518,
+  "noteheadWholeInSpace": 67,
+  "noteheadHalfInSpace": 24,
+  "noteheadHalfOnLine": 13,
+  "noteheadWholeOnLine": 20
+ }
+}

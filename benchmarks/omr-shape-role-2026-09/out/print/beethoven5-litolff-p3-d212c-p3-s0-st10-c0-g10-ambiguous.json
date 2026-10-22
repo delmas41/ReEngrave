@@ -1,0 +1,42 @@
+{
+ "png": "beethoven5-litolff-p3-d212c-p3-s0-st10-c0-g10-ambiguous.png",
+ "subject": "glyph/3/0/10/0/10",
+ "bucket": "ambiguous",
+ "detector_role": "staccato",
+ "detector_class": "articStaccatoBelow",
+ "dot_role_verdict": {
+  "outcome": "abstained",
+  "value": null,
+  "reason": "dot_role_ambiguous",
+  "detail": {
+   "detector_role": "staccato",
+   "detector_class": "articStaccatoBelow"
+  }
+ },
+ "caption": "beethoven5-litolff-p3-d212c page 3, system 0, staff 10, bar-cell 0 -- the detector called this box `articStaccatoBelow`. `adjudicate_dot_role` reads it as ABSTAINED: dot_role_ambiguous (ambiguous). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 108.63
+ },
+ "mark_page_px": [
+  548.2225000000001,
+  2046.6175,
+  551.215,
+  2049.61
+ ],
+ "owner_page_px": null,
+ "staff_lines_page_px": [
+  1957,
+  1973,
+  1989,
+  2004,
+  2020
+ ],
+ "crop_page_px": [
+  453.7225000000001,
+  1862.5,
+  645.715,
+  2144.11
+ ],
+ "VERDICT_none_yet": null
+}

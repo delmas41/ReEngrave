@@ -1,0 +1,114 @@
+[
+ {
+  "tag": "D01",
+  "file": "D01-tie-cluster.png",
+  "members": [
+   "glyph/3/0/4/3/8",
+   "glyph/3/0/4/3/11"
+  ],
+  "paired_info": [
+   "no_stop_head",
+   "no_stop_head"
+  ]
+ },
+ {
+  "tag": "D02",
+  "file": "D02-tie-cluster.png",
+  "members": [
+   "glyph/3/0/1/11/1"
+  ],
+  "paired_info": [
+   "no_start_head"
+  ]
+ },
+ {
+  "tag": "D03",
+  "file": "D03-tie-cluster.png",
+  "members": [
+   "glyph/3/0/5/6/1"
+  ],
+  "paired_info": [
+   "more_than_one_pair"
+  ]
+ },
+ {
+  "tag": "D04",
+  "file": "D04-tie-cluster.png",
+  "members": [
+   "glyph/3/1/3/4/3"
+  ],
+  "paired_info": [
+   "no_head_near_the_arc"
+  ]
+ },
+ {
+  "tag": "D05",
+  "file": "D05-tie-cluster.png",
+  "members": [
+   "glyph/3/0/0/5/2"
+  ],
+  "paired_info": [
+   "paired"
+  ]
+ },
+ {
+  "tag": "D06",
+  "file": "D06-tie-cluster.png",
+  "members": [
+   "glyph/3/0/1/1/4",
+   "glyph/3/0/1/1/5",
+   "glyph/3/0/1/1/6",
+   "glyph/3/0/1/1/8",
+   "glyph/3/0/1/1/10"
+  ],
+  "paired_info": [
+   "spans_a_whole_bar",
+   "more_than_one_pair",
+   "more_than_one_pair",
+   "spans_a_whole_bar",
+   "more_than_one_pair"
+  ]
+ },
+ {
+  "tag": "D07",
+  "file": "D07-tie-cluster.png",
+  "members": [
+   "glyph/3/1/1/14/1",
+   "glyph/3/1/2/14/5"
+  ],
+  "paired_info": [
+   "no_head_near_the_arc",
+   "no_pair_at_one_position"
+  ]
+ },
+ {
+  "tag": "D08",
+  "file": "D08-tie-cluster.png",
+  "members": [
+   "glyph/3/0/1/4/5"
+  ],
+  "paired_info": [
+   "no_head_near_the_arc"
+  ]
+ },
+ {
+  "tag": "D09",
+  "file": "D09-tie-cluster.png",
+  "members": [
+   "glyph/3/0/4/13/5"
+  ],
+  "paired_info": [
+   "no_stop_head"
+  ]
+ },
+ {
+  "tag": "D10",
+  "file": "D10-tie-cluster.png",
+  "members": [
+   "glyph/3/1/2/13/5"
+  ],
+  "paired_info": [
+   "no_pair_at_one_position"
+  ]
+ }
+]

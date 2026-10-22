@@ -1,0 +1,7 @@
+work                    pages  spans   reach
+beet5-984073               88      2   _align_by_span RUNS
+                                       [(0, 43), (44, 87)]
+brahms1-317803             86      2   _align_by_span RUNS
+                                       [(0, 44), (45, 85)]
+dvorak9-405834             80      1   one span -> _align_by_span never runs; flag unreachable
+mozart41-73                56      1   one span -> _align_by_span never runs; flag unreachable

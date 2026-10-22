@@ -1,0 +1,852 @@
+{
+  "version_name": "v6-2026-07-13-clef-diverse",
+  "created_utc": "2026-07-13T08:30:42+00:00",
+  "labeler": "sean",
+  "description": "Cross-score clef diversity: 47 clefs (10 alto, 10 tenor, 14 bass, 13 treble)",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-clef-diverse/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-clef-diverse/detections",
+    "manifest": "benchmarks/omr-labeling-clef-diverse/cells.json",
+    "weights_for_class_names": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 47,
+    "n_v1_cells": 0,
+    "n_v2_cells": 47,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 572,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "accidentalFlat",
+    "accidentalNatural",
+    "articAccentAbove",
+    "articAccentBelow",
+    "articStaccatoAbove",
+    "articStaccatoBelow",
+    "articTenutoAbove",
+    "augmentationDot",
+    "clefCAlto",
+    "clefCTenor",
+    "clefF",
+    "clefG",
+    "dynamicDiminuendoHairpin",
+    "dynamicF",
+    "dynamicLetterF",
+    "dynamicLetterP",
+    "dynamicLetterS",
+    "flag8thDown",
+    "flag8thUp",
+    "keyFlat",
+    "keySharp",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeOnLine",
+    "repeatRight",
+    "rest8th",
+    "restQuarter",
+    "restWhole",
+    "slur",
+    "tie",
+    "tremolo2",
+    "tremolo3"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "beet5-p36-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "dynamicF",
+        "dynamicLetterP",
+        "dynamicLetterS",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "restQuarter",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 26,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "augmentationDot",
+        "clefF",
+        "dynamicF",
+        "dynamicLetterP",
+        "dynamicLetterS",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "restQuarter",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys0-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 9,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "dynamicLetterP",
+        "noteheadBlackInSpace",
+        "restQuarter",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "clefG",
+        "dynamicF",
+        "dynamicLetterP",
+        "dynamicLetterS",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "restQuarter",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys0-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 26,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalNatural",
+        "augmentationDot",
+        "clefCAlto",
+        "dynamicLetterF",
+        "dynamicLetterP",
+        "dynamicLetterS",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s11-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s13-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s14-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCTenor",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s19-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 5,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "keyFlat",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "beet5-p36-sys1-s20-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCTenor",
+        "dynamicDiminuendoHairpin",
+        "dynamicF",
+        "dynamicLetterP",
+        "keyFlat",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys1-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCTenor",
+        "noteheadBlackInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys1-s11-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys1-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCTenor",
+        "clefF",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys1-s8-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 10,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys1-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "beet5-p56-sys2-s14-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 30,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoAbove",
+        "augmentationDot",
+        "clefCAlto",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "repeatRight",
+        "restQuarter",
+        "tremolo2"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s0-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 18,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoAbove",
+        "articTenutoAbove",
+        "clefG",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 26,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoAbove",
+        "articTenutoAbove",
+        "clefG",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s12-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 12,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articTenutoAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s13-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 17,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articAccentAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s14-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentBelow",
+        "clefF",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s3-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 20,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articStaccatoAbove",
+        "articTenutoAbove",
+        "clefG",
+        "flag8thDown",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "slur",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentBelow",
+        "clefG",
+        "flag8thUp",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys0-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "flag8thDown",
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys1-s22-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articTenutoAbove",
+        "clefCAlto",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys1-s23-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articTenutoAbove",
+        "clefCAlto",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys1-s24-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 14,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articTenutoAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys1-s25-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 14,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articTenutoAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p31-sys1-s26-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 13,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentAbove",
+        "clefF",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys0-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articAccentAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys0-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentAbove",
+        "clefCTenor",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys0-s18-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys0-s6-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 15,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "articAccentBelow",
+        "clefG",
+        "flag8thUp",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "rest8th"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys1-s25-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 22,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefCAlto",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "bolero-p38-sys1-s26-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 20,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefCAlto",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "lamer-p26-sys2-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefF",
+        "noteheadWholeOnLine",
+        "tremolo3"
+      ]
+    },
+    {
+      "cell_id": "lamer-p26-sys2-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "clefF",
+        "keyFlat",
+        "noteheadWholeOnLine",
+        "tie"
+      ]
+    },
+    {
+      "cell_id": "lamer-p26-sys3-s12-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 18,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "articStaccatoBelow",
+        "flag8thUp",
+        "keyFlat",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "slur"
+      ]
+    },
+    {
+      "cell_id": "lamer-p26-sys6-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 16,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "accidentalFlat",
+        "augmentationDot",
+        "clefG",
+        "keyFlat",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "restQuarter"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys0-s2-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 6,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys0-s7-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys1-s10-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys1-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "keySharp",
+        "restWhole"
+      ]
+    },
+    {
+      "cell_id": "mahler-p121-sys1-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 7,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefCAlto",
+        "keySharp",
+        "noteheadBlackOnLine",
+        "restQuarter",
+        "tie"
+      ]
+    }
+  ]
+}

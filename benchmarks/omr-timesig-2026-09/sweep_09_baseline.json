@@ -1,0 +1,959 @@
+{
+  "add_meters": "",
+  "min_score": null,
+  "totals": {
+    "wrong": 3,
+    "correct": 2,
+    "missed": 2,
+    "correct_silences": 19
+  },
+  "cases": [
+    {
+      "case": "mozart40-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 11,
+            "voters": 11,
+            "median_score": 0.5789
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.57
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.583
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.599
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.545
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.551
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.608
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.584
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.579
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.593
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.565
+            },
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.578
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.9
+    },
+    {
+      "case": "mozart40-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.503
+            },
+            null,
+            null,
+            {
+              "staff": 14,
+              "raw": "C",
+              "score": 0.569
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 2.8
+    },
+    {
+      "case": "brahms4-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 13,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 13,
+            "voters": 13,
+            "median_score": 0.5649
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.594
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.564
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.583
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.553
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.578
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.559
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.565
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.549
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.564
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.573
+            },
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.556
+            },
+            {
+              "staff": 11,
+              "raw": "C",
+              "score": 0.569
+            },
+            {
+              "staff": 12,
+              "raw": "C",
+              "score": 0.566
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 4,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 2,
+          "n_staves": 5,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.3
+    },
+    {
+      "case": "brahms4-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 11,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.1
+    },
+    {
+      "case": "bruckner5-p1",
+      "expected": [
+        "C|"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 19,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.3
+    },
+    {
+      "case": "mozart41-p1",
+      "expected": [
+        "C"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": {
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "C",
+            "source": "header_reader",
+            "votes": 10,
+            "voters": 10,
+            "median_score": 0.7977
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "C",
+              "score": 0.817
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.821
+            },
+            {
+              "staff": 2,
+              "raw": "C",
+              "score": 0.792
+            },
+            {
+              "staff": 3,
+              "raw": "C",
+              "score": 0.781
+            },
+            {
+              "staff": 4,
+              "raw": "C",
+              "score": 0.819
+            },
+            {
+              "staff": 5,
+              "raw": "C",
+              "score": 0.795
+            },
+            {
+              "staff": 6,
+              "raw": "C",
+              "score": 0.82
+            },
+            {
+              "staff": 7,
+              "raw": "C",
+              "score": 0.768
+            },
+            {
+              "staff": 8,
+              "raw": "C",
+              "score": 0.791
+            },
+            {
+              "staff": 9,
+              "raw": "C",
+              "score": 0.798
+            }
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.3
+    },
+    {
+      "case": "mozart41-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.6
+    },
+    {
+      "case": "beet3-p1",
+      "expected": [
+        "3/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 12,
+          "meter": {
+            "numerator": 6,
+            "denominator": 4,
+            "raw": "6/4",
+            "source": "header_reader",
+            "votes": 6,
+            "voters": 12,
+            "median_score": 0.5713
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/4",
+              "score": 0.553
+            },
+            {
+              "staff": 1,
+              "raw": "C",
+              "score": 0.506
+            },
+            {
+              "staff": 2,
+              "raw": "6/4",
+              "score": 0.571
+            },
+            {
+              "staff": 3,
+              "raw": "6/4",
+              "score": 0.561
+            },
+            {
+              "staff": 4,
+              "raw": "3/4",
+              "score": 0.613
+            },
+            {
+              "staff": 5,
+              "raw": "6/4",
+              "score": 0.623
+            },
+            {
+              "staff": 6,
+              "raw": "6/4",
+              "score": 0.546
+            },
+            {
+              "staff": 7,
+              "raw": "3/4",
+              "score": 0.623
+            },
+            {
+              "staff": 8,
+              "raw": "3/4",
+              "score": 0.62
+            },
+            null,
+            {
+              "staff": 10,
+              "raw": "9/4",
+              "score": 0.598
+            },
+            {
+              "staff": 11,
+              "raw": "6/4",
+              "score": 0.575
+            }
+          ]
+        }
+      ],
+      "seconds": 3.6
+    },
+    {
+      "case": "beet3-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 10,
+          "meter": null,
+          "per_staff": [
+            {
+              "staff": 10,
+              "raw": "C",
+              "score": 0.51
+            },
+            null,
+            {
+              "staff": 12,
+              "raw": "C",
+              "score": 0.504
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.2
+    },
+    {
+      "case": "brahms3-p1",
+      "expected": [
+        "6/4"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 16,
+          "meter": {
+            "numerator": 6,
+            "denominator": 4,
+            "raw": "6/4",
+            "source": "header_reader",
+            "votes": 16,
+            "voters": 16,
+            "median_score": 0.7079
+          },
+          "per_staff": [
+            {
+              "staff": 0,
+              "raw": "6/4",
+              "score": 0.68
+            },
+            {
+              "staff": 1,
+              "raw": "6/4",
+              "score": 0.728
+            },
+            {
+              "staff": 2,
+              "raw": "6/4",
+              "score": 0.643
+            },
+            {
+              "staff": 3,
+              "raw": "6/4",
+              "score": 0.708
+            },
+            {
+              "staff": 4,
+              "raw": "6/4",
+              "score": 0.721
+            },
+            {
+              "staff": 5,
+              "raw": "6/4",
+              "score": 0.729
+            },
+            {
+              "staff": 6,
+              "raw": "6/4",
+              "score": 0.655
+            },
+            {
+              "staff": 7,
+              "raw": "6/4",
+              "score": 0.692
+            },
+            {
+              "staff": 8,
+              "raw": "6/4",
+              "score": 0.686
+            },
+            {
+              "staff": 9,
+              "raw": "6/4",
+              "score": 0.681
+            },
+            {
+              "staff": 10,
+              "raw": "6/4",
+              "score": 0.747
+            },
+            {
+              "staff": 11,
+              "raw": "6/4",
+              "score": 0.751
+            },
+            {
+              "staff": 12,
+              "raw": "6/4",
+              "score": 0.693
+            },
+            {
+              "staff": 13,
+              "raw": "6/4",
+              "score": 0.774
+            },
+            {
+              "staff": 14,
+              "raw": "6/4",
+              "score": 0.696
+            },
+            {
+              "staff": 15,
+              "raw": "6/4",
+              "score": 0.712
+            }
+          ]
+        }
+      ],
+      "seconds": 3.4
+    },
+    {
+      "case": "brahms3-p2",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 13,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 13,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.7
+    },
+    {
+      "case": "dvorak9-p5",
+      "expected": [
+        "4/8"
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 15,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.6
+    },
+    {
+      "case": "dvorak9-p6",
+      "expected": [
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 15,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 4.9
+    },
+    {
+      "case": "tchaikovsky4-p4",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 16,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.4
+    },
+    {
+      "case": "mahler5-scan-p5",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 21,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "staff": 17,
+              "raw": "7/4",
+              "score": 0.504
+            },
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.6
+    },
+    {
+      "case": "mahler5-scan-p6",
+      "expected": [
+        null,
+        null
+      ],
+      "systems": [
+        {
+          "system": 0,
+          "n_staves": 14,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "system": 1,
+          "n_staves": 7,
+          "meter": null,
+          "per_staff": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "seconds": 3.5
+    }
+  ]
+}

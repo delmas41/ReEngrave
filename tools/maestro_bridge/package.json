@@ -1,0 +1,19 @@
+{
+  "name": "maestro_bridge",
+  "private": true,
+  "version": "0.0.0",
+  "description": "ReEngrave bridge to gradus-vercel/lib/maestroAnalyst. Personal-use only.",
+  "type": "module",
+  "scripts": {
+    "analyze": "tsx analyze.ts"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.5.9",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.19.0",
+    "typescript": "^5"
+  }
+}

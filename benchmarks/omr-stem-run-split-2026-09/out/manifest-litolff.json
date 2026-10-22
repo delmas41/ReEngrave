@@ -1,0 +1,89 @@
+{
+ "label": "litolff",
+ "seed": 0,
+ "question": "is this ONE stem or TWO fused stems?",
+ "verdicts_allowed": [
+  "one_stem",
+  "two_stems",
+  "cannot_tell",
+  "other_ink"
+ ],
+ "dpi": 600,
+ "pad_y_spaces": 6.0,
+ "px_per_space": 100.0,
+ "resample": "NEAREST",
+ "written": 10,
+ "refused": [],
+ "tiles": [
+  {
+   "id": "bed8173294",
+   "subject": "glyph/3/0/10/4/1",
+   "stem": "obs:022913",
+   "stratum": "both_ends",
+   "frame_delta": 92.3
+  },
+  {
+   "id": "f0ea54892e",
+   "subject": "glyph/4/1/2/13/8",
+   "stem": "obs:036429",
+   "stratum": "both_ends",
+   "frame_delta": 144.2
+  },
+  {
+   "id": "585583eb7b",
+   "subject": "glyph/4/0/7/11/10",
+   "stem": "obs:036054",
+   "stratum": "both_ends",
+   "frame_delta": 47.9
+  },
+  {
+   "id": "30df0cc069",
+   "subject": "glyph/3/0/9/1/3",
+   "stem": "obs:022865",
+   "stratum": "both_ends",
+   "frame_delta": 86.7
+  },
+  {
+   "id": "446c143806",
+   "subject": "glyph/3/1/2/14/3",
+   "stem": "obs:023062",
+   "stratum": "both_ends",
+   "frame_delta": 54.0
+  },
+  {
+   "id": "44447fb26d",
+   "subject": "glyph/3/0/2/4/9",
+   "stem": "obs:022559",
+   "stratum": "both_ends",
+   "frame_delta": 208.5
+  },
+  {
+   "id": "b313bfeef6",
+   "subject": "glyph/4/1/1/14/0",
+   "stem": "obs:036366",
+   "stratum": "both_ends",
+   "frame_delta": 169.3
+  },
+  {
+   "id": "ce98b7d5b7",
+   "subject": "glyph/4/1/3/14/13",
+   "stem": "obs:036510",
+   "stratum": "both_ends",
+   "frame_delta": 192.7
+  },
+  {
+   "id": "6e254565f8",
+   "subject": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "both_ends",
+   "frame_delta": 192.7
+  },
+  {
+   "id": "9b597979d2",
+   "subject": "glyph/1/0/9/0/6",
+   "stem": "obs:003254",
+   "stratum": "both_ends",
+   "frame_delta": 185.9
+  }
+ ]
+}

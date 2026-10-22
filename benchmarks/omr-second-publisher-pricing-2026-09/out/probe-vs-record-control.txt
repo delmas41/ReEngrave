@@ -1,0 +1,11 @@
+record verdicts for notehead_is_a_whole_rest: 3337
+outcomes Counter({'decided': 3337})
+reasons  Counter({'not_rest_shaped': 3227, 'not_where_a_whole_rest_can_hang': 98, 'shape_and_position_agree': 12})
+TRUE: 12
+witness Counter({'neighbouring_bar': 11, 'slot': 1})
+
+MY PROBE fires   : 12
+RECORD fires     : 12
+agree            : 12
+probe-only       : []
+record-only      : []

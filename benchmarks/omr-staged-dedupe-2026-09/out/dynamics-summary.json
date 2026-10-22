@@ -1,0 +1,32 @@
+{
+ "control": {
+  "agree": 1148,
+  "total": 1148
+ },
+ "base": {
+  "ffff": 11,
+  "ff": 47,
+  "f": 63,
+  "pp": 17,
+  "p": 15,
+  "fff": 10,
+  "ppp": 1,
+  "sf": 9,
+  "mf": 1
+ },
+ "fix": {
+  "ff": 39,
+  "fff": 8,
+  "f": 77,
+  "sf": 34,
+  "p": 31,
+  "ffff": 2,
+  "pp": 2,
+  "fp": 1,
+  "mf": 1
+ },
+ "letters_dropped_as_duplicate": {
+  "base": 0,
+  "fix": 155
+ }
+}

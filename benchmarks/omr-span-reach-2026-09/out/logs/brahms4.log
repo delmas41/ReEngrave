@@ -1,0 +1,9 @@
+pdf=brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf pages=99 dpi=600 veto=report cache=benchmarks/omr-span-reach-2026-09/out/brahms4/cache600
+read 99 pages in 2400s (99 read, 0 cached)
+[spans-off] available=True reason=None in 5s reference=16 slots vetoes=0
+  wrote benchmarks/omr-span-reach-2026-09/out/brahms4/spans-off.json
+[spans-on] available=True reason=None in 5s reference=16 slots vetoes=0
+  wrote benchmarks/omr-span-reach-2026-09/out/brahms4/spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (99 pages read, 0 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-reach-2026-09/out/brahms4/spans-off.json
+  benchmarks/omr-span-reach-2026-09/out/brahms4/spans-on.json

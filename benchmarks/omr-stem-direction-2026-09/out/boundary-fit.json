@@ -1,0 +1,22 @@
+{
+ "n": 1443,
+ "at_middle_line": 0.7872,
+ "best_single": {
+  "boundary": 4.5,
+  "accuracy": 0.7949
+ },
+ "per STAFF": {
+  "groups": 49,
+  "heads": 1302,
+  "accuracy_at_fit": 0.9255,
+  "boundary_median": 4.0,
+  "share_exactly_4": 0.3469
+ },
+ "per CELL": {
+  "groups": 23,
+  "heads": 164,
+  "accuracy_at_fit": 0.8598,
+  "boundary_median": 4.0,
+  "share_exactly_4": 0.4783
+ }
+}

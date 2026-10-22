@@ -1,0 +1,6 @@
+pitch verdict       dy~0   dy~step   dy_WIDE   total
+same                  47         0         0      47
+SPELLING              11         0         0      11
+STEP_APART             0         8         0       8
+WIDE                   0         0         4       4
+TOTAL                 58         8         4      70

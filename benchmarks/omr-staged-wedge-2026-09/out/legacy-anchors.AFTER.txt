@@ -1,0 +1,13 @@
+answered: 10 of 12 cases
+between two notes: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x75.0000, box[70, 100, 10, 10])
+under one long note: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x15.0000, box[10, 100, 10, 10])
+one anchor is enough: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x15.0000, box[10, 100, 10, 10])
+no candidates at all: None
+cross-barline, two segments: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m1, x195.0000, box[190, 100, 10, 10])
+stop reach: next note just inside: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x75.0000, box[70, 100, 10, 10])
+stop reach: next note far past: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x15.0000, box[10, 100, 10, 10])
+start rule: note astride the left edge: start=(m0, x33.0000, box[28, 100, 10, 10]) stop=(m0, x33.0000, box[28, 100, 10, 10])
+window reaches the NEXT measure: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m0, x15.0000, box[10, 100, 10, 10])
+window does NOT reach two measures on: None
+hairpin entirely before the first note: start=(m0, x305.0000, box[300, 100, 10, 10]) stop=(m0, x305.0000, box[300, 100, 10, 10])
+three measures of ink: start=(m0, x15.0000, box[10, 100, 10, 10]) stop=(m2, x215.0000, box[210, 100, 10, 10])

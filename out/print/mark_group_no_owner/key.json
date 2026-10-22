@@ -1,0 +1,479 @@
+[
+ {
+  "tile": 1,
+  "work": "litolff",
+  "group": "mg/13/1/36",
+  "cause": "none_far_no_rungs",
+  "page": 13,
+  "system": 1,
+  "A": "staff 1: Flute",
+  "B": "staff 2: Oboe",
+  "note": "glyph/13/1/0/0/6",
+  "members": [
+   {
+    "subject": "glyph/13/1/0/0/6",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/13/1/1/0/7",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1680,
+   2428
+  ]
+ },
+ {
+  "tile": 2,
+  "work": "brahms",
+  "group": "mg/18/1/599",
+  "cause": "conflict_kept",
+  "page": 18,
+  "system": 1,
+  "A": "staff 14: Contrabass",
+  "B": "staff 13: Cello",
+  "note": "glyph/18/1/12/6/9",
+  "members": [
+   {
+    "subject": "glyph/18/1/12/6/9",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/18/1/13",
+      "ledger_direction",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/18/1/13/6/5",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/18/1/12",
+      "ledger_note_first",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1750,
+   3421
+  ]
+ },
+ {
+  "tile": 3,
+  "work": "litolff",
+  "group": "mg/14/0/46",
+  "cause": "ledger_over_distance",
+  "page": 14,
+  "system": 0,
+  "A": "staff 6: Trumpet (Tr.)",
+  "B": "staff 7: Timpani",
+  "note": "glyph/14/0/6/1/1",
+  "members": [
+   {
+    "subject": "glyph/14/0/5/1/1",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/14/0/5",
+      "ledger_note_first",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/14/0/6/1/1",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/14/0/6",
+      "distance",
+      false
+     ]
+    ],
+    "new_rule": [
+     "decided",
+     "staff/14/0/5",
+     "group_owner"
+    ]
+   }
+  ],
+  "size": [
+   1680,
+   2646
+  ]
+ },
+ {
+  "tile": 4,
+  "work": "brahms",
+  "group": "mg/2/1/56",
+  "cause": "none_far_no_rungs",
+  "page": 2,
+  "system": 1,
+  "A": "staff 12: Viola",
+  "B": "staff 11: Violin (2.Viol.)",
+  "note": "glyph/2/1/11/0/0",
+  "members": [
+   {
+    "subject": "glyph/2/1/10/0/5",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/2/1/11/0/0",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1744,
+   3309
+  ]
+ },
+ {
+  "tile": 5,
+  "work": "litolff",
+  "group": "mg/6/1/374",
+  "cause": "conflict_kept",
+  "page": 6,
+  "system": 1,
+  "A": "staff 4: Bassoon (Fag.)",
+  "B": "staff 3: Clarinet (Cl.)",
+  "note": "glyph/6/1/2/8/2",
+  "members": [
+   {
+    "subject": "glyph/6/1/2/8/2",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/6/1/2",
+      "ledger_owner_density",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/6/1/3/8/2",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/6/1/3",
+      "ledger_note_first",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/6/1/3/8/4",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/6/1/3",
+      "ledger_note_first",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1680,
+   2723
+  ]
+ },
+ {
+  "tile": 6,
+  "work": "brahms",
+  "group": "mg/21/0/223",
+  "cause": "none_tied",
+  "page": 21,
+  "system": 0,
+  "A": "staff 4: Bassoon (Fag.)",
+  "B": "staff 5: Horn ((C) Hr.)",
+  "note": "glyph/21/0/3/3/23",
+  "members": [
+   {
+    "subject": "glyph/21/0/3/3/23",
+    "cls": "noteheadHalfInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "tied",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/21/0/4/3/24",
+    "cls": "noteheadHalfInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "tied",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1750,
+   3234
+  ]
+ },
+ {
+  "tile": 7,
+  "work": "litolff",
+  "group": "mg/4/1/178",
+  "cause": "ledger_over_distance",
+  "page": 4,
+  "system": 1,
+  "A": "staff 3: Clarinet (Cl.)",
+  "B": "staff 2: Oboe",
+  "note": "glyph/4/1/2/4/3",
+  "members": [
+   {
+    "subject": "glyph/4/1/1/4/3",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/4/1/1",
+      "ledger_note_first",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/4/1/2/4/3",
+    "cls": "noteheadBlackInSpace",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/4/1/2",
+      "distance",
+      false
+     ]
+    ],
+    "new_rule": [
+     "decided",
+     "staff/4/1/1",
+     "group_owner"
+    ]
+   }
+  ],
+  "size": [
+   1680,
+   2399
+  ]
+ },
+ {
+  "tile": 8,
+  "work": "litolff",
+  "group": "mg/16/0/415",
+  "cause": "uncontested_one_staff",
+  "page": 16,
+  "system": 0,
+  "A": "staff 3: Clarinet (Cl.)",
+  "B": "staff 4: \"Fug.\"",
+  "note": "glyph/16/0/3/16/2",
+  "members": [
+   {
+    "subject": "glyph/16/0/3/16/2",
+    "cls": "noteheadHalfInSpace",
+    "refused": false,
+    "saved": [],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/16/0/3/16/3",
+    "cls": "noteheadHalfOnLine",
+    "refused": false,
+    "saved": [],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1680,
+   2513
+  ]
+ },
+ {
+  "tile": 9,
+  "work": "brahms",
+  "group": "mg/5/1/35",
+  "cause": "conflict_kept",
+  "page": 5,
+  "system": 1,
+  "A": "staff 13: Cello",
+  "B": "staff 14: Contrabass",
+  "note": "glyph/5/1/13/0/8",
+  "members": [
+   {
+    "subject": "glyph/5/1/12/0/10",
+    "cls": "noteheadBlackOnLine",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/5/1/12",
+      "ladder",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/5/1/13/0/8",
+    "cls": "noteheadBlackOnLine",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "decided",
+      "staff/5/1/13",
+      "ledger_direction",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1744,
+   3414
+  ]
+ },
+ {
+  "tile": 10,
+  "work": "litolff",
+  "group": "mg/4/1/181",
+  "cause": "none_far_no_rungs",
+  "page": 4,
+  "system": 1,
+  "A": "staff 3: Clarinet (Cl.)",
+  "B": "staff 2: Oboe",
+  "note": "glyph/4/1/2/4/1",
+  "members": [
+   {
+    "subject": "glyph/4/1/1/4/1",
+    "cls": "noteheadBlackOnLine",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   },
+   {
+    "subject": "glyph/4/1/2/4/1",
+    "cls": "noteheadBlackOnLine",
+    "refused": false,
+    "saved": [
+     [
+      "adjudicate_glyph_owner",
+      "abstained",
+      null,
+      "far_no_rungs",
+      false
+     ]
+    ],
+    "new_rule": null
+   }
+  ],
+  "size": [
+   1680,
+   2399
+  ]
+ }
+]

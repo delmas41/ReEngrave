@@ -1,0 +1,28 @@
+tree: d2a412af848b3bc9eddbc5274690428ee3964c93 (clean)
+pdf : /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reengraved-meter-range-9814dc/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+arms: L1 C1 L2 C2 LD   pages: 1-4
+
+── L1  flags='--surya --ocr' OMR_DIRECTION_TEXT=1  05:30:58Z
+   L1: 1980 s, census exit 0
+}
+census OK: 50 margin_label observations
+── C1  flags='' OMR_DIRECTION_TEXT=1  06:04:03Z
+   C1: 1753 s, census exit 0
+}
+census OK: 0 margin_label observations
+── L2  flags='--surya --ocr' OMR_DIRECTION_TEXT=1  06:33:20Z
+   L2: 2203 s, census exit 0
+}
+census OK: 50 margin_label observations
+── C2  flags='' OMR_DIRECTION_TEXT=1  07:10:07Z
+   C2: 1872 s, census exit 0
+}
+census OK: 0 margin_label observations
+ABORT at LD: a keep-alive server is resident -- this arm would
+       measure QUEUEING. Stop it with
+       python3 -m tools.omr.staff_labels_surya --stop
+       (never pkill), once nothing else is reading.
+surya interpreter: yes
+llama.cpp backend: yes
+persistent server: yes, port 58403 (pid 10748)
+keep-alive default: off (OMR_SURYA_KEEP_ALIVE)

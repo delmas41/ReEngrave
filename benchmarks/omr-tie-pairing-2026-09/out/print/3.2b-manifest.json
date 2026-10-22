@@ -1,0 +1,294 @@
+{
+ "roadmap_item": "3.2b",
+ "cache": "benchmarks/omr-tie-pairing-2026-09/out/3.2b-litolff-p3-crops-cache.json",
+ "record_provenance": {
+  "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+    "OMR_SURYA_KEEP_ALIVE": "0"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 600,
+    "imgsz": null,
+    "ink_rows": false,
+    "no_roster": false,
+    "no_weight_routing": false,
+    "ocr": true,
+    "pages": "1-16",
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "route_weights": true,
+    "sheet": null,
+    "surya": true,
+    "weights": "auto",
+    "work_id": null
+   }
+  }
+ },
+ "dpi": 600,
+ "seed": 20260929,
+ "population": {
+  "linked": 5,
+  "contradictions": 3
+ },
+ "crops": [
+  {
+   "n": 1,
+   "file": "3.2b-tie-01.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/0",
+   "start": "glyph/3/0/0/3/7",
+   "stop": "glyph/3/0/0/4/8",
+   "pitches": [
+    "C6",
+    "C6"
+   ],
+   "arcs": [
+    "glyph/3/0/0/3/6"
+   ],
+   "start_box": [
+    1023.59,
+    412.645,
+    1048.545,
+    428.3
+   ],
+   "stop_box": [
+    1186.995,
+    412.49,
+    1208.695,
+    426.595
+   ],
+   "frame_contrast": 187.21,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "file": "3.2b-tie-02.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/3",
+   "start": "glyph/3/0/3/3/7",
+   "stop": "glyph/3/0/3/4/6",
+   "pitches": [
+    "Eb3",
+    "Eb3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/3/9"
+   ],
+   "start_box": [
+    1020.885,
+    880.9625,
+    1045.14,
+    902.225
+   ],
+   "stop_box": [
+    1189.5225,
+    877.025,
+    1213.7775,
+    900.4925000000001
+   ],
+   "frame_contrast": 150.91,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "file": "3.2b-tie-03.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/6",
+   "start": "glyph/3/0/6/6/1",
+   "stop": "glyph/3/0/6/7/0",
+   "pitches": [
+    "C3",
+    "C3"
+   ],
+   "arcs": [
+    "glyph/3/0/6/6/2"
+   ],
+   "start_box": [
+    1539.295,
+    1327.405,
+    1563.865,
+    1347.0925
+   ],
+   "stop_box": [
+    1717.145,
+    1329.1375,
+    1739.6675,
+    1347.25
+   ],
+   "frame_contrast": 185.83,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "file": "3.2b-tie-04.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/0/3",
+   "start": "glyph/3/0/3/5/2",
+   "stop": "glyph/3/0/3/6/5",
+   "pitches": [
+    "Ab3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/5/3",
+    "glyph/3/0/3/5/4",
+    "glyph/3/0/3/5/5",
+    "glyph/3/0/3/5/6",
+    "glyph/3/0/3/5/7",
+    "glyph/3/0/3/5/11"
+   ],
+   "start_box": [
+    1364.405,
+    851.825,
+    1389.4475,
+    874.3475
+   ],
+   "stop_box": [
+    1536.6175,
+    853.715,
+    1562.92,
+    875.45
+   ],
+   "frame_contrast": 150.91,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 5,
+   "file": "3.2b-tie-05.png",
+   "kind": "linked",
+   "page": 3,
+   "staff": "staff/3/1/3",
+   "start": "glyph/3/1/3/2/3",
+   "stop": "glyph/3/1/3/3/2",
+   "pitches": [
+    "G4",
+    "G4"
+   ],
+   "arcs": [
+    "glyph/3/1/3/2/1"
+   ],
+   "start_box": [
+    778.7425,
+    2855.1975,
+    804.73,
+    2876.46
+   ],
+   "stop_box": [
+    890.105,
+    2855.985,
+    916.4075,
+    2879.295
+   ],
+   "frame_contrast": 171.66,
+   "question": "is S~E ONE printed tie? (yes / it is a slur / wrong notes / not a tie at all)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 6,
+   "file": "3.2b-tie-06.png",
+   "kind": "contradiction",
+   "page": 3,
+   "staff": "staff/3/0/3",
+   "start": "glyph/3/0/3/4/4",
+   "stop": "glyph/3/0/3/5/10",
+   "pitches": [
+    "Bb3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/4/3"
+   ],
+   "start_box": [
+    1189.995,
+    854.345,
+    1209.525,
+    867.1025
+   ],
+   "stop_box": [
+    1364.2475,
+    852.14,
+    1389.4475,
+    875.45
+   ],
+   "frame_contrast": 150.91,
+   "question": "is S~E a printed tie? if yes, which pitch is misread (S / E)? if no, what is the arc?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 7,
+   "file": "3.2b-tie-07.png",
+   "kind": "contradiction",
+   "page": 3,
+   "staff": "staff/3/1/2",
+   "start": "glyph/3/1/2/10/2",
+   "stop": "glyph/3/1/2/11/1",
+   "pitches": [
+    "G3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/1/2/10/4",
+    "glyph/3/1/2/10/5"
+   ],
+   "start_box": [
+    1741.165,
+    2635.38,
+    1767.825,
+    2652.895
+   ],
+   "stop_box": [
+    1847.745,
+    2628.87,
+    1872.39,
+    2647.935
+   ],
+   "frame_contrast": 55.12,
+   "question": "is S~E a printed tie? if yes, which pitch is misread (S / E)? if no, what is the arc?",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 8,
+   "file": "3.2b-tie-08.png",
+   "kind": "contradiction",
+   "page": 3,
+   "staff": "staff/3/1/3",
+   "start": "glyph/3/1/3/1/1",
+   "stop": "glyph/3/1/3/2/4",
+   "pitches": [
+    "G4",
+    "F4"
+   ],
+   "arcs": [
+    "glyph/3/1/3/2/6"
+   ],
+   "start_box": [
+    678.5775,
+    2856.1425,
+    703.935,
+    2880.555
+   ],
+   "stop_box": [
+    779.215,
+    2865.5925,
+    803.785,
+    2881.3425
+   ],
+   "frame_contrast": 171.66,
+   "question": "is S~E a printed tie? if yes, which pitch is misread (S / E)? if no, what is the arc?",
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": []
+}
