@@ -1,0 +1,19 @@
+LANE REPORT  OMR_ONE_INK_ONE_MARK (OFF=1 ON=1), OMR_ACCIDENTAL_SHAPE (OFF=0 ON=1)  --from adjudicate
+  OMR_ONE_INK_ONE_MARK: read in staged/accidental_shape.py, staged/adjudicators/family_precision.py, staged/adjudicators/ownership.py, staged/export.py ... -> GATHER
+  OMR_ACCIDENTAL_SHAPE: read in staged/accidental_shape.py, staged/adjudicators/ownership.py, staged/gather.py -> GATHER
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5419 notes+rests OFF, 5419 ON, 5419 paired)
+  file:   notes +4 -4 | accidentals +15 -1 ~3 | pitches ~26 | blue marks +9
+  red bars 266 -> 266 | notes not written 2252 -> 2252
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 8958
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6512 notes+rests OFF, 6512 ON, 6512 paired)
+  file:   accidentals +25 -4 ~37 | ties +2 -2 | slurs +2 | pitches ~78 | blue marks +24 -2
+  red bars 166 -> 166 | notes not written 3209 -> 3209
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 12324
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 971 s

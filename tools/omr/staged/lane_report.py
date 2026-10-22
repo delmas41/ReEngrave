@@ -161,6 +161,9 @@ def load_sample(path: pathlib.Path = SAMPLE_PATH) -> Dict[str, Any]:
 # ───────────────────────────── 2. per-page slices ─────────────────────────────
 
 def slice_dir(plate: str, tag: str) -> pathlib.Path:
+    """The per-page slices of the night record `tag`; or, when `tag` is an existing DIRECTORY (2.190), that directory's `<plate>/` slices as built."""
+    if os.path.isdir(tag):
+        return pathlib.Path(tag) / plate
     return RECORDS / ("lane-report-slices-%s" % tag) / plate
 
 
@@ -169,6 +172,8 @@ def ensure_slices(plate: str, pages: Sequence[int], tag: str, log=print) -> path
     while the page list and the record file are unchanged. Never loads a record whole."""
     from .judged import iter_array
     d = slice_dir(plate, tag)
+    if os.path.isdir(tag):      # slices built by hand (2.190 build_slices): used as they stand
+        return d
     rp = record_path(plate, tag)
     st = rp.stat()
     stamp = {"pages": sorted(pages), "size": st.st_size, "mtime": int(st.st_mtime)}

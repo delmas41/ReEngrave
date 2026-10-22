@@ -17,7 +17,8 @@ staff cannot move it -- page-facts section 3 measures against the staff LOCALLY,
   * a NATURAL is two short verticals offset (left one up, right one down) joined by two slanted bars: neither the bottom left nor the top
              right of the glyph is inked (the left stem stops above the bottom, the right stem starts below the top).
   * a SHARP  is two verticals crossed by two slanted bars: BOTH the bottom left and the top right are inked.
-So two windows decide: BL (bottom-left corner) and TR (top-right corner). (TR absent, BL present)=flat, (absent, absent)=natural,
+So two windows decide: BL (bottom-left corner) and TR (top-right corner), each read as STEM STRENGTH: the best 3-column-wide vertical run of ink
+in the window, as a fraction of the window's height (a stem crossing the window reads ~1, an empty corner 0, a bar or bit of noise in between). (TR absent, BL present)=flat, (absent, absent)=natural,
 (present, present)=sharp, (TR present, BL absent)=nothing a printed accidental is (unclear). Each window's ink density has three zones:
 clear PRESENT (>= `PRESENT_MIN`), clear ABSENT (<= `ABSENT_MAX`), and the band between, where the answer is UNCLEAR and nothing is chosen.
 CUT-OFFS ARE A MEASUREMENT, NOT A CONVENTION (CLAUDE section 4): they were set by looking at crops of two plates (Litolff, Breitkopf) and Sean's 12
@@ -30,12 +31,13 @@ from typing import Any, Dict, Optional, Sequence
 
 SHAPE_ENV = "OMR_ACCIDENTAL_SHAPE"
 
-#: Window size, as a fraction of the glyph's tight ink box: the corner is the outer 30% of the width by the outer 22% of the height.
-WINDOW_W = 0.30
-WINDOW_H = 0.22
-#: Ink density (ink pixels / window area) at or above which a corner is clearly INKED, and at or below which it is clearly EMPTY.
-PRESENT_MIN = 0.42
-ABSENT_MAX = 0.14
+#: Window size, as a fraction of the glyph's tight ink box: the outer 45% of the width by the outer 20% of the height (a sharp's stems stand at
+#: about a quarter and three quarters of its width, so a narrower corner would miss them).
+WINDOW_W = 0.45
+WINDOW_H = 0.20
+#: Stem strength (see above) at or above which a corner clearly holds a stem, and at or below which it clearly does not.
+PRESENT_MIN = 0.60
+ABSENT_MAX = 0.25
 #: The smallest ink box (px) the check will read at all; below it the box is a speck and the answer is `unread`.
 MIN_SIDE_PX = 6
 #: The shape is never READ: Sean's to set on blind tiles.
@@ -72,6 +74,15 @@ def _tight(ink):
     return int(ys.min()), int(ys.max()) + 1, int(xs.min()), int(xs.max()) + 1
 
 
+def _stem_strength(win) -> float:
+    """The best vertical run: the largest column fill (ink / window height) after a 3-column moving average."""
+    import numpy as np
+    col = win.mean(axis=0)
+    if len(col) >= 3:
+        col = np.convolve(col, np.ones(3) / 3.0, mode="valid")
+    return float(col.max())
+
+
 def measure(img: Any, box: Sequence[float]) -> Optional[Dict[str, Any]]:
     """The two corner densities of ONE accidental box on the cell's staff-erased raster (0 = ink), or None where there is nothing to read.
 
@@ -105,8 +116,8 @@ def measure(img: Any, box: Sequence[float]) -> Optional[Dict[str, Any]]:
         return None
     g = keep[ty0:ty1, tx0:tx1]
     ww, wh = max(1, int(round(tw * WINDOW_W))), max(1, int(round(th * WINDOW_H)))
-    bl = float(g[th - wh:, :ww].mean())
-    tr = float(g[:wh, tw - ww:].mean())
+    bl = _stem_strength(g[th - wh:, :ww])
+    tr = _stem_strength(g[:wh, tw - ww:])
     return {"bl": round(bl, 3), "tr": round(tr, 3), "ink_w": tw, "ink_h": th, "aspect": round(tw / th, 3)}
 
 

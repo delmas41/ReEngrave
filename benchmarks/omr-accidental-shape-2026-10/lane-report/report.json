@@ -1,0 +1,178 @@
+{
+ "flags": [
+  [
+   "OMR_ONE_INK_ONE_MARK",
+   "1",
+   "1"
+  ],
+  [
+   "OMR_ACCIDENTAL_SHAPE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 26
+    },
+    "accidental": {
+     "gained": 15,
+     "lost": 1,
+     "changed": 3
+    },
+    "blue": {
+     "gained": 9,
+     "lost": 0,
+     "changed": 0
+    },
+    "note": {
+     "gained": 4,
+     "lost": 4,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5419,
+    5419
+   ],
+   "paired": 5419,
+   "red_bars": [
+    266,
+    266
+   ],
+   "notes_not_written": [
+    2252,
+    2252
+   ],
+   "control": {
+    "reproduces": "both",
+    "off": {
+     "stored": 8958,
+     "same": 8958,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 8958,
+     "same": 8958,
+     "differ": 0,
+     "first_differ": []
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 254
+   },
+   "seconds": [
+    338.2,
+    337.6
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "blue": {
+     "gained": 24,
+     "lost": 2,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 25,
+     "lost": 4,
+     "changed": 37
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 78
+    },
+    "tie": {
+     "gained": 2,
+     "lost": 2,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6512,
+    6512
+   ],
+   "paired": 6512,
+   "red_bars": [
+    166,
+    166
+   ],
+   "notes_not_written": [
+    3209,
+    3209
+   ],
+   "control": {
+    "reproduces": "both",
+    "off": {
+     "stored": 12324,
+     "same": 12324,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 12324,
+     "same": 12324,
+     "differ": 0,
+     "first_differ": []
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 232
+   },
+   "seconds": [
+    577.8,
+    577.2
+   ]
+  }
+ },
+ "notes": [
+  "OMR_ONE_INK_ONE_MARK: read in staged/accidental_shape.py, staged/adjudicators/family_precision.py, staged/adjudicators/ownership.py, staged/export.py ... -> GATHER",
+  "OMR_ACCIDENTAL_SHAPE: read in staged/accidental_shape.py, staged/adjudicators/ownership.py, staged/gather.py -> GATHER",
+  "REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 971.2
+}

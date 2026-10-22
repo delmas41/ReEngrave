@@ -86,8 +86,8 @@ class TestShapeReader(unittest.TestCase):
         self.assertEqual(AS.classify(AS.measure(img, (5, 5, 20, 20)))["shape"], "unread")
 
     def test_a_corner_between_the_zones_is_unclear(self):
-        self.assertEqual(AS.classify({"bl": 0.28, "tr": 0.02})["shape"], "unclear")
-        self.assertEqual(AS.classify({"bl": 0.8, "tr": 0.02})["shape"], "flat")
+        self.assertEqual(AS.classify({"bl": 0.4, "tr": 0.02})["shape"], "unclear")
+        self.assertEqual(AS.classify({"bl": 0.9, "tr": 0.02})["shape"], "flat")
 
     def test_it_never_reads_a_raster_with_the_dust_of_a_neighbour(self):
         ink = natural()
