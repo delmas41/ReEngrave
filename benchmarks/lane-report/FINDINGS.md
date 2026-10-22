@@ -25,3 +25,5 @@ That is "minutes", not seconds: the cost is the ADJUDICATE..INFER replay of ~9 d
 **Known limits.** Pairing is by page position (a symbol with no glyph box is counted per bar, no tile). Red-bar warning words show as
 `words`. A flag read at import time is safe (one process per arm); a flag read only in the web path is not exercised. Context page
 means a cross-page rule that needs a page other than the opening one is not reproduced (the control line would say so).
+
+**2.188b (2026-10-21): tiles follow the counts.** `pick_tiles` now draws the ~9 case tiles in proportion to how many changes each kind has (largest remainder; any kind with >= 10% of changes gets at least one), not one per kind. Found on 2.186, where 201+58 accidental changes got one tile. Test: `test_tiles_follow_the_counts_and_a_tenth_gets_one` (twin: a 5% kind gets none).
