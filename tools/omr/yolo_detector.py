@@ -530,7 +530,7 @@ class YoloDetector:
             from . import natural_candidate as _nc
             nat_id = next((k for k, v in (self._class_names or {}).items() if v.lower() == _nc.CLASS_NAME), None)
             if nat_id is not None:
-                extra["aux"] = (int(nat_id), float(_nc.LOWER_BOUND))
+                extra["aux"] = (int(nat_id), float(_nc.STORE_FLOOR))
         results = self._predict(
             source=img_rgb,
             conf=conf_threshold,

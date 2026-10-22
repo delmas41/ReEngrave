@@ -19,8 +19,15 @@ CLASS_NAME = "accidentalnatural"
 #: The same-ink overlap (a convention checked on crops by 2.185 / `one_ink.ONE_INK_IOU_MIN`, restated here because this module is shared).
 IOU_MIN = 0.5
 
-#: The lowest natural score kept as a candidate. SET FROM THE MEASUREMENT in FINDINGS 2.193 (CLAUDE section 4: a cut-off tuned on two plates may
-#: only NARROW -- a candidate that the shape reader still has to confirm, written GUESSED).
+#: What GATHER files: the best natural score over the ink when it is at least this (a record-size floor, so a later change of `LOWER_BOUND` needs
+#: no re-gather as long as it stays at or above it).
+STORE_FLOOR = 0.01
+
+#: The lowest natural score ADJUDICATE accepts as a candidate. MEASURED, not tuned to a target (FINDINGS 2.193): on the frozen sample the natural
+#: score over inks whose shape reads flat or sharp (non-natural by shape, where the detector offered no natural) has p90 = 0.074 (Litolff) /
+#: 0.060 (Brahms), p50 = 0.005 / 0.003 -- 0.05 is the score above which fewer than ~15% / ~12% of such inks sit, i.e. the point at which the
+#: natural channel says more than its ordinary noise on a non-natural ink. A convention-free cut-off set on two plates: by CLAUDE section 4 it may
+#: only NARROW, so the shape reader must still call the ink a natural and the result is written GUESSED (blue).
 LOWER_BOUND = 0.05
 
 
