@@ -118,6 +118,10 @@ class SymbolDetection:
     one_ink_margin: float | None = None
     #: ROADMAP 2.186: set on a box the merge ABSORBED (kept in the list, so every glyph index is unchanged): the index of the winner in the same cell.
     one_ink_absorbed_by: int | None = None
+    #: ROADMAP 2.193 (`OMR_NATURAL_CANDIDATE`, default OFF): on a flat/sharp (non-natural, non-key) ACCIDENTAL box, the best score the detector's NATURAL
+    #: class gave any anchor over this same ink (IoU >= 0.5), when it is at or above `natural_candidate.LOWER_BOUND` yet was below the conf floor /
+    #: lost the anchor's argmax. Never a box of its own: a CANDIDATE for the shape check to choose. None on every other box.
+    natural_score: float | None = None
 
     @property
     def y_center(self) -> int:

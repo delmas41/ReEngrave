@@ -485,6 +485,7 @@ class YoloDetector:
         imgsz: int | None = None,
         iou_threshold: float = 0.7,
         agnostic_nms: bool = False,
+        natural_candidates: bool = False,
     ) -> list[SymbolDetection]:
         """Run YOLO on `cell.image` and return SymbolDetection objects in
         canonical-image coordinates.
@@ -523,6 +524,13 @@ class YoloDetector:
             imgsz = imgsz_for_cell(cell)
 
         # MPS device hint on Apple Silicon; "auto" lets ultralytics pick.
+        extra = {}
+        nat_id = None
+        if natural_candidates:                                 # ROADMAP 2.193: also keep the natural class's sub-floor scores
+            from . import natural_candidate as _nc
+            nat_id = next((k for k, v in (self._class_names or {}).items() if v.lower() == _nc.CLASS_NAME), None)
+            if nat_id is not None:
+                extra["aux"] = (int(nat_id), float(_nc.LOWER_BOUND))
         results = self._predict(
             source=img_rgb,
             conf=conf_threshold,
@@ -531,6 +539,7 @@ class YoloDetector:
             imgsz=imgsz,
             device=self.device if self.device != "auto" else None,
             verbose=False,
+            **extra,
         )
         if not results:
             return []
@@ -571,7 +580,38 @@ class YoloDetector:
         # ROADMAP 2.12g: one piece of ink is one reading. See the module
         # comment above `_collapse_role_twins` for scope and why this is
         # the cheap half of the fix, not the invisible-half one.
-        return _collapse_role_twins(detections, cell)
+        detections = _collapse_role_twins(detections, cell)
+        if extra:
+            detections = self._attach_natural_scores(detections, img_rgb.shape)
+        return detections
+
+    @staticmethod
+    def _attach_natural_scores(detections: list[SymbolDetection], image_shape) -> list[SymbolDetection]:
+        """ROADMAP 2.193: `natural_score` on every accidental box (not key*, not itself a natural): the best NATURAL score any anchor gave over the
+        same ink (IoU >= `natural_candidate.IOU_MIN` with the box), from `detector_cache.last_aux()`. See `natural_candidate.py`."""
+        import dataclasses
+        from . import detector_cache, natural_candidate as _nc
+        aux = detector_cache.last_aux()
+        if not aux or not len(aux["arrays"].get("nidx0", ())):
+            return detections
+        import torch
+        from ultralytics.utils import ops
+        xywh = torch.from_numpy(aux["arrays"]["nbox0"]).float()
+        xyxy = torch.stack([xywh[:, 0] - xywh[:, 2] / 2, xywh[:, 1] - xywh[:, 3] / 2, xywh[:, 0] + xywh[:, 2] / 2, xywh[:, 1] + xywh[:, 3] / 2], 1)
+        B = ops.scale_boxes(tuple(aux["img_shape"]), xyxy, tuple(image_shape[:2])).numpy()
+        S = aux["arrays"]["nscore0"]
+        out = []
+        for d in detections:
+            low = d.smufl_name.lower()
+            if d.category != "accidental" or low.startswith("key") or low == _nc.CLASS_NAME:
+                out.append(d)
+                continue
+            a = (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical)
+            ix = (np.minimum(a[2], B[:, 2]) - np.maximum(a[0], B[:, 0])).clip(min=0) * (np.minimum(a[3], B[:, 3]) - np.maximum(a[1], B[:, 1])).clip(min=0)
+            iou = ix / np.maximum((a[2] - a[0]) * (a[3] - a[1]) + (B[:, 2] - B[:, 0]) * (B[:, 3] - B[:, 1]) - ix, 1e-9)
+            sel = iou >= _nc.IOU_MIN
+            out.append(dataclasses.replace(d, natural_score=round(float(S[sel].max()), 4)) if sel.any() else d)
+        return out
 
     def detect_image(self, image: "np.ndarray", conf_threshold: float,
                      imgsz: int) -> list[tuple[str, float, tuple[float, float, float, float]]]:
