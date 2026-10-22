@@ -34,6 +34,7 @@ import json
 import os
 import sys
 import threading
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -48,7 +49,7 @@ class DetectorCacheError(RuntimeError):
     """A cache entry that exists but cannot be trusted. Never swallowed."""
 
 
-_STATS = {"hits": 0, "misses": 0, "bytes_written": 0, "bytes_read": 0}
+_STATS = {"hits": 0, "misses": 0, "bytes_written": 0, "bytes_read": 0, "miss_s": 0.0, "hit_s": 0.0, "plain_s": 0.0, "calls_plain": 0}
 _WEIGHT_HASH: Dict[Any, str] = {}
 _LOCK = threading.Lock()
 
@@ -239,14 +240,21 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
     kw = dict(source=source, conf=conf, iou=iou, agnostic_nms=agnostic_nms, imgsz=imgsz, device=device,
               verbose=verbose)
     if root is None:
-        return model.predict(**kw)
+        t0 = time.perf_counter()
+        r = model.predict(**kw)
+        _STATS["plain_s"] += time.perf_counter() - t0
+        _STATS["calls_plain"] += 1
+        return r
+    t0 = time.perf_counter()
     images = _images_of(source)
     key = make_key(weights_path=weights_path, source=source, conf=conf, imgsz=imgsz, device=device)
     digest = key_digest(key)
     hit = _load(root, digest, key)
     if hit is not None:
         _STATS["hits"] += 1
-        return _serve(hit[0], hit[1], images, conf, iou, agnostic_nms)
+        r = _serve(hit[0], hit[1], images, conf, iou, agnostic_nms)
+        _STATS["hit_s"] += time.perf_counter() - t0
+        return r
     _STATS["misses"] += 1
     rec: Dict[str, Any] = {}
     with _capture(rec):
@@ -256,13 +264,17 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
     arrays, meta = rec["cand"]
     meta["img_shape"] = list(rec["img_shape"])
     _store(root, digest, key, meta, arrays)
+    _STATS["miss_s"] += time.perf_counter() - t0
     return results
 
 
 def _report() -> None:
     if (_STATS["hits"] or _STATS["misses"]) and cache_dir():
-        sys.stderr.write("detector-cache: %d hit, %d miss, %.1f MB written, %.1f MB read (%s)\n" % (
-            _STATS["hits"], _STATS["misses"], _STATS["bytes_written"] / 1e6, _STATS["bytes_read"] / 1e6, cache_dir()))
+        sys.stderr.write("detector-cache: %d hit, %d miss, %.1f MB written, %.1f MB read; detector seconds: %.1f on misses, "
+                         "%.1f serving hits (%s)\n" % (_STATS["hits"], _STATS["misses"], _STATS["bytes_written"] / 1e6,
+                                                      _STATS["bytes_read"] / 1e6, _STATS["miss_s"], _STATS["hit_s"], cache_dir()))
+    elif _STATS["calls_plain"] and os.environ.get("OMR_DETECTOR_TIMING"):
+        sys.stderr.write("detector (no cache): %d calls, %.1f s\n" % (_STATS["calls_plain"], _STATS["plain_s"]))
 
 
 atexit.register(_report)
