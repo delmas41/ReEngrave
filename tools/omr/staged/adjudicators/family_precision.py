@@ -434,11 +434,22 @@ def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
         return None
     this_class = this_val[0]
     this_priority = _rest_duplicate_priority(this_row)
+    # ROADMAP 2.186 (`OMR_ONE_INK_ONE_MARK`): the merge at GATHER already settled which class of this ink stands. The box it ABSORBED is
+    # refused as the duplicate it is (kept, refused, like every other refused box -- its glyph index is unchanged); the winner is not
+    # compared with it. Pairs below the merge's IoU, and 2.172 view boxes, still reach the rule below.
+    on = _one_ink.enabled()
+    merged_away = (this_row.detail or {}).get("one_ink_absorbed_by") if on else None
+    if merged_away:
+        detail["duplicate_of_key"] = merged_away
+        detail["one_ink_absorbed"] = True
+        return Ruling(value=True, reason="rest_is_a_duplicate_box", used=(this_row.id,), detail=detail)
 
     disagreeing: List[str] = []
     better: Optional[Any] = None
     for subj, row in _cell_rest_boxes(ev, cell).items():
         if subj == ev.subject:
+            continue
+        if on and (row.detail or {}).get("one_ink_absorbed_by"):
             continue
         other_val = row.value
         if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:

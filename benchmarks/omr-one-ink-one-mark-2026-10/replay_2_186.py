@@ -60,36 +60,27 @@ def merged_rows(obs, abst):
             stats["absorbed_" + fam] += len(info["absorbed"])
             for j in info["absorbed"]:
                 drop.add(bs[j]["subject"])
-    # patch MARK_GROUP
-    gid_of = {o["subject"]: o["value"] for o in obs if o["quantity"] == "mark_group"}
-    members = collections.defaultdict(list)
-    for s, g in gid_of.items():
-        members[g].append(s)
+    # nothing is dropped (glyph indices unchanged): winners carry `one_ink`, absorbed boxes `one_ink_absorbed_by` (box row) / `one_ink_absorbed` (position row)
+    winner_key = {}
+    for cell, bs in cells.items():
+        bs.sort(key=lambda o: int(o["subject"].split("/")[5]))
+        p2 = OI.plan([(o["value"][0], o["value"][1], o["value"][2], o["value"][3], o["value"][4], o["score"] or 0.0) for o in bs])
+        for i, info in p2.items():
+            for j in info["absorbed"]:
+                winner_key[bs[j]["subject"]] = bs[i]["subject"]
     newobs = []
     for o in obs:
-        s = o["subject"]
-        if s in drop:
-            continue
-        if o["quantity"] in ("glyph_box", "accidental_staff_position") and s in win and o["quantity"] != "mark_group":
-            if o["quantity"] == "glyph_box" and o["reader"] != "detector":
-                newobs.append(o); continue
-            o = dict(o); o["detail"] = dict(o.get("detail") or {}); o["detail"].update(win[s])
-        if o["quantity"] == "mark_group":
-            g = o["value"]
-            left = [m for m in members[g] if m not in drop]
-            if len(left) != len(members[g]):
-                o = dict(o); d = dict(o["detail"]); d["size"] = len(left)
-                if len(left) > 1:
-                    d["members"] = left
-                else:
-                    d.pop("members", None)
-                if d.get("rep") in drop:
-                    d["rep"] = left[0] if left else d["rep"]
-                o["detail"] = d
+        s_ = o["subject"]
+        if o["quantity"] == "glyph_box" and o["reader"] == "detector" and (s_ in win or s_ in winner_key):
+            o = dict(o); o["detail"] = dict(o.get("detail") or {})
+            if s_ in win: o["detail"].update(win[s_])
+            else: o["detail"]["one_ink_absorbed_by"] = winner_key[s_]
+        elif o["quantity"] == "accidental_staff_position" and (s_ in win or s_ in winner_key):
+            o = dict(o); o["detail"] = dict(o.get("detail") or {})
+            if s_ in win: o["detail"].update(win[s_])
+            else: o["detail"]["one_ink_absorbed"] = True
         newobs.append(o)
-    newabs = [a for a in abst if a["subject"] not in drop]
-    stats["rows_dropped"] = len(obs) - len(newobs) + len(abst) - len(newabs)
-    return newobs, newabs, dict(stats)
+    return newobs, abst, dict(stats)
 
 
 t0 = time.time()

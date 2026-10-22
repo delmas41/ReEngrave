@@ -116,6 +116,8 @@ class SymbolDetection:
     #: and the confidence margin to the best of them. None on every box no merge touched.
     one_ink_rivals: tuple | None = None
     one_ink_margin: float | None = None
+    #: ROADMAP 2.186: set on a box the merge ABSORBED (kept in the list, so every glyph index is unchanged): the index of the winner in the same cell.
+    one_ink_absorbed_by: int | None = None
 
     @property
     def y_center(self) -> int:
