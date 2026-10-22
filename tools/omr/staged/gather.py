@@ -34,6 +34,7 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
 from . import one_ink as _one_ink
+from . import accidental_shape as _acc_shape
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
                        STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
@@ -1758,6 +1759,7 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
             pos_float = (anchor_y - top_y) / half_step
             centre_pos = (d.y_center - top_y) / half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
             log.observe(
                 g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
                 reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
@@ -1778,7 +1780,32 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                 y0=float(d.y_canonical),
                 y1=float(d.y_canonical + d.height_canonical),
                 confidence=float(d.confidence),
-                **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)))
+                **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
+                **shape_detail)
+
+
+def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
+    """ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, default OFF): the shape of THIS accidental's own ink, measured on the cell's staff-erased
+    raster (`staged/accidental_shape.py` has the rule, the cut-offs and why this is a second reader of the detector's raster, not a witness),
+    plus the staff position the glyph would have under EACH class the detector offered for this ink (the winner and its merged rivals), so
+    ADJUDICATE can pick among them without a re-gather. Measurement only: nothing here chooses. An absorbed box carries none (it is refused)."""
+    if getattr(d, "one_ink_absorbed_by", None) is not None:
+        return {}
+    img = getattr(c, "image_no_staff", None)
+    m = _acc_shape.measure(img, (float(d.x_canonical), float(d.y_canonical), float(d.width_canonical), float(d.height_canonical))) \
+        if img is not None else None
+    out: Dict[str, Any] = {"shape": {**(m or {}), **_acc_shape.classify(m)}}
+    rivals = [str(r[0]) for r in (getattr(d, "one_ink_rivals", None) or ())]
+    pos: Dict[str, Dict[str, Any]] = {}
+    for cls in [str(d.smufl_name)] + rivals:
+        alt = _alteration_of(cls)
+        if alt is None:
+            continue
+        fr = _ANCHOR_FRACTION.get(cls.lower(), 0.5)
+        pos[cls] = {"alteration": alt, "position": (d.y_canonical + d.height_canonical * fr - top_y) / half_step, "anchor_fraction": fr}
+    if rivals:
+        out["position_by_class"] = pos
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
