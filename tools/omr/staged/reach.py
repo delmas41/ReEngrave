@@ -579,6 +579,10 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.186. `one_ink.py` is PURE (boxes in, a merge plan out; the flag, the READ bar, the guess candidates): it files no row and names
     # no quantity -- `gather.py` calls `merge` and files `detail.one_ink` on the rows it already files.
     "one_ink.py",
+    # ROADMAP 2.190. `accidental_shape.py` is PURE (a raster and a box in, two corner stem strengths and a shape out; the flag, the READ bar, the
+    # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
+    # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.
+    "accidental_shape.py",
 })
 
 

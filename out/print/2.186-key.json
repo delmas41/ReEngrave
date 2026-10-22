@@ -1,0 +1,243 @@
+[
+ {
+  "kind": "note",
+  "page": 12,
+  "box": [
+   1455.75,
+   4192.55,
+   1495.35,
+   4226.1
+  ],
+  "rg": "glyph/12/1/1/1/6",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 1,
+  "crop_origin": [
+   1283,
+   4049
+  ]
+ },
+ {
+  "kind": "words",
+  "side": "lost",
+  "page": 5,
+  "box": [
+   2096.05,
+   5646.9,
+   2135.65,
+   5681.825
+  ],
+  "rg": "glyph/5/1/7/2/0",
+  "value": "unread",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1923,
+   5504
+  ]
+ },
+ {
+  "kind": "tie",
+  "page": 4,
+  "box": [
+   2394.575,
+   4307.025,
+   2432.525,
+   4338.375
+  ],
+  "rg": "glyph/4/1/1/3/1",
+  "value": "stop",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 3,
+  "crop_origin": [
+   2221,
+   4162
+  ]
+ },
+ {
+  "kind": "slur",
+  "side": "lost",
+  "page": 19,
+  "box": [
+   1806.15,
+   5026.65,
+   1847.4,
+   5059.65
+  ],
+  "rg": "glyph/19/1/4/2/7",
+  "value": "stop",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   1634,
+   4883
+  ]
+ },
+ {
+  "kind": "dot",
+  "side": "gained",
+  "page": 19,
+  "box": [
+   1818.25,
+   3288.7,
+   1857.3,
+   3323.35
+  ],
+  "rg": "glyph/19/0/12/1/0",
+  "value": ".",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   1645,
+   3146
+  ]
+ },
+ {
+  "kind": "tie",
+  "side": "lost",
+  "page": 5,
+  "box": [
+   3018.15,
+   5619.4,
+   3055.275,
+   5654.325
+  ],
+  "rg": "glyph/5/1/7/4/3",
+  "value": "start",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   2844,
+   5476
+  ]
+ },
+ {
+  "kind": "dot",
+  "page": 8,
+  "box": [
+   2780.125,
+   4816.995,
+   2819.08,
+   4849.59
+  ],
+  "rg": "glyph/8/1/3/5/2",
+  "value": ".",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 7,
+  "crop_origin": [
+   2607,
+   4673
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "gained",
+  "page": 5,
+  "box": [
+   1604.135,
+   6111.15,
+   1644.465,
+   6145.7575
+  ],
+  "rg": "glyph/5/1/9/1/6",
+  "value": "sharp",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   1432,
+   5968
+  ]
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 19,
+  "box": [
+   1818.25,
+   3288.7,
+   1857.3,
+   3323.35
+  ],
+  "rg": "glyph/19/0/12/1/0",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   1645,
+   3146
+  ]
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   3333.15,
+   2978.625,
+   3370.55,
+   3010.25
+  ],
+  "rg": "glyph/4/0/10/6/2",
+  "was": "E-14",
+  "value": "E4",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   3159,
+   2834
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 8,
+  "box": [
+   4307.55,
+   1282.525,
+   4338.9,
+   1343.3
+  ],
+  "rg": "glyph/8/0/2/9/3",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   4131,
+   1152
+  ]
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 19,
+  "box": [
+   3149.45,
+   3386.325,
+   3186.3,
+   3420.15
+  ],
+  "rg": "glyph/19/0/12/5/0",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   2975,
+   3243
+  ]
+ }
+]

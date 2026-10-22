@@ -75,23 +75,33 @@ def _det(cls, x, c, w=50):
 
 class TestMergeLive(unittest.TestCase):
 
-    def test_merge_drops_the_absorbed_and_carries_the_rivals(self):
-        out = OI.merge([_det("rest16th", 100, 0.44), _det("rest8th", 101, 0.35), _det("restQuarter", 400, 0.5)])
-        self.assertEqual([d.smufl_name for d in out], ["rest16th", "restQuarter"])
+    def test_merge_keeps_every_index_marks_the_absorbed_and_carries_the_rivals(self):
+        dets = [_det("rest16th", 100, 0.44), _det("rest8th", 101, 0.35), _det("restQuarter", 400, 0.5)]
+        out = OI.merge(dets)
+        self.assertEqual([d.smufl_name for d in out], ["rest16th", "rest8th", "restQuarter"])   # same length, same order: ids stable
         self.assertEqual(out[0].one_ink_rivals, (("rest8th", 0.35),))
-        self.assertIsNone(out[1].one_ink_rivals)
+        self.assertEqual(out[1].one_ink_absorbed_by, 0)
+        self.assertIsNone(out[2].one_ink_rivals)
+        self.assertIsNone(out[2].one_ink_absorbed_by)
         d = OI.box_detail(out[0])["one_ink"]
         self.assertEqual(d["winner"], {"class": "rest16th", "conf": 0.44})
+        self.assertEqual(OI.box_detail(out[1]), {"one_ink_absorbed_by_index": 0})
 
-    def test_the_flag_defaults_OFF(self):
+    def test_CONTROL_nothing_to_merge_returns_the_boxes_untouched(self):
+        dets = [_det("rest16th", 100, 0.44), _det("rest16th", 400, 0.35)]
+        self.assertEqual(OI.merge(dets), dets)
+
+    def test_the_flag_defaults_ON(self):
+        # ROADMAP 2.186 landed ON (Sean 2026-10-22): unset is ON, an explicit 0/false/no/off disables.
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(ENV, None)
-            self.assertFalse(OI.enabled())
+            self.assertTrue(OI.enabled())
         for v in ("1", "true", "on"):
             with mock.patch.dict(os.environ, {ENV: v}):
                 self.assertTrue(OI.enabled())
-        with mock.patch.dict(os.environ, {ENV: "0"}):
-            self.assertFalse(OI.enabled())
+        for v in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {ENV: v}):
+                self.assertFalse(OI.enabled())
 
     def test_no_margin_reads_until_the_bar_is_set(self):
         self.assertFalse(OI.reads(0.99))
@@ -111,6 +121,20 @@ def _rest(log, gi, cls, score, one_ink=None, *, x_c=200.0, w_c=100.0, h_c=300.0,
 
 
 MERGED = {"rivals": [{"class": "rest16th", "conf": 0.37}], "margin": 0.06, "winner": {"class": "rest8th", "conf": 0.43}, "iou_min": 0.5}
+
+
+def _decide_pair_rest(flag=True):
+    """The winner (rest8th .43, merged) and the box it absorbed (rest16th .37, kept at its own index) in ONE cell."""
+    log = Log()
+    _staff_geometry(log)
+    w = _rest(log, 0, "rest8th", 0.43, MERGED)
+    g = R.glyph(0, 0, 0, 0, 1)
+    log.observe(g, Q.GLYPH_BOX, ("rest16th", 201.0, 100.0, 100.0, 300.0), reader=READERS.DETECTOR, frame="cell:0", score=0.37, category="rest",
+                bbox_page_px=list(_page_box_at_step(4.0, x0=500.0, x1=520.0, thickness=60.0)), one_ink_absorbed_by=w.to_key())
+    log.observe(g, Q.REST, "rest16th", reader=READERS.DETECTOR, frame="cell:0", score=0.37, category="rest")
+    with mock.patch.dict(os.environ, {ENV: "1" if flag else "0"}, clear=False):
+        _run(log, Q.REST_IS_NOT_A_REST)
+    return log, w, g
 
 
 def _decide_rest(one_ink, flag=True, cls="rest8th", w_c=100.0, extra_env=None):
@@ -146,6 +170,22 @@ class TestRestNarrowing(unittest.TestCase):
         v = log.verdict(Q.REST_IS_NOT_A_REST, g)
         self.assertIs(v.value, True)
         self.assertEqual(v.reason, "rest_narrower_than_its_class")
+
+    def test_the_absorbed_box_is_refused_a_duplicate_and_the_winner_is_not_refused_with_it(self):
+        log, w, g = _decide_pair_rest()
+        vw, vg = log.verdict(Q.REST_IS_NOT_A_REST, w), log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertEqual(vw.outcome, Outcome.NARROWED)
+        self.assertEqual(vw.reason, "one_ink_merged")
+        self.assertIs(vg.value, True)
+        self.assertEqual(vg.reason, "rest_is_a_duplicate_box")
+        self.assertTrue(vg.detail["one_ink_absorbed"])
+
+    def test_CONTROL_off_the_same_pair_is_still_refused_both(self):
+        log, w, g = _decide_pair_rest(flag=False)
+        for x in (w, g):
+            v = log.verdict(Q.REST_IS_NOT_A_REST, x)
+            self.assertIs(v.value, True)
+            self.assertEqual(v.reason, "rest_is_a_duplicate_box")
 
     def test_the_read_bar_when_cleared_leaves_a_plain_decided_rest(self):
         with mock.patch.object(OI, "ONE_INK_READ_MARGIN", 0.05):
@@ -211,6 +251,22 @@ class TestOwnershipFirstForAccidentals(unittest.TestCase):
     def test_CONTROL_on_an_uncontested_glyph_has_no_owner_verdict_and_passes(self):
         log, acc, head = _acc_case(None)
         self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, acc).value, head.to_key())
+
+    def test_an_absorbed_accidental_owns_no_head_and_is_counted_by_name(self):
+        log = Log()
+        TA._cell_unit(log)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.GLYPH_BOX, ("accidentalNatural", 88.0, 4 * TA.HALF - TA.SPACE, 12.0, TA.SPACE * 2), reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.6, category="accidental", one_ink_absorbed_by="glyph/0/0/0/0/2")
+        log.observe(g, Q.ACCIDENTAL_STAFF_POSITION, 4.0, reader=READERS.GEOMETRY, frame="cell:0", alteration="n", detector_class="accidentalNatural",
+                    anchor_fraction=0.5, box_centre_position=4.0, residual=0.0, rounded=4, x0=88.0, x1=100.0, y0=4 * TA.HALF - TA.SPACE,
+                    y1=4 * TA.HALF + TA.SPACE, confidence=0.6, one_ink_absorbed=True)
+        TA._head(log, 1, 106.0, 4.0)
+        with mock.patch.dict(os.environ, {ENV: "1"}):
+            TA._decide(log)
+        v = log.verdict(Q.ACCIDENTAL_OWNER, g)
+        self.assertEqual(v.outcome, "abstained")
+        self.assertEqual(v.reason, "one_ink_absorbed")
 
     def test_a_merged_glyph_carries_its_classes_on_the_owner_verdict(self):
         log = Log()

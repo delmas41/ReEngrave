@@ -1,0 +1,69 @@
+{
+ "lane": "2.190",
+ "date": "2026-10-22",
+ "question": "which accidental is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "verbatim": "1. Nat 2. Flat 3. Sharp 4-11. Nat 12. 8 rest",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 2,
+   "sean": "flat",
+   "result": "control right"
+  },
+  {
+   "tile": 3,
+   "sean": "sharp",
+   "result": "control right"
+  },
+  {
+   "tile": 4,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 5,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 6,
+   "sean": "natural",
+   "result": "both wrong (sharp->flat)"
+  },
+  {
+   "tile": 7,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 8,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 9,
+   "sean": "natural",
+   "result": "both wrong (sharp lost; natural printed)"
+  },
+  {
+   "tile": 10,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 11,
+   "sean": "natural",
+   "result": "ON right"
+  },
+  {
+   "tile": 12,
+   "sean": "eighth rest",
+   "result": "control WRONG: an eighth rest written as a double-sharp in both arms"
+  }
+ ],
+ "summary": "cases 9: with the shape check 7 right, before it 0; tiles 6 and 9 wrong both ways (natural printed, detector did not offer natural); controls 2,3 right; control 12 is an eighth rest written as a double-sharp accidental in both arms (phantom accidental on a rest, 2.185)"
+}
