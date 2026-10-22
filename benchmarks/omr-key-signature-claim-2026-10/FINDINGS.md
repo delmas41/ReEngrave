@@ -158,3 +158,38 @@ the only ones that may refuse a box. WHAT WOULD FALSIFY IT: a plate where a staf
   tiles 2, 3, 7, 8, 9, 10, 11 are blue marks on what look like REAL notes standing just after a short signature (the NARROWED tail reaches 1-1.8 spaces past it): a cost, not an error; tiles 4, 6 are controls, unchanged.
   So of the 9 case tiles, 2 are fixes and 7 are blue-on-real: the tail's generous reach (needed for the p5 drift case) is paid for in blue notes. Sean's call: tighten the NARROWED tail to the placed slots' own width (fewer blue notes, more flats left as rests).
 - `-6` notes / `-3` rests on Litolff: 2 shown above are key flats; the other lost symbols were not looked at on the print (the report draws 9 tiles from 12 changes).
+
+---
+
+# 2.187b -- the key TAIL judged by what the staff may print (2026-10-22; Sean's tiles and three rulings)
+
+Path: STAGED. GATHER `gather_key_object` MEASURES each tail box's own ink (`key_object.measure_tail_box`: shape, staff step against the lines AT that x, x) and files the
+slots' x (`tail_info`); ADJUDICATE `claimed_by.consult` DECIDES (`key_object.judge_tail_box`, given `header.key_tail_context`). No stage was reordered: the claim is still filed at GATHER and
+consulted at ADJUDICATE, where every claim has always been consulted; what moved is that the NARROWING of the tail is no longer a reach but a judgement. Flag `OMR_KEY_PER_SYSTEM`, still OFF.
+
+**Cause (rule 3, lesson).** The tail was narrowed for EVERY box in it, so 7 of Sean's 9 changed tiles were real notes. The cause was that it asked "is the box in the reach?" and never "could this staff
+print an accidental here?". Sean's question ("does the guessing know transposing instruments?") found the second hole: the written key was never known. The lesson, from the first build of this
+fix: a staff's WRITTEN key must not come from the staves' own readings (`expected_fifths`' part-majority tier). On Litolff, 8 of the 13 flats still standing after the first build were on
+concert-pitch staves (Fl., Ob., Fag., Bassi, violins) whose part majority was one or two flats SHORT -- the same missed flat misreads the part, and two readings of one missed ink fall together
+(CLAUDE §4). The written key is now the system's COUNT (the staves' agreement, a different witness) + the sign of the document's key stretch (flats only vote from the staff's own slots, two with no
+sharp: a crushed flat's bowl reads `sharp`, measured 9 of 10) + the staff's transposition READ off its label or its part's, never defaulted (`_transposition`; an unlabelled clarinet is not the B-flat one).
+
+**What a tail box must be to be narrowed (all of Sean's rulings, 2026-10-22).** Slot k of the run holds ONLY the k-th accidental of the fixed order (Bb Eb Ab Db Gb Cb Fb / F# C# G# D# A# E# B#), at
+a FIXED staff step for the clef (`key_signature_geometry.slot_positions`, the table the fitter and the resolver read: treble, bass, alto, tenor), measured against the staff locally. So a box in
+the tail is NARROWED only if (a) its shape is not a CLEAR contradiction of the run's accidental type (flat for a flat key, sharp for a sharp key, a natural only where the key changes -- the
+cancelling naturals come FIRST, at the OLD key's steps, then the new key's accidentals counted from the cancels' end -- any of the three where the type is unknown); (b) its centre stands at slot
+k's step within `POS_TOL_STEPS` = 0.5 step (the fitter's `max_residual`; key_slots has only the x tolerance, `SLOT_TOLERANCE_SPACES` 0.5, used for (c)); (c) it stands at slot k's x
+(`SLOT_TOL_SPACES` 0.6 + `SLOT_DRIFT_SPACES` 0.2 per placed slot, from the staff's own last read slot or its clef edge); and (d) k is within the staff's WRITTEN count where that is known
+(a horn: 0, no tail; a B-flat clarinet in three flats: 1; a staff whose concert key is sharps but whose written key is flats or the other way round takes its OWN type; a transposing staff in
+sharps may reach past the system's count). A box that fails any test is LEFT ALONE: neither refused nor blue. The slots a staff READ itself are unchanged (refused).
+CONVENTION: the order and the clef steps are Sean's (confirmed). MEASUREMENTS (may only narrow): the 1.25-step flat anchor (whole flats: median 1.23-1.26 steps above the pitch over 824 read flats; a bowl
+the detector boxed alone sits on it, so the offset runs 0 -> 1.25 with the ink's height), the x tolerance, the drift.
+
+**Measured, and what did not work (rule 7).**
+- The 2.190 shape reader reads the WHOLE glyph or nothing: on the detector's box it called a flat's bowl a `sharp` (a crushed Litolff flat is boxed as a rest over its bowl alone). Read off the accidental-sized
+  raster piece that overlaps the box (the `staff_run` size/fill/level tests) it reads 5 of 15 known tail flats (1 right, 1 `natural`, 3 `unclear`; the other 10 have no whole piece), and 53 of 66 real tail notes
+  with a piece read `sharp`. So the shape can only REJECT (a clear contradiction), never accept; an unreadable crush is neutral.
+- A solid-head test (erosion of the box's ink by a disc of 0.4-0.8 space) was built and DROPPED: at 0.65 space 8 of 10 crushed flat bowls survive it as heads, while 25 of 316 notehead boxes do not (hollow / half heads). It would reject the flats and admit hollow notes: no use. A notehead is excluded by x, by step and by its sharp-reading ink, not by being a head; a note exactly at slot k's x and step is the remaining leak (counted below as notes turned blue).
+- No stem-direction feature separates a key flat from a down-stem head in the data (a head with a stem reads `sharp` on both corners; the flat rises on the LEFT, which BL/TR already say). No new measurement added.
+
+**Staves by where the written key came from** (known_flats pages, real gather -> ADJUDICATE of each page's slice of the 20261020-night record; `tail_report_2_187b.py`): see the lane-report section below for the sample pages.

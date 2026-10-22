@@ -118,15 +118,21 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
                 # accidental -- shape, fixed-order staff step, slot x, written count (`key_object.judge_tail_box`). Else it is LEFT ALONE.
                 from .. import key_object as _ko
                 from .header import key_tail_context_from
-                if tail_ctx is None:
-                    ko_d = d.get("key_object") or {}
-                    tail_ctx = key_tail_context_from(tail_reads() if tail_reads is not None else {"staff": None},
-                                                     system_count=ko_d.get("system_count"),
-                                                     read_shapes=[(q or {}).get("shape") for q in ko_d.get("read_pieces") or ()])
                 ti = d.get("tail_info") or {}
-                tail_j = _ko.judge_tail_box(e["tail"], ti.get("slot_cx") or {}, float(ti.get("spacing") or 0.0), own=int(ti.get("own") or 0),
-                                            system_n=int(ti.get("N") or 0), written=tail_ctx["written"], previous=tail_ctx["previous"],
-                                            clef=tail_ctx["clef"])
+                ko_d = d.get("key_object") or {}
+                args = (e["tail"], ti.get("slot_cx") or {}, float(ti.get("spacing") or 0.0))
+                kw = dict(own=int(ti.get("own") or 0), system_n=int(ti.get("N") or 0))
+                # the cheap look first: the clef alone, on the loosest run (either type, every slot to 7, naturals): a box that cannot be an
+                # accidental there is left alone WITHOUT reading the slot, the part key and the labels (their basis would ride on its verdict)
+                light = tail_reads(True) if tail_reads is not None else {}
+                clef0 = (light.get("clef").value if light.get("clef") is not None and isinstance(light["clef"].value, str) else None)
+                tail_j = _ko.judge_tail_box(*args, **dict(kw, system_n=_ko.MAX_SLOTS), written=None, previous=None, clef=clef0, loose=True)
+                if tail_j["narrow"]:
+                    if tail_ctx is None:
+                        tail_ctx = key_tail_context_from(tail_reads(False) if tail_reads is not None else {"staff": None},
+                                                         system_count=ko_d.get("system_count"),
+                                                         read_shapes=[(q or {}).get("shape") for q in ko_d.get("read_pieces") or ()])
+                    tail_j = _ko.judge_tail_box(*args, **kw, written=tail_ctx["written"], previous=tail_ctx["previous"], clef=tail_ctx["clef"])
                 if tail_j["narrow"]:
                     narrowing.append((owner, r, 0.0, "key_tail_" + tail_j["why"]))
                 continue

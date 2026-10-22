@@ -285,6 +285,37 @@ class TestX(unittest.TestCase):
         self.assertTrue(judge(tb, own=2, n=3, written=-3)["narrow"], tb)
 
 
+class TestThePreGateIsASupersetOfEveryWrittenKey(unittest.TestCase):
+    """`loose=True` is the cheap look `claimed_by.consult` takes before it reads the staff's slot, part key and labels (whose basis would ride on
+    every notehead verdict it touched: Litolff's record grew 62%). It must reject nothing any written key could narrow."""
+
+    def _boxes(self):
+        out = []
+        for painter, acc in ((paint_flat, "b"), (paint_sharp, "#"), (paint_natural, "b"), (paint_note, "b")):
+            for k in (1, 2, 3, 4):
+                for j in (1, 2, 3, 4):
+                    for shift in (0.0, 0.4, 3.0):
+                        out.append(tb_of(painter, k, pitch_step("treble", acc, j) + shift))
+        return out
+
+    def test_whatever_a_written_key_narrows_the_pre_gate_narrows(self):
+        n_full = 0
+        for tb in self._boxes():
+            for written, previous in ((-3, -3), (-1, -1), (2, 2), (5, 5), (-1, -3), (0, -3), (3, 0), (None, None)):
+                for own in (0, 1, 2):
+                    full = KO.judge_tail_box(tb, slot_cx(own), SP, own=own, system_n=3, written=written, previous=previous, clef="treble")
+                    loose = KO.judge_tail_box(tb, slot_cx(own), SP, own=own, system_n=KO.MAX_SLOTS, written=None, previous=None, clef="treble", loose=True)
+                    if full["narrow"]:
+                        n_full += 1
+                        self.assertTrue(loose["narrow"], (written, previous, own, tb, full, loose))
+        self.assertGreater(n_full, 50)                                    # the property was exercised
+
+    def test_TWIN_the_pre_gate_does_reject_what_cannot_be_an_accidental_anywhere(self):
+        rejected = [KO.judge_tail_box(tb, slot_cx(0), SP, own=0, system_n=KO.MAX_SLOTS, clef="treble", loose=True)["narrow"] for tb in
+                    (tb_of(paint_note, 1, 14), tb_of(paint_flat, 1, 20), tb_of(paint_sharp, 3, -4))]
+        self.assertEqual(rejected, [False, False, False])
+
+
 class TestKeyTailContext(unittest.TestCase):
     """`header.key_tail_context`: the staff's written key from the verdicts, never from the system's count."""
 

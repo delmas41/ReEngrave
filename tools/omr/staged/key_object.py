@@ -388,7 +388,8 @@ def glyph_offset_steps(acc: str, h_spaces: float) -> float:
 
 
 def judge_tail_box(tb: Optional[Dict[str, Any]], slot_cx: Dict[Any, float], spacing: float, *, own: int, system_n: int,
-                   written: Optional[int] = None, previous: Optional[int] = None, clef: Optional[str] = None) -> Dict[str, Any]:
+                   written: Optional[int] = None, previous: Optional[int] = None, clef: Optional[str] = None,
+                   loose: bool = False) -> Dict[str, Any]:
     """Is this tail box the staff's own next key accidental? `{"narrow": bool, "why": str, ...}` (PURE; ADJUDICATE calls it with what it knows).
 
     `tb`: `measure_tail_box`. `slot_cx`: `slot_centres` (keys may be str after a JSON round trip). `own`: the slots the staff read. `system_n`:
@@ -402,7 +403,9 @@ def judge_tail_box(tb: Optional[Dict[str, Any]], slot_cx: Dict[Any, float], spac
           print reads 5 of 15 known flats);
       (b) POSITION: its centre stands at slot k's fixed staff step for the clef (`POS_TOL_STEPS`), after the glyph-anchor offset;
       (c) X: within `SLOT_TOL_SPACES` of slot k's x plus the drift allowance.
-    Otherwise the box is LEFT ALONE (`narrow` False). No clef: (b) is unchecked and says so."""
+    Otherwise the box is LEFT ALONE (`narrow` False). No clef: (b) is unchecked and says so.
+    `loose`: the PRE-GATE (a superset of every written key): either type, any slot to `MAX_SLOTS`, any order index 1..k (a key change shifts the
+    index by its cancels), naturals allowed -- a box it rejects no written key could narrow, so the heavy reads are skipped for it."""
     if not tb:
         return {"narrow": False, "why": "no_measure"}
     shape = tb.get("shape")
@@ -411,6 +414,8 @@ def judge_tail_box(tb: Optional[Dict[str, Any]], slot_cx: Dict[Any, float], spac
     cancel = abs(int(previous)) if change else 0
     # slot k -> the candidates it could hold: (type "b"|"#", order index j, kind "acc"|"cancel")
     def holds(k):
+        if loose:
+            return [(t, j, kind) for t in ("b", "#") for j in range(1, k + 1) for kind in ("acc", "cancel")]
         if written is None:
             return [("b", k, "acc"), ("#", k, "acc")] + ([("b", k, "cancel"), ("#", k, "cancel")] if previous is None else [])
         if k <= cancel:

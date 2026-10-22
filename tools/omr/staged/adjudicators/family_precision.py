@@ -1937,7 +1937,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
         # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE register consult, in place of the 2.177 meter read; a
         # claim too weak to refuse NARROWS at the end instead.
-        claim = _claimed_by.consult(ev, box_row, head=False, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
+        claim = _claimed_by.consult(ev, box_row, head=False, tail_reads=lambda light=False: _key_tail_reads(ev, light)) if _claimed_by.enabled() else None
         if claim is not None and claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_refusal(claim, box_row, detail)
@@ -2600,11 +2600,16 @@ def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
 FAMILY_REFUSALS: Tuple[str, ...] = tuple(_OK)
 
 
-def _key_tail_reads(ev):
-    """ROADMAP 2.187b: the four verdicts the key tail's written key is made of, READ here in the decision's own body (`claimed_by.consult` takes
-    them as `tail_reads`): the staff's clef, slot and part key, and its margin label rows."""
+def _key_tail_reads(ev, light=False):
+    """ROADMAP 2.187b: the verdicts the key tail's written key is made of, READ here in the decision's own body (`claimed_by.consult` takes
+    them as `tail_reads`): the staff's clef; and, unless `light`, its slot and the document's part key and its margin label rows. `light` is the
+    first, cheap look (the clef alone): a box that cannot be an accidental on ANY run never reads the heavy ones, whose basis would otherwise ride
+    on every notehead verdict it touches (measured: Litolff's record grew 62%)."""
     staff = ev.subject.at(Kind.STAFF)
     if staff is None:
         return {"staff": None}
-    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
-            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}
+    out = {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff)}
+    if not light:
+        out.update({"slot": ev.verdict(Q.SLOT_INDEX, subject=staff), "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)),
+                    "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)})
+    return out
