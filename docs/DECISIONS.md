@@ -9,6 +9,7 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
 
+- 2026-10-22 · Sean · Land 2.193 (OMR_NATURAL_CANDIDATE) ON: "Land on" · Sean's fresh tiles 8/9 naturals right vs 0/9 before, judged right->wrong 0; known gap: naturals the detector scores ~0 (his earlier tiles 2.186 #4, 2.190 #6 #9) · (benchmarks/omr-one-ink-one-mark-2026-10/FINDINGS.md)
 - 2026-10-22 · Sean · 2.193 tiles: "Tiles 2 and 11 are flats, all the others are naturals." · OMR_NATURAL_CANDIDATE: 8 of 9 changed accidentals right (printed naturals the detector boxed as flat/sharp, now natural), 0 of 9 before; tile 10, a natural, was written flat and is now written with none (both wrong); controls right; not landed · (benchmarks/omr-one-ink-one-mark-2026-10/FINDINGS.md, out/print/2.193-missing-naturals/answers.json)
 - 2026-10-22 · Sean · Land 2.192 (OMR_ACCIDENTAL_ON_A_REST) ON: "land 2.192" · all 9 double-sharps it stops applying are eighth rests (Sean's tiles), judged right->wrong 0; known gap: 2 kept double-sharps on rests the shape reader calls sharps · (benchmarks/omr-phantom-accidental-2026-10/FINDINGS.md)
 - 2026-10-22 · Sean · Double sharps are rare but real in these scores and must be read: "we definitely need the x for double sharps - they are rare but happen" · so a double-sharp box on a rest's ink is never refused on rarity alone; the gap (rests read as sharp-shaped) needs a better rest-vs-accidental shape test, not a class ban · (ROADMAP 2.192)

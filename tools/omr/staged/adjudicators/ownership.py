@@ -23,6 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from .. import one_ink as _one_ink
 from .. import accidental_shape as _acc_shape
+from ... import natural_candidate as _natural_candidate
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
                       owner_from_staves_enabled)
@@ -4381,10 +4382,25 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         oi = detail.get("one_ink")
         cands = ([str((oi.get("winner") or {}).get("class"))] + [str(r.get("class")) for r in oi.get("rivals") or ()]) if oi else \
             [str(detail.get("detector_class"))]
+        # ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`): the detector's sub-floor NATURAL score for THIS ink (filed at GATHER, a candidate and never a
+        # box) joins the candidates the shape may choose among -- only an ink that already holds a flat/sharp box has one. Its confidence is its own
+        # (low) score; the choice is GUESSED like every shape choice.
+        nat = detail.get("natural_candidate") if _natural_candidate.enabled() else None
+        nat_injected = False
+        if nat and nat.get("conf") is not None and float(nat["conf"]) >= _natural_candidate.LOWER_BOUND \
+                and not any(c.lower() == _natural_candidate.CLASS_NAME for c in cands):
+            cands = cands + ["accidentalNatural"]
+            pbc = {**pbc, "accidentalNatural": {"alteration": "natural", "position": nat["position"], "anchor_fraction": nat["anchor_fraction"]}}
+            nat_injected = True
         shape_choice = _acc_shape.choose(cands, shape_now)
         shape_choice = {**shape_choice, "measured": shape_now["shape"], "bl": shape_row.get("bl"), "tr": shape_row.get("tr"),
                         "margin": shape_now["margin"], "candidates": cands}
         pick = shape_choice.get("pick")
+        if nat_injected and pick == "accidentalNatural":
+            # the natural exists only as a sub-floor score: it enters the merge record as a rival with its own score, and only because the shape chose it
+            oi = ({**oi, "rivals": list(oi.get("rivals") or ()) + [{"class": "accidentalNatural", "conf": nat["conf"]}]} if oi else
+                  {"rivals": [{"class": "accidentalNatural", "conf": nat["conf"]}], "margin": None, "natural_candidate": True,
+                   "winner": {"class": str(detail.get("detector_class")), "conf": detail.get("confidence")}})
         if oi and pick and pick in pbc and str(pick) != str((oi.get("winner") or {}).get("class")):
             was = oi.get("winner") or {}
             rivals = [r for r in oi.get("rivals") or () if str(r.get("class")) != str(pick)] + [dict(was)]
