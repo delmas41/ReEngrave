@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import pathlib
 import random
+import collections
 import unittest
 
 from tools.omr.staged import lane_report as L
@@ -151,6 +152,19 @@ class TestTilesAndSample(unittest.TestCase):
         self.assertTrue(all(c["rg"].startswith("s") for c in ctrl))          # controls are unchanged symbols
         self.assertEqual(L.pick_tiles(self.changes(), self.same(), seed=7), items)   # seeded
         self.assertNotEqual([i["rg"] for i in L.pick_tiles(self.changes(), self.same(), seed=8)], [i["rg"] for i in items])
+
+    def test_tiles_follow_the_counts_and_a_tenth_gets_one(self):
+        mk = lambda kind, i: dict(kind=kind, side="gained", page=1, cx=1, cy=1, box=[0, 0, 5, 5], rg="g%s%d" % (kind, i), value="v")
+        big = {"brahms": [mk("accidental", i) for i in range(80)] + [mk("rest", i) for i in range(10)] + [mk("slur", i) for i in range(4)]}
+        n = lambda ch: collections.Counter(i["kind"] for i in L.pick_tiles(ch, self.same(), seed=3) if i["role"] == "case")
+        c = n(big)
+        self.assertGreaterEqual(c["accidental"], 6)       # the biggest kind gets most of the 9
+        self.assertGreaterEqual(c["rest"], 1)             # >= 10% of changes: at least one
+        # twin: a kind under 10% is NOT guaranteed a tile and the biggest kind is not capped at one-per-kind
+        twin = {"brahms": [mk("accidental", i) for i in range(95)] + [mk("slur", i) for i in range(5)]}
+        c2 = n(twin)
+        self.assertEqual(c2["slur"], 0)
+        self.assertEqual(c2["accidental"], 9)
 
     def test_no_changes_gives_no_cases(self):
         items = L.pick_tiles({"litolff": []}, self.same(), seed=1)
