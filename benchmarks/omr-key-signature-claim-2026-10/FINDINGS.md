@@ -125,3 +125,16 @@ whole system run (so a mark at a slot it did not print is refused), and one that
 (`glyph/5/1/1/0/13` stays a rest in both: its staff read 3 slots itself but the flat's box stands 1.2 sp past the placed third; `glyph/7/0/10/0/12` and the two Brahms keys
 `15/0/0/0/11`, `21/0/9/0/3` change with the dossier -- see the dossier note: a count the work prints as {0,1,3} made the pair's 2 "disagree" before the dossier-stands-in rule was fixed;
 the table above is the pre-fix run, re-run in the final measure.) The 2 narrowed are staves that read NO slot of their own on a system whose other staves read 3 (`5/1/5/0/5`, `9/0/1/0/12`): blue, never refused.
+
+Update after the dossier fix (`find_object`: the dossier bounds the count; a pair reading one more than the work prints is taken one down, a larger gap is a disagreement): Brahms p15
+(4 pages' worth of the 24 are on p5/p15/p21/p24; p15 holds the first) now refuses all 4 of its flats' boxes with the dossier admitted (was 2 of 4 abstained). The full 24 are re-measured by `lane_report --from gather` once
+2.189's detector cache is on main (a gather per arm is not run before it, coordinator's order).
+
+## The 2.183 Brahms leak (19 blue dynamics words, 2 notes, 3 glyph verdicts): NOT reproduced; cause NOT found
+
+Tested, each a control that could fail, all on the 20261020-night Brahms slices, adjudicate-stage replays of pages (no gather):
+- ids: the same replay with the row-id counter started at 677000 (ids cross 999999 mid-run, where `obs:%06d` stops sorting numerically) and again +535 (the 535 key rows): byte-identical export. Ids are not the cause.
+- hash order: three PYTHONHASHSEED values, byte-identical. Not set-iteration order.
+- the whole movement in two chunks (the 8 sample pages; the other 19 + page 0), OFF vs ON (`OMR_KEY_SIGNATURE_CLAIM`), fresh process each: the only difference is the one rest the claim names (`claim_narrowed:key_signature`, +1 blue, +352 bytes); no dynamics word moves. Same-process OFF-then-ON: identical result.
+So on every Brahms page the residue does not appear when the pages are replayed in chunks, with or without a shared process. It needs the whole 27-page record in one log (`replay_2_183.py`), which this lane may not run (measuring.md §0).
+The coordinator's rule stands: ON must change nothing but what the claim names; `lane_report`'s no-op control (OFF==ON) is the check, and the 2.187 report below uses it.
