@@ -1,0 +1,2488 @@
+{
+ "litolff": {
+  "rows": 153991,
+  "bytes": 52671068,
+  "by_quantity": {
+   "roster_entry": {
+    "rows": 16,
+    "bytes": 7728,
+    "readers": [
+     "catalog"
+    ],
+    "detail_keys": {
+     "tier": 16,
+     "n_instruments": 16,
+     "n_families": 16
+    }
+   },
+   "document_identity": {
+    "rows": 1,
+    "bytes": 657,
+    "readers": [
+     "catalog"
+    ],
+    "detail_keys": {
+     "tier": 1,
+     "edition_path": 1,
+     "publisher": 1,
+     "publisher_year": 1,
+     "plate": 1,
+     "work_id": 1,
+     "composer": 1,
+     "image_type": 1,
+     "has_text_layer": 1,
+     "imslp_id": 1,
+     "source_kind": 1
+    }
+   },
+   "input_domain": {
+    "rows": 1,
+    "bytes": 489,
+    "readers": [
+     "container"
+    ],
+    "detail_keys": {
+     "tier": 1,
+     "pages_probed": 1,
+     "page_verdicts": 1,
+     "max_raster_coverage": 1,
+     "max_drawings": 1,
+     "ms": 1,
+     "source_kind": 1
+    }
+   },
+   "staff_lines": {
+    "rows": 184,
+    "bytes": 39940,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "page_staff_index": 184
+    }
+   },
+   "staff_spacing": {
+    "rows": 184,
+    "bytes": 31860,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_extent": {
+    "rows": 184,
+    "bytes": 32835,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_skew": {
+    "rows": 184,
+    "bytes": 38541,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "thickness_px": 184
+    }
+   },
+   "bracket_block": {
+    "rows": 184,
+    "bytes": 36880,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "mirror": 184,
+     "n_blocks": 184
+    }
+   },
+   "gap_bridging": {
+    "rows": 9,
+    "bytes": 1623,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "mirror": 9
+    }
+   },
+   "barline_column": {
+    "rows": 184,
+    "bytes": 38168,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "note": 184
+    }
+   },
+   "system_staff_count": {
+    "rows": 17,
+    "bytes": 2996,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_ordinal": {
+    "rows": 184,
+    "bytes": 31560,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "cell_box": {
+    "rows": 2899,
+    "bytes": 574914,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "glyph_box": {
+    "rows": 19946,
+    "bytes": 7235958,
+    "readers": [
+     "detector",
+     "yolo_detector_view",
+     "yolo_letter_look",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head"
+    ],
+    "detail_keys": {
+     "category": 19946,
+     "bbox_page_px": 19946,
+     "x_center_page": 19946,
+     "y_center_page": 19946,
+     "source": 305,
+     "read_from": 208,
+     "end": 208,
+     "from_record_box": 208,
+     "orphan_stems": 208,
+     "stem_canonical": 208,
+     "witness": 100,
+     "view": 97,
+     "staff_space_px": 97,
+     "anti_alias": 97,
+     "n_phases": 97,
+     "phases_found": 97,
+     "phase_confs": 97,
+     "family": 97,
+     "how": 12,
+     "read_as": 12,
+     "candidates": 12,
+     "library_term": 12,
+     "looks_seen": 12,
+     "evidence": 12,
+     "group_box_page": 12,
+     "region_letters": 12
+    }
+   },
+   "glyph_conf": {
+    "rows": 19946,
+    "bytes": 4082071,
+    "readers": [
+     "detector",
+     "yolo_detector_view",
+     "yolo_letter_look",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head"
+    ],
+    "detail_keys": {}
+   },
+   "notehead_class": {
+    "rows": 5953,
+    "bytes": 1263488,
+    "readers": [
+     "detector",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head"
+    ],
+    "detail_keys": {}
+   },
+   "empty_bar_rest_search": {
+    "rows": 201,
+    "bytes": 67013,
+    "readers": [
+     "cv_rest_search"
+    ],
+    "detail_keys": {
+     "found": 201,
+     "bar_width_px": 201,
+     "reason": 143,
+     "n_components": 143,
+     "ink_bbox_canonical": 58,
+     "width_spaces": 58,
+     "height_spaces": 58,
+     "staff_step": 58,
+     "target_line_canonical_y": 58,
+     "witness": 58,
+     "bbox_page_px": 58
+    }
+   },
+   "system_arc": {
+    "rows": 801,
+    "bytes": 588480,
+    "readers": [
+     "cv_system_arc"
+    ],
+    "detail_keys": {
+     "pieces": 801,
+     "piece_classes": 801,
+     "cells": 801,
+     "x_left_page": 801,
+     "x_right_page": 801,
+     "y_left_page": 801,
+     "y_right_page": 801,
+     "width_spaces": 801,
+     "inked_columns": 801,
+     "coverage": 801,
+     "cut_at_barline": 801,
+     "beyond_boxes_spaces": 801,
+     "through_boxes": 801,
+     "anchor_left": 801,
+     "anchor_right": 801,
+     "anchor_dy_spaces": 801,
+     "heads_between": 801,
+     "space_page_px": 801
+    }
+   },
+   "mark_group": {
+    "rows": 8653,
+    "bytes": 2248443,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "family": 8653,
+     "size": 8653,
+     "rep": 8653,
+     "members": 2688
+    }
+   },
+   "notehead_recentre": {
+    "rows": 399,
+    "bytes": 101575,
+    "readers": [
+     "cv_notehead_recentre"
+    ],
+    "detail_keys": {
+     "fill": 399,
+     "margin": 399,
+     "runner_up": 399
+    }
+   },
+   "head_line_cut": {
+    "rows": 17,
+    "bytes": 9077,
+    "readers": [
+     "cv_head_line_cut"
+    ],
+    "detail_keys": {
+     "line_y": 17,
+     "line_half_step": 17,
+     "line_half_step_float": 17,
+     "edge": 17,
+     "area_ratio": 17,
+     "holes": 17,
+     "line_ink": 17,
+     "detector_box": 17
+    }
+   },
+   "cell_staff_space": {
+    "rows": 2897,
+    "bytes": 606003,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "half_step": 2897,
+     "lines": 2897
+    }
+   },
+   "notehead_staff_position": {
+    "rows": 5953,
+    "bytes": 1388670,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "residual": 5953,
+     "rounded": 5953,
+     "from_head_cut": 17,
+     "detector_position_float": 17
+    }
+   },
+   "accidental_staff_position": {
+    "rows": 699,
+    "bytes": 312437,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "alteration": 699,
+     "detector_class": 699,
+     "anchor_fraction": 699,
+     "box_centre_position": 699,
+     "residual": 699,
+     "rounded": 699,
+     "x0": 699,
+     "x1": 699,
+     "y0": 699,
+     "y1": 699,
+     "confidence": 699
+    }
+   },
+   "glyph_band_distance": {
+    "rows": 9305,
+    "bytes": 3081116,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "candidate": 9305,
+     "own": 9305,
+     "position_in_candidate": 9305,
+     "local_position_in_candidate": 9305
+    }
+   },
+   "glyph_ladder": {
+    "rows": 3468,
+    "bytes": 870037,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "candidate": 3468,
+     "expected": 3468,
+     "found": 3468,
+     "rungs": 3468
+    }
+   },
+   "ledger_rung_ink": {
+    "rows": 8273,
+    "bytes": 3934228,
+    "readers": [
+     "cv_ledger"
+    ],
+    "detail_keys": {
+     "candidate": 8273,
+     "step": 8273,
+     "want_y_page": 8273,
+     "window_page_px": 8273,
+     "center": 8273,
+     "left": 8273,
+     "right": 8273,
+     "left_adjacent": 8273,
+     "right_adjacent": 8273,
+     "slant": 8273,
+     "adjacent": 8273,
+     "adjacent_above": 8273,
+     "adjacent_below": 8273
+    }
+   },
+   "ledger_owner_density": {
+    "rows": 2404,
+    "bytes": 591971,
+    "readers": [
+     "cv_ledger"
+    ],
+    "detail_keys": {
+     "candidate": 2404,
+     "step": 2404,
+     "want_y_page": 2404
+    }
+   },
+   "aug_dot": {
+    "rows": 231,
+    "bytes": 59292,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "detector_role": 231,
+     "detector_class": 231
+    }
+   },
+   "flag": {
+    "rows": 169,
+    "bytes": 37962,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "y_center": 169,
+     "x_center": 169
+    }
+   },
+   "dot_staff_position": {
+    "rows": 227,
+    "bytes": 98560,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "step": 227,
+     "on": 227,
+     "residual": 227,
+     "margin": 227,
+     "basis": 227,
+     "staff": 227,
+     "home": 227,
+     "x_page": 227,
+     "detector_role": 227,
+     "detector_class": 227
+    }
+   },
+   "rest": {
+    "rows": 1703,
+    "bytes": 656196,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 1703,
+     "x1": 1703,
+     "y0": 1703,
+     "y1": 1703,
+     "x_center": 1703,
+     "y_center": 1703,
+     "bbox_page_px": 1703,
+     "x_center_page": 1703,
+     "y_center_page": 1703
+    }
+   },
+   "fermata_mark": {
+    "rows": 149,
+    "bytes": 61206,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 149,
+     "x1": 149,
+     "y0": 149,
+     "y1": 149,
+     "x_center": 149,
+     "y_center": 149,
+     "bbox_page_px": 149,
+     "x_center_page": 149,
+     "y_center_page": 149,
+     "side": 149
+    }
+   },
+   "arc_box": {
+    "rows": 1403,
+    "bytes": 536097,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 1403,
+     "x1": 1403,
+     "y0": 1403,
+     "y1": 1403,
+     "x_center": 1403,
+     "y_center": 1403,
+     "bbox_page_px": 1403,
+     "x_center_page": 1403,
+     "y_center_page": 1403
+    }
+   },
+   "dynamic_letter": {
+    "rows": 1160,
+    "bytes": 737346,
+    "readers": [
+     "detector",
+     "yolo_letter_look"
+    ],
+    "detail_keys": {
+     "letter": 1160,
+     "cell_frame": 1160,
+     "bbox_page_px": 1160,
+     "x_center_page": 1160,
+     "y_center_page": 1160,
+     "staff_bottom_line_page": 1160,
+     "staff_spacing_px": 1160,
+     "band_offset_spaces": 1160,
+     "in_hairpin_band": 1160,
+     "local_position_in_staves": 1160,
+     "ink_height_spaces": 1160,
+     "ink_width_spaces": 1160
+    }
+   },
+   "dynamic_letter_neighbours": {
+    "rows": 1160,
+    "bytes": 333515,
+    "readers": [
+     "cv_letter_neighbours"
+    ],
+    "detail_keys": {
+     "gap_spaces": 1160
+    }
+   },
+   "stem": {
+    "rows": 4409,
+    "bytes": 1182816,
+    "readers": [
+     "cv_lines"
+    ],
+    "detail_keys": {
+     "x0": 4409,
+     "x1": 4409,
+     "y_center": 4409,
+     "image": 4409,
+     "staff_lines_erased": 4409
+    }
+   },
+   "stem_slash": {
+    "rows": 4409,
+    "bytes": 2260216,
+    "readers": [
+     "cv_stem_slash"
+    ],
+    "detail_keys": {
+     "stem_row_id": 4409,
+     "strokes": 4409,
+     "head_at_end": 4409
+    }
+   },
+   "stem_tip_ink": {
+    "rows": 1313,
+    "bytes": 615918,
+    "readers": [
+     "cv_stem_tip"
+    ],
+    "detail_keys": {
+     "stem_row_id": 1313,
+     "end": 1313,
+     "why": 1313,
+     "window_canonical": 1313,
+     "witness": 1313,
+     "line_rows_left_out": 1303,
+     "right": 1303,
+     "left": 1303,
+     "area": 1303,
+     "left_area": 1303,
+     "window_found": 918,
+     "window_right": 918,
+     "window_left": 918,
+     "hooks": 263,
+     "hooks_min": 263,
+     "hooks_max": 263,
+     "hooks_reason": 263,
+     "hooks_support": 263,
+     "out": 203,
+     "arm": 186,
+     "t_first": 186,
+     "covered_area": 98,
+     "tip_disagree": 4
+    }
+   },
+   "dot_stroke_ink": {
+    "rows": 106,
+    "bytes": 22721,
+    "readers": [
+     "cv_dot_stroke"
+    ],
+    "detail_keys": {
+     "ink_px": 106,
+     "line_px": 106
+    }
+   },
+   "mark_shape": {
+    "rows": 226,
+    "bytes": 57484,
+    "readers": [
+     "cv_mark_shape"
+    ],
+    "detail_keys": {
+     "top": 226,
+     "bot": 226,
+     "h_spaces": 226,
+     "w_spaces": 226,
+     "fill": 226
+    }
+   },
+   "beam_stroke": {
+    "rows": 2278,
+    "bytes": 647934,
+    "readers": [
+     "cv_lines",
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 2278,
+     "x1": 2278,
+     "y_center": 2278,
+     "image": 2278,
+     "staff_lines_erased": 2278
+    }
+   },
+   "beam_stem_join": {
+    "rows": 3326,
+    "bytes": 1304392,
+    "readers": [
+     "cv_beam_join"
+    ],
+    "detail_keys": {
+     "stem_row_id": 3326,
+     "beam_row_id": 3326,
+     "end": 3326,
+     "gap_px": 3326,
+     "max_blank_run_px": 3326,
+     "gap_tolerance_px": 3326,
+     "window_canonical": 3326,
+     "reason": 2112,
+     "line_bridge": 117
+    }
+   },
+   "ink": {
+    "rows": 2899,
+    "bytes": 1140506,
+    "readers": [
+     "cv_ink"
+    ],
+    "detail_keys": {
+     "ink_n_components": 2899,
+     "ink_total_area_px": 2899,
+     "ink_largest_share": 2899,
+     "ink_detector_coverage_max": 2899,
+     "ink_explained_by_union": 2899,
+     "cell_staff_space_px": 2899
+    }
+   },
+   "cell_ink_pieces": {
+    "rows": 2899,
+    "bytes": 1077754,
+    "readers": [
+     "cv_ink_pieces"
+    ],
+    "detail_keys": {
+     "pieces": 2899,
+     "staff_space_page_px": 2899
+    }
+   },
+   "narrow_box_shape": {
+    "rows": 135,
+    "bytes": 36164,
+    "readers": [
+     "cv_narrow_box_shape"
+    ],
+    "detail_keys": {
+     "n_pieces": 135,
+     "width_spaces": 36,
+     "height_spaces": 36,
+     "staff_step": 36,
+     "fill": 36,
+     "touches_cell_edge": 36,
+     "overlapping_detections": 36,
+     "bbox_page_px": 36
+    }
+   },
+   "unboxed_rest_shape": {
+    "rows": 845,
+    "bytes": 569847,
+    "readers": [
+     "cv_unboxed_rest_shape"
+    ],
+    "detail_keys": {
+     "n_pieces": 845,
+     "width_spaces": 845,
+     "height_spaces": 845,
+     "staff_step": 845,
+     "fill": 845,
+     "max_column_share": 845,
+     "mass_y": 845,
+     "column_profile": 845,
+     "coverage": 845,
+     "covered_by": 845,
+     "right_head": 845,
+     "first_cell": 845,
+     "left_of_header": 845,
+     "header_known": 845,
+     "touches_cell_edge": 845,
+     "bbox_canonical": 845,
+     "bbox_page_px": 845
+    }
+   },
+   "rest_ink_contact": {
+    "rows": 1703,
+    "bytes": 615870,
+    "readers": [
+     "cv_rest_ink_contact"
+    ],
+    "detail_keys": {
+     "thin_run_sp": 1703,
+     "thin_beyond_sp": 1703,
+     "blob_sp": 1703,
+     "box_height_sp": 1703,
+     "head_ink_sp2": 1703,
+     "head": 1703,
+     "heads": 1703
+    }
+   },
+   "ledger_ink_under": {
+    "rows": 3865,
+    "bytes": 1359366,
+    "readers": [
+     "cv_ink"
+    ],
+    "detail_keys": {
+     "ink_best_window": 3865,
+     "ink_windows": 3865,
+     "ink_background": 3865,
+     "ink_background_windows": 3865
+    }
+   },
+   "arc_ink_shape": {
+    "rows": 1403,
+    "bytes": 368483,
+    "readers": [
+     "cv_arc_ink"
+    ],
+    "detail_keys": {
+     "tall_cols": 1403,
+     "lines_in_box": 1403,
+     "width_spaces": 1403,
+     "height_spaces": 1403
+    }
+   },
+   "notehead_ink": {
+    "rows": 5953,
+    "bytes": 3869673,
+    "readers": [
+     "cv_notehead_ink"
+    ],
+    "detail_keys": {
+     "ink_raw": 5953,
+     "ink_net": 5953,
+     "interior_white": 5953,
+     "ink_off_line": 5826,
+     "interior_white_located": 536,
+     "part_boxed": 473,
+     "box_source": 142,
+     "ink_frame": 125,
+     "stem_bridge": 19
+    }
+   },
+   "stacked_head_fit": {
+    "rows": 2047,
+    "bytes": 793074,
+    "readers": [
+     "cv_stacked_head_fit"
+    ],
+    "detail_keys": {
+     "side": 2047,
+     "stem": 2047,
+     "ink": 2047,
+     "scores": 2047,
+     "near_miss": 277
+    }
+   },
+   "notehead_stem_cross_ink": {
+    "rows": 2917,
+    "bytes": 1192816,
+    "readers": [
+     "cv_notehead_stem_cross_ink"
+    ],
+    "detail_keys": {
+     "stem": 2917,
+     "left": 2917,
+     "right": 2917,
+     "left_share": 2917,
+     "right_share": 2917,
+     "total_ink_px": 2917,
+     "angle_deg": 2912,
+     "elongation": 2912,
+     "fill": 2912,
+     "ink_px": 2912
+    }
+   },
+   "head_oval": {
+    "rows": 105,
+    "bytes": 34011,
+    "readers": [
+     "cv_head_oval"
+    ],
+    "detail_keys": {
+     "left_gap_sp": 105,
+     "space_page_px": 105,
+     "oval_width_sp": 105,
+     "head_tall_columns": 105,
+     "columns": 105,
+     "max_span_sp": 105,
+     "line_rows": 105
+    }
+   },
+   "head_stem_reach": {
+    "rows": 2225,
+    "bytes": 833824,
+    "readers": [
+     "cv_head_stem_reach"
+    ],
+    "detail_keys": {
+     "head_box_page": 2225,
+     "sp": 2225,
+     "down_ext": 2225,
+     "up_ext": 2225,
+     "down_tip_y": 2225,
+     "up_tip_y": 2225,
+     "down_clipped": 2225,
+     "up_clipped": 2225
+    }
+   },
+   "notehead_letter_ink": {
+    "rows": 87,
+    "bytes": 36666,
+    "readers": [
+     "cv_notehead_letter_ink"
+    ],
+    "detail_keys": {
+     "letter_ink_share": 87,
+     "head_in_letter": 87,
+     "letter": 87,
+     "letter_class": 87,
+     "letter_w_spaces": 87,
+     "letter_h_spaces": 87,
+     "head_box_page": 87,
+     "sp": 87
+    }
+   },
+   "beam_stroke_ink": {
+    "rows": 2271,
+    "bytes": 1475135,
+    "readers": [
+     "cv_beam_shape"
+    ],
+    "detail_keys": {
+     "beam_row_id": 2271,
+     "thickness_px": 2271,
+     "line_px": 2271,
+     "thickness_ratio": 2271,
+     "thickness_spaces": 2271,
+     "sagitta_spaces": 2271,
+     "end_stems": 2271,
+     "columns": 2271,
+     "cover": 2271,
+     "band": 2271,
+     "core": 2271
+    }
+   },
+   "beam_stem_levels": {
+    "rows": 4409,
+    "bytes": 1669982,
+    "readers": [
+     "cv_beam_levels"
+    ],
+    "detail_keys": {
+     "stem_row_id": 4409,
+     "ends": 4409
+    }
+   },
+   "clef_glyph": {
+    "rows": 212,
+    "bytes": 46703,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "y_center": 212,
+     "x_center": 212
+    }
+   },
+   "clef_position": {
+    "rows": 212,
+    "bytes": 45148,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "glyph": 212,
+     "y_center": 212
+    }
+   },
+   "clef_located": {
+    "rows": 42,
+    "bytes": 14683,
+    "readers": [
+     "cv_locator"
+    ],
+    "detail_keys": {
+     "family": 42,
+     "line": 42,
+     "line_source": 42,
+     "x_center": 42,
+     "bbox": 42,
+     "w_spaces": 42,
+     "h_spaces": 42,
+     "overrides_notehead_box": 13,
+     "overrode_glyph_subjects": 13
+    }
+   },
+   "keysig_marker": {
+    "rows": 346,
+    "bytes": 104334,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x": 346,
+     "y_center": 346,
+     "detector_class": 346,
+     "detector_role": 346,
+     "cell_staff_space": 346
+    }
+   },
+   "keysig_clef_fit": {
+    "rows": 271,
+    "bytes": 71101,
+    "readers": [
+     "cv_header"
+    ],
+    "detail_keys": {
+     "n_accidentals": 271,
+     "accidental": 271,
+     "decided_by": 271,
+     "fifths": 271
+    }
+   },
+   "keysig_template_fit": {
+    "rows": 249,
+    "bytes": 60069,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "n_accidentals": 249,
+     "accidental": 249,
+     "fifths": 249
+    }
+   },
+   "keysig_run_position": {
+    "rows": 90,
+    "bytes": 19062,
+    "readers": [
+     "cv_header"
+    ],
+    "detail_keys": {
+     "n_accidentals": 90
+    }
+   },
+   "meter_template": {
+    "rows": 42,
+    "bytes": 12813,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "raw": 42,
+     "runner_up": 42,
+     "runner_up_score": 42,
+     "score_margin": 42
+    }
+   },
+   "meter_glyph": {
+    "rows": 48,
+    "bytes": 11783,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x": 48,
+     "y_center": 48,
+     "cell": 48,
+     "letter": 48
+    }
+   },
+   "claimed_area": {
+    "rows": 420,
+    "bytes": 286006,
+    "readers": [
+     "cv_claimed_area",
+     "cv_claimed_register"
+    ],
+    "detail_keys": {
+     "cell": 420,
+     "owner": 420,
+     "owner_row": 420,
+     "unit": 420,
+     "standing": 420,
+     "boxes_inside": 420,
+     "space_page_px": 420,
+     "owner_glyph": 408,
+     "source": 224,
+     "start_spaces": 197,
+     "cls": 197,
+     "prior": 184,
+     "right_edge": 184,
+     "locator_frame": 27,
+     "witnesses": 12,
+     "form": 12,
+     "pieces": 12,
+     "thickness_px": 12,
+     "column_x": 12,
+     "n_staves": 12,
+     "n_in_column": 12,
+     "numbers": 12
+    }
+   },
+   "margin_label": {
+    "rows": 115,
+    "bytes": 41033,
+    "readers": [
+     "surya",
+     "tesseract"
+    ],
+    "detail_keys": {
+     "reader_confidence": 115,
+     "reader_alias": 115,
+     "y_center_px": 115,
+     "rung": 115,
+     "label_tiers": 115
+    }
+   },
+   "direction_word": {
+    "rows": 67,
+    "bytes": 51564,
+    "readers": [
+     "surya",
+     "tesseract"
+    ],
+    "detail_keys": {
+     "category": 67,
+     "terms": 67,
+     "winning_reader": 67,
+     "dynamics": 67,
+     "library": 67,
+     "other_language": 67,
+     "lexicon_scope": 67,
+     "includes_dynamic_glyphs": 67,
+     "readers_run": 67,
+     "page_conflicts": 67,
+     "bbox_page_px": 67,
+     "x_center_page": 67,
+     "y_center_page": 67,
+     "x_page": 67,
+     "placement": 67,
+     "n_components": 67,
+     "page_staff_index": 67
+    }
+   },
+   "printed_bar_number": {
+    "rows": 15,
+    "bytes": 3463,
+    "readers": [
+     "surya"
+    ],
+    "detail_keys": {
+     "bbox_page_px": 15
+    }
+   },
+   "letter_look_cover": {
+    "rows": 7,
+    "bytes": 3015,
+    "readers": [
+     "yolo_letter_look"
+    ],
+    "detail_keys": {
+     "letters": 7,
+     "read_as": 7,
+     "candidates": 7,
+     "status": 7,
+     "group_box_page": 7,
+     "library_term": 7
+    }
+   },
+   "articulation_mark": {
+    "rows": 8,
+    "bytes": 3405,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 8,
+     "x1": 8,
+     "y0": 8,
+     "y1": 8,
+     "x_center": 8,
+     "y_center": 8,
+     "bbox_page_px": 8,
+     "x_center_page": 8,
+     "y_center_page": 8,
+     "side": 8
+    }
+   },
+   "meter_template_at_bar": {
+    "rows": 5,
+    "bytes": 1711,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "cell": 5,
+     "raw": 5,
+     "runner_up": 5,
+     "runner_up_score": 5,
+     "score_margin": 5,
+     "candidate_staves": 5
+    }
+   },
+   "ornament_mark": {
+    "rows": 1,
+    "bytes": 437,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 1,
+     "x1": 1,
+     "y0": 1,
+     "y1": 1,
+     "x_center": 1,
+     "y_center": 1,
+     "bbox_page_px": 1,
+     "x_center_page": 1,
+     "y_center_page": 1,
+     "kind": 1,
+     "strokes": 1,
+     "side": 1
+    }
+   },
+   "wedge_box": {
+    "rows": 3,
+    "bytes": 1441,
+    "readers": [
+     "cv_hairpins"
+    ],
+    "detail_keys": {
+     "bbox_page_px": 3,
+     "x_center_page": 3,
+     "y_center_page": 3,
+     "staff_bottom_line_page": 3,
+     "staff_spacing_px": 3,
+     "band_offset_spaces": 3,
+     "open_spaces": 3,
+     "outline_rms_spaces": 3,
+     "page_staff_index": 3
+    }
+   },
+   "tuplet_marker": {
+    "rows": 4,
+    "bytes": 1037,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 4,
+     "x1": 4,
+     "x_center": 4,
+     "is_bracket": 4
+    }
+   },
+   "far_head_ledger_position": {
+    "rows": 1016,
+    "bytes": 385145,
+    "readers": [
+     "ledger_farhead"
+    ],
+    "detail_keys": {
+     "ledger_reason": 1016,
+     "box_source": 1016,
+     "shape_source": 1016,
+     "geometry_position": 1016
+    }
+   },
+   "far_head_owner_ledger": {
+    "rows": 1640,
+    "bytes": 603531,
+    "readers": [
+     "ledger_owner_note_first"
+    ],
+    "detail_keys": {
+     "candidate": 1640,
+     "ledger_reason": 1640,
+     "how": 1640,
+     "geometry_position": 1640
+    }
+   }
+  },
+  "by_kind": {
+   "document": {
+    "rows": 18,
+    "bytes": 8874
+   },
+   "staff": {
+    "rows": 3340,
+    "bytes": 964230
+   },
+   "page": {
+    "rows": 9,
+    "bytes": 1623
+   },
+   "system": {
+    "rows": 32,
+    "bytes": 6459
+   },
+   "cell": {
+    "rows": 34210,
+    "bytes": 12622583
+   },
+   "glyph": {
+    "rows": 116382,
+    "bytes": 39067299
+   }
+  }
+ },
+ "brahms": {
+  "rows": 217835,
+  "bytes": 74379644,
+  "by_quantity": {
+   "roster_entry": {
+    "rows": 27,
+    "bytes": 12636,
+    "readers": [
+     "catalog"
+    ],
+    "detail_keys": {
+     "tier": 27,
+     "n_instruments": 27,
+     "n_families": 27
+    }
+   },
+   "document_identity": {
+    "rows": 1,
+    "bytes": 633,
+    "readers": [
+     "catalog"
+    ],
+    "detail_keys": {
+     "tier": 1,
+     "edition_path": 1,
+     "publisher": 1,
+     "publisher_year": 1,
+     "plate": 1,
+     "work_id": 1,
+     "composer": 1,
+     "image_type": 1,
+     "has_text_layer": 1,
+     "imslp_id": 1,
+     "source_kind": 1
+    }
+   },
+   "input_domain": {
+    "rows": 1,
+    "bytes": 488,
+    "readers": [
+     "container"
+    ],
+    "detail_keys": {
+     "tier": 1,
+     "pages_probed": 1,
+     "page_verdicts": 1,
+     "max_raster_coverage": 1,
+     "max_drawings": 1,
+     "ms": 1,
+     "source_kind": 1
+    }
+   },
+   "staff_lines": {
+    "rows": 199,
+    "bytes": 43386,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "page_staff_index": 199
+    }
+   },
+   "staff_spacing": {
+    "rows": 199,
+    "bytes": 34485,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_extent": {
+    "rows": 199,
+    "bytes": 35592,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_skew": {
+    "rows": 199,
+    "bytes": 41759,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "thickness_px": 199
+    }
+   },
+   "bracket_block": {
+    "rows": 199,
+    "bytes": 39956,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "mirror": 199,
+     "n_blocks": 199
+    }
+   },
+   "gap_bridging": {
+    "rows": 8,
+    "bytes": 1444,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "mirror": 8
+    }
+   },
+   "barline_column": {
+    "rows": 199,
+    "bytes": 41282,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "note": 199
+    }
+   },
+   "system_staff_count": {
+    "rows": 15,
+    "bytes": 2648,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "staff_ordinal": {
+    "rows": 199,
+    "bytes": 34234,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "cell_box": {
+    "rows": 2034,
+    "bytes": 404095,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {}
+   },
+   "glyph_box": {
+    "rows": 30063,
+    "bytes": 11053056,
+    "readers": [
+     "detector",
+     "yolo_detector_view",
+     "yolo_letter_look",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head",
+     "yolo_rescue_wedge"
+    ],
+    "detail_keys": {
+     "category": 30063,
+     "bbox_page_px": 30063,
+     "x_center_page": 30063,
+     "y_center_page": 30063,
+     "source": 457,
+     "view": 428,
+     "staff_space_px": 428,
+     "anti_alias": 428,
+     "n_phases": 428,
+     "phases_found": 428,
+     "phase_confs": 428,
+     "family": 428,
+     "witness_head": 54,
+     "mark_hw": 54,
+     "mark_taper": 54,
+     "mark_tip": 54,
+     "mark_h_spaces": 54,
+     "read_from": 29,
+     "end": 29,
+     "from_record_box": 29,
+     "orphan_stems": 29,
+     "stem_canonical": 29,
+     "witness": 8,
+     "how": 2,
+     "read_as": 2,
+     "candidates": 2,
+     "library_term": 2,
+     "looks_seen": 2,
+     "evidence": 2,
+     "group_box_page": 2
+    }
+   },
+   "glyph_conf": {
+    "rows": 30063,
+    "bytes": 6152246,
+    "readers": [
+     "detector",
+     "yolo_detector_view",
+     "yolo_letter_look",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head",
+     "yolo_rescue_wedge"
+    ],
+    "detail_keys": {}
+   },
+   "notehead_class": {
+    "rows": 7013,
+    "bytes": 1484764,
+    "readers": [
+     "detector",
+     "yolo_rescue_lowconf",
+     "yolo_rescue_stem_head"
+    ],
+    "detail_keys": {}
+   },
+   "empty_bar_rest_search": {
+    "rows": 59,
+    "bytes": 23419,
+    "readers": [
+     "cv_rest_search"
+    ],
+    "detail_keys": {
+     "found": 59,
+     "bar_width_px": 59,
+     "ink_bbox_canonical": 41,
+     "width_spaces": 41,
+     "height_spaces": 41,
+     "staff_step": 41,
+     "target_line_canonical_y": 41,
+     "witness": 41,
+     "bbox_page_px": 41,
+     "reason": 18,
+     "n_components": 18
+    }
+   },
+   "system_arc": {
+    "rows": 1358,
+    "bytes": 1042040,
+    "readers": [
+     "cv_system_arc"
+    ],
+    "detail_keys": {
+     "pieces": 1358,
+     "piece_classes": 1358,
+     "cells": 1358,
+     "x_left_page": 1358,
+     "x_right_page": 1358,
+     "y_left_page": 1358,
+     "y_right_page": 1358,
+     "width_spaces": 1358,
+     "inked_columns": 1358,
+     "coverage": 1358,
+     "cut_at_barline": 1358,
+     "beyond_boxes_spaces": 1358,
+     "through_boxes": 1358,
+     "anchor_left": 1358,
+     "anchor_right": 1358,
+     "anchor_dy_spaces": 1358,
+     "heads_between": 1358,
+     "space_page_px": 1358
+    }
+   },
+   "mark_group": {
+    "rows": 12120,
+    "bytes": 3162702,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "family": 12120,
+     "size": 12120,
+     "rep": 12120,
+     "members": 3951
+    }
+   },
+   "notehead_recentre": {
+    "rows": 536,
+    "bytes": 136549,
+    "readers": [
+     "cv_notehead_recentre"
+    ],
+    "detail_keys": {
+     "fill": 536,
+     "margin": 536,
+     "runner_up": 536
+    }
+   },
+   "head_line_cut": {
+    "rows": 18,
+    "bytes": 9721,
+    "readers": [
+     "cv_head_line_cut"
+    ],
+    "detail_keys": {
+     "line_y": 18,
+     "line_half_step": 18,
+     "line_half_step_float": 18,
+     "edge": 18,
+     "area_ratio": 18,
+     "holes": 18,
+     "line_ink": 18,
+     "detector_box": 18
+    }
+   },
+   "cell_staff_space": {
+    "rows": 2032,
+    "bytes": 424701,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "half_step": 2032,
+     "lines": 2032
+    }
+   },
+   "notehead_staff_position": {
+    "rows": 7013,
+    "bytes": 1656183,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "residual": 7013,
+     "rounded": 7013,
+     "from_head_cut": 18,
+     "detector_position_float": 18
+    }
+   },
+   "accidental_staff_position": {
+    "rows": 2081,
+    "bytes": 934689,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "alteration": 2081,
+     "detector_class": 2081,
+     "anchor_fraction": 2081,
+     "box_centre_position": 2081,
+     "residual": 2081,
+     "rounded": 2081,
+     "x0": 2081,
+     "x1": 2081,
+     "y0": 2081,
+     "y1": 2081,
+     "confidence": 2081
+    }
+   },
+   "glyph_band_distance": {
+    "rows": 18574,
+    "bytes": 6139119,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "candidate": 18574,
+     "own": 18574,
+     "position_in_candidate": 18574,
+     "local_position_in_candidate": 18574
+    }
+   },
+   "glyph_ladder": {
+    "rows": 4263,
+    "bytes": 1090509,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "candidate": 4263,
+     "expected": 4263,
+     "found": 4263,
+     "rungs": 4263
+    }
+   },
+   "ledger_rung_ink": {
+    "rows": 9720,
+    "bytes": 4639867,
+    "readers": [
+     "cv_ledger"
+    ],
+    "detail_keys": {
+     "candidate": 9720,
+     "step": 9720,
+     "want_y_page": 9720,
+     "window_page_px": 9720,
+     "center": 9720,
+     "left": 9720,
+     "right": 9720,
+     "left_adjacent": 9720,
+     "right_adjacent": 9720,
+     "slant": 9720,
+     "adjacent": 9720,
+     "adjacent_above": 9720,
+     "adjacent_below": 9720
+    }
+   },
+   "ledger_owner_density": {
+    "rows": 3032,
+    "bytes": 749680,
+    "readers": [
+     "cv_ledger"
+    ],
+    "detail_keys": {
+     "candidate": 3032,
+     "step": 3032,
+     "want_y_page": 3032
+    }
+   },
+   "aug_dot": {
+    "rows": 3352,
+    "bytes": 855793,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "detector_role": 3352,
+     "detector_class": 3352
+    }
+   },
+   "flag": {
+    "rows": 1059,
+    "bytes": 238359,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "y_center": 1059,
+     "x_center": 1059
+    }
+   },
+   "dot_staff_position": {
+    "rows": 3270,
+    "bytes": 1417607,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "step": 3270,
+     "on": 3270,
+     "residual": 3270,
+     "margin": 3270,
+     "basis": 3270,
+     "staff": 3270,
+     "home": 3270,
+     "x_page": 3270,
+     "detector_role": 3270,
+     "detector_class": 3270
+    }
+   },
+   "arc_box": {
+    "rows": 4630,
+    "bytes": 1787363,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 4630,
+     "x1": 4630,
+     "y0": 4630,
+     "y1": 4630,
+     "x_center": 4630,
+     "y_center": 4630,
+     "bbox_page_px": 4630,
+     "x_center_page": 4630,
+     "y_center_page": 4630
+    }
+   },
+   "rest": {
+    "rows": 2648,
+    "bytes": 1027742,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 2648,
+     "x1": 2648,
+     "y0": 2648,
+     "y1": 2648,
+     "x_center": 2648,
+     "y_center": 2648,
+     "bbox_page_px": 2648,
+     "x_center_page": 2648,
+     "y_center_page": 2648
+    }
+   },
+   "articulation_mark": {
+    "rows": 343,
+    "bytes": 149274,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 343,
+     "x1": 343,
+     "y0": 343,
+     "y1": 343,
+     "x_center": 343,
+     "y_center": 343,
+     "bbox_page_px": 343,
+     "x_center_page": 343,
+     "y_center_page": 343,
+     "side": 343
+    }
+   },
+   "dynamic_letter": {
+    "rows": 1148,
+    "bytes": 736173,
+    "readers": [
+     "detector",
+     "yolo_letter_look"
+    ],
+    "detail_keys": {
+     "letter": 1148,
+     "cell_frame": 1148,
+     "bbox_page_px": 1148,
+     "x_center_page": 1148,
+     "y_center_page": 1148,
+     "staff_bottom_line_page": 1148,
+     "staff_spacing_px": 1148,
+     "band_offset_spaces": 1148,
+     "in_hairpin_band": 1148,
+     "local_position_in_staves": 1148,
+     "ink_height_spaces": 1146,
+     "ink_width_spaces": 1146
+    }
+   },
+   "dynamic_letter_neighbours": {
+    "rows": 1148,
+    "bytes": 330247,
+    "readers": [
+     "cv_letter_neighbours"
+    ],
+    "detail_keys": {
+     "gap_spaces": 1148
+    }
+   },
+   "wedge_box": {
+    "rows": 54,
+    "bytes": 26130,
+    "readers": [
+     "cv_hairpins",
+     "detector"
+    ],
+    "detail_keys": {
+     "bbox_page_px": 53,
+     "x_center_page": 53,
+     "y_center_page": 53,
+     "staff_bottom_line_page": 53,
+     "staff_spacing_px": 53,
+     "band_offset_spaces": 53,
+     "open_spaces": 53,
+     "outline_rms_spaces": 53,
+     "page_staff_index": 53,
+     "detector_class": 1
+    }
+   },
+   "stem": {
+    "rows": 4295,
+    "bytes": 1155006,
+    "readers": [
+     "cv_lines"
+    ],
+    "detail_keys": {
+     "x0": 4295,
+     "x1": 4295,
+     "y_center": 4295,
+     "image": 4295,
+     "staff_lines_erased": 4295
+    }
+   },
+   "stem_slash": {
+    "rows": 4295,
+    "bytes": 2158584,
+    "readers": [
+     "cv_stem_slash"
+    ],
+    "detail_keys": {
+     "stem_row_id": 4295,
+     "strokes": 4295,
+     "head_at_end": 4295
+    }
+   },
+   "stem_tip_ink": {
+    "rows": 2365,
+    "bytes": 1213732,
+    "readers": [
+     "cv_stem_tip"
+    ],
+    "detail_keys": {
+     "stem_row_id": 2365,
+     "end": 2365,
+     "why": 2365,
+     "window_canonical": 2365,
+     "witness": 2365,
+     "line_rows_left_out": 2348,
+     "right": 2348,
+     "left": 2348,
+     "area": 2348,
+     "left_area": 2348,
+     "window_found": 2066,
+     "window_right": 2066,
+     "window_left": 2066,
+     "hooks": 923,
+     "hooks_min": 923,
+     "hooks_max": 923,
+     "hooks_reason": 923,
+     "hooks_support": 923,
+     "out": 868,
+     "arm": 813,
+     "t_first": 813,
+     "covered_area": 343,
+     "tip_disagree": 4
+    }
+   },
+   "dot_stroke_ink": {
+    "rows": 2325,
+    "bytes": 497947,
+    "readers": [
+     "cv_dot_stroke"
+    ],
+    "detail_keys": {
+     "ink_px": 2325,
+     "line_px": 2325
+    }
+   },
+   "mark_shape": {
+    "rows": 3346,
+    "bytes": 853736,
+    "readers": [
+     "cv_mark_shape"
+    ],
+    "detail_keys": {
+     "top": 3346,
+     "bot": 3346,
+     "h_spaces": 3346,
+     "w_spaces": 3346,
+     "fill": 3346
+    }
+   },
+   "beam_stroke": {
+    "rows": 3768,
+    "bytes": 1087473,
+    "readers": [
+     "cv_lines",
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 3768,
+     "x1": 3768,
+     "y_center": 3768,
+     "image": 3768,
+     "staff_lines_erased": 3768
+    }
+   },
+   "beam_stem_join": {
+    "rows": 2500,
+    "bytes": 994175,
+    "readers": [
+     "cv_beam_join"
+    ],
+    "detail_keys": {
+     "stem_row_id": 2500,
+     "beam_row_id": 2500,
+     "end": 2500,
+     "gap_px": 2500,
+     "max_blank_run_px": 2500,
+     "gap_tolerance_px": 2500,
+     "window_canonical": 2500,
+     "reason": 1901,
+     "line_bridge": 106
+    }
+   },
+   "ink": {
+    "rows": 2034,
+    "bytes": 894459,
+    "readers": [
+     "cv_ink"
+    ],
+    "detail_keys": {
+     "ink_n_components": 2034,
+     "ink_total_area_px": 2034,
+     "ink_largest_share": 2034,
+     "ink_detector_coverage_max": 2034,
+     "ink_explained_by_union": 2034,
+     "cell_staff_space_px": 2034
+    }
+   },
+   "cell_ink_pieces": {
+    "rows": 2034,
+    "bytes": 958832,
+    "readers": [
+     "cv_ink_pieces"
+    ],
+    "detail_keys": {
+     "pieces": 2034,
+     "staff_space_page_px": 2034
+    }
+   },
+   "narrow_box_shape": {
+    "rows": 1038,
+    "bytes": 250570,
+    "readers": [
+     "cv_narrow_box_shape"
+    ],
+    "detail_keys": {
+     "n_pieces": 1038,
+     "width_spaces": 164,
+     "height_spaces": 164,
+     "staff_step": 164,
+     "fill": 164,
+     "touches_cell_edge": 164,
+     "overlapping_detections": 164,
+     "bbox_page_px": 164
+    }
+   },
+   "unboxed_rest_shape": {
+    "rows": 2119,
+    "bytes": 1449771,
+    "readers": [
+     "cv_unboxed_rest_shape"
+    ],
+    "detail_keys": {
+     "n_pieces": 2119,
+     "width_spaces": 2119,
+     "height_spaces": 2119,
+     "staff_step": 2119,
+     "fill": 2119,
+     "max_column_share": 2119,
+     "mass_y": 2119,
+     "column_profile": 2119,
+     "coverage": 2119,
+     "covered_by": 2119,
+     "right_head": 2119,
+     "first_cell": 2119,
+     "left_of_header": 2119,
+     "header_known": 2119,
+     "touches_cell_edge": 2119,
+     "bbox_canonical": 2119,
+     "bbox_page_px": 2119
+    }
+   },
+   "rest_ink_contact": {
+    "rows": 2648,
+    "bytes": 974402,
+    "readers": [
+     "cv_rest_ink_contact"
+    ],
+    "detail_keys": {
+     "thin_run_sp": 2648,
+     "thin_beyond_sp": 2648,
+     "blob_sp": 2648,
+     "box_height_sp": 2648,
+     "head_ink_sp2": 2648,
+     "head": 2648,
+     "heads": 2648
+    }
+   },
+   "ledger_ink_under": {
+    "rows": 2313,
+    "bytes": 826692,
+    "readers": [
+     "cv_ink"
+    ],
+    "detail_keys": {
+     "ink_best_window": 2313,
+     "ink_windows": 2313,
+     "ink_background": 2313,
+     "ink_background_windows": 2313
+    }
+   },
+   "arc_ink_shape": {
+    "rows": 4630,
+    "bytes": 1222304,
+    "readers": [
+     "cv_arc_ink"
+    ],
+    "detail_keys": {
+     "tall_cols": 4630,
+     "lines_in_box": 4630,
+     "width_spaces": 4630,
+     "height_spaces": 4630
+    }
+   },
+   "notehead_ink": {
+    "rows": 7013,
+    "bytes": 4725405,
+    "readers": [
+     "cv_notehead_ink"
+    ],
+    "detail_keys": {
+     "ink_raw": 7013,
+     "ink_net": 7013,
+     "interior_white": 7013,
+     "ink_off_line": 6966,
+     "part_boxed": 1187,
+     "interior_white_located": 714,
+     "box_source": 185,
+     "ink_frame": 167,
+     "stem_bridge": 12
+    }
+   },
+   "stacked_head_fit": {
+    "rows": 2474,
+    "bytes": 952018,
+    "readers": [
+     "cv_stacked_head_fit"
+    ],
+    "detail_keys": {
+     "side": 2474,
+     "stem": 2474,
+     "ink": 2474,
+     "scores": 2474,
+     "near_miss": 180,
+     "second_head_by": 41
+    }
+   },
+   "notehead_stem_cross_ink": {
+    "rows": 1866,
+    "bytes": 763522,
+    "readers": [
+     "cv_notehead_stem_cross_ink"
+    ],
+    "detail_keys": {
+     "stem": 1866,
+     "left": 1866,
+     "right": 1866,
+     "left_share": 1866,
+     "right_share": 1866,
+     "total_ink_px": 1866,
+     "angle_deg": 1866,
+     "elongation": 1866,
+     "fill": 1866,
+     "ink_px": 1866
+    }
+   },
+   "head_oval": {
+    "rows": 272,
+    "bytes": 88274,
+    "readers": [
+     "cv_head_oval"
+    ],
+    "detail_keys": {
+     "left_gap_sp": 272,
+     "space_page_px": 272,
+     "oval_width_sp": 272,
+     "head_tall_columns": 272,
+     "columns": 272,
+     "max_span_sp": 272,
+     "line_rows": 272
+    }
+   },
+   "far_head_ledger_position": {
+    "rows": 1356,
+    "bytes": 506132,
+    "readers": [
+     "ledger_farhead"
+    ],
+    "detail_keys": {
+     "ledger_reason": 1356,
+     "box_source": 1356,
+     "shape_source": 1356,
+     "geometry_position": 1356
+    }
+   },
+   "far_head_owner_ledger": {
+    "rows": 2355,
+    "bytes": 857207,
+    "readers": [
+     "ledger_owner_note_first"
+    ],
+    "detail_keys": {
+     "candidate": 2355,
+     "ledger_reason": 2355,
+     "how": 2355,
+     "geometry_position": 2355
+    }
+   },
+   "head_stem_reach": {
+    "rows": 2887,
+    "bytes": 1083880,
+    "readers": [
+     "cv_head_stem_reach"
+    ],
+    "detail_keys": {
+     "head_box_page": 2887,
+     "sp": 2887,
+     "down_ext": 2887,
+     "up_ext": 2887,
+     "down_tip_y": 2887,
+     "up_tip_y": 2887,
+     "down_clipped": 2887,
+     "up_clipped": 2887
+    }
+   },
+   "beam_stroke_ink": {
+    "rows": 3761,
+    "bytes": 2214988,
+    "readers": [
+     "cv_beam_shape"
+    ],
+    "detail_keys": {
+     "beam_row_id": 3761,
+     "thickness_px": 3761,
+     "line_px": 3761,
+     "thickness_ratio": 3761,
+     "thickness_spaces": 3761,
+     "sagitta_spaces": 3761,
+     "end_stems": 3761,
+     "columns": 3761,
+     "cover": 3761,
+     "band": 3761,
+     "core": 3761
+    }
+   },
+   "beam_stem_levels": {
+    "rows": 4295,
+    "bytes": 1607671,
+    "readers": [
+     "cv_beam_levels"
+    ],
+    "detail_keys": {
+     "stem_row_id": 4295,
+     "ends": 4295
+    }
+   },
+   "clef_glyph": {
+    "rows": 279,
+    "bytes": 61657,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "y_center": 279,
+     "x_center": 279
+    }
+   },
+   "clef_position": {
+    "rows": 279,
+    "bytes": 61414,
+    "readers": [
+     "geometry"
+    ],
+    "detail_keys": {
+     "glyph": 279,
+     "y_center": 279
+    }
+   },
+   "clef_located": {
+    "rows": 43,
+    "bytes": 14265,
+    "readers": [
+     "cv_locator"
+    ],
+    "detail_keys": {
+     "family": 43,
+     "line": 43,
+     "line_source": 43,
+     "x_center": 43,
+     "bbox": 43,
+     "w_spaces": 43,
+     "h_spaces": 43,
+     "overrides_notehead_box": 4,
+     "overrode_glyph_subjects": 4
+    }
+   },
+   "keysig_marker": {
+    "rows": 499,
+    "bytes": 150744,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x": 499,
+     "y_center": 499,
+     "detector_class": 499,
+     "detector_role": 499,
+     "cell_staff_space": 499
+    }
+   },
+   "keysig_clef_fit": {
+    "rows": 296,
+    "bytes": 77772,
+    "readers": [
+     "cv_header"
+    ],
+    "detail_keys": {
+     "n_accidentals": 296,
+     "accidental": 296,
+     "decided_by": 296,
+     "fifths": 296
+    }
+   },
+   "keysig_template_fit": {
+    "rows": 185,
+    "bytes": 44681,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "n_accidentals": 185,
+     "accidental": 185,
+     "fifths": 185
+    }
+   },
+   "keysig_run_position": {
+    "rows": 94,
+    "bytes": 19929,
+    "readers": [
+     "cv_header"
+    ],
+    "detail_keys": {
+     "n_accidentals": 94
+    }
+   },
+   "meter_glyph": {
+    "rows": 158,
+    "bytes": 38699,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x": 158,
+     "y_center": 158,
+     "cell": 158,
+     "letter": 158
+    }
+   },
+   "meter_template": {
+    "rows": 27,
+    "bytes": 8253,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "raw": 27,
+     "runner_up": 27,
+     "runner_up_score": 27,
+     "score_margin": 27
+    }
+   },
+   "meter_template_at_bar": {
+    "rows": 14,
+    "bytes": 4821,
+    "readers": [
+     "template"
+    ],
+    "detail_keys": {
+     "cell": 14,
+     "raw": 14,
+     "runner_up": 14,
+     "runner_up_score": 14,
+     "score_margin": 14,
+     "candidate_staves": 14
+    }
+   },
+   "claimed_area": {
+    "rows": 484,
+    "bytes": 385828,
+    "readers": [
+     "cv_claimed_area",
+     "cv_claimed_register"
+    ],
+    "detail_keys": {
+     "cell": 484,
+     "owner": 484,
+     "owner_row": 484,
+     "unit": 484,
+     "standing": 484,
+     "boxes_inside": 484,
+     "space_page_px": 484,
+     "owner_glyph": 460,
+     "source": 261,
+     "start_spaces": 238,
+     "cls": 238,
+     "prior": 199,
+     "right_edge": 199,
+     "witnesses": 24,
+     "form": 24,
+     "pieces": 24,
+     "thickness_px": 24,
+     "column_x": 24,
+     "n_staves": 24,
+     "n_in_column": 24,
+     "numbers": 24,
+     "locator_frame": 23
+    }
+   },
+   "margin_label": {
+    "rows": 199,
+    "bytes": 71972,
+    "readers": [
+     "surya",
+     "tesseract"
+    ],
+    "detail_keys": {
+     "reader_confidence": 199,
+     "reader_alias": 199,
+     "y_center_px": 199,
+     "rung": 199,
+     "label_tiers": 199,
+     "shared_word": 16
+    }
+   },
+   "direction_word": {
+    "rows": 148,
+    "bytes": 116857,
+    "readers": [
+     "surya",
+     "tesseract"
+    ],
+    "detail_keys": {
+     "category": 148,
+     "terms": 148,
+     "winning_reader": 148,
+     "dynamics": 148,
+     "library": 148,
+     "other_language": 148,
+     "lexicon_scope": 148,
+     "includes_dynamic_glyphs": 148,
+     "readers_run": 148,
+     "page_conflicts": 148,
+     "bbox_page_px": 148,
+     "x_center_page": 148,
+     "y_center_page": 148,
+     "x_page": 148,
+     "placement": 148,
+     "n_components": 148,
+     "page_staff_index": 148
+    }
+   },
+   "printed_bar_number": {
+    "rows": 11,
+    "bytes": 2545,
+    "readers": [
+     "surya"
+    ],
+    "detail_keys": {
+     "bbox_page_px": 11
+    }
+   },
+   "notehead_letter_ink": {
+    "rows": 43,
+    "bytes": 18223,
+    "readers": [
+     "cv_notehead_letter_ink"
+    ],
+    "detail_keys": {
+     "letter_ink_share": 43,
+     "head_in_letter": 43,
+     "letter": 43,
+     "letter_class": 43,
+     "letter_w_spaces": 43,
+     "letter_h_spaces": 43,
+     "head_box_page": 43,
+     "sp": 43
+    }
+   },
+   "letter_look_cover": {
+    "rows": 2,
+    "bytes": 751,
+    "readers": [
+     "yolo_letter_look"
+    ],
+    "detail_keys": {
+     "letters": 2,
+     "read_as": 2,
+     "candidates": 2,
+     "status": 2,
+     "group_box_page": 2,
+     "library_term": 2
+    }
+   },
+   "ornament_mark": {
+    "rows": 6,
+    "bytes": 2727,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 6,
+     "x1": 6,
+     "y0": 6,
+     "y1": 6,
+     "x_center": 6,
+     "y_center": 6,
+     "bbox_page_px": 6,
+     "x_center_page": 6,
+     "y_center_page": 6,
+     "kind": 6,
+     "strokes": 6,
+     "side": 6
+    }
+   },
+   "fermata_mark": {
+    "rows": 2,
+    "bytes": 890,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 2,
+     "x1": 2,
+     "y0": 2,
+     "y1": 2,
+     "x_center": 2,
+     "y_center": 2,
+     "bbox_page_px": 2,
+     "x_center_page": 2,
+     "y_center_page": 2,
+     "side": 2
+    }
+   },
+   "tuplet_marker": {
+    "rows": 1,
+    "bytes": 265,
+    "readers": [
+     "detector"
+    ],
+    "detail_keys": {
+     "x0": 1,
+     "x1": 1,
+     "x_center": 1,
+     "is_bracket": 1
+    }
+   }
+  },
+  "by_kind": {
+   "document": {
+    "rows": 29,
+    "bytes": 13757
+   },
+   "staff": {
+    "rows": 3950,
+    "bytes": 1210729
+   },
+   "page": {
+    "rows": 8,
+    "bytes": 1444
+   },
+   "system": {
+    "rows": 26,
+    "bytes": 5193
+   },
+   "cell": {
+    "rows": 33472,
+    "bytes": 13137135
+   },
+   "glyph": {
+    "rows": 180350,
+    "bytes": 60011386
+   }
+  }
+ }
+}

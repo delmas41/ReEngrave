@@ -1,0 +1,1595 @@
+{
+ "litolff": {
+  "verdict_rows": 18581,
+  "verdict_bytes": 111716856,
+  "abst_rows": 35679,
+  "abst_bytes": 11419488,
+  "verdict_bytes_by_field": {
+   "considered": 11638474,
+   "basis": 71883683,
+   "used": 754872,
+   "missing": 1535905,
+   "declined": 101991,
+   "excluded": 37162,
+   "correlated": 8847283,
+   "candidates": 116721,
+   "detail": 9888590,
+   "value": 543967,
+   "reason": 266460
+  },
+  "verdict_by_quantity": {
+   "notehead_is_not_a_notehead": {
+    "rows": 5953,
+    "bytes": 14364678
+   },
+   "rest_is_not_a_rest": {
+    "rows": 1703,
+    "bytes": 2351903
+   },
+   "arc_kind": {
+    "rows": 1403,
+    "bytes": 4945418
+   },
+   "notehead_is_an_eighth_rest": {
+    "rows": 135,
+    "bytes": 87655
+   },
+   "unboxed_ink_is_a_rest": {
+    "rows": 845,
+    "bytes": 739230
+   },
+   "duration": {
+    "rows": 8542,
+    "bytes": 89227972
+   }
+  },
+  "reasons": [
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "notehead",
+    "n": 5108
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "n": 4721
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "rest_class",
+    "n": 1549
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest",
+    "n": 1364
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "decided",
+    "reason": "tie",
+    "n": 907
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "n": 707
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "whole_rest_means_the_bar",
+    "n": 706
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "already_read_as_a_glyph",
+    "n": 664
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "decided",
+    "reason": "slur",
+    "n": 492
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "stacked_head_duplicate",
+    "n": 253
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "clipped_fragment",
+    "n": 192
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "n": 180
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "n": 132
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "notehead_is_a_duplicate_box",
+    "n": 120
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "too_narrow",
+    "n": 100
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "stem_tip_reads_no_beam",
+    "n": 88
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "shape_cannot_tell",
+    "n": 80
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "not_a_note_mark",
+    "n": 79
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "no_ink_under_box",
+    "n": 77
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_is_a_duplicate_box",
+    "n": 60
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_touches_two_staff_lines",
+    "n": 59
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_has_a_stem",
+    "n": 58
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "n": 53
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "head_fill_from_ink",
+    "n": 53
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "tremolo_slash_crosses_stem",
+    "n": 43
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "stem_value_follows",
+    "n": 42
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_is_a_barline",
+    "n": 40
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "claimed_by_another_class",
+    "n": 40
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_dynamic_letter",
+    "n": 36
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "eighth_rest_shape",
+    "n": 36
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "not_refused_as_too_narrow",
+    "n": 35
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_off_center",
+    "n": 34
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_clipped_by_crop",
+    "n": 32
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_stroke_into_a_head",
+    "n": 29
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "rest8th_shape",
+    "n": 29
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "meter_reconciliation",
+    "n": 24
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "rest_slot_contradicts_class",
+    "n": 22
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "belongs_to_a_nearer_staff",
+    "n": 19
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:clef",
+    "n": 18
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "chord_mate_shares_the_stem",
+    "n": 18
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beam_certain_not_joined",
+    "n": 16
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "claimed_by_another_class",
+    "n": 15
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "stem_stroke_not_a_rest",
+    "n": 14
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "hooks_counted",
+    "n": 14
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "bar_disagrees_with_decided",
+    "n": 14
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_beam_piece",
+    "n": 13
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_in_a_key_signature_slot",
+    "n": 13
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "restQuarter_shape",
+    "n": 13
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "quarter_rest_shape",
+    "n": 13
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_rest_twin",
+    "n": 12
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "lone_event_fills_bar",
+    "n": 12
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:leading_column",
+    "n": 10
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "head_cut_piece",
+    "n": 10
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "open_head_flag_contradiction",
+    "n": 9
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "whole_class_filled_or_stemmed",
+    "n": 8
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "bar_corrects_one_note",
+    "n": 8
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_rest_shape",
+    "n": 7
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "flag_ink_unread",
+    "n": 7
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "dot_seen_beside_a_plain_note",
+    "n": 7
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "hollow_head_bare_stem",
+    "n": 6
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "whole_class_on_a_stem",
+    "n": 6
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_outside_its_staff",
+    "n": 5
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "whole_class_filled_on_a_stem",
+    "n": 5
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "narrowed",
+    "reason": "claim_narrowed:clef",
+    "n": 4
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "claimed_by:meter",
+    "n": 4
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "decided",
+    "reason": "ink_already_read_as_a_glyph",
+    "n": 4
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "n": 4
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "notehead_in_a_key_signature_slot",
+    "n": 3
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "abstained",
+    "reason": "same_pitch_accidental_unread",
+    "n": 3
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "decided",
+    "reason": "not_rest_shaped",
+    "n": 3
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "in_the_header",
+    "n": 3
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:meter",
+    "n": 2
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_rest",
+    "n": 2
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "narrowed",
+    "reason": "claim_narrowed:clef",
+    "n": 2
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "the_neighbours_run_to_the_same_barline",
+    "n": 2
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_an_arc_tail",
+    "n": 1
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_on_a_dynamic_letter",
+    "n": 1
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_overlaps_a_notehead",
+    "n": 1
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_is_a_slashed_stem",
+    "n": 1
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "abstained",
+    "reason": "stack_slur_over_two_same_pitch_notes",
+    "n": 1
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "shape_cannot_tell",
+    "n": 1
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "head_beside_it",
+    "n": 1
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "thin_stroke_not_a_rest",
+    "n": 1
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "tip_readers_disagree",
+    "n": 1
+   }
+  ],
+  "abstention_reasons": [
+   {
+    "quantity": "notehead_recentre",
+    "reason": "box_already_head_sized",
+    "n": 5473
+   },
+   {
+    "quantity": "stem_tip_ink",
+    "reason": "occupied",
+    "n": 4784
+   },
+   {
+    "quantity": "beam_stem_join",
+    "reason": "ambiguous",
+    "n": 4210
+   },
+   {
+    "quantity": "stem_tip_ink",
+    "reason": "ambiguous",
+    "n": 2721
+   },
+   {
+    "quantity": "direction_word",
+    "reason": "no_ink",
+    "n": 2662
+   },
+   {
+    "quantity": "far_head_owner_ledger",
+    "reason": "ledger_not_read",
+    "n": 2424
+   },
+   {
+    "quantity": "dynamic_letter",
+    "reason": "no_glyph_of_this_kind",
+    "n": 2423
+   },
+   {
+    "quantity": "beam_stroke",
+    "reason": "no_stems_to_join",
+    "n": 1795
+   },
+   {
+    "quantity": "meter_template_at_bar",
+    "reason": "below_threshold",
+    "n": 1327
+   },
+   {
+    "quantity": "ledger_owner_density",
+    "reason": "no_staff_geometry",
+    "n": 1232
+   },
+   {
+    "quantity": "far_head_ledger_position",
+    "reason": "ledger_not_read",
+    "n": 1094
+   },
+   {
+    "quantity": "stem",
+    "reason": "no_line_accepted",
+    "n": 896
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "no_letter_read",
+    "n": 796
+   },
+   {
+    "quantity": "beam_stroke",
+    "reason": "no_line_accepted",
+    "n": 535
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "rescue_unguided",
+    "n": 483
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "witness_unmet",
+    "n": 472
+   },
+   {
+    "quantity": "system_arc",
+    "reason": "below_threshold",
+    "n": 431
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "ambiguous",
+    "n": 271
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "no_clusters",
+    "n": 231
+   },
+   {
+    "quantity": "direction_word",
+    "reason": "no_reading",
+    "n": 212
+   },
+   {
+    "quantity": "wedge_box",
+    "reason": "no_ink",
+    "n": 181
+   },
+   {
+    "quantity": "meter_glyph",
+    "reason": "no_detections",
+    "n": 153
+   },
+   {
+    "quantity": "meter_template",
+    "reason": "below_threshold",
+    "n": 142
+   },
+   {
+    "quantity": "keysig_run_position",
+    "reason": "no_clusters",
+    "n": 94
+   },
+   {
+    "quantity": "ledger_rung_ink",
+    "reason": "no_staff_geometry",
+    "n": 93
+   },
+   {
+    "quantity": "margin_label",
+    "reason": "no_ink",
+    "n": 69
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "asymmetric",
+    "n": 65
+   },
+   {
+    "quantity": "keysig_marker",
+    "reason": "no_detections",
+    "n": 50
+   },
+   {
+    "quantity": "ledger_owner_density",
+    "reason": "off_staff",
+    "n": 47
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "already_boxed_as_a_dynamic",
+    "n": 45
+   },
+   {
+    "quantity": "meter_ocr",
+    "reason": "below_threshold",
+    "n": 42
+   },
+   {
+    "quantity": "notehead_recentre",
+    "reason": "ambiguous",
+    "n": 37
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "no_detections",
+    "n": 36
+   },
+   {
+    "quantity": "notehead_recentre",
+    "reason": "below_threshold",
+    "n": 21
+   },
+   {
+    "quantity": "clef_glyph",
+    "reason": "no_detections",
+    "n": 21
+   },
+   {
+    "quantity": "volta_bracket",
+    "reason": "no_ink",
+    "n": 17
+   },
+   {
+    "quantity": "repeat_dots",
+    "reason": "no_ink",
+    "n": 17
+   },
+   {
+    "quantity": "dossier_fact",
+    "reason": "out_of_scope",
+    "n": 16
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "ambiguous_snap",
+    "n": 10
+   },
+   {
+    "quantity": "stacked_head_fit",
+    "reason": "ambiguous",
+    "n": 9
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "occupied",
+    "n": 9
+   },
+   {
+    "quantity": "beam_stroke_ink",
+    "reason": "no_reading",
+    "n": 7
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "f_clef_dots",
+    "n": 5
+   },
+   {
+    "quantity": "mark_shape",
+    "reason": "no_staff_geometry",
+    "n": 5
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "only_debris",
+    "n": 5
+   },
+   {
+    "quantity": "dot_staff_position",
+    "reason": "no_staff_geometry",
+    "n": 4
+   },
+   {
+    "quantity": "printed_bar_number",
+    "reason": "no_ink",
+    "n": 2
+   },
+   {
+    "quantity": "dynamic_letter",
+    "reason": "no_detections",
+    "n": 2
+   },
+   {
+    "quantity": "movement_spans",
+    "reason": "out_of_scope",
+    "n": 1
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "mezzosoprano_symmetry",
+    "n": 1
+   },
+   {
+    "quantity": "direction_word",
+    "reason": "not_in_lexicon",
+    "n": 1
+   }
+  ]
+ },
+ "brahms": {
+  "verdict_rows": 27763,
+  "verdict_bytes": 408187737,
+  "abst_rows": 35249,
+  "abst_bytes": 11224981,
+  "verdict_bytes_by_field": {
+   "considered": 46765425,
+   "basis": 315465308,
+   "used": 1162744,
+   "missing": 1624728,
+   "declined": 119724,
+   "excluded": 55526,
+   "correlated": 17825973,
+   "candidates": 204431,
+   "detail": 14799604,
+   "value": 646178,
+   "reason": 382966
+  },
+  "verdict_by_quantity": {
+   "notehead_is_not_a_notehead": {
+    "rows": 7013,
+    "bytes": 20170775
+   },
+   "rest_is_not_a_rest": {
+    "rows": 2648,
+    "bytes": 4868616
+   },
+   "arc_kind": {
+    "rows": 4630,
+    "bytes": 94834960
+   },
+   "notehead_is_an_eighth_rest": {
+    "rows": 1038,
+    "bytes": 712573
+   },
+   "unboxed_ink_is_a_rest": {
+    "rows": 2119,
+    "bytes": 1827477
+   },
+   "duration": {
+    "rows": 10315,
+    "bytes": 285773336
+   }
+  },
+  "reasons": [
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "notehead",
+    "n": 5622
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "n": 4409
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "decided",
+    "reason": "tie",
+    "n": 3794
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "rest_class",
+    "n": 2567
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest",
+    "n": 2064
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "already_read_as_a_glyph",
+    "n": 1999
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "n": 947
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "too_narrow",
+    "n": 914
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "decided",
+    "reason": "slur",
+    "n": 829
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "no_ink_under_box",
+    "n": 768
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beam_discounted_uncertain",
+    "n": 614
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "stem_tip_reads_no_beam",
+    "n": 534
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "whole_rest_means_the_bar",
+    "n": 395
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "not_a_note_mark",
+    "n": 307
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_is_a_duplicate_box",
+    "n": 241
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_clipped_by_crop",
+    "n": 176
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "clipped_fragment",
+    "n": 169
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "not_refused_as_too_narrow",
+    "n": 124
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "meter_reconciliation",
+    "n": 82
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "rest_stands_where_no_rest_hangs",
+    "n": 65
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "claimed_by_another_class",
+    "n": 64
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "head_fill_from_ink",
+    "n": 63
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:leading_column",
+    "n": 62
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "chord_mate_shares_the_stem",
+    "n": 58
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "stacked_head_duplicate",
+    "n": 53
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_outside_its_staff",
+    "n": 52
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "tremolo_slash_crosses_stem",
+    "n": 47
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "decided",
+    "reason": "ink_already_read_as_a_glyph",
+    "n": 46
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "claimed_by_another_class",
+    "n": 46
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "stem_value_follows",
+    "n": 46
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "shape_cannot_tell",
+    "n": 44
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_stroke_into_a_head",
+    "n": 41
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "hooks_counted",
+    "n": 41
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "whole_class_on_a_stem",
+    "n": 36
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "n": 33
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "notehead_is_a_duplicate_box",
+    "n": 30
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "decided",
+    "reason": "not_rest_shaped",
+    "n": 27
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_rest_twin",
+    "n": 21
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "eighth_rest_shape",
+    "n": 21
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_is_a_barline",
+    "n": 19
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "bar_disagrees_with_decided",
+    "n": 19
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_touches_two_staff_lines",
+    "n": 18
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "dot_seen_beside_a_plain_note",
+    "n": 17
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_dynamic_letter",
+    "n": 16
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "belongs_to_a_nearer_staff",
+    "n": 15
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_off_center",
+    "n": 15
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:meter",
+    "n": 14
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "rest8th_shape",
+    "n": 14
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "claimed_by:clef",
+    "n": 13
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_has_a_stem",
+    "n": 13
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "unreadable_rest",
+    "n": 12
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "stem_stroke_not_a_rest",
+    "n": 8
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "flag_ink_unread",
+    "n": 8
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_read_meter",
+    "n": 7
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "head_cut_piece",
+    "n": 7
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_rest",
+    "n": 7
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "rest_in_a_key_signature_slot",
+    "n": 7
+   },
+   {
+    "quantity": "arc_kind",
+    "outcome": "abstained",
+    "reason": "same_pitch_accidental_unread",
+    "n": 7
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "decided",
+    "reason": "rest8th_shape",
+    "n": 7
+   },
+   {
+    "quantity": "duration",
+    "outcome": "abstained",
+    "reason": "whole_class_filled_or_stemmed",
+    "n": 6
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "the_bars_arithmetic_forces_this_length",
+    "n": 6
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "whole_class_filled_on_a_stem",
+    "n": 5
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "refused_strokes_are_slurs_or_too_thin_for_a_beam",
+    "n": 5
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "on_a_barline",
+    "n": 4
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "thin_stroke_not_a_rest",
+    "n": 4
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "rest_slot_contradicts_class",
+    "n": 4
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "beam_certain_not_joined",
+    "n": 4
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "open_head_flag_contradiction",
+    "n": 4
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_beam_piece",
+    "n": 3
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_a_dot",
+    "n": 3
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "narrowed",
+    "reason": "claim_narrowed:clef",
+    "n": 3
+   },
+   {
+    "quantity": "notehead_is_not_a_notehead",
+    "outcome": "decided",
+    "reason": "is_an_arc_tail",
+    "n": 3
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "abstained",
+    "reason": "in_the_header",
+    "n": 3
+   },
+   {
+    "quantity": "rest_is_not_a_rest",
+    "outcome": "decided",
+    "reason": "claimed_by:leading_column",
+    "n": 2
+   },
+   {
+    "quantity": "notehead_is_an_eighth_rest",
+    "outcome": "abstained",
+    "reason": "shape_cannot_tell",
+    "n": 2
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "bar_corrects_one_note",
+    "n": 2
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "lone_event_fills_bar",
+    "n": 2
+   },
+   {
+    "quantity": "unboxed_ink_is_a_rest",
+    "outcome": "decided",
+    "reason": "restQuarter_shape",
+    "n": 1
+   },
+   {
+    "quantity": "duration",
+    "outcome": "narrowed",
+    "reason": "flags_disagree",
+    "n": 1
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "hollow_head_bare_stem",
+    "n": 1
+   },
+   {
+    "quantity": "duration",
+    "outcome": "decided",
+    "reason": "quarter_rest_shape",
+    "n": 1
+   }
+  ],
+  "abstention_reasons": [
+   {
+    "quantity": "notehead_recentre",
+    "reason": "box_already_head_sized",
+    "n": 5639
+   },
+   {
+    "quantity": "stem_tip_ink",
+    "reason": "occupied",
+    "n": 4398
+   },
+   {
+    "quantity": "system_arc",
+    "reason": "below_threshold",
+    "n": 2761
+   },
+   {
+    "quantity": "far_head_owner_ledger",
+    "reason": "ledger_not_read",
+    "n": 2725
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "no_letter_read",
+    "n": 1941
+   },
+   {
+    "quantity": "beam_stem_join",
+    "reason": "ambiguous",
+    "n": 1828
+   },
+   {
+    "quantity": "stem_tip_ink",
+    "reason": "ambiguous",
+    "n": 1827
+   },
+   {
+    "quantity": "direction_word",
+    "reason": "no_ink",
+    "n": 1679
+   },
+   {
+    "quantity": "dynamic_letter",
+    "reason": "no_glyph_of_this_kind",
+    "n": 1599
+   },
+   {
+    "quantity": "ledger_owner_density",
+    "reason": "no_staff_geometry",
+    "n": 1563
+   },
+   {
+    "quantity": "far_head_ledger_position",
+    "reason": "ledger_not_read",
+    "n": 1276
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "rescue_unguided",
+    "n": 1091
+   },
+   {
+    "quantity": "meter_template_at_bar",
+    "reason": "below_threshold",
+    "n": 1013
+   },
+   {
+    "quantity": "beam_stroke",
+    "reason": "no_line_accepted",
+    "n": 904
+   },
+   {
+    "quantity": "beam_stroke",
+    "reason": "no_stems_to_join",
+    "n": 856
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "ambiguous",
+    "n": 557
+   },
+   {
+    "quantity": "notehead_recentre",
+    "reason": "ambiguous",
+    "n": 498
+   },
+   {
+    "quantity": "ledger_rung_ink",
+    "reason": "no_staff_geometry",
+    "n": 447
+   },
+   {
+    "quantity": "stem",
+    "reason": "no_line_accepted",
+    "n": 424
+   },
+   {
+    "quantity": "direction_word",
+    "reason": "no_reading",
+    "n": 351
+   },
+   {
+    "quantity": "ledger_owner_density",
+    "reason": "off_staff",
+    "n": 284
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "no_clusters",
+    "n": 253
+   },
+   {
+    "quantity": "notehead_recentre",
+    "reason": "below_threshold",
+    "n": 244
+   },
+   {
+    "quantity": "wedge_box",
+    "reason": "no_ink",
+    "n": 173
+   },
+   {
+    "quantity": "meter_template",
+    "reason": "below_threshold",
+    "n": 172
+   },
+   {
+    "quantity": "meter_glyph",
+    "reason": "no_detections",
+    "n": 139
+   },
+   {
+    "quantity": "keysig_run_position",
+    "reason": "no_clusters",
+    "n": 105
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "witness_unmet",
+    "n": 78
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "asymmetric",
+    "n": 72
+   },
+   {
+    "quantity": "dot_staff_position",
+    "reason": "off_staff",
+    "n": 56
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "already_boxed_as_a_dynamic",
+    "n": 47
+   },
+   {
+    "quantity": "keysig_marker",
+    "reason": "no_detections",
+    "n": 45
+   },
+   {
+    "quantity": "dossier_fact",
+    "reason": "out_of_scope",
+    "n": 27
+   },
+   {
+    "quantity": "meter_ocr",
+    "reason": "below_threshold",
+    "n": 27
+   },
+   {
+    "quantity": "dot_staff_position",
+    "reason": "no_staff_geometry",
+    "n": 26
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "ambiguous_snap",
+    "n": 26
+   },
+   {
+    "quantity": "volta_bracket",
+    "reason": "no_ink",
+    "n": 15
+   },
+   {
+    "quantity": "repeat_dots",
+    "reason": "no_ink",
+    "n": 15
+   },
+   {
+    "quantity": "stacked_head_fit",
+    "reason": "ambiguous",
+    "n": 13
+   },
+   {
+    "quantity": "claimed_area",
+    "reason": "no_ink",
+    "n": 11
+   },
+   {
+    "quantity": "glyph_box",
+    "reason": "no_detections",
+    "n": 9
+   },
+   {
+    "quantity": "beam_stroke_ink",
+    "reason": "no_reading",
+    "n": 7
+   },
+   {
+    "quantity": "claimed_area",
+    "reason": "no_detections",
+    "n": 7
+   },
+   {
+    "quantity": "mark_shape",
+    "reason": "no_staff_geometry",
+    "n": 6
+   },
+   {
+    "quantity": "printed_bar_number",
+    "reason": "no_ink",
+    "n": 4
+   },
+   {
+    "quantity": "clef_glyph",
+    "reason": "no_detections",
+    "n": 4
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "f_clef_dots",
+    "n": 2
+   },
+   {
+    "quantity": "dynamic_letter",
+    "reason": "no_detections",
+    "n": 2
+   },
+   {
+    "quantity": "clef_located",
+    "reason": "occupied",
+    "n": 2
+   },
+   {
+    "quantity": "movement_spans",
+    "reason": "out_of_scope",
+    "n": 1
+   }
+  ]
+ }
+}

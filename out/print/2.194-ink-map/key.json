@@ -1,0 +1,291 @@
+[
+ {
+  "tile": 1,
+  "file": "01_litolff_beams_presence.png",
+  "plate": "litolff",
+  "kind": "beams_presence",
+  "subject": "glyph/2/1/10/1/5",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/2/1/10/1/5",
+   0,
+   1,
+   "beam_discounted_uncertain"
+  ]
+ },
+ {
+  "tile": 2,
+  "file": "02_litolff_beams_presence.png",
+  "plate": "litolff",
+  "kind": "beams_presence",
+  "subject": "glyph/1/0/11/2/3",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/1/0/11/2/3",
+   1,
+   0,
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 3,
+  "file": "03_litolff_beams_presence.png",
+  "plate": "litolff",
+  "kind": "beams_presence",
+  "subject": "glyph/2/1/5/9/2",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/2/1/5/9/2",
+   0,
+   2,
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 4,
+  "file": "04_litolff_fill.png",
+  "plate": "litolff",
+  "kind": "fill",
+  "subject": "glyph/2/0/3/0/5",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/2/0/3/0/5",
+   "black",
+   true,
+   {
+    "fill": "hollow",
+    "rows_share": 0.4944,
+    "hole_share": 0.0316,
+    "row": "obs:027230",
+    "margin": 0.3144,
+    "settled": "half_on_a_stem"
+   },
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 5,
+  "file": "05_litolff_fill.png",
+  "plate": "litolff",
+  "kind": "fill",
+  "subject": "glyph/6/1/0/10/11",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/6/1/0/10/11",
+   "black",
+   true,
+   {
+    "fill": "hollow",
+    "rows_share": 0.3288,
+    "hole_share": 0.0138,
+    "row": "obs:113945",
+    "margin": 0.1488,
+    "settled": "half_on_a_stem"
+   },
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 6,
+  "file": "06_litolff_stems_finder_stem_reach_none.png",
+  "plate": "litolff",
+  "kind": "stems_finder_stem_reach_none",
+  "subject": "glyph/16/0/2/5/0",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/16/0/2/5/0",
+   0.035,
+   0.082
+  ]
+ },
+ {
+  "tile": 7,
+  "file": "07_litolff_stems_finder_stem_reach_none.png",
+  "plate": "litolff",
+  "kind": "stems_finder_stem_reach_none",
+  "subject": "glyph/9/0/0/3/8",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/9/0/0/3/8",
+   0.511,
+   0.261
+  ]
+ },
+ {
+  "tile": 8,
+  "file": "08_litolff_ledgers.png",
+  "plate": "litolff",
+  "kind": "ledgers",
+  "subject": "glyph/4/0/0/14/4",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/4/0/0/14/4",
+   1,
+   [
+    "False",
+    "False"
+   ]
+  ]
+ },
+ {
+  "tile": 9,
+  "file": "09_litolff_ledgers.png",
+  "plate": "litolff",
+  "kind": "ledgers",
+  "subject": "glyph/6/1/11/10/2",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/6/1/11/10/2",
+   1,
+   [
+    "False",
+    "False",
+    "False"
+   ]
+  ]
+ },
+ {
+  "tile": 10,
+  "file": "10_brahms_beams_presence.png",
+  "plate": "brahms",
+  "kind": "beams_presence",
+  "subject": "glyph/0/0/1/6/4",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/0/0/1/6/4",
+   0,
+   1,
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 11,
+  "file": "11_brahms_beams_presence.png",
+  "plate": "brahms",
+  "kind": "beams_presence",
+  "subject": "glyph/4/0/13/2/3",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/4/0/13/2/3",
+   0,
+   2,
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 12,
+  "file": "12_brahms_beams_presence.png",
+  "plate": "brahms",
+  "kind": "beams_presence",
+  "subject": "glyph/0/0/0/1/6",
+  "class": "noteheadBlackInSpace",
+  "case": [
+   "glyph/0/0/0/1/6",
+   0,
+   2,
+   "head_and_marks"
+  ]
+ },
+ {
+  "tile": 13,
+  "file": "13_brahms_fill.png",
+  "plate": "brahms",
+  "kind": "fill",
+  "subject": "glyph/5/0/4/7/12",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/5/0/4/7/12",
+   "black",
+   true,
+   {
+    "fill": null,
+    "rows_share": 0.0,
+    "hole_share": 0.0,
+    "row": "obs:189455",
+    "margin": -0.18,
+    "not_head_sized": true
+   },
+   "head_fill_from_ink"
+  ]
+ },
+ {
+  "tile": 14,
+  "file": "14_brahms_fill.png",
+  "plate": "brahms",
+  "kind": "fill",
+  "subject": "glyph/5/0/0/0/7",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/5/0/0/0/7",
+   "black",
+   true,
+   {
+    "fill": null,
+    "rows_share": 0.0,
+    "hole_share": 0.0,
+    "row": "obs:189212",
+    "margin": -0.18,
+    "not_head_sized": true
+   },
+   "head_fill_from_ink"
+  ]
+ },
+ {
+  "tile": 15,
+  "file": "15_brahms_stems_finder_stem_reach_none.png",
+  "plate": "brahms",
+  "kind": "stems_finder_stem_reach_none",
+  "subject": "glyph/5/1/0/3/19",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/5/1/0/3/19",
+   -0.056,
+   0.432
+  ]
+ },
+ {
+  "tile": 16,
+  "file": "16_brahms_stems_finder_stem_reach_none.png",
+  "plate": "brahms",
+  "kind": "stems_finder_stem_reach_none",
+  "subject": "glyph/19/1/8/7/2",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/19/1/8/7/2",
+   0.294,
+   0.632
+  ]
+ },
+ {
+  "tile": 17,
+  "file": "17_brahms_ledgers.png",
+  "plate": "brahms",
+  "kind": "ledgers",
+  "subject": "glyph/5/0/2/1/5",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/5/0/2/1/5",
+   0,
+   [
+    "True"
+   ]
+  ]
+ },
+ {
+  "tile": 18,
+  "file": "18_brahms_ledgers.png",
+  "plate": "brahms",
+  "kind": "ledgers",
+  "subject": "glyph/0/0/0/2/4",
+  "class": "noteheadBlackOnLine",
+  "case": [
+   "glyph/0/0/0/2/4",
+   3,
+   [
+    "False",
+    "False",
+    "False"
+   ]
+  ]
+ }
+]

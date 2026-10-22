@@ -1,0 +1,7 @@
+whole-record sections (bytes by file position, approximate), litolff 20261020-night
+verdicts                    1118.0 MB  88.1%  items=189920
+observations                  92.3 MB   7.3%  items=296662
+pools                         37.8 MB   3.0%  items=?
+abstentions                   20.6 MB   1.6%  items=68444
+counts                         0.0 MB   0.0%  items=?
+elapsed 27 s
