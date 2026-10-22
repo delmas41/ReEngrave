@@ -168,9 +168,7 @@ smaller page list (a control; the report says it is not the frozen sample). Cach
   the hold-out count in both directions), in minutes, `--through adjudicate`
   by default. It never writes `current.json` and never substitutes for the
   overnight run.
-- **FULL** (overnight, Sean runs it -- never ask; ROADMAP 2.189 step 2: the script keeps a persistent per-movement detector cache in
-  `library/_shared-records/detector-cache/<id>` and prints a `detector-cache: H hit / M miss ... bad entries: 0` line per movement in
-  `summary.txt`; a changed weight/crop/parameter is a miss; `DETECTOR_CACHE=off` disables): both movements,
+- **FULL** (overnight, Sean runs it -- never ask): both movements,
   `benchmarks/acceptance/overnight/regather_20260930.sh` (`TAG=...`,
   `THROUGH=adjudicate` by default), compared by `compare_20261009.sh`. Only a
   through-infer full re-gather feeds `benchmarks/acceptance/current.json`.

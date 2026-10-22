@@ -96,7 +96,7 @@ def make_key(*, weights_path: str, source: Any, conf: float, imgsz: int, device:
         format=FORMAT, ultralytics=ultralytics.__version__, torch=torch.__version__,
         weights=weights_hash(weights_path), device=str(device), conf=float(conf), imgsz=int(imgsz),
         images=[dict(shape=list(a.shape), dtype=str(a.dtype),
-                     pixels=hashlib.sha256(np.ascontiguousarray(a).tobytes()).hexdigest()) for a in imgs])
+                     pixels=hashlib.sha256(np.ascontiguousarray(a)).hexdigest()) for a in imgs])
 
 
 def key_digest(key: Dict[str, Any]) -> str:
