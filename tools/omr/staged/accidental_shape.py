@@ -165,7 +165,7 @@ def choose(candidates: Sequence[str], shape: Optional[Dict[str, Any]]) -> Dict[s
     return {"pick": None, "why": "shape_not_offered", "shape": s}
 
 
-# ── ROADMAP 2.192 -- AN ACCIDENTAL BOX ON A REST'S INK (flag `OMR_ACCIDENTAL_ON_A_REST`, default OFF) ──────────────────────────────────────
+# ── ROADMAP 2.192 -- AN ACCIDENTAL BOX ON A REST'S INK (flag `OMR_ACCIDENTAL_ON_A_REST`, default ON) ──────────────────────────────────────
 # THE CAUSE (benchmarks/omr-phantom-accidental-2026-10/FINDINGS.md): the production detector boxes an eighth rest's bulb-and-stem as
 # `accidentalDoubleSharp` (and, rarely, a real rest as another class); 2.186 merges only WITHIN a family and `adjudicate_rest_is_not_a_rest` /
 # `adjudicate_accidental_is_not_an_accidental` each look only at their own family, so nothing ever compares the two boxes on one ink.
@@ -183,8 +183,8 @@ _FAMILY_OF_CLASS = {"accidentalflat": "flat", "accidentaldoubleflat": "flat", "a
 
 
 def on_rest_enabled() -> bool:
-    """`OMR_ACCIDENTAL_ON_A_REST`, default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ON_REST_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_ON_A_REST`, default ON (ROADMAP 2.192, Sean 2026-10-22); an explicit 0/false/no/off disables."""
+    return os.environ.get(ON_REST_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def on_rest_verdict(detector_class: str, shape: Optional[Dict[str, Any]]) -> Dict[str, Any]:

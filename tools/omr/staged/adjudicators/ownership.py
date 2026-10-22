@@ -4398,7 +4398,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         elif oi and pick:
             shape_choice["agrees_with_winner"] = True
 
-    # ⚠️⚠️ ROADMAP 2.192 (flag `OMR_ACCIDENTAL_ON_A_REST`, default OFF). An accidental box that CONTESTS the ink of a KEPT rest box in its own cell
+    # ⚠️⚠️ ROADMAP 2.192 (flag `OMR_ACCIDENTAL_ON_A_REST`, default ON). An accidental box that CONTESTS the ink of a KEPT rest box in its own cell
     # (IoU >= `ON_REST_IOU`) is refused -- it owns no head -- unless its own ink is accidental-shaped, of the shape its class names (2.190's reader).
     # Never deletes the rest (it is not touched); never refuses an accidental that merely touches a rest (the overlap must be one ink). Where the
     # shape cannot tell, the accidental is NOT applied and the refusal records why (counted: reason `on_a_rest`), never a silent drop.

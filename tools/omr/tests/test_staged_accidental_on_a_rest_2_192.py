@@ -1,4 +1,4 @@
-"""ROADMAP 2.192 -- an accidental box on a kept rest's ink (flag `OMR_ACCIDENTAL_ON_A_REST`, default OFF). Every test that says the accidental is
+"""ROADMAP 2.192 -- an accidental box on a kept rest's ink (flag `OMR_ACCIDENTAL_ON_A_REST`, default ON). Every test that says the accidental is
 refused has a twin that says it must stay (flag OFF, a rest that is only NEAR, a refused rest box, an accidental-shaped ink, a real accidental
 that merely touches a rest); the control proves the refusal can fire."""
 from __future__ import annotations
@@ -104,10 +104,13 @@ class TestOnARest(unittest.TestCase):
         self.assertFalse(AS.on_rest_verdict("accidentalSharp", None)["keep"])
         self.assertFalse(AS.on_rest_verdict("keyFlat", {"shape": "flat"})["keep"])
 
-    def test_default_is_off(self):
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(AS.on_rest_enabled())
+            self.assertTrue(AS.on_rest_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: off}):
+                self.assertFalse(AS.on_rest_enabled())
 
 
 if __name__ == "__main__":
