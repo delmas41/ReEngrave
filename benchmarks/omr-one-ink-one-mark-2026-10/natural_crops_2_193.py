@@ -19,12 +19,12 @@ for plate in ("litolff", "brahms"):
                 if bb and c.page_index == int(cell[0]) and all(abs(a - b) < 1.5 for a, b in zip(r["bbox_page_px"], bb)):
                     x0, y0, x1, y1 = [int(v) for v in r["bbox"]]; h = y1 - y0
                     img = c.image if c.image.ndim == 2 else cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
-                    crop = img[max(0, y0 - h): y1 + h, max(0, x0 - 2 * h): x1 + 3 * h]
+                    crop = img[max(0, y0 - h): y1 + h, max(0, x0 - 2 * h): x1 + 2 * h]
                     crop = cv2.cvtColor(cv2.resize(crop, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC), cv2.COLOR_GRAY2BGR)
                     bx = (3 * (x0 - max(0, x0 - 2 * h)), 3 * (y0 - max(0, y0 - h)), 3 * (x1 - max(0, x0 - 2 * h)), 3 * (y1 - max(0, y0 - h)))
-                    cv2.rectangle(crop, bx[:2], bx[2:], (0, 140, 255), 1)
+                    cv2.rectangle(crop, bx[:2], bx[2:], (0, 140, 255), 2)
                     tiles.append(crop); meta.append((plate, r["page"], r["cls"], r["nat_max"]))
-W = 360; H = 240; cols = 4; rows = (len(tiles) + cols - 1) // cols
+W = 360; H = 300; cols = 4; rows = (len(tiles) + cols - 1) // cols
 sheet = np.full((rows * (H + 24), cols * W, 3), 255, np.uint8)
 for i, t in enumerate(tiles):
     t = cv2.resize(t, None, fx=min(W / t.shape[1], H / t.shape[0]), fy=min(W / t.shape[1], H / t.shape[0]))
