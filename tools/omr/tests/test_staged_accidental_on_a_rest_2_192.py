@@ -65,6 +65,13 @@ class TestOnARest(unittest.TestCase):
         log, g = _scene(cls="accidentalFlat", alt="b", shape=FLATISH)
         self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, g).outcome, "decided")
 
+    def test_TWIN_a_single_class_accidental_is_never_refused_even_when_its_shape_disagrees(self):
+        """The sample run's one real flat (shape read `sharp` because its stem reaches the top): out of this flag's classes, it stays."""
+        log, g = _scene(cls="accidentalFlat", alt="b", shape=SHARPISH)
+        self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, g).outcome, "decided")
+        log, g = _scene(cls="accidentalSharp", alt="#", shape=UNCL)
+        self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, g).outcome, "decided")
+
     def test_TWIN_a_rest_that_is_only_near_is_not_one_ink(self):
         log, g = _scene(rest_dx=10.0)      # 2 of 12 px overlap: IoU well under .5
         self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, g).outcome, "decided")

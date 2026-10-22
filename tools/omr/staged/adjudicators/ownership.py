@@ -4402,7 +4402,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # (IoU >= `ON_REST_IOU`) is refused -- it owns no head -- unless its own ink is accidental-shaped, of the shape its class names (2.190's reader).
     # Never deletes the rest (it is not touched); never refuses an accidental that merely touches a rest (the overlap must be one ink). Where the
     # shape cannot tell, the accidental is NOT applied and the refusal records why (counted: reason `on_a_rest`), never a silent drop.
-    if _acc_shape.on_rest_enabled():
+    if _acc_shape.on_rest_enabled() and str(detail.get("detector_class") or "").lower() in _acc_shape.ON_REST_CLASSES:
         mine = ev.rows(Q.GLYPH_BOX)
         if mine and isinstance(mine[-1].value, (list, tuple)) and len(mine[-1].value) >= 5:
             cellsub = ev.subject.at(Kind.CELL)

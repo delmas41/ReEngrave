@@ -173,6 +173,10 @@ ON_REST_ENV = "OMR_ACCIDENTAL_ON_A_REST"
 #: Two boxes in one cell contest ONE ink when their IoU is at least this (checked on crops: 10 of 10 double sharps at >= .5 were an eighth rest; the
 #: kept-rest overlap of real accidentals sits in the same band, which is why the SHAPE, not the overlap, decides whether the accidental stays).
 ON_REST_IOU = 0.5
+#: The classes a rest's ink is taken for, measured (Brahms 20261020: 209 double sharps sit on a kept rest box, 0 double flats; of the 51 single-class
+#: sharp/flat/natural boxes touching a kept rest, 14 crops showed mostly REAL accidentals with a wrong-class rest box beside them, and the sample
+#: run refused one real flat). The refusal is therefore confined to these; a single-class accidental on a rest box is never refused here.
+ON_REST_CLASSES = ("accidentaldoublesharp", "accidentaldoubleflat")
 #: Every accidental class the shape reader can compare, to the shape (family) its ink must have.
 _FAMILY_OF_CLASS = {"accidentalflat": "flat", "accidentaldoubleflat": "flat", "accidentalnatural": "natural",
                     "accidentalsharp": "sharp", "accidentaldoublesharp": "sharp"}
