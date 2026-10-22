@@ -469,6 +469,13 @@ class YoloDetector:
         # deliberately NOT renamed, and why.
         self._class_names = canonicalize_names(raw)
 
+    def _predict(self, **kw):
+        """ROADMAP 2.189: the ONE seam between this wrapper and ultralytics' `predict`. With `OMR_DETECTOR_CACHE` unset
+        it is `self._model.predict(**kw)` untouched; with it set the raw (pre-NMS) output is cached
+        (`detector_cache.py`)."""
+        from . import detector_cache
+        return detector_cache.predict(self._model, self.weights_path, **kw)
+
     # --------------- inference ---------------
 
     def detect(
@@ -516,7 +523,7 @@ class YoloDetector:
             imgsz = imgsz_for_cell(cell)
 
         # MPS device hint on Apple Silicon; "auto" lets ultralytics pick.
-        results = self._model.predict(
+        results = self._predict(
             source=img_rgb,
             conf=conf_threshold,
             iou=iou_threshold,
@@ -579,7 +586,7 @@ class YoloDetector:
         img = image
         if img.ndim == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        results = self._model.predict(
+        results = self._predict(
             source=img, conf=conf_threshold, imgsz=int(imgsz),
             device=self.device if self.device != "auto" else None,
             verbose=False)
@@ -660,7 +667,7 @@ class YoloDetector:
             canvas = np.full((hc, wc, 3), 114, np.uint8)
             canvas[top:top + nh, left:left + nw] = small
             canvases.append(canvas)
-        results = self._model.predict(
+        results = self._predict(
             source=canvases, conf=conf_threshold, iou=iou_threshold,
             imgsz=imgsz, device=self.device if self.device != "auto" else None,
             verbose=False)

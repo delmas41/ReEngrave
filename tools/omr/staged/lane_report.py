@@ -49,9 +49,10 @@ from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tupl
 
 DERIVED_CHECK = False
 ROOT = pathlib.Path(__file__).resolve().parents[3]
-SAMPLE_PATH = ROOT / "benchmarks" / "lane-report" / "sample.json"
+SAMPLE_PATH = pathlib.Path(os.environ.get("LANE_REPORT_SAMPLE") or ROOT / "benchmarks" / "lane-report" / "sample.json")  # env: a one-page control (2.189)
 LIB = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library")
 RECORDS = LIB / "_shared-records"
+DETECTOR_CACHE: Optional[pathlib.Path] = RECORDS / "detector-cache"      # ROADMAP 2.189: OFF and ON share it; None = no cache
 LOCK = RECORDS / ".record-load.lock"
 ORANGE = (255, 140, 0)
 
@@ -698,10 +699,29 @@ def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[
 
 # ───────────────────────────── 8. the blind sheet ─────────────────────────────
 
+def tile_quota(sizes: Dict[str, int], n: int, floor_share: float = 0.10) -> Dict[str, int]:
+    """Tiles per kind in proportion to how many changes the kind has (largest remainder); every kind holding at least
+    `floor_share` of all changes gets at least one. Never more than the kind has."""
+    total = sum(sizes.values())
+    if total <= 0 or n <= 0:
+        return {k: 0 for k in sizes}
+    q = {k: n * v / total for k, v in sizes.items()}
+    out = {k: min(sizes[k], int(q[k])) for k in sizes}
+    for k, v in sizes.items():
+        if v / total >= floor_share and out[k] < 1:
+            out[k] = 1
+    # largest remainder fills what is left; the floor may overshoot n by a tile or two, never more
+    for k in sorted(sizes, key=lambda k: (q[k] - int(q[k]), sizes[k]), reverse=True):
+        if sum(out.values()) >= n:
+            break
+        if out[k] < sizes[k] and q[k] - out[k] > 0:
+            out[k] += 1
+    return out
+
+
 def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict]], seed: int, n_cases: int = 9,
                n_controls: int = 3) -> List[dict]:
-    """About 9 changed symbols drawn at random, STRATIFIED by kind (round-robin over the kinds present, a random draw
-    inside each), + about 3 controls = unchanged symbols of the kinds drawn. Only symbols with a place on the page."""
+    """About 9 changed symbols drawn at random, drawn in PROPORTION to how many changes each kind has (every kind with >= 10% gets one; a random draw inside each), + about 3 controls = unchanged symbols of the kinds drawn. Only symbols with a place on the page."""
     rng = random.Random(seed)
     pool: Dict[str, List[dict]] = collections.defaultdict(list)
     for plate, ch in sorted(all_changes.items()):
@@ -712,18 +732,19 @@ def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict
         rng.shuffle(pool[k])
     kinds = sorted(pool)
     rng.shuffle(kinds)
+    quota = tile_quota({k: len(pool[k]) for k in kinds}, n_cases)
     cases: List[dict] = []
     seen = set()
-    while len(cases) < n_cases and any(pool[k] for k in kinds):
-        for k in kinds:
-            while pool[k] and len(cases) < n_cases:
-                c = pool[k].pop()
-                sig = (c["plate"], c["rg"], c["kind"], c["side"])
-                if sig in seen:
-                    continue
-                seen.add(sig)
-                cases.append(dict(c, role="case"))
-                break
+    for k in kinds:
+        got = 0
+        while pool[k] and got < quota[k]:
+            c = pool[k].pop()
+            sig = (c["plate"], c["rg"], c["kind"], c["side"])
+            if sig in seen:
+                continue
+            seen.add(sig)
+            cases.append(dict(c, role="case"))
+            got += 1
     ctrl_pool: Dict[str, List[dict]] = collections.defaultdict(list)
     for plate, sm in sorted(all_same.items()):
         for s in sm:
@@ -830,6 +851,10 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
             for name, off, on in flags:
                 env[name] = on if a == "on" else off
             env["OMR_SURYA_KEEP_ALIVE"] = "0"
+            if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
+                env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
+            else:
+                env.pop("OMR_DETECTOR_CACHE", None)
             cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[p]["pdf"]), "--pages",
                    ",".join(map(str, pages[p])), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
             print("  gather %s %s pages %s ..." % (p, a, pages[p]), flush=True)
@@ -929,6 +954,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--seed", type=int, default=2188, help="tile draw seed (the page sample's seed is in sample.json)")
     ap.add_argument("--workers", type=int, default=2, help="arm processes at once (<= 4)")
     ap.add_argument("--allow-unknown-flag", action="store_true")
+    ap.add_argument("--detector-cache", default=None,
+                    help="--from gather: the detector's raw-output cache dir (default library/_shared-records/detector-cache; 'off' = none)")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -958,10 +985,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         raise SystemExit("--out DIR is required")
     plates = [p for p in a.plates.split(",") if p]
     mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag)
+    if os.environ.get("LANE_REPORT_SAMPLE"):
+        notes.append("NOT THE FROZEN SAMPLE: %s (a development control)" % SAMPLE_PATH)
     if not flags:
         notes.append("no --flag: OFF and ON are the same tree (the identity control)")
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    global DETECTOR_CACHE
+    if a.detector_cache:
+        DETECTOR_CACHE = None if a.detector_cache == "off" else pathlib.Path(a.detector_cache)
     rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse)
     print(render_text(rep))
     return 0

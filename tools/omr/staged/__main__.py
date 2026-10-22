@@ -66,7 +66,9 @@ def parse_pages(spec: str) -> list:
 #: argument; only the NEW `--pdf` output flag (below, `dest="pdf_out"` for
 #: exactly this reason -- argparse would otherwise collide it with the
 #: positional) is output-only.
-_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "pdf_out", "progress")
+_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "pdf_out", "progress", "detector_cache")
+# ROADMAP 2.189: the detector cache changes the wall time, never the record, so it is not a setting (a record read from the cache must equal one read fresh).
+_PERFORMANCE_ONLY_ENV = ("OMR_DETECTOR_CACHE", "OMR_DETECTOR_TIMING")
 
 
 def _settings(args: Any = None) -> dict:
@@ -96,7 +98,7 @@ def _settings(args: Any = None) -> dict:
     put credentials (`ANTHROPIC_API_KEY`) into every record.
     """
     env = {k: v for k, v in sorted(os.environ.items())
-           if k.startswith("OMR_")}
+           if k.startswith("OMR_") and k not in _PERFORMANCE_ONLY_ENV}
     out: dict = {"env_overrides": env}
     if args is not None:
         out["args"] = {k: v for k, v in sorted(vars(args).items())
@@ -190,6 +192,10 @@ def main(argv=None) -> int:
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--imgsz", type=int, default=None)
+    ap.add_argument("--detector-cache", default=None, metavar="DIR",
+                    help="ROADMAP 2.189: cache the detector's raw (pre-NMS) output in DIR so a re-gather that only changes "
+                         "merging/judging does not read the page twice (same as OMR_DETECTOR_CACHE=DIR; "
+                         "tools/omr/detector_cache.py). Unset = no cache.")
     ap.add_argument("--out", default=None)
     ap.add_argument("--against", default=None,
                     help="a legacy transcribe result JSON, for the divergence "
@@ -343,6 +349,8 @@ def main(argv=None) -> int:
                          "EXPORT needs what EVALUATE (and, if it ran, "
                          "INFER) derive.")
     args = ap.parse_args(argv)
+    if args.detector_cache:
+        os.environ["OMR_DETECTOR_CACHE"] = str(args.detector_cache)
 
     if args.through != "infer" and (args.musicxml or args.lilypond
                                     or args.pdf_out):

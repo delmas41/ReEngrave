@@ -17,8 +17,8 @@ import pytest
 LIB = Path(os.environ.get("REENGRAVE_LIBRARY_DIR")
            or "/Users/seanjohnson/Desktop/ReEngrave/library") / "_shared-records"
 RECORDS = {
-    "beethoven5-litolff": (LIB / "beethoven5-litolff-mvt1-whole-20261013-night.record.json", 125),
-    "brahms1-breitkopf": (LIB / "brahms1-breitkopf-mvt1-whole-20261013-night.record.json", 450),
+    "beethoven5-litolff": (LIB / "beethoven5-litolff-mvt1-whole-20261020-night.record.json", 125),
+    "brahms1-breitkopf": (LIB / "brahms1-breitkopf-mvt1-whole-20261020-night.record.json", 450),
 }
 
 

@@ -143,6 +143,20 @@ record (streamed, one reader at a time under `.record-load.lock`) into `library/
 about 16 min for both plates at 2 workers (Brahms is ~13 min an arm). The sample is frozen: `lane_report sample` refuses to
 re-draw without `--force`, Sean's word.
 
+**Read the page once (ROADMAP 2.189).** `YoloDetector._predict` is the one seam to ultralytics' `predict`
+(`tools/omr/detector_cache.py`). With `OMR_DETECTOR_CACHE=DIR` (or `python3 -m tools.omr.staged ... --detector-cache DIR`) it stores, per
+model call (every pass: production cell, 2.172 views, 2.179 stem-end, rescue floors, `detect_image`, the second weights, routed weights),
+the head tensor's CANDIDATES -- every anchor whose best class beats the conf floor -- BEFORE NMS, and on a hit re-runs the same
+`non_max_suppression` + `scale_boxes` with the caller's `iou` / `agnostic_nms`. So a lane that changes how boxes are merged, NMS'd
+(IoU, class-agnostic within a family), or anything after, is served from the cache and equals a fresh read. It cannot serve a lane that
+changes the conf floor, the crop the model sees (pixels, `imgsz`, view, shifts, anti-alias), the weights, or multi-label NMS: those are a
+MISS (the key is sha256 of weights-file hash, ultralytics+torch versions, device, conf, imgsz, shape/dtype/pixel-hash of every image), never
+a reuse. A corrupt, partial, mismatched or checksum-bad entry RAISES `DetectorCacheError`. `lane_report --from gather` uses one shared,
+persistent cache (`library/_shared-records/detector-cache`, gitignored; `--detector-cache DIR|off`) for OFF and ON and for every later run
+on the frozen sample; the first run of a sample page reads it, every later one does not. `LANE_REPORT_SAMPLE=file.json` points the report at a
+smaller page list (a control; the report says it is not the frozen sample). Cache OFF unless a dir is given; each process prints
+`detector-cache: N hit, M miss, ... MB` on exit.
+
 ## 3. The two re-gathers
 
 (Sean, 2026-09-30; `docs/measuring.md` §2 has the A/B rules.)
