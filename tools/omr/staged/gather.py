@@ -439,6 +439,10 @@ def gather_detections(log: Log, cells: Sequence[Any],
             # and only the second may reach a cross-staff consumer.
             page_box = _page_box(c, d)
             box_detail: Dict[str, Any] = {"category": d.category, **_one_ink.box_detail(d)}
+            if "one_ink_absorbed_by_index" in box_detail:
+                # ROADMAP 2.186: this box was absorbed by a stronger class on its ink; it keeps its glyph index and names its winner's key
+                box_detail["one_ink_absorbed_by"] = R.glyph(p, sys_idx, st_idx, c.measure_index,
+                                                            box_detail.pop("one_ink_absorbed_by_index")).to_key()
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
@@ -1774,7 +1778,7 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                 y0=float(d.y_canonical),
                 y1=float(d.y_canonical + d.height_canonical),
                 confidence=float(d.confidence),
-                **_one_ink.box_detail(d))
+                **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

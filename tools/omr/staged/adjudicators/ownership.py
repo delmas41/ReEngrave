@@ -4237,7 +4237,7 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
              "no_candidate", "no_unit", "no_evidence",
              "refused_not_an_accidental", "is_a_key_signature_marker",
              "head_belongs_to_a_nearer_staff", "owned_by_another_staff",
-             "ownership_undecided"),
+             "ownership_undecided", "one_ink_absorbed"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -4352,6 +4352,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # contest has NOT decided, the glyph abstains and is counted -- the stronger box of either cell never wins by confidence alone.
     # Uncontested glyphs carry no verdict or `no_contest` for their own staff and pass.
     if _one_ink.enabled():
+        if detail.get("one_ink_absorbed"):
+            # the merge kept this box (its glyph index is unchanged) but a stronger class of the SAME ink in this cell stands for it
+            return Ruling.abstain("one_ink_absorbed", alteration=alteration, detector_class=detail.get("detector_class"))
         gown = ev.verdict(Q.GLYPH_OWNER)
         if gown is not None:
             if gown.outcome is Outcome.DECIDED and isinstance(gown.value, str):

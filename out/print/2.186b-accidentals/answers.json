@@ -1,0 +1,81 @@
+{
+ "lane": "2.186",
+ "date": "2026-10-21",
+ "question": "which accidental is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "verbatim": "1. # 2. Nat 3. None directly in front. Nat earlier . 4-12 Nat",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "sharp",
+   "OFF": "right",
+   "ON": "right"
+  },
+  {
+   "tile": 2,
+   "sean": "natural",
+   "OFF": "right",
+   "ON": "WRONG"
+  },
+  {
+   "tile": 3,
+   "sean": "none directly in front; natural earlier in the bar",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 4,
+   "sean": "natural",
+   "OFF": "WRONG",
+   "ON": "WRONG"
+  },
+  {
+   "tile": 5,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 6,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "WRONG"
+  },
+  {
+   "tile": 7,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 8,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "WRONG"
+  },
+  {
+   "tile": 9,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 10,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 11,
+   "sean": "natural",
+   "OFF": "wrong",
+   "ON": "right"
+  },
+  {
+   "tile": 12,
+   "sean": "natural",
+   "OFF": "right",
+   "ON": "right"
+  }
+ ],
+ "summary": "cases (9): OFF right 1 (tile 2), ON right 6 (3,5,7,9,10,11); ON wrong 3: tile 2 natural lost (was right OFF), tile 6 natural written as sharp, tile 8 natural written as flat; controls: 1 and 12 right both arms, 4 a natural written as sharp in BOTH arms. Every error is a natural read as sharp/flat or dropped."
+}
