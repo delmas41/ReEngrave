@@ -66,7 +66,9 @@ def parse_pages(spec: str) -> list:
 #: argument; only the NEW `--pdf` output flag (below, `dest="pdf_out"` for
 #: exactly this reason -- argparse would otherwise collide it with the
 #: positional) is output-only.
-_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "pdf_out", "progress")
+_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "pdf_out", "progress", "detector_cache")
+# ROADMAP 2.189: the detector cache changes the wall time, never the record, so it is not a setting (a record read from the cache must equal one read fresh).
+_PERFORMANCE_ONLY_ENV = ("OMR_DETECTOR_CACHE", "OMR_DETECTOR_TIMING")
 
 
 def _settings(args: Any = None) -> dict:
@@ -96,7 +98,7 @@ def _settings(args: Any = None) -> dict:
     put credentials (`ANTHROPIC_API_KEY`) into every record.
     """
     env = {k: v for k, v in sorted(os.environ.items())
-           if k.startswith("OMR_")}
+           if k.startswith("OMR_") and k not in _PERFORMANCE_ONLY_ENV}
     out: dict = {"env_overrides": env}
     if args is not None:
         out["args"] = {k: v for k, v in sorted(vars(args).items())
