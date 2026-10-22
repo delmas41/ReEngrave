@@ -138,3 +138,23 @@ Tested, each a control that could fail, all on the 20261020-night Brahms slices,
 - the whole movement in two chunks (the 8 sample pages; the other 19 + page 0), OFF vs ON (`OMR_KEY_SIGNATURE_CLAIM`), fresh process each: the only difference is the one rest the claim names (`claim_narrowed:key_signature`, +1 blue, +352 bytes); no dynamics word moves. Same-process OFF-then-ON: identical result.
 So on every Brahms page the residue does not appear when the pages are replayed in chunks, with or without a shared process. It needs the whole 27-page record in one log (`replay_2_183.py`), which this lane may not run (measuring.md §0).
 The coordinator's rule stands: ON must change nothing but what the claim names; `lane_report`'s no-op control (OFF==ON) is the check, and the 2.187 report below uses it.
+
+## FINAL (2026-10-22): the transposing-staff guard, and the three measures
+
+**Guard (coordinator 2026-10-22).** A staff that read fewer slots than the system's count claims, beyond the slots it read itself, a NARROWED (blue) part only, unless its instrument's written
+accidental count is known and is at least N (`claim_for_staff(written_count=)`, READ then). At GATHER the part-to-staff join does not exist yet, so the count is never known today: a B-flat clarinet reading
+its 1 flat claims one READ slot and a blue tail, never a refusal. Tests: refused with `written_counts={2: 3}`, narrowed with `{2: 1}` and with none. CONVENTION ASSUMED: a staff's own printed slots are
+the only ones that may refuse a box. WHAT WOULD FALSIFY IT: a plate where a staff prints more slots than the detector/raster read AND a print-confirmed flat boxed as a rest stands there (it then stays blue, never lost
+-- the cost). NOT CONFIRMED: Sean's answer is pending.
+
+**The 24 known flats, final code** (`known_flats_2_187.py`, real gather rows -> ADJUDICATE..EXPORT of each page): main 0/24 fixed; 2.183 0/24; 2.187 with the dossier admitted: 10 refused (gone from the file), 13 written blue,
+1 still a rest; dossier silent: 10 refused, 12 blue, 2 still rest. (Before the guard: 19-20 refused.) Blue is a flagged mark, not a fix: Sean can see and correct it.
+
+**`lane_report --from gather --flag OMR_KEY_SIGNATURE_CLAIM --flag OMR_KEY_PER_SYSTEM`**, frozen sample, detector cache warm after the first arm (wall 2 h 44 m, not minutes: four 8-page gathers).
+- Litolff: notes -6, rests -3, blue marks +18 -2, words +1; red bars 0 -> 0 (notes not written 2556 -> 2565). Brahms: blue marks +11, nothing else; red bars 166 -> 166.
+- Judged right->wrong: 0 on Litolff (233 tiles) and Brahms (232 tiles); right->narrowed/gone 0; wrong->right 0.
+- Control "OFF==record": NOT CHECKED in re-gather mode (reported by the command); the no-op OFF==ON control was not run in this lane (a no-flag run is a third 2.7 h gather pair).
+- 11 tiles (`out/lane-report/2.187/tiles/sheet.png`, key `key.json`), seed 2188: the 2 cases that are real fixes on the print are tiles 1 (a bass-clef key flat written as a quarter NOTE, now gone) and 5 (an alto-clef key flat written as an eighth rest, now gone);
+  tiles 2, 3, 7, 8, 9, 10, 11 are blue marks on what look like REAL notes standing just after a short signature (the NARROWED tail reaches 1-1.8 spaces past it): a cost, not an error; tiles 4, 6 are controls, unchanged.
+  So of the 9 case tiles, 2 are fixes and 7 are blue-on-real: the tail's generous reach (needed for the p5 drift case) is paid for in blue notes. Sean's call: tighten the NARROWED tail to the placed slots' own width (fewer blue notes, more flats left as rests).
+- `-6` notes / `-3` rests on Litolff: 2 shown above are key flats; the other lost symbols were not looked at on the print (the report draws 9 tiles from 12 changes).
