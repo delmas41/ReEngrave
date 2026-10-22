@@ -25,3 +25,22 @@ That is "minutes", not seconds: the cost is the ADJUDICATE..INFER replay of ~9 d
 **Known limits.** Pairing is by page position (a symbol with no glyph box is counted per bar, no tile). Red-bar warning words show as
 `words`. A flag read at import time is safe (one process per arm); a flag read only in the web path is not exercised. Context page
 means a cross-page rule that needs a page other than the opening one is not reproduced (the control line would say so).
+
+# 2.189 -- read the page once (detector raw-output cache; STATUS: built, controls pending)
+
+**Level cached: BEFORE NMS.** `YoloDetector._predict` (3 call sites: `detect`, `detect_image`, `detect_view`; every gather pass goes through them, incl. routed
+and second weights) calls `tools/omr/detector_cache.py`. A miss runs ultralytics unchanged and, while it runs, takes the head tensor's candidates (anchors whose
+best class beats the conf floor; taken BEFORE `non_max_suppression`, which converts xywh->xyxy in place) plus the letterboxed shape. A hit rebuilds the tensor and
+runs the same NMS (caller's `iou`/`agnostic_nms`) and `scale_boxes`. A real-weights probe on a synthetic crop: cold == no cache; warm == no cache, including after
+changing iou 0.7->0.5 and agnostic False->True (served from the cache, 0.003 s vs 0.3 s). Cannot serve: conf floor, crop pixels/imgsz/view/shifts, weights,
+multi-label NMS (all are a different key = a miss).
+**Key:** weights-file sha256, ultralytics+torch version, device, conf, imgsz, shape/dtype/pixel sha256 per image. dpi and view are in the pixels; `iou`/`agnostic` are
+deliberately not in the key (applied at serve time). Corrupt/partial/misfiled/bad-checksum entries RAISE (unit-tested: truncated, non-zip, wrong filename, edited payload).
+**Tests:** `tools/omr/tests/test_detector_cache.py` 10 pass (cold==warm==none, NMS change served exactly, conf/pixel/imgsz/weights/shape each a miss, batch, corruption).
+**Merge check:** `git merge-tree` of this branch with `origin/lane-2.186-one-ink-one-mark`: no conflict (the seam is 3 one-line `predict` -> `_predict` edits + one method).
+**Measured so far:** Litolff pages 2,4 gather with no cache: 818 s (record 137 MB). Controls (a) cold/warm/none byte-identity, (b) on real pages, (c) merge-only flag through lane_report
+from a warm cache, and the cold-vs-warm lane_report wall time were NOT run: the box had another lane's lane_report gathers queued (hours) and the disk fell below the 15 GB floor
+(Sean/coordinator 2026-10-21), so the runs were stopped. Script: `/private/tmp/claude-501/ctrl189/ctrl_a.py` pattern (none, cold, warm; sha256 of the record; delete after hashing).
+**Step 2:** `benchmarks/acceptance/overnight/regather_20260930.sh` now exports `OMR_DETECTOR_CACHE=$OUT/detector-cache/<id>` and writes
+`python3 -m tools.omr.detector_cache summary LOG` (hits/misses, detector seconds, weights hash, bad entries) to `summary.txt`; `DETECTOR_CACHE=off` disables. Time split and cache
+size per movement: NOT MEASURED yet (needs the controls' gathers; whole-movement cache is a projection only).
