@@ -582,6 +582,10 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.187. `key_object.py` is PURE (a page raster, staff geometry and detector boxes in, a count and per-staff areas out); `gather.gather_key_object`
     # is its stage.
     "key_object.py",
+    # ROADMAP 2.190. `accidental_shape.py` is PURE (a raster and a box in, two corner stem strengths and a shape out; the flag, the READ bar, the
+    # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
+    # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.
+    "accidental_shape.py",
 })
 
 

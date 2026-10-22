@@ -1,0 +1,163 @@
+{
+ "flags": [
+  [
+   "OMR_ONE_INK_ONE_MARK",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "rest": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 34,
+     "lost": 2,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 21,
+     "lost": 12,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 37
+    }
+   },
+   "hosts": [
+    5036,
+    5038
+   ],
+   "paired": 5036,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    2556,
+    2554
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 233
+   },
+   "seconds": [
+    9.9,
+    9.9
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "rest": {
+     "gained": 5,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 201,
+     "lost": 7,
+     "changed": 0
+    },
+    "note": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 201,
+     "lost": 58,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 253
+    },
+    "slur": {
+     "gained": 0,
+     "lost": 4,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 8,
+     "lost": 12,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 4,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6512,
+    6519
+   ],
+   "paired": 6512,
+   "red_bars": [
+    166,
+    166
+   ],
+   "notes_not_written": [
+    3209,
+    3202
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 232
+   },
+   "seconds": [
+    19.1,
+    19.7
+   ]
+  }
+ },
+ "notes": [
+  "OMR_ONE_INK_ONE_MARK: read in staged/adjudicators/family_precision.py, staged/adjudicators/ownership.py, staged/export.py, staged/gather.py ... -> GATHER"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 64.3
+}

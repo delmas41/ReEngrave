@@ -1,0 +1,414 @@
+[
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   5247.07,
+   1838.9475,
+   5283.7,
+   1869.75
+  ],
+  "rg": "glyph/19/0/5/10/4",
+  "role": "control",
+  "side": "unchanged",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "D14",
+   "accidental": [
+    "sharp"
+   ],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "D14",
+   "accidental": [
+    "sharp"
+   ],
+   "blue": false,
+   "type": "eighth"
+  },
+  "tile": 1,
+  "crop_origin": [
+   5073,
+   1694
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   1987.055,
+   1743.7125,
+   2023.9625,
+   1779.51
+  ],
+  "rg": "glyph/25/0/4/2/2",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "E2",
+   "accidental": [
+    "natural"
+   ],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "E-12",
+   "accidental": [],
+   "blue": false,
+   "type": "eighth"
+  },
+  "tile": 2,
+  "crop_origin": [
+   1813,
+   1601
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   3675.8525,
+   6322.705,
+   3713.73,
+   6353.4975
+  ],
+  "rg": "glyph/19/1/9/5/3",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "B-13",
+   "accidental": [],
+   "blue": true,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "B13",
+   "accidental": [],
+   "blue": false,
+   "type": "eighth"
+  },
+  "tile": 3,
+  "crop_origin": [
+   3502,
+   6178
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   4639.975,
+   4697.675,
+   4679.3,
+   4732.6
+  ],
+  "rg": "glyph/25/1/1/8/1",
+  "role": "control",
+  "side": "unchanged",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "E15",
+   "accidental": [
+    "sharp"
+   ],
+   "blue": false,
+   "type": "quarter"
+  },
+  "on": {
+   "pitch": "E15",
+   "accidental": [
+    "sharp"
+   ],
+   "blue": true,
+   "type": "quarter"
+  },
+  "tile": 4,
+  "crop_origin": [
+   4467,
+   4555
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   3288.805,
+   708.2125,
+   3325.1575,
+   739.5699999999999
+  ],
+  "rg": "glyph/4/0/1/6/0",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "A-15",
+   "accidental": [],
+   "blue": false,
+   "type": "quarter"
+  },
+  "on": {
+   "pitch": "A5",
+   "accidental": [
+    "natural"
+   ],
+   "blue": true,
+   "type": "quarter"
+  },
+  "tile": 5,
+  "crop_origin": [
+   3114,
+   563
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1832.6475,
+   1730.925,
+   1855.3275,
+   1749.9825
+  ],
+  "rg": "glyph/10/0/9/8/8",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "B-13",
+   "accidental": [],
+   "blue": true,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "B13",
+   "accidental": [
+    "sharp"
+   ],
+   "blue": true,
+   "type": "eighth"
+  },
+  "tile": 6,
+  "crop_origin": [
+   1749,
+   1661
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   1370.7763671875,
+   6909.2099609375,
+   1408.4169921875,
+   6944.10595703125
+  ],
+  "rg": "glyph/25/1/10/0/9",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "D3",
+   "accidental": [],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "D3",
+   "accidental": [
+    "natural"
+   ],
+   "blue": true,
+   "type": "eighth"
+  },
+  "tile": 7,
+  "crop_origin": [
+   1197,
+   6766
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4338.01,
+   6541.0825,
+   4375.195,
+   6572.1625
+  ],
+  "rg": "glyph/4/1/11/6/3",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "A-14",
+   "accidental": [],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "A-14",
+   "accidental": [
+    "flat"
+   ],
+   "blue": true,
+   "type": "eighth"
+  },
+  "tile": 8,
+  "crop_origin": [
+   4164,
+   6396
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2009.2275,
+   4498.9675,
+   2048.195,
+   4531.6675
+  ],
+  "rg": "glyph/14/1/1/2/4",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "B-14",
+   "accidental": [],
+   "blue": true,
+   "type": "quarter"
+  },
+  "on": {
+   "pitch": "B4",
+   "accidental": [
+    "natural"
+   ],
+   "blue": true,
+   "type": "quarter"
+  },
+  "tile": 9,
+  "crop_origin": [
+   1836,
+   4355
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4417.7,
+   2992.375,
+   4457.3,
+   3024.0
+  ],
+  "rg": "glyph/4/0/10/8/19",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "D4",
+   "accidental": [],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "D4",
+   "accidental": [
+    "natural"
+   ],
+   "blue": true,
+   "type": "eighth"
+  },
+  "tile": 10,
+  "crop_origin": [
+   4245,
+   2848
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1208.92,
+   2275.2,
+   1230.84,
+   2294.08
+  ],
+  "rg": "glyph/2/1/1/5/6",
+  "role": "case",
+  "side": "changed",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "E-15",
+   "accidental": [],
+   "blue": true,
+   "type": "quarter"
+  },
+  "on": {
+   "pitch": "E5",
+   "accidental": [
+    "natural"
+   ],
+   "blue": true,
+   "type": "quarter"
+  },
+  "tile": 11,
+  "crop_origin": [
+   1125,
+   2205
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2237.5,
+   500.6,
+   2263.3,
+   521.9
+  ],
+  "rg": "glyph/6/0/1/10/0",
+  "role": "control",
+  "side": "unchanged",
+  "kind": "accidental",
+  "glyph": "notehead+accidental",
+  "off": {
+   "pitch": "A5",
+   "accidental": [
+    "natural"
+   ],
+   "blue": false,
+   "type": "eighth"
+  },
+  "on": {
+   "pitch": "A5",
+   "accidental": [
+    "natural"
+   ],
+   "blue": false,
+   "type": "eighth"
+  },
+  "tile": 12,
+  "crop_origin": [
+   2155,
+   432
+  ]
+ }
+]
