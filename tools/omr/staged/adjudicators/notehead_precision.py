@@ -3502,7 +3502,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # arc box cut at the barline -- `_arc_tail_refusal`.
                   Q.HEAD_OVAL, Q.ARC_BOX,
                   # ROADMAP 2.177: the meter's claimed area -- `inside_meter.read`.
-                  Q.CLAIMED_AREA),
+                  Q.CLAIMED_AREA,
+                  # ROADMAP 2.187b: `claimed_by.consult` -> `header.key_tail_context` (the staff's written key for the key tail)
+                  Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3514,7 +3516,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
-          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR),
+          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
+          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3714,7 +3717,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE consult of the claimed-area register, where `is_a_clef`
     # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
     # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
-    claim = _claimed_by.consult(ev, box_row, head=True) if _claimed_by.enabled() else None
+    claim = _claimed_by.consult(ev, box_row, head=True, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
     if claim is not None and claim.refuse:
         return _claim_refusal(claim, box_row)
     clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
@@ -3964,3 +3967,12 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     return Ruling(value=False, reason="notehead", used=tuple(used),
                   detail=detail)
 
+
+def _key_tail_reads(ev):
+    """ROADMAP 2.187b: the four verdicts the key tail's written key is made of, READ here in the decision's own body (`claimed_by.consult` takes
+    them as `tail_reads`): the staff's clef, slot and part key, and its margin label rows."""
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return {"staff": None}
+    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
+            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}

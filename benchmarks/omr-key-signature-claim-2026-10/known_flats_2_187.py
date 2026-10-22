@@ -9,6 +9,7 @@ import collections, glob, json, os, sys
 sys.path.insert(0, ".")
 from tools.omr.preprocessing import render_page
 from tools.omr.staged import gather as G
+from tools.omr.staged.record import Q as _Q
 from tools.omr.staged.review import rerun as RR
 
 SD, OUT = sys.argv[1], sys.argv[2]
@@ -77,6 +78,13 @@ def inject(log, obs, binary, pg, dossier, key_object):
         G.gather_key_object(log, pws, cells, local, dets, dossier=dossier)
 
 
+def live_all(vs, quantity):
+    ch = collections.defaultdict(list)
+    for v in vs:
+        if v["quantity"] == quantity: ch[v["subject"]].append(v)
+    return [([x for x in c if x["id"] not in {y.get("supersedes") for y in c}] or c)[-1] for c in ch.values()]
+
+
 def live(vs, quantity):
     ch = collections.defaultdict(list)
     for v in vs:
@@ -89,9 +97,13 @@ def live(vs, quantity):
 
 
 res = {}
+TAIL = []
 for doc in ("litolff", "brahms"):
     dossier = json.load(open(DOSS[doc]))
     pages = sorted({int(g.split("/")[1]) for g in KNOWN[doc]})
+    for ex in os.environ.get('EXTRA_PAGES', '').split(';'):
+        if ex.startswith(doc + ':'):
+            pages = sorted(set(pages) | {int(x) for x in ex.split(':')[1].split(',') if x})
     for pg in pages:
         if ONLY and pg not in ONLY:
             continue
@@ -103,6 +115,8 @@ for doc in ("litolff", "brahms"):
                          ("c183", dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="0")),
                          ("c187", dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="1")),
                          ("c187nd", dict(OMR_KEY_SIGNATURE_CLAIM="1", OMR_KEY_PER_SYSTEM="1"))):
+            if os.environ.get("ARMS") and arm not in os.environ["ARMS"].split(","):
+                continue
             os.environ.update(env)
             os.environ.pop("OMR_METER_OBJECT", None); os.environ.pop("OMR_CLAIMED_REGISTER", None)
             rec = {"observations": obs, "abstentions": ab, "verdicts": []}
@@ -122,7 +136,36 @@ for doc in ("litolff", "brahms"):
                         if a.quantity == _Q.CLAIMED_AREA and a.subject.to_key().startswith("staff/%s/%s/" % (pp[1], pp[2])) and (a.detail or {}).get("owner") == "key_signature":
                             print("    ABST", a.subject.to_key(), a.reason, json.dumps(a.detail, default=str)[:300])
             RR.run_stages(log)
-            vs = log.to_json()["verdicts"]
+            LJ = log.to_json()
+            vs = LJ["verdicts"]
+            if arm == "c187" and os.environ.get("DUMP_TAIL"):
+                clefs = {v["subject"]: v["value"] for v in live_all(vs, "clef")}
+                glyph_v = {}
+                for qn in ("rest_is_not_a_rest", "notehead_is_not_a_notehead"):
+                    for g, v in live(vs, qn).items():
+                        glyph_v.setdefault(g, {})[qn] = {"outcome": v.get("outcome"), "reason": v.get("reason"), "value": v.get("value")}
+                from tools.omr.staged import adjudicate as _A
+                from tools.omr.staged.adjudicators import header as _H
+                from tools.omr.staged.record import Subject as _S
+                _spec = _A.REGISTRY[_Q.REST_IS_NOT_A_REST]
+                _ctx = {}
+                for o in LJ["observations"]:
+                    dd = o.get("detail") or {}
+                    if o["quantity"] == "claimed_area" and dd.get("source") == "system_key_object":
+                        if o["subject"] not in _ctx:
+                            try:
+                                _ko = dd.get("key_object") or {}
+                                _ctx[o["subject"]] = _H.key_tail_context(_A.Evidence(log, _S.from_key(o["subject"]), _spec), system_count=_ko.get("system_count"),
+                                                                          read_shapes=[(q or {}).get("shape") for q in _ko.get("read_pieces") or ()])
+                            except Exception as ex:   # a context that cannot be read is a finding, not a crash
+                                _ctx[o["subject"]] = {"error": repr(ex)}
+                for o in LJ["observations"]:
+                    dd = o.get("detail") or {}
+                    if o["quantity"] == "claimed_area" and dd.get("source") == "system_key_object":
+                        bi = dd.get("boxes_inside") or {}
+                        TAIL.append({"doc": doc, "page": pg, "staff": o["subject"], "part": dd.get("part"), "standing": dd.get("standing"),
+                                     "clef": clefs.get(o["subject"]), "ctx": _ctx.get(o["subject"]), "ko": dd.get("key_object"), "tail_info": dd.get("tail_info"),
+                                     "area": o["value"], "boxes": {g: dict(e, verdicts=glyph_v.get(g)) for g, e in bi.items()}})
             rn, dur = live(vs, "rest_is_not_a_rest"), live(vs, "duration")
             for g in KNOWN[doc]:
                 if int(g.split("/")[1]) != pg: continue
@@ -130,9 +173,11 @@ for doc in ("litolff", "brahms"):
                 dv = (d["value"] if d and isinstance(d["value"], dict) else {}) if d else {}
                 res.setdefault(g, {})[arm] = dict(refused=bool(r and r["value"] is True), reason=(r or {}).get("reason"),
                                                   outcome=(r or {}).get("outcome"), written_as_rest=bool(dv.get("is_rest")),
-                                                  dur_outcome=(d or {}).get("outcome"))
+                                                  dur_outcome=(d or {}).get("outcome"),
+                                                  claimed=((r or {}).get("detail") or {}).get("claimed_by"))
             print(doc, pg, arm, flush=True)
 json.dump(res, open(OUT, "w"), indent=1)
+if TAIL: json.dump(TAIL, open(OUT.replace('.json', '.tail.json'), 'w'), default=str)
 for arm in ("base", "c183", "c187", "c187nd"):
     n = collections.Counter()
     for g, a in res.items():

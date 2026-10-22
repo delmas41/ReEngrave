@@ -1834,13 +1834,13 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
                    Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER,
-                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA),
+                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
-           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA),
+           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_on_a_dynamic_letter",
@@ -1937,7 +1937,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
         # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE register consult, in place of the 2.177 meter read; a
         # claim too weak to refuse NARROWS at the end instead.
-        claim = _claimed_by.consult(ev, box_row, head=False) if _claimed_by.enabled() else None
+        claim = _claimed_by.consult(ev, box_row, head=False, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
         if claim is not None and claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_refusal(claim, box_row, detail)
@@ -2598,3 +2598,13 @@ def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
 #: `_OK`, never typed twice: `export.py` counts by walking this, so a family
 #: added above is counted without a second list being remembered.
 FAMILY_REFUSALS: Tuple[str, ...] = tuple(_OK)
+
+
+def _key_tail_reads(ev):
+    """ROADMAP 2.187b: the four verdicts the key tail's written key is made of, READ here in the decision's own body (`claimed_by.consult` takes
+    them as `tail_reads`): the staff's clef, slot and part key, and its margin label rows."""
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return {"staff": None}
+    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
+            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}

@@ -32,6 +32,14 @@ def lines_of(i):
     return [top + SP * j for j in range(5)]
 
 
+def _paint_flat(img, x, bot):
+    """A real flat's ink: a 3 px stem 54 px tall and a round 13 x 26 px bowl on its lower right (bowl bottom at row `bot`)."""
+    img[bot - 54:bot, x:x + 3] = 0
+    yy, xx = np.mgrid[bot - 26:bot, x:x + 13]
+    r = ((yy - (bot - 13)) / 13.0) ** 2 + ((xx - (x + 5.0)) / 8.0) ** 2
+    img[bot - 26:bot, x:x + 13][(r <= 1.0) & (r >= 0.45)] = 0
+
+
 def raster(flats_per_staff, *, extra=(), n=3):
     img = np.full((H, W), 255, np.uint8)
     for i in range(n):
@@ -41,7 +49,7 @@ def raster(flats_per_staff, *, extra=(), n=3):
         for s in range(flats_per_staff[i]):
             x = FLAT0 + PITCH * s
             top = int(lines_of(i)[1]) - 10 + (s % 2) * 6
-            img[top:top + 50, x:x + 18] = 0
+            _paint_flat(img, x, top + 50)
     for (x0, y0, x1, y1) in extra:
         img[y0:y1, x0:x1] = 0
     return img
@@ -208,28 +216,36 @@ class TestCountFromTheSystem(unittest.TestCase):
         self.assertEqual((obj["status"], obj["N"]), ("found", 2))
 
 
-class TestTheConsult(unittest.TestCase):
-    """The cause, reproduced: the rest on the third flat of staff 2 is written as a rest unless the system's count reaches it."""
+def _bridge(i):
+    """Ink joining flats 2 and 3 of staff i into one piece too wide to be an accidental: the raster reads 2 slots, the detector boxes 2 + a rest."""
+    y = int(lines_of(i)[1]) + 12
+    return [(FLAT0 + PITCH + 10, y, FLAT0 + PITCH * 2 + 6, y + 6)]
 
-    def _rest(self, env, boxes=None, flats=(3, 3, 2)):
-        log, g = gather(list(flats), boxes or _full(), env=env)
-        decide(log, env, Q.REST_IS_NOT_A_REST)
+
+CTX = {"written": None, "previous": None, "clef": None, "source": "unknown"}
+
+
+class TestTheConsult(unittest.TestCase):
+    """The cause, reproduced: the rest on the third flat of staff 2 is written as a rest unless the system's count reaches it.
+    ROADMAP 2.187b: the slots a staff did NOT read are a NARROWED tail (never refused), cut to the staff's written key where ADJUDICATE knows it."""
+
+    def _rest(self, env, ctx=None, boxes=None):
+        log, g = gather([3, 3, 3], boxes or _full(), env=env, extra=_bridge(2))
+        with mock.patch("tools.omr.staged.adjudicators.header.key_tail_context_from", return_value=dict(CTX, **(ctx or {}))):
+            decide(log, env, Q.REST_IS_NOT_A_REST)
         return log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)])
 
-    def test_the_rest_on_a_placed_slot_is_narrowed_unless_the_instruments_written_key_allows_it(self):
-        boxes = _full()
-        off = self._rest(OFF, boxes)
+    def test_the_rest_on_a_placed_slot_is_narrowed_unless_the_instruments_written_key_cuts_the_tail(self):
+        off = self._rest(OFF)
         self.assertNotEqual(off.reason, "claimed_by:key_signature")
-        on = self._rest(ON, boxes)                                                 # written key unknown at GATHER: blue, never refused
+        on = self._rest(ON)                                                        # written key unknown: today's reach, blue, never refused
         self.assertEqual((on.outcome, on.reason), ("narrowed", "claim_narrowed:key_signature"))
-        log, g = gather([3, 3, 2], boxes, env=ON, written_counts={2: 3})           # the instrument's written key IS 3 flats: refused
-        decide(log, ON, Q.REST_IS_NOT_A_REST)
-        v = log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)])
-        self.assertEqual(v.reason, "claimed_by:key_signature")
-        self.assertGreater(v.margin, 0)
-        log, g = gather([3, 3, 2], boxes, env=ON, written_counts={2: 1})           # a B-flat clarinet (1 flat) can never claim 3
-        decide(log, ON, Q.REST_IS_NOT_A_REST)
-        self.assertEqual(log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)]).outcome, "narrowed")
+        three = self._rest(ON, {"written": -3, "previous": -3, "source": "part_key:document_majority"})      # concert pitch: slot 3 is its tail
+        self.assertEqual((three.outcome, three.reason), ("narrowed", "claim_narrowed:key_signature"))
+        one = self._rest(ON, {"written": -1, "previous": -1, "source": "part_key:document_majority"})        # a B-flat clarinet (1 flat): no tail at slot 3
+        self.assertEqual(one.reason, "rest")                                       # left alone: neither refused nor blue
+        zero = self._rest(ON, {"written": 0, "previous": 0, "source": "no_signature_convention"})            # a horn: no tail at all
+        self.assertEqual(zero.reason, "rest")
 
     def test_a_rest_on_a_slot_the_staff_read_itself_is_still_refused(self):
         boxes = _full((3, 3, 3))
@@ -247,12 +263,19 @@ class TestTheConsult(unittest.TestCase):
             v = log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 3)])
             self.assertEqual((v.value, v.reason), (False, "rest"), env)
 
-    def test_a_box_in_a_narrowed_area_is_narrowed_not_refused(self):
-        boxes = [_full()[0], _full()[1], [clef_box(2), rest_on_slot(2, 1)]]
-        log, g = gather([3, 3, 0], boxes)
-        decide(log, ON, Q.REST_IS_NOT_A_REST)
-        v = log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 1)])
-        self.assertEqual((v.outcome, v.reason), ("narrowed", "claim_narrowed:key_signature"))
+    def test_a_staff_that_read_none_has_its_whole_run_as_a_tail_judged_the_same_way(self):
+        # staff 2's three flats are one wide blob (no raster piece) and the detector drew no key box on it: it reads NONE (a transposing staff,
+        # or a crushed print). A rest boxed on its first slot is narrowed where its written key is unknown, left alone where it is a horn's 0.
+        y = int(lines_of(2)[1]) + 12
+        bridge = [(FLAT0 + 6, y, FLAT0 + PITCH * 2 + 6, y + 6)]
+        boxes = [_full()[0], _full()[1], [clef_box(2), rest_on_slot(2, 0)]]
+        for ctx, want in (({}, "claim_narrowed:key_signature"), ({"written": 0, "previous": 0, "source": "no_signature_convention"}, "rest"),
+                          ({"written": -1, "previous": -1, "source": "part_key:document_majority"}, "claim_narrowed:key_signature")):
+            log, g = gather([3, 3, 3], boxes, extra=bridge)
+            self.assertEqual(rows(log, 2)[0].detail["part"], "none_read")
+            with mock.patch("tools.omr.staged.adjudicators.header.key_tail_context_from", return_value=dict(CTX, **ctx)):
+                decide(log, ON, Q.REST_IS_NOT_A_REST)
+            self.assertEqual(log.verdict(Q.REST_IS_NOT_A_REST, g[(2, 1)]).reason, want, ctx)
 
 
 if __name__ == "__main__":

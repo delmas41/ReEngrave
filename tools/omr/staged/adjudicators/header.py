@@ -487,9 +487,13 @@ def _transposition(ev: Evidence, subject):
     admit different staves, which is the drift `key_consensus`' own docstring
     warns about one module over.
     """
+    return _transposition_of_labels(ev.rows(Q.MARGIN_LABEL, subject=subject))
+
+
+def _transposition_of_labels(labels):
+    """`_transposition` over the staff's `Q.MARGIN_LABEL` rows already read (the key tail's context reads them in its decision's own body)."""
     from ...key_consensus import (MAY_DIFFER_NOT_A_WITNESS,
                                   NO_SIGNATURE_CONVENTION, resolve_label)
-    labels = ev.rows(Q.MARGIN_LABEL, subject=subject)
     if not labels:
         return None, None
     name, offset, known = resolve_label(str(labels[-1].value))
@@ -911,6 +915,93 @@ def expected_fifths(part_key_value, slot, offset, sys_key):
         if written is not None:
             return int(written), "part_majority"
     return None, "nothing_to_compare"
+
+
+def _segment_at(segments, sys_key):
+    """`(index, segment)` of the stretch holding `sys_key`, or `(None, None)`. The lookup `segment_fifths` does, keeping the position."""
+    hit = (None, None)
+    for i, seg in enumerate(segments or ()):
+        start = seg.get("from")
+        if start is None or tuple(start) <= tuple(sys_key):
+            hit = (i, seg)
+        else:
+            break
+    return hit
+
+
+def key_tail_reads(ev: Evidence, subject=None) -> dict:
+    """The four reads the key tail's context is made of, off `ev` (the deciding module declares them in `wants`)."""
+    staff = (ev.subject if subject is None else subject).at(Kind.STAFF)
+    if staff is None:
+        return {"staff": None}
+    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
+            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}
+
+
+def key_tail_context(ev: Evidence, subject=None, *, system_count: Optional[int] = None, read_shapes=()):
+    """`key_tail_context_from(key_tail_reads(ev))` -- the form a caller with an `Evidence` that declares the four quantities uses."""
+    return key_tail_context_from(key_tail_reads(ev, subject), system_count=system_count, read_shapes=read_shapes)
+
+
+def key_tail_context_from(reads: dict, *, system_count: Optional[int] = None, read_shapes=()):
+    """What the KEY TAIL judge (`key_object.judge_tail_box`) needs to know of ONE staff, from ADJUDICATE verdicts and the key claim alone --
+    ROADMAP 2.187b. Returns `{"written", "previous", "clef", "source"}`.
+
+    `written`: the staff's WRITTEN fifths here (negative = flats), else None. It is the system's CONCERT key -- the COUNT the staves agreed on
+    (`system_count`, `key_object.find_object`) with the sign of the document's key stretch here (else of the staff's own READ slots' shapes,
+    `read_shapes`: only flats vote, two or more and no sharp) -- plus THIS staff's transposition, READ off its margin label or its part's (`_transposition` / `effective_offset`), never
+    defaulted. `source`: `system_count+read_transposition`; `no_signature_convention` (natural brass, timpani print none: key_consensus [C81],
+    a zero only); `unknown` = no READ transposition, no count or no sign: the tail keeps today's NARROWED reach.
+    `previous`: the same one system before where the document's key stretch CHANGES at this system (the cancelling naturals precede the new
+    accidentals), else `written` (no change). `clef`: the staff's CLEF verdict value or None.
+
+    ⚠️ NOT `expected_fifths`' part-majority tier: a part's majority is made of this very staff's readings on other systems, and on a crushed plate
+    those miss the flat boxed as a rest -- measured on Litolff, 8 of 13 flats left standing had a part-majority written count one or two short on
+    a concert-pitch staff (Fl., Ob., Fag., Bassi, violins). Two readings of the same missed ink fall together (CLAUDE §4).
+    ⚠️ THE TRANSPOSITION IS READ, NEVER DEFAULTED: an unlabelled clarinet is NOT the B-flat one here. Decides nothing; reads only verdicts that
+    precede the notehead decision in `adjudicate.ORDER` (`Q.CLEF`, `Q.SLOT_INDEX`, `Q.PART_KEY`) and the staff's `Q.MARGIN_LABEL` rows."""
+    from ...key_consensus import NO_SIGNATURE_CONVENTION
+    staff = reads.get("staff")
+    out = {"written": None, "previous": None, "clef": None, "source": "unknown"}
+    if staff is None:
+        return out
+    clef = reads.get("clef")
+    if clef is not None and isinstance(clef.value, str):
+        out["clef"] = clef.value
+    slot = reads.get("slot")
+    slot = int(slot.value) if slot is not None and isinstance(slot.value, int) and slot.outcome is Outcome.DECIDED else None
+    part_key = reads.get("part_key")
+    pk = part_key.value if part_key is not None and part_key.value else None
+    name, offset = _transposition_of_labels(reads.get("labels"))
+    if offset is None and pk is not None:
+        offset = effective_offset(pk, slot, None)
+    sys_key = (staff.page or 0, staff.system or 0)
+    if name in NO_SIGNATURE_CONVENTION:
+        out["written"], out["previous"], out["source"] = 0, 0, "no_signature_convention"
+        return out
+    if offset is None or not system_count:
+        out["why"] = "no_read_transposition" if offset is None else "no_system_count"
+        return out
+    # the sign of the concert key: the document's stretch here, else what the staff's own READ slots look like
+    sign = 0
+    segs = (pk.get("document") if pk else None) or ()
+    i, seg = _segment_at(segs, sys_key)
+    if seg is not None and seg.get("fifths"):
+        sign = -1 if int(seg["fifths"]) < 0 else 1
+    if not sign:
+        # only FLATS vote, and two of them with no sharp: a crushed flat's bowl reads `sharp` (9 of 10 measured), so a sharp reading is no witness
+        if sum(1 for sh in read_shapes if sh == "flat") >= 2 and not any(sh == "sharp" for sh in read_shapes):
+            sign = -1
+    if not sign:
+        out["why"] = "no_sign"
+        return out
+    out["written"] = sign * int(system_count) + int(offset)
+    out["source"] = "system_count+read_transposition"
+    out["previous"] = out["written"]
+    if i is not None and i > 0 and seg.get("from") is not None and tuple(seg["from"]) == tuple(sys_key):
+        before = segs[i - 1].get("fifths")
+        out["previous"] = None if before is None else int(before) + int(offset)
+    return out
 
 
 def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:

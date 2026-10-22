@@ -75,10 +75,12 @@ def _confs(ev: Any) -> Dict[str, float]:
     return out
 
 
-def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: Any = None) -> Optional[Finding]:
+def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: Any = None, tail_reads: Any = None) -> Optional[Finding]:
     """REFUSE / NARROW / None for this box (see the module docstring). A missing row declines (rule 8). `family` is "note" (a head or
     a rest: a claim that cannot refuse NARROWS) or "mark" (a flag, an arpeggiato, an arc: only the key signature's NAMED box refuses
-    -- those families have no blue reading, so nothing else is consulted). `rows`: the decision's own read of `Q.CLAIMED_AREA`, if it made one."""
+    -- those families have no blue reading, so nothing else is consulted). `rows`: the decision's own read of `Q.CLAIMED_AREA`, if it made one.
+    `tail_reads`: a callable returning `header.key_tail_reads(ev)` -- the deciding module READS the four verdicts its key tail needs in its own
+    body (so its `wants` are visibly live, `inventory --check`); None = the decision declares none of them: the tail's written key is unknown."""
     if not enabled() or box_row is None or ev.subject.at(Kind.STAFF) is None:
         return None
     key = box_row.subject.to_key() if family == "mark" else ev.subject.to_key()
@@ -87,6 +89,7 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
         return None
     stemmed = _stemmed(ev, box_row) if head else False
     confs = None
+    tail_ctx, tail_j = None, None
     refusing, narrowing = [], []
     for r, e in held:
         d = r.detail or {}
@@ -109,6 +112,23 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
             if family == "mark":
                 if e.get("named") and standing == "READ":
                     refusing.append((owner, r, float(e.get("stand_margin_spaces") or 0.0), "stands_in_the_key_run"))
+                continue
+            if e.get("tail") is not None and d.get("part") in ("placed", "none_read") and standing != "READ":
+                # 2.187b: a box in the TAIL (a slot the staff did not read) is narrowed only if it could be this staff's own next key
+                # accidental -- shape, fixed-order staff step, slot x, written count (`key_object.judge_tail_box`). Else it is LEFT ALONE.
+                from .. import key_object as _ko
+                from .header import key_tail_context_from
+                if tail_ctx is None:
+                    ko_d = d.get("key_object") or {}
+                    tail_ctx = key_tail_context_from(tail_reads() if tail_reads is not None else {"staff": None},
+                                                     system_count=ko_d.get("system_count"),
+                                                     read_shapes=[(q or {}).get("shape") for q in ko_d.get("read_pieces") or ()])
+                ti = d.get("tail_info") or {}
+                tail_j = _ko.judge_tail_box(e["tail"], ti.get("slot_cx") or {}, float(ti.get("spacing") or 0.0), own=int(ti.get("own") or 0),
+                                            system_n=int(ti.get("N") or 0), written=tail_ctx["written"], previous=tail_ctx["previous"],
+                                            clef=tail_ctx["clef"])
+                if tail_j["narrow"]:
+                    narrowing.append((owner, r, 0.0, "key_tail_" + tail_j["why"]))
                 continue
             if e.get("named"):
                 m = float(e.get("stand_margin_spaces") or 0.0)
@@ -164,5 +184,6 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
                              # how the claim was drawn: the header column's right edge (own clef / the system's clefs), the locator's crop
                              "right_edge": d0.get("right_edge"), "key_object": d0.get("key_object"), "part": d0.get("part"), "locator_frame": d0.get("locator_frame"), "prior": d0.get("prior"),
                              "holding": [{"owner": o, "row": r.id, "why": w, "margin": round(m, 3)} for o, r, m, w in refusing + narrowing],
-                             "entry": (r0.detail or {}).get("boxes_inside", {}).get(key)}}
+                             "entry": (r0.detail or {}).get("boxes_inside", {}).get(key),
+                             "tail": ({"context": tail_ctx, "judged": tail_j} if tail_j is not None else None)}}
     return Finding(bool(refusing), owner, used, margin, detail)

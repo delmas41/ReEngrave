@@ -14264,12 +14264,19 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                 continue
             ko = {"system_count": obj["N"], "basis": obj["basis"], "dossier": obj["dossier"], "allowed_counts": allowed,
                   "system_counts": obj["counts"], "pitch_spaces": obj["pitch_spaces"], "clef_edge": s0["clef_edge"],
-                  "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"]}
+                  "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"],
+                  # 2.187b: what each slot the staff READ is (shape, step against the lines there): ADJUDICATE / the report check the fixed order
+                  "read_pieces": [dict(KO.measure_tail_box(binary, list(st.line_ys), sp, [q["x0"], q["y0"], q["x1"], q["y1"]]) or {}, slot=qi + 1)
+                                  for qi, q in enumerate(obj["by_staff"][li]["pieces"][:obj["N"]])]}
             for part in cl["parts"]:
                 area = part["area"]
                 win = KS.KeySlotWindow(lo=area[0], hi=area[2], y_lo=area[1], y_hi=area[3], members=(), clef=None, slots=cl["slots"],
                                        next_x=None, next_tol=0.0)
                 inside: Dict[str, Any] = {}
+                # ROADMAP 2.187b: the TAIL (slots this staff did not read) reaches out to the staff's window bound, and each box in it carries
+                # what its own ink IS (shape, staff step against the lines locally, a solid head) -- measurements; ADJUDICATE judges them.
+                tail_part = part["kind"] in ("placed", "none_read")
+                wide = [area[0], area[1], max(area[2], float(s0["x_hi"])), area[3]] if tail_part else area
                 for gi, d in enumerate(dets):
                     pb = _page_box(c, d)
                     nm = str(d.smufl_name)
@@ -14277,19 +14284,23 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                         continue
                     b = KS.KeyBox(R.glyph(p, sys_idx, li, 0, gi).to_key(), nm, pb[0], pb[1], pb[2] - pb[0], pb[3] - pb[1])
                     stands = KS.stands_in_the_window(win, b) and KS.is_refusable_class(nm)
-                    if not CL.overlaps(area, pb) and not stands:
+                    if not CL.overlaps(wide, pb) and not stands:
                         continue
                     got = MO.ink_inside(binary, pb, area, list(st.line_ys), sp)
                     if got is None and not stands:
                         continue
                     e = dict(got or {}, cls=nm)
+                    if tail_part:
+                        e["tail"] = KO.measure_tail_box(binary, list(st.line_ys), sp, pb) or {}
                     if stands:
                         e["named"] = True
                         e["stand_margin_spaces"] = KS.stand_margin_spaces(win, b, sp)
                     inside[b.row_id] = e
                 log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_KEY_OBJECT, frame=frame_cell(0), cell=0, owner=CL.OWNER_KEY,
                             owner_row=None, unit="area", standing=part["standing"], source="system_key_object", slots=cl["slots"],
-                            part=part["kind"], key_object=ko, boxes_inside=inside, space_page_px=round(sp, 3))
+                            part=part["kind"], key_object=ko, boxes_inside=inside, space_page_px=round(sp, 3),
+                            tail_info=({"slot_cx": {str(k): round(v, 1) for k, v in KO.slot_centres(obj, li, sp).items()}, "spacing": round(sp, 3),
+                                        "own": cl["own"], "N": obj["N"]} if tail_part else None))
             if progress:
                 print(f"  gather claimed area (key object) {ssub.to_key()}")
 

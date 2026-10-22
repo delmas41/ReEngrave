@@ -170,6 +170,6 @@ def covering(rows: Iterable[Any], key: str) -> List[Tuple[Any, Dict[str, Any]]]:
         at_edge = d.get("owner") == OWNER_COLUMN and got.get("left_edge_spaces") is not None \
             and float(got["left_edge_spaces"]) <= LEADING_EDGE_SPACES
         clef_cover = d.get("owner") == OWNER_CLEF and float(got.get("box_cover", 0.0)) >= CLEF_BOX_COVER_MIN
-        if got.get("named") or at_edge or clef_cover or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
+        if got.get("named") or at_edge or clef_cover or got.get("tail") is not None or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
             out.append((r, got))
     return out
