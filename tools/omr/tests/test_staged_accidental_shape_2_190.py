@@ -113,7 +113,6 @@ class TestChoose(unittest.TestCase):
         self.assertEqual(AS.choose(["accidentalFlat"], self.N)["why"], "unambiguous")
 
     def test_double_sharp_among_the_candidates_is_never_picked(self):
-        self.assertIsNone(AS.choose(["accidentalSharp", "accidentalDoubleSharp"], {"shape": "sharp"} )["pick"] and None)
         self.assertEqual(AS.choose(["accidentalSharp", "accidentalDoubleSharp"], {"shape": "sharp"})["pick"], "accidentalSharp")
         self.assertIsNone(AS.choose(["accidentalDoubleFlat", "accidentalDoubleSharp"], {"shape": "sharp"})["pick"])
 
@@ -203,6 +202,25 @@ class TestChoiceAmongCandidates(unittest.TestCase):
         self.assertIsNone(AS.SHAPE_READ)
         self.assertFalse(AS.reads_shape(9.9))
         self.assertFalse(OI.reads(0.5))
+
+
+class TestLaneReportReplayOfAGatheredRecord(unittest.TestCase):
+    """The lane report may replay ADJUDICATE..EXPORT of a record gathered with the GATHER-side flags on, for both arms, ONLY when told so."""
+
+    def test_refused_without_the_option_allowed_with_it(self):
+        from tools.omr.staged import lane_report as L
+        orig = L.flag_homes
+        L.flag_homes = lambda f, root=None: ["staged/gather.py"]
+        try:
+            with self.assertRaises(SystemExit):
+                L.decide_from("adjudicate", [("OMR_X", "0", "1")], False)
+            mode, notes = L.decide_from("adjudicate", [("OMR_X", "0", "1")], False, replay_gathered=True)
+            self.assertEqual(mode, "adjudicate")
+            self.assertTrue(any("REPLAY OF A RECORD GATHERED" in n for n in notes))
+            with self.assertRaises(SystemExit):
+                L.decide_from("gather", [("OMR_X", "0", "1")], False, replay_gathered=True)
+        finally:
+            L.flag_homes = orig
 
 
 if __name__ == "__main__":

@@ -233,8 +233,11 @@ def acts_in_gather(homes: Iterable[str]) -> bool:
     return any(pathlib.PurePath(h).name in GATHER_MODULES and "staged" in pathlib.PurePath(h).parts for h in homes)
 
 
-def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unknown: bool) -> Tuple[str, List[str]]:
-    """`(from, notes)`. Refuses what would report a clean zero by construction."""
+def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unknown: bool,
+                replay_gathered: bool = False) -> Tuple[str, List[str]]:
+    """`(from, notes)`. Refuses what would report a clean zero by construction. `replay_gathered` (2.190): the replayed record (`--tag`) was
+    GATHERED with the GATHER-side flags already on and those flags are only MEASURING (the OFF arm ignores what they filed), so a flag homed in
+    GATHER may be replayed from ADJUDICATE; the claim is the caller's and is printed in the notes."""
     notes: List[str] = []
     gather = False
     for name, _off, _on in flags:
@@ -249,6 +252,11 @@ def decide_from(requested: str, flags: Sequence[Tuple[str, str, str]], allow_unk
         gather = gather or g
         notes.append("%s: read in %s -> %s" % (name, ", ".join(homes[:4]) + (" ..." if len(homes) > 4 else ""),
                                               "GATHER" if g else "ADJUDICATE..EXPORT"))
+    if replay_gathered:
+        if requested == "gather":
+            raise SystemExit("--replay-gathered replays a record gathered with the flags on: use --from adjudicate (or auto)")
+        notes.append("REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT")
+        return "adjudicate", notes
     if requested == "auto":
         return ("gather" if gather else "adjudicate"), notes
     if requested == "adjudicate" and gather:
@@ -949,6 +957,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--seed", type=int, default=2188, help="tile draw seed (the page sample's seed is in sample.json)")
     ap.add_argument("--workers", type=int, default=2, help="arm processes at once (<= 4)")
     ap.add_argument("--allow-unknown-flag", action="store_true")
+    ap.add_argument("--replay-gathered", action="store_true",
+                    help="--tag names a record GATHERED with the GATHER-side flags on (2.190); replay ADJUDICATE..EXPORT for both arms")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -977,7 +987,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if not a.out:
         raise SystemExit("--out DIR is required")
     plates = [p for p in a.plates.split(",") if p]
-    mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag)
+    mode, notes = decide_from(a.mode, flags, a.allow_unknown_flag, a.replay_gathered)
     if not flags:
         notes.append("no --flag: OFF and ON are the same tree (the identity control)")
     out = pathlib.Path(a.out)
