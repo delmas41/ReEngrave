@@ -68,6 +68,10 @@ project. Ask him.
    an agent's own look -- above all one that contradicts an earlier figure or
    comes from hand-picked pages -- gets a 10-minute crop look or a few tiles
    to Sean first; three of them were wrong in one day.
+   **A rate from another population is not a rate on ours** (2026-10-22): a
+   figure measured on training crops, other publishers or one stage alone is
+   re-measured on the acceptance plates through the whole pipeline before it
+   opens a lane (2.196's "20% of accidentals missed" was 2-4% on Brahms).
 8. **A fallback never converts "cannot tell" into an answer** — not "same",
    not "clean", not a whole rest that means silence.
 9. **No new flag, benchmark directory, derived check or handoff without a
