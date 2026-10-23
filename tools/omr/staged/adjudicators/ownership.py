@@ -4547,13 +4547,30 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         srow = detail.get("shape")
         shp = _acc_shape.classify(srow if isinstance(srow, dict) and srow.get("bl") is not None else None)
         ap = _acc_anchor.applies(str(detail.get("detector_class")), apos, detail.get("box_centre_position"), shp)
+        twin = None
         if ap is not None:
+            mine_b = ev.rows(Q.GLYPH_BOX)
+            others = []
+            for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+                if (r.detail or {}).get("category") != "accidental" or r.subject == ev.subject or not isinstance(r.value, (list, tuple)) \
+                        or len(r.value) < 5:
+                    continue
+                if str(r.value[0]).lower().startswith("key"):
+                    continue
+                others.append((r.subject.to_key(), *[float(v) for v in r.value[1:5]]))
+            if mine_b and isinstance(mine_b[-1].value, (list, tuple)) and len(mine_b[-1].value) >= 5:
+                twin = _acc_anchor.twin_of(tuple(float(v) for v in mine_b[-1].value[1:5]), others)
+        if ap is not None and twin is None:
             cands = _collect(float(detail["box_centre_position"]))
             if cands:
                 unclassed = {**ap, "centre_position": round(float(detail["box_centre_position"]), 3), "class_position": round(apos, 3),
                              "label": alteration, "detector_class": str(detail.get("detector_class")), "bl": (srow or {}).get("bl"),
                              "tr": (srow or {}).get("tr"), "shape_margin": shp.get("margin")}
                 apos = float(detail["box_centre_position"])
+        elif ap is not None:
+            return Ruling.abstain("no_candidate", alteration=alteration, detector_class=detail.get("detector_class"),
+                                  heads_in_cell=len(heads), heads_excluded=excluded or None, max_dx_spaces=_ACC_MAX_DX_SPACES,
+                                  max_dy_positions=_ACC_MAX_DY_POSITIONS, unclassed_twin=twin)
 
     if not cands:
         return Ruling.abstain(

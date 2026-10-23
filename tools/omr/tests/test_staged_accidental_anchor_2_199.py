@@ -20,7 +20,7 @@ FLATSH = {"bl": 0.8, "tr": 0.0, "shape": "flat"}
 UNCL = {"bl": 0.28, "tr": 0.0, "shape": "unclear"}
 
 
-def _ink(shape, cls="accidentalFlat", alt="b", class_pos=6.0, centre=4.0, heads=((4.0,),), flag=True):
+def _ink(shape, cls="accidentalFlat", alt="b", class_pos=6.0, centre=4.0, heads=((4.0,),), flag=True, twin=None):
     """One accidental the detector drew as `cls`, whose class anchor stands at `class_pos` and whose box centre at `centre`; one head per entry
     of `heads` (a tuple of positions sharing a column)."""
     log = Log()
@@ -31,6 +31,10 @@ def _ink(shape, cls="accidentalFlat", alt="b", class_pos=6.0, centre=4.0, heads=
     log.observe(g, Q.ACCIDENTAL_STAFF_POSITION, class_pos, reader=READERS.GEOMETRY, frame="cell:0", alteration=alt, detector_class=cls,
                 anchor_fraction=0.715, box_centre_position=centre, residual=0.0, rounded=int(class_pos), x0=88.0, x1=100.0, y0=y0,
                 y1=y0 + 6 * TA.SPACE, confidence=0.8, shape=shape)
+    if twin is not None:             # another accidental glyph's box (x, y, w, h offsets from this one's) in the same cell
+        t = R.glyph(0, 0, 0, 0, 40)
+        log.observe(t, Q.GLYPH_BOX, ("accidentalNatural", 88.0 + twin[0], y0 + twin[1], 12.0, 6 * TA.SPACE), reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.7, category="accidental")
     gi = 1
     for col, ps in enumerate(heads):
         for p in ps:
@@ -86,6 +90,15 @@ class TestUnclassedAnchor(unittest.TestCase):
         self.assertNotIn("anchor_unclassed", v.detail)
         v2 = _ink(NAT, heads=((2.4,),))                                      # 1.6 from the centre
         self.assertEqual(v2.reason, "no_candidate")
+
+    def test_TWIN_a_twin_box_over_the_same_ink_means_no_second_search(self):
+        v = _ink(NAT, twin=(1.0, 4.0))                                       # a natural box on the same ink: its owner would contradict this one
+        self.assertEqual(v.reason, "no_candidate")
+        self.assertIn("unclassed_twin", v.detail)
+
+    def test_a_far_away_accidental_is_not_a_twin(self):
+        v = _ink(NAT, twin=(300.0, 0.0))
+        self.assertIn("anchor_unclassed", v.detail)
 
     def test_applies_is_pure(self):
         self.assertIsNone(AA.applies("accidentalFlat", 6.0, None, NAT))

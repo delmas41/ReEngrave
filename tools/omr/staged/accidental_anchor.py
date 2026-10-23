@@ -36,6 +36,26 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: Another accidental-family box in the cell that covers at least this share of the SMALLER box's area is the SAME INK boxed twice (2.185/2.186: the
+#: merge keeps two boxes when their IoU is under its cut). Measured here: every flat the second search would "recover" onto a head that a natural twin
+#: already owned made a contradiction at EVALUATE (two glyphs, two alterations on one head -> nothing written) and LOST the natural.
+TWIN_COVER_MIN = 0.3
+
+
+def twin_of(box, others) -> Optional[Any]:
+    """The first of `others` ((key, x, y, w, h) boxes of the cell's other accidental-family glyphs) that covers >= `TWIN_COVER_MIN` of the smaller
+    of the two boxes, else None. `box` is (x, y, w, h)."""
+    x, y, w, h = box
+    for key, ox, oy, ow, oh in others:
+        iw = min(x + w, ox + ow) - max(x, ox)
+        ih = min(y + h, oy + oh) - max(y, oy)
+        if iw <= 0 or ih <= 0:
+            continue
+        if iw * ih >= TWIN_COVER_MIN * min(w * h, ow * oh):
+            return key
+    return None
+
+
 def applies(detector_class: str, class_position: float, centre_position: Optional[float], shape: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """None when the class anchor must stand; else `{why, shift_positions}` saying why the class is not trusted: `contradicted` (the shape
     reader clearly reads another accidental), or `unverified` (unclear / unread / a class with no shape: nothing confirms it)."""
