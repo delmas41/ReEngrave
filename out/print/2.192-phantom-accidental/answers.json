@@ -1,0 +1,57 @@
+{
+ "lane": "2.192",
+ "date": "2026-10-22",
+ "question": "What is in the orange box: a rest, an accidental (which one), or both?",
+ "verbatim": "2.192 - tile 9 is a nat accidental all the others are 8th note rests",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 2,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 3,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 4,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 5,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 6,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 7,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 8,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 9,
+   "sean": "natural accidental"
+  },
+  {
+   "tile": 10,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 11,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 12,
+   "sean": "eighth rest"
+  }
+ ],
+ "summary": "all 9 cases are eighth rests (flag right 9/9: the double-sharp on them is a phantom); controls 4 and 12, double-sharps the flag KEEPS because the shape reader reads them as sharps, are also eighth rests (wrong); control 9, boxed sharp/flat, is a natural (2.193 territory)"
+}

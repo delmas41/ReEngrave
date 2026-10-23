@@ -35,6 +35,7 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from . import one_ink as _one_ink
 from . import accidental_shape as _acc_shape
+from .. import natural_candidate as _natural_candidate
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
                        STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
@@ -347,6 +348,16 @@ def _is_clef_class(name: Optional[str], category: Optional[str]) -> bool:
     return "percussion" in (name or "").lower()
 
 
+
+def _accepts_natural_candidates(detector) -> bool:
+    """ROADMAP 2.193: does `detector.detect` take `natural_candidates` (or **kwargs)? A test double with a fixed signature does not."""
+    import inspect
+    try:
+        ps = inspect.signature(detector.detect).parameters
+    except (TypeError, ValueError):
+        return False
+    return "natural_candidates" in ps or any(p.kind is inspect.Parameter.VAR_KEYWORD for p in ps.values())
+
 def gather_detections(log: Log, cells: Sequence[Any],
                       local: Dict[int, Tuple[int, int]], *,
                       detector: Any = None, conf_threshold: float = 0.25,
@@ -409,7 +420,9 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # price — see `benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md` §6,
         # which ranks it first and gives the recipe. It is recorded rather
         # than quietly fixed so the next reader does not have to find it again.
-        dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz)
+        # ⚠️ ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`, default ON): also keep the detector's sub-floor NATURAL score on each accidental box
+        # (`natural_score`), a candidate only; the kwarg is passed ONLY with the flag on AND to a detector whose `detect` takes it, so a detector double without it is unaffected.
+        dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz, **({"natural_candidates": True} if _natural_candidate.enabled() and _accepts_natural_candidates(detector) else {}))
         # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default OFF): the class-wise NMS above keeps two classes of one family on one ink;
         # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
         if dets and _one_ink.enabled():
@@ -1796,6 +1809,12 @@ def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> 
         if img is not None else None
     out: Dict[str, Any] = {"shape": {**(m or {}), **_acc_shape.classify(m)}}
     rivals = [str(r[0]) for r in (getattr(d, "one_ink_rivals", None) or ())]
+    if _natural_candidate.enabled() and getattr(d, "natural_score", None) is not None \
+            and not any(r.lower() == _natural_candidate.CLASS_NAME for r in [str(d.smufl_name)] + rivals):
+        # ROADMAP 2.193: the sub-floor NATURAL candidate for this ink and the staff position a natural would anchor at on THIS box
+        fr = _ANCHOR_FRACTION.get(_natural_candidate.CLASS_NAME, 0.5)
+        out["natural_candidate"] = {"conf": float(d.natural_score), "alteration": "natural", "anchor_fraction": fr,
+                                    "position": (d.y_canonical + d.height_canonical * fr - top_y) / half_step}
     pos: Dict[str, Dict[str, Any]] = {}
     for cls in [str(d.smufl_name)] + rivals:
         alt = _alteration_of(cls)

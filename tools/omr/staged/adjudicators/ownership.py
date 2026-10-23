@@ -23,6 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from .. import one_ink as _one_ink
 from .. import accidental_shape as _acc_shape
+from ... import natural_candidate as _natural_candidate
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
                       owner_from_staves_enabled)
@@ -4232,13 +4233,13 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
            Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
-           Q.KEYSIG_MARKER),
+           Q.KEYSIG_MARKER, Q.REST_IS_NOT_A_REST),
     subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
     reasons=("immediately_right_same_position", "ambiguous_height",
              "no_candidate", "no_unit", "no_evidence",
              "refused_not_an_accidental", "is_a_key_signature_marker",
              "head_belongs_to_a_nearer_staff", "owned_by_another_staff",
-             "ownership_undecided", "one_ink_absorbed"),
+             "ownership_undecided", "one_ink_absorbed", "on_a_rest"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -4381,10 +4382,25 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         oi = detail.get("one_ink")
         cands = ([str((oi.get("winner") or {}).get("class"))] + [str(r.get("class")) for r in oi.get("rivals") or ()]) if oi else \
             [str(detail.get("detector_class"))]
+        # ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`): the detector's sub-floor NATURAL score for THIS ink (filed at GATHER, a candidate and never a
+        # box) joins the candidates the shape may choose among -- only an ink that already holds a flat/sharp box has one. Its confidence is its own
+        # (low) score; the choice is GUESSED like every shape choice.
+        nat = detail.get("natural_candidate") if _natural_candidate.enabled() else None
+        nat_injected = False
+        if nat and nat.get("conf") is not None and float(nat["conf"]) >= _natural_candidate.LOWER_BOUND \
+                and not any(c.lower() == _natural_candidate.CLASS_NAME for c in cands):
+            cands = cands + ["accidentalNatural"]
+            pbc = {**pbc, "accidentalNatural": {"alteration": "natural", "position": nat["position"], "anchor_fraction": nat["anchor_fraction"]}}
+            nat_injected = True
         shape_choice = _acc_shape.choose(cands, shape_now)
         shape_choice = {**shape_choice, "measured": shape_now["shape"], "bl": shape_row.get("bl"), "tr": shape_row.get("tr"),
                         "margin": shape_now["margin"], "candidates": cands}
         pick = shape_choice.get("pick")
+        if nat_injected and pick == "accidentalNatural":
+            # the natural exists only as a sub-floor score: it enters the merge record as a rival with its own score, and only because the shape chose it
+            oi = ({**oi, "rivals": list(oi.get("rivals") or ()) + [{"class": "accidentalNatural", "conf": nat["conf"]}]} if oi else
+                  {"rivals": [{"class": "accidentalNatural", "conf": nat["conf"]}], "margin": None, "natural_candidate": True,
+                   "winner": {"class": str(detail.get("detector_class")), "conf": detail.get("confidence")}})
         if oi and pick and pick in pbc and str(pick) != str((oi.get("winner") or {}).get("class")):
             was = oi.get("winner") or {}
             rivals = [r for r in oi.get("rivals") or () if str(r.get("class")) != str(pick)] + [dict(was)]
@@ -4397,6 +4413,36 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             shape_choice["switched_from"] = str(was.get("class"))
         elif oi and pick:
             shape_choice["agrees_with_winner"] = True
+
+    # ⚠️⚠️ ROADMAP 2.192 (flag `OMR_ACCIDENTAL_ON_A_REST`, default ON). An accidental box that CONTESTS the ink of a KEPT rest box in its own cell
+    # (IoU >= `ON_REST_IOU`) is refused -- it owns no head -- unless its own ink is accidental-shaped, of the shape its class names (2.190's reader).
+    # Never deletes the rest (it is not touched); never refuses an accidental that merely touches a rest (the overlap must be one ink). Where the
+    # shape cannot tell, the accidental is NOT applied and the refusal records why (counted: reason `on_a_rest`), never a silent drop.
+    if _acc_shape.on_rest_enabled() and str(detail.get("detector_class") or "").lower() in _acc_shape.ON_REST_CLASSES:
+        mine = ev.rows(Q.GLYPH_BOX)
+        if mine and isinstance(mine[-1].value, (list, tuple)) and len(mine[-1].value) >= 5:
+            cellsub = ev.subject.at(Kind.CELL)
+            mybox = tuple(float(v) for v in mine[-1].value[1:5])
+            contested = None
+            for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cellsub):
+                if (r.detail or {}).get("category") != "rest" or not isinstance(r.value, (list, tuple)) or len(r.value) < 5:
+                    continue
+                rv = ev.verdict(Q.REST_IS_NOT_A_REST, subject=r.subject)
+                if rv is not None and rv.outcome is Outcome.DECIDED and rv.value is True:
+                    continue                        # a refused rest box is not a rest
+                ov = _one_ink.iou(mybox, tuple(float(v) for v in r.value[1:5]))
+                if ov >= _acc_shape.ON_REST_IOU and (contested is None or ov > contested[0]):
+                    contested = (ov, r)
+            if contested is not None:
+                srow = detail.get("shape")
+                srow = srow if isinstance(srow, dict) else {}
+                sh = _acc_shape.classify(srow if srow.get("bl") is not None else None)
+                vd = _acc_shape.on_rest_verdict(str(detail.get("detector_class")), sh)
+                if not vd["keep"]:
+                    return Ruling.abstain("on_a_rest", alteration=alteration, detector_class=detail.get("detector_class"),
+                                          rest=contested[1].subject.to_key(), rest_class=contested[1].value[0],
+                                          iou=round(contested[0], 3), why=vd["why"], measured=sh["shape"],
+                                          bl=srow.get("bl"), tr=srow.get("tr"))
 
     cell = ev.subject.at(Kind.CELL)
     unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
