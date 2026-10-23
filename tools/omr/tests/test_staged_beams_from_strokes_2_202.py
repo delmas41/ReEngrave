@@ -191,6 +191,16 @@ class TestAFlagBoxedAsABeam(unittest.TestCase):
         self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 1))
         self.assertEqual(v.detail["beam_evidence"], "flag")
 
+    def test_flag_ON_a_hook_box_the_older_one_stem_ink_filter_ALREADY_removed_is_still_a_flag_RED(self):
+        # milestone 2.202: 0 of 418 map-hook boxes were still in `kept` when the block ran (the 2.74 ink test drops a stroke on one stem first)
+        def drop_all(ev, cell, kept, stems, tol, **kw):
+            return [], {b.id: "one_stem" for b in kept}, []
+        with mock.patch.object(rhythm, "_not_a_beam_by_ink", drop_all):
+            off = dur(False, self.TWO, boxes=[((251, 690, 110, 110), [1, 2])], heads=(0,))
+            on = dur(True, self.TWO, boxes=[((251, 690, 110, 110), [1, 2])], heads=(0,))
+        self.assertNotEqual(off.detail.get("beam_evidence"), "flag")
+        self.assertEqual((on.outcome, on.value["beam_levels"], on.detail["beam_evidence"]), (Outcome.DECIDED, 2, "flag"))
+
     def test_TWIN_the_same_hook_on_a_stem_that_carries_a_spanning_beam_is_a_stub_not_a_flag(self):
         # stem 0 also touches the thick stroke across to stem 1: a beamed stem, the short stroke beside it is a stub (candidate level only)
         s = [dict(stem_stroke(0), touches=[2, 3]), dict(stem_stroke(1), touches=[2]), beam_stroke([0, 1]), hook_stroke([0], box=(251, 700, 110, 25))]

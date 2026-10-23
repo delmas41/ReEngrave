@@ -3971,7 +3971,7 @@ def _beam_box_strokes(ev: Evidence, cell, detector_rows) -> Dict[str, Tuple[list
     return out
 
 
-def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
+def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, detector_pre=()) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.202. What the stroke map says about THIS head's beams, as facts for `adjudicate_duration` to act on. Decides nothing.
 
     Returns `None` where the map cannot speak (no strokes in the cell, no stem stroke for this head's stem): the head is read as today.
@@ -3991,6 +3991,12 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side) -> 
         return None
     tip = _BS.tip_reading(views, role, stem_sv, side)
     yolo = [b for b in kept if b.reader == READERS.DETECTOR]
+    # The older filters (the 2.74 ink test: a stroke standing on one stem is not a beam) already take most hook-shaped boxes out of `kept`
+    # before this block runs (milestone: 0 of 418 map-hook boxes were still in `kept`). A box the detector called a beam and the strokes show
+    # to be THIS stem's hook is a flag whether or not an older filter also removed it, so the pre-filter detector boxes are read too; only a
+    # box still in `kept` can be REMOVED from the count (the others are already out).
+    kept_ids = {b.id for b in yolo}
+    yolo = yolo + [b for b in detector_pre if b.id not in kept_ids and b.reader == READERS.DETECTOR]
     linked = _beam_box_strokes(ev, cell, yolo)
     boxes, removed, flag_rows = [], [], []
     for b in yolo:
@@ -4006,13 +4012,17 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side) -> 
                 sup["support"] = "flag"
                 sup["stroke_rows"] = [next(v.row_id for v in views if v.ordinal == h) for h in mine]
                 flag_rows.extend(sup["stroke_rows"])
-                removed.append(b.id)
+                if b.id in kept_ids:
+                    removed.append(b.id)
             else:
                 sup["support"] = "unsupported"
                 sup["reason"] = "hook_on_a_beamed_stem" if mine else "hook_on_another_stem"
-                removed.append(b.id)
-        elif sup["support"] == "unsupported":
+                if b.id in kept_ids:
+                    removed.append(b.id)
+        elif sup["support"] == "unsupported" and b.id in kept_ids:
             removed.append(b.id)
+        elif sup["support"] == "beam" and b.id not in kept_ids:
+            continue            # an older filter removed a box the strokes call a beam: not this block's business (nothing is added back)
         boxes.append(sup)
     # every stroke that moved the reading is a row this verdict used
     rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
@@ -4555,7 +4565,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     sb_detail = None
     if (beams_from_strokes_enabled() and not hollow and voice_levels is None and own_stems and head_box is not None
             and side in ("up", "down")):
-        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side)
+        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side, detector_pre=_kept_beams(ev, cell)[0])
         if sb is not None:
             used.extend(sb["rows"])
             before = [certain, possible]
