@@ -316,6 +316,27 @@ class TestThePreGateIsASupersetOfEveryWrittenKey(unittest.TestCase):
         self.assertEqual(rejected, [False, False, False])
 
 
+class TestTheMeasuredClef(unittest.TestCase):
+    """`clef_of_box`: the clef the detector's box names, GATHER's measurement for the cheap look (no verdict is read for it)."""
+
+    def test_names_and_the_c_clefs_centre_line(self):
+        self.assertEqual(KO.clef_of_box(("gClef", [0, 150, 30, 330]), LINES), "treble")
+        self.assertEqual(KO.clef_of_box(("fClef8vb", [0, 200, 30, 260]), LINES), "bass")
+        self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[2] - 40, 30, LINES[2] + 40]), LINES), "alto")
+        self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[1] - 40, 30, LINES[1] + 40]), LINES), "tenor")
+
+    def test_TWIN_a_c_clef_centred_between_lines_or_an_unknown_name_is_none(self):
+        self.assertIsNone(KO.clef_of_box(("cClef", [0, LINES[2] - 40 + 10, 30, LINES[2] + 40 + 10]), LINES))       # a space, not a line
+        self.assertIsNone(KO.clef_of_box(("clef8va", [0, 150, 30, 330]), LINES))
+        self.assertIsNone(KO.clef_of_box(None, LINES))
+
+    def test_the_pre_gate_uses_it_to_reject_a_flat_at_the_wrong_clefs_step(self):
+        tb = tb_of(paint_flat, 3, pitch_step("treble", "b", 3))
+        loose = lambda clef: KO.judge_tail_box(tb, slot_cx(2), SP, own=2, system_n=KO.MAX_SLOTS, clef=clef, loose=True)["narrow"]
+        self.assertTrue(loose("treble"))                    # the treble Ab: some run holds it
+        self.assertTrue(loose(None))                        # no clef measured: position unchecked, never rejected on a guess
+
+
 class TestKeyTailContext(unittest.TestCase):
     """`header.key_tail_context`: the staff's written key from the verdicts, never from the system's count."""
 

@@ -354,6 +354,26 @@ def measure_tail_box(binary: Any, lines: Sequence[float], spacing: float, box: S
     return {"cx": round(bcx, 1), "step": round(step, 2), "h": round(h, 2), "basis": basis, "shape": shape, "bl": bl, "tr": tr, "margin": margin}
 
 
+def clef_of_box(clef_box: Any, lines: Sequence[float]) -> Optional[str]:
+    """The base clef the detector's clef BOX names on one staff, a MEASUREMENT for the key tail's cheap look (the CLEF verdict is ADJUDICATE's):
+    gClef -> treble, fClef -> bass, cClef -> alto where the box's centre stands on the middle line, tenor on the second line from the top, else
+    None. `clef_box`: `(smufl name, page-px box)`. An 8va/8vb/15ma suffix changes what sounds, never where the key is printed."""
+    if not clef_box or len(lines) < 5:
+        return None
+    nm, pb = str(clef_box[0]), clef_box[1]
+    if nm.startswith("gClef"):
+        return "treble"
+    if nm.startswith("fClef"):
+        return "bass"
+    if nm.startswith("cClef"):
+        cy = (float(pb[1]) + float(pb[3])) / 2.0
+        near = min(range(5), key=lambda i: abs(float(lines[i]) - cy))
+        if abs(float(lines[near]) - cy) > 0.35 * (float(lines[1]) - float(lines[0])):
+            return None
+        return {2: "alto", 1: "tenor"}.get(near)
+    return None
+
+
 def slot_centres(obj: Dict[str, Any], key: Any, spacing: float, upto: int = MAX_SLOTS) -> Dict[int, float]:
     """The page x of the CENTRE of each slot this staff did NOT read (k = own+1 .. upto), placed one pitch apart from its last read piece (or,
     where it read none, from its clef edge as `claim_for_staff` places the none-read area)."""

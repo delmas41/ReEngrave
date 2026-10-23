@@ -122,14 +122,15 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
                 ko_d = d.get("key_object") or {}
                 args = (e["tail"], ti.get("slot_cx") or {}, float(ti.get("spacing") or 0.0))
                 kw = dict(own=int(ti.get("own") or 0), system_n=int(ti.get("N") or 0))
-                # the cheap look first: the clef alone, on the loosest run (either type, every slot to 7, naturals): a box that cannot be an
-                # accidental there is left alone WITHOUT reading the slot, the part key and the labels (their basis would ride on its verdict)
-                light = tail_reads(True) if tail_reads is not None else {}
-                clef0 = (light.get("clef").value if light.get("clef") is not None and isinstance(light["clef"].value, str) else None)
-                tail_j = _ko.judge_tail_box(*args, **dict(kw, system_n=_ko.MAX_SLOTS), written=None, previous=None, clef=clef0, loose=True)
+                # the cheap look first, with NO verdict read: the clef the detector's box names (GATHER's measurement, `clef_measured`), on the
+                # loosest run (either type, every slot to 7, any order index, naturals). A box that cannot be an accidental there is left alone
+                # WITHOUT reading the clef, slot, part key and labels verdicts: a verdict read puts its whole ancestry in this verdict's basis,
+                # and every notehead verdict near the signature would carry it (measured: Litolff's record grew 47-62%).
+                tail_j = _ko.judge_tail_box(*args, **dict(kw, system_n=_ko.MAX_SLOTS), written=None, previous=None,
+                                            clef=ko_d.get("clef_measured"), loose=True)
                 if tail_j["narrow"]:
                     if tail_ctx is None:
-                        tail_ctx = key_tail_context_from(tail_reads(False) if tail_reads is not None else {"staff": None},
+                        tail_ctx = key_tail_context_from(tail_reads() if tail_reads is not None else {"staff": None},
                                                          system_count=ko_d.get("system_count"),
                                                          read_shapes=[(q or {}).get("shape") for q in ko_d.get("read_pieces") or ()])
                     tail_j = _ko.judge_tail_box(*args, **kw, written=tail_ctx["written"], previous=tail_ctx["previous"], clef=tail_ctx["clef"])

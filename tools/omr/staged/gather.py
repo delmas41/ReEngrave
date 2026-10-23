@@ -14214,13 +14214,15 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
             if c is None or not getattr(c, "bbox_page_px", None) or not sp or len(list(st.line_ys)) < 5:
                 continue
             dets = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
-            clef_x, kb = None, []
+            clef_x, kb, clef_box = None, [], None
             for gi, d in enumerate(dets):
                 pb = _page_box(c, d)
                 nm = str(d.smufl_name)
                 if pb is None:
                     continue
                 if nm.startswith(("clef", "gClef", "fClef", "cClef")) and (pb[3] - pb[1]) / sp >= CL.CLEF_BOX_MIN_HEIGHT_SPACES:
+                    if clef_x is None or pb[2] < clef_x:
+                        clef_box = (nm, pb)
                     clef_x = pb[2] if clef_x is None else min(clef_x, pb[2])
                 elif nm.startswith(("key", "accidental")):
                     kb.append(list(pb))
@@ -14230,7 +14232,8 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                 if d0.get("owner") == CL.OWNER_METER and d0.get("cell") == 0:
                     meter_left = float(r0.value[0])
             info[li] = (c, dets, sp, st, meter_left)
-            staves.append({"key": li, "lines": list(st.line_ys), "spacing": sp, "x_start": clef_x, "x_hi": None, "boxes": kb})
+            staves.append({"key": li, "lines": list(st.line_ys), "spacing": sp, "x_start": clef_x, "x_hi": None, "boxes": kb,
+                           "clef_measured": KO.clef_of_box(clef_box, list(st.line_ys)) if clef_box else None})
         known = sorted(s0["x_start"] for s0 in staves if s0["x_start"] is not None)
         med = known[len(known) // 2] if known else None
         for s0 in staves:
@@ -14264,7 +14267,7 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                 continue
             ko = {"system_count": obj["N"], "basis": obj["basis"], "dossier": obj["dossier"], "allowed_counts": allowed,
                   "system_counts": obj["counts"], "pitch_spaces": obj["pitch_spaces"], "clef_edge": s0["clef_edge"],
-                  "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"],
+                  "clef_measured": s0.get("clef_measured"), "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"],
                   # 2.187b: what each slot the staff READ is (shape, step against the lines there): ADJUDICATE / the report check the fixed order
                   "read_pieces": [dict(KO.measure_tail_box(binary, list(st.line_ys), sp, [q["x0"], q["y0"], q["x1"], q["y1"]]) or {}, slot=qi + 1)
                                   for qi, q in enumerate(obj["by_staff"][li]["pieces"][:obj["N"]])]}
