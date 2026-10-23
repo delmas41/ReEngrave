@@ -1,0 +1,53 @@
+{
+ "lane": "2.187",
+ "date": "2026-10-22",
+ "question": "what is in the orange box: a key flat, a note, a rest, or something else?",
+ "verbatim": "1. Key accidental 2. Box around 2 niteheads a 3rd apart quarter notes. 3.4 4. Dot 4 5. key accidental 6. 8 rest 7. Dot 4 8.4 9-10. Dot 2 11.8",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "key accidental"
+  },
+  {
+   "tile": 2,
+   "sean": "two noteheads a third apart, quarter notes"
+  },
+  {
+   "tile": 3,
+   "sean": "quarter"
+  },
+  {
+   "tile": 4,
+   "sean": "dotted quarter"
+  },
+  {
+   "tile": 5,
+   "sean": "key accidental"
+  },
+  {
+   "tile": 6,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 7,
+   "sean": "dotted quarter"
+  },
+  {
+   "tile": 8,
+   "sean": "quarter"
+  },
+  {
+   "tile": 9,
+   "sean": "dotted half"
+  },
+  {
+   "tile": 10,
+   "sean": "dotted half (same note as 9)"
+  },
+  {
+   "tile": 11,
+   "sean": "eighth"
+  }
+ ],
+ "summary": "both lost symbols (tiles 1, 5) are key accidentals: real fixes; all 7 blue-gained cases (2,3,7,8,9,10,11) are real notes just after the signature: the narrowed tail costs 7 of 9 changes; controls 4 and 6 real (4 is a dotted quarter, key says quarter -- not this lane)"
+}

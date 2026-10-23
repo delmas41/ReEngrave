@@ -627,8 +627,13 @@ def _claim_refusal(claim, box_row) -> Ruling:
         r = Ruling(value=True, reason="claimed_by:meter", used=claim.used, detail=detail)
     elif claim.by == "clef":
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
+    elif claim.by == "key_signature":
+        r = Ruling(value=True, reason="claimed_by:key_signature", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
+    if claim.by == "key_signature":       # 2.183: the 2.100 centre rule, so the margin is the depth of the centre inside the run
+        return _margins.attach(r, margin=claim.margin, axis="stand_margin_spaces", unit="staff spaces inside the key run",
+                               band=None, would_choose=(True,))
     return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
                            band=None, would_choose=(True,))
 
@@ -641,6 +646,8 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
         return Ruling.narrow(cands, "claim_narrowed:clef", used=u, **detail)
     if claim.by == "meter":
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
+    if claim.by == "key_signature":
+        return Ruling.narrow(cands, "claim_narrowed:key_signature", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
@@ -3495,7 +3502,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # arc box cut at the barline -- `_arc_tail_refusal`.
                   Q.HEAD_OVAL, Q.ARC_BOX,
                   # ROADMAP 2.177: the meter's claimed area -- `inside_meter.read`.
-                  Q.CLAIMED_AREA),
+                  Q.CLAIMED_AREA,
+                  # ROADMAP 2.187b: `claimed_by.consult` -> `header.key_tail_context` (the staff's written key for the key tail)
+                  Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3507,7 +3516,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
-          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR),
+          Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
+          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3524,8 +3534,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      BEAM_PIECE_REASON,
                                      REST_TWIN_REASON,
                                      "on_a_read_meter", "on_a_rest", "inside_the_meter",
-                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column",
+                                     "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
+                                     "claim_narrowed:key_signature",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3706,7 +3717,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE consult of the claimed-area register, where `is_a_clef`
     # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
     # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
-    claim = _claimed_by.consult(ev, box_row, head=True) if _claimed_by.enabled() else None
+    claim = _claimed_by.consult(ev, box_row, head=True, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
     if claim is not None and claim.refuse:
         return _claim_refusal(claim, box_row)
     clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
@@ -3724,7 +3735,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # slots is a flat's bowl boxed under a second name. It needs no unit of
     # its own beyond the cell's (`key_slots.key_slot_occupant` returns `None`
     # without one), so it sits before the guard like `is_a_clef`.
-    in_key = _key_slots.key_slot_occupant(ev, box_row)
+    # ROADMAP 2.183 (flags `OMR_KEY_SIGNATURE_CLAIM` + the register, ON): the key run is a claim in the register, consulted above;
+    # this geometry gate stands only while that flag is OFF.
+    in_key = None if _claimed_by.key_active() else _key_slots.key_slot_occupant(ev, box_row)
     if in_key is not None:
         return Ruling(value=True, reason="notehead_in_a_key_signature_slot",
                       used=(box_row.id,) + in_key["used"],
@@ -3954,3 +3967,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     return Ruling(value=False, reason="notehead", used=tuple(used),
                   detail=detail)
 
+
+def _key_tail_reads(ev):
+    """ROADMAP 2.187b: the four verdicts the key tail's written key is made of, READ here in the decision's own body (`claimed_by.consult` takes
+    them as `tail_reads` and calls it ONLY for a box the cheap look has not already left alone: each verdict read puts its whole ancestry in this
+    verdict's basis): the staff's clef, slot and part key, and its margin label rows."""
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return {"staff": None}
+    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
+            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}

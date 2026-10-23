@@ -61,7 +61,11 @@ CLEF_BOX_COVER_MIN = 0.9
 OWNER_CLEF = "clef"
 OWNER_COLUMN = "leading_column"
 OWNER_METER = "meter"
-OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER)
+#: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
+#: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
+OWNER_KEY = "key_signature"
+OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY)
+ENV_KEY = "OMR_KEY_SIGNATURE_CLAIM"
 #: classes that are owners' own ink, never measured as a box inside a claim
 OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "brace", "bracket")
 
@@ -69,6 +73,16 @@ OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "br
 def enabled() -> bool:
     """`OMR_CLAIMED_REGISTER`, default ON (ROADMAP 2.181, Sean 2026-10-20); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def key_enabled() -> bool:
+    """`OMR_KEY_SIGNATURE_CLAIM` (ROADMAP 2.183), default ON (Sean 2026-10-23); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_KEY, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def key_active() -> bool:
+    """The key claim files and is consulted only through the register: both `OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER` on."""
+    return key_enabled() and enabled()
 
 
 def is_owner_class(name: Any) -> bool:
@@ -173,6 +187,6 @@ def covering(rows: Iterable[Any], key: str, box_strokes: Optional[Sequence[int]]
         at_edge = d.get("owner") == OWNER_COLUMN and got.get("left_edge_spaces") is not None \
             and float(got["left_edge_spaces"]) <= LEADING_EDGE_SPACES
         clef_cover = d.get("owner") == OWNER_CLEF and float(got.get("box_cover", 0.0)) >= CLEF_BOX_COVER_MIN
-        if got.get("named") or at_edge or clef_cover or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
+        if got.get("named") or at_edge or clef_cover or got.get("tail") is not None or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
             out.append((r, got))
     return out

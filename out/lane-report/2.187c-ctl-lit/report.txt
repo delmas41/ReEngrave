@@ -1,0 +1,11 @@
+LANE REPORT  (no flag)  --from gather
+  no --flag: OFF and ON are the same tree (the identity control)
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5038 notes+rests OFF, 5038 ON, 5038 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 2554 -> 2554
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 1 (0 from the changes, 1 controls), seed 2193 -> tiles/ (sheet.png), key.json outside the folder
+wall time 2006 s

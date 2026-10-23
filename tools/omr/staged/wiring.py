@@ -389,11 +389,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "`winning_reader`. The ranked next step of the direction work is to "
         "put the two rungs on the record as INDEPENDENT readings; this is "
         "half of what that needs and nothing reads it yet."),
-    "DETAIL Q.GLYPH_BAND_DISTANCE.own": (
-        "whether THIS candidate is the staff the glyph was detected in — the "
-        "contested/uncontested split. `adjudicate_glyph_owner` re-derives the "
-        "same fact from the subject rather than reading it, so the two could "
-        "disagree and nothing would say so."),
     "DETAIL Q.MARGIN_LABEL.y_center_px": (
         "where in the margin this label sits. The label→staff assignment "
         "happens inside the reader (`_assign`, on block centroids) and the "

@@ -1,0 +1,57 @@
+{
+ "lane": "2.187",
+ "date": "2026-10-23",
+ "question": "What is in the orange box: a key flat, a note, a rest, or something else?",
+ "verbatim": "1.8 2-6. Flat 7.2 8. 8 rest  9-12. Flat  ( When I say flat, I mean key accidental flats.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "eighth note"
+  },
+  {
+   "tile": 2,
+   "sean": "key flat"
+  },
+  {
+   "tile": 3,
+   "sean": "key flat"
+  },
+  {
+   "tile": 4,
+   "sean": "key flat"
+  },
+  {
+   "tile": 5,
+   "sean": "key flat"
+  },
+  {
+   "tile": 6,
+   "sean": "key flat"
+  },
+  {
+   "tile": 7,
+   "sean": "half note"
+  },
+  {
+   "tile": 8,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 9,
+   "sean": "key flat"
+  },
+  {
+   "tile": 10,
+   "sean": "key flat"
+  },
+  {
+   "tile": 11,
+   "sean": "key flat"
+  },
+  {
+   "tile": 12,
+   "sean": "key flat"
+  }
+ ],
+ "summary": "all 6 symbols the flag removes from the file (tiles 2-6, 11: quarters and eighth rests) are key flats -- 6/6 right; tiles 9 and 12 (newly blue) and 10 (blue lost) are key flats too; controls 1 and 8 right, control 7 is a half note written as a quarter (not this lane)"
+}

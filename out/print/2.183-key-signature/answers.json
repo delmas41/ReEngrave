@@ -1,0 +1,11 @@
+{
+ "judge": "sean",
+ "date": "2026-10-21",
+ "question": "2.183 tiles 1-12 (Litolff): is the thing in the orange box a rest, a note, or part of the key signature (a flat)?",
+ "raw": "1-6 key flats 7-8. 8 rest 9. Key flat 10. 8 rest 11-12. Key flat",
+ "answers": {
+  "1": "key flat", "2": "key flat", "3": "key flat", "4": "key flat", "5": "key flat", "6": "key flat",
+  "7": "8th rest", "8": "8th rest", "9": "key flat", "10": "8th rest", "11": "key flat", "12": "key flat"
+ },
+ "key_check": "tiles 1-6, 9, 11, 12 = the 9 cause-population draws (all key flats); tiles 7, 8, 10 = the 3 controls (all real eighth rests): 12 of 12 as the key (out/print/2.183-key.json); tiles 4 and 5 are the two 2.177 'key flats written as rests'"
+}

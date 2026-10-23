@@ -21,7 +21,9 @@ lone in-bar accidental far from the clef opens no window.
 """
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
@@ -58,6 +60,18 @@ def _cell0(log, boxes, *, staff=0):
                         frame="cell:0", score=0.5, category="notehead")
         out.append(g)
     return out
+
+
+_PIN = mock.patch.dict(os.environ, {"OMR_KEY_SIGNATURE_CLAIM": "0"})
+
+
+def setUpModule():
+    # pinned OFF: this file tests the five `in_a_key_signature_slot` gates, which the 2.183 key claim (default ON, Sean 2026-10-23) subsumes
+    _PIN.start()
+
+
+def tearDownModule():
+    _PIN.stop()
 
 
 def _run(log):
