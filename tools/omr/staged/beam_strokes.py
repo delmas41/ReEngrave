@@ -38,6 +38,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+#: A vertical stroke is a STEM only up to this long (staff spaces). Measured on Litolff pp.2-16 (the 2.202 milestone gather): the 4,260 vertical
+#: strokes that coincide with a `Q.STEM` (cv_lines) row are 1-8 sp long (only 10 reach 8-9); the 11,457 that coincide with none pile up at 8 and at
+#: 12 sp (barlines, system edges, the cell's full height). A hook "on one stem" that is really a stroke leaning on a barline was 118 of the 122
+#: Litolff map-hook boxes (`hook_box_funnel.py`): such a vertical is not a stem and counts for nothing here.
+STEM_MAX_SPACES = 8.0
 #: A beam's thickness, staff spaces. Measured gap between the two thickness populations of the strokes that span >= 2 stems (module doc).
 BEAM_MIN_THICKNESS_SP = 0.5
 #: A flag's hook is at most this long (staff spaces) to be DECIDED a hook; up to `+ HOOK_NEAR_MISS_SPACES` it is `hook_or_stub`.
@@ -73,7 +78,7 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView]) -> Dict[str, object]:
     """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours."""
     if s.kind not in ("horizontal", "curve"):
         return {"role": "other", "why": "kind:" + s.kind}
-    stems = sorted({j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical"})
+    stems = sorted({j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical" and by_ord[j].length <= STEM_MAX_SPACES})
     nv = len(stems)
     out: Dict[str, object] = {"stems": nv, "stem_ordinals": stems, "thickness": s.thickness, "length": s.length,
                               "thickness_margin": round(s.thickness - BEAM_MIN_THICKNESS_SP, 3),
@@ -134,7 +139,7 @@ def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -
     sx, sy, sw, sh = (float(v) for v in stem_box)
     best, best_ov = None, 0.0
     for s in strokes:
-        if s.kind != "vertical":
+        if s.kind != "vertical" or s.length > STEM_MAX_SPACES:
             continue
         slack = STEM_MATCH_X_SLACK_SPACES * s.space_px
         bx, by, bw, bh = s.box

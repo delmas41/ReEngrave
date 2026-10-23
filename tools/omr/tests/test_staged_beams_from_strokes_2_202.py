@@ -117,6 +117,12 @@ class TestPureShapes(unittest.TestCase):
             s[0]["touches"] = [1]
             self.assertEqual(self.role(s, 1), want, length)
 
+    def test_a_vertical_longer_than_any_stem_is_a_barline_and_a_stroke_leaning_on_it_is_no_hook(self):
+        bar = [dict(stem_stroke(0), L=12.0, touches=[1]), hook_stroke([0])]
+        self.assertEqual(self.role(bar, 1), "other")           # milestone 2.202: 118 of 122 'hooks' stood on barlines
+        ok = [dict(stem_stroke(0), touches=[1]), hook_stroke([0])]
+        self.assertEqual(self.role(ok, 1), "hook")             # twin: the same geometry on a stem-length vertical
+
     def test_a_stroke_touching_no_stem_is_nothing_a_vertical_is_not_a_hook(self):
         self.assertEqual(self.role([hook_stroke([])], 0), "other")
         self.assertEqual(self.role([stem_stroke(0)], 0), "other")

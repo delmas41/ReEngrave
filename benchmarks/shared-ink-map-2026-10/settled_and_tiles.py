@@ -63,7 +63,7 @@ for plate in ("litolff", "brahms"):
         item = dict(plate=plate, page=b["page"], box=b["box"], rg=sub, kind="note", settled=d["settled"] if d else None,
                     off=lv(live_off.get((sub, q))), on=lv(v))
         if d and lv(live_off.get((sub, q))) != lv(v):
-            changed[("flag" if "box_flag" in d["settled"] else "other")].append(item)
+            changed[("flag" if d.get("flag_levels") else "other")].append(item)
         elif d and d["settled"] == "agrees" and v.get("outcome") == "decided" and (v.get("value") or {}).get("beam_levels"):
             same_ok[plate].append(item)
     counts[plate]["heads_whose_duration_changed"] = sum(len(x) for x in changed.values() if x and x[0]["plate"] == plate) if False else \
