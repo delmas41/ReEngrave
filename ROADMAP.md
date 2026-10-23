@@ -17,6 +17,13 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-22 (main ≥ the commit naming this block)
+
+**Overnight 20261022-night** started 2026-10-23 05:21Z on main a2eae6880, THROUGH=infer (summary: library/_shared-records/overnight-20261022-night/summary.txt). First run with 2.186 one-ink-one-mark, 2.190 accidental shape, 2.192 accidental-on-a-rest, 2.193 natural candidate ON (plus 2.191 speed, 2.189 cache code). Compare it against 20261020-night first.
+**Rules added 10-21/22:** find the cause first (CLAUDE rule 3); lanes report three things on the frozen sample (rule 4, measuring.md §0, `lane_report`); a rate from another population is not a rate on ours (rule 7); fix at the source, judged case by case; colour only at EXPORT; transposing staves print their own key (page-facts §2); hooks on one stem are flags; double sharps are real.
+**Next:** 2.187 key per system -- clean measure on a QUIET box (no other gathers: Surya timeouts made noise), OFF==ON control, then tiles; 2.201 one accidental family (role by position) after 2.187 lands; shared ink map (plan adopted, 2.194; second path, tests only at milestones): step 2 = 2.198 in flight, then step 3 beams; 2.199 parked until the label is fixed at the source.
+**Process:** never measure while another lane gathers; landings via a fresh small agent; git is very slow on this box.
+
 ## START HERE — after 2026-10-21 (main ≥ the commit naming this block; everything Sean approved is landed ON)
 
 **2026-10-22: 2.193 LANDED ON** (Sean "Land on"): `OMR_NATURAL_CANDIDATE` default ON (a sub-floor natural score is kept as a candidate for an accidental box the detector drew; written GUESSED/blue); reaches records at the next re-gather (old detector-cache entries are re-read once and rewritten as a superset). Known gap: naturals the detector scores ~0 (Sean's earlier tiles 2.186 #4, 2.190 #6 #9).
