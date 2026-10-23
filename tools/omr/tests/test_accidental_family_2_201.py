@@ -228,5 +228,141 @@ class FamilyGather(unittest.TestCase):
         self.assertIsNone(det.accidental_family["head_right"])            # CONTROL: the same mark with its head three spaces off is not in-bar
 
 
+# ───────────────────────── ADJUDICATE + EXPORT, on the record rows GATHER files ─────────────────────────
+
+from tools.omr.staged import export as E                      # noqa: E402
+from tools.omr.staged import record as R                      # noqa: E402
+from tools.omr.staged.record import Log, Q, READERS           # noqa: E402
+from tools.omr.tests import test_staged_accidental as TA      # noqa: E402
+
+
+def _fam(t, det_class, cands, *, why="x", margin=0.3, head_right=None):
+    return {"type": t, "why": why, "margin": margin, "features": {}, "grown": False, "grown_sp": {"up": 0.0, "down": 0.0},
+            "detector_class": det_class, "detector_type": AF.type_of_class(det_class), "candidates": cands,
+            "agrees_with_detector": (t == AF.type_of_class(det_class)) if t in AF.TYPES else None, "head_right": head_right}
+
+
+def _acc_row(log, gi, x, position, cls, alteration, family=None, w=12.0):
+    """The position row GATHER files; `family` is the 2.201 detail (None = the flag OFF, exactly the row main files)."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.GLYPH_BOX, (cls, x - w, position * TA.HALF - TA.SPACE, w, TA.SPACE * 2), reader=READERS.DETECTOR, frame="cell:0",
+                score=0.8, category="accidental")
+    log.observe(g, Q.ACCIDENTAL_STAFF_POSITION, float(position), reader=READERS.GEOMETRY, frame="cell:0", alteration=alteration,
+                detector_class=cls, anchor_fraction=0.5, box_centre_position=float(position), residual=0.0, rounded=int(round(position)),
+                x0=x - w, x1=x, y0=position * TA.HALF - TA.SPACE, y1=position * TA.HALF + TA.SPACE, confidence=0.8,
+                **({"family": family} if family else {}))
+    return g
+
+
+def _file(family, cls="accidentalFlat", alteration="natural"):
+    log = Log()
+    TA._cell_unit(log)
+    _acc_row(log, 0, 100.0, 7.0, cls, alteration, family)
+    TA._head(log, 1, 106.0, 7.0)
+    TA._durations(log, 1)
+    xml, report = E.to_musicxml(TA._full(TA._decide(log)))
+    return log, xml, report
+
+
+class FamilyAdjudicateExport(unittest.TestCase):
+    def test_a_clear_family_type_is_written_with_its_alteration_and_blue(self):
+        fam = _fam("natural", "accidentalFlat", ["flat"])
+        log, xml, report = _file(fam)
+        v = log.verdict(Q.ACCIDENTAL_OWNER, R.glyph(0, 0, 0, 0, 0))
+        self.assertEqual(v.outcome, "decided")
+        self.assertEqual(v.detail["alteration"], "natural")
+        self.assertEqual(v.detail["family"]["type"], "natural")
+        self.assertIn("<accidental>natural</accidental>", xml)
+        self.assertIn('color="%s"' % E.GUESS_COLOR, xml)                   # the strokes changed the detector's type: GUESSED
+        self.assertIn("accidental_family", xml)                            # the rule is named in the machine-readable carrier
+
+    def test_TWIN_agreement_with_a_lone_detector_class_is_not_blue(self):
+        fam = _fam("flat", "accidentalFlat", ["flat"])
+        _log, xml, _r = _file(fam, alteration="b")
+        self.assertIn("<accidental>flat</accidental>", xml)
+        self.assertNotIn('color="%s"' % E.GUESS_COLOR, xml)
+
+    def test_TWIN_the_flag_off_row_has_no_family_and_is_written_as_main_writes_it(self):
+        _log, xml, _r = _file(None, alteration="b")
+        self.assertIn("<accidental>flat</accidental>", xml)
+        self.assertNotIn('color="%s"' % E.GUESS_COLOR, xml)
+
+    def test_an_unclear_type_keeps_the_detectors_candidate_and_is_blue(self):
+        fam = _fam("unclear", "accidentalFlat", ["flat", "sharp"], why="stagger_between_cutoffs", margin=-0.1)
+        log, xml, _r = _file(fam, alteration="b")
+        self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, R.glyph(0, 0, 0, 0, 0)).detail["alteration"], "b")
+        self.assertIn("<accidental>flat</accidental>", xml)
+        self.assertIn('color="%s"' % E.GUESS_COLOR, xml)
+
+    def test_a_key_class_box_after_the_signature_is_an_in_bar_accidental_by_position_and_is_blue(self):
+        fam = _fam("flat", "keyFlat", ["flat"])
+        log, xml, _r = _file(fam, cls="keyFlat", alteration="b")
+        self.assertEqual(log.verdict(Q.ACCIDENTAL_OWNER, R.glyph(0, 0, 0, 0, 0)).outcome, "decided")
+        self.assertIn("<accidental>flat</accidental>", xml)
+        self.assertIn('color="%s"' % E.GUESS_COLOR, xml)
+
+    def test_the_clear_type_replaces_the_corner_check(self):
+        """With a clear family type 2.190's corner reader is not consulted (it read the same ink through a box that can cut it)."""
+        row_shape = {"bl": 0.9, "tr": 0.9, "shape": "sharp"}          # a corner reading that would say sharp
+        log = Log()
+        TA._cell_unit(log)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.GLYPH_BOX, ("accidentalFlat", 88.0, 7 * TA.HALF - TA.SPACE, 12.0, TA.SPACE * 2), reader=READERS.DETECTOR, frame="cell:0",
+                    score=0.8, category="accidental")
+        log.observe(g, Q.ACCIDENTAL_STAFF_POSITION, 7.0, reader=READERS.GEOMETRY, frame="cell:0", alteration="natural", detector_class="accidentalFlat",
+                    anchor_fraction=0.504, box_centre_position=7.0, residual=0.0, rounded=7, x0=88.0, x1=100.0, y0=7 * TA.HALF - TA.SPACE,
+                    y1=7 * TA.HALF + TA.SPACE, confidence=0.8, shape=row_shape, family=_fam("natural", "accidentalFlat", ["flat"]),
+                    one_ink={"rivals": [{"class": "accidentalSharp", "conf": 0.5}], "margin": 0.3, "winner": {"class": "accidentalFlat", "conf": 0.8}, "iou_min": 0.5})
+        TA._head(log, 1, 106.0, 7.0)
+        with mock.patch.dict(os.environ, {"OMR_ONE_INK_ONE_MARK": "1", "OMR_ACCIDENTAL_SHAPE": "1"}):
+            TA._decide(log)
+        v = log.verdict(Q.ACCIDENTAL_OWNER, g)
+        self.assertEqual(v.detail["alteration"], "natural")
+        self.assertNotIn("shape_check", v.detail)
+
+
+class FamilyPositionRow(unittest.TestCase):
+    """`gather_accidental_positions` with and without `d.accidental_family` (what `gather_accidental_family` sets)."""
+
+    def _rows(self, dets):
+        log = Log()
+        G.gather_accidental_positions(log, [TA._Cell()], {0: (0, 0)}, {R.cell(0, 0, 0, 0).to_key(): dets})
+        return log.rows(Q.ACCIDENTAL_STAFF_POSITION, R.cell(0, 0, 0, 0), scope=R.Scope.SELF_AND_DESCENDANTS)
+
+    def test_the_family_type_names_the_alteration_and_its_anchor_and_the_label_stays_a_fact(self):
+        d = TA._Det("accidentalFlat", 100.0, 0.0, 12.0, 40.0)
+        d.accidental_family = {**_fam("natural", "accidentalFlat", ["flat"]), "box": [96.0, -10.0, 112.0, 50.0], "anchor_fraction": 0.504}
+        (row,) = self._rows([d])
+        self.assertEqual(row.detail["alteration"], "natural")
+        self.assertEqual(row.detail["detector_class"], "accidentalFlat")
+        self.assertEqual(row.detail["anchor_fraction"], 0.504)
+        self.assertEqual((row.detail["x0"], row.detail["x1"], row.detail["y0"], row.detail["y1"]), (96.0, 112.0, -10.0, 50.0))   # the GROWN box
+        self.assertEqual(row.detail["family"]["type"], "natural")
+        self.assertAlmostEqual(row.value, (-10.0 + 60.0 * 0.504) / (TA.SPACE / 2.0), places=3)
+
+    def test_CONTROL_without_the_family_the_row_is_exactly_the_detectors(self):
+        d = TA._Det("accidentalFlat", 100.0, 0.0, 12.0, 40.0)
+        (row,) = self._rows([d])
+        self.assertEqual(row.detail["alteration"], "b")
+        self.assertEqual(row.detail["anchor_fraction"], 0.715)
+        self.assertNotIn("family", row.detail)
+        self.assertEqual((row.detail["x0"], row.detail["x1"], row.detail["y0"], row.detail["y1"]), (100.0, 112.0, 0.0, 40.0))
+
+    def test_a_key_class_box_gets_a_row_only_through_the_family(self):
+        d = TA._Det("keyFlat", 100.0, 0.0, 12.0, 40.0)
+        self.assertEqual(self._rows([d]), [])                              # main: key* boxes never get an accidental row
+        d.accidental_family = {**_fam("flat", "keyFlat", ["flat"]), "box": [100.0, 0.0, 112.0, 40.0], "anchor_fraction": 0.715}
+        (row,) = self._rows([d])
+        self.assertEqual(row.detail["alteration"], "b")
+        self.assertEqual(row.detail["detector_class"], "keyFlat")
+
+    def test_an_unclear_family_keeps_the_detectors_class_geometry(self):
+        d = TA._Det("accidentalSharp", 100.0, 0.0, 12.0, 40.0)
+        d.accidental_family = {**_fam("unclear", "accidentalSharp", ["sharp"], why="no_stem"), "box": [100.0, 0.0, 112.0, 40.0], "anchor_fraction": 0.501}
+        (row,) = self._rows([d])
+        self.assertEqual(row.detail["alteration"], "#")
+        self.assertEqual(row.detail["anchor_fraction"], 0.501)             # the class's own anchor: no type was read
+
+
 if __name__ == "__main__":
     unittest.main()
