@@ -7348,7 +7348,7 @@ def gather_ink(log: Log, cells: Sequence[Any],
 #: ALLOW-LIST (an empty value or a typo must not switch a document onto an unpriced GATHER change). PRODUCER ONLY: nothing reads the rows, so
 #: flag on writes a byte-identical exported file.
 STROKE_MAP_ENV = "OMR_STROKE_MAP"
-_STROKE_GLYPH_BASE = 400_000          # past the detector's ordinals, `_CV_GLYPH_BASE`, `_INK_GLYPH_BASE`, `_VERTICAL_RUN_GLYPH_BASE`
+_STROKE_GLYPH_BASE = 375_000          # past the detector's ordinals and every other gather base, BELOW `human_evidence.HUMAN_GLYPH_BASE` (400,000: a first draft sat ON it)
 
 
 def stroke_map_enabled() -> bool:
