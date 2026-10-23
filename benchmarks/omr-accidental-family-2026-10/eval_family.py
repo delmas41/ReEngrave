@@ -60,9 +60,9 @@ def analyse(plate, page, tiles, det):
             own_blocked = blocked - {i for i, sh in shares if sh >= 0.5 and False}
             fam = AF.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(own_blocked),
                                 rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())])
-            cand.append((score, dict(gi=gi, cls=d.smufl_name, conf=round(float(d.confidence), 3), fam=fam)))
+            cand.append((score, dict(gi=gi, cls=d.smufl_name, conf=round(float(d.confidence), 3), fam=fam, det_box=[x0, y0, x1, y1])))
         cand.sort(key=lambda r: -r[0])
-        out.append(dict(set=t["set"], tile=t["tile"], plate=plate, page=page, sean=t["sean"], sp=sp,
+        out.append(dict(set=t["set"], tile=t["tile"], plate=plate, page=page, sean=t["sean"], sp=sp, staff=c.staff_index, measure=c.measure_index,
                         acc=cand[0][1] if cand else None, n_acc=len(cand)))
     return out
 
