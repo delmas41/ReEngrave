@@ -146,3 +146,44 @@ names a consumer needs, so I did not.
 The first draft put `_STROKE_GLYPH_BASE` at 400,000, ON `review/human_evidence.HUMAN_GLYPH_BASE` (`test_stage_review_evidence::test_the_offset_base_cannot_collide_with_any_gather_reader`
 failed in the 29-minute fast tier, 8,783 passed). Moved to 375,000. The four gathers above were made with 400,000: only the stroke subjects' last coordinate differs (400,000+i vs 375,000+i), no
 coverage, byte or timing number depends on it. Nothing in a gathered record could have collided (no human box is added to a gather).
+
+# 2.198 -- step 2: `Q.GLYPH_STROKES`, the register's `ink` branch, slimmer `Q.STROKE` rows (flag group `OMR_STROKE_MAP`, producer only)
+
+Path: STAGED GATHER. No new flag: 2.195's `OMR_STROKE_MAP` (default OFF) is the master switch of the whole group. Built on `lane-2.195-stroke-map`, main merged in. Nothing reads any of it.
+Built: `stroke_map.strokes_in_box` (+ masks kept on `CellStrokes`, never filed); `gather_glyph_strokes` (right after the map, when the box set is final): `Q.GLYPH_STROKES`, one row per detector
+box of every pass, value = ordinals of the cell's strokes of which >= 0.5 of the stroke's ink lies inside the box (the register's one cut, `claims.INSIDE_SHARE_MIN`, not a new number), `shares`,
+`partial` (strokes with some ink inside and less); an EMPTY list is a fact, a cell with no stroke map ABSTAINS per box (rule 8). `gather_claimed_register(stroke_cells=)` files a `unit: ink`
+`Q.CLAIMED_AREA` row beside each CLEF area claim (detector clef box: its `Q.GLYPH_STROKES` strokes; located clef: strokes >= 0.5 inside the fitted area); an owner on no stroke abstains.
+Meter claims and the header column get no ink claim (the column is a convention area, the meter's pieces span two cells): said, not built. `claims.covering(rows, key, box_strokes=, cell=)` gains the
+`ink` branch; without `box_strokes` it reads exactly what it read. Tests `tools/omr/tests/test_glyph_strokes_2_198.py` (16; controls: a moved box loses the stroke, a box on paper is `[]`, a mark numbered
+just under the base is still listed).
+
+## Cause / lesson (rule 3): the byte cost was not the rows
+2.195's +9.5 MB a page was blamed on the row size. First ON gather of this lane (Litolff pages 2,4): the file grew +10.2 MB a page although the rows were already 26% slimmer. The rows are 3.5 MB a
+page; the rest sat in the `evaluation` and `inference` sections (+5.9 MB each over two pages): `Log.subjects(Kind.GLYPH)` listed each stroke (a glyph subject) and every EVALUATE rule wrote a
+"skipped: cause_absent" line for it, 13,441 strokes x the rules. Fix: `Log.subjects(Kind.GLYPH)` does not list subjects numbered `STROKE_GLYPH_BASE <= g < 400,000` (record.py; a flag-off record holds none, so
+nothing there changes). Process lesson: a record-size claim needs the file's per-section bytes, not the rows' bytes.
+
+## 1. Bytes a page of the `Q.STROKE` rows (`slim_bytes.py`: the same strokes, 2.195 filing copied verbatim vs the real function; compact JSON, which is how the file is written)
+Slimmed: dropped `area_sp2` (= fill x box area), `component_n_strokes` (count of rows sharing `component`), `staff_lines_left/right` (what a consumer takes from them is `end_steps_from_top` and
+`staff_space_local_px`, which stay), `profile_sixteenths` on blobs (their named fields are `fill`, `hole_share`), `staff_local` unless False, `cell_n_below_floor` once per cell (first row); `ends` one flat list.
+| | rows | before | after |
+|---|---|---|---|
+| Litolff p2 / p4 | 6,816 / 6,625 | 4.81 / 4.67 MB | 3.57 / 3.48 MB (-25.7% / -25.4%) |
+| Brahms p4 / p5 | 9,560 / 9,939 | 6.71 / 7.00 MB | 4.99 / 5.22 MB (-25.7% / -25.4%) |
+Per page: Litolff 4.74 -> 3.53 MB, Brahms 6.85 -> 5.10 MB. Check: the real ON Litolff record holds 13,441 stroke rows = 7.04 MB (3.52 MB a page), the live NEW figure. `Q.GLYPH_STROKES`: 5,774 rows, 1.35 MB for
+two Litolff pages (0.67 MB a page). Still ~520 bytes a row; what is left is the envelope and the named fields -- pooling per cell is plan step 9. The file-level number after the `subjects` fix: NOT MEASURED YET (see Open).
+
+## 2. Byte-identical check (PYTHONHASHSEED=0, detector cache, `--musicxml`, pages Litolff 2,4)
+Litolff, flag OFF vs ON: the MusicXML and its coverage JSON are byte-identical (`cmp`), with the code BEFORE the `subjects` fix (record: 44,393 -> 63,654 observations, 46 `ink` claims, 136 vs 90
+`claimed_area` rows). Brahms pages 4,5 OFF finished; its ON arm and the OFF-vs-OFF re-gather were stopped by the coordinator for Sean's overnight re-gather. Open: Litolff ON re-run on the final
+code, Brahms ON, Brahms OFF2 (the one Surya word of 2.195). Not claimed.
+
+## 3. Sanity count: 2.185's same-cell different-class doubles as shared stroke sets (`glyph_strokes_census.py`, Litolff pages 2,4 ON record)
+199 pairs (same cell, different class, IoU >= 0.5): **167 stand on the same stroke set**, 28 overlap without being equal, 4 have an empty list. Examples: a head and a whole rest on one blob,
+keyFlat/keySharp on three strokes, dynamicF/dynamicZ. Control: 10,559 same-cell different-class pairs with IoU 0 and strokes: none shares a stroke. Brahms: not run (Open).
+
+## 4. `check`
+`python3 -m tools.omr.staged.check`: TOTAL 203, status ok. By design: reach +1 (`Q.GLYPH_STROKES` unread), wiring +2 (`Q.GLYPH_STROKES.shares`, `Q.CLAIMED_AREA.shares`). wiring -5 stale entries removed (`area_sp2`,
+`staff_lines_left` truly gone; `profile_sixteenths`, `staff_local`, `cell_n_below_floor` are still written but through a conditional dict the tool cannot see, so the drop is partly the tool's blind spot).
+Fast tier (final code): 8825 passed, 0 failed (12 skipped, 2 xfailed).

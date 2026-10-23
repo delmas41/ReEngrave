@@ -123,6 +123,35 @@ class GlyphStrokesRows(unittest.TestCase):
         self.assertEqual(sum(1 for r in rows if "cell_n_below_floor" in r.detail), 1)       # the cell fact is said once
 
 
+class StrokesAreNotWalked(unittest.TestCase):
+    """The measured cost of making strokes glyph subjects: every EVALUATE rule 'skipped' each of them (+11.9 MB on 2 Litolff pages)."""
+
+    def test_log_subjects_lists_marks_not_strokes(self):
+        log = G.Log()
+        mark, stroke = G.R.glyph(0, 0, 0, 0, 7), G.R.glyph(0, 0, 0, 0, RC.STROKE_GLYPH_BASE + 3)
+        log.observe(mark, Q.GLYPH_BOX, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0")
+        log.observe(stroke, Q.STROKE, "blob", reader=READERS.CV_STROKE, frame="cell:0")
+        keys = [s.to_key() for s in log.subjects(RC.Kind.GLYPH)]
+        self.assertEqual(keys, [mark.to_key()])
+        self.assertEqual(len(log.subjects(RC.Kind.CELL)), 1)                           # the cell is listed as ever
+        self.assertEqual(len(log.rows(Q.STROKE, stroke)), 1)                           # and the stroke row is still readable
+
+    def test_CONTROL_a_mark_numbered_just_below_the_base_is_still_listed(self):
+        log = G.Log()
+        m = G.R.glyph(0, 0, 0, 0, RC.STROKE_GLYPH_BASE - 1)
+        log.observe(m, Q.GLYPH_BOX, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0")
+        self.assertEqual([s.to_key() for s in log.subjects(RC.Kind.GLYPH)], [m.to_key()])
+        h = G.R.glyph(0, 0, 0, 0, RC.HUMAN_GLYPH_BASE_FLOOR)                            # a human box (400,000) is a mark
+        log.observe(h, Q.GLYPH_BOX, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0")
+        self.assertIn(h.to_key(), [s.to_key() for s in log.subjects(RC.Kind.GLYPH)])
+
+    def test_the_two_bases_agree_with_the_human_base(self):
+        from tools.omr.staged.review import human_evidence as HE
+        self.assertEqual(RC.HUMAN_GLYPH_BASE_FLOOR, HE.HUMAN_GLYPH_BASE)
+        self.assertEqual(G._STROKE_GLYPH_BASE, RC.STROKE_GLYPH_BASE)
+        self.assertLess(RC.STROKE_GLYPH_BASE, RC.HUMAN_GLYPH_BASE_FLOOR)
+
+
 class _Row:
     def __init__(self, value, **d):
         self.value, self.detail, self.id = value, d, "obs"

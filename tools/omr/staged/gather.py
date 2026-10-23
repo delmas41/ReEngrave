@@ -40,6 +40,7 @@ from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
                        STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
 from .record import ABSTAIN, Log, Q, READERS, Subject
+from .record import STROKE_GLYPH_BASE as RECORD_STROKE_GLYPH_BASE
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
 #: over every `research`-verdict flag (roadmap 0.2b): "moves behind the
@@ -7367,7 +7368,7 @@ def gather_ink(log: Log, cells: Sequence[Any],
 #: ALLOW-LIST (an empty value or a typo must not switch a document onto an unpriced GATHER change). PRODUCER ONLY: nothing reads the rows, so
 #: flag on writes a byte-identical exported file.
 STROKE_MAP_ENV = "OMR_STROKE_MAP"
-_STROKE_GLYPH_BASE = 375_000          # past the detector's ordinals and every other gather base, BELOW `human_evidence.HUMAN_GLYPH_BASE` (400,000: a first draft sat ON it)
+_STROKE_GLYPH_BASE = RECORD_STROKE_GLYPH_BASE          # 375_000, record.py; past the detector's ordinals and every other gather base, BELOW `human_evidence.HUMAN_GLYPH_BASE` (400,000: a first draft sat ON it)
 
 
 def stroke_map_enabled() -> bool:

@@ -44,6 +44,12 @@ from typing import (Any, Iterator, Mapping, Sequence,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+#: ROADMAP 2.195/2.198: glyph ordinals from here (below `human_evidence.HUMAN_GLYPH_BASE`, 400,000) number the STROKES of a cell (`Q.STROKE`).
+#: `Log.subjects(Kind.GLYPH)` does not list them (see there). One constant: `gather._STROKE_GLYPH_BASE` is this.
+STROKE_GLYPH_BASE = 375_000
+HUMAN_GLYPH_BASE_FLOOR = 400_000
+
+
 class Kind(str, Enum):
     """What a row is ABOUT. Ordered coarse to fine."""
 
@@ -3874,6 +3880,12 @@ class Log:
         seen: dict[str, Subject] = {}
         for _q, key in self._by_subject:
             sub = Subject.from_key(key)
+            # ROADMAP 2.198: a STROKE (`Q.STROKE`, a glyph subject numbered from `STROKE_GLYPH_BASE`) is a measurement, not a mark: no
+            # EVALUATE / ADJUDICATE / INFER rule is asked about it (measured: walking 13,441 of them put +11.9 MB of "skipped: cause_absent"
+            # lines into a 2-page record). Only the stroke itself is passed over; its cell, staff, ... are listed as ever, and its rows stay
+            # readable by quantity. A flag-off record holds no such subject, so nothing there changes.
+            if kind is Kind.GLYPH and sub.glyph is not None and STROKE_GLYPH_BASE <= sub.glyph < HUMAN_GLYPH_BASE_FLOOR:
+                continue
             anc = sub.at(kind)
             if anc is not None:
                 seen[anc.to_key()] = anc
