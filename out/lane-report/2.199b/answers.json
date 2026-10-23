@@ -1,0 +1,57 @@
+{
+ "lane": "2.199",
+ "date": "2026-10-22",
+ "question": "which accidental is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "verbatim": "1. Flat 2. Flat 3. Nat 4. Nat 5. Nat 6. Flat 7. Flat 8. Nat 9. None 10. Nat 11. Nat 12. Flat",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "flat"
+  },
+  {
+   "tile": 2,
+   "sean": "flat"
+  },
+  {
+   "tile": 3,
+   "sean": "natural"
+  },
+  {
+   "tile": 4,
+   "sean": "natural"
+  },
+  {
+   "tile": 5,
+   "sean": "natural"
+  },
+  {
+   "tile": 6,
+   "sean": "flat"
+  },
+  {
+   "tile": 7,
+   "sean": "flat"
+  },
+  {
+   "tile": 8,
+   "sean": "natural"
+  },
+  {
+   "tile": 9,
+   "sean": "none"
+  },
+  {
+   "tile": 10,
+   "sean": "natural"
+  },
+  {
+   "tile": 11,
+   "sean": "natural"
+  },
+  {
+   "tile": 12,
+   "sean": "flat"
+  }
+ ],
+ "summary": "cases: right 2 (tile 2 flat applied, tile 7 flat), wrong 5 (tiles 4, 8, 10, 11 a printed natural written as a flat; tile 5 a natural turned F into F-flat -- a pitch that was right before); tiles 3 and 9 blue only; controls 1, 6, 12 right. The head is found, the class (flat label on a natural) is wrong: NOT landed"
+}
