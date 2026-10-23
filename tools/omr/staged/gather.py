@@ -7528,6 +7528,25 @@ FAMILY_HEAD_GAP_SPACES = 1.0
 FAMILY_HEAD_DY_STEPS = 1.0
 
 
+def family_head_right(heads: Sequence[Any], meters: Sequence[Any], gb: Sequence[float], apos: float, top_y: float, half_step: float,
+                      sp: float) -> Optional[Dict[str, float]]:
+    """The head directly right of a mark (`gb` = its grown box, `apos` = its anchor's staff position), or None: the role evidence "left of a head at its
+    step" (page-facts §3). None where a METER box stands in the way -- a mark followed within 1.5 spaces by a time-signature digit is the key's last
+    accidental, not an in-bar one -- or where the head is not at the mark's height."""
+    for m in meters:
+        if gb[2] - 0.25 * sp <= m.x_canonical <= gb[2] + 1.5 * sp:
+            return None
+    best = None
+    for h in heads:
+        gap = (h.x_canonical - gb[2]) / sp
+        if gap < -0.25 or gap > FAMILY_HEAD_GAP_SPACES:
+            continue
+        dy = abs((h.y_canonical + h.height_canonical / 2.0 - top_y) / half_step - apos)
+        if dy <= FAMILY_HEAD_DY_STEPS and (best is None or gap < best["gap_spaces"]):
+            best = {"gap_spaces": round(gap, 2), "dy_steps": round(dy, 2)}
+    return best
+
+
 def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
                              stroke_cells: Dict[Tuple[int, int, int, int], Any]) -> int:
     """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`, default OFF; needs `OMR_STROKE_MAP`), STAGED GATHER: every accidental-family box -- `accidental*`
@@ -7554,6 +7573,10 @@ def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, i
         top_y, half_step = grid
         sp = half_step * 2.0
         heads = [d for d in dets if getattr(d, "category", None) == "notehead"]
+        meters = [d for d in dets if str(d.smufl_name).lower().startswith("timesig")]
+        # a notehead box that sits ON a meter digit (the detector boxes the 8 of 6/8 as a head) is not a note: it must not make the key's last accidental in-bar
+        real_heads = [h for h in heads if not any(m.x_canonical <= h.x_canonical + h.width_canonical / 2.0 <= m.x_canonical + m.width_canonical
+                                                  and m.y_canonical <= h.y_canonical + h.height_canonical / 2.0 <= m.y_canonical + m.height_canonical for m in meters)]
         blocked = set()
         for h in heads:
             for i, sh in SM.strokes_in_box(res, (h.x_canonical, h.y_canonical, h.x_canonical + h.width_canonical, h.y_canonical + h.height_canonical)):
@@ -7570,15 +7593,7 @@ def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, i
             gb = fam["box"]
             frac = _acc_family.anchor_fraction(fam["type"]) or _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
             apos = (gb[1] + (gb[3] - gb[1]) * frac - top_y) / half_step
-            best = None
-            for h in heads:
-                gap = (h.x_canonical - gb[2]) / sp
-                if gap < -0.25 or gap > FAMILY_HEAD_GAP_SPACES:
-                    continue
-                dy = abs((h.y_canonical + h.height_canonical / 2.0 - top_y) / half_step - apos)
-                if dy <= FAMILY_HEAD_DY_STEPS and (best is None or gap < best["gap_spaces"]):
-                    best = {"gap_spaces": round(gap, 2), "dy_steps": round(dy, 2)}
-            fam["head_right"] = best
+            fam["head_right"] = family_head_right(real_heads, meters, gb, apos, top_y, half_step, sp)
             fam["anchor_fraction"] = frac
             d.accidental_family = fam
             n += 1
