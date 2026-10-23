@@ -6968,12 +6968,23 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
 }
 
 
+#: Every abstention reason `accidental_owner` can emit -> its census key. ⚠️ Pinned against the producer's declared vocabulary
+#: (`adjudicate.REGISTRY[Q.ACCIDENTAL_OWNER].reasons`) by test_staged_accidental_census_reasons: a reason added there and not here
+#: fails that test, and shows as `unaccounted` > 0 on a real record rather than vanishing.
+_ACCIDENTAL_CENSUS_BY_REASON: Dict[str, str] = {
+    "ambiguous_height": "abstained_ambiguous",
+    **{r: r for r in ("no_candidate", "no_unit", "no_evidence", "refused_not_an_accidental", "is_a_key_signature_marker",
+                      "head_belongs_to_a_nearer_staff", "owned_by_another_staff", "ownership_undecided",
+                      "one_ink_absorbed", "on_a_rest")},
+}
+
+
 def _accidental_census(rec: "Record", detected: Dict[str, int],
                        written: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """What became of every PRINTED accidental glyph — ROADMAP 2.7.
 
     ⚠️⚠️ A PARTITION, AND ITS OWN ARITHMETIC IS THE CONTROL. `gathered` is
-    split with no remainder into `owner_decided`, `abstained_ambiguous`,
+    split with no remainder into `owner_decided`, `abstained_ambiguous`, `on_a_rest` (2.192), the 2.186 reasons,
     `no_candidate`, `no_unit`, `no_evidence`,
     `refused_not_an_accidental`, `is_a_key_signature_marker` and
     `head_belongs_to_a_nearer_staff` (2.7b); and the HEADS the decided owners name are
@@ -7059,6 +7070,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         "owned_by_another_staff": by_reason.get("owned_by_another_staff", 0),
         "ownership_undecided": by_reason.get("ownership_undecided", 0),
         "one_ink_absorbed": by_reason.get("one_ink_absorbed", 0),
+        # ROADMAP 2.192: an abstained glyph refused as standing on a REST (the ink is the rest's, not an accidental): counted, not lost.
+        "on_a_rest": by_reason.get("on_a_rest", 0),
         "heads_owned": heads_owned,
         "heads_contradicted": heads_contradicted,
         "owners_sharing_a_head": decided - heads_owned,
@@ -7089,13 +7102,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     # did (`max(0, decided - applied)`), which could hide exactly that.
     census["heads_balanced"] = census["unowned"] >= 0
     census["unaccounted"] = gathered - sum(
-        census[k] for k in ("owner_decided", "abstained_ambiguous",
-                            "no_candidate", "no_unit", "no_evidence",
-                            "refused_not_an_accidental",
-                            "is_a_key_signature_marker",
-                            "head_belongs_to_a_nearer_staff",
-                            "owned_by_another_staff", "ownership_undecided",
-                            "one_ink_absorbed"))
+        census[k] for k in ("owner_decided",) + tuple(
+            _ACCIDENTAL_CENSUS_BY_REASON.values()))
     return census
 
 
