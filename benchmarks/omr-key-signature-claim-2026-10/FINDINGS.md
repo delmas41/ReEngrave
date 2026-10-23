@@ -193,3 +193,12 @@ the detector boxed alone sits on it, so the offset runs 0 -> 1.25 with the ink's
 - No stem-direction feature separates a key flat from a down-stem head in the data (a head with a stem reads `sharp` on both corners; the flat rises on the LEFT, which BL/TR already say). No new measurement added.
 
 **Staves by where the written key came from** (known_flats pages, real gather -> ADJUDICATE of each page's slice of the 20261020-night record; `tail_report_2_187b.py`): see the lane-report section below for the sample pages.
+
+## 2.187b -- clean measure (2026-10-23, quiet box after the overnight; tree = 2.187b merged with origin/main)
+
+Why this replaces the 2026-10-22 numbers: re-gathers run while other lanes gathered hit Surya's 20 s guard in one arm and not the other, so unrelated kinds (words, dynamics, clefs, ties, beams) changed between two arms of the SAME tree (a no-flag control on Brahms: notes +92, rests +62 -80, pitches ~2, red bars 161 -> 166). Those runs are void. The runs below had 0 Surya failures in the key arms; the Litolff no-flag control (`out/lane-report/2.187c-ctl-lit`) printed NOTHING CHANGED.
+
+- `lane_report --flag OMR_KEY_SIGNATURE_CLAIM --flag OMR_KEY_PER_SYSTEM --from gather`, frozen sample. **Litolff:** notes -6, rests -3, blue marks +3 -2, words +1; red bars 0 -> 0 (notes not written 2554 -> 2563). **Brahms:** blue marks -17 and nothing else; red bars 166 -> 166 (the bar-1 mixed-run exclusion turning INFER guesses into marker reads). Judged answers right->wrong 0 on both plates (233 / 232 tiles).
+- The 24 known key flats (`known_flats_2_187.py`, real gather rows -> ADJUDICATE of each page): main 0 fixed, 2.183 0, **2.187b 10 refused (gone from the file), 9 written blue, 5 left alone (still a rest)**. Before the tail judge: 10 / 13 / 1.
+- Notes in a tail turned blue: 5 of 287 notehead boxes held by a tail (were 35 with the unjudged tail on the same pages).
+- Tiles: `out/lane-report/2.187c-key-lit/tiles/sheet.png`, key `key.json` (seed 2194, 9 changes + 3 controls, no two tiles on one ink). Brahms' only change is lost blue marks (`out/lane-report/2.187c-key-bra/`).
