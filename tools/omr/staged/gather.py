@@ -12384,7 +12384,7 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
 
     for staff_index, key in sorted(local.items()):
         sub = R.staff(p, key[0], key[1])
-        _gather_keysig_markers(log, sub, detections, p, key)
+        _gather_keysig_markers(log, sub, detections, p, key, geometry=_marker_geometry(pws, cells, staff_index))
 
         crop = header_cells.get(staff_index)
         if crop is None:
@@ -12517,8 +12517,27 @@ def _gather_keysig_template(log: Log, sub: Subject, crop: Any) -> None:
                     fifths=read.fifths)
 
 
+def _spacing_from_lines(lines) -> float:
+    """The median distance between a staff's five lines (page px)."""
+    d = sorted(float(b) - float(a) for a, b in zip(lines, lines[1:]))
+    return d[len(d) // 2] if d else 0.0
+
+
+def _marker_geometry(pws: Any, cells: Sequence[Any], staff_index: int):
+    """`(cell, staff line ys, page binary)` for the key markers' staff step (ROADMAP 2.187b, flag `OMR_KEY_PER_SYSTEM`), else None."""
+    from . import key_object as KO
+    if not KO.enabled():
+        return None
+    st = next((x for x in pws.staves if x.staff_index == staff_index), None)
+    c = next((x for x in cells if x.staff_index == staff_index and x.measure_index == 0), None)
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if st is None or c is None or binary is None or len(list(st.line_ys)) < 5:
+        return None
+    return c, [float(v) for v in st.line_ys], binary
+
+
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
-                           key) -> None:
+                           key, geometry=None) -> None:
     """The DETECTOR's accidental SHAPES in the staff's header, with its own
     class recorded beside them as an opinion about the ROLE.
 
@@ -12586,10 +12605,21 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                     frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
         return
     for d, shape, role in sorted(marks, key=lambda m: m[0].x_canonical):
+        step_kw = {}
+        if geometry is not None and space > 0:
+            # ROADMAP 2.187b: the box centre's STEP below the staff's top line, against the lines at its own x (page-facts §3): the measurement
+            # `header._in_fixed_order` judges the marker's slot against. Only with the flag on: a record without it reads as it always did.
+            from . import key_object as KO
+            gc, glines, gbin = geometry
+            pb = _page_box(gc, d)
+            if pb is not None:
+                sp_page = _spacing_from_lines(glines)
+                shift = KO.local_line_shift(gbin, glines, sp_page, pb[0], pb[2])
+                step_kw["step"] = round(((pb[1] + pb[3]) / 2.0 - (glines[0] + shift)) / (sp_page / 2.0), 2)
         log.observe(sub, Q.KEYSIG_MARKER, shape,
                     reader=READERS.DETECTOR, frame=frame_cell(0),
                     score=float(d.confidence), x=d.x_canonical,
-                    y_center=d.y_center,
+                    y_center=d.y_center, **step_kw,
                     # ⚠️ THE DISAGREEMENT, ON THE RECORD. A run read from two
                     # roles is exactly the case this change exists for, and a
                     # reader of the record can count them without re-running

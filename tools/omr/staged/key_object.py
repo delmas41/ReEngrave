@@ -356,16 +356,16 @@ def measure_tail_box(binary: Any, lines: Sequence[float], spacing: float, box: S
 
 def clef_of_box(clef_box: Any, lines: Sequence[float]) -> Optional[str]:
     """The base clef the detector's clef BOX names on one staff, a MEASUREMENT for the key tail's cheap look (the CLEF verdict is ADJUDICATE's):
-    gClef -> treble, fClef -> bass, cClef -> alto where the box's centre stands on the middle line, tenor on the second line from the top, else
+    gClef / clefG -> treble, fClef / clefF -> bass, cClef / clefC -> alto (the detector's names are `clefG` / `clefF` / `clefC`) where the box's centre stands on the middle line, tenor on the second line from the top, else
     None. `clef_box`: `(smufl name, page-px box)`. An 8va/8vb/15ma suffix changes what sounds, never where the key is printed."""
     if not clef_box or len(lines) < 5:
         return None
     nm, pb = str(clef_box[0]), clef_box[1]
-    if nm.startswith("gClef"):
+    if nm.startswith(("gClef", "clefG")):
         return "treble"
-    if nm.startswith("fClef"):
+    if nm.startswith(("fClef", "clefF")):
         return "bass"
-    if nm.startswith("cClef"):
+    if nm.startswith(("cClef", "clefC")):
         cy = (float(pb[1]) + float(pb[3])) / 2.0
         near = min(range(5), key=lambda i: abs(float(lines[i]) - cy))
         if abs(float(lines[near]) - cy) > 0.35 * (float(lines[1]) - float(lines[0])):

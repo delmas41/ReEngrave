@@ -321,6 +321,9 @@ class TestTheMeasuredClef(unittest.TestCase):
 
     def test_names_and_the_c_clefs_centre_line(self):
         self.assertEqual(KO.clef_of_box(("gClef", [0, 150, 30, 330]), LINES), "treble")
+        self.assertEqual(KO.clef_of_box(("clefG", [0, 150, 30, 330]), LINES), "treble")      # the detector's real spellings
+        self.assertEqual(KO.clef_of_box(("clefF", [0, 200, 30, 260]), LINES), "bass")
+        self.assertEqual(KO.clef_of_box(("clefC", [0, LINES[2] - 40, 30, LINES[2] + 40]), LINES), "alto")
         self.assertEqual(KO.clef_of_box(("fClef8vb", [0, 200, 30, 260]), LINES), "bass")
         self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[2] - 40, 30, LINES[2] + 40]), LINES), "alto")
         self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[1] - 40, 30, LINES[1] + 40]), LINES), "tenor")

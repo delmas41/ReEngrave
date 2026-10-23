@@ -138,6 +138,8 @@ for doc in ("litolff", "brahms"):
             RR.run_stages(log)
             LJ = log.to_json()
             vs = LJ["verdicts"]
+            if os.environ.get("SIZE"):
+                print("SIZE", doc, pg, arm, "verdict basis bytes", sum(len(json.dumps(v.get("basis"))) for v in vs), "verdicts", len(vs), flush=True)
             if arm == "c187" and os.environ.get("DUMP_TAIL"):
                 clefs = {v["subject"]: v["value"] for v in live_all(vs, "clef")}
                 glyph_v = {}
