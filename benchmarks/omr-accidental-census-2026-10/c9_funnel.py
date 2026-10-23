@@ -23,7 +23,7 @@ for pg, bs in v.boxes.items():
         if own["outcome"] == "decided":
             P["owner_decided"] += 1
             xn = v.xml_notes.get(own["value"])
-            alt = dt.get("alteration"); want = {"b": "flat", "#": "sharp", "n": "natural", "natural": "natural", "##": "double-sharp", "bb": "flat-flat"}.get(alt)
+            alt = (own.get("detail") or {}).get("alteration") or dt.get("alteration"); want = {"b": "flat", "#": "sharp", "n": "natural", "natural": "natural", "##": "double-sharp", "bb": "flat-flat"}.get(alt)
             if xn is None: P["decided_but_head_not_written"] += 1
             elif xn["accidental"] == want: P["written_as_<accidental>"] += 1
             elif xn["accidental"] is None: P["decided_head_written_WITHOUT_accidental_elem"] += 1

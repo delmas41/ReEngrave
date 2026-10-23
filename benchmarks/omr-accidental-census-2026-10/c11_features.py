@@ -1,11 +1,13 @@
 """2.197 C11: what the MISSES share. For each in-bar truth item of a census json: success = the note Sean's head carries is written with the right accidental
 (E2 == alter_right/elem_right); features: distance from the cell's left edge (staff spaces; a barline for cell>0), first event after the barline,
 size (staff spaces), other-class boxes touching it, a neighbour accidental, system/staff/page; split by outcome stage of failure.
-usage: c11_features.py CENSUS.json VIEW.json PDF UNIT [OUT.json]"""
+usage: c11_features.py CENSUS.json VIEW.json PDF UNIT OUT.json TRUTH.json"""
 import sys, json, collections, statistics, fitz
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from census_lib import View, iou, fam
 cen = json.load(open(sys.argv[1])); view = View(sys.argv[2]); UNIT = float(sys.argv[4])
+truth = json.load(open(sys.argv[6])); heads = collections.defaultdict(list)
+for h in truth["heads"]: heads[(h["page"], h["system"], h["staff"], h["cell"])].append(h)
 doc = fitz.open(sys.argv[3]); cache = {}
 def ink(pg):
     if pg not in cache:
@@ -40,7 +42,7 @@ for x in cen:
     rside = I[y0:y1, x1:x1 + 4].mean() if x1 + 4 <= I.shape[1] else 0.0
     lside = I[y0:y1, max(0, x0 - 4):x0].mean()
     rows.append(dict(src=x["src"], page=pg, system=x["system"], staff=x["staff"], cell=x["cell"], type=x["type"], ok=ok, stage=stage, w=round(w, 2), h=round(h, 2),
-                     xl=x.get("x_from_cell_left_sp"), first_event=not any(((hh["box"][0] + hh["box"][2]) / 2 < tb[0]) for hh in [] ), touching=dict(near),
+                     xl=x.get("x_from_cell_left_sp"), first_event=not any(((hh["box"][0] + hh["box"][2]) / 2 < tb[0]) for hh in heads.get((pg, x["system"], x["staff"], x["cell"]), ())), touching=dict(near),
                      ink_right4px=round(float(rside), 2), ink_left4px=round(float(lside), 2), conf=(x["boxes_on_ink"][0]["conf"] if x["boxes_on_ink"] else None)))
 json.dump(rows, open(sys.argv[5] if len(sys.argv) > 5 else "/dev/null", "w"), default=str)
 def rate(f):
@@ -53,6 +55,7 @@ for name, f in (("xl<=1.5sp (just after the barline)", lambda r: r["xl"] is not 
                 ("touching slur/tie", lambda r: r["touching"].get("slur/tie")), ("touching beam/flag", lambda r: r["touching"].get("beam/flag")),
                 ("touching ledger", lambda r: r["touching"].get("ledger")), ("neighbour accidental", lambda r: r["touching"].get("accidental(other)")),
                 ("touching a barline/clef/time", lambda r: r["touching"].get("barline/clef/time")),
+                ("first event after the barline (no head/rest to its left in the bar)", lambda r: r["first_event"]), ("not the first event", lambda r: not r["first_event"]),
                 ("natural", lambda r: r["type"] == "natural"), ("flat", lambda r: r["type"] == "flat"), ("sharp", lambda r: r["type"] == "sharp"),
                 ("ink within 4px on the right", lambda r: r["ink_right4px"] > 0.5), ("no ink within 4px on the right", lambda r: r["ink_right4px"] <= 0.5),
                 ("box h < 2.4 sp", lambda r: r["h"] < 2.4), ("box h >= 2.4 sp", lambda r: r["h"] >= 2.4)):

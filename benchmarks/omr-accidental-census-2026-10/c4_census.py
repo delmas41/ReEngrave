@@ -95,6 +95,8 @@ for it in truth["items"]:
                                    candidates=[(dt.get("one_ink") or {}).get("winner")] + list((dt.get("one_ink") or {}).get("rivals") or []) if dt.get("one_ink") else None,
                                    shape=((dt.get("shape") or {}).get("bl"), (dt.get("shape") or {}).get("tr")) if dt.get("shape") else None,
                                    owner=(own["outcome"], own["reason"], own.get("value")) if own else None,
+                                   owner_alteration=((own.get("detail") or {}).get("alteration") if own and own["outcome"] == "decided" else None),
+                                   shape_check=((own.get("detail") or {}).get("shape_check") if own and own["outcome"] == "decided" else None),
                                    glyph_owner=(gown["outcome"], gown["reason"], gown.get("value")) if gown else None,
                                    cell=g["cell"], staff=g["staff"]))
     r["G"] = "boxed" if accb else "boxed_key_class_only"
@@ -102,7 +104,8 @@ for it in truth["items"]:
     if it["label_family"] == "accidental" or accb:
         live = [a for a in r["acc_glyphs"] if a["owner"] and a["owner"][0] == "decided"]
         if live:
-            a = live[0]; r["A"] = "owner_decided"; r["A_alteration"] = a["alteration"]; r["A_type_right"] = ALT.get(a["alteration"]) == it["type"]
+            a = live[0]; alt_used = a["owner_alteration"] or a["alteration"]    # the OWNER's alteration (2.190's shape check may have switched the class)
+            r["A"] = "owner_decided"; r["A_alteration"] = alt_used; r["A_type_right"] = ALT.get(alt_used) == it["type"]; r["A_shape_switched"] = bool((a.get("shape_check") or {}).get("switched_from"))
             hk = a["owner"][2]; hg = view.by_key.get(hk)
             r["owner_head"] = hk
             if r["truth_head"] and hg:
