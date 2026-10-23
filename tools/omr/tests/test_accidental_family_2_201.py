@@ -350,7 +350,7 @@ class FamilyPositionRow(unittest.TestCase):
 
     def test_a_key_class_box_gets_a_row_only_through_the_family(self):
         d = TA._Det("keyFlat", 100.0, 0.0, 12.0, 40.0)
-        self.assertEqual(self._rows([d]), [])                              # main: key* boxes never get an accidental row
+        self.assertEqual(list(self._rows([d])), [])                              # main: key* boxes never get an accidental row
         d.accidental_family = {**_fam("flat", "keyFlat", ["flat"]), "box": [100.0, 0.0, 112.0, 40.0], "anchor_fraction": 0.715}
         (row,) = self._rows([d])
         self.assertEqual(row.detail["alteration"], "b")
