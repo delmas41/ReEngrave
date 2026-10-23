@@ -1,0 +1,249 @@
+[
+ {
+  "kind": "accidental",
+  "page": 4,
+  "box": [
+   4489.7775,
+   6525.5425,
+   4526.9625,
+   6558.565
+  ],
+  "rg": "glyph/4/1/11/7/4",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 1,
+  "crop_origin": [
+   4316,
+   6382
+  ]
+ },
+ {
+  "kind": "accidental",
+  "page": 12,
+  "box": [
+   1933.59,
+   5968.52,
+   1970.85,
+   6000.65
+  ],
+  "rg": "glyph/12/1/9/2/7",
+  "value": "flat",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 2,
+  "crop_origin": [
+   1760,
+   5824
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 16,
+  "box": [
+   1862.815,
+   2499.6475,
+   1885.495,
+   2516.6575
+  ],
+  "rg": "glyph/16/1/3/9/2",
+  "was": "flat",
+  "value": "natural",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1779,
+   2429
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 19,
+  "box": [
+   3358.6625,
+   6776.23,
+   3397.3575,
+   6809.475
+  ],
+  "rg": "glyph/19/1/11/5/3",
+  "was": "sharp",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   3186,
+   6632
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "gained",
+  "page": 5,
+  "box": [
+   2090.275,
+   6545.025,
+   2130.425,
+   6579.125
+  ],
+  "rg": "glyph/5/1/11/2/4",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   1918,
+   6402
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   3470.29,
+   1325.3899999999999,
+   3508.585,
+   1353.1399999999999
+  ],
+  "rg": "glyph/4/0/3/6/9",
+  "was": "flat",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   3297,
+   1179
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 19,
+  "box": [
+   1397.60400390625,
+   3373.95703125,
+   1434.0380859375,
+   3406.00146484375
+  ],
+  "rg": "glyph/19/0/12/0/10",
+  "was": "sharp",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1223,
+   3229
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 14,
+  "box": [
+   2765.9,
+   4200.275,
+   2805.5,
+   4231.625
+  ],
+  "rg": "glyph/14/1/0/3/7",
+  "was": "sharp",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   2593,
+   4055
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 19,
+  "box": [
+   4468.4,
+   774.875,
+   4505.525,
+   807.05
+  ],
+  "rg": "glyph/19/0/1/8/17",
+  "was": "flat",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   4294,
+   630
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "lost",
+  "page": 25,
+  "box": [
+   980.2548828125,
+   4948.921875,
+   1014.36669921875,
+   4977.9365234375
+  ],
+  "rg": "glyph/25/1/2/0/11",
+  "value": "flat",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   805,
+   4803
+  ]
+ },
+ {
+  "kind": "accidental",
+  "page": 14,
+  "box": [
+   1728.5974999999999,
+   4515.045,
+   1768.9275,
+   4540.3875
+  ],
+  "rg": "glyph/14/1/1/1/12",
+  "value": "flat",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 11,
+  "crop_origin": [
+   1556,
+   4367
+  ]
+ },
+ {
+  "kind": "accidental",
+  "side": "changed",
+  "page": 5,
+  "box": [
+   2878.65,
+   805.825,
+   2917.425,
+   836.35
+  ],
+  "rg": "glyph/5/0/1/3/1",
+  "was": "flat",
+  "value": "natural",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   2706,
+   661
+  ]
+ }
+]

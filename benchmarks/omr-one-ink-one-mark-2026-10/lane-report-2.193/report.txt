@@ -1,0 +1,17 @@
+LANE REPORT  OMR_NATURAL_CANDIDATE (OFF=0 ON=1)  --from gather
+  OMR_NATURAL_CANDIDATE: read in natural_candidate.py, staged/adjudicators/ownership.py, staged/gather.py, template_matcher.py -> GATHER
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5038 notes+rests OFF, 5038 ON, 5038 paired)
+  file:   accidentals +2 ~2 | pitches ~5 | blue marks +2
+  red bars 0 -> 0 | notes not written 2554 -> 2554
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6519 notes+rests OFF, 6519 ON, 6519 paired)
+  file:   accidentals +8 -3 ~28 | ties -2 | pitches ~40 | blue marks +26
+  red bars 166 -> 166 | notes not written 3202 -> 3202
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 10861 s

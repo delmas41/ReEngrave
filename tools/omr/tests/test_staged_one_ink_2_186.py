@@ -91,15 +91,17 @@ class TestMergeLive(unittest.TestCase):
         dets = [_det("rest16th", 100, 0.44), _det("rest16th", 400, 0.35)]
         self.assertEqual(OI.merge(dets), dets)
 
-    def test_the_flag_defaults_OFF(self):
+    def test_the_flag_defaults_ON(self):
+        # ROADMAP 2.186 landed ON (Sean 2026-10-22): unset is ON, an explicit 0/false/no/off disables.
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(ENV, None)
-            self.assertFalse(OI.enabled())
+            self.assertTrue(OI.enabled())
         for v in ("1", "true", "on"):
             with mock.patch.dict(os.environ, {ENV: v}):
                 self.assertTrue(OI.enabled())
-        with mock.patch.dict(os.environ, {ENV: "0"}):
-            self.assertFalse(OI.enabled())
+        for v in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {ENV: v}):
+                self.assertFalse(OI.enabled())
 
     def test_no_margin_reads_until_the_bar_is_set(self):
         self.assertFalse(OI.reads(0.99))

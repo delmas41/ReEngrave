@@ -28,6 +28,8 @@ Sean runs. Trade-off accepted: a rare case may miss the sample and is caught
 overnight. The report opens with the cause and the process lesson (CLAUDE
 rule 3). Everything below is the background these three rest on.
 
+**Exception -- the shared ink map path (Sean, 2026-10-22):** a step that changes no output (records, links or slims the stroke map) reports only the fast tests and a byte-identical control -- no lane_report, no tiles. The three measures apply at the milestones where a reader switches to the map, as the new path against main.
+
 ## 1. The acceptance set and the three measures (plan §4)
 
 | document | kind | count page |

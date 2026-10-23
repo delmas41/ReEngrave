@@ -380,3 +380,8 @@ benchmarks/acceptance/out/**/*-whole-movement-*.musicxml
 # and the review's crops and LilyPond renders. Sean's review marks live
 # beside the page store, as <page>.review.json, and ARE committed.
 benchmarks/hand-truth-sessions/
+
+# lane_report working records (multi-GB; never commit) -- 2026-10-22
+out/lane-report/*/work/
+**/work/*.gathered.record.json
+**/work/*.mini-record.json

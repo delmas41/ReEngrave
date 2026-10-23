@@ -140,15 +140,19 @@ def _provenance() -> dict:
         # are set together or neither is, and `None` is the only failure
         # value -- no magic string like "unknown", which two failing machines
         # would share.
-        commit = git("rev-parse", "HEAD")
         # ⚠️ 2026-09-29: DIRTY MEANS "WHAT RAN IS NOT THE COMMIT" -- a TRACKED
         # modification, or an untracked `.py` (new code nobody committed).
         # The run's own untracked OUTPUTS (log, coverage, musicxml beside the
         # record) cannot change what ran, and counting them stamped every
         # acceptance record of 09-28 and 09-29 dirty.
-        tracked = git("status", "--porcelain", "--untracked-files=no")
-        new_code = git("ls-files", "--others", "--exclude-standard",
-                       "--", "*.py")
+        # ROADMAP 2.191: the three git calls are independent and each one walks the tree (16 s a call on a
+        # busy box), so they run together; the answers and the failure rule (any one raising = no stamp) are the same.
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            f_commit = pool.submit(git, "rev-parse", "HEAD")
+            f_tracked = pool.submit(git, "status", "--porcelain", "--untracked-files=no")
+            f_new = pool.submit(git, "ls-files", "--others", "--exclude-standard", "--", "*.py")
+            commit, tracked, new_code = f_commit.result(), f_tracked.result(), f_new.result()
         dirty = bool(tracked or new_code)
         out["commit"], out["dirty"] = commit, dirty
     except Exception as exc:                       # noqa: BLE001

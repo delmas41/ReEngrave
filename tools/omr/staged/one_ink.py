@@ -1,4 +1,4 @@
-"""ROADMAP 2.186 -- ONE INK, ONE MARK (flag `OMR_ONE_INK_ONE_MARK`, default OFF). STAGED GATHER (the merge) + ADJUDICATE (ownership first
+"""ROADMAP 2.186 -- ONE INK, ONE MARK (flag `OMR_ONE_INK_ONE_MARK`, default ON). STAGED GATHER (the merge) + ADJUDICATE (ownership first
 for accidentals, the narrowing for rests) + EXPORT (the blue guess). Sean 2026-10-21: "the one mark one box was what I had in mind for
 claiming ink. Each cell should claim its own and the one it belongs to should decide what it is not the other staff".
 
@@ -59,8 +59,8 @@ ONE_INK_READ_MARGIN: Optional[float] = None
 
 
 def enabled() -> bool:
-    """`OMR_ONE_INK_ONE_MARK`, default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ONE_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ONE_INK_ONE_MARK`, default ON (ROADMAP 2.186, Sean 2026-10-22); an explicit 0/false/no/off disables."""
+    return os.environ.get(ONE_INK_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def reads(margin: Optional[float]) -> bool:

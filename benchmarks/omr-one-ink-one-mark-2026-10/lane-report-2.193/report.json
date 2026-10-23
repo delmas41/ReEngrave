@@ -1,0 +1,133 @@
+{
+ "flags": [
+  [
+   "OMR_NATURAL_CANDIDATE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 5
+    },
+    "accidental": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 2
+    },
+    "blue": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5038,
+    5038
+   ],
+   "paired": 5038,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    2554,
+    2554
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 233
+   },
+   "seconds": [
+    16.0,
+    11.8
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 40
+    },
+    "blue": {
+     "gained": 26,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 8,
+     "lost": 3,
+     "changed": 28
+    },
+    "tie": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6519,
+    6519
+   ],
+   "paired": 6519,
+   "red_bars": [
+    166,
+    166
+   ],
+   "notes_not_written": [
+    3202,
+    3202
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 232
+   },
+   "seconds": [
+    24.2,
+    24.6
+   ]
+  }
+ },
+ "notes": [
+  "OMR_NATURAL_CANDIDATE: read in natural_candidate.py, staged/adjudicators/ownership.py, staged/gather.py, template_matcher.py -> GATHER"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 10861.3
+}

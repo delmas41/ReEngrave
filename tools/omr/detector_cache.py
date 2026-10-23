@@ -53,6 +53,12 @@ _STATS = {"hits": 0, "misses": 0, "bytes_written": 0, "bytes_read": 0, "miss_s":
 _WEIGHT_HASH: Dict[Any, str] = {}
 _USED_WEIGHTS: set = set()
 _LOCK = threading.Lock()
+_TL = threading.local()
+
+
+def last_aux() -> Optional[Dict[str, Any]]:
+    """The extra class's anchors of the LAST `predict(..., aux=...)` call on this thread, or None."""
+    return getattr(_TL, "aux", None)
 
 
 def stats() -> Dict[str, int]:
@@ -150,7 +156,7 @@ def _load(root: Path, digest: str, key: Dict[str, Any]):
 # --------------------------------------------------------------------------- miss: run and record
 
 @contextlib.contextmanager
-def _capture(rec: Dict[str, Any]):
+def _capture(rec: Dict[str, Any], aux: Optional[tuple] = None):
     """While active, record the head tensor `non_max_suppression` receives and the letterboxed input shape
     `construct_results` receives, passing both straight through (so a miss returns exactly what no cache would)."""
     from ultralytics.models.yolo.detect.predict import DetectionPredictor
@@ -163,6 +169,8 @@ def _capture(rec: Dict[str, Any]):
         p = prediction[0] if isinstance(prediction, (list, tuple)) else prediction
         c = a[0] if a else k["conf_thres"]
         rec["cand"] = _candidates(p.detach(), float(c))
+        if aux is not None:
+            rec["aux"] = _aux_arrays(p.detach(), int(aux[0]), float(aux[1]))
         return orig_nms(prediction, *a, **k)
 
     def cr_wrap(self, preds, img, orig_imgs, *a, **k):
@@ -174,6 +182,20 @@ def _capture(rec: Dict[str, Any]):
         yield
     finally:
         nms.non_max_suppression, DetectionPredictor.construct_results = orig_nms, orig_cr
+
+
+def _aux_arrays(pred, cid: int, floor: float):
+    """ROADMAP 2.193: per image the anchors whose score for class `cid` is above `floor`, WHATEVER their best class is (the candidates above keep
+    only each anchor's argmax, so a sub-floor or beaten class is not in them): index, box (cx, cy, w, h network px), that class's score."""
+    import torch
+    arrays: Dict[str, np.ndarray] = {}
+    for b in range(pred.shape[0]):
+        sc = pred[b, 4 + cid]
+        idx = torch.nonzero(sc > floor).flatten()
+        arrays["nidx%d" % b] = idx.cpu().numpy().astype(np.int32)
+        arrays["nbox%d" % b] = pred[b, :4, idx].T.contiguous().cpu().numpy().astype(np.float32)
+        arrays["nscore%d" % b] = sc[idx].cpu().numpy().astype(np.float32)
+    return arrays
 
 
 def _candidates(pred, conf: float):
@@ -234,15 +256,28 @@ def _serve(meta: Dict[str, Any], arrays: Dict[str, np.ndarray], images: Sequence
 
 def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: float = 0.7,
             agnostic_nms: bool = False, imgsz: int, device: Optional[str] = None, verbose: bool = False,
-            root: Optional[Path] = None):
+            root: Optional[Path] = None, aux: Optional[tuple] = None):
     """`model.predict(...)` with the cache in front of it. `root` None -> `$OMR_DETECTOR_CACHE`; neither -> the
-    plain call, untouched."""
+    plain call, untouched.
+
+    `aux=(class_id, floor)` (ROADMAP 2.193): also keep, for that ONE class, every anchor scoring above `floor` whatever its best class is
+    (`last_aux()` returns them after the call). The returned detections are identical with or without it. A cache entry written without
+    it (or with a higher floor) cannot serve it: that call re-reads the page and REWRITES the entry as a superset under the same key."""
+    _TL.aux = None
     root = Path(root) if root else cache_dir()
     kw = dict(source=source, conf=conf, iou=iou, agnostic_nms=agnostic_nms, imgsz=imgsz, device=device,
               verbose=verbose)
     if root is None:
         t0 = time.perf_counter()
-        r = model.predict(**kw)
+        if aux is not None:
+            rec0: Dict[str, Any] = {}
+            with _capture(rec0, aux):
+                r = model.predict(**kw)
+            if "aux" not in rec0 or "img_shape" not in rec0:
+                raise DetectorCacheError("could not capture the raw detector output (ultralytics internals changed?)")
+            _TL.aux = dict(arrays=rec0["aux"], img_shape=list(rec0["img_shape"]), floor=float(aux[1]))
+        else:
+            r = model.predict(**kw)
         _STATS["plain_s"] += time.perf_counter() - t0
         _STATS["calls_plain"] += 1
         return r
@@ -252,19 +287,39 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
     _USED_WEIGHTS.add(key["weights"][:12])
     digest = key_digest(key)
     hit = _load(root, digest, key)
+    if hit is not None and aux is not None:
+        m_ = hit[0]
+        if not ("nidx0" in hit[1] and m_.get("aux_class") == int(aux[0]) and float(m_.get("aux_floor", 9.0)) <= float(aux[1])):
+            hit = None                                      # an entry without the extra arrays cannot serve it: re-read, rewrite as a superset
     if hit is not None:
         _STATS["hits"] += 1
+        if aux is not None:
+            keep = {}
+            for b in range(hit[0]["batch"]):
+                sel = hit[1]["nscore%d" % b] > float(aux[1])
+                for nm in ("nidx", "nbox", "nscore"):
+                    keep["%s%d" % (nm, b)] = hit[1]["%s%d" % (nm, b)][sel]
+            _TL.aux = dict(arrays=keep, img_shape=list(hit[0]["img_shape"]), floor=float(aux[1]))
         r = _serve(hit[0], hit[1], images, conf, iou, agnostic_nms)
         _STATS["hit_s"] += time.perf_counter() - t0
         return r
     _STATS["misses"] += 1
     rec: Dict[str, Any] = {}
-    with _capture(rec):
+    with _capture(rec, aux):
         results = model.predict(**kw)
-    if "cand" not in rec or "img_shape" not in rec:
+    if "cand" not in rec or "img_shape" not in rec or (aux is not None and "aux" not in rec):
         raise DetectorCacheError("could not capture the raw detector output (ultralytics internals changed?)")
     arrays, meta = rec["cand"]
     meta["img_shape"] = list(rec["img_shape"])
+    if aux is not None:
+        arrays = {**arrays, **rec["aux"]}
+        meta["aux_class"], meta["aux_floor"] = int(aux[0]), float(aux[1])
+        keep = {}
+        for b in range(meta["batch"]):
+            sel = rec["aux"]["nscore%d" % b] > float(aux[1])
+            for nm in ("nidx", "nbox", "nscore"):
+                keep["%s%d" % (nm, b)] = rec["aux"]["%s%d" % (nm, b)][sel]
+        _TL.aux = dict(arrays=keep, img_shape=list(rec["img_shape"]), floor=float(aux[1]))
     _store(root, digest, key, meta, arrays)
     _STATS["miss_s"] += time.perf_counter() - t0
     return results
