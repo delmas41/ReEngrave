@@ -187,3 +187,82 @@ keyFlat/keySharp on three strokes, dynamicF/dynamicZ. Control: 10,559 same-cell 
 `python3 -m tools.omr.staged.check`: TOTAL 203, status ok. By design: reach +1 (`Q.GLYPH_STROKES` unread), wiring +2 (`Q.GLYPH_STROKES.shares`, `Q.CLAIMED_AREA.shares`). wiring -5 stale entries removed (`area_sp2`,
 `staff_lines_left` truly gone; `profile_sixteenths`, `staff_local`, `cell_n_below_floor` are still written but through a conditional dict the tool cannot see, so the drop is partly the tool's blind spot).
 Fast tier (final code): 8825 passed, 0 failed (12 skipped, 2 xfailed).
+
+
+# 2.202 -- step 3: a head's beams from the stroke map (flag `OMR_BEAMS_FROM_STROKES`, OFF; needs `OMR_STROKE_MAP` in the gather)
+
+Path: STAGED ADJUDICATE. Built on `lane-2.198-glyph-strokes`, main merged in. Code and unit tests only: no gather, no `lane_report` was run (Sean's overnight re-gather was running).
+Built: `tools/omr/staged/beam_strokes.py` (pure: a stroke's role from its own fields, what a detector beam box stands on, the strokes at a stem's tip); `rhythm._beams_from_strokes`
+(reads `Q.STROKE` and `Q.GLYPH_STROKES` through `Evidence`, both added to `adjudicate_duration`'s `wants` and `composed_from`) called from `adjudicate_duration` right after the old beam
+readers have spoken (`_kept_beams`, the side / beyond-the-tip / ink / neighbour / arc / slash / ledger filters, `_beam_levels`, `_beam_join_witness`, `_fused_double_beams`, the 2.140
+stem-levels block) and BEFORE `strokes_before_hollow`, the hollow override, the flag reads, `certain_conflicts`, `beams_ambiguous`, `stem_tip_reads_no_beam`,
+`beam_discounted_uncertain`, `hooks_counted` and `flag_ink_unread`; those later branches are untouched and see the stroke-map-adjusted `certain` / `possible` / `kept` / `flag_levels`.
+`tests/test_staged_beams_from_strokes_2_202.py` (33 tests); `hook_beam_measure.py`; reach / wiring gap entries for `Q.STROKE`, `Q.GLYPH_STROKES` and three `Q.STROKE` detail keys
+LEAVE (a decision reads them now); `check` open findings 203 -> 198.
+
+## What it does (flag ON; a cell with no stroke map, a box with no `Q.GLYPH_STROKES` row, a head with no stem stroke in the map, a hollow head, a two-voice head: nothing changes, rule 8)
+1. A DETECTOR beam box (`Q.BEAM_STROKE`, reader detector, kept by `_kept_beams`) is linked to its `Q.GLYPH_STROKES` row (the cell's `beam`-class `Q.GLYPH_BOX` with the same x,y,w,h). If no
+   stroke under it is beam-shaped the box leaves the count and its level is kept as a CANDIDATE (`possible` = the old certain): the head NARROWS (`beams_ambiguous`), it does not decide.
+   The reasons are named per box: `box_on_paper`, `box_on_a_stem`, `thin_or_curved_span`, `one_stem_stub`, `hook_or_stub`, `hook_on_a_beamed_stem`, `hook_on_another_stem`.
+2. A box standing on a HOOK (one stem, thinner than a beam, <= 1.6 sp) that touches THIS head's stem, a stem that touches no spanning beam, is a FLAG (Sean 2026-10-22): the box leaves the
+   beam count and the number of hooks at the tip is filed as the flag levels, used only where no flag box was attached and no beam level stands (`beam_evidence: "flag"`, the rows used are the hook strokes).
+3. The beam-shaped strokes touching the head's own stem stroke inside the tip window (0.5 sp past the tip, 3.3 sp inward; `rhythm.BEAM_STEM_RUNS_PAST_MAX_SPACES` 2.5 + one beam) are counted,
+   one per level. More than the old readers counted: a candidate only (`possible`), nothing is invented (rule 6). Fewer: the two readings disagree and the strokes cannot settle it
+   (CV rows and strokes come off the same erased raster, so neither is the other's second witness): NARROWED between them (rule 8). Equal: decided as today.
+
+## 1. The hook-vs-beam measure (`hook_beam_measure.py` on the 2.198 Litolff p2,4 ON record; `results/2.202/hook_beam_measure.json`; read-only, no gather)
+Horizontal / curve strokes under the 373 detector beam boxes (395) and under the 39 detector flag boxes (15), by how many vertical strokes each touches:
+| population | touches | n | length sp (min / median / p95 / max) | thickness sp (median) |
+|---|---|---|---|---|
+| under beam boxes | >= 2 stems | 192 | 1.0 / 5.6 / 10.3 / 17.5 | 0.63 |
+| under beam boxes | 1 stem | 100 | 0.75 / 3.1 / 6.1 / 10.1 | 0.31 |
+| under beam boxes | none | 103 | 0.6 / 2.3 / 6.5 / 10.9 | 0.25 |
+| under flag boxes | 1 stem | 12 | 0.63 / 1.2 / 2.7 / 2.7 | 0.19 |
+- **Beam thickness has a gap.** The 190 horizontal strokes touching >= 2 stems: 66 are 0.06-0.437 sp (slur / tie / hairpin remnants), 124 are 0.546-1.0 (median 0.653). The cut `BEAM_MIN_THICKNESS_SP` = 0.5 sits in the
+  gap and is the engraving convention for a beam; Sean's own rule (2026-10-09, "the thickness of a beam is always more than a hairpin") says the same direction.
+- **Hook length does not separate a flag from a beam stub.** The 12 one-stem strokes under flag boxes are 10 near-horizontal (0.63-1.45 sp, thickness 0.12-0.38) and two slanted curves (1.93, 2.69 sp).
+  Of the 100 one-stem strokes under BEAM boxes, 32 are <= 1.6 sp, 9 are 1.6-2.4, 59 are longer. Length, thickness, sagitta and angle all overlap, so **no number on the stroke alone defines a hook**.
+- **What does is the stem (structural, not a number):** a short one-stem stroke is a hook only on a stem that touches NO spanning beam; beside a spanning beam it is a partial-beam stub (Sean's
+  one-stem rule makes that a candidate level, never decided). The only numbers left are the hook length cut (`HOOK_MAX_SPACES` 1.6 = the longest near-horizontal flag + 0.15, decided; up to 2.4 =
+  `hook_or_stub`, narrowed, never decided; the 2.69 curve is not rescued) and the 0.5 beam thickness. Both are read off this one plate (n = 15 for the hook): CLAUDE §4 says a cut measured on our
+  plates only NARROWS until another publisher confirms it, which is why the band between 1.6 and 2.4 exists and why Brahms must be measured the same way before any default (no Brahms ON record
+  exists: the 2.198 Brahms ON arm was stopped for the overnight).
+- **Not tuned to a target:** I did not look at which heads the rule changes before fixing the cuts, and no run of the rule on a file exists yet.
+
+## 2. Tests (`test_staged_beams_from_strokes_2_202.py`, 33, constructed cells; every RED has a twin that must not fire)
+OFF byte-identical (the same verdict value, detail, candidates with and without the stroke map in the log; flag ON without a map equals OFF). Beamed pair (decides as today). Flag misboxed as beam:
+two hooks -> a SIXTEENTH flag (OFF: one beam level), one hook -> eighth flag; twins: hook on a stem that carries a spanning beam, hook longer than 2.4, hook in the near-miss band. Beam box on empty paper,
+on a stem alone, on a thin slur across two stems (narrow); twin: a box on a real beam, a box with no `Q.GLYPH_STROKES` row, a CV stroke the map agrees with. Two beam levels (agree -> decided; a second
+stroke no reader counted -> candidate; two strokes closer than a beam gap -> one level; the readers' two vs the map's one -> narrowed). **Controls that fail:** with `HOOK_MAX_SPACES` broken the RED flag
+case stops being a flag; with `BEAM_MIN_THICKNESS_SP` broken a slur supports the box. Two bugs the tests found in my first draft: two hooks 0.35 sp apart merged into one level (real 16th hooks are ~0.7 sp
+apart, the test geometry was wrong, not the rule), and a twin built with a CV row the box overlapped, which `_kept_beams` had already dropped.
+Other tests run: `test_staged_duration`, `..._beam_stem_levels_2_140`, `..._beam_refused_off_the_tip_2_170`, `..._stroke_is_a_beam_2_141h`, `test_stroke_map_2_195`, `test_glyph_strokes_2_198`,
+`test_staged_wiring`, `test_staged_reach`, `test_staged_check`, the four `test_flag_*` files: all pass. The full fast tier was NOT run (the box was busy).
+
+## 3. What is NOT shown (said, not hidden)
+No whole-file A/B, no byte-identity on a gathered record (the unit test is the OFF control), no Brahms stroke data, no tile. The tip window (0.5 / 3.3 sp), the 0.4 sp level separation and the stem-matching
+slack (0.35 sp) are geometry taken from the stacking convention and `rhythm`'s own 2.141h number, not measured on strokes; the milestone should print each as a count of heads it touches.
+Risks to look at first: (a) the downward disagreement (map counts fewer levels than the CV rows) narrows a CV-confirmed beam when the stem stroke is cut short or the beam stroke is split at a crossing;
+(b) a stroke shared by two stems of a chord; (c) `Evidence.rows(Q.STROKE, SELF_AND_DESCENDANTS)` per head records ~30-100 ids in `considered` (record bytes: plan step 9's `pools`).
+
+## 4. MILESTONE MEASUREMENT PLAN (to be run on a quiet box; NOT run now)
+Prerequisite: the worktree `lane-2.202` with origin/main merged again; the overnight `summary.txt` says "done"; one lane on the box (CLAUDE §6).
+```
+cd /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/lane-2.202
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_BEAMS_FROM_STROKES --from gather \
+    --workers 2 --out out/lane-report/2.202 > out/lane-report/2.202.txt 2>&1
+```
+`--flag OMR_STROKE_MAP=1:1` puts the stroke map in BOTH arms (2.198 showed it changes no file: the OFF arm is main's behaviour with the map filed beside it), `--flag OMR_BEAMS_FROM_STROKES` is OFF in the first arm
+and ON in the second, `--from gather` re-gathers the frozen sample's pages for both arms with the 2.189 detector cache (the flag acts in ADJUDICATE but the rows it reads exist only in a gather made with
+`OMR_STROKE_MAP`; a replay of the 20261020-night record has none, and `lane_report` refuses `--from adjudicate` for a flag that needs a gather rather than print a clean zero). The report gives per plate what
+changed in the exported MusicXML by kind (value, beam, flag, red bars, blue marks), judged right -> wrong against Sean's answers, and writes the 12-tile sheet and key.
+Then, from the same out directory and one extra process (no new gather), for each plate count the heads by `beams_from_strokes.settled` in the ON record: `agrees` / `box_narrowed` / `box_flag` /
+`stroke_candidate` / `disagree_narrowed` / (absent = the map could not speak) -- the 31% / 55% cells of plan §5 step 3 as decided / narrowed / contested counts, and per box reason
+(`box_on_paper`, `box_on_a_stem`, ...). A flat table in `results/2.202/settled_counts.txt`; the mining script is written on the day (a 20-line stream over `observations` is enough).
+**The 12 tiles** (blind, nothing of ours drawn, neutral orange box, key in a separate JSON; Sean answers right / wrong / what is it): about 9 are the CHANGED heads (the report draws them at random,
+stratified by kind: `box_flag` heads (the hook-as-flag decision) get at least 3, `box_narrowed` 3, `stroke_candidate` / `disagree_narrowed` 3), and 3 are CONTROLS: one decided-and-unchanged beamed pair from
+each plate, and the re-shown tiles (the report's seed-2188 controls are replaced by these three, same orange box): 2.170 tile 2 (`out/print/2.170-review/`, the HALF the beam rule must not turn into
+a beam) and one clear beamed Litolff eighth from 2.153 tiles 4 / 14 / 16 (`out/print/2.153-review/`, Sean: "the stem clearly connects to the beam"), so a regression of the join shows. Judged right -> wrong
+must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
+The question for Sean at the milestone (plan §5 step 3, now narrowed by his 2026-10-22 ruling): when the box is a beam but the stroke is a hook on a stem with no beam, the file already writes a flag; the tile
+asks "is this a flag or a beam?" on the box's ink, and the hook length cut (1.6 / 2.4 sp) is confirmed or moved on his answers.
