@@ -1,0 +1,394 @@
+{
+ "v1-|imslp984073|34": [
+  [
+   "beet5-p35-sys0-s9-m1",
+   {
+    "natural": 7,
+    "sharp": 2,
+    "flat": 1
+   }
+  ],
+  [
+   "beet5-p35-sys1-s11-m4",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "beet5-p35-sys0-s6-m1",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "beet5-p35-sys0-s0-m0",
+   {
+    "flat": 1,
+    "keyFlat": 1
+   }
+  ]
+ ],
+ "v1-|imslp984073|14": [
+  [
+   "beet5-p15-sys2-s15-m0",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "beet5-p15-sys2-s17-m0",
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "beet5-p15-sys2-s11-m1",
+   {
+    "natural": 1
+   }
+  ]
+ ],
+ "v1-|imslp984073|4": [
+  [
+   "beet5-p5-sys1-s3-m1",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "beet5-p5-sys1-s13-m0",
+   {
+    "flat": 3
+   }
+  ],
+  [
+   "beet5-p5-sys1-s11-m0",
+   {
+    "flat": 4,
+    "natural": 2
+   }
+  ]
+ ],
+ "v1-|imslp984073|24": [
+  [
+   "beet5-p25-sys0-s9-m0",
+   {
+    "flat": 4
+   }
+  ],
+  [
+   "beet5-p25-sys2-s13-m1",
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "beet5-p25-sys0-s0-m0",
+   {
+    "flat": 2
+   }
+  ]
+ ],
+ "v18|imslp317803|3": [
+  [
+   "brahms1-p4-sys1-s15-m7",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s23-m1",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s15-m0",
+   {
+    "natural": 2,
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s24-m9",
+   {
+    "flat": 1,
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s17-m7",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s10-m5",
+   {
+    "sharp": 1,
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s0-m3",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s2-m0",
+   {
+    "keyFlat": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s18-m2",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s9-m3",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s18-m1",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s1-m3",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p4-sys0-s1-m0",
+   {
+    "natural": 1,
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p4-sys1-s24-m3",
+   {
+    "natural": 1
+   }
+  ]
+ ],
+ "v18|imslp317803|2": [
+  [
+   "brahms1-p3-sys1-s23-m0",
+   {
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p3-sys0-s12-m2",
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "brahms1-p3-sys1-s27-m0",
+   {
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p3-sys0-s9-m4",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p3-sys0-s1-m0",
+   {
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p3-sys0-s3-m3",
+   {
+    "sharp": 1,
+    "natural": 2,
+    "flat": 1
+   }
+  ]
+ ],
+ "v18|imslp317803|1": [
+  [
+   "brahms1-p2-sys0-s10-m3",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys1-s25-m3",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s2-m5",
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys1-s23-m2",
+   {
+    "flat": 1,
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s0-m1",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys1-s26-m0",
+   {
+    "flat": 1,
+    "keyFlat": 3
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s9-m0",
+   {
+    "keyFlat": 3,
+    "sharp": 1,
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys1-s26-m3",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s9-m5",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s1-m5",
+   {
+    "flat": 1,
+    "natural": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s3-m6",
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys1-s22-m0",
+   {
+    "keyFlat": 3,
+    "flat": 1
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s3-m4",
+   {
+    "natural": 2
+   }
+  ],
+  [
+   "brahms1-p2-sys0-s1-m1",
+   {
+    "natural": 2
+   }
+  ]
+ ],
+ "v2-|imslp984073|54": [
+  [
+   "beet5-p55-sys0-s1-m4",
+   {
+    "flat": 1
+   }
+  ],
+  [
+   "beet5-p55-sys2-s13-m2",
+   {
+    "flat": 1
+   }
+  ]
+ ],
+ "v24|imslp984073|12": [
+  [
+   "litolff-p13-sys1-s20-m2",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "litolff-p13-sys0-s3-m8",
+   {
+    "flat": 2
+   }
+  ],
+  [
+   "litolff-p13-sys0-s2-m6",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "litolff-p13-sys0-s2-m2",
+   {
+    "natural": 1
+   }
+  ],
+  [
+   "litolff-p13-sys1-s15-m1",
+   {
+    "sharp": 1
+   }
+  ]
+ ],
+ "v24|imslp317803|20": [
+  [
+   "brahms-p21-sys0-s1-m2",
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "brahms-p21-sys1-s14-m3",
+   {
+    "sharp": 1
+   }
+  ],
+  [
+   "brahms-p21-sys1-s13-m6",
+   {
+    "natural": 3,
+    "flat": 2
+   }
+  ],
+  [
+   "brahms-p21-sys1-s13-m4",
+   {
+    "sharp": 1,
+    "flat": 1
+   }
+  ],
+  [
+   "brahms-p21-sys1-s13-m3",
+   {
+    "sharp": 1
+   }
+  ]
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "keyFlat|cell0": {
+  "boxes": 360,
+  "no accidental row (key class: never an accidental)": 360
+ },
+ "accidentalFlat|cell0": {
+  "boxes": 175,
+  "abstained:is_a_key_signature_marker": 79,
+  "owner_decided": 53,
+  "written_as_<accidental>": 42,
+  "abstained:owned_by_another_staff": 15,
+  "abstained:no_candidate": 19,
+  "decided_but_head_not_written": 7,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 9,
+  "decided_head_written_with_OTHER_accidental": 4
+ },
+ "accidentalSharp|later": {
+  "boxes": 413,
+  "owner_decided": 228,
+  "written_as_<accidental>": 196,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 135,
+  "decided_head_written_WITHOUT_accidental_elem": 5,
+  "abstained:owned_by_another_staff": 26,
+  "decided_but_head_not_written": 9,
+  "decided_head_written_with_OTHER_accidental": 18,
+  "abstained:no_candidate": 22,
+  "abstained:ambiguous_height": 2
+ },
+ "accidentalFlat|later": {
+  "boxes": 845,
+  "owner_decided": 519,
+  "written_as_<accidental>": 426,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 66,
+  "decided_head_written_WITHOUT_accidental_elem": 7,
+  "decided_head_written_with_OTHER_accidental": 39,
+  "abstained:no_candidate": 106,
+  "decided_but_head_not_written": 47,
+  "abstained:owned_by_another_staff": 150,
+  "abstained:ambiguous_height": 2,
+  "abstained:ownership_undecided": 2
+ },
+ "accidentalNatural|later": {
+  "boxes": 423,
+  "owner_decided": 257,
+  "written_as_<accidental>": 244,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 109,
+  "abstained:owned_by_another_staff": 38,
+  "abstained:no_candidate": 14,
+  "decided_but_head_not_written": 12,
+  "abstained:ambiguous_height": 3,
+  "decided_head_written_WITHOUT_accidental_elem": 1,
+  "abstained:ownership_undecided": 2
+ },
+ "accidentalSharp|cell0": {
+  "boxes": 49,
+  "owner_decided": 27,
+  "written_as_<accidental>": 23,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 19,
+  "abstained:no_candidate": 2,
+  "decided_head_written_WITHOUT_accidental_elem": 2,
+  "decided_but_head_not_written": 1,
+  "abstained:owned_by_another_staff": 1,
+  "decided_head_written_with_OTHER_accidental": 1
+ },
+ "accidentalDoubleFlat|later": {
+  "boxes": 8,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 6,
+  "owner_decided": 2,
+  "written_as_<accidental>": 2
+ },
+ "accidentalDoubleSharp|later": {
+  "boxes": 95,
+  "owner_decided": 24,
+  "written_as_<accidental>": 16,
+  "abstained:no_candidate": 61,
+  "abstained:owned_by_another_staff": 4,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 5,
+  "decided_but_head_not_written": 2,
+  "decided_head_written_WITHOUT_accidental_elem": 6,
+  "abstained:ambiguous_height": 1
+ },
+ "accidentalDoubleSharp|cell0": {
+  "boxes": 13,
+  "abstained:no_candidate": 10,
+  "owner_decided": 2,
+  "written_as_<accidental>": 2,
+  "abstained:owned_by_another_staff": 1
+ },
+ "keyFlat|later": {
+  "boxes": 7,
+  "no accidental row (key class: never an accidental)": 7
+ },
+ "accidentalNatural|cell0": {
+  "boxes": 58,
+  "abstained:no_candidate": 2,
+  "owner_decided": 35,
+  "written_as_<accidental>": 31,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 12,
+  "abstained:owned_by_another_staff": 9,
+  "decided_but_head_not_written": 4
+ },
+ "keySharp|cell0": {
+  "boxes": 11,
+  "no accidental row (key class: never an accidental)": 11
+ },
+ "accidentalDoubleFlat|cell0": {
+  "boxes": 2,
+  "absorbed_by_a_stronger_class_of_the_same_ink (2.186)": 1,
+  "owner_decided": 1,
+  "written_as_<accidental>": 1
+ }
+}

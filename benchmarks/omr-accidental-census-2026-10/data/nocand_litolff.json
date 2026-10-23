@@ -1,0 +1,39 @@
+{
+ "no_candidate_causes": {
+  "head in window, height off by >3.0 pos": 28,
+  "heads exist, none reaches past the glyph (all to its left)": 12,
+  "SHORT BOX (< 1.6 sp tall: a fragment -- ascender / stem tip)": 63,
+  "head in window, height off by 1.4-2.0 pos": 25,
+  "the head that fits was REFUSED as not-a-notehead (merged/claimed ink)": 8,
+  "heads to the right but > 1.75 sp away": 8,
+  "no head box at all in the cell": 11,
+  "head in window, height off by 2.0-3.0 pos": 7,
+  "every head box in the cell refused (not-a-notehead)": 5
+ },
+ "box_height_sp": {
+  "accidentalDoubleSharp": {
+   "n": 50,
+   "median": 1.91,
+   "p10": 1.33,
+   "p90": 2.85
+  },
+  "accidentalFlat": {
+   "n": 355,
+   "median": 2.65,
+   "p10": 1.06,
+   "p90": 3.8
+  },
+  "accidentalNatural": {
+   "n": 213,
+   "median": 3.65,
+   "p10": 2.16,
+   "p90": 4.09
+  },
+  "accidentalSharp": {
+   "n": 62,
+   "median": 3.02,
+   "p10": 0.98,
+   "p90": 4.3
+  }
+ }
+}
