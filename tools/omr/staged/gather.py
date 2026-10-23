@@ -14161,7 +14161,7 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
 
 def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                                detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
-    """`Q.CLAIMED_AREA` rows of owner `key_signature` -- ROADMAP 2.183 (claimed-area step 3), flag `OMR_KEY_SIGNATURE_CLAIM` (default OFF;
+    """`Q.CLAIMED_AREA` rows of owner `key_signature` -- ROADMAP 2.183 (claimed-area step 3), flag `OMR_KEY_SIGNATURE_CLAIM` (default ON;
     needs `OMR_CLAIMED_REGISTER`, which it files into).
 
     PATH: STAGED GATHER, PAGE raster. AFTER `gather_claimed_register`. Per staff and cell: the key run (`key_slots.claim_window` -- the
@@ -14252,7 +14252,7 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
 def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                       detections: Dict[str, List[Any]], *, dossier: Any = None, written_counts: Any = None,
                       progress: bool = False) -> None:
-    """`Q.CLAIMED_AREA` rows of owner `key_signature` read ONCE PER SYSTEM -- ROADMAP 2.187, flag `OMR_KEY_PER_SYSTEM` (default OFF; needs
+    """`Q.CLAIMED_AREA` rows of owner `key_signature` read ONCE PER SYSTEM -- ROADMAP 2.187, flag `OMR_KEY_PER_SYSTEM` (default ON; needs
     `OMR_KEY_SIGNATURE_CLAIM` and `OMR_CLAIMED_REGISTER`, which it files into).
 
     PATH: STAGED GATHER, PAGE raster. AFTER `gather_key_signature_claim` and `gather_meter_object` (reads the meter's left edge). 2.183 drew
@@ -15712,9 +15712,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
         gather_claimed_register(log, pws, cells, local, detections)
-        # ROADMAP 2.183 (flag OMR_KEY_SIGNATURE_CLAIM, default OFF): AFTER the register; page raster.
+        # ROADMAP 2.183 (flag OMR_KEY_SIGNATURE_CLAIM, default ON): AFTER the register; page raster.
         gather_key_signature_claim(log, pws, cells, local, detections)
-        # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default OFF): AFTER the key claim and the meter object; page raster.
+        # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default ON): AFTER the key claim and the meter object; page raster.
         gather_key_object(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,

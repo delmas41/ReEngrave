@@ -22,12 +22,12 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from . import meter_object as MO
 
-#: the flag (ROADMAP 2.187), default OFF; it files through the 2.183 key claim, so `claims.key_active()` must also hold
+#: the flag (ROADMAP 2.187), default ON (Sean 2026-10-23; explicit 0/false/no/off disables); it files through the 2.183 key claim, so `claims.key_active()` must also hold
 ENV = "OMR_KEY_PER_SYSTEM"
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 # --- one accidental piece, in staff spaces (a printed flat is ~1.0 wide and ~2.7 tall; a sharp ~1.2 x 3.2; a natural ~0.8 x 2.8) ---

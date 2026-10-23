@@ -65,6 +65,18 @@ def _run(log, *qs):
     adjudicate.run(log, order=tuple(qs))
 
 
+_PIN = mock.patch.dict(os.environ, {"OMR_KEY_SIGNATURE_CLAIM": "0"})
+
+
+def setUpModule():
+    # pinned OFF: this file tests the five `in_a_key_signature_slot` gates, which the 2.183 key claim (default ON, Sean 2026-10-23) subsumes
+    _PIN.start()
+
+
+def tearDownModule():
+    _PIN.stop()
+
+
 class TestAnyClassInTheKeySlots(unittest.TestCase):
 
     def test_a_flag_in_the_key_slots_is_refused(self):

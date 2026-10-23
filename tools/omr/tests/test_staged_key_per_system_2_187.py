@@ -138,9 +138,11 @@ def _full(flats=(3, 3, 2)):
 
 
 class TestFlag(unittest.TestCase):
-    def test_default_off_and_files_through_the_claim(self):
+    def test_default_on_and_files_through_the_claim(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_KEY_PER_SYSTEM", None)
+            self.assertTrue(KO.enabled())
+        with mock.patch.dict(os.environ, {"OMR_KEY_PER_SYSTEM": "0"}):
             self.assertFalse(KO.enabled())
         log, _ = gather([3, 3, 3], _full((3, 3, 3)), env=OFF)
         self.assertEqual([rows(log, i) for i in range(3)], [[], [], []])

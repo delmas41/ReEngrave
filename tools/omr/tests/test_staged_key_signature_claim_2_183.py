@@ -32,11 +32,12 @@ LINES = [700.0 + SPACE * i for i in range(5)]
 
 
 class TestFlag(unittest.TestCase):
-    def test_default_off_and_needs_the_register(self):
+    def test_default_on_and_needs_the_register(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_KEY_SIGNATURE_CLAIM", None)
-            self.assertFalse(CL.key_enabled())
-            self.assertFalse(CL.key_active())
+            os.environ.pop("OMR_CLAIMED_REGISTER", None)
+            self.assertTrue(CL.key_enabled())
+            self.assertTrue(CL.key_active())
         with mock.patch.dict(os.environ, ON):
             self.assertTrue(CL.key_active())
         with mock.patch.dict(os.environ, {"OMR_KEY_SIGNATURE_CLAIM": "1", "OMR_CLAIMED_REGISTER": "0"}):

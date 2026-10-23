@@ -76,8 +76,8 @@ def enabled() -> bool:
 
 
 def key_enabled() -> bool:
-    """`OMR_KEY_SIGNATURE_CLAIM` (ROADMAP 2.183), default OFF: only an explicit 1/true/yes/on enables the key-signature claim."""
-    return os.environ.get(ENV_KEY, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_KEY_SIGNATURE_CLAIM` (ROADMAP 2.183), default ON (Sean 2026-10-23); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_KEY, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def key_active() -> bool:
