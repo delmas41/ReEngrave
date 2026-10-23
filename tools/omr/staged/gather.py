@@ -35,6 +35,7 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from . import one_ink as _one_ink
 from . import accidental_shape as _acc_shape
+from . import accidental_family as _acc_family
 from .. import natural_candidate as _natural_candidate
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
@@ -1766,12 +1767,27 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
         top_y, half_step = grid
         for gi, d in enumerate(dets):
             alteration = _alteration_of(d.smufl_name)
+            fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
+            fam_detail: Dict[str, Any] = {}
+            bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
+            if fam is not None:
+                fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
+                if fam_alt is not None:
+                    alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
+                elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
+                    alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
+                bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
+                fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
+                                                              "candidates", "agrees_with_detector", "head_right") if k in fam}}
             if alteration is None:
                 continue
-            frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
-            anchor_y = d.y_canonical + d.height_canonical * frac
+            if fam is not None and fam["type"] in _acc_family.TYPES:
+                frac = float(fam["anchor_fraction"])
+            else:
+                frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+            anchor_y = by0 + (by1 - by0) * frac
             pos_float = (anchor_y - top_y) / half_step
-            centre_pos = (d.y_center - top_y) / half_step
+            centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
             log.observe(
@@ -1789,13 +1805,13 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                 box_centre_position=centre_pos,
                 residual=abs(pos_float - round(pos_float)),
                 rounded=int(round(pos_float)),
-                x0=float(d.x_canonical),
-                x1=float(d.x_canonical + d.width_canonical),
-                y0=float(d.y_canonical),
-                y1=float(d.y_canonical + d.height_canonical),
+                x0=bx0,
+                x1=bx1,
+                y0=by0,
+                y1=by1,
                 confidence=float(d.confidence),
                 **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
-                **shape_detail)
+                **shape_detail, **fam_detail)
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
@@ -7502,6 +7518,74 @@ def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# One accidental family -- the type from the mark's own strokes (ROADMAP 2.201)
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A notehead to the right of an accidental-family mark, at most this many staff spaces away (box edge to box edge), whose centre stands within
+#: `FAMILY_HEAD_DY_STEPS` half-spaces of the mark's anchor: the mark is IN-BAR (an accidental belongs to the note on its right at its step, page-facts
+#: §3). A key signature's last accidental is not followed that closely by a head at its own step (the meter and the gap of the run stand between).
+FAMILY_HEAD_GAP_SPACES = 1.0
+FAMILY_HEAD_DY_STEPS = 1.0
+
+
+def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
+                             stroke_cells: Dict[Tuple[int, int, int, int], Any]) -> int:
+    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`, default OFF; needs `OMR_STROKE_MAP`), STAGED GATHER: every accidental-family box -- `accidental*`
+    AND `key*`, both series, one family (Sean 2026-10-22) -- gets `d.accidental_family`: its extent grown along its own accidental-shaped strokes,
+    its TYPE read from those strokes, the detector's label kept as a recorded fact, and the role evidence by position (`head_right`: the notehead
+    this mark stands directly left of, if any). The consumers read it off the detection (`gather_accidental_positions`, `_gather_keysig_markers`);
+    it files no row of its own -- the detail rides on the rows that use it. Returns the number of boxes measured. Decides nothing."""
+    if not (_acc_family.enabled() and stroke_map_enabled() and stroke_cells):
+        return 0
+    from . import stroke_map as SM
+    n = 0
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        res = stroke_cells.get(ck)
+        if res is None or isinstance(res, str):
+            continue
+        dets = detections.get(R.cell(*ck).to_key(), ())
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        top_y, half_step = grid
+        sp = half_step * 2.0
+        heads = [d for d in dets if getattr(d, "category", None) == "notehead"]
+        blocked = set()
+        for h in heads:
+            for i, sh in SM.strokes_in_box(res, (h.x_canonical, h.y_canonical, h.x_canonical + h.width_canonical, h.y_canonical + h.height_canonical)):
+                if sh >= SM.COVER_SHARE_MIN:
+                    blocked.add(i)
+        for d in dets:
+            if not _acc_family.is_family_class(d.smufl_name) or getattr(d, "one_ink_absorbed_by", None) is not None:
+                continue
+            box = (float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical))
+            shares = SM.strokes_in_box(res, box)
+            fam = _acc_family.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(blocked),
+                                         rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())])
+            # the role evidence: the nearest head to the right of the (grown) mark at about its own height
+            gb = fam["box"]
+            frac = _acc_family.anchor_fraction(fam["type"]) or _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+            apos = (gb[1] + (gb[3] - gb[1]) * frac - top_y) / half_step
+            best = None
+            for h in heads:
+                gap = (h.x_canonical - gb[2]) / sp
+                if gap < -0.25 or gap > FAMILY_HEAD_GAP_SPACES:
+                    continue
+                dy = abs((h.y_canonical + h.height_canonical / 2.0 - top_y) / half_step - apos)
+                if dy <= FAMILY_HEAD_DY_STEPS and (best is None or gap < best["gap_spaces"]):
+                    best = {"gap_spaces": round(gap, 2), "dy_steps": round(dy, 2)}
+            fam["head_right"] = best
+            fam["anchor_fraction"] = frac
+            d.accidental_family = fam
+            n += 1
+    return n
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The staff-sized ink of a bar, with its page box -- ROADMAP 2.80
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -12778,18 +12862,33 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
     # said it was. Where there is no key-class box at all (53 header cells on
     # Litolff, 81 on Breitkopf) nothing says which kind, so they are all
     # admitted and `_marker_run` abstains if they disagree.
-    key_shapes = {d.smufl_name for d in here
-                  if d.smufl_name in _KEYSIG_CLASSES}
+    # ⚠️ ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; a box carries `accidental_family` only then): the marker's SHAPE is the TYPE its own strokes read
+    # (the detector's key*/accidental* label is a recorded fact and the role claim it always was), and a mark standing directly left of a notehead at its
+    # own height (`head_right`) is IN-BAR by position, not a member of the signature.
+    def _shape_of(d):
+        fam = getattr(d, "accidental_family", None)
+        if fam is not None and fam["type"] in _acc_family.TYPES:
+            return _acc_family.KEY_SHAPE_OF_TYPE[fam["type"]]
+        return d.smufl_name if d.smufl_name in _KEYSIG_CLASSES else _ACCIDENTAL_SHAPE.get(d.smufl_name)
+
+    def _in_bar_by_position(d):
+        fam = getattr(d, "accidental_family", None)
+        return fam is not None and fam.get("head_right") is not None
+
+    key_shapes = {_shape_of(d) for d in here
+                  if d.smufl_name in _KEYSIG_CLASSES and not _in_bar_by_position(d)}
     marks = []
     for d in here:
+        if _in_bar_by_position(d):
+            continue
         if d.smufl_name in _KEYSIG_CLASSES:
-            marks.append((d, d.smufl_name, "key"))
+            marks.append((d, _shape_of(d), "key"))
             continue
         if d.smufl_name not in _ACCIDENTAL_SHAPE:
             continue
         if limit <= 0 or float(d.x_canonical) > limit:
             continue
-        shape = _ACCIDENTAL_SHAPE[d.smufl_name]
+        shape = _shape_of(d)
         if key_shapes and shape not in key_shapes:
             continue
         marks.append((d, shape, "accidental"))
@@ -12818,7 +12917,8 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                     # reader of the record can count them without re-running
                     # the detector.
                     detector_class=d.smufl_name, detector_role=role,
-                    cell_staff_space=space)
+                    cell_staff_space=space,
+                    **({"family_type": d.accidental_family["type"]} if getattr(d, "accidental_family", None) is not None else {}))
 
 
 _METER_CLASSES = ("timeSigCommon", "timeSigCutCommon")
@@ -15761,6 +15861,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default OFF; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
+        # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
+        gather_accidental_family(cells, local, detections, stroke_cells)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files
