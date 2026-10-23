@@ -7374,39 +7374,58 @@ def stroke_map_enabled() -> bool:
     return os.environ.get(STROKE_MAP_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
-def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> None:
+def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
     """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
-    staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`)."""
+    staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
+
+    ROADMAP 2.198: the rows are SLIMMED (bytes a page; every field a later step of the plan names is kept) and the function returns what
+    `gather_glyph_strokes` / the claimed register need and the rows cannot give them -- `{(page, system, staff, cell): CellStrokes}`, or
+    the abstain reason (a string) for a cell with no strokes. Empty (and nothing filed) with the flag off.
+
+    Slimmed away, each recoverable from a row that stays: `area_sp2` (= `fill` x the box area / the local space squared),
+    `component_n_strokes` (the count of the cell's rows with the same `component`), `staff_lines_left` / `staff_lines_right` (the staff
+    measured at the stroke's own x -- what a consumer takes from them is `end_steps_from_top` and `staff_space_local_px`, which stay),
+    `profile_sixteenths` on a blob (a blob's named fields are `fill` and `hole_share`; the profile is kept for the vertical, horizontal and
+    curve strokes whose thickness a consumer smooths), `staff_local` unless False (absent = the local lines were found), and the cell-level
+    `cell_n_below_floor` (filed once, on the cell's FIRST stroke row). `ends` is one flat list [x0, y0, x1, y1]."""
+    cache: Dict[Tuple[int, int, int, int], Any] = {}
     if not stroke_map_enabled():
-        return
+        return cache
     from . import stroke_map as SM
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
             continue
         sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        ck = (c.page_index, key[0], key[1], c.measure_index)
         frame = frame_cell(c.measure_index)
         img = getattr(c, "image_no_staff", None)
         grid = _cell_grid(c)
         if img is None or getattr(img, "ndim", 0) != 2:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_MASK,
                         note="cell carries no image_no_staff")
+            cache[ck] = ABSTAIN.NO_MASK
             continue
         if grid is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
         res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None))
         if res is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
         if not res.strokes:
             if res.n_below_floor == 0:
                 log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_INK)
+                cache[ck] = ABSTAIN.NO_INK
             else:           # ink, but every piece under the floor: said, never read as "no ink"
                 log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.ONLY_DEBRIS,
                             n_below_floor=res.n_below_floor)
+                cache[ck] = ABSTAIN.ONLY_DEBRIS
             continue
+        cache[ck] = res
         up = getattr(c, "upscale_factor", None)
         cell_box = getattr(c, "bbox_page_px", None)
         page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
@@ -7417,8 +7436,12 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["sagitta_spaces"] = st.sagitta_sp
             if st.hole_share is not None:
                 optional["hole_share"] = st.hole_share
-            if st.lines_right != st.lines_left:          # absent = the staff is level across the stroke (bytes: 5 ints on most rows)
-                optional["staff_lines_right"] = st.lines_right
+            if st.kind != "blob":
+                optional["profile_sixteenths"] = st.profile
+            if not res.staff_local:                      # absent = the staff was measured at the stroke's own x
+                optional["staff_local"] = False
+            if i == 0:                                   # a CELL fact, said once
+                optional["cell_n_below_floor"] = res.n_below_floor
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
@@ -7427,15 +7450,54 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["frame_note"] = "no page box: cell has no bbox_page_px/upscale_factor"
             log.observe(
                 g, Q.STROKE, st.kind, reader=READERS.CV_STROKE, frame=frame,
-                stroke_box=list(st.box), area_sp2=st.area_sp2, length_spaces=st.length_sp, angle_deg=st.angle_deg,
+                stroke_box=list(st.box), length_spaces=st.length_sp, angle_deg=st.angle_deg,
                 thickness_spaces=st.thickness_sp, thickness_spread_spaces=st.thickness_spread_sp, fill=st.fill,
-                ends=[list(st.ends[0]), list(st.ends[1])], end_steps_from_top=list(st.end_steps),
-                profile_sixteenths=st.profile, touches=[[j, ct] for j, ct in st.touches],
-                component=st.component, component_n_strokes=st.component_n_strokes,
-                staff_lines_left=st.lines_left, staff_space_local_px=st.staff_space_local,
-                staff_local=res.staff_local, cell_n_below_floor=res.n_below_floor, **optional)
+                ends=[st.ends[0][0], st.ends[0][1], st.ends[1][0], st.ends[1][1]], end_steps_from_top=list(st.end_steps),
+                touches=[[j, ct] for j, ct in st.touches], component=st.component,
+                staff_space_local_px=st.staff_space_local, **optional)
         if progress:
             print(f"  gather strokes {sub.to_key()}: {len(res.strokes)}")
+    return cache
+
+
+def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
+                         stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False) -> None:
+    """ROADMAP 2.198 step 2 (flag `OMR_STROKE_MAP`, default OFF), STAGED GATHER: `Q.GLYPH_STROKES`, one row per detector box of every pass
+    (the plan, `docs/plan-2026-10-22-shared-ink-map.md` §2.2: a box is a hypothesis over strokes). The row's value is the list of stroke
+    ordinals (of the box's own cell; the stroke `i` is the glyph subject `_STROKE_GLYPH_BASE + i` of that cell) of which at least
+    `stroke_map.COVER_SHARE_MIN` of the stroke's ink lies inside the box; `shares` are those strokes' shares, `partial` the strokes with
+    some ink inside and less than that. An EMPTY list is a fact (the box stands on no filed stroke: 8 of 8 wide beam boxes in 2.195's
+    crops); a cell whose strokes could not be mapped ABSTAINS per box, by the cell's reason, never filed as an empty list (rule 8).
+    Decides nothing, reads only `detections` and `stroke_cells`; nothing reads the rows yet."""
+    if not stroke_map_enabled() or not stroke_cells:
+        return
+    from . import stroke_map as SM
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        res = stroke_cells.get(ck)
+        if res is None:
+            continue
+        dets = detections.get(R.cell(*ck).to_key(), ())
+        frame = frame_cell(c.measure_index)
+        for gi, d in enumerate(dets):
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if isinstance(res, str):
+                log.abstain(g, Q.GLYPH_STROKES, reader=READERS.CV_GLYPH_STROKES, frame=frame, reason=res)
+                continue
+            got = SM.strokes_in_box(res, (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical,
+                                          d.y_canonical + d.height_canonical))
+            covered = [(i, sh) for i, sh in got if sh >= SM.COVER_SHARE_MIN]
+            part = [[i, sh] for i, sh in got if sh < SM.COVER_SHARE_MIN]
+            extra: Dict[str, Any] = {}
+            if part:
+                extra["partial"] = part
+            log.observe(g, Q.GLYPH_STROKES, [i for i, _sh in covered], reader=READERS.CV_GLYPH_STROKES, frame=frame,
+                        shares=[sh for _i, sh in covered], cover_min=SM.COVER_SHARE_MIN, **extra)
+        if progress:
+            print(f"  gather glyph strokes {R.cell(*ck).to_key()}: {len(dets)} boxes")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -14089,8 +14151,23 @@ def _claim_boxes_inside(binary, area, dets, cell, sub_of, line_ys, sp, *, skip=(
     return out
 
 
+def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, float]]], why: Optional[str], cell: int,
+                    owner: str, owner_row: Any, owner_glyph: Any, standing: str, source: str, **extra: Any) -> None:
+    """ROADMAP 2.198: the register's `ink` branch (plan §2.3) -- ONE `Q.CLAIMED_AREA` row, `unit: ink`, whose value is the list of stroke
+    ordinals (of `cell`) the owner stands on, filed BESIDE the owner's area claim (which stays). An owner that stands on no filed stroke
+    or whose cell has no stroke map ABSTAINS (`why` says which), never claims an empty list. Decides nothing."""
+    if not strokes:
+        log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell), reason=ABSTAIN.NO_INK,
+                    cell=cell, owner=owner, unit="ink", why=why or "owner_stands_on_no_filed_stroke", source=source)
+        return
+    log.observe(ssub, Q.CLAIMED_AREA, [i for i, _sh in strokes], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell), cell=cell,
+                owner=owner, owner_row=owner_row, owner_glyph=owner_glyph, unit="ink", standing=standing, source=source,
+                shares=[sh for _i, sh in strokes], **extra)
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                            detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+                            detections: Dict[str, List[Any]], *, progress: bool = False,
+                            stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
     """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default OFF).
 
     PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). AFTER `gather_clef_locator` (reads its rows) and beside
@@ -14156,6 +14233,20 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                 log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0),
                             cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, unit="area", standing="READ",
                             source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3))
+                if stroke_cells:               # ROADMAP 2.198 (OMR_STROKE_MAP): the same clef as a list of strokes
+                    from . import stroke_map as SM
+                    res0 = stroke_cells.get((p, sys_idx, li, 0))
+                    upc = getattr(c0, "upscale_factor", None)
+                    if res0 is None or isinstance(res0, str) or not upc:
+                        _file_ink_claim(log, ssub, strokes=None, why="no stroke map for the cell" if res0 is None or isinstance(res0, str)
+                                        else "no upscale factor", cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None,
+                                        standing="READ", source="clef_locator")
+                    else:
+                        cb0 = c0.bbox_page_px
+                        canon = [(area[0] - cb0[0]) * upc, (area[1] - cb0[1]) * upc, (area[2] - cb0[0]) * upc, (area[3] - cb0[1]) * upc]
+                        _file_ink_claim(log, ssub, strokes=[(i, sh) for i, sh in SM.strokes_in_box(res0, canon) if sh >= SM.COVER_SHARE_MIN],
+                                        why=None, cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, standing="READ",
+                                        source="clef_locator", cover_min=SM.COVER_SHARE_MIN)
                 if r0.frame == frame_cell(0):
                     prev = clef_left.get(li)
                     clef_left[li] = (min(area[0], prev[0]) if prev else area[0], c0.bbox_page_px[0])
@@ -14179,6 +14270,13 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                                 owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
                                 start_spaces=round((pb[0] - cb[0]) / sp, 3),
                                 cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
+                    if stroke_cells:           # ROADMAP 2.198 (OMR_STROKE_MAP): the owner box's strokes, read off its `Q.GLYPH_STROKES` row
+                        from . import stroke_map as SM
+                        gs = log.rows(Q.GLYPH_STROKES, gsub)
+                        mine = [(int(i), float(sh)) for i, sh in zip(gs[0].value or (), (gs[0].detail or {}).get("shares") or ())] if gs else None
+                        _file_ink_claim(log, ssub, strokes=mine, why=None if gs else "no GLYPH_STROKES row (the cell has no stroke map)",
+                                        cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None, owner_glyph=gsub.to_key(),
+                                        standing=standing, source="detector", cls=str(d.smufl_name), cover_min=SM.COVER_SHARE_MIN)
                     if k == 0 and standing == "READ":
                         prev = clef_left.get(li)
                         clef_left[li] = (min(pb[0], prev[0]) if prev else pb[0], cb[0])
@@ -15398,7 +15496,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default OFF; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
-        gather_stroke_map(log, cells, local, progress=progress)
+        stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
+        # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
+        # it sits right after the map; it files rows only and decides nothing.
+        gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files
@@ -15533,7 +15634,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
-        gather_claimed_register(log, pws, cells, local, detections)
+        gather_claimed_register(log, pws, cells, local, detections, stroke_cells=stroke_cells)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)

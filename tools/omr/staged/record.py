@@ -918,6 +918,14 @@ class Q(_Vocab):
     #: rows (`cell_n_below_floor`), not filed.
     STROKE = "stroke"
 
+    #: ROADMAP 2.198 (same flag `OMR_STROKE_MAP`; `gather_glyph_strokes`, plan §2.2): ONE ROW PER DETECTOR BOX of every pass, filed on the box's
+    #: glyph subject: `value` is the list of stroke ordinals (of the box's own cell; stroke `i` is the glyph subject `_STROKE_GLYPH_BASE + i`
+    #: of that cell, a `Q.STROKE` row) of which at least `detail.cover_min` of the stroke's ink lies inside the box, `shares` those shares,
+    #: `partial` the strokes with some ink inside and less. An empty list is a fact (the box stands on no filed stroke); a cell with no stroke
+    #: map ABSTAINS per box. A box is a hypothesis over strokes: two boxes of one cell with the same list stand on the same ink. Decides
+    #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
+    GLYPH_STROKES = "glyph_strokes"
+
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
     #: glyph: the ink fraction INSIDE the detector's OWN box, two ways --
@@ -2306,6 +2314,8 @@ CLAIMS: "dict[str, str]" = {
     "VERTICAL_RUN": CLAIM.MEASUREMENT,
     #: ROADMAP 2.195: a measurement of ink, like `VERTICAL_RUN`; names nothing, so it cannot be wrong about what the ink is.
     "STROKE": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.198: which strokes lie inside a box -- a measurement of ink under the detector's box, naming nothing.
+    "GLYPH_STROKES": CLAIM.MEASUREMENT,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
@@ -2910,6 +2920,8 @@ class READERS(_Vocab):
     CV_INK_PIECES = "cv_ink_pieces"
     #: `gather.gather_stroke_map` -- ROADMAP 2.195. The SAME erased raster `CV_INK` reads (one crop, one signal), reduced to 16 px a space.
     CV_STROKE = "cv_stroke"
+    #: `gather.gather_glyph_strokes` -- ROADMAP 2.198. Reads the `CV_STROKE` masks and the detector's boxes; no raster of its own.
+    CV_GLYPH_STROKES = "cv_glyph_strokes"
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"

@@ -215,6 +215,39 @@ class CellStrokes:
     scale: float
     sp_canonical: float
     staff_local: bool
+    #: ROADMAP 2.198: each stroke's mask in the REDUCED frame, parallel to `strokes` -- (mask, x0, y0). Never filed; it is what lets
+    #: `strokes_in_box` say how much of a stroke's ink lies inside a detector box.
+    masks: List[Tuple[np.ndarray, int, int]] = field(default_factory=list, repr=False, compare=False)
+
+
+#: A box COVERS a stroke when at least this share of the stroke's ink lies inside the box. Not tuned: it is the register's one cut
+#: (`claims.INSIDE_SHARE_MIN`, 2.177: "a mark's own piece is wholly inside, ~1.0; a neighbour shares a sliver"), and the measured
+#: distribution of the share (benchmarks/shared-ink-map-2026-10/FINDINGS.md 2.198 section) is what says it sits in a gap.
+COVER_SHARE_MIN = 0.5
+
+
+def strokes_in_box(res: "CellStrokes", box: Sequence[float]) -> List[Tuple[int, float]]:
+    """ROADMAP 2.198: `[(stroke ordinal, share)]` for every stroke of the cell with any ink inside `box` = (x0, y0, x1, y1) in CANONICAL cell
+    px (the frame of `Stroke.box` and of the detector's boxes); `share` = the stroke's ink inside the box / the stroke's ink, in [0, 1].
+    Pure; ordered by ordinal. A caller applies `COVER_SHARE_MIN` (covered) and keeps the rest as partial."""
+    out: List[Tuple[int, float]] = []
+    if not res.masks:
+        return out
+    s = res.scale
+    bx0, by0, bx1, by1 = (float(v) * s for v in box)
+    for i, (m, x0, y0) in enumerate(res.masks):
+        h, w = m.shape
+        lx0, ly0 = max(0, int(round(bx0)) - x0), max(0, int(round(by0)) - y0)
+        lx1, ly1 = min(w, int(round(bx1)) - x0), min(h, int(round(by1)) - y0)
+        if lx1 <= lx0 or ly1 <= ly0:
+            continue
+        total = int(m.sum())
+        if total <= 0:
+            continue
+        inside = int(m[ly0:ly1, lx0:lx1].sum())
+        if inside:
+            out.append((i, round(inside / float(total), 3)))
+    return out
 
 
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
@@ -325,4 +358,4 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
         per[s.component] = per.get(s.component, 0) + 1
     for s in out:
         s.component_n_strokes = per[s.component]
-    return CellStrokes(out, below, scale, float(sp_canonical), staff.local)
+    return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built])

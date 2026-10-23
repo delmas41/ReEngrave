@@ -142,12 +142,29 @@ def through_stroke(binary: Any, box: Sequence[float], spacing: float) -> Optiona
             "beyond_up_spaces": round(up, 2), "beyond_down_spaces": round(down, 2), "column_x": cx}
 
 
-def covering(rows: Iterable[Any], key: str) -> List[Tuple[Any, Dict[str, Any]]]:
+def covering(rows: Iterable[Any], key: str, box_strokes: Optional[Sequence[int]] = None,
+             cell: Optional[int] = None) -> List[Tuple[Any, Dict[str, Any]]]:
     """Every `Q.CLAIMED_AREA` row (any owner) that holds the box `key`: its entry names the box (`named`, the owner itself said this
-    box is its ink) or measured at least `INSIDE_SHARE_MIN` of the box's own ink inside the area. Decides nothing."""
+    box is its ink) or measured at least `INSIDE_SHARE_MIN` of the box's own ink inside the area. Decides nothing.
+
+    ROADMAP 2.198, the `ink` branch (plan §2.3): where the caller passes `box_strokes` (the box's `Q.GLYPH_STROKES` value, stroke
+    ordinals of the box's own `cell`), a `unit: ink` claim of that cell also holds the box when at least `INSIDE_SHARE_MIN` of the box's
+    strokes are the claim's strokes (the claim's own owner box excepted). Its entry is `{"unit": "ink", "stroke_share", "shared"}`.
+    Without `box_strokes` an ink claim is ignored, so every existing caller reads exactly what it read."""
     out = []
     for r in rows:
         d = getattr(r, "detail", None) or {}
+        if d.get("unit") == "ink" and d.get("owner") in OWNERS and box_strokes:
+            if cell is not None and d.get("cell") != cell:
+                continue
+            if d.get("owner_glyph") == key:
+                continue
+            mine = set(r.value or ()) if isinstance(getattr(r, "value", None), (list, tuple)) else set()
+            shared = len(mine & set(box_strokes))
+            share = shared / float(len(set(box_strokes)))
+            if shared and share >= INSIDE_SHARE_MIN:
+                out.append((r, {"unit": "ink", "stroke_share": round(share, 3), "shared": shared}))
+            continue
         if d.get("unit") != "area" or d.get("owner") not in OWNERS:
             continue
         got = (d.get("boxes_inside") or {}).get(key)

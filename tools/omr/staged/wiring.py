@@ -621,21 +621,16 @@ KNOWN_GAPS: Dict[str, str] = {
         "every row above, and a tool that excused its author's fields would "
         "not be worth running."),
     # ── `Q.STROKE` (ROADMAP 2.195): PRODUCER ONLY, first consumer named in the plan (step 3, beams from strokes) ──
-    "DETAIL Q.STROKE.area_sp2": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
-    "DETAIL Q.STROKE.cell_n_below_floor": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
+    # ── ROADMAP 2.198 (step 2 of the shared ink map, same flag): producer-only again ──
+    "DETAIL Q.GLYPH_STROKES.shares": (
+        "producer-only quantity (`OMR_STROKE_MAP`, default OFF): the share of each covered stroke's ink inside the box. Its first stage reader is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5; `claims.covering`'s `ink` branch counts strokes, not shares. Leaves the day a decision reads it."),
+    "DETAIL Q.CLAIMED_AREA.shares": (
+        "producer-only (`OMR_STROKE_MAP`, default OFF): on a `unit: ink` claim, the share of each claimed stroke's ink inside the owner. Leaves the day the ink branch of the consult reads it (plan step 5)."),
     "DETAIL Q.STROKE.end_steps_from_top": (
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.length_spaces": (
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.n_below_floor": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
-    "DETAIL Q.STROKE.profile_sixteenths": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
-    "DETAIL Q.STROKE.staff_lines_left": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
-    "DETAIL Q.STROKE.staff_local": (
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.staff_space_local_px": (
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),

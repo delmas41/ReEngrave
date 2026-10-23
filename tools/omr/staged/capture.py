@@ -495,6 +495,12 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "(`LocalStaff`), so it is a staff-grid measurement as well; nothing reads it yet.",
         None),
 
+    "GLYPH_STROKES": (
+        RAW_INK,
+        "ROADMAP 2.198, step 2 of the shared ink map: the strokes (`Q.STROKE`) that lie inside a detector box, with the share of each stroke's ink "
+        "inside it. Scoreless: it is a count of ink under the detector's box and carries no confidence of its own; nothing reads it yet.",
+        None),
+
     "VERTICAL_RUN": (
         RAW_INK,
         "EVERY component the stem opening produced, accepted AND refused, "
@@ -901,6 +907,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_INK_PIECES": ("staged/gather.py", "gather_cell_ink_pieces"),
     # ROADMAP 2.195: the erased raster, reduced to 16 px a space, and the raw raster for the local staff.
     "CV_STROKE": ("staged/gather.py", "gather_stroke_map"),
+    # ROADMAP 2.198: the stroke masks (no raster of its own) against the detector boxes.
+    "CV_GLYPH_STROKES": None,
     "CV_NARROW_BOX_SHAPE": ("staged/gather.py", "gather_narrow_box_shape"),
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),
