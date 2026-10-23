@@ -503,6 +503,16 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
             b = rec.verdict_by_id(bid)
             if b is None or b.get("quantity") != Q.ACCIDENTAL_OWNER or b.get("outcome") != "decided":
                 continue
+            au = (b.get("detail") or {}).get("anchor_unclassed")
+            if au:
+                # ROADMAP 2.199 (flag `OMR_ACCIDENTAL_ANCHOR_UNCLASSED`): the head was found from the box centre because the class anchor found
+                # none and nothing confirmed the class -> the label is a guess (the measured shape, when it reads another accidental, is a candidate)
+                cands = [{"value": au.get("label"), "support": None}]
+                ms = au.get("measured_shape")
+                if ms in ("flat", "natural", "sharp") and ms != au.get("named_shape"):
+                    cands.append({"value": {"flat": "b", "natural": "natural", "sharp": "#"}[ms], "support": None})
+                return {"stage": "ADJUDICATE", "rule": "accidental_anchor_unclassed", "quantity": Q.ACCIDENTAL, "candidates": cands,
+                        "chosen": {"value": au.get("label")}, "margin": None}
             oi = (b.get("detail") or {}).get("one_ink")
             if oi and not _oi.reads(oi.get("margin")):
                 return {"stage": "ADJUDICATE", "rule": ONE_INK_RULE, "quantity": Q.ACCIDENTAL,

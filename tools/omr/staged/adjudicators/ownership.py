@@ -23,6 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from .. import one_ink as _one_ink
 from .. import accidental_shape as _acc_shape
+from .. import accidental_anchor as _acc_anchor
 from ... import natural_candidate as _natural_candidate
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
@@ -4517,22 +4518,42 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     ax1 = float(detail.get("x1", 0.0))
     apos = float(acc.value) if apos_override is None else apos_override
 
-    cands = []
-    for key, row in list(heads.items()) + list(elsewhere.items()):
-        _cls, hx, hy, hw, hh = row.value[:5]
-        if float(hx) + float(hw) < ax1:
-            continue                    # the head does not reach past the glyph
-        dx = max(0.0, float(hx) - ax1) / space
-        if dx > _ACC_MAX_DX_SPACES:
-            continue
-        got = pos_of.get(key)
-        if got is None:
-            continue                    # no clef-free position: nothing to compare
-        hpos, hrow = got
-        dpos = abs(hpos - apos)
-        if dpos > _ACC_MAX_DY_POSITIONS:
-            continue
-        cands.append((dpos, dx, key, row, hrow, float(hx), float(hw), hpos))
+    def _collect(anchor_pos: float):
+        found = []
+        for key, row in list(heads.items()) + list(elsewhere.items()):
+            _cls, hx, hy, hw, hh = row.value[:5]
+            if float(hx) + float(hw) < ax1:
+                continue                    # the head does not reach past the glyph
+            dx = max(0.0, float(hx) - ax1) / space
+            if dx > _ACC_MAX_DX_SPACES:
+                continue
+            got = pos_of.get(key)
+            if got is None:
+                continue                    # no clef-free position: nothing to compare
+            hpos, hrow = got
+            dpos = abs(hpos - anchor_pos)
+            if dpos > _ACC_MAX_DY_POSITIONS:
+                continue
+            found.append((dpos, dx, key, row, hrow, float(hx), float(hw), hpos))
+        return found
+
+    cands = _collect(apos)
+
+    # ⚠️⚠️ ROADMAP 2.199 (flag `OMR_ACCIDENTAL_ANCHOR_UNCLASSED`, default OFF; see `accidental_anchor.py`): the class anchor found NO head, and
+    # nothing independent confirms the class -> search once more from the BOX CENTRE (the anchor of every non-flat class). Additive only: a glyph
+    # the class anchor decides or finds ambiguous never reaches this. The head is geometry; the alteration stays the label and is written GUESSED.
+    unclassed = None
+    if not cands and _acc_anchor.enabled() and detail.get("box_centre_position") is not None:
+        srow = detail.get("shape")
+        shp = _acc_shape.classify(srow if isinstance(srow, dict) and srow.get("bl") is not None else None)
+        ap = _acc_anchor.applies(str(detail.get("detector_class")), apos, detail.get("box_centre_position"), shp)
+        if ap is not None:
+            cands = _collect(float(detail["box_centre_position"]))
+            if cands:
+                unclassed = {**ap, "centre_position": round(float(detail["box_centre_position"]), 3), "class_position": round(apos, 3),
+                             "label": alteration, "detector_class": str(detail.get("detector_class")), "bl": (srow or {}).get("bl"),
+                             "tr": (srow or {}).get("tr"), "shape_margin": shp.get("margin")}
+                apos = float(detail["box_centre_position"])
 
     if not cands:
         return Ruling.abstain(
@@ -4598,7 +4619,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 # ROADMAP 2.186: the classes this glyph's box chose between at the merge; absent (and no key) when it chose none
                 **({"one_ink": detail["one_ink"]} if detail.get("one_ink") else {}),
                 # ROADMAP 2.190: what the shape check said about this ink (flag ON, a measured box only)
-                **({"shape_check": shape_choice} if shape_choice else {})})
+                **({"shape_check": shape_choice} if shape_choice else {}),
+                # ROADMAP 2.199: the head was found from the box centre because the class anchor found none and nothing confirmed the class
+                **({"anchor_unclassed": unclassed} if unclassed else {})})
 
 
 def _keysig_marker_row(ev: Evidence):
