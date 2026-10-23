@@ -1,0 +1,86 @@
+{
+ "flags": [
+  [
+   "OMR_KEY_SIGNATURE_CLAIM",
+   "0",
+   "1"
+  ],
+  [
+   "OMR_KEY_PER_SYSTEM",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "rest": {
+     "gained": 0,
+     "lost": 3,
+     "changed": 0
+    },
+    "note": {
+     "gained": 0,
+     "lost": 6,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 3,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5038,
+    5029
+   ],
+   "paired": 5029,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    2554,
+    2563
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 233
+   },
+   "seconds": [
+    11.1,
+    13.0
+   ]
+  }
+ },
+ "notes": [
+  "OMR_KEY_SIGNATURE_CLAIM: read in staged/adjudicators/claimed_by.py, staged/adjudicators/family_precision.py, staged/adjudicators/notehead_precision.py, staged/claims.py ... -> GATHER",
+  "OMR_KEY_PER_SYSTEM: read in staged/gather.py, staged/key_object.py, staged/record.py -> GATHER"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2194,
+ "wall_seconds": 2052.7
+}

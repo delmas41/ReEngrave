@@ -1,0 +1,71 @@
+{
+ "flags": [
+  [
+   "OMR_KEY_SIGNATURE_CLAIM",
+   "0",
+   "1"
+  ],
+  [
+   "OMR_KEY_PER_SYSTEM",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "blue": {
+     "gained": 0,
+     "lost": 17,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6519,
+    6519
+   ],
+   "paired": 6519,
+   "red_bars": [
+    166,
+    166
+   ],
+   "notes_not_written": [
+    3202,
+    3202
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 232
+   },
+   "seconds": [
+    19.8,
+    24.6
+   ]
+  }
+ },
+ "notes": [
+  "OMR_KEY_SIGNATURE_CLAIM: read in staged/adjudicators/claimed_by.py, staged/adjudicators/family_precision.py, staged/adjudicators/notehead_precision.py, staged/claims.py ... -> GATHER",
+  "OMR_KEY_PER_SYSTEM: read in staged/gather.py, staged/key_object.py, staged/record.py -> GATHER"
+ ],
+ "tiles": {
+  "n": 9,
+  "cases": 9,
+  "controls": 0
+ },
+ "tile_seed": 2194,
+ "wall_seconds": 5131.2
+}

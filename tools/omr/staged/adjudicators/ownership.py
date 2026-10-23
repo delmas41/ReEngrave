@@ -4222,7 +4222,9 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
                    Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
                    Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
-                   Q.KEYSIG_MARKER),
+                   Q.KEYSIG_MARKER,
+                   # ROADMAP 2.187b: `header.marker_run_members` judges the run's markers against the fixed order for THIS staff's clef
+                   Q.CLEF),
     scope=Kind.GLYPH,
     # ⚠️ THREE VERDICTS BESIDE THE FOUR GATHER ROWS, added when 2.7 was
     # MERGED onto the tree that had grown them overnight (2026-09-27). Each is
@@ -4233,7 +4235,7 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
            Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
-           Q.KEYSIG_MARKER, Q.REST_IS_NOT_A_REST),
+           Q.KEYSIG_MARKER, Q.REST_IS_NOT_A_REST, Q.CLEF),
     subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
     reasons=("immediately_right_same_position", "ambiguous_height",
              "no_candidate", "no_unit", "no_evidence",
@@ -4635,7 +4637,8 @@ def _keysig_marker_row(ev: Evidence):
         space = float(unit[0].value) if unit else 0.0
     except (TypeError, ValueError):
         space = 0.0
-    for r in marker_run_members(marks, space):
+    clef = ev.verdict(Q.CLEF, subject=ev.subject.at(Kind.STAFF))
+    for r in marker_run_members(marks, space, clef.value if clef is not None and isinstance(clef.value, str) else None):
         d = r.detail or {}
         try:
             mx, my = float(d["x"]), float(d["y_center"])

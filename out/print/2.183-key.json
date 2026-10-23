@@ -1,0 +1,278 @@
+[
+ {
+  "tile": 1,
+  "glyph": "glyph/15/0/10/0/3",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 15,
+  "box_page_px": [
+   479.89,
+   1976.18,
+   499.735,
+   1997.4425
+  ],
+  "crop_origin": [
+   363,
+   1908
+  ],
+  "rect_in_tile": [
+   117,
+   68,
+   137,
+   89
+  ]
+ },
+ {
+  "tile": 2,
+  "glyph": "glyph/9/0/1/0/12",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 9,
+  "box_page_px": [
+   470.81640625,
+   560.236328125,
+   490.43359375,
+   604.05859375
+  ],
+  "crop_origin": [
+   354,
+   503
+  ],
+  "rect_in_tile": [
+   117,
+   57,
+   136,
+   101
+  ]
+ },
+ {
+  "tile": 3,
+  "glyph": "glyph/5/1/5/0/5",
+  "cls": "restQuarter",
+  "kind": "cause_population",
+  "page": 5,
+  "box_page_px": [
+   475.52750000000003,
+   3326.9025,
+   483.0875,
+   3377.6175
+  ],
+  "crop_origin": [
+   353,
+   3273
+  ],
+  "rect_in_tile": [
+   123,
+   54,
+   130,
+   105
+  ]
+ },
+ {
+  "tile": 4,
+  "glyph": "glyph/15/1/7/0/1",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 15,
+  "box_page_px": [
+   475.165,
+   3177.9325,
+   496.58500000000004,
+   3208.1725
+  ],
+  "crop_origin": [
+   359,
+   3114
+  ],
+  "rect_in_tile": [
+   116,
+   64,
+   138,
+   94
+  ]
+ },
+ {
+  "tile": 5,
+  "glyph": "glyph/15/1/8/0/3",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 15,
+  "box_page_px": [
+   477.12,
+   3322.52,
+   495.03999999999996,
+   3343.8
+  ],
+  "crop_origin": [
+   360,
+   3254
+  ],
+  "rect_in_tile": [
+   117,
+   69,
+   135,
+   90
+  ]
+ },
+ {
+  "tile": 6,
+  "glyph": "glyph/14/0/3/0/12",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 14,
+  "box_page_px": [
+   432.24,
+   836.44,
+   449.36,
+   874.52
+  ],
+  "crop_origin": [
+   314,
+   776
+  ],
+  "rect_in_tile": [
+   118,
+   60,
+   135,
+   99
+  ]
+ },
+ {
+  "tile": 7,
+  "glyph": "glyph/7/0/3/0/3",
+  "cls": "rest8th",
+  "kind": "control_real_rest_after_the_meter",
+  "page": 7,
+  "box_page_px": [
+   522.2,
+   866.88,
+   541.72,
+   895.04
+  ],
+  "crop_origin": [
+   405,
+   802
+  ],
+  "rect_in_tile": [
+   117,
+   65,
+   137,
+   93
+  ]
+ },
+ {
+  "tile": 8,
+  "glyph": "glyph/8/1/0/0/15",
+  "cls": "rest8th",
+  "kind": "control_real_rest_after_the_meter",
+  "page": 8,
+  "box_page_px": [
+   523.833984375,
+   1955.3720703125,
+   545.1240234375,
+   1984.0888671875
+  ],
+  "crop_origin": [
+   408,
+   1890
+  ],
+  "rect_in_tile": [
+   116,
+   65,
+   137,
+   94
+  ]
+ },
+ {
+  "tile": 9,
+  "glyph": "glyph/4/1/10/0/5",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 4,
+  "box_page_px": [
+   456.84000000000003,
+   3545.48,
+   473.8,
+   3596.36
+  ],
+  "crop_origin": [
+   339,
+   3492
+  ],
+  "rect_in_tile": [
+   118,
+   53,
+   135,
+   104
+  ]
+ },
+ {
+  "tile": 10,
+  "glyph": "glyph/7/0/1/0/6",
+  "cls": "rest8th",
+  "kind": "control_real_rest_after_the_meter",
+  "page": 7,
+  "box_page_px": [
+   524.6925,
+   583.3475,
+   544.2225000000001,
+   615.95
+  ],
+  "crop_origin": [
+   408,
+   520
+  ],
+  "rect_in_tile": [
+   117,
+   63,
+   136,
+   96
+  ]
+ },
+ {
+  "tile": 11,
+  "glyph": "glyph/7/0/10/0/12",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 7,
+  "box_page_px": [
+   461.0625,
+   1866.2025,
+   479.49,
+   1884.7875
+  ],
+  "crop_origin": [
+   344,
+   1796
+  ],
+  "rect_in_tile": [
+   117,
+   70,
+   135,
+   89
+  ]
+ },
+ {
+  "tile": 12,
+  "glyph": "glyph/12/1/3/0/6",
+  "cls": "rest8th",
+  "kind": "cause_population",
+  "page": 12,
+  "box_page_px": [
+   466.162109375,
+   2641.64794921875,
+   485.1181640625,
+   2662.21044921875
+  ],
+  "crop_origin": [
+   349,
+   2573
+  ],
+  "rect_in_tile": [
+   117,
+   69,
+   136,
+   89
+  ]
+ }
+]

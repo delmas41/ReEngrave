@@ -183,7 +183,78 @@ def _slot_centres(xs, space: float):
     return centres, slots
 
 
-def marker_run_members(marks, space: float):
+def _in_fixed_order(marks, space: float, clef):
+    """The markers that stand in the FIXED ORDER at their clef's staff steps -- ROADMAP 2.187b (Sean 2026-10-22: "If there are flats they only show
+    up as Bb, Eb, Ab, Db"; coordinator, from lane 2.197's census: in bar 1 an in-bar natural or sharp just after the signature is admitted into
+    the run and the key abstains `mixed_marker_kinds`, 13 of 131 Brahms staves on pages 0-3).
+
+    Slot k (by x, `_slot_centres`) holds only the k-th accidental of its kind's order, at that step (`key_object.expected_step`, measured against
+    the staff locally at GATHER as the marker's `step`). The run is the longest prefix of slots in which some FLAT or SHARP marker stands at its
+    slot's step (within `ORDER_TOL_STEPS`, either glyph anchor: a whole flat's box centre stands 1.25 steps above its pitch, a crushed bowl's on
+    it); the markers of those slots that match, and nothing else, are the run -- a natural, a marker of the other kind, a marker off its step, and
+    everything past the first slot with no match are NOT (the in-bar accidental the detector said it was). POSITION DECIDES, not the detector's
+    key*/accidental* label.
+
+    ONLY WHERE THE RUN IS MIXED (two or more kinds: today's `mixed_marker_kinds` abstention): a run of one kind is never shortened, because the step
+    measured off a crushed plate's boxes is not tight enough (Litolff: correct runs of 3 read as 1). And only if every excluded marker stands right of
+    every kept one.
+    Returns `(kept, excluded)`. Where it cannot judge -- no clef, a marker with no measured `step` (a record gathered with the flag off), an
+    all-natural run, or no slot matching at all -- it returns `(marks, ())`: today's behaviour, never an invented reading (rule 8)."""
+    from .. import key_object as _ko
+    if not marks or not clef or space <= 0:
+        return tuple(marks), ()
+    if any((m.detail or {}).get("step") is None for m in marks):
+        return tuple(marks), ()
+    if all(str(m.value) == _NATURAL for m in marks):
+        return tuple(marks), ()
+    if len({str(m.value) for m in marks}) < 2:
+        # ONE kind: nothing abstains, and the measured step of a crushed plate's boxes is not tight enough to SHORTEN a run (on Litolff the
+        # filter turned correct runs of 3 into 1: 8 of 92 marker readings). It decides only where the run is MIXED -- the census's case.
+        return tuple(marks), ()
+    ordered = sorted(marks, key=lambda m: float(m.detail.get("x") or 0.0))
+    xs = [float(m.detail.get("x") or 0.0) for m in ordered]
+    centres, _slots = _slot_centres(xs, space)
+    slot_of = []
+    for x in xs:
+        slot_of.append(max(i for i, c in enumerate(centres) if x >= c - 1e-9))
+    kept = []
+    for slot in range(len(centres)):
+        group = [m for m, si in zip(ordered, slot_of) if si == slot]
+        ok = []
+        for m in group:
+            kind = str(m.value)
+            if kind not in (_FLAT, _SHARP):
+                continue
+            e = _ko.expected_step(clef, "b" if kind == _FLAT else "#", slot + 1)
+            if e is None:
+                continue
+            st = float(m.detail["step"])
+            offs = (0.0, _ko.ANCHOR_OFFSET_STEPS["flat"]) if kind == _FLAT else (0.0,)
+            if any(abs(st - (e - o)) <= ORDER_TOL_STEPS for o in offs):
+                ok.append(m)
+        if not ok:
+            break
+        # a slot's survivors must agree on the kind: the first run's kind is the signature's
+        kinds = {str(m.value) for m in kept + ok}
+        if len(kinds) > 1:
+            ok = [m for m in ok if str(m.value) == str(kept[0].value if kept else ok[0].value)]
+        kept += ok
+    if not kept:
+        return tuple(marks), ()
+    # an in-bar accidental stands to the RIGHT of the signature: every excluded marker must lie right of every kept one, or nothing is judged
+    last_kept = max(float(m.detail.get("x") or 0.0) for m in kept)
+    if any(float(m.detail.get("x") or 0.0) < last_kept for m in marks if all(m is not k for k in kept)):
+        return tuple(marks), ()
+    kept_ids = {id(m) for m in kept}
+    return tuple(m for m in marks if id(m) in kept_ids), tuple(m for m in marks if id(m) not in kept_ids)
+
+
+#: how far a marker's centre may stand from its slot's fixed step: the positional fitter's `max_residual` (`key_signature_geometry`), after the
+#: glyph-anchor offset; both anchors are tried for a flat
+ORDER_TOL_STEPS = 0.6
+
+
+def marker_run_members(marks, space: float, clef=None):
     """The `Q.KEYSIG_MARKER` rows the key reader COUNTED as its signature.
 
     ⚠️ ROADMAP 2.7b. `accidental_owner` refuses a glyph that is one of these
@@ -202,6 +273,7 @@ def marker_run_members(marks, space: float):
     """
     if not marks or space <= 0:
         return ()
+    marks, _off = _in_fixed_order(marks, space, clef)
     kinds = {str(m.value) for m in marks}
     if len(kinds) != 1 or kinds == {_NATURAL}:
         return ()
@@ -214,7 +286,7 @@ def marker_run_members(marks, space: float):
                  if end is None or float(m.detail.get("x") or 0.0) < end)
 
 
-def _marker_run(marks, space: float):
+def _marker_run(marks, space: float, clef=None):
     """The detector's key accidentals as `(fifths, reason, detail)`.
 
     ⚠️⚠️ THIS IS THE READING, AND UNTIL 2026-09-23 IT WAS READ BY NOTHING.
@@ -245,9 +317,12 @@ def _marker_run(marks, space: float):
     """
     if not marks:
         return None, "no_markers", {}
+    marks, off_order = _in_fixed_order(marks, space, clef)
     kinds = sorted({str(m.value) for m in marks})
     xs = sorted(float(m.detail.get("x") or 0.0) for m in marks)
     base = {"keysig_marker_ink": len(marks), "keysig_marker_classes": kinds}
+    if off_order:
+        base["keysig_markers_off_the_fixed_order"] = len(off_order)
     if len(kinds) > 1:
         return None, "mixed_marker_kinds", base
     if space <= 0:
@@ -362,7 +437,7 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
 
     marks = tuple(m for m in ev.rows(Q.KEYSIG_MARKER, subject=subject)
                  if not _keysig_marker_glyph_refused(ev, subject, m))
-    fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject))
+    fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject), clef.value)
 
     fits = ev.rows(Q.KEYSIG_CLEF_FIT, subject=subject)
     tpls = ev.rows(Q.KEYSIG_TEMPLATE_FIT, subject=subject)
@@ -487,9 +562,13 @@ def _transposition(ev: Evidence, subject):
     admit different staves, which is the drift `key_consensus`' own docstring
     warns about one module over.
     """
+    return _transposition_of_labels(ev.rows(Q.MARGIN_LABEL, subject=subject))
+
+
+def _transposition_of_labels(labels):
+    """`_transposition` over the staff's `Q.MARGIN_LABEL` rows already read (the key tail's context reads them in its decision's own body)."""
     from ...key_consensus import (MAY_DIFFER_NOT_A_WITNESS,
                                   NO_SIGNATURE_CONVENTION, resolve_label)
-    labels = ev.rows(Q.MARGIN_LABEL, subject=subject)
     if not labels:
         return None, None
     name, offset, known = resolve_label(str(labels[-1].value))
@@ -911,6 +990,93 @@ def expected_fifths(part_key_value, slot, offset, sys_key):
         if written is not None:
             return int(written), "part_majority"
     return None, "nothing_to_compare"
+
+
+def _segment_at(segments, sys_key):
+    """`(index, segment)` of the stretch holding `sys_key`, or `(None, None)`. The lookup `segment_fifths` does, keeping the position."""
+    hit = (None, None)
+    for i, seg in enumerate(segments or ()):
+        start = seg.get("from")
+        if start is None or tuple(start) <= tuple(sys_key):
+            hit = (i, seg)
+        else:
+            break
+    return hit
+
+
+def key_tail_reads(ev: Evidence, subject=None) -> dict:
+    """The four reads the key tail's context is made of, off `ev` (the deciding module declares them in `wants`)."""
+    staff = (ev.subject if subject is None else subject).at(Kind.STAFF)
+    if staff is None:
+        return {"staff": None}
+    return {"staff": staff, "clef": ev.verdict(Q.CLEF, subject=staff), "slot": ev.verdict(Q.SLOT_INDEX, subject=staff),
+            "part_key": ev.verdict(Q.PART_KEY, subject=ev.subject.at(Kind.DOCUMENT)), "labels": ev.rows(Q.MARGIN_LABEL, subject=staff)}
+
+
+def key_tail_context(ev: Evidence, subject=None, *, system_count: Optional[int] = None, read_shapes=()):
+    """`key_tail_context_from(key_tail_reads(ev))` -- the form a caller with an `Evidence` that declares the four quantities uses."""
+    return key_tail_context_from(key_tail_reads(ev, subject), system_count=system_count, read_shapes=read_shapes)
+
+
+def key_tail_context_from(reads: dict, *, system_count: Optional[int] = None, read_shapes=()):
+    """What the KEY TAIL judge (`key_object.judge_tail_box`) needs to know of ONE staff, from ADJUDICATE verdicts and the key claim alone --
+    ROADMAP 2.187b. Returns `{"written", "previous", "clef", "source"}`.
+
+    `written`: the staff's WRITTEN fifths here (negative = flats), else None. It is the system's CONCERT key -- the COUNT the staves agreed on
+    (`system_count`, `key_object.find_object`) with the sign of the document's key stretch here (else of the staff's own READ slots' shapes,
+    `read_shapes`: only flats vote, two or more and no sharp) -- plus THIS staff's transposition, READ off its margin label or its part's (`_transposition` / `effective_offset`), never
+    defaulted. `source`: `system_count+read_transposition`; `no_signature_convention` (natural brass, timpani print none: key_consensus [C81],
+    a zero only); `unknown` = no READ transposition, no count or no sign: the tail keeps today's NARROWED reach.
+    `previous`: the same one system before where the document's key stretch CHANGES at this system (the cancelling naturals precede the new
+    accidentals), else `written` (no change). `clef`: the staff's CLEF verdict value or None.
+
+    ⚠️ NOT `expected_fifths`' part-majority tier: a part's majority is made of this very staff's readings on other systems, and on a crushed plate
+    those miss the flat boxed as a rest -- measured on Litolff, 8 of 13 flats left standing had a part-majority written count one or two short on
+    a concert-pitch staff (Fl., Ob., Fag., Bassi, violins). Two readings of the same missed ink fall together (CLAUDE §4).
+    ⚠️ THE TRANSPOSITION IS READ, NEVER DEFAULTED: an unlabelled clarinet is NOT the B-flat one here. Decides nothing; reads only verdicts that
+    precede the notehead decision in `adjudicate.ORDER` (`Q.CLEF`, `Q.SLOT_INDEX`, `Q.PART_KEY`) and the staff's `Q.MARGIN_LABEL` rows."""
+    from ...key_consensus import NO_SIGNATURE_CONVENTION
+    staff = reads.get("staff")
+    out = {"written": None, "previous": None, "clef": None, "source": "unknown"}
+    if staff is None:
+        return out
+    clef = reads.get("clef")
+    if clef is not None and isinstance(clef.value, str):
+        out["clef"] = clef.value
+    slot = reads.get("slot")
+    slot = int(slot.value) if slot is not None and isinstance(slot.value, int) and slot.outcome is Outcome.DECIDED else None
+    part_key = reads.get("part_key")
+    pk = part_key.value if part_key is not None and part_key.value else None
+    name, offset = _transposition_of_labels(reads.get("labels"))
+    if offset is None and pk is not None:
+        offset = effective_offset(pk, slot, None)
+    sys_key = (staff.page or 0, staff.system or 0)
+    if name in NO_SIGNATURE_CONVENTION:
+        out["written"], out["previous"], out["source"] = 0, 0, "no_signature_convention"
+        return out
+    if offset is None or not system_count:
+        out["why"] = "no_read_transposition" if offset is None else "no_system_count"
+        return out
+    # the sign of the concert key: the document's stretch here, else what the staff's own READ slots look like
+    sign = 0
+    segs = (pk.get("document") if pk else None) or ()
+    i, seg = _segment_at(segs, sys_key)
+    if seg is not None and seg.get("fifths"):
+        sign = -1 if int(seg["fifths"]) < 0 else 1
+    if not sign:
+        # only FLATS vote, and two of them with no sharp: a crushed flat's bowl reads `sharp` (9 of 10 measured), so a sharp reading is no witness
+        if sum(1 for sh in read_shapes if sh == "flat") >= 2 and not any(sh == "sharp" for sh in read_shapes):
+            sign = -1
+    if not sign:
+        out["why"] = "no_sign"
+        return out
+    out["written"] = sign * int(system_count) + int(offset)
+    out["source"] = "system_count+read_transposition"
+    out["previous"] = out["written"]
+    if i is not None and i > 0 and seg.get("from") is not None and tuple(seg["from"]) == tuple(sys_key):
+        before = segs[i - 1].get("fifths")
+        out["previous"] = None if before is None else int(before) + int(offset)
+    return out
 
 
 def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
