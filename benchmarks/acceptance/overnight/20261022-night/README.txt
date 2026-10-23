@@ -23,3 +23,4 @@ Surprising / worse:
   - Fewer accidentals DECIDED (664 -> 570, 4439 -> 3504) yet MORE written (+61, +558): the glyphs dropped are duplicates of one ink (heads_contradicted 74 -> 3, 740 -> 24), so the head that was contradicted (writes nothing) now gets one answer. That is the intended effect; but 222 + 1182 glyphs now abstain `one_ink_absorbed` and 190 + 693 `owned_by_another_staff` -- no Sean tile has checked either.
   - Pitches altered by the key fell (-91, -624) and carried_in_bar rose (+15, +149): bars that had a contradicted accidental now carry a printed one forward. Not checked against the print.
   - Wall: Brahms 9 min faster, Litolff 1 min slower; no change worth reading into.
+Fix e040a950f: accidental census now counts on_a_rest (unaccounted 0 on Litolff record; was 14 Litolff / 176 Brahms).
