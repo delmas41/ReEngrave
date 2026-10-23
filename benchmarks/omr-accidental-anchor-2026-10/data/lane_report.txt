@@ -1,0 +1,17 @@
+LANE REPORT  OMR_ACCIDENTAL_ANCHOR_UNCLASSED (OFF=0 ON=1)  --from adjudicate
+  OMR_ACCIDENTAL_ANCHOR_UNCLASSED: read in staged/accidental_anchor.py, staged/adjudicators/ownership.py, staged/export.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5419 notes+rests OFF, 5419 ON, 5419 paired)
+  file:   accidentals +5 | pitches ~1 | blue marks +2
+  red bars 266 -> 266 | notes not written 2252 -> 2252
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 8958
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6512 notes+rests OFF, 6512 ON, 6512 paired)
+  file:   accidentals +13 | pitches ~6 | blue marks +12
+  red bars 166 -> 166 | notes not written 3209 -> 3209
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 2 of 12324 (e.g. glyph/14/0/12/8/0, glyph/14/0/12/8/6)
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 652 s

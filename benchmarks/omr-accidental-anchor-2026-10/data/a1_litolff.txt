@@ -1,0 +1,62 @@
+control (option class == live verdict): {'control_ok': 437, 'control_FAIL': 2}
+
+ALREADY DECIDED today -> option says:
+   ('centre', 'none') 12
+   ('centre', 'same head') 260
+   ('fallback_centre', 'same head') 272
+   ('final', 'same head') 272
+   ('shape_class', 'none') 2
+   ('shape_class', 'same head') 230
+   ('shape_class', 'unread') 40
+   ('union_offered', 'disagree') 26
+   ('union_offered', 'same head') 246
+
+no_candidate today -> option says:
+   ('centre', 'RECOVERED') 14
+   ('centre', 'none') 153
+   ('fallback_centre', 'RECOVERED') 15
+   ('fallback_centre', 'none') 152
+   ('final', 'RECOVERED') 11
+   ('final', 'none') 156
+   ('shape_class', 'RECOVERED') 9
+   ('shape_class', 'none') 126
+   ('shape_class', 'unread') 32
+   ('union_offered', 'disagree') 5
+   ('union_offered', 'none') 162
+
+no_candidate, class accidentalFlat:
+   ('centre', 'RECOVERED') 12
+   ('centre', 'none') 82
+   ('fallback_centre', 'RECOVERED') 13
+   ('fallback_centre', 'none') 81
+   ('final', 'RECOVERED') 10
+   ('final', 'none') 84
+   ('shape_class', 'RECOVERED') 8
+   ('shape_class', 'none') 81
+   ('shape_class', 'unread') 5
+   ('union_offered', 'disagree') 2
+   ('union_offered', 'none') 92
+
+no_candidate, class accidentalSharp:
+   ('centre', 'RECOVERED') 1
+   ('centre', 'none') 18
+   ('fallback_centre', 'RECOVERED') 1
+   ('fallback_centre', 'none') 18
+   ('final', 'RECOVERED') 1
+   ('final', 'none') 18
+   ('shape_class', 'none') 18
+   ('shape_class', 'unread') 1
+   ('union_offered', 'disagree') 1
+   ('union_offered', 'none') 18
+
+no_candidate, class accidentalNatural:
+   ('centre', 'RECOVERED') 1
+   ('centre', 'none') 23
+   ('fallback_centre', 'RECOVERED') 1
+   ('fallback_centre', 'none') 23
+   ('final', 'none') 24
+   ('shape_class', 'RECOVERED') 1
+   ('shape_class', 'none') 13
+   ('shape_class', 'unread') 10
+   ('union_offered', 'disagree') 2
+   ('union_offered', 'none') 22
