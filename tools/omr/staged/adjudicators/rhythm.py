@@ -56,6 +56,7 @@ from . import structure as _structure
 from . import ownership as _own
 from . import aug_dot_join as _aug_join
 from .. import bar_length as _BL
+from .. import beam_strokes as _BS
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -3918,6 +3919,109 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
     return False
 
 
+#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
+#: A head's beam levels from the STROKE MAP (`Q.STROKE`, `Q.GLYPH_STROKES`; they exist only under `OMR_STROKE_MAP`): the detector's beam boxes
+#: are read against the strokes they stand on, and the horizontal strokes touching the head's own stem at its tip are counted. A cell with no
+#: stroke map, a box with no `Q.GLYPH_STROKES` row, a stem the map holds no stroke for: the block says nothing and the head is read as today
+#: (rule 8). An allow-list: an empty value or a typo must not switch a document onto an unpriced ADJUDICATE change.
+BEAMS_FROM_STROKES_ENV = "OMR_BEAMS_FROM_STROKES"
+
+
+def beams_from_strokes_enabled() -> bool:
+    return os.environ.get(BEAMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _stroke_views(ev: Evidence, cell) -> list:
+    """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none."""
+    from ..record import STROKE_GLYPH_BASE
+    out = []
+    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        g = getattr(r.subject, "glyph", None)
+        d = r.detail or {}
+        box = d.get("stroke_box")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
+            continue
+        out.append(_BS.StrokeView(
+            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
+            sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
+            touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
+    return out
+
+
+def _beam_box_strokes(ev: Evidence, cell, detector_rows) -> Dict[str, Tuple[list, str]]:
+    """`{detector beam row id: (stroke ordinals, the Q.GLYPH_STROKES row id)}` for the detector beam rows whose box has a `Q.GLYPH_STROKES`
+    row. The link is the box itself: the cell's `beam`-class `Q.GLYPH_BOX` with the same x, y, w, h is the glyph that row was filed on."""
+    by_box: Dict[Tuple[int, ...], list] = {}
+    for g in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        v = g.value
+        if isinstance(v, (list, tuple)) and len(v) >= 5 and v[0] == "beam":
+            by_box.setdefault(tuple(int(round(float(x))) for x in v[1:5]), []).append(g.subject)
+    out: Dict[str, Tuple[list, str]] = {}
+    for b in detector_rows:
+        bb = _xywh(b)
+        if bb is None:
+            continue
+        for sub in by_box.get(tuple(int(round(x)) for x in bb), ()):
+            rows = ev.rows(Q.GLYPH_STROKES, subject=sub)
+            if rows and isinstance(rows[-1].value, (list, tuple)):
+                out[b.id] = ([int(o) for o in rows[-1].value], rows[-1].id)
+                break
+    return out
+
+
+def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.202. What the stroke map says about THIS head's beams, as facts for `adjudicate_duration` to act on. Decides nothing.
+
+    Returns `None` where the map cannot speak (no strokes in the cell, no stem stroke for this head's stem): the head is read as today.
+    Otherwise `{"removed_ids": detector beam boxes that stand on no beam-shaped stroke of this head, "flag_levels": hooks at this stem's tip
+    (a flag, Sean 2026-10-22), "tip_levels": beam levels the strokes at the tip count, "boxes": per-box support with margins, ...}`."""
+    views = _stroke_views(ev, cell)
+    if not views or side not in ("up", "down") or head_box is None or not own_stems:
+        return None
+    role = _BS.roles(views)
+    stem_sv = None
+    for st in _voice_stems(own_stems, head_box)[side]:
+        b = _xywh(st)
+        stem_sv = _BS.find_stem_stroke(views, b) if b is not None else None
+        if stem_sv is not None:
+            break
+    if stem_sv is None:
+        return None
+    tip = _BS.tip_reading(views, role, stem_sv, side)
+    yolo = [b for b in kept if b.reader == READERS.DETECTOR]
+    linked = _beam_box_strokes(ev, cell, yolo)
+    boxes, removed, flag_rows = [], [], []
+    for b in yolo:
+        if b.id not in linked:
+            boxes.append({"row": b.id, "support": "unlinked"})        # no Q.GLYPH_STROKES row for this box: cannot tell, left as it was
+            continue
+        under, grow = linked[b.id]
+        sup = _BS.box_support(under, role)
+        sup["row"], sup["glyph_strokes_row"] = b.id, grow
+        if sup["support"] == "hook":
+            mine = [h for h in sup["hooks"] if h in tip["hooks_all"]]
+            if mine and not tip["stem_beamed"]:
+                sup["support"] = "flag"
+                sup["stroke_rows"] = [next(v.row_id for v in views if v.ordinal == h) for h in mine]
+                flag_rows.extend(sup["stroke_rows"])
+                removed.append(b.id)
+            else:
+                sup["support"] = "unsupported"
+                sup["reason"] = "hook_on_a_beamed_stem" if mine else "hook_on_another_stem"
+                removed.append(b.id)
+        elif sup["support"] == "unsupported":
+            removed.append(b.id)
+        boxes.append(sup)
+    # every stroke that moved the reading is a row this verdict used
+    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
+    rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
+    return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
+            "tip_levels": len(tip["beams"]), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
+            "boxes": boxes, "rows": rows, "settled": None}
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -3966,7 +4070,10 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
                    # positions (`_attached_dots`).
                    Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
                    # ROADMAP 2.170 addition 2: a stroke on a traced system arc is not a beam.
-                   Q.SYSTEM_ARC),
+                   Q.SYSTEM_ARC,
+                   # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
+                   # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
+                   Q.STROKE, Q.GLYPH_STROKES),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -4014,7 +4121,9 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
-           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC),
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
+           # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
+           Q.STROKE, Q.GLYPH_STROKES),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -4432,6 +4541,48 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             else:
                 possible = max(possible, tip["count"])
                 stem_levels["settled"] = "narrowed_one_witness"
+    # ⚠️⚠️ ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map; Sean 2026-10-22: *"if there is a flag it
+    # should be treated as a flag - it is the more distinctive symbol"*). THIS HEAD'S BEAMS FROM THE STROKE MAP, after every old reader above
+    # has spoken and BEFORE anything is decided from them. (1) A detector beam box that stands on NO beam-shaped stroke (empty paper, a stem,
+    # a thin line, a one-stem stub) NARROWS: it leaves the count, its level stays as a candidate (`possible`), it never decides. (2) A box that
+    # stands on a short hook touching THIS head's stem, a stem that carries no spanning beam, is a FLAG: the hook count is filed as the flag
+    # levels (below) instead of a beam level. (3) The beam-shaped strokes touching this stem at its tip are counted: more than the readers
+    # counted -> a CANDIDATE (`possible`), never decided (rule 6: nothing is invented); fewer -> a DISAGREEMENT the strokes cannot settle:
+    # NARROWED between the two, never an argmax (rule 8). Where they agree nothing here changes. With the flag off none of this runs and
+    # the verdict is byte-identical. The cut-offs (`beam_strokes.py`) are measured on the stroke fields (FINDINGS 2.202 §1), one plate only,
+    # so they narrow; the hook-as-flag decision is Sean's ruling.
+    sb = None
+    sb_detail = None
+    if (beams_from_strokes_enabled() and not hollow and voice_levels is None and own_stems and head_box is not None
+            and side in ("up", "down")):
+        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side)
+        if sb is not None:
+            used.extend(sb["rows"])
+            before = [certain, possible]
+            settled = []
+            if sb["removed_ids"]:
+                gone = set(sb["removed_ids"])
+                used.extend(sb["removed_ids"])
+                kept = [b for b in kept if b.id not in gone]
+                joined, _sb_att = _stem_joined(kept, stems, head_box)
+                join_witness, sb_wit_used = _beam_join_witness(ev, cell, kept, own_stems, side)
+                used.extend(r.id for r in sb_wit_used)
+                c2, p2, cc2 = _beam_levels(kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
+                possible = max(possible, p2, certain)
+                certain, certain_conflicts = c2, cc2
+                settled.append("box_flag" if sb["flag_levels"] else "box_narrowed")
+            if not certain_conflicts:
+                if sb["tip_levels"] > certain:
+                    possible = max(possible, sb["tip_levels"])
+                    settled.append("stroke_candidate")
+                elif sb["tip_levels"] < certain:
+                    possible = max(possible, certain)
+                    certain = sb["tip_levels"]
+                    settled.append("disagree_narrowed")
+            sb["settled"] = ",".join(settled) if settled else "agrees"
+            sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
+                         "flag_levels": sb["flag_levels"], "tip": sb["tip"],
+                         "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -4484,6 +4635,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # `glyph/3/0/7/3/5`, both reached through the join tolerance) the max is
     # an argmax over a disagreement. A box an existing verdict refuses never
     # got here (`_attached_flags` skips it), so it does not vote.
+    # ROADMAP 2.202: the hook(s) the stroke map found at this stem's tip under a box the detector called a beam are the FLAG levels (Sean
+    # 2026-10-22), only where no flag box was attached and no beam level stands; the hooks' stroke rows are what the verdict used.
+    sb_flag_rows: tuple = ()
+    if sb is not None and sb["flag_levels"] and not flag_levels and not levels:
+        flag_levels = sb["flag_levels"]
+        sb_flag_rows = tuple(sb["flag_rows"])
     flag_level_votes: Dict[int, int] = {}
     for f in flags:
         lv = _flag_levels_for(f.value)
@@ -4494,6 +4651,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         # A flag says the same thing a beam does for an unbeamed note.
         levels = flag_levels
         used.extend(r.id for r in flags)
+        used.extend(sb_flag_rows)
         beam_evidence = "flag"
         flags_disagree = len(flag_level_votes) > 1
     beats = base / (2 ** levels) if levels else base
@@ -4542,6 +4700,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
+              **({"beams_from_strokes": sb_detail} if sb_detail else {}),
               **({"beam_stem_levels": stem_levels} if stem_levels else {}),
               "beams_not_by_ink": len(ink_dropped),
               "beams_not_by_ink_why": {
