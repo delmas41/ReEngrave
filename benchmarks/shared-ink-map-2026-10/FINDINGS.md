@@ -172,16 +172,19 @@ Slimmed: dropped `area_sp2` (= fill x box area), `component_n_strokes` (count of
 | Litolff p2 / p4 | 6,816 / 6,625 | 4.81 / 4.67 MB | 3.57 / 3.48 MB (-25.7% / -25.4%) |
 | Brahms p4 / p5 | 9,560 / 9,939 | 6.71 / 7.00 MB | 4.99 / 5.22 MB (-25.7% / -25.4%) |
 Per page: Litolff 4.74 -> 3.53 MB, Brahms 6.85 -> 5.10 MB. Check: the real ON Litolff record holds 13,441 stroke rows = 7.04 MB (3.52 MB a page), the live NEW figure. `Q.GLYPH_STROKES`: 5,774 rows, 1.35 MB for
-two Litolff pages (0.67 MB a page). Still ~520 bytes a row; what is left is the envelope and the named fields -- pooling per cell is plan step 9. The file-level number after the `subjects` fix: NOT MEASURED YET (see Open).
+two Litolff pages (0.67 MB a page). Still ~520 bytes a row; what is left is the envelope and the named fields -- pooling per cell is plan step 9. File-level numbers in section 2.
 
-## 2. Byte-identical check (PYTHONHASHSEED=0, detector cache, `--musicxml`, pages Litolff 2,4)
-Litolff, flag OFF vs ON: the MusicXML and its coverage JSON are byte-identical (`cmp`), with the code BEFORE the `subjects` fix (record: 44,393 -> 63,654 observations, 46 `ink` claims, 136 vs 90
-`claimed_area` rows). Brahms pages 4,5 OFF finished; its ON arm and the OFF-vs-OFF re-gather were stopped by the coordinator for Sean's overnight re-gather. Open: Litolff ON re-run on the final
-code, Brahms ON, Brahms OFF2 (the one Surya word of 2.195). Not claimed.
+## 2. Byte-identical check (final code, main merged; PYTHONHASHSEED=0, detector cache, `--musicxml`; all arms re-gathered after the merge, one at a time)
+Litolff pages 2,4 and Brahms pages 4,5, flag OFF vs ON: the MusicXML is byte-identical on both (`cmp`), and so is Litolff's coverage JSON. Record-level (`byte_control.py`): Brahms ON differs from OFF only by
+rows the flag files: 9,282 `glyph_strokes` + 81 `claimed_area` (the `ink` claims) observations and 1 `claimed_area` abstention (a clef box on no stroke); 19,499 stroke rows; every other row identical.
+**File bytes a page, whole record (the real measure)**: Litolff 137.40 -> 146.01 MB for 2 pages = **+4.3 MB a page** (2.195: +9.5); Brahms 373.62 -> 386.56 MB = **+6.5 MB a page** (2.195: +12.4).
+`evaluation` / `inference` sections: identical to OFF (the `Log.subjects` fix); verdicts +0.17 MB on Litolff (not traced, small).
+**OFF-vs-OFF control (Brahms 4,5, two gathers of the same code, flag off): 0 rows differ and the MusicXML is byte-identical.** So 2.195's one Surya/Tesseract word did NOT reappear here: it neither
+shows the swing is reader noise nor that it is the flag's -- this pair of runs is clean, and the ON-vs-OFF pair is clean too. Said plainly: the question is not settled by this, only not reproduced.
 
 ## 3. Sanity count: 2.185's same-cell different-class doubles as shared stroke sets (`glyph_strokes_census.py`, Litolff pages 2,4 ON record)
 199 pairs (same cell, different class, IoU >= 0.5): **167 stand on the same stroke set**, 28 overlap without being equal, 4 have an empty list. Examples: a head and a whole rest on one blob,
-keyFlat/keySharp on three strokes, dynamicF/dynamicZ. Control: 10,559 same-cell different-class pairs with IoU 0 and strokes: none shares a stroke. Brahms: not run (Open).
+keyFlat/keySharp on three strokes, dynamicF/dynamicZ. Control: 10,559 same-cell different-class pairs with IoU 0 and strokes: none shares a stroke. Brahms pages 4,5: 459 pairs, **382 same stroke set**, 68 overlap not equal, 9 empty list; control 54,560 IoU-0 pairs, none shares a stroke.
 
 ## 4. `check`
 `python3 -m tools.omr.staged.check`: TOTAL 203, status ok. By design: reach +1 (`Q.GLYPH_STROKES` unread), wiring +2 (`Q.GLYPH_STROKES.shares`, `Q.CLAIMED_AREA.shares`). wiring -5 stale entries removed (`area_sp2`,
