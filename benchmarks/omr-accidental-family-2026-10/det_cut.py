@@ -14,8 +14,8 @@ ACC = ("accidental", "key")
 
 
 def is_acc(n):
-    n = n.lower()
-    return n.startswith("accidental") or n.startswith("key")
+    from tools.omr.staged import accidental_family as AF
+    return AF.is_family_class(n)
 
 
 def analyse(plate, page, tiles, det):
