@@ -597,6 +597,10 @@ NOT_A_STAGE = frozenset({
     # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
     # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.
     "accidental_shape.py",
+    # ROADMAP 2.201. `accidental_family.py` is PURE (strokes, a box and a staff space in; the mark's own extent, its type and the guess it carries out; the
+    # flag): it files no row and names no quantity -- `gather.gather_accidental_family` sets it on the detection, `gather_accidental_positions` files it as
+    # `detail.family` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` and `export.one_ink_guess_of` consume it.
+    "accidental_family.py",
 })
 
 

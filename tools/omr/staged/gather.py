@@ -12813,6 +12813,21 @@ def _marker_geometry(pws: Any, cells: Sequence[Any], staff_index: int):
     return c, [float(v) for v in st.line_ys], binary
 
 
+def _family_marker_shape(d: Any) -> Optional[str]:
+    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; a box carries `accidental_family` only then): a key marker's SHAPE -- the TYPE its own strokes read,
+    else the detector's class shape (exactly what the marker gatherer always took). The key*/accidental* label stays on the row as `detector_class`."""
+    fam = getattr(d, "accidental_family", None)
+    if fam is not None and fam["type"] in _acc_family.TYPES:
+        return _acc_family.KEY_SHAPE_OF_TYPE[fam["type"]]
+    return d.smufl_name if d.smufl_name in _KEYSIG_CLASSES else _ACCIDENTAL_SHAPE.get(d.smufl_name)
+
+
+def _family_in_bar(d: Any) -> bool:
+    """ROADMAP 2.201: a mark standing directly left of a notehead at its own height (`head_right`) is IN-BAR by position, not a signature member."""
+    fam = getattr(d, "accidental_family", None)
+    return fam is not None and fam.get("head_right") is not None
+
+
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                            key, geometry=None) -> None:
     """The DETECTOR's accidental SHAPES in the staff's header, with its own
@@ -12865,30 +12880,20 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
     # ⚠️ ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; a box carries `accidental_family` only then): the marker's SHAPE is the TYPE its own strokes read
     # (the detector's key*/accidental* label is a recorded fact and the role claim it always was), and a mark standing directly left of a notehead at its
     # own height (`head_right`) is IN-BAR by position, not a member of the signature.
-    def _shape_of(d):
-        fam = getattr(d, "accidental_family", None)
-        if fam is not None and fam["type"] in _acc_family.TYPES:
-            return _acc_family.KEY_SHAPE_OF_TYPE[fam["type"]]
-        return d.smufl_name if d.smufl_name in _KEYSIG_CLASSES else _ACCIDENTAL_SHAPE.get(d.smufl_name)
-
-    def _in_bar_by_position(d):
-        fam = getattr(d, "accidental_family", None)
-        return fam is not None and fam.get("head_right") is not None
-
-    key_shapes = {_shape_of(d) for d in here
-                  if d.smufl_name in _KEYSIG_CLASSES and not _in_bar_by_position(d)}
+    key_shapes = {_family_marker_shape(d) for d in here
+                  if d.smufl_name in _KEYSIG_CLASSES and not _family_in_bar(d)}
     marks = []
     for d in here:
-        if _in_bar_by_position(d):
+        if _family_in_bar(d):
             continue
         if d.smufl_name in _KEYSIG_CLASSES:
-            marks.append((d, _shape_of(d), "key"))
+            marks.append((d, _family_marker_shape(d), "key"))
             continue
         if d.smufl_name not in _ACCIDENTAL_SHAPE:
             continue
         if limit <= 0 or float(d.x_canonical) > limit:
             continue
-        shape = _shape_of(d)
+        shape = _family_marker_shape(d)
         if key_shapes and shape not in key_shapes:
             continue
         marks.append((d, shape, "accidental"))
