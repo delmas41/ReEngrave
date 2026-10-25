@@ -1,0 +1,57 @@
+{
+ "lane": "2.201",
+ "date": "2026-10-25",
+ "question": "Which accidental is printed directly in front of the note at the orange box (or in the box): sharp, flat, natural, or none?",
+ "verbatim": "1. Nat 2. Nat 3. Flat 4. Nat 5. Sharp 6. Nat 7. Flat 8. Nat 9. Sharp 10-12 Nat",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "natural"
+  },
+  {
+   "tile": 2,
+   "sean": "natural"
+  },
+  {
+   "tile": 3,
+   "sean": "flat"
+  },
+  {
+   "tile": 4,
+   "sean": "natural"
+  },
+  {
+   "tile": 5,
+   "sean": "sharp"
+  },
+  {
+   "tile": 6,
+   "sean": "natural"
+  },
+  {
+   "tile": 7,
+   "sean": "flat"
+  },
+  {
+   "tile": 8,
+   "sean": "natural"
+  },
+  {
+   "tile": 9,
+   "sean": "sharp"
+  },
+  {
+   "tile": 10,
+   "sean": "natural"
+  },
+  {
+   "tile": 11,
+   "sean": "natural"
+  },
+  {
+   "tile": 12,
+   "sean": "natural"
+  }
+ ],
+ "summary": "cases 9: ON right 6 (1, 4, 5, 8, 10, 12); wrong 3: tile 2 (Litolff natural, OFF sharp, ON flat -- both wrong), tile 9 (Brahms sharp, OFF right, ON flat -- a regression), tile 11 (natural, OFF flat, ON none -- both wrong); OFF right on 1 of 9 (tile 9); controls 3/3"
+}
