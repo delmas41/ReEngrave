@@ -93,6 +93,26 @@ class FamilyType(unittest.TestCase):
         self.assertIn(_row(blob)[0]["type"], ("unclear", "unread"))
 
 
+class FamilyTiles2_201(unittest.TestCase):
+    """Sean's 2.201 tiles 9 and 11: the first fix came from them."""
+
+    def test_a_sharp_whose_stem_is_fused_to_a_mark_above_is_unclear_not_a_flat(self):
+        def fused(img):
+            _sharp(img)
+            _stem(img, 460, 150, 400)               # the right stem runs on up into another mark: one 5.5-space stroke
+        fam = _row(fused)[0]
+        self.assertEqual(fam["type"], "unclear", fam["features"])
+        self.assertEqual(fam["why"], "second_stem_fused_or_owned")
+
+    def test_CONTROL_the_same_sharp_without_the_fused_stem_reads_sharp(self):
+        self.assertEqual(_row(_sharp)[0]["type"], "sharp")
+
+    def test_two_stems_with_the_right_one_far_higher_are_not_a_sharp(self):
+        fam = _row(lambda img: _sharp(img, right_drop=-int(1.2 * SP)))[0]
+        self.assertEqual(fam["type"], "unclear", fam["features"])
+        self.assertEqual(fam["why"], "right_stem_much_higher")
+
+
 class FamilyExtent(unittest.TestCase):
     def _cut(self, ink):                       # the box stops short: keeps the top 2.0 spaces of the 3.2 the natural is tall
         return (ink[0], ink[1], ink[2], ink[1] + 2.0 * SP)

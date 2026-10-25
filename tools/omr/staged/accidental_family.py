@@ -51,6 +51,9 @@ STEM_GAP_MIN_SP = 0.3
 NATURAL_STAGGER_MIN_SP = 0.45
 #: SHARP: neither end staggers by more than this; measured -0.19 .. 0.06. Between the two cut-offs the stems are `unclear`.
 SHARP_STAGGER_MAX_SP = 0.2
+#: ... and neither end of a sharp has its right stem HIGHER than the left's by more than this (measured -0.19 at the most; tile 11 read -1.2 and -1.4: two
+#: neighbouring marks, not one sharp).
+SHARP_STAGGER_REVERSE_MAX_SP = 0.45
 #: ... and a natural's other end is never HIGHER than the left's by more than this (a mirrored natural is not a natural).
 STAGGER_REVERSE_MAX_SP = 0.25
 #: FLAT: the one stem stands in the left part of the mark and its bowl (a piece to its right) lies in its lower part.
@@ -131,6 +134,12 @@ def members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Seq
             refused.append(i)
             continue
         cand.append(i)
+    # a COVERED vertical stroke longer than any accidental stem (a sharp's stem fused to a note stem or to the mark above it: tile 9 of the 2.201 tiles) is
+    # not the mark's to measure, and it must not simply vanish -- the type is then unclear, not whatever the remaining stem and bars look like
+    for i in members:
+        st = strokes[i]
+        if st.kind == "vertical" and st.length_sp > STEM_MAX_SP:
+            refused.append(i)
     ext = [x0, y0, x1, y1]
     # a covered stroke that runs past the box (a share of 0.5-0.95) also grows it
     for i in list(members):
@@ -221,8 +230,10 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
         return {**feat, "type": "unclear", "why": "stems_too_close", "margin": None}
     if hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "natural", "why": "right_stem_lower", "margin": round(hi - NATURAL_STAGGER_MIN_SP, 3)}
-    if hi <= SHARP_STAGGER_MAX_SP:
+    if hi <= SHARP_STAGGER_MAX_SP and lo >= -SHARP_STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "sharp", "why": "stems_level", "margin": round(SHARP_STAGGER_MAX_SP - hi, 3)}
+    if hi <= SHARP_STAGGER_MAX_SP:
+        return {**feat, "type": "unclear", "why": "right_stem_much_higher", "margin": round(lo + SHARP_STAGGER_REVERSE_MAX_SP, 3)}
     return {**feat, "type": "unclear", "why": "stagger_between_cutoffs",
             "margin": round(-min(abs(hi - NATURAL_STAGGER_MIN_SP), abs(hi - SHARP_STAGGER_MAX_SP)), 3)}
 
