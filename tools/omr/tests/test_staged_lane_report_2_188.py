@@ -134,13 +134,14 @@ class TestJudged(unittest.TestCase):
 class TestTilesAndSample(unittest.TestCase):
     def changes(self):
         def mk(kind, i):
-            return dict(kind=kind, side="gained", page=1, cx=1, cy=1, box=[0, 0, 5, 5], rg="g%s%d" % (kind, i), value="v")
+            x = 100 * i + 1000 * ("rest", "dot", "accidental").index(kind)       # distinct boxes: the same-ink dedup (2.187b) must not merge fixtures
+            return dict(kind=kind, side="gained", page=1, cx=1, cy=1, box=[x, 0, x + 5, 5], rg="g%s%d" % (kind, i), value="v")
         return {"litolff": [mk("rest", i) for i in range(10)] + [mk("dot", i) for i in range(10)],
                 "brahms": [mk("accidental", i) for i in range(10)]}
 
     def same(self):
-        return {"litolff": [dict(kind=k, page=1, cx=1, cy=1, box=[0, 0, 5, 5], rg="s%s%d" % (k, i), value="v")
-                            for k in ("rest", "dot", "accidental") for i in range(6)], "brahms": []}
+        return {"litolff": [dict(kind=k, page=1, cx=1, cy=1, box=[100 * i + 1000 * j, 50, 100 * i + 1000 * j + 5, 55], rg="s%s%d" % (k, i), value="v")
+                            for j, k in enumerate(("rest", "dot", "accidental")) for i in range(6)], "brahms": []}
 
     def test_nine_cases_stratified_and_three_controls(self):
         items = L.pick_tiles(self.changes(), self.same(), seed=7)
@@ -154,7 +155,7 @@ class TestTilesAndSample(unittest.TestCase):
         self.assertNotEqual([i["rg"] for i in L.pick_tiles(self.changes(), self.same(), seed=8)], [i["rg"] for i in items])
 
     def test_tiles_follow_the_counts_and_a_tenth_gets_one(self):
-        mk = lambda kind, i: dict(kind=kind, side="gained", page=1, cx=1, cy=1, box=[0, 0, 5, 5], rg="g%s%d" % (kind, i), value="v")
+        mk = lambda kind, i: dict(kind=kind, side="gained", page=1, cx=1, cy=1, box=[100 * i + 10000 * ("accidental", "rest", "slur").index(kind), 0, 100 * i + 10000 * ("accidental", "rest", "slur").index(kind) + 5, 5], rg="g%s%d" % (kind, i), value="v")
         big = {"brahms": [mk("accidental", i) for i in range(80)] + [mk("rest", i) for i in range(10)] + [mk("slur", i) for i in range(4)]}
         n = lambda ch: collections.Counter(i["kind"] for i in L.pick_tiles(ch, self.same(), seed=3) if i["role"] == "case")
         c = n(big)

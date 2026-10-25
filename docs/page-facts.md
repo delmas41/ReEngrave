@@ -100,6 +100,12 @@ machine-readable form.
 
 ## 3. Geometry and ownership
 
+- **An accidental belongs to a note of the staff it stands on** (scope:
+  general; Sean, 2026-10-23: "Every accidental belongs to the same note that
+  the staff belongs to"): the note to its right on that staff, never a note
+  of the staff above or below. A neighbouring staff's padded crop boxing the
+  same ink is a copy, not a second owner (ROADMAP 2.186, 2.201).
+
 - **The measure cell is padded 4 spaces (6 where the neighbour is far)** and
   on a conductor's page that reaches the next staff's ink; cross-staff
   ownership is a CONTEST resolved by `glyph_owner` (ladder completeness,

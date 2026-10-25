@@ -732,6 +732,20 @@ def tile_quota(sizes: Dict[str, int], n: int, floor_share: float = 0.10) -> Dict
     return out
 
 
+def _same_ink(a: dict, b: dict) -> bool:
+    """Two tile items on ONE page whose boxes overlap (a centre of one inside the other, or IoU > 0.3) show the same ink: 2.187b, after two tiles
+    of one note under two box ids were drawn (Sean 2026-10-22: 'Dot 2 (same note as 9)')."""
+    if (a["plate"], a["page"]) != (b["plate"], b["page"]):
+        return False
+    ax0, ay0, ax1, ay1 = a["box"]
+    bx0, by0, bx1, by1 = b["box"]
+    iw, ih = min(ax1, bx1) - max(ax0, bx0), min(ay1, by1) - max(ay0, by0)
+    if iw > 0 and ih > 0 and iw * ih / float((ax1 - ax0) * (ay1 - ay0) + (bx1 - bx0) * (by1 - by0) - iw * ih) > 0.3:
+        return True
+    inside = lambda p, q: q[0] <= (p[0] + p[2]) / 2.0 <= q[2] and q[1] <= (p[1] + p[3]) / 2.0 <= q[3]
+    return inside(a["box"], b["box"]) or inside(b["box"], a["box"])
+
+
 def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict]], seed: int, n_cases: int = 9,
                n_controls: int = 3) -> List[dict]:
     """About 9 changed symbols drawn at random, drawn in PROPORTION to how many changes each kind has (every kind with >= 10% gets one; a random draw inside each), + about 3 controls = unchanged symbols of the kinds drawn. Only symbols with a place on the page."""
@@ -753,7 +767,7 @@ def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict
         while pool[k] and got < quota[k]:
             c = pool[k].pop()
             sig = (c["plate"], c["rg"], c["kind"], c["side"])
-            if sig in seen:
+            if sig in seen or any(_same_ink(c, x) for x in cases):
                 continue
             seen.add(sig)
             cases.append(dict(c, role="case"))
@@ -770,7 +784,8 @@ def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict
     for k in want:
         if len(controls) >= n_controls:
             break
-        cand = [s for s in ctrl_pool.get(k, []) if (s["plate"], s["rg"]) not in taken]
+        cand = [s for s in ctrl_pool.get(k, []) if (s["plate"], s["rg"]) not in taken
+                and not any(_same_ink(s, x) for x in cases + controls)]
         if cand:
             s = rng.choice(cand)
             controls.append(dict(s, role="control", side="unchanged"))
