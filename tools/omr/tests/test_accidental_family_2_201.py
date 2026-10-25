@@ -384,5 +384,14 @@ class FamilyPositionRow(unittest.TestCase):
         self.assertEqual(row.detail["anchor_fraction"], 0.501)             # the class's own anchor: no type was read
 
 
+class FamilyMarkerRun(unittest.TestCase):
+    def test_a_key_flat_with_a_head_close_on_its_right_stays_in_the_key_run(self):
+        """The Litolff measurement (4 real key flats removed by the head test): role evidence is recorded, never used to drop a marker."""
+        d = TA._Det("keyFlat", 100.0, 0.0, 12.0, 40.0)
+        d.accidental_family = {**_fam("flat", "keyFlat", ["flat"]), "head_right": {"gap_spaces": 0.4, "dy_steps": 0.3}}
+        self.assertFalse(G._family_in_bar(d))
+        self.assertEqual(G._family_marker_shape(d), "keyFlat")
+
+
 if __name__ == "__main__":
     unittest.main()

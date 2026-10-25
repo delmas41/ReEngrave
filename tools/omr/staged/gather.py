@@ -12838,9 +12838,10 @@ def _family_marker_shape(d: Any) -> Optional[str]:
 
 
 def _family_in_bar(d: Any) -> bool:
-    """ROADMAP 2.201: a mark standing directly left of a notehead at its own height (`head_right`) is IN-BAR by position, not a signature member."""
-    fam = getattr(d, "accidental_family", None)
-    return fam is not None and fam.get("head_right") is not None
+    """ROADMAP 2.201: `head_right` (a mark directly left of a notehead at its own height) is RECORDED on the family row as role evidence, and it is NOT used to
+    leave a mark out of the key run: measured on Litolff it removed 4 genuine key flats (x 517-730, the first or last flat of a mid-piece signature, which no
+    meter follows, so a head stands within a space of it) and moved 59 of 126 staves' key verdicts. False until a role test that cannot take a key flat exists."""
+    return False
 
 
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
