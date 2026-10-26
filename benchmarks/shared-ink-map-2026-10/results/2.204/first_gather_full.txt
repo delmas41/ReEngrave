@@ -1,0 +1,46 @@
+  gather litolff off pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather litolff on pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather brahms off pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+  gather brahms on pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_STEMS_FROM_STROKES (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py, staged/gather.py, staged/record.py ... -> GATHER
+  OMR_STEMS_FROM_STROKES: read in staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/gather.py, staged/stem_strokes.py -> GATHER
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5029 notes+rests OFF, 4356 ON, 4314 paired)
+  file:   notes +40 -713 | rests +2 -2 | accidentals +5 -39 | dots -3 | flags +27 -106 | beams +27 -167 ~54 | ties +2 -44 | slurs +8 -36 ~1 | articulations -28 | fermatas -3 | note values ~34 | pitches ~1 | blue marks +14 -123 | dynamics +3 -2 | words +112 -12
+  red bars 0 -> 0 | notes not written 2563 -> 3229
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 17 | wrong->right 0
+      right->abstained  2.102-review tile tile_09 glyph/11/0/0/8/2
+      right->narrowed  2.145-review tile 8 glyph/11/1/3/0/15
+      right->narrowed  2.154-review tile 18 glyph/4/0/9/7/3
+      right->abstained  2.154-review tile 8 glyph/6/1/9/10/4
+      right->abstained  2.158-review tile 7 glyph/10/1/1/8/8
+      right->abstained  2.158-review tile 9 glyph/9/0/3/2/8
+      right->abstained  2.159-review tile 8 glyph/10/1/1/8/8
+      right->narrowed  2.161-review tile 2 glyph/11/1/3/12/1
+      right->narrowed  2.161-review tile 5 glyph/10/1/4/5/4
+      right->abstained  2.162-review tile 9 glyph/10/1/4/5/5
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6519 notes+rests OFF, 5525 ON, 5487 paired)
+  file:   notes +33 -983 | rests +5 -49 | accidentals +4 -210 | dots +11 -485 | flags +40 -177 | beams +19 -114 ~6 | ties +5 -162 | slurs +23 -163 ~2 | articulations +1 -133 | fermatas -1 | note values ~19 | blue marks +689 -251 | dynamics +3 -2 | wedges +1 -9 | words +416 -100
+  red bars 166 -> 238 | notes not written 3202 -> 4188
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 4 | right->narrowed/abstained/gone 11 | wrong->right 1
+      RIGHT->WRONG  2.137-review tile 4 glyph/14/1/7/0/4  Sean: dot 4  now: narrowed [0.375, 0.75], answer NOT in set (flag_ink_unread)
+      RIGHT->WRONG  2.154-review tile 15 glyph/5/0/0/2/2  Sean: dot 4  now: narrowed [0.375, 0.75], answer NOT in set (flag_ink_unread)
+      RIGHT->WRONG  2.81-review tile control_3 glyph/0/0/11/2/7  Sean: dotted quarter  now: narrowed [0.375, 0.75], answer NOT in set (flag_ink_unread)
+      RIGHT->WRONG  2.81-review tile tile_14 glyph/19/0/4/9/1  Sean: dotted quarter  now: narrowed [0.375, 0.75], answer NOT in set (flag_ink_unread)
+      right->narrowed  2.114-second-detector tile tile_11 glyph/0/0/3/0/6
+      right->narrowed  2.162-review tile 15 glyph/5/0/5/5/11
+      right->abstained  2.162-review tile 22 glyph/8/0/1/3/3
+      right->abstained  2.180-review tile tile_02 glyph/19/0/10/4/4
+      right->abstained  2.74-review tile brahms_09 glyph/0/0/0/3/11
+      right->abstained  2.81-review tile control_2 glyph/0/0/0/4/9
+      right->abstained  2.81-review tile control_4 glyph/0/0/1/5/2
+      right->narrowed  2.81-review tile tile_30 glyph/4/1/3/1/3
+      right->abstained  2.83-review tile control_2 glyph/0/0/2/6/3
+      right->abstained  rhythm-leftovers-3 tile 1 glyph/0/0/0/6/6
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 8015 s

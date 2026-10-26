@@ -1,0 +1,25 @@
+  gather litolff off pages [4, 11] ...
+  gather litolff on pages [4, 11] ...
+  gather brahms off pages [5, 14] ...
+  gather brahms on pages [5, 14] ...
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_STEMS_FROM_STROKES (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py, staged/gather.py, staged/record.py ... -> GATHER
+  OMR_STEMS_FROM_STROKES: read in staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/gather.py, staged/stem_strokes.py -> GATHER
+  NOT THE FROZEN SAMPLE: /tmp/claude-501/sample204.json (a development control)
+
+litolff  pages [4, 11]  (1184 notes+rests OFF, 1155 ON, 1133 paired)
+  file:   notes +21 -51 | rests +1 | accidentals +5 | flags +5 -9 | beams +6 -33 ~12 | ties +2 -4 | slurs +11 -23 ~1 | articulations -18 | note values ~6 | blue marks +7 -10 | words +3 -4
+  red bars 0 -> 0 | notes not written 559 -> 588
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (136 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 2 | wrong->right 0
+      right->narrowed  2.145-review tile 8 glyph/11/1/3/0/15
+      right->narrowed  2.161-review tile 2 glyph/11/1/3/12/1
+
+brahms  pages [5, 14]  (1913 notes+rests OFF, 1946 ON, 1880 paired)
+  file:   notes +61 -32 | rests +5 -1 | accidentals +9 -9 | dots +34 -13 | flags +1 -19 | beams +4 -3 | ties +20 -4 | slurs +3 -1 | articulations +5 -4 | note values ~5 | blue marks +9 -4 | words +2 -6
+  red bars 0 -> 0 | notes not written 1171 -> 1142
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (167 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1675 s
