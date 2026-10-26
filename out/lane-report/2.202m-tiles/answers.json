@@ -1,0 +1,57 @@
+{
+ "lane": "2.202",
+ "date": "2026-10-25",
+ "question": "for each boxed note: eighth, sixteenth, quarter, or something else -- and flag or beam on its stem?",
+ "verbatim": "2.202 - 1. 8 2. Dot 4 3-5. 8 6.4 7.2 8.dot 4 9-11.8 12. Dot 4",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "eighth"
+  },
+  {
+   "tile": 2,
+   "sean": "dotted quarter"
+  },
+  {
+   "tile": 3,
+   "sean": "eighth"
+  },
+  {
+   "tile": 4,
+   "sean": "eighth"
+  },
+  {
+   "tile": 5,
+   "sean": "eighth"
+  },
+  {
+   "tile": 6,
+   "sean": "quarter"
+  },
+  {
+   "tile": 7,
+   "sean": "half"
+  },
+  {
+   "tile": 8,
+   "sean": "dotted quarter"
+  },
+  {
+   "tile": 9,
+   "sean": "eighth"
+  },
+  {
+   "tile": 10,
+   "sean": "eighth"
+  },
+  {
+   "tile": 11,
+   "sean": "eighth"
+  },
+  {
+   "tile": 12,
+   "sean": "dotted quarter"
+  }
+ ],
+ "summary": "every changed head was RIGHT under main: the 7 narrowings (disagree_narrowed 1, 4, 10, 11; stroke_candidate 2, 5, 6) doubt a value main had right, and both hook-as-flag changes (8, 12) are WRONG -- dotted quarters turned into eighths; controls right. Net loss: NOT landed"
+}
