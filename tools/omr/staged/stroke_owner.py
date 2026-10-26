@@ -184,12 +184,16 @@ SLASH_MAX_ANGLE = 60.0
 BLOCK_RESTS = ("restwhole", "resthalf", "resthbar")
 
 
-def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = False, touches_a_head: bool = False) -> Tuple[str, str]:
+def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = False, touches_a_head: bool = False,
+              touches_a_note: bool = False) -> Tuple[str, str]:
     """`("clear" | "could" | "no", why)`: does stroke `s` fit the printed shape of `family` (`cls` refines rests)? The `why` names the fields.
 
     `crosses_a_stem`: the stroke touches a vertical stroke that runs on past both its sides (a slash across a stem, not a head beside it);
     `touches_a_head`: the stroke touches a stroke an EARLIER tier gave to a head (the claim order: a rest never touches a note -- 2.150b,
-    `rest_stroke_into_a_head`; 2.33c, `rest_has_a_stem`)."""
+    `rest_stroke_into_a_head`; 2.33c, `rest_has_a_stem`); `touches_a_note`: it touches a head's stroke or a vertical stroke that touches one
+    (the note's stem) -- a dynamic letter / text is printed clear of the notes (CONVENTION ASSUMED, 2.205 milestone: a Litolff flag boxed
+    `dynamicF` took the flag from its eighth; WHAT WOULD FALSIFY IT: a letter printed touching a stem -- then the stroke is the consumers'
+    as it is today, never invented into a flag by this rule)."""
     k, L, t, a, w, h = s.kind, s.length, s.thickness, s.area, s.w_sp, s.h_sp
     dims = "kind=%s len=%.2f thick=%.2f area=%.2f w=%.2f h=%.2f" % (k, L, t, a, w, h)
     if family in AREA_OWNERS:
@@ -233,6 +237,8 @@ def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = Fals
         # an arc's box is mostly paper over other marks (plan section 2.3): it claims only its own line, never a blob it passes over
         return "no", "not_an_arc_piece:" + dims
     if family in ("dynamic", "text"):
+        if touches_a_note:
+            return "no", "letter_ink_runs_into_a_note:" + dims
         if L > LETTER_MAX_LEN_SP and k != "blob":
             return "no", "longer_than_a_letter:" + dims
         return ("clear" if k in ("blob", "curve") else "could"), "letter_piece:" + dims
@@ -340,19 +346,22 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
     head_tier = tier_index.get("head")
     cand: Dict[int, List[Dict[str, object]]] = {o: [] for o in by_ord}
     head_owned: set = set()
+    note_ink: set = set()
     done_tier = -1
     for c in live:
         ti = tier_index[c.family]
         if ti > done_tier:
             if head_tier is not None and head_tier < ti and not head_owned:
                 head_owned = {o for o in by_ord if _settle(o, cand, tier_index).family == "head"}
+                note_ink = head_owned | {o for o, v in by_ord.items() if v.kind == "vertical" and any(j in head_owned for j, _c in v.touches)}
             done_tier = ti
         for o in c.covers:
             if o in by_ord:
                 s_ = by_ord[o]
                 touches_head = any(j in head_owned for j, _ct in s_.touches)
+                touches_note = o in note_ink or any(j in note_ink for j, _ct in s_.touches)
                 fit, why = ("clear", "area") if c.area else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
-                                                                        touches_a_head=touches_head)
+                                                                        touches_a_head=touches_head, touches_a_note=touches_note)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
 

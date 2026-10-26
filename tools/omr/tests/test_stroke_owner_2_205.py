@@ -119,6 +119,30 @@ class TestASlurStartingAtAStem(unittest.TestCase):
         self.assertEqual({own[2].state, own[3].state}, {"refused_claims"})
 
 
+class TestAFlagBoxedAsALetter(unittest.TestCase):
+    """2.205 milestone, Litolff p10 (Sean's 2.154 tile 7, an eighth): the flag hook on the note's stem lay in detector `dynamicF` boxes."""
+    HEAD = ink(0, "blob", (500, 500, 120, 110), 1.2, 0.9)
+    STEM = ink(1, "vertical", (500, 520, 25, 450), 4.5, 0.25, touches=(0, 2))
+    HOOK = ink(2, "horizontal", (510, 900, 113, 19), 1.13, 0.19, touches=(1,))
+
+    def test_a_letter_box_never_owns_ink_that_runs_into_a_note_RED(self):
+        own = SO.own_strokes([self.HEAD, self.STEM, self.HOOK],
+                             [claim("h", "noteheadBlackInSpace", covers=(0,)), claim("f", "dynamicF", covers=(2,))])
+        self.assertEqual(own[2].state, "refused_claims")
+        self.assertIn("letter_ink_runs_into_a_note", own[2].candidates[0]["why"])
+
+    def test_TWIN_a_letter_standing_clear_of_the_notes_is_the_letters(self):
+        free = ink(2, "horizontal", (900, 900, 113, 19), 1.13, 0.19)
+        own = SO.own_strokes([self.HEAD, self.STEM, free], [claim("h", "noteheadBlackInSpace", covers=(0,)), claim("f", "dynamicF", covers=(2,))])
+        self.assertEqual(own[2].family, "dynamic")
+
+    def test_CONTROL_with_the_order_broken_letters_before_heads_the_letter_takes_the_flag(self):
+        broken = (SO.TIERS[0], ("dynamic", "mark", "dot", "text"), ("head", "ledger"), ("accidental",), ("arc", "hairpin"), ("rest",))
+        own = SO.own_strokes([self.HEAD, self.STEM, self.HOOK],
+                             [claim("h", "noteheadBlackInSpace", covers=(0,)), claim("f", "dynamicF", covers=(2,))], tiers=broken)
+        self.assertEqual(own[2].family, "dynamic")
+
+
 class TestAContestedStroke(unittest.TestCase):
     """2.192's case: an eighth rest's bulb boxed both as an accidental and as a rest -- both shapes fit, the shape cannot settle it."""
     BULB = ink(0, "blob", (300, 400, 50, 60), 0.6, 0.3, area=0.25)
