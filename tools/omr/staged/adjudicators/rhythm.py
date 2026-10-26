@@ -265,7 +265,8 @@ def _second_only_evidence(ev: Evidence, own_stems, n_dots: int) -> List[str]:
     out: List[str] = []
     if own_stems:
         out.append("stem_box")
-    reach = ev.rows(Q.HEAD_STEM_REACH)
+    # ROADMAP 2.204 (flag ON): the ruler is retired -- the stroke stem is already in `own_stems` (`stem_box`).
+    reach = () if stems_from_strokes_enabled() else ev.rows(Q.HEAD_STEM_REACH)
     if reach and str(reach[-1].value) in ("up", "down"):
         out.append("stem_reach")
     if n_dots:
@@ -1732,10 +1733,10 @@ def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> O
     # that end (`head_at_this_end`) says the side itself may be wrong. Every other reason keeps the narrowing.
     end = "top" if side == "up" else "bottom"
     ids = {s.id for s in own_stems}
-    for r in ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+    for r in _tip_obs(ev, cell, own_stems):
         if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
             return None
-    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    whys = [a.detail.get("why") for a in _tip_abs(ev, cell, own_stems)
             if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
     if not whys or any(w != "ink_not_flag_shaped" for w in whys):
         return None
@@ -3403,7 +3404,9 @@ def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any
     # `beam_mate` (`down`, from the NEXT staff's beam below it) and the beam
     # across the head's own bottom counted as its own. `both` and `none`
     # claim nothing and leave the column test exactly as it was.
-    reach = ev.rows(Q.HEAD_STEM_REACH)
+    # ROADMAP 2.204 (flag ON): the ruler is retired. A head the finder missed but the stroke map shows a stem for is in `own_stems` and
+    # its direction comes from `Q.STEM_DIRECTION` above; so the ruler's branch below is unreachable.
+    reach = () if stems_from_strokes_enabled() else ev.rows(Q.HEAD_STEM_REACH)
     if unison is not None:
         # ⚠️ ROADMAP 2.141h fix 2: the CV stem finder found a stem EACH WAY; the ruler's single direction (it reads the longer
         # run, or the right-hand one) is one voice's stem, and taking it called the OTHER voice's beam "far side" (Litolff p5
@@ -3690,8 +3693,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
         return None, ()
     end = "top" if side == "up" else "bottom"
     ids = {s.id for s in own_stems}
-    rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS,
-                   subject=cell)
+    rows = _tip_obs(ev, cell, own_stems)
     # ⚠️ ROADMAP 2.83 FIX ROUND: a row the two tip witnesses DISPUTE (`tip_disagree`: the shape reader sees nothing hanging, the 2.18c
     # window sees a hook) is neither "a hook is there" nor "nothing is there" -- it is read by `_stem_tip_disputed` and NARROWS, so it
     # is left out of this function's answer in BOTH directions (it must not decide a flag level, and it must not let 2.70 read a bare stem).
@@ -3798,7 +3800,7 @@ def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tu
         return ()
     end = "top" if side == "up" else "bottom"
     ids = {s.id for s in own_stems}
-    rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    rows = _tip_obs(ev, cell, own_stems)
     return tuple(r for r in rows if r.detail.get("end") == end
                  and r.detail.get("stem_row_id") in ids
                  and r.detail.get("tip_disagree"))
@@ -3812,10 +3814,10 @@ def _stem_tip_unread_why(ev: Evidence, cell, own_stems, side: Optional[str]) -> 
         return None
     end = "top" if side == "up" else "bottom"
     ids = {s.id for s in own_stems}
-    for r in ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+    for r in _tip_obs(ev, cell, own_stems):
         if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
             return None
-    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    whys = [a.detail.get("why") for a in _tip_abs(ev, cell, own_stems)
             if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
     if whys and all(w in TIP_UNREAD_REASONS for w in whys):
         return sorted(set(whys))[0]
@@ -4032,6 +4034,283 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             "boxes": boxes, "rows": rows, "settled": None}
 
 
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`, default OFF; step 4 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
+# A head's STEM from the stroke map: the vertical stroke its blob touches on the engraving side (up -> right, down -> left), with the
+# stroke's own length and tip (`stem_strokes.py`, pure). The Q.STEM finder (`line_detection`, GATHER) is the OTHER reader: where the two
+# agree the head decides as today; where the strokes find a firm stem the finder did not, the stroke stem is used (the 2.167 refused real
+# stems) and named `gained`; where the finder's stem is a stroke the convention refuses for this head (wrong side, a barline) the strokes
+# settle it and the finder's row is dropped (named `old_refused`); where they disagree and the strokes cannot settle it (`disagree`) the
+# decision ABSTAINS with the candidates -- colour is EXPORT's. A vertical stroke no head touches is never made a stem of some head (rule 6).
+# RETIRED when the flag is ON (unreachable; unchanged when OFF): `Q.HEAD_STEM_REACH` is not read (`_own_stem_side`, `_second_only_evidence`,
+# `ownership._stem_owner`), `Q.STEM_TIP_INK` is not read (the four tip accessors read `_tips_from_strokes` instead) and GATHER does not file
+# either row (`gather.gather_head_stem_reach`, `gather._observe_stem_tip_ink` are skipped when both flags are on). `refuse_owned` is bypassed:
+# the stroke reading does not pass through the finder's refusals; it stays in the finder for the consumers not yet moved (step 10 deletes it).
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+STEMS_FROM_STROKES_ENV = "OMR_STEMS_FROM_STROKES"
+
+
+def stems_from_strokes_enabled() -> bool:
+    """Allow-list: an empty value or a typo must not switch a document onto an unpriced ADJUDICATE change."""
+    return os.environ.get(STEMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: one-slot memo `[log, cell key, views, rows by id, head boxes]`; holds the Log strongly, so an `id` cannot be recycled under it.
+_STEM_MEMO: list = [None, None, None, None, None]
+
+
+def _stem_views(ev: Evidence, cell, stroke_rows=None):
+    """`(StemViews of the cell's Q.STROKE rows, {row id: row}, other head boxes)`; `([], {}, [])` where the cell has no stroke map."""
+    ck = cell.to_key() if hasattr(cell, "to_key") else str(cell)
+    if _STEM_MEMO[0] is ev.log and _STEM_MEMO[1] == ck:
+        return _STEM_MEMO[2], _STEM_MEMO[3], _STEM_MEMO[4]
+    from ..record import STROKE_GLYPH_BASE
+    from .. import stem_strokes as _SS
+    views, rows = [], {}
+    for r in (stroke_rows if stroke_rows is not None else ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)):
+        g = getattr(r.subject, "glyph", None)
+        d = r.detail or {}
+        box = d.get("stroke_box")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
+            continue
+        es = d.get("end_steps_from_top")
+        ends = d.get("ends")
+        steps = None
+        if isinstance(es, (list, tuple)) and len(es) == 2:
+            flipped = isinstance(ends, (list, tuple)) and len(ends) == 4 and ends[1] > ends[3]
+            steps = (float(es[1]), float(es[0])) if flipped else (float(es[0]), float(es[1]))
+        views.append(_SS.StemView(
+            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
+            sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
+            touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id, end_steps=steps))
+        rows[r.id] = r
+    heads = [hb for hb in (_xywh_head(h.value) for h in _heads_in(ev, cell)) if hb is not None] if views else []
+    _STEM_MEMO[:] = [ev.log, ck, views, rows, heads]
+    return views, rows, heads
+
+
+def _whole_head(ev: Evidence) -> bool:
+    """The detector's own box name says whole / double whole (read off `Q.GLYPH_BOX`, which every caller declares)."""
+    box = ev.rows(Q.GLYPH_BOX)
+    v = box[-1].value if box else None
+    return isinstance(v, (list, tuple)) and bool(v) and str(v[0]).lower().startswith(("noteheadwhole", "noteheaddoublewhole"))
+
+
+def _read_stem(ev: Evidence, head_box, views, rows, heads):
+    """`(StemReading, views, rows)` from already-built stroke views, or `None` (flag off, no head box, no map, no staff space)."""
+    if not stems_from_strokes_enabled() or head_box is None or not views:
+        return None
+    from .. import stem_strokes as _SS
+    sps = sorted(v.space_px for v in views if v.space_px > 0)
+    space = sps[len(sps) // 2] if sps else 0.0
+    if space <= 0:
+        return None
+    return _SS.head_stem(views, head_box, space, whole_head=_whole_head(ev), other_heads=heads), views, rows
+
+
+def _stem_reading(ev: Evidence, cell, head_box):
+    """`_read_stem` over the cell's own `Q.STROKE` rows."""
+    if not stems_from_strokes_enabled() or head_box is None:
+        return None
+    views, rows, heads = _stem_views(ev, cell)
+    return _read_stem(ev, head_box, views, rows, heads)
+
+
+def _stroke_stem_row(cand, rows):
+    """A stand-in for a `Q.STEM` row built from the stroke row(s) of an accepted stem candidate: same row id as the first stroke (so a
+    verdict cites a row the record holds), `value` the stem box, `detail` says where it came from."""
+    import dataclasses
+    r0 = rows[cand.row_ids[0]]
+    return dataclasses.replace(
+        r0, quantity=Q.STEM, value=tuple(float(v) for v in cand.box),
+        detail={"from_stroke": True, "stroke_rows": list(cand.row_ids), "direction": cand.direction, "length_spaces": cand.length_sp,
+                "tip_end": cand.tip_end, "tip_step": cand.tip_step, "merged": cand.merged})
+
+
+def _head_stems(ev: Evidence, cell, head_box, stems):
+    """`(own stems, info)`. With the flag OFF, or no stroke map in the cell: `(_stems_on(head_box, stems), None)` -- today, exactly.
+    Otherwise the stroke reading is set against the finder's (see the block comment above) and `info` records the settlement:
+    `state`, `settled` (`agrees` / `gained` / `old_refused` / `map_silent` / `disagree` / `no_stem` / ...), `disagree` (a reason when the
+    caller must abstain), the candidates."""
+    old = _stems_on(head_box, stems) if head_box is not None else []
+    got = None
+    if head_box is not None:
+        views_, rows_, heads_ = _stem_views(ev, cell)          # the cell's Q.STROKE rows
+        got = _read_stem(ev, head_box, views_, rows_, heads_)
+    if got is None:
+        return old, None
+    rd, views, rows = got
+    info: Dict[str, Any] = {"state": rd.state, "reason": rd.reason, "finder_stems": len(old),
+                            "candidates": [{"rows": list(c.row_ids), "side": c.side, "direction": c.direction, "why": c.why or "stem",
+                                            "length_sp": c.length_sp, "gap_sp": c.gap_sp} for c in rd.candidates]}
+
+    def ordinal_of(o):
+        b = _xywh(o)
+        sv = _BS.find_stem_stroke(views, b) if b is not None else None
+        return sv.ordinal if sv is not None else None
+
+    if rd.state in ("stem", "two_stems"):
+        chosen, taken, gained = [], set(), []
+        for c in rd.stems:
+            hit = next((o for o in old if o.id not in taken and ordinal_of(o) in c.ordinals), None)
+            if hit is not None:
+                chosen.append(hit)
+                taken.add(hit.id)
+            else:
+                chosen.append(_stroke_stem_row(c, rows))
+                gained.append(list(c.row_ids))
+        refused, silent = [], []
+        for o in old:
+            if o.id in taken:
+                continue
+            ordn = ordinal_of(o)
+            cand = next((cc for cc in rd.candidates if ordn is not None and ordn in cc.ordinals), None)
+            if cand is not None and cand.why not in ("", "bridged"):
+                refused.append({"row": o.id, "why": cand.why})
+            else:
+                silent.append(o.id)
+        info["gained"], info["old_refused"] = gained, refused
+        info["directions"] = [c.direction for c in rd.stems]
+        if silent:
+            info["disagree"] = "finder_stem_is_not_a_stroke_beside_the_head"
+            info["settled"] = "disagree"
+        else:
+            info["settled"] = "old_refused" if refused else "gained" if gained and not taken else "agrees"
+        return chosen, info
+    if rd.state in ("wrong_side", "through_head", "barline", "unanchored", "ambiguous"):
+        if old:
+            info["disagree"] = "finder_stem_but_" + rd.state
+            info["settled"] = "disagree"
+        else:
+            info["settled"] = "no_stem_candidate_only"          # strokes touch the head but none is its stem: shown, never invented (rule 6)
+        return old, info
+    info["settled"] = "map_silent" if rd.state in ("no_stem", "bridged") else rd.state
+    return old, info
+
+
+def _bridged_from_strokes(ev: Evidence, cell, head_box, old_bridged):
+    """ROADMAP 2.161 on strokes: `(stem row, reading)` where the stroke map shows a stem standing a hair beside the head's box on its
+    engraving side, with no head in the gap; `old_bridged` (the GATHER ink reading, kept for the box extension) must name the same stem if
+    it speaks at all. None otherwise (the finder's bridge, if any, is dropped: the two disagree)."""
+    got = _stem_reading(ev, cell, head_box)
+    if got is None:
+        return old_bridged
+    rd, _views, rows = got
+    if rd.state != "bridged":
+        return None if old_bridged is not None and rd.state in ("stem", "two_stems") else old_bridged if rd.state == "no_stem" else None
+    c = rd.stems[0]
+    if old_bridged is not None:
+        want = [float(v) for v in (old_bridged[1].get("stem_box") or [])]
+        if len(want) != 4 or any(abs(a - b) > 0.5 for a, b in zip(c.box, want)):
+            return None
+    sb = dict(old_bridged[1]) if old_bridged is not None else {}
+    sb.update({"side": c.side, "gap_sp": c.gap_sp, "stem_box": [round(float(v), 2) for v in c.box], "from_stroke": True,
+               "stem_below": c.direction == "down", "stem_above": c.direction == "up"})
+    sb.setdefault("bridge_rows", None)
+    return _stroke_stem_row(c, rows), sb
+
+
+def _tips_from_strokes(ev: Evidence, cell, own_stems):
+    """`(observation-like rows, abstention-like rows)` standing in for `Q.STEM_TIP_INK` -- one per (own stem, end) -- read off the stroke
+    map, or `None` where there is no stroke map in the cell (the caller then reads the GATHER rows as today). Row shapes follow
+    `gather._observe_stem_tip_ink`: detail `end`, `stem_row_id`, `hooks`, `hooks_min`, `hooks_max`, `tip_disagree`; an abstention's
+    `why` is one of `TIP_UNREAD_REASONS` / `ink_not_flag_shaped`.
+
+      hook strokes at the tip of a stem no spanning beam touches  -> True, counted (`hooks` = the levels; a hook_or_stub: bracketed 1..2)
+      a beam / beam stub at the tip, or a stem that carries a beam  -> abstains `runs_on`   (a beam leaves the tip: not a flag, not clean)
+      any OTHER stroke within reach of the tip                      -> abstains `occupied`  (cannot tell: never read as a clean tip)
+      nothing at the tip                                            -> False (clean)"""
+    views, rows, _heads = _stem_views(ev, cell)
+    if not views:
+        return None
+    import types
+    role = _BS.roles(views)
+    obs, ab = [], []
+    for st in own_stems:
+        b = _xywh(st)
+        if b is None:
+            continue
+        sv = _BS.find_stem_stroke(views, b)
+        if sv is None:
+            continue
+        members = {sv.ordinal}
+        if (st.detail or {}).get("merged"):
+            for rid in (st.detail or {}).get("stroke_rows") or ():
+                members |= {v.ordinal for v in views if v.row_id == rid}
+        sp = sv.space_px if sv.space_px > 0 else 1.0
+        for end, side in (("top", "up"), ("bottom", "down")):
+            tr = _BS.tip_reading(views, role, sv, side)
+            tip_y = b[1] if side == "up" else b[1] + b[3]
+            lo, hi = ((tip_y - _BS.TIP_OUTWARD_SPACES * sp, tip_y + _BS.TIP_INWARD_SPACES * sp) if side == "up"
+                      else (tip_y - _BS.TIP_INWARD_SPACES * sp, tip_y + _BS.TIP_OUTWARD_SPACES * sp))
+            near = [v for v in views if v.ordinal not in members and v.kind != "vertical"
+                    and v.box[0] <= b[0] + b[2] + 0.3 * sp and v.box[0] + v.box[2] >= b[0] - 0.3 * sp
+                    and v.box[1] <= hi and v.box[1] + v.box[3] >= lo]
+            ids = [sv.row_id] + [v.row_id for v in near]
+            base = {"end": end, "stem_row_id": st.id, "tip_y": tip_y, "stroke_rows": ids}
+            hooks, beams, stubs = tr["hooks"], tr["beams"], tr["stubs"]
+            stub_roles = {str(role[o]["role"]) for o in stubs}
+            if beams or (tr["stem_beamed"] and (stubs or hooks)) or "beam_stub" in stub_roles:
+                ab.append(types.SimpleNamespace(id=sv.row_id, value=None, detail={**base, "why": "runs_on"}))
+            elif hooks and not stubs:
+                obs.append(types.SimpleNamespace(id=sv.row_id, value=True, detail={**base, "hooks": len(hooks), "hooks_min": len(hooks),
+                                                                                     "hooks_max": len(hooks), "tip_disagree": False}))
+            elif hooks or stubs:
+                n = len(hooks)
+                obs.append(types.SimpleNamespace(id=sv.row_id, value=True, detail={**base, "hooks": None, "hooks_min": max(1, n),
+                                                                                     "hooks_max": max(2, n + len(stubs)), "tip_disagree": False}))
+            elif near:
+                ab.append(types.SimpleNamespace(id=sv.row_id, value=None, detail={**base, "why": "occupied"}))
+            else:
+                obs.append(types.SimpleNamespace(id=sv.row_id, value=False, detail={**base, "hooks": 0, "tip_disagree": False}))
+    return obs, ab
+
+
+def _tip_obs(ev: Evidence, cell, own_stems):
+    """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today."""
+    if stems_from_strokes_enabled():
+        got = _tips_from_strokes(ev, cell, own_stems)
+        if got is not None:
+            return got[0]
+    return ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
+
+def _tip_abs(ev: Evidence, cell, own_stems):
+    if stems_from_strokes_enabled():
+        got = _tips_from_strokes(ev, cell, own_stems)
+        if got is not None:
+            return got[1]
+    return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
+
+def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
+    """What `Q.HEAD_STEM_REACH` told `ownership._stem_owner`, read off the stroke map for THIS glyph: `{"way", "tip_y_page", "head_box_page",
+    "ext", "rows"}` or `None` (silent: flag off, no map, no single stem). Page px by the head box's own scale (canonical -> page)."""
+    if not stems_from_strokes_enabled():
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    box = ev.rows(Q.GLYPH_BOX)
+    if not box:
+        return None
+    hb = _xywh_head(box[-1].value)
+    page = (box[-1].detail or {}).get("bbox_page_px")
+    views_, rows_, heads_ = _stem_views(ev, cell, stroke_rows)
+    got = _read_stem(ev, hb, views_, rows_, heads_)
+    if got is None or not page or len(page) < 4:
+        return None
+    rd = got[0]
+    if rd.state != "stem" or len(rd.stems) != 1 or rd.stems[0].tip_y is None:
+        return None
+    c = rd.stems[0]
+    scale = (float(page[3]) - float(page[1])) / hb[3] if hb[3] > 0 else 0.0
+    if scale <= 0:
+        return None
+    return {"way": c.direction, "tip_y_page": float(page[1]) + (c.tip_y - hb[1]) * scale, "head_box_page": [float(v) for v in page[:4]],
+            "ext": c.from_head_sp, "rows": list(c.row_ids)}
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -4144,7 +4423,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead",
-             "stem_tip_reads_no_beam"),
+             "stem_tip_reads_no_beam", "stem_readers_disagree"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -4290,6 +4569,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # it touches) needs this head's attached stems before any filtering,
     # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
     own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    # ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`): the head's stem from the stroke map, set against the finder's. OFF: `_stems_on`, as above.
+    stem_info = None
+    if stems_from_strokes_enabled():
+        own_stems, stem_info = _head_stems(ev, cell, head_box, stems)
+        if stem_info is not None and stem_info.get("disagree"):
+            return Ruling.abstain("stem_readers_disagree", used=tuple(used) + tuple(r.id for r in own_stems), stems_from_strokes=stem_info)
     # ⚠️ ROADMAP 2.148 (flag `OMR_HEAD_FILL_FIRST`): THE HEAD FIRST (Sean 2026-10-16). A BLACK-classed head whose own ink holds
     # white inside it is HOLLOW; with a stem of its own it is a half -- decided here, before any stroke, flag or tip is read,
     # so nothing below can make it a quarter or beam it (2.43: an open head is never beamed). No stem -> not decided here
@@ -4320,6 +4605,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         first_stems = own_stems
         if head_stem_bridge_enabled() and head_first is not None and not own_stems and not refused:
             bridged = _bridged_stem(ev, stems, head_box)
+            if stem_info is not None:          # ROADMAP 2.204: the bridge on strokes (the GATHER ink reading is kept for the box extension)
+                bridged = _bridged_from_strokes(ev, cell, head_box, bridged)
             if bridged is not None:
                 b_row, b_read = bridged
                 if head_first.get("fill") is None and head_first.get("not_head_sized"):
@@ -4711,6 +4998,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
               **({"beams_from_strokes": sb_detail} if sb_detail else {}),
+              **({"stems_from_strokes": stem_info} if stem_info else {}),
               **({"beam_stem_levels": stem_levels} if stem_levels else {}),
               "beams_not_by_ink": len(ink_dropped),
               "beams_not_by_ink_why": {
@@ -8847,16 +9135,16 @@ def _stems_on(head_box, stems):
 
 @decision(
     quantity=Q.STEM_DIRECTION,
-    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE),
+    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
-             "no_evidence"),
+             "no_evidence", "stem_readers_disagree"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_stem_direction(ev: Evidence) -> Ruling:
@@ -8898,6 +9186,13 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
     mine = _stems_on(head_box, stems)
+    stem_info = None
+    if stems_from_strokes_enabled():
+        # ROADMAP 2.204: the head's stem from the stroke map set against the finder's; a disagreement the strokes cannot settle abstains.
+        mine, stem_info = _head_stems(ev, cell, head_box, stems)
+        if stem_info is not None and stem_info.get("disagree"):
+            return Ruling.abstain("stem_readers_disagree", used=(box[-1].id,) + tuple(s.id for s in mine), n_stems=len(mine),
+                                  answers=sorted(set(stem_info.get("directions") or ())), stems_from_strokes=stem_info)
     if not mine:
         # ⚠️⚠️ THE BEAM ROWS ARE ASKED FOR BEFORE THE HEADS, AND THE ORDER IS
         # MEASURED RATHER THAN TIDY. An earlier draft hoisted the whole-cell
@@ -8922,6 +9217,10 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
         answers.add(_project(s, heads, head_box))
         used.append(s.id)
 
+    if stem_info is not None and len(answers) == 1 and stem_info.get("directions") and set(stem_info["directions"]) != answers:
+        # the stroke reading (engraving side + which end stands in the head) and the stem's projection onto the heads it carries disagree
+        return Ruling.abstain("stem_readers_disagree", used=tuple(used), n_stems=len(mine), answers=sorted(answers | set(stem_info["directions"])),
+                              stems_from_strokes=stem_info)
     if len(answers) != 1:
         # ⚠️ ABSTAIN RATHER THAN VOTE. A head met by two stems pointing
         # opposite ways is exactly the divisi/double-stop ambiguity this
@@ -8934,7 +9233,7 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
 
     return Ruling(value=answers.pop(), reason="stem_projection",
                   used=tuple(used),
-                  detail={"n_stems": len(mine), "heads_on_stem": len(heads)})
+                  detail={"n_stems": len(mine), "heads_on_stem": len(heads), **({"stems_from_strokes": stem_info} if stem_info else {})})
 
 
 # ─────────────────────────────────────────────────────────────────────────────

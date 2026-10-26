@@ -406,6 +406,7 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
     # at a stem's tip): files no row, names no quantity, decides nothing; the decision is `adjudicate_duration`'s.
     "beam_strokes.py",
+    "stem_strokes.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",

@@ -621,8 +621,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF): the share of each covered stroke's ink inside the box. Its first stage reader is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5; `claims.covering`'s `ink` branch counts strokes, not shares. Leaves the day a decision reads it."),
     "DETAIL Q.CLAIMED_AREA.shares": (
         "producer-only (`OMR_STROKE_MAP`, default OFF): on a `unit: ink` claim, the share of each claimed stroke's ink inside the owner. Leaves the day the ink branch of the consult reads it (plan step 5)."),
-    "DETAIL Q.STROKE.end_steps_from_top": (
-        "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.n_below_floor": (
         "producer-only quantity (`OMR_STROKE_MAP`, default OFF); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.thickness_spread_spaces": (
