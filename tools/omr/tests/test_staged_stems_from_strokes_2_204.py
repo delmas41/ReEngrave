@@ -501,6 +501,46 @@ class TestTheTipFromTheStem(unittest.TestCase):
         self.assertIsNone(self._tips([], finder=(UP,)))
 
 
+class TestMeasuredOnTheRealPlates(unittest.TestCase):
+    """Three faults the first Litolff / Brahms gather showed (2.204 FINDINGS); each is a cell built to the measured shape, with a twin."""
+
+    def test_a_vertical_stroke_with_the_head_fused_to_it_is_placed_at_its_TIP_not_its_box_centre_RED(self):
+        # Litolff merges the head into the stem's stroke: the box is 1.2 sp wide, the stem stands at the end far from the head
+        fused = dict(V(0, (500, 180, 120, 400)), steps=None)
+        v = view(fused)
+        v = SS.StemView(v.ordinal, v.kind, v.box, v.length, 0.25, v.sagitta, v.angle, v.touches, SP, row_id="r0", ends=(612.0, 180.0, 520.0, 580.0))
+        rd = SS.head_stem([v], HEAD, SP)
+        self.assertEqual((rd.state, rd.direction), ("stem", "up"))
+        self.assertAlmostEqual(rd.stems[0].box[0] + rd.stems[0].box[2] / 2.0, 612.0, places=0)       # the tip end's x, not the box centre 560
+        # twin: a thin stroke (not fused) is placed by its box centre
+        self.assertAlmostEqual(read([V(0, UP)]).stems[0].box[0] + 15.0, 615.0, places=0)
+
+    def test_a_vertical_stroke_deep_inside_the_head_box_is_not_a_stem_but_one_at_the_edge_is(self):
+        self.assertEqual(read([V(0, (560, 180, 12, 400))]).state, "through_head")          # 0.6 sp from either edge
+        self.assertEqual(read([V(0, (590, 180, 25, 400))]).state, "stem")                  # 0.15 sp inside the right edge
+
+    def test_a_soft_refusal_leaves_the_finders_stem_standing_only_a_positive_one_abstains(self):
+        # the map cannot tell (the head box is a tall cluster, no end stands in it): the finder's stem stands as today
+        tall = (500, 400, 130, 400)
+        stroke = V(0, (600, 450, 30, 300))
+        log, gs = build([stroke], finder=((600, 450, 30, 300),), heads=(tall,))
+        with mock.patch.dict(os.environ, {FLAG: "1"}):
+            adjudicate.run(log)
+        v = log.verdict(Q.STEM_DIRECTION, gs[0])
+        self.assertNotEqual(v.reason, "stem_readers_disagree")
+        self.assertEqual(v.detail["stems_from_strokes"]["settled"], "map_cannot_tell")
+
+    def test_a_staff_line_remnant_touching_the_stem_far_from_its_tip_says_nothing_about_the_tip_RED(self):
+        # Brahms: 1.9-sp horizontals touching the stem 2-5 spaces from its tip were read as flags; the 4 dotted quarters came out narrowed
+        remnants = [V(0, UP, touches=[1, 2]), H(1, (630, 330, 194, 25), thick=0.25, touches=[0]), H(2, (630, 400, 194, 30), thick=0.31, touches=[0])]
+        obs, ab = TestTheTipFromTheStem()._top(TestTheTipFromTheStem()._tips(remnants))
+        self.assertEqual(([r.value for r in obs], ab), ([False], []))
+        # twin: the same stroke starting AT the tip is a hook
+        hook = [V(0, UP, touches=[1]), H(1, (630, 185, 194, 25), thick=0.25, touches=[0])]
+        obs, ab = TestTheTipFromTheStem()._top(TestTheTipFromTheStem()._tips(hook))
+        self.assertTrue(obs and obs[0].value is True or (ab and ab[0].detail["why"] != "clean"))
+
+
 class TestTheControlCanFail(unittest.TestCase):
 
     def test_breaking_the_side_rule_turns_the_wrong_side_case_into_a_stem(self):

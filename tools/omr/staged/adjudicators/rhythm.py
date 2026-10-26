@@ -4084,7 +4084,8 @@ def _stem_views(ev: Evidence, cell, stroke_rows=None):
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
-            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id, end_steps=steps))
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id, end_steps=steps,
+            ends=(tuple(float(v) for v in ends) if isinstance(ends, (list, tuple)) and len(ends) == 4 else None)))
         rows[r.id] = r
     heads = [hb for hb in (_xywh_head(h.value) for h in _heads_in(ev, cell)) if hb is not None] if views else []
     _STEM_MEMO[:] = [ev.log, ck, views, rows, heads]
@@ -4149,6 +4150,14 @@ def _head_stems(ev: Evidence, cell, head_box, stems):
     def ordinal_of(o):
         b = _xywh(o)
         sv = _BS.find_stem_stroke(views, b) if b is not None else None
+        if sv is None and b is not None:          # a vertical longer than any stem (a barline) is no `find_stem_stroke` match: look for it too
+            best, ov = None, 0.0
+            for v in views:
+                if v.kind == "vertical" and v.box[0] <= b[0] + b[2] and v.box[0] + v.box[2] >= b[0]:
+                    o_y = min(v.box[1] + v.box[3], b[1] + b[3]) - max(v.box[1], b[1])
+                    if o_y > ov:
+                        best, ov = v, o_y
+            sv = best if best is not None and ov >= 0.5 * b[3] else None
         return sv.ordinal if sv is not None else None
 
     if rd.state in ("stem", "two_stems"):
@@ -4180,9 +4189,21 @@ def _head_stems(ev: Evidence, cell, head_box, stems):
             info["settled"] = "old_refused" if refused else "gained" if gained and not taken else "agrees"
         return chosen, info
     if rd.state in ("wrong_side", "through_head", "barline", "unanchored", "ambiguous"):
-        if old:
-            info["disagree"] = "finder_stem_but_" + rd.state
+        # Only a POSITIVE refusal of the finder's own stem (it is a stroke the convention names wrong-sided, or a barline) is a disagreement.
+        # `through_head` / `unanchored` / `ambiguous` are the map saying it cannot tell (tilted stems, tall cluster boxes, a neighbour's stroke
+        # inside the box): the finder's stem stands as today (rule 8 both ways), recorded as `map_cannot_tell`.
+        positive = []
+        for o in old:
+            ordn = ordinal_of(o)
+            cand = next((cc for cc in rd.candidates if ordn is not None and ordn in cc.ordinals), None)
+            if cand is not None and cand.why in ("wrong_side", "barline"):
+                positive.append({"row": o.id, "why": cand.why})
+        if positive:
+            info["disagree"] = "finder_stem_but_" + positive[0]["why"]
+            info["old_refused"] = positive
             info["settled"] = "disagree"
+        elif old:
+            info["settled"] = "map_cannot_tell"
         else:
             info["settled"] = "no_stem_candidate_only"          # strokes touch the head but none is its stem: shown, never invented (rule 6)
         return old, info
@@ -4210,6 +4231,13 @@ def _bridged_from_strokes(ev: Evidence, cell, head_box, old_bridged):
                "stem_below": c.direction == "down", "stem_above": c.direction == "up"})
     sb.setdefault("bridge_rows", None)
     return _stroke_stem_row(c, rows), sb
+
+
+#: A stroke is AT a stem's tip when its tip-side edge is at most this far inward of the stem's end (the first hook / beam level starts there);
+#: each further level within `TIP_LEVEL_GAP_SPACES` of the last (a 16th's second hook is ~0.6-0.9 sp in). Geometry from the stacking convention
+#: (`beam_strokes`: level 1 at the tip, 2 at ~0.9), not fitted; the 2.204 measure is the staff-line remnants it refuses.
+TIP_START_SPACES = 0.6
+TIP_LEVEL_GAP_SPACES = 1.1
 
 
 def _tips_from_strokes(ev: Evidence, cell, own_stems):
@@ -4243,14 +4271,31 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
         for end, side in (("top", "up"), ("bottom", "down")):
             tr = _BS.tip_reading(views, role, sv, side)
             tip_y = b[1] if side == "up" else b[1] + b[3]
-            lo, hi = ((tip_y - _BS.TIP_OUTWARD_SPACES * sp, tip_y + _BS.TIP_INWARD_SPACES * sp) if side == "up"
-                      else (tip_y - _BS.TIP_INWARD_SPACES * sp, tip_y + _BS.TIP_OUTWARD_SPACES * sp))
-            near = [v for v in views if v.ordinal not in members and v.kind != "vertical"
-                    and v.box[0] <= b[0] + b[2] + 0.3 * sp and v.box[0] + v.box[2] >= b[0] - 0.3 * sp
-                    and v.box[1] <= hi and v.box[1] + v.box[3] >= lo]
+            # What stands AT the tip. A stroke is at the tip only if it STARTS there (its tip-side edge within `TIP_START_*` of the stem's
+            # end) or continues such a stroke inward level by level (each level within `TIP_LEVEL_GAP_SPACES` of the last). Measured 2.204
+            # (Brahms, the 4 dotted quarters it narrowed): 1.9-sp staff-line remnants touching the stem 2-5 spaces from its tip are inside the
+            # 3.3-sp tip window and were read as flags/stubs. They are not at the tip, and say nothing about it.
+            cand = []
+            for v in views:
+                if v.ordinal in members or v.kind == "vertical":
+                    continue
+                if not (v.box[0] <= b[0] + b[2] + 0.3 * sp and v.box[0] + v.box[2] >= b[0] - 0.3 * sp):
+                    continue
+                s_in = (v.box[1] - tip_y) / sp if side == "up" else (tip_y - (v.box[1] + v.box[3])) / sp
+                if -_BS.TIP_OUTWARD_SPACES <= s_in <= _BS.TIP_INWARD_SPACES:
+                    cand.append((s_in, v))
+            chain, last = [], None
+            for s_in, v in sorted(cand, key=lambda t: t[0]):
+                if (last is None and s_in <= TIP_START_SPACES) or (last is not None and s_in <= last + TIP_LEVEL_GAP_SPACES):
+                    chain.append(v)
+                    last = s_in
+            at_tip = {v.ordinal for v in chain}
+            near = chain
+            hooks = [o for o in tr["hooks"] if o in at_tip]
+            beams = [o for o in tr["beams"] if o in at_tip]
+            stubs = [o for o in tr["stubs"] if o in at_tip]
             ids = [sv.row_id] + [v.row_id for v in near]
             base = {"end": end, "stem_row_id": st.id, "tip_y": tip_y, "stroke_rows": ids}
-            hooks, beams, stubs = tr["hooks"], tr["beams"], tr["stubs"]
             stub_roles = {str(role[o]["role"]) for o in stubs}
             if beams or (tr["stem_beamed"] and (stubs or hooks)) or "beam_stub" in stub_roles:
                 ab.append(types.SimpleNamespace(id=sv.row_id, value=None, detail={**base, "why": "runs_on"}))

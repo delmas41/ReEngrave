@@ -27,8 +27,8 @@ THE OLD RULES, RE-EXPRESSED ON STROKES (each had a reader of its own on the rast
 THE CUTS. `BRIDGE_MAX_GAP_SPACES` 0.35 is the 2.161 gap (0.13-0.27 sp on ONE plate) plus 0.08: it may only NARROW until another
 publisher confirms it (CLAUDE §4), which is why `bridged` is its own state. `END_IN_HEAD_SLACK_SPACES` 0.3 is the head box's own slop
 (detector boxes are loose by about a quarter space). `COLLINEAR_X_SPACES` 0.3 / `BREAK_MAX_GAP_SPACES` 0.6 join the two halves of a stem
-a beam or ledger rung cut; a join also needs both halves to be vertical strokes of ONE x-column. `RIGHT/LEFT_FLUSH_FRACTION` 0.6 / 0.4
-put a stroke's centre in the head's right / left flush zone; between them it runs THROUGH the head. None of them was tuned to a count.
+a beam or ledger rung cut; a join also needs both halves to be vertical strokes of ONE x-column. `FLUSH_SPACES` 0.45 puts a
+stem's outer edge within that of the head box's side edge; deeper inside it runs THROUGH the head. None of them was tuned to a count.
 """
 from __future__ import annotations
 
@@ -41,8 +41,12 @@ BRIDGE_MAX_GAP_SPACES = 0.35
 END_IN_HEAD_SLACK_SPACES = 0.3
 COLLINEAR_X_SPACES = 0.3
 BREAK_MAX_GAP_SPACES = 0.6
-RIGHT_FLUSH_FRACTION = 0.6
-LEFT_FLUSH_FRACTION = 0.4
+#: A "vertical" stroke wider than this has head ink fused to it; its stem stands at the tip end (median error 0.09 sp against the finder's
+#: stem on the 446 fused strokes, against 0.41 for the box centre).
+FUSED_MIN_WIDTH_SPACES = 0.6
+#: A stem's outer edge stands at most this far INSIDE the detector box's side edge (boxes are loose by a quarter space on one side).
+#: Measured 2.204, Litolff, the finder's own stems: 0 to 0.32 sp inside; the interior strokes it must refuse: 0.51-0.58 sp in.
+FLUSH_SPACES = 0.45
 #: A stroke must share at least this share of the head box's height to be beside the head at all.
 MIN_VERTICAL_OVERLAP_SHARE = 0.4
 #: A vertical stroke whose edge is within this of the cell's edge is "at the bar's edge" (2.155).
@@ -54,6 +58,9 @@ class StemView(StrokeView):
     """A `StrokeView` plus where its ENDS stand against the staff (steps from the top line, 0..8 -- measured by the map at the stroke's own
     x). `end_steps` is `(top end, bottom end)` or None."""
     end_steps: Optional[Tuple[float, float]] = None
+    #: the two extreme pixels along the axis, flat `(x0, y0, x1, y1)` canonical px (the row's `ends`). A "vertical" stroke on Litolff keeps the
+    #: head ink fused to the stem (measured 2.204: boxes 1.2 sp wide), so its BOX is not the stem; the stem stands at the end far from the head.
+    ends: Optional[Tuple[float, float, float, float]] = None
 
 
 @dataclass(frozen=True)
@@ -102,18 +109,39 @@ def _overlap(a0: float, a1: float, b0: float, b1: float) -> float:
     return min(a1, b1) - max(a0, b0)
 
 
-def merge_collinear(verts: Sequence[StemView]) -> List[Tuple[Tuple[StemView, ...], Tuple[float, float, float, float]]]:
+def axis_x(v: StemView, head_ys: Sequence[float] = ()) -> float:
+    """The x of THIS stroke's stem: the x of the end farthest (in y) from every head (the tip, where no head ink is fused), else the box
+    centre. Measured 2.204 on Litolff: 'vertical' strokes are up to 1.2 sp wide because head ink is fused to the stem."""
+    e = v.ends
+    sp = v.space_px if v.space_px > 0 else 1.0
+    if not e or len(e) != 4 or v.box[2] <= FUSED_MIN_WIDTH_SPACES * sp:
+        return v.box[0] + v.box[2] / 2.0           # a thin stroke: its box IS the stem (box centre: median error 0.03 sp, measured)
+    if not head_ys:
+        return (e[0] + e[2]) / 2.0
+    d0, d1 = (min(abs(e[1] - y) for y in head_ys), min(abs(e[3] - y) for y in head_ys))
+    return float(e[0] if d0 >= d1 else e[2])
+
+
+def stem_box(v: StemView, cx: float) -> Tuple[float, float, float, float]:
+    """The stem alone: the stroke's y-range, `thickness` wide (the median run width the map measured) about `cx`."""
+    sp = v.space_px if v.space_px > 0 else 1.0
+    w = min(v.box[2], max(v.thickness * sp, 0.12 * sp))
+    return (cx - w / 2.0, v.box[1], w, v.box[3])
+
+
+def merge_collinear(verts: Sequence[StemView], head_ys: Sequence[float] = ()) -> List[Tuple[Tuple[StemView, ...], Tuple[float, float, float, float]]]:
     """Group vertical strokes that are ONE stem cut by a crossing. Two verticals join when their x-centres are within `COLLINEAR_X_SPACES`
     and the vertical gap between them is at most `BREAK_MAX_GAP_SPACES` (or they overlap), or twice that when one horizontal stroke touches
     both (the caller lists it in `touches`). Returns `[(members, union box)]`. Pure; never joins across x-columns."""
-    items = sorted(verts, key=lambda s: (s.box[0], s.box[1]))
+    xs = {s.ordinal: axis_x(s, head_ys) for s in verts}
+    items = sorted(verts, key=lambda s: (xs[s.ordinal], s.box[1]))
     groups: List[List[StemView]] = []
     for s in items:
         sp = s.space_px if s.space_px > 0 else 1.0
         placed = False
         for g in groups:
             for m in g:
-                cx_s, cx_m = s.box[0] + s.box[2] / 2.0, m.box[0] + m.box[2] / 2.0
+                cx_s, cx_m = xs[s.ordinal], xs[m.ordinal]
                 if abs(cx_s - cx_m) > COLLINEAR_X_SPACES * sp:
                     continue
                 gap = -_overlap(s.box[1], s.box[1] + s.box[3], m.box[1], m.box[1] + m.box[3])
@@ -128,11 +156,11 @@ def merge_collinear(verts: Sequence[StemView]) -> List[Tuple[Tuple[StemView, ...
             groups.append([s])
     out = []
     for g in groups:
-        x0 = min(m.box[0] for m in g)
+        cx = sum(xs[m.ordinal] for m in g) / len(g)
         y0 = min(m.box[1] for m in g)
-        x1 = max(m.box[0] + m.box[2] for m in g)
         y1 = max(m.box[1] + m.box[3] for m in g)
-        out.append((tuple(g), (x0, y0, x1 - x0, y1 - y0)))
+        w = max(stem_box(m, cx)[2] for m in g)
+        out.append((tuple(g), (cx - w / 2.0, y0, w, y1 - y0)))
     return out
 
 
@@ -164,7 +192,7 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
 
     verts = [s for s in views if s.kind == "vertical"]
     cands: List[StemCand] = []
-    for members, box in merge_collinear(verts):
+    for members, box in merge_collinear(verts, [b[1] + b[3] / 2.0 for b in heads]):
         sx, sy, sw, sh = box
         member_sp = max((m.space_px for m in members if m.space_px > 0), default=sp)
         length = members[0].length if len(members) == 1 else sh / member_sp
@@ -174,12 +202,14 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
             gap = (sx - (hx + hw)) / sp
         else:
             gap = (hx - (sx + sw)) / sp
+        # how far INSIDE the box's side edge the stem's outer edge stands (negative: outside it). A stem is flush with its head; a vertical
+        # stroke deeper inside the box than FLUSH_SPACES is the head's own ink or a neighbour's, not its stem (2.204: 12 px strokes 0.5 sp in).
+        d_left, d_right = (sx - hx) / sp, ((hx + hw) - (sx + sw)) / sp
         if _overlap(sy, sy + sh, hy, hy + hh) < MIN_VERTICAL_OVERLAP_SHARE * hh or gap > BRIDGE_MAX_GAP_SPACES:
             continue                                   # not beside this head at all: not even a candidate
         top_in = hy - slack <= sy <= hy + hh + slack
         bot_in = hy - slack <= sy + sh <= hy + hh + slack
-        frac = (sx + sw / 2.0 - hx) / hw
-        side = "right" if frac >= RIGHT_FLUSH_FRACTION else "left" if frac <= LEFT_FLUSH_FRACTION else "through"
+        side = ("left" if d_left <= FLUSH_SPACES and d_left <= d_right else "right" if d_right <= FLUSH_SPACES else "through")
         ends_in = top_in != bot_in
         anchored = in_a_head(sy, sx, sx + sw) or in_a_head(sy + sh, sx, sx + sw)
         displaced = False
@@ -214,9 +244,9 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
         elif not engraving_side_ok(direction, side):
             # a second's DISPLACED head stands on the far side of the chord's one stem: the stroke touches it on the wrong side, but the head
             # its end stands in sees it on the right one. Only a passing stem, and only then.
+            a_l, a_r = (sx - anchor_box[0]) / sp if anchor_box else 9.0, ((anchor_box[0] + anchor_box[2]) - (sx + sw)) / sp if anchor_box else 9.0
             if anchor_box is not None and engraving_side_ok(
-                    direction, "right" if (sx + sw / 2.0 - anchor_box[0]) / anchor_box[2] >= RIGHT_FLUSH_FRACTION else
-                    "left" if (sx + sw / 2.0 - anchor_box[0]) / anchor_box[2] <= LEFT_FLUSH_FRACTION else "through"):
+                    direction, "left" if a_l <= FLUSH_SPACES and a_l <= a_r else "right" if a_r <= FLUSH_SPACES else "through"):
                 displaced = True
                 why = "bridged" if gap > 0 else ""
             else:
