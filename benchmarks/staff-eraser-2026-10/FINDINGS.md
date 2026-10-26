@@ -187,3 +187,50 @@ The scorer fix is its own item, not this lane.
   read differently. (That value is already wrong on the print, Eb major = -3, but it is the same in both arms.)
 
 Every move is right on the print, so the full frozen sample runs.
+
+## 6. Full frozen sample (2026-10-26): STOPPED. The fix is right at the eraser, but readers downstream had their cut-offs set on the cut ink
+
+`--from gather --workers 2`, frozen sample, 7,435 s. The report is in `results/full/report.txt` and `report.json`.
+
+    litolff  notes +18 -164 | rests +30 -14 | accidentals -8 | flags +110 -19 | beams +4 -185 ~6 | ties +8 -4 | slurs -2 | artic -5
+             note values ~508 | pitches ~17 | blue +516 -34 | words +1589 -3 | clefs +16 -6 | keys +17 -7 | meters +12
+             red bars 0 -> 1289 | notes not written 2563 -> 2717
+             judged (233): right->wrong 1 real (+1 twin-box artifact, tile_05, §5) | wrong->right 3
+    brahms   notes +13 -17 | rests +1 -2 | accidentals +4 -6 | dots +9 -9 | flags +1 -3 | beams +5 -4 ~3 | ties +2 -4 | artic +2 -3
+             note values ~3 | blue +20 -15 | dynamics +1 | words +13 -9
+             red bars 166 -> 166 | notes not written 3202 -> 3209 | judged (232): right->wrong 0
+
+**Failure 1 (the red bars): a false common-time meter on Litolff p2 system 1.** The ON file has a 4/4 change at m18 in all 12 parts.
+Every later bar of the sample is then the wrong length, which gives 1,289 red bars, and the cascade accounts for most of the Litolff
+lines above. On the print (`out/print/2.206-eraser/meter-check/p2_s1_staff8.png`) the header holds a treble clef and three flats, and
+NO meter.
+
+The template reader (`time_signature_locator`, NCC, floor 0.5) scores "C" on that non-meter header ink:
+- OFF: 0.4927, under the floor.
+- ON: 0.5317, over it.
+
+The same thing happens on 10 staves across pp 2, 9, 10, 11 and 16 (one, p16 s0 st6, goes the other way). On p2 s1, `adjudicate_meter`
+votes the system to 4/4 (`voted`). The eraser now keeps the flats' and clef's ink where they cross a line, and that ink is what the "C"
+template matches. The reader was already 0.007 under its floor on ink that is not a meter.
+
+**Failure 2 (the real right->wrong): 2.145-review tile 10, `glyph/9/0/7/3/6`, Litolff p9.** Sean's answer: an eighth rest. OFF:
+refused as a notehead (`is_a_rest_shape`). ADJUDICATE read the ink component as an eighth rest (`rest8th_head_ink`):
+`max_column_share` 0.90, height 2.0 sp. ON: the same component, with the line crossings kept, measures `max_column_share` 0.776 and
+height 2.32 sp. The eighth-rest reader no longer fires, so the box is kept as a quarter notehead.
+
+**Cause.** Fix A does what it says: the eraser keeps the ink it used to cut. But the readers of `image_no_staff` had their bands and
+floors set on the CUT image. The meter template's 0.5 floor and the eighth-rest column-share band were both measured on ink the eraser
+had been eroding. Restore the ink and their inputs change underneath them. One sits 0.007 under its floor on a non-meter; the other sits
+just inside a band. No threshold was touched in this lane.
+
+**Process lesson.** Fixing a SHARED upstream image moves the input of every reader that was tuned on the old image. Before running the
+sample, such a lane must list each consumer's cut-offs and how close the OFF readings sit to them. The meter reader at 0.4927 against
+0.5 was visible in the OFF record. "Who says it's right" applies to the downstream thresholds too: they were measured, on the eroded
+image.
+
+**Tiles.** lane_report drew 12 (`out/lane-report/2.206/tiles/`), but they were NOT sent. Eight of nine change draws on Litolff would
+sample a meter cascade that the print already rules out.
+
+**What it would take.** Not a threshold change here. Either re-measure the meter template's floor and the rest-shape bands on the
+corrected image (their own items, with Sean's tiles), or run the corrected walk only for the readers that wanted it (2.202b's beam on a
+line). The choice is Sean's.
