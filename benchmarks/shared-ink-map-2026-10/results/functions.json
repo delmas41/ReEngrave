@@ -1,0 +1,3311 @@
+{
+ "functions": [
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "letter_ink_extent",
+   "line": 4025,
+   "lines": 59,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 25,
+   "tags": [
+    "stem/vertical",
+    "component",
+    "staff line local",
+    "thickness",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/clef_locator.py",
+   "function": "_staff_left_column",
+   "line": 479,
+   "lines": 51,
+   "raster_refs": 16,
+   "helper_calls": 0,
+   "pixel_ops": 16,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/clef_locator.py",
+   "function": "_ink_mask",
+   "line": 447,
+   "lines": 30,
+   "raster_refs": 20,
+   "helper_calls": 0,
+   "pixel_ops": 7,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/yolo_detector.py",
+   "function": "detect_view",
+   "line": 608,
+   "lines": 88,
+   "raster_refs": 15,
+   "helper_calls": 0,
+   "pixel_ops": 10,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "dot/wedge",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_labels_surya.py",
+   "function": "read_crops_text",
+   "line": 658,
+   "lines": 104,
+   "raster_refs": 23,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/preprocessing.py",
+   "function": "deskew",
+   "line": 98,
+   "lines": 51,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 12,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_ink_without_detections",
+   "line": 4134,
+   "lines": 59,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 12,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_unboxed_rest_ink",
+   "line": 7729,
+   "lines": 162,
+   "raster_refs": 18,
+   "helper_calls": 1,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "ink_mask",
+   "line": 128,
+   "lines": 21,
+   "raster_refs": 16,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "header_ink_mask",
+   "line": 588,
+   "lines": 23,
+   "raster_refs": 16,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_line_removal.py",
+   "function": "remove_staff_lines_from_cell",
+   "line": 93,
+   "lines": 60,
+   "raster_refs": 18,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/transcribe.py",
+   "function": "_notehead_fill_ratio",
+   "line": 411,
+   "lines": 33,
+   "raster_refs": 18,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "head fill/hole",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "detect_beams",
+   "line": 1432,
+   "lines": 177,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 18,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "ledger",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_labels_tesseract.py",
+   "function": "read_crops_text",
+   "line": 141,
+   "lines": 67,
+   "raster_refs": 15,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "component",
+    "thickness",
+    "arc/hairpin",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "refine_staff_lines_in_cell",
+   "line": 163,
+   "lines": 57,
+   "raster_refs": 12,
+   "helper_calls": 0,
+   "pixel_ops": 7,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "stem_tip_ink",
+   "line": 4980,
+   "lines": 152,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 14,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "letter/text",
+    "ledger",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_strip_lines_and_stems",
+   "line": 10900,
+   "lines": 19,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 16,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "rest",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_beam_stem_levels",
+   "line": 11825,
+   "lines": 56,
+   "raster_refs": 16,
+   "helper_calls": 1,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/vertical_runs_page.py",
+   "function": "read_page_vertical_runs",
+   "line": 163,
+   "lines": 74,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/visualize.py",
+   "function": "write_cell_images",
+   "line": 102,
+   "lines": 17,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/volta_bracket.py",
+   "function": "find_brackets",
+   "line": 122,
+   "lines": 50,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 10,
+   "tags": [
+    "beam/horizontal",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "ledger",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/yolo_detector.py",
+   "function": "detect",
+   "line": 481,
+   "lines": 94,
+   "raster_refs": 13,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "component",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "strip_vertical_rules",
+   "line": 52,
+   "lines": 38,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 13,
+   "tags": [
+    "stem/vertical",
+    "component",
+    "staff line local",
+    "thickness",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "_binary_ink",
+   "line": 76,
+   "lines": 14,
+   "raster_refs": 12,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/transcribe.py",
+   "function": "transcribe",
+   "line": 4689,
+   "lines": 1212,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin",
+    "letter/text",
+    "ledger",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/template_matcher.py",
+   "function": "_classify_components",
+   "line": 326,
+   "lines": 148,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/capture.py",
+   "function": "_raster_of",
+   "line": 1598,
+   "lines": 69,
+   "raster_refs": 15,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "ledger_rung_ink",
+   "line": 2615,
+   "lines": 276,
+   "raster_refs": 14,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "thickness",
+    "arc/hairpin",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_beam_stroke_ink",
+   "line": 11662,
+   "lines": 57,
+   "raster_refs": 14,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/clef_locator.py",
+   "function": "locate_clef",
+   "line": 799,
+   "lines": 285,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "dot/wedge",
+    "letter/text",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/key_signature_locator.py",
+   "function": "locate_key_signature",
+   "line": 288,
+   "lines": 142,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/key_signature_template.py",
+   "function": "read_key_signature",
+   "line": 116,
+   "lines": 111,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_labels_tesseract.py",
+   "function": "one",
+   "line": 184,
+   "lines": 15,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/template_matcher.py",
+   "function": "_binarize_for_components",
+   "line": 136,
+   "lines": 9,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/template_matcher.py",
+   "function": "_find_noteheads",
+   "line": 198,
+   "lines": 121,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 9,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "ledger",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/accidental_shape.py",
+   "function": "measure",
+   "line": 86,
+   "lines": 36,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "arc/hairpin",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_observe_stem_tip_ink",
+   "line": 5578,
+   "lines": 146,
+   "raster_refs": 13,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "arc/hairpin",
+    "letter/text",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_cell_raw_ink",
+   "line": 6645,
+   "lines": 12,
+   "raster_refs": 12,
+   "helper_calls": 1,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_ink_components",
+   "line": 7037,
+   "lines": 26,
+   "raster_refs": 11,
+   "helper_calls": 1,
+   "pixel_ops": 3,
+   "tags": [
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "tight_crop_for",
+   "line": 1065,
+   "lines": 17,
+   "raster_refs": 9,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_build_measure_cell",
+   "line": 1674,
+   "lines": 141,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/yolo_detector.py",
+   "function": "detect_image",
+   "line": 576,
+   "lines": 31,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "dot_stroke_ink",
+   "line": 6191,
+   "lines": 41,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "thickness",
+    "dot/wedge"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_mark_shapes",
+   "line": 6356,
+   "lines": 89,
+   "raster_refs": 10,
+   "helper_calls": 3,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness",
+    "dot/wedge"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_meter_ocr_at_bars",
+   "line": 13161,
+   "lines": 124,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_printed_bar_numbers",
+   "line": 13324,
+   "lines": 130,
+   "raster_refs": 13,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "letter/text",
+    "ledger",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "crop_for",
+   "line": 1021,
+   "lines": 30,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "detect_stems",
+   "line": 901,
+   "lines": 289,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/meter_digit_ocr.py",
+   "function": "read_meter_digits",
+   "line": 86,
+   "lines": 57,
+   "raster_refs": 12,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "beam_stroke_ink",
+   "line": 11578,
+   "lines": 82,
+   "raster_refs": 9,
+   "helper_calls": 3,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/clef_locator.py",
+   "function": "_has_f_clef_dots",
+   "line": 589,
+   "lines": 83,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 9,
+   "tags": [
+    "component",
+    "staff line local",
+    "thickness",
+    "dot/wedge",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "strip_horizontal_rules",
+   "line": 92,
+   "lines": 16,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 9,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "arc/hairpin",
+    "dot/wedge",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/preprocessing.py",
+   "function": "binarize",
+   "line": 76,
+   "lines": 17,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/template_matcher.py",
+   "function": "_extract_components",
+   "line": 155,
+   "lines": 31,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 7,
+   "tags": [
+    "component",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/volta_bracket.py",
+   "function": "read_numeral",
+   "line": 188,
+   "lines": 44,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": [
+    "head fill/hole",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "stem_tip_hooks",
+   "line": 5312,
+   "lines": 145,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "notehead_ink_under",
+   "line": 9201,
+   "lines": 78,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "head fill/hole",
+    "thickness",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "stacked_blob_height_spaces",
+   "line": 9846,
+   "lines": 53,
+   "raster_refs": 9,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_gather_meter_ocr_header",
+   "line": 12714,
+   "lines": 57,
+   "raster_refs": 11,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_refit_misaligned_group",
+   "line": 967,
+   "lines": 78,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "beam/horizontal",
+    "staff line local",
+    "thickness",
+    "rest",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "_ink_strip",
+   "line": 596,
+   "lines": 39,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/visualize.py",
+   "function": "draw_overlay",
+   "line": 34,
+   "lines": 59,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 11,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "component",
+    "staff line local",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "ledger_ink_under",
+   "line": 8109,
+   "lines": 70,
+   "raster_refs": 9,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "head fill/hole",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "arc_ink_shape",
+   "line": 8268,
+   "lines": 87,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "head_interior_white",
+   "line": 9126,
+   "lines": 51,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_meter_object",
+   "line": 13835,
+   "lines": 118,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_claimed_register",
+   "line": 13994,
+   "lines": 117,
+   "raster_refs": 10,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_detect_barlines_in_window",
+   "line": 208,
+   "lines": 81,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 10,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/run_pipeline.py",
+   "function": "main",
+   "line": 38,
+   "lines": 96,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/claims.py",
+   "function": "through_stroke",
+   "line": 103,
+   "lines": 40,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_observe_beam_stem_join",
+   "line": 6913,
+   "lines": 92,
+   "raster_refs": 8,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "notehead_ink_off_line",
+   "line": 9294,
+   "lines": 66,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "head fill/hole",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_box_ink_mask",
+   "line": 10508,
+   "lines": 32,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_clef_locator",
+   "line": 12002,
+   "lines": 160,
+   "raster_refs": 9,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/meter_object.py",
+   "function": "_pieces",
+   "line": 109,
+   "lines": 12,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/readout.py",
+   "function": "build_html",
+   "line": 1386,
+   "lines": 153,
+   "raster_refs": 9,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "component",
+    "thickness",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/bar_number_text.py",
+   "function": "read_crops_surya",
+   "line": 96,
+   "lines": 26,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "_page_ink",
+   "line": 317,
+   "lines": 7,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "find_candidates",
+   "line": 902,
+   "lines": 86,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "component",
+    "staff line local",
+    "thickness",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/export.py",
+   "function": "_measure_events_xml",
+   "line": 5879,
+   "lines": 276,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 9,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "rest",
+    "arc/hairpin",
+    "dot/wedge",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_raw_page_ink",
+   "line": 4005,
+   "lines": 10,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "line_rows_across_stem",
+   "line": 6592,
+   "lines": 23,
+   "raster_refs": 3,
+   "helper_calls": 1,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_rest_ink_contact",
+   "line": 7591,
+   "lines": 54,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_bar_head_window",
+   "line": 12916,
+   "lines": 33,
+   "raster_refs": 8,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_volta_numerals",
+   "line": 13523,
+   "lines": 113,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "component",
+    "thickness",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "read_group",
+   "line": 721,
+   "lines": 101,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "component",
+    "rest",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/bracket_reader.py",
+   "function": "strokes_at_left_edge",
+   "line": 139,
+   "lines": 105,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/hairpin_detection.py",
+   "function": "read_hairpins_for_page",
+   "line": 400,
+   "lines": 73,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "rest",
+    "arc/hairpin",
+    "dot/wedge",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "_column_stroke_bands",
+   "line": 536,
+   "lines": 127,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 8,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "measure_line_geometry",
+   "line": 830,
+   "lines": 51,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/template_matcher.py",
+   "function": "detect_symbols",
+   "line": 481,
+   "lines": 181,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "letter/text",
+    "ledger",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_wedge_boxes",
+   "line": 4252,
+   "lines": 143,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "dot/wedge",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_observe_stem_slashes",
+   "line": 6117,
+   "lines": 48,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "mark_shape",
+   "line": 6338,
+   "lines": 16,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_empty_bar_rest_search",
+   "line": 7927,
+   "lines": 163,
+   "raster_refs": 6,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "recentre_notehead",
+   "line": 8481,
+   "lines": 50,
+   "raster_refs": 7,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "head fill/hole",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "recentre_part_boxed",
+   "line": 8727,
+   "lines": 124,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_enclosed_holes",
+   "line": 8950,
+   "lines": 26,
+   "raster_refs": 1,
+   "helper_calls": 1,
+   "pixel_ops": 6,
+   "tags": [
+    "head fill/hole",
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_letter_look",
+   "line": 11086,
+   "lines": 202,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "rest",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/meter_object.py",
+   "function": "_line_thickness",
+   "line": 57,
+   "lines": 23,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/readout.py",
+   "function": "_encode_png",
+   "line": 1332,
+   "lines": 14,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/rest_ink.py",
+   "function": "measure",
+   "line": 58,
+   "lines": 59,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/bar_number_text.py",
+   "function": "read_crop",
+   "line": 134,
+   "lines": 43,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "thickness",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/export.py",
+   "function": "_mxl_voice_events",
+   "line": 3302,
+   "lines": 103,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 7,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "rest",
+    "arc/hairpin",
+    "dot/wedge",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/header_ink.py",
+   "function": "drop_flat_residue",
+   "line": 110,
+   "lines": 16,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "ledger",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_cell_line_offset_capped",
+   "line": 1610,
+   "lines": 62,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/preprocessing.py",
+   "function": "render_page",
+   "line": 28,
+   "lines": 33,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_staff_x_extent",
+   "line": 598,
+   "lines": 74,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_header.py",
+   "function": "_rule_columns",
+   "line": 152,
+   "lines": 18,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/system_grouping.py",
+   "function": "pair_left_edge_count",
+   "line": 220,
+   "lines": 29,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/system_grouping.py",
+   "function": "gap_crossing_runs",
+   "line": 268,
+   "lines": 47,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/system_grouping.py",
+   "function": "left_edge_barline_counts",
+   "line": 338,
+   "lines": 37,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "letter_ink_beside",
+   "line": 4199,
+   "lines": 42,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "arc/hairpin",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "beam_stem_join_ink",
+   "line": 6778,
+   "lines": 133,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "head_letter_ink",
+   "line": 10921,
+   "lines": 54,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_direction_words",
+   "line": 14474,
+   "lines": 312,
+   "raster_refs": 6,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "arc/hairpin",
+    "letter/text",
+    "ledger",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "look",
+   "line": 288,
+   "lines": 29,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/rhythm.py",
+   "function": "adjudicate_duration",
+   "line": 4042,
+   "lines": 1126,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin",
+    "dot/wedge",
+    "letter/text",
+    "ledger",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/hairpin_detection.py",
+   "function": "detect_hairpins",
+   "line": 165,
+   "lines": 48,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "_stacked_bar_bands",
+   "line": 1206,
+   "lines": 127,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_row_profile",
+   "line": 1432,
+   "lines": 15,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/repeat_dots.py",
+   "function": "find_pair",
+   "line": 47,
+   "lines": 58,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "dot/wedge",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_single_line_staff_rows",
+   "line": 500,
+   "lines": 93,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_header.py",
+   "function": "_band_ink_profile",
+   "line": 137,
+   "lines": 13,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/system_grouping.py",
+   "function": "assign_systems",
+   "line": 623,
+   "lines": 123,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/arcs_system.py",
+   "function": "_cell_ink_on_page",
+   "line": 183,
+   "lines": 14,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "ledger_owner_ink_density",
+   "line": 3011,
+   "lines": 34,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "head fill/hole",
+    "thickness",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_local_staff_lines",
+   "line": 3428,
+   "lines": 28,
+   "raster_refs": 5,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "dot/wedge"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "stem_tip_window",
+   "line": 5163,
+   "lines": 54,
+   "raster_refs": 5,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_hook_line_rows",
+   "line": 6659,
+   "lines": 9,
+   "raster_refs": 4,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_best_overlap_runs",
+   "line": 11402,
+   "lines": 30,
+   "raster_refs": 0,
+   "helper_calls": 3,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_page_gray",
+   "line": 13456,
+   "lines": 11,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/health.py",
+   "function": "_problems",
+   "line": 217,
+   "lines": 24,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 6,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "erase_staff_lines",
+   "line": 149,
+   "lines": 34,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/clef_locator.py",
+   "function": "_refine_symmetry_axis",
+   "line": 532,
+   "lines": 55,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "staff line local",
+    "dot/wedge",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_ink_profile",
+   "line": 220,
+   "lines": 4,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "head fill/hole",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_longest_row_run",
+   "line": 422,
+   "lines": 30,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_detector.py",
+   "function": "_line_ink_runs_per_space",
+   "line": 787,
+   "lines": 38,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "locate_time_signature",
+   "line": 637,
+   "lines": 89,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "rest",
+    "arc/hairpin",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_far_head_ledger_positions",
+   "line": 1472,
+   "lines": 141,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_dot_positions",
+   "line": 3458,
+   "lines": 106,
+   "raster_refs": 3,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "arc/hairpin",
+    "dot/wedge"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "line_rows_past_flag",
+   "line": 6625,
+   "lines": 18,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 5,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_narrow_box_shape",
+   "line": 7444,
+   "lines": 138,
+   "raster_refs": 4,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "head_stem_bridge",
+   "line": 9369,
+   "lines": 62,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "thickness",
+    "rest",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/head_oval.py",
+   "function": "oval_width",
+   "line": 100,
+   "lines": 33,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "_remnant_slots",
+   "line": 566,
+   "lines": 29,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "component",
+    "rest",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/meter_object.py",
+   "function": "_ink_without_bare_lines",
+   "line": 82,
+   "lines": 25,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/readout.py",
+   "function": "frame_control",
+   "line": 1291,
+   "lines": 39,
+   "raster_refs": 4,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "_letter_components",
+   "line": 439,
+   "lines": 30,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_upscale_to_canonical",
+   "line": 1222,
+   "lines": 25,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/score_layouts.py",
+   "function": "align_to_layout",
+   "line": 357,
+   "lines": 171,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/score_translation.py",
+   "function": "verdict",
+   "line": 109,
+   "lines": 33,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_labels_vision.py",
+   "function": "margin_strip",
+   "line": 200,
+   "lines": 26,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "_half_scores",
+   "line": 469,
+   "lines": 37,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "head_cut_by_line",
+   "line": 8978,
+   "lines": 74,
+   "raster_refs": 2,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_head_line_cut",
+   "line": 9054,
+   "lines": 61,
+   "raster_refs": 3,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/lane_report.py",
+   "function": "control_of",
+   "line": 652,
+   "lines": 8,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 4,
+   "tags": [
+    "beam/horizontal"
+   ]
+  },
+  {
+   "module": "tools/omr/dossier.py",
+   "function": "check_clef_distribution",
+   "line": 182,
+   "lines": 45,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/line_detection.py",
+   "function": "_thin_stem_in_run",
+   "line": 439,
+   "lines": 53,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_spans_system",
+   "line": 443,
+   "lines": 47,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_line_removal.py",
+   "function": "_vertical_runs_through",
+   "line": 180,
+   "lines": 45,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "_half_templates",
+   "line": 440,
+   "lines": 27,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "letter/text",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/visualize.py",
+   "function": "write_overlay",
+   "line": 95,
+   "lines": 5,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "stem_slashes",
+   "line": 5945,
+   "lines": 148,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_ink",
+   "line": 7117,
+   "lines": 224,
+   "raster_refs": 2,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest",
+    "arc/hairpin",
+    "dot/wedge",
+    "letter/text",
+    "ledger",
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_recentre_window_fill",
+   "line": 8446,
+   "lines": 16,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "head fill/hole"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_head_stem_reach",
+   "line": 10835,
+   "lines": 51,
+   "raster_refs": 2,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "letter_components",
+   "line": 206,
+   "lines": 19,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "component",
+    "arc/hairpin",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/notehead_precision.py",
+   "function": "_unladdered",
+   "line": 2944,
+   "lines": 61,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 3,
+   "tags": [
+    "head fill/hole",
+    "staff line local",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/_phase1_diagnostic.py",
+   "function": "_connectivity",
+   "line": 33,
+   "lines": 28,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/acceptance.py",
+   "function": "lilypond_check",
+   "line": 648,
+   "lines": 39,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "arc/hairpin",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/conventions.py",
+   "function": "format_report",
+   "line": 925,
+   "lines": 61,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "beam/horizontal"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "_grow_along_baseline",
+   "line": 658,
+   "lines": 73,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "staff line local",
+    "thickness",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/direction_text.py",
+   "function": "read_directions",
+   "line": 1347,
+   "lines": 105,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "staff line local",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/key_consensus.py",
+   "function": "_is_witness",
+   "line": 270,
+   "lines": 13,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_intersystem_connectivity",
+   "line": 492,
+   "lines": 83,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "_window_blind_systems",
+   "line": 640,
+   "lines": 27,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole"
+   ]
+  },
+  {
+   "module": "tools/omr/measure_extractor.py",
+   "function": "resegment_fused_measures",
+   "line": 2127,
+   "lines": 184,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/slots.py",
+   "function": "align",
+   "line": 492,
+   "lines": 51,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "component"
+   ]
+  },
+  {
+   "module": "tools/omr/staff_labels.py",
+   "function": "_pdf_to_pixel_transform",
+   "line": 81,
+   "lines": 19,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/symbol_ledger.py",
+   "function": "lcs_pairs",
+   "line": 636,
+   "lines": 34,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/symbol_ledger.py",
+   "function": "coverage_check",
+   "line": 835,
+   "lines": 33,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "_meter_templates",
+   "line": 355,
+   "lines": 45,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "thickness",
+    "letter/text",
+    "accidental",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/time_signature_locator.py",
+   "function": "_looks_cut",
+   "line": 402,
+   "lines": 35,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "thickness",
+    "letter/text",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/arcs_system.py",
+   "function": "stroke_share",
+   "line": 560,
+   "lines": 33,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/check.py",
+   "function": "_check_reach",
+   "line": 141,
+   "lines": 13,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_true_ink_span",
+   "line": 2554,
+   "lines": 28,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_dynamic_letters",
+   "line": 3856,
+   "lines": 147,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "thickness",
+    "arc/hairpin",
+    "dot/wedge",
+    "letter/text"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_col_runs",
+   "line": 5859,
+   "lines": 4,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "line_band_beside",
+   "line": 6268,
+   "lines": 29,
+   "raster_refs": 1,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "staff line local",
+    "thickness"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_median_filter_1d",
+   "line": 11434,
+   "lines": 11,
+   "raster_refs": 0,
+   "helper_calls": 1,
+   "pixel_ops": 1,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "local_line_thickness",
+   "line": 11447,
+   "lines": 38,
+   "raster_refs": 0,
+   "helper_calls": 2,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local",
+    "thickness",
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_column_ink_without_lines",
+   "line": 11762,
+   "lines": 21,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "beam_runs_at_stem_end",
+   "line": 11785,
+   "lines": 38,
+   "raster_refs": 1,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "staff line local"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/letter_look.py",
+   "function": "_runs",
+   "line": 132,
+   "lines": 8,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": []
+  },
+  {
+   "module": "tools/omr/staged/lilypond.py",
+   "function": "_direction_suffix",
+   "line": 314,
+   "lines": 94,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "beam/horizontal",
+    "head fill/hole",
+    "letter/text",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/reach.py",
+   "function": "_report",
+   "line": 737,
+   "lines": 58,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "arc/hairpin"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/family_precision.py",
+   "function": "_ledger_reading",
+   "line": 2265,
+   "lines": 90,
+   "raster_refs": 1,
+   "helper_calls": 0,
+   "pixel_ops": 1,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "staff line local",
+    "ledger"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/identity.py",
+   "function": "_forced_pairing",
+   "line": 294,
+   "lines": 69,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "component",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/movement.py",
+   "function": "_top_staff_indent",
+   "line": 178,
+   "lines": 12,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/adjudicators/structure.py",
+   "function": "_trailing_cell_is_cautionary_only",
+   "line": 151,
+   "lines": 52,
+   "raster_refs": 0,
+   "helper_calls": 0,
+   "pixel_ops": 2,
+   "tags": [
+    "stem/vertical",
+    "head fill/hole",
+    "thickness",
+    "clef/key/meter"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "gather_cell_ink_pieces",
+   "line": 7361,
+   "lines": 68,
+   "raster_refs": 0,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "beam/horizontal",
+    "component",
+    "staff line local",
+    "thickness",
+    "rest"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_ink_runs",
+   "line": 11391,
+   "lines": 9,
+   "raster_refs": 0,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "accidental"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_stem_at_end",
+   "line": 11487,
+   "lines": 47,
+   "raster_refs": 0,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal"
+   ]
+  },
+  {
+   "module": "tools/omr/staged/gather.py",
+   "function": "_beam_core",
+   "line": 11536,
+   "lines": 40,
+   "raster_refs": 0,
+   "helper_calls": 1,
+   "pixel_ops": 0,
+   "tags": [
+    "stem/vertical",
+    "beam/horizontal",
+    "thickness"
+   ]
+  }
+ ],
+ "per_module": {
+  "tools/omr/_phase1_diagnostic.py": 1,
+  "tools/omr/acceptance.py": 1,
+  "tools/omr/bar_number_text.py": 2,
+  "tools/omr/bracket_reader.py": 1,
+  "tools/omr/clef_locator.py": 5,
+  "tools/omr/conventions.py": 1,
+  "tools/omr/direction_text.py": 7,
+  "tools/omr/dossier.py": 1,
+  "tools/omr/export.py": 1,
+  "tools/omr/hairpin_detection.py": 2,
+  "tools/omr/header_ink.py": 6,
+  "tools/omr/key_consensus.py": 1,
+  "tools/omr/key_signature_locator.py": 1,
+  "tools/omr/key_signature_template.py": 1,
+  "tools/omr/line_detection.py": 6,
+  "tools/omr/measure_extractor.py": 9,
+  "tools/omr/meter_digit_ocr.py": 1,
+  "tools/omr/preprocessing.py": 3,
+  "tools/omr/repeat_dots.py": 1,
+  "tools/omr/run_pipeline.py": 1,
+  "tools/omr/score_layouts.py": 1,
+  "tools/omr/score_translation.py": 1,
+  "tools/omr/slots.py": 1,
+  "tools/omr/staff_detector.py": 7,
+  "tools/omr/staff_header.py": 2,
+  "tools/omr/staff_labels.py": 1,
+  "tools/omr/staff_labels_surya.py": 1,
+  "tools/omr/staff_labels_tesseract.py": 2,
+  "tools/omr/staff_labels_vision.py": 1,
+  "tools/omr/staff_line_removal.py": 2,
+  "tools/omr/symbol_ledger.py": 2,
+  "tools/omr/system_grouping.py": 4,
+  "tools/omr/template_matcher.py": 5,
+  "tools/omr/time_signature_locator.py": 6,
+  "tools/omr/transcribe.py": 2,
+  "tools/omr/vertical_runs_page.py": 1,
+  "tools/omr/visualize.py": 3,
+  "tools/omr/volta_bracket.py": 2,
+  "tools/omr/yolo_detector.py": 3,
+  "tools/omr/staged/accidental_shape.py": 1,
+  "tools/omr/staged/arcs_system.py": 2,
+  "tools/omr/staged/capture.py": 1,
+  "tools/omr/staged/check.py": 1,
+  "tools/omr/staged/claims.py": 1,
+  "tools/omr/staged/export.py": 1,
+  "tools/omr/staged/gather.py": 75,
+  "tools/omr/staged/head_oval.py": 1,
+  "tools/omr/staged/health.py": 1,
+  "tools/omr/staged/lane_report.py": 1,
+  "tools/omr/staged/letter_look.py": 6,
+  "tools/omr/staged/lilypond.py": 1,
+  "tools/omr/staged/meter_object.py": 3,
+  "tools/omr/staged/reach.py": 1,
+  "tools/omr/staged/readout.py": 3,
+  "tools/omr/staged/rest_ink.py": 1,
+  "tools/omr/staged/adjudicators/family_precision.py": 1,
+  "tools/omr/staged/adjudicators/identity.py": 1,
+  "tools/omr/staged/adjudicators/movement.py": 1,
+  "tools/omr/staged/adjudicators/notehead_precision.py": 1,
+  "tools/omr/staged/adjudicators/rhythm.py": 1,
+  "tools/omr/staged/adjudicators/structure.py": 1
+ },
+ "per_module_all": {
+  "tools/omr/_omrned_worker.py": 5,
+  "tools/omr/_phase1_diagnostic.py": 4,
+  "tools/omr/_surya_worker.py": 8,
+  "tools/omr/absent_instrument.py": 5,
+  "tools/omr/acceptance.py": 36,
+  "tools/omr/acceptance_barscore.py": 7,
+  "tools/omr/acceptance_quick.py": 21,
+  "tools/omr/accuracy_record.py": 16,
+  "tools/omr/assist.py": 6,
+  "tools/omr/bar_number_text.py": 5,
+  "tools/omr/bracket_reader.py": 10,
+  "tools/omr/class_aliases.py": 5,
+  "tools/omr/clef_correction.py": 14,
+  "tools/omr/clef_geometry.py": 6,
+  "tools/omr/clef_locator.py": 10,
+  "tools/omr/condensed_parts.py": 3,
+  "tools/omr/contextual.py": 22,
+  "tools/omr/conventions.py": 46,
+  "tools/omr/detector_cache.py": 19,
+  "tools/omr/direction_lexicon.py": 13,
+  "tools/omr/direction_text.py": 50,
+  "tools/omr/dossier.py": 24,
+  "tools/omr/export.py": 105,
+  "tools/omr/export_coverage.py": 23,
+  "tools/omr/factsheet.py": 37,
+  "tools/omr/hairpin_detection.py": 12,
+  "tools/omr/header_ink.py": 17,
+  "tools/omr/input_domain.py": 4,
+  "tools/omr/instruments.py": 23,
+  "tools/omr/key_consensus.py": 15,
+  "tools/omr/key_signature_corroboration.py": 7,
+  "tools/omr/key_signature_geometry.py": 7,
+  "tools/omr/key_signature_locator.py": 6,
+  "tools/omr/key_signature_template.py": 4,
+  "tools/omr/key_signature_vote.py": 8,
+  "tools/omr/label_contradiction.py": 5,
+  "tools/omr/line_detection.py": 35,
+  "tools/omr/measure_extractor.py": 38,
+  "tools/omr/meter_digit_ocr.py": 4,
+  "tools/omr/movement_reference.py": 13,
+  "tools/omr/musical_terms.py": 12,
+  "tools/omr/no_producer.py": 21,
+  "tools/omr/offroster_name.py": 3,
+  "tools/omr/omr_ned.py": 10,
+  "tools/omr/page_truth.py": 10,
+  "tools/omr/pitch_resolver.py": 10,
+  "tools/omr/positional_store.py": 35,
+  "tools/omr/preprocessing.py": 4,
+  "tools/omr/repeat_dots.py": 1,
+  "tools/omr/rhythm.py": 36,
+  "tools/omr/roster.py": 10,
+  "tools/omr/run_pipeline.py": 2,
+  "tools/omr/score_language.py": 15,
+  "tools/omr/score_layouts.py": 13,
+  "tools/omr/score_reading.py": 9,
+  "tools/omr/score_translation.py": 5,
+  "tools/omr/slots.py": 24,
+  "tools/omr/staff_detector.py": 21,
+  "tools/omr/staff_header.py": 13,
+  "tools/omr/staff_labels.py": 7,
+  "tools/omr/staff_labels_human.py": 4,
+  "tools/omr/staff_labels_surya.py": 21,
+  "tools/omr/staff_labels_tesseract.py": 7,
+  "tools/omr/staff_labels_vision.py": 5,
+  "tools/omr/staff_line_removal.py": 5,
+  "tools/omr/symbol_ledger.py": 36,
+  "tools/omr/system_grouping.py": 13,
+  "tools/omr/template_matcher.py": 12,
+  "tools/omr/time_signature_locator.py": 15,
+  "tools/omr/transcribe.py": 88,
+  "tools/omr/types.py": 10,
+  "tools/omr/vertical_runs_page.py": 6,
+  "tools/omr/visualize.py": 3,
+  "tools/omr/voicing.py": 10,
+  "tools/omr/volta_bracket.py": 5,
+  "tools/omr/work_roster.py": 18,
+  "tools/omr/yolo_detector.py": 13,
+  "tools/omr/staged/__main__.py": 8,
+  "tools/omr/staged/accidental_shape.py": 10,
+  "tools/omr/staged/adjudicate.py": 33,
+  "tools/omr/staged/arcs_system.py": 33,
+  "tools/omr/staged/bar_length.py": 9,
+  "tools/omr/staged/brakes.py": 10,
+  "tools/omr/staged/budget.py": 4,
+  "tools/omr/staged/capture.py": 30,
+  "tools/omr/staged/check.py": 27,
+  "tools/omr/staged/check_helpers.py": 5,
+  "tools/omr/staged/claims.py": 9,
+  "tools/omr/staged/consequences.py": 63,
+  "tools/omr/staged/detector_views.py": 13,
+  "tools/omr/staged/evaluate.py": 10,
+  "tools/omr/staged/export.py": 142,
+  "tools/omr/staged/export_unison.py": 6,
+  "tools/omr/staged/gather.py": 279,
+  "tools/omr/staged/gather_coverage.py": 24,
+  "tools/omr/staged/geometry.py": 11,
+  "tools/omr/staged/groups.py": 25,
+  "tools/omr/staged/head_oval.py": 6,
+  "tools/omr/staged/health.py": 8,
+  "tools/omr/staged/infer.py": 24,
+  "tools/omr/staged/inferences.py": 41,
+  "tools/omr/staged/inventory.py": 22,
+  "tools/omr/staged/judged.py": 33,
+  "tools/omr/staged/lane_report.py": 43,
+  "tools/omr/staged/legacy.py": 4,
+  "tools/omr/staged/letter_look.py": 32,
+  "tools/omr/staged/letter_look_report.py": 3,
+  "tools/omr/staged/lilypond.py": 30,
+  "tools/omr/staged/margins.py": 16,
+  "tools/omr/staged/meaning.py": 17,
+  "tools/omr/staged/meter_object.py": 11,
+  "tools/omr/staged/movements.py": 11,
+  "tools/omr/staged/one_ink.py": 9,
+  "tools/omr/staged/one_note.py": 10,
+  "tools/omr/staged/pipeline.py": 17,
+  "tools/omr/staged/positions.py": 22,
+  "tools/omr/staged/producers.py": 10,
+  "tools/omr/staged/reach.py": 7,
+  "tools/omr/staged/readout.py": 74,
+  "tools/omr/staged/record.py": 51,
+  "tools/omr/staged/record_coverage.py": 6,
+  "tools/omr/staged/record_io.py": 12,
+  "tools/omr/staged/record_slim.py": 15,
+  "tools/omr/staged/regather_report.py": 45,
+  "tools/omr/staged/rest_ink.py": 3,
+  "tools/omr/staged/second_hollow.py": 12,
+  "tools/omr/staged/stem_end_heads.py": 12,
+  "tools/omr/staged/trace.py": 34,
+  "tools/omr/staged/weight_routing.py": 1,
+  "tools/omr/staged/wiring.py": 36,
+  "tools/omr/staged/adjudicators/aug_dot_join.py": 15,
+  "tools/omr/staged/adjudicators/claimed_by.py": 4,
+  "tools/omr/staged/adjudicators/clef.py": 16,
+  "tools/omr/staged/adjudicators/family_precision.py": 53,
+  "tools/omr/staged/adjudicators/head_on_mark.py": 5,
+  "tools/omr/staged/adjudicators/head_rest_shape.py": 8,
+  "tools/omr/staged/adjudicators/header.py": 27,
+  "tools/omr/staged/adjudicators/identity.py": 34,
+  "tools/omr/staged/adjudicators/inside_meter.py": 2,
+  "tools/omr/staged/adjudicators/key_slots.py": 16,
+  "tools/omr/staged/adjudicators/letter_cover.py": 4,
+  "tools/omr/staged/adjudicators/movement.py": 11,
+  "tools/omr/staged/adjudicators/narrow_rest.py": 2,
+  "tools/omr/staged/adjudicators/notehead_precision.py": 81,
+  "tools/omr/staged/adjudicators/ownership.py": 105,
+  "tools/omr/staged/adjudicators/position.py": 1,
+  "tools/omr/staged/adjudicators/repeats.py": 3,
+  "tools/omr/staged/adjudicators/rest_search.py": 1,
+  "tools/omr/staged/adjudicators/rhythm.py": 185,
+  "tools/omr/staged/adjudicators/stem_value.py": 35,
+  "tools/omr/staged/adjudicators/structure.py": 10,
+  "tools/omr/staged/adjudicators/text.py": 29,
+  "tools/omr/staged/adjudicators/unboxed_rest.py": 5,
+  "tools/omr/staged/adjudicators/unison_two.py": 4,
+  "tools/omr/staged/adjudicators/unread_mark.py": 11
+ },
+ "per_tag": {
+  "stem/vertical": 126,
+  "arc/hairpin": 36,
+  "letter/text": 60,
+  "head fill/hole": 111,
+  "component": 63,
+  "thickness": 99,
+  "ledger": 36,
+  "staff line local": 113,
+  "beam/horizontal": 65,
+  "accidental": 34,
+  "clef/key/meter": 43,
+  "dot/wedge": 17,
+  "rest": 30
+ },
+ "total_functions": 3325
+}

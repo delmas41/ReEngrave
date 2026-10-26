@@ -35,11 +35,13 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from . import one_ink as _one_ink
 from . import accidental_shape as _acc_shape
+from . import accidental_family as _acc_family
 from .. import natural_candidate as _natural_candidate
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
                        STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
 from .record import ABSTAIN, Log, Q, READERS, Subject
+from .record import STROKE_GLYPH_BASE as RECORD_STROKE_GLYPH_BASE
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
 #: over every `research`-verdict flag (roadmap 0.2b): "moves behind the
@@ -1765,12 +1767,27 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
         top_y, half_step = grid
         for gi, d in enumerate(dets):
             alteration = _alteration_of(d.smufl_name)
+            fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
+            fam_detail: Dict[str, Any] = {}
+            bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
+            if fam is not None:
+                fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
+                if fam_alt is not None:
+                    alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
+                elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
+                    alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
+                bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
+                fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
+                                                              "candidates", "agrees_with_detector", "head_right") if k in fam}}
             if alteration is None:
                 continue
-            frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
-            anchor_y = d.y_canonical + d.height_canonical * frac
+            if fam is not None and fam["type"] in _acc_family.TYPES:
+                frac = float(fam["anchor_fraction"])
+            else:
+                frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+            anchor_y = by0 + (by1 - by0) * frac
             pos_float = (anchor_y - top_y) / half_step
-            centre_pos = (d.y_center - top_y) / half_step
+            centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
             log.observe(
@@ -1788,13 +1805,13 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                 box_centre_position=centre_pos,
                 residual=abs(pos_float - round(pos_float)),
                 rounded=int(round(pos_float)),
-                x0=float(d.x_canonical),
-                x1=float(d.x_canonical + d.width_canonical),
-                y0=float(d.y_canonical),
-                y1=float(d.y_canonical + d.height_canonical),
+                x0=bx0,
+                x1=bx1,
+                y0=by0,
+                y1=by1,
                 confidence=float(d.confidence),
                 **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
-                **shape_detail)
+                **shape_detail, **fam_detail)
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
@@ -7360,6 +7377,230 @@ def gather_ink(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The stroke map -- every stroke of a cell, measured once (ROADMAP 2.195, step 1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `OMR_STROKE_MAP` -- file one `Q.STROKE` row per stroke of each cell's staff-erased ink (`stroke_map.py`). **Default OFF**, so the ON test is an
+#: ALLOW-LIST (an empty value or a typo must not switch a document onto an unpriced GATHER change). PRODUCER ONLY: nothing reads the rows, so
+#: flag on writes a byte-identical exported file.
+STROKE_MAP_ENV = "OMR_STROKE_MAP"
+_STROKE_GLYPH_BASE = RECORD_STROKE_GLYPH_BASE          # 375_000, record.py; past the detector's ordinals and every other gather base, BELOW `human_evidence.HUMAN_GLYPH_BASE` (400,000: a first draft sat ON it)
+
+
+def stroke_map_enabled() -> bool:
+    return os.environ.get(STROKE_MAP_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
+    raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
+    staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
+
+    ROADMAP 2.198: the rows are SLIMMED (bytes a page; every field a later step of the plan names is kept) and the function returns what
+    `gather_glyph_strokes` / the claimed register need and the rows cannot give them -- `{(page, system, staff, cell): CellStrokes}`, or
+    the abstain reason (a string) for a cell with no strokes. Empty (and nothing filed) with the flag off.
+
+    Slimmed away, each recoverable from a row that stays: `area_sp2` (= `fill` x the box area / the local space squared),
+    `component_n_strokes` (the count of the cell's rows with the same `component`), `staff_lines_left` / `staff_lines_right` (the staff
+    measured at the stroke's own x -- what a consumer takes from them is `end_steps_from_top` and `staff_space_local_px`, which stay),
+    `profile_sixteenths` on a blob (a blob's named fields are `fill` and `hole_share`; the profile is kept for the vertical, horizontal and
+    curve strokes whose thickness a consumer smooths), `staff_local` unless False (absent = the local lines were found), and the cell-level
+    `cell_n_below_floor` (filed once, on the cell's FIRST stroke row). `ends` is one flat list [x0, y0, x1, y1]."""
+    cache: Dict[Tuple[int, int, int, int], Any] = {}
+    if not stroke_map_enabled():
+        return cache
+    from . import stroke_map as SM
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        grid = _cell_grid(c)
+        if img is None or getattr(img, "ndim", 0) != 2:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            cache[ck] = ABSTAIN.NO_MASK
+            continue
+        if grid is None:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
+            continue
+        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None))
+        if res is None:
+            log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
+            continue
+        if not res.strokes:
+            if res.n_below_floor == 0:
+                log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_INK)
+                cache[ck] = ABSTAIN.NO_INK
+            else:           # ink, but every piece under the floor: said, never read as "no ink"
+                log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.ONLY_DEBRIS,
+                            n_below_floor=res.n_below_floor)
+                cache[ck] = ABSTAIN.ONLY_DEBRIS
+            continue
+        cache[ck] = res
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+        for i, st in enumerate(res.strokes):
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, _STROKE_GLYPH_BASE + i)
+            optional: Dict[str, Any] = {}
+            if st.sagitta_sp is not None:
+                optional["sagitta_spaces"] = st.sagitta_sp
+            if st.hole_share is not None:
+                optional["hole_share"] = st.hole_share
+            if st.kind != "blob":
+                optional["profile_sixteenths"] = st.profile
+            if not res.staff_local:                      # absent = the staff was measured at the stroke's own x
+                optional["staff_local"] = False
+            if i == 0:                                   # a CELL fact, said once
+                optional["cell_n_below_floor"] = res.n_below_floor
+            if page_ok:
+                x, y, w, h = st.box
+                optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
+                                            round(cell_box[0] + (x + w) / up, 1), round(cell_box[1] + (y + h) / up, 1)]
+            else:
+                optional["frame_note"] = "no page box: cell has no bbox_page_px/upscale_factor"
+            log.observe(
+                g, Q.STROKE, st.kind, reader=READERS.CV_STROKE, frame=frame,
+                stroke_box=list(st.box), length_spaces=st.length_sp, angle_deg=st.angle_deg,
+                thickness_spaces=st.thickness_sp, thickness_spread_spaces=st.thickness_spread_sp, fill=st.fill,
+                ends=[st.ends[0][0], st.ends[0][1], st.ends[1][0], st.ends[1][1]], end_steps_from_top=list(st.end_steps),
+                touches=[[j, ct] for j, ct in st.touches], component=st.component,
+                staff_space_local_px=st.staff_space_local, **optional)
+        if progress:
+            print(f"  gather strokes {sub.to_key()}: {len(res.strokes)}")
+    return cache
+
+
+def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
+                         stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False) -> None:
+    """ROADMAP 2.198 step 2 (flag `OMR_STROKE_MAP`, default OFF), STAGED GATHER: `Q.GLYPH_STROKES`, one row per detector box of every pass
+    (the plan, `docs/plan-2026-10-22-shared-ink-map.md` §2.2: a box is a hypothesis over strokes). The row's value is the list of stroke
+    ordinals (of the box's own cell; the stroke `i` is the glyph subject `_STROKE_GLYPH_BASE + i` of that cell) of which at least
+    `stroke_map.COVER_SHARE_MIN` of the stroke's ink lies inside the box; `shares` are those strokes' shares, `partial` the strokes with
+    some ink inside and less than that. An EMPTY list is a fact (the box stands on no filed stroke: 8 of 8 wide beam boxes in 2.195's
+    crops); a cell whose strokes could not be mapped ABSTAINS per box, by the cell's reason, never filed as an empty list (rule 8).
+    Decides nothing, reads only `detections` and `stroke_cells`; nothing reads the rows yet."""
+    if not stroke_map_enabled() or not stroke_cells:
+        return
+    from . import stroke_map as SM
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        res = stroke_cells.get(ck)
+        if res is None:
+            continue
+        dets = detections.get(R.cell(*ck).to_key(), ())
+        frame = frame_cell(c.measure_index)
+        for gi, d in enumerate(dets):
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if isinstance(res, str):
+                log.abstain(g, Q.GLYPH_STROKES, reader=READERS.CV_GLYPH_STROKES, frame=frame, reason=res)
+                continue
+            got = SM.strokes_in_box(res, (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical,
+                                          d.y_canonical + d.height_canonical))
+            covered = [(i, sh) for i, sh in got if sh >= SM.COVER_SHARE_MIN]
+            part = [[i, sh] for i, sh in got if sh < SM.COVER_SHARE_MIN]
+            extra: Dict[str, Any] = {}
+            if part:
+                extra["partial"] = part
+            log.observe(g, Q.GLYPH_STROKES, [i for i, _sh in covered], reader=READERS.CV_GLYPH_STROKES, frame=frame,
+                        shares=[sh for _i, sh in covered], cover_min=SM.COVER_SHARE_MIN, **extra)
+        if progress:
+            print(f"  gather glyph strokes {R.cell(*ck).to_key()}: {len(dets)} boxes")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# One accidental family -- the type from the mark's own strokes (ROADMAP 2.201)
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A notehead to the right of an accidental-family mark, at most this many staff spaces away (box edge to box edge), whose centre stands within
+#: `FAMILY_HEAD_DY_STEPS` half-spaces of the mark's anchor: the mark is IN-BAR (an accidental belongs to the note on its right at its step, page-facts
+#: §3). A key signature's last accidental is not followed that closely by a head at its own step (the meter and the gap of the run stand between).
+FAMILY_HEAD_GAP_SPACES = 1.0
+FAMILY_HEAD_DY_STEPS = 1.0
+
+
+def family_head_right(heads: Sequence[Any], meters: Sequence[Any], gb: Sequence[float], apos: float, top_y: float, half_step: float,
+                      sp: float) -> Optional[Dict[str, float]]:
+    """The head directly right of a mark (`gb` = its grown box, `apos` = its anchor's staff position), or None: the role evidence "left of a head at its
+    step" (page-facts §3). None where a METER box stands in the way -- a mark followed within 1.5 spaces by a time-signature digit is the key's last
+    accidental, not an in-bar one -- or where the head is not at the mark's height."""
+    for m in meters:
+        if gb[2] - 0.25 * sp <= m.x_canonical <= gb[2] + 1.5 * sp:
+            return None
+    best = None
+    for h in heads:
+        gap = (h.x_canonical - gb[2]) / sp
+        if gap < -0.25 or gap > FAMILY_HEAD_GAP_SPACES:
+            continue
+        dy = abs((h.y_canonical + h.height_canonical / 2.0 - top_y) / half_step - apos)
+        if dy <= FAMILY_HEAD_DY_STEPS and (best is None or gap < best["gap_spaces"]):
+            best = {"gap_spaces": round(gap, 2), "dy_steps": round(dy, 2)}
+    return best
+
+
+def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
+                             stroke_cells: Dict[Tuple[int, int, int, int], Any]) -> int:
+    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`, default OFF; needs `OMR_STROKE_MAP`), STAGED GATHER: every accidental-family box -- `accidental*`
+    AND `key*`, both series, one family (Sean 2026-10-22) -- gets `d.accidental_family`: its extent grown along its own accidental-shaped strokes,
+    its TYPE read from those strokes, the detector's label kept as a recorded fact, and the role evidence by position (`head_right`: the notehead
+    this mark stands directly left of, if any). The consumers read it off the detection (`gather_accidental_positions`, `_gather_keysig_markers`);
+    it files no row of its own -- the detail rides on the rows that use it. Returns the number of boxes measured. Decides nothing."""
+    if not (_acc_family.enabled() and stroke_map_enabled() and stroke_cells):
+        return 0
+    from . import stroke_map as SM
+    n = 0
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        res = stroke_cells.get(ck)
+        if res is None or isinstance(res, str):
+            continue
+        dets = detections.get(R.cell(*ck).to_key(), ())
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        top_y, half_step = grid
+        sp = half_step * 2.0
+        heads = [d for d in dets if getattr(d, "category", None) == "notehead"]
+        meters = [d for d in dets if str(d.smufl_name).lower().startswith("timesig")]
+        # a notehead box that sits ON a meter digit (the detector boxes the 8 of 6/8 as a head) is not a note: it must not make the key's last accidental in-bar
+        real_heads = [h for h in heads if not any(m.x_canonical <= h.x_canonical + h.width_canonical / 2.0 <= m.x_canonical + m.width_canonical
+                                                  and m.y_canonical <= h.y_canonical + h.height_canonical / 2.0 <= m.y_canonical + m.height_canonical for m in meters)]
+        blocked = set()
+        for h in heads:
+            for i, sh in SM.strokes_in_box(res, (h.x_canonical, h.y_canonical, h.x_canonical + h.width_canonical, h.y_canonical + h.height_canonical)):
+                if sh >= SM.COVER_SHARE_MIN:
+                    blocked.add(i)
+        for d in dets:
+            if not _acc_family.is_family_class(d.smufl_name) or getattr(d, "one_ink_absorbed_by", None) is not None:
+                continue
+            box = (float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical))
+            shares = SM.strokes_in_box(res, box)
+            fam = _acc_family.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(blocked),
+                                         rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())])
+            # the role evidence: the nearest head to the right of the (grown) mark at about its own height
+            gb = fam["box"]
+            frac = _acc_family.anchor_fraction(fam["type"]) or _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+            apos = (gb[1] + (gb[3] - gb[1]) * frac - top_y) / half_step
+            fam["head_right"] = family_head_right(real_heads, meters, gb, apos, top_y, half_step, sp)
+            fam["anchor_fraction"] = frac
+            d.accidental_family = fam
+            n += 1
+    return n
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The staff-sized ink of a bar, with its page box -- ROADMAP 2.80
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -12587,6 +12828,22 @@ def _marker_geometry(pws: Any, cells: Sequence[Any], staff_index: int):
     return c, [float(v) for v in st.line_ys], binary
 
 
+def _family_marker_shape(d: Any) -> Optional[str]:
+    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; a box carries `accidental_family` only then): a key marker's SHAPE -- the TYPE its own strokes read,
+    else the detector's class shape (exactly what the marker gatherer always took). The key*/accidental* label stays on the row as `detector_class`."""
+    fam = getattr(d, "accidental_family", None)
+    if fam is not None and fam["type"] in _acc_family.TYPES:
+        return _acc_family.KEY_SHAPE_OF_TYPE[fam["type"]]
+    return d.smufl_name if d.smufl_name in _KEYSIG_CLASSES else _ACCIDENTAL_SHAPE.get(d.smufl_name)
+
+
+def _family_in_bar(d: Any) -> bool:
+    """ROADMAP 2.201: `head_right` (a mark directly left of a notehead at its own height) is RECORDED on the family row as role evidence, and it is NOT used to
+    leave a mark out of the key run: measured on Litolff it removed 4 genuine key flats (x 517-730, the first or last flat of a mid-piece signature, which no
+    meter follows, so a head stands within a space of it) and moved 59 of 126 staves' key verdicts. False until a role test that cannot take a key flat exists."""
+    return False
+
+
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                            key, geometry=None) -> None:
     """The DETECTOR's accidental SHAPES in the staff's header, with its own
@@ -12636,18 +12893,23 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
     # said it was. Where there is no key-class box at all (53 header cells on
     # Litolff, 81 on Breitkopf) nothing says which kind, so they are all
     # admitted and `_marker_run` abstains if they disagree.
-    key_shapes = {d.smufl_name for d in here
-                  if d.smufl_name in _KEYSIG_CLASSES}
+    # ⚠️ ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; a box carries `accidental_family` only then): the marker's SHAPE is the TYPE its own strokes read
+    # (the detector's key*/accidental* label is a recorded fact and the role claim it always was), and a mark standing directly left of a notehead at its
+    # own height (`head_right`) is IN-BAR by position, not a member of the signature.
+    key_shapes = {_family_marker_shape(d) for d in here
+                  if d.smufl_name in _KEYSIG_CLASSES and not _family_in_bar(d)}
     marks = []
     for d in here:
+        if _family_in_bar(d):
+            continue
         if d.smufl_name in _KEYSIG_CLASSES:
-            marks.append((d, d.smufl_name, "key"))
+            marks.append((d, _family_marker_shape(d), "key"))
             continue
         if d.smufl_name not in _ACCIDENTAL_SHAPE:
             continue
         if limit <= 0 or float(d.x_canonical) > limit:
             continue
-        shape = _ACCIDENTAL_SHAPE[d.smufl_name]
+        shape = _family_marker_shape(d)
         if key_shapes and shape not in key_shapes:
             continue
         marks.append((d, shape, "accidental"))
@@ -12676,7 +12938,8 @@ def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                     # reader of the record can count them without re-running
                     # the detector.
                     detector_class=d.smufl_name, detector_role=role,
-                    cell_staff_space=space)
+                    cell_staff_space=space,
+                    **({"family_type": d.accidental_family["type"]} if getattr(d, "accidental_family", None) is not None else {}))
 
 
 _METER_CLASSES = ("timeSigCommon", "timeSigCutCommon")
@@ -14040,8 +14303,23 @@ def _claim_boxes_inside(binary, area, dets, cell, sub_of, line_ys, sp, *, skip=(
     return out
 
 
+def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, float]]], why: Optional[str], cell: int,
+                    owner: str, owner_row: Any, owner_glyph: Any, standing: str, source: str, **extra: Any) -> None:
+    """ROADMAP 2.198: the register's `ink` branch (plan §2.3) -- ONE `Q.CLAIMED_AREA` row, `unit: ink`, whose value is the list of stroke
+    ordinals (of `cell`) the owner stands on, filed BESIDE the owner's area claim (which stays). An owner that stands on no filed stroke
+    or whose cell has no stroke map ABSTAINS (`why` says which), never claims an empty list. Decides nothing."""
+    if not strokes:
+        log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell), reason=ABSTAIN.NO_INK,
+                    cell=cell, owner=owner, unit="ink", why=why or "owner_stands_on_no_filed_stroke", source=source)
+        return
+    log.observe(ssub, Q.CLAIMED_AREA, [i for i, _sh in strokes], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell), cell=cell,
+                owner=owner, owner_row=owner_row, owner_glyph=owner_glyph, unit="ink", standing=standing, source=source,
+                shares=[sh for _i, sh in strokes], **extra)
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                            detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+                            detections: Dict[str, List[Any]], *, progress: bool = False,
+                            stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
     """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default OFF).
 
     PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). AFTER `gather_clef_locator` (reads its rows) and beside
@@ -14107,6 +14385,20 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                 log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0),
                             cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, unit="area", standing="READ",
                             source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3))
+                if stroke_cells:               # ROADMAP 2.198 (OMR_STROKE_MAP): the same clef as a list of strokes
+                    from . import stroke_map as SM
+                    res0 = stroke_cells.get((p, sys_idx, li, 0))
+                    upc = getattr(c0, "upscale_factor", None)
+                    if res0 is None or isinstance(res0, str) or not upc:
+                        _file_ink_claim(log, ssub, strokes=None, why="no stroke map for the cell" if res0 is None or isinstance(res0, str)
+                                        else "no upscale factor", cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None,
+                                        standing="READ", source="clef_locator")
+                    else:
+                        cb0 = c0.bbox_page_px
+                        canon = [(area[0] - cb0[0]) * upc, (area[1] - cb0[1]) * upc, (area[2] - cb0[0]) * upc, (area[3] - cb0[1]) * upc]
+                        _file_ink_claim(log, ssub, strokes=[(i, sh) for i, sh in SM.strokes_in_box(res0, canon) if sh >= SM.COVER_SHARE_MIN],
+                                        why=None, cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, standing="READ",
+                                        source="clef_locator", cover_min=SM.COVER_SHARE_MIN)
                 if r0.frame == frame_cell(0):
                     prev = clef_left.get(li)
                     clef_left[li] = (min(area[0], prev[0]) if prev else area[0], c0.bbox_page_px[0])
@@ -14130,6 +14422,13 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                                 owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
                                 start_spaces=round((pb[0] - cb[0]) / sp, 3),
                                 cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
+                    if stroke_cells:           # ROADMAP 2.198 (OMR_STROKE_MAP): the owner box's strokes, read off its `Q.GLYPH_STROKES` row
+                        from . import stroke_map as SM
+                        gs = log.rows(Q.GLYPH_STROKES, gsub)
+                        mine = [(int(i), float(sh)) for i, sh in zip(gs[0].value or (), (gs[0].detail or {}).get("shares") or ())] if gs else None
+                        _file_ink_claim(log, ssub, strokes=mine, why=None if gs else "no GLYPH_STROKES row (the cell has no stroke map)",
+                                        cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None, owner_glyph=gsub.to_key(),
+                                        standing=standing, source="detector", cls=str(d.smufl_name), cover_min=SM.COVER_SHARE_MIN)
                     if k == 0 and standing == "READ":
                         prev = clef_left.get(li)
                         clef_left[li] = (min(pb[0], prev[0]) if prev else pb[0], cb[0])
@@ -15577,6 +15876,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
         _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
+        # ROADMAP 2.195 (flag OMR_STROKE_MAP, default OFF; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
+        # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
+        stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
+        # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
+        # it sits right after the map; it files rows only and decides nothing.
+        gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default OFF; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
+        # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
+        gather_accidental_family(cells, local, detections, stroke_cells)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files
@@ -15711,7 +16019,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
-        gather_claimed_register(log, pws, cells, local, detections)
+        gather_claimed_register(log, pws, cells, local, detections, stroke_cells=stroke_cells)
         # ROADMAP 2.183 (flag OMR_KEY_SIGNATURE_CLAIM, default ON): AFTER the register; page raster.
         gather_key_signature_claim(log, pws, cells, local, detections)
         # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default ON): AFTER the key claim and the meter object; page raster.

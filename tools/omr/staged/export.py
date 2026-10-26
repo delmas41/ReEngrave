@@ -503,6 +503,13 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
             b = rec.verdict_by_id(bid)
             if b is None or b.get("quantity") != Q.ACCIDENTAL_OWNER or b.get("outcome") != "decided":
                 continue
+            # ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; `family` is on the owner verdict only then): the accidental's TYPE came from its own strokes
+            from . import accidental_family as _af
+            fam = (b.get("detail") or {}).get("family")
+            fg = _af.guess_of(fam) if fam else None
+            if fg is not None and not _af.reads(fg.get("margin")):
+                return {"stage": "ADJUDICATE", "rule": _af.REASON, "quantity": Q.ACCIDENTAL, "candidates": fg["candidates"],
+                        "chosen": fg["chosen"], "margin": fg.get("margin")}
             oi = (b.get("detail") or {}).get("one_ink")
             if oi and not _oi.reads(oi.get("margin")):
                 return {"stage": "ADJUDICATE", "rule": ONE_INK_RULE, "quantity": Q.ACCIDENTAL,

@@ -1,0 +1,3747 @@
+[
+ {
+  "box": [
+   1420.3515625,
+   1538.7030456852792,
+   1453.017578125,
+   1622.793570219966
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.065,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1389.86328125,
+   1589.2445008460236,
+   1421.22265625,
+   1672.899323181049
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.01,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.129,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1452.58203125,
+   1604.9297800338409,
+   1485.248046875,
+   1686.84179357022
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.08,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2147.481823427582,
+   1533.625313283208,
+   2183.931332948644,
+   1637.2061403508771
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.19,
+   "stagger_bottom_sp": -0.13,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    2.94,
+    3.0
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2355.856895556838,
+   1494.2581453634084,
+   2386.177726485863,
+   1577.5100250626567
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.124,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2189.737449509521,
+   1504.2612781954888,
+   2216.1875360646277,
+   1611.0689223057643
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.45,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.63,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2324.5683785343335,
+   1535.2387218045112,
+   2350.6959030582802,
+   1635.2700501253132
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.12,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.54,
+   "stem_len_sp": [
+    2.62,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3574.6487747957995,
+   1489.7406015037593,
+   3600.7823803967326,
+   1587.8358395989976
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.76,
+   "stagger_bottom_sp": 0.7,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.44,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   5021.5625,
+   1437.7556742323097,
+   5046.65625,
+   1538.142857142857
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.07,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.76,
+   "stagger_bottom_sp": 0.69,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.44,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1424.271484375,
+   1925.1531914893617,
+   1455.630859375,
+   2007.5089361702128
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1390.298828125,
+   1971.7778723404256,
+   1422.96484375,
+   2058.055319148936
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.066,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2324.266323024055,
+   1918.12,
+   2350.1993127147766,
+   2021.48
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.5,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    2.69,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2146.2571592210766,
+   1917.8,
+   2182.7554410080184,
+   2019.24
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.12,
+   "stagger_bottom_sp": -0.18,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    3.0,
+    2.94
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2352.4404352806414,
+   1876.84,
+   2383.816151202749,
+   1962.28
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2184.036082474227,
+   1887.08,
+   2214.451317296678,
+   1989.48
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    2.63,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3577.681712962963,
+   1981.8,
+   3603.283564814815,
+   2084.84
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.01,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.44,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.38,
+    2.69
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   5022.9375,
+   1934.1417058428476,
+   5050.4375,
+   2031.7965077233043
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.69,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1390.734375,
+   2360.828085106383,
+   1421.658203125,
+   2444.055319148936
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.09,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.07,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2147.217640320733,
+   2290.36,
+   2183.0756013745704,
+   2390.2
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "unclear",
+  "why": "stagger_between_cutoffs",
+  "grown": 0.08,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": -0.13,
+   "stagger_bottom_sp": 0.3,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    2.69,
+    3.13
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2356.602520045819,
+   2243.32,
+   2390.539518900344,
+   2322.04
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.26,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.81,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2325.226804123711,
+   2290.68,
+   2357.5630011454755,
+   2385.72
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.23,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.69,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   2186.597365406644,
+   2256.12,
+   2217.012600229095,
+   2355.96
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.22,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3569.3611111111113,
+   2460.28,
+   3602.9635416666665,
+   2563.0
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.07,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": -0.25,
+   "stagger_bottom_sp": -0.13,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    2.88,
+    3.0
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   5017.78125,
+   2303.6366689053057,
+   5053.53125,
+   2406.1054398925453
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.19,
+   "stagger_bottom_sp": -0.19,
+   "stem_gap_sp": 0.44,
+   "stem_len_sp": [
+    2.94,
+    2.94
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   1388.556640625,
+   2778.0753623188407,
+   1420.787109375,
+   2862.6106280193235
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   1453.017578125,
+   2794.6338164251206,
+   1483.505859375,
+   2876.11884057971
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.13,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1419.916015625,
+   2732.3217391304347,
+   1452.146484375,
+   2811.192270531401
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.14,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.093,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   2361.340450086555,
+   2681.557939914163,
+   2391.33871898442,
+   2762.5314735336196
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.04,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2152.32025389498,
+   2723.1738197424893,
+   2187.1569532602425,
+   2822.535765379113
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.06,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.19,
+   "stagger_bottom_sp": -0.19,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    2.88,
+    2.88
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2192.3179457588,
+   2694.1394849785406,
+   2217.800346220427,
+   2793.824034334764
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.07,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    2.56,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2330.051933064051,
+   2723.496423462089,
+   2359.405077899596,
+   2823.8261802575107
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.07,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 6,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.5,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    2.56,
+    2.31
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   3577.229871645274,
+   2789.307582260372,
+   3602.07292882147,
+   2886.4113018597996
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.08,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.63,
+   "stagger_bottom_sp": 0.7,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.31,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   5019.15625,
+   2620.53125,
+   5049.40625,
+   2725.71875
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.63,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.38,
+    2.31
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1390.734375,
+   3108.6637931034484,
+   1421.658203125,
+   3191.0344827586205
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.1,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.108,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1454.759765625,
+   3124.7892720306513,
+   1483.94140625,
+   3203.6733716475096
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1422.529296875,
+   3059.8515325670496,
+   1453.888671875,
+   3140.9147509578543
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.14,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.064,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2364.926689576174,
+   3906.72,
+   2391.179839633448,
+   4003.04
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.63,
+   "stagger_bottom_sp": 0.76,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.31,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2154.581328751432,
+   3907.04,
+   2189.4788087056127,
+   4009.12
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 6,
+   "stagger_top_sp": -0.13,
+   "stagger_bottom_sp": -0.13,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    2.94,
+    2.94
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2112.960481099656,
+   3911.52,
+   2153.6208476517754,
+   3996.0
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "unclear",
+  "why": "second_stem_fused_or_owned",
+  "grown": 0.06,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "refused_vertical": [
+    0
+   ]
+  }
+ },
+ {
+  "box": [
+   1426.884765625,
+   5121.495769881557,
+   1460.421875,
+   5203.843485617597
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.12,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1395.08984375,
+   5169.423011844332,
+   1426.013671875,
+   5254.384940778342
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.069,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2959.064516129032,
+   4972.549498746867,
+   2991.3225806451615,
+   5077.098370927319
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.76,
+   "stagger_bottom_sp": 0.7,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.44,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3421.7136752136753,
+   4970.290726817043,
+   3453.9786324786323,
+   5039.9899749373435
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.11,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.31,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1428.19140625,
+   5506.588936170213,
+   1458.6796875,
+   5590.687659574468
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.04,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.103,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1395.525390625,
+   5554.085106382979,
+   1426.44921875,
+   5643.848510638298
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.01,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1459.986328125,
+   5576.743829787234,
+   1489.603515625,
+   5655.177872340426
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.065,
+   "stem_len_sp": 2.12,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1980.900390625,
+   5549.727659574468,
+   2014.4375,
+   5647.770212765958
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.2,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.07,
+   "stagger_bottom_sp": -0.24,
+   "stem_gap_sp": 0.5,
+   "stem_len_sp": [
+    3.25,
+    2.94
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   2963.3231571109454,
+   5472.88,
+   2990.538346984363,
+   5575.28
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.63,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3418.9003533568903,
+   5461.04,
+   3450.2742049469966,
+   5546.8
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.94,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1460.421875,
+   6036.793570219967,
+   1489.603515625,
+   6124.369712351946
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.108,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1427.755859375,
+   5974.923857868021,
+   1456.501953125,
+   6057.271573604061
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.129,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1396.396484375,
+   6020.672588832487,
+   1426.013671875,
+   6102.148900169204
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "unclear",
+  "why": "no_stem",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 0,
+   "n_members": 4
+  }
+ },
+ {
+  "box": [
+   2367.1465666474323,
+   5924.392230576441,
+   2397.467397576457,
+   6006.676065162907
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.19,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2194.2533179457587,
+   5935.040726817043,
+   2218.7680323139066,
+   6032.4906015037595
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.26,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.54,
+   "stem_len_sp": [
+    2.38,
+    2.5
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2334.2452394691286,
+   5964.4047619047615,
+   2361.663012117715,
+   6066.049498746867
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.16,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.69,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.44,
+    2.5
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2155.868436237738,
+   5967.954260651629,
+   2190.060011540681,
+   6065.081453634085
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.19,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": -0.13,
+   "stagger_bottom_sp": -0.01,
+   "stem_gap_sp": 0.54,
+   "stem_len_sp": [
+    3.0,
+    3.12
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3582.0694282380396,
+   6026.682330827068,
+   3609.170945157526,
+   6131.55388471178
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.06,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.69,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   5029.46875,
+   5866.5387182910545,
+   5055.25,
+   5965.550734312416
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.08,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.68,
+   "stagger_bottom_sp": 0.68,
+   "stem_gap_sp": 0.55,
+   "stem_len_sp": [
+    2.38,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1428.19140625,
+   6335.516595744681,
+   1458.244140625,
+   6420.051063829787
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1460.421875,
+   6394.3421276595745,
+   1490.474609375,
+   6483.669787234043
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.101,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1394.21875,
+   6381.705531914894,
+   1427.3203125,
+   6463.189787234042
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.09,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.096,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1980.46484375,
+   6376.04085106383,
+   2015.744140625,
+   6473.647659574468
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.01,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.12,
+   "stagger_bottom_sp": -0.18,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    2.88,
+    2.81
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   2964.6038719285184,
+   6296.96,
+   2990.21816827997,
+   6395.52
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.21,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.76,
+   "stagger_bottom_sp": 0.76,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3422.101766784452,
+   6291.52,
+   3452.1950530035338,
+   6366.08
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.17,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.133,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1395.08984375,
+   6778.894468085106,
+   1424.271484375,
+   6863.428936170213
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.13,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.039,
+   "stem_len_sp": 2.44,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1457.373046875,
+   6796.76,
+   1486.990234375,
+   6877.808510638298
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.1,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.103,
+   "stem_len_sp": 2.5,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1425.578125,
+   6730.091063829787,
+   1458.244140625,
+   6810.268085106383
+  ],
+  "src": "p0",
+  "page": 0,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.15,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1948.555479,
+   569.4051075,
+   1974.901141,
+   659.4304545
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.45,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.69,
+    2.38
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   2280.447389,
+   474.8786265,
+   2309.042095,
+   563.9392815
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.08,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   1945.342465,
+   829.681414,
+   1976.186215,
+   919.711054
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.69,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2282.696104,
+   830.646064,
+   2314.503824,
+   919.711054
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 6,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.44,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.75,
+    2.38
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   4413.691674,
+   796.8883825,
+   4446.562806,
+   871.3152175
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.04,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.088,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   4680.544788,
+   887.7551425,
+   4712.220684,
+   978.6215755000001
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.62,
+   "stem_len_sp": [
+    2.38,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3363.915186,
+   2990.6997525,
+   3396.641886,
+   3064.3999175
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.14,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.085,
+   "stem_len_sp": 2.81,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   4415.783184,
+   1008.6358325,
+   4447.45908,
+   1083.0651875
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.092,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   4414.886604,
+   1103.690215,
+   4446.5625,
+   1183.201185
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.1,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.087,
+   "stem_len_sp": 2.88,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   4067.024436,
+   1284.162763,
+   4103.358552,
+   1382.584969
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.82,
+   "stagger_bottom_sp": 0.57,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.69,
+    2.44
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   3805.830945,
+   1294.793806,
+   3841.136631,
+   1394.244712
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.82,
+   "stem_gap_sp": 0.63,
+   "stem_len_sp": [
+    2.44,
+    2.5
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   5267.4333155,
+   1356.1121365,
+   5302.9354705,
+   1436.6681095
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.119,
+   "stem_len_sp": 2.94,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   5272.504921,
+   1356.111946,
+   5302.040661,
+   1440.844822
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.119,
+   "stem_len_sp": 2.94,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   779.7442925,
+   2731.5189145,
+   816.2232575,
+   2818.1297695
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "unclear",
+  "why": "second_stem_fused_or_owned",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "refused_vertical": [
+    36
+   ]
+  }
+ },
+ {
+  "box": [
+   806.221155,
+   2697.3461065,
+   844.465445,
+   2776.2973135
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.092,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   832.109375,
+   2748.0160645,
+   874.472355,
+   2834.6269195
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.122,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1530.5147225,
+   2697.345943,
+   1570.5243375,
+   2786.313487
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 6,
+   "stagger_top_sp": -0.19,
+   "stagger_bottom_sp": -0.24,
+   "stem_gap_sp": 0.49,
+   "stem_len_sp": [
+    3.0,
+    2.94
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   1717.61929,
+   2711.4865675,
+   1747.6262,
+   2786.3136505
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNaturalSmall",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.49,
+   "stagger_bottom_sp": 0.32,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    1.81,
+    1.62
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1079.8170075,
+   2699.7027955,
+   1115.7079325,
+   2803.9893085
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.86,
+   "stagger_bottom_sp": 0.8,
+   "stem_gap_sp": 0.66,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   4431.023208,
+   2709.703927,
+   4456.722312,
+   2786.522113
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.088,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   791.8809679999999,
+   5994.634491,
+   828.272054,
+   6073.146597
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.12,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.108,
+   "stem_len_sp": 3.0,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   822.5473925,
+   5950.062357,
+   853.2142355,
+   6033.890223
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.116,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   853.214654,
+   6008.9464365,
+   884.29079,
+   6084.1872315
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.01,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.108,
+   "stem_len_sp": 2.75,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1023.7224349999999,
+   6037.979442,
+   1061.7490189999999,
+   6117.71841
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.086,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2279.0029705,
+   6287.082871,
+   2311.5256355,
+   6368.753083
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.153,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   2594.0245365,
+   6307.8194125,
+   2622.4019575,
+   6390.7659055
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.37,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.88,
+   "stagger_bottom_sp": 0.88,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.5,
+    2.5
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   2831.131367,
+   6788.6862525,
+   2858.938085,
+   6882.7631715
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   3078.973396,
+   6758.739102,
+   3108.895856,
+   6854.933346
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.5,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.69,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1032.3087995,
+   7020.48178,
+   1065.8381825,
+   7104.26625
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.113,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   794.742671,
+   6995.142235,
+   832.360799,
+   7073.613705
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.04,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.12,
+   "stem_len_sp": 2.88,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   825.4099325,
+   6951.819725,
+   858.9393155,
+   7031.517035
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.112,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   854.8505705,
+   7010.6729425,
+   895.3304015,
+   7085.8746075
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.113,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2829.92246,
+   7002.7735125,
+   2855.915508,
+   7092.8993175
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.38,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3078.9730865,
+   6971.92558,
+   3110.1044535,
+   7069.00718
+  ],
+  "src": "v18",
+  "page": 1,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.38,
+    2.38
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   780.8708325,
+   743.165625,
+   816.0779275,
+   837.688899
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.147,
+   "stem_len_sp": 2.88,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   812.5071625,
+   709.9546875,
+   843.6324875,
+   787.1060865
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.114,
+   "stem_len_sp": 2.75,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   840.5706375,
+   762.5814135,
+   875.2677725,
+   841.2657885
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.06,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.114,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   3154.116876,
+   3355.3044125,
+   3190.620938,
+   3452.0868675
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": -0.25,
+   "stagger_bottom_sp": -0.19,
+   "stem_gap_sp": 0.46,
+   "stem_len_sp": [
+    2.94,
+    3.0
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   3320.61521,
+   1164.3950725,
+   3349.17959,
+   1247.8601875
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.33,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": -0.2,
+   "stagger_bottom_sp": -0.32,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    3.06,
+    2.94
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   3357.1781,
+   1138.4790145,
+   3384.59978,
+   1224.6117955
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.18,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.82,
+   "stagger_bottom_sp": 0.77,
+   "stem_gap_sp": 0.61,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   3579.59939,
+   1165.9195465,
+   3613.49585,
+   1247.8601875
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.39,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.5,
+   "stem_gap_sp": 0.63,
+   "stem_len_sp": [
+    2.75,
+    2.44
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   3608.54519,
+   1133.1433555,
+   3639.77561,
+   1202.5069225
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.11,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.1,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   4582.46983,
+   2472.01,
+   4612.208194,
+   2567.07
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.62,
+   "stem_len_sp": [
+    2.44,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   796.97011,
+   6101.5140025,
+   834.11549,
+   6186.2698275
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.133,
+   "stem_len_sp": 2.88,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   826.926088,
+   6063.1341225,
+   864.071468,
+   6147.8899475
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.109,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   858.47962,
+   6124.701975,
+   903.6135879999999,
+   6191.467135
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.22,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.141,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   802.561549,
+   7048.5254975,
+   838.109375,
+   7124.8860125
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.15,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.109,
+   "stem_len_sp": 2.88,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   832.517527,
+   7003.3488275,
+   862.473505,
+   7082.5075225
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.153,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   862.473914,
+   7060.919225,
+   899.619294,
+   7138.878645
+  ],
+  "src": "v18",
+  "page": 2,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.115,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2232.03146,
+   433.045866,
+   2264.226428,
+   532.960134
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 2,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.38,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1186.4103380000001,
+   713.599318,
+   1216.938522,
+   811.947838
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.87,
+   "stagger_bottom_sp": 0.74,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.5,
+    2.38
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   789.5417649999999,
+   794.905579,
+   827.1698309999999,
+   867.6905469999999
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "unclear",
+  "why": "second_stem_fused_or_owned",
+  "grown": 0.14,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "refused_vertical": [
+    37
+   ]
+  }
+ },
+ {
+  "box": [
+   820.0703125,
+   751.2345655,
+   856.2785475000001,
+   825.0845725
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.12,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.138,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   850.2433570000001,
+   809.462638,
+   887.871423,
+   885.798172
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.081,
+   "stem_len_sp": 2.69,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2233.709768,
+   705.7073365,
+   2263.41908,
+   794.5424455
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.12,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 3,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.5,
+    2.5
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2235.344984,
+   702.4375,
+   2263.41908,
+   791.545
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.23,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 3,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.5,
+    2.5
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3295.836273,
+   2955.9226635,
+   3331.004175,
+   3046.1200545
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "sharp",
+  "cls": "accidentalSharp",
+  "type": "sharp",
+  "why": "stems_level",
+  "grown": 0.03,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": -0.19,
+   "stagger_bottom_sp": -0.19,
+   "stem_gap_sp": 0.47,
+   "stem_len_sp": [
+    3.0,
+    3.0
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   3332.640076,
+   2925.4024455,
+   3360.719852,
+   3033.8575545
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.88,
+   "stagger_bottom_sp": 0.82,
+   "stem_gap_sp": 0.57,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 2
+  }
+ },
+ {
+  "box": [
+   793.4468455,
+   1011.3783395,
+   824.6853085,
+   1086.6406685
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.09,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.12,
+   "stem_len_sp": 2.81,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   2228.423816,
+   2613.105111,
+   2265.614264,
+   2710.507611
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.44,
+   "stem_gap_sp": 0.57,
+   "stem_len_sp": [
+    2.75,
+    2.38
+   ],
+   "n_bars": 1
+  }
+ },
+ {
+  "box": [
+   930.2987304999999,
+   4338.95957,
+   961.5691895,
+   4425.17933
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.1,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.87,
+   "stagger_bottom_sp": 0.8,
+   "stem_gap_sp": 0.53,
+   "stem_len_sp": [
+    2.5,
+    2.44
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   788.0559815,
+   4308.821,
+   829.6231445000001,
+   4388.55494
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 3,
+   "stem_x_fraction": 0.091,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 2
+  }
+ },
+ {
+  "box": [
+   828.4789795,
+   4268.38148,
+   859.7494385,
+   4345.44506
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 4,
+   "stem_x_fraction": 0.037,
+   "stem_len_sp": 1.94,
+   "bowl_pieces": 3
+  }
+ },
+ {
+  "box": [
+   858.605664,
+   4325.98826,
+   891.020288,
+   4400.38148
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "key",
+  "sean": "flat",
+  "cls": "keyFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.05,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.091,
+   "stem_len_sp": 2.56,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   1128.2181885,
+   4239.768665,
+   1162.1581055000001,
+   4333.618355
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.76,
+   "stagger_bottom_sp": 0.51,
+   "stem_gap_sp": 0.61,
+   "stem_len_sp": [
+    2.63,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   4201.450688,
+   4323.824945,
+   4233.910726,
+   4416.499835
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.69,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.44,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3970.653797,
+   4778.24989,
+   4000.362957,
+   4873.94989
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.44,
+   "stem_gap_sp": 0.56,
+   "stem_len_sp": [
+    2.69,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   3968.7284645,
+   4872.574945,
+   3998.9877195,
+   4972.125055
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.0,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 3,
+   "stagger_top_sp": 0.87,
+   "stagger_bottom_sp": 0.81,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.56,
+    2.5
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1738.3003075000001,
+   4968.1825555,
+   1766.6105905,
+   5042.5524445
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.07,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.125,
+   "stem_len_sp": 2.57,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2375.024589,
+   5017.320202,
+   2414.507283,
+   5115.15427
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.09,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 5,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.94,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.38,
+    2.56
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   2459.151955,
+   5034.942562,
+   2490.130665,
+   5125.484596
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.11,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 3,
+   "stagger_top_sp": 0.94,
+   "stagger_bottom_sp": 0.82,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.44,
+    2.31
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   1643.932423,
+   5898.94291,
+   1673.075539,
+   5965.829842
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.28,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.064,
+   "stem_len_sp": 2.62,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   2602.608686,
+   6312.492389,
+   2632.599458,
+   6404.067389
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.06,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.81,
+   "stagger_bottom_sp": 0.75,
+   "stem_gap_sp": 0.59,
+   "stem_len_sp": [
+    2.44,
+    2.38
+   ],
+   "n_bars": 0
+  }
+ },
+ {
+  "box": [
+   5024.5749525,
+   6195.9425555,
+   5051.7782075,
+   6260.6001665
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "flat",
+  "cls": "accidentalFlat",
+  "type": "flat",
+  "why": "one_stem_with_a_bowl",
+  "grown": 0.27,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 1,
+   "n_members": 2,
+   "stem_x_fraction": 0.095,
+   "stem_len_sp": 2.63,
+   "bowl_pieces": 1
+  }
+ },
+ {
+  "box": [
+   4833.5979825,
+   6315.8225555,
+   4863.8545875,
+   6406.8424445
+  ],
+  "src": "v18",
+  "page": 3,
+  "role": "accidental",
+  "sean": "natural",
+  "cls": "accidentalNatural",
+  "type": "natural",
+  "why": "right_stem_lower",
+  "grown": 0.02,
+  "cell_frac": 1.0,
+  "feat": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.82,
+   "stagger_bottom_sp": 0.44,
+   "stem_gap_sp": 0.6,
+   "stem_len_sp": [
+    2.69,
+    2.31
+   ],
+   "n_bars": 0
+  }
+ }
+]

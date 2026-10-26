@@ -165,6 +165,15 @@ KNOWN_GAPS: Dict[str, str] = {
         "pp.0-3, so the record was carrying about a third of the population "
         "the pipeline looked at. This entry LEAVES the day a decision reads "
         "it."),
+    Q.STROKE: (
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.195, step 1 of the shared ink map, `OMR_STROKE_MAP`, default OFF): the `Q.INK` discipline -- a "
+        "producer and its first consumer in one change make the reach measurement circular. ⚠️ Its first consumer is NAMED in the plan "
+        "(`docs/plan-2026-10-22-shared-ink-map.md` §5): step 3 `adjudicate_duration` reads a head's beams off the horizontal strokes at its stem's tip "
+        "(`OMR_BEAMS_FROM_STROKES`). This entry LEAVES the day a decision reads it."),
+    Q.GLYPH_STROKES: (
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.198, step 2 of the shared ink map, `OMR_STROKE_MAP`, default OFF): the `Q.INK` discipline. "
+        "Its first reader is `claims.covering`'s `ink` branch (plan §2.3), which no stage calls yet; the first stage consumer is step 3 "
+        "(`OMR_BEAMS_FROM_STROKES`: a beam box with no beam-shaped stroke under it). This entry LEAVES the day a decision reads it."),
     Q.SYSTEMIC_COLUMN: (
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
@@ -401,6 +410,8 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.179. Pure helpers for `gather.gather_stem_end_heads` (the flag, orphan stems, the stem-end window, the candidate pick):
     # files no row, names no quantity; the rows are `gather_stem_end_heads`'s own.
     "stem_end_heads.py",
+    # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
+    "stroke_map.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
@@ -586,6 +597,10 @@ NOT_A_STAGE = frozenset({
     # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
     # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.
     "accidental_shape.py",
+    # ROADMAP 2.201. `accidental_family.py` is PURE (strokes, a box and a staff space in; the mark's own extent, its type and the guess it carries out; the
+    # flag): it files no row and names no quantity -- `gather.gather_accidental_family` sets it on the detection, `gather_accidental_positions` files it as
+    # `detail.family` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` and `export.one_ink_guess_of` consume it.
+    "accidental_family.py",
 })
 
 
