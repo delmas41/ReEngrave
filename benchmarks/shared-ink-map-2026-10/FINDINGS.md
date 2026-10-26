@@ -463,6 +463,4 @@ and `owner_on_2202_heads.py` re-pointed at 2.205b's own ON arm for the settled c
 whose stem changed (one accidental- or dynamic-owned finder stem among them: the 5% risk above), 3 CONTESTED strokes (question: "what is this ink: which mark, or two?",
 Brahms accidental|rest first), 1 box ownership refuses that main kept; and the 2.202 tiles RE-SHOWN with their new outcome -- 2, 5, 6, 12 (predicted to move to Sean's answer)
 and one of 1 / 4 / 10 (predicted unchanged, the erase-thinned beam: a control). Judged right -> wrong must be 0.
-**Question for Sean at the milestone** (plan section 6, now concrete): a stroke two different marks claim whose shape cannot settle it -- 446 / 668 on the sample, most of them an
-eighth rest's bulb that the detector also boxed as an accidental -- is today written as nothing new (the consumers do not read it; the boxes are as main decided). Should the
-file mark that spot red as unread ink, or write the stronger reading blue as 2.186 does within a family?
+**No colour question at the milestone: already ruled** (DECISIONS 2026-10-22, Sean: "the color should just be applied at output. Everything else before that is intended to help determine what it is"). A contested stroke (446 / 668 on the sample) ABSTAINS in ADJUDICATE with both candidates kept, as built; INFER may choose among them, labelled; EXPORT alone colours the result. The milestone asks Sean only the tiles' own question ("what is this ink: which mark, or two?").
