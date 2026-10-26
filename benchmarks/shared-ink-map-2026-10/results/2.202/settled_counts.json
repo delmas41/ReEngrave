@@ -1,0 +1,59 @@
+{
+ "counts": {
+  "litolff": {
+   "first_duration_verdicts": 7399,
+   "settled": {
+    "(map could not speak or flag path not reached)": 4518,
+    "agrees": 2642,
+    "stroke_candidate": 179,
+    "disagree_narrowed": 57,
+    "box_narrowed,stroke_candidate": 1,
+    "box_narrowed": 2
+   },
+   "box_reasons": {
+    "no_beam_or_hook_shaped_stroke": 411,
+    "thin_or_curved_span": 10,
+    "box_on_a_stem": 2,
+    "one_stem_stub": 9,
+    "box_on_paper": 36,
+    "hook_on_another_stem": 12,
+    "beam": 6,
+    "hook_or_stub": 8
+   },
+   "heads_whose_duration_changed": 158
+  },
+  "brahms": {
+   "first_duration_verdicts": 9676,
+   "settled": {
+    "agrees": 3716,
+    "(map could not speak or flag path not reached)": 5726,
+    "disagree_narrowed": 79,
+    "stroke_candidate": 112,
+    "box_narrowed": 34,
+    "box_narrowed,stroke_candidate": 7,
+    "box_narrowed,disagree_narrowed": 2
+   },
+   "box_reasons": {
+    "no_beam_or_hook_shaped_stroke": 3347,
+    "box_on_paper": 476,
+    "box_on_a_stem": 12,
+    "hook_or_stub": 152,
+    "hook_on_another_stem": 130,
+    "flag": 2,
+    "one_stem_stub": 85,
+    "thin_or_curved_span": 50,
+    "beam": 9
+   },
+   "heads_whose_duration_changed": 119
+  }
+ },
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "n_changed": {
+  "other": 275,
+  "flag": 2
+ }
+}

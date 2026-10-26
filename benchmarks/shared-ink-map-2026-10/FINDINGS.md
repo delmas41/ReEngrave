@@ -269,3 +269,19 @@ a beam) and one clear beamed Litolff eighth from 2.153 tiles 4 / 14 / 16 (`out/p
 must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
 The question for Sean at the milestone (plan §5 step 3, now narrowed by his 2026-10-22 ruling): when the box is a beam but the stroke is a hook on a stem with no beam, the file already writes a flag; the tile
 asks "is this a flag or a beam?" on the box's ink, and the hook length cut (1.6 / 2.4 sp) is confirmed or moved on his answers.
+
+## 5. MILESTONE RESULT (2.202; main 78a0144fe merged; fast tier 8,962 passed; `lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_BEAMS_FROM_STROKES --from gather`; `results/2.202/`)
+Cause first: the hook-as-flag path almost never fires, and the reason is upstream of it. Of the map's 122 (Litolff) / 332 (Brahms) detector beam boxes standing on a "hook", 118 / ~300 stood on a stroke leaning on a
+BARLINE or a cell-height vertical, not a stem (the first draft counted any vertical; fixed with `STEM_MAX_SPACES` = 8, measured: the 4,260 verticals that coincide with a `Q.STEM` row are 1-8 sp, the unmatched pile up at 8 and 12), and
+the 2.74 ink test had already dropped the rest from `kept` (fixed: pre-filter boxes are read). Process lesson: a funnel count made on the rows alone (`hook_box_funnel.py`) overstated the population 50x; the head-level reach
+(verdict details) is the number.
+- **Measure 1, exported file (Litolff / Brahms):** notes +2 -133 / +6 -113, beams +2 -131 ~17 / +3 -78, flags +19 -14 / +19 -29, blue marks +2 -34 / +69 -32, red bars 0->0 / 166->167, notes NOT written 2563->2694 / 3202->3311
+  (about 130 and 110 notes held out: the narrowed beams leave bars the bar sum will not settle). **Measure 3, Sean's judged answers: right->wrong 0 / 0**, right->narrowed 4 / 1, wrong->right 0 / 1.
+- **Control (Litolff, same flags both arms): NOTHING CHANGED**, 5029 = 5029 notes, 2563 = 2563 held out, box quiet. A replay of the OFF gather confirmed OFF reproduces its own record (0 of 8,958 differ).
+- **`beams_from_strokes.settled`, first duration verdicts (Litolff 7,399 / Brahms 9,676):** map could not speak 4,518 / 5,726; agrees 2,642 / 3,716; stroke_candidate 179 / 112; disagree_narrowed 57 / 79; box_narrowed 2 / 34;
+  box_narrowed+stroke_candidate 1 / 7; box_narrowed+disagree_narrowed 0 / 2. **Hook-as-flag decided at 0 heads on Litolff, 2 on Brahms.** Heads whose live duration changed: 158 / 119. Box reasons: Litolff 411 no beam- or hook-shaped stroke,
+  36 on paper, 12 hook on another stem; Brahms 3,347 / 476 / 130, `thin_or_curved_span` 50, `one_stem_stub` 85, `hook_or_stub` 152.
+- **Tiles `out/lane-report/2.202m-tiles/tiles/sheet.png` (key `../key.json`):** 12 = 9 changed (2 hook-as-flag -- all there are --, 4 disagree_narrowed, 3 stroke_candidate) + 3 controls (one unchanged decided beamed head, the re-shown 2.170 tile 2 and 2.153 tile 4); no two on one ink (boxes
+  grown one space must not meet). 2.170 tile 2 is on page 5, outside the frozen sample, so it shows the tile, not a re-measured verdict. Question: "for each boxed note: is it an eighth, a sixteenth, a quarter, or something else -- and is the mark on its stem a flag or a beam?"
+- **What the numbers say:** the big movers are not the box rule or the hook rule but the two disagreement kinds (`disagree_narrowed` narrows a note the CV rows decided; `stroke_candidate` raises `possible`). Together ~236 / 191 heads become narrowed; that is where the 130 held-out
+  notes come from. Whether those narrowings are right is the tiles' question (tiles 1, 4, 10, 11 are decided-on-main-now-narrowed; 2, 5, 6 are candidates). Not landed, no default touched.
