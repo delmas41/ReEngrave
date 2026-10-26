@@ -411,7 +411,7 @@ Every head / rest / accidental box an old pair rule refused, and what ownership 
 2.186's; owns = owns some of its ink; no_ink = covers no stroke it does not stand beside):
 | rule | n | refused + contested | merged | owns | no_ink |
 |---|---|---|---|---|---|
-| rest_has_a_stem | 60 / 13 | **54 / 11** | 0 / 0 | 2 / 1 | 2 / 1 |
+| rest_has_a_stem | 58 / 13 | **54 / 11** | 0 / 0 | 2 / 1 | 2 / 1 |
 | rest_stroke_into_a_head | 29 / 41 | 15 / 24 | 1 / 0 | 10 / 11 | 3 / 6 |
 | rest_is_a_barline | 31 / 19 | 10 / 3 | 1 / 0 | 2 / 0 | 18 / 16 |
 | is_a_rest_twin | 12 / 21 | 6 / 14 | 4 / 1 | 2 / 6 | 0 / 0 |
@@ -420,7 +420,7 @@ Every head / rest / accidental box an old pair rule refused, and what ownership 
 | rest_is_a_duplicate_box, different class | 0 / 8 | 0 / 1 | 0 / 4 | 0 / 3 | 0 / 0 |
 | head_cut_piece | 10 / 7 | 0 / 0 | 7 / 0 | 3 / 7 | 0 / 0 |
 | tremolo_slash_crosses_stem (+ rest_is_a_slashed_stem) | 42 / 47 | 0 / 1 | 8 / 10 | 34 / 36 | 0 / 0 |
-**Parity is NOT reached: 97 of 208 (47%) / 61 of 222 (27%).** Strong for the rest-vs-stem rules and the beam piece; the named differences: (1) `rest_is_a_barline` is mostly
+**Parity is NOT reached: 97 of 206 (47%) / 61 of 222 (27%).** Strong for the rest-vs-stem rules and the beam piece; the named differences: (1) `rest_is_a_barline` is mostly
 `no_ink` -- the barline's stroke is longer than the thin rest box, so under half of it lies inside and the box covers nothing (a box-coverage limit, not a shape one);
 (2) `tremolo_slash_crosses_stem` and `head_cut_piece` boxes own a head-shaped piece of their own (the slash is cut by the stem into head-sized halves; a cut piece is the same
 family -- 2.186's); (3) `on_a_rest` is mostly 2.192's ACCIDENTAL on an eighth-rest bulb where no rest box covers the bulb, so nothing contests it. So the old rules are NOT
