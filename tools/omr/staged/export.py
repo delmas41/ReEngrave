@@ -6981,6 +6981,41 @@ _ACCIDENTAL_CENSUS_BY_REASON: Dict[str, str] = {
 }
 
 
+def _stroke_owner_census(rec: "Record") -> Dict[str, Any]:
+    """ROADMAP 2.205: `{"stroke_ownership": {...}}` summed over the cells' `Q.STROKE_OWNER` verdicts, or `{}` when none was filed (flag off),
+    so a flag-off report is unchanged. A PARTITION: `strokes` = the record's `Q.STROKE` rows in the cells that have a verdict; `unclaimed`
+    + `decided` + `merged` + `refused_claims` + `contested` + `unaccounted` = `strokes`, and `unaccounted` must be 0."""
+    vs = [v for v in rec.verdicts_of(Q.STROKE_OWNER) if isinstance(v.get("value"), dict)]
+    if not vs:
+        return {}
+    from .stroke_owner import STATES
+    out: Dict[str, Any] = {k: 0 for k in STATES}
+    fam: Dict[str, int] = {}
+    boxes: Dict[str, int] = {}
+    cells = set()
+    for v in vs:
+        cells.add(str(v.get("subject")))
+        d = v.get("detail") or {}
+        for k, n in (d.get("census") or {}).items():
+            if k.startswith("family:"):
+                fam[k[7:]] = fam.get(k[7:], 0) + int(n)
+            elif k in out:
+                out[k] += int(n)
+        for _key, b in (d.get("boxes") or {}).items():
+            boxes[str(b[0])] = boxes.get(str(b[0]), 0) + 1
+    strokes = 0
+    for r in rec.obs_of(Q.STROKE):
+        sub = str(r.get("subject") or "")
+        if sub.startswith("glyph/") and "cell/" + sub[len("glyph/"):].rsplit("/", 1)[0] in cells:
+            strokes += 1
+    out["strokes"] = strokes
+    out["unaccounted"] = strokes - sum(out[k] for k in STATES)
+    out["owned_by_family"] = dict(sorted(fam.items()))
+    out["boxes_owning_none_of_their_ink"] = dict(sorted(boxes.items()))
+    out["cells"] = len(cells)
+    return {"stroke_ownership": out}
+
+
 def _accidental_census(rec: "Record", detected: Dict[str, int],
                        written: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """What became of every PRINTED accidental glyph — ROADMAP 2.7.
@@ -7657,6 +7692,9 @@ def coverage(result: Dict[str, Any],
         # thing it counts starts happening.
         "accidental_reading": _accidental_census(rec, detected, written),
         "detector_views": _detector_view_census(rec),
+        # ROADMAP 2.205 (`OMR_STROKE_OWNER`): who owns the ink -- strokes by state (the CONTESTED ones are ink nobody may read as a beam or a
+        # stem, counted here and never written as anything), boxes that own none of their ink. Present only when the decision ran.
+        **_stroke_owner_census(rec),
         # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
         # class nobody has thought about appears here the first time the
         # detector emits one.

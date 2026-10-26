@@ -407,6 +407,9 @@ NOT_A_STAGE = frozenset({
     # at a stem's tip): files no row, names no quantity, decides nothing; the decision is `adjudicate_duration`'s.
     "beam_strokes.py",
     "stem_strokes.py",
+    # ROADMAP 2.205. Pure helpers for `adjudicators/stroke_owner.py` (the claim order, the family shapes, one owner per stroke): files no row,
+    # names no quantity; the decision is `adjudicate_stroke_owner`'s.
+    "stroke_owner.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",

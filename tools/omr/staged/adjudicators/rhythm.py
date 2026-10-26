@@ -3933,10 +3933,26 @@ def beams_from_strokes_enabled() -> bool:
     return os.environ.get(BEAMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _owner_on() -> bool:
+    from . import stroke_owner as _SOA
+    return _SOA.enabled()
+
+
+def _owner_mask(verdict) -> Dict[int, str]:
+    """ROADMAP 2.205 (`OMR_STROKE_OWNER`): `{ordinal: "owned" | "contested"}` for the strokes of a cell a mark owns or two marks contest, from
+    the cell's `Q.STROKE_OWNER` verdict; `{}` with no verdict (as before). The consumers below give such a stroke that KIND, so it stays ink in
+    their views (never a clean tip) but is never a beam, a hook, a stub or a stem. Callers read the verdict only with the flag on, so a
+    flag-off verdict records nothing new."""
+    from . import stroke_owner as _SOA
+    return _SOA.masked(verdict)
+
+
 def _stroke_views(ev: Evidence, cell) -> list:
-    """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none."""
+    """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none.
+    With `OMR_STROKE_OWNER` on, a stroke another mark owns (or two contest) has kind `owned` / `contested` (`_owner_mask`)."""
     from ..record import STROKE_GLYPH_BASE
     out = []
+    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         d = r.detail or {}
@@ -3944,7 +3960,7 @@ def _stroke_views(ev: Evidence, cell) -> list:
         if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
             continue
         out.append(_BS.StrokeView(
-            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
@@ -4059,9 +4075,11 @@ def stems_from_strokes_enabled() -> bool:
 _STEM_MEMO: list = [None, None, None, None, None]
 
 
-def _stem_views(ev: Evidence, cell, stroke_rows=None):
+def _stem_views(ev: Evidence, cell, stroke_rows=None, mask=None):
     """`(StemViews of the cell's Q.STROKE rows, {row id: row}, other head boxes)`; `([], {}, [])` where the cell has no stroke map."""
-    ck = cell.to_key() if hasattr(cell, "to_key") else str(cell)
+    if mask is None:                      # ROADMAP 2.205: owned / contested strokes are never a stem (`_owner_mask`)
+        mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
+    ck = (cell.to_key() if hasattr(cell, "to_key") else str(cell), bool(mask))
     if _STEM_MEMO[0] is ev.log and _STEM_MEMO[1] == ck:
         return _STEM_MEMO[2], _STEM_MEMO[3], _STEM_MEMO[4]
     from ..record import STROKE_GLYPH_BASE
@@ -4080,7 +4098,7 @@ def _stem_views(ev: Evidence, cell, stroke_rows=None):
             flipped = isinstance(ends, (list, tuple)) and len(ends) == 4 and ends[1] > ends[3]
             steps = (float(es[1]), float(es[0])) if flipped else (float(es[0]), float(es[1]))
         views.append(_SS.StemView(
-            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
@@ -4330,7 +4348,7 @@ def _tip_abs(ev: Evidence, cell, own_stems):
     return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 
-def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
+def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     """What `Q.HEAD_STEM_REACH` told `ownership._stem_owner`, read off the stroke map for THIS glyph: `{"way", "tip_y_page", "head_box_page",
     "ext", "rows"}` or `None` (silent: flag off, no map, no single stem). Page px by the head box's own scale (canonical -> page)."""
     if not stems_from_strokes_enabled():
@@ -4341,7 +4359,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
         return None
     hb = _xywh_head(box[-1].value)
     page = (box[-1].detail or {}).get("bbox_page_px")
-    views_, rows_, heads_ = _stem_views(ev, cell, stroke_rows)
+    views_, rows_, heads_ = _stem_views(ev, cell, stroke_rows, mask)
     got = _read_stem(ev, hb, views_, rows_, heads_)
     if got is None or not page or len(page) < 4:
         return None
@@ -4407,7 +4425,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
                    Q.SYSTEM_ARC,
                    # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
                    # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
-                   Q.STROKE, Q.GLYPH_STROKES),
+                   Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -4457,7 +4475,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
            # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
-           Q.STROKE, Q.GLYPH_STROKES),
+           Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -9180,13 +9198,13 @@ def _stems_on(head_box, stems):
 
 @decision(
     quantity=Q.STEM_DIRECTION,
-    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
+    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
              "no_evidence", "stem_readers_disagree"),

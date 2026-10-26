@@ -934,6 +934,13 @@ class Q(_Vocab):
     #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
     GLYPH_STROKES = "glyph_strokes"
 
+    #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
+    #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
+    #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
+    #: stems) read only the other strokes. `detail.strokes` = per claimed / refused / contested stroke its state, owner family, owners and
+    #: candidates (claim order, fit, the measured fields); `detail.boxes` = the head / rest / accidental boxes that own none of their ink.
+    STROKE_OWNER = "stroke_owner"
+
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
     #: glyph: the ink fraction INSIDE the detector's OWN box, two ways --
@@ -2579,6 +2586,7 @@ CLAIMS: "dict[str, str]" = {
     # stems touch one box the side rule picks) and the value that stem carries.
     "HEAD_STEM": CLAIM.INTERPRETATION,
     "STEM_HEAD_CONTACT": CLAIM.INTERPRETATION,
+    "STROKE_OWNER": CLAIM.INTERPRETATION,
     "STEM_VALUE": CLAIM.INTERPRETATION,
     "TUPLET_RATIO": CLAIM.INTERPRETATION,
     "GLYPH_OWNER": CLAIM.INTERPRETATION,

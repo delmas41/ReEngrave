@@ -355,7 +355,10 @@ def _stem_owner(ev: Evidence, cand_keys: Sequence[Optional[str]]):
     # engraving side, read off the stroke map (`rhythm.stem_reach_equivalent`); with the flag on `Q.HEAD_STEM_REACH` is not read.
     from . import rhythm as _rhythm
     if _rhythm.stems_from_strokes_enabled():
-        eq = _rhythm.stem_reach_equivalent(ev, ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=ev.subject.at(Kind.CELL)))
+        # ROADMAP 2.205 (`OMR_STROKE_OWNER`): a stroke another mark owns is never this head's stem
+        so_cell = ev.subject.at(Kind.CELL)
+        so_mask = _rhythm._owner_mask(ev.verdict(Q.STROKE_OWNER, subject=so_cell)) if _rhythm._owner_on() else {}
+        eq = _rhythm.stem_reach_equivalent(ev, ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=so_cell), so_mask)
         if eq is None:
             return None
         way, tip, box = eq["way"], eq["tip_y_page"], eq["head_box_page"]
@@ -615,7 +618,7 @@ def _owner_from_staves(ev: Evidence):
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
                    Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW,
-                   Q.HEAD_STEM_REACH, Q.STROKE),
+                   Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
     # look toward each candidate staff, read AHEAD of distance and of the older
@@ -625,7 +628,7 @@ def _owner_from_staves(ev: Evidence):
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
            Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT,
-           Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE),
+           Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
     reasons=("human_owner", "staff_band", "staff_band_no_box",
              "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
              "stem_toward_staff", "stem_disagrees",
