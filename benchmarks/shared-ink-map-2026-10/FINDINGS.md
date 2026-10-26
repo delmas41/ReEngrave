@@ -480,8 +480,8 @@ holding p10 (Litolff 8, 10, 16 / Brahms 0, 14): right -> wrong 0 (138 / 196), no
   **notes not written 2,801 -> 2,779**; judged right -> wrong **0** (233 tiles).
 - Brahms: notes +29 -10, rests +1, accidentals +12 -2, dots +17 -4, flags +6 -9, beams +7 ~1, ties +6 -2, slurs +8 -2, articulations +9 -2, values ~3, blue marks
   +15 -35; **red bars 173 -> 171**; **notes not written 3,363 -> 3,343**; judged right -> wrong **0** (232 tiles).
-- Words +3 -6 / +8 -21 cannot come from an ADJUDICATE flag: each arm re-gathers, and the text reader is not deterministic across gathers (2.198's OFF-vs-OFF -1 word);
-  run (a) is the OFF-vs-ON control for it.
+- Words +3 -6 / +8 -21: NOT gather noise -- run (a) re-gathers both arms too and its words did not move. They follow the notes: a written word is placed on a note, and (b) writes / drops notes; not chased further (no judged answer moved).
+- **Run (a), ownership alone, full sample** (`out/lane-report/2.205a.txt`): NOTHING CHANGED in the exported file on either plate (notes not written 2,563 / 3,202, red bars 0 / 166 both arms), judged right -> wrong 0 (233 / 232) -- OFF-vs-ON of the decision itself changes no output, as designed.
 - Ownership on the full sample (`multi_claim_2205b.json`): contested 399 / 655 strokes; Brahms accidental|rest 190 (2.192's bulb).
 **The 2.204 stem `disagree` abstentions** (`stem_disagree_owner.py`, both arms stems ON): Litolff 178 OFF (the coordinator's 167, main merged) -> ownership removes **23**
 (13 agree, 8 map silent, 1 old refused, 1 cannot tell) and adds 7: 178 -> 162; Brahms 96 -> 5 removed, 6 added. **Ownership does not remove them**, and should not be
