@@ -24,6 +24,8 @@ def norm(s):
 def load():
     out = []
     for name, d in SETS:
+        if not os.path.exists(d + "key.json"):
+            continue                      # that tile set is not on this checkout (out/print is untracked)
         ans = {t["tile"]: t for t in json.load(open(d + "answers.json"))["tiles"]}
         key = json.load(open(d + "key.json"))
         key = key if isinstance(key, list) else key.get("tiles", key)
