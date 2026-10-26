@@ -242,6 +242,14 @@ class TimeSignatureLocatorConfig:
 
 DEFAULT_LOCATOR_CONFIG = TimeSignatureLocatorConfig()
 
+ENV_METER_SLOT = "OMR_METER_SLOT"
+
+
+def meter_slot_enabled() -> bool:
+    """ROADMAP 2.206b: OFF unless `OMR_METER_SLOT` is 1/true/yes/on (STAGED `gather_meter` only; LEGACY unchanged)."""
+    import os
+    return os.environ.get(ENV_METER_SLOT, "").strip().lower() in ("1", "true", "yes", "on")
+
 
 @dataclass(frozen=True)
 class LocatedTimeSignature:
@@ -640,8 +648,15 @@ def locate_time_signature(
     config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
     min_score: float | None = None,
     trace: dict[str, object] | None = None,
+    x_min_canonical: float | None = None,
 ) -> LocatedTimeSignature | None:
     """Read the time signature in one staff's header cell, or return None.
+
+    `x_min_canonical` (ROADMAP 2.206b, `OMR_METER_SLOT`; None = the whole cell,
+    as always): a meter is printed AFTER the clef and the key signature, so a
+    match whose left edge is left of this x (header-cell canonical px) is ink
+    the clef or the key already owns -- a label's `C`, a flat -- and is not
+    searched.
 
     `cell` is a header cell from `staff_header.extract_header_cell` — the crop
     running from the staff's left edge to the first barline, which is where a
@@ -674,6 +689,11 @@ def locate_time_signature(
         if template.shape[0] > strip.shape[0] or template.shape[1] > strip.shape[1]:
             continue
         response = cv2.matchTemplate(strip, template, cv2.TM_CCOEFF_NORMED)
+        if x_min_canonical is not None:
+            cut = int(np.ceil(x_min_canonical * scale))
+            if cut >= response.shape[1]:
+                continue
+            response[:, :max(cut, 0)] = -1.0
         _, score, _, location = cv2.minMaxLoc(response)
         scores.append((raw, float(score)))
         if best is None or score > best.score:

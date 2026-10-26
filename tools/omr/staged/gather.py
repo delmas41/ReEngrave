@@ -12996,8 +12996,18 @@ def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
                         reason=ABSTAIN.NO_STAFF_GEOMETRY)
             continue
         trace: Dict[str, Any] = {}
+        x_min = None
         try:
-            found = locate_time_signature(crop, trace=trace)
+            # ROADMAP 2.206b (flag `OMR_METER_SLOT`): the meter is searched only RIGHT of the ink the clef and the key own.
+            from ..time_signature_locator import meter_slot_enabled
+            if meter_slot_enabled():
+                from ..key_signature_template import claimed_header_edge
+                x_min = claimed_header_edge(crop)
+                trace["x_min_claimed"] = None if x_min is None else round(float(x_min), 1)
+        except Exception:                                     # noqa: BLE001
+            x_min = None
+        try:
+            found = locate_time_signature(crop, trace=trace, x_min_canonical=x_min)
         except Exception:                                     # noqa: BLE001
             log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
                         frame=FRAME_HEADER_WINDOW,
