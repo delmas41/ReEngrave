@@ -1,0 +1,57 @@
+{
+ "lane": "2.204c",
+ "date": "2026-10-26",
+ "question": "which way does its stem go, or none -- and is the line beside it its stem or a barline?",
+ "verbatim": "2.204 - 1. Up 2. Up and down, main tip of stem is down but there is a note above sharing the same stem. 3, up 4. Up 5. Down 6. Up 7-8. Down 9. Up 10. Same as tile 2 11. Down but stem shares seconds which put note heads on both sides of the stem. 12. Down.   Stems that share notes are more complicated when it comes to which side the stem is on and if it goes up or down...",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "up"
+  },
+  {
+   "tile": 2,
+   "sean": "shared stem: tip down, a note above on the same stem"
+  },
+  {
+   "tile": 3,
+   "sean": "up"
+  },
+  {
+   "tile": 4,
+   "sean": "up"
+  },
+  {
+   "tile": 5,
+   "sean": "down"
+  },
+  {
+   "tile": 6,
+   "sean": "up"
+  },
+  {
+   "tile": 7,
+   "sean": "down"
+  },
+  {
+   "tile": 8,
+   "sean": "down"
+  },
+  {
+   "tile": 9,
+   "sean": "up"
+  },
+  {
+   "tile": 10,
+   "sean": "shared stem: tip down, a note above on the same stem"
+  },
+  {
+   "tile": 11,
+   "sean": "down; seconds put heads on both sides of the stem"
+  },
+  {
+   "tile": 12,
+   "sean": "down"
+  }
+ ],
+ "summary": "every boxed note has a stem (none is a barline: the 3 \"barline\" tiles 2, 8, 10 are chord stems -- 2 and 10 shared by notes above and below); the finder was right; shared stems with seconds put heads on both sides, so the side rule alone cannot read them"
+}
