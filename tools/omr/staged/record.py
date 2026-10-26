@@ -2951,6 +2951,10 @@ class READERS(_Vocab):
     #: `gather.gather_key_object` -- ROADMAP 2.187 (flag `OMR_KEY_PER_SYSTEM`, default ON). The key signature read as ONE system object: its
     #: count from the staves' agreement (and the dossier, where admitted), the slots placed on each staff from its own clef edge.
     CV_KEY_OBJECT = "cv_key_object"
+    #: `gather.gather_clef_slot_claim` -- ROADMAP 2.208 (flag `OMR_CLEF_SLOT_CLAIM`, default OFF). A staff whose clef nothing located and the
+    #: detector never boxed (a clef we carry from other systems) still has the clef's INK at its start: the slot between the system's clef
+    #: offset and the key claim, drawn as the clef's claim (area, and strokes where the stroke map is on).
+    CV_CLEF_SLOT_CLAIM = "cv_clef_slot_claim"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

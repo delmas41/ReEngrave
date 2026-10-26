@@ -14688,6 +14688,100 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
                 print(f"  gather claimed area (key object) {ssub.to_key()}")
 
 
+def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]], *, progress: bool = False,
+                           stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `clef` for a staff that has NO clef claim of its own -- ROADMAP 2.208, flag `OMR_CLEF_SLOT_CLAIM`
+    (default OFF; needs `OMR_CLAIMED_REGISTER`).
+
+    PATH: STAGED GATHER, PAGE raster. AFTER `gather_key_object` (reads the key claim's left edge). WHY (2.205 tile 5, Litolff p4 staff 8,
+    measured): `gather_claimed_register` files a clef claim only from a located clef (cell 0 frame, or a header-window read that
+    overrode a head box) or a clef-sized detector box. A staff whose clef nothing located and the detector never boxed has its clef
+    DECIDED only by carry from other systems (EVALUATE) -- and the ink is still there, claimed by nobody: the header column stops at the
+    system's clef offset, the key claim starts later, and a detector head drawn on the clef's body stands unopposed.
+
+    CONVENTION ASSUMED: a system opens with a clef on every staff (page-facts), so the space between the system's clef offset and the key
+    claim is that clef's. WHAT WOULD FALSIFY IT: a print-confirmed note whose ink lies in the slot. NOT CONFIRMED beyond the two plates.
+
+    Per staff with a `leading_column` claim drawn from the SYSTEM's clef offset (`right_edge == "system"`: this staff showed no clef) and no
+    cell-0 clef area claim of any standing: ONE `clef` area claim, standing READ, `source: clef_slot` -- from that offset to the staff's key
+    claim (cell 0), never past the widest clef a sibling staff shows plus `claims.CLEF_SLOT_PAD_SPACES`. With the stroke map, the strokes
+    >= `COVER_SHARE_MIN` inside the slot are filed beside it as an `ink` claim, as for a located clef. No sibling clef, no column, no
+    raster or a slot narrower than one space files nothing and says so (rule 8): never "no clef here".
+
+    ⚠️ This reader draws the claim and measures `boxes_inside`; it decides nothing about any box (the consult is `claimed_by`)."""
+    from . import claims as CL
+    if not CL.clef_slot_enabled():
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_sys: Dict[int, Dict[int, Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], {})[key[1]] = st
+    cells_of: Dict[int, Dict[int, Any]] = {}
+    for c in cells:
+        cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
+
+    def _cell0(rows: Sequence[Any], owner: str, unit: str = "area") -> List[Any]:
+        return [r for r in rows if (r.detail or {}).get("owner") == owner and (r.detail or {}).get("unit") == unit
+                and (r.detail or {}).get("cell") == 0]
+
+    for sys_idx, members in sorted(by_sys.items()):
+        rows_of = {li: list(log.rows(Q.CLAIMED_AREA, R.staff(p, sys_idx, li))) for li in members}
+        sibling_right = [float(r.value[2]) for li in members for r in _cell0(rows_of[li], CL.OWNER_CLEF)
+                         if (r.detail or {}).get("standing") == "READ" and isinstance(r.value, list) and len(r.value) == 4]
+        for li, st in sorted(members.items()):
+            rows = rows_of[li]
+            cols = [r for r in _cell0(rows, CL.OWNER_COLUMN) if (r.detail or {}).get("right_edge") == "system"]
+            if not cols or _cell0(rows, CL.OWNER_CLEF):
+                continue                                   # the staff showed its own clef (or no system clef offset exists)
+            sp = _spacing(st)
+            lines = list(st.line_ys)
+            ssub = R.staff(p, sys_idx, li)
+            c0 = cells_of.get(st.staff_index, {}).get(0)
+            if not sp or len(lines) < 5 or c0 is None or not getattr(c0, "bbox_page_px", None):
+                continue
+            if not sibling_right:
+                log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLEF_SLOT_CLAIM, frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS,
+                            cell=0, owner=CL.OWNER_CLEF, unit="area", why="no_clef_on_the_system", source="clef_slot")
+                continue
+            left = float(cols[0].value[2])
+            keys = [float(r.value[0]) for r in _cell0(rows, CL.OWNER_KEY) if isinstance(r.value, list) and len(r.value) == 4]
+            key_lo = min(keys) if keys else None
+            area = CL.clef_slot(left, key_lo, max(sibling_right), lines, sp)
+            if area is None:
+                log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLEF_SLOT_CLAIM, frame=frame_cell(0), reason=ABSTAIN.NO_INK,
+                            cell=0, owner=CL.OWNER_CLEF, unit="area", why="slot_narrower_than_a_space", source="clef_slot")
+                continue
+            located = list(log.rows(Q.CLEF_LOCATED, ssub))
+            dets0 = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
+            inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(), lines, sp)
+            owner_row = located[0].id if located else None
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_CLEF_SLOT_CLAIM, frame=frame_cell(0), cell=0,
+                        owner=CL.OWNER_CLEF, owner_row=owner_row, owner_glyph=None, unit="area", standing="READ", source="clef_slot",
+                        boxes_inside=inside, space_page_px=round(sp, 3))
+            if stroke_cells:                               # the same slot as a list of strokes (2.198 ink claim)
+                from . import stroke_map as SM
+                res0 = stroke_cells.get((p, sys_idx, li, 0))
+                upc = getattr(c0, "upscale_factor", None)
+                if res0 is None or isinstance(res0, str) or not upc:
+                    _file_ink_claim(log, ssub, strokes=None, why="no stroke map for the cell" if res0 is None or isinstance(res0, str)
+                                    else "no upscale factor", cell=0, owner=CL.OWNER_CLEF, owner_row=owner_row, owner_glyph=None,
+                                    standing="READ", source="clef_slot")
+                else:
+                    cb0 = c0.bbox_page_px
+                    canon = [(area[0] - cb0[0]) * upc, (area[1] - cb0[1]) * upc, (area[2] - cb0[0]) * upc, (area[3] - cb0[1]) * upc]
+                    _file_ink_claim(log, ssub, strokes=[(i, sh) for i, sh in SM.strokes_in_box(res0, canon) if sh >= SM.COVER_SHARE_MIN],
+                                    why=None, cell=0, owner=CL.OWNER_CLEF, owner_row=owner_row, owner_glyph=None, standing="READ",
+                                    source="clef_slot", cover_min=SM.COVER_SHARE_MIN)
+            if progress:
+                print(f"  gather claimed area (clef slot) {ssub.to_key()}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -16024,6 +16118,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_key_signature_claim(log, pws, cells, local, detections)
         # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default ON): AFTER the key claim and the meter object; page raster.
         gather_key_object(log, pws, cells, local, detections)
+        # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default OFF): AFTER the key claim (reads its left edge); page raster.
+        gather_clef_slot_claim(log, pws, cells, local, detections, stroke_cells=stroke_cells)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
