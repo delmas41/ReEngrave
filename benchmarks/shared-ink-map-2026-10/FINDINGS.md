@@ -464,3 +464,34 @@ whose stem changed (one accidental- or dynamic-owned finder stem among them: the
 Brahms accidental|rest first), 1 box ownership refuses that main kept; and the 2.202 tiles RE-SHOWN with their new outcome -- 2, 5, 6, 12 (predicted to move to Sean's answer)
 and one of 1 / 4 / 10 (predicted unchanged, the erase-thinned beam: a control). Judged right -> wrong must be 0.
 **No colour question at the milestone: already ruled** (DECISIONS 2026-10-22, Sean: "the color should just be applied at output. Everything else before that is intended to help determine what it is"). A contested stroke (446 / 668 on the sample) ABSTAINS in ADJUDICATE with both candidates kept, as built; INFER may choose among them, labelled; EXPORT alone colours the result. The milestone asks Sean only the tiles' own question ("what is this ink: which mark, or two?").
+
+## MILESTONE RESULT (2.205; main merged `a21aab575`; fast tier 9,061 passed, 0 failed; `results/2.205/`, `out/print/2.205-stroke-owner/`)
+**Subsets first** (Sean 2026-10-25). (a) ownership alone, Litolff 8, 16 / Brahms 0, 14: NOTHING CHANGED in the file, right -> wrong 0 (117 / 196 judged tiles);
+759 / 360 cells carry a `stroke_owner` verdict, contested 138 / 108 strokes. (b) ownership with beams + stems in both arms: notes not written 620 -> 613 / 604 -> 597,
+red bars 34 -> 33 (Brahms), right -> wrong 0.
+**First full (b) run: ONE right -> wrong**, Litolff p10 (2.154 tile 7, Sean: eighth; ON wrote a quarter). **Cause**: the note's flag hook (stroke 19, on its own stem 22) lay
+in detector boxes classed `dynamicF` (the detector named a Litolff flag as a forte letter, as it does other ink in that cell), so the letter tier owned the hook before the flag
+reader could read it. **Lesson**: a letter box has the same failure as a rest box on a stem -- the detector's CLASS is a guess, so its claim needs a structural test, not only a
+shape one. **Fix** (`shape_fit`, `touches_a_note`; CONVENTION ASSUMED: a dynamic letter is printed clear of the notes): a letter never owns a stroke that touches a head's
+stroke or a stem touching one -- the claim order acting (heads before letters), with a control that breaks the order and gives the flag back to the letter. Re-run on a subset
+holding p10 (Litolff 8, 10, 16 / Brahms 0, 14): right -> wrong 0 (138 / 196), notes not written 944 -> 934 / 604 -> 597.
+**Full frozen sample, (b), after the fix** (`out/lane-report/2.205b.txt`): the consumers in both arms, ownership OFF vs ON.
+- Litolff: notes +35 -13, accidentals +9 -1, flags +7 -8 ~1, beams +14 -7 ~7, ties +2, slurs +8, values ~2, pitches ~1, blue marks +12 -1; red bars 0 -> 0;
+  **notes not written 2,801 -> 2,779**; judged right -> wrong **0** (233 tiles).
+- Brahms: notes +29 -10, rests +1, accidentals +12 -2, dots +17 -4, flags +6 -9, beams +7 ~1, ties +6 -2, slurs +8 -2, articulations +9 -2, values ~3, blue marks
+  +15 -35; **red bars 173 -> 171**; **notes not written 3,363 -> 3,343**; judged right -> wrong **0** (232 tiles).
+- Words +3 -6 / +8 -21 cannot come from an ADJUDICATE flag: each arm re-gathers, and the text reader is not deterministic across gathers (2.198's OFF-vs-OFF -1 word);
+  run (a) is the OFF-vs-ON control for it.
+- Ownership on the full sample (`multi_claim_2205b.json`): contested 399 / 655 strokes; Brahms accidental|rest 190 (2.192's bulb).
+**The 2.204 stem `disagree` abstentions** (`stem_disagree_owner.py`, both arms stems ON): Litolff 178 OFF (the coordinator's 167, main merged) -> ownership removes **23**
+(13 agree, 8 map silent, 1 old refused, 1 cannot tell) and adds 7: 178 -> 162; Brahms 96 -> 5 removed, 6 added. **Ownership does not remove them**, and should not be
+expected to: their reasons are 2.204's own rules on strokes no mark owns -- `finder_stem_but_wrong_side` 76 / 59, `finder_stem_is_not_a_stroke_beside_the_head` 56 / 32,
+`finder_stem_but_barline` 46 / 5. The crop check's causes (fused heads, chord stems over 8 sp called barlines -- Sean 2026-10-26: a long stem through stacked heads is
+a chord stem, never a barline --, neighbours' stems) are 2.204's side and length rules; they are 2.204's to fix. Ownership's part (Sean 2026-10-26): no head may claim a
+shared chord stem -- it never does (a head never owns a vertical stroke; `TestAStemSharedByAChord`: a three-note chord and a second with heads on both sides, pure and
+through the pipeline).
+**The 12 tiles** (`out/print/2.205-stroke-owner/tiles/sheet.png`; key `out/print/2.205-stroke-owner/key.json`; question per tile: "what is the boxed ink -- a note
+(which value, flag or beam on its stem), a rest, or something else?"): 3 beam readings ownership changed (tiles 4, 5 narrowed -> decided; 11 abstained -> decided eighth),
+2 stem readings (7, 12: 2.204 `disagree` -> agrees, now decided), 2 contested strokes (1 head|rest, 9 accidental|rest), 1 head box ownership contests that main kept (6),
+and the 2.202 tiles re-shown: 2 (sharp's crossbar), 6 (head + ledger), 12 (slur start) -- predicted to move to Sean's answer -- and 1 (erase-thinned beam: the control,
+predicted unchanged). Not answered yet.

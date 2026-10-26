@@ -1,0 +1,126 @@
+{
+ "litolff": {
+  "off": {
+   "agrees": 3750,
+   "map_silent": 203,
+   "whole_head": 19,
+   "map_cannot_tell": 221,
+   "old_refused": 304,
+   "no_stem_candidate_only": 217,
+   "gained": 121,
+   "disagree": 178
+  },
+  "on": {
+   "agrees": 3763,
+   "map_silent": 245,
+   "whole_head": 19,
+   "map_cannot_tell": 210,
+   "old_refused": 304,
+   "no_stem_candidate_only": 194,
+   "gained": 116,
+   "disagree": 162
+  },
+  "off_disagree_why": {
+   "finder_stem_but_wrong_side": 76,
+   "finder_stem_is_not_a_stroke_beside_the_head": 56,
+   "finder_stem_but_barline": 46
+  },
+  "off_disagree_became_on": {
+   "disagree": 155,
+   "map_silent": 8,
+   "agrees": 13,
+   "old_refused": 1,
+   "map_cannot_tell": 1
+  },
+  "new_disagree_on": 7,
+  "new_disagree_examples": [
+   [
+    "glyph/6/0/2/8/5",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ],
+   [
+    "glyph/6/0/2/8/7",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ],
+   [
+    "glyph/6/1/0/10/8",
+    "finder_stem_but_barline"
+   ],
+   [
+    "glyph/6/1/7/4/15",
+    "finder_stem_but_wrong_side"
+   ],
+   [
+    "glyph/10/1/4/3/3",
+    "finder_stem_but_wrong_side"
+   ],
+   [
+    "glyph/10/1/4/3/4",
+    "finder_stem_but_wrong_side"
+   ],
+   [
+    "glyph/11/1/3/1/3",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ]
+  ]
+ },
+ "brahms": {
+  "off": {
+   "agrees": 4180,
+   "map_cannot_tell": 142,
+   "no_stem_candidate_only": 687,
+   "gained": 80,
+   "disagree": 96,
+   "whole_head": 72,
+   "old_refused": 279,
+   "map_silent": 226
+  },
+  "on": {
+   "agrees": 4183,
+   "map_cannot_tell": 139,
+   "no_stem_candidate_only": 622,
+   "gained": 73,
+   "disagree": 97,
+   "whole_head": 72,
+   "old_refused": 276,
+   "map_silent": 300
+  },
+  "off_disagree_why": {
+   "finder_stem_is_not_a_stroke_beside_the_head": 32,
+   "finder_stem_but_wrong_side": 59,
+   "finder_stem_but_barline": 5
+  },
+  "off_disagree_became_on": {
+   "disagree": 91,
+   "agrees": 3,
+   "map_silent": 2
+  },
+  "new_disagree_on": 6,
+  "new_disagree_examples": [
+   [
+    "glyph/0/0/10/1/6",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ],
+   [
+    "glyph/0/0/12/1/6",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ],
+   [
+    "glyph/5/0/10/5/0",
+    "finder_stem_but_barline"
+   ],
+   [
+    "glyph/5/0/10/5/1",
+    "finder_stem_but_barline"
+   ],
+   [
+    "glyph/5/0/10/5/11",
+    "finder_stem_but_barline"
+   ],
+   [
+    "glyph/19/1/0/8/20",
+    "finder_stem_is_not_a_stroke_beside_the_head"
+   ]
+  ]
+ }
+}

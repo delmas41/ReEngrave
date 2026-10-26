@@ -1,0 +1,26 @@
+  gather litolff off pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather litolff on pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather brahms off pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+  gather brahms on pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_BEAMS_FROM_STROKES (OFF=1 ON=1), OMR_STEMS_FROM_STROKES (OFF=1 ON=1), OMR_STROKE_OWNER (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py, staged/beam_strokes.py, staged/gather.py ... -> GATHER
+  OMR_BEAMS_FROM_STROKES: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py -> ADJUDICATE..EXPORT
+  OMR_STEMS_FROM_STROKES: read in staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/gather.py, staged/stem_strokes.py -> GATHER
+  OMR_STROKE_OWNER: read in staged/adjudicate.py, staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py ... -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (4787 notes+rests OFF, 4814 ON, 4772 paired)
+  file:   notes +42 -15 | accidentals +10 -1 | flags +7 -11 | beams +15 -7 ~7 | ties +2 | slurs +8 | note values ~3 | pitches ~1 | blue marks +13 -2 | dynamics +1 -1 | words +5 -7
+  red bars 0 -> 0 | notes not written 2801 -> 2774
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 1 | right->narrowed/abstained/gone 0 | wrong->right 0
+      RIGHT->WRONG  2.154-review tile 7 glyph/10/1/8/8/10  Sean: 8  now: decided 1 beats (head_and_marks)
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6360 notes+rests OFF, 6380 ON, 6350 paired)
+  file:   notes +29 -10 | rests +1 | accidentals +12 -2 | dots +17 -4 | flags +6 -9 | beams +7 ~1 | ties +6 -2 | slurs +8 -2 | articulations +9 -2 | note values ~3 | blue marks +15 -35 | words +8 -21
+  red bars 173 -> 171 | notes not written 3363 -> 3343
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 8317 s
+exit 0

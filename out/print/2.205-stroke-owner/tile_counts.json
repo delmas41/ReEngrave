@@ -1,0 +1,29 @@
+{
+ "counts": {
+  "litolff": {
+   "beam_changed": 46,
+   "stem_changed": 76,
+   "contested": 387,
+   "box_owns_none_main_kept": 118
+  },
+  "brahms": {
+   "beam_changed": 40,
+   "stem_changed": 92,
+   "contested": 652,
+   "box_owns_none_main_kept": 166
+  }
+ },
+ "pools": {
+  "beam": 86,
+  "stem_gone": 28,
+  "stem_other": 140,
+  "contested_acc_rest": 215,
+  "contested_other": 824,
+  "boxes": 284
+ },
+ "tiles": {
+  "n": 12,
+  "cases": 8,
+  "controls": 1
+ }
+}
