@@ -244,6 +244,7 @@ tested `--through adjudicate` against a copy of production.
 | `docs/staged-internals.md` | the record model, scopes, adjudicators, EVALUATE/INFER/EXPORT, the derived checks and their blind spots |
 | `docs/page-facts.md` | every engraving/plate convention with Sean's quotes and dates |
 | `docs/measuring.md` | the acceptance set, A/B rules, test tiers, flags |
+| `docs/ink-rules.md` | every old rule sorted convention / erasure workaround / double-count workaround / other, with fires and fate (generated; ROADMAP 2.207) |
 | `docs/data-sources.md` | library, rosters, dossiers, fact sheet, conventions registry |
 | `docs/detector.md` | weights, labels, fine-tuning facts, labeling UI |
 | `docs/flags-2026-09.md` | the verdict on every flag |

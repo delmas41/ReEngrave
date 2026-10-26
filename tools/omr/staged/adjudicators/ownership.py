@@ -23,6 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from .. import one_ink as _one_ink
 from .. import accidental_shape as _acc_shape
+from .. import accidental_family as _acc_family
 from ... import natural_candidate as _natural_candidate
 from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
                       LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
@@ -4377,7 +4378,12 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # reader of the detector's own raster, not a second witness. Singles (no rival) are only recorded, never moved.
     apos_override = None
     shape_choice = None
-    if _acc_shape.enabled() and detail.get("shape") is not None:
+    # ⚠️⚠️ ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`; the row carries `family` only then): the mark's TYPE was read from its own strokes at GATHER
+    # (`accidental_family.read_type`) and the row's alteration, anchor and x1 already come from it, so a CLEAR family type replaces 2.190's corner check
+    # (which read the same ink through a box that can cut it). An unclear / unread type leaves the detector's candidates and 2.190's check to stand.
+    family = detail.get("family")
+    family_clear = bool(family) and family.get("type") in _acc_family.TYPES
+    if _acc_shape.enabled() and detail.get("shape") is not None and not family_clear:
         shape_row = detail["shape"]
         shape_now = _acc_shape.classify(shape_row if shape_row.get("bl") is not None else None)
         pbc = detail.get("position_by_class") or {}
@@ -4600,7 +4606,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 # ROADMAP 2.186: the classes this glyph's box chose between at the merge; absent (and no key) when it chose none
                 **({"one_ink": detail["one_ink"]} if detail.get("one_ink") else {}),
                 # ROADMAP 2.190: what the shape check said about this ink (flag ON, a measured box only)
-                **({"shape_check": shape_choice} if shape_choice else {})})
+                **({"shape_check": shape_choice} if shape_choice else {}),
+                # ROADMAP 2.201: the family reading of this ink (type from its strokes, the detector's label as a fact); export writes it GUESSED
+                **({"family": family} if family else {})})
 
 
 def _keysig_marker_row(ev: Evidence):

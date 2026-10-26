@@ -44,6 +44,12 @@ from typing import (Any, Iterator, Mapping, Sequence,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+#: ROADMAP 2.195/2.198: glyph ordinals from here (below `human_evidence.HUMAN_GLYPH_BASE`, 400,000) number the STROKES of a cell (`Q.STROKE`).
+#: `Log.subjects(Kind.GLYPH)` does not list them (see there). One constant: `gather._STROKE_GLYPH_BASE` is this.
+STROKE_GLYPH_BASE = 375_000
+HUMAN_GLYPH_BASE_FLOOR = 400_000
+
+
 class Kind(str, Enum):
     """What a row is ABOUT. Ordered coarse to fine."""
 
@@ -912,6 +918,21 @@ class Q(_Vocab):
     #: Filed on the curve's leftmost piece; the value is the ends' SHAPE (`two_heads_one_position_adjacent`,
     #: `two_positions`, ...), a measurement naming nothing -- `Q.ARC_KIND` / `Q.TIE_PAIR` are not changed by it.
     SYSTEM_ARC = "system_arc"
+
+    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default ON; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
+    #: a cell's staff-erased ink, measured once: `value` is the kind (`vertical` / `horizontal` / `curve` / `blob`), `detail` its measurements (box in both
+    #: frames, length / angle / thickness / curvature / fill / hole share, ends in staff steps against the staff measured AT the ends' x, the strokes it
+    #: touches). It decides nothing and NOTHING READS IT yet (step 1 of 10; the `Q.INK` discipline). A piece under 0.05 sp^2 is counted on its cell's
+    #: rows (`cell_n_below_floor`), not filed.
+    STROKE = "stroke"
+
+    #: ROADMAP 2.198 (same flag `OMR_STROKE_MAP`; `gather_glyph_strokes`, plan §2.2): ONE ROW PER DETECTOR BOX of every pass, filed on the box's
+    #: glyph subject: `value` is the list of stroke ordinals (of the box's own cell; stroke `i` is the glyph subject `_STROKE_GLYPH_BASE + i`
+    #: of that cell, a `Q.STROKE` row) of which at least `detail.cover_min` of the stroke's ink lies inside the box, `shares` those shares,
+    #: `partial` the strokes with some ink inside and less. An empty list is a fact (the box stands on no filed stroke); a cell with no stroke
+    #: map ABSTAINS per box. A box is a hypothesis over strokes: two boxes of one cell with the same list stand on the same ink. Decides
+    #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
+    GLYPH_STROKES = "glyph_strokes"
 
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
@@ -2299,6 +2320,10 @@ CLAIMS: "dict[str, str]" = {
     #: be wrong about what the ink is, only about where the ruler was laid.
     #: `score is None` follows, as it does for `NOTEHEAD_STAFF_POSITION`.
     "VERTICAL_RUN": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.195: a measurement of ink, like `VERTICAL_RUN`; names nothing, so it cannot be wrong about what the ink is.
+    "STROKE": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.198: which strokes lie inside a box -- a measurement of ink under the detector's box, naming nothing.
+    "GLYPH_STROKES": CLAIM.MEASUREMENT,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
@@ -2901,6 +2926,10 @@ class READERS(_Vocab):
     #: `CV_INK` reads (one crop, one signal), filed as staff-sized pieces
     #: with page boxes for EVALUATE's missed-rest question.
     CV_INK_PIECES = "cv_ink_pieces"
+    #: `gather.gather_stroke_map` -- ROADMAP 2.195. The SAME erased raster `CV_INK` reads (one crop, one signal), reduced to 16 px a space.
+    CV_STROKE = "cv_stroke"
+    #: `gather.gather_glyph_strokes` -- ROADMAP 2.198. Reads the `CV_STROKE` masks and the detector's boxes; no raster of its own.
+    CV_GLYPH_STROKES = "cv_glyph_strokes"
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
@@ -3859,6 +3888,12 @@ class Log:
         seen: dict[str, Subject] = {}
         for _q, key in self._by_subject:
             sub = Subject.from_key(key)
+            # ROADMAP 2.198: a STROKE (`Q.STROKE`, a glyph subject numbered from `STROKE_GLYPH_BASE`) is a measurement, not a mark: no
+            # EVALUATE / ADJUDICATE / INFER rule is asked about it (measured: walking 13,441 of them put +11.9 MB of "skipped: cause_absent"
+            # lines into a 2-page record). Only the stroke itself is passed over; its cell, staff, ... are listed as ever, and its rows stay
+            # readable by quantity. A flag-off record holds no such subject, so nothing there changes.
+            if kind is Kind.GLYPH and sub.glyph is not None and STROKE_GLYPH_BASE <= sub.glyph < HUMAN_GLYPH_BASE_FLOOR:
+                continue
             anc = sub.at(kind)
             if anc is not None:
                 seen[anc.to_key()] = anc

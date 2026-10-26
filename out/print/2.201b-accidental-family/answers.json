@@ -1,0 +1,57 @@
+{
+ "lane": "2.201b",
+ "date": "2026-10-26",
+ "question": "Which accidental is printed directly in front of the note at the orange box: sharp, flat, natural, or none?",
+ "verbatim": "2.201 - 1-2. Nat 3. Sharp 4. Nat 5-6. Nat 7. Flat 8-12. Nat. (11 is a misprint and is missing ink it looks like a flat except for the fact that it is more square than rounded. That tile will trick most readers",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "natural"
+  },
+  {
+   "tile": 2,
+   "sean": "natural"
+  },
+  {
+   "tile": 3,
+   "sean": "sharp"
+  },
+  {
+   "tile": 4,
+   "sean": "natural"
+  },
+  {
+   "tile": 5,
+   "sean": "natural"
+  },
+  {
+   "tile": 6,
+   "sean": "natural"
+  },
+  {
+   "tile": 7,
+   "sean": "flat"
+  },
+  {
+   "tile": 8,
+   "sean": "natural"
+  },
+  {
+   "tile": 9,
+   "sean": "natural"
+  },
+  {
+   "tile": 10,
+   "sean": "natural"
+  },
+  {
+   "tile": 11,
+   "sean": "natural (misprint: missing ink, looks like a flat but squarer)"
+  },
+  {
+   "tile": 12,
+   "sean": "natural"
+  }
+ ],
+ "summary": "cases 9: ON right 8 (1, 2, 4, 5, 8, 9, 10, 12 -- naturals the detector called flat/sharp), OFF right 0; tile 11 a misprinted natural (missing ink, flat-like but square) read flat ON, sharp OFF; controls 3/3"
+}

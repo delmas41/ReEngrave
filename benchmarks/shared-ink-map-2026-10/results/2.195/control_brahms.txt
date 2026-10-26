@@ -1,0 +1,8 @@
+observations OFF 217817 ON-minus-stroke 217816 rows in only one arm 1 {'direction_word': 1}
+    OFF only: ('glyph/5/0/5/2/90010', 'direction_word') {"bbox_page_px": [2574.0, 1831.0, 2775.0, 1875.0], "category": "dynamic", "dynamics": [], "includes_dynamic_glyphs": [], "lexicon_scope": {"composer_languages": ["German"], "edition_languages": ["Germ
+abstentions OFF 35229 ON-minus-stroke 35230 rows in only one arm 77 {'direction_word': 77}
+    OFF only: ('glyph/5/0/0/0/90000', 'direction_word') {"bbox_page_px": [829.0, 660.0, 919.0, 706.0], "n_components": 2, "page_n_candidates": 45, "page_n_read": 45, "page_n_rejected_by_lexicon": 78, "page_staff_index": 0, "placement": "below", "split_is_p
+    OFF only: ('glyph/5/0/0/5/90001', 'direction_word') {"bbox_page_px": [4166.0, 692.0, 4321.0, 747.0], "n_components": 5, "page_n_candidates": 45, "page_n_read": 45, "page_n_rejected_by_lexicon": 78, "page_staff_index": 0, "placement": "below", "split_is
+    ON only:  ('glyph/5/0/0/0/90000', 'direction_word') {"bbox_page_px": [829.0, 660.0, 919.0, 706.0], "n_components": 2, "page_n_candidates": 40, "page_n_read": 40, "page_n_rejected_by_lexicon": 68, "page_staff_index": 0, "placement": "below", "split_is_p
+    ON only:  ('glyph/5/0/0/5/90001', 'direction_word') {"bbox_page_px": [4166.0, 692.0, 4321.0, 747.0], "n_components": 5, "page_n_candidates": 40, "page_n_read": 40, "page_n_rejected_by_lexicon": 68, "page_staff_index": 0, "placement": "below", "split_is
+stroke rows in ON: 65084 | stroke abstentions: 0
