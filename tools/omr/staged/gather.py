@@ -7380,15 +7380,15 @@ def gather_ink(log: Log, cells: Sequence[Any],
 # The stroke map -- every stroke of a cell, measured once (ROADMAP 2.195, step 1)
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: `OMR_STROKE_MAP` -- file one `Q.STROKE` row per stroke of each cell's staff-erased ink (`stroke_map.py`). **Default OFF**, so the ON test is an
-#: ALLOW-LIST (an empty value or a typo must not switch a document onto an unpriced GATHER change). PRODUCER ONLY: nothing reads the rows, so
+#: `OMR_STROKE_MAP` -- file one `Q.STROKE` row per stroke of each cell's staff-erased ink (`stroke_map.py`). **Default ON since 2026-10-26** (Sean "2.201 land on"; an explicit
+#: 0/false/no/off disables). PRODUCER ONLY: nothing reads the rows, so
 #: flag on writes a byte-identical exported file.
 STROKE_MAP_ENV = "OMR_STROKE_MAP"
 _STROKE_GLYPH_BASE = RECORD_STROKE_GLYPH_BASE          # 375_000, record.py; past the detector's ordinals and every other gather base, BELOW `human_evidence.HUMAN_GLYPH_BASE` (400,000: a first draft sat ON it)
 
 
 def stroke_map_enabled() -> bool:
-    return os.environ.get(STROKE_MAP_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(STROKE_MAP_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
@@ -7479,7 +7479,7 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
 
 def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
                          stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False) -> None:
-    """ROADMAP 2.198 step 2 (flag `OMR_STROKE_MAP`, default OFF), STAGED GATHER: `Q.GLYPH_STROKES`, one row per detector box of every pass
+    """ROADMAP 2.198 step 2 (flag `OMR_STROKE_MAP`, default ON), STAGED GATHER: `Q.GLYPH_STROKES`, one row per detector box of every pass
     (the plan, `docs/plan-2026-10-22-shared-ink-map.md` §2.2: a box is a hypothesis over strokes). The row's value is the list of stroke
     ordinals (of the box's own cell; the stroke `i` is the glyph subject `_STROKE_GLYPH_BASE + i` of that cell) of which at least
     `stroke_map.COVER_SHARE_MIN` of the stroke's ink lies inside the box; `shares` are those strokes' shares, `partial` the strokes with
@@ -7549,7 +7549,7 @@ def family_head_right(heads: Sequence[Any], meters: Sequence[Any], gb: Sequence[
 
 def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
                              stroke_cells: Dict[Tuple[int, int, int, int], Any]) -> int:
-    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`, default OFF; needs `OMR_STROKE_MAP`), STAGED GATHER: every accidental-family box -- `accidental*`
+    """ROADMAP 2.201 (flag `OMR_ACCIDENTAL_FAMILY`, default ON; needs `OMR_STROKE_MAP`), STAGED GATHER: every accidental-family box -- `accidental*`
     AND `key*`, both series, one family (Sean 2026-10-22) -- gets `d.accidental_family`: its extent grown along its own accidental-shaped strokes,
     its TYPE read from those strokes, the detector's label kept as a recorded fact, and the role evidence by position (`head_right`: the notehead
     this mark stands directly left of, if any). The consumers read it off the detection (`gather_accidental_positions`, `_gather_keysig_markers`);
@@ -15876,13 +15876,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
         _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
-        # ROADMAP 2.195 (flag OMR_STROKE_MAP, default OFF; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
+        # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
         stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
-        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default OFF; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
+        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
         # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
         gather_accidental_family(cells, local, detections, stroke_cells)
 

@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-26 -- ROADMAP 2.201 + 2.195 + 2.198 LANDED ON: accidental family + stroke map
+STAGED GATHER + ADJUDICATE, `OMR_ACCIDENTAL_FAMILY` and `OMR_STROKE_MAP` default ON (explicit 0/false/no/off disables). An accidental's type is read from its own strokes and its role from position; the stroke map (Q.STROKE, Q.GLYPH_STROKES, register ink claims) is output-neutral (byte-identical MusicXML, +4-6 MB/page, 3-5% gather CPU). Sean: tiles 8/9 vs 0/9 (fixed version), earlier 44/47 vs 37/47, hand boxes 136/142, judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` / `OMR_STEMS_FROM_STROKES` / `OMR_STROKE_OWNER` stay OFF. Tests rewritten default-ON; judged index rebuilt (1494 tiles); `check` 192 -> 202 (ten producer-only Q.STROKE / Q.GLYPH_STROKES entries in wiring/reach).
+
 ## 2026-10-21 -- Overnight 20261020-night + START HERE after 2026-10-21
 Docs only. Overnight on main f1db97989 (through infer), compared with 20261018-night: Litolff notes in file 6,626 -> 8,887, Brahms 11,991 -> 15,165; held-out bars 0 (red bars 508 / 650); judged Brahms right 129 -> 142, wrong 31 -> 21. New ROADMAP START HERE block "after 2026-10-21" consolidates 2.162-2.181 landed, 2.174/2.182 parked, and the ranked next steps; PROJECT_BRIEF "Where things stand (2026-10-21)" added; CLAUDE rule 7 gained "check a count before it opens a lane" (f1db97989).
 

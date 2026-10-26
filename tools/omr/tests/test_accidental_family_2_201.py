@@ -174,8 +174,8 @@ class FamilyGuess(unittest.TestCase):
 
 
 class FamilyFlag(unittest.TestCase):
-    def test_default_off_and_allow_list(self):
-        for v, want in ((None, False), ("", False), ("0", False), ("typo", False), ("1", True), ("true", True), ("on", True)):
+    def test_default_on_and_explicit_off(self):
+        for v, want in ((None, True), ("", True), ("0", False), ("false", False), ("no", False), ("off", False), ("1", True), ("true", True), ("on", True)):
             with mock.patch.dict(os.environ, {AF.ENV: v} if v is not None else {}, clear=False):
                 if v is None:
                     os.environ.pop(AF.ENV, None)

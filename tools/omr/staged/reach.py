@@ -166,12 +166,12 @@ KNOWN_GAPS: Dict[str, str] = {
         "the pipeline looked at. This entry LEAVES the day a decision reads "
         "it."),
     Q.STROKE: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.195, step 1 of the shared ink map, `OMR_STROKE_MAP`, default OFF): the `Q.INK` discipline -- a "
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.195, step 1 of the shared ink map, `OMR_STROKE_MAP`, default ON): the `Q.INK` discipline -- a "
         "producer and its first consumer in one change make the reach measurement circular. ⚠️ Its first consumer is NAMED in the plan "
         "(`docs/plan-2026-10-22-shared-ink-map.md` §5): step 3 `adjudicate_duration` reads a head's beams off the horizontal strokes at its stem's tip "
         "(`OMR_BEAMS_FROM_STROKES`). This entry LEAVES the day a decision reads it."),
     Q.GLYPH_STROKES: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.198, step 2 of the shared ink map, `OMR_STROKE_MAP`, default OFF): the `Q.INK` discipline. "
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.198, step 2 of the shared ink map, `OMR_STROKE_MAP`, default ON): the `Q.INK` discipline. "
         "Its first reader is `claims.covering`'s `ink` branch (plan §2.3), which no stage calls yet; the first stage consumer is step 3 "
         "(`OMR_BEAMS_FROM_STROKES`: a beam box with no beam-shaped stroke under it). This entry LEAVES the day a decision reads it."),
     Q.SYSTEMIC_COLUMN: (

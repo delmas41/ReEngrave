@@ -1,4 +1,4 @@
-"""ROADMAP 2.201 -- ONE ACCIDENTAL FAMILY: the TYPE from the mark's own strokes, its ROLE from position (flag `OMR_ACCIDENTAL_FAMILY`, default OFF,
+"""ROADMAP 2.201 -- ONE ACCIDENTAL FAMILY: the TYPE from the mark's own strokes, its ROLE from position (flag `OMR_ACCIDENTAL_FAMILY`, default ON,
 needs `OMR_STROKE_MAP`). STAGED GATHER (the extent and the type, pure, here) + ADJUDICATE (`adjudicate_accidental_owner` reads the row detail).
 
 PURE: no log, no cell. `gather.gather_accidental_family` is its stage; it hands in `stroke_map.Stroke` rows and the box.
@@ -29,8 +29,8 @@ REASON = "accidental_family"
 
 
 def enabled() -> bool:
-    """`OMR_ACCIDENTAL_FAMILY`, default OFF: an ALLOW-LIST, so a typo or an empty value never switches a document onto an unpriced GATHER change."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_FAMILY`, default ON (Sean 2026-10-26); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: A stroke is a stem of the mark at or above this length (staff spaces). A natural's hanging stem can be cropped to ~0.8 and still read.

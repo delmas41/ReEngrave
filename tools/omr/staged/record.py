@@ -919,7 +919,7 @@ class Q(_Vocab):
     #: `two_positions`, ...), a measurement naming nothing -- `Q.ARC_KIND` / `Q.TIE_PAIR` are not changed by it.
     SYSTEM_ARC = "system_arc"
 
-    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default OFF; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
+    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default ON; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
     #: a cell's staff-erased ink, measured once: `value` is the kind (`vertical` / `horizontal` / `curve` / `blob`), `detail` its measurements (box in both
     #: frames, length / angle / thickness / curvature / fill / hole share, ends in staff steps against the staff measured AT the ends' x, the strokes it
     #: touches). It decides nothing and NOTHING READS IT yet (step 1 of 10; the `Q.INK` discipline). A piece under 0.05 sp^2 is counted on its cell's
