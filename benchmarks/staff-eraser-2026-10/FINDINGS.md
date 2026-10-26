@@ -228,8 +228,8 @@ sample, such a lane must list each consumer's cut-offs and how close the OFF rea
 0.5 was visible in the OFF record. "Who says it's right" applies to the downstream thresholds too: they were measured, on the eroded
 image.
 
-**Tiles.** lane_report drew 12 (`out/lane-report/2.206/tiles/`), but they were NOT sent. Eight of nine change draws on Litolff would
-sample a meter cascade that the print already rules out.
+**Tiles.** lane_report drew 12 (`out/lane-report/2.206/tiles/`), but they were NOT sent. Their change draws come from a Litolff file
+dominated by a meter cascade that the print already rules out.
 
 **What it would take.** Not a threshold change here. Either re-measure the meter template's floor and the rest-shape bands on the
 corrected image (their own items, with Sean's tiles), or run the corrected walk only for the readers that wanted it (2.202b's beam on a
