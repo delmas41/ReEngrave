@@ -495,3 +495,21 @@ through the pipeline).
 2 stem readings (7, 12: 2.204 `disagree` -> agrees, now decided), 2 contested strokes (1 head|rest, 9 accidental|rest), 1 head box ownership contests that main kept (6),
 and the 2.202 tiles re-shown: 2 (sharp's crossbar), 6 (head + ledger), 12 (slur start) -- predicted to move to Sean's answer -- and 1 (erase-thinned beam: the control,
 predicted unchanged). Not answered yet.
+
+## 2.205 TILES ANSWERED (Sean 2026-10-26; `out/print/2.205-stroke-owner/answers.json`)
+**Score (ON, the 8 notes ownership wrote or moved): 7 right, 1 wrong.** Right: 2 quarter, 3 dotted quarter, 4 dotted quarter, 7 eighth (Sean first said quarter, then
+corrected it to eighth), 8 dotted quarter (OFF wrote a dotted eighth, the 2.202 hook-as-flag; ON a dotted quarter), 11 eighth, 12 half. Tiles 2 and 3 were not written OFF.
+Tiles 1, 6, 9 (contested strokes; run (a) changes no file) are eighth rests, tile 10 (control) an eighth, unchanged. Judged right -> wrong stays 0.
+**The one wrong decision: tile 5** (Litolff p4, `glyph/4/0/8/0/5`): ink Sean reads as part of a C clef, written as a blue quarter.
+**Cause (measured on the saved record).** (1) The detector drew `noteheadBlackOnLine` (conf 0.44) on the clef's body, plus a `tie` box beside it (`.../4`). (2) Nothing
+claims that ink: the staff's clef is DECIDED `alto` only by `clef_from_other_systems` -- no `clef_located` row exists for staff 8 -- so there is no clef area claim there. The
+only leading-column claim runs x 316-372.6 (barline/brace), the key claim starts at 427.5, and the head box sits at 385.8-417.8, in the unclaimed gap that is the clef.
+(3) The note reader treats the box as a head (`notehead_is_not_a_notehead` decided False on the class alone; the fill check says `not_head_sized`, and a stem was borrowed from
+a neighbour: `wrong_side`). (4) OFF the duration was NARROWED {quarter, eighth} because YOLO drew 2 beam boxes; the stroke map saw no beam stroke over it ("agrees", 0 beams) and
+the bar rule took the lone remaining value. So ownership did not invent the note; it removed the doubt about a beam from a "head" that was never a head.
+**Process lesson.** A clef we carry from other systems still has ink on this one; a decided value with no located ink leaves its ink unclaimed, and the detector's guess
+(a head) then stands unopposed. The missing fact is the claim, not the beam. The beam answer was right (no beam); the question asked of the box was wrong.
+**Source fix, not a 2.205 rule:** claim the clef's ink on a staff whose clef is carried (locate it from the leading column / other systems' clef width) so tier 0 owns it
+before any head can; secondarily the detector class on clef ink (`not_head_sized` fill is already a signal the head reader declines to use). Ownership is correctly ordered
+here and needs no new rule; the clef claim is a GATHER fix to be rostered, not built in 2.205.
+**Tile 7 correction:** Sean's first answer (quarter) was corrected to eighth; ON's eighth is right, so no cause hunt was needed.
