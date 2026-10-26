@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **445 rule exits** are sorted (516 declared reasons on 61 decisions, less 64 positive exits and 61 stubs, plus 28 EVALUATE/INFER/post-pass rules and 26 guard modules): **169 CONVENTION** (A), **10 ERASURE** (B), **77 DOUBLE-COUNT** (C), **167 OTHER** (D), **22 UNSURE** (U).
+1. **447 rule exits** are sorted (516 declared reasons on 61 decisions, less 64 positive exits and 61 stubs, plus 28 EVALUATE/INFER/post-pass rules and 28 guard modules): **169 CONVENTION** (A), **10 ERASURE** (B), **77 DOUBLE-COUNT** (C), **167 OTHER** (D), **24 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **22 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **24 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -287,6 +287,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 
 | module | kind | plain meaning | evidence | fate |
 |---|---|---|---|---|
+| `accidental_family.py` | U | NOT YET CLASSIFIED | - | open |
 | `accidental_shape.py` | C | a shape check on a merged accidental ink chooses among the detector's own candidates | Sean 2026-10-22 (2.190 tiles 7/9) | landed 2.190 |
 | `arcs_system.py` | C | arcs read ONCE per staff across the system, then their own stroke erased (a cell cuts an arc in two) | Sean 2026-10-18 (2.166, default ON) | retires with 2.205 (arcs own their strokes) |
 | `bar_length.py` | A | a bar's length from the durations standing in it | Sean 2026-10-17 (2.162/2.165) | kept |
@@ -306,6 +307,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |
+| `stroke_map.py` | U | NOT YET CLASSIFIED | - | open |
 | `adjudicators/aug_dot_join.py` | A | a dot seen beside a note must not leave it written plain | Sean 2026-10-14 (2.127) | kept |
 | `adjudicators/claimed_by.py` | C | the ONE consult of the claimed-area register: a head or rest box on ink a clef / leading column / key already owns is refused | Sean 2026-10-20 claimed-area plan (2.181, default ON) | retires with 2.205 |
 | `adjudicators/head_on_mark.py` | C | a head box standing on ink another reading already owns | ROADMAP 2.176 (default ON) | retires with 2.205 |
@@ -330,7 +332,9 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **rest where no rest hangs** (`adjudicate_duration`: `rest_stands_where_no_rest_hangs`; fires 169 / 230): a box called a rest in a position no rest is printed. Fate: open.
 - **rest flush against the crop edge** (`adjudicate_rest_is_not_a_rest`: `rest_clipped_by_crop`; fires 81 / 568): a notehead sliced by the cell's crop edge reads as a rest. Fate: open: C if neighbour-staff bleed, A if only a crop edge.
 - **an arc box that is a staff line or a barline** (`adjudicate_arc_is_not_an_arc`: `ink_is_a_staff_line`, `ink_is_a_barline`; fires 502 / 7,944): a box with no curved ink and a staff line through it is a staff line; a narrow tall one is a barline. C if 2.205 makes lines and barlines owners of their strokes; otherwise a plain detector false positive (D). Fate: open.
+- **`accidental_family.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
+- **`stroke_map.py`**: not classified.
 
 ## How this page stays true
 
