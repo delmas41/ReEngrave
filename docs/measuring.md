@@ -30,6 +30,8 @@ rule 3). Everything below is the background these three rest on.
 
 **Exception -- the shared ink map path (Sean, 2026-10-22):** a step that changes no output (records, links or slims the stroke map) reports only the fast tests and a byte-identical control -- no lane_report, no tiles. The three measures apply at the milestones where a reader switches to the map, as the new path against main.
 
+**Fail fast (Sean, 2026-10-25: "Don't take too long testing if we can rule out issues quickly"):** a lane first runs lane_report on a 2-page-per-plate subset (`LANE_REPORT_SAMPLE`); if notes not written jump or any judged answer goes right->wrong, it stops and finds the cause there. The full frozen sample runs only once the subset is clean.
+
 ## 1. The acceptance set and the three measures (plan §4)
 
 | document | kind | count page |
