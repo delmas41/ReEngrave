@@ -84,6 +84,59 @@ class TestAStemTouchingBothHalvesOfASplitHead(unittest.TestCase):
         self.assertEqual({own[0].family, own[1].family}, {"head"})
 
 
+class TestAStemSharedByAChord(unittest.TestCase):
+    """Sean 2026-10-26 (page-facts): a chord's stem runs THROUGH its notes and every head on it shares it; a second puts heads on BOTH sides;
+    a long stem through stacked heads is a chord stem, never a barline. No head may claim the shared stem -- each must still see it."""
+    STEM = ink(3, "vertical", (600, 150, 30, 750), 7.5, 0.3, touches=(0, 1, 2))
+    CHORD = [ink(0, "blob", (480, 700, 130, 110), 1.3, 0.9, touches=(3,)), ink(1, "blob", (480, 500, 130, 110), 1.3, 0.9, touches=(3,)),
+             ink(2, "blob", (480, 300, 130, 110), 1.3, 0.9, touches=(3,))]
+
+    def heads(self):
+        return [claim("h%d" % i, "noteheadBlackInSpace", covers=(i,), partial=((3, 0.16),)) for i in range(3)]
+
+    def test_a_three_note_chord_no_head_owns_the_stem_and_each_owns_its_blob_RED(self):
+        own = SO.own_strokes(self.CHORD + [self.STEM], self.heads())
+        self.assertEqual(own[3].state, "unclaimed")
+        self.assertIn(3, SO.unclaimed(own))
+        for i in range(3):
+            self.assertEqual(own[i].owners, ("h%d" % i,))
+            self.assertEqual(SO.box_verdict(self.heads()[i], own, {s.ordinal: s for s in self.CHORD + [self.STEM]})["verdict"], "owns")
+
+    def test_a_second_heads_on_both_sides_of_the_stem_neither_owns_it(self):
+        left = ink(0, "blob", (470, 500, 130, 110), 1.3, 0.9, touches=(2,))
+        right = ink(1, "blob", (630, 450, 130, 110), 1.3, 0.9, touches=(2,))
+        stem = ink(2, "vertical", (600, 150, 30, 460), 4.6, 0.3, touches=(0, 1))
+        cl = [claim("L", "noteheadBlackInSpace", covers=(0,), partial=((2, 0.25),)),
+              claim("R", "noteheadBlackOnLine", covers=(1,), partial=((2, 0.25),))]
+        own = SO.own_strokes([left, right, stem], cl)
+        self.assertEqual(own[2].state, "unclaimed")
+        self.assertEqual((own[0].owners, own[1].owners), (("L",), ("R",)))
+
+    def test_TWIN_a_letter_box_on_the_chord_stem_cannot_take_it_either(self):
+        own = SO.own_strokes(self.CHORD + [self.STEM], self.heads() + [claim("f", "dynamicF", covers=(3,))])
+        self.assertNotEqual(own[3].family, "dynamic")
+        self.assertIn(3, SO.unclaimed(own))
+
+    def test_through_the_pipeline_every_head_of_the_chord_reads_the_stem_as_with_ownership_off(self):
+        lower, upper = (500, 540, 130, 100), (500, 440, 130, 100)
+        stem = S4.V(0, (600, 180, 30, 460), touches=[1, 2])
+        blobs = [dict(i=1, kind="blob", box=lower, L=1.3, T=0.9, touches=[0], steps=None),
+                 dict(i=2, kind="blob", box=upper, L=1.3, T=0.9, touches=[0], steps=None)]
+
+        def extra(log):
+            _claimant(log, 0, "noteheadBlackInSpace", lower, [1], [(0, 0.2)])
+            _claimant(log, 1, "noteheadBlackInSpace", upper, [2], [(0, 0.2)])
+
+        got = {}
+        for owner in (False, True):
+            log, gs = S4.build([stem] + blobs, finder=((600, 180, 30, 460),), heads=(lower, upper), extra=extra)
+            with mock.patch.dict(os.environ, {STEMS: "1", OWNER: "1" if owner else "0"}):
+                adjudicate.run(log)
+            got[owner] = [S4.direction(log, g).value for g in gs]
+        self.assertEqual(got[True], got[False])
+        self.assertEqual(set(got[True]), {"up"})
+
+
 class TestANoteheadFusedToItsLedger(unittest.TestCase):
     """2.202 tile 6 (Brahms p0): the head merged with its ledger is one 'horizontal' 1.9 x 0.8 sp piece the beam rule counted."""
     BLOB = ink(0, "horizontal", (200, 400, 190, 81), 1.9, 0.81)
