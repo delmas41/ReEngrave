@@ -30,6 +30,16 @@ machine-readable form.
   the SIDE of its head -- so the outer note's centre is half a head past the
   stroke. Stems: up -> right, down -> left; right-and-down does not exist
   (96 of 96 against print, `benchmarks/omr-head-fill-2026-09/FINDINGS.md`).
+- **A stem shared by a chord runs through its notes, and a second puts heads
+  on BOTH sides of it** (Sean, 2026-10-26, on the 2.204 tiles: "main tip of
+  stem is down but there is a note above sharing the same stem"; "stem shares
+  seconds which put note heads on both sides of the stem"; "Stems that share
+  notes are more complicated when it comes to which side the stem is on and if
+  it goes up or down"; scope: general). So the side rule above reads only an
+  isolated head: in a chord the direction is the stem's tip beyond its OUTER
+  head, every head on it shares that stem, and a head of a second stands on
+  the far side; a long stem through stacked heads is a chord stem, never a
+  barline (2.204c: all 3 "barline" tiles were chord stems).
 - Every note on one stem shares one written value, and a whole note never
   has a stem (ROADMAP 2.78).
 - **A note is an eighth (or shorter) ONLY on positive evidence on the page**
