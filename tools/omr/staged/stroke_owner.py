@@ -38,7 +38,8 @@ families -- plan section 4). One more place it acts: a stroke a head owns is nev
 
 ATTACHED STROKES. A stroke only partly inside a mark's box (at least `ATTACH_SHARE_MIN`) that touches at least `ATTACH_MIN_TOUCHES` strokes
 the mark already owns joins the mark: a sharp's crossbar that runs on into the note's stem ties the sharp's two stems together, so it is the
-sharp's. Structural (what the stroke connects), not a number on the stroke.
+sharp's. Structural (what the stroke connects), not a number on the stroke -- and only a stroke the mark's shape admits (`shape_fit` not
+`no`): a stem touching both halves of a head the staff-line erase split is still the note's stem.
 
 THE SHAPES (`shape_fit`). A convention prior per family on the stroke's own fields, in staff spaces; none tuned to a count. `clear` = the
 family's printed shape; `could` = a piece the family can leave on these plates (Litolff merges, Breitkopf shatters); `no` = never that
@@ -373,6 +374,10 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
             if n < ATTACH_MIN_TOUCHES:
                 continue
             fit, why = shape_fit(c.family, s, c.cls)
+            if fit == "no":
+                # a stroke the family can never be does not join it by touching it: a STEM touching the two halves of a head the staff-line
+                # erase split is the note's stem, not the head's ink (measured 2.205: without this, 647 / 143 finder stems went to heads)
+                continue
             entry = {"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": "attached:%d_owned:%s" % (n, why),
                      "how": "attach", "row": c.row_id, "share": share}
             out[o] = Ownership(o, "decided", c.family, (c.key,), tuple(list(w.candidates) + [entry]), "attach",

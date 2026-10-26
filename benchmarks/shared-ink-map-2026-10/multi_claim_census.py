@@ -53,7 +53,8 @@ def old_verdicts(path):
 
 
 def cell_of(subject):
-    return subject.rsplit("/", 1)[0]
+    """`p/s/st/c` of a glyph subject `glyph/p/s/st/c/n` (the key `Q.STEM` rows -- `cell/p/s/st/c` -- and the area claims share)."""
+    return subject[len("glyph/"):].rsplit("/", 1)[0]
 
 
 def stream(path):
@@ -130,6 +131,7 @@ def run(path):
                 claims.append(SO.Claim(rid, owner, owner, tuple(inside), (), rid, area=True))
         views = [BS.StrokeView(o, t[0], tuple(float(v) for v in t[1]), t[2], t[3], t[4], t[5], t[6], t[7], t[9]) for o, t in c["strokes"].items()]
         role = BS.roles(views)
+        finder = set()
         for o, t in c["strokes"].items():
             kind = t[0]
             fams = {f for _k, f in cover.get(o, ())}
@@ -156,6 +158,7 @@ def run(path):
                 for sx, sy, sw, sh in c["stems"]:
                     if bx <= sx + sw + 0.35 * t[7] and bx + bw >= sx - 0.35 * t[7] and min(by + bh, sy + sh) - max(by, sy) > 0.5 * min(bh, sh):
                         cons = "finder_stem"
+                        finder.add(o)
                         break
             if cons:
                 expo[(cons, "total")] += 1
@@ -183,6 +186,8 @@ def run(path):
             if w.state == "refused_claims":
                 for x in w.candidates:
                     refused["%s:%s:%s" % (x["family"], str(x["why"]).split(":")[0], by_ink[o].kind)] += 1
+            if o in finder:
+                states["finder_stem:%s" % (w.family or w.state)] += 1
             r = role[o]["role"]
             if r in ("beam", "beam_stub", "hook", "hook_or_stub") and w.claimed:
                 states["beam_role_claimed:%s:%s" % (r, w.family or w.state)] += 1

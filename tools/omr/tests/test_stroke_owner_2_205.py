@@ -72,6 +72,18 @@ class TestASharpsCrossbarNearAStemTip(unittest.TestCase):
         self.assertEqual(own[3].state, "unclaimed")
 
 
+class TestAStemTouchingBothHalvesOfASplitHead(unittest.TestCase):
+    """A head on a line, cut in two by the staff-line erase: its stem touches both halves. Measured 2.205: 647 / 143 finder stems went to heads."""
+
+    def test_the_stem_never_attaches_to_the_head_RED_TWIN_of_the_sharps_crossbar(self):
+        top = ink(0, "blob", (500, 500, 130, 45), 1.3, 0.45)
+        bottom = ink(1, "blob", (500, 555, 130, 45), 1.3, 0.45)
+        stem = ink(2, "vertical", (600, 180, 30, 400), 4.0, 0.3, touches=(0, 1))
+        own = SO.own_strokes([top, bottom, stem], [claim("h", "noteheadBlackOnLine", covers=(0, 1), partial=((2, 0.2),))])
+        self.assertEqual(own[2].state, "unclaimed")
+        self.assertEqual({own[0].family, own[1].family}, {"head"})
+
+
 class TestANoteheadFusedToItsLedger(unittest.TestCase):
     """2.202 tile 6 (Brahms p0): the head merged with its ledger is one 'horizontal' 1.9 x 0.8 sp piece the beam rule counted."""
     BLOB = ink(0, "horizontal", (200, 400, 190, 81), 1.9, 0.81)
