@@ -269,3 +269,67 @@ a beam) and one clear beamed Litolff eighth from 2.153 tiles 4 / 14 / 16 (`out/p
 must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
 The question for Sean at the milestone (plan §5 step 3, now narrowed by his 2026-10-22 ruling): when the box is a beam but the stroke is a hook on a stem with no beam, the file already writes a flag; the tile
 asks "is this a flag or a beam?" on the box's ink, and the hook length cut (1.6 / 2.4 sp) is confirmed or moved on his answers.
+
+# 2.204 -- step 4: a head's stem from the stroke map (flag `OMR_STEMS_FROM_STROKES`, OFF; needs `OMR_STROKE_MAP` in the gather)
+
+Path: STAGED ADJUDICATE (+ a two-line GATHER gate). Built on `lane-2.202-beams-from-strokes` (`08fa1bb57`), main merged in. Code and unit tests only: no gather, no `lane_report` was run (2.202 was gathering).
+
+## Cause (rule 3) and what it teaches
+"Which vertical stroke is this head's stem" was never asked once. It is asked by seven readers (the finder `Q.STEM`, `head_stem_reach`, `stem_tip_ink`, the 2.161 bridge, `stem_slash`, `beam_stem_join`, `beam_stem_levels`), each on the raster with its own
+cut-offs, and each pair got a rule written for its disagreement: the finder vs the reach ruler disagree on 3.9% / 9.0% of heads (section 2 above); `refuse_owned` took 58 / 126 real stems away because a false rest/flag box sat on them
+(plan section 3); 2.167 found 33 of 40 "no stem" real notes had a stem the finder refused. Those are not three measurement faults, they are one ownership question (is this stroke a stem of THIS head?) answered by geometry in three places
+and by the finder's refusals in a fourth. The stroke map already separates the vertical strokes (2.195: `Q.STEM` is covered 100% by vertical strokes), so the question is a join: the head's blob, the vertical stroke beside it, the engraving side.
+Lesson: when the same ink is read by several readers, the first thing to build is the join that says which ink belongs to which mark; the cut-offs then shrink to the one the join needs (here: the bridge gap).
+
+## Built
+- `tools/omr/staged/stem_strokes.py` (pure; `reach.NOT_A_STAGE`): `head_stem(views, head_box, space, whole_head, other_heads, cell_width)` -> `StemReading` with `state` (stem / two_stems / bridged / no_stem / whole_head / wrong_side / through_head / barline / unanchored / ambiguous),
+  the accepted `StemCand`s (stroke row ids, merged box, side, direction, tip end / y / staff step as the map measured it at the stroke's own x, length in sp, distance from the head) and every candidate with the reason it was refused. The rule: the stroke the head touches on the engraving side
+  (up -> right, down -> left); a stem that passes the head (chord middle, a second's displaced head) takes its direction from the head its END stands in; a whole head reads no stem. The three old rules on strokes: 2.161 bridge (`bridged`, gap <= 0.35 sp, no head in the gap), 2.169
+  pair (a stem each side, each ending in the head -> `two_stems`; two collinear halves cut by a beam or ledger rung -> ONE stem), 2.155 edge (a stroke at the cell edge that ends in no head, or longer than 8 sp, is a barline).
+- `rhythm._head_stems` / `_bridged_from_strokes` / `_tips_from_strokes` / `_tip_obs` / `_tip_abs` / `stem_reach_equivalent` (+ `ownership._stem_owner`): the reading is set against the finder's. Agree -> the finder's own row, decided as today. Strokes find a firm stem the finder did not (`gained`) -> a stand-in
+  row carrying the stroke's id. The finder's stem is a stroke the convention refuses for this head (`old_refused`: wrong side, barline) -> the strokes settle it, the finder's row is dropped. The finder's stem is not a stroke beside the head at all, or strokes touch the head and refuse every one while the
+  finder attached a stem (`disagree`) -> `adjudicate_stem_direction` and `adjudicate_duration` ABSTAIN `stem_readers_disagree` with the candidates (EXPORT counts it; colour is EXPORT's). The map being SILENT about a finder stem (no vertical stroke beside the head; a stem under 1.5 sp is not a stroke) is not a
+  disagreement: as today (rule 8 both ways). A vertical stroke no head touches, or touches on the wrong side, is a candidate in the detail and never a stem (rule 6). Recorded in `detail["stems_from_strokes"]` (state, settled, candidates, gained, old_refused, directions).
+- The tip readers: the four accessors (`_stem_tip_flag_ink`, `_stem_tip_disputed`, `_stem_tip_unread_why`, `_no_beam_at_the_stem_tip`) read `_tips_from_strokes` instead of `Q.STEM_TIP_INK`: hook strokes at the tip of an unbeamed stem -> True (counted; hook_or_stub bracketed 1..2);
+  a beam, a beam stub, or a stem that carries a beam -> `runs_on`; ANY other stroke within reach of the tip -> `occupied` (never a clean tip); nothing -> False (clean). A cell with no stroke map falls back to the GATHER rows (older records replay as before).
+
+## Retired when ON (unreachable) / unchanged when OFF
+- `head_stem_reach`: no ADJUDICATE read of `Q.HEAD_STEM_REACH` survives the flag (`_own_stem_side`, `_second_only_evidence`, `ownership._stem_owner`; `_flags_on_reach_stem` is unreachable because `reach_stem` is never true), and GATHER does not file the row (`gather_head_stem_reach` skipped when `OMR_STEMS_FROM_STROKES` and `OMR_STROKE_MAP` are both on).
+- `stem_tip_ink`'s scan: `Q.STEM_TIP_INK` is not read (the four tip accessors) and GATHER does not file it (`_observe_stem_tip_ink` skipped under the same two flags). A static test counts the reads in `rhythm.py`.
+- `refuse_owned`: BYPASSED, not deleted -- the stroke reading never passes through the finder's refusals, so a stem under a false rest/flag box is found. It still shapes the `Q.STEM` rows that other, not-yet-moved readers (beam join, stem value, articulation owners) consume; removing it from the finder would change all of them at once, so it waits for step 10.
+- Side effect to say aloud: `_second_only_evidence`'s `stem_reach` witness (an independent ruler on the UNERASED raster) is gone; the stroke stem is already counted as `stem_box`, so a second-detector-only head has one stem witness where it had two (conservative: more refusals, no new notes).
+
+## Tests (`tools/omr/tests/test_staged_stems_from_strokes_2_204.py`, 58, constructed cells; every RED has a twin that must not fire)
+Pure: up-stem right (twin: same stroke on the left = `wrong_side`), down-stem left (twin: on the right), a stroke through the head, length / tip / staff step off the stroke, a stroke beside another head, a chord on one stem (both heads take it), a second's displaced head (twin: no head sees the stem on the
+engraving side -> `wrong_side`), a stem each side = `two_stems` (twin: two same-side strokes = `ambiguous`), a stem cut by a ledger rung = ONE (twins: a gap too wide; two columns; a beam on both halves widens the gap), a barline (> 8 sp; unanchored; cell edge unless an end stands in a head), a whole note
+(the stroke is shown, never made its stem), the bridge (twins: too wide a gap; a head in the gap; the wrong side). Integrated through `adjudicate.run`: OFF byte-identical with and without the map; ON without a map changes nothing; ON agrees (up, down, chord); ON gains a stem the finder refused; a stroke no head touches /
+on the wrong side / by a whole head -> no stem, as OFF; ON a finder stem that is a barline to the strokes -> `stem_readers_disagree` (twin: OFF decides `up` as main); the strokes settle a finder stem on the wrong side (`old_refused`); the unison case still abstains `stems_disagree`; the owner witness's page-px tip.
+Retirement: the OFF accessor reads the planted `Q.STEM_TIP_INK` row (True), the ON accessor ignores it and reads the stroke (False), ON with no map falls back to the row; ON the ruler is not a head's side; a static test on the sources. **Controls that fail:** with `engraving_side_ok` forced True the wrong-side case becomes a stem; with `STEM_MAX_SPACES` raised the barline becomes a stem.
+Other tests run (serially): the 48 test files naming the stem / tip / reach quantities, `test_staged_beams_from_strokes_2_202`, `test_stroke_map_2_195`, `test_glyph_strokes_2_198`, `test_staged_wiring`, `test_staged_reach`, `test_staged_check`, the flag-doc tests: all pass (1,938 + 268). `inventory --check` green; `check` open findings 197 (was 198).
+Two things the tests found in my first draft: a stem that PASSES a head took its direction from the head's side, which called a second's displaced head's stem a down-stem (now: from the head its end stands in; the displaced head sees it on the far side by design); and the test cell lacked `category: notehead` on the box row `_heads_in` filters on.
+
+## What is NOT shown (said, not hidden)
+No whole-file A/B, no record, no tile, no Brahms data. The six cuts (`BRIDGE_MAX_GAP_SPACES` 0.35 from 2.161's one-plate 0.13-0.27; `END_IN_HEAD_SLACK` 0.3; the two collinear-join cuts 0.3 / 0.6; the flush fractions 0.6 / 0.4; the 0.4 vertical-overlap share) are geometry stated before any count and NOT fitted -- the milestone must print how many heads each touches. Risks to look at first:
+(a) `disagree` abstentions replace decided notes with unread bars where the finder was right and the map is wrong (a stem cut short, a head box that stops short of the chord's stem): the count and the tiles tell, right -> wrong must stay 0, but decided -> unread is a loss to count;
+(b) `_heads_in` needs `category: notehead` on the box row (true on gathered records, absent on the old test helpers): without it a PASSING stem reads `unanchored`;
+(c) `cell_width` is not passed (the bar-edge test is dormant in the adapter; the pure function has it): a barline at the cell edge relies on `unanchored` / the 8 sp cut;
+(d) the clean-tip reading (`False`) is firmer than the GATHER shape reader's `ink_not_flag_shaped`: it feeds 2.146 ("clean tip decides no beam"); a beam stroke the map did not record as near the tip would read clean;
+(e) the memo `rhythm._STEM_MEMO` holds one `Log` alive until the next decision replaces it.
+
+## MILESTONE MEASUREMENT PLAN (to be run on a quiet box; NOT run now)
+Prerequisite: `lane-2.204` with origin/main merged again; the overnight/2.202 gather finished; one lane on the box (CLAUDE section 6).
+```
+cd /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/lane-2.204
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_STEMS_FROM_STROKES --from gather \
+    --workers 2 --out out/lane-report/2.204 > out/lane-report/2.204.txt 2>&1
+```
+`OMR_STROKE_MAP=1:1` puts the map in BOTH arms (so the arms differ by one flag, and 2.198 showed the map alone changes no file); `OMR_STEMS_FROM_STROKES` is OFF in the first arm, ON in the second. `--from gather` is required: the flag is named in `gather.py` (it gates the two scans), so `lane_report` refuses an ADJUDICATE replay, and the OFF arm
+must still file `Q.HEAD_STEM_REACH` / `Q.STEM_TIP_INK` while the ON arm must not (that is what "retired" means).
+**2.202's flag (`OMR_BEAMS_FROM_STROKES`) is in NEITHER arm** for this run: 2.202 is not landed or measured, and with it in both arms the stems effect would be read through a beam change nobody has seen on a tile. This is the attribution run. A SECOND run, only if the first shows changes, repeats it with
+`--flag OMR_BEAMS_FROM_STROKES=1:1` (2.202 in both arms): the two lanes share `own_stems` and both read the tip, so the stack is what would ship; report the second as a control, not a result.
+The report gives, per plate, what changed in the exported MusicXML by kind (value, beam, flag, red bars, blue marks, and `stem_readers_disagree` bars), and judged right -> wrong against Sean's answers (`python3 -m tools.omr.staged.judged`). Then, from the same out directory and one extra pass (no gather), count per plate the heads by
+`detail["stems_from_strokes"].settled` in the ON record -- `agrees` / `gained` / `old_refused` / `disagree` / `map_silent` / `no_stem_candidate_only` -- and by `state`; the `disagree` count by `disagree` reason; heads decided -> unread (risk a). That table is the answer to "the 87 / 259 reach disagreements named" (plan step 4) and to 2.167's 33 of 40.
+**The tiles (12, blind, nothing of ours drawn, neutral orange box on the head, key in a separate JSON; Sean answers right / wrong / what is it):** about 9 are CHANGED stem decisions, drawn at random stratified by kind: `gained` 3 (a stem the finder refused now in the file), `old_refused` 2, `disagree` 3 (the head now unread, shown as "is there a stem here, which way?"), and
+1 changed value or direction. 3 are CONTROLS: (1) 2.150 tile 11 re-shown and (2) 2.150b tile 20 re-shown (the "stems of quarter notes" tiles; see `docs/DECISIONS.md` 2026-10-16, the 2.150b line -- the PNGs are under the machine-local `out/print/` of the checkout that made them; they are NOT in this worktree, the manager must point to them), and (3) one decided-and-unchanged
+beamed Litolff eighth (2.153 tile 4 / 14 / 16: "the stem clearly connects to the beam") so a regression of the join shows. Judged right -> wrong must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
+The question for Sean at the milestone (plan step 4): "re-show those two tiles (stems of quarter notes)", plus one plain question on the bridge cut: a stem standing a hair beside the head's box on the right (up) or left (down) is that head's stem -- may it speak, or only narrow?
