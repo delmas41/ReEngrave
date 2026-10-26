@@ -190,3 +190,326 @@ keyFlat/keySharp on three strokes, dynamicF/dynamicZ. Control: 10,559 same-cell 
 `python3 -m tools.omr.staged.check`: TOTAL 203, status ok. By design: reach +1 (`Q.GLYPH_STROKES` unread), wiring +2 (`Q.GLYPH_STROKES.shares`, `Q.CLAIMED_AREA.shares`). wiring -5 stale entries removed (`area_sp2`,
 `staff_lines_left` truly gone; `profile_sixteenths`, `staff_local`, `cell_n_below_floor` are still written but through a conditional dict the tool cannot see, so the drop is partly the tool's blind spot).
 Fast tier (final code): 8825 passed, 0 failed (12 skipped, 2 xfailed).
+
+
+# 2.202 -- step 3: a head's beams from the stroke map (flag `OMR_BEAMS_FROM_STROKES`, OFF; needs `OMR_STROKE_MAP` in the gather)
+
+Path: STAGED ADJUDICATE. Built on `lane-2.198-glyph-strokes`, main merged in. Code and unit tests only: no gather, no `lane_report` was run (Sean's overnight re-gather was running).
+Built: `tools/omr/staged/beam_strokes.py` (pure: a stroke's role from its own fields, what a detector beam box stands on, the strokes at a stem's tip); `rhythm._beams_from_strokes`
+(reads `Q.STROKE` and `Q.GLYPH_STROKES` through `Evidence`, both added to `adjudicate_duration`'s `wants` and `composed_from`) called from `adjudicate_duration` right after the old beam
+readers have spoken (`_kept_beams`, the side / beyond-the-tip / ink / neighbour / arc / slash / ledger filters, `_beam_levels`, `_beam_join_witness`, `_fused_double_beams`, the 2.140
+stem-levels block) and BEFORE `strokes_before_hollow`, the hollow override, the flag reads, `certain_conflicts`, `beams_ambiguous`, `stem_tip_reads_no_beam`,
+`beam_discounted_uncertain`, `hooks_counted` and `flag_ink_unread`; those later branches are untouched and see the stroke-map-adjusted `certain` / `possible` / `kept` / `flag_levels`.
+`tests/test_staged_beams_from_strokes_2_202.py` (33 tests); `hook_beam_measure.py`; reach / wiring gap entries for `Q.STROKE`, `Q.GLYPH_STROKES` and three `Q.STROKE` detail keys
+LEAVE (a decision reads them now); `check` open findings 203 -> 198.
+
+## What it does (flag ON; a cell with no stroke map, a box with no `Q.GLYPH_STROKES` row, a head with no stem stroke in the map, a hollow head, a two-voice head: nothing changes, rule 8)
+1. A DETECTOR beam box (`Q.BEAM_STROKE`, reader detector, kept by `_kept_beams`) is linked to its `Q.GLYPH_STROKES` row (the cell's `beam`-class `Q.GLYPH_BOX` with the same x,y,w,h). If no
+   stroke under it is beam-shaped the box leaves the count and its level is kept as a CANDIDATE (`possible` = the old certain): the head NARROWS (`beams_ambiguous`), it does not decide.
+   The reasons are named per box: `box_on_paper`, `box_on_a_stem`, `thin_or_curved_span`, `one_stem_stub`, `hook_or_stub`, `hook_on_a_beamed_stem`, `hook_on_another_stem`.
+2. A box standing on a HOOK (one stem, thinner than a beam, <= 1.6 sp) that touches THIS head's stem, a stem that touches no spanning beam, is a FLAG (Sean 2026-10-22): the box leaves the
+   beam count and the number of hooks at the tip is filed as the flag levels, used only where no flag box was attached and no beam level stands (`beam_evidence: "flag"`, the rows used are the hook strokes).
+3. The beam-shaped strokes touching the head's own stem stroke inside the tip window (0.5 sp past the tip, 3.3 sp inward; `rhythm.BEAM_STEM_RUNS_PAST_MAX_SPACES` 2.5 + one beam) are counted,
+   one per level. More than the old readers counted: a candidate only (`possible`), nothing is invented (rule 6). Fewer: the two readings disagree and the strokes cannot settle it
+   (CV rows and strokes come off the same erased raster, so neither is the other's second witness): NARROWED between them (rule 8). Equal: decided as today.
+
+## 1. The hook-vs-beam measure (`hook_beam_measure.py` on the 2.198 Litolff p2,4 ON record; `results/2.202/hook_beam_measure.json`; read-only, no gather)
+Horizontal / curve strokes under the 373 detector beam boxes (395) and under the 39 detector flag boxes (15), by how many vertical strokes each touches:
+| population | touches | n | length sp (min / median / p95 / max) | thickness sp (median) |
+|---|---|---|---|---|
+| under beam boxes | >= 2 stems | 192 | 1.0 / 5.6 / 10.3 / 17.5 | 0.63 |
+| under beam boxes | 1 stem | 100 | 0.75 / 3.1 / 6.1 / 10.1 | 0.31 |
+| under beam boxes | none | 103 | 0.6 / 2.3 / 6.5 / 10.9 | 0.25 |
+| under flag boxes | 1 stem | 12 | 0.63 / 1.2 / 2.7 / 2.7 | 0.19 |
+- **Beam thickness has a gap.** The 190 horizontal strokes touching >= 2 stems: 66 are 0.06-0.437 sp (slur / tie / hairpin remnants), 124 are 0.546-1.0 (median 0.653). The cut `BEAM_MIN_THICKNESS_SP` = 0.5 sits in the
+  gap and is the engraving convention for a beam; Sean's own rule (2026-10-09, "the thickness of a beam is always more than a hairpin") says the same direction.
+- **Hook length does not separate a flag from a beam stub.** The 12 one-stem strokes under flag boxes are 10 near-horizontal (0.63-1.45 sp, thickness 0.12-0.38) and two slanted curves (1.93, 2.69 sp).
+  Of the 100 one-stem strokes under BEAM boxes, 32 are <= 1.6 sp, 9 are 1.6-2.4, 59 are longer. Length, thickness, sagitta and angle all overlap, so **no number on the stroke alone defines a hook**.
+- **What does is the stem (structural, not a number):** a short one-stem stroke is a hook only on a stem that touches NO spanning beam; beside a spanning beam it is a partial-beam stub (Sean's
+  one-stem rule makes that a candidate level, never decided). The only numbers left are the hook length cut (`HOOK_MAX_SPACES` 1.6 = the longest near-horizontal flag + 0.15, decided; up to 2.4 =
+  `hook_or_stub`, narrowed, never decided; the 2.69 curve is not rescued) and the 0.5 beam thickness. Both are read off this one plate (n = 15 for the hook): CLAUDE §4 says a cut measured on our
+  plates only NARROWS until another publisher confirms it, which is why the band between 1.6 and 2.4 exists and why Brahms must be measured the same way before any default (no Brahms ON record
+  exists: the 2.198 Brahms ON arm was stopped for the overnight).
+- **Not tuned to a target:** I did not look at which heads the rule changes before fixing the cuts, and no run of the rule on a file exists yet.
+
+## 2. Tests (`test_staged_beams_from_strokes_2_202.py`, 33, constructed cells; every RED has a twin that must not fire)
+OFF byte-identical (the same verdict value, detail, candidates with and without the stroke map in the log; flag ON without a map equals OFF). Beamed pair (decides as today). Flag misboxed as beam:
+two hooks -> a SIXTEENTH flag (OFF: one beam level), one hook -> eighth flag; twins: hook on a stem that carries a spanning beam, hook longer than 2.4, hook in the near-miss band. Beam box on empty paper,
+on a stem alone, on a thin slur across two stems (narrow); twin: a box on a real beam, a box with no `Q.GLYPH_STROKES` row, a CV stroke the map agrees with. Two beam levels (agree -> decided; a second
+stroke no reader counted -> candidate; two strokes closer than a beam gap -> one level; the readers' two vs the map's one -> narrowed). **Controls that fail:** with `HOOK_MAX_SPACES` broken the RED flag
+case stops being a flag; with `BEAM_MIN_THICKNESS_SP` broken a slur supports the box. Two bugs the tests found in my first draft: two hooks 0.35 sp apart merged into one level (real 16th hooks are ~0.7 sp
+apart, the test geometry was wrong, not the rule), and a twin built with a CV row the box overlapped, which `_kept_beams` had already dropped.
+Other tests run: `test_staged_duration`, `..._beam_stem_levels_2_140`, `..._beam_refused_off_the_tip_2_170`, `..._stroke_is_a_beam_2_141h`, `test_stroke_map_2_195`, `test_glyph_strokes_2_198`,
+`test_staged_wiring`, `test_staged_reach`, `test_staged_check`, the four `test_flag_*` files: all pass. The full fast tier was NOT run (the box was busy).
+
+## 3. What is NOT shown (said, not hidden)
+No whole-file A/B, no byte-identity on a gathered record (the unit test is the OFF control), no Brahms stroke data, no tile. The tip window (0.5 / 3.3 sp), the 0.4 sp level separation and the stem-matching
+slack (0.35 sp) are geometry taken from the stacking convention and `rhythm`'s own 2.141h number, not measured on strokes; the milestone should print each as a count of heads it touches.
+Risks to look at first: (a) the downward disagreement (map counts fewer levels than the CV rows) narrows a CV-confirmed beam when the stem stroke is cut short or the beam stroke is split at a crossing;
+(b) a stroke shared by two stems of a chord; (c) `Evidence.rows(Q.STROKE, SELF_AND_DESCENDANTS)` per head records ~30-100 ids in `considered` (record bytes: plan step 9's `pools`).
+
+## 4. MILESTONE MEASUREMENT PLAN (to be run on a quiet box; NOT run now)
+Prerequisite: the worktree `lane-2.202` with origin/main merged again; the overnight `summary.txt` says "done"; one lane on the box (CLAUDE §6).
+```
+cd /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/lane-2.202
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_BEAMS_FROM_STROKES --from gather \
+    --workers 2 --out out/lane-report/2.202 > out/lane-report/2.202.txt 2>&1
+```
+`--flag OMR_STROKE_MAP=1:1` puts the stroke map in BOTH arms (2.198 showed it changes no file: the OFF arm is main's behaviour with the map filed beside it), `--flag OMR_BEAMS_FROM_STROKES` is OFF in the first arm
+and ON in the second, `--from gather` re-gathers the frozen sample's pages for both arms with the 2.189 detector cache (the flag acts in ADJUDICATE but the rows it reads exist only in a gather made with
+`OMR_STROKE_MAP`; a replay of the 20261020-night record has none, and `lane_report` refuses `--from adjudicate` for a flag that needs a gather rather than print a clean zero). The report gives per plate what
+changed in the exported MusicXML by kind (value, beam, flag, red bars, blue marks), judged right -> wrong against Sean's answers, and writes the 12-tile sheet and key.
+Then, from the same out directory and one extra process (no new gather), for each plate count the heads by `beams_from_strokes.settled` in the ON record: `agrees` / `box_narrowed` / `box_flag` /
+`stroke_candidate` / `disagree_narrowed` / (absent = the map could not speak) -- the 31% / 55% cells of plan §5 step 3 as decided / narrowed / contested counts, and per box reason
+(`box_on_paper`, `box_on_a_stem`, ...). A flat table in `results/2.202/settled_counts.txt`; the mining script is written on the day (a 20-line stream over `observations` is enough).
+**The 12 tiles** (blind, nothing of ours drawn, neutral orange box, key in a separate JSON; Sean answers right / wrong / what is it): about 9 are the CHANGED heads (the report draws them at random,
+stratified by kind: `box_flag` heads (the hook-as-flag decision) get at least 3, `box_narrowed` 3, `stroke_candidate` / `disagree_narrowed` 3), and 3 are CONTROLS: one decided-and-unchanged beamed pair from
+each plate, and the re-shown tiles (the report's seed-2188 controls are replaced by these three, same orange box): 2.170 tile 2 (`out/print/2.170-review/`, the HALF the beam rule must not turn into
+a beam) and one clear beamed Litolff eighth from 2.153 tiles 4 / 14 / 16 (`out/print/2.153-review/`, Sean: "the stem clearly connects to the beam"), so a regression of the join shows. Judged right -> wrong
+must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
+The question for Sean at the milestone (plan §5 step 3, now narrowed by his 2026-10-22 ruling): when the box is a beam but the stroke is a hook on a stem with no beam, the file already writes a flag; the tile
+asks "is this a flag or a beam?" on the box's ink, and the hook length cut (1.6 / 2.4 sp) is confirmed or moved on his answers.
+
+# 2.204 -- step 4: a head's stem from the stroke map (flag `OMR_STEMS_FROM_STROKES`, OFF; needs `OMR_STROKE_MAP` in the gather)
+
+Path: STAGED ADJUDICATE (+ a two-line GATHER gate). Built on `lane-2.202-beams-from-strokes` (`08fa1bb57`), main merged in. Code and unit tests only: no gather, no `lane_report` was run (2.202 was gathering).
+
+## Cause (rule 3) and what it teaches
+"Which vertical stroke is this head's stem" was never asked once. It is asked by seven readers (the finder `Q.STEM`, `head_stem_reach`, `stem_tip_ink`, the 2.161 bridge, `stem_slash`, `beam_stem_join`, `beam_stem_levels`), each on the raster with its own
+cut-offs, and each pair got a rule written for its disagreement: the finder vs the reach ruler disagree on 3.9% / 9.0% of heads (section 2 above); `refuse_owned` took 58 / 126 real stems away because a false rest/flag box sat on them
+(plan section 3); 2.167 found 33 of 40 "no stem" real notes had a stem the finder refused. Those are not three measurement faults, they are one ownership question (is this stroke a stem of THIS head?) answered by geometry in three places
+and by the finder's refusals in a fourth. The stroke map already separates the vertical strokes (2.195: `Q.STEM` is covered 100% by vertical strokes), so the question is a join: the head's blob, the vertical stroke beside it, the engraving side.
+Lesson: when the same ink is read by several readers, the first thing to build is the join that says which ink belongs to which mark; the cut-offs then shrink to the one the join needs (here: the bridge gap).
+
+## Built
+- `tools/omr/staged/stem_strokes.py` (pure; `reach.NOT_A_STAGE`): `head_stem(views, head_box, space, whole_head, other_heads, cell_width)` -> `StemReading` with `state` (stem / two_stems / bridged / no_stem / whole_head / wrong_side / through_head / barline / unanchored / ambiguous),
+  the accepted `StemCand`s (stroke row ids, merged box, side, direction, tip end / y / staff step as the map measured it at the stroke's own x, length in sp, distance from the head) and every candidate with the reason it was refused. The rule: the stroke the head touches on the engraving side
+  (up -> right, down -> left); a stem that passes the head (chord middle, a second's displaced head) takes its direction from the head its END stands in; a whole head reads no stem. The three old rules on strokes: 2.161 bridge (`bridged`, gap <= 0.35 sp, no head in the gap), 2.169
+  pair (a stem each side, each ending in the head -> `two_stems`; two collinear halves cut by a beam or ledger rung -> ONE stem), 2.155 edge (a stroke at the cell edge that ends in no head, or longer than 8 sp, is a barline).
+- `rhythm._head_stems` / `_bridged_from_strokes` / `_tips_from_strokes` / `_tip_obs` / `_tip_abs` / `stem_reach_equivalent` (+ `ownership._stem_owner`): the reading is set against the finder's. Agree -> the finder's own row, decided as today. Strokes find a firm stem the finder did not (`gained`) -> a stand-in
+  row carrying the stroke's id. The finder's stem is a stroke the convention refuses for this head (`old_refused`: wrong side, barline) -> the strokes settle it, the finder's row is dropped. The finder's stem is not a stroke beside the head at all, or strokes touch the head and refuse every one while the
+  finder attached a stem (`disagree`) -> `adjudicate_stem_direction` and `adjudicate_duration` ABSTAIN `stem_readers_disagree` with the candidates (EXPORT counts it; colour is EXPORT's). The map being SILENT about a finder stem (no vertical stroke beside the head; a stem under 1.5 sp is not a stroke) is not a
+  disagreement: as today (rule 8 both ways). A vertical stroke no head touches, or touches on the wrong side, is a candidate in the detail and never a stem (rule 6). Recorded in `detail["stems_from_strokes"]` (state, settled, candidates, gained, old_refused, directions).
+- The tip readers: the four accessors (`_stem_tip_flag_ink`, `_stem_tip_disputed`, `_stem_tip_unread_why`, `_no_beam_at_the_stem_tip`) read `_tips_from_strokes` instead of `Q.STEM_TIP_INK`: hook strokes at the tip of an unbeamed stem -> True (counted; hook_or_stub bracketed 1..2);
+  a beam, a beam stub, or a stem that carries a beam -> `runs_on`; ANY other stroke within reach of the tip -> `occupied` (never a clean tip); nothing -> False (clean). A cell with no stroke map falls back to the GATHER rows (older records replay as before).
+
+## Retired when ON (unreachable) / unchanged when OFF
+- `head_stem_reach`: no ADJUDICATE read of `Q.HEAD_STEM_REACH` survives the flag (`_own_stem_side`, `_second_only_evidence`, `ownership._stem_owner`; `_flags_on_reach_stem` is unreachable because `reach_stem` is never true), and GATHER does not file the row (`gather_head_stem_reach` skipped when `OMR_STEMS_FROM_STROKES` and `OMR_STROKE_MAP` are both on).
+- `stem_tip_ink`'s scan: `Q.STEM_TIP_INK` is not read (the four tip accessors) and GATHER does not file it (`_observe_stem_tip_ink` skipped under the same two flags). A static test counts the reads in `rhythm.py`.
+- `refuse_owned`: BYPASSED, not deleted -- the stroke reading never passes through the finder's refusals, so a stem under a false rest/flag box is found. It still shapes the `Q.STEM` rows that other, not-yet-moved readers (beam join, stem value, articulation owners) consume; removing it from the finder would change all of them at once, so it waits for step 10.
+- Side effect to say aloud: `_second_only_evidence`'s `stem_reach` witness (an independent ruler on the UNERASED raster) is gone; the stroke stem is already counted as `stem_box`, so a second-detector-only head has one stem witness where it had two (conservative: more refusals, no new notes).
+
+## Tests (`tools/omr/tests/test_staged_stems_from_strokes_2_204.py`, 58, constructed cells; every RED has a twin that must not fire)
+Pure: up-stem right (twin: same stroke on the left = `wrong_side`), down-stem left (twin: on the right), a stroke through the head, length / tip / staff step off the stroke, a stroke beside another head, a chord on one stem (both heads take it), a second's displaced head (twin: no head sees the stem on the
+engraving side -> `wrong_side`), a stem each side = `two_stems` (twin: two same-side strokes = `ambiguous`), a stem cut by a ledger rung = ONE (twins: a gap too wide; two columns; a beam on both halves widens the gap), a barline (> 8 sp; unanchored; cell edge unless an end stands in a head), a whole note
+(the stroke is shown, never made its stem), the bridge (twins: too wide a gap; a head in the gap; the wrong side). Integrated through `adjudicate.run`: OFF byte-identical with and without the map; ON without a map changes nothing; ON agrees (up, down, chord); ON gains a stem the finder refused; a stroke no head touches /
+on the wrong side / by a whole head -> no stem, as OFF; ON a finder stem that is a barline to the strokes -> `stem_readers_disagree` (twin: OFF decides `up` as main); the strokes settle a finder stem on the wrong side (`old_refused`); the unison case still abstains `stems_disagree`; the owner witness's page-px tip.
+Retirement: the OFF accessor reads the planted `Q.STEM_TIP_INK` row (True), the ON accessor ignores it and reads the stroke (False), ON with no map falls back to the row; ON the ruler is not a head's side; a static test on the sources. **Controls that fail:** with `engraving_side_ok` forced True the wrong-side case becomes a stem; with `STEM_MAX_SPACES` raised the barline becomes a stem.
+Other tests run (serially): the 48 test files naming the stem / tip / reach quantities, `test_staged_beams_from_strokes_2_202`, `test_stroke_map_2_195`, `test_glyph_strokes_2_198`, `test_staged_wiring`, `test_staged_reach`, `test_staged_check`, the flag-doc tests: all pass (1,938 + 268). `inventory --check` green; `check` open findings 197 (was 198).
+Two things the tests found in my first draft: a stem that PASSES a head took its direction from the head's side, which called a second's displaced head's stem a down-stem (now: from the head its end stands in; the displaced head sees it on the far side by design); and the test cell lacked `category: notehead` on the box row `_heads_in` filters on.
+
+## What is NOT shown (said, not hidden)
+No whole-file A/B, no record, no tile, no Brahms data. The six cuts (`BRIDGE_MAX_GAP_SPACES` 0.35 from 2.161's one-plate 0.13-0.27; `END_IN_HEAD_SLACK` 0.3; the two collinear-join cuts 0.3 / 0.6; the flush fractions 0.6 / 0.4; the 0.4 vertical-overlap share) are geometry stated before any count and NOT fitted -- the milestone must print how many heads each touches. Risks to look at first:
+(a) `disagree` abstentions replace decided notes with unread bars where the finder was right and the map is wrong (a stem cut short, a head box that stops short of the chord's stem): the count and the tiles tell, right -> wrong must stay 0, but decided -> unread is a loss to count;
+(b) `_heads_in` needs `category: notehead` on the box row (true on gathered records, absent on the old test helpers): without it a PASSING stem reads `unanchored`;
+(c) `cell_width` is not passed (the bar-edge test is dormant in the adapter; the pure function has it): a barline at the cell edge relies on `unanchored` / the 8 sp cut;
+(d) the clean-tip reading (`False`) is firmer than the GATHER shape reader's `ink_not_flag_shaped`: it feeds 2.146 ("clean tip decides no beam"); a beam stroke the map did not record as near the tip would read clean;
+(e) the memo `rhythm._STEM_MEMO` holds one `Log` alive until the next decision replaces it.
+
+## MILESTONE MEASUREMENT PLAN (to be run on a quiet box; NOT run now)
+Prerequisite: `lane-2.204` with origin/main merged again; the overnight/2.202 gather finished; one lane on the box (CLAUDE section 6).
+```
+cd /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/lane-2.204
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_STEMS_FROM_STROKES --from gather \
+    --workers 2 --out out/lane-report/2.204 > out/lane-report/2.204.txt 2>&1
+```
+`OMR_STROKE_MAP=1:1` puts the map in BOTH arms (so the arms differ by one flag, and 2.198 showed the map alone changes no file); `OMR_STEMS_FROM_STROKES` is OFF in the first arm, ON in the second. `--from gather` is required: the flag is named in `gather.py` (it gates the two scans), so `lane_report` refuses an ADJUDICATE replay, and the OFF arm
+must still file `Q.HEAD_STEM_REACH` / `Q.STEM_TIP_INK` while the ON arm must not (that is what "retired" means).
+**2.202's flag (`OMR_BEAMS_FROM_STROKES`) is in NEITHER arm** for this run: 2.202 is not landed or measured, and with it in both arms the stems effect would be read through a beam change nobody has seen on a tile. This is the attribution run. A SECOND run, only if the first shows changes, repeats it with
+`--flag OMR_BEAMS_FROM_STROKES=1:1` (2.202 in both arms): the two lanes share `own_stems` and both read the tip, so the stack is what would ship; report the second as a control, not a result.
+The report gives, per plate, what changed in the exported MusicXML by kind (value, beam, flag, red bars, blue marks, and `stem_readers_disagree` bars), and judged right -> wrong against Sean's answers (`python3 -m tools.omr.staged.judged`). Then, from the same out directory and one extra pass (no gather), count per plate the heads by
+`detail["stems_from_strokes"].settled` in the ON record -- `agrees` / `gained` / `old_refused` / `disagree` / `map_silent` / `no_stem_candidate_only` -- and by `state`; the `disagree` count by `disagree` reason; heads decided -> unread (risk a). That table is the answer to "the 87 / 259 reach disagreements named" (plan step 4) and to 2.167's 33 of 40.
+**The tiles (12, blind, nothing of ours drawn, neutral orange box on the head, key in a separate JSON; Sean answers right / wrong / what is it):** about 9 are CHANGED stem decisions, drawn at random stratified by kind: `gained` 3 (a stem the finder refused now in the file), `old_refused` 2, `disagree` 3 (the head now unread, shown as "is there a stem here, which way?"), and
+1 changed value or direction. 3 are CONTROLS: (1) 2.150 tile 11 re-shown and (2) 2.150b tile 20 re-shown (the "stems of quarter notes" tiles; see `docs/DECISIONS.md` 2026-10-16, the 2.150b line -- the PNGs are in the old agent worktree `/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6fd65f56a127e4f7/out/print/2.150-review` and `.../2.150b-review` (coordinator, 2026-10-25); at milestone time copy tile 11 and tile 20 into this worktree's `out/print/` -- not copied yet), and (3) one decided-and-unchanged
+beamed Litolff eighth (2.153 tile 4 / 14 / 16: "the stem clearly connects to the beam") so a regression of the join shows. Judged right -> wrong must be 0 over Sean's answers; the 12 tiles are Sean's to answer before any default is discussed.
+The question for Sean at the milestone (plan step 4): "re-show those two tiles (stems of quarter notes)", plus one plain question on the bridge cut: a stem standing a hair beside the head's box on the right (up) or left (down) is that head's stem -- may it speak, or only narrow?
+
+## 5. MILESTONE RESULT (2.202; main 78a0144fe merged; fast tier 8,962 passed; `lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_BEAMS_FROM_STROKES --from gather`; `results/2.202/`)
+Cause first: the hook-as-flag path almost never fires, and the reason is upstream of it. Of the map's 122 (Litolff) / 332 (Brahms) detector beam boxes standing on a "hook", 118 / ~300 stood on a stroke leaning on a
+BARLINE or a cell-height vertical, not a stem (the first draft counted any vertical; fixed with `STEM_MAX_SPACES` = 8, measured: the 4,260 verticals that coincide with a `Q.STEM` row are 1-8 sp, the unmatched pile up at 8 and 12), and
+the 2.74 ink test had already dropped the rest from `kept` (fixed: pre-filter boxes are read). Process lesson: a funnel count made on the rows alone (`hook_box_funnel.py`) overstated the population 50x; the head-level reach
+(verdict details) is the number.
+- **Measure 1, exported file (Litolff / Brahms):** notes +2 -133 / +6 -113, beams +2 -131 ~17 / +3 -78, flags +19 -14 / +19 -29, blue marks +2 -34 / +69 -32, red bars 0->0 / 166->167, notes NOT written 2563->2694 / 3202->3311
+  (about 130 and 110 notes held out: the narrowed beams leave bars the bar sum will not settle). **Measure 3, Sean's judged answers: right->wrong 0 / 0**, right->narrowed 4 / 1, wrong->right 0 / 1.
+- **Control (Litolff, same flags both arms): NOTHING CHANGED**, 5029 = 5029 notes, 2563 = 2563 held out, box quiet. A replay of the OFF gather confirmed OFF reproduces its own record (0 of 8,958 differ).
+- **`beams_from_strokes.settled`, first duration verdicts (Litolff 7,399 / Brahms 9,676):** map could not speak 4,518 / 5,726; agrees 2,642 / 3,716; stroke_candidate 179 / 112; disagree_narrowed 57 / 79; box_narrowed 2 / 34;
+  box_narrowed+stroke_candidate 1 / 7; box_narrowed+disagree_narrowed 0 / 2. **Hook-as-flag decided at 0 heads on Litolff, 2 on Brahms.** Heads whose live duration changed: 158 / 119. Box reasons: Litolff 411 no beam- or hook-shaped stroke,
+  36 on paper, 12 hook on another stem; Brahms 3,347 / 476 / 130, `thin_or_curved_span` 50, `one_stem_stub` 85, `hook_or_stub` 152.
+- **Tiles `out/lane-report/2.202m-tiles/tiles/sheet.png` (key `../key.json`):** 12 = 9 changed (2 hook-as-flag -- all there are --, 4 disagree_narrowed, 3 stroke_candidate) + 3 controls (one unchanged decided beamed head, the re-shown 2.170 tile 2 and 2.153 tile 4); no two on one ink (boxes
+  grown one space must not meet). 2.170 tile 2 is on page 5, outside the frozen sample, so it shows the tile, not a re-measured verdict. Question: "for each boxed note: is it an eighth, a sixteenth, a quarter, or something else -- and is the mark on its stem a flag or a beam?"
+- **What the numbers say:** the big movers are not the box rule or the hook rule but the two disagreement kinds (`disagree_narrowed` narrows a note the CV rows decided; `stroke_candidate` raises `possible`). Together ~236 / 191 heads become narrowed; that is where the 130 held-out
+  notes come from. Whether those narrowings are right is the tiles' question (tiles 1, 4, 10, 11 are decided-on-main-now-narrowed; 2, 5, 6 are candidates). Not landed, no default touched.
+
+# 2.205 -- step 5, moved forward: ONE OWNER PER STROKE (flag `OMR_STROKE_OWNER`, OFF; needs `OMR_STROKE_MAP` in the gather)
+
+Path: STAGED ADJUDICATE. Branch `lane-2.205-stroke-owner`, cut from `lane-2.204-stems-from-strokes` (2.198 + 2.202 + 2.204), main `b4a6c573d` merged. Code, unit tests and
+read-only record replays only: NO gather and NO lane_report was run (2.204 was gathering). Every number below comes from a script in this directory run on the 2.202 milestone's
+gathered ON records (`.claude/worktrees/lane-2.202/out/lane-report/2.202m/work/*.on.gathered.record.json`, frozen 8-page sample, OMR_STROKE_MAP on), which hold the strokes, the boxes'
+`Q.GLYPH_STROKES` and main's own precision verdicts. My look is not evidence (rule 7); no crop or tile was made.
+
+## Cause (rule 3) and what it teaches
+**The stroke map measured every piece of ink, and the first two consumers read it before anything said whose it was.** `multi_claim_census.py`: of 47,780 (Litolff) / 65,084 (Brahms)
+strokes, 5,167 / 10,842 lie under two or more detector boxes, 1,908 (4.0%) / 5,878 (9.0%) under boxes of two or more FAMILIES, 1,380 / 3,568 under two or more CLAIMANT families
+(consumers -- beam, flag, stem boxes -- left out). The pairs that dominate: arc|beam 312 / 1,300, arc|head 198 / 796, head|ledger 201 / --, accidental|arc -- / 481, arc|rest -- / 447,
+flag|head 58 / 421, dynamic|head 148 / --, head|rest 127 / 139, accidental|rest 55 / 319, arc|flag -- / 263 (top 12 per plate in `results/2.205/multi_claim.json`).
+**What that means to the consumers**: of the strokes 2.202's rule gives a beam role, a CLAIMANT's box covers 369 of 1,172 (31%) / 363 of 659 (55%) `beam` strokes (head 220 / 217,
+clef 74 / 90), 317 of 399 / 1,031 of 1,082 `beam_stub` (head 267 / 864), 2,086 of 2,563 (81%) / 2,379 of 2,866 (83%) `hook` (dynamic 953, head 416, rest 321 / rest 814,
+accidental 618, dynamic 410) and 452 of 611 / 789 of 1,154 `hook_or_stub` (ledger 178 / 556). And 1,508 of the 4,795 / 712 of the 4,568 strokes that coincide with a finder `Q.STEM`
+are under some claimant's box (mostly the head they stand beside). The 31% / 55% are, to the stroke, the plan's "CV and detector disagree about beams in 31% / 55% of cells".
+**Process lesson.** A role (`beam`, `hook`, `stem`) is a shape rule, and a shape rule fires on any dark stroke of that shape. We built two shape readers (steps 3 and 4) on a
+map whose strokes had no owner, and measured their cut-offs on strokes that were often a head's, a letter's or a rest's. The plan put ownership at step 5 because it is the
+hardest, not because it comes later in dependency; the order of building should follow the order of reading (who owns it, then what it is).
+
+## The design, in plain words
+Once per cell, every stroke gets one owner (`stroke_owner.py`, pure; `adjudicators/stroke_owner.py`, one verdict per CELL -- a stroke is a measurement, not a subject, 2.198).
+The claimants, in convention order: the register's AREA claims (clef, key signature, meter, header column -- nothing else is printed there), then noteheads and ledger lines,
+accidentals, arcs and hairpins, dynamics / text / articulations / dots, rests. Stems, beams and flags are never claimants: they read what is left. A box claims the strokes
+with >= half their ink inside it (`Q.GLYPH_STROKES`). Per stroke: no claimant -> unclaimed; an area -> its owner; one family whose SHAPE fits -> decided (two boxes of that
+family -> merged, which box is 2.186's question); claimants none of whose shapes fit -> the claims are refused and the stroke stays the consumers'; two families that both fit ->
+the stroke's own shape decides only if it CLEARLY fits one, else CONTESTED (abstained, candidates kept in claim order, counted, no consumer may use it). Never a confidence pick.
+The shapes are convention sizes on the stroke's fields (`shape_fit`, the fields named in every `why`); two were MEASURED and corrected before they spoke
+(`owner_shape_sizes.py`, the strokes under boxes main KEPT): a whole / half rest block is 0.76 sp tall at the median, 0.88 at p95, on both plates (the convention's 0.75 refused
+455 / 170 real rests) and a filled head 1.24-1.32, so the cut is 1.0; quarter / eighth rest verticals reach 3.44 sp (Litolff p95), so the rest length cut is 2.71's measured 3.8.
+Where the order acts: areas first, consumers last, and a REST may not own a stroke that touches a stroke a HEAD (an earlier tier) already owns (2.150b, 2.33c: a rest never
+touches a note). A stroke only partly in a box joins that mark when it touches two strokes the mark owns and its shape fits (a sharp's crossbar that runs into the note's stem).
+The consumers MASK owned and contested strokes (kind `owned` / `contested`): the ink is still there, so a tip with a slur on it is never read as a clean tip (rule 8), but it is
+never a beam, a hook, a stub or a stem. 2.202's and 2.204's rules are otherwise untouched (the filter is in `rhythm._stroke_views` / `_stem_views` only).
+EXPORT: `report["stroke_ownership"]` (strokes by state, owner family, boxes owning none of their ink; a partition with `unaccounted` = 0), present only when the decision ran.
+OFF: the decision files nothing (`adjudicate.run` skips it), the views read no verdict, the report gains no key.
+
+Three faults the record replay found in my first draft (each now a test): a box's PARTIAL strokes counted as evidence against it (127 / 343 heads main kept "owned nothing"
+because a neighbouring ledger rung was another's); real chord heads beside their stem read as tremolo slashes (56 / 204 strokes; a slash is a line, length / thickness >= 2.5,
+crossed in its middle); and the attach step had no shape test, so a stem touching both halves of an erase-split head went to the head (647 / 143 finder stems).
+
+## What ownership does, measured without a gather
+- **States** (`multi_claim.json`): Litolff decided 20,239, merged 5,187, unclaimed 18,293, refused claims 3,615, **contested 446 (0.9%)**; Brahms 31,118 / 7,380 / 22,240 / 3,678 /
+  **668 (1.0%)**. Contested by pair: Litolff mark|rest 69, head|ledger 56, accidental|mark 31, head|rest 24; Brahms **accidental|rest 190** (2.192's eighth-rest bulb boxed as an
+  accidental), accidental|arc 79, accidental|mark 57, arc|clef 36.
+- **Finder stems that ownership gives to a mark** (the risk to 2.204): 247 of 4,795 (5.2%) / 246 of 4,568 (5.4%). Of them the header claims (key signature, clef, meter,
+  header column) are 89 / 43 and right by convention; **accidental 44 / 150 and dynamic 112 / 46 are the ones to tile** (an accidental's or a letter's own vertical the finder
+  took for a stem, or a real stem under a letter / accidental box: cannot tell from here).
+- **The 2.202 heads** (`owner_on_2202_heads.py`; 2.202's own tip count re-taken with the mask; the box-support half is not replayed, so this predicts, it does not measure):
+  `stroke_candidate` (the map counted MORE levels) resolved 44 of 179 Litolff / **97 of 112 Brahms**, stem stroke owned 7 / 3; `disagree_narrowed` (FEWER: the erase-thinned
+  beams) unchanged 57 / 78 -- ownership only takes strokes away, so this is 2.202b's, as expected; hook heads 1 of 2 no longer a flag.
+  **The 9 judged 2.202 tiles**: tile 2 (the sharp's crossbar) -> the accidental's, resolved; tile 5 (the head cluster) and tile 6 (head + ledger) -> the head's, resolved;
+  tile 12 (slur start) -> the arc's, no longer a flag; tile 8 (slur start) STILL a flag -- that slur has no detector box, and a stroke map never names a mark nobody boxed
+  (rule 6); tiles 1, 4, 10, 11 (beams thinned by the erase) unchanged -- 2.202b. So 4 of the 9 move toward Sean's answer, 0 move away; the milestone must show it.
+  Litolff's 128 unchanged `stroke_candidate` heads: the head-end piece is not >= half inside any claimant's box (Litolff merges); not chased here.
+
+## Parity with the old pair rules (plan section 3; the record's own verdicts against `box_verdict`; Litolff / Brahms)
+Every head / rest / accidental box an old pair rule refused, and what ownership says about it (refused = owns none of its ink; contested = narrowed; merged = same family,
+2.186's; owns = owns some of its ink; no_ink = covers no stroke it does not stand beside):
+| rule | n | refused + contested | merged | owns | no_ink |
+|---|---|---|---|---|---|
+| rest_has_a_stem | 58 / 13 | **54 / 11** | 0 / 0 | 2 / 1 | 2 / 1 |
+| rest_stroke_into_a_head | 29 / 41 | 15 / 24 | 1 / 0 | 10 / 11 | 3 / 6 |
+| rest_is_a_barline | 31 / 19 | 10 / 3 | 1 / 0 | 2 / 0 | 18 / 16 |
+| is_a_rest_twin | 12 / 21 | 6 / 14 | 4 / 1 | 2 / 6 | 0 / 0 |
+| is_a_beam_piece | 13 / 3 | 11 / 2 | 0 / 0 | 2 / 1 | 0 / 0 |
+| on_a_rest (head and accidental) | 11 / 63 | 1 / 5 | 0 / 2 | 10 / 56 | 0 / 0 |
+| rest_is_a_duplicate_box, different class | 0 / 8 | 0 / 1 | 0 / 4 | 0 / 3 | 0 / 0 |
+| head_cut_piece | 10 / 7 | 0 / 0 | 7 / 0 | 3 / 7 | 0 / 0 |
+| tremolo_slash_crosses_stem (+ rest_is_a_slashed_stem) | 42 / 47 | 0 / 1 | 8 / 10 | 34 / 36 | 0 / 0 |
+**Parity is NOT reached: 97 of 206 (47%) / 61 of 222 (27%).** Strong for the rest-vs-stem rules and the beam piece; the named differences: (1) `rest_is_a_barline` is mostly
+`no_ink` -- the barline's stroke is longer than the thin rest box, so under half of it lies inside and the box covers nothing (a box-coverage limit, not a shape one);
+(2) `tremolo_slash_crosses_stem` and `head_cut_piece` boxes own a head-shaped piece of their own (the slash is cut by the stem into head-sized halves; a cut piece is the same
+family -- 2.186's); (3) `on_a_rest` is mostly 2.192's ACCIDENTAL on an eighth-rest bulb where no rest box covers the bulb, so nothing contests it. So the old rules are NOT
+deleted or bypassed: the box verdicts are on the record (`detail.boxes`) and no precision decision reads them. Deleting a rule waits for its row to reach parity and for Sean.
+**Boxes ownership refuses that main KEPT** (what switching the precision rules over would change; NOT acted on): Litolff heads 42 refused + 43 contested, rests 4 + 39;
+Brahms heads 45 + 30, rests 13 + 79. These, and the contested strokes, are the tile population.
+
+## Tests (`tools/omr/tests/test_stroke_owner_2_205.py`, 36, constructed cells; every RED has a twin that must not fire)
+Pure: a sharp's crossbar at a stem tip is the sharp's (attached by the two stems it ties; twins: no sharp -> unclaimed; touching one owned stroke -> not attached); a stem
+touching both halves of an erase-split head stays unclaimed; head + ledger fused piece -> the head (twins: a thin rung -> the ledger; a long thick beam -> nobody's); a slur's
+start at a stem -> the arc's (twin: an arc box never owns a blob or a beam it passes); an eighth-rest bulb under an accidental box and a rest box -> CONTESTED, counted, claim
+order kept (twins: one claimant decides; two boxes of one family merge); the census partitions every stroke; the pair rules as ownership (rest stroke into a head, block rest on
+a stem, block rest on a head's blob, a barline under a rest box, a tremolo slash; twins: a quarter rest's own stroke, a real whole-rest block, a head beside its stem, a head at
+the block height -> contested); an area claim owns whatever stands in it. Through `adjudicate.run`: OFF files no verdict and the duration equals flag-unset; the flag is an
+allow-list; with 2.202 ON the sharp's crossbar is a tip beam OFF and the sharp's ON; a slur start is a 2-hook flag OFF and not ON, while real hooks with no claimant stay a
+flag; a real beamed pair reads as OFF; a contested beam stroke narrows; with 2.204 ON a quarter-rest box on a stem that runs into a head leaves the stem to the stem reader
+(direction `up`) and the head box owns its blob. **Controls that fail**: the claim order broken (rests before heads) -> the rest takes the stem and the direction is lost; the
+consumer mask switched off -> the sharp's crossbar is a beam level again. Export: the tally partitions with `unaccounted` 0 and is absent OFF.
+Also run (serially): 2.202's and 2.204's test files, `test_stroke_map_2_195`, `test_glyph_strokes_2_198`, `test_staged_adjudicate`, `test_staged_check`, `test_staged_inventory`,
+`test_staged_reach`, `test_staged_wiring`, `test_flag_docs_match_predicates`: all pass. The full fast tier was NOT run (the box was busy).
+
+## MILESTONE PLAN (to run on a quiet box; NOT run now)
+Prerequisite: `lane-2.205-stroke-owner` with origin/main merged again (and 2.202b's fixes when they land, re-merged); one lane on the box. **Subset first (Sean 2026-10-25: "Don't
+take too long testing if we can rule out issues quickly")**: every command below runs FIRST with `LANE_REPORT_SAMPLE=benchmarks/shared-ink-map-2026-10/results/2.205/sample_2pages.json`
+(2 pages per plate: Litolff 8, 16; Brahms 0, 14 -- the pages holding the judged 2.202 tiles 1, 2, 4, 5, 6, 10, so the right->wrong control can fire). If notes not written jump,
+or any judged answer goes right -> wrong, stop and find the cause on those pages; only a clean subset earns the full frozen sample (unset the variable).
+```
+cd /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/lane-2.205-stroke-owner
+# (a) ownership alone: the stroke map in both arms, OMR_STROKE_OWNER off -> on. Expected: NOTHING CHANGED in the file (no consumer reads it); the report's
+#     stroke_ownership tally per plate (contested count) is the measure.
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_STROKE_OWNER --from gather --workers 2 --out out/lane-report/2.205a > out/lane-report/2.205a.txt 2>&1
+# (b) what ownership does to beams and stems: the three flags vs the same two without ownership (the consumers in BOTH arms)
+python3 -m tools.omr.staged.lane_report --flag OMR_STROKE_MAP=1:1 --flag OMR_BEAMS_FROM_STROKES=1:1 --flag OMR_STEMS_FROM_STROKES=1:1 --flag OMR_STROKE_OWNER \
+    --from gather --workers 2 --out out/lane-report/2.205b > out/lane-report/2.205b.txt 2>&1
+```
+`--from gather` because the flags it stacks on are named in `gather.py`; the ownership flag itself acts in ADJUDICATE, so (b)'s two arms differ by one ADJUDICATE flag on one gather
+each. Then, from the ON records and one extra pass (no gather): `multi_claim_census.py out/lane-report/2.205b <out.json>` (states, contested pairs, finder stems owned, parity)
+and `owner_on_2202_heads.py` re-pointed at 2.205b's own ON arm for the settled counts with the full 2.202 path.
+**The 12 tiles** (blind, nothing of ours drawn, neutral orange box, key apart): from (b)'s changes -- 3 heads whose beam reading changed because a stroke became owned, 2 heads
+whose stem changed (one accidental- or dynamic-owned finder stem among them: the 5% risk above), 3 CONTESTED strokes (question: "what is this ink: which mark, or two?",
+Brahms accidental|rest first), 1 box ownership refuses that main kept; and the 2.202 tiles RE-SHOWN with their new outcome -- 2, 5, 6, 12 (predicted to move to Sean's answer)
+and one of 1 / 4 / 10 (predicted unchanged, the erase-thinned beam: a control). Judged right -> wrong must be 0.
+**No colour question at the milestone: already ruled** (DECISIONS 2026-10-22, Sean: "the color should just be applied at output. Everything else before that is intended to help determine what it is"). A contested stroke (446 / 668 on the sample) ABSTAINS in ADJUDICATE with both candidates kept, as built; INFER may choose among them, labelled; EXPORT alone colours the result. The milestone asks Sean only the tiles' own question ("what is this ink: which mark, or two?").
+
+## MILESTONE RESULT (2.205; main merged `a21aab575`; fast tier 9,061 passed, 0 failed; `results/2.205/`, `out/print/2.205-stroke-owner/`)
+**Subsets first** (Sean 2026-10-25). (a) ownership alone, Litolff 8, 16 / Brahms 0, 14: NOTHING CHANGED in the file, right -> wrong 0 (117 / 196 judged tiles);
+759 / 360 cells carry a `stroke_owner` verdict, contested 138 / 108 strokes. (b) ownership with beams + stems in both arms: notes not written 620 -> 613 / 604 -> 597,
+red bars 34 -> 33 (Brahms), right -> wrong 0.
+**First full (b) run: ONE right -> wrong**, Litolff p10 (2.154 tile 7, Sean: eighth; ON wrote a quarter). **Cause**: the note's flag hook (stroke 19, on its own stem 22) lay
+in detector boxes classed `dynamicF` (the detector named a Litolff flag as a forte letter, as it does other ink in that cell), so the letter tier owned the hook before the flag
+reader could read it. **Lesson**: a letter box has the same failure as a rest box on a stem -- the detector's CLASS is a guess, so its claim needs a structural test, not only a
+shape one. **Fix** (`shape_fit`, `touches_a_note`; CONVENTION ASSUMED: a dynamic letter is printed clear of the notes): a letter never owns a stroke that touches a head's
+stroke or a stem touching one -- the claim order acting (heads before letters), with a control that breaks the order and gives the flag back to the letter. Re-run on a subset
+holding p10 (Litolff 8, 10, 16 / Brahms 0, 14): right -> wrong 0 (138 / 196), notes not written 944 -> 934 / 604 -> 597.
+**Full frozen sample, (b), after the fix** (`out/lane-report/2.205b.txt`): the consumers in both arms, ownership OFF vs ON.
+- Litolff: notes +35 -13, accidentals +9 -1, flags +7 -8 ~1, beams +14 -7 ~7, ties +2, slurs +8, values ~2, pitches ~1, blue marks +12 -1; red bars 0 -> 0;
+  **notes not written 2,801 -> 2,779**; judged right -> wrong **0** (233 tiles).
+- Brahms: notes +29 -10, rests +1, accidentals +12 -2, dots +17 -4, flags +6 -9, beams +7 ~1, ties +6 -2, slurs +8 -2, articulations +9 -2, values ~3, blue marks
+  +15 -35; **red bars 173 -> 171**; **notes not written 3,363 -> 3,343**; judged right -> wrong **0** (232 tiles).
+- Words +3 -6 / +8 -21: NOT gather noise -- run (a) re-gathers both arms too and its words did not move. They follow the notes: a written word is placed on a note, and (b) writes / drops notes; not chased further (no judged answer moved).
+- **Run (a), ownership alone, full sample** (`out/lane-report/2.205a.txt`): NOTHING CHANGED in the exported file on either plate (notes not written 2,563 / 3,202, red bars 0 / 166 both arms), judged right -> wrong 0 (233 / 232) -- OFF-vs-ON of the decision itself changes no output, as designed.
+- Ownership on the full sample (`multi_claim_2205b.json`): contested 399 / 655 strokes; Brahms accidental|rest 190 (2.192's bulb).
+**The 2.204 stem `disagree` abstentions** (`stem_disagree_owner.py`, both arms stems ON): Litolff 178 OFF (the coordinator's 167, main merged) -> ownership removes **23**
+(13 agree, 8 map silent, 1 old refused, 1 cannot tell) and adds 7: 178 -> 162; Brahms 96 -> 5 removed, 6 added. **Ownership does not remove them**, and should not be
+expected to: their reasons are 2.204's own rules on strokes no mark owns -- `finder_stem_but_wrong_side` 76 / 59, `finder_stem_is_not_a_stroke_beside_the_head` 56 / 32,
+`finder_stem_but_barline` 46 / 5. The crop check's causes (fused heads, chord stems over 8 sp called barlines -- Sean 2026-10-26: a long stem through stacked heads is
+a chord stem, never a barline --, neighbours' stems) are 2.204's side and length rules; they are 2.204's to fix. Ownership's part (Sean 2026-10-26): no head may claim a
+shared chord stem -- it never does (a head never owns a vertical stroke; `TestAStemSharedByAChord`: a three-note chord and a second with heads on both sides, pure and
+through the pipeline).
+**The 12 tiles** (`out/print/2.205-stroke-owner/tiles/sheet.png`; key `out/print/2.205-stroke-owner/key.json`; question per tile: "what is the boxed ink -- a note
+(which value, flag or beam on its stem), a rest, or something else?"): 3 beam readings ownership changed (tiles 4, 5 narrowed -> decided; 11 abstained -> decided eighth),
+2 stem readings (7, 12: 2.204 `disagree` -> agrees, now decided), 2 contested strokes (1 head|rest, 9 accidental|rest), 1 head box ownership contests that main kept (6),
+and the 2.202 tiles re-shown: 2 (sharp's crossbar), 6 (head + ledger), 12 (slur start) -- predicted to move to Sean's answer -- and 1 (erase-thinned beam: the control,
+predicted unchanged). Not answered yet.
+
+## 2.205 TILES ANSWERED (Sean 2026-10-26; `out/print/2.205-stroke-owner/answers.json`)
+**Score (ON, the 8 notes ownership wrote or moved): 7 right, 1 wrong.** Right: 2 quarter, 3 dotted quarter, 4 dotted quarter, 7 eighth (Sean first said quarter, then
+corrected it to eighth), 8 dotted quarter (OFF wrote a dotted eighth, the 2.202 hook-as-flag; ON a dotted quarter), 11 eighth, 12 half. Tiles 2 and 3 were not written OFF.
+Tiles 1, 6, 9 (contested strokes; run (a) changes no file) are eighth rests, tile 10 (control) an eighth, unchanged. Judged right -> wrong stays 0.
+**The one wrong decision: tile 5** (Litolff p4, `glyph/4/0/8/0/5`): ink Sean reads as part of a C clef, written as a blue quarter.
+**Cause (measured on the saved record).** (1) The detector drew `noteheadBlackOnLine` (conf 0.44) on the clef's body, plus a `tie` box beside it (`.../4`). (2) Nothing
+claims that ink: the staff's clef is DECIDED `alto` only by `clef_from_other_systems` -- no `clef_located` row exists for staff 8 -- so there is no clef area claim there. The
+only leading-column claim runs x 316-372.6 (barline/brace), the key claim starts at 427.5, and the head box sits at 385.8-417.8, in the unclaimed gap that is the clef.
+(3) The note reader treats the box as a head (`notehead_is_not_a_notehead` decided False on the class alone; the fill check says `not_head_sized`, and a stem was borrowed from
+a neighbour: `wrong_side`). (4) OFF the duration was NARROWED {quarter, eighth} because YOLO drew 2 beam boxes; the stroke map saw no beam stroke over it ("agrees", 0 beams) and
+the bar rule took the lone remaining value. So ownership did not invent the note; it removed the doubt about a beam from a "head" that was never a head.
+**Process lesson.** A clef we carry from other systems still has ink on this one; a decided value with no located ink leaves its ink unclaimed, and the detector's guess
+(a head) then stands unopposed. The missing fact is the claim, not the beam. The beam answer was right (no beam); the question asked of the box was wrong.
+**Source fix, not a 2.205 rule:** claim the clef's ink on a staff whose clef is carried (locate it from the leading column / other systems' clef width) so tier 0 owns it
+before any head can; secondarily the detector class on clef ink (`not_head_sized` fill is already a signal the head reader declines to use). Ownership is correctly ordered
+here and needs no new rule; the clef claim is a GATHER fix to be rostered, not built in 2.205.
+**Tile 7 correction:** Sean's first answer (quarter) was corrected to eighth; ON's eighth is right, so no cause hunt was needed.

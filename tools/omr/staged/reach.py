@@ -165,15 +165,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "pp.0-3, so the record was carrying about a third of the population "
         "the pipeline looked at. This entry LEAVES the day a decision reads "
         "it."),
-    Q.STROKE: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.195, step 1 of the shared ink map, `OMR_STROKE_MAP`, default ON): the `Q.INK` discipline -- a "
-        "producer and its first consumer in one change make the reach measurement circular. ⚠️ Its first consumer is NAMED in the plan "
-        "(`docs/plan-2026-10-22-shared-ink-map.md` §5): step 3 `adjudicate_duration` reads a head's beams off the horizontal strokes at its stem's tip "
-        "(`OMR_BEAMS_FROM_STROKES`). This entry LEAVES the day a decision reads it."),
-    Q.GLYPH_STROKES: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.198, step 2 of the shared ink map, `OMR_STROKE_MAP`, default ON): the `Q.INK` discipline. "
-        "Its first reader is `claims.covering`'s `ink` branch (plan §2.3), which no stage calls yet; the first stage consumer is step 3 "
-        "(`OMR_BEAMS_FROM_STROKES`: a beam box with no beam-shaped stroke under it). This entry LEAVES the day a decision reads it."),
     Q.SYSTEMIC_COLUMN: (
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
@@ -412,6 +403,13 @@ NOT_A_STAGE = frozenset({
     "stem_end_heads.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
+    # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
+    # at a stem's tip): files no row, names no quantity, decides nothing; the decision is `adjudicate_duration`'s.
+    "beam_strokes.py",
+    "stem_strokes.py",
+    # ROADMAP 2.205. Pure helpers for `adjudicators/stroke_owner.py` (the claim order, the family shapes, one owner per stroke): files no row,
+    # names no quantity; the decision is `adjudicate_stroke_owner`'s.
+    "stroke_owner.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",

@@ -4795,10 +4795,11 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                     found.get("beams") or (),
                     (detections or {}).get(sub.to_key()) or (), space_c,
                     own_stem=stem_xywh)
-                _observe_stem_tip_ink(
-                    log, sub, frame, c, row_id, stem_xywh,
-                    blockers, space_c, heads=heads,
-                    slashes=slashes.get(row_id))
+                if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the tip is read off the stem's stroke instead
+                    _observe_stem_tip_ink(
+                        log, sub, frame, c, row_id, stem_xywh,
+                        blockers, space_c, heads=heads,
+                        slashes=slashes.get(row_id))
 
         # ROADMAP 2.69 follow-up: is any `augmentationDot` box in this cell
         # really the tip of a flag? Needs the cell raster, not any stem.
@@ -7389,6 +7390,16 @@ _STROKE_GLYPH_BASE = RECORD_STROKE_GLYPH_BASE          # 375_000, record.py; pas
 
 def stroke_map_enabled() -> bool:
     return os.environ.get(STROKE_MAP_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+#: ROADMAP 2.204 (`rhythm.STEMS_FROM_STROKES_ENV`, the same name). With BOTH this and `OMR_STROKE_MAP` on, GATHER does not file
+#: `Q.HEAD_STEM_REACH` (`gather_head_stem_reach`) nor `Q.STEM_TIP_INK` (`_observe_stem_tip_ink`): every ADJUDICATE reader of them reads the
+#: stroke map instead, so the two scans are unreachable. Either flag off: both scans run, as before.
+STEMS_FROM_STROKES_ENV = "OMR_STEMS_FROM_STROKES"
+
+
+def stems_from_strokes_retires_scans() -> bool:
+    return (os.environ.get(STEMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on") and stroke_map_enabled())
 
 
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
@@ -15993,7 +16004,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                                          far_head_state)
         # ⚠️ ROADMAP 2.58d, AFTER `gather_ownership_evidence` (it files only
         # for a contested head, read off that evidence's own rows).
-        gather_head_stem_reach(log, pws, cells, local, detections)
+        if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the head's stem is the stroke its blob touches (ADJUDICATE)
+            gather_head_stem_reach(log, pws, cells, local, detections)
         # dynamic-not-a-head: AFTER the detections (it reads them) -- a head box
         # lying on a dynamic letter's box, measured against the raw raster.
         gather_notehead_letter_ink(log, pws, cells, local, detections)

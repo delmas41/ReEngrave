@@ -1,0 +1,250 @@
+[
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4464.9,
+   3607.2,
+   4487.0,
+   3641.3
+  ],
+  "rg": "stroke:5/0/13/6/8",
+  "kind": "ink",
+  "role": "case",
+  "side": "contested:head|rest",
+  "tile": 1,
+  "crop_origin": [
+   4283,
+   3464
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   4711.15625,
+   1918.96875,
+   4755.5,
+   1956.09375
+  ],
+  "rg": "glyph/0/0/1/6/3",
+  "kind": "note",
+  "role": "reshown",
+  "side": "2.202 tile 6 re-shown",
+  "tile": 2,
+  "crop_origin": [
+   4541,
+   1777
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2547.6325,
+   3519.91,
+   2584.42,
+   3552.065
+  ],
+  "rg": "glyph/14/0/12/3/2",
+  "kind": "note",
+  "role": "reshown",
+  "side": "2.202 tile 2 re-shown",
+  "tile": 3,
+  "crop_origin": [
+   2374,
+   3375
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   1238.10546875,
+   978.36328125,
+   1278.01953125,
+   1010.2177734375
+  ],
+  "rg": "glyph/14/0/2/0/3",
+  "kind": "note",
+  "off": "('narrowed', None, ('0.75', '1.5'))",
+  "on": "('decided', 1.5, ())",
+  "role": "case",
+  "side": "beam_reading_changed",
+  "settled_off": "stroke_candidate",
+  "settled_on": "agrees",
+  "tile": 4,
+  "crop_origin": [
+   1066,
+   834
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   385.76,
+   1639.92,
+   417.76,
+   1662.8
+  ],
+  "rg": "glyph/4/0/8/0/5",
+  "kind": "note",
+  "off": "('narrowed', None, ('0.5', '1.0'))",
+  "on": "('decided', 1.0, ())",
+  "role": "case",
+  "side": "beam_reading_changed",
+  "settled_off": "stroke_candidate",
+  "settled_on": "agrees",
+  "tile": 5,
+  "crop_origin": [
+   307,
+   1572
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1154.3175,
+   2668.53,
+   1177.47,
+   2697.825
+  ],
+  "rg": "glyph/16/1/4/5/3",
+  "kind": "rest8th",
+  "role": "case",
+  "side": "ownership_contested_main_kept",
+  "tile": 6,
+  "crop_origin": [
+   1071,
+   2604
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   3394.4,
+   4628.375,
+   3432.625,
+   4662.2
+  ],
+  "rg": "glyph/12/1/3/5/1",
+  "kind": "note",
+  "off": "('abstained', None, ())",
+  "on": "('decided', 0.5, ())",
+  "role": "case",
+  "side": "stem_reading_changed",
+  "settled_off": "disagree",
+  "settled_on": "agrees",
+  "tile": 7,
+  "crop_origin": [
+   3221,
+   4485
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4418.25,
+   1948.525,
+   4454.275,
+   1980.15
+  ],
+  "rg": "glyph/4/0/6/8/6",
+  "kind": "note",
+  "role": "reshown",
+  "side": "2.202 tile 12 re-shown",
+  "tile": 8,
+  "crop_origin": [
+   4244,
+   1804
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   3953.4,
+   4620.6,
+   3972.7,
+   4636.3
+  ],
+  "rg": "stroke:8/1/2/8/17",
+  "kind": "ink",
+  "role": "case",
+  "side": "contested:accidental|rest",
+  "tile": 9,
+  "crop_origin": [
+   3771,
+   4468
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   2353.44,
+   3416.4,
+   2379.2,
+   3436.4
+  ],
+  "rg": "glyph/8/1/9/17/6",
+  "kind": "note",
+  "role": "control",
+  "side": "2.202 tile 1 re-shown",
+  "tile": 10,
+  "crop_origin": [
+   2271,
+   3347
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1735.115,
+   1847.4575,
+   1756.535,
+   1868.405
+  ],
+  "rg": "glyph/8/1/0/13/2",
+  "kind": "note",
+  "off": "('abstained', None, ())",
+  "on": "('decided', 0.5, ())",
+  "role": "case",
+  "side": "beam_reading_changed",
+  "settled_off": null,
+  "settled_on": "stroke_candidate",
+  "tile": 11,
+  "crop_origin": [
+   1651,
+   1779
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1387.68,
+   888.985,
+   1413.0375,
+   912.61
+  ],
+  "rg": "glyph/16/0/3/7/4",
+  "kind": "note",
+  "off": "('abstained', None, ())",
+  "on": "('decided', 2.0, ())",
+  "role": "case",
+  "side": "stem_reading_changed",
+  "settled_off": "disagree",
+  "settled_on": "agrees",
+  "tile": 12,
+  "crop_origin": [
+   1305,
+   822
+  ]
+ }
+]

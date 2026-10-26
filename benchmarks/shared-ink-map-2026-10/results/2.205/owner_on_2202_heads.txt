@@ -1,0 +1,11 @@
+litolff {'disagree_narrowed|unchanged': 57, 'stroke_candidate|resolved': 44, 'stroke_candidate|stem_owned': 7, 'stroke_candidate|unchanged': 128}
+   tile 1 disagree_narrowed unchanged []
+   tile 4 disagree_narrowed unchanged []
+   tile 10 disagree_narrowed unchanged []
+brahms {'disagree_narrowed|stem_owned': 1, 'disagree_narrowed|unchanged': 78, 'hook|no_longer_a_flag': 1, 'hook|still_a_flag': 1, 'stroke_candidate|resolved': 97, 'stroke_candidate|stem_owned': 3, 'stroke_candidate|unchanged': 12}
+   tile 2 stroke_candidate resolved [(11, ('decided', 'accidental'))]
+   tile 5 stroke_candidate resolved [(69, ('decided', 'head'))]
+   tile 6 stroke_candidate resolved [(1, ('decided', 'head'))]
+   tile 8 hook still_a_flag []
+   tile 11 disagree_narrowed unchanged []
+   tile 12 hook no_longer_a_flag [(15, ('decided', 'arc'))]
