@@ -341,3 +341,58 @@ the map is right) and Brahms 4/1/13/4/6 (a true second beam over the stem). So t
    beam. This is plan step 4 (claiming) arriving as a precondition of step 3, not after it.
 3. A hook is a flag only when it is a FREE END (touches only this stem) and lies in no detector slur / tie / system-arc box (`_not_a_decided_arc` is the existing test for the CV beam path); an arc that starts at the stem tip is read by the arc readers.
 4. A slab thicker than ~1.0 sp across >= 2 stems is two levels (`_fused_double_beams` already says so for the CV path); a beam stroke that comes within ~0.5 sp of the stem's end joins it (2 of 20).
+
+## 5c. 2.202b: the three measurement faults of 5b (branch `lane-2.202b-beam-faults`; code + unit tests + read-only re-measure on the 2.202 records, NO gather, NO lane_report; nothing defaulted, nothing landed)
+Path: STAGED GATHER (`stroke_map.py`, flag `OMR_STROKE_MAP`) + STAGED ADJUDICATE (`beam_strokes.py`, flag `OMR_BEAMS_FROM_STROKES`); both OFF. Fenced edits: `stroke_map._restored_thickness` (+ one call in `map_strokes`), `beam_strokes.tip_reading` / `local_thickness` /
+`StrokeView.profile`, and ONE line in `rhythm._stroke_views` (it now passes the row's `profile_sixteenths` into the view; nothing else in `rhythm.py` moved -- 2.205 merges around it).
+Scripts: `beam_faults_live.py` (re-run the map on the 8 + 8 sample pages without a gather, old vs new thickness), `beam_faults_thickness.py` (the distribution under detector beam boxes), `beam_faults_records.py` (`--settle`: re-run `tip_reading` on every duration head of the two ON records
+with the old / new code, against main's level count `before`); results `results/2.202b/`. Tests `test_stroke_thickness_2_202b.py` (7), `test_beam_faults_2_202b.py` (18); with the 2.195 / 2.198 / 2.202 files 88 pass.
+
+**Cause first (rule 3): the 0.19 sp beam is the staff-line ERASER's bug, not the map's.** `staff_line_removal.remove_staff_lines_from_cell` walks the vertical run through a line row only `cap + 2` = 37 rows either side (`_vertical_runs_through`, "bounded at max_search")
+and erases the run when it is <= `crossing_cut` (0.45 sp = 45 rows). A beam 0.64 sp thick HANGING from a line has the line row near the top of its run: the walk goes 6 up and 37 down = 44 <= 45, so the band 705..748 is erased and rows 749..768 (the 0.19 sp sliver) are
+left. I re-cut the cell of the p16 tile (`glyph/16/0/1/8/3`, sp 100 px; line thickness measured by the eraser 32 px = 0.32 sp: Litolff's lines are fat): raw run 705..768 = 0.64 sp, erased raster 749..768 = 0.19 sp, the walk 44 rows. So any ink taller than the cut whose edge
+is at a line is cut back by up to 0.37 sp below / above that line, for EVERY reader of `image_no_staff`, not only the stroke map. **Process lesson:** a "bounded walk compared with an unbounded cut" erases what it was built to protect (the in-file comment says a beam must never be erased);
+the 2.202 cause (5b: "the erase takes more than the line") was right and the mechanism is one line. NOT fixed here (shared reader, outside the fence, it moves every CV consumer and the legacy path); the candidate is `reach >= ceil(crossing_cut) + 1`, needing its own byte-for-byte read of all consumers -- Sean's call to open it as a roadmap item.
+
+### Fault 1 -- beam thickness read off the erased raster (`stroke_map._restored_thickness`, constant `THICKNESS_FROM_UNERASED`, default True inside the OFF flag group)
+For a horizontal / curve stroke, the stroke's own pixels grown, per column, through CONTIGUOUS pixels the eraser removed (`raw & ~erased`: the eraser only ever takes line rows and the run it walked with them, so no neighbour's ink comes back), at CANONICAL resolution (a first draft at the
+16 px/sp reduction joined a line 0.06 sp clear of a beam). Used only where a column touches erased ink; otherwise the old reading exactly. The p16 tile stroke: 0.187 -> 0.64.
+**"Subtract the line" was measured and REFUSED.** Taking the line band at the run's end off again (first draft, Litolff, reduced resolution; `results/2.202b/thickness_line_subtracted_litolff_reducedres.json`) rescued 1 of the 9 on-line strokes under beam boxes that read < 0.5 (0.64 -> 0.31 on the tile: the
+printed beam covers the 0.32 sp line, it does not sit beside it); the unsubtracted reading rescued 4 and leaves the 0.45-0.55 band empty on-line. The rule cannot tell "line beside the beam" from "line inside the beam" from one column, and the measured population says inside.
+**New thickness distribution** (`beam_faults_thickness.py`; horizontal strokes touching >= 2 stems under a detector BEAM box; Litolff 372, Brahms 269; on-line = centre within 0.4 sp of a staff line; counts):
+| | Litolff on-line | Litolff off-line | Brahms on-line | Brahms off-line |
+|---|---|---|---|---|
+| OLD (2.202) < 0.5 / 0.5-0.55 / >= 0.55 | 9 / 0 / 75 | 38 / 6 / 244 | 18 / 1 / 68 | 78 / 4 / 100 |
+| NEW < 0.5 / 0.5-0.55 / >= 0.55 | **5** / 0 / 80 | 37 / 4 / 247 | **12** / 1 / 74 | 75 / 2 / 105 |
+28 (Litolff) and 33 (Brahms) of those strokes moved at all; 4 and 6 on-line strokes crossed the 0.5 cut. The 0.5 cut is a gap only where the line was the problem: on-line Litolff has nothing between 0.45 and 0.55 (one at 0.40-0.45, then 8 at 0.55-0.60), but off-line Litolff has 1 + 4 in 0.45-0.55 and
+Brahms has 3 on-line and 4 off-line there: **the cut is not a gap on Brahms either way** (section 5b's finding stands; the 0.437 | 0.546 gap was two Litolff pages). I did not move 0.5.
+
+### Fault 2 -- a fused double beam (`beam_strokes.tip_reading`, `FUSED_*`)
+Convention: two beams stacked = beam 0.5 + gap 0.25 + beam 0.5 = 1.25 sp (the pitch of the tip window, 0.75 sp a level); a single beam is 0.5-0.7 (the on-line / off-line `>= 0.55` mode above is 0.6-0.7). A slab counts as TWO levels when ALL hold: its median thickness >= 1.0 (Sean's rule),
+its thickness AT THIS STEM'S x >= 1.0 (`local_thickness`: the 12-sample `profile_sixteenths`, mean of three), < 1.75 (three fused would be 2.0: not measured, left as one), horizontal, and its outer edge within 0.6 sp of the tip. The two extra conditions are measured, not guessed: the median alone
+doubled 6 Brahms heads main reads as ONE level (a group whose second beam covers only some stems: the same stroke is 0.5 sp over the first half and 1.3 over the second; the stem on the single half is 0.31-0.66 locally, the 12 stems on the double half 0.8-1.6) and a local value alone doubled 16 Litolff heads
+(a 1.3 sp bump in a 0.7 sp beam where a head merges with it). With both: **Brahms 8 of the 15 `fused_double` heads now equal main (fused alone: 8 settled, 0 broke; 1 head broke in combination with the thickness fix); Litolff 0 / 0** (the other 7 have a local value of 0.81-0.96, below Sean's 1.0: they stay narrowed).
+
+### Fault 3 -- a beam that stops short of the stem (`beam_strokes.tip_reading`, `JOIN_*`)
+The gap that sets "within ~0.5 sp" is NOT measurable from the stroke geometry: the box-to-box gap of every non-touching (beam, stem) pair in a cell is flat from 0.0 to 1.5 sp (Litolff per 0.1 sp: 41 56 66 100 75 | 77 86 73 93 91 96 114 103 122 118; Brahms 14 44 31 75 66 | 41 50 38 43 41 54 62 69 64 45; `record_hists.json`).
+For HEADS: the 8 + 4 `join_missing` heads have gaps 0.00-0.37 sp (median ~0.2); the unrestricted rule (any beam-role stroke within 0.5 sp counts) settled 12 heads to main and BROKE 26 Litolff + 13 Brahms heads that already agreed (18 of the 26 are a 1.0-1.3 sp slab 2.4-3.7 sp long = a head cluster at the stem's far end;
+the rest thin one-stem-short strokes beside a neighbouring group's beam). So I did NOT ship the unrestricted rule. What ships is the narrower one the data allow: the stem has NO level at its tip yet, and the stroke's OUTER edge is within 0.6 sp of the tip (a first level), and it is no thicker than one beam. Measured effect (J alone, vs 2.202): Litolff +2 settled / -1 broken,
+Brahms 0 / 0 -- i.e. **1 of 11 `join_missing` heads settle, and the rule is close to inert**. It is kept because it cannot hurt and says what the data support; whether to keep it at all is the lane's call. (The restriction rides on the same constant, `JOIN_MAX_GAP_SPACES` 0.5, Sean's number; the control sets it to 0 and shows the RED case turn.)
+
+### What the fixes settle on the EXISTING 2.202 records (`beam_faults_records.py --settle`; every duration head with a stem stroke, a side and no flag levels: Litolff 2,886, Brahms 3,950; "agrees" = the tip's level count equals main's `before`; arms T = thickness, TF = + fused, TFJ = + join)
+| | Litolff | Brahms |
+|---|---|---|
+| heads that DISagreed with main (2.202) -> agree now | **41** | **59** |
+| heads that AGREED with main (2.202) -> disagree now | 10 | 8 |
+| T alone / + fused / + join (settled) | 39 / 0 / 2 | 51 / 8 / 0 |
+**By 5b's cause (the old code classifies; counts are heads that now equal main):** thin remnant < 0.30: Litolff 21 of 22, Brahms 30 of 33; thin 0.30-0.50: 18 of 21, 21 of 24; fused double: -, 8 of 15; join missing: 1 of 8, 0 of 3; **head-end ink (the 156 / 102 + the `at_tip` 23 / 10): 0 settle** -- that is cause 2 of 5b, the ownership lane
+(2.205), outside this lane's fence by design. So of 5b's "199 / 160" heads (causes 1+2): 43 / 57 thin heads were this lane's (39 / 51 settle); 156 / 102 are 2.205's.
+**The 9 milestone tiles (`out/lane-report/2.202-tiles/key.json`, its numbering; my read of the script, not Sean's tiles):** 6 of the 9 changed heads (tiles 2, 3, 5, 7, 9, 11 -- all `disagree_narrowed`, thin remnant or near-cut) now equal main's level count (1); tiles 4 and 10 (`stroke_candidate`, head-end blob) are unchanged (2 vs main 1: 2.205);
+tile 12 (`other`, main 2, strokes 1) unchanged. The two hook-as-flag heads of 5b are not in this lane (cause 3, the slur-origin rule).
+**The 18 broken heads** (Litolff 10 = 9 thickness + 1 join; Brahms 8 = 7 thickness + 1 fused-in-combination): of the 9 Litolff thickness ones, 6 (p2) are a real beam now read at the tip (0.12 -> 0.62) ALONGSIDE the head-end blob the 2.202 count had taken for the level (a 1.29 sp stroke 3.5-4.0 sp inward): main's 1 was
+matched by the wrong stroke and is now 2 -- the blob is 2.205's; 3 (p4) are a real beam 0.25 -> 0.63 at 0.2-0.3 sp from the tip, count 2 (the second counted stroke I did not inspect). Of the 7 Brahms: 4 are a 0.36-0.47 stroke 3.4-3.9 sp INWARD of the tip now 0.57-0.73 (head-end ink, same cause); 3 (p25) are a 0.41 -> 0.57-0.61 stroke 0.1-1.3 sp from the tip where
+main says 0 levels (a beam main missed, or a slur on a line: needs a crop). None of this was shown to Sean; nothing here replaces his 12 blind tiles.
+
+**Not shown (said, not hidden):** (1) "agrees with main" is a control, not truth (rule 5/7): 6 of 9 tiles settle to the value 5b's crop look says is right (all main-right), nothing more. (2) The live re-map covers the 8 + 8 frozen sample pages; the heads are the 2.202 records' (same pages), every thickness joined by (cell, ordinal) with 0 box mismatches.
+(3) No `lane_report`, so Measures 1 and 3 (the exported file; Sean's judged right->wrong) are NOT measured here -- the next step is the milestone run with these constants and the 12 blind tiles, after 2.205's ownership filter is in front of `_beams_from_strokes`. (4) The staff-line eraser's bounded walk is a finding, not a fix.
+(5) The `_restored_thickness` growth costs CPU in the stroke map (not timed; only strokes touching erased ink pay it).

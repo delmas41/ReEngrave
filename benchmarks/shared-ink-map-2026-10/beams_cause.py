@@ -44,7 +44,7 @@ def views_of(rows):
             ordinal=int(r["subject"].rsplit("/", 1)[1]) - BASE, kind=r["value"], box=tuple(float(v) for v in d["stroke_box"][:4]),
             length=float(d.get("length_spaces") or 0), thickness=float(d.get("thickness_spaces") or 0), sagitta=d.get("sagitta_spaces"),
             angle=float(d.get("angle_deg") or 0), touches=tuple((int(a), float(b)) for a, b in d.get("touches") or ()),
-            space_px=float(d.get("staff_space_local_px") or 0), row_id=r["id"]))
+            space_px=float(d.get("staff_space_local_px") or 0), row_id=r["id"], profile=tuple(d.get("profile_sixteenths") or ())))
     return out
 
 

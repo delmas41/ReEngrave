@@ -3946,7 +3946,8 @@ def _stroke_views(ev: Evidence, cell) -> list:
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
-            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
+            profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ()))))
     return out
 
 

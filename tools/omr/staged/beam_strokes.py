@@ -55,6 +55,19 @@ TIP_OUTWARD_SPACES = 0.5
 TIP_INWARD_SPACES = 3.3
 #: Two strokes touching one stem whose centres are closer than this (staff spaces) are one level (a stroke cut in two by a crossing).
 LEVEL_MIN_SEPARATION_SPACES = 0.4
+#: ROADMAP 2.202b. TWO beams are printed one above the other with a gap: beam 0.5 sp + gap 0.25 sp + beam 0.5 sp = 1.25 sp (the engraving convention the
+#: tip window above is built on: level pitch ~0.75 sp). A slab that spans the stems and is this thick is TWO levels fused by the scan, not one beam
+#: (a single beam is 0.5-0.7 sp; measured, FINDINGS 2.202 section 5c), measured at THE STEM'S OWN x (`local_thickness`). Counted as two only while its outer edge lies AT the tip (within
+#: `FUSED_OUTER_EDGE_SPACES`: a "slab" 3 sp inward of the tip is a head cluster, the 2.202 cause 2) and only up to `FUSED_MAX_THICKNESS_SPACES`
+#: (three levels fused would be 2.0 sp; nothing between is measured, so a thicker slab is left as the one level it was counted as).
+FUSED_DOUBLE_MIN_THICKNESS_SPACES = 1.0
+FUSED_MAX_THICKNESS_SPACES = 1.75
+FUSED_OUTER_EDGE_SPACES = 0.6
+#: ROADMAP 2.202b. A beam-role stroke that does not TOUCH the head's stem stroke but ends within this many staff spaces of it (box to box: the scan
+#: cuts a beam where it meets a stem, or the stem stops short of the beam) is the stem's beam: a beam IS the thing that joins its stems.
+JOIN_MAX_GAP_SPACES = 0.5
+#: ...and the joining beam's OUTER edge lies within this many staff spaces of the stem's tip (the first level of a beam).
+JOIN_OUTER_EDGE_SPACES = 0.6
 #: A vertical stroke is THIS stem when it overlaps the stem's x-span (within this slack) and y-range.
 STEM_MATCH_X_SLACK_SPACES = 0.35
 
@@ -72,6 +85,18 @@ class StrokeView:
     touches: Tuple[Tuple[int, float], ...]
     space_px: float                              # canonical px per staff space at the stroke
     row_id: str = ""
+    profile: Tuple[int, ...] = ()                # thickness along the stroke's axis, 12 samples, sixteenths of a staff space (empty: not filed)
+
+
+def local_thickness(s: StrokeView, x: float) -> float:
+    """The stroke's thickness (staff spaces) in the neighbourhood of page-x `x` (canonical cell px): the mean of the three profile samples around it;
+    the stroke's own median thickness where no profile was filed or `x` is off the stroke. CLAUDE section 5: measure against the subject LOCALLY."""
+    if len(s.profile) < 3 or s.box[2] <= 0 or not (s.box[0] - 0.35 * s.space_px <= x <= s.box[0] + s.box[2] + 0.35 * s.space_px):
+        return s.thickness
+    n = len(s.profile)
+    i = int(round(min(max((x - s.box[0]) / s.box[2], 0.0), 1.0) * (n - 1)))
+    lo, hi = max(0, i - 1), min(n, i + 2)
+    return sum(s.profile[lo:hi]) / float(hi - lo) / 16.0
 
 
 def role_of(s: StrokeView, by_ord: Dict[int, StrokeView]) -> Dict[str, object]:
@@ -134,6 +159,13 @@ def box_support(under: Iterable[int], role_by_ord: Dict[int, Dict[str, object]])
     return {"support": "unsupported", "strokes": under, "reason": why}
 
 
+def _box_gap(a: Sequence[float], b: Sequence[float]) -> float:
+    """Distance between two (x, y, w, h) boxes in their own units; 0 when they overlap or touch."""
+    dx = max(0.0, max(a[0], b[0]) - min(a[0] + a[2], b[0] + b[2]))
+    dy = max(0.0, max(a[1], b[1]) - min(a[1] + a[3], b[1] + b[3]))
+    return (dx * dx + dy * dy) ** 0.5
+
+
 def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -> Optional[StrokeView]:
     """The vertical stroke that IS the stem `stem_box` (x, y, w, h, canonical px), or None when the map holds none there (cannot tell)."""
     sx, sy, sw, sh = (float(v) for v in stem_box)
@@ -178,6 +210,23 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
         if y1 < lo or y0 > hi:
             continue
         found[key].append(s)
+    # 2.202b: a stem with NO beam level at its tip, and a beam-role stroke that comes within JOIN_MAX_GAP_SPACES of it without touching it, whose
+    # OUTER edge lies at the tip (the first level: a beam's outer edge is where its stems end) and that is no thicker than one beam: the beam is this
+    # stem's. (Measured, FINDINGS 2.202 section 5c: without these three conditions the same rule re-counted head clusters at 18 of 26 heads the readers
+    # already agreed on.) Never adds a second level to a stem that already has one.
+    joined: List[StrokeView] = []
+    if not found["beam"]:
+        touched = {s.ordinal for s in touching}
+        for s in strokes:
+            if s.ordinal in touched or s.ordinal == stem.ordinal or role_by_ord.get(s.ordinal, {}).get("role") != "beam":
+                continue
+            if s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES or _box_gap(s.box, stem.box) > JOIN_MAX_GAP_SPACES * sp:
+                continue
+            outer = s.box[1] if side == "up" else s.box[1] + s.box[3]
+            if abs(outer - tip_y) > JOIN_OUTER_EDGE_SPACES * sp:
+                continue
+            joined.append(s)
+        found["beam"].extend(joined)
 
     def levels(group: List[StrokeView]) -> List[int]:
         out: List[Tuple[float, int]] = []
@@ -188,6 +237,25 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
             out.append((c, s.ordinal))
         return [o for _c, o in out]
 
+    fused: List[int] = []
+    beams = levels(found["beam"])
+    by_o = {s.ordinal: s for s in found["beam"]}
+    doubled: List[int] = []
+    for o in beams:
+        s = by_o[o]
+        outer = s.box[1] if side == "up" else s.box[1] + s.box[3]
+        # The slab is double (median over the stroke >= 1.0, Sean's rule) AND double at THIS stem's x: a group whose second beam covers some stems
+        # only is ~0.6 sp along one stretch and ~1.25 along the next, and the median alone would double every stem of it (Brahms: 6 heads main read
+        # as one level). The median is kept because a short bump of >= 1.0 in a 0.8 beam (a head merged with it: Litolff, 16 heads) is not a slab.
+        here = local_thickness(s, bx + bw / 2.0)
+        if (s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES and FUSED_DOUBLE_MIN_THICKNESS_SPACES <= here < FUSED_MAX_THICKNESS_SPACES
+                and s.kind == "horizontal"
+                and abs(outer - tip_y) <= FUSED_OUTER_EDGE_SPACES * sp):
+            fused.append(o)
+        doubled.append(o)
+        if o in fused:
+            doubled.append(o)           # one slab = two levels: the ordinal is listed once per level
+
     return {"stem": stem.ordinal, "tip_y": tip_y, "stem_beamed": stem_beamed,
-            "beams": levels(found["beam"]), "hooks": levels(found["hook"]), "stubs": levels(found["stub"]),
+            "beams": doubled, "fused": fused, "joined": sorted(j.ordinal for j in joined), "hooks": levels(found["hook"]), "stubs": levels(found["stub"]),
             "hooks_all": sorted(s.ordinal for s in found["hook"])}
