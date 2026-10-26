@@ -172,3 +172,18 @@ box id it was first shown on. That would be a fix to `tools.omr.staged.judged` (
 Litolff pitches ~27, clefs +1 -3 and keys -2. The clef and key moves need a crop look before the full sample.
 
 Stopped here, as the lane brief says. The full frozen sample and the 12 tiles were NOT run; that waits on a ruling about this tile.
+
+### 5b. Coordinator ruling and the clef/key crop check (2026-10-26)
+
+**Ruling.** `tile_05` counts as a key artifact (twin box refused as `stacked_head_duplicate`; the written note is a quarter F4 in both arms).
+The scorer fix is its own item, not this lane.
+
+**Litolff clef +1 -3, keys -2.** There are two reading changes. One crop per staff is in `out/print/2.206-eraser/clef-check/`.
+- p4 system 1 staff 10, "Bassi" (P11, m16). OFF: `cv_locator` read tenor, decided. ON: ADJUDICATE narrowed it
+  (`margin_below_floor`), and INFER `fill_clef_gap` gave bass (`clef_from_other_systems`, labelled). **Print: bass clef, so ON is right.**
+  This one move removes three items from the file: OFF's C4 at m16, its key restatement at m16, and the F4 plus key restated at m31.
+- p11 system 1 staff 5, "Tp." (Timpani, P6, m49). OFF: tenor. ON: bass. **Print: bass clef, so ON is right.**
+- Keys -2: both are the key restatements that went out with the removed OFF clef changes. The value is fifths -2, unchanged. Nothing is
+  read differently. (That value is already wrong on the print, Eb major = -3, but it is the same in both arms.)
+
+Every move is right on the print, so the full frozen sample runs.
