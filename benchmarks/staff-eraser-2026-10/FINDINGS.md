@@ -118,4 +118,22 @@ ON == the unbounded rule on a busy cell; with `walk_for_cut` mutated back to `ca
 
 ## 4. The three measures
 
-PENDING (the box was busy with 2.204's gather and < 15 GB free when Part 1-3 were done).
+**NOT RUN -- blocked on the box.** 2.204 and then 2.201 gathered until 02:27; after that the box was idle but the disk stayed at 13 GB free,
+under the lane's 15 GB floor, for 20 minutes. Fast tier on the branch (flag OFF): 8,922 passed, 12 skipped, 2 xfailed, 0 failed.
+
+The fail-fast run, when the disk allows (same 2-page subset 2.204 used: Litolff 4, 11; Brahms 5, 14):
+
+    LANE_REPORT_SAMPLE=<file with plates.litolff.pages [4, 11], plates.brahms.pages [5, 14]> \
+      python3 -m tools.omr.staged.lane_report --flag OMR_ERASER_FIX --from gather --workers 2 --out out/lane-report/2.206s
+
+then, only if notes-not-written does not jump and judged right->wrong is 0, the frozen sample (`--out out/lane-report/2.206`).
+
+⚠️ **`--from gather` MUST be passed.** `lane_report.acts_in_gather` counts a flag as GATHER only when its home is a module under
+`staged/` in `GATHER_MODULES`; `OMR_ERASER_FIX` lives in the SHARED `tools/omr/staff_line_removal.py`, so `--from auto` would replay the
+saved GATHER rows from ADJUDICATE and report "nothing changed" by construction. That is a hole in the shared command (any shared
+GATHER-side reader -- the eraser, `line_detection`, `measure_extractor` -- would hit it), worth a one-line fix there (its own item).
+
+What to expect, from Part 1: most changes in readers of `image_no_staff` -- notehead fill / recentre on heads in a space (Brahms 908
+boxes), rests read by ink components (whole rests, eighth rests), stem-tip flag ink, accidental shape, the clef / key / meter templates on
+the erased header crops. Tile question to fit what changes (draft): for notes/rests gained or changed, "What is the note or rest value
+at the orange box?"; if clef/key/meter move, a separate plain question.
