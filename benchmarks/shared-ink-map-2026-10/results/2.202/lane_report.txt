@@ -1,0 +1,23 @@
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_BEAMS_FROM_STROKES (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py, staged/gather.py, staged/record.py ... -> GATHER
+  OMR_BEAMS_FROM_STROKES: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5029 notes+rests OFF, 4898 ON, 4896 paired)
+  file:   notes +2 -133 | accidentals -12 | flags +19 -14 | beams +2 -131 ~17 | ties -2 | slurs +1 -23 | articulations -8 | blue marks +2 -34 | words +11
+  red bars 0 -> 0 | notes not written 2563 -> 2694
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 4 | wrong->right 0
+      right->narrowed  2.81-review tile tile_16 glyph/11/1/0/1/2
+      right->narrowed  rhythm-leftovers-2 tile 8 glyph/2/1/7/13/1
+      right->narrowed  rhythm-leftovers-3 tile 2 glyph/2/1/7/13/3
+      right->narrowed  rhythm-leftovers-3 tile 6 glyph/2/1/7/13/0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6519 notes+rests OFF, 6410 ON, 6404 paired)
+  file:   notes +6 -113 | rests -2 | accidentals -23 | dots -17 | flags +19 -29 | beams +3 -78 | ties -10 | slurs +7 -34 | articulations -26 | note values ~4 | blue marks +69 -32 | dynamics +2 -1 | words +37 -11
+  red bars 166 -> 167 | notes not written 3202 -> 3311
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 1 | wrong->right 1
+      right->narrowed  2.81-review tile control_2 glyph/0/0/0/4/9
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 7852 s
