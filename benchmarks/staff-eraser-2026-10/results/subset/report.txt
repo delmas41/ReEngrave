@@ -1,0 +1,19 @@
+LANE REPORT  OMR_ERASER_FIX (OFF=0 ON=1)  --from gather
+  OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: benchmarks/staff-eraser-2026-10/subset_sample.json (a development control)
+
+litolff  pages [4, 11]  (1184 notes+rests OFF, 1187 ON, 1183 paired)
+  file:   notes +4 -1 | beams -1 ~1 | ties +2 | note values ~1 | pitches ~27 | blue marks +18 | words +1 | clefs +1 -3 | keys -2
+  red bars 0 -> 0 | notes not written 559 -> 556
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (136 tiles on these pages): right->wrong 1 | right->narrowed/abstained/gone 0 | wrong->right 0
+      RIGHT->WRONG  2.83-fix-review tile tile_05 glyph/4/0/7/7/10  Sean: 4  now: refused as not a note (stacked_head_duplicate)
+
+brahms  pages [5, 14]  (1913 notes+rests OFF, 1908 ON, 1906 paired)
+  file:   notes +2 -6 | rests -1 | accidentals +1 -1 | dots +1 -3 | blue marks +1 -1 | dynamics +1 | words -1
+  red bars 0 -> 0 | notes not written 1171 -> 1178
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (167 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1403 s

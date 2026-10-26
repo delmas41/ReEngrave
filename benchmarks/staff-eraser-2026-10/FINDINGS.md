@@ -137,3 +137,38 @@ What to expect, from Part 1: most changes in readers of `image_no_staff` -- note
 boxes), rests read by ink components (whole rests, eighth rests), stem-tip flag ink, accidental shape, the clef / key / meter templates on
 the erased header crops. Tile question to fit what changes (draft): for notes/rests gained or changed, "What is the note or rest value
 at the orange box?"; if clef/key/meter move, a separate plain question.
+
+## 5. Fail-fast subset (2026-10-26): STOPPED on one judged right->wrong. The cause is a key on a duplicate box, not a change in the file
+
+Main merged at 4b79e9103. Fast tier, flag OFF: 8,989 passed, 12 skipped, 2 xfailed, 0 failed. Subset command as in §4
+(`subset_sample.json`, `--from gather --workers 2`, 1,403 s). The report is in `results/subset/report.txt` and `report.json`.
+
+    litolff [4, 11]  notes +4 -1 | beams -1 ~1 | ties +2 | note values ~1 | pitches ~27 | blue +18 | words +1 | clefs +1 -3 | keys -2
+                     red bars 0 -> 0 | notes not written 559 -> 556 | judged (136): right->wrong 1, wrong->right 0
+    brahms  [5, 14]  notes +2 -6 | rests -1 | accidentals +1 -1 | dots +1 -3 | blue +1 -1 | dynamics +1 | words -1
+                     red bars 0 -> 0 | notes not written 1171 -> 1178 | judged (167): right->wrong 0
+
+**The one right->wrong.** Tile 2.83-fix-review `tile_05`, Litolff pdf 4, part P8, bar 8. Sean's answer is "4", a quarter. The key is
+`glyph/4/0/7/7/10`. On the print (`out/print/2.83-fix-review/tile_05.png`) there is ONE black head in the bottom space, with a stem up.
+The detector drew TWO boxes on it:
+- `/2`: the head, page y 1514-1535, 0.9 sp tall.
+- `/10`: head plus stem, page y 1483-1535, 3.29 sp tall, at the same x (652 vs 653 in the cell).
+
+The note in the file is `/2`. It is written as a quarter F4 in BOTH arms (`symbols.json`, rg `glyph/4/0/7/7/2`), so the file does not
+change at this note. `/10` was never written in either arm: in OFF it was narrowed, and then given a value by `share_stem_value`.
+
+With the flag ON, the eraser keeps the head's ink where it crosses the line. On `/10`, `notehead_ink` ink_net at the center goes
+0.02 -> 0.27. `cv_stacked_head_fit` was ambiguous in OFF; in ON it decides one head at slot 7 for both `/2` and `/10`. ADJUDICATE then
+refuses `/10` as `stacked_head_duplicate` of `/2`. That is what the print shows: one head on that stem.
+
+The judged scorer counts a refusal of a keyed head as wrong, so it reports right->wrong 1. The tile's answer was about the NOTE, and the
+note is still a quarter. No threshold was touched.
+
+**Process lesson.** A judged answer keyed on a detector box id stops being a judgment of the note once a twin box exists. A reader that
+correctly de-duplicates the twin then reads as a regression. A judged answer should resolve to the WRITTEN note at its place, not to the
+box id it was first shown on. That would be a fix to `tools.omr.staged.judged` (its own item, not this lane).
+
+**Not yet explained.** The file moves far less than Part 1 predicted ("about 22 readers"): on the subset it is single-digit notes, plus
+Litolff pitches ~27, clefs +1 -3 and keys -2. The clef and key moves need a crop look before the full sample.
+
+Stopped here, as the lane brief says. The full frozen sample and the 12 tiles were NOT run; that waits on a ruling about this tile.
