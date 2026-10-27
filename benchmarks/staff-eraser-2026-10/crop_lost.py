@@ -15,7 +15,7 @@ for rg in rgs:
     r = 170
     c = cache[pg].crop((int(cx - r), int(cy - r), int(cx + r), int(cy + r)))
     ImageDraw.Draw(c).rectangle((x0 - cx + r, y0 - cy + r, x1 - cx + r, y1 - cy + r), outline=(255, 140, 0), width=3)
-    ImageDraw.Draw(c).text((4, 4), rg, fill=(200, 0, 0))
+    ImageDraw.Draw(c).text((4, 4), str(len(tiles)+1), fill=(200, 0, 0))
     tiles.append(c)
 cols = 4; rows = (len(tiles) + cols - 1) // cols
 sheet = Image.new("RGB", (cols * 340, rows * 340), "white")
