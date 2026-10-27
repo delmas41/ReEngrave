@@ -615,6 +615,50 @@ def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+BEAM_END_ENV = "OMR_STEM_BEAM_END"
+
+
+def beam_end_enabled() -> bool:
+    """ROADMAP 2.209, flag `OMR_STEM_BEAM_END`, default OFF: a detector "notehead" that stands on a BEAM's ink and on no ink of its own is
+    not a member of the stem (`_on_beam_ink`)."""
+    import os
+    return os.environ.get(BEAM_END_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _on_beam_ink(ev: Evidence, sub: Subject) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.209 (Brahms p0 `glyph/0/0/12/1/15`, 2.206b tile 5). STAGED ADJUDICATE. Is this "notehead" the END OF A BEAM?
+
+    CAUSE. A beam's thick end at a stem's foot is a dark block about a head's size, and the detector sometimes boxes it as a notehead (score
+    0.25-0.30 on both Brahms cases). `Q.HEAD_STEM` joins any notehead-classed box that touches a stem, so the box became a MEMBER of the
+    stem; the levels of a stem are read from the member nearest its tip (the beams hang there), and that member is the box ON the beam, whose
+    own `Q.DURATION` counts the one beam level it sits in. It outvotes the real head's two decided levels, `share_stem_value` rewrites the
+    real head (a decided sixteenth becomes an eighth), the bar then fills, and the blue flag goes: a wrong value written plain.
+
+    THE CONVENTION. A notehead stands on a blob of ink of its own (2.205: tier 1 claims the blob strokes); a stem is 3.5 spaces past its last
+    head, so the tip is a beam's place, not a head's. A box that covers NO blob and stands on a stroke the 2.202 reader reads as a BEAM (horizontal, thick as a beam, joins >= 2
+    stems; not owned by another mark) is that beam's end. Structural (what ink the box stands on), not a score cut-off.
+
+    Returns `{"beam_strokes": [...], "covered": [...]}` for such a box, else None. None where the map cannot speak (no `Q.GLYPH_STROKES` row, no
+    strokes in the cell): a box is a member as before (rule 8: "cannot tell" is not "beam end")."""
+    rows = ev.rows(Q.GLYPH_STROKES, subject=sub)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)):
+        return None
+    covered = [int(o) for o in rows[-1].value]
+    partial = [int(p[0]) for p in ((rows[-1].detail or {}).get("partial") or ()) if len(p) >= 2]
+    from .rhythm import _stroke_views
+    from .. import beam_strokes as BS
+    views = _stroke_views(ev, sub.at(Kind.CELL))
+    if not views:
+        return None
+    role = BS.roles(views)
+    beam = [o for o in covered + partial if o in role and role[o]["role"] == "beam"]
+    own = [o for o in covered if o in role and role[o]["role"] != "beam"
+           and next(v.kind for v in views if v.ordinal == o) in ("blob", "owned")]
+    if beam and not own:
+        return {"beam_strokes": sorted(set(beam)), "covered": covered}
+    return None
+
+
 class _Member:
     """One kept notehead of a stem, with what its own duration verdict says."""
 
@@ -741,6 +785,8 @@ def _member_of(ev: Evidence, join: Any) -> Optional[_Member]:
     if (owner is not None and owner.outcome is Outcome.DECIDED
             and is_relocated_copy(sub, owner.value)):
         return None
+    if beam_end_enabled() and _on_beam_ink(ev, sub) is not None:
+        return None
     boxes = ev.rows(Q.GLYPH_BOX, subject=sub)
     box = _head_xywh(boxes[-1].value) if boxes else None
     cls = str(boxes[-1].value[0]) if boxes else ""
@@ -771,7 +817,7 @@ def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
     scope=Kind.GLYPH,
     wants=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_A_WHOLE_REST,
-           Q.GLYPH_OWNER),
+           Q.GLYPH_OWNER, Q.GLYPH_STROKES, Q.STROKE, Q.STROKE_OWNER),
     subjects_from=Q.HEAD_STEM,
     reasons=("stem_agrees", "stem_value_from_evidence",
              "hollow_head_on_a_beamed_stem", "stem_levels_unread",
