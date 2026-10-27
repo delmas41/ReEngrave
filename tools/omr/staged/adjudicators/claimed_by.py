@@ -49,7 +49,22 @@ class Finding(NamedTuple):
     detail: Dict[str, Any]
 
 
-def _stemmed(ev: Any, box_row: Any) -> bool:
+def _stem_inside_claim(box_row: Any, sv: Any, area: Any) -> bool:
+    """ROADMAP 2.208: True where the stem `sv` (cell canonical px) has its CENTRE in the page-px `area` (2.205's tier-0 rule for a stroke), mapped through the head box's own
+    two frames (its canonical box and its `bbox_page_px`). The clef slot claim owns every stroke in it (2.205's tier 0), so a "stem" the
+    line finder drew on the clef's own curl is the clef's ink, not a note's stem."""
+    v, bp = box_row.value, (box_row.detail or {}).get("bbox_page_px")
+    if not (isinstance(v, (list, tuple)) and len(v) == 5 and isinstance(bp, (list, tuple)) and len(bp) == 4 and float(v[3]) > 0):
+        return False
+    k = (float(bp[2]) - float(bp[0])) / float(v[3])
+    x0, y0 = float(bp[0]) + (float(sv[0]) - float(v[1])) * k, float(bp[1]) + (float(sv[1]) - float(v[2])) * k
+    cx, cy = x0 + float(sv[2]) * k / 2.0, y0 + float(sv[3]) * k / 2.0
+    return area[0] <= cx <= area[2] and area[1] <= cy <= area[3]
+
+
+def _stemmed(ev: Any, box_row: Any, inside: Any = None) -> bool:
+    """A stem touches the head. `inside` (ROADMAP 2.208, a clef slot claim's page-px area): a stem whose centre stands in it is the claimant's ink
+    and does not count -- the stem finder is blind to claims, the consult is not."""
     v = box_row.value
     cell = ev.subject.at(Kind.CELL)
     if not (isinstance(v, (list, tuple)) and len(v) == 5) or cell is None:
@@ -58,6 +73,8 @@ def _stemmed(ev: Any, box_row: Any) -> bool:
     for st in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
         sv = st.value
         if isinstance(sv, (list, tuple)) and len(sv) >= 4 and _geom.stem_touches_head(tuple(float(x) for x in sv[:4]), hb):
+            if inside is not None and _stem_inside_claim(box_row, sv, inside):
+                continue
             return True
     return False
 
@@ -150,7 +167,10 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
             if e.get("named"):
                 refusing.append((owner, r, 1.0, "named_by_the_located_clef"))
                 continue
-            if stemmed:
+            clef_stemmed = stemmed
+            if stemmed and head and d.get("source") == "clef_slot" and isinstance(r.value, (list, tuple)) and len(r.value) == 4:
+                clef_stemmed = _stemmed(ev, box_row, inside=r.value)   # 2.208: a stem standing in the clef's slot is the clef's ink
+            if clef_stemmed:
                 continue                                   # 2.176 / 2.144: a stem stands on it: a note
             voted_under = False
             if head and d.get("owner_glyph"):

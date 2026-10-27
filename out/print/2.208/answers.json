@@ -1,0 +1,105 @@
+{
+ "lane": "2.208",
+ "date": "2026-10-26",
+ "question": "what is the boxed ink: a note (which value), part of a clef, or something else?",
+ "verbatim": "1 C clef; 2 part of an F clef; 3 C clef; 4 eighth; 5 eighth; 6 part of a C clef; 7 part of an F clef; 8 quarter; 9 C clef; 10 C clef; 11 half; 12 treble clef",
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "case",
+   "side": "lost",
+   "plate": "litolff",
+   "page": 10,
+   "sean": "C clef"
+  },
+  {
+   "tile": 2,
+   "role": "case",
+   "side": "lost",
+   "plate": "brahms",
+   "page": 14,
+   "sean": "part of an F clef"
+  },
+  {
+   "tile": 3,
+   "role": "refused_before_unwritten",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "C clef"
+  },
+  {
+   "tile": 4,
+   "role": "control",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 10,
+   "sean": "eighth"
+  },
+  {
+   "tile": 5,
+   "role": "control",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "eighth"
+  },
+  {
+   "tile": 6,
+   "role": "case",
+   "side": "lost",
+   "plate": "litolff",
+   "page": 4,
+   "sean": "part of a C clef"
+  },
+  {
+   "tile": 7,
+   "role": "refused_before_unwritten",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 11,
+   "sean": "part of an F clef"
+  },
+  {
+   "tile": 8,
+   "role": "control",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 4,
+   "sean": "quarter"
+  },
+  {
+   "tile": 9,
+   "role": "refused_before_unwritten",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 4,
+   "sean": "C clef"
+  },
+  {
+   "tile": 10,
+   "role": "case",
+   "side": "lost",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "C clef"
+  },
+  {
+   "tile": 11,
+   "role": "control",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "half"
+  },
+  {
+   "tile": 12,
+   "role": "unfixed",
+   "side": "unchanged",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "treble clef"
+  }
+ ],
+ "summary": "All 4 lost cases (1, 2, 6, 10) are clef ink: right to unwrite. All 4 controls (4, 5, 8, 11) are real notes and were kept: right. Tiles 3, 7, 9 were already unwritten (no change). Tile 12 (unfixed) is a treble clef on Litolff p6 still written as a note: a key flat's stem lies outside the slot -- a known follow-up, not a regression. Judged right->wrong 0 on both plates."
+}
