@@ -1,0 +1,73 @@
+{
+ "lane": "2.205",
+ "date": "2026-10-26",
+ "question": "what is the boxed ink: a note (which value), a rest, or something else?",
+ "verbatim": "2.205 - 1 eighth rest, 2 quarter, 3 dotted quarter, 4 dotted quarter, 5 part of a C clef, 6 eighth rest, 7 eighth (corrected by Sean from quarter), 8 dotted quarter, 9 eighth rest, 10 eighth, 11 eighth, 12 half",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 2,
+   "sean": "quarter",
+   "on_wrote": "quarter",
+   "on_right": true
+  },
+  {
+   "tile": 3,
+   "sean": "dotted quarter",
+   "on_wrote": "dotted quarter",
+   "on_right": true
+  },
+  {
+   "tile": 4,
+   "sean": "dotted quarter",
+   "on_wrote": "dotted quarter",
+   "on_right": true
+  },
+  {
+   "tile": 5,
+   "sean": "not a note: part of a C clef",
+   "on_wrote": "quarter",
+   "on_right": false
+  },
+  {
+   "tile": 6,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 7,
+   "sean": "eighth",
+   "on_wrote": "eighth",
+   "on_right": true
+  },
+  {
+   "tile": 8,
+   "sean": "dotted quarter",
+   "on_wrote": "dotted quarter",
+   "on_right": true
+  },
+  {
+   "tile": 9,
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 10,
+   "sean": "eighth"
+  },
+  {
+   "tile": 11,
+   "sean": "eighth",
+   "on_wrote": "eighth",
+   "on_right": true
+  },
+  {
+   "tile": 12,
+   "sean": "half",
+   "on_wrote": "half",
+   "on_right": true
+  }
+ ],
+ "summary": "ON (OMR_STROKE_OWNER with beams+stems) wrote 8 notes on the tiles: 7 right, 1 wrong (tile 5, a C-clef fragment written as a quarter, blue). Tile 8 (2.202 re-shown): OFF eighth -> ON dotted quarter, right. Tiles 2, 3 not written OFF, right ON. Tiles 1, 6, 9 are contested strokes (no file change in run (a)); Sean says rests. Tile 10 control unchanged."
+}

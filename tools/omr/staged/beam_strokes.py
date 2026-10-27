@@ -1,0 +1,193 @@
+"""ROADMAP 2.202 -- the shared ink map, STEP 3: a head's beams from the STROKE MAP (flag `OMR_BEAMS_FROM_STROKES`, requires `OMR_STROKE_MAP`).
+
+STAGED ADJUDICATE, PURE: this module imports nothing from the pipeline. `adjudicators/rhythm.py::_beams_from_strokes` is the only caller; it
+builds `StrokeView`s from `Q.STROKE` rows and hands them here. Nothing in this file decides a duration: it says what each stroke IS (by
+measured shape), which strokes a detector box stands on, and what the strokes at one stem's tip count. The adjudicator turns that into
+narrowings and decisions (CLAUDE §3: the answer follows -> decided; it does not -> narrowed with candidates).
+
+THE ROLES (a stroke's role is a function of ITS OWN fields and its neighbours, never of the box that happens to cover it) --
+
+  beam       horizontal, touches >= 2 vertical strokes (stems), thick as a beam         (a beam joins its stems)
+  beam_stub  horizontal, touches ONE vertical stroke, thick as a beam                   (Sean 2026-10-09: "a beam must not only
+             connect to its note but also to another note" -> counted as a CANDIDATE level, never a decided one)
+  span_thin  touches >= 2 vertical strokes but thinner than a beam, or curved           (a slur / tie / hairpin line across stems)
+  hook       horizontal or curve, touches ONE vertical stroke, thinner than a beam, short (a flag)
+  hook_or_stub  the same, longer than the hook cut but inside its near-miss band        (cannot tell flag from a stub: never decided)
+  other      everything else (a vertical, a blob, a lone horizontal, a long one-stem line)
+
+THE CUT-OFFS ARE MEASURED ON THE STROKE FIELDS, NOT TUNED TO A TARGET (benchmarks/shared-ink-map-2026-10/FINDINGS.md 2.202 section 1;
+Litolff pages 2 and 4, the 2.198 ON record: 395 horizontal/curve strokes under 373 detector beam boxes, 15 under 39 detector flag boxes; `hook_beam_measure.py`):
+
+  * `BEAM_MIN_THICKNESS_SP` 0.5. The thickness of the 190 horizontal strokes that touch >= 2 stems is two populations with a gap between
+    them: 0.06-0.437 (66 strokes: slur, tie and hairpin remnants -- Sean 2026-10-09 "the thickness of a beam is always more than a
+    hairpin") and 0.546-1.0 (124 strokes, median 0.653). 0.5 is the engraving convention for a beam's thickness (about half a space) and
+    sits in the gap.
+  * `HOOK_MAX_SPACES` 1.6. The 12 one-stem strokes under detector FLAG boxes: 10 are near-horizontal, 0.63-1.45 sp long (thickness 0.12-
+    0.38); two are slanted curves, 1.93 and 2.69. 1.6 is the longest near-horizontal flag plus 0.15; `HOOK_NEAR_MISS_SPACES` 0.8 widens it
+    to 2.4 so a flag that is a little longer (the 1.93 curve) is NARROWED (`hook_or_stub`), not decided; the 2.69 curve is not rescued.
+    The one-stem strokes under BEAM boxes overlap the flag population in length (32 of 100 are <= 1.6 sp) and thickness (median 0.31):
+    LENGTH AND THICKNESS ALONE DO NOT SEPARATE A HOOK FROM A BEAM STUB. What separates them is the stem, below.
+  * a one-stem short stroke is a FLAG only when its stem touches NO beam-role stroke (a stem that carries a spanning beam is a beamed
+    stem; a short stroke beside it is a partial-beam stub = a level candidate). That is structural, not a number.
+
+A cut measured on one plate (n = 15 for the hook length) may only NARROW until another publisher confirms it (CLAUDE §4): the margins are
+returned with every role so a refusal says how close it came.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+
+#: A vertical stroke is a STEM only up to this long (staff spaces). Measured on Litolff pp.2-16 (the 2.202 milestone gather): the 4,260 vertical
+#: strokes that coincide with a `Q.STEM` (cv_lines) row are 1-8 sp long (only 10 reach 8-9); the 11,457 that coincide with none pile up at 8 and at
+#: 12 sp (barlines, system edges, the cell's full height). A hook "on one stem" that is really a stroke leaning on a barline was 118 of the 122
+#: Litolff map-hook boxes (`hook_box_funnel.py`): such a vertical is not a stem and counts for nothing here.
+STEM_MAX_SPACES = 8.0
+#: A beam's thickness, staff spaces. Measured gap between the two thickness populations of the strokes that span >= 2 stems (module doc).
+BEAM_MIN_THICKNESS_SP = 0.5
+#: A flag's hook is at most this long (staff spaces) to be DECIDED a hook; up to `+ HOOK_NEAR_MISS_SPACES` it is `hook_or_stub`.
+HOOK_MAX_SPACES = 1.6
+HOOK_NEAR_MISS_SPACES = 0.8
+#: The window at a stem's tip in which a stroke counts as one of its beam levels / hooks: from this far BEYOND the tip (the beam's outer
+#: edge past the stem end) to this far INWARD (level 1 starts at the tip, 2 at ~0.9, 3 ~1.8, 4 ~2.7, each ~0.6 thick;
+#: `rhythm.BEAM_STEM_RUNS_PAST_MAX_SPACES` 2.5 + one beam -- derived from the stacking geometry, not fitted).
+TIP_OUTWARD_SPACES = 0.5
+TIP_INWARD_SPACES = 3.3
+#: Two strokes touching one stem whose centres are closer than this (staff spaces) are one level (a stroke cut in two by a crossing).
+LEVEL_MIN_SEPARATION_SPACES = 0.4
+#: A vertical stroke is THIS stem when it overlaps the stem's x-span (within this slack) and y-range.
+STEM_MATCH_X_SLACK_SPACES = 0.35
+
+
+@dataclass(frozen=True)
+class StrokeView:
+    """One `Q.STROKE` row as this module reads it (canonical cell px; lengths in staff spaces)."""
+    ordinal: int
+    kind: str                                    # vertical / horizontal / curve / blob
+    box: Tuple[float, float, float, float]       # x, y, w, h
+    length: float
+    thickness: float
+    sagitta: Optional[float]
+    angle: float
+    touches: Tuple[Tuple[int, float], ...]
+    space_px: float                              # canonical px per staff space at the stroke
+    row_id: str = ""
+
+
+def role_of(s: StrokeView, by_ord: Dict[int, StrokeView]) -> Dict[str, object]:
+    """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours."""
+    if s.kind not in ("horizontal", "curve"):
+        return {"role": "other", "why": "kind:" + s.kind}
+    stems = sorted({j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical" and by_ord[j].length <= STEM_MAX_SPACES})
+    nv = len(stems)
+    out: Dict[str, object] = {"stems": nv, "stem_ordinals": stems, "thickness": s.thickness, "length": s.length,
+                              "thickness_margin": round(s.thickness - BEAM_MIN_THICKNESS_SP, 3),
+                              "hook_margin": round(HOOK_MAX_SPACES - s.length, 3)}
+    thick = s.thickness >= BEAM_MIN_THICKNESS_SP
+    if nv >= 2:
+        # "A beam never has an arc" (Sean 2026-10-09): a CURVE-kind stroke across stems is a slur, however thick.
+        out["role"] = "beam" if (s.kind == "horizontal" and thick) else "span_thin"
+    elif nv == 1:
+        if thick and s.kind == "horizontal":
+            out["role"] = "beam_stub"
+        elif s.length <= HOOK_MAX_SPACES:
+            out["role"] = "hook"
+        elif s.length <= HOOK_MAX_SPACES + HOOK_NEAR_MISS_SPACES:
+            out["role"] = "hook_or_stub"
+        else:
+            out["role"] = "other"
+            out["why"] = "one_stem_too_long"
+    else:
+        out["role"] = "other"
+        out["why"] = "touches_no_stem"
+    return out
+
+
+def roles(strokes: Sequence[StrokeView]) -> Dict[int, Dict[str, object]]:
+    by_ord = {s.ordinal: s for s in strokes}
+    return {s.ordinal: role_of(s, by_ord) for s in strokes}
+
+
+def box_support(under: Iterable[int], role_by_ord: Dict[int, Dict[str, object]]) -> Dict[str, object]:
+    """What a detector BEAM box stands on, from the roles of the strokes `Q.GLYPH_STROKES` lists for it.
+
+    `support`: `beam` (some stroke under it is beam-shaped), `hook` (no beam, at least one hook), `unsupported` (nothing beam- or
+    hook-shaped: empty paper, a stem alone, a thin line, a one-stem stub, an ambiguous hook). `reason` names why, for the record."""
+    under = [o for o in under if o in role_by_ord]
+    rs = [str(role_by_ord[o]["role"]) for o in under]
+    if "beam" in rs:
+        return {"support": "beam", "strokes": under}
+    if "hook" in rs:
+        return {"support": "hook", "strokes": under, "hooks": [o for o in under if role_by_ord[o]["role"] == "hook"]}
+    if not under:
+        why = "box_on_paper"
+    elif all(str(role_by_ord[o].get("why", "")) == "kind:vertical" for o in under):
+        why = "box_on_a_stem"
+    elif "hook_or_stub" in rs:
+        why = "hook_or_stub"
+    elif "beam_stub" in rs:
+        why = "one_stem_stub"
+    elif "span_thin" in rs:
+        why = "thin_or_curved_span"
+    else:
+        why = "no_beam_or_hook_shaped_stroke"
+    return {"support": "unsupported", "strokes": under, "reason": why}
+
+
+def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -> Optional[StrokeView]:
+    """The vertical stroke that IS the stem `stem_box` (x, y, w, h, canonical px), or None when the map holds none there (cannot tell)."""
+    sx, sy, sw, sh = (float(v) for v in stem_box)
+    best, best_ov = None, 0.0
+    for s in strokes:
+        if s.kind != "vertical" or s.length > STEM_MAX_SPACES:
+            continue
+        slack = STEM_MATCH_X_SLACK_SPACES * s.space_px
+        bx, by, bw, bh = s.box
+        if bx > sx + sw + slack or bx + bw < sx - slack:
+            continue
+        ov = min(by + bh, sy + sh) - max(by, sy)
+        if ov > best_ov:
+            best, best_ov = s, ov
+    return best
+
+
+def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str) -> Dict[str, object]:
+    """What the strokes touching THIS stem say at its tip. `side` is the stem's direction ("up": the tip is the top).
+
+    `beams`: ordinals of beam-role strokes touching the stem inside the tip window, one per level (strokes whose centres are closer than
+    `LEVEL_MIN_SEPARATION_SPACES` are one level); `hooks`: the same for hook-role strokes; `stubs`: beam_stub / hook_or_stub strokes.
+    `stem_beamed`: the stem touches ANY beam-role stroke (inside the window or not) -- the structural test that makes a short stroke a
+    stub rather than a flag."""
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    bx, by, bw, bh = stem.box
+    tip_y = by if side == "up" else by + bh
+    if side == "up":
+        lo, hi = tip_y - TIP_OUTWARD_SPACES * sp, tip_y + TIP_INWARD_SPACES * sp
+    else:
+        lo, hi = tip_y - TIP_INWARD_SPACES * sp, tip_y + TIP_OUTWARD_SPACES * sp
+    by_ord = {s.ordinal: s for s in strokes}
+    touching = [by_ord[j] for j, _c in stem.touches if j in by_ord]
+    stem_beamed = any(role_by_ord.get(s.ordinal, {}).get("role") == "beam" for s in touching)
+    found: Dict[str, List[StrokeView]] = {"beam": [], "hook": [], "stub": []}
+    for s in touching:
+        r = role_by_ord.get(s.ordinal, {}).get("role")
+        key = "beam" if r == "beam" else "hook" if r == "hook" else "stub" if r in ("beam_stub", "hook_or_stub") else None
+        if key is None:
+            continue
+        y0, y1 = s.box[1], s.box[1] + s.box[3]
+        if y1 < lo or y0 > hi:
+            continue
+        found[key].append(s)
+
+    def levels(group: List[StrokeView]) -> List[int]:
+        out: List[Tuple[float, int]] = []
+        for s in sorted(group, key=lambda t: (t.box[1] + t.box[3] / 2.0, t.ordinal)):
+            c = s.box[1] + s.box[3] / 2.0
+            if out and abs(c - out[-1][0]) < LEVEL_MIN_SEPARATION_SPACES * sp:
+                continue
+            out.append((c, s.ordinal))
+        return [o for _c, o in out]
+
+    return {"stem": stem.ordinal, "tip_y": tip_y, "stem_beamed": stem_beamed,
+            "beams": levels(found["beam"]), "hooks": levels(found["hook"]), "stubs": levels(found["stub"]),
+            "hooks_all": sorted(s.ordinal for s in found["hook"])}

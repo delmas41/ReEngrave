@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-26 -- ROADMAP 2.205 LANDED ON: one owner per stroke
+STAGED ADJUDICATE, `OMR_STROKE_OWNER` default ON (explicit 0/false/no/off disables; needs `OMR_STROKE_MAP`, already ON). `adjudicate_stroke_owner` files one `Q.STROKE_OWNER` verdict per cell (heads, accidentals, arcs, letters, rests, clefs claim their strokes; contested strokes are counted); consumers read only unclaimed strokes, and with the 2.202/2.204 readers OFF nothing reads it, so the exported file is byte-identical. Sean "1. Yes": 12 tiles 7 right / 1 wrong (a clef fragment boxed as a head), judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` and `OMR_STEMS_FROM_STROKES` stay OFF. `docs/ink-rules.md` regenerated, `staged.check` 202 -> 198.
+
 ## 2026-10-26 -- ROADMAP 2.201 + 2.195 + 2.198 LANDED ON: accidental family + stroke map
 STAGED GATHER + ADJUDICATE, `OMR_ACCIDENTAL_FAMILY` and `OMR_STROKE_MAP` default ON (explicit 0/false/no/off disables). An accidental's type is read from its own strokes and its role from position; the stroke map (Q.STROKE, Q.GLYPH_STROKES, register ink claims) is output-neutral (byte-identical MusicXML, +4-6 MB/page, 3-5% gather CPU). Sean: tiles 8/9 vs 0/9 (fixed version), earlier 44/47 vs 37/47, hand boxes 136/142, judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` / `OMR_STEMS_FROM_STROKES` / `OMR_STROKE_OWNER` stay OFF. Tests rewritten default-ON; judged index rebuilt (1494 tiles); `check` 192 -> 202 (ten producer-only Q.STROKE / Q.GLYPH_STROKES entries in wiring/reach).
 
