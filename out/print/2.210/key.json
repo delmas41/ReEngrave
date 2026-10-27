@@ -1,0 +1,170 @@
+[
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1049.1825,
+   2338.4675,
+   1101.1575,
+   2390.285
+  ],
+  "rg": "glyph/4/1/1/4/17",
+  "role": "case",
+  "what": "ff, joins a stem",
+  "tile": 1
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2456.08,
+   2865.66,
+   2497.9825,
+   2899.7925
+  ],
+  "rg": "glyph/12/0/10/5/2",
+  "role": "case",
+  "what": "real note the flag turns unwritten",
+  "tile": 2
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2547.6325,
+   3519.91,
+   2584.42,
+   3552.065
+  ],
+  "rg": "glyph/14/0/12/3/2",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 3
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2585.605,
+   2441.7075,
+   2607.8125,
+   2463.7575
+  ],
+  "rg": "glyph/4/1/2/14/5",
+  "role": "control",
+  "what": "ordinary head on a multi-head stem",
+  "tile": 4
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2179.7775,
+   2999.8275,
+   2217.795,
+   3025.635
+  ],
+  "rg": "glyph/12/0/11/4/6",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 5
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   1715.75,
+   1127.85,
+   1755.9,
+   1157.825
+  ],
+  "rg": "glyph/25/0/2/1/21",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 6
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   657.4775,
+   562.23,
+   680.4725,
+   581.76
+  ],
+  "rg": "glyph/2/0/1/1/5",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 7
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   999.0025,
+   1166.895,
+   1023.2575,
+   1187.37
+  ],
+  "rg": "glyph/2/0/5/4/4",
+  "role": "control",
+  "what": "ordinary head on a multi-head stem",
+  "tile": 8
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   4950.58203125,
+   4077.10546875,
+   4991.890625,
+   4107.8671875
+  ],
+  "rg": "glyph/19/1/0/8/20",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 9
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   2448.2,
+   5989.275,
+   2491.375,
+   6022.55
+  ],
+  "rg": "glyph/19/1/8/3/1",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 10
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   4925.97265625,
+   4076.2265625,
+   4992.18359375,
+   4107.57421875
+  ],
+  "rg": "glyph/19/1/0/8/19",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 11
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2474.6725,
+   2806.275,
+   2514.6325,
+   2830.4175
+  ],
+  "rg": "glyph/12/0/10/5/8",
+  "role": "case",
+  "what": "ownership refuses as a tremolo slash",
+  "tile": 12
+ }
+]

@@ -1,0 +1,1 @@
+Each picture is a piece of a scanned score page with ONE orange box and nothing else drawn. The box only says where to look. Question, for every tile: what does the print show at the orange box (a note, a slash across a stem, a letter, a clef, a beam...)? Answer by tile number.
