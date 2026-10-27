@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-26 -- ROADMAP 2.208 LANDED ON: the clef claims its own ink on every staff
+STAGED GATHER, `OMR_CLEF_SLOT_CLAIM` default ON (explicit 0/false/no/off disables; needs `OMR_CLAIMED_REGISTER`). A staff whose clef was carried from other systems has the clef's ink claimed in the slot between the system's clef offset and its key claim, so no head box can take it (cause: 2.205 tile 5). Sean "Yes": 12 tiles, 4/4 lost cases are clef ink, 4/4 controls kept; judged right->wrong 0; Litolff notes -3, Brahms notes -1. Only the default-flag test changed (`test_flag_default_on`); judged index rebuilt (1518 tiles); `staged.check` 198 -> 198. Follow-up: tile 12, a Litolff p6 treble clef still a note (key flat stem outside the slot).
+
 ## 2026-10-26 -- ROADMAP 2.205 LANDED ON: one owner per stroke
 STAGED ADJUDICATE, `OMR_STROKE_OWNER` default ON (explicit 0/false/no/off disables; needs `OMR_STROKE_MAP`, already ON). `adjudicate_stroke_owner` files one `Q.STROKE_OWNER` verdict per cell (heads, accidentals, arcs, letters, rests, clefs claim their strokes; contested strokes are counted); consumers read only unclaimed strokes, and with the 2.202/2.204 readers OFF nothing reads it, so the exported file is byte-identical. Sean "1. Yes": 12 tiles 7 right / 1 wrong (a clef fragment boxed as a head), judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` and `OMR_STEMS_FROM_STROKES` stay OFF. `docs/ink-rules.md` regenerated, `staged.check` 202 -> 198.
 

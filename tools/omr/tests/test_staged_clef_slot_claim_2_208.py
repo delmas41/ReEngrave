@@ -1,4 +1,4 @@
-"""ROADMAP 2.208: the clef claims its own ink on every staff -- `gather.gather_clef_slot_claim`, flag `OMR_CLEF_SLOT_CLAIM` (default OFF).
+"""ROADMAP 2.208: the clef claims its own ink on every staff -- `gather.gather_clef_slot_claim`, flag `OMR_CLEF_SLOT_CLAIM` (default ON since 2026-10-26).
 
 CAUSE (2.205 tile 5, Litolff p4 staff 8): a staff whose clef nothing located and the detector never boxed (a clef carried from other
 systems) files no clef claim, so the detector's head on the clef's body stands unopposed. The slot between the system's clef offset and
@@ -88,10 +88,13 @@ def _slot_rows(log, staff):
 
 
 class TestPure(unittest.TestCase):
-    def test_flag_default_off(self):
+    def test_flag_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_CLEF_SLOT_CLAIM", None)
-            self.assertFalse(CL.clef_slot_enabled())
+            self.assertTrue(CL.clef_slot_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {"OMR_CLAIMED_REGISTER": "1", "OMR_CLEF_SLOT_CLAIM": off}):
+                self.assertFalse(CL.clef_slot_enabled())
         with mock.patch.dict(os.environ, ON):
             self.assertTrue(CL.clef_slot_enabled())
         with mock.patch.dict(os.environ, {"OMR_CLAIMED_REGISTER": "0", "OMR_CLEF_SLOT_CLAIM": "1"}):

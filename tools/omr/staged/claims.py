@@ -85,7 +85,7 @@ def key_active() -> bool:
     return key_enabled() and enabled()
 
 
-#: ROADMAP 2.208 (flag `OMR_CLEF_SLOT_CLAIM`, default OFF): the clef's own ink on a staff where no clef was located or boxed.
+#: ROADMAP 2.208 (flag `OMR_CLEF_SLOT_CLAIM`, default ON): the clef's own ink on a staff where no clef was located or boxed.
 ENV_CLEF_SLOT = "OMR_CLEF_SLOT_CLAIM"
 #: the slot reaches this far above the top line and below the bottom line (a G clef's curl and a bass clef's dots; the detector's own
 #: clef-sized boxes measure 6-7 sp tall)
@@ -97,8 +97,8 @@ CLEF_SLOT_MIN_SPACES = 1.0
 
 
 def clef_slot_enabled() -> bool:
-    """`OMR_CLEF_SLOT_CLAIM` (ROADMAP 2.208), default OFF; only an explicit 1/true/yes/on enables it. Needs the register."""
-    return enabled() and os.environ.get(ENV_CLEF_SLOT, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLEF_SLOT_CLAIM` (ROADMAP 2.208), default ON (Sean 2026-10-26); an explicit 0/false/no/off disables. Needs the register."""
+    return enabled() and os.environ.get(ENV_CLEF_SLOT, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def clef_slot(left: float, key_lo: Optional[float], clef_right_max: float, lines: Sequence[float], spacing: float) -> Optional[List[float]]:
