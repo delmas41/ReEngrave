@@ -102,3 +102,15 @@ pitch of the head at the box. Not yet answered; flag stays OFF until they are.
 - Head-plus-stem boxes and pairs >= 0.5 sp apart (88 Litolff / 17 Brahms 2.42 pairs) still choose pitch by keeper.
 - Class of an indecisive-fill twin group is still the keeper's class (ADJUDICATE untouched).
 - Estimator evidence is 2 Sean heads + 5 hand-labelled Brahms groups; widen with the tile answers.
+
+## 7. Sean's tiles (2026-10-27)
+
+He gave where the boxed head sits on the staff; pitch derived from the recorded clef of that staff (20261022-night slices;
+tiles 8, 9, 12 from `clef_located`: alto, tenor, alto), accidentals ignored. Per tile (`out/print/2.212/answers.json`):
+1 OFF right / ON wrong; 3, 4, 6, 7, 8, 9, 12 OFF wrong / ON right; 10 both wrong (Sean: a tremolo slash, not a note; box sits in
+the second space from the bottom); 11 OFF right / ON wrong. Tiles 2 and 5 are unchanged controls (no pitch in the key; positions
+recorded only). Of 10 pitch tiles: OFF right 2, ON right 7. **Right->wrong: 2** (tiles 1 and 11, Litolff p16 staves 0 and 2, G5->A5
+and A5->G5: ON moves the head one step the wrong way at the staff top, the staff top / first ledger zone). Cause of those two is
+not yet found; look there before landing. Clef doubt: tile 12's staff (Litolff p11 staff 7) holds only a `clef_glyph` clefG at
+y=38 (a neighbour's), while `clef_located` says alto; with treble both arms would be wrong, with alto ON is right. Tile 8's staff
+has no clef reading on its own page (alto carried from page 1 staff 9). Tile 10 is a mark to be withheld, not a pitch.
