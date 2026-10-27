@@ -481,6 +481,54 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+TWIN_HEAD_RULE = "twin_head_positions_disagree"
+
+
+def _twin_effective_position(rec: "Record", sub: str) -> Optional[float]:
+    """Where one head box sits, from the readers that already exist: the far-head ledger read where one was filed (a head
+    outside the staff is placed only by its ink ledgers), else the box-centre staff position."""
+    far = [o for o in rec.obs(Q.FAR_HEAD_LEDGER_POSITION, sub) if o.get("value") is not None]
+    if far:
+        return float(far[-1]["value"])
+    pos = [o for o in rec.obs(Q.NOTEHEAD_STAFF_POSITION, sub) if o.get("value") is not None]
+    return float(pos[-1]["value"]) if pos else None
+
+
+def twin_head_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`; the `twin_head` detail is filed only then): a head the detector boxed more than
+    once whose boxes' positions DISAGREE is written GUESSED, both pitches carried, the written one first -- the keeper choice
+    never decides the pitch alone. No new measurement: each box's position is its existing reader's (`_twin_effective_position`).
+    None where the boxes agree, the head is not a twin, or no pitch was decided."""
+    rows = rec.obs(Q.NOTEHEAD_STAFF_POSITION, sub)
+    tw = ((rows[-1].get("detail") or {}).get("twin_head") if rows else None)
+    pv = rec.verdict(Q.PITCH, sub)
+    if not tw or pv is None or pv.get("outcome") != "decided":
+        return None
+    pos = {m: _twin_effective_position(rec, m) for m in tw.get("members") or ()}
+    pos = {m: p for m, p in pos.items() if p is not None}
+    if len(pos) < 2 or max(pos.values()) - min(pos.values()) < 0.5:
+        return None
+    clef = None
+    for bid in pv.get("basis") or ():
+        b = rec.verdict_by_id(bid)
+        if b is not None and b.get("quantity") == Q.CLEF:
+            clef = b.get("value")
+    from ..pitch_resolver import _pitch_from_position
+    mine = _twin_effective_position(rec, sub)
+    cands, seen = [], set()
+    for p in sorted(set(int(round(v)) for v in pos.values()),
+                    key=lambda v: abs(v - (mine if mine is not None else v))):
+        name = _pitch_from_position(p, str(clef)) if clef is not None else None
+        val = name if name is not None else "position %d" % p
+        if val not in seen:
+            seen.add(val)
+            cands.append({"value": val, "support": 1.0})
+    if len(cands) < 2:
+        return None
+    return {"stage": "GATHER", "rule": TWIN_HEAD_RULE, "quantity": Q.PITCH, "candidates": cands,
+            "chosen": {"value": pv.get("value")}, "margin": round(max(pos.values()) - min(pos.values()), 3)}
+
+
 ONE_INK_RULE = "one_ink_merged"
 
 
@@ -519,7 +567,7 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
 
 
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub)
+    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or twin_head_guess_of(rec, sub)
     return {"guess": g} if g else {}
 
 

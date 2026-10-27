@@ -49,53 +49,6 @@ class TestTwinGroups(unittest.TestCase):
         self.assertEqual(TW.twin_groups([_box(150, 150), _box(150, 151)], 0.0), [])
 
 
-class TestGroupCentre(unittest.TestCase):
-
-    def test_a_hollow_head_is_placed_by_its_hole_whichever_way_the_boxes_sit(self):
-        img = _paper()
-        _ring_head(img, 150.0, 170.0)
-        for off in (-0.3, 0.0, 0.3):
-            boxes = [_box(150, 170 + off * S), _box(150, 170 + (off + 0.25) * S)]
-            r = TW.group_centre(img, boxes, S)
-            self.assertIsNone(r["reason"])
-            self.assertEqual(r["by"], "hole")
-            self.assertAlmostEqual(r["cy"], 170.0, delta=0.08 * S)
-
-    def test_a_black_cap_over_the_ring_does_not_pull_the_hole(self):
-        """The Litolff p8 head: a black mark touching the ring's top. The ink centroid is pulled; the hole is not."""
-        img = _paper()
-        _ring_head(img, 150.0, 170.0)
-        img[int(170 - 0.9 * S):int(170 - 0.5 * S), 125:170] = 0
-        r = TW.group_centre(img, [_box(150, 165), _box(150, 175)], S)
-        self.assertEqual(r["by"], "hole")
-        self.assertAlmostEqual(r["cy"], 170.0, delta=0.1 * S)
-
-    def test_a_filled_head_is_placed_by_its_ink(self):
-        img = _paper()
-        _ring_head(img, 150.0, 170.0, ink_fill=True)
-        r = TW.group_centre(img, [_box(150, 160), _box(150, 175)], S)
-        self.assertIsNone(r["reason"])
-        self.assertEqual(r["by"], "ink")
-        self.assertAlmostEqual(r["cy"], 170.0, delta=0.1 * S)
-
-    def test_CONTROL_a_black_only_group_is_never_placed_by_a_hole(self):
-        """The first frozen-sample run: two black groups were placed by a white gap near them (not a head's hole) and moved
-        a space. `hollow_possible=False` (every box black-class) leaves only the ink."""
-        img = _paper()
-        _ring_head(img, 150.0, 170.0, ink_fill=True)
-        img[142:154, 120:180] = 0                                       # a bar over the head's top ...
-        img[146:152, 142:158] = 255                                     # ... with an enclosed white speck inside it
-        boxes = [_box(150, 165), _box(150, 175)]
-        self.assertEqual(TW.group_centre(img, boxes, S, hollow_possible=True)["by"], "hole")   # the control: it can fire
-        r = TW.group_centre(img, boxes, S, hollow_possible=False)
-        self.assertNotEqual(r.get("by"), "hole")
-
-    def test_CONTROL_blank_paper_places_nothing(self):
-        r = TW.group_centre(_paper(), [_box(150, 160), _box(150, 175)], S)
-        self.assertIsNotNone(r["reason"])
-        self.assertNotIn("cy", r)
-
-
 def _gather(img, dets, flag):
     cell = _cell_of(img)
     sub = R.cell(0, 0, 0, 0)
@@ -103,8 +56,8 @@ def _gather(img, dets, flag):
     det = {sub.to_key(): dets}
     pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=img))
     with mock.patch.dict(os.environ, {TW.ENV: "1" if flag else "0"}):
-        gather.gather_notehead_positions(log, [cell], {0: (0, 0)}, det, pws=pws)
-        gather.gather_notehead_ink(log, [cell], {0: (0, 0)}, det, pws=pws)
+        gather.gather_notehead_positions(log, [cell], {0: (0, 0)}, det)
+        gather.gather_notehead_ink(log, [cell], {0: (0, 0)}, det)
     return log
 
 
@@ -120,54 +73,64 @@ def _ring_dets(cy=180.0, off=0.15):
 
 class TestWired(unittest.TestCase):
 
-    def test_flag_on_the_two_boxes_share_one_position_read_off_the_head(self):
-        img = _paper()
-        _ring_head(img, 150.0, 180.0)
-        log = _gather(img, _ring_dets(), True)
-        p0, p1 = _pos(log, 0), _pos(log, 1)
-        self.assertAlmostEqual(float(p0.value), float(p1.value), places=9)
-        self.assertAlmostEqual(float(p0.value), (180.0 - LINES[0]) / (S / 2.0), delta=0.2)
-        self.assertEqual(p0.detail["twin_head"]["by"], "hole")
-        self.assertEqual(sorted(p0.detail["twin_head"]["classes"]), ["noteheadBlackInSpace", "noteheadHalfInSpace"])
-        self.assertIn("detector_position_float", p0.detail)
-
-    def test_CONTROL_flag_off_each_box_keeps_its_own_centre(self):
-        img = _paper()
-        _ring_head(img, 150.0, 180.0)
-        log = _gather(img, _ring_dets(), False)
-        p0, p1 = _pos(log, 0), _pos(log, 1)
-        self.assertGreater(abs(float(p0.value) - float(p1.value)), 0.5)
-        self.assertNotIn("twin_head", p0.detail or {})
-
-    def test_the_twins_read_the_head_fill_in_one_window(self):
+    def test_flag_on_twins_name_each_other_and_keep_their_OWN_positions(self):
         img = _paper()
         _ring_head(img, 150.0, 180.0)
         on = _gather(img, _ring_dets(), True)
-        i0 = on.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1]
-        i1 = on.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 1))[-1]
-        self.assertEqual(i0.detail["ink_raw"], i1.detail["ink_raw"])
-        self.assertEqual(i0.detail["box_source"].split(":")[0], "twin_head")
         off = _gather(img, _ring_dets(), False)
-        j0 = off.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 0))[-1]
-        j1 = off.rows(Q.NOTEHEAD_INK, R.glyph(0, 0, 0, 0, 1))[-1]
-        self.assertNotEqual(j0.detail["ink_raw"], j1.detail["ink_raw"])     # the control: apart, they read different windows
+        for gi in (0, 1):
+            self.assertEqual(float(_pos(on, gi).value), float(_pos(off, gi).value))     # no invented position
+            self.assertEqual(len(_pos(on, gi).detail["twin_head"]["members"]), 2)
+            self.assertNotIn("twin_head", _pos(off, gi).detail or {})                   # the control: OFF files nothing
+        self.assertGreater(abs(float(_pos(on, 0).value) - float(_pos(on, 1).value)), 0.5)
 
-    def test_CONTROL_a_head_the_ink_cannot_place_keeps_each_boxes_own_position(self):
-        log = _gather(_paper(), _ring_dets(), True)
-        p0, p1 = _pos(log, 0), _pos(log, 1)
-        self.assertNotIn("twin_head", p0.detail or {})
-        self.assertIn("twin_head_declined", p0.detail)
-        self.assertGreater(abs(float(p0.value) - float(p1.value)), 0.5)
-
-    def test_CONTROL_two_heads_a_third_apart_are_not_merged(self):
+    def test_CONTROL_two_heads_a_third_apart_are_not_twins(self):
         img = _paper()
-        _ring_head(img, 150.0, 160.0)
-        _ring_head(img, 150.0, 200.0)
         dets = [_detection("noteheadHalfInSpace", (150 - HEAD_W / 2, 160 - HEAD_H / 2, 150 + HEAD_W / 2, 160 + HEAD_H / 2)),
                 _detection("noteheadHalfInSpace", (150 - HEAD_W / 2, 200 - HEAD_H / 2, 150 + HEAD_W / 2, 200 + HEAD_H / 2))]
         log = _gather(img, dets, True)
         self.assertNotIn("twin_head", _pos(log, 0).detail or {})
-        self.assertNotIn("twin_head", _pos(log, 1).detail or {})
+
+
+class _Rec:
+    def __init__(self, obs, pitch, clef):
+        self._o, self._p, self._c = obs, pitch, clef
+
+    def obs(self, q, sub):
+        return self._o.get((q, sub), [])
+
+    def verdict(self, q, sub):
+        return self._p
+
+    def verdict_by_id(self, vid):
+        return self._c
+
+
+class TestExportGuess(unittest.TestCase):
+    A, B = "glyph/0/0/0/0/0", "glyph/0/0/0/0/1"
+
+    def _rec(self, posA, posB, far=None):
+        det = {"twin_head": {"members": [self.A, self.B]}}
+        o = {(Q.NOTEHEAD_STAFF_POSITION, self.A): [{"value": posA, "detail": det}],
+             (Q.NOTEHEAD_STAFF_POSITION, self.B): [{"value": posB, "detail": det}]}
+        if far:
+            o[(Q.FAR_HEAD_LEDGER_POSITION, self.B)] = [{"value": far}]
+        return _Rec(o, {"outcome": "decided", "value": "G5", "basis": ["c"]}, {"quantity": Q.CLEF, "value": "treble"})
+
+    def test_disagreeing_twins_are_guessed_with_both_candidates(self):
+        from tools.omr.staged import export as E
+        g = E.twin_head_guess_of(self._rec(8.1, 9.0), self.A)
+        self.assertEqual(len(g["candidates"]), 2)
+        self.assertEqual(g["rule"], E.TWIN_HEAD_RULE)
+
+    def test_agreeing_twins_are_not_guessed(self):
+        from tools.omr.staged import export as E
+        self.assertIsNone(E.twin_head_guess_of(self._rec(8.1, 8.3), self.A))
+
+    def test_a_far_head_ledger_read_outranks_the_box_centre(self):
+        from tools.omr.staged import export as E
+        # B's box centre says 9.0 but its ledger read says 8: the twins AGREE once the ledger is used
+        self.assertIsNone(E.twin_head_guess_of(self._rec(8.1, 9.0, far=8), self.A))
 
 
 if __name__ == "__main__":

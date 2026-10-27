@@ -1242,49 +1242,32 @@ def gather_second_hollow(log: Log, cells: Sequence[Any],
                   f"{len(plan['second_only'])} second-only, {len(plan['over_other'])} over another class")
 
 
-def _twin_head_centres(c: Any, dets: Sequence[Any], top_y: float, half_step: float,
-                       page_binary: Any, cell_sub: Any) -> Dict[int, Dict[str, Any]]:
-    """ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`, default OFF) -- for every group of notehead boxes that are ONE head boxed
-    more than once (`twin_head.twin_groups`), ONE staff position read off the head's own ink on the PAGE raster
-    (`twin_head.group_centre`): `{detection index: {position_float, centre (canonical cx, cy), by, members, ...}}`. A group
-    the ink cannot place is absent (every member keeps its own box's position: cannot tell, never a guess)."""
+def _twin_head_members(c: Any, dets: Sequence[Any], half_step: float, cell_sub: Any) -> Dict[int, Dict[str, Any]]:
+    """ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`, default OFF) -- which notehead boxes are ONE head boxed more than once
+    (`twin_head.twin_groups`): `{detection index: {"members": [glyph keys]}}`. It INVENTS NO POSITION (Sean 2026-10-01 /
+    2026-10-27: the box centre is the hollow head's position, the ink ledgers place a head outside the staff): each member keeps
+    the position its own reader gave it, and `export.twin_head_guess_of` marks the head GUESSED where the members' positions
+    (far-head ledger read, else box centre) disagree."""
     from . import twin_head as _tw
-    up = getattr(c, "upscale_factor", None)
-    bbox = getattr(c, "bbox_page_px", None)
-    if (page_binary is None or getattr(page_binary, "ndim", 0) != 2 or not up or not bbox
-            or not half_step or half_step <= 0):
+    if not half_step or half_step <= 0:
         return {}
     idx = [gi for gi, d in enumerate(dets) if str(d.smufl_name).startswith(_NOTEHEAD_PREFIX)]
     if len(idx) < 2:
         return {}
-    space = float(half_step) * 2.0
     boxes = [(float(dets[gi].x_canonical), float(dets[gi].y_canonical), float(dets[gi].width_canonical),
               float(dets[gi].height_canonical)) for gi in idx]
     out: Dict[int, Dict[str, Any]] = {}
-    for grp in _tw.twin_groups(boxes, space):
+    for grp in _tw.twin_groups(boxes, float(half_step) * 2.0):
         mem = [idx[i] for i in grp]
-        pbox = [((bbox[0] + boxes[i][0] / up), (bbox[1] + boxes[i][1] / up), boxes[i][2] / up, boxes[i][3] / up)
-                for i in grp]
-        hollow = any(str(dets[gi].smufl_name).startswith(("noteheadHalf", "noteheadWhole")) for gi in mem)
-        r = _tw.group_centre(page_binary, pbox, space / up, hollow_possible=hollow)
         keys = [R.glyph(cell_sub.page, cell_sub.system, cell_sub.staff, cell_sub.cell, gi).to_key() for gi in mem]
-        if r.get("reason"):
-            for gi in mem:
-                out[gi] = {"declined": r["reason"], "members": keys}
-            continue
-        cy_canon = (r["cy"] - bbox[1]) * up
-        cx_canon = (r["cx"] - bbox[0]) * up
-        info = {"position_float": (cy_canon - top_y) / half_step, "centre": [round(cx_canon, 2), round(cy_canon, 2)],
-                "by": r["by"], "holes": r.get("holes"), "members": keys,
-                "classes": sorted({str(dets[gi].smufl_name) for gi in mem})}
         for gi in mem:
-            out[gi] = info
+            out[gi] = {"members": keys}
     return out
 
 
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
-                              detections: Dict[str, List[Any]], pws: Any = None) -> None:
+                              detections: Dict[str, List[Any]]) -> None:
     """The notehead's fractional STAFF POSITION -- clef-free, and kept.
 
     ⚠️ THIS IS THE THESIS OF THE WHOLE ARCHITECTURE IN ONE FUNCTION.
@@ -1345,9 +1328,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     half_step=float(half_step), lines=len(
                         list(getattr(c, "staff_line_ys_canonical", None) or [])))
         from . import twin_head as _tw
-        twins = (_twin_head_centres(c, dets, top_y, half_step,
-                                    getattr(getattr(pws, "page", None), "binary", None), sub)
-                 if _tw.enabled() else {})
+        twins = _twin_head_members(c, dets, half_step, sub) if _tw.enabled() else {}
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
@@ -1367,17 +1348,11 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
-            # ⚠️ ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`, default OFF): boxes on ONE head share ONE position, read off
-            # the head's own ink (`twin_head`); the box's own reading rides on the row so the move is countable. A group the
-            # ink could not place keeps each box's own position and says why.
+            # ⚠️ ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`, default OFF): boxes on ONE head name each other on the row; the
+            # position stays each box's own (no new measurement). `export.twin_head_guess_of` compares them.
             tw = twins.get(gi)
             if tw is not None:
-                if tw.get("declined"):
-                    extra["twin_head_declined"] = tw["declined"]
-                else:
-                    extra["twin_head"] = {k: tw[k] for k in ("members", "classes", "centre", "by", "holes")}
-                    extra.setdefault("detector_position_float", round(pos_float, 3))
-                    pos_float = tw["position_float"]
+                extra["twin_head"] = {"members": tw["members"]}
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
@@ -9869,18 +9844,6 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                     box = tuple(float(v) for v in cv)
                     box_source = cut_rows[-1].id
                     located_by = "head_line_cut"
-            # ⚠️ ROADMAP 2.212 (flag `OMR_TWIN_HEAD_MERGE`, default OFF): boxes on ONE head read the fill of ONE window, the
-            # standard head box at the shared ink centre `gather_notehead_positions` filed -- so the twins agree on the head's
-            # fill and no keeper choice between them changes what is read. Wins over the three locators above (it is
-            # their reading of the same head, from the ink of the whole group) and stops 2.115 below.
-            for _tr in log.rows(Q.NOTEHEAD_STAFF_POSITION, g)[-1:]:
-                _twin = (_tr.detail or {}).get("twin_head")
-                if _twin and space_canonical:
-                    tcx, tcy = _twin["centre"]
-                    bx0, bx1, by0, by1 = _standard_head_box(float(tcx), float(tcy), space_canonical)
-                    box = (bx0, by0, bx1 - bx0, by1 - by0)
-                    box_source = "twin_head:" + _tr.id
-                    located_by = "twin_head"
             # ⚠️ ROADMAP 2.115 (flag `OMR_RECENTRE_PART_BOXED`, default ON): a
             # box that is only PART of its head (2.39b's search declined it or
             # never ran: it is not under 0.7) is moved vertically onto its
@@ -16075,7 +16038,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        gather_notehead_positions(log, cells, local, detections, pws=pws)
+        gather_notehead_positions(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
         # and its consumer's whole rule is a comparison between the two. Filed
