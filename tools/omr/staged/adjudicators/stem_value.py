@@ -627,10 +627,10 @@ BEAM_END_OTHER_MIN_SP = 2.5
 
 
 def beam_end_enabled() -> bool:
-    """ROADMAP 2.209, flag `OMR_STEM_BEAM_END`, default OFF: a detector "notehead" that stands on a BEAM's ink and on no ink of its own is
+    """ROADMAP 2.209, flag `OMR_STEM_BEAM_END`, default ON (Sean 2026-10-27; explicit 0/false/no/off disables): a detector "notehead" that stands on a BEAM's ink and on no ink of its own is
     not a member of the stem (`_on_beam_ink`)."""
     import os
-    return os.environ.get(BEAM_END_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAM_END_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _owner_mask(verdict: Any) -> Dict[int, str]:
