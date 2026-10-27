@@ -396,3 +396,21 @@ Tile 9 of 2.206d (`glyph/19/0/13/0/8`) is now an eighth, begin (OFF-arm dotted 1
 **Lost notes (1):** Brahms p19 `glyph/19/0/12/0/5`, 16th C4: `duration` decided `head_and_marks` -> narrowed `beam_certain_not_joined`; the dotted-eighth beside it (`12/0/21`) goes 16th -> eighth: the same shape as tile 9 on the next staff, so the lost note is the neighbour's
 second-level evidence now missing. Marked, not wrong. **Unexplained:** words/dynamics +/- (tiles 1-3, 11) on Brahms p14, p19 are not beam readings; ink the beam bar no longer claims or gather noise -- the tiles decide.
 **Proposal only (not built):** `beam_stem_levels` (the stem's own reading) disagreeing with `rhythm._beam_levels` should NOT be a second witness for the level: both read the same raster ink. It could be a refusal-with-margin (record the disagreement, narrow rather than decide), which is a 2.153-family change for its own item.
+
+## 15. 2.213 tile answers (Sean, 2026-10-27)
+
+Answers `out/print/2.213/answers.json`, key `results/2.213-key.json`. Values read from the lane-report records (`out/lane-report/2.213/work`, ON = `OMR_BEAM_OWN_EXTENT=1`).
+
+| tile | Sean | OFF -> ON written | verdict |
+|---|---|---|---|
+| 7 `glyph/19/0/12/0/21` | Dot 8 | dotted 16th -> dotted eighth (dot, flag eighth, blue) | good |
+| 10 `13/0/8` | Dot 8 | dotted 16th -> dotted eighth | good (the 2.206d tile 9 right->wrong is repaired) |
+| 5 `12/0/5` | 16 | plain 16th -> NOT WRITTEN: duration narrowed `beam_certain_not_joined`, candidates eighth (0.5, 1 beam) and 16th (0.25, 2 beams), both support 1.0, no margin; not written blue | right->gone (BAD, marked not wrong) |
+| 8 `13/0/5` | 16 | 16th -> 16th, beam sub continue/continue -> continue/begin | value unchanged, matches |
+| 4 | 16 | 16th both (beam -> flag) | unchanged, matches |
+| 6, 12 | 8, 8 | eighth both | controls match |
+| 1, 2, 3, 9, 11 | Dot 4, 4, 4 rest, Dot 4, Dot 4 | host note identical both arms, all match except 3 | not judged |
+
+Score: 2 good, 1 right->gone, 0 right->wrong, 2 controls match. Judged right->wrong stays 0 but tile 5 is the neighbour-staff loss already named in 14: the dotted-eighth fix on `12/0/21` removes the second-level beam evidence for `12/0/5`, whose own stem now shows a certain conflict (`certain_conflicts` 1, `levels_certain` 2).
+
+**Tile-maker defect (named, not fixed):** for words and dynamics the changed symbol is a bar-level mark with no ink of its own; `tools/omr/staged/lane_report.py` `place()` (lines 340-345, via `boxes[rg]`, called for the text kinds at 367-376) gives it the HOST note's box, and `benchmarks/staff-eraser-2026-10/recrop_tiles.py` draws that box (`b = [it["box"]...]`), so the orange box sat on a note and Sean answered the note. "does not add up: ..." words are our own bar-check annotation (`export.py` `RED_BAR_WORD_PREFIX`, 2.173), not print text, so no tile of them can be answered from the page. Tile 3: both arms write a quarter note (`glyph/14/1/0/0/5`) where Sean reads a quarter rest, pre-existing and not 2.213.
