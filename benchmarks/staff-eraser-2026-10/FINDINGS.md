@@ -336,3 +336,20 @@ lone_head -> not_a_member 3, two decided notes read as not_a_note_mark 2, identi
 brahms notes +50 -12, dots +36 -5, ties +30 -4, slurs +8, blue +21 -52, words +10 -33, wedges +3, red bars 165 -> 164, notes not written 3203 -> 3168. Tiles `out/print/2.206d/tiles/sheet.png`,
 key `out/print/2.206d/key.json`. Judged right->wrong: litolff 1 (`tile_05` `glyph/4/0/7/7/10`, the known twin-box artifact, same as 2.206c), brahms 0.
 The Brahms gain (+50 notes against +13 at 2.206c) is not yet looked at: the tiles are the check. Fast tier: 3 failures, none new in kind (two flag-doc tables name the OFF branch flags, one judged-index).
+
+## 11. 2.206d answers (2026-10-27, Sean): tiles and the lost-note sheet
+
+Answers: `out/print/2.206d/answers.json` (his 9-20 = tiles 1-12), `out/print/2.206d-lost/answers.json` (his 1-8). Flags all four ON vs OFF.
+
+**12 tiles.** Good 3 (1 litolff eighth gained, 5 dotted quarter gained, 8 eighth gained); right->wrong 1 (tile 9 brahms p19 `glyph/19/0/13/0/8`: Sean "dot 8", OFF dotted eighth, ON dotted 16th `begin/begin`);
+controls 3 match (7, 10, 12); neutral 5: 2 (eighth rest both arms, ON drops the blue), 11 (eighth both arms, ON adds blue), 6 (dotted quarter both arms, the gained tie not judged), 3 (Sean: eighth; OFF wrote a
+wrong quarter, ON writes no note there, the 'does not add up' words are gone), 4 (undecidable). **Crop defect:** tiles 4 and 7 cut the stem short ("can't see the bottom of the stem", "stem is cut off"); the crop
+padding at the stem foot is too tight, so those two answers carry no weight (7 matches anyway). The one right->wrong (beam 9) is the new count to look at before any flip: ON reads a second beam level on a dotted eighth.
+
+**Lost sheet (litolff `stem_value lone_head -> not_a_member`).** Real half notes 4 (1, 2, 4, 7); correctly dropped 4 (3, 5, 6, 8: "part of a 4 rest"), so the rest fix is working on those.
+**The 4 half notes are not lost.** Cause (STAGED ADJUDICATE `notehead_is_not_a_notehead`): the stem exists in both arms (same stem box, `head_stem one_stem`, `duration` half decided in both). The head's verdict flips
+False -> True `stacked_head_duplicate` ON; the glyph has two candidate boxes at one slot (`candidates_at_slot` 2, `shape_contenders` 2; two with margins -0.003..-0.026, two hollow-class with no margin), the ON arm chooses the
+other box as the head, and this one becomes the duplicate, so `stem_value` abstains `not_a_member` (a consequence, not the cause). Neither the eraser cut the hollow head nor the stem: ON exports a half note from the twin box
+(`glyph/16/0/8/0/9` G4, `glyph/6/1/11/9/2` B-12, same pitch as OFF; `glyph/16/1/3/1/3` E-14 vs OFF D4, `glyph/8/1/6/3/1` A4 vs OFF B4) at the same place. So the "lost" count is an identity swap between twin boxes, with the
+twin's own pitch: two of four (tiles 4, 7) change pitch (D4 -> E, B4 -> A4), unjudged; a print check of those two pitches is the open question. **Process lesson:** a lost-by-rg list counts identity, not music; match
+lost notes to gained notes by position before calling any a loss.
