@@ -47,3 +47,31 @@ def test_on_the_secondary_bar_starts_at_its_own_ink(monkeypatch):
     # the dotted eighth's head column (x 220) is covered by one bar only
     covering = [b for b in beams if b.x_canonical <= 220 <= b.x_canonical + b.width_canonical]
     assert len(covering) == 1
+
+
+def _cell_stem_in_bridge() -> MeasureCell:
+    """Brahms p19 `glyph/19/0/12/0/5` (Sean: a 16th): the secondary bar really starts AT the first 16th's stem (x 300), but ink bleed at the stem's foot
+    bridges the two bars for 40 px, so the first column where the bars read separately is 340."""
+    img = np.full((800, 900), 255, dtype=np.uint8)
+    img[150:198, 195:705] = 0
+    img[210:258, 300:705] = 0
+    img[196:212, 300:340] = 0           # the bridge, from the stem's foot
+    img[150:560, 195:205] = 0
+    img[150:560, 300:312] = 0           # the first 16th's stem, inside the bridge
+    img[150:560, 695:705] = 0
+    return MeasureCell(
+        page_index=0, system_index=0, staff_index=0, measure_index=0,
+        image=img, image_no_staff=img.copy(), bbox_page_px=(0, 0, 900, 800),
+        staff_line_ys_canonical=list(LINE_YS), upscale_factor=1.0,
+    )
+
+
+def test_on_the_secondary_bar_reaches_the_stem_it_ends_on(monkeypatch):
+    monkeypatch.setenv("OMR_BEAM_OWN_EXTENT", "1")
+    beams = sorted(detect_beams(_cell_stem_in_bridge()), key=lambda b: b.y_canonical)
+    assert len(beams) == 2
+    secondary = beams[1]
+    assert secondary.x_canonical <= 306                 # the stem at 300, not 340 where the bars part
+    assert secondary.x_canonical > 250                  # and not the dotted eighth's stem at 195
+    covering = [b for b in beams if b.x_canonical <= 306 <= b.x_canonical + b.width_canonical]
+    assert len(covering) == 2                           # the stem's own column carries both levels
