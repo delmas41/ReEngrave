@@ -379,3 +379,20 @@ flag-gated (new flag, GATHER, OFF), same OFF/ON frozen-sample report, tiles on t
 ## 13. 2.206e pitch sheet answers (Sean, 2026-10-27)
 
 Crop 1 (litolff p16 P4 bar 240) "Eb"; crop 2 (litolff p8 P8 bar 115) "A natural". Both match eraser ON (E-flat4 vs OFF D4; A4 vs OFF B-flat4 blue): the keeper the eraser path picks from the twin boxes is right on both pitches. Answers `out/print/2.206e-pitch/answers.json`.
+
+## 14. 2.213 (2026-10-27, Sean "Yes"): a beam bar's x extent from its own ink; `OMR_BEAM_OWN_EXTENT` (OFF)
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Assumed: a secondary beam spans only the notes it serves, so its ink starts and stops at their stems. Falsified by a print where a secondary bar is drawn
+from a stem that has no second flag/beam. Not confirmed by Sean beyond the tile 9 answer ("Dot 8"). The tiles on the cells below are the check.
+
+**Cause and lesson** are §12 (GATHER `detect_beams._emit` gave every stacked band the component's x extent; the eraser fix only exposed it). Fix (STAGED GATHER, shared `line_detection`): per band, a column belongs to the bar where the bar has a vertical
+run at least 0.6 of its median thickness (`_bar_own_extents`); the box is the first..last such column. Single-bar components and unmeasurable bands are untouched (full extent). Test
+`test_line_detection_beam_own_extent_2_213.py` fails OFF (secondary starts at the first stem), passes ON. Limits: a stack whose secondary is under half the component's width reads one bar (`_stacked_bar_bands` median), so is not trimmed; ink bleed joining the two
+bars is given to the primary, so a secondary starts where the two are separate again.
+
+**Three measures** (frozen sample, four eraser-path flags ON in BOTH arms, only `OMR_BEAM_OWN_EXTENT` differs; `results/2.213-report.txt`). File: litolff NOTHING changed (5,038 paired); brahms notes -1, flags +3, beams -4 ~2, slurs +1 -1, note values ~2, blue +1,
+dynamics +2 -2, words +5 -3, red bars 164 -> 162, notes not written 3168 -> 3169. Judged right->wrong 0 (litolff 233 judged tiles, brahms 232). Tiles `out/print/2.213/tiles/sheet.png` (12, taller/wider via `recrop_tiles.py`), key `results/2.213-key.json`.
+Tile 9 of 2.206d (`glyph/19/0/13/0/8`) is now an eighth, begin (OFF-arm dotted 16th gone), its neighbour `13/0/5` `continue/begin`.
+**Lost notes (1):** Brahms p19 `glyph/19/0/12/0/5`, 16th C4: `duration` decided `head_and_marks` -> narrowed `beam_certain_not_joined`; the dotted-eighth beside it (`12/0/21`) goes 16th -> eighth: the same shape as tile 9 on the next staff, so the lost note is the neighbour's
+second-level evidence now missing. Marked, not wrong. **Unexplained:** words/dynamics +/- (tiles 1-3, 11) on Brahms p14, p19 are not beam readings; ink the beam bar no longer claims or gather noise -- the tiles decide.
+**Proposal only (not built):** `beam_stem_levels` (the stem's own reading) disagreeing with `rhythm._beam_levels` should NOT be a second witness for the level: both read the same raster ink. It could be a refusal-with-margin (record the disagreement, narrow rather than decide), which is a 2.153-family change for its own item.
