@@ -234,3 +234,37 @@ dominated by a meter cascade that the print already rules out.
 **What it would take.** Not a threshold change here. Either re-measure the meter template's floor and the rest-shape bands on the
 corrected image (their own items, with Sean's tiles), or run the corrected walk only for the readers that wanted it (2.202b's beam on a
 line). The choice is Sean's.
+
+## 7. 2.206b (2026-10-26, Sean "2. A"): the two downstream readers re-measured; the frozen sample is clean
+
+Flags run together, all OFF by default: `OMR_ERASER_FIX` + `OMR_METER_SLOT` + `OMR_REST_OWN_STROKE`; `--from gather`; report in
+`results/full/report_2206b.txt|json`; fail-fast subset (Litolff 2,9; Brahms 5,14) was clean first.
+
+**Cause (a), meter, STAGED `gather_meter` (LEGACY `transcribe` unchanged).** The template slid over the WHOLE 16 sp header cell. On Litolff p2
+the "C" matches were (i) the instrument LABEL ("Cl.", "Cor.") at x 0.2-1.0 sp, left of the barline and clef -- already scoring 0.51-0.58 with
+the eraser fix OFF -- and (ii) the three FLATS at 12.6 sp, ink the clef/key already own. The eraser fix only pushed one over the 0.5 floor.
+No threshold moved: `key_signature_template.claimed_header_edge` (clef template, then the chain of accidental matches, gap <= 2 sp, the
+key run's own ladder) gives the x the clef+key ink ends; `locate_time_signature(x_min_canonical=)` searches right of it only; no clef found
+= no bound (as before). Eraser ON: false reads Litolff p2/p10/p9/p11/p16 7/5/5/6/5 -> 0/0/1/1/1; real meters keep reading (Litolff p1 12/12,
+Brahms p1 14/14, with 0.3-0.5 sp between the claimed edge and the meter's left edge on Brahms: a margin to watch on other publishers).
+
+**Cause (b), rest, STAGED `head_rest_shape.read_head_ink`. FINDINGS 6's diagnosis was wrong.** On the corrected image the eighth-rest SHAPE
+measures still pass (h 2.32 in 1.5-2.5, column share 0.78 <= 0.92, step 3.86, mass_y 0.41, left bins 0.56). What changed is the STEM finder:
+with the line crossings kept it finds a "stem" `[207,479,32,232]` (min stem height is 2.0 sp) -- the rest's own diagonal, exactly the ink's
+height -- and the reader's veto ("a rest owns no stem", rule 8) fires: `no_head_refused_on_the_ink`. Fix: a stem lying inside the ink's
+columns and spanning its whole height (slack 0.2 sp = about half a head, which a real stem leaves sticking out) is the ink's own stroke.
+The 0.2 is tuned on our two plates: it may only narrow. **Lesson:** a band measured on the old image was not what broke; print the actual
+veto before re-measuring a band. Other movers in the 2.206 OFF/ON verdicts: `stacked_head_duplicate` (29 flips each way on Litolff),
+unboxed-rest clusters re-keyed; no other single cut-off stood out (not a margin audit of the OFF records).
+
+**The three measures (frozen sample, 8 + 8 pages).**
+1. File: litolff notes +16 -16 | rests +5 -2 | accidentals -1 | flags +1 -2 | beams +4 -3 ~6 | ties +8 -2 | note values ~4 | pitches ~16 | blue +47 -4 |
+   words +4 -5 | clefs -6 | keys +1 -7 | red bars 0 -> 0 | notes not written 2563 -> 2566.
+   brahms notes +13 -16 | rests +1 -2 | accidentals +4 -6 | dots +9 -8 | flags +1 -3 | beams +5 -4 ~3 | ties +2 -4 | artic +2 -3 | blue +20 -15 |
+   dynamics +1 | words +13 -9 | red bars 166 -> 166 | notes not written 3202 -> 3208. (Against FINDINGS 6: Litolff red bars 1289 -> 0.)
+2. Tiles: 12 (9 changes, 3 controls) in `out/print/2.206b/tiles/sheet.png`, key `out/print/2.206b/key.json`. NOT YET SENT to Sean.
+3. Judged right->wrong: litolff 1 of 233 = `tile_05` `glyph/4/0/7/7/10`, the known twin-box KEY artifact of FINDINGS 5 (written note unchanged;
+   ruled an artifact there); wrong->right 3. brahms 0 of 232. Real right->wrong: 0. The 2.145 tile-10 eighth rest is no longer in the list.
+   Control `OFF == record` is not available in re-gather mode (NOT CHECKED).
+
+Flags stay OFF; not merged. Open for Sean: the tiles, then turning the three flags on together.
