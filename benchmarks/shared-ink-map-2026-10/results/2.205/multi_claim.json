@@ -1,0 +1,3254 @@
+{
+ "litolff": {
+  "raw": {
+   "strokes": 47780,
+   "boxes=0": 17244,
+   "boxes=>=2": 5167,
+   "boxes=1": 25369,
+   "families>=2": 1908,
+   "claimant_families>=2": 1380
+  },
+  "pairs": {
+   "arc|beam": 312,
+   "head|ledger": 201,
+   "arc|head": 198,
+   "dynamic|head": 148,
+   "head|rest": 127,
+   "mark|rest": 125,
+   "accidental|mark": 81,
+   "head|mark": 74,
+   "flag|head": 58,
+   "accidental|rest": 55,
+   "arc|clef": 53,
+   "beam|head": 49,
+   "arc|dynamic": 47,
+   "beam|dynamic": 42,
+   "ledger|rest": 38,
+   "clef|rest": 36,
+   "clef|head": 32,
+   "dynamic|rest": 23,
+   "accidental|arc": 22,
+   "arc|rest": 20,
+   "dynamic|mark": 20,
+   "arc|ledger": 18,
+   "arc|mark": 18,
+   "flag|mark": 17,
+   "accidental|head": 16,
+   "clef|dynamic": 13,
+   "ledger|mark": 12,
+   "accidental|beam": 12,
+   "accidental|flag": 11,
+   "accidental|clef": 10,
+   "clef|mark": 10,
+   "clef|flag": 10,
+   "accidental|meter": 10,
+   "dot|dynamic": 9,
+   "dynamic|flag": 9,
+   "beam|mark": 8,
+   "arc|dot": 8,
+   "dynamic|ledger": 7,
+   "flag|rest": 7,
+   "accidental|dynamic": 5,
+   "head|stem": 4,
+   "meter|rest": 4,
+   "beam|ledger": 3,
+   "dot|mark": 3,
+   "flag|ledger": 3,
+   "beam|rest": 3,
+   "arc|flag": 3,
+   "beam|text": 2,
+   "beam|flag": 1,
+   "mark|stem": 1,
+   "accidental|ledger": 1,
+   "clef|ledger": 1,
+   "mark|meter": 1,
+   "dot|rest": 1,
+   "dynamic|text": 1,
+   "accidental|dot": 1,
+   "beam|clef": 1
+  },
+  "pairs_by_kind": {
+   "arc|beam|horizontal": 162,
+   "head|ledger|horizontal": 127,
+   "arc|head|blob": 114,
+   "head|rest|blob": 101,
+   "arc|beam|blob": 86,
+   "mark|rest|blob": 78,
+   "head|ledger|blob": 74,
+   "dynamic|head|blob": 72,
+   "arc|head|horizontal": 59,
+   "arc|beam|curve": 58,
+   "dynamic|head|horizontal": 44,
+   "head|mark|blob": 42,
+   "ledger|rest|blob": 38,
+   "accidental|mark|vertical": 36,
+   "accidental|mark|blob": 36,
+   "flag|head|blob": 36,
+   "mark|rest|vertical": 33,
+   "arc|clef|blob": 33,
+   "accidental|rest|blob": 31,
+   "dynamic|head|vertical": 29,
+   "beam|head|blob": 23,
+   "arc|dynamic|blob": 22,
+   "clef|rest|blob": 21,
+   "arc|head|vertical": 21,
+   "beam|dynamic|blob": 20,
+   "accidental|rest|vertical": 20,
+   "arc|dynamic|horizontal": 18,
+   "flag|head|vertical": 18,
+   "head|mark|vertical": 17,
+   "arc|rest|blob": 16,
+   "beam|head|horizontal": 16,
+   "accidental|arc|blob": 16,
+   "clef|head|blob": 15,
+   "mark|rest|horizontal": 14,
+   "dynamic|rest|blob": 13,
+   "head|mark|horizontal": 13,
+   "head|rest|vertical": 13,
+   "dynamic|mark|blob": 13,
+   "head|rest|horizontal": 12,
+   "arc|ledger|blob": 11
+  },
+  "exposure": {
+   "beam_role:beam|covered_by:accidental": 14,
+   "beam_role:beam|covered_by:arc": 21,
+   "beam_role:beam|covered_by:clef": 74,
+   "beam_role:beam|covered_by:dynamic": 24,
+   "beam_role:beam|covered_by:head": 220,
+   "beam_role:beam|covered_by:ledger": 23,
+   "beam_role:beam|covered_by:mark": 12,
+   "beam_role:beam|covered_by:rest": 14,
+   "beam_role:beam|covered_by:text": 1,
+   "beam_role:beam|covered_by_claimant": 369,
+   "beam_role:beam|partly_covered_by_claimant": 222,
+   "beam_role:beam|total": 1172,
+   "beam_role:beam_stub|covered_by:accidental": 3,
+   "beam_role:beam_stub|covered_by:arc": 10,
+   "beam_role:beam_stub|covered_by:clef": 8,
+   "beam_role:beam_stub|covered_by:dynamic": 15,
+   "beam_role:beam_stub|covered_by:head": 267,
+   "beam_role:beam_stub|covered_by:ledger": 26,
+   "beam_role:beam_stub|covered_by:rest": 14,
+   "beam_role:beam_stub|covered_by_claimant": 317,
+   "beam_role:beam_stub|partly_covered_by_claimant": 26,
+   "beam_role:beam_stub|total": 399,
+   "beam_role:hook|covered_by:accidental": 145,
+   "beam_role:hook|covered_by:arc": 38,
+   "beam_role:hook|covered_by:clef": 178,
+   "beam_role:hook|covered_by:dot": 7,
+   "beam_role:hook|covered_by:dynamic": 953,
+   "beam_role:hook|covered_by:head": 416,
+   "beam_role:hook|covered_by:ledger": 69,
+   "beam_role:hook|covered_by:mark": 40,
+   "beam_role:hook|covered_by:meter": 3,
+   "beam_role:hook|covered_by:rest": 321,
+   "beam_role:hook|covered_by:text": 1,
+   "beam_role:hook|covered_by_claimant": 2086,
+   "beam_role:hook|partly_covered_by_claimant": 49,
+   "beam_role:hook|total": 2563,
+   "beam_role:hook_or_stub|covered_by:accidental": 13,
+   "beam_role:hook_or_stub|covered_by:arc": 44,
+   "beam_role:hook_or_stub|covered_by:clef": 17,
+   "beam_role:hook_or_stub|covered_by:dot": 1,
+   "beam_role:hook_or_stub|covered_by:dynamic": 113,
+   "beam_role:hook_or_stub|covered_by:head": 120,
+   "beam_role:hook_or_stub|covered_by:ledger": 178,
+   "beam_role:hook_or_stub|covered_by:mark": 6,
+   "beam_role:hook_or_stub|covered_by:rest": 2,
+   "beam_role:hook_or_stub|covered_by_claimant": 452,
+   "beam_role:hook_or_stub|partly_covered_by_claimant": 21,
+   "beam_role:hook_or_stub|total": 611,
+   "finder_stem|covered_by:accidental": 58,
+   "finder_stem|covered_by:arc": 22,
+   "finder_stem|covered_by:clef": 3,
+   "finder_stem|covered_by:dynamic": 132,
+   "finder_stem|covered_by:head": 737,
+   "finder_stem|covered_by:mark": 589,
+   "finder_stem|covered_by:rest": 16,
+   "finder_stem|covered_by:text": 1,
+   "finder_stem|covered_by_claimant": 1508,
+   "finder_stem|partly_covered_by_claimant": 2743,
+   "finder_stem|total": 4795
+  },
+  "own_states": {
+   "decided": 20239,
+   "unclaimed": 18293,
+   "merged": 5187,
+   "refused_claims": 3615,
+   "finder_stem:unclaimed": 3227,
+   "finder_stem:refused_claims": 1321,
+   "beam_role_claimed:hook:dynamic": 932,
+   "contested": 446,
+   "beam_role_claimed:hook:head": 380,
+   "beam_role_claimed:hook:rest": 295,
+   "beam_role_claimed:beam_stub:head": 267,
+   "beam_role_claimed:beam:head": 186,
+   "beam_role_claimed:hook:clef": 184,
+   "finder_stem:dynamic": 112,
+   "beam_role_claimed:hook_or_stub:dynamic": 112,
+   "beam_role_claimed:hook_or_stub:ledger": 105,
+   "beam_role_claimed:hook_or_stub:head": 104,
+   "beam_role_claimed:hook:key_signature": 103,
+   "beam_role_claimed:beam:clef": 85,
+   "finder_stem:key_signature": 57,
+   "beam_role_claimed:hook:accidental": 45,
+   "finder_stem:accidental": 44,
+   "beam_role_claimed:hook_or_stub:arc": 42,
+   "beam_role_claimed:hook:ledger": 38,
+   "beam_role_claimed:hook:arc": 36,
+   "beam_role_claimed:hook:contested": 36,
+   "beam_role_claimed:hook:mark": 20,
+   "beam_role_claimed:beam:accidental": 19,
+   "beam_role_claimed:hook_or_stub:clef": 18,
+   "finder_stem:leading_column": 17,
+   "finder_stem:clef": 15,
+   "beam_role_claimed:beam_stub:dynamic": 12,
+   "beam_role_claimed:beam:dynamic": 12,
+   "beam_role_claimed:beam_stub:rest": 11,
+   "beam_role_claimed:beam_stub:clef": 10,
+   "beam_role_claimed:hook:leading_column": 10,
+   "beam_role_claimed:hook_or_stub:key_signature": 9,
+   "beam_role_claimed:beam_stub:leading_column": 7,
+   "beam_role_claimed:hook:dot": 4,
+   "beam_role_claimed:hook_or_stub:accidental": 4,
+   "beam_role_claimed:beam:contested": 3,
+   "beam_role_claimed:beam_stub:accidental": 3,
+   "beam_role_claimed:beam:rest": 3,
+   "beam_role_claimed:hook_or_stub:contested": 2,
+   "finder_stem:rest": 2,
+   "beam_role_claimed:hook:meter": 2,
+   "beam_role_claimed:hook_or_stub:mark": 2,
+   "beam_role_claimed:hook_or_stub:rest": 2,
+   "beam_role_claimed:hook_or_stub:leading_column": 2,
+   "beam_role_claimed:beam_stub:key_signature": 1,
+   "beam_role_claimed:hook:text": 1
+  },
+  "owned_by_family": {
+   "head": 7989,
+   "dynamic": 5851,
+   "rest": 3293,
+   "clef": 2925,
+   "accidental": 1320,
+   "arc": 1236,
+   "key_signature": 877,
+   "mark": 780,
+   "leading_column": 633,
+   "ledger": 434,
+   "dot": 60,
+   "text": 17,
+   "meter": 11
+  },
+  "contested_pairs": {
+   "mark|rest|blob": 69,
+   "head|ledger|blob": 56,
+   "accidental|mark|blob": 31,
+   "head|rest|blob": 24,
+   "dynamic|head|blob": 22,
+   "accidental|rest|blob": 22,
+   "clef|rest|blob": 21,
+   "dynamic|head|horizontal": 20,
+   "arc|head|horizontal": 14,
+   "dynamic|rest|blob": 13,
+   "mark|rest|horizontal": 12,
+   "dynamic|mark|blob": 12,
+   "accidental|clef|vertical": 8,
+   "head|mark|horizontal": 7,
+   "arc|clef|horizontal": 7,
+   "dot|dynamic|horizontal": 6,
+   "clef|mark|blob": 6,
+   "clef|head|blob": 6,
+   "accidental|key_signature|meter|blob": 6,
+   "dynamic|rest|vertical": 5,
+   "clef|dynamic|blob": 5,
+   "ledger|mark|rest|blob": 5,
+   "head|mark|blob": 5,
+   "dynamic|mark|horizontal": 5,
+   "key_signature|meter|vertical": 4,
+   "dynamic|rest|horizontal": 4,
+   "accidental|head|blob": 4,
+   "clef|key_signature|blob": 4,
+   "head|rest|horizontal": 3,
+   "key_signature|meter|blob": 3,
+   "dot|dynamic|blob": 3,
+   "dot|mark|blob": 3,
+   "meter|rest|blob": 3,
+   "clef|head|horizontal": 3,
+   "clef|leading_column|blob": 3,
+   "accidental|key_signature|meter|vertical": 3,
+   "accidental|arc|horizontal": 2,
+   "head|mark|curve": 2,
+   "accidental|dynamic|blob": 2,
+   "arc|rest|horizontal": 2,
+   "arc|dynamic|curve": 2,
+   "head|mark|rest|blob": 2,
+   "clef|key_signature|vertical": 1,
+   "accidental|clef|key_signature|vertical": 1,
+   "arc|clef|curve": 1,
+   "accidental|clef|horizontal": 1,
+   "dot|rest|blob": 1,
+   "dynamic|text|vertical": 1,
+   "accidental|key_signature|meter|horizontal": 1
+  },
+  "refused_claims": {
+   "head:not_a_head_piece:vertical": 1905,
+   "arc:not_an_arc_piece:blob": 853,
+   "mark:not_a_small_mark:vertical": 778,
+   "ledger:not_a_rung:horizontal": 158,
+   "arc:not_an_arc_piece:horizontal": 104,
+   "arc:not_an_arc_piece:vertical": 53,
+   "head:not_a_head_piece:horizontal": 53,
+   "dynamic:longer_than_a_letter:horizontal": 42,
+   "accidental:longer_than_an_acc_stem:vertical": 41,
+   "rest:rest_ink_runs_into_a_head:vertical": 36,
+   "dynamic:longer_than_a_letter:vertical": 34,
+   "rest:longer_than_a_rest:vertical": 18,
+   "mark:not_a_small_mark:horizontal": 16,
+   "rest:not_a_rest_block:blob": 12,
+   "head:tremolo_slash_across_a_stem:horizontal": 8,
+   "rest:not_a_rest_block:horizontal": 8,
+   "rest:block_rest_has_no_vertical:vertical": 5,
+   "mark:not_a_small_mark:blob": 3,
+   "text:longer_than_a_letter:vertical": 3,
+   "head:not_a_head_piece:curve": 3,
+   "mark:not_a_small_mark:curve": 2,
+   "rest:a_beam_not_a_rest_block:horizontal": 1,
+   "rest:rest_ink_runs_into_a_head:horizontal": 1,
+   "accidental:acc_curve:curve": 1,
+   "dot:not_a_small_mark:vertical": 1,
+   "text:longer_than_a_letter:horizontal": 1,
+   "rest:rest_ink_runs_into_a_head:blob": 1
+  },
+  "parity": {
+   "table": {
+    "head_cut_piece|merged": 7,
+    "head_cut_piece|owns": 3,
+    "is_a_beam_piece|owns": 2,
+    "is_a_beam_piece|refused": 11,
+    "is_a_rest_twin|contested": 4,
+    "is_a_rest_twin|merged": 4,
+    "is_a_rest_twin|owns": 2,
+    "is_a_rest_twin|refused": 2,
+    "on_a_rest|contested": 1,
+    "on_a_rest|owns": 10,
+    "rest_has_a_stem|contested": 1,
+    "rest_has_a_stem|no_ink": 2,
+    "rest_has_a_stem|owns": 2,
+    "rest_has_a_stem|refused": 53,
+    "rest_is_a_barline|merged": 1,
+    "rest_is_a_barline|no_ink": 18,
+    "rest_is_a_barline|owns": 2,
+    "rest_is_a_barline|refused": 10,
+    "rest_is_a_slashed_stem|owns": 1,
+    "rest_stroke_into_a_head|merged": 1,
+    "rest_stroke_into_a_head|no_ink": 3,
+    "rest_stroke_into_a_head|owns": 10,
+    "rest_stroke_into_a_head|refused": 15,
+    "tremolo_slash_crosses_stem|merged": 8,
+    "tremolo_slash_crosses_stem|owns": 33
+   },
+   "differences_n": {
+    "is_a_rest_twin/owns": 2,
+    "tremolo_slash_crosses_stem/owns": 33,
+    "tremolo_slash_crosses_stem/merged": 8,
+    "head_cut_piece/merged": 7,
+    "is_a_rest_twin/merged": 4,
+    "is_a_beam_piece/owns": 2,
+    "head_cut_piece/owns": 3,
+    "rest_is_a_barline/no_ink": 18,
+    "rest_has_a_stem/no_ink": 2,
+    "rest_stroke_into_a_head/no_ink": 3,
+    "rest_has_a_stem/owns": 2,
+    "rest_stroke_into_a_head/owns": 10,
+    "rest_is_a_barline/owns": 2,
+    "rest_is_a_slashed_stem/owns": 1,
+    "rest_stroke_into_a_head/merged": 1,
+    "rest_is_a_barline/merged": 1,
+    "on_a_rest/owns": 10
+   },
+   "differences_examples": {
+    "is_a_rest_twin/owns": [
+     [
+      "glyph/2/0/10/4/5",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/10/1/7/14/4",
+      "noteheadBlackOnLine",
+      []
+     ]
+    ],
+    "tremolo_slash_crosses_stem/owns": [
+     [
+      "glyph/2/1/8/11/1",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/2/1/8/12/1",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/2/1/8/13/5",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/2/1/9/11/1",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/2/1/9/12/2",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/2/1/9/14/3",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/4/1/3/13/13",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/6/0/6/8/3",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/6/1/0/11/2",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/6/1/3/7/7",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/6/1/6/11/8",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/6/1/11/3/3",
+      "noteheadBlackOnLine",
+      []
+     ]
+    ],
+    "tremolo_slash_crosses_stem/merged": [
+     [
+      "glyph/2/1/8/13/8",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/6/1/8/11/1",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/6/1/8/11/7",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/6/1/11/1/4",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/16/0/0/8/24",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/16/0/3/5/3",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/16/0/9/5/0",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/16/0/10/4/2",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "head_cut_piece/merged": [
+     [
+      "glyph/4/1/0/5/7",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/1/10/8/1",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/8/1/10/8/2",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/16/0/3/14/1",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/16/0/3/14/7",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/16/0/10/5/2",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/16/1/10/1/2",
+      "noteheadBlackOnLine",
+      []
+     ]
+    ],
+    "is_a_rest_twin/merged": [
+     [
+      "glyph/4/1/4/1/9",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/4/1/4/1/11",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/4/1/4/1/12",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/10/1/7/14/3",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "is_a_beam_piece/owns": [
+     [
+      "glyph/6/0/3/7/7",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/10/1/6/7/5",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "head_cut_piece/owns": [
+     [
+      "glyph/10/1/8/1/0",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/11/1/8/2/0",
+      "noteheadHalfInSpace",
+      []
+     ],
+     [
+      "glyph/16/0/3/16/3",
+      "noteheadHalfOnLine",
+      []
+     ]
+    ],
+    "rest_is_a_barline/no_ink": [
+     [
+      "glyph/2/0/1/15/12",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/6/0/1/8/7",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/6/1/1/3/0",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/6/1/2/3/8",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/0/2/1",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/4/3/4",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/5/3/2",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/8/3/13",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/10/0/6/0/7",
+      "rest64th",
+      []
+     ],
+     [
+      "glyph/10/1/9/2/1",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/11/0/7/10/2",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/11/0/8/17/1",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_has_a_stem/no_ink": [
+     [
+      "glyph/4/0/2/14/4",
+      "restWhole",
+      []
+     ],
+     [
+      "glyph/6/1/7/0/24",
+      "restHalf",
+      []
+     ]
+    ],
+    "rest_stroke_into_a_head/no_ink": [
+     [
+      "glyph/4/1/0/8/6",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/10/1/5/4/5",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/16/0/0/2/13",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_has_a_stem/owns": [
+     [
+      "glyph/6/0/9/11/2",
+      "restHalf",
+      []
+     ],
+     [
+      "glyph/10/0/1/7/4",
+      "restWhole",
+      []
+     ]
+    ],
+    "rest_stroke_into_a_head/owns": [
+     [
+      "glyph/6/1/1/1/2",
+      "rest8th",
+      []
+     ],
+     [
+      "glyph/6/1/3/10/11",
+      "rest8th",
+      []
+     ],
+     [
+      "glyph/6/1/11/5/2",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/8/1/0/0/21",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/8/1/8/0/16",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/7/8/1",
+      "rest8th",
+      []
+     ],
+     [
+      "glyph/10/1/8/2/3",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/11/0/7/15/0",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/16/1/2/2/7",
+      "rest8th",
+      []
+     ],
+     [
+      "glyph/16/1/6/9/5",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_is_a_barline/owns": [
+     [
+      "glyph/9/1/6/6/2",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/9/1/8/6/7",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_is_a_slashed_stem/owns": [
+     [
+      "glyph/10/1/2/5/3",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_stroke_into_a_head/merged": [
+     [
+      "glyph/10/1/8/14/3",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_is_a_barline/merged": [
+     [
+      "glyph/16/1/3/3/4",
+      "rest16th",
+      []
+     ]
+    ],
+    "on_a_rest/owns": [
+     [
+      "glyph/4/0/8/3/8",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/4/0/8/7/10",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/4/0/10/3/6",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/4/0/10/7/6",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/6/0/0/8/11",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/6/1/7/6/11",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/8/1/3/0/21",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/11/1/8/11/7",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/16/0/0/4/10",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/16/0/2/4/10",
+      "accidentalDoubleSharp",
+      []
+     ]
+    ]
+   },
+   "ownership_only": {
+    "head|contested|old_kept:notehead": 43,
+    "head|refused|old_kept:notehead": 42,
+    "rest|contested|old_kept:rest": 39,
+    "head|refused|old_refused:claimed_by:key_signature": 12,
+    "head|refused|old_refused:claimed_by:clef": 12,
+    "head|contested|old_refused:on_a_dynamic_letter": 11,
+    "head|contested|old_refused:too_narrow": 10,
+    "rest|refused|old_refused:claimed_by:key_signature": 10,
+    "rest|refused|old_refused:rest_is_a_duplicate_box": 5,
+    "rest|contested|old_refused:rest_is_a_duplicate_box": 5,
+    "head|refused|old_refused:clipped_fragment": 4,
+    "head|contested|old_kept:claim_narrowed:clef": 4,
+    "rest|refused|old_kept:rest": 4,
+    "head|contested|old_refused:clipped_fragment": 2,
+    "rest|contested|old_refused:rest_on_a_dynamic_letter": 2,
+    "rest|contested|old_refused:rest_touches_two_staff_lines": 2,
+    "rest|contested|old_kept:claim_narrowed:clef": 2,
+    "head|refused|old_refused:stacked_head_duplicate": 1,
+    "head|refused|old_refused:on_a_dynamic_letter": 1,
+    "head|refused|old_refused:notehead_is_a_duplicate_box": 1,
+    "head|refused|old_refused:too_narrow": 1,
+    "rest|contested|old_refused:rest_outside_its_staff": 1,
+    "rest|contested|old_kept:one_ink_merged": 1,
+    "rest|refused|old_refused:rest_outside_its_staff": 1,
+    "rest|contested|old_refused:rest_clipped_by_crop": 1,
+    "rest|refused|old_kept:one_ink_merged": 1,
+    "rest|refused|old_refused:rest_clipped_by_crop": 1,
+    "rest|contested|old_refused:rest_off_center": 1
+   },
+   "ownership_only_examples": {
+    "head/contested": [
+     [
+      "glyph/2/0/0/2/2",
+      "noteheadBlackOnLine",
+      [
+       [
+        12,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/0/0/11/2",
+      "noteheadBlackInSpace",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/0/12/8",
+      "noteheadBlackInSpace",
+      [
+       [
+        6,
+        "contested",
+        null,
+        "head_lens"
+       ],
+       [
+        13,
+        "decided",
+        "arc",
+        "rung_in_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/1/4/0",
+      "noteheadBlackOnLine",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "head_blob"
+       ],
+       [
+        9,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/3/3/1",
+      "noteheadBlackOnLine",
+      [
+       [
+        5,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/9/10/1",
+      "noteheadBlackOnLine",
+      [
+       [
+        16,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/3/0/8",
+      "noteheadBlackOnLine",
+      [
+       [
+        18,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/7/3/6",
+      "noteheadBlackOnLine",
+      [
+       [
+        1,
+        "decided",
+        "accidental",
+        "not_a_head_piece"
+       ],
+       [
+        2,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/8/2/3",
+      "noteheadBlackInSpace",
+      [
+       [
+        9,
+        "contested",
+        null,
+        "head_blob"
+       ],
+       [
+        10,
+        "decided",
+        "mark",
+        "head_blob"
+       ],
+       [
+        12,
+        "decided",
+        "mark",
+        "head_blob"
+       ],
+       [
+        13,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/1/1",
+      "noteheadBlackOnLine",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "head_blob"
+       ],
+       [
+        10,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/2/3/11",
+      "noteheadBlackInSpace",
+      [
+       [
+        25,
+        "contested",
+        null,
+        "head_lens"
+       ],
+       [
+        26,
+        "decided",
+        "clef",
+        "not_a_head_piece"
+       ],
+       [
+        30,
+        "decided",
+        "clef",
+        "not_a_head_piece"
+       ],
+       [
+        32,
+        "decided",
+        "clef",
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/6/8/0",
+      "noteheadBlackInSpace",
+      [
+       [
+        7,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ]
+    ],
+    "head/refused": [
+     [
+      "glyph/2/0/1/1/5",
+      "noteheadBlackOnLine",
+      [
+       [
+        1,
+        "refused_claims",
+        null,
+        "tremolo_slash_across_a_stem"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/5/12/2",
+      "noteheadBlackOnLine",
+      [
+       [
+        1,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/6/8/1",
+      "noteheadBlackInSpace",
+      [
+       [
+        2,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/8/6/7",
+      "noteheadBlackOnLine",
+      [
+       [
+        14,
+        "decided",
+        "dynamic",
+        "not_a_head_piece"
+       ],
+       [
+        15,
+        "decided",
+        "dynamic",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/10/0/1",
+      "noteheadBlackInSpace",
+      [
+       [
+        32,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/1/10/0/14",
+      "noteheadBlackInSpace",
+      [
+       [
+        39,
+        "decided",
+        "mark",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/0/11/7",
+      "noteheadBlackOnLine",
+      [
+       [
+        13,
+        "merged",
+        "dynamic",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/2/12/3",
+      "noteheadBlackOnLine",
+      [
+       [
+        4,
+        "decided",
+        "accidental",
+        "head_cluster"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/8/11/7",
+      "noteheadBlackOnLine",
+      [
+       [
+        22,
+        "merged",
+        "dynamic",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/11/2",
+      "noteheadBlackInSpace",
+      [
+       [
+        7,
+        "decided",
+        "mark",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/12/14",
+      "noteheadBlackInSpace",
+      [
+       [
+        1,
+        "decided",
+        "rest",
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/1/3/8",
+      "noteheadBlackInSpace",
+      [
+       [
+        9,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ]
+    ],
+    "rest/contested": [
+     [
+      "glyph/2/0/0/11/3",
+      "restWhole",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/2/0/10/11/8",
+      "rest8th",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        2,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        3,
+        "decided",
+        "clef",
+        "rest_stroke"
+       ],
+       [
+        4,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/8/3/7",
+      "rest8th",
+      [
+       [
+        3,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        6,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        7,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/8/7/9",
+      "rest8th",
+      [
+       [
+        6,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        8,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        9,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/10/3/4",
+      "rest8th",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        2,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        3,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/10/7/2",
+      "rest8th",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        2,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        3,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/2/6",
+      "restQuarter",
+      [
+       [
+        9,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        10,
+        "decided",
+        "meter",
+        "rest_stroke"
+       ],
+       [
+        11,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        12,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/6/14/2",
+      "restWhole",
+      [
+       [
+        4,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/6/0/0/8/7",
+      "rest8th",
+      [
+       [
+        1,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        4,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        5,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/6/1/2/5/7",
+      "restWhole",
+      [
+       [
+        6,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/6/1/5/5/1",
+      "restWhole",
+      [
+       [
+        3,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/6/1/7/6/3",
+      "rest8th",
+      [
+       [
+        2,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        3,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        4,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        5,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ]
+    ],
+    "rest/refused": [
+     [
+      "glyph/8/0/5/10/3",
+      "rest32nd",
+      [
+       [
+        1,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        2,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        3,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        4,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ]
+      ]
+     ],
+     [
+      "glyph/9/0/9/6/1",
+      "restWhole",
+      [
+       [
+        5,
+        "refused_claims",
+        null,
+        "not_a_rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/10/0/2/7/1",
+      "restWhole",
+      [
+       [
+        3,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        4,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/11/0/6/14/1",
+      "restQuarter",
+      [
+       [
+        3,
+        "refused_claims",
+        null,
+        "longer_than_a_rest"
+       ]
+      ]
+     ],
+     [
+      "glyph/11/1/7/7/1",
+      "restQuarter",
+      [
+       [
+        8,
+        "refused_claims",
+        null,
+        "longer_than_a_rest"
+       ]
+      ]
+     ]
+    ]
+   }
+  }
+ },
+ "brahms": {
+  "raw": {
+   "strokes": 65084,
+   "boxes=0": 18055,
+   "boxes=1": 36187,
+   "boxes=>=2": 10842,
+   "families>=2": 5878,
+   "claimant_families>=2": 3568
+  },
+  "pairs": {
+   "arc|beam": 1300,
+   "arc|head": 796,
+   "accidental|arc": 481,
+   "arc|rest": 447,
+   "flag|head": 421,
+   "arc|dot": 357,
+   "accidental|rest": 319,
+   "arc|clef": 287,
+   "arc|flag": 263,
+   "accidental|mark": 181,
+   "head|rest": 139,
+   "arc|mark": 131,
+   "head|ledger": 127,
+   "beam|head": 113,
+   "arc|dynamic": 81,
+   "beam|mark": 79,
+   "beam|dot": 73,
+   "beam|clef": 67,
+   "flag|rest": 64,
+   "accidental|beam": 62,
+   "accidental|dynamic": 59,
+   "beam|dynamic": 58,
+   "dot|head": 57,
+   "mark|rest": 55,
+   "dynamic|head": 44,
+   "accidental|head": 43,
+   "flag|ledger": 38,
+   "beam|rest": 34,
+   "accidental|flag": 33,
+   "arc|ledger": 28,
+   "beam|flag": 22,
+   "flag|mark": 22,
+   "dot|dynamic": 19,
+   "clef|meter": 14,
+   "dynamic|mark": 12,
+   "dot|mark": 11,
+   "arc|meter": 10,
+   "accidental|ledger": 10,
+   "head|meter": 9,
+   "dynamic|flag": 9,
+   "beam|ledger": 6,
+   "accidental|meter": 6,
+   "clef|head": 6,
+   "dynamic|rest": 5,
+   "ledger|rest": 4,
+   "flag|stem": 3,
+   "accidental|clef": 3,
+   "beam|meter": 2,
+   "ledger|mark": 2,
+   "dynamic|ledger": 2,
+   "dot|rest": 2,
+   "accidental|dot": 2,
+   "clef|flag": 2,
+   "mark|meter": 2,
+   "arc|stem": 1,
+   "clef|ledger": 1,
+   "head|mark": 1,
+   "beam|stem": 1,
+   "dynamic|stem": 1,
+   "beam|text": 1,
+   "arc|text": 1
+  },
+  "pairs_by_kind": {
+   "arc|head|blob": 615,
+   "arc|beam|horizontal": 609,
+   "arc|beam|blob": 408,
+   "arc|dot|blob": 357,
+   "arc|rest|blob": 326,
+   "arc|beam|curve": 250,
+   "flag|head|blob": 245,
+   "accidental|arc|blob": 240,
+   "accidental|rest|blob": 205,
+   "arc|clef|blob": 181,
+   "flag|head|vertical": 150,
+   "arc|flag|blob": 143,
+   "accidental|arc|vertical": 137,
+   "arc|head|horizontal": 122,
+   "accidental|arc|horizontal": 104,
+   "head|rest|blob": 99,
+   "head|ledger|horizontal": 83,
+   "accidental|mark|vertical": 83,
+   "arc|flag|vertical": 80,
+   "beam|head|blob": 76,
+   "beam|dot|blob": 73,
+   "accidental|mark|blob": 69,
+   "arc|rest|horizontal": 67,
+   "accidental|rest|vertical": 63,
+   "arc|clef|vertical": 59,
+   "arc|mark|blob": 59,
+   "arc|head|vertical": 56,
+   "dot|head|blob": 55,
+   "arc|rest|vertical": 49,
+   "beam|clef|blob": 48,
+   "accidental|rest|horizontal": 48,
+   "arc|dynamic|blob": 47,
+   "arc|clef|horizontal": 46,
+   "head|ledger|blob": 43,
+   "flag|ledger|horizontal": 37,
+   "beam|mark|horizontal": 34,
+   "beam|dynamic|blob": 34,
+   "arc|beam|vertical": 33,
+   "flag|rest|vertical": 33,
+   "beam|mark|curve": 33
+  },
+  "exposure": {
+   "beam_role:beam|covered_by:accidental": 21,
+   "beam_role:beam|covered_by:arc": 42,
+   "beam_role:beam|covered_by:clef": 90,
+   "beam_role:beam|covered_by:dot": 1,
+   "beam_role:beam|covered_by:dynamic": 15,
+   "beam_role:beam|covered_by:head": 217,
+   "beam_role:beam|covered_by:ledger": 7,
+   "beam_role:beam|covered_by:mark": 4,
+   "beam_role:beam|covered_by:meter": 9,
+   "beam_role:beam|covered_by:rest": 2,
+   "beam_role:beam|covered_by:text": 1,
+   "beam_role:beam|covered_by_claimant": 363,
+   "beam_role:beam|partly_covered_by_claimant": 27,
+   "beam_role:beam|total": 659,
+   "beam_role:beam_stub|covered_by:accidental": 11,
+   "beam_role:beam_stub|covered_by:arc": 40,
+   "beam_role:beam_stub|covered_by:clef": 3,
+   "beam_role:beam_stub|covered_by:dynamic": 4,
+   "beam_role:beam_stub|covered_by:head": 864,
+   "beam_role:beam_stub|covered_by:ledger": 26,
+   "beam_role:beam_stub|covered_by:mark": 1,
+   "beam_role:beam_stub|covered_by:meter": 1,
+   "beam_role:beam_stub|covered_by:rest": 153,
+   "beam_role:beam_stub|covered_by_claimant": 1031,
+   "beam_role:beam_stub|partly_covered_by_claimant": 2,
+   "beam_role:beam_stub|total": 1082,
+   "beam_role:hook|covered_by:accidental": 618,
+   "beam_role:hook|covered_by:arc": 175,
+   "beam_role:hook|covered_by:clef": 218,
+   "beam_role:hook|covered_by:dot": 1,
+   "beam_role:hook|covered_by:dynamic": 410,
+   "beam_role:hook|covered_by:head": 313,
+   "beam_role:hook|covered_by:ledger": 2,
+   "beam_role:hook|covered_by:mark": 21,
+   "beam_role:hook|covered_by:meter": 2,
+   "beam_role:hook|covered_by:rest": 814,
+   "beam_role:hook|covered_by_claimant": 2379,
+   "beam_role:hook|partly_covered_by_claimant": 25,
+   "beam_role:hook|total": 2866,
+   "beam_role:hook_or_stub|covered_by:accidental": 16,
+   "beam_role:hook_or_stub|covered_by:arc": 106,
+   "beam_role:hook_or_stub|covered_by:clef": 11,
+   "beam_role:hook_or_stub|covered_by:dynamic": 67,
+   "beam_role:hook_or_stub|covered_by:head": 83,
+   "beam_role:hook_or_stub|covered_by:ledger": 556,
+   "beam_role:hook_or_stub|covered_by:mark": 13,
+   "beam_role:hook_or_stub|covered_by:rest": 2,
+   "beam_role:hook_or_stub|covered_by_claimant": 789,
+   "beam_role:hook_or_stub|partly_covered_by_claimant": 36,
+   "beam_role:hook_or_stub|total": 1154,
+   "finder_stem|covered_by:accidental": 158,
+   "finder_stem|covered_by:arc": 207,
+   "finder_stem|covered_by:clef": 2,
+   "finder_stem|covered_by:dynamic": 51,
+   "finder_stem|covered_by:head": 227,
+   "finder_stem|covered_by:mark": 93,
+   "finder_stem|covered_by:rest": 23,
+   "finder_stem|covered_by_claimant": 712,
+   "finder_stem|partly_covered_by_claimant": 3108,
+   "finder_stem|total": 4568
+  },
+  "own_states": {
+   "decided": 31118,
+   "unclaimed": 22240,
+   "merged": 7380,
+   "finder_stem:unclaimed": 3819,
+   "refused_claims": 3678,
+   "beam_role_claimed:beam_stub:head": 858,
+   "beam_role_claimed:hook:rest": 724,
+   "contested": 668,
+   "finder_stem:refused_claims": 503,
+   "beam_role_claimed:hook_or_stub:ledger": 459,
+   "beam_role_claimed:hook:accidental": 439,
+   "beam_role_claimed:hook:dynamic": 400,
+   "beam_role_claimed:hook:head": 257,
+   "beam_role_claimed:hook:clef": 219,
+   "beam_role_claimed:beam:head": 197,
+   "finder_stem:accidental": 150,
+   "beam_role_claimed:hook:key_signature": 146,
+   "beam_role_claimed:beam_stub:rest": 133,
+   "beam_role_claimed:hook:arc": 121,
+   "beam_role_claimed:beam:clef": 94,
+   "beam_role_claimed:hook_or_stub:arc": 93,
+   "beam_role_claimed:hook_or_stub:dynamic": 62,
+   "beam_role_claimed:hook:contested": 54,
+   "beam_role_claimed:hook_or_stub:head": 47,
+   "finder_stem:dynamic": 46,
+   "beam_role_claimed:hook:leading_column": 29,
+   "beam_role_claimed:beam:accidental": 25,
+   "finder_stem:key_signature": 22,
+   "beam_role_claimed:hook_or_stub:contested": 15,
+   "finder_stem:clef": 14,
+   "beam_role_claimed:hook:mark": 13,
+   "beam_role_claimed:hook_or_stub:clef": 11,
+   "beam_role_claimed:hook_or_stub:mark": 11,
+   "beam_role_claimed:beam_stub:accidental": 11,
+   "beam_role_claimed:beam:meter": 10,
+   "beam_role_claimed:beam:dynamic": 9,
+   "finder_stem:rest": 7,
+   "finder_stem:meter": 4,
+   "beam_role_claimed:hook_or_stub:accidental": 4,
+   "beam_role_claimed:hook:meter": 3,
+   "beam_role_claimed:hook_or_stub:leading_column": 3,
+   "beam_role_claimed:beam_stub:leading_column": 3,
+   "finder_stem:leading_column": 3,
+   "beam_role_claimed:beam:contested": 2,
+   "beam_role_claimed:beam_stub:clef": 2,
+   "beam_role_claimed:hook:ledger": 2,
+   "beam_role_claimed:beam_stub:dynamic": 2,
+   "beam_role_claimed:beam_stub:contested": 2,
+   "beam_role_claimed:beam_stub:meter": 1,
+   "beam_role_claimed:beam:rest": 1,
+   "beam_role_claimed:hook_or_stub:rest": 1,
+   "beam_role_claimed:hook_or_stub:key_signature": 1
+  },
+  "owned_by_family": {
+   "rest": 7853,
+   "head": 7147,
+   "accidental": 5261,
+   "dynamic": 4532,
+   "clef": 3658,
+   "arc": 2957,
+   "dot": 2241,
+   "mark": 1513,
+   "leading_column": 1192,
+   "key_signature": 1020,
+   "ledger": 861,
+   "meter": 234,
+   "text": 28,
+   "hairpin": 1
+  },
+  "contested_pairs": {
+   "accidental|rest|blob": 190,
+   "accidental|arc|horizontal": 79,
+   "accidental|mark|blob": 57,
+   "arc|clef|horizontal": 36,
+   "head|ledger|blob": 34,
+   "head|rest|blob": 32,
+   "accidental|dynamic|blob": 25,
+   "mark|rest|blob": 22,
+   "dot|head|blob": 17,
+   "arc|rest|horizontal": 16,
+   "arc|head|horizontal": 11,
+   "accidental|head|blob": 11,
+   "dot|mark|blob": 11,
+   "clef|key_signature|blob": 10,
+   "dot|dynamic|blob": 10,
+   "dynamic|head|horizontal": 9,
+   "accidental|mark|rest|blob": 9,
+   "arc|ledger|horizontal": 6,
+   "dot|dynamic|horizontal": 6,
+   "dynamic|mark|blob": 6,
+   "clef|meter|vertical": 6,
+   "mark|rest|horizontal": 5,
+   "accidental|arc|rest|horizontal": 4,
+   "clef|meter|horizontal": 4,
+   "head|rest|horizontal": 4,
+   "accidental|rest|curve": 3,
+   "dynamic|mark|horizontal": 3,
+   "clef|meter|blob": 3,
+   "accidental|dynamic|horizontal": 3,
+   "accidental|key_signature|meter|vertical": 3,
+   "head|meter|horizontal": 2,
+   "accidental|clef|blob": 2,
+   "clef|leading_column|blob": 2,
+   "clef|head|horizontal": 2,
+   "clef|head|blob": 2,
+   "dot|rest|blob": 2,
+   "accidental|dot|blob": 2,
+   "accidental|arc|mark|horizontal": 2,
+   "clef|ledger|horizontal": 1,
+   "arc|meter|horizontal": 1,
+   "accidental|meter|vertical": 1,
+   "clef|leading_column|horizontal": 1,
+   "head|mark|blob": 1,
+   "clef|key_signature|meter|blob": 1,
+   "dynamic|head|blob": 1,
+   "accidental|key_signature|meter|blob": 1,
+   "dynamic|head|rest|blob": 1,
+   "dynamic|rest|blob": 1,
+   "accidental|head|rest|blob": 1,
+   "accidental|clef|vertical": 1,
+   "accidental|ledger|horizontal": 1,
+   "accidental|arc|head|horizontal": 1,
+   "accidental|ledger|rest|blob": 1,
+   "accidental|key_signature|mark|meter|blob": 1,
+   "arc|clef|curve": 1
+  },
+  "refused_claims": {
+   "arc:not_an_arc_piece:blob": 2532,
+   "head:not_a_head_piece:vertical": 1020,
+   "arc:not_an_arc_piece:vertical": 439,
+   "mark:not_a_small_mark:vertical": 139,
+   "ledger:not_a_rung:horizontal": 104,
+   "rest:rest_ink_runs_into_a_head:vertical": 100,
+   "arc:not_an_arc_piece:horizontal": 50,
+   "head:not_a_head_piece:horizontal": 38,
+   "accidental:longer_than_an_acc_stem:vertical": 31,
+   "rest:rest_ink_runs_into_a_head:blob": 26,
+   "dynamic:longer_than_a_letter:horizontal": 26,
+   "rest:block_rest_has_no_vertical:vertical": 23,
+   "rest:rest_ink_runs_into_a_head:horizontal": 19,
+   "rest:not_a_rest_block:horizontal": 14,
+   "dynamic:longer_than_a_letter:vertical": 12,
+   "head:tremolo_slash_across_a_stem:horizontal": 7,
+   "head:not_a_head_piece:blob": 5,
+   "rest:longer_than_a_rest:vertical": 5,
+   "head:not_a_head_piece:curve": 4,
+   "rest:not_a_rest_block:blob": 4,
+   "mark:not_a_small_mark:blob": 3,
+   "dot:not_a_small_mark:vertical": 3,
+   "mark:not_a_small_mark:horizontal": 2,
+   "rest:rest_ink_runs_into_a_head:curve": 1,
+   "text:longer_than_a_letter:horizontal": 1,
+   "ledger:not_a_rung:vertical": 1
+  },
+  "parity": {
+   "table": {
+    "head_cut_piece|owns": 7,
+    "is_a_beam_piece|owns": 1,
+    "is_a_beam_piece|refused": 2,
+    "is_a_rest_twin|contested": 8,
+    "is_a_rest_twin|merged": 1,
+    "is_a_rest_twin|owns": 6,
+    "is_a_rest_twin|refused": 6,
+    "on_a_rest|contested": 5,
+    "on_a_rest|merged": 2,
+    "on_a_rest|owns": 56,
+    "rest_has_a_stem|contested": 1,
+    "rest_has_a_stem|no_ink": 1,
+    "rest_has_a_stem|owns": 1,
+    "rest_has_a_stem|refused": 10,
+    "rest_is_a_barline|no_ink": 16,
+    "rest_is_a_barline|refused": 3,
+    "rest_is_a_duplicate_box:different_class|merged": 4,
+    "rest_is_a_duplicate_box:different_class|owns": 3,
+    "rest_is_a_duplicate_box:different_class|refused": 1,
+    "rest_stroke_into_a_head|no_ink": 6,
+    "rest_stroke_into_a_head|owns": 11,
+    "rest_stroke_into_a_head|refused": 24,
+    "tremolo_slash_crosses_stem|merged": 10,
+    "tremolo_slash_crosses_stem|owns": 36,
+    "tremolo_slash_crosses_stem|refused": 1
+   },
+   "differences_n": {
+    "tremolo_slash_crosses_stem/owns": 36,
+    "head_cut_piece/owns": 7,
+    "tremolo_slash_crosses_stem/merged": 10,
+    "is_a_beam_piece/owns": 1,
+    "is_a_rest_twin/owns": 6,
+    "on_a_rest/owns": 56,
+    "is_a_rest_twin/merged": 1,
+    "rest_has_a_stem/owns": 1,
+    "rest_stroke_into_a_head/owns": 11,
+    "rest_is_a_barline/no_ink": 16,
+    "rest_is_a_duplicate_box:different_class/merged": 4,
+    "rest_is_a_duplicate_box:different_class/owns": 3,
+    "rest_has_a_stem/no_ink": 1,
+    "rest_stroke_into_a_head/no_ink": 6,
+    "on_a_rest/merged": 2
+   },
+   "differences_examples": {
+    "tremolo_slash_crosses_stem/owns": [
+     [
+      "glyph/0/0/0/6/4",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/1/6/1",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/3/6/4",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/4/1/6",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/0/0/4/2/4",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/4/4/7",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/8/1/3",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/8/5/4",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/0/0/13/6/14",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/4/0/10/10/10",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/5/1/11/2/3",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/8/0/5",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "head_cut_piece/owns": [
+     [
+      "glyph/0/0/4/3/7",
+      "noteheadHalfInSpace",
+      []
+     ],
+     [
+      "glyph/0/0/5/2/17",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/0/0/5/3/15",
+      "noteheadHalfInSpace",
+      []
+     ],
+     [
+      "glyph/0/0/5/6/13",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/8/0/2/0/12",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/5/4/11",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/25/1/0/8/9",
+      "noteheadWholeInSpace",
+      []
+     ]
+    ],
+    "tremolo_slash_crosses_stem/merged": [
+     [
+      "glyph/0/0/8/5/5",
+      "noteheadHalfOnLine",
+      []
+     ],
+     [
+      "glyph/8/0/8/1/3",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/8/2/5",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/8/2/10",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/8/8/9",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/10/4/5",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/10/4/6",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/10/6/2",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/10/6/7",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/12/0/11/5/4",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "is_a_beam_piece/owns": [
+     [
+      "glyph/0/0/10/1/16",
+      "noteheadBlackOnLine",
+      []
+     ]
+    ],
+    "is_a_rest_twin/owns": [
+     [
+      "glyph/5/1/1/7/12",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/5/1/11/8/18",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/1/2/19",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/8/0/3/9/6",
+      "noteheadBlackInSpace",
+      []
+     ],
+     [
+      "glyph/14/0/10/4/16",
+      "noteheadBlackOnLine",
+      []
+     ],
+     [
+      "glyph/25/0/8/2/17",
+      "noteheadWholeOnLine",
+      []
+     ]
+    ],
+    "on_a_rest/owns": [
+     [
+      "glyph/5/1/7/1/9",
+      "noteheadWholeOnLine",
+      []
+     ],
+     [
+      "glyph/5/1/7/2/6",
+      "noteheadWholeInSpace",
+      []
+     ],
+     [
+      "glyph/8/1/8/10/15",
+      "noteheadWholeInSpace",
+      []
+     ],
+     [
+      "glyph/8/1/8/11/11",
+      "noteheadWholeInSpace",
+      []
+     ],
+     [
+      "glyph/14/0/6/1/8",
+      "noteheadWholeOnLine",
+      []
+     ],
+     [
+      "glyph/14/0/9/0/13",
+      "noteheadWholeOnLine",
+      []
+     ],
+     [
+      "glyph/19/0/2/10/10",
+      "noteheadWholeOnLine",
+      []
+     ],
+     [
+      "glyph/4/0/12/0/20",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/4/1/0/7/17",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/5/0/1/3/11",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/5/0/3/1/12",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/5/0/3/3/10",
+      "accidentalDoubleSharp",
+      []
+     ]
+    ],
+    "is_a_rest_twin/merged": [
+     [
+      "glyph/19/0/3/10/24",
+      "noteheadBlackInSpace",
+      []
+     ]
+    ],
+    "rest_has_a_stem/owns": [
+     [
+      "glyph/0/0/4/5/5",
+      "restWhole",
+      []
+     ]
+    ],
+    "rest_stroke_into_a_head/owns": [
+     [
+      "glyph/4/1/1/2/16",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/5/0/11/7/15",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/8/1/7/3/8",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/12/0/2/9/0",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/0/4/6/12",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/0/13/1/9",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/0/13/3/6",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/0/12/6/14",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/1/3/2/19",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/1/7/3/13",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/1/10/3/17",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_is_a_barline/no_ink": [
+     [
+      "glyph/4/1/6/7/10",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/4/1/8/0/25",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/5/0/4/6/12",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/5/0/9/3/14",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/8/1/2/3/5",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/12/1/13/4/4",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/12/1/13/7/15",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/14/0/8/4/7",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/14/1/6/0/22",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/0/8/1/11",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/0/13/3/11",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/1/1/7/22",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_is_a_duplicate_box:different_class/merged": [
+     [
+      "glyph/5/1/4/3/1",
+      "restWhole",
+      []
+     ],
+     [
+      "glyph/5/1/4/3/3",
+      "restWhole",
+      []
+     ],
+     [
+      "glyph/5/1/4/3/4",
+      "restHBar",
+      []
+     ],
+     [
+      "glyph/5/1/4/3/6",
+      "restHBar",
+      []
+     ]
+    ],
+    "rest_is_a_duplicate_box:different_class/owns": [
+     [
+      "glyph/5/1/13/2/1",
+      "rest8th",
+      []
+     ],
+     [
+      "glyph/5/1/13/2/11",
+      "restHBar",
+      []
+     ],
+     [
+      "glyph/19/0/10/5/12",
+      "restQuarter",
+      []
+     ]
+    ],
+    "rest_has_a_stem/no_ink": [
+     [
+      "glyph/8/0/2/6/13",
+      "restWhole",
+      []
+     ]
+    ],
+    "rest_stroke_into_a_head/no_ink": [
+     [
+      "glyph/8/0/5/4/12",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/14/0/5/3/10",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/1/0/2/19",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/19/1/9/1/9",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/1/0/1/20",
+      "restQuarter",
+      []
+     ],
+     [
+      "glyph/25/1/9/0/34",
+      "restQuarter",
+      []
+     ]
+    ],
+    "on_a_rest/merged": [
+     [
+      "glyph/14/0/6/4/7",
+      "accidentalDoubleSharp",
+      []
+     ],
+     [
+      "glyph/14/0/6/4/13",
+      "accidentalDoubleSharp",
+      []
+     ]
+    ]
+   },
+   "ownership_only": {
+    "rest|contested|old_kept:rest": 79,
+    "head|refused|old_refused:too_narrow": 46,
+    "head|refused|old_kept:notehead": 45,
+    "head|contested|old_refused:too_narrow": 44,
+    "head|contested|old_kept:notehead": 30,
+    "head|refused|old_refused:claimed_by:leading_column": 13,
+    "rest|refused|old_refused:rest_clipped_by_crop": 13,
+    "rest|refused|old_kept:rest": 13,
+    "head|refused|old_refused:claimed_by:meter": 12,
+    "head|refused|old_refused:clipped_fragment": 6,
+    "rest|refused|old_refused:claimed_by:key_signature": 6,
+    "rest|contested|old_refused:rest_clipped_by_crop": 6,
+    "rest|refused|old_refused:rest_outside_its_staff": 4,
+    "head|refused|old_refused:claimed_by:clef": 3,
+    "rest|refused|old_refused:rest_is_a_duplicate_box": 3,
+    "rest|contested|old_refused:rest_is_a_duplicate_box": 3,
+    "head|refused|old_refused:on_a_read_meter": 2,
+    "head|contested|old_kept:claim_narrowed:clef": 2,
+    "head|refused|old_refused:belongs_to_a_nearer_staff": 2,
+    "head|contested|old_refused:on_a_dynamic_letter": 2,
+    "head|contested|old_refused:on_a_read_meter": 1,
+    "head|contested|old_refused:claimed_by:meter": 1,
+    "head|contested|old_refused:claimed_by:clef": 1,
+    "head|refused|old_refused:is_a_dot": 1,
+    "head|contested|old_refused:is_an_arc_tail": 1,
+    "head|refused|old_refused:notehead_is_a_duplicate_box": 1,
+    "head|refused|old_kept:claim_narrowed:clef": 1,
+    "head|contested|old_refused:stacked_head_duplicate": 1,
+    "rest|contested|old_refused:rest_off_center": 1,
+    "rest|refused|old_refused:claimed_by:leading_column": 1,
+    "rest|contested|old_refused:rest_outside_its_staff": 1
+   },
+   "ownership_only_examples": {
+    "head/contested": [
+     [
+      "glyph/0/0/0/1/8",
+      "noteheadBlackOnLine",
+      [
+       [
+        25,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/0/2/5",
+      "noteheadBlackOnLine",
+      [
+       [
+        14,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/0/3/5",
+      "noteheadBlackOnLine",
+      [
+       [
+        18,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/0/3/6",
+      "noteheadBlackOnLine",
+      [
+       [
+        19,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/1/5/4",
+      "noteheadBlackInSpace",
+      [
+       [
+        16,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/10/1/6",
+      "noteheadBlackOnLine",
+      [
+       [
+        10,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/10/8/19",
+      "noteheadBlackInSpace",
+      [
+       [
+        26,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/3/0/27",
+      "noteheadBlackInSpace",
+      [
+       [
+        96,
+        "contested",
+        null,
+        "head_blob"
+       ],
+       [
+        99,
+        "decided",
+        "accidental",
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/9/3/4",
+      "noteheadBlackOnLine",
+      [
+       [
+        25,
+        "contested",
+        null,
+        "head_blob"
+       ],
+       [
+        32,
+        "decided",
+        "accidental",
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/11/3/13",
+      "noteheadBlackInSpace",
+      [
+       [
+        58,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/2/1/6",
+      "noteheadBlackInSpace",
+      [
+       [
+        2,
+        "contested",
+        null,
+        "head_blob"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/3/0/30",
+      "noteheadBlackOnLine",
+      [
+       [
+        51,
+        "contested",
+        null,
+        "head_lens"
+       ]
+      ]
+     ]
+    ],
+    "head/refused": [
+     [
+      "glyph/0/0/9/4/7",
+      "noteheadBlackInSpace",
+      [
+       [
+        25,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/0/0/10/3/5",
+      "noteheadBlackInSpace",
+      [
+       [
+        8,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/0/8/8",
+      "noteheadBlackInSpace",
+      [
+       [
+        7,
+        "decided",
+        "accidental",
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/12/9/1",
+      "noteheadBlackInSpace",
+      [
+       [
+        8,
+        "decided",
+        "arc",
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/3/3",
+      "noteheadBlackInSpace",
+      [
+       [
+        2,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/4/2",
+      "noteheadBlackInSpace",
+      [
+       [
+        3,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/12/0/3",
+      "noteheadBlackInSpace",
+      [
+       [
+        66,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/12/1/3",
+      "noteheadBlackInSpace",
+      [
+       [
+        24,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/0/0/13",
+      "noteheadBlackOnLine",
+      [
+       [
+        91,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/0/2/1",
+      "noteheadBlackInSpace",
+      [
+       [
+        4,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/2/3/2",
+      "noteheadBlackInSpace",
+      [
+       [
+        18,
+        "refused_claims",
+        null,
+        "not_a_head_piece"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/2/4/1",
+      "noteheadBlackInSpace",
+      [
+       [
+        6,
+        "decided",
+        "accidental",
+        "not_a_head_piece"
+       ]
+      ]
+     ]
+    ],
+    "rest/contested": [
+     [
+      "glyph/4/0/0/2/10",
+      "rest8th",
+      [
+       [
+        21,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        22,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/2/2/14",
+      "rest8th",
+      [
+       [
+        23,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        24,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        25,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        26,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/3/4/23",
+      "rest8th",
+      [
+       [
+        12,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        13,
+        "contested",
+        null,
+        "rest_curve"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/4/2/0",
+      "restWhole",
+      [
+       [
+        6,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/5/3/1",
+      "restWhole",
+      [
+       [
+        3,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/0/12/0/24",
+      "rest8th",
+      [
+       [
+        31,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        32,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        33,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/0/7/8",
+      "rest8th",
+      [
+       [
+        12,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        13,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        14,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        15,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/4/1/7/2/0",
+      "restWhole",
+      [
+       [
+        8,
+        "contested",
+        null,
+        "rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/1/3/0",
+      "rest8th",
+      [
+       [
+        7,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        8,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        9,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        10,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/3/1/14",
+      "rest8th",
+      [
+       [
+        8,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        9,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        10,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/3/3/0",
+      "rest8th",
+      [
+       [
+        8,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        9,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        10,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ],
+       [
+        11,
+        "contested",
+        null,
+        "rest_body"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/7/7/5",
+      "rest8th",
+      [
+       [
+        14,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        15,
+        "decided",
+        "accidental",
+        "rest_block"
+       ],
+       [
+        16,
+        "contested",
+        null,
+        "rest_body"
+       ],
+       [
+        17,
+        "decided",
+        "accidental",
+        "rest_stroke"
+       ]
+      ]
+     ]
+    ],
+    "rest/refused": [
+     [
+      "glyph/4/1/1/8/0",
+      "rest8th",
+      [
+       [
+        15,
+        "decided",
+        "arc",
+        "rest_curve"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/0/13/2/10",
+      "restQuarter",
+      [
+       [
+        6,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        7,
+        "decided",
+        "arc",
+        "rest_curve"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/1/7/9",
+      "rest8th",
+      [
+       [
+        34,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        35,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        36,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        37,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/2/7/15",
+      "restQuarter",
+      [
+       [
+        18,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/3/2/13",
+      "restWhole",
+      [
+       [
+        17,
+        "decided",
+        "head",
+        "not_a_rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/5/1/6/1/3",
+      "restWhole",
+      [
+       [
+        6,
+        "refused_claims",
+        null,
+        "not_a_rest_block"
+       ]
+      ]
+     ],
+     [
+      "glyph/8/0/1/2/21",
+      "rest8th",
+      [
+       [
+        34,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        35,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        36,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        37,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/8/0/9/4/13",
+      "restQuarter",
+      [
+       [
+        10,
+        "refused_claims",
+        null,
+        "longer_than_a_rest"
+       ]
+      ]
+     ],
+     [
+      "glyph/8/1/5/9/0",
+      "restWhole",
+      [
+       [
+        1,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        2,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        3,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        4,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/14/0/0/6/15",
+      "rest8th",
+      [
+       [
+        20,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        21,
+        "decided",
+        "arc",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        22,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        23,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/14/0/5/6/4",
+      "rest8th",
+      [
+       [
+        23,
+        "decided",
+        "head",
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        24,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ],
+       [
+        25,
+        "refused_claims",
+        null,
+        "rest_ink_runs_into_a_head"
+       ]
+      ]
+     ],
+     [
+      "glyph/25/0/1/6/0",
+      "restWhole",
+      [
+       [
+        1,
+        "refused_claims",
+        null,
+        "not_a_rest_block"
+       ]
+      ]
+     ]
+    ]
+   }
+  }
+ }
+}

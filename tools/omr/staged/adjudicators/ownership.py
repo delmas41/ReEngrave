@@ -352,21 +352,36 @@ def _stem_owner(ev: Evidence, cand_keys: Sequence[Optional[str]]):
     It does not decide against a ledger witness: `adjudicate_glyph_owner`
     abstains (`stem_disagrees`) where the two name different staves.
     """
-    rows = ev.rows(Q.HEAD_STEM_REACH)
-    if not rows:
-        return None
-    row = rows[-1]
-    way = row.value
-    if way not in ("down", "up"):
-        return None
-    det = row.detail or {}
-    tip = det.get(f"{way}_tip_y")
-    box = det.get("head_box_page")
+    # ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`): the ruler is RETIRED -- the stem is the vertical stroke the head's blob touches on the
+    # engraving side, read off the stroke map (`rhythm.stem_reach_equivalent`); with the flag on `Q.HEAD_STEM_REACH` is not read.
+    from . import rhythm as _rhythm
+    if _rhythm.stems_from_strokes_enabled():
+        # ROADMAP 2.205 (`OMR_STROKE_OWNER`): a stroke another mark owns is never this head's stem
+        so_cell = ev.subject.at(Kind.CELL)
+        so_mask = _rhythm._owner_mask(ev.verdict(Q.STROKE_OWNER, subject=so_cell)) if _rhythm._owner_on() else {}
+        eq = _rhythm.stem_reach_equivalent(ev, ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=so_cell), so_mask)
+        if eq is None:
+            return None
+        way, tip, box = eq["way"], eq["tip_y_page"], eq["head_box_page"]
+        det = {f"{way}_ext": eq["ext"]}
+        used_rows = list(eq["rows"])
+    else:
+        rows = ev.rows(Q.HEAD_STEM_REACH)
+        if not rows:
+            return None
+        row = rows[-1]
+        way = row.value
+        if way not in ("down", "up"):
+            return None
+        det = row.detail or {}
+        tip = det.get(f"{way}_tip_y")
+        box = det.get("head_box_page")
+        used_rows = [row.id]
     if tip is None or not box or len(box) != 4:
         return None
     cy = (float(box[1]) + float(box[3])) / 2.0
     sign = 1.0 if way == "down" else -1.0
-    pointed, per, used = [], {}, [row.id]
+    pointed, per, used = [], {}, used_rows
     for k in cand_keys:
         if k is None:
             continue
@@ -604,7 +619,7 @@ def _owner_from_staves(ev: Evidence):
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
                    Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW,
-                   Q.HEAD_STEM_REACH),
+                   Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
     # look toward each candidate staff, read AHEAD of distance and of the older
@@ -614,7 +629,7 @@ def _owner_from_staves(ev: Evidence):
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
            Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT,
-           Q.STAFF_SKEW, Q.HEAD_STEM_REACH),
+           Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
     reasons=("human_owner", "staff_band", "staff_band_no_box",
              "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
              "stem_toward_staff", "stem_disagrees",

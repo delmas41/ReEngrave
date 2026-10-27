@@ -1,0 +1,23 @@
+  gather litolff off pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather litolff on pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather brahms off pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+  gather brahms on pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_STROKE_OWNER (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py, staged/beam_strokes.py, staged/gather.py ... -> GATHER
+  OMR_STROKE_OWNER: read in staged/adjudicate.py, staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py ... -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5029 notes+rests OFF, 5029 ON, 5029 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 2563 -> 2563
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6519 notes+rests OFF, 6519 ON, 6519 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 166 -> 166 | notes not written 3202 -> 3202
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 1 (0 from the changes, 1 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 7845 s
+exit 0
