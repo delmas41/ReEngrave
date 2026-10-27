@@ -1265,7 +1265,8 @@ def _twin_head_centres(c: Any, dets: Sequence[Any], top_y: float, half_step: flo
         mem = [idx[i] for i in grp]
         pbox = [((bbox[0] + boxes[i][0] / up), (bbox[1] + boxes[i][1] / up), boxes[i][2] / up, boxes[i][3] / up)
                 for i in grp]
-        r = _tw.group_centre(page_binary, pbox, space / up)
+        hollow = any(str(dets[gi].smufl_name).startswith(("noteheadHalf", "noteheadWhole")) for gi in mem)
+        r = _tw.group_centre(page_binary, pbox, space / up, hollow_possible=hollow)
         keys = [R.glyph(cell_sub.page, cell_sub.system, cell_sub.staff, cell_sub.cell, gi).to_key() for gi in mem]
         if r.get("reason"):
             for gi in mem:

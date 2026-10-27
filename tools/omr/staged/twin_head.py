@@ -156,14 +156,18 @@ def head_ink_centre(raw: Any, cx: float, cy: float, spacing: float) -> Optional[
     return out
 
 
-def group_centre(raw: Any, boxes: Sequence[Tuple[float, float, float, float]], spacing: float) -> Dict[str, Any]:
+def group_centre(raw: Any, boxes: Sequence[Tuple[float, float, float, float]], spacing: float,
+                 hollow_possible: bool = True) -> Dict[str, Any]:
     """ONE vertical centre for the head these `boxes` (one group of `twin_groups`) all draw, in the raster's frame.
 
     HOLLOW head: the area-weighted centre of the enclosed white regions inside the group's union box (a line through the
     head splits its hole in two; both halves count) -- the hole is the head's own centre however the detector drew the
     box, and a stray black cap or slur above the ring cannot pull it (`head_ink_centre`'s centroid IS pulled by one; the
     two Litolff heads Sean read, FINDINGS 3). FILLED head (no hole of that size): `head_ink_centre`'s centroid. Neither:
-    `{"reason": ...}` and the caller leaves every member's own position as it is (cannot tell, rule 8).
+    `{"reason": ...}` and the caller leaves every member's own position as it is (cannot tell, rule 8). `hollow_possible` is
+    False for a group whose every box is black-class: a black head has no hole, and any enclosed white region near it (between a
+    beam and a head, in a neighbouring mark) is not its centre (2.212's first frozen-sample run: two black groups placed by such
+    a "hole" moved a space and lost their fill reading), so only the ink answers there.
     Returns `{"cy", "cx", "by": "hole"|"ink", "holes", "reason": None}` or `{"reason": ...}`."""
     import numpy as np
     from . import gather as G
@@ -176,8 +180,9 @@ def group_centre(raw: Any, boxes: Sequence[Tuple[float, float, float, float]], s
     x1 = max(b[0] + b[2] for b in boxes) + TWIN_HOLE_PAD_SPACES[0] * spacing
     y0 = min(b[1] for b in boxes) - TWIN_HOLE_PAD_SPACES[1] * spacing
     y1 = max(b[1] + b[3] for b in boxes) + TWIN_HOLE_PAD_SPACES[1] * spacing
-    holes = [h for h in G._enclosed_holes(ink, x0, y0, x1, y1)
+    holes = [h for h in (G._enclosed_holes(ink, x0, y0, x1, y1) if hollow_possible else [])
              if TWIN_HOLE_AREA_SPACES2[0] <= h["area"] / (spacing * spacing) <= TWIN_HOLE_AREA_SPACES2[1]
+             and h["w"] <= G.HEAD_CUT_HOLE_MAX_WIDTH_SPACES * spacing and h["h"] <= G.HEAD_CUT_HOLE_MAX_HEIGHT_SPACES * spacing
              and abs(h["cy"] - mean_cy) <= TWIN_MAX_SHIFT_SPACES * spacing
              and abs(h["cx"] - mean_cx) <= TWIN_MAX_SHIFT_SPACES * 2.0 * spacing]
     if holes:

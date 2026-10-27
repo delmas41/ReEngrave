@@ -78,6 +78,18 @@ class TestGroupCentre(unittest.TestCase):
         self.assertEqual(r["by"], "ink")
         self.assertAlmostEqual(r["cy"], 170.0, delta=0.1 * S)
 
+    def test_CONTROL_a_black_only_group_is_never_placed_by_a_hole(self):
+        """The first frozen-sample run: two black groups were placed by a white gap near them (not a head's hole) and moved
+        a space. `hollow_possible=False` (every box black-class) leaves only the ink."""
+        img = _paper()
+        _ring_head(img, 150.0, 170.0, ink_fill=True)
+        img[142:154, 120:180] = 0                                       # a bar over the head's top ...
+        img[146:152, 142:158] = 255                                     # ... with an enclosed white speck inside it
+        boxes = [_box(150, 165), _box(150, 175)]
+        self.assertEqual(TW.group_centre(img, boxes, S, hollow_possible=True)["by"], "hole")   # the control: it can fire
+        r = TW.group_centre(img, boxes, S, hollow_possible=False)
+        self.assertNotEqual(r.get("by"), "hole")
+
     def test_CONTROL_blank_paper_places_nothing(self):
         r = TW.group_centre(_paper(), [_box(150, 160), _box(150, 175)], S)
         self.assertIsNotNone(r["reason"])
