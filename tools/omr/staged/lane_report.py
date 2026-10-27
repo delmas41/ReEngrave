@@ -332,6 +332,28 @@ def glyph_boxes(observations: Iterable[dict]) -> Dict[str, dict]:
     return out
 
 
+def own_direction_box(d: dict, boxes: Dict[str, dict]) -> Optional[list]:
+    """ROADMAP 2.215: the box of a direction's OWN ink, not its host note's (2.213 tiles 1, 2, 3, 9, 11 boxed a note and
+    never showed the change). A dynamic is the union of the `dynamic*` glyphs of the host's cell whose letters spell its
+    value; our own bar-check words ("does not add up...") have no ink on the page, so no box (no tile); other words
+    have no glyph of their own in the record, so the host box stands and the item is marked `box_is_host`."""
+    if d.get("kind") == "words" and str(d.get("value", "")).startswith("does not add up"):
+        d["no_ink"] = True
+        return None
+    rg = d.get("rg") or ""
+    if d.get("kind") == "dynamic":
+        pre = "/".join(rg.split("/")[:5]) + "/"
+        want = str(d.get("value", "")).lower()
+        got = [b for k, b in boxes.items() if k.startswith(pre) and (b.get("cls") or "").startswith("dynamic")
+               and (b["cls"][7:].lower() in want) and b["page"] == d.get("page")]
+        if got and "".join(sorted(b["cls"][7:].lower() for b in got)) == "".join(sorted(want)):
+            return [min(b["box"][0] for b in got), min(b["box"][1] for b in got),
+                    max(b["box"][2] for b in got), max(b["box"][3] for b in got)]
+    if d.get("kind") in ("words", "dynamic"):
+        d["box_is_host"] = True
+    return d.get("box")
+
+
 def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
     """The written file as symbols: `hosts` (notes / rests with their sub-marks), `loose` (directions anchored to the
     next note, and attributes) -- each with page and centre where the glyph key gives one."""
@@ -441,6 +463,11 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                                       chord=el.find("chord") is not None, onset=onset, voice=el.findtext("voice")))
                     for d in pending:
                         d.update(page=pg, cx=cx, cy=cy, box=bx, rg=rg)
+                        ob = own_direction_box(d, boxes)
+                        if ob is not bx:
+                            d["box"] = ob
+                            if ob:
+                                d["cx"], d["cy"] = (ob[0] + ob[2]) / 2, (ob[1] + ob[3]) / 2
                         loose.append(d)
                     pending = []
             for d in pending:      # a direction with no note after it in its bar: counted, no place on the page
