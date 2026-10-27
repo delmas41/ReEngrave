@@ -147,6 +147,25 @@ machine-readable form.
   in spacing), and ~1 px at the head decides a near-boundary pitch. Any
   position relative to the staff reads the staff lines AT THE SUBJECT'S x,
   never a staff-wide or bar-wide value (ROADMAP 2.48).
+- **Ledger lines are their own read, by ink, beside the head** (Sean,
+  2026-10-01: *"Most of them on these old scores were done by hand so they
+  are not even necessarily even or predictable by geometry. It can only be an
+  ink read for the lines."*; scope: general, measured on Litolff -- rungs at
+  1.03-1.11 of staff spacing, a step wrong by the 4th rung -- while Breitkopf
+  holds 1.00, `benchmarks/omr-ledger-extrapolation-2026-09/`): a head outside
+  the staff is placed ONLY by counting its own printed ledgers, never by
+  extending the staff spacing or any grid past the outer line
+  (`OMR_FARHEAD_LEDGER`, `measure_ledger_rungs`). The walk outward does not
+  stop at a wide gap while the head is farther out; a ledger THROUGH a head
+  (stubs on both sides) means the head is ON it; a head in the first space
+  just outside the staff, touching the outer line with no ledger, is an
+  on-staff note placed against the staff lines. Any new position reader
+  defers to this read outside the staff (2.212 broke two heads by not).
+- **A hollow head's position is its detector box centre, not its hole**
+  (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost always right and
+  better"*; scope: Litolff + Brahms): the white-interior centre was tried and
+  dropped; a reader that re-centres a hollow head on its hole needs Sean's
+  tiles first (2.212 did, unasked).
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.
