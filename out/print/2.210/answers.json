@@ -1,0 +1,129 @@
+{
+ "lane": "2.210",
+ "date": "2026-10-27",
+ "question": "what is the boxed ink: a note (which value), a slash, a dynamic, or something else?",
+ "verbatim": "1 FF; 2 Dot 4; 3 Dot 4; 4 8; 5 Trem slash; 6 8; 7 8; 8 4; 9 8; 10 8; 11 Wide rectangular box around an 8 and a Nat accidental; 12 Trem slash",
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "case",
+   "what": "ff, joins a stem",
+   "plate": "litolff",
+   "page": 4,
+   "rg": "glyph/4/1/1/4/17",
+   "sean": "FF",
+   "reading": "ff dynamic (not a note)"
+  },
+  {
+   "tile": 2,
+   "role": "case",
+   "what": "real note the flag turns unwritten",
+   "plate": "brahms",
+   "page": 12,
+   "rg": "glyph/12/0/10/5/2",
+   "sean": "Dot 4",
+   "reading": "real note, bad if flag unwrites it"
+  },
+  {
+   "tile": 3,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 14,
+   "rg": "glyph/14/0/12/3/2",
+   "sean": "Dot 4",
+   "reading": "real note, ownership slash verdict wrong"
+  },
+  {
+   "tile": 4,
+   "role": "control",
+   "what": "ordinary head on a multi-head stem",
+   "plate": "litolff",
+   "page": 4,
+   "rg": "glyph/4/1/2/14/5",
+   "sean": "8",
+   "reading": "real note (control)"
+  },
+  {
+   "tile": 5,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 12,
+   "rg": "glyph/12/0/11/4/6",
+   "sean": "Trem slash",
+   "reading": "true slash, ownership right"
+  },
+  {
+   "tile": 6,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 25,
+   "rg": "glyph/25/0/2/1/21",
+   "sean": "8",
+   "reading": "real note, ownership wrong"
+  },
+  {
+   "tile": 7,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "litolff",
+   "page": 2,
+   "rg": "glyph/2/0/1/1/5",
+   "sean": "8",
+   "reading": "real note, ownership wrong"
+  },
+  {
+   "tile": 8,
+   "role": "control",
+   "what": "ordinary head on a multi-head stem",
+   "plate": "litolff",
+   "page": 2,
+   "rg": "glyph/2/0/5/4/4",
+   "sean": "4",
+   "reading": "real note (control)"
+  },
+  {
+   "tile": 9,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 19,
+   "rg": "glyph/19/1/0/8/20",
+   "sean": "8",
+   "reading": "real note, ownership wrong"
+  },
+  {
+   "tile": 10,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 19,
+   "rg": "glyph/19/1/8/3/1",
+   "sean": "8",
+   "reading": "real note, ownership wrong"
+  },
+  {
+   "tile": 11,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 19,
+   "rg": "glyph/19/1/0/8/19",
+   "sean": "Wide rectangular box around an 8 and a Nat accidental",
+   "reading": "box over a note plus a natural, ownership wrong"
+  },
+  {
+   "tile": 12,
+   "role": "case",
+   "what": "ownership refuses as a tremolo slash",
+   "plate": "brahms",
+   "page": 12,
+   "rg": "glyph/12/0/10/5/8",
+   "sean": "Trem slash",
+   "reading": "true slash, ownership right"
+  }
+ ],
+ "summary": "ownership tremolo-slash verdict right 2 of 8 (tiles 5,12); wrong on 3,6,7,9,10 (real notes) and 11 (note+natural)"
+}

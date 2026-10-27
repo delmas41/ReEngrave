@@ -49,3 +49,12 @@ control (true slashes 0.69 and 1.29 sp from the tip; the others 1.95-3.77). n = 
 3. Judged right -> wrong: 0 on both plates (wrong -> right 1, Brahms, 2.209's).
 Verdict: do not turn ON. Next row (proposal): feed the ownership box verdict into `notehead_is_not_a_notehead` for slashes, after Sean reads the 8 tiles.
 Control note: lane_report prints "NEITHER ARM REPRODUCES THE RECORD" (the tree moved since the 2.202 records; same on 2.209).
+
+## Sean's answers on the 2.210 tiles (2026-10-27; `out/print/2.210/answers.json`)
+1 FF; 2 Dot 4; 3 Dot 4; 4 8; 5 Trem slash; 6 8; 7 8; 8 4; 9 8; 10 8; 11 "wide rectangular box around an 8 and a Nat accidental"; 12 Trem slash.
+- Ownership's tremolo-slash verdict (STAGED, `stroke_owner.shape_fit`, head family) is right 2 of 8 (tiles 5, 12). Real notes: 3, 6, 7, 9, 10;
+  tile 11 is a box over a note plus a natural. The 2.210 `tremolo` kind that leans on this refusal is therefore wrong 6 times in 8: do not turn ON.
+- Tile 2 is a real dotted quarter that the flag turns unwritten (bad); the ff (tile 1) is read correctly; controls 4 and 8 are real notes.
+- Does the refusal reach the file? In the main-arm export (`out/lane-report/2.210/work/*.off.symbols.json`): of the 8 refused boxes, 5 real notes
+  (3, 6, 7, 9, 10) ARE written, real tile 11 is not, slash 12 IS written (as a quarter) and slash 5 is not. The box verdict has no consumer that
+  writes or unwrites a note (see the lane message); only the 2.210 branch would have used it.
