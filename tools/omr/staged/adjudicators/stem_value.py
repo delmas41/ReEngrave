@@ -85,7 +85,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision, is_relocated_copy
-from ..record import Candidate, Kind, Outcome, Q, Scope, Subject
+from ..record import Candidate, Kind, Outcome, Q, Scope, STROKE_GLYPH_BASE, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants -- each one a convention or a measurement, never a tuning knob
@@ -615,6 +615,109 @@ def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+BEAM_END_ENV = "OMR_STEM_BEAM_END"
+
+#: A stem runs about 3.5 staff spaces past its OUTERMOST head (the engraving standard; CONVENTION ASSUMED, not yet confirmed by Sean -- a
+#: lane report cannot confirm it: tiles can). MEASURED on the 2.202strokes records, every stem with >= 2 heads whose direction is decided
+#: (Brahms pp.0,4,5,8,12,14,19,25; 1,230 stems): the distance from the tip to the member nearest it is 2.5-4.0 sp for 1,123 of them and under
+#: 2.0 sp for 57. A box within `BEAM_END_TIP_MAX_SP` of the tip with another head `BEAM_END_OTHER_MIN_SP` or more from it contradicts that:
+#: the tip is a beam's place. The pair of numbers sits in the valley (1.0 and 2.5), so it only NARROWS WHO MAY VOTE and names its margin.
+BEAM_END_TIP_MAX_SP = 1.0
+BEAM_END_OTHER_MIN_SP = 2.5
+
+
+def beam_end_enabled() -> bool:
+    """ROADMAP 2.209, flag `OMR_STEM_BEAM_END`, default ON (Sean 2026-10-27; explicit 0/false/no/off disables): a detector "notehead" that stands on a BEAM's ink and on no ink of its own is
+    not a member of the stem (`_on_beam_ink`)."""
+    import os
+    return os.environ.get(BEAM_END_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _owner_mask(verdict: Any) -> Dict[int, str]:
+    """`{ordinal: "owned" | "contested"}` from a cell's `Q.STROKE_OWNER` verdict (`stroke_owner.masked`: {} with the flag off or no verdict)."""
+    from . import stroke_owner as _SOA
+    return _SOA.masked(verdict)
+
+
+def _on_beam_ink(ev: Evidence, sub: Subject) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.209 (Brahms p0 `glyph/0/0/12/1/15`, 2.206b tile 5). STAGED ADJUDICATE. Is this "notehead" the END OF A BEAM?
+
+    CAUSE. A beam's thick end at a stem's foot is a dark block about a head's size, and the detector sometimes boxes it as a notehead (score
+    0.25-0.30 on both Brahms cases). `Q.HEAD_STEM` joins any notehead-classed box that touches a stem, so the box became a MEMBER of the
+    stem; the levels of a stem are read from the member nearest its tip (the beams hang there), and that member is the box ON the beam, whose
+    own `Q.DURATION` counts the one beam level it sits in. It outvotes the real head's two decided levels, `share_stem_value` rewrites the
+    real head (a decided sixteenth becomes an eighth), the bar then fills, and the blue flag goes: a wrong value written plain.
+
+    ONE WITNESS, THE INK (this function). A notehead stands on a blob of ink of its own (2.205: tier 1 claims the blob strokes). A box that
+    covers NO blob and stands on a stroke the 2.202 reader reads as a BEAM (horizontal, thick as a beam, joins >= 2 stems; not owned by
+    another mark) is ON BEAM INK. ⚠️ That alone is NOT enough: on a MERGING plate (Litolff) and on Brahms beamed groups a real head fuses
+    with its beam and covers no blob either (measured: with the ink alone 101 Litolff and 12 Brahms heads of 0.4-0.9 score were excluded,
+    among them whole chords). The SECOND WITNESS, from another source, is the stem's own geometry (`_beam_end_boxes`): the box is at the TIP,
+    where a stem has no head.
+
+    Returns `{"beam_strokes": [...], "covered": [...]}` for a box on beam ink, else None. None where the map cannot speak (no `Q.GLYPH_STROKES` row, no
+    strokes in the cell): a box is a member as before (rule 8: "cannot tell" is not "beam end")."""
+    rows = ev.rows(Q.GLYPH_STROKES, subject=sub)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)):
+        return None
+    covered = [int(o) for o in rows[-1].value]
+    partial = [int(p[0]) for p in ((rows[-1].detail or {}).get("partial") or ()) if len(p) >= 2]
+    from .. import beam_strokes as BS
+    cell = sub.at(Kind.CELL)
+    # the cell's stroke map as `StrokeView`s -- the construction `rhythm._stroke_views` does, read HERE so this decision's `wants` are its own
+    # reads; a stroke another mark owns (or two contest) has kind `owned` / `contested`, never a beam (2.205)
+    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell))
+    views = []
+    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        g = getattr(r.subject, "glyph", None)
+        d = r.detail or {}
+        box = d.get("stroke_box")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
+            continue
+        views.append(BS.StrokeView(
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
+            length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
+            sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
+            touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
+    if not views:
+        return None
+    role = BS.roles(views)
+    beam = [o for o in covered + partial if o in role and role[o]["role"] == "beam"]
+    own = [o for o in covered if o in role and role[o]["role"] != "beam"
+           and next(v.kind for v in views if v.ordinal == o) in ("blob", "owned")]
+    if beam and not own:
+        return {"beam_strokes": sorted(set(beam)), "covered": covered}
+    return None
+
+
+def _beam_end_boxes(ev: Evidence, members: Sequence["_Member"], stem_box: Sequence[float],
+                    direction: Optional[str], space: Optional[float]) -> Dict[str, Dict[str, Any]]:
+    """ROADMAP 2.209. The members that are a BEAM'S END, not a head, keyed by their glyph key, each with the facts that say so. A member is one
+    when BOTH witnesses hold (module constants): (1) `_on_beam_ink` (the stroke map: the box covers no blob of its own and stands on beam
+    ink) and (2) the stem's geometry: it is the member nearest the tip, within `BEAM_END_TIP_MAX_SP` of it, while another member stands
+    `BEAM_END_OTHER_MIN_SP` or more from the tip. Unknown direction, no staff-space unit or no stroke map names nobody (rule 8: cannot tell
+    is not a beam end). Repeated while the tip-most member qualifies (a beam end can be boxed twice)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    if direction not in ("up", "down") or not stem_box or not space or space <= 0:
+        return out
+    tip_y = stem_box[1] if direction == "up" else stem_box[1] + stem_box[3]
+    live = [m for m in members if m.cy is not None]
+    while len(live) >= 2:
+        live.sort(key=lambda m: abs(m.cy - tip_y))
+        first, rest = live[0], live[1:]
+        d0 = abs(first.cy - tip_y) / space
+        far = max(abs(m.cy - tip_y) for m in rest) / space
+        if d0 > BEAM_END_TIP_MAX_SP or far < BEAM_END_OTHER_MIN_SP:
+            break
+        ink = _on_beam_ink(ev, first.sub)
+        if ink is None:
+            break
+        out[first.key] = {"tip_distance_sp": round(d0, 2), "farthest_member_sp": round(far, 2), **ink}
+        live = rest
+    return out
+
+
 class _Member:
     """One kept notehead of a stem, with what its own duration verdict says."""
 
@@ -771,7 +874,8 @@ def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
     scope=Kind.GLYPH,
     wants=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_A_WHOLE_REST,
-           Q.GLYPH_OWNER),
+           Q.GLYPH_OWNER, Q.GLYPH_STROKES, Q.STROKE, Q.STROKE_OWNER,
+           Q.CELL_STAFF_SPACE),
     subjects_from=Q.HEAD_STEM,
     reasons=("stem_agrees", "stem_value_from_evidence",
              "hollow_head_on_a_beamed_stem", "stem_levels_unread",
@@ -813,6 +917,17 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
         m = _member_of(ev, j)
         if m is not None:
             members.append(m)
+    beam_ends: Dict[str, Dict[str, Any]] = {}
+    if beam_end_enabled() and len(members) >= 2:
+        dirs = {m.direction for m in members if m.direction}
+        sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        try:
+            space = float(sp_rows[-1].value) if sp_rows else None
+        except (TypeError, ValueError):
+            space = None
+        beam_ends = _beam_end_boxes(ev, members, stem_box, next(iter(dirs)) if len(dirs) == 1 else None, space)
+        if beam_ends:
+            members = [m for m in members if m.key not in beam_ends]
     if all(m.sub != ev.subject for m in members):
         return Ruling.abstain("not_a_member")
     if len(members) < 2:
@@ -924,6 +1039,8 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
               "head_reading": {"outcome": me.outcome,
                                "values": [list(o) for o in own]},
               "evidence": why}
+    if beam_ends:
+        detail["beam_end_boxes"] = beam_ends
 
     if len(combos) == 1:
         b, lv, d = combos[0]

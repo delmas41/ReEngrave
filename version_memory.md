@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-27 -- ROADMAP 2.209 LANDED ON: a head on a beam end is not a member of the stem
+STAGED ADJUDICATE, `OMR_STEM_BEAM_END` default ON (explicit 0/false/no/off disables). A notehead box that covers no ink of its own, stands on beam ink and sits at the stem tip while another member is 2.5 sp or more away is dropped from `stem_value`'s members, so it no longer overrides a DECIDED duration (cause: 2.206b tile 5, Brahms p0). Sean "Yes": 8 of 8 touched tiles right, judged right->wrong 0. Only the default-flag test changed (`test_default_is_on`); judged-tiles.json regenerated. Follow-up ROADMAP 2.210.
+
 ## 2026-10-26 -- ROADMAP 2.208 LANDED ON: the clef claims its own ink on every staff
 STAGED GATHER, `OMR_CLEF_SLOT_CLAIM` default ON (explicit 0/false/no/off disables; needs `OMR_CLAIMED_REGISTER`). A staff whose clef was carried from other systems has the clef's ink claimed in the slot between the system's clef offset and its key claim, so no head box can take it (cause: 2.205 tile 5). Sean "Yes": 12 tiles, 4/4 lost cases are clef ink, 4/4 controls kept; judged right->wrong 0; Litolff notes -3, Brahms notes -1. Only the default-flag test changed (`test_flag_default_on`); judged index rebuilt (1518 tiles); `staged.check` 198 -> 198. Follow-up: tile 12, a Litolff p6 treble clef still a note (key flat stem outside the slot).
 
@@ -6385,3 +6388,6 @@ STAGED GATHER (shared detector `YoloDetector.detect(natural_candidates=True)`, `
 
 ## 2026-10-23 -- ROADMAP 2.183 + 2.187 landed ON: the key signature read once per system
 STAGED GATHER (`gather_key_signature_claim`, `gather_key_object`/`key_object.py`) + ADJUDICATE (`claimed_by.consult`, `key_object.judge_tail_box`), `OMR_KEY_SIGNATURE_CLAIM` (`claims.key_enabled`) and `OMR_KEY_PER_SYSTEM` (`key_object.enabled`) default ON; explicit `0/false/no/off` disables; both need `OMR_CLAIMED_REGISTER`. The key run (cancelling naturals included) is one claim in the register (2.183, parity with the five key-slot gates) and its count is read once per system from the staves' agreement and the dossier (2.187); a transposing staff uses its own written key, an unknown staff only narrows. Sean's clean tiles: all 6 removals are key flats, judged right->wrong 0; of the 24 known key flats 10 refused, 9 blue, 5 still rests. Reaches records at the next re-gather. Benchmark `benchmarks/omr-key-signature-claim-2026-10/FINDINGS.md`.
+
+## 2026-10-27 -- ROADMAP 2.211 landed: score by written place, not detector box id
+TOOLING (no flag, no pipeline change): `tools/omr/staged/lane_report.py` keys the lost-notes list and the judged right->wrong rescore on the written event (page, system, cell, staff, onset, pitch) in the exported file, so a twin detector box swapping keeper reports nothing. Replaces `benchmarks/staff-eraser-2026-10/lost_notes.py` (`lane_report lost-notes`, `lane_report rescore`). Control (`benchmarks/score-by-place-2026-10/FINDINGS.md`): 2.206d Litolff lost 21->11, planted 5 lost caught (16); judged `tile_05` right->wrong 1->0 (`same_music`). Test: `test_staged_lane_report_2_211.py`.
