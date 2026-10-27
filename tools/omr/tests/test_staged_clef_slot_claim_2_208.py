@@ -140,18 +140,20 @@ def _box(log, gi, box, cls):
 
 
 class TestEndToEnd(unittest.TestCase):
-    """The failure this lane exists for, through GATHER's claim and ADJUDICATE's consult."""
-    def _verdict(self, env):
+    """The failure this lane exists for, through GATHER's claim and ADJUDICATE's consult. The false head stands IN the slot
+    (page px 152..172); `stem` is a `Q.STEM` row (cell canonical = page px here) that touches it."""
+    def _verdict(self, env, stem=None):
         log = Log()
-        _staff_space(log, 100)
-        # staff 1's cell sits where `_staff_space` puts it; the false head is boxed on the clef body, no stem touches it
-        g = _box(log, 0, (300, 120, 130, 100), "noteheadBlackOnLine")
+        _staff_space(log, SP)
+        g = _box(log, 0, (152, 300, 20, 16), "noteheadBlackOnLine")
         slot = _slot_rows(_gather(env, key_lo=230.0), 1)
-        if slot:       # the REAL claim gather drew, its measured entry for the false head re-keyed onto this log's head
+        if slot:       # the REAL claim gather drew; its measured entry for the false head re-keyed onto this log's head
             entry = slot[0].detail["boxes_inside"][R.glyph(0, 0, 1, 0, 0).to_key()]
             log.observe(R.staff(0, 0, 0), Q.CLAIMED_AREA, slot[0].value, reader=READERS.CV_CLEF_SLOT_CLAIM, frame="cell:0", cell=0,
                         owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ", source="clef_slot",
                         boxes_inside={g.to_key(): entry})
+        if stem is not None:
+            log.observe(R.cell(0, 0, 0, 0), Q.STEM, stem, reader=READERS.CV_INK, frame="cell:0", x0=stem[0], x1=stem[0] + stem[2], y_center=0)
         with mock.patch.dict(os.environ, env):
             adjudicate.run(log)
         return log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
@@ -163,6 +165,30 @@ class TestEndToEnd(unittest.TestCase):
     def test_FAILS_WITHOUT_THE_FIX_the_same_head_stands_with_the_flag_off(self):
         v = self._verdict(OFF)
         self.assertNotEqual(v.reason, "claimed_by:clef")
+
+    def test_a_stem_the_line_finder_drew_on_the_clefs_own_ink_does_not_make_the_head_a_note(self):
+        # Litolff p4 staff 8: the finder's "stem" touching the head was the clef's curl, itself inside the slot
+        v = self._verdict(ON, stem=(162, 290, 4, 60))
+        self.assertEqual((v.value, v.reason), (True, "claimed_by:clef"))
+
+    def test_CONTROL_a_stem_standing_outside_the_slot_still_makes_it_a_note(self):
+        # a stem whose centre is right of the slot (x 190 > 188): not the clef's; a stemmed head is never refused by a clef claim
+        v = self._verdict(ON, stem=(170, 290, 40, 60))
+        self.assertEqual((v.outcome, v.value), ("decided", False))
+
+    def test_CONTROL_a_stem_inside_a_DETECTOR_clef_claim_still_counts_as_a_stem(self):
+        # only the slot claim reads a stem in its area as its own ink: every older clef claim consults exactly as before
+        log = Log()
+        _staff_space(log, SP)
+        g = _box(log, 0, (152, 300, 20, 16), "noteheadBlackOnLine")
+        log.observe(R.staff(0, 0, 0), Q.CLAIMED_AREA, [140.0, 236.0, 188.0, 428.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                    cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ", source="detector",
+                    boxes_inside={g.to_key(): {"ink_share_inside": 0.95}})
+        log.observe(R.cell(0, 0, 0, 0), Q.STEM, (162, 290, 4, 60), reader=READERS.CV_INK, frame="cell:0", x0=162, x1=166, y_center=0)
+        with mock.patch.dict(os.environ, ON):
+            adjudicate.run(log)
+        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
+        self.assertEqual((v.outcome, v.value), ("decided", False))
 
 
 if __name__ == "__main__":
