@@ -268,3 +268,32 @@ unboxed-rest clusters re-keyed; no other single cut-off stood out (not a margin 
    Control `OFF == record` is not available in re-gather mode (NOT CHECKED).
 
 Flags stay OFF; not merged. Open for Sean: the tiles, then turning the three flags on together.
+
+## 8. 2.206b tiles (Sean, 2026-10-26): four real notes lost, and why
+
+**Tile score.** Good: 2 (half gained), 6 (a "dot" that is a tremolo slash), 10 ("words" on an eighth), 11 (beam on an eighth). BAD: 1 and 7 (Brahms p14
+`glyph/14/1/9/3/4` and `/2`, dotted quarters), 4 (p5 `glyph/5/1/12/9/12`, quarter), 5 (p0 `glyph/0/0/12/1/1`, sixteenth). Tile 9 (Litolff p11 `glyph/11/1/10/11/2`) is
+an improvement: OFF reads the key `-2` by markers (A3, unmarked); ON abstains `disagrees_with_part` and INFER fills `-3` (A-flat 3, blue). The print's bass key
+shows three flats (agent look at the key crop; the print is the witness, not Sean's answer -- he answered the duration). Controls 3 and 8 match; tile 12's box
+sits on an eighth rest, not the "cresc." word the key names (key and tile disagree, not scored). Answers: `out/print/2.206b/answers.json`.
+
+**Cause (STAGED, ADJUDICATE; the eraser itself, not `OMR_METER_SLOT` or `OMR_REST_OWN_STROKE`).** The 2.206 eraser-only run reproduces all three
+refusals (OFF decided -> ON narrowed). Tiles 1, 4, 7 are one mechanism: the stem-tip reader (`Q.STEM_TIP_INK`, `rhythm.py::_stem_tip_flag_ink`) now finds ink at the
+stem's own tip that the OFF image did not show. Tile 1/7: the window's right-hand ink goes 0.215 -> 0.240 (window 0.274 -> 0.324), `window_found` false -> true,
+a row `value True, hooks_reason too_little_ink`; the decider turns `head_and_marks` (dotted quarter) into `flag_ink_unread`. The ink is the slur's start at the
+stem top (visible in the tile), read as a hook. Tile 4: the stem's lower tip goes from "empty" (area 0.0) to `ink_not_flag_shaped` (area 0.158), a stub where the stem
+meets the staff line; `stem_tip_reads_no_beam` becomes `beam_discounted_uncertain`. Both are a cut-off crossed by a few hundredths, and both refusals are
+right by rule 8 ("cannot tell") -- the notes are real and were read right before. Tile 5 is a different mechanism: its verdicts are identical in both arms
+(`duration` 0.25 decided, `stem_value` 0.5 shared); ON beams two more heads onto the stem (D4, E-flat 16th) so the eighth, wrong in both (Sean: sixteenth),
+is written unmarked instead of blue. That is worse by CLAUDE.md section 4 (a wrong value unmarked) and has its own cause: the second beam level at the stem end is missed.
+
+**Process lesson.** The 2.206b re-measure fixed two readers whose cut-offs sat on the cut ink; the stem-tip window is a third, and it was not in the list because
+it never produces a refusal in the OFF record -- it only abstains. Re-measuring cut-offs one reader at a time finds them only when a tile points at one: a
+before/after of every verdict reason on the notes lost (this section's count) would have named it without waiting for Sean.
+
+**Count (the saved 2.206b full-run symbol files, notes present OFF and absent ON by `rg`; the report's paired -16/-16 differs from 18/21 here because it pairs by place).**
+Brahms 18 lost: 9 have the ON duration narrowed by the stem-tip/beam-ink family (`flag_ink_unread` 2, `beam_discounted_uncertain` 4, `beams_ambiguous` 3;
+tiles 1, 4, 7 are in it); 4 `stacked_head_duplicate`; 2 tremolo slash (`not_a_note_mark`, right); 3 decided in both arms and dropped at export (tile 5 type).
+Litolff 21 lost: only 2 are this mechanism (`beam_discounted_uncertain`); 8 `stacked_head_duplicate`, 4 `is_a_rest_shape`, 1 `is_a_beam_piece`, 3 decided in both
+arms, 3 with no ON duration verdict. So the stem-tip mechanism is a Brahms problem (9 of 18); Litolff's losses are other vetoes that the ink change moved.
+Not yet printed: whether the Litolff `stacked_head_duplicate` / `is_a_rest_shape` losses are real notes (no tiles). Flags stay OFF.
