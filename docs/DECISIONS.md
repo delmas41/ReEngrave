@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-10-26 Sean "Yes": before a lane's full sample, list the refusal reason of every lost note ON vs OFF and look at the top groups (docs/measuring.md §0). Cause: 2.206b's eraser fix dropped 9 of 18 lost Brahms notes through the stem-tip reader (slur starts read as hooks), which no judged answer covered. Same ruling: the stem-tip reader consults the ink owner (2.205), never a moved cut-off.
 
 - 2026-10-26 · Sean · Land 2.205 (OMR_STROKE_OWNER, one owner per stroke) ON: "1. Yes" · ownership alone changed nothing in the exported file, judged right->wrong 0, his 12 tiles 7 right / 1 wrong (tile 5, a C-clef fragment boxed as a head: a source fault, "the clef claims its ink on every staff" is a separate follow-up); OMR_BEAMS_FROM_STROKES (2.202) and OMR_STEMS_FROM_STROKES (2.204) stay OFF and are not yet measured against main's default
 - 2026-10-26 · Sean · Two stem conventions (STEM_LESSONS questions): "In a chord the stem can go in both directions" and a ~1-space stem "is either a grace note or could be connected to a beam with notes further and closer away to the beam" · a vertical past the heads at both ends can be a chord stem (never refused on that alone); stem length alone never makes a grace note -- a small head does, otherwise a short stem is a beamed note near its beam · (docs/page-facts.md stems; benchmarks/shared-ink-map-2026-10/STEM_LESSONS.md on stem-lessons; ROADMAP 2.204)
