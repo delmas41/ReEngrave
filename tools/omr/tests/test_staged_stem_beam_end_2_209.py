@@ -20,7 +20,7 @@ from tools.omr.staged.adjudicators import stem_value as SV
 from tools.omr.staged.record import Outcome, Q, READERS, STROKE_GLYPH_BASE
 from tools.omr.tests.test_staged_stem_value import Stem, _dur, _w
 
-SP = 100.0
+SP = 20.0
 FLAG = SV.BEAM_END_ENV
 
 
@@ -37,11 +37,12 @@ STROKES = [
 ]
 
 
-def build(*, false_head_strokes=None, real_head_row=True, strokes=STROKES, false_cls="noteheadBlackOnLine"):
+def build(*, false_head_strokes=None, real_head_row=True, strokes=STROKES, false_cls="noteheadBlackOnLine", false_y=64, direction="down"):
     """The real head (top, two beam levels, decided) and the box on the beam's end (bottom, one level, decided)."""
-    st = Stem(direction="down")
+    st = Stem(direction=direction)
+    st.log.observe(R.cell(0, 0, 0, 0), Q.CELL_STAFF_SPACE, SP, reader=READERS.GEOMETRY, frame="cell:0")
     real = st.head(0, "noteheadBlackOnLine", 0, decided=(0.25, 0, 2), x=82)
-    false = st.head(1, false_cls, 64, decided=(0.5, 0, 1), x=82)
+    false = st.head(1, false_cls, false_y, decided=(0.5, 0, 1), x=82)
     for i, s in enumerate(strokes):
         st.log.observe(R.glyph(0, 0, 0, 0, STROKE_GLYPH_BASE + i), Q.STROKE, s["kind"], reader=READERS.CV_STROKE, frame="cell:0",
                        stroke_box=list(s["box"]), length_spaces=s["L"], angle_deg=0.0, thickness_spaces=s["T"],
@@ -99,6 +100,20 @@ class TestBeamEndIsNotAMember(unittest.TestCase):
         st, real, false = build(false_head_strokes=None)
         run(st, True)
         self.assertEqual(_w(st.log.verdict(Q.STEM_VALUE, real)), (0.5, 0, 1))
+
+    def test_two_witnesses_the_ink_alone_is_not_enough_TWIN(self):
+        # the same beam ink under the box, but the box stands at the ROOT end beside the other head (a chord fused with its beam on a
+        # merging plate): the stem's geometry does not say beam end, so it stays a member
+        st, real, false = build(false_head_strokes=ON_BEAM_END, false_y=0)
+        run(st, True)
+        v = st.log.verdict(Q.STEM_VALUE, real)
+        self.assertNotIn("beam_end_boxes", v.detail)
+        self.assertEqual(len(v.detail["members"]), 2)
+
+    def test_unknown_direction_names_no_tip_TWIN(self):
+        st, real, false = build(false_head_strokes=ON_BEAM_END, direction=None)
+        run(st, True)
+        self.assertNotEqual(st.log.verdict(Q.STEM_VALUE, real).reason, "lone_head")
 
     def test_default_is_off(self):
         with mock.patch.dict(os.environ, {}, clear=False):
