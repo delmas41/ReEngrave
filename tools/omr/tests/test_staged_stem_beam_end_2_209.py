@@ -1,4 +1,4 @@
-"""ROADMAP 2.209 -- a detector "notehead" on a BEAM'S END is not a member of the stem (flag `OMR_STEM_BEAM_END`, default OFF).
+"""ROADMAP 2.209 -- a detector "notehead" on a BEAM'S END is not a member of the stem (flag `OMR_STEM_BEAM_END`, default ON since 2026-10-27).
 
 The case is 2.206b tile 5 (Brahms p0 `glyph/0/0/12/1/1`, a sixteenth): the real head reads two beam levels; a 0.25-score box on the beam's thick
 end at the stem's foot reads one; `stem_value` reads the levels from the member nearest the tip -- the box on the beam -- and the real head is
@@ -115,10 +115,13 @@ class TestBeamEndIsNotAMember(unittest.TestCase):
         run(st, True)
         self.assertNotEqual(st.log.verdict(Q.STEM_VALUE, real).reason, "lone_head")
 
-    def test_default_is_off(self):
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(SV.beam_end_enabled())
+            self.assertTrue(SV.beam_end_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: off}):
+                self.assertFalse(SV.beam_end_enabled())
 
 
 if __name__ == "__main__":
