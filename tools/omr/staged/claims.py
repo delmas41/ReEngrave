@@ -85,6 +85,38 @@ def key_active() -> bool:
     return key_enabled() and enabled()
 
 
+#: ROADMAP 2.208 (flag `OMR_CLEF_SLOT_CLAIM`, default OFF): the clef's own ink on a staff where no clef was located or boxed.
+ENV_CLEF_SLOT = "OMR_CLEF_SLOT_CLAIM"
+#: the slot reaches this far above the top line and below the bottom line (a G clef's curl and a bass clef's dots; the detector's own
+#: clef-sized boxes measure 6-7 sp tall)
+CLEF_SLOT_REACH_SPACES = 4.0
+#: past the widest clef the system's other staves show (they stand at one x), the slot ends this far on (a clef wider than any sibling's still fits; past it stands a key accidental or a meter, never a head)
+CLEF_SLOT_PAD_SPACES = 0.75
+#: a slot narrower than this is no clef (a staff whose clef offset and key claim nearly touch)
+CLEF_SLOT_MIN_SPACES = 1.0
+
+
+def clef_slot_enabled() -> bool:
+    """`OMR_CLEF_SLOT_CLAIM` (ROADMAP 2.208), default OFF; only an explicit 1/true/yes/on enables it. Needs the register."""
+    return enabled() and os.environ.get(ENV_CLEF_SLOT, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def clef_slot(left: float, key_lo: Optional[float], clef_right_max: float, lines: Sequence[float], spacing: float) -> Optional[List[float]]:
+    """The clef's slot on ONE staff (page px [x0, y0, x1, y1]): from `left` (where the system's clefs begin -- the header column's right
+    edge) to the key claim's left edge, never beyond the widest clef the system's other staves show (`clef_right_max`) plus
+    `CLEF_SLOT_PAD_SPACES`; `CLEF_SLOT_REACH_SPACES` above the top line and below the bottom line. None where the slot is narrower than
+    `CLEF_SLOT_MIN_SPACES`. Pure geometry: decides nothing."""
+    if not spacing or len(lines) < 5:
+        return None
+    hi = float(clef_right_max) + CLEF_SLOT_PAD_SPACES * spacing
+    if key_lo is not None:
+        hi = min(hi, float(key_lo))
+    if hi - float(left) < CLEF_SLOT_MIN_SPACES * spacing:
+        return None
+    return [round(float(left), 1), round(float(lines[0]) - CLEF_SLOT_REACH_SPACES * spacing, 1), round(hi, 1),
+            round(float(lines[4]) + CLEF_SLOT_REACH_SPACES * spacing, 1)]
+
+
 def is_owner_class(name: Any) -> bool:
     return str(name).startswith(OWNER_CLASS_PREFIXES)
 

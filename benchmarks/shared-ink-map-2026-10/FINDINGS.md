@@ -513,3 +513,16 @@ the bar rule took the lone remaining value. So ownership did not invent the note
 before any head can; secondarily the detector class on clef ink (`not_head_sized` fill is already a signal the head reader declines to use). Ownership is correctly ordered
 here and needs no new rule; the clef claim is a GATHER fix to be rostered, not built in 2.205.
 **Tile 7 correction:** Sean's first answer (quarter) was corrected to eighth; ON's eighth is right, so no cause hunt was needed.
+
+## 2.208 THE CLEF CLAIMS ITS OWN INK ON EVERY STAFF (STAGED GATHER; flag `OMR_CLEF_SLOT_CLAIM`, OFF; branch `lane-2.208-clef-claim`)
+**Cause.** `gather_claimed_register` files a clef claim only from a located clef (cell-0 frame, or a header read that overrode a head) or a clef-sized detector box. A staff with neither
+(clef DECIDED later, in EVALUATE, by carry from other systems) files no clef claim: the header column stops at the system's clef offset, the key claim starts later, and the clef's ink in
+between is claimed by nobody. **Lesson:** a decided value with no located ink leaves its ink unclaimed; the detector's guess then stands unopposed. A second layer: the line finder (cv_lines)
+drew a "stem" on the clef's own curl, and the consult treats any touching stem as proof of a note, so the claim alone refused nothing (Litolff p4 s8: stem centre inside the slot).
+**Count (20261022-night records, frozen sample pages, `count_clef_gap_2_208.py`).** Staves with no cell-0 clef claim: Litolff 9 of 172 (2 had a header-window locator row), Brahms 1 of 199.
+Detector boxes in that slot: Litolff 8 (7 noteheadBlackOnLine, 1 ledgerLine), Brahms 1. Crop check (10 staves, one sheet): every one shows a clef (alto 5, bass 2, treble 2, plus one) and every box sits on clef ink.
+**Fix.** `gather_clef_slot_claim` (after the key object): per such staff one `clef` area claim, READ, `source: clef_slot`, from the system's clef offset to the key claim (cap: widest sibling clef + 0.75 sp), plus the 2.198 ink claim.
+`claimed_by._stemmed`: for slot claims only, a stem whose centre stands in the slot is the clef's ink. CONVENTION ASSUMED: a system opens with a clef on every staff / FALSIFIED BY a print-confirmed note in the slot / NOT CONFIRMED beyond two plates.
+**Measures (main with 2.205 ON; `out/print/2.208/`).** (1) Exported file, frozen sample, OFF vs ON: Litolff notes -3, blue marks -3, words +1; Brahms notes -1, words -1 (a "does not add up" note gone), red bars 166 -> 165. 10 slot claims; 7 heads refused by them (4 had been written).
+One head still a note: Litolff p6 s0 (`glyph/6/1/0/0/10`), touched by a key flat's stem outside the slot. (2) 12 blind tiles `out/print/2.208/tiles/sheet.png` (8 on clef ink: 4 changed, 3 refused-but-never-written, 1 still a note; 4 controls = first real notes after the clef); key `out/print/2.208/key.json`. Not answered yet.
+(3) Judged answers right->wrong: 0 on both plates (233 / 232 tiles). Subset (2 pages per plate) was clean first. Tests: `test_staged_clef_slot_claim_2_208.py` (11, mutation of the stem rule fails the stem test).
