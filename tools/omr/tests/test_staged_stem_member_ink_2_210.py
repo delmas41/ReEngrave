@@ -96,6 +96,11 @@ class TestTremolo(unittest.TestCase):
         f = st.log.verdict(Q.STEM_VALUE, slash)
         self.assertEqual((f.outcome, f.reason), (Outcome.ABSTAINED, "not_a_member"))
 
+    def test_slash_near_the_tip_with_one_head_is_not_a_member_ON(self):          # Brahms p12 `glyph/12/0/10/5/8`: 1.3 sp from the tip
+        st, top, slash, low = self.build(y_slash=58, extra_below=False)          # stem down, tip at y 80; slash centre 64 = 0.8 sp from it
+        run(st, True)
+        self.assertEqual(st.log.verdict(Q.STEM_VALUE, slash).reason, "not_a_member")
+
     def test_flag_off_keeps_it_CONTROL(self):
         st, top, slash, low = self.build(y_slash=32)
         run(st, False)

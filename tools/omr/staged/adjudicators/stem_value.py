@@ -730,6 +730,10 @@ MERGED_MIN_STROKES = 8
 #: oval - always thick diagonal lines"). The ownership layer's shape rule alone is NOT enough (measured: 5 of 8 boxes it refused as a slash look like a
 #: real head beside a sharp / flat and a dot), so this is the second witness: where on the stem the box stands.
 TREMOLO_BETWEEN_MIN_SP = 0.5
+#: MEASURED (2.202strokes, the 8 boxes the ownership layer refused as a slash): the two true slashes (Sean's tile 4, Brahms p12) stand 1.29 and 0.69 sp from
+#: the stem's tip; the 6 others -- real heads beside a sharp / flat and a dot -- stand 1.95-3.77 sp from it, where a head stands (a stem runs about 3.5 sp
+#: past its outermost head). n = 2: it only NARROWS who may vote.
+TREMOLO_TIP_MAX_SP = 1.5
 
 
 def member_ink_enabled() -> bool:
@@ -751,7 +755,7 @@ def _tremolo_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], st
                    direction: Optional[str], space: Optional[float], exclude: Set[str]) -> Dict[str, Dict[str, Any]]:
     """KIND tremolo. Witness 1 (ink-owner, 2.205): the stroke-owner box verdict REFUSED this box with `tremolo_slash_across_a_stem` (a thick diagonal
     stroke crossing a vertical). Witness 2 (stem geometry): it stands between two other members (>= 0.5 sp each side), or is the tip-most member,
-    within `BEAM_END_TIP_MAX_SP` of the tip, with another member >= `BEAM_END_OTHER_MIN_SP` from it (2.209's pair)."""
+    within `TREMOLO_TIP_MAX_SP` of the tip, with another member >= `BEAM_END_OTHER_MIN_SP` from it (2.209's pair)."""
     out: Dict[str, Dict[str, Any]] = {}
     if not space or space <= 0:
         return out
@@ -770,7 +774,7 @@ def _tremolo_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], st
         if direction in ("up", "down") and stem_box and others:
             tip_y = stem_box[1] if direction == "up" else stem_box[1] + stem_box[3]
             at_tip = (abs(m.cy - tip_y) == min(abs(o.cy - tip_y) for o in live)
-                      and abs(m.cy - tip_y) / space <= BEAM_END_TIP_MAX_SP
+                      and abs(m.cy - tip_y) / space <= TREMOLO_TIP_MAX_SP
                       and max(abs(o.cy - tip_y) for o in others) / space >= BEAM_END_OTHER_MIN_SP)
         if between or at_tip:
             out[m.key] = {"kind": "tremolo", "between": between, "at_tip": at_tip}
