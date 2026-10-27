@@ -315,3 +315,24 @@ Fail-fast subset (Litolff 4, 9; Brahms 5, 14; `subset_2206c.json`, 1,547 s) then
 **Three measures (same as section 7: owner ON changed nothing).** File: litolff notes +16 -16, rests +5 -2, ties +8 -2, blue +47 -4, red bars 0 -> 0, notes not written 2563 -> 2566; brahms notes +13 -16, dots +9 -8, blue +20 -15, red bars 166 -> 166, notes not written 3202 -> 3208. Tiles: `out/print/2.206c/tiles/sheet.png`, key `out/print/2.206c/key.json`. Judged right->wrong: litolff 1 (`tile_05` `glyph/4/0/7/7/10`, the twin-box artifact ruled in section 5), brahms 0; real 0.
 
 **Process lesson.** "Consult the owner" presumes the owner map covers the ink; before building the consumer, print the strokes in the reader's window with their owner state. Two of three cases had no owned stroke there, and the third case's cause was the finder's stem width, upstream of both.
+
+## 10. 2.206d (2026-10-27, Sean "Yes" 2026-10-26): the tip window starts at the stem's stroke; `OMR_STEM_TIP_TRUE_EDGE` (OFF)
+
+**Cause (STAGED GATHER, `_observe_stem_tip_ink`).** The finder says WHICH stroke a stem is; it was also trusted for how wide. 133 of 4,336 Brahms stem boxes are under 10 px
+(Litolff 31 of 4,258) on stems whose stroke is ~25 px; the 2.18c window started at that core's edge and counted the stem's own side. Fix (flag-gated, OFF): `stroke_map.stem_true_edges`
+reads the stem stroke's width from its mask on the rows 1.5 sp away from either end (L7), refused above 0.7 sp (fused); the window starts at `min(core, stroke)` edges. Tile 4 is a
+different case: its finder box equals the stroke (29 px); the ON ink is a kept line crossing fused into the stem 2.7 sp from the tip. Rule (L15, one in the same flag): ink that first
+touches the stem beyond 1.6 sp (the reader's own widest root) over a clean tip is not a stroke that starts at the tip -> `found False`, `why root_beyond_tip`. Crop look at 12 of the
+~130 `ink_not_flag_shaped` rows with t_first > 1.6 on the subset: 12 of 12 the far end of a stem with a staff or ledger line crossing 2.8-3.3 sp back, no flag (agent look, not Sean's).
+**Process lesson.** A finder box is a location, not a measurement of the thing; every reader that took x0/x1 from it inherited the core. Per-plate stem thickness (idea, not built): stroke
+thickness is quantised to 1/16 sp; page medians differ by one step (Brahms 0.19-0.25, Litolff 0.25-0.31) and p10-p90 within a page spans two steps, so a per-page constant is good to about
++-6 px, worse than the per-stem measurement.
+
+**Lost notes by reason (full sample, ON all four flags, `lost_notes.py`).** Brahms 14 lost (was 18): beams_ambiguous 3 (p4 `glyph/4/1/13/5/*`), beam_discounted 2, stem_value
+lone_head -> not_a_member 3, two decided notes read as not_a_note_mark 2, identical 2, other 2. Tiles 1, 7 (p14) and 4 (p5) are kept (were lost). Litolff 21 lost, unchanged: the
+8-note `stem_value lone_head -> not_a_member` group is on `out/print/2.206d-lost/sheet.png` (key `benchmarks/staff-eraser-2026-10/results/2.206d-lost-key.json`), answers pending.
+
+**Three measures (frozen sample, all four flags ON vs OFF).** File: litolff notes +25 -16, rests +5 -2, ties +8 -2, blue +50 -4, red bars 0 -> 0, notes not written 2566 -> 2560;
+brahms notes +50 -12, dots +36 -5, ties +30 -4, slurs +8, blue +21 -52, words +10 -33, wedges +3, red bars 165 -> 164, notes not written 3203 -> 3168. Tiles `out/print/2.206d/tiles/sheet.png`,
+key `out/print/2.206d/key.json`. Judged right->wrong: litolff 1 (`tile_05` `glyph/4/0/7/7/10`, the known twin-box artifact, same as 2.206c), brahms 0.
+The Brahms gain (+50 notes against +13 at 2.206c) is not yet looked at: the tiles are the check. Fast tier: 3 failures, none new in kind (two flag-doc tables name the OFF branch flags, one judged-index).
