@@ -111,6 +111,11 @@ class TestTremolo(unittest.TestCase):
         run(st, True)
         self.assertNotEqual(st.log.verdict(Q.STEM_VALUE, slash).reason, "not_a_member")
 
+    def test_refused_box_far_from_the_tip_with_a_head_above_stays_TWIN(self):     # Litolff p2 `glyph/2/0/1/1/5`: the lower head of a chord
+        st, top, slash, low = self.build(y_slash=40, extra_below=False)
+        run(st, True)
+        self.assertNotEqual(st.log.verdict(Q.STEM_VALUE, slash).reason, "not_a_member")
+
     def test_default_is_off(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)

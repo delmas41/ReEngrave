@@ -750,8 +750,8 @@ def _box_facts(ev: Evidence, sub: Subject) -> Dict[str, Any]:
 def _tremolo_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], stem_box: Sequence[float],
                    direction: Optional[str], space: Optional[float], exclude: Set[str]) -> Dict[str, Dict[str, Any]]:
     """KIND tremolo. Witness 1 (ink-owner, 2.205): the stroke-owner box verdict REFUSED this box with `tremolo_slash_across_a_stem` (a thick diagonal
-    stroke crossing a vertical). Witness 2 (stem geometry): it stands between two other members (>= 0.5 sp each side), or is the tip-most member
-    with another member >= `BEAM_END_OTHER_MIN_SP` from the tip."""
+    stroke crossing a vertical). Witness 2 (stem geometry): it stands between two other members (>= 0.5 sp each side), or is the tip-most member,
+    within `BEAM_END_TIP_MAX_SP` of the tip, with another member >= `BEAM_END_OTHER_MIN_SP` from it (2.209's pair)."""
     out: Dict[str, Dict[str, Any]] = {}
     if not space or space <= 0:
         return out
@@ -770,6 +770,7 @@ def _tremolo_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], st
         if direction in ("up", "down") and stem_box and others:
             tip_y = stem_box[1] if direction == "up" else stem_box[1] + stem_box[3]
             at_tip = (abs(m.cy - tip_y) == min(abs(o.cy - tip_y) for o in live)
+                      and abs(m.cy - tip_y) / space <= BEAM_END_TIP_MAX_SP
                       and max(abs(o.cy - tip_y) for o in others) / space >= BEAM_END_OTHER_MIN_SP)
         if between or at_tip:
             out[m.key] = {"kind": "tremolo", "between": between, "at_tip": at_tip}
