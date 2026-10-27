@@ -359,3 +359,61 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
     for s in out:
         s.component_n_strokes = per[s.component]
     return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built])
+
+
+#: ROADMAP 2.206d (flag `OMR_STEM_TIP_TRUE_EDGE`, default OFF). The stem finder's box can be a thin core of a thick stem (Brahms p14: 4 px
+#: of a 25 px stem); the stroke map holds the stem's whole width. Measured over the rows this far from either end of the stem (L7: head and
+#: stem fuse up to 1.2 sp beside a head) and refused where the stroke is wider than `STEM_TRUE_WIDTH_MAX_SPACES` (Litolff's widest plain stem
+#: 0.43 sp, Brahms 0.37 at p90; a fused or doubled stroke is not a stem's width).
+STEM_TRUE_END_MARGIN_SPACES = 1.5
+STEM_TRUE_WIDTH_MAX_SPACES = 0.7
+
+
+def stem_true_edges(res: "CellStrokes", stem_box: Sequence[float]) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.206d: `(x0, x1)` in canonical cell px of the stroke the finder's stem box lies on, measured mid-stem; `None` where no stroke
+    carries the box's centre at the mid rows or the measured width is not a stem's. The finder says WHICH stroke; the stroke says how wide."""
+    if res is None or isinstance(res, str) or not getattr(res, "masks", None):
+        return None
+    x, y, w, h = (float(v) for v in stem_box)
+    sp = float(res.sp_canonical)
+    s = float(res.scale)
+    margin = STEM_TRUE_END_MARGIN_SPACES * sp
+    ya, yb = y + margin, y + h - margin
+    if yb - ya < 0.5 * sp:                      # a short stem: the middle half
+        ya, yb = y + 0.25 * h, y + 0.75 * h
+    cx = (x + w / 2.0) * s
+    best = None
+    for m, mx0, my0 in res.masks:
+        mh, mw = m.shape
+        r0, r1 = max(0, int(round(ya * s)) - my0), min(mh, int(round(yb * s)) - my0)
+        c = int(round(cx)) - mx0
+        if r1 <= r0 or not (0 <= c < mw):
+            continue
+        hits = int(m[r0:r1, c].sum())
+        if hits and (best is None or hits > best[0]):
+            best = (hits, m, mx0, r0, r1)
+    if best is None:
+        return None
+    _, m, mx0, r0, r1 = best
+    lefts, rights = [], []
+    for r in range(r0, r1):
+        row = m[r]
+        c = int(round(cx)) - mx0
+        if not row[c]:
+            nz = np.flatnonzero(row)
+            if nz.size == 0:
+                continue
+            c = int(nz[np.argmin(np.abs(nz - c))])
+        a = c
+        while a > 0 and row[a - 1]:
+            a -= 1
+        b = c
+        while b < row.size - 1 and row[b + 1]:
+            b += 1
+        lefts.append(a); rights.append(b + 1)
+    if len(lefts) < 3:
+        return None
+    x0, x1 = (mx0 + float(np.median(lefts))) / s, (mx0 + float(np.median(rights))) / s
+    if x1 - x0 > STEM_TRUE_WIDTH_MAX_SPACES * sp:
+        return None
+    return x0, x1

@@ -4636,7 +4636,8 @@ def _owner_marks_for_cell(detections: Optional[Dict[str, List[Any]]],
 
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]],
-                    detections: Optional[Dict[str, List[Any]]] = None) -> None:
+                    detections: Optional[Dict[str, List[Any]]] = None,
+                    stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
     """Stems and beams from the classical-CV rung, on the ERASED image.
 
     ⚠️ THE TWO READERS SEE DIFFERENT IMAGES OF THE SAME PAGE, DELIBERATELY.
@@ -4799,7 +4800,9 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                     _observe_stem_tip_ink(
                         log, sub, frame, c, row_id, stem_xywh,
                         blockers, space_c, heads=heads,
-                        slashes=slashes.get(row_id))
+                        slashes=slashes.get(row_id),
+                        true_edges=(_stem_true_edges_for(stroke_cells, c, key, stem_xywh)
+                                    if stem_tip_true_edge_enabled() and stroke_cells else None))
 
         # ROADMAP 2.69 follow-up: is any `augmentationDot` box in this cell
         # really the tip of a flag? Needs the cell raster, not any stem.
@@ -4980,6 +4983,16 @@ STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 #: DEFAULT ON since 2026-10-13 (Sean's 9/9 on `out/print/2.104-review/`: "go ahead switch on and land"); a DENY-LIST, so a typo or an
 #: empty value leaves it RUNNING and only an explicit off-word turns it off. Measured on Sean's hand-truth page (FINDINGS 2.104).
 TIP_UNBLOCKED_ENV = "OMR_TIP_UNBLOCKED"
+
+
+#: ROADMAP 2.206d (`OMR_STEM_TIP_TRUE_EDGE`, default OFF; Sean 2026-10-26 "Yes"). The 2.18c tip window starts at the stem FINDER's box edge; where that box is
+#: a thin core of a thick stem (Brahms p14: 4 px of 25) the window counts the stem's own side as flag ink. ON: the window starts at the edge of the stem's
+#: STROKE (`stroke_map.stem_true_edges`, measured mid-stem), never inside the finder's box. Moves the reader's input, not its cut-off (0.30).
+STEM_TIP_TRUE_EDGE_ENV = "OMR_STEM_TIP_TRUE_EDGE"
+
+
+def stem_tip_true_edge_enabled() -> bool:
+    return os.environ.get(STEM_TIP_TRUE_EDGE_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
 def tip_unblocked_enabled() -> bool:
@@ -5163,6 +5176,13 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
         and t_first <= STEM_TIP_INK_ROOT_BIG_SPACES
     if thin or developed:
         out.update(found=True, why="shaped")
+        return out
+    # ROADMAP 2.206d (OMR_STEM_TIP_TRUE_EDGE; L15 "the tip reads only strokes that start at the tip"): a flag's first hook leaves the stem AT
+    # its tip. Where the ink first touches the stem further back than the developed flag's root (`STEM_TIP_INK_ROOT_BIG_SPACES`, 1.6 sp,
+    # the reader's own widest root) and the tip's own stretch is clean paper, that ink is not a stroke that starts at the tip (Brahms p5
+    # `glyph/5/1/12/9/12`: a kept line crossing fused into the stem, 2.7 sp back); nothing hangs from the tip.
+    if stem_tip_true_edge_enabled() and t_first > STEM_TIP_INK_ROOT_BIG_SPACES:
+        out.update(found=False, why="root_beyond_tip")
         return out
     out["why"] = "ink_not_flag_shaped"
     return out
@@ -5612,13 +5632,21 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
     return out
 
 
+def _stem_true_edges_for(stroke_cells: Any, c: Any, key: Tuple[int, int], stem_xywh: Tuple[float, float, float, float]
+                         ) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.206d: the stem stroke's edges for this finder box, or None (no map for the cell, no stroke under the box, not a stem's width)."""
+    from . import stroke_map as SM
+    return SM.stem_true_edges(stroke_cells.get((c.page_index, key[0], key[1], c.measure_index)), stem_xywh)
+
+
 def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                           stem_row_id: str,
                           stem_box: Tuple[float, float, float, float],
                           blockers: Sequence[Tuple[float, float, float, float]],
                           space: Optional[float],
                           heads: Optional[Sequence[Tuple[float, float, float, float]]] = None,
-                          slashes: Optional[Sequence[Dict[str, Any]]] = None
+                          slashes: Optional[Sequence[Dict[str, Any]]] = None,
+                          true_edges: Optional[Tuple[float, float]] = None
                           ) -> None:
     """`Q.STEM_TIP_INK` -- one row per (`Q.STEM` row, end). ROADMAP 2.18c.
 
@@ -5700,11 +5728,15 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         # ROADMAP 2.83 FIX ROUND: the 2.18c density window is the SECOND witness (see `stem_tip_window`): read where no box overlaps it,
         # combined with the shape reading below -- the shape reader may ADD a witness, never REMOVE one.
         window = None
-        if not stem_tip_window_blocked(blockers, x1, tip_y, into_sign, space):
-            window = stem_tip_window(img, x0, x1, tip_y, into_sign, space)
+        # ROADMAP 2.206d (OMR_STEM_TIP_TRUE_EDGE): the window starts at the stem stroke's edge, never inside the finder's box.
+        wx0, wx1 = (min(x0, true_edges[0]), max(x1, true_edges[1])) if true_edges else (x0, x1)
+        if not stem_tip_window_blocked(blockers, wx1, tip_y, into_sign, space):
+            window = stem_tip_window(img, wx0, wx1, tip_y, into_sign, space)
         window_found = None if window is None else window["found"]
         window_detail: Dict[str, Any] = {} if window is None else {
             "window_found": window_found, "window_right": window["right"], "window_left": window["left"]}
+        if window is not None and true_edges:
+            window_detail["window_stem_edges"] = [round(wx0, 1), round(wx1, 1)]
         extra: Dict[str, Any] = {}
         if found is None and not window_found and m.get("why") == "occupied" and tip_unblocked_enabled():
             # ROADMAP 2.104: the boxes explain the ink, but a flag-shaped reading with them set aside is still the ink's own
@@ -16043,7 +16075,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that
         # `gather_cv_lines` was never handed the map.
-        gather_cv_lines(log, cells, local, detections)
+        gather_cv_lines(log, cells, local, detections, stroke_cells)
         # ⚠️ AFTER detection, because a component's row records how much of it
         # the detections account for -- the same edge `gather_direction_words`
         # has and for the same reason. BESIDE `gather_cv_lines` because the
