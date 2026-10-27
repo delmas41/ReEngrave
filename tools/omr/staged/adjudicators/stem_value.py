@@ -85,7 +85,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision, is_relocated_copy
-from ..record import Candidate, Kind, Outcome, Q, Scope, Subject
+from ..record import Candidate, Kind, Outcome, Q, Scope, STROKE_GLYPH_BASE, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants -- each one a convention or a measurement, never a tuning knob
@@ -633,6 +633,12 @@ def beam_end_enabled() -> bool:
     return os.environ.get(BEAM_END_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _owner_mask(verdict: Any) -> Dict[int, str]:
+    """`{ordinal: "owned" | "contested"}` from a cell's `Q.STROKE_OWNER` verdict (`stroke_owner.masked`: {} with the flag off or no verdict)."""
+    from . import stroke_owner as _SOA
+    return _SOA.masked(verdict)
+
+
 def _on_beam_ink(ev: Evidence, sub: Subject) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.209 (Brahms p0 `glyph/0/0/12/1/15`, 2.206b tile 5). STAGED ADJUDICATE. Is this "notehead" the END OF A BEAM?
 
@@ -656,9 +662,24 @@ def _on_beam_ink(ev: Evidence, sub: Subject) -> Optional[Dict[str, Any]]:
         return None
     covered = [int(o) for o in rows[-1].value]
     partial = [int(p[0]) for p in ((rows[-1].detail or {}).get("partial") or ()) if len(p) >= 2]
-    from .rhythm import _stroke_views
     from .. import beam_strokes as BS
-    views = _stroke_views(ev, sub.at(Kind.CELL))
+    cell = sub.at(Kind.CELL)
+    # the cell's stroke map as `StrokeView`s -- the construction `rhythm._stroke_views` does, read HERE so this decision's `wants` are its own
+    # reads; a stroke another mark owns (or two contest) has kind `owned` / `contested`, never a beam (2.205)
+    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell))
+    views = []
+    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        g = getattr(r.subject, "glyph", None)
+        d = r.detail or {}
+        box = d.get("stroke_box")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
+            continue
+        views.append(BS.StrokeView(
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
+            length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
+            sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
+            touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
     if not views:
         return None
     role = BS.roles(views)
