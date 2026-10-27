@@ -23,7 +23,7 @@ machine-readable form.
   not. A lone dotless whole rest is the bar, sized to the `<time>` in force
   (ROADMAP 2.98, print-confirmed 12 of 12, 2026-10-12).
 - **An augmentation dot always stands in a SPACE, never on a line** (Sean, 2026-10-14: *"Always in a space"*; scope: general engraving; ROADMAP 2.128): in its note's own space; after a note on a line, in the space **above** by default, and **below** for the lower (stems-down) voice of two on one staff or the lower note of a second in a chord (Sean, same day, *"Yes"* to the researched rule; PROVISIONAL for 19th-c. German plates -- Brahms p.0 labels: 41 above, 15 apparent "below" are the lower chord partner's above-dot, 4 are a lower voice, 0 contradictions). Registry: `docs/engraving-conventions.md`.
-- **A tremolo slash is never oval: always a thick diagonal line** (Sean, 2026-10-15: *"They are never oval shaped - always thick diagonal lines"*; scope: general engraving; ROADMAP 2.137). It crosses one stem and joins no other note (2.49, 2.71), so a box over one is never a notehead, and a slash never changes the written value.
+- **A tremolo slash is never oval: always a thick diagonal line** (Sean, 2026-10-15: *"They are never oval shaped - always thick diagonal lines"*; scope: general engraving; ROADMAP 2.137). **Its ends are square-cut, a head's are round** (Sean, 2026-10-27: *"The slash is octogonal and the notehead is oval. Both at a slant. The slash is a thick line without rounded edges."*; scope: general engraving; ROADMAP 2.214): slant and length do not separate them, the corners do. It crosses one stem and joins no other note (2.49, 2.71), so a box over one is never a notehead, and a slash never changes the written value.
 - **A grace note never counts in the bar sum, and is significantly smaller than a regular note** (Sean, 2026-10-16: *"Grace Notes never take up math in the measure. They are significantly smaller by proportion to the regular note size. Som have a little slash through them but nit always."*; scope: general engraving; ROADMAP 2.156). **CORRECTION 2026-10-16 (Sean):** the slash being optional was his guess, not a confirmed fact (*"I am not sure the slash is optional… I was guessing. I don't know about notes after a trill. Your research would be the most reliable info we have."*) -- what a slash (or its absence) means, and where notes after a trill belong, rest on the 2.156 research (`benchmarks/omr-grace-notes-2026-10/RESEARCH.md`), each rule CONVENTION ASSUMED / NOT CONFIRMED until the sources and the print check it; no rule may yet treat a missing slash as evidence either way.
 - A dot sits a space higher on a line note (the usual case); the box window is asymmetric and misses the below-line dots (`OMR_DOT_POSITION_JOIN`).
 - A beam runs from the first stem it joins to the last, and a stem stands at
@@ -147,6 +147,25 @@ machine-readable form.
   in spacing), and ~1 px at the head decides a near-boundary pitch. Any
   position relative to the staff reads the staff lines AT THE SUBJECT'S x,
   never a staff-wide or bar-wide value (ROADMAP 2.48).
+- **Ledger lines are their own read, by ink, beside the head** (Sean,
+  2026-10-01: *"Most of them on these old scores were done by hand so they
+  are not even necessarily even or predictable by geometry. It can only be an
+  ink read for the lines."*; scope: general, measured on Litolff -- rungs at
+  1.03-1.11 of staff spacing, a step wrong by the 4th rung -- while Breitkopf
+  holds 1.00, `benchmarks/omr-ledger-extrapolation-2026-09/`): a head outside
+  the staff is placed ONLY by counting its own printed ledgers, never by
+  extending the staff spacing or any grid past the outer line
+  (`OMR_FARHEAD_LEDGER`, `measure_ledger_rungs`). The walk outward does not
+  stop at a wide gap while the head is farther out; a ledger THROUGH a head
+  (stubs on both sides) means the head is ON it; a head in the first space
+  just outside the staff, touching the outer line with no ledger, is an
+  on-staff note placed against the staff lines. Any new position reader
+  defers to this read outside the staff (2.212 broke two heads by not).
+- **A hollow head's position is its detector box centre, not its hole**
+  (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost always right and
+  better"*; scope: Litolff + Brahms): the white-interior centre was tried and
+  dropped; a reader that re-centres a hollow head on its hole needs Sean's
+  tiles first (2.212 did, unasked).
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.
