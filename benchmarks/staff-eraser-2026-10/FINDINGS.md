@@ -353,3 +353,25 @@ other box as the head, and this one becomes the duplicate, so `stem_value` absta
 (`glyph/16/0/8/0/9` G4, `glyph/6/1/11/9/2` B-12, same pitch as OFF; `glyph/16/1/3/1/3` E-14 vs OFF D4, `glyph/8/1/6/3/1` A4 vs OFF B4) at the same place. So the "lost" count is an identity swap between twin boxes, with the
 twin's own pitch: two of four (tiles 4, 7) change pitch (D4 -> E, B4 -> A4), unjudged; a print check of those two pitches is the open question. **Process lesson:** a lost-by-rg list counts identity, not music; match
 lost notes to gained notes by position before calling any a loss.
+
+## 12. 2.206d tile 9 (Brahms p19 `glyph/19/0/13/0/8`): why ON reads a dotted 16th (2026-10-27)
+
+**Cause (STAGED, GATHER `line_detection.detect_beams` -> ADJUDICATE `rhythm._beam_levels`; the eraser is the trigger, not the culprit).** One flag only: with each of the four flags ON alone on p19
+(`--from gather`, p19 + context page 0), `OMR_ERASER_FIX` alone gives `16th begin/begin`; `OMR_METER_SLOT`, `OMR_REST_OWN_STROKE`, `OMR_STEM_TIP_TRUE_EDGE` each give `eighth begin` = OFF. Not the tip window, not a remnant.
+Mechanism, from the records (cell `cell/19/0/13/0`, stem x 1310, head centre x 1353): in a dotted-eighth + 16ths group the primary beam starts at the dotted eighth's stem (x 1309) and the secondary starts at the first 16th's stem (x 1532).
+OFF: the overcut eraser (§Cause) bites the lower edge of the primary beam's left section (staff line y 374; a comb of white slits, `out/print/2.206f-beam/cell_crops.png` panel 2), the component breaks, and the finder emits
+two strokes with their own x extents: primary `[1318,395,602,59]`, secondary `[1532,342,385,57]`. ON: the beam is whole (1,890 px kept, red in panel 4), primary and secondary are ONE connected component; `_stacked_bar_bands` splits it into two y bands, and `_emit`
+gives EVERY band the component's full x extent: both strokes `[1309, .., 611, ..]`. `_beam_levels` counts strokes whose box covers the head's column (the `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM` test is OFF): 2 covers the head at 1353, level 2. The stem's own reader
+`beam_stem_levels` (stem 1310, bottom, right) says ONE level in both arms and is not consulted; `beam_stem_join` joins the dotted eighth to the primary only (the upper stroke has no join row), same in both arms. The neighbour (first 16th, `glyph/19/0/13/0/5`)
+also moves `continue/begin` -> `continue/continue` (same stroke): one mechanism, two notes. So OFF was right by accident: an overcut separated what a shared-x band split cannot.
+
+**How many others.** Value changes ON vs OFF on the full sample (`out/lane-report/2.206d/work` symbols): litolff 12 notes change type or beam state, none gains a level by value (3 lose one: p2, p6 x2; p9 gains the first beam, right); brahms 8, of which exactly 1 value gain
+of a level (this note) and 1 beam-state change on its neighbour. Stroke records (cv_lines `beam_stroke`, ON vs OFF, ON stroke with the same right end and x0 >30 px further left): litolff 4 cells, brahms 7 cells (12 strokes). Crop look at 6 of the brahms cells
+(`out/print/2.206f-beam/widen.png`, OFF blue / ON red on the original ink; agent look, not Sean's): the same shape in 4 (p19 `0/13/0`, p4 `1/13/5`, p12 `1/10/0`, p0 `0/0/12/1`: a secondary or short bar drawn the full component length from the left, where the real bar starts later), the box merely equal in 2 (p5, p19 `0/3/0`).
+Only p19 `0/13/0` turned a decided value wrong; the others show as lost/changed beam state, unjudged.
+
+**Process lesson.** A stroke finder that splits a component into stacked bars must give each bar its own x extent: the stroke's x is the evidence `_beam_levels` counts by, and a bar that does not exist at a stem's column cannot be a level there. A correct upstream change (whole beam) exposed a
+latent downstream assumption that had been satisfied by damage; "ON worse on one tile" can be the old arm right for the wrong reason. Check the finder's output geometry before any reader cut-off.
+
+**Proposed fix (not built).** In `detect_beams._emit`, trim each stacked band's x extent to the columns where THAT band's rows carry ink (coverage >= `BEAM_RESCUE_BAND_COVER` over a one-thickness run, ends rounded to the nearest stem if any), so a secondary bar starts at the 16th's stem and a primary at the dotted eighth's;
+flag-gated (new flag, GATHER, OFF), same OFF/ON frozen-sample report, tiles on the 4 shapes above. Alternative at ADJUDICATE (`_beam_levels` consulting `beam_stem_levels` as a second witness) is rejected first: the same ink read twice is not a second witness.
