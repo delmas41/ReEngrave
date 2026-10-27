@@ -1,0 +1,3 @@
+{"plate":"litolff","sheet":"out/print/2.206e-pitch/sheet.png","source":"out/lane-report/2.206d/work litolff.{off,on}.symbols.json","note":"pitch strings are the exported-symbol format step+alter+octave: E-14 = E flat 4, B-14 = B flat 4. Box drawn = OFF box.",
+"crops":{"1":{"off_rg":"glyph/16/1/3/1/2","off_pitch":"D4","on_rg":"glyph/16/1/3/1/3","on_pitch":"E-14 (E flat 4)","page":16,"part":"P4","measure":"240","type":"half","dy_px_600dpi":-5.9},
+"2":{"off_rg":"glyph/8/1/6/3/3","off_pitch":"B-14 (B flat 4, blue)","on_rg":"glyph/8/1/6/3/1","on_pitch":"A4","page":8,"part":"P8","measure":"115","type":"half","dy_px_600dpi":6.2}}}
