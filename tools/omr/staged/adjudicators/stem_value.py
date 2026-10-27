@@ -718,6 +718,93 @@ def _beam_end_boxes(ev: Evidence, members: Sequence["_Member"], stem_box: Sequen
     return out
 
 
+MEMBER_INK_ENV = "OMR_STEM_MEMBER_INK"
+
+#: ROADMAP 2.210. A synthesized `stem_end_head` box (GATHER reads a head at an orphan stem's end) can swallow the ink beside it. MEASURED on the
+#: 2.202strokes records (frozen pages): 213 such members, 4 are larger than `MERGED_MIN_W_SP` x `MERGED_MIN_H_SP` AND cover >= `MERGED_MIN_STROKES`
+#: strokes; all 4 are a clef, an "ff" or an accidental cluster (crops). The largest real open head among the other 209 is 2.2 x 2.0 sp. NARROWS who may vote.
+MERGED_MIN_W_SP = 2.6
+MERGED_MIN_H_SP = 2.2
+MERGED_MIN_STROKES = 8
+#: a tremolo slash sits ON the stem BETWEEN two of its heads, or at its tip with a head 2.5 sp or more away (page-facts section 1, Sean 2026-10-15 "never
+#: oval - always thick diagonal lines"). The ownership layer's shape rule alone is NOT enough (measured: 5 of 8 boxes it refused as a slash look like a
+#: real head beside a sharp / flat and a dot), so this is the second witness: where on the stem the box stands.
+TREMOLO_BETWEEN_MIN_SP = 0.5
+
+
+def member_ink_enabled() -> bool:
+    """ROADMAP 2.210, flag `OMR_STEM_MEMBER_INK`, default OFF: a box counts as a member of a stem only if its own ink can be a notehead. ON includes
+    the 2.209 beam-end test (`_beam_end_boxes`), which this generalises."""
+    import os
+    return os.environ.get(MEMBER_INK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _box_facts(ev: Evidence, sub: Subject) -> Dict[str, Any]:
+    rows = ev.rows(Q.GLYPH_BOX, subject=sub)
+    src = ((rows[-1].detail or {}).get("source") if rows else None)
+    g = ev.rows(Q.GLYPH_STROKES, subject=sub)
+    n = len(g[-1].value) if g and isinstance(g[-1].value, (list, tuple)) else None
+    return {"source": src, "covered": n}
+
+
+def _tremolo_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], stem_box: Sequence[float],
+                   direction: Optional[str], space: Optional[float], exclude: Set[str]) -> Dict[str, Dict[str, Any]]:
+    """KIND tremolo. Witness 1 (ink-owner, 2.205): the stroke-owner box verdict REFUSED this box with `tremolo_slash_across_a_stem` (a thick diagonal
+    stroke crossing a vertical). Witness 2 (stem geometry): it stands between two other members (>= 0.5 sp each side), or is the tip-most member
+    with another member >= `BEAM_END_OTHER_MIN_SP` from the tip."""
+    out: Dict[str, Dict[str, Any]] = {}
+    if not space or space <= 0:
+        return out
+    v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    boxes = ((getattr(v, "detail", None) or {}).get("boxes") or {}) if v is not None else {}
+    live = [m for m in members if m.cy is not None and m.key not in exclude]
+    for m in live:
+        b = boxes.get(m.key)
+        if not b or b[0] != "refused" or not any(str(l[3]).startswith("tremolo_slash_across_a_stem") for l in b[1]):
+            continue
+        others = [o for o in live if o is not m]
+        above = [o for o in others if o.cy < m.cy - TREMOLO_BETWEEN_MIN_SP * space]
+        below = [o for o in others if o.cy > m.cy + TREMOLO_BETWEEN_MIN_SP * space]
+        between = bool(above and below)
+        at_tip = False
+        if direction in ("up", "down") and stem_box and others:
+            tip_y = stem_box[1] if direction == "up" else stem_box[1] + stem_box[3]
+            at_tip = (abs(m.cy - tip_y) == min(abs(o.cy - tip_y) for o in live)
+                      and max(abs(o.cy - tip_y) for o in others) / space >= BEAM_END_OTHER_MIN_SP)
+        if between or at_tip:
+            out[m.key] = {"kind": "tremolo", "between": between, "at_tip": at_tip}
+    return out
+
+
+def _merged_ink_boxes(ev: Evidence, members: Sequence["_Member"], space: Optional[float]) -> Dict[str, Dict[str, Any]]:
+    """KIND merged_ink. A synthesized `stem_end_head` box bigger than any head in both directions that covers `MERGED_MIN_STROKES` or more strokes
+    is a clef / dynamic / accidental cluster. Witness 1: the box (reader + size); witness 2: the stroke map (how many strokes it stands on)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    if not space or space <= 0:
+        return out
+    for m in members:
+        if not m.box:
+            continue
+        f = _box_facts(ev, m.sub)
+        w, h = m.box[2] / space, m.box[3] / space
+        if (f["source"] == "stem_end_head" and w > MERGED_MIN_W_SP and h > MERGED_MIN_H_SP
+                and (f["covered"] or 0) >= MERGED_MIN_STROKES):
+            out[m.key] = {"kind": "merged_ink", "w_sp": round(w, 2), "h_sp": round(h, 2), "strokes": f["covered"]}
+    return out
+
+
+def _non_head_boxes(ev: Evidence, cell: Subject, members: Sequence["_Member"], stem_box: Sequence[float],
+                    direction: Optional[str], space: Optional[float]) -> Dict[str, Dict[str, Any]]:
+    """ROADMAP 2.210. The members whose own ink cannot be a notehead, keyed by glyph key, each with its kind and witnesses: beam_end (2.209),
+    tremolo, merged_ink. Every kind needs two witnesses from different sources; a box nothing can speak for stays a member (rule 8)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    for k, v in _beam_end_boxes(ev, members, stem_box, direction, space).items():
+        out[k] = {"kind": "beam_end", **v}
+    out.update(_merged_ink_boxes(ev, [m for m in members if m.key not in out], space))
+    out.update(_tremolo_boxes(ev, cell, members, stem_box, direction, space, set(out)))
+    return out
+
+
 class _Member:
     """One kept notehead of a stem, with what its own duration verdict says."""
 
@@ -918,7 +1005,17 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
         if m is not None:
             members.append(m)
     beam_ends: Dict[str, Dict[str, Any]] = {}
-    if beam_end_enabled() and len(members) >= 2:
+    if member_ink_enabled() and len(members) >= 2:
+        dirs = {m.direction for m in members if m.direction}
+        sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        try:
+            space = float(sp_rows[-1].value) if sp_rows else None
+        except (TypeError, ValueError):
+            space = None
+        beam_ends = _non_head_boxes(ev, cell, members, stem_box, next(iter(dirs)) if len(dirs) == 1 else None, space)
+        if beam_ends:
+            members = [m for m in members if m.key not in beam_ends]
+    elif beam_end_enabled() and len(members) >= 2:
         dirs = {m.direction for m in members if m.direction}
         sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
         try:
