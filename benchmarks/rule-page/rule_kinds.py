@@ -405,6 +405,7 @@ MODULES = {
     "rest_ink.py": (RESTS, "C", "does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule)", "Sean 2026-10-16 (2.150b)", "retires with 2.205"),
     "head_oval.py": (HEADS, "C", "does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines)", "Sean 2026-10-17 (2.164)", "retires with 2.205"),
     "second_hollow.py": (HEADS, "U", "a SECOND detector at GATHER for hollow heads only", "ROADMAP 2.114", "open: a second reading of the same ink"),
+    "twin_head.py": (HEADS, "C", "boxes on one head share ONE position and ONE fill window read off the head's own ink", "Sean 2026-10-27 (2.212 \"Yes\")", "open: flag OFF until Sean's tiles"),
     "stem_end_heads.py": (STEMS, "A", "a stem with no head is a note we have not seen: look at its end", "Sean 2026-10-01 (2.179 \"if there are stems then there are notes\")", "kept"),
     "detector_views.py": (HEADS, "D:gather", "the detector looks at each symbol family at its own size", "Sean 2026-10-19 (2.172)", "kept"),
     "geometry.py": (HEADS, "A", "the standard notehead box: all regular heads are the same size", "Sean 2026-09-29 (2.39)", "kept"),

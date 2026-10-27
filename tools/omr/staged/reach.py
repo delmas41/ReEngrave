@@ -395,6 +395,9 @@ NOT_A_STAGE = frozenset({
     # ⚠️ ROADMAP 2.114. Pure helpers for `gather.gather_second_hollow` (the flag, the class list, box matching): files no row, names
     # no quantity, so it is neither a reader nor a decider.
     "second_hollow.py",
+    # ROADMAP 2.212. Pure helpers for `gather.gather_notehead_positions` / `gather_notehead_ink` (the flag, which boxes are one head, the
+    # head's ink centre): files no row, names no quantity; the rows are those two readers' own.
+    "twin_head.py",
     # ROADMAP 2.172. Pure helpers for `gather.gather_detector_views` (the flag, the views, the phase median, the family-aware merge): files no row,
     # names no quantity; the rows are `gather_detector_views`'s own.
     "detector_views.py",
