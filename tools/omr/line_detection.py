@@ -1332,6 +1332,59 @@ def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
     return n_bars, [(tops[k], bottoms[k]) for k in range(n_bars)]
 
 
+#: ROADMAP 2.213 (`OMR_BEAM_OWN_EXTENT`, default OFF; Sean 2026-10-27 "Yes"; benchmarks/staff-eraser-2026-10/FINDINGS.md 12). A stacked component's bars all
+#: took the COMPONENT's x extent, so a secondary bar that really starts at the first 16th's stem was drawn from the dotted eighth's stem, and
+#: `rhythm._beam_levels` (which counts strokes whose box covers a head's column) read a second level there. ON: each bar's x extent is the columns where
+#: THAT bar's own rows carry a run at least `BEAM_OWN_EXTENT_MIN_THICK` of the bar's typical thickness. CONVENTION ASSUMED: a secondary beam spans only the
+#: notes it serves, so its ink starts and stops at their stems.
+BEAM_OWN_EXTENT_ENV = "OMR_BEAM_OWN_EXTENT"
+BEAM_OWN_EXTENT_MIN_THICK = 0.6
+
+
+def beam_own_extent_enabled() -> bool:
+    import os
+    return os.environ.get(BEAM_OWN_EXTENT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _bar_own_extents(labels, label: int, x: int, y: int, w: int, h: int,
+                     bands: list[tuple[int, int]]) -> list[tuple[int, int] | None]:
+    """Per bar, the `(x0, x1)` (component frame, inclusive) of its OWN ink, or None where it cannot be said (the caller keeps the full extent).
+
+    A column's vertical runs are each given to the band whose centre is nearest the run's centre; a bar owns a column where it has a run at least
+    `BEAM_OWN_EXTENT_MIN_THICK` times the bar's median run thickness. Thickness is measured only on columns that read every bar cleanly.
+    """
+    roi = labels[y:y + h, x:x + w] == label
+    n = len(bands)
+    centres = [(t + b) / 2.0 for t, b in bands]
+    starts = roi & ~np.vstack([np.zeros((1, w), dtype=bool), roi[:-1]])
+    ends = roi & ~np.vstack([roi[1:], np.zeros((1, w), dtype=bool)])
+    per_col: list[list[tuple[int, int]]] = []   # (bar, run thickness) per column
+    thick: list[list[int]] = [[] for _ in range(n)]
+    for j in range(w):
+        s_rows = np.flatnonzero(starts[:, j])
+        e_rows = np.flatnonzero(ends[:, j])
+        col: list[tuple[int, int]] = []
+        if s_rows.size == e_rows.size:
+            for a, b in zip(s_rows, e_rows):
+                c = (a + b) / 2.0
+                k = min(range(n), key=lambda q: abs(centres[q] - c))
+                col.append((k, int(b - a + 1)))
+            if s_rows.size == n:
+                for k, t in col:
+                    thick[k].append(t)
+        per_col.append(col)
+    med = [float(np.median(t)) if t else None for t in thick]
+    out: list[tuple[int, int] | None] = []
+    for k in range(n):
+        if med[k] is None:
+            out.append(None)
+            continue
+        need = BEAM_OWN_EXTENT_MIN_THICK * med[k]
+        cols = [j for j, col in enumerate(per_col) if any(kk == k and t >= need for kk, t in col)]
+        out.append((cols[0], cols[-1]) if cols else None)
+    return out
+
+
 def _stacked_bar_count(labels, label: int, x: int, y: int, w: int, h: int,
                        max_samples: int = 48) -> int:
     """How many beam bars are stacked here, counted as vertical ink runs.
@@ -1561,13 +1614,19 @@ def detect_beams(
         else:
             placed = [(int(y + top), max(1, int(bottom - top + 1)))
                       for top, bottom in bands]
-        for bar_y, bar_h in placed:
+        extents: list = [None] * len(placed)
+        if bands is not None and beam_own_extent_enabled():
+            extents = _bar_own_extents(lab, i, x, y, w, h, bands)
+        for (bar_y, bar_h), ext in zip(placed, extents):
+            bx, bw = int(x), int(w)
+            if ext is not None:
+                bx, bw = int(x + ext[0]), int(ext[1] - ext[0] + 1)
             out.append(LineDetection(
                 smufl_name="beam",
                 category="structural",
-                x_canonical=int(x),
+                x_canonical=bx,
                 y_canonical=bar_y,
-                width_canonical=int(w),
+                width_canonical=bw,
                 height_canonical=bar_h,
                 confidence=1.0,
             ))
