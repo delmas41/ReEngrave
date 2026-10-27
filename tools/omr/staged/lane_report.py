@@ -45,6 +45,7 @@ import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
+from fractions import Fraction
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
 
 DERIVED_CHECK = False
@@ -337,6 +338,7 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
     root = ET.fromstring(xml)
     hosts: List[dict] = []
     loose: List[dict] = []
+    divisions = 1
 
     def place(rg: Optional[str]) -> Tuple[Optional[int], Optional[float], Optional[float], Optional[list]]:
         b = boxes.get(rg or "")
@@ -350,9 +352,16 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
         for m in part.findall("measure"):
             mnum = m.get("number")
             pending: List[dict] = []
+            pos, last_onset = 0, 0      # ROADMAP 2.211: the written onset, in divisions, of each note
             for el in m:
                 tag = el.tag
+                if tag == "backup":
+                    pos -= int(el.findtext("duration") or 0)
+                elif tag == "forward":
+                    pos += int(el.findtext("duration") or 0)
                 if tag == "attributes":
+                    if el.findtext("divisions"):
+                        divisions = int(el.findtext("divisions"))
                     for c in el.findall("clef"):
                         loose.append(dict(kind="clef", part=pid, measure=mnum, value="%s%s" % (c.findtext("sign"), c.findtext("line"))))
                     for c in el.findall("key"):
@@ -376,6 +385,13 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                                 pending.append(dict(kind="words", part=pid, measure=mnum, value=txt))
                 elif tag == "note":
                     rg = el.get("rg")
+                    if el.find("chord") is not None:
+                        onset_div = last_onset
+                    else:
+                        onset_div = last_onset = pos
+                        if el.find("grace") is None:
+                            pos += int(el.findtext("duration") or 0)
+                    onset = str(Fraction(onset_div, divisions))
                     pg, cx, cy, bx = place(rg)
                     is_rest = el.find("rest") is not None
                     notations = el.find("notations")
@@ -422,7 +438,7 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                         continue
                     hosts.append(dict(kind=kind, part=pid, measure=mnum, rg=rg, page=pg, cx=cx, cy=cy,
                                       box=bx, type=typ, pitch=pitch, blue=guessed, sub=dict(sub),
-                                      chord=el.find("chord") is not None))
+                                      chord=el.find("chord") is not None, onset=onset, voice=el.findtext("voice")))
                     for d in pending:
                         d.update(page=pg, cx=cx, cy=cy, box=bx, rg=rg)
                         loose.append(d)
@@ -532,15 +548,65 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
 
 # ───────────────────────────── 6. the diff (pure counting) ─────────────────────────────
 
+def place_of(h: dict) -> Optional[tuple]:
+    """ROADMAP 2.211: where a written note / rest SITS, read from what EXPORT wrote, never from the detector box it was
+    written from: `(page, system, staff, cell, part, measure, onset)`. The glyph key `glyph/page/system/staff/cell/n`
+    gives the first four (the cell is the bar's cell on that system and staff); the XML gives the bar and the onset in
+    it. None when the host has no onset or its key does not parse (then position pairing is the only way)."""
+    m = re.match(r"glyph/(\d+)/(\d+)/(\d+)/(\d+)/\d+$", h.get("rg") or "")
+    if not m or h.get("onset") is None:
+        return None
+    return tuple(int(x) for x in m.groups()) + (h.get("part"), h.get("measure"), h.get("onset"))
+
+
+def pair_by_place(off: Sequence[dict], on: Sequence[dict], same_pitch: bool,
+                  skip_i: Iterable[int] = (), skip_j: Iterable[int] = ()) -> Tuple[List[Tuple[int, int]], List[int], List[int]]:
+    """Pair two arms' written notes/rests by PLACE, not by box: same place and, if `same_pitch`, the same pitch (a rest is
+    its own pitch), one to one, in x order within a tie. `skip_*` are hosts already paired. Returns (pairs, left_off, left_on)."""
+    def pk(h):
+        return h.get("pitch") or h.get("kind")
+    used_i, used_j = set(skip_i), set(skip_j)
+    pairs: List[Tuple[int, int]] = []
+    groups_off: Dict[tuple, List[int]] = collections.defaultdict(list)
+    groups_on: Dict[tuple, List[int]] = collections.defaultdict(list)
+    for i, h in enumerate(off):
+        pl = place_of(h)
+        if pl is not None and i not in used_i:
+            groups_off[pl + ((pk(h),) if same_pitch else ())].append(i)
+    for j, h in enumerate(on):
+        pl = place_of(h)
+        if pl is not None and j not in used_j:
+            groups_on[pl + ((pk(h),) if same_pitch else ())].append(j)
+    for k, a in groups_off.items():
+        b = groups_on.get(k)
+        if not b:
+            continue
+        a = sorted(a, key=lambda i: (off[i].get("cx") or 0, off[i].get("cy") or 0))
+        b = sorted(b, key=lambda j: (on[j].get("cx") or 0, on[j].get("cy") or 0))
+        for i, j in zip(a, b):
+            pairs.append((i, j))
+            used_i.add(i)
+            used_j.add(j)
+    return pairs, [i for i in range(len(off)) if i not in used_i], [j for j in range(len(on)) if j not in used_j]
+
+
 def pair_hosts(off: Sequence[dict], on: Sequence[dict], tol: float) -> Tuple[List[Tuple[int, int]], List[int], List[int]]:
-    """Pair two arms' written notes/rests by page position: same page, centres within `tol` px, nearest first, one to
-    one. A host with no page position (no glyph key) is never paired. Returns (pairs, unmatched_off, unmatched_on)."""
+    """Pair two arms' written notes/rests, three rounds (ROADMAP 2.211; a detector box is no identity -- a twin box that
+    changes keeper over the same written music must pair and report nothing):
+      1. same PLACE (page, system, staff, cell, bar, onset) and same pitch;
+      2. what is left, by page position: same page, centres within `tol` px, nearest first (the old rule; it carries a
+         note whose onset moved because an earlier note in its bar changed value, a change that is reported on that note);
+      3. what is left, same place and a different pitch or kind (a changed pitch at its place reports as one).
+    A host with no place and no page position is never paired. Returns (pairs, unmatched_off, unmatched_on)."""
+    pairs, lost, gain = pair_by_place(off, on, True)
     cands = []
     by_page: Dict[Any, List[int]] = collections.defaultdict(list)
-    for j, h in enumerate(on):
+    for j in gain:
+        h = on[j]
         if h.get("page") is not None and h.get("cx") is not None:
             by_page[h["page"]].append(j)
-    for i, h in enumerate(off):
+    for i in lost:
+        h = off[i]
         if h.get("page") is None or h.get("cx") is None:
             continue
         for j in by_page.get(h["page"], ()):
@@ -549,13 +615,17 @@ def pair_hosts(off: Sequence[dict], on: Sequence[dict], tol: float) -> Tuple[Lis
             if d <= tol:
                 cands.append((d, i, j))
     cands.sort()
-    used_i, used_j, pairs = set(), set(), []
+    used_i, used_j = {i for i, _ in pairs}, {j for _, j in pairs}
     for _d, i, j in cands:
         if i in used_i or j in used_j:
             continue
         used_i.add(i)
         used_j.add(j)
         pairs.append((i, j))
+    more, _l, _g = pair_by_place(off, on, False, used_i, used_j)
+    pairs += more
+    used_i |= {i for i, _ in more}
+    used_j |= {j for _, j in more}
     return (pairs, [i for i in range(len(off)) if i not in used_i], [j for j in range(len(on)) if j not in used_j])
 
 
@@ -679,13 +749,76 @@ def format_counts(counts: Dict[str, Dict[str, int]]) -> str:
 
 # ───────────────────────────── 7. judged answers ─────────────────────────────
 
-def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str) -> Dict[str, Any]:
-    """Sean's judged tiles scored against the OFF and the ON mini-records (tools.omr.staged.judged, one scorer)."""
+def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str,
+                 off_hosts: Optional[Sequence[dict]] = None, on_hosts: Optional[Sequence[dict]] = None) -> Dict[str, Any]:
+    """Sean's judged tiles scored against the OFF and the ON mini-records (tools.omr.staged.judged, one scorer). With the
+    arms' written hosts, each right->wrong / right->lost is then attached to its PLACE (`by_place`, ROADMAP 2.211)."""
     from . import judged as J
     idx = json.loads(J.INDEX_PATH.read_text())
     a = J.score(idx, off_rec, doc)
     b = J.score(idx, on_rec, doc)
-    return compare_judged(a["tiles"], b["tiles"])
+    rep = compare_judged(a["tiles"], b["tiles"])
+    if off_hosts is not None and on_hosts is not None:
+        subs = {s for k in ("worse", "lost") for r in rep[k] for s in _subject_list(r["subject"])}
+        rep = by_place(rep, J.page_boxes(off_rec, subs) if subs else {}, off_hosts, on_hosts)
+    return rep
+
+
+def _subject_list(sub: Any) -> List[str]:
+    return [sub] if isinstance(sub, str) else list(sub or [])
+
+
+def written_at(hosts: Sequence[dict], subject: str, box: Optional[Sequence[float]]) -> Optional[dict]:
+    """The note / rest an arm WROTE for a judged box: the host written from that very key, else (the box was a twin that
+    was never written) the host on the same page whose centre lies inside the box, nearest the box's centre."""
+    for h in hosts:
+        if h.get("rg") == subject:
+            return h
+    if not box:
+        return None
+    pg = page_of(subject)
+    cx, cy = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
+    inside = [h for h in hosts if h.get("page") == pg and h.get("cx") is not None
+              and box[0] <= h["cx"] <= box[2] and box[1] <= h["cy"] <= box[3]]
+    return min(inside, key=lambda h: (h["cx"] - cx) ** 2 + (h["cy"] - cy) ** 2) if inside else None
+
+
+def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: str) -> Optional[dict]:
+    """The event an arm wrote at a place: same pitch (or kind, for a rest) first, else any event at that slot."""
+    here = [h for h in hosts if place_of(h) == place]
+    for h in here:
+        if (h.get("pitch") or h.get("kind")) == (pitch or kind):
+            return h
+    return here[0] if here else None
+
+
+def by_place(rep: Dict[str, Any], boxes: Dict[str, Sequence[float]], off_hosts: Sequence[dict],
+             on_hosts: Sequence[dict]) -> Dict[str, Any]:
+    """ROADMAP 2.211. The scorer answers per detector box; the file is the music. A right->wrong / right->lost row is
+    attached to the place its box was written at in the OFF file, and kept only if the ON file WRITES something else
+    there (a different pitch or value, or nothing). Moves out of `worse` / `lost`:
+      `same_music`  the ON file writes the same pitch and value at that place (a twin box changed keeper);
+      `not_found`   no event is written at that place in the OFF file, so nothing can be said -- never right or wrong."""
+    out = dict(rep)
+    same_music, not_found = [], []
+    for key in ("worse", "lost"):
+        keep = []
+        for r in rep[key]:
+            subs = _subject_list(r["subject"])
+            offs = [written_at(off_hosts, s, boxes.get(s)) for s in subs]
+            if not subs or any(h is None or place_of(h) is None for h in offs):
+                not_found.append(dict(r, was=key, why="no written event at that place in the OFF file"))
+                continue
+            same = True
+            for h in offs:
+                g = event_at(on_hosts, place_of(h), h.get("pitch"), h["kind"])
+                if g is None or g["kind"] != h["kind"] or g.get("pitch") != h.get("pitch") or g["type"] != h["type"] \
+                        or collections.Counter(g["sub"].get("dot", ())) != collections.Counter(h["sub"].get("dot", ())):
+                    same = False
+            (same_music if same else keep).append(r if not same else dict(r, was=key))
+        out[key] = keep
+    out["same_music"], out["not_found"] = same_music, not_found
+    return out
 
 
 def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[str, Any]:
@@ -914,7 +1047,8 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
     for p in plates:
         off, on = done[(p, "off")], done[(p, "on")]
         d = diff_arms(off, on, tol=0.5 * PLATES[p]["unit"])
-        jm = judged_moves(work / ("%s.off.mini-record.json" % p), work / ("%s.on.mini-record.json" % p), p)
+        jm = judged_moves(work / ("%s.off.mini-record.json" % p), work / ("%s.on.mini-record.json" % p), p,
+                          off["hosts"], on["hosts"])
         all_changes[p], all_same[p] = d["changes"], d["same"]
         rep["plates"][p] = dict(pages=pages[p], counts=d["counts"], hosts=d["hosts"], paired=d["paired"],
                                 red_bars=[off["red_bars"], on["red_bars"]],
@@ -960,6 +1094,10 @@ def render_text(rep: Dict[str, Any]) -> str:
             L.append("      RIGHT->WRONG  %s tile %s %s  Sean: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["now"]))
         for w in j["lost"][:10]:
             L.append("      right->%s  %s tile %s %s" % (w["now"], w["item"], w["tile"], w["subject"]))
+        for w in j.get("same_music", ()):
+            L.append("      same music at its place (box swap, not a change)  %s tile %s %s  scorer said %s" % (w["item"], w["tile"], w["subject"], w["was"]))
+        for w in j.get("not_found", ()):
+            L.append("      NOT FOUND (no written event at its place; neither right nor wrong)  %s tile %s %s  was %s" % (w["item"], w["tile"], w["subject"], w["was"]))
     t = rep["tiles"]
     L.append("")
     L.append("tiles: %d (%d from the changes, %d controls), seed %d -> tiles/ (sheet.png), key.json outside the folder"
@@ -968,10 +1106,69 @@ def render_text(rep: Dict[str, Any]) -> str:
     return "\n".join(L)
 
 
+def load_arms(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int = 0) -> Dict[str, Any]:
+    """The saved arms of a finished lane report, re-read with the CURRENT parser (onsets included). `box_keyed=True`
+    strips the onsets (pairing falls back to the old box-centre rule); `drop=N` deletes N written notes from the ON file."""
+    arms = {}
+    for arm in ("off", "on"):
+        old = json.loads((work / ("%s.%s.symbols.json" % (plate, arm))).read_text())
+        boxes = {h["rg"]: dict(page=h["page"], box=h["box"], cls=None) for h in old["hosts"] if h.get("rg") and h.get("box")}
+        new = parse_symbols((work / ("%s.%s.musicxml" % (plate, arm))).read_text(), boxes)
+        keep = {h["rg"] for h in old["hosts"]}
+        old["hosts"] = [h for h in new["hosts"] if h["rg"] in keep]
+        if box_keyed:
+            for h in old["hosts"]:
+                h["onset"] = None
+        arms[arm] = old
+    if drop:
+        notes = [i for i, h in enumerate(arms["on"]["hosts"]) if h["kind"] == "note" and not h.get("chord")]
+        gone = {notes[(k * len(notes)) // drop] for k in range(drop)}
+        arms["on"]["hosts"] = [h for i, h in enumerate(arms["on"]["hosts"]) if i not in gone]
+    return arms
+
+
+def rescore(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int = 0) -> Dict[str, Any]:
+    """ROADMAP 2.211 control: re-score a finished lane report's saved arms with the CURRENT parser and place pairing.
+    `box_keyed=True` is the BEFORE number (it must equal the saved report); `drop=N` plants N real losses in the ON file
+    (they must show as N lost notes)."""
+    arms = load_arms(work, plate, box_keyed, drop)
+    d = diff_arms(arms["off"], arms["on"], tol=0.5 * PLATES[plate]["unit"])
+    rec = (work / ("%s.off.mini-record.json" % plate), work / ("%s.on.mini-record.json" % plate))
+    jm = judged_moves(rec[0], rec[1], plate) if box_keyed else judged_moves(rec[0], rec[1], plate, arms["off"]["hosts"], arms["on"]["hosts"])
+    return dict(counts=d["counts"], hosts=d["hosts"], paired=d["paired"], judged=jm)
+
+
+def lost_notes(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int = 0) -> Dict[str, Any]:
+    """The written notes present OFF with no note at their place ON (and the reverse), each with the OFF and ON verdicts
+    the mini-record keeps for its box, grouped by what differs (ROADMAP 2.211: this replaces the by-box-id list of
+    benchmarks/staff-eraser-2026-10/lost_notes.py -- a twin box that took over a note is not a lost note)."""
+    from . import judged as J
+    arms = load_arms(work, plate, box_keyed, drop)
+    off, on = arms["off"]["hosts"], arms["on"]["hosts"]
+    _pairs, lo, ga = pair_hosts(off, on, 0.5 * PLATES[plate]["unit"])
+    lost = [off[i] for i in lo if off[i]["kind"] == "note"]
+    gained = [on[j] for j in ga if on[j]["kind"] == "note"]
+    want = {h["rg"] for h in lost} | {h["rg"] for h in gained}
+    said: Dict[str, Dict[str, Dict[str, str]]] = {"off": collections.defaultdict(dict), "on": collections.defaultdict(dict)}
+    for arm in ("off", "on"):
+        for v in J.iter_array(work / ("%s.%s.mini-record.json" % (plate, arm)), "verdicts"):
+            if v.get("subject") in want:
+                said[arm][v["subject"]][v["quantity"]] = "%s:%s" % (v.get("outcome"), v.get("reason"))
+    groups: Dict[str, List[str]] = collections.defaultdict(list)
+    rows = []
+    for h in lost:
+        so, sn = said["off"].get(h["rg"], {}), said["on"].get(h["rg"], {})
+        diff = {q: (so.get(q), sn.get(q)) for q in set(so) | set(sn) if so.get(q) != sn.get(q)}
+        why = "; ".join("%s: %s -> %s" % (q, a, b) for q, (a, b) in sorted(diff.items())) or "verdicts identical (dropped later)"
+        groups[why].append(h["rg"])
+        rows.append(dict(rg=h["rg"], part=h["part"], measure=h["measure"], onset=h["onset"], pitch=h["pitch"], type=h["type"], reason=why))
+    return dict(plate=plate, notes=(len(off), len(on)), lost=rows, gained=[g["rg"] for g in gained], groups=dict(groups))
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     cmd = "run"
-    if argv and argv[0] in ("sample", "arm"):
+    if argv and argv[0] in ("sample", "arm", "rescore", "lost-notes"):
         cmd = argv.pop(0)
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--flag", action="append", default=[], help="OMR_X (OFF=0, ON=1), OMR_X=V (ON=V) or OMR_X=OFFV:ONV")
@@ -994,6 +1191,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--arm")
     ap.add_argument("--gathered")
     ap.add_argument("--n", type=int, default=8)
+    ap.add_argument("--box-keyed", action="store_true", help="rescore: the old box-centre pairing (the BEFORE number)")
+    ap.add_argument("--drop", type=int, default=0, help="rescore: plant N lost notes in the ON file (the control that can fail)")
     a = ap.parse_args(argv)
     if cmd == "sample":
         if SAMPLE_PATH.exists() and not a.force:
@@ -1002,6 +1201,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         SAMPLE_PATH.parent.mkdir(parents=True, exist_ok=True)
         SAMPLE_PATH.write_text(json.dumps(s, indent=1) + "\n")
         print({p: v["pages"] for p, v in s["plates"].items()})
+        return 0
+    if cmd == "lost-notes":
+        for p in [x for x in a.plates.split(",") if x]:
+            r = lost_notes(pathlib.Path(a.work), p, a.box_keyed, a.drop)
+            print("%s: %d notes written OFF with no note at their place ON (%d notes OFF, %d ON); %d notes only ON"
+                  % (p, len(r["lost"]), r["notes"][0], r["notes"][1], len(r["gained"])))
+            for k, v in sorted(r["groups"].items(), key=lambda kv: -len(kv[1])):
+                print("  %3d  %s\n        %s" % (len(v), k, ", ".join(v)))
+        return 0
+    if cmd == "rescore":
+        for p in [x for x in a.plates.split(",") if x]:
+            r = rescore(pathlib.Path(a.work), p, a.box_keyed, a.drop)
+            j = r["judged"]
+            print("%s  %s\n  judged: right->wrong %d | right->lost %d | same music at its place %d | not found %d"
+                  % (p, format_counts(r["counts"]), len(j["worse"]), len(j["lost"]), len(j.get("same_music", ())), len(j.get("not_found", ()))))
+            for w in j["worse"]:
+                print("    RIGHT->WRONG", w["item"], w["tile"], w["subject"], w["now"])
+            for w in j.get("not_found", ()):
+                print("    NOT FOUND", w["item"], w["tile"], w["subject"])
         return 0
     sample = load_sample()
     tag = a.tag or sample["record_tag"]
