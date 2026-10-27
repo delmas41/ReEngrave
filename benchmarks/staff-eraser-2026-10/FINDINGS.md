@@ -375,3 +375,7 @@ latent downstream assumption that had been satisfied by damage; "ON worse on one
 
 **Proposed fix (not built).** In `detect_beams._emit`, trim each stacked band's x extent to the columns where THAT band's rows carry ink (coverage >= `BEAM_RESCUE_BAND_COVER` over a one-thickness run, ends rounded to the nearest stem if any), so a secondary bar starts at the 16th's stem and a primary at the dotted eighth's;
 flag-gated (new flag, GATHER, OFF), same OFF/ON frozen-sample report, tiles on the 4 shapes above. Alternative at ADJUDICATE (`_beam_levels` consulting `beam_stem_levels` as a second witness) is rejected first: the same ink read twice is not a second witness.
+
+## 13. 2.206e pitch sheet answers (Sean, 2026-10-27)
+
+Crop 1 (litolff p16 P4 bar 240) "Eb"; crop 2 (litolff p8 P8 bar 115) "A natural". Both match eraser ON (E-flat4 vs OFF D4; A4 vs OFF B-flat4 blue): the keeper the eraser path picks from the twin boxes is right on both pitches. Answers `out/print/2.206e-pitch/answers.json`.
