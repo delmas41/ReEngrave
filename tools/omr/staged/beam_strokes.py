@@ -181,7 +181,9 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
         return {"role": "other", "why": "kind:" + s.kind}
     stems = sorted({j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical" and by_ord[j].length <= STEM_MAX_SPACES})
     gap_stems: List[int] = []
-    if face_join and s.kind == "horizontal":
+    if face_join and s.kind == "horizontal" and stems:
+        # only a stroke that already reaches a stem on its own is a beam whose width can own more (2.202f tiles 3, 8: a hairpin under a
+        # stem tip touches no stem, and was taken for a broken beam -- FINDINGS 5i)
         gap_stems = sorted(v.ordinal for v in by_ord.values()
                            if v.kind == "vertical" and v.length <= STEM_MAX_SPACES and v.ordinal not in stems and v.ordinal != s.ordinal
                            and _face_joined(s, v, by_ord))

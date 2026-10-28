@@ -117,6 +117,17 @@ def test_down_stem_joins_a_beam_below():
     assert B.tip_reading(v, r, s1, "up", face_join=True)["joined"] == []    # the beam is not beyond an up-stem's tip
 
 
+def test_a_stroke_touching_no_stem_is_not_a_broken_beam():
+    # 2.202f tiles 3, 8 (Brahms p8): a hairpin under a down-stem's tip touches no stem; it may not own the stem by its width
+    hairpin = sv(0, "horizontal", (0, 500, 700, 60), touches=(), thick=0.6, ends=(0, 530, 700, 530))
+    s1 = sv(1, "vertical", (100, 0, 30, 470))
+    s2 = sv(2, "vertical", (400, 0, 30, 470))
+    v = [hairpin, s1, s2]
+    r = B.roles(v, face_join=True)
+    assert r[0]["stems_by_face"] == [] and r[0]["role"] != "beam"
+    assert B.tip_reading(v, r, s1, "down", face_join=True)["joined"] == []
+
+
 # ── cause 2: an accidental's bar is printed clear of the note (tile 5, Litolff p6 1/8/10/5) ────────────────────────────────────────────
 
 def _ink(L):
