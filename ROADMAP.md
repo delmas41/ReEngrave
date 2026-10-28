@@ -17,7 +17,17 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-10-27/28 (main ≥ the commit naming this block)
+## START HERE — after 2026-10-28 evening (main ≥ the commit naming this block)
+
+Read FIRST. **2.202 BEAMS FROM THE STROKE MAP LANDED ON** (main 9dcd78a6e, Sean "merge lanes and land on"; `OMR_BEAMS_FROM_STROKES` default ON, explicit 0 disables). Evidence: judged right->wrong 0 both plates; Sean's 2.202f tiles right->wrong 0; round-3 right->gone fixed by four causes (head-end ink, accidental owner taking a beam, thickness trough 0.4375-0.5 abstains, a broken beam owns the stems under its width -- Sean 2026-10-28, only for a stroke that itself reaches a stem). FINDINGS shared-ink-map 5i. The overnight re-gather is the first whole-movement measure with it ON.
+
+Still open on beams, all already tiled kinds: with the flag ON, Brahms 21 and Litolff 13 notes OFF wrote are written red (`stroke_candidate` 11 incl. 3 face joins on stem-touching strokes, `box_narrowed` 8, `disagree_narrowed` 2 on Brahms); Brahms p19 `19/0/2/1/3` went eighth -> quarter, unjudged. Count these classes from the overnight before opening a lane.
+
+NEXT: step 4 STEMS (2.204, `lane-2.204-stems-from-strokes` 645fe41b7) -- merge main, re-measure on landed 2.202. Note: its "OFF is byte-identical" test must pin `OMR_BEAMS_FROM_STROKES=0` (main's copy already does). Then 2.216 (owner from two witnesses). Simple test runs first (Sean 10-28): re-adjudicate a saved gather (`out/lane-report/2.202f/work/*.gathered.record.json`) before any full frozen-sample gather.
+
+Process lesson 10-28: two of 2.202's four causes were already counted on `cause-2.202` (e320bf101); three tile rounds chased tiles instead of closing counted classes -- close the counted class first.
+
+## START HERE — after 2026-10-27/28 (superseded by the block above)
 
 Read FIRST. Landed ON 10-26/27: 2.195/2.198 stroke map, 2.201 accidental family, 2.205 stroke owner, 2.208 clef slot claim, 2.209 stem beam end, and the ERASER PATH (2.206/2.206b-e/2.213: `OMR_ERASER_FIX`, `OMR_METER_SLOT`, `OMR_REST_OWN_STROKE`, `OMR_STEM_TIP_TRUE_EDGE`, `OMR_BEAM_OWN_EXTENT`). docs/page-facts.md now carries the rulings that used to live only in DECISIONS (ledger lines read by ink beside the head; a hollow head's position is its box centre, 2.50; §5 "tried and rejected"). CLAUDE.md has the north star: all ink is accounted for one time.
 

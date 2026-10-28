@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- 2.202 LANDED ON; START HERE after 2026-10-28 evening
+
+main 9dcd78a6e: `OMR_BEAMS_FROM_STROKES` default ON (Sean "merge lanes and land on"); 2.202b-f merged (fast-forward from d4d05d2bf); the 2.204 stems OFF-identity test pins the beams flag OFF. ROADMAP START HERE block after 2026-10-28 evening: next is 2.204 stems re-measured on top.
+
 ## 2026-10-28 -- 2.202f: the four causes of round-3 right->gone, Sean's tiles, the face join tightened
 
 Branch `lane-2.202f-beam-causes` (STAGED ADJUDICATE, all behind `OMR_BEAMS_FROM_STROKES`, default OFF). `beam_strokes`: a stroke covering the head is the head's own ink; thickness trough 0.4375-0.5 is `beam_doubt` (`trough_abstains`); a stem stopping short of a beam's face under its run is joined (Sean 2026-10-28), only for a stroke that reaches a stem itself. `stroke_owner.shape_fit`: a long acc bar running into a note is refused (gated on the 2.202 flag). Tests `test_beam_causes_2_202f.py`. Frozen sample + Sean's 12 tiles recorded (`out/print/2.202f/answers.json`, DECISIONS, FINDINGS shared-ink-map 5i).
