@@ -309,6 +309,16 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
 STEM_OWNER_ENV = "OMR_STEM_OWNER"
 
 
+LEDGER_WINS_ENV = "OMR_OWNER_LEDGER_WINS"
+
+
+def ledger_wins_enabled() -> bool:
+    """ROADMAP 2.216, DEFAULT ON since 2026-10-28 (Sean "land 2.216"; explicit
+    0/false/no/off disables). On a stem-vs-ledger disagreement the ledger lines decide."""
+    return os.environ.get(LEDGER_WINS_ENV, "1").strip().lower() not in (
+        "0", "false", "no", "off")
+
+
 def stem_owner_enabled() -> bool:
     """DEFAULT ON since 2026-10-08 (Sean: "if they pass then implement them"). Deny-list."""
     return os.environ.get(STEM_OWNER_ENV, "1").strip().lower() not in (
@@ -632,7 +642,7 @@ def _owner_from_staves(ev: Evidence):
            Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
     reasons=("human_owner", "staff_band", "staff_band_no_box",
              "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
-             "stem_toward_staff", "stem_disagrees",
+             "stem_toward_staff", "stem_disagrees", "ledger_over_stem",
              "ledger_direction", "ledger_refuted", "hairpin_separates",
              "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
              "distance", "no_contest", "no_evidence", "tied"),
@@ -717,6 +727,16 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         stem = _stem_owner(ev, [r.detail.get("candidate") for r in bands])
 
     def _stem_clash(owner):
+        if ledger_wins_enabled():
+            # (Sean 2026-10-28, option B: the ledger lines decide outright --
+            # plain, DECIDED, not blue. His 8 tiles: ledger right 8/8, stem
+            # 0/8. Reconsider after a lot of measuring on different scores.)
+            # The other staff's copy is dropped as any resolved contest's
+            # loser is (it names no owner, the exporter refuses it).
+            return Ruling(value=owner, reason="ledger_over_stem",
+                          used=tuple(r.id for r in bands),
+                          detail={"stem_owner": stem[0], "ledger_owner": owner,
+                                  **stem[2]})
         return Ruling.abstain("stem_disagrees",
                               stem_owner=stem[0], ledger_owner=owner,
                               **stem[2])
