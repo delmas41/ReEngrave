@@ -794,6 +794,7 @@ def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str,
             for s_, b_ in J.page_boxes(off_rec, subs).items():
                 boxes.setdefault(s_, b_)
         out = by_place(out, boxes, off_hosts, on_hosts)
+        out = invented_moves(out, idx, doc, boxes, off_hosts, on_hosts)
     return out
 
 
@@ -823,6 +824,49 @@ def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: st
         if (h.get("pitch") or h.get("kind")) == (pitch or kind):
             return h
     return here[0] if here else None
+
+
+_NOT_A_NOTE_TEXT = re.compile(r"^(part of\b|nothing\b|beams?\b|\d+ beams?\b|beams \(|bracket\b|fermata\b|f dyn\b|ledger line|.*\bclef\b)", re.I)
+
+
+def says_not_a_note(row: dict) -> bool:
+    """ROADMAP 2.218: Sean's answer says the marked ink is NOT a note: the answer kind says so, or a free-text answer to an
+    identity / unknown question names another mark ('part of ff', 'part of a 4 rest', 'beams', 'nothing', a clef)."""
+    if row.get("answer_kind") == "not_a_note":
+        return True
+    return row.get("answer_kind") == "other" and row.get("question_kind") in ("unknown", "identity") \
+        and bool(_NOT_A_NOTE_TEXT.match((row.get("answer") or "").strip()))
+
+
+def invented_moves(rep: Dict[str, Any], idx: Dict[str, Any], doc: str, boxes: Dict[str, Sequence[float]],
+                   off_hosts: Sequence[dict], on_hosts: Sequence[dict]) -> Dict[str, Any]:
+    """ROADMAP 2.218. Judged 'not a note' answers, by the place the arms WROTE. `invented`: the ON file writes a note
+    from that box and the OFF file writes none there -- counted under unwritten->wrong (the worst wrong: a note made of
+    other ink; CLAUDE section 1). `invented_removed`: OFF wrote a note there and ON writes none (good, its own line).
+    Rows whose manifest names no document are not scored here."""
+    out = dict(rep)
+    wrong = list(rep.get("unwritten_wrong", ()))
+    seen = {(w["item"], w["tile"]): w for w in wrong}
+    removed = []
+    for r in idx["tiles"]:
+        if r.get("followup") or r.get("doc") != doc or r.get("subject_kind") != "glyph" or not says_not_a_note(r):
+            continue
+        for sub in (r.get("subjects") or ([r["subject"]] if r.get("subject") else [])):
+            box = boxes.get(sub)
+            on_h, off_h = written_at(on_hosts, sub, box), written_at(off_hosts, sub, box)
+            key = (r["item"], r["tile"])
+            if on_h and on_h["kind"] == "note" and place_of(on_h) and not _same_note_at(off_hosts, on_h):
+                if key in seen:
+                    seen[key]["invented"] = True
+                else:
+                    w = dict(item=r["item"], tile=r["tile"], subject=sub, answer=r["answer"], off="unwritten", invented=True,
+                             now="INVENTED: ON writes a %s %s from non-note ink" % (on_h["type"], on_h.get("pitch")))
+                    wrong.append(w)
+                    seen[key] = w
+            elif off_h and off_h["kind"] == "note" and place_of(off_h) and not _same_note_at(on_hosts, off_h):
+                removed.append(dict(item=r["item"], tile=r["tile"], subject=sub, answer=r["answer"]))
+    out["unwritten_wrong"], out["invented_removed"] = wrong, removed
+    return out
 
 
 def _same_note_at(hosts: Sequence[dict], h: dict) -> bool:
@@ -1165,8 +1209,9 @@ def render_text(rep: Dict[str, Any]) -> str:
                  % (j["scored"], len(j["worse"]), len(j["lost"]), len(j["better"])))
         for w in j["worse"]:
             L.append("      RIGHT->WRONG  %s tile %s %s  Sean: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["now"]))
-        L.append("  Sean's judged answers, OFF wrote nothing there: unwritten->wrong %d (must be 0) | unwritten->right %d"
-                 % (len(j.get("unwritten_wrong", ())), len(j.get("unwritten_right", ()))))
+        L.append("  Sean's judged answers, OFF wrote nothing there: unwritten->wrong %d (of which invented from non-note ink %d; must be 0) | unwritten->right %d | invented->removed %d (good)"
+                 % (len(j.get("unwritten_wrong", ())), sum(1 for w in j.get("unwritten_wrong", ()) if w.get("invented")),
+                    len(j.get("unwritten_right", ())), len(j.get("invented_removed", ()))))
         for w in j.get("unwritten_wrong", ()):
             L.append("      UNWRITTEN->WRONG  %s tile %s %s  Sean: %s  OFF: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["off"], w["now"]))
         for w in j["lost"][:10]:
@@ -1298,8 +1343,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             j = r["judged"]
             print("%s  %s\n  judged: right->wrong %d | right->lost %d | same music at its place %d | not found %d"
                   % (p, format_counts(r["counts"]), len(j["worse"]), len(j["lost"]), len(j.get("same_music", ())), len(j.get("not_found", ()))))
-            print("  judged, OFF wrote nothing there: unwritten->wrong %d (must be 0) | unwritten->right %d"
-                  % (len(j.get("unwritten_wrong", ())), len(j.get("unwritten_right", ()))))
+            print("  judged, OFF wrote nothing there: unwritten->wrong %d (of which invented from non-note ink %d; must be 0) | unwritten->right %d | invented->removed %d (good)"
+                  % (len(j.get("unwritten_wrong", ())), sum(1 for w in j.get("unwritten_wrong", ()) if w.get("invented")),
+                     len(j.get("unwritten_right", ())), len(j.get("invented_removed", ()))))
             for w in j["worse"]:
                 print("    RIGHT->WRONG", w["item"], w["tile"], w["subject"], w["now"])
             for w in j.get("unwritten_wrong", ()):

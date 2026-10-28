@@ -61,5 +61,31 @@ class TestUnwrittenToWrong(unittest.TestCase):
         self.assertNotIn("FAILS", L.landing_line(dict(plates={"litolff": dict(judged=j)})))
 
 
+class TestInvented(unittest.TestCase):
+    def idx(self, text="part of an ff", kind="other"):
+        return dict(tiles=[dict(item="t", tile="7", doc="litolff", subject="glyph/4/0/4/3/8", subjects=None, followup=False,
+                                subject_kind="glyph", answer=text, answer_kind=kind, question_kind="unknown")])
+
+    def test_says_not_a_note(self):
+        for t in ("part of ff", "part of a 4 rest", "beams", "nothing", "part of a C clef"):
+            self.assertTrue(L.says_not_a_note(dict(answer=t, answer_kind="other", question_kind="unknown")), t)
+        self.assertTrue(L.says_not_a_note(dict(answer="sharp", answer_kind="not_a_note", question_kind="unknown")))
+        self.assertFalse(L.says_not_a_note(dict(answer="chord below", answer_kind="other", question_kind="owner")))
+        self.assertFalse(L.says_not_a_note(dict(answer="half", answer_kind="duration", question_kind="duration")))
+
+    def test_note_made_of_non_note_ink_is_invented_and_fails_the_landing(self):
+        r = L.invented_moves(dict(unwritten_wrong=[]), self.idx(), "litolff", {}, [], ON_WRITES)
+        self.assertEqual([w.get("invented") for w in r["unwritten_wrong"]], [True])
+        self.assertIn("FAILS", L.landing_line(dict(plates={"p": dict(judged=dict(worse=[], **r))})))
+
+    def test_off_wrote_it_too_is_not_invented(self):
+        r = L.invented_moves(dict(unwritten_wrong=[]), self.idx(), "litolff", {}, [host("glyph/4/0/4/3/2")], ON_WRITES)
+        self.assertEqual(r["unwritten_wrong"], [])
+
+    def test_off_note_dropped_by_on_is_invented_removed_not_wrong(self):
+        r = L.invented_moves(dict(unwritten_wrong=[]), self.idx("sharp", "not_a_note"), "litolff", {}, ON_WRITES, [])
+        self.assertEqual((r["unwritten_wrong"], len(r["invented_removed"])), ([], 1))
+
+
 if __name__ == "__main__":
     unittest.main()
