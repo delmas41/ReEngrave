@@ -73,8 +73,7 @@ cell), so write ONE note, not two (`is_relocated_copy`/dedupe path) -- today's d
 in until a musician decides must be a stated rule (the stem's staff is the natural default; Sean's 2026-10-27 line says only
 "both staves as candidates").
 Notes it would bring into the file (distinct inks, whole movement): disagreements 6 Litolff + 22 Brahms; if
-`far_no_rungs`/`ledger_witnesses_disagree` ride along: +3 Litolff, +35 Brahms; if `tied` (no witness) also: +52 Litolff, +175 Brahms
-(not all are noteheads that survive the earlier drops, so these are upper bounds). On the frozen pages: 5 / 1 for disagreements alone.
+`far_no_rungs`/`ledger_witnesses_disagree` ride along: +3 Litolff, +35 Brahms; if `tied` (no witness) also: see the CORRECTION below -- the earlier +52 Litolff / +175 Brahms counted every mark class and is WRONG. On the frozen pages: 5 / 1 for disagreements alone.
 
 ## Sean's tiles (2026-10-28)
 
@@ -105,3 +104,10 @@ Cheap proof (`lane_report --flag OMR_OWNER_LEDGER_WINS --from adjudicate --worke
 - Control caveat: lane_report says neither arm reproduces the saved record (the tree moved since 20261020-night; duration/rest verdicts
   differing OFF 11 / ON 18 of 8958 Litolff, 8 / 9 Brahms). Both arms share it; the extra few differing verdicts are the bars the added notes sit in.
 - Whole movement (not run): 6 Litolff + 22 Brahms heads. Sean's 8 tiles on them: ledger right 8/8. Not a cut-off; hence "for now".
+
+## CORRECTION (2026-10-28): the `tied` counts counted marks, not notes
+
+The "+52 Litolff / +175 Brahms" heads (section 2 and the "notes it would bring" line) counted every glyph_owner verdict with reason `tied`.
+Almost all are beams, slurs, dynamics, ties and articulations. Restricted to notehead-class boxes, the whole-movement 10-22 records have
+**0 on Litolff and 7 distinct heads on Brahms**. Tile 1 (Brahms p14 `glyph/14/1/3/0/7`) is the top of a treble clef boxed as a head. The
+crops are `out/print/2.216-nowitness-heads` (key.json), with Sean, unanswered. Lesson: filter by mark class before counting "notes".
