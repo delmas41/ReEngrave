@@ -526,3 +526,114 @@ Detector boxes in that slot: Litolff 8 (7 noteheadBlackOnLine, 1 ledgerLine), Br
 **Measures (main with 2.205 ON; `out/print/2.208/`).** (1) Exported file, frozen sample, OFF vs ON: Litolff notes -3, blue marks -3, words +1; Brahms notes -1, words -1 (a "does not add up" note gone), red bars 166 -> 165. 10 slot claims; 7 heads refused by them (4 had been written).
 One head still a note: Litolff p6 s0 (`glyph/6/1/0/0/10`), touched by a key flat's stem outside the slot. (2) 12 blind tiles `out/print/2.208/tiles/sheet.png` (8 on clef ink: 4 changed, 3 refused-but-never-written, 1 still a note; 4 controls = first real notes after the clef); key `out/print/2.208/key.json`. Not answered yet.
 (3) Judged answers right->wrong: 0 on both plates (233 / 232 tiles). Subset (2 pages per plate) was clean first. Tests: `test_staged_clef_slot_claim_2_208.py` (11, mutation of the stem rule fails the stem test).
+
+## 5b. CAUSE OF THE 9 CHANGED HEADS (2.202 milestone; read-only, no gather, no code change; branch `cause-2.202`; my look at 600 dpi, not Sean's -- rule 7)
+Cause first: **the stroke map measures ink BEFORE any mark owns it, and the beam rules are shape rules.** Every one of the 9 changed heads (all main-right) is a beam rule applied to ink that is not
+that stem's beam: a real beam the erased raster thinned (4), the ink of a head / accidental at the far end of a short stem (3), a slur's thin start (2). Process lesson: a `beam` / `hook` role
+is "horizontal, across >= 2 verticals, thick" -- a description of ANY dark stroke -- and the lane wired it before the ink was claimed (step 4 of the plan) and before the 0.5 cut was measured on
+the second plate (section 1 said "Brahms must be measured before any default"; the first Brahms data was the tiles). Tools: `beams_cause.py` (all narrowed heads, streams the two gathered ON records, 22 s),
+`beam_thickness.py`, `erased_cell.py`; crops `out/print/2.202-cause/` (`sheet_tiles_{0,1,2}.png` the 9, `sheet_sample_{0..6}.png` 20 `disagree_narrowed`, `sheet_sc_{0..6}.png` 20 `stroke_candidate`; left = plain print, right =
+strokes boxed: green beam, cyan beam_stub, blue span_thin, red hook, orange hook_or_stub, grey other; magenta = detector beam/flag box; black = the head's stem stroke; `erased_t04.png` = what the map reads).
+
+**The 9 (record rows from the ON gathered record; Q.STROKE fields in sp):**
+| tile | plate p | settled | the stroke that decided it | what it really is on the print |
+|---|---|---|---|---|
+| 1 | Litolff 8 | disagree_narrowed [1]->[0,1] | beam, 4.7 long, **0.187 thick**, `span_thin`; tip counts 0 | the eighth beam lying ON the top staff line; page ink there is 0.7 sp thick |
+| 4 | Litolff 16 | same | beam, 6.0 long, **0.187**, `span_thin` | the same, on the 2nd line (page ink 0.57-0.7 sp) |
+| 10 | Litolff 8 | same | beam, 3.6 long, **0.187**, `span_thin` | the same as tile 1, one cell left |
+| 11 | Brahms 12 | same | beam, 5.0 long, **0.497** (cut 0.5), `span_thin` | a sloped beam (-6 deg) whose low end touches the bottom line; page ink 0.5-0.69 sp |
+| 2 | Brahms 14 | stroke_candidate [0]->[0,1] | `beam` 3.1 long, 0.52 thick, 21.9 deg, touches the sharp's two verticals AND the stem, centre 3.6 sp inward on a 4.0 sp stem | the CROSSBAR OF THE SHARP beside the head |
+| 5 | Brahms 14 | stroke_candidate [1]->[1,2] | `beam` 2.6 long, **1.16 thick**, sagitta 0.47, 62 deg, centre 3.8 sp inward (counted with the real beam, 0.62) | the cluster of heads at the stem's far end (two levels counted where the print has one) |
+| 6 | Brahms 0 | stroke_candidate [0]->[0,1] | `beam` 1.9 long, 0.81 thick, touches the stem and the chord's upper stem, 3.5 sp inward on a 4.9 sp stem | the notehead merged with its ledger line / staff line (the head itself) |
+| 8 | Brahms 19 | hook_as_flag [0]->[1] | `hook`: flat, 1.06 long, **0.06 thick**, touches the stem (0.25 contact) AND a blob (0.5) that continues | the thin START OF A SLUR that begins at the stem tip (the detector boxed it as a `beam`) |
+| 12 | Brahms 4 | hook_as_flag [0]->[1] | `hook`: curve, 1.58 long, 0.24 thick, touches the stem (0.31) AND a 3.8 sp stroke (0.56) | the start of a slur at the stem tip (same) |
+
+**Causes, with the cut each one breaks:**
+1. **A beam the staff-line erase thinned (tiles 1, 4, 10; 11 as its near-miss) -- 4 of 9.** The map reads `image_no_staff`; where the beam lies on a line the erase takes more than the line's 0.12 sp and leaves a sliver on one side:
+   `erased_t04.png` shows the beam solid between two stems and a thin remnant at both ends; the stroke's median run is 0.187 sp where the page (the binary, line included) has 0.57-0.7. Breaks: `BEAM_MIN_THICKNESS_SP` 0.5, applied
+   to a thickness taken after the erase. The cut is not a gap on the whole sample either (`results/2.202/beam_thickness_*.json`, horizontal strokes across >= 2 stems under detector beam boxes): thickness 0.3-0.5 is 21 of 372 (Litolff) and 44 of 269
+   (Brahms) of them, 0.6-0.7 the mode of beams; section 1's gap (0.437 | 0.546) was two pages. Tile 11 is the 0.003 knife edge (a pixel count / space).
+2. **Ink of another mark at the far end of the stem counted as a beam (tiles 2, 5, 6) -- 3 of 9.** Breaks the tip window: 0.5 sp past the tip, 3.3 sp inward, tested by the stroke's BOX overlapping the window, so on any stem shorter
+   than ~4.5 sp the window reaches the head end, where a notehead cluster, a ledger line, a sharp's bar or a dynamic letter is "horizontal, wider than tall, >= 0.5 thick, touching this stem and one more vertical": role `beam`. Nothing in
+   `role_of` knows the stroke is a head's. This is the cause of the milestone's "+levels" (`stroke_candidate`) heads.
+3. **A slur's thin start read as a flag hook (tiles 8, 12) -- 2 of 9.** Breaks "one stem, thinner than a beam, <= 1.6 sp, on a stem with no spanning beam": all three are true of a slur that starts at the tip. What a flag hook is NOT: its far end is
+   free. Both hooks touch a second, non-stem stroke (blob 41, stroke 17 of 3.8 sp) in the same connected component; the stem tip carries a slur / tie / arc box the detector may call a `beam` (tile 8).
+
+**Does it explain the ~130 / ~110 held-out notes?** Yes. All 236 (Litolff) / 191 (Brahms; +2 hook heads) narrowed heads, classified by script (`beams_cause.py`, cause = the measured stroke at the tip; script vs my hand label agree on 48 of the 49 inspected heads; the one miss is tile 8, whose slur carries no slur box so the script says hook_other):
+| cause (settled kind) | Litolff | Brahms |
+|---|---|---|
+| head-end ink counted as a beam (`stroke_candidate`) | 156 | 102 |
+| tip counts a stroke 0-1.5 sp from the tip only (`stroke_candidate`, "at_tip") | 23 | 10 |
+| beam thinned by the erase, < 0.30 sp (`disagree_narrowed`) | 22 | 33 |
+| beam 0.30-0.50 sp (`disagree_narrowed`) | 21 | 25 |
+| two levels fused in one slab >= 1.0 sp, counted once (`disagree_narrowed`) | 0 | 15 |
+| the beam stroke does not touch this stem (stem short of the beam or beam starts at the stem's edge) | 8 | 3 |
+| no stroke / other | 6 | 6 |
+| hook = slur origin (script: 1 by slur box, 1 `hook_other` = tile 8 by hand) | 0 | 2 |
+Causes 1+2 are 199 of 236 (84%) and 160 of 191 (84%); with the fused slab 92% on Brahms. The held-out notes (2694-2563 = 131, 3311-3202 = 109) are the bars the narrowed heads leave unsettled, so they follow these causes, not a different one.
+Crop look, 20 `disagree_narrowed` (Litolff 10, Brahms 10, seeded random, not the tile heads): thinned or thin beam 14 (6 on a line < 0.3, 8 at 0.37-0.50), fused double slab 4 (Brahms 5/0/1/7/1, 5/0/3/5/4, 19/0/12/0/10 and /13), beam not touching the stem 2
+(Litolff 10/1/8/6/10, 9/0/2/0/4). 20 `stroke_candidate` (same): 18 head-end ink (heads, a head row, a ledger line, a dynamic `f`), **2 real**: Litolff 10/0/9/10/3 (a beam on a staff line the readers never found -- OFF says quarter;
+the map is right) and Brahms 4/1/13/4/6 (a true second beam over the stem). So the map also sees things main misses; the 23 / 10 `at_tip` heads are where those live (2 of 2 inspected real) and must NOT be thrown away with the rest.
+
+**What each cause points to (nothing built; each needs the tiles again, rule 5):**
+1. Measure a beam's thickness where the map's own raster is not the eraser's: for a stroke whose centre is within ~0.4 sp of a staff line take the run on `binary` (line included) or add the erased band back; and re-measure the 0.5 cut on BOTH plates'
+   strokes under detector beam boxes before it is a number (CLAUDE §4, a cut measured on one plate only NARROWS).
+2. Count a stroke at the tip only where its CONTACT with the stem lies in the window (not its box), and let a head / accidental / dynamic / ledger own its ink first: a stroke whose box is >= 30% inside a notehead, accidental or dynamic box is not a candidate
+   beam. This is plan step 4 (claiming) arriving as a precondition of step 3, not after it.
+3. A hook is a flag only when it is a FREE END (touches only this stem) and lies in no detector slur / tie / system-arc box (`_not_a_decided_arc` is the existing test for the CV beam path); an arc that starts at the stem tip is read by the arc readers.
+4. A slab thicker than ~1.0 sp across >= 2 stems is two levels (`_fused_double_beams` already says so for the CV path); a beam stroke that comes within ~0.5 sp of the stem's end joins it (2 of 20).
+
+## 5c. 2.202b: the three measurement faults of 5b (branch `lane-2.202b-beam-faults`; code + unit tests + read-only re-measure on the 2.202 records, NO gather, NO lane_report; nothing defaulted, nothing landed)
+Path: STAGED GATHER (`stroke_map.py`, flag `OMR_STROKE_MAP`) + STAGED ADJUDICATE (`beam_strokes.py`, flag `OMR_BEAMS_FROM_STROKES`); both OFF. Fenced edits: `stroke_map._restored_thickness` (+ one call in `map_strokes`), `beam_strokes.tip_reading` / `local_thickness` /
+`StrokeView.profile`, and ONE line in `rhythm._stroke_views` (it now passes the row's `profile_sixteenths` into the view; nothing else in `rhythm.py` moved -- 2.205 merges around it).
+Scripts: `beam_faults_live.py` (re-run the map on the 8 + 8 sample pages without a gather, old vs new thickness), `beam_faults_thickness.py` (the distribution under detector beam boxes), `beam_faults_records.py` (`--settle`: re-run `tip_reading` on every duration head of the two ON records
+with the old / new code, against main's level count `before`); results `results/2.202b/`. Tests `test_stroke_thickness_2_202b.py` (7), `test_beam_faults_2_202b.py` (18); with the 2.195 / 2.198 / 2.202 files 88 pass.
+
+**Cause first (rule 3): the 0.19 sp beam is the staff-line ERASER's bug, not the map's.** `staff_line_removal.remove_staff_lines_from_cell` walks the vertical run through a line row only `cap + 2` = 37 rows either side (`_vertical_runs_through`, "bounded at max_search")
+and erases the run when it is <= `crossing_cut` (0.45 sp = 45 rows). A beam 0.64 sp thick HANGING from a line has the line row near the top of its run: the walk goes 6 up and 37 down = 44 <= 45, so the band 705..748 is erased and rows 749..768 (the 0.19 sp sliver) are
+left. I re-cut the cell of the p16 tile (`glyph/16/0/1/8/3`, sp 100 px; line thickness measured by the eraser 32 px = 0.32 sp: Litolff's lines are fat): raw run 705..768 = 0.64 sp, erased raster 749..768 = 0.19 sp, the walk 44 rows. So any ink taller than the cut whose edge
+is at a line is cut back by up to 0.37 sp below / above that line, for EVERY reader of `image_no_staff`, not only the stroke map. **Process lesson:** a "bounded walk compared with an unbounded cut" erases what it was built to protect (the in-file comment says a beam must never be erased);
+the 2.202 cause (5b: "the erase takes more than the line") was right and the mechanism is one line. NOT fixed here (shared reader, outside the fence, it moves every CV consumer and the legacy path); the candidate is `reach >= ceil(crossing_cut) + 1`, needing its own byte-for-byte read of all consumers -- Sean's call to open it as a roadmap item.
+
+### Fault 1 -- beam thickness read off the erased raster (`stroke_map._restored_thickness`, constant `THICKNESS_FROM_UNERASED`, default True inside the OFF flag group)
+For a horizontal / curve stroke, the stroke's own pixels grown, per column, through CONTIGUOUS pixels the eraser removed (`raw & ~erased`: the eraser only ever takes line rows and the run it walked with them, so no neighbour's ink comes back), at CANONICAL resolution (a first draft at the
+16 px/sp reduction joined a line 0.06 sp clear of a beam). Used only where a column touches erased ink; otherwise the old reading exactly. The p16 tile stroke: 0.187 -> 0.64.
+**"Subtract the line" was measured and REFUSED.** Taking the line band at the run's end off again (first draft, Litolff, reduced resolution; `results/2.202b/thickness_line_subtracted_litolff_reducedres.json`) rescued 1 of the 9 on-line strokes under beam boxes that read < 0.5 (0.64 -> 0.31 on the tile: the
+printed beam covers the 0.32 sp line, it does not sit beside it); the unsubtracted reading rescued 4 and leaves the 0.45-0.55 band empty on-line. The rule cannot tell "line beside the beam" from "line inside the beam" from one column, and the measured population says inside.
+**New thickness distribution** (`beam_faults_thickness.py`; horizontal strokes touching >= 2 stems under a detector BEAM box; Litolff 372, Brahms 269; on-line = centre within 0.4 sp of a staff line; counts):
+| | Litolff on-line | Litolff off-line | Brahms on-line | Brahms off-line |
+|---|---|---|---|---|
+| OLD (2.202) < 0.5 / 0.5-0.55 / >= 0.55 | 9 / 0 / 75 | 38 / 6 / 244 | 18 / 1 / 68 | 78 / 4 / 100 |
+| NEW < 0.5 / 0.5-0.55 / >= 0.55 | **5** / 0 / 80 | 37 / 4 / 247 | **12** / 1 / 74 | 75 / 2 / 105 |
+28 (Litolff) and 33 (Brahms) of those strokes moved at all; 4 and 6 on-line strokes crossed the 0.5 cut. The 0.5 cut is a gap only where the line was the problem: on-line Litolff has nothing between 0.45 and 0.55 (one at 0.40-0.45, then 8 at 0.55-0.60), but off-line Litolff has 1 + 4 in 0.45-0.55 and
+Brahms has 3 on-line and 4 off-line there: **the cut is not a gap on Brahms either way** (section 5b's finding stands; the 0.437 | 0.546 gap was two Litolff pages). I did not move 0.5.
+
+### Fault 2 -- a fused double beam (`beam_strokes.tip_reading`, `FUSED_*`)
+Convention: two beams stacked = beam 0.5 + gap 0.25 + beam 0.5 = 1.25 sp (the pitch of the tip window, 0.75 sp a level); a single beam is 0.5-0.7 (the on-line / off-line `>= 0.55` mode above is 0.6-0.7). A slab counts as TWO levels when ALL hold: its median thickness >= 1.0 (Sean's rule),
+its thickness AT THIS STEM'S x >= 1.0 (`local_thickness`: the 12-sample `profile_sixteenths`, mean of three), < 1.75 (three fused would be 2.0: not measured, left as one), horizontal, and its outer edge within 0.6 sp of the tip. The two extra conditions are measured, not guessed: the median alone
+doubled 6 Brahms heads main reads as ONE level (a group whose second beam covers only some stems: the same stroke is 0.5 sp over the first half and 1.3 over the second; the stem on the single half is 0.31-0.66 locally, the 12 stems on the double half 0.8-1.6) and a local value alone doubled 16 Litolff heads
+(a 1.3 sp bump in a 0.7 sp beam where a head merges with it). With both: **Brahms 8 of the 15 `fused_double` heads now equal main (fused alone: 8 settled, 0 broke; 1 head broke in combination with the thickness fix); Litolff 0 / 0** (the other 7 have a local value of 0.81-0.96, below Sean's 1.0: they stay narrowed).
+
+### Fault 3 -- a beam that stops short of the stem (`beam_strokes.tip_reading`, `JOIN_*`)
+The gap that sets "within ~0.5 sp" is NOT measurable from the stroke geometry: the box-to-box gap of every non-touching (beam, stem) pair in a cell is flat from 0.0 to 1.5 sp (Litolff per 0.1 sp: 41 56 66 100 75 | 77 86 73 93 91 96 114 103 122 118; Brahms 14 44 31 75 66 | 41 50 38 43 41 54 62 69 64 45; `record_hists.json`).
+For HEADS: the 8 + 4 `join_missing` heads have gaps 0.00-0.37 sp (median ~0.2); the unrestricted rule (any beam-role stroke within 0.5 sp counts) settled 12 heads to main and BROKE 26 Litolff + 13 Brahms heads that already agreed (18 of the 26 are a 1.0-1.3 sp slab 2.4-3.7 sp long = a head cluster at the stem's far end;
+the rest thin one-stem-short strokes beside a neighbouring group's beam). So I did NOT ship the unrestricted rule. What ships is the narrower one the data allow: the stem has NO level at its tip yet, and the stroke's OUTER edge is within 0.6 sp of the tip (a first level), and it is no thicker than one beam. Measured effect (J alone, vs 2.202): Litolff +2 settled / -1 broken,
+Brahms 0 / 0 -- i.e. **1 of 11 `join_missing` heads settle, and the rule is close to inert**. It is kept because it cannot hurt and says what the data support; whether to keep it at all is the lane's call. (The restriction rides on the same constant, `JOIN_MAX_GAP_SPACES` 0.5, Sean's number; the control sets it to 0 and shows the RED case turn.)
+
+### What the fixes settle on the EXISTING 2.202 records (`beam_faults_records.py --settle`; every duration head with a stem stroke, a side and no flag levels: Litolff 2,886, Brahms 3,950; "agrees" = the tip's level count equals main's `before`; arms T = thickness, TF = + fused, TFJ = + join)
+| | Litolff | Brahms |
+|---|---|---|
+| heads that DISagreed with main (2.202) -> agree now | **41** | **59** |
+| heads that AGREED with main (2.202) -> disagree now | 10 | 8 |
+| T alone / + fused / + join (settled) | 39 / 0 / 2 | 51 / 8 / 0 |
+**By 5b's cause (the old code classifies; counts are heads that now equal main):** thin remnant < 0.30: Litolff 21 of 22, Brahms 30 of 33; thin 0.30-0.50: 18 of 21, 21 of 24; fused double: -, 8 of 15; join missing: 1 of 8, 0 of 3; **head-end ink (the 156 / 102 + the `at_tip` 23 / 10): 0 settle** -- that is cause 2 of 5b, the ownership lane
+(2.205), outside this lane's fence by design. So of 5b's "199 / 160" heads (causes 1+2): 43 / 57 thin heads were this lane's (39 / 51 settle); 156 / 102 are 2.205's.
+**The 9 milestone tiles (`out/lane-report/2.202-tiles/key.json`, its numbering; my read of the script, not Sean's tiles):** 6 of the 9 changed heads (tiles 2, 3, 5, 7, 9, 11 -- all `disagree_narrowed`, thin remnant or near-cut) now equal main's level count (1); tiles 4 and 10 (`stroke_candidate`, head-end blob) are unchanged (2 vs main 1: 2.205);
+tile 12 (`other`, main 2, strokes 1) unchanged. The two hook-as-flag heads of 5b are not in this lane (cause 3, the slur-origin rule).
+**The 18 broken heads** (Litolff 10 = 9 thickness + 1 join; Brahms 8 = 7 thickness + 1 fused-in-combination): of the 9 Litolff thickness ones, 6 (p2) are a real beam now read at the tip (0.12 -> 0.62) ALONGSIDE the head-end blob the 2.202 count had taken for the level (a 1.29 sp stroke 3.5-4.0 sp inward): main's 1 was
+matched by the wrong stroke and is now 2 -- the blob is 2.205's; 3 (p4) are a real beam 0.25 -> 0.63 at 0.2-0.3 sp from the tip, count 2 (the second counted stroke I did not inspect). Of the 7 Brahms: 4 are a 0.36-0.47 stroke 3.4-3.9 sp INWARD of the tip now 0.57-0.73 (head-end ink, same cause); 3 (p25) are a 0.41 -> 0.57-0.61 stroke 0.1-1.3 sp from the tip where
+main says 0 levels (a beam main missed, or a slur on a line: needs a crop). None of this was shown to Sean; nothing here replaces his 12 blind tiles.
+
+**Not shown (said, not hidden):** (1) "agrees with main" is a control, not truth (rule 5/7): 6 of 9 tiles settle to the value 5b's crop look says is right (all main-right), nothing more. (2) The live re-map covers the 8 + 8 frozen sample pages; the heads are the 2.202 records' (same pages), every thickness joined by (cell, ordinal) with 0 box mismatches.
+(3) No `lane_report`, so Measures 1 and 3 (the exported file; Sean's judged right->wrong) are NOT measured here -- the next step is the milestone run with these constants and the 12 blind tiles, after 2.205's ownership filter is in front of `_beams_from_strokes`. (4) The staff-line eraser's bounded walk is a finding, not a fix.
+(5) The `_restored_thickness` growth costs CPU in the stroke map (not timed; only strokes touching erased ink pay it).
