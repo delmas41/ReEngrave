@@ -3921,16 +3921,16 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
     return False
 
 
-#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
+#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default ON since 2026-10-28, Sean "land on"; an explicit 0/false/no/off disables; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
 #: A head's beam levels from the STROKE MAP (`Q.STROKE`, `Q.GLYPH_STROKES`; they exist only under `OMR_STROKE_MAP`): the detector's beam boxes
 #: are read against the strokes they stand on, and the horizontal strokes touching the head's own stem at its tip are counted. A cell with no
 #: stroke map, a box with no `Q.GLYPH_STROKES` row, a stem the map holds no stroke for: the block says nothing and the head is read as today
-#: (rule 8). An allow-list: an empty value or a typo must not switch a document onto an unpriced ADJUDICATE change.
+#: (rule 8). Default ON like `OMR_STROKE_OWNER`.
 BEAMS_FROM_STROKES_ENV = "OMR_BEAMS_FROM_STROKES"
 
 
 def beams_from_strokes_enabled() -> bool:
-    return os.environ.get(BEAMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAMS_FROM_STROKES_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _owner_on() -> bool:

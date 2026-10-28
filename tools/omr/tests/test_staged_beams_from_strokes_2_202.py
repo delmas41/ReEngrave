@@ -1,4 +1,4 @@
-"""ROADMAP 2.202 (STAGED ADJUDICATE `rhythm._beams_from_strokes` + pure `beam_strokes`), flag `OMR_BEAMS_FROM_STROKES`, default OFF, step 3 of the shared ink map.
+"""ROADMAP 2.202 (STAGED ADJUDICATE `rhythm._beams_from_strokes` + pure `beam_strokes`), flag `OMR_BEAMS_FROM_STROKES`, default ON since 2026-10-28, step 3 of the shared ink map.
 
 A head's beam levels from the stroke map: a detector beam box on no beam-shaped stroke NARROWS; a box on a short hook of a stem that carries
 no spanning beam is a FLAG (Sean 2026-10-22); the strokes at the stem tip are counted and a stroke no box named is a candidate only. Every
@@ -347,8 +347,11 @@ class TestOtherGuards(unittest.TestCase):
         v = log2.verdict(Q.DURATION, h)
         self.assertNotIn("beams_from_strokes", v.detail)
 
-    def test_the_flag_is_an_allow_list(self):
-        for val, want in (("1", True), ("true", True), ("on", True), ("", False), ("0", False), ("yes please", False), ("off", False)):
+    def test_the_flag_is_default_ON_and_an_explicit_off_list_disables(self):
+        with mock.patch.dict(os.environ):
+            os.environ.pop(FLAG, None)
+            self.assertTrue(rhythm.beams_from_strokes_enabled())
+        for val, want in (("1", True), ("true", True), ("on", True), ("0", False), ("false", False), ("no", False), ("off", False)):
             with mock.patch.dict(os.environ, {FLAG: val}):
                 self.assertEqual(rhythm.beams_from_strokes_enabled(), want, val)
 
