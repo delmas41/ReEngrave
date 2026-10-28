@@ -45,7 +45,11 @@ machine-readable form.
   seen on a stem is a flag even inside a detector "beam" box (2026-10-22: *"if
   there is a flag it should be treated as a flag"*); *"Clean tip means no
   beam"* (2026-10-16); a staff line between a beam and its stem is not a gap
-  (2026-10-15).
+  (2026-10-15); a beam OWNS the stemmed notes under its width even where the
+  ink between stem and beam is broken (2026-10-28: *"the beam covers the
+  width of where those notes with stems occur. that is how I would determine
+  that they were all 8th notes that belong to that beam even though the ink
+  is broken"*; ROADMAP 2.202f).
 - **Heads sharing one stem** (Sean, 2026-10-17: two heads that disagree "can't
   be decided"; scope: general; ROADMAP 2.165): two that disagree leave the
   value UNDECIDED; with three or more, one dissenter makes the value GUESSED
