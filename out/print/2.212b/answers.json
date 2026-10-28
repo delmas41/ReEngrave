@@ -1,0 +1,246 @@
+{
+ "date": "2026-10-27",
+ "source": "Sean, 2026-10-27: where the boxed head sits on the staff (2.212 rework tiles)",
+ "verbatim": "1. On the 5th ledger line 2.second line from tge top 3. Box around 2 notes a 3rd apart in the top 2 spaces 4. Top line 5. Space blvd top line 6. 4th ledger line 7-8. Sharps second line from bottom 9. Top line 10. Top space 11.space above staff 13. 1st ledger line above staff",
+ "interpretation": "'blvd' = above; '13' = tile 12; '7-8' one answer for both. Position 0 = top line, steps are half-spaces, negative = up. Clef = the pitch verdict's clef basis in out/lane-report/2.212e ON record; tile 4 tenor and tile 7 tenor not checked on the page. Candidate pitches derived from the twin members' positions (written one first); OFF written value = ON written value by construction (flag only adds the GUESSED).",
+ "tiles": [
+  {
+   "tile": 1,
+   "rg": "glyph/5/1/0/9/7",
+   "plate": "brahms",
+   "page": 5,
+   "sean_words": "5th ledger line",
+   "right_position": -10,
+   "clef": "treble",
+   "off_written": "B6",
+   "on_written": "B6",
+   "on_candidates": [
+    "B6",
+    "A6"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 2,
+   "rg": "glyph/9/0/3/1/4",
+   "plate": "litolff",
+   "page": 9,
+   "sean_words": "2nd line from the top",
+   "right_position": 2,
+   "clef": "bass",
+   "off_written": "F3",
+   "on_written": "F3",
+   "on_candidates": [
+    "F3",
+    "G3"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 3,
+   "rg": "glyph/16/1/2/8/3",
+   "plate": "litolff",
+   "page": 16,
+   "sean_words": "box around 2 notes a 3rd apart in the top 2 spaces",
+   "right_position": null,
+   "clef": "treble",
+   "off_written": "D5",
+   "on_written": "D5",
+   "on_candidates": [
+    "D5",
+    "E5"
+   ],
+   "off_right": false,
+   "class": "not_a_single_head",
+   "on_right": false
+  },
+  {
+   "tile": 4,
+   "rg": "glyph/16/1/3/1/2",
+   "plate": "litolff",
+   "page": 16,
+   "sean_words": "top line",
+   "right_position": 0,
+   "clef": "tenor",
+   "off_written": "D4",
+   "on_written": "D4",
+   "on_candidates": [
+    "D4",
+    "E4"
+   ],
+   "off_right": false,
+   "class": "guessed_with_right",
+   "on_right": false,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 5,
+   "rg": "glyph/16/0/0/4/5",
+   "plate": "litolff",
+   "page": 16,
+   "sean_words": "space above top line (typo 'blvd')",
+   "right_position": -1,
+   "clef": "treble",
+   "off_written": "G5",
+   "on_written": "G5",
+   "on_candidates": [
+    "G5",
+    "A5"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 6,
+   "rg": "glyph/16/0/0/8/2",
+   "plate": "litolff",
+   "page": 16,
+   "sean_words": "4th ledger line",
+   "right_position": -8,
+   "clef": "treble",
+   "off_written": "G6",
+   "on_written": "G6",
+   "on_candidates": [
+    "G6",
+    "F6"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 7,
+   "rg": "glyph/6/0/8/8/4",
+   "plate": "litolff",
+   "page": 6,
+   "sean_words": "sharp, second line from bottom (box is a sharp)",
+   "right_position": null,
+   "clef": "tenor",
+   "off_written": "E3",
+   "on_written": "E3",
+   "on_candidates": [
+    "E3",
+    "F3"
+   ],
+   "off_right": false,
+   "class": "not_a_head_sharp",
+   "on_right": false
+  },
+  {
+   "tile": 8,
+   "rg": "glyph/6/1/2/4/3",
+   "plate": "litolff",
+   "page": 6,
+   "sean_words": "sharp, second line from bottom (box is a sharp)",
+   "right_position": null,
+   "clef": "treble",
+   "off_written": "G4",
+   "on_written": "G4",
+   "on_candidates": [
+    "G4",
+    "F4"
+   ],
+   "off_right": false,
+   "class": "not_a_head_sharp",
+   "on_right": false
+  },
+  {
+   "tile": 9,
+   "rg": "glyph/8/1/10/17/4",
+   "plate": "litolff",
+   "page": 8,
+   "sean_words": "top line",
+   "right_position": 0,
+   "clef": "bass",
+   "off_written": "A3",
+   "on_written": "A3",
+   "on_candidates": [
+    "A3",
+    "G3"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  },
+  {
+   "tile": 10,
+   "rg": "glyph/9/0/11/1/5",
+   "plate": "litolff",
+   "page": 9,
+   "sean_words": "top space",
+   "right_position": 1,
+   "clef": "bass",
+   "off_written": "G3",
+   "on_written": "G3",
+   "on_candidates": null,
+   "off_right": true,
+   "class": "control_unchanged_right",
+   "on_right": true
+  },
+  {
+   "tile": 11,
+   "rg": "glyph/2/1/7/7/1",
+   "plate": "litolff",
+   "page": 2,
+   "sean_words": "space above staff",
+   "right_position": -1,
+   "clef": "treble",
+   "off_written": "G5",
+   "on_written": "G5",
+   "on_candidates": null,
+   "off_right": true,
+   "class": "control_unchanged_right",
+   "on_right": true
+  },
+  {
+   "tile": 12,
+   "rg": "glyph/16/0/2/6/2",
+   "plate": "litolff",
+   "page": 16,
+   "sean_words": "1st ledger line above staff (Sean wrote '13')",
+   "right_position": -2,
+   "clef": "treble",
+   "off_written": "A5",
+   "on_written": "A5",
+   "on_candidates": [
+    "A5",
+    "B5"
+   ],
+   "off_right": true,
+   "class": "guessed_with_right",
+   "on_right": true,
+   "on_guessed_with_right": true
+  }
+ ],
+ "totals": {
+  "pitch_tiles": 10,
+  "controls": 2,
+  "off_right": 6,
+  "on_written_right": 6,
+  "on_guessed_with_right": 7,
+  "right_to_wrong": 0,
+  "guessed_real_doubts_right_in_candidates": 7,
+  "guessed_not_a_single_head": [
+   3,
+   7,
+   8
+  ],
+  "sharps_boxed_as_heads": [
+   7,
+   8
+  ],
+  "two_notes_one_box": [
+   3
+  ]
+ }
+}
