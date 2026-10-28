@@ -4268,13 +4268,10 @@ TIP_LEVEL_GAP_SPACES = 1.1
 
 def _stroke_stem_cannot_decide(stem_info, head_first) -> bool:
     """ROADMAP 2.204 fixes 1b and 2 (flag `OMR_STEMS_FROM_STROKES` ON only; `stem_info` is `None` OFF so this is False).
-    A clean tip or flag window never decides a value alone (a) on a stem the old finder did not have (`gained` / `old_refused`: the
-    2.146 "a clean tip decides" was measured on finder stems), nor (b) for a head whose fill the head reader could not measure
-    (`not_head_sized` / `fill` null: a half is never seen). It narrows to the OFF candidates instead."""
-    if stem_info is not None and stem_info.get("settled") in ("gained", "old_refused"):
-        return True
-    return bool(stem_info is not None and head_first is not None
-                and (head_first.get("not_head_sized") or head_first.get("fill") is None))
+    A clean tip or flag window never decides a value alone on a stem the old finder did not have (`gained` / `old_refused`: the 2.146
+    "a clean tip decides" was measured on finder stems). It narrows to the OFF candidates instead. (Round 3: part (b), the unmeasured-fill
+    head, is REMOVED with the stroke tip reader; `head_first` is kept in the signature for the callers.)"""
+    return bool(stem_info is not None and stem_info.get("settled") in ("gained", "old_refused"))
 
 
 def _tips_from_strokes(ev: Evidence, cell, own_stems):
@@ -4354,19 +4351,14 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
 
 
 def _tip_obs(ev: Evidence, cell, own_stems):
-    """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today."""
-    if stems_from_strokes_enabled():
-        got = _tips_from_strokes(ev, cell, own_stems)
-        if got is not None:
-            return got[0]
+    """The tip rows of the head's own stems: always `Q.STEM_TIP_INK`, the OLD reader's, ON or OFF. ROADMAP 2.204 round 3 (Sean 2026-10-28
+    "try the new stems with old tip reader"): the stroke tip reader (`_tips_from_strokes`) wrote 28 of the 33 round-1 `stem_tip_reads_no_beam`
+    errors on stems the finder ALSO had, so it no longer decides anything; the stroke map chooses WHICH stem, this reads the tip on it. A
+    stem the finder did not have (`gained`) has no row here: no tip evidence, so it narrows."""
     return ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 
 def _tip_abs(ev: Evidence, cell, own_stems):
-    if stems_from_strokes_enabled():
-        got = _tips_from_strokes(ev, cell, own_stems)
-        if got is not None:
-            return got[1]
     return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 

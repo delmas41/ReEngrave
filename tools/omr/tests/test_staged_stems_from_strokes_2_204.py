@@ -390,11 +390,12 @@ class TestTheRetiredScansAreUnreachable(unittest.TestCase):
             ink, rows = rhythm._stem_tip_flag_ink(self._ev(log, gs[0]), R.cell(0, 0, 0, 0), [stem], "up")
         self.assertEqual(ink, True)                      # the planted Q.STEM_TIP_INK row says flag ink
 
-    def test_ON_the_same_accessor_ignores_that_row_and_reads_the_stem_stroke_RED(self):
+    def test_ON_round3_the_same_accessor_STILL_reads_the_GATHER_row_not_the_stroke_tip_RED(self):
+        # 2.204 round 3 (Sean 2026-10-28 "try the new stems with old tip reader"): the stroke tip reader decides nothing.
         log, gs, stem = self._log_with_rows(True)
         with mock.patch.dict(os.environ, {FLAG: "1"}):
             ink, rows = rhythm._stem_tip_flag_ink(self._ev(log, gs[0]), R.cell(0, 0, 0, 0), [stem], "up")
-        self.assertEqual(ink, False)                     # the stroke map shows a clean tip; the planted row was not read
+        self.assertEqual(ink, True)                      # the stroke map shows a clean tip; the planted GATHER row (flag ink) is what is read
 
     def test_ON_with_no_stroke_map_the_accessor_falls_back_to_the_GATHER_row_as_today(self):
         log, gs = build([], finder=(UP,))
@@ -641,5 +642,6 @@ class TestAClearTipNeverDecidesOnAStemTheFinderDidNotHave(unittest.TestCase):
     def test_the_gate_is_off_with_no_stroke_stem_info(self):
         self.assertFalse(rhythm._stroke_stem_cannot_decide(None, {"not_head_sized": True}))
         self.assertTrue(rhythm._stroke_stem_cannot_decide({"settled": "gained"}, None))
-        self.assertTrue(rhythm._stroke_stem_cannot_decide({"settled": "agrees"}, {"not_head_sized": True, "fill": None}))
+        # round 3: the unmeasured-fill clause went with the stroke tip reader (a finder stem's old tip reading decides as in OFF)
+        self.assertFalse(rhythm._stroke_stem_cannot_decide({"settled": "agrees"}, {"not_head_sized": True, "fill": None}))
         self.assertFalse(rhythm._stroke_stem_cannot_decide({"settled": "agrees"}, {"fill": "black"}))

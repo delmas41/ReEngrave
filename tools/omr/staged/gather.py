@@ -4796,7 +4796,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                     found.get("beams") or (),
                     (detections or {}).get(sub.to_key()) or (), space_c,
                     own_stem=stem_xywh)
-                if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the tip is read off the stem's stroke instead
+                if True:      # ROADMAP 2.204 round 3: the OLD tip reader runs ON too (the stroke tip reader no longer decides)
                     _observe_stem_tip_ink(
                         log, sub, frame, c, row_id, stem_xywh,
                         blockers, space_c, heads=heads,
@@ -7425,8 +7425,7 @@ def stroke_map_enabled() -> bool:
 
 
 #: ROADMAP 2.204 (`rhythm.STEMS_FROM_STROKES_ENV`, the same name). With BOTH this and `OMR_STROKE_MAP` on, GATHER does not file
-#: `Q.HEAD_STEM_REACH` (`gather_head_stem_reach`) nor `Q.STEM_TIP_INK` (`_observe_stem_tip_ink`): every ADJUDICATE reader of them reads the
-#: stroke map instead, so the two scans are unreachable. Either flag off: both scans run, as before.
+#: `Q.HEAD_STEM_REACH` (`gather_head_stem_reach`): ADJUDICATE reads the stroke map instead. (Round 3: `Q.STEM_TIP_INK` is filed ON too.) Either flag off: both scans run, as before.
 STEMS_FROM_STROKES_ENV = "OMR_STEMS_FROM_STROKES"
 
 
