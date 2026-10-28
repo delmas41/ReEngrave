@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- ROADMAP 2.218 LANDED: lane_report counts unwritten->wrong (incl. invented)
+
+Sean "Land with safety check". Tooling only, no flag: `lane_report` now reports unwritten->wrong (a judged answer OFF left unwritten that ON writes wrong, invented included) beside right->wrong; both must be 0 to land (`docs/measuring.md`). On the saved re-score it catches 2.204 tiles 1, 7 (invented), 8 and 2.154 t7. `test_staged_lane_report_2_218.py` pins it.
+
 ## 2026-10-28 -- ROADMAP 2.216 LANDED ON: the ledger lines decide the owner on a stem clash
 
 Sean "land 2.216". `OMR_OWNER_LEDGER_WINS` default ON (explicit 0/false/no/off disables; `ownership.ledger_wins_enabled`): where stem and ledger witnesses name different staves the ledger owner is DECIDED (`ledger_over_stem`) instead of abstaining `stem_disagrees`. Frozen sample Litolff +5, Brahms +1 notes, judged right->wrong 0; Sean's tiles ledger 8/8; the 7 Brahms no-witness heads are false heads (tied drop right). `test_owner_ledger_wins_2_216.py` pins OFF with 0. Reconsider after more scores.
