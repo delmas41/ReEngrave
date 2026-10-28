@@ -83,8 +83,8 @@ OWN_STROKE_SLACK_SPACES = 0.2
 
 
 def own_stroke_enabled() -> bool:
-    """ROADMAP 2.206b: OFF unless `OMR_REST_OWN_STROKE` is 1/true/yes/on."""
-    return os.environ.get(ENV_OWN_STROKE, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.206b: ON unless `OMR_REST_OWN_STROKE` is 0/false/no/off."""
+    return os.environ.get(ENV_OWN_STROKE, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _is_own_stroke(stem, ink, spaces: float) -> bool:

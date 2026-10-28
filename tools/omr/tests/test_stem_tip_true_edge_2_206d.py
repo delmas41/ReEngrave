@@ -51,7 +51,7 @@ def test_root_beyond_tip_only_with_the_flag(monkeypatch):
     img = np.full((1000, 700), 255, dtype=np.uint8)
     img[100:900, 300:312] = 0
     img[100 + 270:100 + 300, 312:342] = 0           # a stub touching the stem 2.7 sp from the tip
-    monkeypatch.delenv("OMR_STEM_TIP_TRUE_EDGE", raising=False)
+    monkeypatch.setenv("OMR_STEM_TIP_TRUE_EDGE", "0")
     off = G.stem_tip_ink(img, 300.0, 312.0, 100.0, 1.0, SP)
     monkeypatch.setenv("OMR_STEM_TIP_TRUE_EDGE", "1")
     on = G.stem_tip_ink(img, 300.0, 312.0, 100.0, 1.0, SP)

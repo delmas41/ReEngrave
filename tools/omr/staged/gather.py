@@ -4985,14 +4985,14 @@ STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 TIP_UNBLOCKED_ENV = "OMR_TIP_UNBLOCKED"
 
 
-#: ROADMAP 2.206d (`OMR_STEM_TIP_TRUE_EDGE`, default OFF; Sean 2026-10-26 "Yes"). The 2.18c tip window starts at the stem FINDER's box edge; where that box is
+#: ROADMAP 2.206d (`OMR_STEM_TIP_TRUE_EDGE`, default ON since 2026-10-27, Sean "Land eraser path"). The 2.18c tip window starts at the stem FINDER's box edge; where that box is
 #: a thin core of a thick stem (Brahms p14: 4 px of 25) the window counts the stem's own side as flag ink. ON: the window starts at the edge of the stem's
 #: STROKE (`stroke_map.stem_true_edges`, measured mid-stem), never inside the finder's box. Moves the reader's input, not its cut-off (0.30).
 STEM_TIP_TRUE_EDGE_ENV = "OMR_STEM_TIP_TRUE_EDGE"
 
 
 def stem_tip_true_edge_enabled() -> bool:
-    return os.environ.get(STEM_TIP_TRUE_EDGE_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(STEM_TIP_TRUE_EDGE_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def tip_unblocked_enabled() -> bool:

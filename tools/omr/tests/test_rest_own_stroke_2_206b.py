@@ -23,10 +23,10 @@ def test_no_scale_no_claim():
     assert not H._is_own_stroke((207, 479, 32, 232), INK, 0.0)
 
 
-def test_flags_default_off(monkeypatch):
+def test_flags_default_on(monkeypatch):
     monkeypatch.delenv(H.ENV_OWN_STROKE, raising=False)
     monkeypatch.delenv(T.ENV_METER_SLOT, raising=False)
+    assert H.own_stroke_enabled() and T.meter_slot_enabled()      # ON since 2026-10-27 (Sean "Land eraser path")
+    monkeypatch.setenv(H.ENV_OWN_STROKE, "0")
+    monkeypatch.setenv(T.ENV_METER_SLOT, "off")
     assert not H.own_stroke_enabled() and not T.meter_slot_enabled()
-    monkeypatch.setenv(H.ENV_OWN_STROKE, "1")
-    monkeypatch.setenv(T.ENV_METER_SLOT, "on")
-    assert H.own_stroke_enabled() and T.meter_slot_enabled()

@@ -41,7 +41,7 @@ def _erase(cell, on, monkeypatch):
     if on:
         monkeypatch.setenv(SLR.ENV_ERASER_FIX, "1")
     else:
-        monkeypatch.delenv(SLR.ENV_ERASER_FIX, raising=False)
+        monkeypatch.setenv(SLR.ENV_ERASER_FIX, "0")
     return SLR.remove_staff_lines_from_cell(cell, in_place=False)
 
 
@@ -58,13 +58,13 @@ def _hanging(line_centre, height, x0=250, x1=400, below=True, thickness=26):
     return paint
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(SLR.ENV_ERASER_FIX, raising=False)
-    assert not SLR.eraser_fix_enabled()
+    assert SLR.eraser_fix_enabled()      # ON since 2026-10-27 (Sean "Land eraser path")
     for v in ("1", "true", "yes", "on", " ON "):
         monkeypatch.setenv(SLR.ENV_ERASER_FIX, v)
         assert SLR.eraser_fix_enabled()
-    for v in ("0", "", "off", "no"):
+    for v in ("0", "", "off", "no", "false"):
         monkeypatch.setenv(SLR.ENV_ERASER_FIX, v)
         assert not SLR.eraser_fix_enabled()
 

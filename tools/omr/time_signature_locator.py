@@ -246,9 +246,9 @@ ENV_METER_SLOT = "OMR_METER_SLOT"
 
 
 def meter_slot_enabled() -> bool:
-    """ROADMAP 2.206b: OFF unless `OMR_METER_SLOT` is 1/true/yes/on (STAGED `gather_meter` only; LEGACY unchanged)."""
+    """ROADMAP 2.206b: ON unless `OMR_METER_SLOT` is 0/false/no/off (STAGED `gather_meter` only; LEGACY unchanged)."""
     import os
-    return os.environ.get(ENV_METER_SLOT, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV_METER_SLOT, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 @dataclass(frozen=True)

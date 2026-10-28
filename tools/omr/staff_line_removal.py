@@ -92,7 +92,7 @@ MAX_ERASABLE_RUN_SPACES = 0.45
 # staff space so the search can never reach the neighbouring line.
 LINE_SEARCH_RADIUS_SPACES = 0.25
 
-# ROADMAP 2.206 (flag OMR_ERASER_FIX, default OFF). The walk through each column
+# ROADMAP 2.206 (flag OMR_ERASER_FIX, default ON since 2026-10-27). The walk through each column
 # was bounded at `cap + 2` rows either side -- `cap` is the THICKNESS cap
 # (0.35 sp), a different quantity from the crossing cut it feeds (up to 0.45 sp,
 # `MAX_ERASABLE_RUN_SPACES`). Where the cut is taller than the walk (a fat line:
@@ -108,8 +108,8 @@ ENV_ERASER_FIX = "OMR_ERASER_FIX"
 
 
 def eraser_fix_enabled() -> bool:
-    """ROADMAP 2.206: OFF unless `OMR_ERASER_FIX` is 1/true/yes/on."""
-    return os.environ.get(ENV_ERASER_FIX, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.206: ON unless `OMR_ERASER_FIX` is 0/false/no/off."""
+    return os.environ.get(ENV_ERASER_FIX, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def walk_for_cut(cap: int, crossing_cut: float) -> int:

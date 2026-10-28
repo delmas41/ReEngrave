@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-27 -- ROADMAP 2.206 / 2.206b-e / 2.213 LANDED ON: the staff-eraser path ("Land eraser path")
+
+Sean 2026-10-27 "Land eraser path". `OMR_ERASER_FIX`, `OMR_METER_SLOT`, `OMR_REST_OWN_STROKE`, `OMR_STEM_TIP_TRUE_EDGE` and `OMR_BEAM_OWN_EXTENT` now default ON (deny-list readers in `staff_line_removal.py`, `time_signature_locator.py`, `staged/adjudicators/head_rest_shape.py`, `staged/gather.py`, `line_detection.py`); `docs/flags-2026-09.md` rows read ON. Combined run (benchmarks/staff-eraser-2026-10/FINDINGS.md 17): judged right->wrong 0, tiles 11/12, 21 lost notes counted (8 beam-doubt from the eraser fix incl. Litolff p9 tile 1, 5 reclassified, 8 not tied to a flag), now first test cases of 2.202. 2.202 (beams) and 2.204 (stems) are unblocked to re-measure on the landed eraser.
+
 ## 2026-10-27 -- ROADMAP 2.209 LANDED ON: a head on a beam end is not a member of the stem
 STAGED ADJUDICATE, `OMR_STEM_BEAM_END` default ON (explicit 0/false/no/off disables). A notehead box that covers no ink of its own, stands on beam ink and sits at the stem tip while another member is 2.5 sp or more away is dropped from `stem_value`'s members, so it no longer overrides a DECIDED duration (cause: 2.206b tile 5, Brahms p0). Sean "Yes": 8 of 8 touched tiles right, judged right->wrong 0. Only the default-flag test changed (`test_default_is_on`); judged-tiles.json regenerated. Follow-up ROADMAP 2.210.
 

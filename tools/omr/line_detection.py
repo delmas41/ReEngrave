@@ -1332,7 +1332,7 @@ def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
     return n_bars, [(tops[k], bottoms[k]) for k in range(n_bars)]
 
 
-#: ROADMAP 2.213 (`OMR_BEAM_OWN_EXTENT`, default OFF; Sean 2026-10-27 "Yes"; benchmarks/staff-eraser-2026-10/FINDINGS.md 12). A stacked component's bars all
+#: ROADMAP 2.213 (`OMR_BEAM_OWN_EXTENT`, default ON since 2026-10-27, Sean "Land eraser path"; benchmarks/staff-eraser-2026-10/FINDINGS.md 12). A stacked component's bars all
 #: took the COMPONENT's x extent, so a secondary bar that really starts at the first 16th's stem was drawn from the dotted eighth's stem, and
 #: `rhythm._beam_levels` (which counts strokes whose box covers a head's column) read a second level there. ON: each bar's x extent is the columns where
 #: THAT bar's own rows carry a run at least `BEAM_OWN_EXTENT_MIN_THICK` of the bar's typical thickness. CONVENTION ASSUMED: a secondary beam spans only the
@@ -1343,7 +1343,7 @@ BEAM_OWN_EXTENT_MIN_THICK = 0.6
 
 def beam_own_extent_enabled() -> bool:
     import os
-    return os.environ.get(BEAM_OWN_EXTENT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAM_OWN_EXTENT_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _bar_own_extents(labels, label: int, x: int, y: int, w: int, h: int,

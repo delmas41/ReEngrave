@@ -30,7 +30,7 @@ def _cell() -> MeasureCell:
 
 
 def test_off_every_bar_takes_the_component_extent(monkeypatch):
-    monkeypatch.delenv("OMR_BEAM_OWN_EXTENT", raising=False)
+    monkeypatch.setenv("OMR_BEAM_OWN_EXTENT", "0")
     beams = detect_beams(_cell())
     assert len(beams) == 2
     assert all(b.x_canonical <= 205 for b in beams)       # secondary reaches the first stem: the defect
