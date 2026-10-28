@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- ROADMAP 2.215 LANDED: tiles box the changed mark; rest-as-note counted
+
+Sean "Yes, land 2.215". Tooling only, no flag: `lane_report.own_direction_box` gives a changed dynamic its own letters' box and bar-check words no tile (cause: 2.213 tiles 1, 2, 3, 9, 11 boxed the host note). Part B counted rests written as notes, no fix: 0 rest-box notes, 59/8376 twin-boxed (-> 2.212 / ownership). Tests in the lane_report test file; FINDINGS benchmarks/rest-as-note-2026-10.
+
 ## 2026-10-28 -- 2.202 LANDED ON; START HERE after 2026-10-28 evening
 
 main 9dcd78a6e: `OMR_BEAMS_FROM_STROKES` default ON (Sean "merge lanes and land on"); 2.202b-f merged (fast-forward from d4d05d2bf); the 2.204 stems OFF-identity test pins the beams flag OFF. ROADMAP START HERE block after 2026-10-28 evening: next is 2.204 stems re-measured on top.
