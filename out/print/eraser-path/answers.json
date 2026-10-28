@@ -1,0 +1,75 @@
+{
+ "date": "2026-10-27",
+ "verbatim": "1.4 2. Dot 4 3. 8 4. Dot 4 5. Dot 4 6-8. 4 9. 8 rest 10. Dot 4 11. 8 12. Dot 4",
+ "tile_06_note": "Sean (coordinator relay): head in the SECOND SPACE from the bottom; staff is Timpani; page clef ink is a BASS clef (tile06-clef.png) -> C3",
+ "tiles": {
+  "1": {
+   "sean": "4",
+   "subject": "litolff p9 glyph/9/0/4/0/3",
+   "off": "quarter F5 (two voices)",
+   "on": "not written",
+   "verdict": "WRONG: right->lost (real quarter)"
+  },
+  "2": {
+   "sean": "Dot 4",
+   "subject": "brahms p14 dot gained",
+   "verdict": "RIGHT"
+  },
+  "3": {
+   "sean": "8",
+   "subject": "litolff p4 glyph/4/1/7/7/3 beam continue->begin",
+   "off": "eighth",
+   "on": "eighth",
+   "verdict": "RIGHT (eighth both arms)"
+  },
+  "4": {
+   "sean": "Dot 4",
+   "subject": "brahms p14 glyph/14/0/9/3/5 note gained",
+   "on": "quarter + dot, blue",
+   "verdict": "RIGHT (dot written)"
+  },
+  "5": {
+   "sean": "Dot 4",
+   "subject": "brahms p12 dot gained",
+   "verdict": "RIGHT"
+  },
+  "6": {
+   "sean": "4, second space from bottom",
+   "subject": "litolff p11 glyph/11/1/5/1/1",
+   "off": "G3 (clef tenor, cv_locator misread of a bass clef)",
+   "on": "C3 (clef bass, from roster Timpani)",
+   "verdict": "RIGHT for ON (C3); OFF wrong. Fault in clef reading, not the eraser"
+  },
+  "7": {
+   "sean": "4",
+   "subject": "litolff p11 note gained quarter",
+   "verdict": "RIGHT"
+  },
+  "8": {
+   "sean": "4",
+   "subject": "brahms p4 note gained quarter",
+   "verdict": "RIGHT"
+  },
+  "9": {
+   "sean": "8 rest",
+   "subject": "brahms p5 rest gained eighth",
+   "verdict": "RIGHT"
+  },
+  "10": {
+   "sean": "Dot 4",
+   "role": "control",
+   "verdict": "RIGHT"
+  },
+  "11": {
+   "sean": "8",
+   "role": "control",
+   "verdict": "RIGHT"
+  },
+  "12": {
+   "sean": "Dot 4",
+   "role": "control",
+   "verdict": "RIGHT"
+  }
+ },
+ "score": "11 right of 12 (tiles 2-12), 1 right->lost (tile 1)"
+}
