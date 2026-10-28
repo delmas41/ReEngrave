@@ -218,6 +218,13 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
         bot_in = hy - slack <= sy + sh <= hy + hh + slack
         side = ("left" if d_left <= FLUSH_SPACES and d_left <= d_right else "right" if d_right <= FLUSH_SPACES else "through")
         ends_in = top_in != bot_in
+        if ends_in:
+            # 2.204 (Litolff 8 pages, `wrong_side`): a chord's stem runs from its far head to the TOP head of the chord; its end stands in this
+            # head only because this is the chord's end head, and its other end stands in ANOTHER head -- the stroke passes this head (the end
+            # the other head holds tells the way: bottom in a head -> up), it does not hang from it.
+            far_y = sy + sh if top_in else sy
+            if any(b[1] - slack <= far_y <= b[1] + b[3] + slack and _overlap(sx, sx + sw, b[0] - slack, b[0] + b[2] + slack) > 0 for b in others):
+                ends_in = False
         anchored = in_a_head(sy, sx, sx + sw) or in_a_head(sy + sh, sx, sx + sw)
         displaced = False
         anchor_box = None
@@ -240,7 +247,12 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
                       tip_step=_tip_step(members, tip_end) if tip_end else None, ends_in_head=ends_in, anchored=anchored,
                       merged=len(members) > 1)
         # the refusals, in the order a human would ask them
-        if length > STEM_MAX_SPACES:
+        if length > STEM_MAX_SPACES and len(members) > 1:
+            # 2.204 (Litolff, 37 of the 8-page `barline` disagreements): collinear pieces joined across a crossing run past any stem's length
+            # when a SECOND stem stands above/below the first. Nobody has shown this is a barline (one stroke drawn 12 sp tall is): the map
+            # cannot tell -> the finder's stem stands (`map_cannot_tell`), never a refusal.
+            why = "unanchored"
+        elif length > STEM_MAX_SPACES:
             why = "barline"
         elif cell_width is not None and not ends_in and (sx <= CELL_EDGE_SPACES * sp or sx + sw >= cell_width - CELL_EDGE_SPACES * sp):
             why = "barline"
