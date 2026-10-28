@@ -202,12 +202,16 @@ machine-readable form.
   overrides them; where a ledger reading disagrees with the print, the RUNG
   FINDING is wrong, not the rule. **The head's STEM is a second, independent
   owner witness** (`OMR_STEM_OWNER`, ON, 2026-10-08, 10 of 10 tiles right):
-  both agree -> the owner is decided; they disagree -> NOT decided, the head
-  is written GUESSED (blue) with both staves as candidates; only one can be
-  read -> use it. Sean, 2026-10-27, why a stem can point away from its own
+  both agree -> the owner is decided; they disagree -> **the ledger lines
+  decide the owner, plain, not blue** (Sean, 2026-10-28, option B: *"2.216
+  let's go with B for now"*; (we should reconsider after a lot of measuring on
+  different scores); SCOPE: Litolff + Brahms, 8 tiles, ledger right 8/8, stem
+  0/8; `OMR_OWNER_LEDGER_WINS`, default OFF until landed; reverses the
+  2026-10-27 "GUESSED blue with both staves" for this case only); only one can
+  be read -> use it. Sean, 2026-10-27, why a stem can point away from its own
   staff: *"multiple voices in a bar where the upper voice is above the staff
   and the lower voice is below the staff."* (*"I like that plan."* Scope:
-  general; **not yet built**, ROADMAP 2.216.) **There is no such thing as a far note
+  general; ROADMAP 2.216.) **There is no such thing as a far note
   with no ledger line** (Sean, 2026-09-29: a head outside the staff touches
   the outer line, touches a ledger, or has one through it; farther than one
   notehead always has ledgers), so "no rungs found either way" is always OUR

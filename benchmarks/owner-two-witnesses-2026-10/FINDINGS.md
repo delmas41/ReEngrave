@@ -85,3 +85,23 @@ was right, so the stems in the disagreement population are not the same kind of 
 disagreements the stem is attached across the gap toward the other staff (a stem reaching the neighbouring staff's head or a shared stem
 line), so the stem reads the wrong staff while the ledger lines name the owner, as CLAUDE.md §5 says. Measure the stem endpoints on the 8
 heads before any rule trusts or overrides either witness; 8 tiles are evidence for "ledger wins on disagreement", not yet a cut-off.
+
+## Option B built behind `OMR_OWNER_LEDGER_WINS` (default OFF) and measured (2026-10-28)
+
+Sean, 2026-10-28: "2.216 let's go with B for now" (reconsider after a lot of measuring on different scores). Path: STAGED ADJUDICATE
+`glyph_owner`, `ownership._stem_clash`. Where the stem and a ledger witness (note-first, density, direction) name different staves the
+ledger owner is DECIDED, reason `ledger_over_stem`, plain (not blue), the stem's staff in `detail.stem_owner`. NOT touched: `tied`,
+`far_no_rungs`, `ledger_witnesses_disagree`, and the ladder-sum clash (~line 919: stem vs a ladder/range-veto/hairpin sum), which still
+abstain `stem_disagrees`. The loser copy (the other staff's cell) is dropped as any resolved contest's loser is; one note is written.
+Unit tests: `tests/test_owner_ledger_wins_2_216.py` (OFF abstains, ON decides, agreement and no-stem unchanged); with the stem-owner,
+ownership and far-head tests: 49 passed.
+
+Cheap proof (`lane_report --flag OMR_OWNER_LEDGER_WINS --from adjudicate --workers 1`, frozen 8 pages per plate, saved night record):
+
+- Litolff: 5430 -> 5435 notes+rests (**+5 notes**, matches the 5 disagreement heads counted on these pages); accidentals +1, beams +2, flags -1
+  (the new notes' own marks); not written 2241 -> 2236.
+- Brahms: 6518 -> 6519 (**+1 note**, the one head); not written 3203 -> 3202; blue marks -4 (a bar sum no longer needs a guess).
+- Sean's judged answers: Litolff 254 tiles, Brahms 232 tiles: **right->wrong 0**, right->gone 0, wrong->right 0 (none of the 6 heads is judged).
+- Control caveat: lane_report says neither arm reproduces the saved record (the tree moved since 20261020-night; duration/rest verdicts
+  differing OFF 11 / ON 18 of 8958 Litolff, 8 / 9 Brahms). Both arms share it; the extra few differing verdicts are the bars the added notes sit in.
+- Whole movement (not run): 6 Litolff + 22 Brahms heads. Sean's 8 tiles on them: ledger right 8/8. Not a cut-off; hence "for now".
