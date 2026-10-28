@@ -559,3 +559,24 @@ class TestTheControlCanFail(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheTipIsTheEndNoHeadStandsAt(unittest.TestCase):
+    """2.204 cause (Litolff p4): a fused, tilted stroke; ANOTHER head in the cell at the far end's height but a different x made the tip read
+    as a head end, and the stem was placed at the head end -> `wrong_side`."""
+
+    def _v(self):
+        import types
+        # ends (x0,y0) = (238, 619) far end; (x1,y1) = (288, 131) head end; fused: 88 px = 0.88 sp wide
+        return types.SimpleNamespace(ends=(238.0, 619.0, 288.0, 131.0), space_px=100.0, box=(206.0, 131.0, 88.0, 494.0))
+
+    def test_RED_a_head_at_the_far_ends_height_but_elsewhere_in_x_does_not_make_it_a_head_end(self):
+        v = self._v()
+        self.assertEqual(SS.axis_x(v, [(194.0, 204.0, 340.0), (600.0, 900.0, 1030.0)]), 238.0)
+
+    def test_TWIN_a_head_standing_at_the_far_end_does_make_it_a_head_end(self):
+        v = self._v()
+        self.assertEqual(SS.axis_x(v, [(194.0, 204.0, 340.0), (600.0, 200.0, 330.0)]), 288.0)
+
+    def test_the_old_spelling_a_bare_y_still_works(self):
+        self.assertEqual(SS.axis_x(self._v(), [194.0, 600.0]), 288.0)
