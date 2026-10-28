@@ -1,0 +1,66 @@
+{
+ "date": "2026-10-27",
+ "verbatim": "1-2. Dot 4 3.16 4-5.4 6. Part of an ff 7. 16 8.4 9.8 10. 8 11. 8 12.4",
+ "tiles": {
+  "1": {
+   "sean": "dot 4",
+   "subject": "brahms p19 glyph/19/1/10/7/10",
+   "verdict": "RIGHT (16th flag removed from a dotted quarter)"
+  },
+  "2": {
+   "sean": "dot 4",
+   "subject": "brahms p19 glyph/19/1/5/1/3",
+   "verdict": "WRONG: ON gains an eighth flag on a dotted quarter -- a 0.06 sp hairline hook touching a second stroke (a slur's start), read as a flag"
+  },
+  "3": {
+   "sean": "16",
+   "subject": "brahms p19 glyph/19/0/12/0/5",
+   "verdict": "WRONG: real 16th lost ON -- a double beam whose second beam starts at this stem reads 0.96 sp locally (cut 1.0), counted as one level, narrowed"
+  },
+  "4": {
+   "sean": "4",
+   "subject": "brahms p14 glyph/14/1/3/7/0",
+   "verdict": "RIGHT (eighth->quarter)"
+  },
+  "5": {
+   "sean": "4",
+   "subject": "brahms p14 glyph/14/1/3/7/6",
+   "verdict": "RIGHT (eighth->quarter)"
+  },
+  "6": {
+   "sean": "part of an ff",
+   "subject": "litolff p4 glyph/4/0/8/11/7",
+   "verdict": "RIGHT (Litolff p4 'note' is part of an ff; dropping it is right)"
+  },
+  "7": {
+   "sean": "16",
+   "subject": "brahms p19 glyph/19/0/12/0/10",
+   "verdict": "RIGHT (16th, only the beam changed)"
+  },
+  "8": {
+   "sean": "4",
+   "subject": "brahms p19 glyph/19/0/2/1/3",
+   "verdict": "RIGHT (eighth flag removed from a quarter)"
+  },
+  "9": {
+   "sean": "8",
+   "subject": "litolff p4 glyph/4/1/0/13/1",
+   "verdict": "control RIGHT"
+  },
+  "10": {
+   "sean": "8",
+   "subject": "litolff p9 glyph/9/1/6/1/4",
+   "verdict": "control RIGHT"
+  },
+  "11": {
+   "sean": "8",
+   "subject": "brahms p14 glyph/14/0/0/0/13",
+   "verdict": "control RIGHT"
+  },
+  "12": {
+   "sean": "4",
+   "subject": "brahms p19 glyph/19/0/2/10/5",
+   "verdict": "control RIGHT"
+  }
+ }
+}

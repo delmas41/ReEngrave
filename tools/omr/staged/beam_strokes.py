@@ -61,7 +61,9 @@ LEVEL_MIN_SEPARATION_SPACES = 0.4
 #: `FUSED_OUTER_EDGE_SPACES`: a "slab" 3 sp inward of the tip is a head cluster, the 2.202 cause 2) and only up to `FUSED_MAX_THICKNESS_SPACES`
 #: (three levels fused would be 2.0 sp; nothing between is measured, so a thicker slab is left as the one level it was counted as).
 FUSED_DOUBLE_MIN_THICKNESS_SPACES = 1.0
+FREE_END_HOOK = True
 FUSED_MAX_THICKNESS_SPACES = 1.75
+FUSED_LOCAL_MIN_SPACES = 0.8      # 2.202e: the cut on the thickness AT THIS STEM's x (the 12-sample profile is coarse: a second beam that STARTS at this stem reads 0.96; measured gap single 0.31-0.66 | double 0.8-1.6, FINDINGS 5f)
 FUSED_OUTER_EDGE_SPACES = 0.6
 #: ROADMAP 2.202b. A beam-role stroke that does not TOUCH the head's stem stroke but ends within this many staff spaces of it (box to box: the scan
 #: cuts a beam where it meets a stem, or the stem stops short of the beam) is the stem's beam: a beam IS the thing that joins its stems.
@@ -232,6 +234,10 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
         y0, y1 = s.box[1], s.box[1] + s.box[3]
         if y1 < lo or y0 > hi:
             continue
+        # 2.202e (5b cause 3; tile 2 of 2.202d: a 0.06 sp hairline touching a second stroke): a flag's far end is FREE. A hook that touches any
+        # stroke but this stem is the start of a slur / tie, not a flag.
+        if key == "hook" and FREE_END_HOOK and any(j != stem.ordinal for j, _c in s.touches):
+            continue
         found[key].append(s)
     # 2.202b: a stem with NO beam level at its tip, and a beam-role stroke that comes within JOIN_MAX_GAP_SPACES of it without touching it, whose
     # OUTER edge lies at the tip (the first level: a beam's outer edge is where its stems end) and that is no thicker than one beam: the beam is this
@@ -287,7 +293,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
         # only is ~0.6 sp along one stretch and ~1.25 along the next, and the median alone would double every stem of it (Brahms: 6 heads main read
         # as one level). The median is kept because a short bump of >= 1.0 in a 0.8 beam (a head merged with it: Litolff, 16 heads) is not a slab.
         here = local_thickness(s, bx + bw / 2.0)
-        if (s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES and FUSED_DOUBLE_MIN_THICKNESS_SPACES <= here < FUSED_MAX_THICKNESS_SPACES
+        if (s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES and FUSED_LOCAL_MIN_SPACES <= here < FUSED_MAX_THICKNESS_SPACES
                 and s.kind == "horizontal"
                 and abs(outer - tip_y) <= FUSED_OUTER_EDGE_SPACES * sp):
             fused.append(o)

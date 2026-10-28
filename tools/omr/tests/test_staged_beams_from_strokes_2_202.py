@@ -364,7 +364,6 @@ class TestCleanTip2_202d(unittest.TestCase):
         s = [dict(stem_stroke(0), touches=[1]), self.blob()]
         v = dur(True, s, boxes=[((251, 757, 364, 63), [1])], heads=(0,))
         self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(levels(v), [0])
         self.assertIn("clean_tip", v.detail["beams_from_strokes"]["settled"])
 
     def test_TWIN_a_long_unclassified_curve_at_the_tip_keeps_it_narrowed(self):

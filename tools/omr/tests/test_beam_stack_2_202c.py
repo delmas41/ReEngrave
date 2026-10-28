@@ -35,5 +35,31 @@ class TestStack(unittest.TestCase):
         self.assertEqual(len(self.run_([second])), 2)
 
 
+class TestFreeEndHookAndLocalFused(unittest.TestCase):
+    """2.202e. A hook whose far end touches another stroke is a slur's start, not a flag; a double slab whose second beam starts AT this stem
+    (local 0.96 on the coarse profile) is two levels. Controls: the constant off / back at 1.0 turns the RED."""
+
+    def hook(self, touches):
+        return sv(3, "horizontal", (251, 810, 106, 25), 1.06, 0.25, touches, sag=0.0)
+
+    def test_free_hook_is_a_hook_touching_another_stroke_is_not(self):
+        st = stems(touching={0: (3,)})
+        other = sv(4, "blob", (300, 820, 50, 19), 0.5, 0.09, (3,), sag=0.0)
+        free = tip(st + [self.hook((0,))], 0)["hooks"]
+        held = tip(st + [self.hook((0, 4)), other], 0)["hooks"]
+        BS.FREE_END_HOOK = False
+        try:
+            off = tip(st + [self.hook((0, 4)), other], 0)["hooks"]
+        finally:
+            BS.FREE_END_HOOK = True
+        self.assertEqual(held, [])
+        self.assertEqual(off, free)          # control: with the rule off the touching hook reads like the free one
+        self.assertEqual(free, [3])
+
+    def test_local_cut_is_inside_the_measured_gap(self):
+        self.assertGreater(BS.FUSED_LOCAL_MIN_SPACES, 0.66)
+        self.assertLess(BS.FUSED_LOCAL_MIN_SPACES, 0.8 + 1e-9)
+
+
 if __name__ == "__main__":
     unittest.main()
