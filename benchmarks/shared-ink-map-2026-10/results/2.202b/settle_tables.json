@@ -1,0 +1,472 @@
+{
+ "litolff": {
+  "by_cause": {
+   "at_tip|2.202": {
+    "more": 23,
+    "agrees": 3
+   },
+   "at_tip|F_only": {
+    "more": 23,
+    "agrees": 3
+   },
+   "at_tip|J_only": {
+    "more": 23,
+    "agrees": 3
+   },
+   "at_tip|T": {
+    "more": 23,
+    "agrees": 3
+   },
+   "at_tip|TF": {
+    "more": 23,
+    "agrees": 3
+   },
+   "at_tip|TFJ": {
+    "more": 23,
+    "agrees": 3
+   },
+   "head_end_blob|2.202": {
+    "more": 152,
+    "agrees": 3
+   },
+   "head_end_blob|F_only": {
+    "more": 152,
+    "agrees": 3
+   },
+   "head_end_blob|J_only": {
+    "more": 152,
+    "agrees": 3
+   },
+   "head_end_blob|T": {
+    "more": 152,
+    "agrees": 3
+   },
+   "head_end_blob|TF": {
+    "more": 152,
+    "agrees": 3
+   },
+   "head_end_blob|TFJ": {
+    "more": 152,
+    "agrees": 3
+   },
+   "join_missing|2.202": {
+    "fewer": 8
+   },
+   "join_missing|F_only": {
+    "fewer": 8
+   },
+   "join_missing|J_only": {
+    "fewer": 7,
+    "agrees": 1
+   },
+   "join_missing|T": {
+    "fewer": 8
+   },
+   "join_missing|TF": {
+    "fewer": 8
+   },
+   "join_missing|TFJ": {
+    "fewer": 7,
+    "agrees": 1
+   },
+   "no_stroke|2.202": {
+    "fewer": 6
+   },
+   "no_stroke|F_only": {
+    "fewer": 6
+   },
+   "no_stroke|J_only": {
+    "fewer": 6
+   },
+   "no_stroke|T": {
+    "fewer": 6
+   },
+   "no_stroke|TF": {
+    "fewer": 6
+   },
+   "no_stroke|TFJ": {
+    "fewer": 6
+   },
+   "other|2.202": {
+    "fewer": 3
+   },
+   "other|F_only": {
+    "fewer": 3
+   },
+   "other|J_only": {
+    "fewer": 3
+   },
+   "other|T": {
+    "fewer": 3
+   },
+   "other|TF": {
+    "fewer": 3
+   },
+   "other|TFJ": {
+    "fewer": 3
+   },
+   "thin_near_cut|2.202": {
+    "fewer": 21
+   },
+   "thin_near_cut|F_only": {
+    "fewer": 21
+   },
+   "thin_near_cut|J_only": {
+    "fewer": 21
+   },
+   "thin_near_cut|T": {
+    "agrees": 18,
+    "fewer": 3
+   },
+   "thin_near_cut|TF": {
+    "agrees": 18,
+    "fewer": 3
+   },
+   "thin_near_cut|TFJ": {
+    "agrees": 18,
+    "fewer": 3
+   },
+   "thin_remnant|2.202": {
+    "fewer": 22
+   },
+   "thin_remnant|F_only": {
+    "fewer": 22
+   },
+   "thin_remnant|J_only": {
+    "fewer": 22
+   },
+   "thin_remnant|T": {
+    "fewer": 1,
+    "agrees": 21
+   },
+   "thin_remnant|TF": {
+    "fewer": 1,
+    "agrees": 21
+   },
+   "thin_remnant|TFJ": {
+    "fewer": 1,
+    "agrees": 21
+   }
+  },
+  "table": {
+   "2.202": {
+    "agrees/agrees": 2616,
+    "agrees/fewer": 7,
+    "agrees/main_uncertain": 15,
+    "disagree_narrowed/fewer": 60,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   },
+   "T": {
+    "agrees/agrees": 2607,
+    "agrees/fewer": 7,
+    "agrees/main_uncertain": 15,
+    "agrees/more": 9,
+    "disagree_narrowed/agrees": 39,
+    "disagree_narrowed/fewer": 21,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   },
+   "TF": {
+    "agrees/agrees": 2607,
+    "agrees/fewer": 7,
+    "agrees/main_uncertain": 15,
+    "agrees/more": 9,
+    "disagree_narrowed/agrees": 39,
+    "disagree_narrowed/fewer": 21,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   },
+   "TFJ": {
+    "agrees/agrees": 2607,
+    "agrees/fewer": 6,
+    "agrees/main_uncertain": 15,
+    "agrees/more": 10,
+    "disagree_narrowed/agrees": 40,
+    "disagree_narrowed/fewer": 20,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   },
+   "F_only": {
+    "agrees/agrees": 2616,
+    "agrees/fewer": 7,
+    "agrees/main_uncertain": 15,
+    "disagree_narrowed/fewer": 60,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   },
+   "J_only": {
+    "agrees/agrees": 2616,
+    "agrees/fewer": 6,
+    "agrees/main_uncertain": 15,
+    "agrees/more": 1,
+    "disagree_narrowed/agrees": 1,
+    "disagree_narrowed/fewer": 59,
+    "other/agrees": 1,
+    "other/fewer": 1,
+    "other/main_uncertain": 1,
+    "stroke_candidate/agrees": 6,
+    "stroke_candidate/main_uncertain": 4,
+    "stroke_candidate/more": 175
+   }
+  }
+ },
+ "brahms": {
+  "by_cause": {
+   "at_tip|2.202": {
+    "agrees": 1,
+    "more": 9
+   },
+   "at_tip|F_only": {
+    "agrees": 1,
+    "more": 9
+   },
+   "at_tip|J_only": {
+    "agrees": 1,
+    "more": 9
+   },
+   "at_tip|T": {
+    "agrees": 1,
+    "more": 9
+   },
+   "at_tip|TF": {
+    "agrees": 1,
+    "more": 9
+   },
+   "at_tip|TFJ": {
+    "agrees": 1,
+    "more": 9
+   },
+   "fused_double|2.202": {
+    "fewer": 15
+   },
+   "fused_double|F_only": {
+    "fewer": 7,
+    "agrees": 8
+   },
+   "fused_double|J_only": {
+    "fewer": 15
+   },
+   "fused_double|T": {
+    "fewer": 15
+   },
+   "fused_double|TF": {
+    "fewer": 7,
+    "agrees": 8
+   },
+   "fused_double|TFJ": {
+    "fewer": 7,
+    "agrees": 8
+   },
+   "head_end_blob|2.202": {
+    "more": 102
+   },
+   "head_end_blob|F_only": {
+    "more": 102
+   },
+   "head_end_blob|J_only": {
+    "more": 102
+   },
+   "head_end_blob|T": {
+    "more": 102
+   },
+   "head_end_blob|TF": {
+    "more": 102
+   },
+   "head_end_blob|TFJ": {
+    "more": 102
+   },
+   "join_missing|2.202": {
+    "fewer": 3
+   },
+   "join_missing|F_only": {
+    "fewer": 3
+   },
+   "join_missing|J_only": {
+    "fewer": 3
+   },
+   "join_missing|T": {
+    "fewer": 3
+   },
+   "join_missing|TF": {
+    "fewer": 3
+   },
+   "join_missing|TFJ": {
+    "fewer": 3
+   },
+   "other|2.202": {
+    "fewer": 3
+   },
+   "other|F_only": {
+    "fewer": 3
+   },
+   "other|J_only": {
+    "fewer": 3
+   },
+   "other|T": {
+    "fewer": 3
+   },
+   "other|TF": {
+    "fewer": 3
+   },
+   "other|TFJ": {
+    "fewer": 3
+   },
+   "thin_near_cut|2.202": {
+    "fewer": 24
+   },
+   "thin_near_cut|F_only": {
+    "fewer": 24
+   },
+   "thin_near_cut|J_only": {
+    "fewer": 24
+   },
+   "thin_near_cut|T": {
+    "agrees": 21,
+    "fewer": 3
+   },
+   "thin_near_cut|TF": {
+    "agrees": 21,
+    "fewer": 3
+   },
+   "thin_near_cut|TFJ": {
+    "agrees": 21,
+    "fewer": 3
+   },
+   "thin_remnant|2.202": {
+    "fewer": 33
+   },
+   "thin_remnant|F_only": {
+    "fewer": 33
+   },
+   "thin_remnant|J_only": {
+    "fewer": 33
+   },
+   "thin_remnant|T": {
+    "agrees": 30,
+    "fewer": 3
+   },
+   "thin_remnant|TF": {
+    "agrees": 30,
+    "fewer": 3
+   },
+   "thin_remnant|TFJ": {
+    "agrees": 30,
+    "fewer": 3
+   }
+  },
+  "table": {
+   "2.202": {
+    "agrees/agrees": 3697,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "disagree_narrowed/fewer": 78,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 19,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 6,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   },
+   "T": {
+    "agrees/agrees": 3691,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "agrees/more": 6,
+    "disagree_narrowed/agrees": 51,
+    "disagree_narrowed/fewer": 27,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 18,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 7,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   },
+   "TF": {
+    "agrees/agrees": 3690,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "agrees/more": 7,
+    "disagree_narrowed/agrees": 59,
+    "disagree_narrowed/fewer": 19,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 18,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 7,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   },
+   "TFJ": {
+    "agrees/agrees": 3690,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "agrees/more": 7,
+    "disagree_narrowed/agrees": 59,
+    "disagree_narrowed/fewer": 19,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 18,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 7,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   },
+   "F_only": {
+    "agrees/agrees": 3697,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "disagree_narrowed/agrees": 8,
+    "disagree_narrowed/fewer": 70,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 19,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 6,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   },
+   "J_only": {
+    "agrees/agrees": 3697,
+    "agrees/fewer": 2,
+    "agrees/main_uncertain": 16,
+    "disagree_narrowed/fewer": 78,
+    "disagree_narrowed/main_uncertain": 1,
+    "other/agrees": 19,
+    "other/fewer": 15,
+    "other/main_uncertain": 3,
+    "other/more": 6,
+    "stroke_candidate/agrees": 1,
+    "stroke_candidate/main_uncertain": 1,
+    "stroke_candidate/more": 111
+   }
+  }
+ }
+}

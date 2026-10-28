@@ -136,12 +136,12 @@ class StrokeMap(unittest.TestCase):
 
 
 class StrokeFlag(unittest.TestCase):
-    def test_default_off_and_allow_list(self):
+    def test_default_on_and_explicit_off(self):
         from tools.omr.staged import gather as G
         old = os.environ.pop(G.STROKE_MAP_ENV, None)
         try:
-            self.assertFalse(G.stroke_map_enabled())
-            for word, want in (("1", True), ("on", True), ("", False), ("0", False), ("yes please", False)):
+            self.assertTrue(G.stroke_map_enabled())
+            for word, want in (("1", True), ("on", True), ("", True), ("0", False), ("false", False), ("no", False), ("off", False)):
                 os.environ[G.STROKE_MAP_ENV] = word
                 self.assertIs(G.stroke_map_enabled(), want, word)
         finally:

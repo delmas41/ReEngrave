@@ -1,0 +1,72 @@
+{
+ "judge": "sean",
+ "date": "2026-10-27",
+ "via": "blind-tile sheet out/print/2.206d/tiles, key out/print/2.206d/key.json (his numbers 9-20 = tiles 1-12)",
+ "answers": {
+  "1": {
+   "sean": "8",
+   "verdict": "good: eighth gained (blue), matches",
+   "his_number": 9
+  },
+  "2": {
+   "sean": "8 rest",
+   "verdict": "unchanged value (eighth rest both arms); ON drops the blue flag from a correct reading: neutral",
+   "his_number": 10
+  },
+  "3": {
+   "sean": "8",
+   "verdict": "undecidable: OFF wrote a quarter (wrong); ON writes no note here (an eighth rest sits 80 px right) and the 'does not add up' words are gone; no right->wrong",
+   "his_number": 11
+  },
+  "4": {
+   "sean": "Hard to determine because I can't see the bottom of the stem",
+   "verdict": "undecidable; CROP DEFECT (tile too tight at the stem foot). ON gains a quarter",
+   "his_number": 12
+  },
+  "5": {
+   "sean": "Dot 4",
+   "verdict": "good: dotted quarter gained (blue), matches",
+   "his_number": 13
+  },
+  "6": {
+   "sean": "Dot 4",
+   "verdict": "note dotted quarter in both arms, matches; the gained tie itself not judged: unchanged/undecidable on the tie",
+   "his_number": 14
+  },
+  "7": {
+   "sean": "Looks like 8 but stem is cut off",
+   "verdict": "control, unchanged eighth, matches; CROP DEFECT (stem cut off)",
+   "his_number": 15
+  },
+  "8": {
+   "sean": "8",
+   "verdict": "good: eighth gained, matches",
+   "his_number": 16
+  },
+  "9": {
+   "sean": "Dot 8",
+   "verdict": "BAD (right->wrong): OFF dotted eighth matches; ON writes a dotted 16th (begin/begin)",
+   "his_number": 17
+  },
+  "10": {
+   "sean": "Dot 4",
+   "verdict": "control, unchanged dotted quarter, matches",
+   "his_number": 18
+  },
+  "11": {
+   "sean": "8",
+   "verdict": "unchanged value (eighth both arms); ON adds a blue flag to a correct reading: neutral",
+   "his_number": 19
+  },
+  "12": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "his_number": 20
+  }
+ },
+ "crop_defects": [
+  4,
+  7
+ ],
+ "summary": "3 good (1,5,8), 1 BAD right->wrong (9 brahms p19 glyph/19/0/13/0/8, dotted eighth -> dotted 16th), 3 controls match (7,10,12), 5 neutral/undecidable (2,3,4,6,11); tiles 4 and 7 crops too tight at the stem foot"
+}

@@ -1,0 +1,26 @@
+  gather litolff off pages [8, 10, 16] ...
+  gather litolff on pages [8, 10, 16] ...
+  gather brahms off pages [0, 14] ...
+  gather brahms on pages [0, 14] ...
+LANE REPORT  OMR_STROKE_MAP (OFF=1 ON=1), OMR_BEAMS_FROM_STROKES (OFF=1 ON=1), OMR_STEMS_FROM_STROKES (OFF=1 ON=1), OMR_STROKE_OWNER (OFF=0 ON=1)  --from gather
+  OMR_STROKE_MAP: read in staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py, staged/beam_strokes.py, staged/gather.py ... -> GATHER
+  OMR_BEAMS_FROM_STROKES: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py -> ADJUDICATE..EXPORT
+  OMR_STEMS_FROM_STROKES: read in staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/gather.py, staged/stem_strokes.py -> GATHER
+  OMR_STROKE_OWNER: read in staged/adjudicate.py, staged/adjudicators/ownership.py, staged/adjudicators/rhythm.py, staged/adjudicators/stroke_owner.py ... -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: benchmarks/shared-ink-map-2026-10/results/2.205/sample_subset_p10.json (a development control)
+
+litolff  pages [8, 10, 16]  (2094 notes+rests OFF, 2104 ON, 2092 paired)
+  file:   notes +12 -2 | accidentals +1 | flags +4 -1 | beams +3 ~2 | note values ~1 | blue marks +5 | words +2 -2
+  red bars 0 -> 0 | notes not written 944 -> 934
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (138 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 14]  (1215 notes+rests OFF, 1222 ON, 1212 paired)
+  file:   notes +10 -3 | accidentals +4 | dots +6 | flags +2 -5 | beams +4 | ties +2 | slurs +6 -2 | articulations +2 | blue marks +2 -10 | dynamics +1 -2 | words +5 -8
+  red bars 34 -> 33 | notes not written 604 -> 597
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (196 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1886 s
+exit 0

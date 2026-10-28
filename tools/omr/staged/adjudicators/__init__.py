@@ -25,3 +25,4 @@ from . import narrow_rest         # noqa: F401  ROADMAP 2.80b
 from . import unboxed_rest        # noqa: F401  ROADMAP 2.99
 from . import head_rest_shape     # noqa: F401  ROADMAP 2.145
 from . import unison_two          # noqa: F401  ROADMAP 2.175
+from . import stroke_owner      # noqa: F401  ROADMAP 2.205

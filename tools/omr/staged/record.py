@@ -919,7 +919,7 @@ class Q(_Vocab):
     #: `two_positions`, ...), a measurement naming nothing -- `Q.ARC_KIND` / `Q.TIE_PAIR` are not changed by it.
     SYSTEM_ARC = "system_arc"
 
-    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default OFF; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
+    #: ROADMAP 2.195 (flag `OMR_STROKE_MAP`, default ON; `gather_stroke_map`, plan `docs/plan-2026-10-22-shared-ink-map.md` §2.1). ONE ROW PER STROKE of
     #: a cell's staff-erased ink, measured once: `value` is the kind (`vertical` / `horizontal` / `curve` / `blob`), `detail` its measurements (box in both
     #: frames, length / angle / thickness / curvature / fill / hole share, ends in staff steps against the staff measured AT the ends' x, the strokes it
     #: touches). It decides nothing and NOTHING READS IT yet (step 1 of 10; the `Q.INK` discipline). A piece under 0.05 sp^2 is counted on its cell's
@@ -933,6 +933,13 @@ class Q(_Vocab):
     #: map ABSTAINS per box. A box is a hypothesis over strokes: two boxes of one cell with the same list stand on the same ink. Decides
     #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
     GLYPH_STROKES = "glyph_strokes"
+
+    #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
+    #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
+    #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
+    #: stems) read only the other strokes. `detail.strokes` = per claimed / refused / contested stroke its state, owner family, owners and
+    #: candidates (claim order, fit, the measured fields); `detail.boxes` = the head / rest / accidental boxes that own none of their ink.
+    STROKE_OWNER = "stroke_owner"
 
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
@@ -2579,6 +2586,7 @@ CLAIMS: "dict[str, str]" = {
     # stems touch one box the side rule picks) and the value that stem carries.
     "HEAD_STEM": CLAIM.INTERPRETATION,
     "STEM_HEAD_CONTACT": CLAIM.INTERPRETATION,
+    "STROKE_OWNER": CLAIM.INTERPRETATION,
     "STEM_VALUE": CLAIM.INTERPRETATION,
     "TUPLET_RATIO": CLAIM.INTERPRETATION,
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
@@ -2951,6 +2959,10 @@ class READERS(_Vocab):
     #: `gather.gather_key_object` -- ROADMAP 2.187 (flag `OMR_KEY_PER_SYSTEM`, default ON). The key signature read as ONE system object: its
     #: count from the staves' agreement (and the dossier, where admitted), the slots placed on each staff from its own clef edge.
     CV_KEY_OBJECT = "cv_key_object"
+    #: `gather.gather_clef_slot_claim` -- ROADMAP 2.208 (flag `OMR_CLEF_SLOT_CLAIM`, default OFF). A staff whose clef nothing located and the
+    #: detector never boxed (a clef we carry from other systems) still has the clef's INK at its start: the slot between the system's clef
+    #: offset and the key claim, drawn as the clef's claim (area, and strokes where the stroke map is on).
+    CV_CLEF_SLOT_CLAIM = "cv_clef_slot_claim"
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

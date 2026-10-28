@@ -407,6 +407,9 @@ NOT_A_STAGE = frozenset({
     # at a stem's tip): files no row, names no quantity, decides nothing; the decision is `adjudicate_duration`'s.
     "beam_strokes.py",
     "stem_strokes.py",
+    # ROADMAP 2.205. Pure helpers for `adjudicators/stroke_owner.py` (the claim order, the family shapes, one owner per stroke): files no row,
+    # names no quantity; the decision is `adjudicate_stroke_owner`'s.
+    "stroke_owner.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
@@ -592,6 +595,10 @@ NOT_A_STAGE = frozenset({
     # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
     # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.
     "accidental_shape.py",
+    # ROADMAP 2.201. `accidental_family.py` is PURE (strokes, a box and a staff space in; the mark's own extent, its type and the guess it carries out; the
+    # flag): it files no row and names no quantity -- `gather.gather_accidental_family` sets it on the detection, `gather_accidental_positions` files it as
+    # `detail.family` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` and `export.one_ink_guess_of` consume it.
+    "accidental_family.py",
 })
 
 

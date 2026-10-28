@@ -1,0 +1,19 @@
+LANE REPORT  OMR_ERASER_FIX (OFF=0 ON=1)  --from gather
+  OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5029 notes+rests OFF, 4869 ON, 4852 paired)
+  file:   notes +18 -164 | rests +30 -14 | accidentals -8 | flags +110 -19 | beams +4 -185 ~6 | ties +8 -4 | slurs -2 | articulations -5 | note values ~508 | pitches ~17 | blue marks +516 -34 | words +1589 -3 | clefs +16 -6 | keys +17 -7 | meters +12
+  red bars 0 -> 1289 | notes not written 2563 -> 2717
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 2 | right->narrowed/abstained/gone 0 | wrong->right 3
+      RIGHT->WRONG  2.145-review tile 10 glyph/9/0/7/3/6  Sean: 8 rest  now: kept as a notehead
+      RIGHT->WRONG  2.83-fix-review tile tile_05 glyph/4/0/7/7/10  Sean: 4  now: refused as not a note (stacked_head_duplicate)
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6519 notes+rests OFF, 6514 ON, 6500 paired)
+  file:   notes +13 -17 | rests +1 -2 | accidentals +4 -6 | dots +9 -9 | flags +1 -3 | beams +5 -4 ~3 | ties +2 -4 | articulations +2 -3 | note values ~3 | blue marks +20 -15 | dynamics +1 | words +13 -9
+  red bars 166 -> 166 | notes not written 3202 -> 3209
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 7435 s

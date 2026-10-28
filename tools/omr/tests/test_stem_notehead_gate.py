@@ -226,7 +226,7 @@ class TestTheGatherWiring:
         import inspect
         from tools.omr.staged import gather as g
         src = inspect.getsource(g.gather)
-        assert "gather_cv_lines(log, cells, local, detections)" in src
+        assert "gather_cv_lines(log, cells, local, detections, stroke_cells)" in src
 
     def test_no_detector_means_no_gate_rather_than_an_empty_one(self):
         """`gather_detections(detector=None)` is a supported mode."""

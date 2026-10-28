@@ -30,6 +30,10 @@ rule 3). Everything below is the background these three rest on.
 
 **Exception -- the shared ink map path (Sean, 2026-10-22):** a step that changes no output (records, links or slims the stroke map) reports only the fast tests and a byte-identical control -- no lane_report, no tiles. The three measures apply at the milestones where a reader switches to the map, as the new path against main.
 
+**Fail fast (Sean, 2026-10-25: "Don't take too long testing if we can rule out issues quickly"):** a lane first runs lane_report on a 2-page-per-plate subset (`LANE_REPORT_SAMPLE`); if notes not written jump or any judged answer goes right->wrong, it stops and finds the cause there. The full frozen sample runs only once the subset is clean.
+
+**List why every lost note was lost (Sean, 2026-10-26 "Yes"):** before the full sample, the subset's lost notes are grouped by their refusal reason ON vs OFF and the top groups looked at on crops. Judged answers cover only notes Sean has seen; a reader whose cut-off was set on old input can drop unjudged notes with no right->wrong (2.206b: the stem-tip reader read slur starts as hooks on the restored ink; found only by tiles, after a 2-hour full run). A fix to a SHARED input (the image, the stroke map) also lists every downstream reader whose OFF readings sit near its cut-off.
+
 ## 1. The acceptance set and the three measures (plan §4)
 
 | document | kind | count page |

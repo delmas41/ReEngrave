@@ -1,0 +1,68 @@
+{
+ "judge": "sean",
+ "date": "2026-10-27",
+ "via": "blind-tile sheet out/print/2.213/tiles, key benchmarks/staff-eraser-2026-10/results/2.213-key.json",
+ "summary": "2 good (7,10), 1 BAD right->gone (5), 2 unchanged-value matches (4,8), 2 controls match (6,12), 5 not-judged (1,2,3,9,11: Sean judged the host note, not the dynamic/words change; 3 also shows a quarter note written where print has a quarter rest, both arms)",
+ "answers": {
+  "1": {
+   "sean": "Dot 4",
+   "verdict": "not-judged: host dotted quarter, same both arms (matches); the change was a lost dynamic 'mp'",
+   "rg": "glyph/14/1/8/1/2"
+  },
+  "2": {
+   "sean": "4",
+   "verdict": "not-judged: host quarter same both arms (matches); the change was gained words 'dolce sempre'",
+   "rg": "glyph/14/1/8/0/5"
+  },
+  "3": {
+   "sean": "4 rest",
+   "verdict": "not-judged: host written as a quarter NOTE both arms where print is a quarter REST (pre-existing, not from 2.213); the change was gained words 'dol'",
+   "rg": "glyph/14/1/0/0/5"
+  },
+  "4": {
+   "sean": "16",
+   "verdict": "unchanged value: 16th both arms (OFF beam, ON flag), matches",
+   "rg": "glyph/19/0/12/0/10"
+  },
+  "5": {
+   "sean": "16",
+   "verdict": "BAD right->gone: OFF wrote a plain 16th (right); ON duration narrowed beam_certain_not_joined {eighth 0.5, 16th 0.25}, note not written",
+   "rg": "glyph/19/0/12/0/5"
+  },
+  "6": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/5/1/0/9/7"
+  },
+  "7": {
+   "sean": "Dot 8",
+   "verdict": "GOOD: OFF dotted 16th (wrong), ON dotted eighth, blue (matches)",
+   "rg": "glyph/19/0/12/0/21"
+  },
+  "8": {
+   "sean": "16",
+   "verdict": "unchanged value: 16th both arms, matches; only the beam sub changed continue/continue -> continue/begin",
+   "rg": "glyph/19/0/13/0/5"
+  },
+  "9": {
+   "sean": "Dot 4",
+   "verdict": "not-judged: host dotted quarter same both arms (matches); the change was a control words 'does not add up'",
+   "rg": "glyph/8/0/1/8/0"
+  },
+  "10": {
+   "sean": "Dot 8",
+   "verdict": "GOOD: OFF dotted 16th (wrong, = 2.206d tile 9), ON dotted eighth (matches)",
+   "rg": "glyph/19/0/13/0/8"
+  },
+  "11": {
+   "sean": "Dot 4",
+   "verdict": "not-judged: host dotted quarter same both arms (matches); the change was lost 'does not add up' words",
+   "rg": "glyph/19/0/13/0/3"
+  },
+  "12": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/25/0/3/3/10"
+  }
+ }
+}

@@ -37,7 +37,7 @@ def setUpModule():
 def tearDownModule():
     _PIN_2_173.stop()
 
-ENV = {H.ENV: "1"}
+ENV = {H.ENV: "1", "OMR_REST_OWN_STROKE": "0"}   # pins the pre-2.206b gate; OWN_STROKE went ON 2026-10-27
 CL = R.glyph(0, 0, 0, 0, 350_000)       # the cluster of ink
 
 #: Shapes MEASURED off the clusters under Sean's tile 3 and the 2.99 controls.

@@ -1,0 +1,104 @@
+{
+ "lane": "2.209",
+ "date": "2026-10-27",
+ "question": "what is the boxed ink: a note (which value), part of a beam, or something else?",
+ "verbatim": "1 Dot 4; 2 FF; 3 Part of a beam; 4 Trem slashes; 5 Part of a beam; 6 Part of a beam; 7 Looks like a 4 but could also be a dot 4 not completely sure; 8 Dot 4; 9 Part of a beam; 10 16; 11 16; 12 Part of a beam",
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "case",
+   "side": "changed",
+   "plate": "brahms",
+   "page": 5,
+   "sean": "Dot 4"
+  },
+  {
+   "tile": 2,
+   "role": "control",
+   "side": "still_rewritten",
+   "plate": "litolff",
+   "page": 4,
+   "sean": "FF"
+  },
+  {
+   "tile": 3,
+   "role": "case",
+   "side": "excluded_box",
+   "plate": "litolff",
+   "page": 4,
+   "sean": "Part of a beam"
+  },
+  {
+   "tile": 4,
+   "role": "control",
+   "side": "still_rewritten",
+   "plate": "brahms",
+   "page": 12,
+   "sean": "Trem slashes"
+  },
+  {
+   "tile": 5,
+   "role": "case",
+   "side": "excluded_box",
+   "plate": "litolff",
+   "page": 9,
+   "sean": "Part of a beam"
+  },
+  {
+   "tile": 6,
+   "role": "case",
+   "side": "excluded_box",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "Part of a beam"
+  },
+  {
+   "tile": 7,
+   "role": "control",
+   "side": "still_rewritten",
+   "plate": "brahms",
+   "page": 5,
+   "sean": "Looks like a 4 but could also be a dot 4 not completely sure"
+  },
+  {
+   "tile": 8,
+   "role": "control",
+   "side": "still_rewritten",
+   "plate": "brahms",
+   "page": 5,
+   "sean": "Dot 4"
+  },
+  {
+   "tile": 9,
+   "role": "case",
+   "side": "excluded_box",
+   "plate": "litolff",
+   "page": 6,
+   "sean": "Part of a beam"
+  },
+  {
+   "tile": 10,
+   "role": "case",
+   "side": "changed",
+   "plate": "brahms",
+   "page": 5,
+   "sean": "16"
+  },
+  {
+   "tile": 11,
+   "role": "case",
+   "side": "changed",
+   "plate": "brahms",
+   "page": 0,
+   "sean": "16"
+  },
+  {
+   "tile": 12,
+   "role": "case",
+   "side": "excluded_box",
+   "plate": "litolff",
+   "page": 2,
+   "sean": "Part of a beam"
+  }
+ ]
+}

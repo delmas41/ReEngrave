@@ -9,6 +9,33 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- 2.202 LANDED ON; START HERE after 2026-10-28 evening
+
+main 9dcd78a6e: `OMR_BEAMS_FROM_STROKES` default ON (Sean "merge lanes and land on"); 2.202b-f merged (fast-forward from d4d05d2bf); the 2.204 stems OFF-identity test pins the beams flag OFF. ROADMAP START HERE block after 2026-10-28 evening: next is 2.204 stems re-measured on top.
+
+## 2026-10-28 -- 2.202f: the four causes of round-3 right->gone, Sean's tiles, the face join tightened
+
+Branch `lane-2.202f-beam-causes` (STAGED ADJUDICATE, all behind `OMR_BEAMS_FROM_STROKES`, default OFF). `beam_strokes`: a stroke covering the head is the head's own ink; thickness trough 0.4375-0.5 is `beam_doubt` (`trough_abstains`); a stem stopping short of a beam's face under its run is joined (Sean 2026-10-28), only for a stroke that reaches a stem itself. `stroke_owner.shape_fit`: a long acc bar running into a note is refused (gated on the 2.202 flag). Tests `test_beam_causes_2_202f.py`. Frozen sample + Sean's 12 tiles recorded (`out/print/2.202f/answers.json`, DECISIONS, FINDINGS shared-ink-map 5i).
+
+## 2026-10-28 -- Session wrap-up: START HERE after 2026-10-27/28; 2.202 round-3 tiles; 2.212/2.217 parked
+Docs + one comment. ROADMAP START HERE block "after 2026-10-27/28"; 2.202 row updated from `lane-2.202c-beams-remeasure` 53c1d6a13 (full frozen sample: judged right->wrong 0, right->narrowed 4; Sean's round-3 tiles: 3 right->gone via `beams_ambiguous`, flag stays OFF). 2.212 and 2.217 parked (63ccef6de, 45d79f85f). Stale "default OFF" comment for `OMR_STEM_TIP_TRUE_EDGE` in `staged/stroke_map.py` corrected. Unused lane-2.216 worktree removed.
+
+## 2026-10-27 -- ROADMAP 2.206 / 2.206b-e / 2.213 LANDED ON: the staff-eraser path ("Land eraser path")
+
+Sean 2026-10-27 "Land eraser path". `OMR_ERASER_FIX`, `OMR_METER_SLOT`, `OMR_REST_OWN_STROKE`, `OMR_STEM_TIP_TRUE_EDGE` and `OMR_BEAM_OWN_EXTENT` now default ON (deny-list readers in `staff_line_removal.py`, `time_signature_locator.py`, `staged/adjudicators/head_rest_shape.py`, `staged/gather.py`, `line_detection.py`); `docs/flags-2026-09.md` rows read ON. Combined run (benchmarks/staff-eraser-2026-10/FINDINGS.md 17): judged right->wrong 0, tiles 11/12, 21 lost notes counted (8 beam-doubt from the eraser fix incl. Litolff p9 tile 1, 5 reclassified, 8 not tied to a flag), now first test cases of 2.202. 2.202 (beams) and 2.204 (stems) are unblocked to re-measure on the landed eraser.
+
+## 2026-10-27 -- ROADMAP 2.209 LANDED ON: a head on a beam end is not a member of the stem
+STAGED ADJUDICATE, `OMR_STEM_BEAM_END` default ON (explicit 0/false/no/off disables). A notehead box that covers no ink of its own, stands on beam ink and sits at the stem tip while another member is 2.5 sp or more away is dropped from `stem_value`'s members, so it no longer overrides a DECIDED duration (cause: 2.206b tile 5, Brahms p0). Sean "Yes": 8 of 8 touched tiles right, judged right->wrong 0. Only the default-flag test changed (`test_default_is_on`); judged-tiles.json regenerated. Follow-up ROADMAP 2.210.
+
+## 2026-10-26 -- ROADMAP 2.208 LANDED ON: the clef claims its own ink on every staff
+STAGED GATHER, `OMR_CLEF_SLOT_CLAIM` default ON (explicit 0/false/no/off disables; needs `OMR_CLAIMED_REGISTER`). A staff whose clef was carried from other systems has the clef's ink claimed in the slot between the system's clef offset and its key claim, so no head box can take it (cause: 2.205 tile 5). Sean "Yes": 12 tiles, 4/4 lost cases are clef ink, 4/4 controls kept; judged right->wrong 0; Litolff notes -3, Brahms notes -1. Only the default-flag test changed (`test_flag_default_on`); judged index rebuilt (1518 tiles); `staged.check` 198 -> 198. Follow-up: tile 12, a Litolff p6 treble clef still a note (key flat stem outside the slot).
+
+## 2026-10-26 -- ROADMAP 2.205 LANDED ON: one owner per stroke
+STAGED ADJUDICATE, `OMR_STROKE_OWNER` default ON (explicit 0/false/no/off disables; needs `OMR_STROKE_MAP`, already ON). `adjudicate_stroke_owner` files one `Q.STROKE_OWNER` verdict per cell (heads, accidentals, arcs, letters, rests, clefs claim their strokes; contested strokes are counted); consumers read only unclaimed strokes, and with the 2.202/2.204 readers OFF nothing reads it, so the exported file is byte-identical. Sean "1. Yes": 12 tiles 7 right / 1 wrong (a clef fragment boxed as a head), judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` and `OMR_STEMS_FROM_STROKES` stay OFF. `docs/ink-rules.md` regenerated, `staged.check` 202 -> 198.
+
+## 2026-10-26 -- ROADMAP 2.201 + 2.195 + 2.198 LANDED ON: accidental family + stroke map
+STAGED GATHER + ADJUDICATE, `OMR_ACCIDENTAL_FAMILY` and `OMR_STROKE_MAP` default ON (explicit 0/false/no/off disables). An accidental's type is read from its own strokes and its role from position; the stroke map (Q.STROKE, Q.GLYPH_STROKES, register ink claims) is output-neutral (byte-identical MusicXML, +4-6 MB/page, 3-5% gather CPU). Sean: tiles 8/9 vs 0/9 (fixed version), earlier 44/47 vs 37/47, hand boxes 136/142, judged right->wrong 0. `OMR_BEAMS_FROM_STROKES` / `OMR_STEMS_FROM_STROKES` / `OMR_STROKE_OWNER` stay OFF. Tests rewritten default-ON; judged index rebuilt (1494 tiles); `check` 192 -> 202 (ten producer-only Q.STROKE / Q.GLYPH_STROKES entries in wiring/reach).
+
 ## 2026-10-21 -- Overnight 20261020-night + START HERE after 2026-10-21
 Docs only. Overnight on main f1db97989 (through infer), compared with 20261018-night: Litolff notes in file 6,626 -> 8,887, Brahms 11,991 -> 15,165; held-out bars 0 (red bars 508 / 650); judged Brahms right 129 -> 142, wrong 31 -> 21. New ROADMAP START HERE block "after 2026-10-21" consolidates 2.162-2.181 landed, 2.174/2.182 parked, and the ranked next steps; PROJECT_BRIEF "Where things stand (2026-10-21)" added; CLAUDE rule 7 gained "check a count before it opens a lane" (f1db97989).
 
@@ -6376,3 +6403,6 @@ STAGED GATHER (shared detector `YoloDetector.detect(natural_candidates=True)`, `
 
 ## 2026-10-23 -- ROADMAP 2.183 + 2.187 landed ON: the key signature read once per system
 STAGED GATHER (`gather_key_signature_claim`, `gather_key_object`/`key_object.py`) + ADJUDICATE (`claimed_by.consult`, `key_object.judge_tail_box`), `OMR_KEY_SIGNATURE_CLAIM` (`claims.key_enabled`) and `OMR_KEY_PER_SYSTEM` (`key_object.enabled`) default ON; explicit `0/false/no/off` disables; both need `OMR_CLAIMED_REGISTER`. The key run (cancelling naturals included) is one claim in the register (2.183, parity with the five key-slot gates) and its count is read once per system from the staves' agreement and the dossier (2.187); a transposing staff uses its own written key, an unknown staff only narrows. Sean's clean tiles: all 6 removals are key flats, judged right->wrong 0; of the 24 known key flats 10 refused, 9 blue, 5 still rests. Reaches records at the next re-gather. Benchmark `benchmarks/omr-key-signature-claim-2026-10/FINDINGS.md`.
+
+## 2026-10-27 -- ROADMAP 2.211 landed: score by written place, not detector box id
+TOOLING (no flag, no pipeline change): `tools/omr/staged/lane_report.py` keys the lost-notes list and the judged right->wrong rescore on the written event (page, system, cell, staff, onset, pitch) in the exported file, so a twin detector box swapping keeper reports nothing. Replaces `benchmarks/staff-eraser-2026-10/lost_notes.py` (`lane_report lost-notes`, `lane_report rescore`). Control (`benchmarks/score-by-place-2026-10/FINDINGS.md`): 2.206d Litolff lost 21->11, planted 5 lost caught (16); judged `tile_05` right->wrong 1->0 (`same_music`). Test: `test_staged_lane_report_2_211.py`.

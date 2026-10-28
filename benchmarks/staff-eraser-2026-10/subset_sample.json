@@ -1,0 +1,75 @@
+{
+ "what": "2.206 fail-fast subset (Litolff 4,11; Brahms 5,14), derived from the frozen sample",
+ "seed": 2188,
+ "n_per_plate": 8,
+ "record_tag": "20261020-night",
+ "method": "random.Random(seed); for plate in (litolff, brahms): sorted(rng.sample(sorted(candidates), n))",
+ "plates": {
+  "litolff": {
+   "candidates": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "pages": [
+    4,
+    11
+   ],
+   "context_pages": [
+    1
+   ]
+  },
+  "brahms": {
+   "candidates": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+   ],
+   "pages": [
+    5,
+    14
+   ],
+   "context_pages": [
+    0
+   ]
+  }
+ },
+ "context": "each plate also loads its OPENING page (the first candidate): the meter / key / clef printed there are inherited by every later bar (a change HOLDS until the printed return), and a slice without it cannot size a whole rest. Context pages are loaded but never counted."
+}

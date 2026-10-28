@@ -957,6 +957,10 @@ ORDER: Tuple[str, ...] = (
     # ROADMAP 2.87 (`head_contact`): GATHER rows only, ahead of its consumers
     # (the rest-has-a-stem refusal just below, the beam-joins-N-stems tests in
     # `duration`).
+    # ROADMAP 2.205 (`OMR_STROKE_OWNER`): one owner per stroke, from GATHER rows only. BEFORE every precision rule and every consumer of
+    # the stroke map (2.202 beams and 2.204 stems inside `duration` / `stem_direction`, 2.204's `glyph_owner` stem witness), which read
+    # its verdict. It cannot stand after `glyph_owner` (the plan's first placement): the precision rules it stands before run ahead of it.
+    Q.STROKE_OWNER,
     Q.STEM_HEAD_CONTACT,
     Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
@@ -1320,6 +1324,11 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
         spec = REGISTRY.get(quantity)
         if spec is None:
             continue
+        if quantity == Q.STROKE_OWNER:
+            # ROADMAP 2.205: OFF is byte-identical -- with the flag off the decision files nothing at all, not an abstention per cell.
+            from .adjudicators import stroke_owner as _so
+            if not _so.enabled():
+                continue
         for subject in subjects_for(log, spec):
             out.append(adjudicate_one(log, spec, subject))
         if quantity == Q.GLYPH_OWNER:

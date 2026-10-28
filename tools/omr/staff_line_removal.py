@@ -54,6 +54,9 @@ move by under 5% either way, so the opening was not protecting anything.
 
 from __future__ import annotations
 
+import math
+import os
+
 import cv2
 import numpy as np
 
@@ -89,6 +92,37 @@ MAX_ERASABLE_RUN_SPACES = 0.45
 # staff space so the search can never reach the neighbouring line.
 LINE_SEARCH_RADIUS_SPACES = 0.25
 
+# ROADMAP 2.206 (flag OMR_ERASER_FIX, default ON since 2026-10-27). The walk through each column
+# was bounded at `cap + 2` rows either side -- `cap` is the THICKNESS cap
+# (0.35 sp), a different quantity from the crossing cut it feeds (up to 0.45 sp,
+# `MAX_ERASABLE_RUN_SPACES`). Where the cut is taller than the walk (a fat line:
+# 2 x thickness > cap + 2, Litolff's 0.25-0.32 sp lines), a run that continues
+# past the walk on ONE side reads as (walk + the other side) and can fall under
+# the cut: the column is erased, and with it up to `cap + 2` rows of whatever
+# hangs from or sits on the line -- a beam, a whole rest, a quarter rest's body,
+# the top of a head in the space below (benchmarks/staff-eraser-2026-10/
+# FINDINGS.md). With the flag ON the walk reaches past the cut on each side, so
+# "taller than the cut" is measured, never truncated: a column is erased iff its
+# whole run is no taller than the cut, which is what this module always said.
+ENV_ERASER_FIX = "OMR_ERASER_FIX"
+
+
+def eraser_fix_enabled() -> bool:
+    """ROADMAP 2.206: ON unless `OMR_ERASER_FIX` is 0/false/no/off."""
+    return os.environ.get(ENV_ERASER_FIX, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+def walk_for_cut(cap: int, crossing_cut: float) -> int:
+    """`max_search` for `_vertical_runs_through` such that a run longer than the
+    walk on either side is already taller than `crossing_cut` (ROADMAP 2.206).
+
+    The walk goes `max_search + 2` rows each side; a run that reaches that bound
+    measures at least `max_search + 3` rows, so `max_search >= ceil(cut)` makes
+    every truncated run read taller than the cut. Never shorter than `cap`, so
+    every run the thickness estimate reads (<= cap) is unchanged.
+    """
+    return max(int(cap), int(math.ceil(crossing_cut)))
+
 
 def remove_staff_lines_from_cell(cell: MeasureCell, in_place: bool = True) -> np.ndarray:
     """Compute a staff-line-removed grayscale image for the cell.
@@ -122,6 +156,7 @@ def remove_staff_lines_from_cell(cell: MeasureCell, in_place: bool = True) -> np
     cap = max(1, int(round(MAX_LINE_THICKNESS_SPACES * spacing))) if spacing > 0 else h
 
     to_erase = np.zeros((h, w), dtype=bool)
+    fix = eraser_fix_enabled()
     for y in line_ys:
         y = int(round(y))
         if not (0 <= y < h):
@@ -137,6 +172,15 @@ def remove_staff_lines_from_cell(cell: MeasureCell, in_place: bool = True) -> np
         if spacing > 0:
             crossing_cut = min(crossing_cut, MAX_ERASABLE_RUN_SPACES * spacing)
         crossing_cut = max(crossing_cut, thickness + 1.0)
+        if fix:
+            walk = walk_for_cut(cap, crossing_cut)
+            if walk > cap:
+                # Same anchor, same rows up to the old bound; only runs the old
+                # walk truncated read longer. The thickness above is unchanged
+                # (it reads runs <= cap, which no walk >= cap truncates).
+                heights, tops, bottoms, present = _vertical_runs_through(
+                    ink_bool, y, walk, radius=search
+                )
         # A run no taller than the line is the line; anything taller crosses it.
         erase_cols = present & (heights <= crossing_cut)
         if not erase_cols.any():
@@ -186,8 +230,14 @@ def _vertical_runs_through(
     line that has drifted off its nominal row is still followed. Returns
     (heights, tops, bottoms, present), each of length w; `present` is False
     where the column has no ink near `y` at all. The walk is bounded at
-    `max_search` rows either side, since a run longer than that is a crossing
+    `max_search + 2` rows either side, since a run longer than that is a crossing
     symbol and its exact extent does not matter — only that it is too tall.
+
+    ⚠️ That holds only if the bound is at least the cut the heights are compared
+    with. A truncated run reads as (bound + the other side's length), which can
+    be SHORTER than the cut: main passes the thickness cap (0.35 sp) while the
+    cut reaches 0.45 sp, so on fat-lined plates a mark hanging from a line was
+    erased up to the bound (ROADMAP 2.206; `walk_for_cut`, `OMR_ERASER_FIX`).
     """
     h, w = ink.shape
     reach = int(max(2, max_search + 2))

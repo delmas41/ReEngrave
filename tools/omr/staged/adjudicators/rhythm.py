@@ -3921,22 +3921,38 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
     return False
 
 
-#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
+#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default ON since 2026-10-28, Sean "land on"; an explicit 0/false/no/off disables; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
 #: A head's beam levels from the STROKE MAP (`Q.STROKE`, `Q.GLYPH_STROKES`; they exist only under `OMR_STROKE_MAP`): the detector's beam boxes
 #: are read against the strokes they stand on, and the horizontal strokes touching the head's own stem at its tip are counted. A cell with no
 #: stroke map, a box with no `Q.GLYPH_STROKES` row, a stem the map holds no stroke for: the block says nothing and the head is read as today
-#: (rule 8). An allow-list: an empty value or a typo must not switch a document onto an unpriced ADJUDICATE change.
+#: (rule 8). Default ON like `OMR_STROKE_OWNER`.
 BEAMS_FROM_STROKES_ENV = "OMR_BEAMS_FROM_STROKES"
 
 
 def beams_from_strokes_enabled() -> bool:
-    return os.environ.get(BEAMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAMS_FROM_STROKES_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _owner_on() -> bool:
+    from . import stroke_owner as _SOA
+    return _SOA.enabled()
+
+
+def _owner_mask(verdict) -> Dict[int, str]:
+    """ROADMAP 2.205 (`OMR_STROKE_OWNER`): `{ordinal: "owned" | "contested"}` for the strokes of a cell a mark owns or two marks contest, from
+    the cell's `Q.STROKE_OWNER` verdict; `{}` with no verdict (as before). The consumers below give such a stroke that KIND, so it stays ink in
+    their views (never a clean tip) but is never a beam, a hook, a stub or a stem. Callers read the verdict only with the flag on, so a
+    flag-off verdict records nothing new."""
+    from . import stroke_owner as _SOA
+    return _SOA.masked(verdict)
 
 
 def _stroke_views(ev: Evidence, cell) -> list:
-    """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none."""
+    """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none.
+    With `OMR_STROKE_OWNER` on, a stroke another mark owns (or two contest) has kind `owned` / `contested` (`_owner_mask`)."""
     from ..record import STROKE_GLYPH_BASE
     out = []
+    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         d = r.detail or {}
@@ -3944,11 +3960,13 @@ def _stroke_views(ev: Evidence, cell) -> list:
         if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
             continue
         out.append(_BS.StrokeView(
-            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
-            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
+            profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
+            ends=tuple(float(v) for v in (d.get("ends") or ())[:4])))
     return out
 
 
@@ -3982,7 +4000,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
     views = _stroke_views(ev, cell)
     if not views or side not in ("up", "down") or head_box is None or not own_stems:
         return None
-    role = _BS.roles(views)
+    role = _BS.roles(views, face_join=True, trough=True)      # 2.202f: the cover rule (Sean 2026-10-28) and the thickness trough
     stem_sv = None
     for st in _voice_stems(own_stems, head_box)[side]:
         b = _xywh(st)
@@ -3991,7 +4009,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             break
     if stem_sv is None:
         return None
-    tip = _BS.tip_reading(views, role, stem_sv, side)
+    tip = _BS.tip_reading(views, role, stem_sv, side, head_box=head_box, face_join=True)
     yolo = [b for b in kept if b.reader == READERS.DETECTOR]
     # The older filters (the 2.74 ink test: a stroke standing on one stem is not a beam) already take most hook-shaped boxes out of `kept`
     # before this block runs (milestone: 0 of 418 map-hook boxes were still in `kept`). A box the detector called a beam and the strokes show
@@ -4027,10 +4045,10 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             continue            # an older filter removed a box the strokes call a beam: not this block's business (nothing is added back)
         boxes.append(sup)
     # every stroke that moved the reading is a row this verdict used
-    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
+    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"]) | set(tip["doubt"])]
     rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
     return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
-            "tip_levels": len(tip["beams"]), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
+            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed", "doubt", "own_head", "joined")},
             "boxes": boxes, "rows": rows, "settled": None}
 
 
@@ -4059,9 +4077,11 @@ def stems_from_strokes_enabled() -> bool:
 _STEM_MEMO: list = [None, None, None, None, None]
 
 
-def _stem_views(ev: Evidence, cell, stroke_rows=None):
+def _stem_views(ev: Evidence, cell, stroke_rows=None, mask=None):
     """`(StemViews of the cell's Q.STROKE rows, {row id: row}, other head boxes)`; `([], {}, [])` where the cell has no stroke map."""
-    ck = cell.to_key() if hasattr(cell, "to_key") else str(cell)
+    if mask is None:                      # ROADMAP 2.205: owned / contested strokes are never a stem (`_owner_mask`)
+        mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
+    ck = (cell.to_key() if hasattr(cell, "to_key") else str(cell), bool(mask))
     if _STEM_MEMO[0] is ev.log and _STEM_MEMO[1] == ck:
         return _STEM_MEMO[2], _STEM_MEMO[3], _STEM_MEMO[4]
     from ..record import STROKE_GLYPH_BASE
@@ -4080,7 +4100,7 @@ def _stem_views(ev: Evidence, cell, stroke_rows=None):
             flipped = isinstance(ends, (list, tuple)) and len(ends) == 4 and ends[1] > ends[3]
             steps = (float(es[1]), float(es[0])) if flipped else (float(es[0]), float(es[1]))
         views.append(_SS.StemView(
-            ordinal=g - STROKE_GLYPH_BASE, kind=str(r.value), box=tuple(float(v) for v in box[:4]),
+            ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
@@ -4330,7 +4350,7 @@ def _tip_abs(ev: Evidence, cell, own_stems):
     return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 
-def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
+def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     """What `Q.HEAD_STEM_REACH` told `ownership._stem_owner`, read off the stroke map for THIS glyph: `{"way", "tip_y_page", "head_box_page",
     "ext", "rows"}` or `None` (silent: flag off, no map, no single stem). Page px by the head box's own scale (canonical -> page)."""
     if not stems_from_strokes_enabled():
@@ -4341,7 +4361,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
         return None
     hb = _xywh_head(box[-1].value)
     page = (box[-1].detail or {}).get("bbox_page_px")
-    views_, rows_, heads_ = _stem_views(ev, cell, stroke_rows)
+    views_, rows_, heads_ = _stem_views(ev, cell, stroke_rows, mask)
     got = _read_stem(ev, hb, views_, rows_, heads_)
     if got is None or not page or len(page) < 4:
         return None
@@ -4407,7 +4427,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
                    Q.SYSTEM_ARC,
                    # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
                    # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
-                   Q.STROKE, Q.GLYPH_STROKES),
+                   Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -4457,7 +4477,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None):
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
            # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
-           Q.STROKE, Q.GLYPH_STROKES),
+           Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -4913,10 +4933,24 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 possible = max(possible, p2, certain)
                 certain, certain_conflicts = c2, cc2
                 settled.append("box_flag" if sb["flag_levels"] else "box_narrowed")
+                # ROADMAP 2.202d (Sean 2026-10-16 "Clean tip means no beam"; 2.202c tiles 1, 5, 9 all quarters): every beam box the map removed
+                # stands on NO beam- or hook-shaped stroke at all AND this stem's tip was read clean (a stem stroke, no beam, hook or stub, no
+                # flag): the boxes are refuted by the ink, so their level is not a candidate. Without this the head is narrowed [0, 1] and the
+                # bar leaves the note unwritten (`beams_ambiguous`), the false value gone and the true one with it.
+                if (not sb["flag_levels"] and sb["tip_levels"] == 0 and not certain_conflicts and sb["tip"].get("stem") is not None
+                        and sb.get("tip_clean")
+                        and sb["boxes"] and all(bx.get("support") == "unsupported" and bx.get("reason") == "no_beam_or_hook_shaped_stroke"
+                                                for bx in sb["boxes"])):
+                    possible = max(p2, certain)
+                    settled.append("clean_tip")
             if not certain_conflicts:
                 if sb["tip_levels"] > certain:
                     possible = max(possible, sb["tip_levels"])
                     settled.append("stroke_candidate")
+                elif sb["tip_levels"] < certain <= sb["tip_levels"] + len(sb["tip"].get("doubt") or ()):
+                    # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
+                    # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
+                    settled.append("trough_abstains")
                 elif sb["tip_levels"] < certain:
                     possible = max(possible, certain)
                     certain = sb["tip_levels"]
@@ -9180,13 +9214,13 @@ def _stems_on(head_box, stems):
 
 @decision(
     quantity=Q.STEM_DIRECTION,
-    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
+    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
              "no_evidence", "stem_readers_disagree"),
