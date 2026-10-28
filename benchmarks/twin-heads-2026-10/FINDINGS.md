@@ -114,3 +114,41 @@ and A5->G5: ON moves the head one step the wrong way at the staff top, the staff
 not yet found; look there before landing. Clef doubt: tile 12's staff (Litolff p11 staff 7) holds only a `clef_glyph` clefG at
 y=38 (a neighbour's), while `clef_located` says alto; with treble both arms would be wrong, with alto ON is right. Tile 8's staff
 has no clef reading on its own page (alto carried from page 1 staff 9). Tile 10 is a mark to be withheld, not a pitch.
+
+## 8. REWORK (Sean 2026-10-27): invent no position -- `OMR_TWIN_HEAD_MERGE` now GUESSES where twin boxes disagree
+
+**Why.** Section 3-4's hole/centroid centre was a NEW position measurement. Sean rejected the hole centre for hollow heads
+(2026-10-01, 2.50: the box centre "is almost always right and better") and a head outside the staff is placed only by the ink
+ledger read (`OMR_FARHEAD_LEDGER`; hand-drawn ledgers do not follow the staff spacing). It moved tiles 1 and 11 (Litolff p16) the
+wrong way.
+
+**Cause, rechecked (STAGED GATHER -> export).** Twin boxes carry two positions because two readers/boxes read them (box centre; far-head
+ledger read where the head is far). Tile 11 (glyph/16/0/2/6/2): boxes -2.38/-2.36 (both round to the first ledger, -2, which is right) but the
+twin's far-head ledger reads are -3 (box ../6/1) and -2 (../6/2): the existing ledger read itself splits across the two boxes of one head.
+Tile 1 (glyph/16/0/0/4/7): three boxes -1.14, -2.26, -1.98, no far read (the first space outside the staff counts as on-staff);
+-1 (G5) is right, the other boxes say -2. So the old fix moved both to a centre the ink measure invented; the existing readers already
+hold the right answer in one box of each and the wrong one in the other. **Lesson:** a second measurement downstream of the readers
+that Sean has already ruled on re-opens a ruled question; where the existing readers disagree, say so (GUESSED, both candidates)
+instead of choosing or re-measuring.
+
+**What the flag does now.** `twin_head.twin_groups` (same thresholds) names the members on each position row (`twin_head.members`);
+NOTHING is re-measured or moved. `export.twin_head_guess_of`: each member's position = far-head ledger read if filed, else the box-centre
+position; if the members' ROUNDED positions (= written steps) differ, the written note is GUESSED (blue) carrying both pitches (rule
+`twin_head_positions_disagree`, margin = position gap). Where they agree nothing changes. The shared-fill read and the hole/centroid code are
+removed (the fill window was placed at the invented centre, so it was not position-independent).
+
+**Sean's 12 tiles re-scored by place** (`rescore_tiles.py`, ON gathered record of the frozen run `out/lane-report/2.212e`):
+- 7 old fixes (3,4,6,7,8,9,12): 6 are GUESSED with the right position among the two candidates (not wrong; not "right" either --
+  Sean still has to pick); tile 7 (boxes 7.32/7.22 agree) stays wrong, as OFF. Most of the old gain therefore rested on the
+  invented centre: only a ledger/box-centre DISAGREEMENT is surfaced now, and nothing is fixed outright.
+- 2 old right->wrong (1, 11): both now GUESSED with the right position a candidate, written value = OFF's (right). Right->wrong 0
+  strictly; right->guessed-with-right 2 (reported apart).
+- Tile 10 (tremolo slash, not a note): GUESSED, both wrong either way (a different mark).
+
+**Frozen sample, OFF vs ON** (`out/lane-report/2.212e`, `--from gather`): Litolff notes 0 lost / 0 gained, pitches ~0, blue marks +62,
+red bars 0 -> 0, notes not written 2566 -> 2566; Brahms blue +7, red bars 166 -> 166. Judged right->wrong 0 / right->narrowed 0 (233 + 232
+tiles). Fail-fast Litolff 2, 11, 16 (`2.212c`): blue +19, nothing else. Fast tier: no failures (the committed judged index rebuilt for
+the 12 answers). `staged.check` TOTAL open=198 (= main).
+
+**Tiles:** `out/print/2.212b/tiles/sheet.png` + `out/print/2.212b/key.json`: 12 = 9 new GUESSED heads (random from the 69), the old right->wrong
+tile 11 head (now GUESSED), and 2 unchanged controls (the previous 2 and 5); orange box only, window >= +-9 sp tall.

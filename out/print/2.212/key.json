@@ -1,0 +1,242 @@
+[
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1090.91,
+   383.42,
+   1112.8025,
+   400.90250000000003
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "G5",
+  "value": "A-15",
+  "rg": "glyph/16/0/0/4/7",
+  "tile": 1,
+  "crop_origin": [
+   975,
+   250
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   728.755,
+   1945.055,
+   751.5925,
+   1960.49
+  ],
+  "kind": "note",
+  "side": "unchanged",
+  "was": null,
+  "value": "eighth",
+  "rg": "glyph/9/0/11/1/5",
+  "tile": 2,
+  "crop_origin": [
+   614,
+   1811
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1405.0,
+   3564.32,
+   1430.76,
+   3580.48
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "A-12",
+  "value": "B-12",
+  "rg": "glyph/8/1/10/10/0",
+  "tile": 3,
+  "crop_origin": [
+   1291,
+   3430
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   779.735,
+   3297.1075,
+   804.305,
+   3316.0075
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "F4",
+  "value": "G4",
+  "rg": "glyph/2/1/8/2/6",
+  "tile": 4,
+  "crop_origin": [
+   666,
+   3164
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1575.3725,
+   3098.0725,
+   1596.1625,
+   3116.6575
+  ],
+  "kind": "note",
+  "side": "unchanged",
+  "was": null,
+  "value": "eighth",
+  "rg": "glyph/2/1/7/7/1",
+  "tile": 5,
+  "crop_origin": [
+   1459,
+   2965
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1951.4975,
+   689.1825,
+   1978.5875,
+   708.7125
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "D5",
+  "value": "C5",
+  "rg": "glyph/6/0/2/9/4",
+  "tile": 6,
+  "crop_origin": [
+   1839,
+   557
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   677.28,
+   1054.08,
+   703.2,
+   1077.28
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "F4",
+  "value": "E4",
+  "rg": "glyph/6/0/4/1/4",
+  "tile": 7,
+  "crop_origin": [
+   564,
+   923
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1311.52,
+   1787.12,
+   1338.08,
+   1809.2
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "G3",
+  "value": "F3",
+  "rg": "glyph/2/0/9/7/1",
+  "tile": 8,
+  "crop_origin": [
+   1198,
+   1656
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   2491.2775,
+   805.825,
+   2514.745,
+   824.8825
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "F4",
+  "value": "E-14",
+  "rg": "glyph/16/0/3/16/2",
+  "tile": 9,
+  "crop_origin": [
+   2377,
+   673
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2189.49,
+   2805.9975,
+   2220.2925,
+   2832.915
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "A-14",
+  "value": "B-14",
+  "rg": "glyph/12/0/10/4/10",
+  "tile": 10,
+  "crop_origin": [
+   1948,
+   2531
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1235.88,
+   651.68,
+   1258.12,
+   668.64
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "A5",
+  "value": "G5",
+  "rg": "glyph/16/0/2/6/2",
+  "tile": 11,
+  "crop_origin": [
+   1121,
+   518
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   1056.84,
+   1450.92,
+   1084.275,
+   1469.83
+  ],
+  "kind": "pitch",
+  "side": "changed",
+  "was": "E-14",
+  "value": "D4",
+  "rg": "glyph/11/0/7/5/5",
+  "tile": 12,
+  "crop_origin": [
+   944,
+   1318
+  ]
+ }
+]

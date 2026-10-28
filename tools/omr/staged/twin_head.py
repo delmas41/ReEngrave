@@ -34,8 +34,6 @@ TWIN_MAX_DY_SPACES = 0.5
 TWIN_MAX_DX_HEAD_WIDTHS = 0.5
 #: A whole group's centres span less than this vertically (staff spaces): a chain of pairs is not one head.
 TWIN_MAX_SPREAD_SPACES = 0.6
-#: A twin group whose members' positions (far-head ledger read, else box centre) differ by less than this (half steps) agree.
-TWIN_AGREE_HALF_STEPS = 0.5
 
 
 def twin_groups(boxes: Sequence[Tuple[float, float, float, float]], spacing: float) -> List[List[int]]:

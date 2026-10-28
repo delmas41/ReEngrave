@@ -506,7 +506,7 @@ def twin_head_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return None
     pos = {m: _twin_effective_position(rec, m) for m in tw.get("members") or ()}
     pos = {m: p for m, p in pos.items() if p is not None}
-    if len(pos) < 2 or max(pos.values()) - min(pos.values()) < 0.5:
+    if len(pos) < 2 or len({int(round(v)) for v in pos.values()}) < 2:     # the WRITTEN pitch is the rounded step
         return None
     clef = None
     for bid in pv.get("basis") or ():

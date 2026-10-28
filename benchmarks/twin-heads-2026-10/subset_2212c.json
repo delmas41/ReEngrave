@@ -1,0 +1,38 @@
+{
+ "what": "2.212 rework fail-fast + cause subset: Litolff 2,11,16 (tile pages 1,4,8,11,12,9; p2 per Sean)",
+ "seed": 2188,
+ "n_per_plate": 8,
+ "record_tag": "20261020-night",
+ "method": "random.Random(seed); for plate in (litolff, brahms): sorted(rng.sample(sorted(candidates), n))",
+ "plates": {
+  "litolff": {
+   "candidates": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "pages": [
+    2,
+    11,
+    16
+   ],
+   "context_pages": [
+    1
+   ]
+  }
+ },
+ "context": "each plate also loads its OPENING page (the first candidate): the meter / key / clef printed there are inherited by every later bar (a change HOLDS until the printed return), and a slice without it cannot size a whole rest. Context pages are loaded but never counted."
+}
