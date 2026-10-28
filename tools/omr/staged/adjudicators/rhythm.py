@@ -3965,7 +3965,8 @@ def _stroke_views(ev: Evidence, cell) -> list:
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
             space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
-            profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ()))))
+            profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
+            ends=tuple(float(v) for v in (d.get("ends") or ())[:4])))
     return out
 
 
@@ -3999,7 +4000,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
     views = _stroke_views(ev, cell)
     if not views or side not in ("up", "down") or head_box is None or not own_stems:
         return None
-    role = _BS.roles(views)
+    role = _BS.roles(views, face_join=True, trough=True)      # 2.202f: the cover rule (Sean 2026-10-28) and the thickness trough
     stem_sv = None
     for st in _voice_stems(own_stems, head_box)[side]:
         b = _xywh(st)
@@ -4008,7 +4009,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             break
     if stem_sv is None:
         return None
-    tip = _BS.tip_reading(views, role, stem_sv, side)
+    tip = _BS.tip_reading(views, role, stem_sv, side, head_box=head_box, face_join=True)
     yolo = [b for b in kept if b.reader == READERS.DETECTOR]
     # The older filters (the 2.74 ink test: a stroke standing on one stem is not a beam) already take most hook-shaped boxes out of `kept`
     # before this block runs (milestone: 0 of 418 map-hook boxes were still in `kept`). A box the detector called a beam and the strokes show
@@ -4044,10 +4045,10 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             continue            # an older filter removed a box the strokes call a beam: not this block's business (nothing is added back)
         boxes.append(sup)
     # every stroke that moved the reading is a row this verdict used
-    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
+    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"]) | set(tip["doubt"])]
     rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
     return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
-            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
+            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed", "doubt", "own_head", "joined")},
             "boxes": boxes, "rows": rows, "settled": None}
 
 
@@ -4946,6 +4947,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 if sb["tip_levels"] > certain:
                     possible = max(possible, sb["tip_levels"])
                     settled.append("stroke_candidate")
+                elif sb["tip_levels"] < certain <= sb["tip_levels"] + len(sb["tip"].get("doubt") or ()):
+                    # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
+                    # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
+                    settled.append("trough_abstains")
                 elif sb["tip_levels"] < certain:
                     possible = max(possible, certain)
                     certain = sb["tip_levels"]

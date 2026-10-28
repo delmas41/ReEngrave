@@ -120,7 +120,8 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_strokes")
     claims = _claims(ev, cell)
     claims += _areas(ev, cell, page)
-    owned = SO.own_strokes(inks, claims, tiers=SO.TIERS)
+    from .rhythm import beams_from_strokes_enabled
+    owned = SO.own_strokes(inks, claims, tiers=SO.TIERS, acc_bar_clear_of_note=beams_from_strokes_enabled())   # 2.202f
     by_ord = {i.ordinal: i for i in inks}
     strokes: Dict[str, Any] = {}
     used: List[str] = []
