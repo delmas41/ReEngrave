@@ -50,9 +50,9 @@ class TestFusedDouble(unittest.TestCase):
             self.assertEqual(t["fused"], [])
 
     def test_twin_a_thick_blob_far_from_the_tip_is_not_doubled(self):
-        # the same 1.25 sp slab 3 sp INWARD of the tip is a head cluster (2.202 cause 2): still counted as before (one level), never two
+        # the same 1.25 sp slab 3 sp INWARD of the tip is a head cluster (2.202 cause 2): never two (2.202c: and, not stacked from the tip, not even one)
         t = self.case(self.slab(1.25, outer=TIP - 300 + 25))
-        self.assertEqual(len(t["beams"]), 1)
+        self.assertEqual(len(t["beams"]), 0)
         self.assertEqual(t["fused"], [])
 
     def test_twin_a_slab_double_only_along_its_second_half_doubles_only_the_stems_there(self):

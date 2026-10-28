@@ -183,6 +183,11 @@ def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -
     return best
 
 
+STACK_FILTER = True
+STACK_FIRST_SPACES = 1.0      # the first level's outer edge lies within this of the tip (a sloped beam's box edge is off by <= 0.5)
+STACK_GAP_SPACES = 0.75       # the next level starts within this of the previous level's inner edge (pitch 0.75 sp, gap 0.25)
+
+
 def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str) -> Dict[str, object]:
     """What the strokes touching THIS stem say at its tip. `side` is the stem's direction ("up": the tip is the top).
 
@@ -227,6 +232,22 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 continue
             joined.append(s)
         found["beam"].extend(joined)
+
+    # 2.202c: levels are STACKED from the tip. A stroke that does not start where the previous level ends (its outer edge more than
+    # STACK_GAP_SPACES past it; the first: more than STACK_FIRST_SPACES past the tip) is ink of something else lying in the window -- a head
+    # of the other voice, a chord cluster -- not a level (FINDINGS 2.202 section 5d; 12 of 15 Litolff p9 narrowed heads, 5b cause 2).
+    if STACK_FILTER and found["beam"]:
+        def _d(s: StrokeView):       # (outer, inner) edge, spaces INWARD of the tip
+            y0, y1 = s.box[1], s.box[1] + s.box[3]
+            return ((y0 - tip_y) / sp, (y1 - tip_y) / sp) if side == "up" else ((tip_y - y1) / sp, (tip_y - y0) / sp)
+        kept: List[StrokeView] = []
+        reach = STACK_FIRST_SPACES
+        for s in sorted(found["beam"], key=lambda t: (_d(t)[0], t.ordinal)):
+            o_, i_ = _d(s)
+            if o_ <= reach:
+                kept.append(s)
+                reach = max(reach, i_ + STACK_GAP_SPACES)
+        found["beam"] = kept
 
     def levels(group: List[StrokeView]) -> List[int]:
         out: List[Tuple[float, int]] = []
