@@ -111,3 +111,7 @@ The "+52 Litolff / +175 Brahms" heads (section 2 and the "notes it would bring" 
 Almost all are beams, slurs, dynamics, ties and articulations. Restricted to notehead-class boxes, the whole-movement 10-22 records have
 **0 on Litolff and 7 distinct heads on Brahms**. Tile 1 (Brahms p14 `glyph/14/1/3/0/7`) is the top of a treble clef boxed as a head. The
 crops are `out/print/2.216-nowitness-heads` (key.json), with Sean, unanswered. Lesson: filter by mark class before counting "notes".
+
+**Sean's answer (2026-10-28):** "none of the tiles are a real note" -- all 7 Brahms tiles (`answers.json` in the crop directory). Consequence: all 7
+notehead-class `tied` drops are false heads (tile 1 is the top of a treble clef), so `owner_not_read` dropping them is right. No export change is
+needed for `tied`, and the "nothing hidden" worry does not apply to them (Litolff had 0).
