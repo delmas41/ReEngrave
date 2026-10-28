@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-10-28 · Sean · 2.216 owner-from-ledger LANDED ON ("land 2.216") · `OMR_OWNER_LEDGER_WINS` default ON (explicit 0/false/no/off disables); evidence: frozen sample Litolff +5, Brahms +1 notes, judged right->wrong 0, Sean's tiles ledger right 8/8; reconsider after a lot of measuring on different scores · (FINDINGS owner-two-witnesses-2026-10; flags-2026-09)
 - 2026-10-28 · Sean · 2.216 no-witness crops answered ("none of the tiles are a real note") · all 7 Brahms notehead boxes with neither a stem nor ledger lines (tied owner) are false heads, so dropping them is right; no export change for tied · (FINDINGS owner-two-witnesses-2026-10)
 - 2026-10-28 · Sean · on a far head where stem and ledger lines name different staves, the ledger lines decide the owner (option B, plain, not blue): "2.216 let's go with B for now" (reconsider after a lot of measuring on different scores) · reverses the 2026-10-27 "disagree -> GUESSED" for this case only; his 2.216 tiles: ledger right 8/8, stem 0/8 · (FINDINGS owner-two-witnesses-2026-10)
 - 2026-10-28 · Sean · 2.216 tiles answered ("1. Green 2 green 3 blue 4 green 5 green 6 blue 7 green 8 green") · on 8 far heads where stem and ledger lines name different staves, the ledger staff is right on 8, the stem on 0 · (FINDINGS owner-two-witnesses-2026-10)

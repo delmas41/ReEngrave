@@ -313,10 +313,10 @@ LEDGER_WINS_ENV = "OMR_OWNER_LEDGER_WINS"
 
 
 def ledger_wins_enabled() -> bool:
-    """ROADMAP 2.216, DEFAULT OFF (Sean 2026-10-28 "let's go with B for now").
-    Opt-in: on a stem-vs-ledger disagreement the ledger lines decide."""
-    return os.environ.get(LEDGER_WINS_ENV, "0").strip().lower() in (
-        "1", "true", "yes", "on")
+    """ROADMAP 2.216, DEFAULT ON since 2026-10-28 (Sean "land 2.216"; explicit
+    0/false/no/off disables). On a stem-vs-ledger disagreement the ledger lines decide."""
+    return os.environ.get(LEDGER_WINS_ENV, "1").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 def stem_owner_enabled() -> bool:

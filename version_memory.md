@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- ROADMAP 2.216 LANDED ON: the ledger lines decide the owner on a stem clash
+
+Sean "land 2.216". `OMR_OWNER_LEDGER_WINS` default ON (explicit 0/false/no/off disables; `ownership.ledger_wins_enabled`): where stem and ledger witnesses name different staves the ledger owner is DECIDED (`ledger_over_stem`) instead of abstaining `stem_disagrees`. Frozen sample Litolff +5, Brahms +1 notes, judged right->wrong 0; Sean's tiles ledger 8/8; the 7 Brahms no-witness heads are false heads (tied drop right). `test_owner_ledger_wins_2_216.py` pins OFF with 0. Reconsider after more scores.
+
 ## 2026-10-28 -- ROADMAP 2.215 LANDED: tiles box the changed mark; rest-as-note counted
 
 Sean "Yes, land 2.215". Tooling only, no flag: `lane_report.own_direction_box` gives a changed dynamic its own letters' box and bar-check words no tile (cause: 2.213 tiles 1, 2, 3, 9, 11 boxed the host note). Part B counted rests written as notes, no fix: 0 rest-box notes, 59/8376 twin-boxed (-> 2.212 / ownership). Tests in the lane_report test file; FINDINGS benchmarks/rest-as-note-2026-10.

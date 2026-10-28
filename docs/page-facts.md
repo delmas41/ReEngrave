@@ -206,7 +206,7 @@ machine-readable form.
   decide the owner, plain, not blue** (Sean, 2026-10-28, option B: *"2.216
   let's go with B for now"*; (we should reconsider after a lot of measuring on
   different scores); SCOPE: Litolff + Brahms, 8 tiles, ledger right 8/8, stem
-  0/8; `OMR_OWNER_LEDGER_WINS`, default OFF until landed; reverses the
+  0/8; `OMR_OWNER_LEDGER_WINS`, default ON since 2026-10-28 (Sean "land 2.216"); reverses the
   2026-10-27 "GUESSED blue with both staves" for this case only); only one can
   be read -> use it. Sean, 2026-10-27, why a stem can point away from its own
   staff: *"multiple voices in a bar where the upper voice is above the staff

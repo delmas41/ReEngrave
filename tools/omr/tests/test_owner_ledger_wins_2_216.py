@@ -21,9 +21,13 @@ class TestLedgerWins(unittest.TestCase):
         with mock.patch.dict(os.environ, {OWN.LEDGER_WINS_ENV: "1"}):
             return _contest(UP_TO_A, **kw)
 
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}):
             os.environ.pop(OWN.LEDGER_WINS_ENV, None)
+            self.assertTrue(OWN.ledger_wins_enabled())
+
+    def test_explicit_off_abstains(self):
+        with mock.patch.dict(os.environ, {OWN.LEDGER_WINS_ENV: "0"}):
             self.assertFalse(OWN.ledger_wins_enabled())
             v = _contest(UP_TO_A, note_first=B_KEY)
         self.assertEqual((v.outcome, v.reason), (Outcome.ABSTAINED, "stem_disagrees"))
