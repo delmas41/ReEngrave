@@ -179,6 +179,24 @@ def _tip_step(members: Sequence[StemView], end: str) -> Optional[float]:
     return float(pick.end_steps[0] if end == "top" else pick.end_steps[1])
 
 
+#: A detector box taller than this (spaces) holds more than one head (a head is ~1.0-1.4 sp): a fused second or chord.
+TALL_BOX_SPACES = 1.8
+#: Another head is "a step away" when its centre is within this many spaces of this head's (one staff position = 0.5 sp).
+SECOND_MAX_SPACES = 0.8
+
+
+def _second_partner(others, stem_box_, me, sp):
+    """Another head touches the stem (its box within 0.3 sp of the stem's x range, y overlapping the stem) with its centre a staff position or
+    so from this head's: this head and that one share the stem as a second."""
+    sx, sy, sw, sh = stem_box_
+    cy = me[1] + me[3] / 2.0
+    for b in others:
+        if b[1] < sy + sh and b[1] + b[3] > sy and b[0] < sx + sw + 0.3 * sp and b[0] + b[2] > sx - 0.3 * sp \
+                and abs((b[1] + b[3] / 2.0) - cy) <= SECOND_MAX_SPACES * sp:
+            return b
+    return None
+
+
 def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: float, *, whole_head: bool = False,
               other_heads: Sequence[Sequence[float]] = (), cell_width: Optional[float] = None) -> StemReading:
     """Which vertical stroke is THIS head's stem. Pure. `head_box` and the strokes are canonical cell px (x, y, w, h); `space_px` the
@@ -263,11 +281,19 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
         elif not engraving_side_ok(direction, side):
             # a second's DISPLACED head stands on the far side of the chord's one stem: the stroke touches it on the wrong side, but the head
             # its end stands in sees it on the right one. Only a passing stem, and only then.
+            if anchor_box is None:
+                # The stroke ENDS in this head (so no passing-stem anchor was set) yet stands on its wrong side: this is the displaced head of a
+                # second when ANOTHER head of the stem, a step away, sees it on the right side (Sean 2026-10-26/28, "on both sides of the stem").
+                # 2.204 count: 23 of the 27 remaining Litolff `wrong_side` were this -- the branch below was never reached with an anchor.
+                anchor_box = _second_partner(others, (sx, sy, sw, sh), me, sp)
             a_l, a_r = (sx - anchor_box[0]) / sp if anchor_box else 9.0, ((anchor_box[0] + anchor_box[2]) - (sx + sw)) / sp if anchor_box else 9.0
             if anchor_box is not None and engraving_side_ok(
                     direction, "left" if a_l <= FLUSH_SPACES and a_l <= a_r else "right" if a_r <= FLUSH_SPACES else "through"):
                 displaced = True
                 why = "bridged" if gap > 0 else ""
+            elif hh > TALL_BOX_SPACES * sp:
+                # a box taller than any one head is a fused cluster (a second's two heads in one box): it has no single side -> cannot tell
+                why = "unanchored"
             else:
                 why = "wrong_side"
         else:

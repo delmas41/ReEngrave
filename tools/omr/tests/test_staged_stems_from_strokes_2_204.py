@@ -580,3 +580,27 @@ class TestTheTipIsTheEndNoHeadStandsAt(unittest.TestCase):
 
     def test_the_old_spelling_a_bare_y_still_works(self):
         self.assertEqual(SS.axis_x(self._v(), [194.0, 600.0]), 288.0)
+
+
+class TestASecondsDisplacedHead(unittest.TestCase):
+    """Sean 2026-10-28: a head printed on the far side of a chord's stem, a second from its partner, is the stem's own."""
+
+    def test_RED_a_down_stem_on_the_right_of_a_head_is_its_stem_when_a_partner_a_step_away_stands_on_it(self):
+        head = (500, 500, 130, 100)
+        stem = V(0, (610, 520, 30, 400))                  # down stem on the head's right edge: wrong side alone
+        partner = (640, 550, 130, 100)                    # a second away (0.5 sp), on the stem's other side
+        alone = SS.head_stem([view(stem)], head, SP, other_heads=[])
+        self.assertEqual(alone.state, "wrong_side")
+        pair = SS.head_stem([view(stem)], head, SP, other_heads=[partner])
+        self.assertEqual(pair.state, "stem")
+
+    def test_TWIN_a_head_three_spaces_away_does_not_excuse_it(self):
+        head = (500, 500, 130, 100)
+        stem = V(0, (610, 520, 30, 400))
+        far = (900, 560, 130, 100)
+        self.assertEqual(SS.head_stem([view(stem)], head, SP, other_heads=[far]).state, "wrong_side")
+
+    def test_a_tall_fused_box_has_no_single_side(self):
+        tall = (500, 500, 130, 250)
+        stem = V(0, (610, 520, 30, 400))
+        self.assertNotEqual(SS.head_stem([view(stem)], tall, SP).state, "wrong_side")
