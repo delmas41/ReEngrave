@@ -4047,7 +4047,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
     rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
     rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
     return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
-            "tip_levels": len(tip["beams"]), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
+            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
             "boxes": boxes, "rows": rows, "settled": None}
 
 
@@ -4932,6 +4932,16 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 possible = max(possible, p2, certain)
                 certain, certain_conflicts = c2, cc2
                 settled.append("box_flag" if sb["flag_levels"] else "box_narrowed")
+                # ROADMAP 2.202d (Sean 2026-10-16 "Clean tip means no beam"; 2.202c tiles 1, 5, 9 all quarters): every beam box the map removed
+                # stands on NO beam- or hook-shaped stroke at all AND this stem's tip was read clean (a stem stroke, no beam, hook or stub, no
+                # flag): the boxes are refuted by the ink, so their level is not a candidate. Without this the head is narrowed [0, 1] and the
+                # bar leaves the note unwritten (`beams_ambiguous`), the false value gone and the true one with it.
+                if (not sb["flag_levels"] and sb["tip_levels"] == 0 and not certain_conflicts and sb["tip"].get("stem") is not None
+                        and sb.get("tip_clean")
+                        and sb["boxes"] and all(bx.get("support") == "unsupported" and bx.get("reason") == "no_beam_or_hook_shaped_stroke"
+                                                for bx in sb["boxes"])):
+                    possible = max(p2, certain)
+                    settled.append("clean_tip")
             if not certain_conflicts:
                 if sb["tip_levels"] > certain:
                     possible = max(possible, sb["tip_levels"])

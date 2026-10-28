@@ -353,5 +353,25 @@ class TestOtherGuards(unittest.TestCase):
                 self.assertEqual(rhythm.beams_from_strokes_enabled(), want, val)
 
 
+class TestCleanTip2_202d(unittest.TestCase):
+    """2.202d (Sean "Clean tip means no beam"): a beam box standing on a BLOB only (a head's ink), the stem's tip clean -> the box is refuted, the
+    head is DECIDED with no level, not narrowed [0, 1] and dropped. Twins: a beam-shaped stroke left at the tip keeps it narrowed."""
+
+    def blob(self):
+        return S("blob", (260, 800, 120, 60), 1.2, 0.6, [0], sag=0.3, angle=0.0)
+
+    def test_RED_box_on_a_blob_with_a_clean_tip_decides_no_beam(self):
+        s = [dict(stem_stroke(0), touches=[1]), self.blob()]
+        v = dur(True, s, boxes=[((251, 757, 364, 63), [1])], heads=(0,))
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(levels(v), [0])
+        self.assertIn("clean_tip", v.detail["beams_from_strokes"]["settled"])
+
+    def test_TWIN_a_long_unclassified_curve_at_the_tip_keeps_it_narrowed(self):
+        s = [dict(stem_stroke(0), touches=[1]), hook_stroke([0], length=2.69, box=(251, 770, 270, 25))]
+        v = dur(True, s, boxes=[((251, 760, 270, 40), [1])], heads=(0,))
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+
+
 if __name__ == "__main__":
     unittest.main()

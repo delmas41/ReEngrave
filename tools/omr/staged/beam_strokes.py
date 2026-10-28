@@ -188,6 +188,24 @@ STACK_FIRST_SPACES = 1.0      # the first level's outer edge lies within this of
 STACK_GAP_SPACES = 0.75       # the next level starts within this of the previous level's inner edge (pitch 0.75 sp, gap 0.25)
 
 
+def tip_clean(strokes: Sequence[StrokeView], stem: StrokeView, side: str) -> bool:
+    """2.202d: NO stroke other than the stem touches it or lies within 0.5 sp of it (a beam-shaped or contested one; blobs and strokes another mark owns do not count) inside the tip
+    window -- Sean's "clean tip" (2026-10-16). Ink of any kind there means the tip is NOT clean."""
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    bx, by, bw, bh = stem.box
+    tip_y = by if side == "up" else by + bh
+    lo, hi = (tip_y - TIP_OUTWARD_SPACES * sp, tip_y + TIP_INWARD_SPACES * sp) if side == "up" else (tip_y - TIP_INWARD_SPACES * sp, tip_y + TIP_OUTWARD_SPACES * sp)
+    touching = {j for j, _c in stem.touches}
+    for s in strokes:
+        if s.ordinal == stem.ordinal or s.kind in ("blob", "owned", "vertical"):
+            continue            # a blob is a head / dot / letter, not beam ink; an owned stroke is another mark's (a contested one still blocks)
+        if s.box[1] + s.box[3] < lo or s.box[1] > hi:
+            continue
+        if s.ordinal in touching or _box_gap(s.box, stem.box) <= 0.5 * sp:
+            return False
+    return True
+
+
 def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str) -> Dict[str, object]:
     """What the strokes touching THIS stem say at its tip. `side` is the stem's direction ("up": the tip is the top).
 
