@@ -1,0 +1,98 @@
+{
+ "tiles": [
+  {
+   "tile": 1,
+   "file": "tiles/tile_01.png",
+   "glyph": "glyph/4/0/4/3/8",
+   "plate": "litolff",
+   "page": 4,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 2,
+   "file": "tiles/tile_02.png",
+   "glyph": "glyph/6/1/8/11/13",
+   "plate": "litolff",
+   "page": 6,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 3,
+   "file": "tiles/tile_03.png",
+   "glyph": "glyph/10/1/6/4/9",
+   "plate": "litolff",
+   "page": 10,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 4,
+   "file": "tiles/tile_04.png",
+   "glyph": "glyph/6/1/9/11/14",
+   "plate": "litolff",
+   "page": 6,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 5,
+   "file": "tiles/tile_05.png",
+   "glyph": "glyph/14/1/5/5/1",
+   "plate": "brahms",
+   "page": 14,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 6,
+   "file": "tiles/tile_06.png",
+   "glyph": "glyph/9/0/2/2/3",
+   "plate": "litolff",
+   "page": 9,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 7,
+   "file": "tiles/tile_07.png",
+   "glyph": "glyph/4/0/8/11/7",
+   "plate": "litolff",
+   "page": 4,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 8,
+   "file": "tiles/tile_08.png",
+   "glyph": "glyph/5/0/11/3/13",
+   "plate": "brahms",
+   "page": 5,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 9,
+   "file": "tiles/tile_09.png",
+   "glyph": "glyph/6/1/9/13/0",
+   "plate": "litolff",
+   "page": 6,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 10,
+   "file": "tiles/tile_10.png",
+   "glyph": "glyph/0/0/10/1/16",
+   "plate": "brahms",
+   "page": 0,
+   "page_box_600dpi": null
+  },
+  {
+   "tile": 11,
+   "file": "tiles/tile_11.png",
+   "source": "2.150 tile 11",
+   "glyph": "glyph/15/1/9/2/5",
+   "plate": "brahms"
+  },
+  {
+   "tile": 12,
+   "file": "tiles/tile_12.png",
+   "source": "2.150b tile 20",
+   "glyph": "glyph/15/1/9/2/5",
+   "plate": "brahms"
+  }
+ ]
+}

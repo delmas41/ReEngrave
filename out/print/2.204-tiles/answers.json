@@ -1,0 +1,78 @@
+{
+ "date": "2026-10-28",
+ "verbatim": "2.204 1. 2 2. Sharp 3.ledger lines 4. 2 5. Dot 4 6. 2 7. Part of ff 8. 8 9. Part of a 4 rest 10. Beams 11 -12 stems on a quarter note",
+ "tiles": {
+  "1": {
+   "sean": "half",
+   "subject": "litolff p4 glyph/4/0/4/3/8",
+   "verdict": "BAD: Sean half; OFF narrowed (nothing written); ON decides a quarter plain (stem_tip_reads_no_beam) -- new wrong written plain",
+   "as_typed": "raw '2'"
+  },
+  "2": {
+   "sean": "sharp",
+   "subject": "litolff p6 glyph/6/1/8/11/13",
+   "verdict": "GOOD: not a note; OFF wrote a half, ON abstains (stem_readers_disagree)",
+   "as_typed": "raw 'Sharp'"
+  },
+  "3": {
+   "sean": "ledger lines",
+   "subject": "litolff p10 glyph/10/1/6/4/9",
+   "verdict": "GOOD: not a note; OFF wrote a quarter, ON abstains (stem_readers_disagree)",
+   "as_typed": "raw 'ledger lines'"
+  },
+  "4": {
+   "sean": "half",
+   "subject": "litolff p6 glyph/6/1/9/11/14",
+   "verdict": "GOOD: OFF wrote a quarter, ON writes a half (head_and_marks)",
+   "as_typed": "raw '2'"
+  },
+  "5": {
+   "sean": "dotted quarter",
+   "subject": "brahms p14 glyph/14/1/5/5/1",
+   "verdict": "GOOD: OFF narrowed, ON decides a dotted quarter",
+   "as_typed": "raw 'Dot 4'"
+  },
+  "6": {
+   "sean": "half",
+   "subject": "litolff p9 glyph/9/0/2/2/3",
+   "verdict": "CONTROL RIGHT: half both arms",
+   "as_typed": "raw '2'"
+  },
+  "7": {
+   "sean": "part of an ff",
+   "subject": "litolff p4 glyph/4/0/8/11/7",
+   "verdict": "BAD: not a note; OFF narrowed (nothing written), ON decides an eighth plain (head_and_marks; old_refused stem)",
+   "as_typed": "raw 'Part of ff'"
+  },
+  "8": {
+   "sean": "eighth",
+   "subject": "brahms p5 glyph/5/0/11/3/13",
+   "verdict": "BAD: Sean eighth; OFF narrowed, ON decides a quarter plain (head_and_marks; gained stem, flag missed)",
+   "as_typed": "raw '8'"
+  },
+  "9": {
+   "sean": "part of a quarter rest",
+   "subject": "litolff p6 glyph/6/1/9/13/0",
+   "verdict": "GOOD: not a note; OFF wrote a quarter, ON abstains (stem_readers_disagree)",
+   "as_typed": "raw 'Part of a 4 rest'"
+  },
+  "10": {
+   "sean": "beams",
+   "subject": "brahms p0 glyph/0/0/10/1/16",
+   "verdict": "WRONG BOTH ARMS: a beam piece (notehead_is_not_a_notehead is_a_beam_piece in both arms); OFF wrote an eighth, ON a quarter",
+   "as_typed": "raw 'Beams'"
+  },
+  "11": {
+   "sean": "stems on a quarter note",
+   "subject": "2.150 tile 11",
+   "verdict": "RE-SHOWN 2.150 tile 11 (Brahms p15 glyph/15/1/9/2/5, a quarter's stem); same answer as 2.150/2.150b; page 15 is not in the 2.204 sample so ON is not scorable from saved records",
+   "as_typed": "raw '11 -12 stems on a quarter note'"
+  },
+  "12": {
+   "sean": "stems on a quarter note",
+   "subject": "2.150b tile 20",
+   "verdict": "RE-SHOWN 2.150b tile 20 (same glyph as 11); not scorable from saved records",
+   "as_typed": "raw '11 -12 stems on a quarter note'"
+  }
+ }
+}
