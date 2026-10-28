@@ -193,6 +193,10 @@ registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 ## 6. How a session works
 
 Check yourself against Sean's past answers first: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`.
+**Before a question reaches Sean, grep `docs/page-facts.md` and DECISIONS
+for it** (Sean, 2026-10-28: 2.204 asked him the seconds-on-both-sides
+question he had answered on 10-26). When a ruling changes a page fact, every
+lane whose code reads that fact re-tests against it before its next measure.
 
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
 the four root assets first (`docs/running.md` §1). Never `git checkout` a
