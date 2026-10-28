@@ -32,6 +32,7 @@ from ..record import Kind, Outcome, Q, Scope
 # ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
 # pair" query -- see `structure.grand_staff_partner_staff`'s own docstring.
 from . import structure as _structure
+from . import ledger_read as _ledger_read
 
 # ⚠️ ASSUMED WEIGHTS (A-OWN-1). Ordered to match the tiers the existing code
 # already applies in this order; none is measured.
@@ -259,6 +260,8 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
     refusals = ev.refusals(Q.FAR_HEAD_OWNER_LEDGER)
     if not rows and not refusals:
         return None
+    if _ledger_read.enabled():
+        return _stroke_ledger_owner(ev, rows, refusals)
     if any((r.detail or {}).get("unread") for r in refusals):
         return None
     fitting = {}
@@ -277,6 +280,38 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
             (r.detail or {}).get("candidate"):
                 (r.detail or {}).get("ledger_reason") for r in refusals}}
 
+
+
+def _stroke_ledger_owner(ev: Evidence, rows, refusals) -> Optional[Tuple[str, Tuple[str, ...], Dict[str, Any]]]:
+    """ROADMAP 2.217 (`OMR_LEDGERS_FROM_STROKES`): the SAME witness as `_note_first_ledger_owner` -- exactly one candidate's ledgers fit -- read
+    from the ONE stroke-map reading (`ledger_strokes.read_head`) instead of the four older ones. The domain and each candidate's geometry
+    position come from the GATHER rows the older reader filed (it still runs; its rows stay on the record as the control); the old reader's
+    ink verdict is NOT read."""
+    allr = list(rows) + list(refusals)
+    geo: Dict[str, Any] = {}
+    for r in allr:
+        d = r.detail or {}
+        if d.get("candidate") is not None and d.get("geometry_position") is not None:
+            geo.setdefault(d["candidate"], d["geometry_position"])
+    fits: Dict[str, Any] = {}
+    not_fit: Dict[str, Any] = {}
+    used: List[str] = []
+    for c in dict.fromkeys((r.detail or {}).get("candidate") for r in allr):
+        if c is None:
+            continue
+        rd = _ledger_read.reading(ev, c, geo.get(c))
+        used.extend(rd.rungs)
+        if rd.unread:
+            return None                       # could not look at this candidate: it could be the owner, nothing is concluded
+        if rd.fits:
+            fits[c] = dict(position=rd.pos, how=rd.how, ledger_reason=rd.reason)
+        else:
+            not_fit[c] = rd.reason
+    if len(fits) != 1:
+        return None
+    owner = next(iter(fits))
+    ids = tuple(dict.fromkeys(used)) or tuple(r.id for r in rows)
+    return owner, ids, {"fits": fits, "not_fitting": not_fit, "reader": "ledger_strokes"}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -698,7 +733,11 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         if banded is not None:
             return banded
 
-    ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
+    # ROADMAP 2.217: with the flag on the four older ledger readings (the detector ladder, the rung-ink windows, the density comparison and
+    # the old walk) are not read; the one stroke reading answers in `_note_first_ledger_owner`, and the tiers below it fall to stem / range /
+    # distance, as for a head with no ledger witness.
+    ledgers_from_strokes = _ledger_read.enabled()
+    ladders = {} if ledgers_from_strokes else {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
     # ⚠️⚠️ ROADMAP 2.56b, AHEAD OF EVERY OLDER LEDGER TIER AND OF DISTANCE.
     # Sean (2026-09-28): the ledger lines name the owner and are
@@ -740,8 +779,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # where it also has an opinion and DISAGREES, that is not evidence
     # either way and this glyph declines outright, rather than trusting
     # either witness alone.
-    ledger = _contest_ledger_reading(ev, bands, ladders)
-    density = _ledger_owner_comparison(
+    ledger = None if ledgers_from_strokes else _contest_ledger_reading(ev, bands, ladders)
+    density = None if ledgers_from_strokes else _ledger_owner_comparison(
         ev, [r.detail.get("candidate") for r in bands])
     if density is not None:
         winner, detail = density

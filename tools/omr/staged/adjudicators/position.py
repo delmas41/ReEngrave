@@ -25,19 +25,24 @@ from __future__ import annotations
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q
+from . import ledger_read as _ledger_read
 
 @decision(
     quantity=Q.NOTEHEAD_POSITION,
     scope=Kind.GLYPH,
-    wants=(Q.FAR_HEAD_LEDGER_POSITION,),
+    wants=(Q.FAR_HEAD_LEDGER_POSITION, Q.STROKE, Q.STROKE_OWNER, Q.GLYPH_BOX),
     subjects_from=Q.FAR_HEAD_LEDGER_POSITION,
     reasons=("ledger_position", ABSTAIN.LEDGER_NOT_READ, ABSTAIN.NO_PAGE_SHAPE,
              ABSTAIN.NO_STAFF_GEOMETRY, ABSTAIN.NO_MASK),
     mode=Mode.ADDITIVE,
-    composed_from=(Q.FAR_HEAD_LEDGER_POSITION,),
+    composed_from=(Q.FAR_HEAD_LEDGER_POSITION, Q.STROKE, Q.STROKE_OWNER, Q.GLYPH_BOX),
 )
 def adjudicate_notehead_position(ev: Evidence) -> Ruling:
     """Where does this far head sit, counted off its printed ledgers?"""
+    if _ledger_read.enabled():
+        stroked = _stroke_position(ev)
+        if stroked is not None:                     # None: geometry says no ledger is needed here -- the older reading answers, as before
+            return stroked
     rows = ev.rows(Q.FAR_HEAD_LEDGER_POSITION)
     if rows:
         row = rows[-1]
@@ -64,3 +69,19 @@ def adjudicate_notehead_position(ev: Evidence) -> Ruling:
             return Ruling.abstain(ABSTAIN.NO_MASK, ledger_reason=why)
         return Ruling.abstain(ABSTAIN.LEDGER_NOT_READ, ledger_reason=why)
     return Ruling.abstain(ABSTAIN.LEDGER_NOT_READ)
+
+
+def _stroke_position(ev: Evidence):
+    """ROADMAP 2.217 (`OMR_LEDGERS_FROM_STROKES`): the head's position on its OWN staff from the one stroke reading (`ledger_strokes`), in
+    place of the older far-head walk; the old row only supplies the domain and the geometry position the side is taken from."""
+    rows = list(ev.rows(Q.FAR_HEAD_LEDGER_POSITION)) + list(ev.refusals(Q.FAR_HEAD_LEDGER_POSITION))
+    geo = next(((r.detail or {}).get("geometry_position") for r in rows if (r.detail or {}).get("geometry_position") is not None), None)
+    sub = ev.subject
+    rd = _ledger_read.reading(ev, "staff/%d/%d/%d" % (sub.page, sub.system, sub.staff), geo)
+    if rd.fits and rd.how == "geometry":
+        return None
+    if rd.fits:
+        return Ruling(value=int(rd.pos), reason="ledger_position", used=tuple(rd.rungs) or tuple(r.id for r in rows),
+                      detail=dict(geometry_position=geo, agrees_with_geometry=rd.agrees_with_geometry, ledger_reason=rd.reason,
+                                  box_source="strokes", shape_source=None, reader="ledger_strokes"))
+    return Ruling.abstain(ABSTAIN.LEDGER_NOT_READ, ledger_reason=rd.reason, reader="ledger_strokes")
