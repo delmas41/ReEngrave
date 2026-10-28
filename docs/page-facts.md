@@ -80,6 +80,7 @@ machine-readable form.
   head, every head on it shares that stem, and a head of a second stands on
   the far side; a long stem through stacked heads is a chord stem, never a
   barline (2.204c: all 3 "barline" tiles were chord stems).
+  Re-confirmed 2026-10-28 on 8 Litolff `wrong_side` crops (Sean: "Almost all of those are chords/dyads a second apart where the rule has them on both sides of the stem."; scope: general). Reader: a head is not refused for a stem on its wrong side when another head of the stem a step away sees it on the right one; a fused box taller than 1.8 sp has no single side (2.204, `stem_strokes.py`).
 - **A chord's stem can run in both directions past its notes, and a short
   stem is not by itself a grace note** (Sean, 2026-10-26: "In a chord the stem
   can go in both directions"; a ~1-space stem beside a note "is either a grace
