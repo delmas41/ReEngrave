@@ -777,18 +777,24 @@ def format_counts(counts: Dict[str, Dict[str, int]]) -> str:
 # ───────────────────────────── 7. judged answers ─────────────────────────────
 
 def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str,
-                 off_hosts: Optional[Sequence[dict]] = None, on_hosts: Optional[Sequence[dict]] = None) -> Dict[str, Any]:
+                 off_hosts: Optional[Sequence[dict]] = None, on_hosts: Optional[Sequence[dict]] = None,
+                 index_path: Optional[pathlib.Path] = None) -> Dict[str, Any]:
     """Sean's judged tiles scored against the OFF and the ON mini-records (tools.omr.staged.judged, one scorer). With the
     arms' written hosts, each right->wrong / right->lost is then attached to its PLACE (`by_place`, ROADMAP 2.211)."""
     from . import judged as J
-    idx = json.loads(J.INDEX_PATH.read_text())
+    idx = json.loads((index_path or J.INDEX_PATH).read_text())
     a = J.score(idx, off_rec, doc)
     b = J.score(idx, on_rec, doc)
-    rep = compare_judged(a["tiles"], b["tiles"])
+    out = compare_judged(a["tiles"], b["tiles"])
     if off_hosts is not None and on_hosts is not None:
-        subs = {s for k in ("worse", "lost") for r in rep[k] for s in _subject_list(r["subject"])}
-        rep = by_place(rep, J.page_boxes(off_rec, subs) if subs else {}, off_hosts, on_hosts)
-    return rep
+        subs = {s for k in ("worse", "lost", "unwritten_wrong", "unwritten_right") for r in out.get(k, ()) for s in _subject_list(r["subject"])}
+        boxes: Dict[str, Sequence[float]] = {}
+        if subs:
+            boxes = dict(J.page_boxes(on_rec, subs))
+            for s_, b_ in J.page_boxes(off_rec, subs).items():
+                boxes.setdefault(s_, b_)
+        out = by_place(out, boxes, off_hosts, on_hosts)
+    return out
 
 
 def _subject_list(sub: Any) -> List[str]:
@@ -819,6 +825,12 @@ def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: st
     return here[0] if here else None
 
 
+def _same_note_at(hosts: Sequence[dict], h: dict) -> bool:
+    """Does `hosts` hold an event at h's place with h's pitch (or kind, for a rest)? Unlike `event_at` there is no
+    fallback to another event at the slot: a chord-mate or a neighbouring part's note is not this note."""
+    return any(place_of(g) == place_of(h) and (g.get("pitch") or g["kind"]) == (h.get("pitch") or h["kind"]) for g in hosts)
+
+
 def by_place(rep: Dict[str, Any], boxes: Dict[str, Sequence[float]], off_hosts: Sequence[dict],
              on_hosts: Sequence[dict]) -> Dict[str, Any]:
     """ROADMAP 2.211. The scorer answers per detector box; the file is the music. A right->wrong / right->lost row is
@@ -844,17 +856,33 @@ def by_place(rep: Dict[str, Any], boxes: Dict[str, Sequence[float]], off_hosts: 
                     same = False
             (same_music if same else keep).append(r if not same else dict(r, was=key))
         out[key] = keep
+    # ROADMAP 2.218: unwritten -> wrong / right. The scorer's OFF status was narrowed / abstained / not found; it counts
+    # only if the OFF file WRITES NOTHING at the place the ON file wrote this box (else it is an ordinary change).
+    for key in ("unwritten_wrong", "unwritten_right"):
+        keep = []
+        for r in rep.get(key, ()):
+            subs = _subject_list(r["subject"])
+            ons = [written_at(on_hosts, s, boxes.get(s)) for s in subs]
+            if not subs or any(h is None or place_of(h) is None for h in ons):
+                not_found.append(dict(r, was=key, why="ON file writes no event at that box"))
+                continue
+            if any(_same_note_at(off_hosts, h) for h in ons):
+                continue   # OFF wrote this very note there: not an unwritten note (a changed one, scored elsewhere)
+            keep.append(r)
+        out[key] = keep
     out["same_music"], out["not_found"] = same_music, not_found
     return out
 
 
 def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[str, Any]:
     """Per judged tile, OFF status -> ON status. `worse` = right -> wrong (must be 0); `lost` = right -> narrowed /
-    abstained / not_found; `better` = wrong -> right."""
+    abstained / not_found; `better` = wrong -> right; `unwritten_wrong` / `unwritten_right` (ROADMAP 2.218) = OFF narrowed /
+    abstained / not found -> ON decided wrong / right (wrong must be 0; the place check is `by_place`)."""
     def k(t):
         return (t["item"], t["tile"])
     on_by = {k(t): t for t in on_tiles}
     worse, lost, better, n_scored = [], [], [], 0
+    up_wrong, up_right = [], []
     for t in off_tiles:
         u = on_by.get(k(t))
         if u is None:
@@ -867,7 +895,15 @@ def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[
             lost.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], now=u["status"]))
         elif t["status"] == "wrong" and u["status"] == "right":
             better.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"]))
-    return dict(worse=worse, lost=lost, better=better, scored=n_scored)
+        elif t["status"] in ("narrowed", "abstained", "not_found") or (t["status"] == "wrong" and t["note"].startswith("narrowed")):
+            # ROADMAP 2.218: OFF left it unwritten (narrowed -- even to a set that misses Sean's answer -- abstained, or
+            # not found); `by_place` keeps it only if the OFF file writes that very note nowhere at the place
+            if u["status"] == "wrong":
+                up_wrong.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"],
+                                     off=t["status"], now=u["note"]))
+            elif u["status"] == "right":
+                up_right.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"], off=t["status"]))
+    return dict(worse=worse, lost=lost, better=better, unwritten_wrong=up_wrong, unwritten_right=up_right, scored=n_scored)
 
 
 # ───────────────────────────── 8. the blind sheet ─────────────────────────────
@@ -1090,6 +1126,16 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
     return rep
 
 
+def landing_line(rep: Dict[str, Any]) -> str:
+    """ROADMAP 2.218: the landing summary. Both judged controls must be 0 for a lane to land (docs/measuring.md section 0)."""
+    rw = sum(len(r["judged"]["worse"]) for r in rep["plates"].values())
+    uw = sum(len(r["judged"].get("unwritten_wrong", ())) for r in rep["plates"].values())
+    ur = sum(len(r["judged"].get("unwritten_right", ())) for r in rep["plates"].values())
+    if rw == 0 and uw == 0:
+        return "LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right %d)" % ur
+    return "LANDING CHECK FAILS: judged right->wrong %d, UNWRITTEN->WRONG %d (a note OFF left unwritten that ON writes against Sean's answer) -- must be 0 to land" % (rw, uw)
+
+
 def render_text(rep: Dict[str, Any]) -> str:
     L = []
     flags = ", ".join("%s (OFF=%s ON=%s)" % tuple(f) for f in rep["flags"]) or "(no flag)"
@@ -1119,12 +1165,18 @@ def render_text(rep: Dict[str, Any]) -> str:
                  % (j["scored"], len(j["worse"]), len(j["lost"]), len(j["better"])))
         for w in j["worse"]:
             L.append("      RIGHT->WRONG  %s tile %s %s  Sean: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["now"]))
+        L.append("  Sean's judged answers, OFF wrote nothing there: unwritten->wrong %d (must be 0) | unwritten->right %d"
+                 % (len(j.get("unwritten_wrong", ())), len(j.get("unwritten_right", ()))))
+        for w in j.get("unwritten_wrong", ()):
+            L.append("      UNWRITTEN->WRONG  %s tile %s %s  Sean: %s  OFF: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["off"], w["now"]))
         for w in j["lost"][:10]:
             L.append("      right->%s  %s tile %s %s" % (w["now"], w["item"], w["tile"], w["subject"]))
         for w in j.get("same_music", ()):
             L.append("      same music at its place (box swap, not a change)  %s tile %s %s  scorer said %s" % (w["item"], w["tile"], w["subject"], w["was"]))
         for w in j.get("not_found", ()):
             L.append("      NOT FOUND (no written event at its place; neither right nor wrong)  %s tile %s %s  was %s" % (w["item"], w["tile"], w["subject"], w["was"]))
+    L.append("")
+    L.append(landing_line(rep))
     t = rep["tiles"]
     L.append("")
     L.append("tiles: %d (%d from the changes, %d controls), seed %d -> tiles/ (sheet.png), key.json outside the folder"
@@ -1154,14 +1206,16 @@ def load_arms(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int
     return arms
 
 
-def rescore(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int = 0) -> Dict[str, Any]:
+def rescore(work: pathlib.Path, plate: str, box_keyed: bool = False, drop: int = 0,
+            index_path: Optional[pathlib.Path] = None) -> Dict[str, Any]:
     """ROADMAP 2.211 control: re-score a finished lane report's saved arms with the CURRENT parser and place pairing.
     `box_keyed=True` is the BEFORE number (it must equal the saved report); `drop=N` plants N real losses in the ON file
     (they must show as N lost notes)."""
     arms = load_arms(work, plate, box_keyed, drop)
     d = diff_arms(arms["off"], arms["on"], tol=0.5 * PLATES[plate]["unit"])
     rec = (work / ("%s.off.mini-record.json" % plate), work / ("%s.on.mini-record.json" % plate))
-    jm = judged_moves(rec[0], rec[1], plate) if box_keyed else judged_moves(rec[0], rec[1], plate, arms["off"]["hosts"], arms["on"]["hosts"])
+    jm = judged_moves(rec[0], rec[1], plate, index_path=index_path) if box_keyed else \
+        judged_moves(rec[0], rec[1], plate, arms["off"]["hosts"], arms["on"]["hosts"], index_path=index_path)
     return dict(counts=d["counts"], hosts=d["hosts"], paired=d["paired"], judged=jm)
 
 
@@ -1219,6 +1273,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--gathered")
     ap.add_argument("--n", type=int, default=8)
     ap.add_argument("--box-keyed", action="store_true", help="rescore: the old box-centre pairing (the BEFORE number)")
+    ap.add_argument("--index", default=None, help="rescore: a judged-tiles.json other than benchmarks/acceptance's (a lane branch's)")
     ap.add_argument("--drop", type=int, default=0, help="rescore: plant N lost notes in the ON file (the control that can fail)")
     a = ap.parse_args(argv)
     if cmd == "sample":
@@ -1239,12 +1294,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0
     if cmd == "rescore":
         for p in [x for x in a.plates.split(",") if x]:
-            r = rescore(pathlib.Path(a.work), p, a.box_keyed, a.drop)
+            r = rescore(pathlib.Path(a.work), p, a.box_keyed, a.drop, pathlib.Path(a.index) if a.index else None)
             j = r["judged"]
             print("%s  %s\n  judged: right->wrong %d | right->lost %d | same music at its place %d | not found %d"
                   % (p, format_counts(r["counts"]), len(j["worse"]), len(j["lost"]), len(j.get("same_music", ())), len(j.get("not_found", ()))))
+            print("  judged, OFF wrote nothing there: unwritten->wrong %d (must be 0) | unwritten->right %d"
+                  % (len(j.get("unwritten_wrong", ())), len(j.get("unwritten_right", ()))))
             for w in j["worse"]:
                 print("    RIGHT->WRONG", w["item"], w["tile"], w["subject"], w["now"])
+            for w in j.get("unwritten_wrong", ()):
+                print("    UNWRITTEN->WRONG", w["item"], w["tile"], w["subject"], "Sean:", w["answer"], "OFF:", w["off"], "now:", w["now"])
             for w in j.get("not_found", ()):
                 print("    NOT FOUND", w["item"], w["tile"], w["subject"])
         return 0

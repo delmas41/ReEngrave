@@ -19,6 +19,7 @@ reports the SAME three things and nothing else unless Sean asks:
    marker, the key in a separate file.
 3. **Did anything Sean already judged get worse**: his judged answers that go
    right->wrong (`tools.omr.staged.judged`). Must be 0; each one is shown.
+   A lane reports **unwritten->wrong** beside it (a judged answer OFF left unwritten -- narrowed or abstained -- that ON writes with a wrong value or kind; `lane_report`, ROADMAP 2.218); both must be 0 to land. Re-score saved arms with `python3 -m tools.omr.staged.lane_report rescore --work DIR/work --plates litolff`.
 
 Measured on the **frozen page sample** (about 8 pages per plate, drawn at
 random once and fixed, `benchmarks/lane-report/sample.json`), which takes
