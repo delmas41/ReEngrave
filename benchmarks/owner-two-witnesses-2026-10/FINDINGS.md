@@ -75,3 +75,13 @@ in until a musician decides must be a stated rule (the stem's staff is the natur
 Notes it would bring into the file (distinct inks, whole movement): disagreements 6 Litolff + 22 Brahms; if
 `far_no_rungs`/`ledger_witnesses_disagree` ride along: +3 Litolff, +35 Brahms; if `tied` (no witness) also: +52 Litolff, +175 Brahms
 (not all are noteheads that survive the earlier drops, so these are upper bounds). On the frozen pages: 5 / 1 for disagreements alone.
+
+## Sean's tiles (2026-10-28)
+
+Eight far heads where the stem and the ledger lines name different staves (Litolff 4, Brahms 4; blue = staff A, green = staff B; key
+`out/print/2.216/key.json`, answers `out/print/2.216/answers.json`). Sean: "1. Green 2 green 3 blue 4 green 5 green 6 blue 7 green 8 green".
+**Ledger staff right 8/8; stem staff right 0/8** (7 stems up, 1 down). This contrasts with the 2026-10-08 Litolff p4 tile 7, where the stem
+was right, so the stems in the disagreement population are not the same kind of witness as in that case. HYPOTHESIS, not measured: in these
+disagreements the stem is attached across the gap toward the other staff (a stem reaching the neighbouring staff's head or a shared stem
+line), so the stem reads the wrong staff while the ledger lines name the owner, as CLAUDE.md §5 says. Measure the stem endpoints on the 8
+heads before any rule trusts or overrides either witness; 8 tiles are evidence for "ledger wins on disagreement", not yet a cut-off.
