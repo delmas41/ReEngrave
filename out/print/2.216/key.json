@@ -1,0 +1,82 @@
+[
+ {
+  "tile": 1,
+  "doc": "litolff",
+  "head": "glyph/6/0/0/8/9",
+  "A": "staff 1: Flute",
+  "B": "staff 2: Oboe",
+  "stem_says": "staff 1: Flute",
+  "ledger_says": "staff 2: Oboe",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 2,
+  "doc": "brahms",
+  "head": "glyph/24/1/3/2/5",
+  "A": "staff 3: Clarinet (Klar. (B))",
+  "B": "staff 4: Bassoon (Fag.)",
+  "stem_says": "staff 3: Clarinet (Klar. (B))",
+  "ledger_says": "staff 4: Bassoon (Fag.)",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 3,
+  "doc": "litolff",
+  "head": "glyph/14/0/1/8/0",
+  "A": "staff 3: Clarinet (Cl.)",
+  "B": "staff 2: Oboe",
+  "stem_says": "staff 2: Oboe",
+  "ledger_says": "staff 3: Clarinet (Cl.)",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 4,
+  "doc": "brahms",
+  "head": "glyph/3/0/0/2/2",
+  "A": "staff 1: Flute",
+  "B": "staff 2: Oboe",
+  "stem_says": "staff 1: Flute",
+  "ledger_says": "staff 2: Oboe",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 5,
+  "doc": "brahms",
+  "head": "glyph/11/0/2/0/15",
+  "A": "staff 3: Clarinet (Klar. (B))",
+  "B": "staff 4: Bassoon (Fag.)",
+  "stem_says": "staff 3: Clarinet (Klar. (B))",
+  "ledger_says": "staff 4: Bassoon (Fag.)",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 6,
+  "doc": "litolff",
+  "head": "glyph/16/0/0/14/0",
+  "A": "staff 2: Oboe",
+  "B": "staff 1: Flute",
+  "stem_says": "staff 1: Flute",
+  "ledger_says": "staff 2: Oboe",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 7,
+  "doc": "litolff",
+  "head": "glyph/6/1/0/9/4",
+  "A": "staff 1: Flute",
+  "B": "staff 2: Oboe",
+  "stem_says": "staff 1: Flute",
+  "ledger_says": "staff 2: Oboe",
+  "stem_dir": "up"
+ },
+ {
+  "tile": 8,
+  "doc": "brahms",
+  "head": "glyph/7/1/3/1/2",
+  "A": "staff 5: Horn ((C) Hr.)",
+  "B": "staff 4: Bassoon (Fag.)",
+  "stem_says": "staff 5: Horn ((C) Hr.)",
+  "ledger_says": "staff 4: Bassoon (Fag.)",
+  "stem_dir": "down"
+ }
+]
