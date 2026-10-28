@@ -2,7 +2,7 @@
 import os
 from unittest import mock
 
-from tools.omr.staged import ledger_strokes as LS
+from tools.omr.annotate import ledger_strokes as LS
 from tools.omr.staged.adjudicators import ledger_read
 
 SP = 20.0                      # page px per staff space; the top line is at y=100, so step s is at y = 100 + s*10

@@ -7,7 +7,7 @@ import os
 from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence
-from .. import ledger_strokes as LS
+from ...annotate import ledger_strokes as LS
 from .. import record as R
 from ..record import Q, Scope, STROKE_GLYPH_BASE
 
