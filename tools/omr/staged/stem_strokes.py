@@ -118,7 +118,14 @@ def axis_x(v: StemView, head_ys: Sequence[float] = ()) -> float:
         return v.box[0] + v.box[2] / 2.0           # a thin stroke: its box IS the stem (box centre: median error 0.03 sp, measured)
     if not head_ys:
         return (e[0] + e[2]) / 2.0
-    d0, d1 = (min(abs(e[1] - y) for y in head_ys), min(abs(e[3] - y) for y in head_ys))
+    def near(x: float, y: float) -> float:
+        # A head is "near" an end only if it STANDS at that end's x (a head is a tuple `(cy, x0, x1)`); a bare number is a y alone (old spelling).
+        # 2.204 (Litolff p4): a head in the cell at the far end's height but a different x made the TIP read as a head end, and the stem was
+        # placed at the head end of a tilted stroke -> `wrong_side`.
+        ds = [abs(y - h) if not isinstance(h, (tuple, list)) else abs(y - h[0]) for h in head_ys
+              if not isinstance(h, (tuple, list)) or h[1] - 0.6 * sp <= x <= h[2] + 0.6 * sp]
+        return min(ds) if ds else 1e9
+    d0, d1 = near(e[0], e[1]), near(e[2], e[3])
     return float(e[0] if d0 >= d1 else e[2])
 
 
@@ -192,7 +199,7 @@ def head_stem(views: Sequence[StemView], head_box: Sequence[float], space_px: fl
 
     verts = [s for s in views if s.kind == "vertical"]
     cands: List[StemCand] = []
-    for members, box in merge_collinear(verts, [b[1] + b[3] / 2.0 for b in heads]):
+    for members, box in merge_collinear(verts, [(b[1] + b[3] / 2.0, b[0], b[0] + b[2]) for b in heads]):
         sx, sy, sw, sh = box
         member_sp = max((m.space_px for m in members if m.space_px > 0), default=sp)
         length = members[0].length if len(members) == 1 else sh / member_sp

@@ -4202,9 +4202,15 @@ def _head_stems(ev: Evidence, cell, head_box, stems):
                 silent.append(o.id)
         info["gained"], info["old_refused"] = gained, refused
         info["directions"] = [c.direction for c in rd.stems]
-        if silent:
+        if silent and not taken:
             info["disagree"] = "finder_stem_is_not_a_stroke_beside_the_head"
             info["settled"] = "disagree"
+        elif silent:
+            # 2.204 cause (Litolff p4, 22 of 45 `stem_readers_disagree`): `_stems_on` attaches by box overlap with no tolerance, so a NEIGHBOUR's
+            # stem standing 0-4 px inside this head's box edge is a second "own" stem of the finder. Where the map's stem is one the finder ALSO
+            # found, the extra finder stems are no stroke beside this head (the map names no candidate for them): dropped, recorded, not a refusal.
+            info["finder_extra_dropped"] = list(silent)
+            info["settled"] = "old_refused" if refused else "agrees_extra_dropped"
         else:
             info["settled"] = "old_refused" if refused else "gained" if gained and not taken else "agrees"
         return chosen, info
