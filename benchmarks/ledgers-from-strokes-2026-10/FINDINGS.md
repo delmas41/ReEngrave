@@ -57,3 +57,11 @@ known to be a loss of positions; it was not worth the machine time before the ma
 
 Flag stays OFF, not a landing candidate. Next, if Sean wants it: a rung-stub pass in `stroke_map` (map change), re-run the coverage guard
 (target >= 99% of the old reader's placed heads), then the frozen sample.
+
+## 5. Sean's tiles (2026-10-27)
+
+Convention: step 0 = top staff line, +1 per line or space going down (lines 0,2,4,6,8); 1st ledger below = 10, 2nd = 12; "nth space below staff" counts the space just under the bottom line as the 1st (9), so the 5th is 17; ledgers above are -2, -4, -6. Not ambiguous: control tile 1 (OFF = ON = 17) was answered "5th space below staff", the same words as tile 10, and the other counting would put tile 10 at 19.
+
+Truth steps: 1:17, 2:-4, 3:10, 4-7:12, 8:10, 9:12, 10:17, 11:-6, 12:12. Of the 9 heads where the readers differ, OFF (old ledger walk) is right on 9, ON (stroke reader) on 0, neither 0. ON DECIDED on every one (no abstention), landing one step past the truth on 2, 3, 5, 6, 9, 11 and two steps on 4, 7, 10. Controls 3/3 right (1, 8, 12). Answers: `out/print/2.217/answers.json`.
+
+Cause stands as in section 1: the stroke reader counts the rungs it can see, and a rung fused into the head blob is not seen, so it places the head one rung too far out. It decides where it is wrong. The next step, if any, is the stub pass in `stroke_map`, then re-run the coverage guard; the flag stays OFF.
