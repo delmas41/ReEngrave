@@ -1,0 +1,66 @@
+{
+ "date": "2026-10-27",
+ "verbatim": "1.4 2.8 3.dot 4 4 4. 4 5.4 6.8 7. Dot 4 8. 16 9. Dot 4 10.8 11.8 12.dot 4",
+ "tiles": {
+  "1": {
+   "sean": "4",
+   "subject": "brahms p19 glyph/19/0/2/1/3",
+   "verdict": "RIGHT (ON removes a false eighth flag; quarter)"
+  },
+  "2": {
+   "sean": "8",
+   "subject": "litolff p9 glyph/9/1/6/3/0",
+   "verdict": "value 8 = ON's eighth; the beam 'continue' lost with the bar held out (same bar-level cause as 6)"
+  },
+  "3": {
+   "sean": "dot 4",
+   "subject": "brahms p19 glyph/19/1/10/7/10",
+   "verdict": "RIGHT (false 16th flag removed; dotted quarter)"
+  },
+  "4": {
+   "sean": "4",
+   "subject": "brahms p14 glyph/14/1/3/7/6",
+   "verdict": "RIGHT (false eighth flag removed; quarter)"
+  },
+  "5": {
+   "sean": "4",
+   "subject": "brahms p14 glyph/14/1/3/7/0",
+   "verdict": "wrong->gone (OFF eighth wrong; ON narrowed beams_ambiguous, not written)"
+  },
+  "6": {
+   "sean": "8",
+   "subject": "brahms p19 glyph/19/1/10/7/15",
+   "verdict": "RIGHT in OFF, DECIDED eighth in ON too, but LOST: its bar holds narrowed heads (tiles 9, 3) so the bar is not written"
+  },
+  "7": {
+   "sean": "dot 4",
+   "subject": "brahms p19 glyph/19/1/5/1/3",
+   "verdict": "RIGHT (dot gained)"
+  },
+  "8": {
+   "sean": "16",
+   "subject": "brahms p19 glyph/19/0/12/0/10",
+   "verdict": "RIGHT (16th; only the beam changed)"
+  },
+  "9": {
+   "sean": "dot 4",
+   "subject": "brahms p19 glyph/19/1/10/7/5",
+   "verdict": "wrong->gone (OFF 16th wrong; ON narrowed beams_ambiguous, not written)"
+  },
+  "10": {
+   "sean": "8",
+   "subject": "brahms p14 glyph/14/0/11/3/2",
+   "verdict": "control RIGHT"
+  },
+  "11": {
+   "sean": "8",
+   "subject": "brahms p19 glyph/19/1/11/2/2",
+   "verdict": "control WRONG in both arms (eighth written as a 16th; existing error, not chased)"
+  },
+  "12": {
+   "sean": "dot 4",
+   "subject": "brahms p14 glyph/14/1/8/4/1",
+   "verdict": "control RIGHT"
+  }
+ }
+}

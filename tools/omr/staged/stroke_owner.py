@@ -185,7 +185,7 @@ BLOCK_RESTS = ("restwhole", "resthalf", "resthbar")
 
 
 def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = False, touches_a_head: bool = False,
-              touches_a_note: bool = False) -> Tuple[str, str]:
+              touches_a_note: bool = False, acc_bar_clear_of_note: bool = False) -> Tuple[str, str]:
     """`("clear" | "could" | "no", why)`: does stroke `s` fit the printed shape of `family` (`cls` refines rests)? The `why` names the fields.
 
     `crosses_a_stem`: the stroke touches a vertical stroke that runs on past both its sides (a slash across a stem, not a head beside it);
@@ -225,6 +225,12 @@ def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = Fals
         if k == "vertical":
             return ("clear", "acc_stem:" + dims) if L <= ACC_STEM_MAX_SP else ("no", "longer_than_an_acc_stem:" + dims)
         if k == "horizontal":
+            # 2.202f (Sean's round-3 tile 5, Litolff p6 1/8/10/5: a blotted beam boxed `accidentalSharp` at 0.48 took the 3.6-sp beam as its
+            # "bar" and the eighth lost its beam): an accidental is printed CLEAR of its note, to the left of the head. A bar longer than an
+            # accidental's that also runs into a note (its head or its stem) is the note's ink, never the accidental's.
+            # Acts only with `acc_bar_clear_of_note` (the 2.202 path, `OMR_BEAMS_FROM_STROKES`: it lands with the beam reader it serves).
+            if acc_bar_clear_of_note and L > ACC_BAR_MAX_LEN_SP and touches_a_note:
+                return "no", "acc_bar_runs_into_a_note:" + dims
             return ("clear" if L <= ACC_BAR_MAX_LEN_SP else "could"), "acc_bar:" + dims
         if k == "blob":
             return ("clear" if w <= ACC_BLOB_MAX_W_SP and h <= ACC_BLOB_MAX_H_SP else "could"), "acc_body:" + dims
@@ -335,7 +341,8 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), how, rows)
 
 
-def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS) -> Dict[int, Ownership]:
+def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
+                acc_bar_clear_of_note: bool = False) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
     dropped here) and its area claims. `tiers` is the claim order -- a parameter only so a control can break it. Deterministic."""
     by_ord = {s.ordinal: s for s in strokes}
@@ -361,7 +368,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                 touches_head = any(j in head_owned for j, _ct in s_.touches)
                 touches_note = o in note_ink or any(j in note_ink for j, _ct in s_.touches)
                 fit, why = ("clear", "area") if c.area else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
-                                                                        touches_a_head=touches_head, touches_a_note=touches_note)
+                                                                        touches_a_head=touches_head, touches_a_note=touches_note,
+                                                                        acc_bar_clear_of_note=acc_bar_clear_of_note)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
 

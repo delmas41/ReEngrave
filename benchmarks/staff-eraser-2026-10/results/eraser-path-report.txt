@@ -1,0 +1,22 @@
+LANE REPORT  OMR_ERASER_FIX (OFF=0 ON=1), OMR_METER_SLOT (OFF=0 ON=1), OMR_REST_OWN_STROKE (OFF=0 ON=1), OMR_STEM_TIP_TRUE_EDGE (OFF=0 ON=1), OMR_BEAM_OWN_EXTENT (OFF=0 ON=1)  --from gather
+  OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT
+  OMR_METER_SLOT: read in staged/gather.py, time_signature_locator.py -> GATHER
+  OMR_REST_OWN_STROKE: read in staged/adjudicators/head_rest_shape.py -> ADJUDICATE..EXPORT
+  OMR_STEM_TIP_TRUE_EDGE: read in staged/gather.py, staged/stroke_map.py -> GATHER
+  OMR_BEAM_OWN_EXTENT: read in line_detection.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5026 notes+rests OFF, 5038 ON, 5013 paired)
+  file:   notes +24 -15 | rests +5 -2 | accidentals +2 -1 | flags -2 | beams +5 -4 ~7 | ties +8 -2 | slurs +3 -1 | note values ~5 | pitches ~18 | blue marks +50 -4 | words +4 -8 | clefs -6 | keys +1 -7
+  red bars 0 -> 0 | notes not written 2566 -> 2560
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 3
+      same music at its place (box swap, not a change)  2.83-fix-review tile tile_05 glyph/4/0/7/7/10  scorer said worse
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6518 notes+rests OFF, 6555 ON, 6505 paired)
+  file:   notes +48 -10 | rests +2 -3 | accidentals +13 -4 | dots +34 -3 | flags +3 -3 | beams +4 -4 ~3 | ties +30 -4 | slurs +8 | articulations +3 -3 | note values ~3 | pitches ~2 | blue marks +23 -50 | dynamics +1 | wedges +3 | words +9 -32
+  red bars 166 -> 163 | notes not written 3203 -> 3168
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 7281 s

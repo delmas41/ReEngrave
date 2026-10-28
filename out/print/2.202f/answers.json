@@ -1,0 +1,66 @@
+{
+ "date": "2026-10-28",
+ "verbatim": "1.16 2.8 3.dot4 4. 4 rest 5.4 6.8 7.8 rest 8.4 9.8 10.4 11.8 12.sharp",
+ "tiles": {
+  "1": {
+   "sean": "sixteenth",
+   "subject": "brahms p0 glyph/0/0/10/1/4",
+   "verdict": "NEUTRAL: OFF wrote an eighth (one beam, wrong: a sixteenth); ON narrows (stroke_candidate) and writes nothing"
+  },
+  "2": {
+   "sean": "eighth",
+   "subject": "brahms p25 glyph/25/1/10/1/1",
+   "verdict": "CONTROL RIGHT: eighth both arms"
+  },
+  "3": {
+   "sean": "dotted quarter",
+   "subject": "brahms p8 glyph/8/1/2/2/0",
+   "verdict": "WRONG ON: OFF wrote a dotted quarter (right); ON narrows (stroke_candidate, a face-joined stroke under the stem) and drops it with its dot -- a right note lost"
+  },
+  "4": {
+   "sean": "quarter rest",
+   "subject": "brahms p12 glyph/12/1/5/7/2",
+   "verdict": "CONTROL: rest written quarter both arms (right); a words mark 'a 2' sits on the same box in both arms (unchanged, not this lane)"
+  },
+  "5": {
+   "sean": "quarter",
+   "subject": "brahms p4 glyph/4/0/1/4/4",
+   "verdict": "CONTROL RIGHT: quarter both arms"
+  },
+  "6": {
+   "sean": "eighth",
+   "subject": "brahms p19 glyph/19/1/10/7/12",
+   "verdict": "BOTH RIGHT: eighth both arms; ON adds a blue mark (guessed) on it"
+  },
+  "7": {
+   "sean": "eighth rest",
+   "subject": "brahms p8 glyph/8/1/2/2/1",
+   "verdict": "RIGHT BOTH (rest), but ON adds an unread words mark here: the knock-on of its neighbours 8/1/2/2/0 and /3 being narrowed by face-joined strokes"
+  },
+  "8": {
+   "sean": "quarter",
+   "subject": "brahms p8 glyph/8/1/2/0/8",
+   "verdict": "WRONG ON: OFF wrote a quarter (right); ON narrows (stroke_candidate, a hairpin under the stem face-joined as a beam) -- a right note lost"
+  },
+  "9": {
+   "sean": "eighth",
+   "subject": "brahms p5 glyph/5/0/9/4/3",
+   "verdict": "RIGHT BOTH (eighth); ON loses the slur stop here, the knock-on of neighbour 5/0/9/4/4 narrowed (stroke_candidate)"
+  },
+  "10": {
+   "sean": "quarter",
+   "subject": "brahms p14 glyph/14/1/3/7/0",
+   "verdict": "RIGHT ON: OFF wrote an eighth (wrong); ON writes a quarter -- wrong->right"
+  },
+  "11": {
+   "sean": "eighth",
+   "subject": "brahms p19 glyph/19/1/10/7/13",
+   "verdict": "BOTH RIGHT: eighth both arms; ON adds a blue mark (guessed)"
+  },
+  "12": {
+   "sean": "sharp",
+   "subject": "litolff p6 glyph/6/1/8/12/3",
+   "verdict": "NEUTRAL: the box is a sharp; OFF wrote a sixteenth note on it (wrong); ON narrows and does not write it"
+  }
+ }
+}

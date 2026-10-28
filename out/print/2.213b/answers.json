@@ -1,0 +1,70 @@
+{
+ "judge": "sean",
+ "date": "2026-10-27",
+ "via": "blind-tile sheet out/print/2.213b/tiles, key out/print/2.213b/key.json",
+ "raw": "1. Dot 8 2. 18 3. 8 4. Dot 8 5. 16 6. 8 7-8. 8 9. Dot 4 10. 2 11. Dot 4 12.4",
+ "summary": "2 good (1,4: dotted 16th -> dotted eighth), 2 unchanged-value matches (2 raw '18' = typo, Sean confirmed 16; 5), 8 controls match; right->wrong 0, right->gone 0 (tile 5 repaired vs 2.213)",
+ "answers": {
+  "1": {
+   "sean": "Dot 8",
+   "verdict": "GOOD: OFF dotted 16th (wrong, blue), ON dotted eighth (matches); dot written both arms",
+   "rg": "glyph/19/0/12/0/21"
+  },
+  "2": {
+   "sean": "18",
+   "verdict": "16th both arms, matches; only the beam sub changed continue/continue -> continue/begin. Sean typed '18'; confirmed by Sean afterwards as 16 (typo)",
+   "rg": "glyph/19/0/13/0/5",
+   "sean_confirmed": "16"
+  },
+  "3": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/14/0/11/5/2"
+  },
+  "4": {
+   "sean": "Dot 8",
+   "verdict": "GOOD: OFF dotted 16th (wrong), ON dotted eighth (matches); dot written both arms",
+   "rg": "glyph/19/0/13/0/8"
+  },
+  "5": {
+   "sean": "16",
+   "verdict": "unchanged value, matches: 16th both arms (the previously lost note is written again); beam sub continue/continue -> continue/begin",
+   "rg": "glyph/19/0/12/0/5"
+  },
+  "6": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/5/1/0/9/19"
+  },
+  "7": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/0/0/3/6/2"
+  },
+  "8": {
+   "sean": "8",
+   "verdict": "control, unchanged eighth, matches",
+   "rg": "glyph/16/0/3/8/7"
+  },
+  "9": {
+   "sean": "Dot 4",
+   "verdict": "control, unchanged quarter, dot written ('.'), matches",
+   "rg": "glyph/14/1/7/7/1"
+  },
+  "10": {
+   "sean": "2",
+   "verdict": "control, unchanged half, matches",
+   "rg": "glyph/16/0/3/16/2"
+  },
+  "11": {
+   "sean": "Dot 4",
+   "verdict": "control, unchanged quarter, dot written ('.'), matches",
+   "rg": "glyph/19/1/2/5/1"
+  },
+  "12": {
+   "sean": "4",
+   "verdict": "control, unchanged quarter, matches",
+   "rg": "glyph/16/0/4/2/2"
+  }
+ }
+}

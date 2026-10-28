@@ -76,6 +76,27 @@ def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
+ENV_OWN_STROKE = "OMR_REST_OWN_STROKE"
+#: ROADMAP 2.206b. A stem on a head leaves the HEAD sticking out past its end (half a head, ~0.4 sp, even when the head sits flush); the ink's full
+#: height is stem + that. A "stem" no shorter than the whole cluster, to within this slack, is the cluster's own stroke (an eighth rest's diagonal).
+OWN_STROKE_SLACK_SPACES = 0.2
+
+
+def own_stroke_enabled() -> bool:
+    """ROADMAP 2.206b: ON unless `OMR_REST_OWN_STROKE` is 0/false/no/off."""
+    return os.environ.get(ENV_OWN_STROKE, "1").strip().lower() not in ("0", "", "false", "no", "off")
+
+
+def _is_own_stroke(stem, ink, spaces: float) -> bool:
+    """`stem` (x, y, w, h) and `ink` (x0, y0, x1, y1) canonical: the stem lies inside the ink's columns and spans its whole height."""
+    if spaces <= 0:
+        return False
+    slack = OWN_STROKE_SLACK_SPACES * spaces
+    sx, sy, sw, sh = stem
+    return (sx >= ink[0] - slack and sx + sw <= ink[2] + slack
+            and sy <= ink[1] + slack and sy + sh >= ink[3] - slack)
+
+
 @dataclass(frozen=True)
 class HeadInk:
     value: str                      # "eighth" | "quarter"
@@ -168,6 +189,9 @@ def read_head_ink(ev: Evidence, cell, head_row, clusters) -> Optional[HeadInk]:
         if isinstance(sv, (list, tuple)) and len(sv) >= 4:
             s = tuple(float(x) for x in sv[:4])
             if _geom.stem_touches_head(s, xywh_head) or _geom.stem_touches_head(s, xywh_ink):
+                hs = (row.detail or {}).get("height_spaces")
+                if own_stroke_enabled() and hs and _is_own_stroke(s, ink, (ink[3] - ink[1]) / float(hs)):
+                    continue                             # ROADMAP 2.206b: the rest's own stroke, not a stem on it
                 return None                              # a stem stands on it: not a rest (rule 8)
 
     strict = _read_ink(row)

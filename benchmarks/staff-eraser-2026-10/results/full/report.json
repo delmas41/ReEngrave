@@ -1,0 +1,264 @@
+{
+ "flags": [
+  [
+   "OMR_ERASER_FIX",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "rest": {
+     "gained": 30,
+     "lost": 14,
+     "changed": 0
+    },
+    "note": {
+     "gained": 18,
+     "lost": 164,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 516,
+     "lost": 34,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 4,
+     "lost": 185,
+     "changed": 6
+    },
+    "flag": {
+     "gained": 110,
+     "lost": 19,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 0,
+     "lost": 8,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 0,
+     "lost": 5,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 8,
+     "lost": 4,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 508
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 17
+    },
+    "clef": {
+     "gained": 16,
+     "lost": 6,
+     "changed": 0
+    },
+    "key": {
+     "gained": 17,
+     "lost": 7,
+     "changed": 0
+    },
+    "time": {
+     "gained": 12,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1589,
+     "lost": 3,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5029,
+    4869
+   ],
+   "paired": 4852,
+   "red_bars": [
+    0,
+    1289
+   ],
+   "notes_not_written": [
+    2563,
+    2717
+   ],
+   "control": null,
+   "judged": {
+    "worse": [
+     {
+      "item": "2.145-review",
+      "tile": "10",
+      "subject": "glyph/9/0/7/3/6",
+      "answer": "8 rest",
+      "now": "kept as a notehead"
+     },
+     {
+      "item": "2.83-fix-review",
+      "tile": "tile_05",
+      "subject": "glyph/4/0/7/7/10",
+      "answer": "4",
+      "now": "refused as not a note (stacked_head_duplicate)"
+     }
+    ],
+    "lost": [],
+    "better": [
+     {
+      "item": "2.154-review",
+      "tile": "11",
+      "subject": "glyph/6/1/10/3/2"
+     },
+     {
+      "item": "2.88-review",
+      "tile": "tile_01",
+      "subject": "glyph/10/1/9/5/0"
+     },
+     {
+      "item": "2.88-review-2",
+      "tile": "tile_02",
+      "subject": "glyph/10/1/9/5/0"
+     }
+    ],
+    "scored": 233
+   },
+   "seconds": [
+    13.8,
+    13.9
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 13,
+     "lost": 17,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 4,
+     "lost": 6,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 9,
+     "lost": 9,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 20,
+     "lost": 15,
+     "changed": 0
+    },
+    "rest": {
+     "gained": 1,
+     "lost": 2,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 2,
+     "lost": 4,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 2,
+     "lost": 3,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 5,
+     "lost": 4,
+     "changed": 3
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 3
+    },
+    "flag": {
+     "gained": 1,
+     "lost": 3,
+     "changed": 0
+    },
+    "dynamic": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 13,
+     "lost": 9,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6519,
+    6514
+   ],
+   "paired": 6500,
+   "red_bars": [
+    166,
+    166
+   ],
+   "notes_not_written": [
+    3202,
+    3209
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 232
+   },
+   "seconds": [
+    27.8,
+    27.6
+   ]
+  }
+ },
+ "notes": [
+  "OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 7435.2
+}
