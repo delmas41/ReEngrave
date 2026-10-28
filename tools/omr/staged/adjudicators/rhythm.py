@@ -4266,6 +4266,17 @@ TIP_START_SPACES = 0.6
 TIP_LEVEL_GAP_SPACES = 1.1
 
 
+def _stroke_stem_cannot_decide(stem_info, head_first) -> bool:
+    """ROADMAP 2.204 fixes 1b and 2 (flag `OMR_STEMS_FROM_STROKES` ON only; `stem_info` is `None` OFF so this is False).
+    A clean tip or flag window never decides a value alone (a) on a stem the old finder did not have (`gained` / `old_refused`: the
+    2.146 "a clean tip decides" was measured on finder stems), nor (b) for a head whose fill the head reader could not measure
+    (`not_head_sized` / `fill` null: a half is never seen). It narrows to the OFF candidates instead."""
+    if stem_info is not None and stem_info.get("settled") in ("gained", "old_refused"):
+        return True
+    return bool(stem_info is not None and head_first is not None
+                and (head_first.get("not_head_sized") or head_first.get("fill") is None))
+
+
 def _tips_from_strokes(ev: Evidence, cell, own_stems):
     """`(observation-like rows, abstention-like rows)` standing in for `Q.STEM_TIP_INK` -- one per (own stem, end) -- read off the stroke
     map, or `None` where there is no stroke map in the cell (the caller then reads the GATHER rows as today). Row shapes follow
@@ -4332,7 +4343,10 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
                 n = len(hooks)
                 obs.append(types.SimpleNamespace(id=sv.row_id, value=True, detail={**base, "hooks": None, "hooks_min": max(1, n),
                                                                                      "hooks_max": max(2, n + len(stubs)), "tip_disagree": False}))
-            elif near:
+            elif near or cand:
+                # ROADMAP 2.204 fix 1 (Sean 2026-10-28 "Go ahead"; tiles 1, 8, 2.154 t7): a tip is CLEAN only if NO non-vertical stroke touches
+                # the stem anywhere in the old 3.3 sp window. `TIP_START_SPACES` decides which stroke is a HOOK, never whether the tip is
+                # clean: a 1.7 sp stroke 2.3 sp in (tile 1) and a shattered flag 0.66 sp in (tile 8) are ink on the tip we cannot read.
                 ab.append(types.SimpleNamespace(id=sv.row_id, value=None, detail={**base, "why": "occupied"}))
             else:
                 obs.append(types.SimpleNamespace(id=sv.row_id, value=False, detail={**base, "hooks": 0, "tip_disagree": False}))
@@ -4488,7 +4502,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
-             "tip_readers_disagree",
+             "tip_readers_disagree", "gained_stem_tip_cannot_decide",
              "beam_certain_not_joined",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
@@ -5317,7 +5331,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if (stem_tip_decides_beam_enabled()
             and ((discount_removed_all_marks and own_stems) or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems):
+            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems
+            and not _stroke_stem_cannot_decide(stem_info, head_first)):
         tipv = _stem_tip_beam_verdict(ev, cell, own_stems, head_box, side)
         # ⚠️ Sean's 2.146 tiles (2026-10-16): the clean-tip half 33/33 right on the beam question (+ 41/41 on his hand-truth
         # page); the one "a beam at the tip" decision (tile 13, Brahms p1 sys0 st2 c1 g11) WRONG -- "definitely a quarter". So
@@ -5382,7 +5397,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         _stroke_at_tip = _refused_stroke_at_tip(refused_here, own_stems, side,
                                                 tip_zone_space)
         evidence_holds = (bool(own_stems) and _bare_tip is False
-                          and _stroke_at_tip is False)
+                          and _stroke_at_tip is False
+                          and not _stroke_stem_cannot_decide(stem_info, None))
         quarter_first = evidence_holds and bare_stem_rank_enabled()
         if quarter_first:
             used.extend(r.id for r in _bare_tip_rows)
@@ -5698,6 +5714,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         if _filled_w or own_stems:
             return Ruling.abstain("whole_class_filled_or_stemmed", used=tuple(used),
                                   filled=bool(_filled_w), own_stems=len(own_stems), **shared)
+
+    # ROADMAP 2.204 fix 2: a stem the old finder did not have never decides a plain value from a clean tip / flag window alone.
+    if (stem_info is not None and stem_info.get("settled") in ("gained", "old_refused") and own_stems and levels == 0
+            and not flag_levels and not open_by_class and not hollow and second_dis is None
+            and beam_evidence in ("none_over_this_note", "reader_declined")):
+        cands = []
+        for lv in (0, 1):
+            b = base / (2 ** lv) if lv else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv},
+                                   support=2.0 if lv == 1 else 1.0))
+        return Ruling.narrow(cands, "gained_stem_tip_cannot_decide", used=tuple(used), **shared)
 
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.

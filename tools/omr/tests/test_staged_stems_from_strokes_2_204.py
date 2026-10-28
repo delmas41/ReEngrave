@@ -498,6 +498,21 @@ class TestTheTipFromTheStem(unittest.TestCase):
         self.assertEqual(obs, [])
         self.assertEqual(ab[0].detail["why"], "occupied")
 
+    def test_tile1_a_stroke_touching_the_stem_2_4_sp_inward_makes_the_tip_occupied_not_clean_RED(self):
+        # Litolff p4 glyph/4/0/4/3/8: a 1.7 x 0.44 sp horizontal stroke on the stem, inside the old 3.3 sp window, outside the 0.6 sp start rule
+        obs, ab = self._top(self._tips([V(0, UP, touches=[1]), H(1, (560, 420, 170, 44), thick=0.44, touches=[0])]))
+        self.assertEqual(obs, [])
+        self.assertEqual(ab[0].detail["why"], "occupied")
+
+    def test_tile8_a_shattered_flag_0_66_sp_in_is_occupied_not_clean_RED(self):
+        obs, ab = self._top(self._tips([V(0, UP), dict(kind="blob", i=1, box=(640, 246, 60, 30), L=0.6, T=0.3, touches=[], steps=None)]))
+        self.assertEqual(obs, [])
+        self.assertEqual(ab[0].detail["why"], "occupied")
+
+    def test_twin_a_real_clean_tip_still_reads_False_with_a_stroke_far_outside_the_window(self):
+        obs, ab = self._top(self._tips([V(0, UP), H(1, (560, 560, 170, 30), thick=0.3, touches=[0])]))   # 3.8 sp in
+        self.assertEqual(([r.value for r in obs], ab), ([False], []))
+
     def test_no_stroke_map_means_none_so_the_caller_reads_the_old_rows(self):
         self.assertIsNone(self._tips([], finder=(UP,)))
 
@@ -531,11 +546,12 @@ class TestMeasuredOnTheRealPlates(unittest.TestCase):
         self.assertNotEqual(v.reason, "stem_readers_disagree")
         self.assertEqual(v.detail["stems_from_strokes"]["settled"], "map_cannot_tell")
 
-    def test_a_staff_line_remnant_touching_the_stem_far_from_its_tip_says_nothing_about_the_tip_RED(self):
-        # Brahms: 1.9-sp horizontals touching the stem 2-5 spaces from its tip were read as flags; the 4 dotted quarters came out narrowed
+    def test_a_staff_line_remnant_touching_the_stem_far_from_its_tip_makes_the_tip_occupied_not_clean_RED(self):
+        # SUPERSEDED round 1 (it read these as 'says nothing' = clean): Sean 2026-10-28 'Go ahead' on tiles 1/8 -- ANY non-vertical stroke in the 3.3 sp window
+        # makes the tip occupied (abstain), never clean.
         remnants = [V(0, UP, touches=[1, 2]), H(1, (630, 330, 194, 25), thick=0.25, touches=[0]), H(2, (630, 400, 194, 30), thick=0.31, touches=[0])]
         obs, ab = TestTheTipFromTheStem()._top(TestTheTipFromTheStem()._tips(remnants))
-        self.assertEqual(([r.value for r in obs], ab), ([False], []))
+        self.assertEqual((obs, ab[0].detail["why"]), ([], "occupied"))
         # twin: the same stroke starting AT the tip is a hook
         hook = [V(0, UP, touches=[1]), H(1, (630, 185, 194, 25), thick=0.25, touches=[0])]
         obs, ab = TestTheTipFromTheStem()._top(TestTheTipFromTheStem()._tips(hook))
@@ -604,3 +620,26 @@ class TestASecondsDisplacedHead(unittest.TestCase):
         tall = (500, 500, 130, 250)
         stem = V(0, (610, 520, 30, 400))
         self.assertNotEqual(SS.head_stem([view(stem)], tall, SP).state, "wrong_side")
+
+
+class TestAClearTipNeverDecidesOnAStemTheFinderDidNotHave(unittest.TestCase):
+    """ROADMAP 2.204 fixes 1b and 2."""
+
+    def test_a_gained_stem_with_a_clean_tip_NARROWS_to_the_off_candidates_RED(self):
+        on, gn = run(True, [V(0, UP)])
+        v = on.verdict(Q.DURATION, gn[0])
+        self.assertEqual((v.outcome, v.reason), (Outcome.NARROWED, "gained_stem_tip_cannot_decide"))
+        self.assertEqual(sorted(c.value["written"] for c in v.candidates), [0.5, 1.0])
+
+    def test_twin_the_same_cell_with_the_finders_stem_decides_the_quarter_as_OFF_does(self):
+        off, go = run(False, [V(0, UP)], finder=(UP,))
+        on, gn = run(True, [V(0, UP)], finder=(UP,))
+        a, b = off.verdict(Q.DURATION, go[0]), on.verdict(Q.DURATION, gn[0])
+        self.assertEqual((a.outcome, a.value), (b.outcome, b.value))
+        self.assertEqual(b.value["written"], 1.0)
+
+    def test_the_gate_is_off_with_no_stroke_stem_info(self):
+        self.assertFalse(rhythm._stroke_stem_cannot_decide(None, {"not_head_sized": True}))
+        self.assertTrue(rhythm._stroke_stem_cannot_decide({"settled": "gained"}, None))
+        self.assertTrue(rhythm._stroke_stem_cannot_decide({"settled": "agrees"}, {"not_head_sized": True, "fill": None}))
+        self.assertFalse(rhythm._stroke_stem_cannot_decide({"settled": "agrees"}, {"fill": "black"}))
