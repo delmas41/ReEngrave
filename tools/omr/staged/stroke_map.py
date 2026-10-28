@@ -422,7 +422,7 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
     return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built])
 
 
-#: ROADMAP 2.206d (flag `OMR_STEM_TIP_TRUE_EDGE`, default OFF). The stem finder's box can be a thin core of a thick stem (Brahms p14: 4 px
+#: ROADMAP 2.206d (flag `OMR_STEM_TIP_TRUE_EDGE`, default ON since 2026-10-27). The stem finder's box can be a thin core of a thick stem (Brahms p14: 4 px
 #: of a 25 px stem); the stroke map holds the stem's whole width. Measured over the rows this far from either end of the stem (L7: head and
 #: stem fuse up to 1.2 sp beside a head) and refused where the stroke is wider than `STEM_TRUE_WIDTH_MAX_SPACES` (Litolff's widest plain stem
 #: 0.43 sp, Brahms 0.37 at p90; a fused or doubled stroke is not a stem's width).

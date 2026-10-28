@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-28 -- Session wrap-up: START HERE after 2026-10-27/28; 2.202 round-3 tiles; 2.212/2.217 parked
+Docs + one comment. ROADMAP START HERE block "after 2026-10-27/28"; 2.202 row updated from `lane-2.202c-beams-remeasure` 53c1d6a13 (full frozen sample: judged right->wrong 0, right->narrowed 4; Sean's round-3 tiles: 3 right->gone via `beams_ambiguous`, flag stays OFF). 2.212 and 2.217 parked (63ccef6de, 45d79f85f). Stale "default OFF" comment for `OMR_STEM_TIP_TRUE_EDGE` in `staged/stroke_map.py` corrected. Unused lane-2.216 worktree removed.
+
 ## 2026-10-27 -- ROADMAP 2.206 / 2.206b-e / 2.213 LANDED ON: the staff-eraser path ("Land eraser path")
 
 Sean 2026-10-27 "Land eraser path". `OMR_ERASER_FIX`, `OMR_METER_SLOT`, `OMR_REST_OWN_STROKE`, `OMR_STEM_TIP_TRUE_EDGE` and `OMR_BEAM_OWN_EXTENT` now default ON (deny-list readers in `staff_line_removal.py`, `time_signature_locator.py`, `staged/adjudicators/head_rest_shape.py`, `staged/gather.py`, `line_detection.py`); `docs/flags-2026-09.md` rows read ON. Combined run (benchmarks/staff-eraser-2026-10/FINDINGS.md 17): judged right->wrong 0, tiles 11/12, 21 lost notes counted (8 beam-doubt from the eraser fix incl. Litolff p9 tile 1, 5 reclassified, 8 not tied to a flag), now first test cases of 2.202. 2.202 (beams) and 2.204 (stems) are unblocked to re-measure on the landed eraser.
