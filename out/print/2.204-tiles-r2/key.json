@@ -1,0 +1,302 @@
+[
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1082.00927734375,
+   5233.7236328125,
+   1119.12353515625,
+   5268.47607421875
+  ],
+  "rg": "glyph/5/1/6/0/6",
+  "kind": "note",
+  "off": "abstained",
+  "off_reason": "owned_by_another_staff",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "old_refused",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 1,
+  "crop_origin": [
+   908,
+   5091
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   991.92,
+   2562.6275,
+   1021.0575,
+   2576.015
+  ],
+  "rg": "glyph/4/1/3/3/3",
+  "kind": "note",
+  "off": "decided",
+  "off_reason": "head_and_marks",
+  "on": "narrowed",
+  "on_reason": "gained_stem_tip_cannot_decide",
+  "on_val": null,
+  "settled": "gained",
+  "role": "case",
+  "side": "withheld",
+  "tile": 2,
+  "crop_origin": [
+   911,
+   2490
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   1874.5225,
+   941.8725,
+   1898.7775,
+   964.5525
+  ],
+  "rg": "glyph/11/0/3/12/2",
+  "kind": "note",
+  "off": "decided",
+  "off_reason": "head_and_marks",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 2.0,
+  "settled": "agrees",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 3,
+  "crop_origin": [
+   1792,
+   874
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   3992.665,
+   3251.22,
+   4033.54,
+   3286.3725
+  ],
+  "rg": "glyph/14/0/11/6/0",
+  "kind": "note",
+  "off": "decided",
+  "off_reason": "head_and_marks",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "agrees",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 4,
+  "crop_origin": [
+   3821,
+   3108
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1249.6982421875,
+   5699.73583984375,
+   1286.47509765625,
+   5735.1630859375
+  ],
+  "rg": "glyph/5/1/8/0/9",
+  "kind": "note",
+  "off": "abstained",
+  "off_reason": "owned_by_another_staff",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "old_refused",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 5,
+  "crop_origin": [
+   1076,
+   5557
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   724.7958984375,
+   5136.5634765625,
+   753.2724609375,
+   5160.689453125
+  ],
+  "rg": "glyph/14/1/3/0/7",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "beam_discounted_uncertain",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 1.0,
+  "settled": "no_stem_candidate_only",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 6,
+  "crop_origin": [
+   547,
+   4988
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   2328.09,
+   721.18,
+   2341.32,
+   738.3475
+  ],
+  "rg": "glyph/11/0/2/15/7",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "head_fill_from_ink",
+  "on": "decided",
+  "on_reason": "hollow_head_bare_stem",
+  "on_val": 2.0,
+  "settled": "gained",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 7,
+  "crop_origin": [
+   2240,
+   651
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1739.115,
+   2216.12,
+   1763.45,
+   2230.8450000000003
+  ],
+  "rg": "glyph/10/1/0/8/3",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "beam_discounted_uncertain",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 1.0,
+  "settled": "no_stem_candidate_only",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 8,
+  "crop_origin": [
+   1656,
+   2144
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1638.8,
+   3191.0,
+   1658.16,
+   3198.52
+  ],
+  "rg": "glyph/10/1/8/7/11",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "beam_discounted_uncertain",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "map_silent",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 9,
+  "crop_origin": [
+   1553,
+   3116
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1248.68603515625,
+   5233.7236328125,
+   1288.8369140625,
+   5268.8134765625
+  ],
+  "rg": "glyph/5/1/6/0/4",
+  "kind": "note",
+  "off": "abstained",
+  "off_reason": "owned_by_another_staff",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "old_refused",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 10,
+  "crop_origin": [
+   1076,
+   5091
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   1239.640625,
+   1268.8125,
+   1275.716796875,
+   1304.12109375
+  ],
+  "rg": "glyph/14/0/3/0/18",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "flag_ink_unread",
+  "on": "decided",
+  "on_reason": "stem_value_follows",
+  "on_val": 1.5,
+  "settled": null,
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 11,
+  "crop_origin": [
+   1065,
+   1126
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2900.69,
+   1212.2825,
+   2935.57,
+   1224.0
+  ],
+  "rg": "glyph/14/0/2/4/30",
+  "kind": "note",
+  "off": "narrowed",
+  "off_reason": "beam_discounted_uncertain",
+  "on": "decided",
+  "on_reason": "head_and_marks",
+  "on_val": 0.5,
+  "settled": "map_silent",
+  "role": "case",
+  "side": "unwritten->written",
+  "tile": 12,
+  "crop_origin": [
+   2726,
+   1058
+  ]
+ }
+]
