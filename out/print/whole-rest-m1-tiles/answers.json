@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_29": "whole rest tiles - 1. 8 rest 2. 8 rest 3. whole rest 4. quarter rest 5-12whole rests",
+ "tally": "9/9 gained whole rests right (4 blue: 3,5,8,12; 5 plain: 6,7,9,10,11); 3/3 controls right (1,2 eighth rests, 4 quarter rest)",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "8 rest",
+   "verdict": "control right"
+  },
+  {
+   "tile": 2,
+   "answer": "8 rest",
+   "verdict": "control right"
+  },
+  {
+   "tile": 3,
+   "answer": "whole rest",
+   "verdict": "right (blue whole rest gained)"
+  },
+  {
+   "tile": 4,
+   "answer": "quarter rest",
+   "verdict": "control right"
+  },
+  {
+   "tile": 5,
+   "answer": "whole rest",
+   "verdict": "right (blue whole rest gained)"
+  },
+  {
+   "tile": 6,
+   "answer": "whole rest",
+   "verdict": "right (plain whole rest gained)"
+  },
+  {
+   "tile": 7,
+   "answer": "whole rest",
+   "verdict": "right (plain whole rest gained)"
+  },
+  {
+   "tile": 8,
+   "answer": "whole rest",
+   "verdict": "right (blue whole rest gained)"
+  },
+  {
+   "tile": 9,
+   "answer": "whole rest",
+   "verdict": "right (plain whole rest gained)"
+  },
+  {
+   "tile": 10,
+   "answer": "whole rest",
+   "verdict": "right (plain whole rest gained)"
+  },
+  {
+   "tile": 11,
+   "answer": "whole rest",
+   "verdict": "right (plain whole rest gained)"
+  },
+  {
+   "tile": 12,
+   "answer": "whole rest",
+   "verdict": "right (blue whole rest gained)"
+  }
+ ]
+}
