@@ -1,0 +1,106 @@
+[
+ {
+  "plate": "litolff",
+  "key": "glyph/2/1/1/12/3",
+  "page": 2,
+  "kept": [
+   2218.44,
+   2259.2,
+   2247.4,
+   2292.96
+  ],
+  "raw": [
+   2218.4607702636717,
+   2259.2467919921874,
+   2247.3675146484375,
+   2292.940185546875
+  ],
+  "max_corner_diff_px": 0.047,
+  "raw_class": "noteheadHalfInSpace",
+  "raw_conf": 0.353,
+  "size_spaces": [
+   1.81,
+   2.11
+  ],
+  "reader": "detector",
+  "eye": "two_heads_one_blob"
+ },
+ {
+  "plate": "litolff",
+  "key": "glyph/2/0/8/3/4",
+  "page": 2,
+  "kept": [
+   904.0,
+   1566.92,
+   926.88,
+   1678.28
+  ],
+  "raw": [
+   903.959296875,
+   1566.9528076171875,
+   926.8933740234374,
+   1678.249150390625
+  ],
+  "max_corner_diff_px": 0.041,
+  "raw_class": "noteheadBlackInSpace",
+  "raw_conf": 0.288,
+  "size_spaces": [
+   1.43,
+   6.96
+  ],
+  "reader": "detector",
+  "eye": "two_heads_one_blob"
+ },
+ {
+  "plate": "litolff",
+  "key": "glyph/2/1/2/12/2",
+  "page": 2,
+  "kept": [
+   2201.0,
+   2436.8,
+   2247.88,
+   2475.04
+  ],
+  "raw": [
+   2201.0,
+   2436.783125,
+   2247.9204736328124,
+   2475.052490234375
+  ],
+  "max_corner_diff_px": 0.04,
+  "raw_class": "noteheadHalfInSpace",
+  "raw_conf": 0.139,
+  "size_spaces": [
+   2.93,
+   2.39
+  ],
+  "reader": "yolo_rescue_lowconf",
+  "eye": "two_heads_one_blob"
+ },
+ {
+  "plate": "brahms",
+  "key": "glyph/5/1/12/3/3",
+  "page": 5,
+  "kept": [
+   2544.075,
+   6699.275,
+   2586.975,
+   6771.05
+  ],
+  "raw": [
+   2543.951414489746,
+   6699.204274228216,
+   2586.8568359375,
+   6770.9638946533205
+  ],
+  "max_corner_diff_px": 0.124,
+  "raw_class": "noteheadBlackOnLine",
+  "raw_conf": 0.648,
+  "size_spaces": [
+   1.56,
+   2.61
+  ],
+  "reader": "detector",
+  "eye": "not_a_notehead"
+ }
+]

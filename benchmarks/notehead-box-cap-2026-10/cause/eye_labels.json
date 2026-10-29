@@ -1,0 +1,13 @@
+{
+ "_what": "My own eye on the zoomed sheets (NOT Sean): one label per oversized written head box. Lists follow the order trace.py kinds() draws (rows.json order within plate/kind); brahms follows sheets() order (big boxes first). T=two_heads_one_blob, B=head_merged_with_neighbour_ink, H=head_ink_itself_this_big, A=box_runs_along_stem, N=not_a_notehead.",
+ "litolff": {
+  "tall_ink":    "BTTTBTBTTTTTTBTBTBTBTNTBTBTBTTTTTB",
+  "stem_in_box": "TTHTTBTTBNHBBAAATBBATBNHAHBANHHBHAN",
+  "edge":        "HHHHHNNHNHHBHBHHNNHHNHHHHNNN",
+  "wide_ink":    "BBNNBNTB",
+  "loose":       "NBN"
+ },
+ "brahms": {
+  "_sheet": "NNNNNNBBNNBNN"
+ }
+}
