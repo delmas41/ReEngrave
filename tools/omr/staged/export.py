@@ -530,12 +530,13 @@ def head_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         seen.add(v["id"])
         g = (v.get("detail") or {}).get("head_ink_guess")
         if g:
+            # Sean 2026-10-28 (m2 tiles): `not_one_head` stays on the record (filed under the head's identity, never duration: a
+            # duration guess made partial bars drop 7 Litolff chord-mates) but marks NOTHING blue (`marks_blue` False).
+            if not g.get("marks_blue", g["rule"] != "head_ink_not_one_head"):
+                return None
             if g["chosen"].get("written") != dur["value"].get("written"):
                 return None
-            # `not_one_head` questions WHAT the box is, not its value: filed under the head's identity so the duration stays certain
-            # and a partial bar keeps its later onsets (the first m2 replay lost 7 Litolff chord-mates behind a value-unchanged guess).
-            q = Q.NOTEHEAD_IS_NOT_A_NOTEHEAD if g["rule"] == "head_ink_not_one_head" else Q.DURATION
-            return {"stage": "ADJUDICATE", "rule": g["rule"], "quantity": q,
+            return {"stage": "ADJUDICATE", "rule": g["rule"], "quantity": Q.DURATION,
                     "candidates": list(g["candidates"]), "chosen": dict(g["chosen"])}
         v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
     return None

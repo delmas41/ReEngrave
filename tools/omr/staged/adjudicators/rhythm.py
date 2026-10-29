@@ -3635,13 +3635,14 @@ def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
 #     and reads HOLLOW is written GUESSED (blue), candidates half and quarter -- the half chosen on its own stem (notehead first), the
 #     black value kept where no stem stands (fix F: a hollow never writes a whole here);
 #   * a black head 2.148's own fill reader READ is never overturned (fix B) -- this branch is reached only where it read nothing;
-#   * a written half whose trimmed head does not read hollow is not a plain half: GUESSED, candidates half and quarter, value kept;
-#   * `not_one_head` only NARROWS: the note is written as before, GUESSED, its value and "not one head" carried. Nothing is removed.
-# The guess rides on the verdict's detail (`head_ink_guess`); EXPORT's `head_ink_guess_of` draws it blue. Old readers stay (fix E).
+#   * `not_one_head` is RECORDED on the verdict (`head_ink_guess`, filed under the head's identity, `notehead_is_not_a_notehead`,
+#     never under duration) and marks NOTHING blue (`marks_blue` False): Sean's m2 tiles 1 of 2, and ~216 Litolff blue marks on 2 pages.
+#   * DROPPED (Sean 2026-10-28, m2 tiles 0 of 2: both were real halves): the old `head_ink_half_not_hollow` rule (a written half whose
+#     trimmed head does not read hollow) -- a slur or line through a half's hole reads "not hollow"; it marks nothing.
+# The guess rides on the verdict's detail (`head_ink_guess`); EXPORT's `head_ink_guess_of` draws only `marks_blue` guesses blue.
 # ─────────────────────────────────────────────────────────────────────────────
 HEAD_INK_GUESS_KEY = "head_ink_guess"
 HEAD_INK_RULE_HOLLOW = "head_ink_hollow_over_black"
-HEAD_INK_RULE_HALF_NOT_HOLLOW = "head_ink_half_not_hollow"
 HEAD_INK_RULE_NOT_ONE_HEAD = "head_ink_not_one_head"
 
 
@@ -3711,13 +3712,13 @@ def _with_head_ink_guess(ruling: Ruling) -> Ruling:
             cands = [dict(plain, support=2.0), _value_at(v, 1.0, 1.0)]
         else:                                   # no stem of its own: the black value stands, the half beside it (never a whole)
             cands = [dict(plain, support=1.0), _value_at(v, 2.0, 1.0)]
-    elif hi is not None and head_w == 2.0 and not v.get("beam_levels") and hi.get("value") != "hollow":
-        rule, cands = HEAD_INK_RULE_HALF_NOT_HOLLOW, [dict(plain, support=1.0), _value_at(v, 1.0, 1.0)]
     elif hi is not None and hi.get("why") == ABSTAIN.NOT_ONE_HEAD:
         rule, cands = HEAD_INK_RULE_NOT_ONE_HEAD, [dict(plain, support=1.0), {"value": "not_one_head", "support": 1.0}]
     if rule is None:
         return ruling
-    g = {"rule": rule, "candidates": cands, "chosen": plain, "head_ink": hi}
+    g = {"rule": rule, "candidates": cands, "chosen": plain, "head_ink": hi,
+         "files_under": str(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD if rule == HEAD_INK_RULE_NOT_ONE_HEAD else Q.DURATION),
+         "marks_blue": rule != HEAD_INK_RULE_NOT_ONE_HEAD}
     return dataclasses.replace(ruling, detail={**d, HEAD_INK_GUESS_KEY: g})
 
 

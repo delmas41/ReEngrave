@@ -2,8 +2,8 @@
 EXPORT (`export.head_ink_guess_of`), flag `OMR_FILL_FROM_STROKES`, default OFF.
 
 Sean 2026-10-28: a black box 2.148 could not read (`not_head_sized`) whose head reads hollow is written blue, half and quarter; a black
-2.148 READ is never overturned; a written half that does not read hollow is not a plain half; `not_one_head` only narrows (blue), it
-never removes a note. Each positive has a control that differs only in the evidence (CLAUDE.md rule 7)."""
+2.148 READ is never overturned. After Sean's m2 tiles (2026-10-28): the half-not-hollow rule is DROPPED (a written half marks nothing),
+and `not_one_head` is recorded on the verdict (under the head's identity) but marks nothing blue and never removes a note. Each positive has a control that differs only in the evidence (CLAUDE.md rule 7)."""
 from __future__ import annotations
 
 import os
@@ -87,6 +87,17 @@ class TestUnreadBlackReadsHollow(unittest.TestCase):
         g = _guess(v_on)
         self.assertEqual(g["rule"], rhythm.HEAD_INK_RULE_NOT_ONE_HEAD)
         self.assertEqual(g["candidates"][1]["value"], "not_one_head")
+        self.assertEqual(g["files_under"], str(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD))
+        self.assertFalse(g["marks_blue"])
+
+    def test_not_one_head_is_recorded_but_export_draws_nothing_blue(self):
+        log = Log()
+        g = _part_boxed(log, located_share=None)
+        _ink(log, g, why=ABSTAIN.NOT_ONE_HEAD, noh="too_wide")
+        v = _decide(log, g)
+        self.assertEqual(_guess(v)["rule"], rhythm.HEAD_INK_RULE_NOT_ONE_HEAD)
+        rec = export.Record({"record": {"observations": [], "abstentions": [], "verdicts": log.to_json()["verdicts"]}})
+        self.assertIsNone(export.head_ink_guess_of(rec, g.to_key()))
 
     def test_control_no_head_ink_row_is_unchanged(self):
         on, off = Log(), Log()
@@ -129,17 +140,17 @@ class TestAWrittenHalfThatDoesNotReadHollow(unittest.TestCase):
             return g
         return b
 
-    def test_ink_filled_marks_the_half_blue_value_kept(self):
+    def test_ink_filled_the_half_is_written_plain(self):
+        """The dropped half_not_hollow rule (Sean's m2 tiles 0 of 2): a half whose ink reads filled marks nothing."""
         v_on, v_off, _log, _g = _arms(self._b(value="filled"))
         self.assertEqual(_w(v_off), 2.0)
         self.assertEqual(_w(v_on), 2.0)
-        g = _guess(v_on)
-        self.assertEqual(g["rule"], rhythm.HEAD_INK_RULE_HALF_NOT_HOLLOW)
-        self.assertEqual([c["written"] for c in g["candidates"]], [2.0, 1.0])
+        self.assertIsNone(_guess(v_on))
 
-    def test_ink_unread_split_also_marks_it(self):
+    def test_ink_unread_split_the_half_is_written_plain(self):
         v_on, _off, _log, _g = _arms(self._b(why=ABSTAIN.READERS_SPLIT))
-        self.assertEqual(_guess(v_on)["rule"], rhythm.HEAD_INK_RULE_HALF_NOT_HOLLOW)
+        self.assertEqual(_w(v_on), 2.0)
+        self.assertIsNone(_guess(v_on))
 
     def test_control_ink_hollow_the_half_stays_plain(self):
         v_on, _off, _log, _g = _arms(self._b(value="hollow"))

@@ -1,0 +1,84 @@
+{
+ "count_by_rule_plate": {
+  "head_ink_hollow_over_black/litolff": 3,
+  "head_ink_hollow_over_black/brahms": 1
+ },
+ "rows": [
+  {
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1344.87,
+    814.255,
+    1375.405,
+    835.645
+   ],
+   "rg": "glyph/4/0/3/6/2",
+   "kind": "note",
+   "off": "half",
+   "on": "half",
+   "blue_off": false,
+   "blue_on": true,
+   "rule": "head_ink_hollow_over_black",
+   "role": "case",
+   "reason": "the detector said black and its fill reader could not read the box; OFF already wrote half (the stem's value, a later step); now the head's own trimmed ink has a hole, so the half is chosen at the head and written blue (quarter the other choice)"
+  },
+  {
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    518.415,
+    1089.4850000000001,
+    548.655,
+    1108.5425
+   ],
+   "rg": "glyph/4/0/4/0/4",
+   "kind": "note",
+   "off": "quarter",
+   "on": "half",
+   "blue_off": false,
+   "blue_on": true,
+   "rule": "head_ink_hollow_over_black",
+   "role": "case",
+   "reason": "the detector said black and its fill reader could not read the box, but the head's own trimmed ink has a hole and it stands on a stem, so it is written half in blue (quarter the other choice)"
+  },
+  {
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    908.7275,
+    1083.9725,
+    939.125,
+    1105.0775
+   ],
+   "rg": "glyph/4/0/4/3/8",
+   "kind": "note",
+   "off": "quarter",
+   "on": "half",
+   "blue_off": false,
+   "blue_on": true,
+   "rule": "head_ink_hollow_over_black",
+   "role": "case",
+   "reason": "the detector said black and its fill reader could not read the box, but the head's own trimmed ink has a hole and it stands on a stem, so it is written half in blue (quarter the other choice)"
+  },
+  {
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3463.775,
+    1285.7,
+    3494.85,
+    1305.775
+   ],
+   "rg": "glyph/14/0/3/5/9",
+   "kind": "note",
+   "off": "quarter",
+   "on": "quarter",
+   "blue_off": false,
+   "blue_on": true,
+   "rule": "head_ink_hollow_over_black",
+   "role": "case",
+   "reason": "the detector said black and its fill reader could not read the box; the head's own trimmed ink has a hole but no stem of its own was found, so the quarter is kept and written blue (half the other choice)"
+  }
+ ]
+}
