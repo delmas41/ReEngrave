@@ -155,7 +155,7 @@ Why not anchor at claim time: the claim runs before heads so no head takes arc i
 
 Sean: *"Let's call the pass a page wide pass (instead of belonging to the barline) and let's make sure we have everything that should be read at that level on that pass."* Also: *"I don't want to add reading passes every time we add a symbol"*, *"Same with arcs and dynamics (hairpins)"*.
 
-**What it is.** One named GATHER stage, the PAGE-WIDE PASS. It reads, ONCE per page or system and across barlines, every mark whose identity or extent is page/system-level, and files their claims (§9 step 1). It decides no meaning and anchors nothing (§9 step 3, ROADMAP 2.223). It reuses rasters and readers GATHER already runs: no extra image or OCR pass per symbol. Each addition reports its added GATHER seconds per page. No lane owns the pass; each lane owns its reader inside it.
+**What it is.** One named GATHER stage, the PAGE-WIDE PASS. It reads, ONCE per page or system and across barlines, every mark whose identity or extent is page/system-level, and files their claims (§9 step 1). It decides no meaning and anchors nothing (§9 step 3, ROADMAP 2.223). It reuses rasters and readers GATHER already runs: no extra image or OCR pass per symbol, and no scan run twice. (Sean: *"I am not worried about how much time it adds to the pass - I was worried we would be running multiple unnecessary passes"* -- so the test is no duplicate passes, not a seconds budget.) No lane owns the pass; each lane owns its reader inside it.
 
 **Inventory: what belongs on the page-wide pass.** The reader is today's STAGED GATHER function; "level" is how it reads today. Draft by the manager from the function list and docstrings, to be VERIFIED (item 1 of the audit below).
 
@@ -173,6 +173,6 @@ Sean: *"Let's call the pass a page wide pass (instead of belonging to the barlin
 Stays PER CELL, not on this pass: noteheads, stems, beams, flags, accidentals, dots, rests, ledger lines, articulations, tremolo slashes, grace notes (they live inside one bar; anchoring of page-wide marks to them is 2.223).
 
 **Audit to run before building more** (one read-only agent):
-1. Verify each row: which reader, page or cell level, which raster it reads, its GATHER seconds per page.
+1. Verify each row: which reader, page or cell level, which raster it reads.
 2. Find any reader that runs the same scan twice or per cell where it could run once per page, for example hairpins read by two readers and arcs read by both `gather_system_arcs` and `gather_arc_ink`.
 3. Order inside the pass: structure (staff, barlines, brackets, braces) -> system registers (clef, key, meter) -> text -> dynamics -> arcs -> repeats -> then the per-cell readers. This follows §3 and Sean's order: easiest and clearest first.
