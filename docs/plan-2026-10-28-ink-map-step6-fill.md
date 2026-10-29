@@ -113,10 +113,12 @@ Form: lesson | source | how the plan respects it, or CONFLICT. All mechanisms ar
 13. **A tremolo slash is told by its ENDS, not slant.** | DECISIONS 2.137 (2026-10-15), page-facts 2026-10-27 | RESPECTED (plan step 4 / 2.214); 2.137's tile 9 (a deformed open half refused) is the known cost: accept as rare.
 14. **A rate from another population is not a rate** (CLAUDE rule 7). | CLAUDE.md | Milestone 1's Litolff 4,6 / Brahms 5,14 sample is the acceptance plates; the 766 "halves" in FINDINGS are written halves only, i.e. exactly the population the gate already admits (selection bias: the 8 failures lie outside it).
 
-### Proposed changes (for Sean)
-- A. In Sec.2, add a head-hood check ahead of the fill read (2.159's guards + `Q.HEAD_OVAL` + slash ends), and let an ink extent that holds a sharp/flag/ff be `not_one_head` -> unread, nothing invented.
-- B. Say that the consumer never calls a decided black head hollow-then-black by overturning: it either narrows (blue) or keeps 2.148/2.159's "never calls black" rule; ask Sean.
-- C. Make the twin key split a stacked pair first (2.129/2.132) and leave `stacked_head_fit`'s hollow branch until the 2.132 tiles are answered.
-- D. Do not centre windows on a centroid (2.115); centre on the mask extent or prove stability on tile 13.
-- E. Retire 2.159/2.161 code only after parity on their own tiles (`out/print/2.159-review/`, `2.161-review/`).
-- F. Whole-class boxes: HEAD_INK hollow never writes a whole without 2.173's tests.
+### Adopted 2026-10-28 (Sean: "Sounds like a good plan."; DECISIONS) -- folded into the steps they change
+- A (milestone 1 records it, milestone 2 acts on it). In Sec.2, add a head-hood check ahead of the fill read (2.159's guards + `Q.HEAD_OVAL` + slash ends), and let an ink extent that holds a sharp/flag/ff be `not_one_head` -> unread, nothing invented.
+- B (milestone 2; Sean's ruling: blue, candidates half and quarter, a black our own fill reader READ is never overturned). Say that the consumer never calls a decided black head hollow-then-black by overturning: it either narrows (blue) or keeps 2.148/2.159's "never calls black" rule; ask Sean.
+- C (milestone 3). Make the twin key split a stacked pair first (2.129/2.132) and leave `stacked_head_fit`'s hollow branch until the 2.132 tiles are answered.
+- D (milestone 1). Do not centre windows on a centroid (2.115); centre on the mask extent or prove stability on tile 13.
+- E (plan step 10). Retire 2.159/2.161 code only after parity on their own tiles (`out/print/2.159-review/`, `2.161-review/`).
+- F (milestone 2). Whole-class boxes: HEAD_INK hollow never writes a whole without 2.173's tests.
+
+**Build order amendments from the adoption.** Milestone 1 also records, per row, the head-hood check (`not_one_head` when the ink extent holds a sharp, a flag or an ff) and centres on the mask extent (fix D), not a centroid. Milestone 2 writes the `not_head_sized` + black class + hollow ink case GUESSED (blue, candidates half/quarter) only after head-hood passes, and never overturns a black that the fill reader actually read (fix B). Milestones 3 and 5 follow C and E.
