@@ -14421,7 +14421,7 @@ def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, fl
 def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                      stroke_cells: Dict[Tuple[int, int, int, int], Any], arcs_summary: Optional[Dict[str, Any]], *,
                      progress: bool = False) -> Dict[str, int]:
-    """lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, default OFF; needs `OMR_SYSTEM_ARCS` and `OMR_STROKE_MAP`), STAGED GATHER: the register's `ink`
+    """lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, default ON; needs `OMR_SYSTEM_ARCS` and `OMR_STROKE_MAP`), STAGED GATHER: the register's `ink`
     branch for ARCS, ONE CLAIM PER SYSTEM ARC (Sean 2026-10-29: "arcs ... need to be treated system or page wide not based on individual measures").
     The unit is the curve `gather_system_arcs` traced and joined across barlines (`Q.SYSTEM_ARC`'s `trace`), keyed by (page, system, staff) and its
     page position -- never a cell index. One `Q.CLAIMED_AREA` row, owner `arc`, unit `ink`, filed on the arc's STAFF; value = `[[cell, stroke ordinal],
@@ -16150,7 +16150,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
-        # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default OFF): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
+        # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
         # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as

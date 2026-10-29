@@ -8,9 +8,10 @@ a tie or a slur. If we can have the gather stage claim the ink as an arc that wi
 His tie rule (page-facts s1, the same day): "a tie only ever happens between 2 adjacent notes of the same pitch. Different pitch or spanning multiple
 notes is always slur. When there are multiple arcs the tie is always closer to the staff than the slur."
 
-THE THREE FLAGS, all default OFF (an explicit on-word turns each on):
+THE THREE FLAGS. `OMR_ARC_CLAIM` is default ON (Sean 2026-10-29, "Yes"; an explicit 0/false/no/off/empty disables); the other two are
+default OFF (an explicit on-word turns each on) and wait for ROADMAP 2.223:
 
-  `OMR_ARC_CLAIM`            GATHER. Each curve `gather_system_arcs` traced (`Q.SYSTEM_ARC`, 2.166) claims the strokes of every cell it runs through as
+  `OMR_ARC_CLAIM`            GATHER (default ON). Each curve `gather_system_arcs` traced (`Q.SYSTEM_ARC`, 2.166) claims the strokes of every cell it runs through as
                              ONE owner, `arc`, in the register (`Q.CLAIMED_AREA`, unit `ink`, owner `arc`) -- no kind. `stroke_owner` reads it at tier 0
                              (a stroke the traced curve runs along is the curve's, whatever box also stands on it). Needs `OMR_SYSTEM_ARCS` and
                              `OMR_STROKE_MAP` (both default ON). A later reader may MARK claimed ink, never TAKE it as a beam, a hook, a stem or a head.
@@ -55,7 +56,11 @@ def _on(name: str) -> bool:
 
 
 def claim_enabled() -> bool:
-    return _on(ENV_CLAIM)
+    """`OMR_ARC_CLAIM`, default ON (Sean 2026-10-29); an explicit `0/false/no/off` (or empty) disables."""
+    raw = os.environ.get(ENV_CLAIM)
+    if raw is None:
+        return True
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
 def kind_enabled() -> bool:

@@ -40,10 +40,14 @@ def test_stacked_arcs_the_nearer_is_the_tie():
     assert AC.kind_from_ends(_tn("different"), {"role": "nearer"}, None)[0] == "slur"
 
 
-def test_flags_default_off(monkeypatch):
+def test_claim_default_on_others_off(monkeypatch):
     for n in (AC.ENV_CLAIM, AC.ENV_KIND, AC.ENV_SLUR):
         monkeypatch.delenv(n, raising=False)
-    assert not (AC.claim_enabled() or AC.kind_enabled() or AC.slur_enabled())
+    assert AC.claim_enabled()
+    assert not (AC.kind_enabled() or AC.slur_enabled())
+    for off in ("0", "false", "no", "off", ""):
+        monkeypatch.setenv(AC.ENV_CLAIM, off)
+        assert not AC.claim_enabled()
     monkeypatch.setenv(AC.ENV_KIND, "1")
     assert AC.kind_enabled()
 

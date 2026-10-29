@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- arc claim LANDED ON (OMR_ARC_CLAIM, lane-arcs-claim-1029)
+STAGED GATHER `gather_arc_claim` + `arc_claim.py` + `stroke_owner` tier 0: each system arc (`Q.SYSTEM_ARC`) claims its strokes once as owner `arc`, no kind; later readers mark but never take that ink. Default ON (deny-list 0/false/no/off/empty). `OMR_ARC_KIND_FROM_ENDS` and `OMR_SLUR_FROM_ANCHORS` landed as code, default OFF, for ROADMAP 2.223. Evidence: Sean's tiles 10/10 arcs, Brahms p0 136/153 hand-truth arcs claimed, 2-page gather Litolff unchanged, Brahms +2 notes +2 dots. Merged clean into main; check 198.
+
 ## 2026-10-29 -- ROADMAP 2.220b fix 2 LANDED ON: head height cap 1.5 -> 1.6 sp
 STAGED GATHER (`head_ink.trim_head`, `trim_line_only_v2`), `OMR_HEAD_TRIM_LINE_ONLY_V2` default ON (deny-list; needs the line-only trim). Cause: the line-only trim measures a slanted hollow Litolff head at its true 1.52-1.59 sp; the 1.5 cap was set on shaved heads. 63 too_tall heads become one head; judged tile 5 (Litolff p10) is a half again; right->wrong 0. Cut-off from one plate's valley (Brahms never reaches 1.55): re-measure on the next publisher. benchmarks/shared-ink-map-2026-10/FINDINGS.md "head trim fix 2".
 
