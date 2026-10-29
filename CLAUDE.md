@@ -197,6 +197,10 @@ Check yourself against Sean's past answers first: `python3 -m tools.omr.staged.j
 for it** (Sean, 2026-10-28: 2.204 asked him the seconds-on-both-sides
 question he had answered on 10-26). When a ruling changes a page fact, every
 lane whose code reads that fact re-tests against it before its next measure.
+**Compare like with like** (Sean, 2026-10-28): reader to reader, or the
+whole pipeline's exported file to the whole pipeline's exported file, matched
+by place (never by box id alone: twins) -- never one arm's verdict against the
+other arm's file.
 
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
 the four root assets first (`docs/running.md` §1). Never `git checkout` a
