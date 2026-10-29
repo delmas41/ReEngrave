@@ -20,3 +20,20 @@ from typing import Any, Optional
 def system_rules(pws: Any, system_index: int) -> Optional[dict]:
     store = getattr(pws, "system_structure", None)
     return None if not store else store.get(system_index)
+
+
+def whole_mark(pws: Any, system_index: int, box) -> Optional[dict]:
+    """The WHOLE left-edge mark (`system_rules(...)["left_edge"]["marks"]`: kind brace|bracket|systemic_barline, box, staff_indices) that
+    contains the centre of `box`, or None. A claimant that holds a fragment (a detector box over one stretch of a bracket) takes this mark's
+    box and kind instead of its own (Sean's tiles 7 and 11: a piece of a bracket is not a brace)."""
+    rules = system_rules(pws, system_index)
+    if not rules:
+        return None
+    cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+    best = None
+    for m in rules["left_edge"].get("marks", []):
+        x0, y0, x1, y1 = m["box"]
+        if x0 - 6 <= cx <= x1 + 6 and y0 <= cy <= y1:
+            if best is None or (y1 - y0) < (best["box"][3] - best["box"][1]):
+                best = m
+    return best

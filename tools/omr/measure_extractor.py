@@ -1132,8 +1132,86 @@ def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
     not by a width cut-off). Chosen over the m2 draft `left_edge_rules`, which labelled kinds from three numbers tuned on two plates and
     called a bracket+systemic-barline pair a `brace` (Litolff p6 s0) and a whole Brahms group a `brace` (p5 s0). Pass `.levels` /
     `.blocks` to the 2.221 m1b claimant."""
-    from .bracket_reader import read_brackets
-    return read_brackets(bin_img, staves)
+    from .bracket_reader import read_brackets, strokes_at_left_edge, covered_staves, is_rule
+    out = dict(read_brackets(bin_img, staves))
+    # WHOLE MARKS with a KIND, by SHAPE measured along the mark (Sean 2026-10-29, tiles 3/6 braces, 7/11 pieces of a bracket): a BRACKET is a
+    # constant-width straight rule with a hook turning RIGHT at its top and bottom; a BRACE bends and has no right hook. Per stroke, on rows
+    # off the staff lines: `hook_sp` = how far the ink at the top/bottom 6% reaches right of the middle's right edge; `bend_sp` = how far the
+    # middle's left edge lies left of the ends'; `width_sp` = median width of the middle third. Measured on Brahms p5 and Litolff p4 (14
+    # strokes): braces hook 0.00-0.09 sp, brackets 0.70-1.27 sp (nothing between); width 0.33-0.44 sp for braces/systemic barlines,
+    # 0.58-0.83 for brackets. Kind: hook >= 0.5 and width >= 0.5 -> bracket; hook <= 0.3 over exactly 2 staves -> brace; the rightmost thin
+    # (< 0.5 sp) stroke over >= 3 staves -> systemic_barline; anything else -> kind None (ABSTAIN, shape given). The claimant's second
+    # witness is the detector's `brace` box: agree -> decide, disagree -> abstain. The mark's box runs top hook to bottom hook.
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    sp = float(np.median([s.line_spacing_px for s in ordered]))
+    anchor = float(np.median([s.x_start for s in ordered]))
+    strokes, _geom = strokes_at_left_edge(bin_img, ordered)
+    line_rows = {int(y) + d for s_ in ordered for y in s_.line_ys for d in range(-3, 4)}
+    marks: list[dict] = []
+    for st in strokes:
+        if not is_rule(st) or (st.x_centre - anchor) / sp > 0.5:
+            continue
+        cov = covered_staves(st, ordered)
+        if len(cov) < 2:
+            continue
+        c, pad = int(round(st.x_centre)), int(1.6 * sp)
+        x_off = max(0, c - pad)
+        rows = []
+        for y in range(st.y_top, st.y_bot + 1):
+            if y in line_rows:
+                continue
+            row = bin_img[y, x_off:c + pad + 1] < 128
+            m0 = c - x_off
+            seg = np.where(row[max(0, m0 - 4):m0 + 5])[0]
+            if seg.size == 0:
+                continue
+            m = max(0, m0 - 4) + int(seg[len(seg) // 2])
+            l = m
+            while l > 0 and row[l - 1]:
+                l -= 1
+            r = m
+            while r < len(row) - 1 and row[r + 1]:
+                r += 1
+            rows.append((y, l + x_off, r + x_off))
+        if len(rows) < 20:
+            continue
+        ys = np.array([r_[0] for r_ in rows], float)
+        lf = np.array([r_[1] for r_ in rows], float)
+        rt = np.array([r_[2] for r_ in rows], float)
+        t = (ys - st.y_top) / max(1, st.y_bot - st.y_top)
+        mid, end, top, bot = (t > 0.35) & (t < 0.65), (t < 0.15) | (t > 0.85), t < 0.06, t > 0.94
+        if not (mid.any() and end.any()):
+            continue
+        reach = max(rt[top].max() if top.any() else 0.0, rt[bot].max() if bot.any() else 0.0)
+        hook = (reach - float(np.median(rt[mid]))) / sp
+        bend = (float(np.median(lf[end])) - float(np.median(lf[mid]))) / sp
+        width = float(np.median(rt[mid] - lf[mid] + 1)) / sp
+        kind = None
+        if hook >= 0.5 and width >= 0.5 and len(cov) >= 3:
+            kind = "bracket"
+        elif hook <= 0.3 and len(cov) == 2 and width < 0.5:
+            kind = "brace"
+        elif width < 0.5 and len(cov) >= 3:
+            kind = "systemic_barline"
+        x1 = max(int(st.x_right), int(min(reach, st.x_right + 1.2 * sp))) if kind == "bracket" else int(st.x_right)
+        marks.append({"kind": kind, "box": [int(min(st.x_left, lf.min())), int(st.y_top), x1, int(st.y_bot)],
+                      "staff_indices": [ordered[i].staff_index for i in cov], "hook_sp": round(hook, 2), "bend_sp": round(bend, 2),
+                      "width_sp": round(width, 2), "height_sp": st.height_spacings})
+    # the systemic barline is the RIGHTMOST thin stroke only; collinear thin pieces of a tilted rule are joined
+    thin = [m for m in marks if m["kind"] == "systemic_barline"]
+    if thin:
+        xr = max(m["box"][2] for m in thin)
+        keep = [m for m in thin if m["box"][2] >= xr - sp]
+        for m in thin:
+            if m not in keep:
+                m["kind"] = None
+        for m in keep[1:]:
+            keep[0]["box"] = [min(keep[0]["box"][0], m["box"][0]), min(keep[0]["box"][1], m["box"][1]),
+                              max(keep[0]["box"][2], m["box"][2]), max(keep[0]["box"][3], m["box"][3])]
+            keep[0]["staff_indices"] = sorted(set(keep[0]["staff_indices"]) | set(m["staff_indices"]))
+            marks.remove(m)
+    out["marks"] = marks
+    return out
 
 
 def _gap_has_rule(bin_img: np.ndarray, upper: Staff, lower: Staff, x_up: float, x_low: float) -> bool:
