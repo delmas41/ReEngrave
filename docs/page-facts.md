@@ -30,6 +30,7 @@ machine-readable form.
   nothing**: a rest box and a note box overlapping are two marks *"very close
   together"* (2026-09-29), and a whole rest in a bar refuses no notehead
   (2026-10-01, *"Leave the whole rest alone"*).
+- **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
   flag third"*, then chords sharing a stem, then a tremolo slash or anything
   else; scope: general; ROADMAP 2.149): a later step reads the earlier
