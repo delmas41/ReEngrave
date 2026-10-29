@@ -866,11 +866,10 @@ class Q(_Vocab):
     #: `notehead_precision._arc_tail_refusal` weighs it with the arc cut at the barline.
     HEAD_OVAL = "head_oval"
 
-    #: ROADMAP 2.220 (flag `OMR_FILL_FROM_STROKES`, default OFF; `gather.gather_head_ink`, plan 2026-10-28 step 6). One row per
-    #: notehead-classed detector box: the FILL read on ONE head's own ink (`stroke_map.head_mask`: the box's strokes minus stems, beams,
-    #: ledger rungs and any stroke an accidental / key / flag / dynamic box covers, the eraser's line pixels put back inside the head's
-    #: hull), never on the box. `value` 'hollow' / 'filled'; an abstention says why ('not_one_head' -- fix A --, 'ring_open',
-    #: 'readers_split', 'no_head_ink'), the measures filed on both. Decides nothing and NOTHING READS IT yet (milestone 1).
+    #: ROADMAP 2.220 milestone 1 (flag `OMR_FILL_FROM_STROKES`, default OFF; `gather.gather_head_ink` -> `head_ink.read_head_ink`). One
+    #: row per notehead-classed detector box, off the PAGE raster (nothing erased): is the box ONE head (trimmed to the head's own oval;
+    #: fix A), and that head's fill by 2.148's slit on the TRIMMED box. `value` 'hollow' / 'filled'; an abstention says why
+    #: ('not_one_head', 'no_head_ink', 'readers_split'), the measures filed on both. Decides nothing and NOTHING READS IT yet.
     HEAD_INK = "head_ink"
 
     #: ROADMAP 2.177 / 2.178 step 1 (flag `OMR_METER_OBJECT`, default OFF; filed only while it is ON). A CLAIMED AREA filed on a STAFF
@@ -2410,7 +2409,7 @@ CLAIMS: "dict[str, str]" = {
     "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
     "REST_INK_CONTACT": CLAIM.MEASUREMENT,
     "HEAD_OVAL": CLAIM.MEASUREMENT,
-    #: ROADMAP 2.220: enclosed paper and the slit on one head's own ink -- a measurement of ink, naming nothing.
+    #: ROADMAP 2.220: a head box trimmed to its own ink and the slit on it -- a measurement of ink, naming nothing.
     "HEAD_INK": CLAIM.MEASUREMENT,
     "CLAIMED_AREA": CLAIM.MEASUREMENT,
     "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
@@ -2956,8 +2955,7 @@ class READERS(_Vocab):
     #: `gather.gather_head_oval` -- ROADMAP 2.164. The PAGE raster (staff lines in, their rows left out) asked
     #: whether a head box at a bar's left edge holds a head-shaped oval.
     CV_HEAD_OVAL = "cv_head_oval"
-    #: `gather.gather_head_ink` -- ROADMAP 2.220. The stroke map's masks (`CV_STROKE`) of one head box, at canonical resolution on the
-    #: ERASED raster, with the UNERASED raster's line pixels put back inside the head's hull.
+    #: `gather.gather_head_ink` -- ROADMAP 2.220. The PAGE raster (staff lines in; bare line runs left out at the head's own x).
     CV_HEAD_INK = "cv_head_ink"
     #: `gather.gather_meter_object` -- ROADMAP 2.177. The PAGE raster (staff-line runs left out) asked where the two stacked numerals of a
     #: printed time signature are, one column on every staff of the system.
@@ -3107,14 +3105,12 @@ class ABSTAIN(_Vocab):
     #: earlier page of the run supplied a pool: the reader will not borrow one.
     NO_PAGE_SHAPE = "no_page_shape"
     ONLY_DEBRIS = "only_debris"
-    #: ROADMAP 2.220 (`Q.HEAD_INK`): the ink under a head box is not ONE head's (fix A: it holds a sharp, a flag, a dynamic's letters, or
-    #: is wider / taller / smaller than one head) -- the fill is not read, nothing is invented.
+    #: ROADMAP 2.220 (`Q.HEAD_INK`): the ink under a head box is not ONE head's (fix A: an accidental / flag / dynamic box stands on it,
+    #: or the trimmed ink is wider / taller / smaller than one head) -- the fill is not decided, nothing is invented.
     NOT_ONE_HEAD = "not_one_head"
-    #: ROADMAP 2.220: no stroke under the head box is a head's (all of it is a stem, beam, rung) -- our failure or a non-head, never a fill.
+    #: ROADMAP 2.220: no run of head-tall ink over the head box's core -- our failure or a non-head, never a fill.
     NO_HEAD_INK = "no_head_ink"
-    #: ROADMAP 2.220: white inside the head (the slit) but no enclosed paper -- the ring is open; the fill is not read.
-    RING_OPEN = "ring_open"
-    #: ROADMAP 2.220: enclosed paper and the slit disagree, or the slit sits between its cuts.
+    #: ROADMAP 2.220: the slit on the trimmed head sits between its cuts (0.06 < slit < 0.18), or could not be read.
     READERS_SPLIT = "readers_split"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"

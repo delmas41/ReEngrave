@@ -327,6 +327,9 @@ KNOWN_GAPS: Dict[str, str] = {
         "⚠️ OPEN FINDING — decision #0's verdict is read by nothing. It appears "
         "in `implicates`, in `DOWNHILL`, in `legacy.EXTRACTED_QUANTITIES` and "
         "in `wants` — all DECLARATIONS, none of them a read."),
+    Q.HEAD_INK: (
+        "⚠️ PRODUCER ONLY -- ROADMAP 2.220 milestone 1 (`OMR_FILL_FROM_STROKES`, default OFF): is the head box ONE head, and 2.148's "
+        "slit on the trimmed head. Its consumer is milestone 2 (`adjudicate_duration`, behind the same flag); leaves this list then."),
 }
 
 STAGE_OF_FILE = {
@@ -579,6 +582,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.164. `head_oval.py` is PURE (a page raster and a box in, numbers out: no log, no cell, no quantity
     # named) -- `gather.gather_head_oval` is its stage; `notehead_precision` reads its constants and flag.
     "head_oval.py",
+    # ROADMAP 2.220. `head_ink.py` is PURE (a page raster and a box in, a trimmed head and its slit out: no log, no cell, no quantity
+    # named) -- `gather.gather_head_ink` is its stage; nothing reads it yet (milestone 1).
+    "head_ink.py",
     # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
     # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
     "meter_object.py",

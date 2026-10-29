@@ -706,9 +706,8 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         None),
     "HEAD_INK": (
         RAW_INK,
-        "ROADMAP 2.220, step 6 of the shared ink map: enclosed paper, the slit and the extent of ONE head's own ink (the head box's strokes "
-        "minus stems, beams, rungs and other marks' strokes; line pixels put back inside the head's hull). A measurement of ink with no class "
-        "and no score; nothing reads it yet.",
+        "ROADMAP 2.220: a notehead box trimmed to its own head's ink on the page raster (bare line runs out, head-tall columns), whether "
+        "that is one head, and 2.148's slit on the trimmed box. A measurement of ink with no class and no score; nothing reads it yet.",
         None),
     "CLAIMED_AREA": (
         RAW_INK,
@@ -919,7 +918,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),
     "CV_HEAD_OVAL": ("staged/gather.py", "gather_head_oval"),
-    # ROADMAP 2.220: the stroke map's masks of one head box on the erased raster, the unerased raster's line pixels inside the hull.
+    # ROADMAP 2.220: the PAGE raster, staff lines in (bare line runs left out at the head's own x).
     "CV_HEAD_INK": ("staged/gather.py", "gather_head_ink"),
     "CV_CLAIMED_AREA": ("staged/gather.py", "gather_meter_object"),
     "CV_CLAIMED_REGISTER": ("staged/gather.py", "gather_claimed_register"),

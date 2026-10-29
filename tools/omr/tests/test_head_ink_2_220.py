@@ -1,221 +1,102 @@
-"""ROADMAP 2.220 milestone 1 -- `Q.HEAD_INK`: ONE fill reading per printed head, read on that head's own ink. STAGED GATHER
-(`stroke_map.head_mask` / `head_ink_value`, `gather.gather_head_ink`, flag `OMR_FILL_FROM_STROKES`, default OFF).
+"""ROADMAP 2.220 milestone 1 -- `Q.HEAD_INK`: is the notehead box ONE head, and that head's fill. STAGED GATHER (`head_ink.trim_head` /
+`read_head_ink`, `gather.gather_head_ink`, flag `OMR_FILL_FROM_STROKES`, default OFF).
 
-The cause (benchmarks/ink-map-fill-2026-10/FINDINGS.md): the stroke map cuts a hollow head's ring into lunes and rims, so a stroke's own
-`hole_share` is 0 on every half. RED before this change: `stroke_map.head_mask` does not exist, and the map's own blob `hole_share` on the
-synthetic half below is 0.0 (the control `test_CONTROL_the_stroke_maps_own_blob_hole_is_zero_on_the_half`).
+The cause (benchmarks/ink-map-fill-2026-10/FINDINGS.md): fill was read in the DETECTOR's box. On Sean's 8 class-A tiles the box was too
+big for 2.148, so the detector's black was written (5 halves wrong), and the slit on those boxes reads "hollow" on the ff, the flag and
+the sharp-quarter too (0.50 / 0.52 / 0.70): a box must be shown to be ONE head before its fill is asked.
 
-Synthetic cells at 100 canonical px a space, 0 = ink, a staff of five lines; `erased` = the same drawing with the line rows removed (the
-eraser's cut through a ring tangent to a line included)."""
+Real fixtures: `data_head_ink_2220_tiles.npz` -- page crops (600 dpi, `render_page(...).binary`, nothing erased) of Sean's 8 tiles
+(out/print/2.220-plan/answers.json) with the detector box, the same cell's accidental / key / flag / dynamic boxes and the page space;
+`data_part_boxed_tile13_cell.npz` -- 2.115's tile 13 page crop (a half boxed on its upper rim only)."""
 import os
+import pathlib
 import unittest
 
-import cv2
 import numpy as np
 
-from tools.omr.staged import stroke_map as SM
+from tools.omr.staged import head_ink as HI
+from tools.omr.staged.gather import head_interior_white, notehead_ink_under
 
-SP = 100
-TOP = 200
-LINES = [TOP + i * SP for i in range(5)]
-LINE_T = 10
-
-
-def _canvas(w=900, h=900):
-    return np.full((h, w), 255, np.uint8)
+HERE = pathlib.Path(__file__).parent
+TILES = np.load(HERE / "data_head_ink_2220_tiles.npz")
+T13 = np.load(HERE / "data_part_boxed_tile13_cell.npz")
 
 
-def _lines(img):
-    for y in LINES:
-        img[y - LINE_T // 2:y + LINE_T // 2, :] = 0
+def _tile(n):
+    shape = tuple(int(v) for v in TILES[f"t{n}_shape"])
+    ink = np.unpackbits(TILES[f"t{n}_ink"])[: shape[0] * shape[1]].reshape(shape).astype(bool)
+    page = np.where(ink, 0, 255).astype(np.uint8)
+    return page, [float(v) for v in TILES[f"t{n}_box"]], [list(map(float, f)) for f in TILES[f"t{n}_foreign"]], float(TILES[f"t{n}_sp"])
 
 
-def _head(img, cx, cy, hollow, angle=-20.0):
-    cv2.ellipse(img, (cx, cy), (66, 46), angle, 0, 360, 0, -1)
-    if hollow:
-        cv2.ellipse(img, (cx, cy), (50, 22), angle, 0, 360, 255, -1)
+def _read(n, **kw):
+    page, box, foreign, sp = _tile(n)
+    return HI.read_head_ink(page, kw.get("box", box), sp, foreign, head_interior_white, notehead_ink_under)
 
 
-def _stem_up(img, cx, cy):
-    x = cx + 60
-    img[cy - 340:cy + 5, x:x + 12] = 0
-    return x
+def _t13():
+    shape = tuple(int(v) for v in T13["page_shape"])
+    ink = np.unpackbits(T13["page_ink"])[: shape[0] * shape[1]].reshape(shape).astype(bool)
+    page = np.where(ink, 0, 255).astype(np.uint8)
+    ox, oy = (float(v) for v in T13["page_origin"])
+    b = [float(v) for v in T13["page_box"]]
+    return page, [b[0] - ox, b[1] - oy, b[2] - ox, b[3] - oy], float(T13["page_space"])
 
 
-def _sharp(img, cx, cy):
-    for dx in (-25, 25):
-        img[cy - 150:cy + 150, cx + dx - 5:cx + dx + 5] = 0
-    for dy in (-45, 45):
-        pts = np.array([[cx - 60, cy + dy + 15], [cx + 60, cy + dy - 15], [cx + 60, cy + dy - 40], [cx - 60, cy + dy - 10]], np.int32)
-        cv2.fillPoly(img, [pts], 0)
+class SeansTiles(unittest.TestCase):
+    def test_the_five_halves_read_hollow(self):
+        for n in (1, 4, 5, 7, 8):
+            r = _read(n)
+            self.assertEqual(str(TILES[f"t{n}_answer"]), "half")
+            self.assertEqual(r["value"], "hollow", (n, r["why"], r["not_one_head"], r["extent_sp"], r["slit"]))
+
+    def test_the_ff_and_the_flag_are_not_one_head(self):
+        for n in (2, 3):
+            r = _read(n)
+            self.assertIsNone(r["value"], n)
+            self.assertEqual(r["why"], "not_one_head", (n, r))
+
+    def test_the_quarter_whose_box_holds_a_sharp_is_never_hollow(self):
+        r = _read(6)
+        self.assertIn(r["value"] or r["why"], ("filled", "not_one_head"), r)
+
+    def test_CONTROL_the_detector_box_alone_reads_hollow_on_the_non_heads(self):
+        """The control that can fail: 2.148's slit on the DETECTOR box (no trim, no head-hood) reads hollow on the ff, the flag and the
+        sharp-quarter -- the mechanism, not the cut, is what keeps them from being written as halves."""
+        for n in (2, 3, 6):
+            page, box, _f, _sp = _tile(n)
+            iw = head_interior_white(page, (box[0], box[1], box[2] - box[0], box[3] - box[1]))
+            self.assertGreaterEqual(iw["rows_share"], 0.18, n)
+
+    def test_CONTROL_without_the_foreign_boxes_the_flag_still_does_not_read_hollow_by_size_alone(self):
+        page, box, _f, sp = _tile(3)
+        r = HI.read_head_ink(page, box, sp, [], head_interior_white, notehead_ink_under)
+        self.assertIn(r["why"], ("not_one_head",), r)
 
 
-def _cell(draw):
-    """(raw, erased, CellStrokes) for a cell drawn by `draw(img)` on top of a staff."""
-    notes = _canvas()
-    draw(notes)
-    raw = notes.copy()
-    _lines(raw)
-    erased = raw.copy()
-    for y in LINES:            # the eraser: every line row whose vertical run is short (the ring top/bottom tangent to a line goes too)
-        band = slice(y - LINE_T // 2, y + LINE_T // 2)
-        col_ink = (notes[y - 25:y + 25] == 0).sum(axis=0)
-        cut = col_ink < 30
-        erased[band, cut] = 255
-    res = SM.map_strokes(erased, float(SP), LINES, raw)
-    return raw, erased, res
-
-
-def _box(cx, cy, w=1.35, h=1.0):
-    return (cx - w * SP / 2.0, cy - h * SP / 2.0, cx + w * SP / 2.0, cy + h * SP / 2.0)
-
-
-def _read(raw, erased, res, box, foreign=None):
-    from tools.omr.staged.gather import head_interior_white
-    hm = SM.head_mask(res, erased, raw, box, foreign)
-    slit = None
-    if hm.get("mask") is not None:
-        img = np.where(hm["mask"], 0, 255).astype(np.uint8)
-        ox, oy = hm["origin"]
-        ex0, ey0, ex1, ey1 = hm["extent"]
-        iw = head_interior_white(img, (ex0 - ox, ey0 - oy, ex1 - ex0, ey1 - ey0))
-        slit = iw["rows_share"] if iw else None
-    return hm, slit, SM.head_ink_value(hm, slit)
-
-
-class HeadMask(unittest.TestCase):
-    def test_CONTROL_the_stroke_maps_own_blob_hole_is_zero_on_the_half(self):
-        """The cause, pinned: the map alone has no head -- no blob under the half's box encloses paper."""
-        cx, cy = 400, LINES[2] + SP // 2           # in a space: the lines above and below are tangent to the ring
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        under = [i for i, sh in SM.strokes_in_box(res, _box(cx, cy)) if sh >= SM.COVER_SHARE_MIN]
-        self.assertTrue(under)
-        self.assertEqual(max((res.strokes[i].hole_share or 0.0) for i in under), 0.0)
-
-    def test_a_half_in_a_space_reads_hollow_on_its_own_ink(self):
-        cx, cy = 400, LINES[2] + SP // 2
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy))
-        self.assertGreater(hm["hole_share"], 0.0)
-        self.assertEqual(value, "hollow", (hm, slit))
-        self.assertEqual(hm["stem_cut"], "right")
-        self.assertIsNone(hm["not_one_head"])
-
-    def test_the_erasers_cut_through_the_ring_is_mended_and_the_control_fails_without_it(self):
-        """The ring's top rows lie on a line and the eraser took them (the ring opens on the erased raster). With the unerased raster the
-        line pixels inside the head's hull are put back and the ring encloses paper; without it (raw=None, the control) it does not."""
-        cx, cy = 400, LINES[2] + SP // 2
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        hole_top = int(np.nonzero((raw[:, cx] == 255) & (np.arange(raw.shape[0]) > LINES[2] + LINE_T))[0][0])   # the hole's first row
-        erased = erased.copy()
-        erased[LINES[2] - LINE_T // 2:hole_top, cx - 70:cx + 55] = 255     # the eraser's walk took the line AND the rim under it
-        self.assertGreater(int(((raw == 0) & (erased == 255))[LINES[2] + LINE_T:hole_top].sum()), 0)   # rim ink was taken
-        res = SM.map_strokes(erased, float(SP), LINES, raw)
-        hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy))
-        self.assertGreater(hm["line_px_restored"], 0)
-        self.assertGreater(hm["hole_share"], 0.0, (hm, slit))
-        hm0 = SM.head_mask(res, erased, None, _box(cx, cy))
-        self.assertEqual(hm0["hole_share"], 0.0)
-
-    def test_a_half_on_a_line_reads_hollow(self):
-        cx, cy = 400, LINES[2]
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy))
-        self.assertGreater(hm["hole_share"], 0.0)
-        self.assertEqual(value, "hollow", (hm, slit))
-
-    def test_a_too_big_box_on_a_half_still_reads_hollow(self):
-        """The 2.220 class A: the detector box is 1.9 sp wide (not head-sized for 2.148); the head's own ink is one head and hollow."""
-        cx, cy = 400, LINES[1] + SP // 2
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy, w=1.95, h=1.25))
-        self.assertEqual(value, "hollow", (hm, slit))
-        self.assertLessEqual(hm["extent_sp"][0], SM.HEAD_INK_MAX_WIDTH_SPACES)
-
-    def test_CONTROL_a_filled_head_reads_filled_with_no_hole(self):
-        for cy in (LINES[2], LINES[2] + SP // 2):
-            cx = 400
-            raw, erased, res = _cell(lambda im: (_head(im, cx, cy, False), _stem_up(im, cx, cy)))
-            hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy))
-            self.assertEqual(hm["hole_share"], 0.0)
-            self.assertEqual(value, "filled", (hm, slit))
-
-    def test_fix_A_a_box_holding_a_sharp_is_not_hollow(self):
-        """Sean's tile 6: a quarter whose box takes in a good part of a sharp. With the sharp's box: its strokes are dropped and the
-        head reads filled; without it the extent is not one head (`not_one_head`). Never hollow."""
-        cx, cy = 500, LINES[2] + SP // 2
-
-        def draw(im):
-            _head(im, cx, cy, False)
-            _stem_up(im, cx, cy)
-            _sharp(im, cx - 120, cy)
-        raw, erased, res = _cell(draw)
-        box = (cx - 175, cy - 57, cx + 70, cy + 57)            # 2.45 x 1.14 sp: head + the sharp's right half
-        sharp_box = (cx - 190, cy - 160, cx - 50, cy + 160)
-        foreign = {i: "accidentalSharp" for i, sh in SM.strokes_in_box(res, sharp_box) if sh >= SM.COVER_SHARE_MIN}
-        for fg in (foreign, None):
-            hm, slit, (value, why, margin) = _read(raw, erased, res, box, fg)
-            self.assertNotEqual(value, "hollow", (fg is not None, hm.get("extent_sp"), hm.get("hole_share"), slit))
-            self.assertIn(value if value else why, ("filled", "not_one_head"))
-
-    def test_fix_A_a_flag_box_is_not_one_head(self):
-        """Sean's tile 3: a head-classed box on a flag. With the flag's box the stroke is another mark's (`ink_is_another_marks`)."""
-        def draw(im):
-            x = 400
-            im[200:600, x:x + 12] = 0
-            pts = np.array([[x, 200], [x + 12, 200], [x + 110, 330], [x + 90, 420], [x + 70, 330]], np.int32)
-            cv2.fillPoly(im, [pts], 0)
-        raw, erased, res = _cell(draw)
-        box = (395, 190, 395 + 152, 190 + 222)
-        foreign = {i: "flag8thUp" for i, sh in SM.strokes_in_box(res, box) if sh >= SM.COVER_SHARE_MIN and res.strokes[i].kind != "vertical"}
-        hm, slit, (value, why, margin) = _read(raw, erased, res, box, foreign)
-        self.assertIsNone(value)
-        self.assertEqual(why, "not_one_head")
-
-    def test_fix_A_a_wide_letter_run_is_not_one_head(self):
-        """Sean's tile 2: part of an ff boxed 3.9 sp wide -- the ink extent is not one head's."""
-        def draw(im):
-            for x0 in (300, 470):
-                cv2.ellipse(im, (x0, 470), (70, 20), -30, 0, 360, 0, -1)
-                cv2.ellipse(im, (x0 + 60, 430), (40, 14), 0, 0, 360, 0, -1)
-        raw, erased, res = _cell(draw)
-        hm, slit, (value, why, margin) = _read(raw, erased, res, (220, 420, 220 + 388, 420 + 103))
-        self.assertIsNone(value)
-        self.assertEqual(why, "not_one_head")
-
-    def test_fix_D_the_extent_and_centre_do_not_move_with_the_window(self):
-        """2.115's tile-13 lesson: a centre computed from a window moved 0.36 sp with the window. The mask's extent is the head's own ink,
-        so neither the crop margin nor the box size moves it."""
-        cx, cy = 400, LINES[2]
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
-        centres = []
-        old = SM.HEAD_WINDOW_MARGIN_SPACES
+class FixD(unittest.TestCase):
+    def test_tile13_trimmed_head_is_stable_across_windows_and_boxes(self):
+        """2.115's tile 13: the window centroid moved 0.36 sp with the window. The trimmed head is an EXTENT of the head's own columns
+        and rows, so neither the slack nor where the box sits on the head moves it by more than 2.115's own guard (0.1 sp)."""
+        page, box, sp = _t13()
+        got = []
+        old = HI.SLACK_SPACES
         try:
-            for mg in (0.2, 0.3, 0.5, 0.8):
-                SM.HEAD_WINDOW_MARGIN_SPACES = mg
-                for w, h, dy in ((1.35, 1.0, 0.0), (0.83, 0.81, -0.3), (1.9, 1.2, 0.0)):
-                    hm = SM.head_mask(res, erased, raw, _box(cx, int(cy + dy * SP), w, h))
-                    centres.append(hm["centre"])
+            for slack in (0.4, 0.5, 0.7):
+                HI.SLACK_SPACES = slack
+                for dy in (0.0, 0.15, 0.3):
+                    b = [box[0], box[1] + dy * sp, box[2], box[3] + dy * sp]
+                    r = HI.read_head_ink(page, b, sp, [], head_interior_white, notehead_ink_under)
+                    self.assertEqual(r["value"], "hollow", (slack, dy, r))
+                    got.append(r["trimmed"])
         finally:
-            SM.HEAD_WINDOW_MARGIN_SPACES = old
-        xs, ys = [c[0] for c in centres], [c[1] for c in centres]
-        # 2.115's own stability guard cut (spread 0.1 sp); its window centroid moved 0.36 sp on tile 13
-        self.assertLessEqual((max(xs) - min(xs)) / SP, 0.1, centres)
-        self.assertLessEqual((max(ys) - min(ys)) / SP, 0.1, centres)
-
-    def test_fix_C_a_stacked_pair_is_clipped_to_the_boxs_own_head(self):
-        """Two heads a second apart on one stem: the column is two heads tall; the head-sized box's mask is clipped to its own rows."""
-        cx = 400
-        cy1, cy2 = LINES[2], LINES[2] + SP // 2
-
-        def draw(im):
-            _head(im, cx, cy1, False)
-            _head(im, cx, cy2, False)
-            _stem_up(im, cx, cy2)
-        raw, erased, res = _cell(draw)
-        hm, slit, (value, why, margin) = _read(raw, erased, res, _box(cx, cy1))
-        self.assertTrue(hm["stack_clipped"])
-        self.assertNotEqual(value, "hollow")
+            HI.SLACK_SPACES = old
+        arr = np.array(got, dtype=float)
+        cx, cy = (arr[:, 0] + arr[:, 2]) / 2.0, (arr[:, 1] + arr[:, 3]) / 2.0
+        self.assertLessEqual((cx.max() - cx.min()) / sp, 0.1, got)
+        self.assertLessEqual((cy.max() - cy.min()) / sp, 0.1, got)
+        # and it is the HEAD, not the box: the trimmed centre stands below the upper-rim box's centre
+        self.assertGreater(cy.mean() - (box[1] + box[3]) / 2.0, 0.1 * sp)
 
 
 class GatherFlag(unittest.TestCase):
@@ -224,40 +105,48 @@ class GatherFlag(unittest.TestCase):
     def _run(self, flag):
         from tools.omr.staged import gather as G
         from tools.omr.staged.record import Q
-        cx, cy = 400, LINES[2] + SP // 2
-        raw, erased, res = _cell(lambda im: (_head(im, cx, cy, True), _stem_up(im, cx, cy)))
+        page, box, foreign, sp = _tile(1)
+
+        class Page:
+            binary = page
+
+        class PWS:
+            pass
+        pws = PWS()
+        pws.page = Page()
 
         class Cell:
             page_index, staff_index, measure_index = 0, 0, 0
-            image_no_staff, binary = erased, raw
+            bbox_page_px = (0.0, 0.0, float(page.shape[1]), float(page.shape[0]))
+            upscale_factor = 1.0
+            staff_line_ys_canonical = [10.0 + i * sp for i in range(5)]
 
         class Det:
-            smufl_name = "noteheadBlackInSpace"
-            x_canonical, y_canonical = cx - 95.0, cy - 60.0
-            width_canonical, height_canonical = 190.0, 120.0
+            smufl_name = "noteheadBlackOnLine"
+            x_canonical, y_canonical = box[0], box[1]
+            width_canonical, height_canonical = box[2] - box[0], box[3] - box[1]
         log = G.Log()
         dets = {G.R.cell(0, 0, 0, 0).to_key(): [Det()]}
-        old = os.environ.get(G.FILL_FROM_STROKES_ENV)
-        os.environ[G.FILL_FROM_STROKES_ENV] = flag
+        old = os.environ.get(HI.ENV)
+        os.environ[HI.ENV] = flag
         try:
-            G.gather_head_ink(log, [Cell()], {0: (0, 0)}, dets, {(0, 0, 0, 0): res})
+            G.gather_head_ink(log, pws, [Cell()], {0: (0, 0)}, dets)
         finally:
             if old is None:
-                os.environ.pop(G.FILL_FROM_STROKES_ENV, None)
+                os.environ.pop(HI.ENV, None)
             else:
-                os.environ[G.FILL_FROM_STROKES_ENV] = old
-        return [r for r in log.all_rows() if r.quantity == Q.HEAD_INK]
+                os.environ[HI.ENV] = old
+        return log.rows(Q.HEAD_INK, G.R.glyph(0, 0, 0, 0, 0)) if hasattr(log, "rows") else []
 
     def test_flag_off_files_nothing(self):
-        self.assertEqual(self._run("0"), [])
+        self.assertEqual(list(self._run("0")), [])
 
     def test_flag_on_files_one_hollow_row(self):
-        rows = self._run("1")
+        rows = list(self._run("1"))
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].value, "hollow")
-        d = rows[0].detail
-        for k in ("hole_share", "slit_rows_share", "extent_sp", "centre", "line_px_restored", "stem_cut", "n_pieces", "stroke_set"):
-            self.assertIn(k, d)
+        for k in ("trimmed", "extent_sp", "slit", "page_box", "size_margin_sp"):
+            self.assertIn(k, rows[0].detail)
 
 
 if __name__ == "__main__":
