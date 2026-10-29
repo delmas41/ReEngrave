@@ -77,6 +77,18 @@ def trim_line_only() -> bool:
     return os.environ.get(TRIM_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
 
+TRIM_V2_ENV = "OMR_HEAD_TRIM_LINE_ONLY_V2"
+#: Head-trim fix 2 (2026-10-29, default OFF; needs `OMR_HEAD_TRIM_LINE_ONLY` too): the height cap of a head under the line-only trim.
+#: 1.5 sp was set against heads the dilated trim shaved by 1-2 px a side; unshaved, a tilted hollow head on Litolff (15.75 px/sp)
+#: measures 1.52-1.59 sp (Litolff p4+p6: 46 heads moved one_head -> too_tall), the heights have their valley at ~1.6-1.7 and
+#: Brahms never reaches 1.55. Measured in benchmarks/shared-ink-map-2026-10/FINDINGS.md "head trim fix 2".
+MAX_HEIGHT_SPACES_V2 = 1.6
+
+
+def trim_line_only_v2() -> bool:
+    return os.environ.get(TRIM_V2_ENV, "0").strip().lower() in ("1", "true", "yes", "on") and trim_line_only()
+
+
 def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
@@ -240,7 +252,8 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
     ex0, ex1 = ex0 + int(cols[0]), ex0 + int(cols[-1]) + 1
     head = np.zeros_like(clean)
     head[ey0:ey1, ex0:ex1] = clean[ey0:ey1, ex0:ex1]
-    if (ey1 - ey0) / sp > MAX_HEIGHT_SPACES and (by1 - by0) / sp <= MAX_HEIGHT_SPACES:
+    max_h = MAX_HEIGHT_SPACES_V2 if trim_line_only_v2() else MAX_HEIGHT_SPACES
+    if (ey1 - ey0) / sp > max_h and (by1 - by0) / sp <= max_h:
         c = int(round(STACK_CLIP_SPACES * sp))
         r0, r1 = max(0, int(round(by0)) - y0 - c), min(head.shape[0], int(round(by1)) - y0 + c)
         h2 = np.zeros_like(head)
@@ -267,13 +280,13 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         noh = "holds_another_marks_ink"
     elif w_sp > MAX_WIDTH_SPACES:
         noh = "too_wide"
-    elif h_sp > MAX_HEIGHT_SPACES:
+    elif h_sp > max_h:
         noh = "too_tall"
     elif w_sp < MIN_SPACES or h_sp < MIN_SPACES:
         noh = "too_small"
     out.update(clean=clean, trimmed=[x0 + ex0, y0 + ey0, x0 + ex1, y0 + ey1], extent_sp=[round(w_sp, 3), round(h_sp, 3)],
                not_one_head=noh, foreign_share=fs,
-               size_margin_sp=round(min(MAX_WIDTH_SPACES - w_sp, MAX_HEIGHT_SPACES - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
+               size_margin_sp=round(min(MAX_WIDTH_SPACES - w_sp, max_h - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
     return out
 
 

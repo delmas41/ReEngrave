@@ -44,23 +44,30 @@ def _t13():
 
 
 class SeansTiles(unittest.TestCase):
-    # Landing 2026-10-29 (OMR_HEAD_TRIM_LINE_ONLY default ON): with the line-only trim tile 5 reads not_one_head=too_tall (1.69 sp) instead
-    # of hollow. These tiles were answered against the old trim, so they are pinned to it; tile 5 under the new trim is an open item.
+    # Head trim fix 2 (2026-10-29): with the landed line-only trim alone tile 5 reads not_one_head=too_tall (1.59 sp against the 1.5 cap);
+    # OMR_HEAD_TRIM_LINE_ONLY_V2 (default OFF) lifts the cap to 1.6 and the five halves read hollow again. Pinned to that arm.
     def setUp(self):
-        self._trim_env = os.environ.get(HI.TRIM_ENV)
-        os.environ[HI.TRIM_ENV] = "0"
+        self._env = {k: os.environ.get(k) for k in (HI.TRIM_ENV, HI.TRIM_V2_ENV)}
+        os.environ[HI.TRIM_ENV] = "1"
+        os.environ[HI.TRIM_V2_ENV] = "1"
 
     def tearDown(self):
-        if self._trim_env is None:
-            os.environ.pop(HI.TRIM_ENV, None)
-        else:
-            os.environ[HI.TRIM_ENV] = self._trim_env
+        for k, v in self._env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
     def test_the_five_halves_read_hollow(self):
         for n in (1, 4, 5, 7, 8):
             r = _read(n)
             self.assertEqual(str(TILES[f"t{n}_answer"]), "half")
             self.assertEqual(r["value"], "hollow", (n, r["why"], r["not_one_head"], r["extent_sp"], r["slit"]))
+
+    def test_CONTROL_tile_5_is_too_tall_without_the_v2_cap(self):
+        os.environ[HI.TRIM_V2_ENV] = "0"
+        r = _read(5)
+        self.assertEqual(r["not_one_head"], "too_tall", r)
 
     def test_the_ff_and_the_flag_are_not_one_head(self):
         for n in (2, 3):
