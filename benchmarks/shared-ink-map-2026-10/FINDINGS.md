@@ -674,3 +674,46 @@ Sean: 1 eighth, 2 dotted quarter, 3 eighth, 4 eighth, 5 eighth, 6 quarter, 7-12 
 **Sean's tiles** (`out/print/2.202f/answers.json`): "1.16 2.8 3.dot4 4. 4 rest 5.4 6.8 7.8 rest 8.4 9.8 10.4 11.8 12.sharp". Right->wrong 0. Wrong->right 1 (10: OFF eighth, ON quarter). Neutral 2 (1: OFF eighth on a sixteenth, ON narrowed; 12: OFF a sixteenth on a sharp, ON narrowed). **Right->gone 2: 3 (dotted quarter) and 8 (quarter), both the face join.** Knock-ons of the same narrowing: 7 (an unread mark beside a right eighth rest) and 9 (slur stop lost). Controls 2, 5 right; 4's 'a 2' words mark on a quarter rest is unchanged and not this lane.
 **Next:** the face join may extend only a stroke that already reaches a stem on its own -- Sean's rule is about a BEAM's width, and a stroke touching no stem is not yet a beam.
 **Tightened (097ce8ce6), checked by re-adjudicating the saved 2.202f ON gathers (ADJUDICATE..EXPORT only; scratch `readjudicate.py`, `out/lane-report/2.202g/work/`):** Brahms decided notes lost vs OFF 37 -> 21, against 2.202f 16 newly decided, 0 newly undecided, 0 values changed; 14 of the 16 take OFF's value, 2 go eighth -> quarter (5/0/10/3/0 = Sean's 2.202e tile 6 "quarter": wrong->right; 19/0/2/1/3 unjudged). Tiles 3 and 8 now dotted quarter and quarter. Litolff unchanged against 2.202f (all 5 round-3 Litolff heads still eighth). Judged: Litolff right 72 -> 73, wrong 18 -> 17; Brahms 64/4 both arms. Remaining Brahms losses: `stroke_candidate` 11 (3 face joins on strokes that touch a stem, e.g. 4/1/13/1/4, OFF dotted quarter), `box_narrowed` 8, `disagree_narrowed` 2 -- the 2.202e classes Sean has already tiled.
+
+## 2026-10-29 does the line cut damage heads (STAGED; read-only on `tools/`; branch `lane-line-cut-1029b`)
+
+**Cause:** yes. `head_ink.trim_head`'s own line cut shaves real heads IN A SPACE on Litolff. A head in a space is fused with the line
+above and the line below. The end trim (head_ink.py, the two `while ... line_rows[...]` loops) removes rows from both ends while they
+are line rows. Those rows come from `head_oval._line_rows`, DILATED by 1 px either way, and the ledger opening adds another 1 px dilation.
+So each end loses the line's thickness plus its dilation. On Litolff the raster has a 15.75 px space, so that loss is about half the
+head. Brahms has a 27.5 px space, so the same pixel loss is a smaller share and its heads survive. The reader fails on its own cut,
+not on the mark. **This is the reverse of 2.222's reading:** the `too_small` notes are in-space heads, not on-line junk.
+**Process lesson:** a cut-off in pixels or dilation steps inside a cut-off in spaces silently changes meaning with raster resolution. Run every new
+size gate per plate, split by line and space, before reading its flags as junk. The 2.222 lane had the split one column
+away and read the flags as marks.
+
+Script `linecut.py` (re-runs `trim_head` on the 2.220 m2b ON arm, Litolff p4/p6, Brahms p5/p14, five ways by in-memory monkeypatch).
+**Control:** `filed` reproduces the record's verdict on 1,199 of 1,205 Litolff notes and 1,252 of 1,256 Brahms notes. The residue is
+foreign boxes, which the census passes empty. Exact-extent equality is lower, from 3-decimal sp rounding. Note: setting the ledger
+cut-off to 1e6 made a 40M-px cv2 kernel and stalled the run; it is now 50 sp, wider than any crop.
+
+| Litolff, in staff | n | filed too_small | filed height median (sp) | no_cut height median | no_line_rows too_small |
+|---|---|---|---|---|---|
+| on a line | 448 | 12 | 1.33 | 1.02 | 2 |
+| in a space | 342 | **245** | **0.57** | 1.06 | 105 |
+
+Litolff outside the staff: 2 on a line, 3 in a space. In all, 259 of Litolff's 262 `too_small` are short in height, not in width.
+Brahms: 0 `too_small` on a line, 5 in a space in the staff, 7 in a space outside it. Filed in-space height median 0.69 sp, just over the
+0.6 gate, so the same shave is present but survives.
+
+**Neither switch-off is a fix.** `no_cut` and `no_bare` give the head its height back but leave the lines in, so the head goes
+`too_wide` (Litolff: 439 of 448 on-line notes and 248 of 342 in-space notes). `no_line_rows` turns 140 of the 245 Litolff in-space
+`too_small` back into a head. It also lets in 39 to 55 `too_wide` per class (ledgers and lines kept), and 105 stay small.
+**Fix, proposed and NOT measured:** in the end trim, strip only the line's own undilated rows (or at most one measured line
+thickness per end), never the dilated `_line_rows`. Arithmetic: about 2 px per end comes back, about 0.25 sp on Litolff, which would put the
+in-space median near 0.8. Re-run `linecut.py` with that variant before landing.
+
+**Who shares it:** only readers that end-trim on `head_oval._line_rows`, which is `head_ink.trim_head` (2.220 `not_one_head`, and the
+trimmed box the slit and window fill read uses). `head_oval._kept_rows` keeps a fused run whole, so it does not shave. The
+stroke map and the CV readers on `image_no_staff` (the 2.206 eraser) are a different cut and were NOT measured here. Q4 (2.217's 37
+"no stroke" heads, raw against `image_no_staff`) was not reached.
+
+Crops for the manager (my look, not blind tiles): `out/print/2.230-line-cut/` (`sheet.png`, `key.json`, `linecut_crops.py`). Each
+tile shows three panels: the raw binary; the cut ink, with removed pixels in red; and the raw binary with three boxes drawn (detector box blue, filed trimmed box
+green, no_cut trimmed box orange). Litolff tiles 5 and 6 (in a space) are plainly real heads; the green box keeps only their middle half. All the
+crops are `too_small`; Brahms has no in-staff on-line case, so there are 8 tiles, not 10.

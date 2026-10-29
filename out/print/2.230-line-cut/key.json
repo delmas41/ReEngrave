@@ -1,0 +1,154 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 5,
+  "sub": "glyph/5/0/5/5/18",
+  "where": "space",
+  "rounded": 3,
+  "type": "quarter",
+  "filed": [
+   1.091,
+   0.582
+  ],
+  "no_cut": [
+   1.236,
+   0.509
+  ],
+  "no_cut_noh": "too_small",
+  "no_line_rows_noh": null
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 14,
+  "sub": "glyph/14/1/8/3/3",
+  "where": "space",
+  "rounded": 3,
+  "type": "quarter",
+  "filed": [
+   1.431,
+   0.587
+  ],
+  "no_cut": [
+   2.422,
+   0.734
+  ],
+  "no_cut_noh": "too_wide",
+  "no_line_rows_noh": "too_wide"
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 4,
+  "sub": "glyph/4/0/2/14/2",
+  "where": "line",
+  "rounded": 4,
+  "type": "quarter",
+  "filed": [
+   1.415,
+   0.308
+  ],
+  "no_cut": [
+   2.338,
+   1.477
+  ],
+  "no_cut_noh": "too_wide",
+  "no_line_rows_noh": "too_wide"
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 4,
+  "sub": "glyph/4/1/5/4/5",
+  "where": "line",
+  "rounded": 6,
+  "type": "quarter",
+  "filed": [
+   1.5,
+   0.188
+  ],
+  "no_cut": [
+   1.625,
+   0.312
+  ],
+  "no_cut_noh": "too_small",
+  "no_line_rows_noh": null
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 4,
+  "sub": "glyph/4/0/10/13/7",
+  "where": "space",
+  "rounded": 3,
+  "type": "quarter",
+  "filed": [
+   1.46,
+   0.571
+  ],
+  "no_cut": [
+   1.523,
+   0.635
+  ],
+  "no_cut_noh": null,
+  "no_line_rows_noh": null
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 4,
+  "sub": "glyph/4/1/7/12/2",
+  "where": "space",
+  "rounded": 1,
+  "type": "half",
+  "filed": [
+   1.688,
+   0.563
+  ],
+  "no_cut": [
+   1.688,
+   0.625
+  ],
+  "no_cut_noh": null,
+  "no_line_rows_noh": null
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 6,
+  "sub": "glyph/6/0/3/11/2",
+  "where": "line",
+  "rounded": 2,
+  "type": "half",
+  "filed": [
+   1.714,
+   0.571
+  ],
+  "no_cut": [
+   1.777,
+   0.571
+  ],
+  "no_cut_noh": "too_wide",
+  "no_line_rows_noh": "too_small"
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 6,
+  "sub": "glyph/6/0/8/12/12",
+  "where": "space",
+  "rounded": 5,
+  "type": "eighth",
+  "filed": [
+   0.698,
+   0.254
+  ],
+  "no_cut": [
+   2.411,
+   1.269
+  ],
+  "no_cut_noh": "too_wide",
+  "no_line_rows_noh": "too_wide"
+ }
+]
