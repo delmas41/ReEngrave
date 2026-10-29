@@ -1075,11 +1075,89 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
             print(f"  gather detector views {cell_key}: {len(out['kept'])} box(es), {len(out['refused'])} refused, {out['calls']} view call(s)")
 
 
+def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, stems: Sequence[Any], existing: Sequence[Any],
+                       kept: List[Dict[str, Any]], grid: Tuple[float, float]) -> List[Dict[str, Any]]:
+    """lane-stem-end-head (flag `OMR_STEM_END_HEAD_INK`, default OFF): every orphan stem end READ on the page raster GATHER holds
+    (`pws.page.binary`; no new image pass) with `head_ink.read_head_ink`, and set beside the 0.05 re-run's `kept`: agree -> the re-run
+    box is kept; ink alone -> a box on the trimmed ink; re-run alone / different ink / a head at both ends -> abstention with the
+    candidates. Ink a mark of the cell already holds is never taken. Returns the new `kept`; `stem_end_heads` holds the rule."""
+    from . import head_ink
+    from . import stem_end_heads as SEH
+    from ..template_matcher import SymbolDetection
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    bbox = getattr(c, "bbox_page_px", None)
+    up = getattr(c, "upscale_factor", None)
+    if page_binary is None or not bbox or not up:
+        for kb in kept:
+            kb.update(ink={"head": False, "why": "no_raster"}, ink_verdict="no_raster")
+        return kept                                       # nothing to read the ink on: the re-run stands as before, marked so
+    top_y, half_step = grid
+    up = float(up)
+    sp_page = 2.0 * half_step / up
+    to_page = lambda b: (bbox[0] + b[0] / up, bbox[1] + b[1] / up, bbox[0] + b[2] / up, bbox[1] + b[3] / up)  # noqa: E731
+    foreign = [pb for pb in (_page_box(c, d) for d in existing if head_ink.is_foreign_class(d.smufl_name)) if pb is not None]
+    others = [(to_page(SEH._box(d)), str(d.smufl_name)) for d in existing
+              if str(d.smufl_name).startswith(SEH._OTHER_FAMILY_PREFIXES) and float(d.confidence) >= SEH.CLAIM_FLOOR]
+    seen = [to_page(SEH._box(d)) for d in existing if SEH.is_head(d.smufl_name)]
+    by_end = {(kb["stem_index"], kb["end"]): kb for kb in kept}
+    out: List[Dict[str, Any]] = []
+    for si in SEH.orphan_indices(stems, existing, 2.0 * half_step):
+        x, yt, yb = SEH.stem_ends(stems[si])
+        stem_page = (bbox[0] + x / up, bbox[1] + yt / up, bbox[1] + yb / up)
+        reads = {}
+        for end in ("bottom", "top"):
+            ink = SEH.ink_head_at_end(page_binary, stem_page, end, sp_page, foreign, head_interior_white, notehead_ink_under)
+            if ink["head"]:
+                tb = ink["trimmed"]
+                claim = next((n for ob, n in others if SEH.same_ink(tb, ob)), None)
+                cx, cy = SEH._centre(tb)
+                if claim is not None:
+                    ink.update(head=False, why="claimed_by:" + claim)
+                elif any(SEH.same_ink(tb, h) or (abs(cx - SEH._centre(h)[0]) <= SEH.BESIDE_ACROSS_SPACES * sp_page
+                                                 and abs(cy - SEH._centre(h)[1]) <= SEH.BESIDE_ALONG_SPACES * sp_page) for h in seen):
+                    ink.update(head=False, why="a_seen_head")
+                elif not (bbox[0] <= cx <= bbox[2]):
+                    ink.update(head=False, why="outside_its_cell")
+            reads[end] = ink
+        both = reads["bottom"]["head"] and reads["top"]["head"]
+        for end in ("bottom", "top"):
+            ink, kb = reads[end], by_end.get((si, end))
+            det_page = to_page(SEH._box(kb["det"])) if kb is not None else None
+            verdict, why = SEH.combine(det_page, ink)
+            if verdict == "ink_only" and both:
+                verdict, why = "abstain", "ink_reads_a_head_at_both_ends"
+            if verdict == "agree":
+                kb.update(ink=ink, ink_verdict="agree")
+                out.append(kb)
+            elif verdict == "ink_only":
+                tx0, ty0, tx1, ty1 = ink["trimmed"]
+                cx0, cy0, cx1, cy1 = (tx0 - bbox[0]) * up, (ty0 - bbox[1]) * up, (tx1 - bbox[0]) * up, (ty1 - bbox[1]) * up
+                name = SEH.ink_head_class(ink["value"], (cy0 + cy1) / 2.0, top_y, half_step)
+                # no detector score: the ink-only box carries the rescue floor; its row's `ink_verdict` says who read it
+                d = SymbolDetection(cell=c, smufl_name=name, category="notehead", x_canonical=int(round(cx0)),
+                                    y_canonical=int(round(cy0)), width_canonical=int(round(cx1 - cx0)),
+                                    height_canonical=int(round(cy1 - cy0)), confidence=SEH.FLOOR)
+                out.append({"det": d, "stem_index": si, "end": end, "read_from": "page_ink", "score": SEH.FLOOR,
+                            "from_record": False, "ink": ink, "ink_verdict": "ink_only"})
+            elif verdict == "abstain":
+                cand = {"why": "ink:" + why, "end": end, "ink_trimmed": ink.get("trimmed"), "ink_why": ink.get("why"),
+                        "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed")}
+                if kb is not None:
+                    d = kb["det"]
+                    cand.update(candidate_class=d.smufl_name, score=float(kb["score"]),
+                                box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical],
+                                rerun_box_page=[round(v, 1) for v in det_page])
+                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                            **{k: v for k, v in cand.items() if v is not None})
+    # a re-run box at an end the ink pass never looked at (not an orphan by the owners test) cannot occur: `kept` comes from the same orphans
+    return out
+
+
 def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                           local: Dict[int, Tuple[int, int]],
                           detections: Dict[str, List[Any]], *,
                           detector: Any = None, imgsz: Optional[int] = None,
-                          progress: bool = False) -> None:
+                          progress: bool = False, pws: Any = None) -> None:
     """ROADMAP 2.179 (flag `OMR_STEM_END_HEADS`, default ON; the caller gates). STAGED GATHER; decides nothing.
 
     For every cell: its CV stems (the 2.55 rescue's call); a stem with no head box at either end is an orphan; for a cell holding one,
@@ -1123,6 +1201,8 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
                         why=rf["why"], candidate_class=d.smufl_name, score=float(rf["score"]), end=rf["end"],
                         box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
+        if SEH.ink_enabled():
+            kept = _stem_end_head_ink(log, pws, c, cell_sub, frame, stems, existing, kept, grid)
         if not kept:
             continue
         lst = detections.get(cell_key)
@@ -1138,6 +1218,9 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                 "category": d.category, "source": "stem_end_head", "read_from": kb["read_from"], "end": kb["end"],
                 "from_record_box": bool(kb["from_record"]), "orphan_stems": n_orph,
                 "stem_canonical": [s.x_canonical, s.y_canonical, s.width_canonical, s.height_canonical]}
+            if kb.get("ink") is not None:                         # OMR_STEM_END_HEAD_INK: the ink read and the verdict it gave
+                box_detail.update(ink_verdict=kb["ink_verdict"], ink_trimmed=kb["ink"].get("trimmed"),
+                                  ink_fill=kb["ink"].get("value"), ink_extent_sp=kb["ink"].get("extent_sp"))
             page_box = _page_box(c, d)
             if page_box is not None:
                 px0, py0, px1, py1 = page_box
@@ -16117,7 +16200,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # views (a view's box counts as seen), BEFORE every `detections` walker, for the rescue's reason: a kept box is appended in place.
         from . import stem_end_heads as _SEH
         if detector is not None and _SEH.enabled():
-            gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress)
+            gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests

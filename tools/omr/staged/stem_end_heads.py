@@ -209,3 +209,121 @@ def candidates_for_cell(stems: Sequence[Any], existing: Sequence[Any], rerun: Se
         cand["det"] = d
         kept.append(cand)
     return kept, refused, len(orphans)
+
+
+def orphan_indices(stems: Sequence[Any], existing: Sequence[Any], space: float) -> List[int]:
+    """The orphan stems `candidates_for_cell` looks at (no head at an end, not another mark's upright)."""
+    heads = [_box(d) for d in existing if is_head(d.smufl_name)]
+    owners = [_box(d) for d in existing if str(d.smufl_name).startswith(_OWNER_PREFIXES) and float(d.confidence) >= 0.25]
+    return [i for i, s in enumerate(stems) if is_orphan(s, heads, space) and not owned_by_a_mark(s, owners, space)]
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# lane-stem-end-head (Sean approved 2026-10-29): the head at an orphan stem's end READ from the page's own ink, beside the detector re-run.
+#
+# CAUSE (lane-barlines-1029, DECISIONS 2026-10-29): Litolff p9's real quarter at page px (1734, 2385) was found only by the 0.05 re-run;
+# OFF it gave a 0.074 box, and with the corrected barline the cell crop starts at 1470 instead of 1526 and the re-run finds nothing. A
+# 0.07 detector guess flips with any crop change: it is not reading. So the head is read where the convention puts it, on the PAGE
+# raster GATHER already holds (`pws.page.binary`, no new image pass), with the head reader landed for fill (`head_ink.read_head_ink`:
+# line-only trim, 1.6 sp cap), and the re-run kept only as a second witness.
+#
+# Flag `OMR_STEM_END_HEAD_INK`, default OFF (explicit 1/true/yes/on enables). Per orphan stem end:
+#   * a head-sized SEED box (`HEAD_WIDTH_SPACES` x `HEAD_HEIGHT_SPACES`, the convention's head, from the staff space) on the side the
+#     stem's direction gives (up-stem: head at the BOTTOM end, LEFT of the stem; down-stem: at the TOP end, RIGHT of it), centred on
+#     the tip; `head_ink.read_head_ink` trims it to the head's own ink;
+#   * it is a head only where the trimmed ink is ONE head (`not_one_head` None), OVAL (wider than tall, head-tall across at least a
+#     head's minimum, `head_ink.MIN_SPACES`), ATTACHED (its stem-side edge within `CROSS_SPACES` of the stem, its centre at the end by
+#     `at_stem_end`) and its fill read ('hollow' / 'filled');
+#   * ink and re-run AGREE (same ink) -> the re-run's box is kept (as before); ink alone -> a box built on the trimmed ink; re-run alone
+#     where the ink reads no head, or the two on different ink, or one head read at BOTH ends of one stem -> ABSTAIN with the
+#     candidates (nothing appended);
+#   * ink another mark of the cell already holds (an `_OTHER_FAMILY_PREFIXES` box at the production floor, or a head already seen) is
+#     never taken.
+# CONVENTION ASSUMED: a head stands at its stem's end on the side the stem's direction gives, an oval ~1.3 x 1.0 sp (page-facts "Stems";
+# benchmarks/omr-notehead-width-2026-09). WHAT WOULD FALSIFY IT: Sean's blind tiles on ink-only heads showing beam ends, clef bodies,
+# dynamics or tremolo slashes read as one head (2.210's list). NOT CONFIRMED beyond Litolff + Brahms.
+
+STEM_END_HEAD_INK_ENV = "OMR_STEM_END_HEAD_INK"
+#: the convention's head (benchmarks/omr-notehead-width-2026-09: 1.3-1.4 sp wide, one space tall); the seed only -- the ink trims it
+HEAD_WIDTH_SPACES = 1.3
+HEAD_HEIGHT_SPACES = 1.0
+#: the production floor: another mark's box below it is not a claim on the ink
+CLAIM_FLOOR = 0.25
+
+
+def ink_enabled() -> bool:
+    """`OMR_STEM_END_HEAD_INK`, default OFF."""
+    return os.environ.get(STEM_END_HEAD_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def seed_box(stem_x: float, tip_y: float, end: str, space: float) -> Tuple[float, float, float, float]:
+    """Page px seed for the head at `end` of a stem at x `stem_x`: bottom end -> LEFT of the stem, top end -> RIGHT of it."""
+    w, h = HEAD_WIDTH_SPACES * space, HEAD_HEIGHT_SPACES * space
+    if end == "bottom":
+        return (stem_x - w, tip_y - h / 2.0, stem_x, tip_y + h / 2.0)
+    return (stem_x, tip_y - h / 2.0, stem_x + w, tip_y + h / 2.0)
+
+
+class _PageStem:
+    """A stem in PAGE px, shaped like a detection, so `at_stem_end` reads it unchanged."""
+    def __init__(self, x: float, yt: float, yb: float):
+        self.x_canonical, self.y_canonical, self.width_canonical, self.height_canonical = x, yt, 0.0, yb - yt
+
+
+def ink_head_at_end(page_binary: Any, stem_page: Tuple[float, float, float], end: str, space_px: float,
+                    foreign_boxes: Sequence[Sequence[float]], slit_fn: Any, window_fn: Any = None) -> Dict[str, Any]:
+    """Pure: the head read from the page ink at `end` ('bottom' | 'top') of a stem `(x, y_top, y_bottom)` in page px.
+    Returns `{"head": bool, "why": None | reason, "trimmed", "value", "extent_sp", "oval_width_sp", "seed"}`."""
+    from . import head_ink
+    x, yt, yb = stem_page
+    sp = float(space_px)
+    seed = seed_box(x, yb if end == "bottom" else yt, end, sp)
+    out: Dict[str, Any] = {"head": False, "why": None, "trimmed": None, "value": None, "extent_sp": None,
+                           "oval_width_sp": None, "seed": [round(v, 1) for v in seed]}
+    got = head_ink.read_head_ink(page_binary, seed, sp, foreign_boxes, slit_fn, window_fn)
+    if got is None:
+        out["why"] = "no_raster"
+        return out
+    out.update(trimmed=got.get("trimmed"), value=got.get("value"), extent_sp=got.get("extent_sp"),
+               oval_width_sp=got.get("oval_width_sp"))
+    if got.get("trimmed") is None:
+        out["why"] = "no_head_ink"
+        return out
+    if got.get("not_one_head"):
+        out["why"] = "not_one_head:" + str(got["not_one_head"])
+        return out
+    w_sp, h_sp = got["extent_sp"]
+    if w_sp < h_sp or (got.get("oval_width_sp") or 0.0) < head_ink.MIN_SPACES:
+        out["why"] = "not_oval"
+        return out
+    tx0, _ty0, tx1, _ty1 = got["trimmed"]
+    cross = CROSS_SPACES * sp
+    attached = (tx1 >= x - cross) if end == "bottom" else (tx0 <= x + cross)
+    if not attached or at_stem_end(got["trimmed"], _PageStem(x, yt, yb), sp) != end:
+        out["why"] = "not_at_stem_end"
+        return out
+    if got.get("value") is None:
+        out["why"] = "fill_unread"
+        return out
+    out["head"] = True
+    return out
+
+
+def combine(det_box_page: Optional[Sequence[float]], ink: Optional[Dict[str, Any]]) -> Tuple[str, str]:
+    """Pure: `(verdict, why)` for one stem end -- `agree` (keep the re-run box), `ink_only` (a box on the ink), `abstain`, or `none`."""
+    ink_head = bool(ink and ink.get("head"))
+    if det_box_page is not None and ink_head:
+        if same_ink(det_box_page, ink["trimmed"]):
+            return "agree", "ink_and_rerun_same_ink"
+        return "abstain", "ink_and_rerun_on_different_ink"
+    if det_box_page is not None:
+        return "abstain", "rerun_only_ink_reads:" + str((ink or {}).get("why"))
+    if ink_head:
+        return "ink_only", "ink_only"
+    return "none", str((ink or {}).get("why"))
+
+
+def ink_head_class(value: str, cy: float, top_y: float, half_step: float) -> str:
+    """The head class for an ink-read head: its fill ('filled' black, 'hollow' half -- it has a stem) at its staff position."""
+    black = black_head_class(cy, top_y, half_step)
+    return black if value == "filled" else black.replace("noteheadBlack", "noteheadHalf")
