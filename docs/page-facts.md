@@ -112,6 +112,7 @@ machine-readable form.
   the one NEARER the noteheads is the tie (ROADMAP 2.75). *"There is never a
   tie between 2 notes on the same beat"* (Sean, 2026-10-02; scope: general):
   a tie's heads are at different onsets.
+- **A tie joins exactly TWO ADJACENT notes of the SAME pitch; anything else is a slur** (Sean, 2026-10-29: *"a tie only ever happens between 2 adjacent notes of the same pitch. Different pitch or spanning multiple notes is always slur. When there are multiple arcs the tie is always closer to the staff than the slur."*; scope: general engraving). So the arc KIND follows from its two end heads once they are read: same pitch and adjacent -> tie; different pitch, or more than two notes under it -> slur. The detector's tie/slur class is a prior, never the decision.
 - An articulation belongs to the note whose notehead side faces it, opposite
   the stem (ROADMAP 2.12f).
 - A hairpin sits UNDER its staff, so a note between a staff and the hairpin
