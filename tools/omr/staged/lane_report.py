@@ -795,7 +795,82 @@ def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str,
                 boxes.setdefault(s_, b_)
         out = by_place(out, boxes, off_hosts, on_hosts)
         out = invented_moves(out, idx, doc, boxes, off_hosts, on_hosts)
+        out = written_moves(out, idx, doc, J.page_boxes, (off_rec, on_rec), off_hosts, on_hosts)
     return out
+
+
+_TYPE_BEATS = {"whole": 4.0, "half": 2.0, "quarter": 1.0, "eighth": 0.5, "16th": 0.25, "32nd": 0.125, "64th": 0.0625}
+
+
+def written_beats(h: dict) -> Optional[float]:
+    """The value EXPORT wrote for a note, in quarter notes (type, plus its dots), plain or blue alike."""
+    b = _TYPE_BEATS.get(h.get("type"))
+    if b is None:
+        return None
+    n = len((h.get("sub") or {}).get("dot", ()))
+    return b * (2 - 0.5 ** n)
+
+
+def _right_value(h: dict, want: float) -> bool:
+    """Right if the written value is Sean's, or the head's undotted value is (the dot is its own mark, as in judged._duration)."""
+    b = written_beats(h)
+    base = _TYPE_BEATS.get(h.get("type"))
+    return b is not None and (abs(b - want) < 1e-6 or abs(base - want) < 1e-6)
+
+
+def written_moves(rep: Dict[str, Any], idx: Dict[str, Any], doc: str, page_boxes, recs: Tuple[pathlib.Path, pathlib.Path],
+                  off_hosts: Sequence[dict], on_hosts: Sequence[dict]) -> Dict[str, Any]:
+    """Judged note VALUES scored from what EXPORT WROTE at the place, plain or blue alike (the lane-scorer-blue fix). The verdict
+    scorer reads a DECIDED duration, so a note written by INFER collapse (a blue GUESSED half that becomes a blue quarter, its
+    verdict `narrowed` on both arms) moved from right to wrong and scored 0. Here, for every judged one-value glyph tile of this
+    document: the OFF note is the one written from the box (else the one inside it); the ON note is the one at the same place
+    (never a chord-mate); right / wrong is the written value against Sean's. OFF right and ON wrong -> `worse`; OFF wrong and
+    ON right -> `better`; each row says whether the ON note is blue (`blue`) and how it was found (`source: written`).
+    A row the verdict scorer already put in `worse` / `better` is kept as it is, with `blue` added."""
+    rows = [r for r in idx["tiles"] if not r.get("followup") and r.get("doc") == doc and r.get("subject_kind") == "glyph"
+            and r.get("answer_kind") == "duration" and r.get("value") is not None and r.get("subject")]
+    out = dict(rep)
+    if not rows:
+        return out
+    subs = {r["subject"] for r in rows}
+    boxes: Dict[str, Sequence[float]] = dict(page_boxes(recs[1], subs))
+    for s_, b_ in page_boxes(recs[0], subs).items():
+        boxes.setdefault(s_, b_)
+    worse, better = list(rep.get("worse", ())), list(rep.get("better", ()))
+    have = {"worse": {(w["item"], w["tile"]): w for w in worse}, "better": {(w["item"], w["tile"]): w for w in better}}
+    for r in rows:
+        sub = r["subject"]
+        off_h = written_at(off_hosts, sub, boxes.get(sub))
+        if off_h is None or off_h["kind"] != "note" or place_of(off_h) is None:
+            continue
+        on_h = event_at(on_hosts, place_of(off_h), off_h.get("pitch"), "note")
+        if on_h is None or on_h["kind"] != "note" or on_h.get("pitch") != off_h.get("pitch"):
+            continue   # the note is gone or moved pitch: a lost / changed note, not a changed value
+        was, now = _right_value(off_h, r["value"]), _right_value(on_h, r["value"])
+        key = (r["item"], r["tile"])
+        blue = bool(on_h.get("blue"))
+        if was and not now:
+            kind, bucket = "worse", worse
+        elif now and not was:
+            kind, bucket = "better", better
+        else:
+            continue
+        if key in have[kind]:
+            have[kind][key]["blue"] = blue
+            continue
+        bucket.append(dict(item=r["item"], tile=r["tile"], subject=sub, answer=r["answer"], source="written", blue=blue,
+                           off_blue=bool(off_h.get("blue")),
+                           now="written %s%s%s (OFF %s%s)" % (on_h["type"], "." * len((on_h.get("sub") or {}).get("dot", ())),
+                                                           " blue" if blue else "", off_h["type"], " blue" if off_h.get("blue") else "")))
+    out["worse"], out["better"] = worse, better
+    return out
+
+
+def blue_count(rows: Iterable[dict]) -> str:
+    """"1 (1 blue)" style: the count, with how many of those are blue (GUESSED) notes."""
+    rows = list(rows)
+    nb = sum(1 for r in rows if r.get("blue"))
+    return "%d (%d blue)" % (len(rows), nb) if nb else "%d" % len(rows)
 
 
 def _subject_list(sub: Any) -> List[str]:
@@ -1172,12 +1247,15 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
 
 def landing_line(rep: Dict[str, Any]) -> str:
     """ROADMAP 2.218: the landing summary. Both judged controls must be 0 for a lane to land (docs/measuring.md section 0)."""
-    rw = sum(len(r["judged"]["worse"]) for r in rep["plates"].values())
+    rwl = [w for r in rep["plates"].values() for w in r["judged"]["worse"]]
+    rw = len(rwl)
+    rwt = blue_count(rwl)
+    bt = blue_count([w for r in rep["plates"].values() for w in r["judged"].get("better", ())])
     uw = sum(len(r["judged"].get("unwritten_wrong", ())) for r in rep["plates"].values())
     ur = sum(len(r["judged"].get("unwritten_right", ())) for r in rep["plates"].values())
     if rw == 0 and uw == 0:
-        return "LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right %d)" % ur
-    return "LANDING CHECK FAILS: judged right->wrong %d, UNWRITTEN->WRONG %d (a note OFF left unwritten that ON writes against Sean's answer) -- must be 0 to land" % (rw, uw)
+        return "LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right %d; wrong->right %s)" % (ur, bt)
+    return "LANDING CHECK FAILS: judged right->wrong " + rwt + ", UNWRITTEN->WRONG %d (a note OFF left unwritten that ON writes against Sean's answer) -- must be 0 to land (wrong->right %s)" % (uw, bt)
 
 
 def render_text(rep: Dict[str, Any]) -> str:
@@ -1205,10 +1283,10 @@ def render_text(rep: Dict[str, Any]) -> str:
                      % (say, o["differ"], n["differ"], o["stored"],
                         "" if c["reproduces"] in ("both",) else " (e.g. %s)" % ", ".join((o if o["differ"] else n)["first_differ"][:3])))
         j = r["judged"]
-        L.append("  Sean's judged answers (%d tiles on these pages): right->wrong %d | right->narrowed/abstained/gone %d | wrong->right %d"
-                 % (j["scored"], len(j["worse"]), len(j["lost"]), len(j["better"])))
+        L.append("  Sean's judged answers (%d tiles on these pages): right->wrong %s | right->narrowed/abstained/gone %d | wrong->right %s"
+                 % (j["scored"], blue_count(j["worse"]), len(j["lost"]), blue_count(j["better"])))
         for w in j["worse"]:
-            L.append("      RIGHT->WRONG  %s tile %s %s  Sean: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["now"]))
+            L.append("      RIGHT->WRONG%s  %s tile %s %s  Sean: %s  now: %s" % (" (blue)" if w.get("blue") else "", w["item"], w["tile"], w["subject"], w["answer"], w["now"]))
         L.append("  Sean's judged answers, OFF wrote nothing there: unwritten->wrong %d (of which invented from non-note ink %d; must be 0) | unwritten->right %d | invented->removed %d (good)"
                  % (len(j.get("unwritten_wrong", ())), sum(1 for w in j.get("unwritten_wrong", ()) if w.get("invented")),
                     len(j.get("unwritten_right", ())), len(j.get("invented_removed", ()))))
@@ -1341,13 +1419,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         for p in [x for x in a.plates.split(",") if x]:
             r = rescore(pathlib.Path(a.work), p, a.box_keyed, a.drop, pathlib.Path(a.index) if a.index else None)
             j = r["judged"]
-            print("%s  %s\n  judged: right->wrong %d | right->lost %d | same music at its place %d | not found %d"
-                  % (p, format_counts(r["counts"]), len(j["worse"]), len(j["lost"]), len(j.get("same_music", ())), len(j.get("not_found", ()))))
+            print("%s  %s\n  judged: right->wrong %s | wrong->right %s | right->lost %d | same music at its place %d | not found %d"
+                  % (p, format_counts(r["counts"]), blue_count(j["worse"]), blue_count(j["better"]), len(j["lost"]), len(j.get("same_music", ())), len(j.get("not_found", ()))))
             print("  judged, OFF wrote nothing there: unwritten->wrong %d (of which invented from non-note ink %d; must be 0) | unwritten->right %d | invented->removed %d (good)"
                   % (len(j.get("unwritten_wrong", ())), sum(1 for w in j.get("unwritten_wrong", ()) if w.get("invented")),
                      len(j.get("unwritten_right", ())), len(j.get("invented_removed", ()))))
             for w in j["worse"]:
-                print("    RIGHT->WRONG", w["item"], w["tile"], w["subject"], w["now"])
+                print("    RIGHT->WRONG", "(blue)" if w.get("blue") else "", w["item"], w["tile"], w["subject"], w["now"])
+            for w in j["better"]:
+                print("    wrong->right", "(blue)" if w.get("blue") else "", w["item"], w["tile"], w["subject"])
             for w in j.get("unwritten_wrong", ()):
                 print("    UNWRITTEN->WRONG", w["item"], w["tile"], w["subject"], "Sean:", w["answer"], "OFF:", w["off"], "now:", w["now"])
             for w in j.get("not_found", ()):
