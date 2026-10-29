@@ -1260,10 +1260,23 @@ def _system_barline_columns(bin_img, staves, clusters, cluster_obs, x_by_staff_o
         x = int(round(sum(cl) / len(cl)))
         votes = {pos[si] for _x, si in cluster_obs[ci] if si in pos}
         xb = x_by_staff_of(ci)
+        # THE SCAN TILTS (CLAUDE.md section 5: measure against the staff LOCALLY): a rule on Litolff p6 sys 1 drifts 21 px over the system
+        # (2487 -> 2508), more than the +-8 px window. So the rule's x in each gap is the line through the staves that DID see it
+        # (Theil-Sen: median of pairwise slopes, immune to a stem alignment that one staff reported), read at that gap's own y; a staff
+        # with no vote of its own gets the line's x, never the cluster's mean x. Fewer than 2 voters -> the staves' own x, else the mean.
+        pts = sorted(((ordered[pos[si]].top_y + ordered[pos[si]].bottom_y) / 2.0, float(xv)) for si, xv in xb.items() if si in pos)
+        slope = 0.0
+        if len(pts) >= 2:
+            sl = [(b[1] - a[1]) / (b[0] - a[0]) for i, a in enumerate(pts) for b in pts[i + 1:] if b[0] != a[0]]
+            slope = float(np.median(sl)) if sl else 0.0
+        icpt = float(np.median([px - slope * py for py, px in pts])) if pts else float(x)
+
+        def _x_at(y: float, _s=slope, _i=icpt, _have=bool(pts), _x=x) -> float:
+            return _s * y + _i if _have else float(_x)
         crossed = set()
         for g in range(n - 1):
-            xu = xb.get(ordered[g].staff_index, x)
-            xl = xb.get(ordered[g + 1].staff_index, x)
+            xu = _x_at(float(ordered[g].bottom_y))
+            xl = _x_at(float(ordered[g + 1].top_y))
             if _gap_has_rule(bin_img, ordered[g], ordered[g + 1], xu, xl):
                 crossed.add(g)
         cands.append((x, votes, crossed))
