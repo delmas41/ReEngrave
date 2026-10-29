@@ -71,10 +71,10 @@ TRIM_ENV = "OMR_HEAD_TRIM_LINE_ONLY"
 
 
 def trim_line_only() -> bool:
-    """Head-trim fix (2026-10-29, default OFF): the END trim strips only a line's own UNDILATED rows, at most one locally measured
+    """Head-trim fix (2026-10-29, default ON): the END trim strips only a line's own UNDILATED rows, at most one locally measured
     line thickness per end (the 1 px dilations of `_line_rows` and of the ledger opening shaved ~a quarter off a head in a space
     on Litolff, 15.75 px/sp)."""
-    return os.environ.get(TRIM_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(TRIM_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
 
 def enabled() -> bool:
