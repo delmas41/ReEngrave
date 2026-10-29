@@ -835,11 +835,8 @@ REST_LINE_TOUCH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
 #: measured on two plates may only NARROW (CLAUDE §4): the rest is written GUESSED (blue) with both readings. No ink row: the
 #: refusal stands as before (rule 8).
 WHOLE_REST_HANGS_ENV = "OMR_WHOLE_REST_HANGS"
-#: ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_OFF_CENTER`, default OFF): the 1/6-of-the-bar centre cut was "CONVENTION ASSUMED, no crop
-#: confirms this exact fraction" (its own docstring); Sean's m0 tiles 3 and 6 (offsets 0.2-0.3 of the bar): whole rest bars. Between 1/6
-#: and 1/2 (the bar edge, where a centre cannot go) a whole rest is NARROWED, not refused: written GUESSED, both readings carried.
-WHOLE_REST_OFF_CENTER_ENV = "OMR_WHOLE_REST_OFF_CENTER"
-WHOLE_REST_OFF_CENTER_NARROW_MAX = 0.5
+#: The same flag DROPS the off-centre test for a restWhole from the decision (Sean 2026-10-29, page-facts "A whole rest need not be
+#: centred"; the 1/6 cut was "CONVENTION ASSUMED, no crop confirms" and his m0 tiles 3 and 6 are whole rest bars at 0.2-0.3).
 
 
 def _env_on(name: str) -> bool:
@@ -849,10 +846,6 @@ def _env_on(name: str) -> bool:
 
 def whole_rest_hangs_enabled() -> bool:
     return _env_on(WHOLE_REST_HANGS_ENV)
-
-
-def whole_rest_off_center_enabled() -> bool:
-    return _env_on(WHOLE_REST_OFF_CENTER_ENV)
 
 
 def _whole_rest_narrowing(reason: str, used, detail: Dict[str, Any], margin: Optional[float], axis: str, unit: str) -> Ruling:
@@ -879,17 +872,6 @@ def _whole_rest_hangs_narrowing(ev: Evidence, this_row, two_lines: Ruling, used,
     return _whole_rest_narrowing("whole_rest_hangs", tuple(used) + (rows[-1].id,), detail,
                                  round(REST_HEAD_BLOB_MIN_SP - tallest, 3), "ink_height_under_head_cut",
                                  "staff spaces under the head cut")
-
-
-def _whole_rest_off_center_narrowing(off_center: Ruling, used, detail: Dict[str, Any]) -> Optional[Ruling]:
-    if not whole_rest_off_center_enabled():
-        return None
-    off = detail.get("bar_centre_offset_fraction")
-    if off is None or float(off) > WHOLE_REST_OFF_CENTER_NARROW_MAX:
-        return None
-    return _whole_rest_narrowing("whole_rest_off_center", used, detail,
-                                 round(float(off) - REST_WHOLE_CENTER_MAX_OFFSET_FRACTION, 3), "bar_centre_offset_over_cut",
-                                 "fraction of the bar width")
 
 
 def _stems_connected_to_a_head(ev: Evidence, cell, stems):
@@ -1922,7 +1904,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_has_a_stem",
                                      "rest_touches_two_staff_lines",
                                      "rest_off_center",
-                                     "whole_rest_hangs", "whole_rest_off_center",
+                                     "whole_rest_hangs",
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
@@ -2051,11 +2033,12 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         if two_lines is not None:
             hangs = _whole_rest_hangs_narrowing(ev, box_row, two_lines, used, detail)
             return hangs if hangs is not None else two_lines
-        if str(detail.get("class")) == "restWhole":
+        # ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`; Sean 2026-10-29, page-facts "A whole rest need not be centred"): the centre test is
+        # not part of the decision with the flag ON -- the shape against the local lines decides it, its x in the bar is no evidence.
+        if str(detail.get("class")) == "restWhole" and not whole_rest_hangs_enabled():
             off_center = _rest_off_center_refusal(ev, box_row, detail)
             if off_center is not None:
-                off = _whole_rest_off_center_narrowing(off_center, used, detail)
-                return off if off is not None else off_center
+                return off_center
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical

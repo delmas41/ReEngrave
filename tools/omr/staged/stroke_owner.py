@@ -64,6 +64,10 @@ ATTACH_MIN_TOUCHES = 2
 #: the claimant tiers, in convention order (module doc). Consumers are not here.
 TIERS: Tuple[Tuple[str, ...], ...] = (
     ("clef", "meter", "key_signature", "leading_column"),
+    # ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`; no box has this family with the flag OFF): a whole rest is READ by its block shape and
+    # CLAIMS its ink BEFORE the heads (Sean 2026-10-29: "We just need to be able to read it and claim the ink"), so a head box standing on
+    # it owns nothing and no later reader (beam, stem, flag) may take it. Not an area: the claimed stroke must fit the block shape.
+    ("whole_rest",),
     ("head", "ledger"),
     ("accidental",),
     ("arc", "hairpin"),
@@ -73,6 +77,15 @@ TIERS: Tuple[Tuple[str, ...], ...] = (
 CONSUMERS = ("stem", "beam", "flag")
 AREA_OWNERS = TIERS[0]
 STATES = ("unclaimed", "decided", "merged", "refused_claims", "contested")
+
+
+ENV_WHOLE_REST = "OMR_WHOLE_REST_HANGS"
+
+
+def whole_rest_claims() -> bool:
+    """`OMR_WHOLE_REST_HANGS` (ROADMAP 2.230 m1), default OFF; only an explicit on-word enables."""
+    import os
+    return os.environ.get(ENV_WHOLE_REST, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 def family_of(cls: str, category: Optional[str] = None) -> Optional[str]:
@@ -90,6 +103,8 @@ def family_of(cls: str, category: Optional[str] = None) -> Optional[str]:
         return "hairpin"
     if lc.startswith("dynamic"):
         return "dynamic"
+    if lc == "restwhole" and whole_rest_claims():
+        return "whole_rest"
     if lc.startswith("rest"):
         return "rest"
     if lc.startswith("clef"):
@@ -254,6 +269,14 @@ def shape_fit(family: str, s: Ink, cls: str = "", *, crosses_a_stem: bool = Fals
         if k in ("curve", "horizontal") and L <= MARK_MAX_LEN_SP and t < ARC_MAX_THICK_SP:
             return "could", "mark_line:" + dims
         return "no", "not_a_small_mark:" + dims
+    if family == "whole_rest":
+        # ROADMAP 2.230 m1: ONE block, no vertical stroke, thinner than a head's blob. The staff lines are already erased from the strokes, so
+        # "never touches two lines" is measured here as the stroke's own height against `BLOCK_MAX_H_SP` (measured 2.205 on the blobs under
+        # kept whole/half rest boxes: median 0.76, p95 0.88; a filled head's blob 1.24-1.32). A cut measured on two plates: it may only
+        # CLAIM, never decide a value (the stroke goes to the head tier when it does not fit).
+        if k in ("blob", "horizontal") and h <= BLOCK_MAX_H_SP and w <= REST_BLOCK_MAX_W_SP:
+            return "clear", "whole_rest_block:" + dims
+        return "no", "not_a_whole_rest_block:" + dims
     if family == "rest":
         block = str(cls or "").lower() in BLOCK_RESTS
         if touches_a_head:

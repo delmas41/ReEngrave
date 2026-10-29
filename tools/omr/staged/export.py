@@ -466,7 +466,7 @@ def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
 
 #: ROADMAP 2.181: a head/rest box a claim holds but cannot refuse is NARROWED {itself, the owner's ink}; written, it is GUESSED.
 CLAIM_NARROWED_PREFIX = "claim_narrowed:"
-WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs", "whole_rest_off_center")
+WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
 
 
 def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
@@ -474,7 +474,7 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     carried), or None. Only a verdict whose reason is `claim_narrowed:<owner>` counts -- none is filed with the flag OFF."""
     v = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
     if v is not None and v.get("outcome") == "narrowed" and v.get("reason") in WHOLE_REST_NARROWED_REASONS:
-        # ROADMAP 2.230 m1: a whole rest the old refusal took, kept GUESSED (flags OMR_WHOLE_REST_HANGS / OMR_WHOLE_REST_OFF_CENTER).
+        # ROADMAP 2.230 m1: a whole rest the old refusal took, kept GUESSED (flag OMR_WHOLE_REST_HANGS).
         return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
                 "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "not_a_rest", "support": 0.5}],
                 "chosen": {"value": "whole_rest"}}
