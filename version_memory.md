@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- ROADMAP 2.220 LANDED ON: the notehead's fill is read from its own trimmed ink
+
+Sean "2.220 land on". STAGED: `head_ink.py` (GATHER fact `Q.HEAD_INK`, the box trimmed to its own head on the page raster) with its consumer in `adjudicators/rhythm.py` and `export.py`. `OMR_FILL_FROM_STROKES` default ON (explicit 0/false/no/off disables; deny-list per `test_flag_default_direction`): `hollow_over_black` (the head's own ink shows a hole) writes the half GUESSED (blue); `not_one_head` is recorded only and draws nothing; `half_not_hollow` dropped. Trimmed m2b re-test: 4 Litolff values changed, all right per Sean, blue +3/+1, judged right->wrong 0. `test_head_ink_2_220.py`, `test_head_ink_consumer_2_220.py`; `docs/flags-2026-09.md` row updated.
+
 ## 2026-10-28 -- ROADMAP 2.218 LANDED: lane_report counts unwritten->wrong (incl. invented)
 
 Sean "Land with safety check". Tooling only, no flag: `lane_report` now reports unwritten->wrong (a judged answer OFF left unwritten that ON writes wrong, invented included) beside right->wrong; both must be 0 to land (`docs/measuring.md`). On the saved re-score it catches 2.204 tiles 1, 7 (invented), 8 and 2.154 t7. `test_staged_lane_report_2_218.py` pins it.

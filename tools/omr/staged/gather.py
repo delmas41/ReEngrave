@@ -7951,6 +7951,54 @@ def gather_rest_ink_contact(log: Log, cells: Sequence[Any], local: Dict[int, Tup
 # Does a head box at a bar's left edge hold a head-shaped oval? -- ROADMAP 2.164
 # ─────────────────────────────────────────────────────────────────────────────
 
+def gather_head_ink(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                    detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """ROADMAP 2.220 milestone 1 (flag `OMR_FILL_FROM_STROKES`, default ON since 2026-10-29), STAGED GATHER: `Q.HEAD_INK` on every notehead-classed box,
+    off the PAGE raster (`pws.page.binary`, nothing erased): `head_ink.read_head_ink` trims the box to the head's own oval (bare line
+    pixels out, read locally; 2.164's head-tall columns), says `not_one_head` where the trimmed ink is not one head's or an accidental /
+    key / flag / dynamic box of the same cell stands on it (fix A), and reads 2.148's slit (`head_interior_white`, unchanged) on the
+    trimmed box (fix D: an extent, never a centroid). Observed 'hollow' / 'filled'; otherwise an abstention naming why, the measures
+    filed on both. Decides nothing and nothing reads it (the consumer is milestone 2)."""
+    from . import head_ink
+    if not head_ink.enabled():
+        return
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        heads = [gi for gi, d in enumerate(dets) if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not heads:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        up = getattr(c, "upscale_factor", None)
+        space_page = (grid[1] * 2.0 / float(up)) if grid and grid[1] and up else None
+        foreign = [pb for pb in (_page_box(c, d) for d in dets if head_ink.is_foreign_class(d.smufl_name)) if pb is not None]
+        for gi in heads:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            page_box = _page_box(c, dets[gi])
+            got = (head_ink.read_head_ink(page_binary, page_box, space_page, foreign, head_interior_white, notehead_ink_under)
+                   if page_binary is not None and page_box is not None and space_page else None)
+            if got is None:
+                log.abstain(g, Q.HEAD_INK, reader=READERS.CV_HEAD_INK, frame=frame, reason=ABSTAIN.NO_MASK,
+                            note="no page raster, page box or staff unit")
+                continue
+            detail = {k: got[k] for k in ("trimmed", "extent_sp", "not_one_head", "size_margin_sp", "foreign_share", "stack_clipped",
+                                          "slit", "window", "oval_width_sp", "line_px_out", "n_runs") if got.get(k) is not None}
+            detail["page_box"] = [round(float(v), 2) for v in page_box]
+            if got["value"] is not None:
+                log.observe(g, Q.HEAD_INK, got["value"], reader=READERS.CV_HEAD_INK, frame=frame, margin=got["margin"], **detail)
+            else:
+                reason = {"not_one_head": ABSTAIN.NOT_ONE_HEAD, "no_head_ink": ABSTAIN.NO_HEAD_INK,
+                          "readers_split": ABSTAIN.READERS_SPLIT}[got["why"]]
+                log.abstain(g, Q.HEAD_INK, reader=READERS.CV_HEAD_INK, frame=frame, reason=reason, **detail)
+        if progress:
+            print(f"  gather head ink {sub.to_key()}: {len(heads)} heads")
+
+
 def gather_head_oval(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                      detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.HEAD_OVAL` on every notehead-classed box that starts within `head_oval.LEFT_EDGE_SPACES` of its bar's left
@@ -16129,6 +16177,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_stem_cross_ink(log, cells, local, detections)
         # ROADMAP 2.164 (flag OMR_ARC_TAIL_NOT_A_HEAD, default ON): head boxes at a bar's left edge, page raster.
         gather_head_oval(log, pws, cells, local, detections)
+        # ROADMAP 2.220 milestone 1 (flag OMR_FILL_FROM_STROKES, default ON; producer only, nothing reads it): is the head box ONE head
+        # (trimmed to its own oval on the page raster), and its fill by 2.148's slit on the trimmed head. Files rows only.
+        gather_head_ink(log, pws, cells, local, detections)
         # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
         # one whose GEOMETRY position lies outside the first space -- it reads
         # that row) and after the ownership evidence, which does not feed it.

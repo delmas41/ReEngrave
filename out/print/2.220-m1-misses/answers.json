@@ -1,0 +1,69 @@
+{
+ "sean_2026_10_28": [
+  "2.220 - nine of those were half notes",
+  "Not nine - nine",
+  "None",
+  "Mostly not notes at all"
+ ],
+ "reading": "dictation: 'nine' = 'none'; Sean confirmed 'None' -- none of the 14 tiles is a half note",
+ "verdict": "all 14 written halves are WRONG in the file; the reader was right to find no hole",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "not a half"
+  },
+  {
+   "tile": 2,
+   "answer": "not a half"
+  },
+  {
+   "tile": 3,
+   "answer": "not a half"
+  },
+  {
+   "tile": 4,
+   "answer": "not a half"
+  },
+  {
+   "tile": 5,
+   "answer": "not a half"
+  },
+  {
+   "tile": 6,
+   "answer": "not a half"
+  },
+  {
+   "tile": 7,
+   "answer": "not a half"
+  },
+  {
+   "tile": 8,
+   "answer": "not a half"
+  },
+  {
+   "tile": 9,
+   "answer": "not a half"
+  },
+  {
+   "tile": 10,
+   "answer": "not a half"
+  },
+  {
+   "tile": 11,
+   "answer": "not a half"
+  },
+  {
+   "tile": 12,
+   "answer": "not a half"
+  },
+  {
+   "tile": 13,
+   "answer": "not a half"
+  },
+  {
+   "tile": 14,
+   "answer": "not a half"
+  }
+ ],
+ "kind": "mostly not notes at all (Sean); a few filled notes"
+}
