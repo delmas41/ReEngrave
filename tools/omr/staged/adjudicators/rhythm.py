@@ -3628,6 +3628,110 @@ def _head_reads_hollow_first(ev: Evidence) -> Optional[Dict[str, Any]]:
             "margin": round(share - HEAD_INTERIOR_WHITE_HOLLOW_MIN, 4)}
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.220 milestone 2: the CONSUMER of `Q.HEAD_INK` (flag `OMR_FILL_FROM_STROKES`, default OFF). STAGED ADJUDICATE.
+# Read ONCE, at 2.148's first step, for every head class. Sean 2026-10-28 (DECISIONS):
+#   * a black-classed box 2.148 could not read (`not_head_sized`, fill None, no located / bridged hollow) whose trimmed head is ONE head
+#     and reads HOLLOW is written GUESSED (blue), candidates half and quarter -- the half chosen on its own stem (notehead first), the
+#     black value kept where no stem stands (fix F: a hollow never writes a whole here);
+#   * a black head 2.148's own fill reader READ is never overturned (fix B) -- this branch is reached only where it read nothing;
+#   * a written half whose trimmed head does not read hollow is not a plain half: GUESSED, candidates half and quarter, value kept;
+#   * `not_one_head` only NARROWS: the note is written as before, GUESSED, its value and "not one head" carried. Nothing is removed.
+# The guess rides on the verdict's detail (`head_ink_guess`); EXPORT's `head_ink_guess_of` draws it blue. Old readers stay (fix E).
+# ─────────────────────────────────────────────────────────────────────────────
+HEAD_INK_GUESS_KEY = "head_ink_guess"
+HEAD_INK_RULE_HOLLOW = "head_ink_hollow_over_black"
+HEAD_INK_RULE_HALF_NOT_HOLLOW = "head_ink_half_not_hollow"
+HEAD_INK_RULE_NOT_ONE_HEAD = "head_ink_not_one_head"
+
+
+def head_ink_consumer_enabled() -> bool:
+    """ROADMAP 2.220 m2: the same flag as the producer (`head_ink.ENV`, default OFF)."""
+    from .. import head_ink as _HI
+    return _HI.enabled()
+
+
+def _head_ink(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """The head's one `Q.HEAD_INK` reading (an observation, else the abstention): value, why, margin, extent. None with no row."""
+    obs = ev.rows(Q.HEAD_INK)
+    if obs:
+        r = obs[-1]
+        d = r.detail or {}
+        return {"value": r.value, "why": None, "row": r.id, "margin": d.get("margin"), "slit": d.get("slit"),
+                "extent_sp": d.get("extent_sp"), "not_one_head": d.get("not_one_head")}
+    ab = ev.refusals(Q.HEAD_INK)
+    if ab:
+        a = ab[-1]
+        d = a.detail or {}
+        return {"value": None, "why": str(a.reason), "row": a.id, "margin": None, "slit": d.get("slit"),
+                "extent_sp": d.get("extent_sp"), "not_one_head": d.get("not_one_head")}
+    return None
+
+
+def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any]], head_first: Optional[Dict[str, Any]],
+                                        refused: bool, refusal=None) -> bool:
+    """2.220 m2: the one case the ink may speak for a BLACK class -- 2.148 read nothing (`not_head_sized`, fill None), the trimmed head
+    is ONE head (fix A: `not_one_head` files no value) and reads hollow, and 2.159's two guards hold (not on a dynamic letter, no
+    slash ink straddling the stem)."""
+    if hi is None or hi.get("value") != "hollow" or refused or head_first is None:
+        return False
+    if head_first.get("fill") is not None or not head_first.get("not_head_sized"):
+        return False
+    if ev.rows(Q.NOTEHEAD_LETTER_INK):
+        return False
+    sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
+    return not (sig.get("crossing_ok") or sig.get("read_by") == "stem_slash")
+
+
+def _value_at(value: Dict[str, Any], head_written: float, support: float) -> Dict[str, Any]:
+    """The same note at another HEAD value (level 0, the same dots, the same tuplet scale), as an export candidate row."""
+    dots = int(value.get("dots") or 0)
+    written = float(value.get("written") or 0.0)
+    scale = (float(value.get("beats")) / written) if written and value.get("beats") is not None else 1.0
+    t = head_written * (2.0 - 0.5 ** dots)
+    return {"beats": t * scale, "written": t, "dots": dots, "beam_levels": 0, "support": support}
+
+
+def _with_head_ink_guess(ruling: Ruling) -> Ruling:
+    """2.220 m2: a DECIDED duration the head's own ink disputes is written GUESSED (`detail.head_ink_guess`); every other ruling unchanged.
+    Never changes the value (the half over an unread black is chosen at 2.148's step, before any stroke is read)."""
+    import dataclasses
+    v = ruling.value
+    if not isinstance(v, dict) or not head_ink_consumer_enabled() or v.get("is_rest"):
+        return ruling
+    d = ruling.detail or {}
+    hi, hf = d.get("head_ink"), d.get("head_fill_first") or {}
+    written, dots = float(v.get("written") or 0.0), int(v.get("dots") or 0)
+    head_w = written / (2.0 - 0.5 ** dots) if written else None
+    plain = {k: v[k] for k in ("beats", "written", "dots", "beam_levels") if k in v}
+    rule = cands = None
+    if hf.get("head_ink_hollow"):
+        rule = HEAD_INK_RULE_HOLLOW
+        if head_w == 2.0:
+            cands = [dict(plain, support=2.0), _value_at(v, 1.0, 1.0)]
+        else:                                   # no stem of its own: the black value stands, the half beside it (never a whole)
+            cands = [dict(plain, support=1.0), _value_at(v, 2.0, 1.0)]
+    elif hi is not None and head_w == 2.0 and not v.get("beam_levels") and hi.get("value") != "hollow":
+        rule, cands = HEAD_INK_RULE_HALF_NOT_HOLLOW, [dict(plain, support=1.0), _value_at(v, 1.0, 1.0)]
+    elif hi is not None and hi.get("why") == ABSTAIN.NOT_ONE_HEAD:
+        rule, cands = HEAD_INK_RULE_NOT_ONE_HEAD, [dict(plain, support=1.0), {"value": "not_one_head", "support": 1.0}]
+    if rule is None:
+        return ruling
+    g = {"rule": rule, "candidates": cands, "chosen": plain, "head_ink": hi}
+    return dataclasses.replace(ruling, detail={**d, HEAD_INK_GUESS_KEY: g})
+
+
+def _head_ink_marks(fn):
+    """2.220 m2: `adjudicate_duration`'s ruling, then `_with_head_ink_guess` (flag OFF: the ruling unchanged). `functools.wraps`, so the
+    wiring / inventory checks read the decision's own source."""
+    import functools
+
+    @functools.wraps(fn)
+    def wrapped(ev: Evidence) -> Ruling:
+        return _with_head_ink_guess(fn(ev))
+    return wrapped
+
+
 def _head_is_open(base: Optional[float], ev: Evidence) -> bool:
     """Is THIS glyph's own notehead OPEN (hollow)? ROADMAP 2.43, DECISIONS
     2026-09-30 (Sean): *"Correct, open noteheads are never beamed except
@@ -4427,7 +4531,9 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
                    Q.SYSTEM_ARC,
                    # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
                    # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
-                   Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
+                   Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+                   # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the trimmed head's own fill turns an unread black hollow.
+                   Q.HEAD_INK),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -4477,7 +4583,9 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
            # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
-           Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
+           Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+           # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
+           Q.HEAD_INK),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -4502,6 +4610,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # bug. The bound lives on the rule.
     revises=Q.DURATION,
 )
+@_head_ink_marks
 def adjudicate_duration(ev: Evidence) -> Ruling:
     """The written value, composed from the marks around one notehead.
 
@@ -4645,6 +4754,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # so nothing below can make it a quarter or beam it (2.43: an open head is never beamed). No stem -> not decided here
     # (a whole or a half, the next step's question). Between the populations -> unchanged (rule 8), the margin recorded.
     head_first = None
+    # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`, default OFF): the head's own trimmed ink, read ONCE, here, for every class.
+    head_ink_read = _head_ink(ev) if head_ink_consumer_enabled() else None
     if head_fill_first_enabled() and base == _HEAD_BEATS["noteheadBlack"]:
         head_first = _head_reads_hollow_first(ev)
         # Sean's 2.148 tiles (2026-10-16): every wrong change and every non-note sat in a box that is not ONE head's size
@@ -4685,6 +4796,16 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                                                 ("side", "gap_sp", "bridge_rows", "stem_box")},
                                   "stem_bridge_row": b_row.id}
                     used.append(b_row.id)
+        # ROADMAP 2.220 m2: 2.148 read nothing on this box (not one head's size, no located / bridged hollow); the trimmed head is ONE
+        # head and its ink reads hollow. Hollow at the first step (so nothing below beams it, 2.43), written GUESSED (`_with_head_ink_guess`).
+        if _head_ink_reads_hollow_unread_black(ev, head_ink_read, head_first, refused, refusal):
+            head_first = {**head_first, "fill": "hollow", "head_ink_hollow": True, "head_ink_row": head_ink_read["row"]}
+            used.append(head_ink_read["row"])
+            if not first_stems and head_stem_bridge_enabled():
+                bridged = _bridged_stem(ev, stems, head_box)
+                if bridged is not None:
+                    first_stems = [bridged[0]]
+                    used.append(bridged[0].id)
         if head_first is not None and head_first["fill"] == "hollow" and first_stems:
             base = _HEAD_BEATS["noteheadHalf"]
             hollow = True
@@ -5061,6 +5182,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             used.append(ratio.id)
 
     shared = {"head": str(head), "head_is_open": hollow, **({"head_fill_first": head_first} if head_first else {}),
+              **({"head_ink": head_ink_read} if head_ink_read else {}),
               "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)

@@ -518,8 +518,28 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def head_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): a decided duration the head's own trimmed ink disputes (`adjudicate_duration`'s
+    `detail.head_ink_guess`), written GUESSED with its candidates -- only while the written value is still the one the guess chose (a
+    later EVALUATE / INFER move is its own guess, `guess_of`). None with the flag OFF (no such detail is filed)."""
+    dur = rec.verdict(Q.DURATION, sub)
+    if dur is None or dur.get("outcome") != "decided" or not isinstance(dur.get("value"), dict):
+        return None
+    v, seen = dur, set()
+    while v is not None and v["id"] not in seen:
+        seen.add(v["id"])
+        g = (v.get("detail") or {}).get("head_ink_guess")
+        if g:
+            if g["chosen"].get("written") != dur["value"].get("written"):
+                return None
+            return {"stage": "ADJUDICATE", "rule": g["rule"], "quantity": Q.DURATION,
+                    "candidates": list(g["candidates"]), "chosen": dict(g["chosen"])}
+        v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+    return None
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub)
+    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or head_ink_guess_of(rec, sub)
     return {"guess": g} if g else {}
 
 

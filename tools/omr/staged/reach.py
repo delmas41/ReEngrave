@@ -327,9 +327,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "⚠️ OPEN FINDING — decision #0's verdict is read by nothing. It appears "
         "in `implicates`, in `DOWNHILL`, in `legacy.EXTRACTED_QUANTITIES` and "
         "in `wants` — all DECLARATIONS, none of them a read."),
-    Q.HEAD_INK: (
-        "⚠️ PRODUCER ONLY -- ROADMAP 2.220 milestone 1 (`OMR_FILL_FROM_STROKES`, default OFF): is the head box ONE head, and 2.148's "
-        "slit on the trimmed head. Its consumer is milestone 2 (`adjudicate_duration`, behind the same flag); leaves this list then."),
 }
 
 STAGE_OF_FILE = {
