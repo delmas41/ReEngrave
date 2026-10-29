@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_28": "1.2 2.8 3. Trem slash 4.2 5.4 6.2 7.dot 4 8.2 9.8 10. Part of a sharp 11-12.2",
+ "tally": "3 value changes all right (4, 8, 11); 0 broken; half_not_hollow 0/2 (both real halves); not_one_head 1/2 (3 slash right, 5 quarter wrong); hollow_over_black flags 10 (sharp) blue",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "2",
+   "verdict": "right (half kept; blue)"
+  },
+  {
+   "tile": 2,
+   "answer": "8",
+   "verdict": "control right"
+  },
+  {
+   "tile": 3,
+   "answer": "trem slash",
+   "verdict": "not a note; ON flags it blue (better, still written)"
+  },
+  {
+   "tile": 4,
+   "answer": "2",
+   "verdict": "FIXED quarter->half"
+  },
+  {
+   "tile": 5,
+   "answer": "4",
+   "verdict": "real quarter; not_one_head blue is a false flag"
+  },
+  {
+   "tile": 6,
+   "answer": "2",
+   "verdict": "real half; half_not_hollow blue is a false flag"
+  },
+  {
+   "tile": 7,
+   "answer": "dot 4",
+   "verdict": "control: written quarter, print dotted quarter (pre-existing, unchanged)"
+  },
+  {
+   "tile": 8,
+   "answer": "2",
+   "verdict": "FIXED quarter->half"
+  },
+  {
+   "tile": 9,
+   "answer": "8",
+   "verdict": "control right"
+  },
+  {
+   "tile": 10,
+   "answer": "part of a sharp",
+   "verdict": "not a note; ON flags it blue (better, still written)"
+  },
+  {
+   "tile": 11,
+   "answer": "2",
+   "verdict": "FIXED quarter->half"
+  },
+  {
+   "tile": 12,
+   "answer": "2",
+   "verdict": "real half; half_not_hollow blue is a false flag"
+  }
+ ]
+}

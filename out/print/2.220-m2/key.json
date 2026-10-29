@@ -1,0 +1,278 @@
+[
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1344.87,
+   814.255,
+   1375.405,
+   835.645
+  ],
+  "rg": "glyph/4/0/3/6/2",
+  "kind": "note",
+  "off": "half",
+  "on": "half",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_hollow_over_black",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1265,
+   746
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   1356.6962890625,
+   3282.7919921875,
+   1396.6103515625,
+   3317.716796875
+  ],
+  "rg": "glyph/14/0/11/0/5",
+  "kind": "note",
+  "off": "eighth",
+  "on": "eighth",
+  "blue_off": false,
+  "blue_on": false,
+  "rule": null,
+  "role": "control",
+  "tile": 2,
+  "crop_origin": [
+   1184,
+   3140
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2445.6425,
+   3090.9025,
+   2472.4175,
+   3111.22
+  ],
+  "rg": "glyph/6/1/7/11/12",
+  "kind": "note",
+  "off": "quarter",
+  "on": "quarter",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_not_one_head",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   2364,
+   3022
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   518.415,
+   1089.4850000000001,
+   548.655,
+   1108.5425
+  ],
+  "rg": "glyph/4/0/4/0/4",
+  "kind": "note",
+  "off": "quarter",
+  "on": "half",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_hollow_over_black",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   439,
+   1020
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   642.2225,
+   3011.28,
+   660.4925,
+   3026.8725
+  ],
+  "rg": "glyph/4/1/6/1/4",
+  "kind": "note",
+  "off": "quarter",
+  "on": "quarter",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_not_one_head",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   556,
+   2940
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2142.4225,
+   1111.1925,
+   2169.04,
+   1132.6125
+  ],
+  "rg": "glyph/6/0/5/10/3",
+  "kind": "note",
+  "off": "half",
+  "on": "half",
+  "blue_off": true,
+  "blue_on": true,
+  "rule": "head_ink_half_not_hollow",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   2061,
+   1043
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   3503.2675,
+   1569.45,
+   3541.285,
+   1599.975
+  ],
+  "rg": "glyph/14/0/4/5/1",
+  "kind": "note",
+  "off": "quarter",
+  "on": "quarter",
+  "blue_off": false,
+  "blue_on": false,
+  "rule": null,
+  "role": "control",
+  "tile": 7,
+  "crop_origin": [
+   3330,
+   1424
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   908.7275,
+   1083.9725,
+   939.125,
+   1105.0775
+  ],
+  "rg": "glyph/4/0/4/3/8",
+  "kind": "note",
+  "off": "quarter",
+  "on": "half",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_hollow_over_black",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   829,
+   1015
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1656.2275,
+   1482.0675,
+   1679.2225,
+   1503.645
+  ],
+  "rg": "glyph/6/0/7/7/1",
+  "kind": "note",
+  "off": "eighth",
+  "on": "eighth",
+  "blue_off": false,
+  "blue_on": false,
+  "rule": null,
+  "role": "control",
+  "tile": 9,
+  "crop_origin": [
+   1573,
+   1414
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   3463.775,
+   1285.7,
+   3494.85,
+   1305.775
+  ],
+  "rg": "glyph/14/0/3/5/9",
+  "kind": "note",
+  "off": "quarter",
+  "on": "quarter",
+  "blue_off": false,
+  "blue_on": true,
+  "rule": "head_ink_hollow_over_black",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   3287,
+   1135
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1458.42,
+   813.48,
+   1488.18,
+   835.49
+  ],
+  "rg": "glyph/4/0/3/7/5",
+  "kind": "note",
+  "off": "quarter",
+  "on": "half",
+  "blue_off": true,
+  "blue_on": true,
+  "rule": "head_ink_hollow_over_black",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   1378,
+   745
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1458.325,
+   2477.78,
+   1484.52,
+   2497.93
+  ],
+  "rg": "glyph/6/1/3/5/10",
+  "kind": "note",
+  "off": "half",
+  "on": "half",
+  "blue_off": true,
+  "blue_on": true,
+  "rule": "head_ink_half_not_hollow",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   1376,
+   2409
+  ]
+ }
+]

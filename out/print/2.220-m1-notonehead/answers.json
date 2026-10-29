@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_28": "1. A real quarter with actual ink missing. A print or copy issue. 2. Barline 3. A box that covers an empty space but grabs a bit of quarters on either side - top and bottom 4-5 barline 6. Real quarter 7. A large box that includes a quarter and its whole stem. 8. Quarter 9. A small box that grabs the bottom of a quarter 10.part of an 8 rest 11-12. Barline",
+ "tally": "5 real quarters (1,6,7,8,9), 7 not notes (barline 2,4,5,11,12; empty 3; rest 10)",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "real quarter (broken ink)",
+   "real_note": true
+  },
+  {
+   "tile": 2,
+   "answer": "barline",
+   "real_note": false
+  },
+  {
+   "tile": 3,
+   "answer": "empty space between two quarters",
+   "real_note": false
+  },
+  {
+   "tile": 4,
+   "answer": "barline",
+   "real_note": false
+  },
+  {
+   "tile": 5,
+   "answer": "barline",
+   "real_note": false
+  },
+  {
+   "tile": 6,
+   "answer": "real quarter",
+   "real_note": true
+  },
+  {
+   "tile": 7,
+   "answer": "real quarter, box includes whole stem",
+   "real_note": true
+  },
+  {
+   "tile": 8,
+   "answer": "real quarter",
+   "real_note": true
+  },
+  {
+   "tile": 9,
+   "answer": "real quarter, box on its bottom only",
+   "real_note": true
+  },
+  {
+   "tile": 10,
+   "answer": "part of an eighth rest",
+   "real_note": false
+  },
+  {
+   "tile": 11,
+   "answer": "barline",
+   "real_note": false
+  },
+  {
+   "tile": 12,
+   "answer": "barline",
+   "real_note": false
+  }
+ ]
+}
