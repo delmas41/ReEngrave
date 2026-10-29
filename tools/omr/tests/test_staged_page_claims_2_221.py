@@ -242,6 +242,16 @@ class TestGather(unittest.TestCase):
         self.assertEqual([r.detail["owner"] for r in rows], ["bracket"])
         self.assertGreaterEqual(rows[0].detail["boxes_inside"][g.to_key()]["ink_share_inside"], 0.5)
 
+    def test_a_detector_brace_box_at_the_left_edge_claims_once_and_one_right_of_the_staff_start_does_not(self):
+        log = Log()
+        dets = {R.cell(0, 0, 0, 0).to_key(): [_Det("brace", 70 - 60, 90 - 50, 20, 290)],
+                R.cell(0, 0, 1, 0).to_key(): [_Det("brace", 71 - 60, 92 - 250, 20, 288), _Det("brace", 300 - 60, 92 - 250, 20, 288)]}
+        _PWS.page.binary = _page()
+        with mock.patch.dict(os.environ, BRACKETS):
+            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, dets, edge_strokes={})
+        rows = [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") == "bracket"]
+        self.assertEqual([(r.detail["source"], r.detail["kind"]) for r in rows], [("detector_box", "brace")])
+
     def test_a_bracket_rule_read_by_the_left_edge_scan_files_a_claim(self):
         log = Log()
         g = _box(log, 0, 0, BRACKET_HEAD)

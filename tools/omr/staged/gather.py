@@ -15060,6 +15060,36 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             for a in CL.bracket_areas(strokes, is_rule):
                 area = a.pop("area")
                 _file(s, area, CL.OWNER_BRACKET, "edge_scan", **a)
+        # a curved brace is no vertical rule, so the edge scan misses it (Brahms p0: 1 of 11 hand-labelled braces). The detector's own
+        # `brace` / `bracket` boxes (already in `detections`) that stand at the system's left edge -- right edge at or left of the
+        # staff start + BRACKET_MAX_OFFSET_SPACES, at least BRACKET_MIN_HEIGHT_SPACES tall -- are the second source: detector + position.
+        start_of = {}
+        for st in pws.staves:
+            key = local.get(st.staff_index)
+            if key is not None and getattr(st, "x_start", None) is not None:
+                start_of.setdefault(key[0], []).append(float(st.x_start))
+        cell_of = {(local[c.staff_index][0], local[c.staff_index][1], c.measure_index): c for c in cells
+                   if local.get(c.staff_index) is not None}
+        seen: List[List[float]] = []
+        for ck, dets in detections.items():
+            sub = Subject.from_key(ck)
+            c = cell_of.get((sub.system, sub.staff, sub.cell))
+            sp, xs = sp_by_sys.get(sub.system), start_of.get(sub.system)
+            if c is None or not sp or not xs:
+                continue
+            spv, x_start = sorted(sp)[len(sp) // 2], sorted(xs)[len(xs) // 2]
+            for d in dets:
+                nm = str(d.smufl_name)
+                if not nm.startswith(("brace", "bracket")):
+                    continue
+                pb = _page_box(c, d)
+                if pb is None or (pb[3] - pb[1]) < CL.BRACKET_MIN_HEIGHT_SPACES * spv \
+                        or pb[2] > x_start + CL.BRACKET_MAX_OFFSET_SPACES * spv:
+                    continue
+                if any(CL._overlap_small(pb, q) >= 0.5 for q in seen):
+                    continue                              # one brace boxed from two cells: one claim
+                seen.append(list(pb))
+                _file(sub.system, list(pb), CL.OWNER_BRACKET, "detector_box", kind=nm)
     log.abstain(page_sub, Q.CLAIMED_AREA, reader=READERS.CV_PAGE_CLAIMS, frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                 owner="page_claims", unit="area", why="page_claim_census", census=dict(sorted(census.items())))
     if progress:
