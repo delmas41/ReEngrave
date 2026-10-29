@@ -78,7 +78,7 @@ def trim_line_only() -> bool:
 
 
 TRIM_V2_ENV = "OMR_HEAD_TRIM_LINE_ONLY_V2"
-#: Head-trim fix 2 (2026-10-29, default OFF; needs `OMR_HEAD_TRIM_LINE_ONLY` too): the height cap of a head under the line-only trim.
+#: Head-trim fix 2 (2026-10-29, default ON, Sean "Let's go with 1.6 for now"; explicit 0/false/no/off disables; needs `OMR_HEAD_TRIM_LINE_ONLY` too): the height cap of a head under the line-only trim.
 #: 1.5 sp was set against heads the dilated trim shaved by 1-2 px a side; unshaved, a tilted hollow head on Litolff (15.75 px/sp)
 #: measures 1.52-1.59 sp (Litolff p4+p6: 46 heads moved one_head -> too_tall), the heights have their valley at ~1.6-1.7 and
 #: Brahms never reaches 1.55. Measured in benchmarks/shared-ink-map-2026-10/FINDINGS.md "head trim fix 2".
@@ -86,7 +86,7 @@ MAX_HEIGHT_SPACES_V2 = 1.6
 
 
 def trim_line_only_v2() -> bool:
-    return os.environ.get(TRIM_V2_ENV, "0").strip().lower() in ("1", "true", "yes", "on") and trim_line_only()
+    return os.environ.get(TRIM_V2_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "") and trim_line_only()
 
 
 def enabled() -> bool:

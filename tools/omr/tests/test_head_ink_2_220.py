@@ -45,7 +45,7 @@ def _t13():
 
 class SeansTiles(unittest.TestCase):
     # Head trim fix 2 (2026-10-29): with the landed line-only trim alone tile 5 reads not_one_head=too_tall (1.59 sp against the 1.5 cap);
-    # OMR_HEAD_TRIM_LINE_ONLY_V2 (default OFF) lifts the cap to 1.6 and the five halves read hollow again. Pinned to that arm.
+    # OMR_HEAD_TRIM_LINE_ONLY_V2 (default ON) lifts the cap to 1.6 and the five halves read hollow again. Pinned to that arm.
     def setUp(self):
         self._env = {k: os.environ.get(k) for k in (HI.TRIM_ENV, HI.TRIM_V2_ENV)}
         os.environ[HI.TRIM_ENV] = "1"

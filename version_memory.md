@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- ROADMAP 2.220b fix 2 LANDED ON: head height cap 1.5 -> 1.6 sp
+STAGED GATHER (`head_ink.trim_head`, `trim_line_only_v2`), `OMR_HEAD_TRIM_LINE_ONLY_V2` default ON (deny-list; needs the line-only trim). Cause: the line-only trim measures a slanted hollow Litolff head at its true 1.52-1.59 sp; the 1.5 cap was set on shaved heads. 63 too_tall heads become one head; judged tile 5 (Litolff p10) is a half again; right->wrong 0. Cut-off from one plate's valley (Brahms never reaches 1.55): re-measure on the next publisher. benchmarks/shared-ink-map-2026-10/FINDINGS.md "head trim fix 2".
+
 ## 2026-10-29 -- Judged scorer LANDED (lane-scorer-blue)
 
 Sean "land the scorer". Tooling only: `judged.py` reads galleries without manifest.json from key.json (46 rows regained subjects, all 2.220); `lane_report.written_moves` scores the value EXPORT wrote at each judged place, plain or blue (printed '1 (1 blue)'). Reason: right->wrong was 0 on Litolff p10 while Sean's judged half was written as a quarter. `judged-tiles.json` rebuilt; docs/measuring.md; test_staged_lane_report_blue_scorer. No reader or flag changes.
