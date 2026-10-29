@@ -1,0 +1,97 @@
+{
+ "answered": "2026-10-28",
+ "by": "Sean",
+ "verbatim": "1.8 2.8 3.8 4.box around the second space below the staff in between ledger lines 5. first ledger line below staff 6.8 7. sharp and a nat accidentals clashing 8.2 9. trem slash 10-12. part of a 4 rest 13-15. 2 16. ledger line 17. cant tell becasue the till cut off the end of the stem 18. 2",
+ "tiles": [
+  {
+   "tile": 1,
+   "glyph": "glyph/4/1/2/12/11",
+   "answer": "8"
+  },
+  {
+   "tile": 2,
+   "glyph": "glyph/4/1/2/14/8",
+   "answer": "8"
+  },
+  {
+   "tile": 3,
+   "glyph": "glyph/4/1/2/5/9",
+   "answer": "8"
+  },
+  {
+   "tile": 4,
+   "glyph": "glyph/4/1/5/6/10",
+   "answer": "not a note: box around the second space below the staff between ledger lines"
+  },
+  {
+   "tile": 5,
+   "glyph": "glyph/4/1/5/6/6",
+   "answer": "not a note: first ledger line below staff"
+  },
+  {
+   "tile": 6,
+   "glyph": "glyph/6/0/8/12/1",
+   "answer": "8"
+  },
+  {
+   "tile": 7,
+   "glyph": "glyph/6/1/3/10/9",
+   "answer": "not a note: sharp and natural accidentals clashing"
+  },
+  {
+   "tile": 8,
+   "glyph": "glyph/6/1/3/11/6",
+   "answer": "2"
+  },
+  {
+   "tile": 9,
+   "glyph": "glyph/6/1/6/11/2",
+   "answer": "not a note: tremolo slash"
+  },
+  {
+   "tile": 10,
+   "glyph": "glyph/6/1/9/13/0",
+   "answer": "not a note: part of a quarter rest"
+  },
+  {
+   "tile": 11,
+   "glyph": "glyph/6/1/9/13/1",
+   "answer": "not a note: part of a quarter rest"
+  },
+  {
+   "tile": 12,
+   "glyph": "glyph/6/1/9/13/2",
+   "answer": "not a note: part of a quarter rest"
+  },
+  {
+   "tile": 13,
+   "glyph": "glyph/10/1/2/9/7",
+   "answer": "2"
+  },
+  {
+   "tile": 14,
+   "glyph": "glyph/10/1/4/3/3",
+   "answer": "2"
+  },
+  {
+   "tile": 15,
+   "glyph": "glyph/10/1/4/3/4",
+   "answer": "2"
+  },
+  {
+   "tile": 16,
+   "glyph": "glyph/10/1/6/4/9",
+   "answer": "not a note: ledger line"
+  },
+  {
+   "tile": 17,
+   "glyph": "glyph/10/1/8/6/1",
+   "answer": "cannot tell: tile cuts off the end of the stem"
+  },
+  {
+   "tile": 18,
+   "glyph": "glyph/11/0/2/9/1",
+   "answer": "2"
+  }
+ ]
+}
