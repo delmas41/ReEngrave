@@ -14418,6 +14418,79 @@ def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, fl
                 shares=[sh for _i, sh in strokes], **extra)
 
 
+def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                     stroke_cells: Dict[Tuple[int, int, int, int], Any], arcs_summary: Optional[Dict[str, Any]], *,
+                     progress: bool = False) -> Dict[str, int]:
+    """lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, default OFF; needs `OMR_SYSTEM_ARCS` and `OMR_STROKE_MAP`), STAGED GATHER: the register's `ink`
+    branch for ARCS, ONE CLAIM PER SYSTEM ARC (Sean 2026-10-29: "arcs ... need to be treated system or page wide not based on individual measures").
+    The unit is the curve `gather_system_arcs` traced and joined across barlines (`Q.SYSTEM_ARC`'s `trace`), keyed by (page, system, staff) and its
+    page position -- never a cell index. One `Q.CLAIMED_AREA` row, owner `arc`, unit `ink`, filed on the arc's STAFF; value = `[[cell, stroke ordinal],
+    ...]` over every cell of that staff the curve runs through (a stroke map is per cell, so a stroke's address is its cell and ordinal), a stroke
+    counting when at least `arc_claim.ON_TRACE_SHARE_MIN` of its ink lies along the trace. It names NO KIND. The cell-level boxes it joined are in
+    `pieces` (counted in the returned `boxes`). A staff cell with no stroke map is counted in `no_map_cells`, never silently skipped. Neighbour
+    staves' padded cells are not claimed here. Returns counts for a probe."""
+    from . import arc_claim as AC
+    counts = {"arcs": 0, "rows": 0, "strokes": 0, "boxes": 0, "no_map_cells": 0, "no_stroke_arcs": 0}
+    if not AC.claim_enabled() or not stroke_cells or not arcs_summary:
+        return counts
+    by_cell: Dict[Tuple[int, int, int, int], Any] = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+    for d in arcs_summary.get("arcs_detail") or ():
+        trace_rows = d.get("trace")
+        if not trace_rows:
+            continue
+        pieces = list(d.get("pieces") or ())
+        counts["arcs"] += 1
+        counts["boxes"] += len(pieces)
+        trace = {int(x): (float(a), float(b)) for x, a, b in trace_rows}
+        xmin, xmax = min(trace), max(trace)
+        ymin, ymax = min(a for a, _b in trace.values()), max(b for _a, b in trace.values())
+        sp = float(d.get("space_page_px") or 0.0)
+        first = R.Subject.from_key(str(d["subject"]))
+        home = (first.page, first.system, first.staff)
+        got_all: List[List[Any]] = []
+        shares: List[float] = []
+        cells_hit: List[int] = []
+        no_map = 0
+        for ck, c in sorted(by_cell.items()):
+            if ck[:3] != home:
+                continue
+            cb = getattr(c, "bbox_page_px", None)
+            up = getattr(c, "upscale_factor", None)
+            if not cb or not up or len(cb) != 4:
+                continue
+            if cb[2] < xmin or cb[0] > xmax or cb[3] < ymin or cb[1] > ymax:
+                continue
+            res = stroke_cells.get(ck)
+            if res is None or isinstance(res, str):
+                no_map += 1
+                continue
+            got = AC.claim_strokes(res, cb, float(up), trace, sp)
+            if got:
+                cells_hit.append(ck[3])
+            for i, sh in got:
+                got_all.append([ck[3], i])
+                shares.append(sh)
+        counts["no_map_cells"] += no_map
+        ssub = R.staff(*home)
+        if not got_all:
+            counts["no_stroke_arcs"] += 1
+            log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page", reason=ABSTAIN.NO_INK, owner=AC.OWNER, unit="ink",
+                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces)
+            continue
+        counts["rows"] += 1
+        counts["strokes"] += len(got_all)
+        log.observe(ssub, Q.CLAIMED_AREA, got_all, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=AC.OWNER, owner_row=None,
+                    owner_glyph=d.get("subject"), unit="ink", scope="system_arc", standing="READ", source="system_arc", shares=shares,
+                    pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN)
+        if progress:
+            print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
+    return counts
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]], *, progress: bool = False,
                             stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
@@ -16070,13 +16143,16 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
-        _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
+        arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
         stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default OFF): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
+        # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
+        gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
         # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
         # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
         gather_accidental_family(cells, local, detections, stroke_cells)

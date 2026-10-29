@@ -907,6 +907,10 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 anchor_dy_spaces=anc["dy_spaces"], heads_between=anc["heads_between"],
                 space_page_px=round(sp_staff, 3),
             )
+            from . import arc_claim as _arc_claim
+            if _arc_claim.claim_enabled():
+                # `OMR_ARC_CLAIM` (default OFF): the traced rows themselves -- what `gather_arc_claim` claims the strokes ALONG
+                detail["trace"] = [[int(x), int(a), int(b)] for x, (a, b) in sorted(pts.items())]
             log.observe(first["glyph"], Q.SYSTEM_ARC, anc["shape"], reader=READERS.CV_SYSTEM_ARC,
                         frame="page", score=None, **detail)
             summary["arcs"] += 1
