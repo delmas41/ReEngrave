@@ -101,6 +101,24 @@ def _areas(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Cl
     return out
 
 
+def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
+    """lane-arcs-claim-1029 (`OMR_ARC_CLAIM`): the strokes of THIS cell that a system arc's claim (ONE row per arc, value `[[cell, ordinal], ...]`,
+    filed on the arc's staff) names. Tier 0: the traced curve runs along them, whatever box also stands on them. Reads the flag so the OFF arm of an A/B replay ignores the rows."""
+    out: List[SO.Claim] = []
+    from .. import arc_claim as _AC
+    if not _AC.claim_enabled():          # the OFF arm of an A/B replays the same gathered rows and must not read the claim
+        return out
+    idx = getattr(cell, "cell", None)
+    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        d = r.detail or {}
+        if d.get("owner") != "arc" or d.get("unit") != "ink" or not isinstance(r.value, (list, tuple)):
+            continue
+        mine = tuple(int(p[1]) for p in r.value if isinstance(p, (list, tuple)) and len(p) == 2 and p[0] == idx)
+        if mine:
+            out.append(SO.Claim(r.id, "arc_trace", "arc", mine, (), r.id, area=True))
+    return out
+
+
 @decision(
     quantity=Q.STROKE_OWNER,
     scope=Kind.CELL,
@@ -120,6 +138,8 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_strokes")
     claims = _claims(ev, cell)
     claims += _areas(ev, cell, page)
+    arc_claims = _arc_claims(ev, cell)
+    claims += arc_claims
     from .rhythm import beams_from_strokes_enabled
     owned = SO.own_strokes(inks, claims, tiers=SO.TIERS, acc_bar_clear_of_note=beams_from_strokes_enabled())   # 2.202f
     by_ord = {i.ordinal: i for i in inks}
@@ -142,6 +162,20 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     value = {"owned": sorted(o for o, w in owned.items() if w.state in ("decided", "merged")),
              "contested": sorted(o for o, w in owned.items() if w.state == "contested")}
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
+    if arc_claims:
+        # what the arc claim REFUSED, by kind: for each stroke the arc owns, the other families that also stood on it (a detector box of that
+        # family claimed it) and the stroke's own kind (a horizontal / curve one is what a beam or hook reader would have taken)
+        cen = detail["census"]
+        for o, w in owned.items():
+            if w.family != "arc_trace":
+                continue
+            cen["arc_claim:strokes"] = cen.get("arc_claim:strokes", 0) + 1
+            cen["arc_claim:kind:" + by_ord[o].kind] = cen.get("arc_claim:kind:" + by_ord[o].kind, 0) + 1
+            rivals = {c["family"] for c in w.candidates if c["family"] != "arc_trace"}
+            if not rivals:
+                cen["arc_claim:no_other_claimant"] = cen.get("arc_claim:no_other_claimant", 0) + 1
+            for f in rivals:
+                cen["arc_claim:from:" + str(f)] = cen.get("arc_claim:from:" + str(f), 0) + 1
     used_t = tuple(dict.fromkeys(u for u in used if u))
     if not strokes:
         return Ruling(value=value, reason="no_claimant", used=used_t, detail=detail)

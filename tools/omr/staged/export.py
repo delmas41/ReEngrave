@@ -60,6 +60,7 @@ from .. import export as _legacy
 from . import export_unison as _export_unison
 from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
+from . import arc_claim as _arc_claim
 # ⚠️ Imported as a bare module name, not through the dotted module path:
 # `wiring.details` matches a detail key by bare substring, and a dot followed
 # by the module's first three letters reads as a consumer of
@@ -2467,6 +2468,66 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
     return spans
 
 
+def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, voice_of, x_probes, spans: List[tuple],
+                         dropped: Dict[str, int], counters: Dict[str, int]) -> List[tuple]:
+    """lane-arcs-claim-1029 (`OMR_SLUR_FROM_ANCHORS`, default OFF): the slur spans `Q.SYSTEM_ARC`'s anchors name for the slur GROUPS (one printed
+    curve, joined across barlines) that the box-count pairing (`_paired_spans` -> `_noteheads_under`, two notes minimum) bound to fewer than two.
+
+    The curve's two ends were anchored on page pixels to the head beside each (`anchor_left` / `anchor_right`, 2.166): a slur whose BOTH ends are anchored
+    on two different heads binds exactly those two (the same end anchors a tie uses). A group the legacy pairing DID bind is left as it is. An end
+    head that is not in the file, two heads in two voices, or one head at both ends, is counted, not guessed. Returns the NEW spans only."""
+    boxsub: Dict[tuple, List[str]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.ARC_BOX):
+        pb = _corners_to_wh(_page_box_of(o))
+        if pb is not None:
+            boxsub[tuple(pb)].append(o["subject"])
+    sysarc: Dict[str, Dict[str, Any]] = {}
+    for o in rec.obs_of(Q.SYSTEM_ARC):
+        d = o.get("detail") or {}
+        if d.get("anchor_left") and d.get("anchor_right"):
+            for k in d.get("pieces") or ():
+                sysarc[k] = d
+    if not sysarc:
+        return []
+    index: Dict[str, Tuple[int, Dict[str, Any]]] = {}
+    for m_idx, m in enumerate(measures):
+        for det in m["detections"] or ():
+            key = det.get("glyph")
+            if key and det.get("category") == "notehead":
+                index.setdefault(str(key), (m_idx, det))
+    have = {(id(s[2]), id(s[3])) for s in spans}
+    out: List[tuple] = []
+    seen_pairs = set()
+    for segs in _legacy._merge_arcs_across_barlines(measures, pools, spacings, tops, breaks):
+        one = [[] for _ in measures]
+        for m, b in segs:
+            one[m].append(b)
+        if _legacy._paired_spans(measures, one, spacings, tops, breaks, voice_of, x_probes=x_probes):
+            continue
+        ds = [sysarc[s] for _m, b in segs for s in boxsub.get(tuple(b), []) if s in sysarc]
+        if not ds:
+            counters["slur_group_unanchored"] += 1
+            continue
+        d = ds[0]
+        a, z = str(d["anchor_left"]), str(d["anchor_right"])
+        if a not in index or z not in index:
+            dropped["slur_anchor_head_not_in_file"] += 1
+            continue
+        (sm, first), (tm, last) = index[a], index[z]
+        if first is last:
+            dropped["slur_anchors_one_note"] += 1
+            continue
+        if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
+            dropped["slur_anchors_in_two_voices"] += 1
+            continue
+        if (id(first), id(last)) in have or (a, z) in seen_pairs:
+            continue
+        seen_pairs.add((a, z))
+        out.append(((sm, None), (tm, None), first, last))
+        counters["slur_spans_from_anchors"] += 1
+    return out
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int],
                tie_report: Optional[Dict[str, Any]] = None
@@ -2552,6 +2613,9 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 spans = _legacy._paired_spans(measures, pools, spacings,
                                               tops, breaks, voice_of,
                                               x_probes=x_probes)
+                if kind == "slur" and _arc_claim.slur_enabled():
+                    spans = list(spans) + _anchored_slur_spans(
+                        rec, measures, pools, spacings, tops, breaks, voice_of, x_probes, list(spans), dropped, counters)
                 n_spans += len(spans)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY

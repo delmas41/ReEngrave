@@ -992,8 +992,14 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
         if not all(k in d for k in ("x0", "x1", "y0", "y1")):
             continue
         v = ev.verdict(Q.ARC_KIND, subject=r.subject)
-        if v is None or v.outcome is not Outcome.DECIDED:
+        if v is None:
             continue
+        if v.outcome is not Outcome.DECIDED:
+            # lane-arcs-claim-1029 (OMR_ARC_KIND_FROM_ENDS): an arc whose KIND abstained because its end heads were unread is still an ARC -- it
+            # discounts a beam as before (the arc stays an arc; only tie-or-slur is withheld)
+            from .. import arc_claim as _AC
+            if not (_AC.kind_enabled() and getattr(v, "reason", None) in _AC.ARC_STILL_AN_ARC):
+                continue
         arcs.append((float(d["x0"]), float(d["y0"]),
                     float(d["x1"]) - float(d["x0"]),
                     float(d["y1"]) - float(d["y0"])))
