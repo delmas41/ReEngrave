@@ -1,0 +1,102 @@
+{
+ "sean_2026_10_29": "1. Not a barline 2. Yes. 3. No 4-6 yes 7 no 8-10 yes 11-12 no",
+ "tally": "11/12 match OMR_BARLINE_SYSTEM_COLUMNS ON: all 3 removed cuts are not barlines (p6 x2559 both halves, p9 x1526 both halves), the added p9 x1470 is a barline (both halves); controls right except tile 12 (p6 x2489 lower half, kept in BOTH arms) which Sean says is not a barline -- while its upper half (tile 9) is. Open: a column the old vote and the new reader both keep on the lower staves.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "no",
+   "role": "removed",
+   "page": 6,
+   "x": 2559,
+   "part": "upper"
+  },
+  {
+   "tile": 2,
+   "answer": "yes",
+   "role": "control_kept",
+   "page": 9,
+   "x": 1343,
+   "part": "lower"
+  },
+  {
+   "tile": 3,
+   "answer": "no",
+   "role": "removed",
+   "page": 6,
+   "x": 2559,
+   "part": "lower"
+  },
+  {
+   "tile": 4,
+   "answer": "yes",
+   "role": "added",
+   "page": 9,
+   "x": 1470,
+   "part": "lower"
+  },
+  {
+   "tile": 5,
+   "answer": "yes",
+   "role": "control_kept",
+   "page": 9,
+   "x": 1343,
+   "part": "upper"
+  },
+  {
+   "tile": 6,
+   "answer": "yes",
+   "role": "control_kept",
+   "page": 9,
+   "x": 1800,
+   "part": "upper"
+  },
+  {
+   "tile": 7,
+   "answer": "no",
+   "role": "removed",
+   "page": 9,
+   "x": 1526,
+   "part": "lower"
+  },
+  {
+   "tile": 8,
+   "answer": "yes",
+   "role": "added",
+   "page": 9,
+   "x": 1470,
+   "part": "upper"
+  },
+  {
+   "tile": 9,
+   "answer": "yes",
+   "role": "control_kept",
+   "page": 6,
+   "x": 2489,
+   "part": "upper"
+  },
+  {
+   "tile": 10,
+   "answer": "yes",
+   "role": "control_kept",
+   "page": 9,
+   "x": 1800,
+   "part": "lower"
+  },
+  {
+   "tile": 11,
+   "answer": "no",
+   "role": "removed",
+   "page": 9,
+   "x": 1526,
+   "part": "upper"
+  },
+  {
+   "tile": 12,
+   "answer": "no",
+   "role": "control_kept",
+   "page": 6,
+   "x": 2489,
+   "part": "lower"
+  }
+ ]
+}
