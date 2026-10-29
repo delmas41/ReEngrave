@@ -1,0 +1,97 @@
+{
+ "brahms a_barline": {
+  "True|too_narrow": 553,
+  "True|clipped_fragment": 12
+ },
+ "brahms a_barline_CONTROL_shifted_3sp": {
+  "True|too_narrow": 1
+ },
+ "brahms b_dynamic": {
+  "True|on_a_dynamic_letter": 17,
+  "True|too_narrow": 5,
+  "True|clipped_fragment": 3,
+  "True|stacked_head_duplicate": 1,
+  "False|notehead": 1,
+  "True|notehead_is_a_duplicate_box": 1
+ },
+ "brahms b_dynamic_CONTROL_shifted_4sp": {
+  "False|notehead": 12,
+  "True|too_narrow": 1,
+  "True|clipped_fragment": 1
+ },
+ "brahms b_dynamic_other": {
+  "False|notehead": 3,
+  "True|clipped_fragment": 1
+ },
+ "brahms b_word": {
+  "False|notehead": 4,
+  "True|clipped_fragment": 4,
+  "True|on_a_dynamic_letter": 3,
+  "True|on_a_barline": 1,
+  "True|belongs_to_a_nearer_staff": 1,
+  "True|stacked_head_duplicate": 1
+ },
+ "brahms c_bracket_reader": {
+  "True|claimed_by:leading_column": 3,
+  "True|belongs_to_a_nearer_staff": 1,
+  "False|notehead": 1,
+  "True|too_narrow": 1
+ },
+ "brahms c_left_edge_proxy": {
+  "True|claimed_by:leading_column": 35
+ },
+ "brahms d_read_claim": {
+  "True|claimed_by:leading_column": 62,
+  "True|claimed_by:meter": 14,
+  "True|claimed_by:clef": 14,
+  "False|notehead": 8,
+  "True|on_a_read_meter": 4,
+  "True|belongs_to_a_nearer_staff": 3,
+  "True|clipped_fragment": 2,
+  "True|notehead_is_a_duplicate_box": 2,
+  "True|too_narrow": 2
+ },
+ "litolff a_barline": {
+  "True|too_narrow": 25,
+  "False|notehead": 2
+ },
+ "litolff a_barline_CONTROL_shifted_3sp": {
+  "True|too_narrow": 3,
+  "True|on_a_dynamic_letter": 2,
+  "True|notehead_is_a_duplicate_box": 1
+ },
+ "litolff b_dynamic": {
+  "True|on_a_dynamic_letter": 29,
+  "False|notehead": 15,
+  "True|too_narrow": 10,
+  "True|stacked_head_duplicate": 6,
+  "True|clipped_fragment": 3,
+  "True|tremolo_slash_crosses_stem": 1
+ },
+ "litolff b_dynamic_CONTROL_shifted_4sp": {
+  "False|notehead": 49,
+  "True|clipped_fragment": 1
+ },
+ "litolff b_dynamic_other": {
+  "True|on_a_dynamic_letter": 6,
+  "False|notehead": 6,
+  "True|stacked_head_duplicate": 1
+ },
+ "litolff b_word": {
+  "True|clipped_fragment": 6
+ },
+ "litolff c_bracket_reader": {
+  "True|claimed_by:clef": 2
+ },
+ "litolff c_left_edge_proxy": {
+  "True|claimed_by:leading_column": 7
+ },
+ "litolff d_read_claim": {
+  "True|claimed_by:clef": 24,
+  "True|claimed_by:key_signature": 13,
+  "True|claimed_by:leading_column": 8,
+  "True|belongs_to_a_nearer_staff": 1,
+  "False|notehead": 1,
+  "True|too_narrow": 1
+ }
+}
