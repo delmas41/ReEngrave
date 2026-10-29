@@ -67,6 +67,16 @@ SLIT_HOLLOW_MIN = 0.18
 SLIT_FILLED_MAX = 0.06
 
 
+TRIM_ENV = "OMR_HEAD_TRIM_LINE_ONLY"
+
+
+def trim_line_only() -> bool:
+    """Head-trim fix (2026-10-29, default OFF): the END trim strips only a line's own UNDILATED rows, at most one locally measured
+    line thickness per end (the 1 px dilations of `_line_rows` and of the ledger opening shaved ~a quarter off a head in a space
+    on Litolff, 15.75 px/sp)."""
+    return os.environ.get(TRIM_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
 def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
@@ -131,6 +141,20 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
     led[1:] |= hl[:-1]
     led[:-1] |= hl[1:]
     line_rows = line_rows | led
+    line_core = None
+    if trim_line_only():
+        core = HO._line_rows(np.asarray(page_binary[y0:y1, lx0:lx1]) == 0, dilate=False) | hl
+        runs_t = []
+        k = 0
+        while k < len(core):
+            if core[k]:
+                q = k
+                while k < len(core) and core[k]:
+                    k += 1
+                runs_t.append(k - q)
+            else:
+                k += 1
+        line_core = (core, max(1, int(np.median(runs_t))) if runs_t else 1)
     bare = _bare_line_pixels(ink, line_rows)
     a = ink & ~bare
     # Stems are NOT cut out: on a merged plate a vertical opening also takes the solid column through a stacked chord (Litolff p2 tile 1,
@@ -197,10 +221,21 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
     by0r, by1r = int(round(by0)) - y0, int(round(by1)) - y0
     ey0, ey1 = max(blocks, key=lambda bl: (min(bl[1], by1r) - max(bl[0], by0r), bl[1] - bl[0]))
     # a staff/ledger line fused with the head's rim (lesson 10) is the line's, not the head's height: line rows at the block's ends go
-    while ey1 - ey0 > 1 and line_rows[ey0]:
-        ey0 += 1
-    while ey1 - ey0 > 1 and line_rows[ey1 - 1]:
-        ey1 -= 1
+    if line_core is None:
+        while ey1 - ey0 > 1 and line_rows[ey0]:
+            ey0 += 1
+        while ey1 - ey0 > 1 and line_rows[ey1 - 1]:
+            ey1 -= 1
+    else:
+        core, cap = line_core
+        n = 0
+        while ey1 - ey0 > 1 and n < cap and core[ey0]:
+            ey0 += 1
+            n += 1
+        n = 0
+        while ey1 - ey0 > 1 and n < cap and core[ey1 - 1]:
+            ey1 -= 1
+            n += 1
     cols = np.nonzero(clean[ey0:ey1, ex0:ex1].any(axis=0))[0]
     ex0, ex1 = ex0 + int(cols[0]), ex0 + int(cols[-1]) + 1
     head = np.zeros_like(clean)

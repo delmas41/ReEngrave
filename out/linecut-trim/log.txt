@@ -1,0 +1,44 @@
+litolff 4 sp 15.75 binary (3813, 2897)
+litolff 6 sp 15.75 binary (3813, 2897)
+brahms 5 sp 27.47 binary (7798, 5929)
+brahms 14 sp 27.49 binary (7798, 5928)
+
+litolff written notes with a head_ink row: 1205; control (re-run 'filed' == record): 1053
+  filed        line_in n=448 small=12 tall=25 wide=16 nohink=0  line_out n=188 small=2 tall=11 wide=10 nohink=0  space_in n=342 small=245 tall=7 wide=16 nohink=4  space_out n=227 small=3 tall=10 wide=7 nohink=0
+  line_only    line_in n=448 small=4 tall=45 wide=18 nohink=0  line_out n=188 small=0 tall=24 wide=10 nohink=0  space_in n=342 small=3 tall=15 wide=18 nohink=4  space_out n=227 small=2 tall=15 wide=7 nohink=0
+  no_cut       line_in n=448 small=5 tall=0 wide=439 nohink=0  line_out n=188 small=0 tall=20 wide=95 nohink=0  space_in n=342 small=37 tall=0 wide=248 nohink=0  space_out n=227 small=1 tall=11 wide=61 nohink=0
+  height_sp line_in    filed     median 1.33  p10 1.21  <0.6: 12 of 448
+  height_sp line_in    line_only median 1.33  p10 1.21  <0.6: 4 of 448
+  height_sp line_in    no_cut    median 1.02  p10 0.64  <0.6: 15 of 448
+  height_sp line_out   filed     median 1.33  p10 1.10  <0.6: 2 of 188
+  height_sp line_out   line_only median 1.38  p10 1.21  <0.6: 0 of 188
+  height_sp line_out   no_cut    median 1.35  p10 1.02  <0.6: 0 of 188
+  height_sp space_in   filed     median 0.57  p10 0.50  <0.6: 246 of 338
+  height_sp space_in   line_only median 1.08  p10 0.70  <0.6: 2 of 338
+  height_sp space_in   no_cut    median 1.06  p10 0.57  <0.6: 62 of 342
+  height_sp space_out  filed     median 1.27  p10 0.89  <0.6: 3 of 227
+  height_sp space_out  line_only median 1.29  p10 1.02  <0.6: 2 of 227
+  height_sp space_out  no_cut    median 1.23  p10 0.89  <0.6: 2 of 227
+  filed too_small -> line_only verdict: {('space_in', 'one_head'): 240, ('space_in', 'too_wide'): 2, ('line_in', 'too_wide'): 1, ('line_in', 'one_head'): 7, ('line_in', 'too_small'): 4, ('space_out', 'too_small'): 2, ('space_out', 'one_head'): 1, ('space_in', 'too_small'): 3, ('line_out', 'one_head'): 2}
+  filed too_small -> no_cut verdict: {('space_in', 'too_wide'): 165, ('line_in', 'too_wide'): 10, ('space_in', 'too_small'): 36, ('space_in', 'one_head'): 44, ('space_out', 'too_wide'): 2, ('line_in', 'too_small'): 2, ('space_out', 'too_small'): 1, ('line_out', 'one_head'): 1, ('line_out', 'too_wide'): 1}
+  verdict change filed -> line_only: {(None, 'too_tall'): 46, ('too_small', None): 250, ('too_small', 'too_wide'): 3, (None, 'too_wide'): 1}
+
+brahms written notes with a head_ink row: 1256; control (re-run 'filed' == record): 988
+  filed        line_in n=432 small=0 tall=1 wide=6 nohink=0  line_out n=233 small=0 tall=1 wide=0 nohink=0  space_in n=365 small=5 tall=1 wide=1 nohink=0  space_out n=226 small=7 tall=1 wide=3 nohink=0
+  line_only    line_in n=432 small=0 tall=1 wide=6 nohink=0  line_out n=233 small=0 tall=1 wide=0 nohink=0  space_in n=365 small=0 tall=1 wide=1 nohink=0  space_out n=226 small=5 tall=1 wide=3 nohink=0
+  no_cut       line_in n=432 small=0 tall=0 wide=432 nohink=0  line_out n=233 small=0 tall=1 wide=231 nohink=0  space_in n=365 small=7 tall=0 wide=293 nohink=0  space_out n=226 small=0 tall=1 wide=39 nohink=0
+  height_sp line_in    filed     median 1.21  p10 1.14  <0.6: 0 of 432
+  height_sp line_in    line_only median 1.21  p10 1.14  <0.6: 0 of 432
+  height_sp line_in    no_cut    median 0.92  p10 0.66  <0.6: 17 of 432
+  height_sp line_out   filed     median 1.17  p10 1.13  <0.6: 0 of 233
+  height_sp line_out   line_only median 1.17  p10 1.13  <0.6: 0 of 233
+  height_sp line_out   no_cut    median 0.96  p10 0.87  <0.6: 0 of 233
+  height_sp space_in   filed     median 0.69  p10 0.62  <0.6: 6 of 365
+  height_sp space_in   line_only median 1.11  p10 0.80  <0.6: 0 of 365
+  height_sp space_in   no_cut    median 1.02  p10 0.66  <0.6: 7 of 365
+  height_sp space_out  filed     median 0.95  p10 0.86  <0.6: 7 of 226
+  height_sp space_out  line_only median 1.25  p10 0.94  <0.6: 4 of 226
+  height_sp space_out  no_cut    median 1.25  p10 0.88  <0.6: 0 of 226
+  filed too_small -> line_only verdict: {('space_in', 'one_head'): 5, ('space_out', 'too_small'): 5, ('space_out', 'one_head'): 2}
+  filed too_small -> no_cut verdict: {('space_in', 'too_wide'): 4, ('space_out', 'too_wide'): 3, ('space_in', 'too_small'): 1, ('space_out', 'one_head'): 4}
+  verdict change filed -> line_only: {('too_small', None): 7}
