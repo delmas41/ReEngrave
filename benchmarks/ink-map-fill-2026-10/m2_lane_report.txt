@@ -1,0 +1,23 @@
+LANE REPORT  OMR_FILL_FROM_STROKES (OFF=0 ON=1)  --from adjudicate
+  OMR_FILL_FROM_STROKES: read in staged/adjudicators/rhythm.py, staged/export.py, staged/gather.py, staged/head_ink.py ... -> GATHER
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-abe33f84eed18488d/out/lane-report/2.220-m2/sample.json (a development control)
+
+litolff  pages [4, 6]  (1445 notes+rests OFF, 1445 ON, 1445 paired)
+  file:   note values ~4 | blue marks +211 | words -4
+  red bars 92 -> 88 | notes not written 824 -> 824
+  control: ON reproduces the record (the flag is default-ON; OFF is the arm that moves): duration/rest verdicts differing from the record OFF 5 / ON 0 of 2465 (e.g. glyph/4/0/1/1/7, glyph/4/0/3/6/2, glyph/4/0/3/7/5)
+  Sean's judged answers (165 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+brahms  pages [5, 14]  (1951 notes+rests OFF, 1951 ON, 1951 paired)
+  file:   blue marks +24
+  red bars 67 -> 67 | notes not written 1223 -> 1223
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 3917
+  Sean's judged answers (212 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0)
+
+tiles: 9 (9 from the changes, 0 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 476 s

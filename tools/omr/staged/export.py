@@ -532,7 +532,10 @@ def head_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         if g:
             if g["chosen"].get("written") != dur["value"].get("written"):
                 return None
-            return {"stage": "ADJUDICATE", "rule": g["rule"], "quantity": Q.DURATION,
+            # `not_one_head` questions WHAT the box is, not its value: filed under the head's identity so the duration stays certain
+            # and a partial bar keeps its later onsets (the first m2 replay lost 7 Litolff chord-mates behind a value-unchanged guess).
+            q = Q.NOTEHEAD_IS_NOT_A_NOTEHEAD if g["rule"] == "head_ink_not_one_head" else Q.DURATION
+            return {"stage": "ADJUDICATE", "rule": g["rule"], "quantity": q,
                     "candidates": list(g["candidates"]), "chosen": dict(g["chosen"])}
         v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
     return None
