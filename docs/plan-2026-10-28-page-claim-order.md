@@ -120,6 +120,7 @@ only where the claim refuses or narrows every box the old rule did.
 | # | milestone | proof | level |
 |---|---|---|---|
 | 0 | **Census, read-only, saved records of the frozen sample (no gather, no flag).** Per plate: written notes and head boxes whose ink lies (a) on an interior barline column, (b) inside an accepted direction word or a spelled dynamic's letters, (c) under a READ clef/key/meter claim (expected ~0: control). 12 crops to Sean. FINDINGS `benchmarks/page-claim-order-2026-10/` | counts by layer; Sean's tiles say how many are real notes. Gate: if (a)+(b) are near zero on the file, layers 1-2 are not the next lane | READER census + print |
+| 0b | **Does the order matter? (Sean's question 1 test, read-only.)** On the same saved records, count the ink that accidental, rest and dot boxes share with written head boxes; only that shared ink can change with the order. If it is small, the order is settled by the convention (after); if not, crop up to 12 shared cases for Sean | record query + tiles, no flag | READER |
 | 1 | **Words outside the staff claim before heads** (cheapest high-value: every row it needs is already on the record). New claimant tier ahead of heads in `stroke_owner.own_strokes`, fed by accepted `Q.DIRECTION_WORD` / adjudicated `Q.DYNAMIC` letters / `Q.LETTER_LOOK_COVER`; READ words refuse only on clean separation, else narrow. Flag `OMR_CLAIM_ORDER`, default OFF | re-adjudicate the milestone-0 saved gather OFF vs ON; `lane_report` by place: judged right->wrong 0, unwritten->wrong 0, invented->removed counted; 12 blind tiles incl. 2.220 tile 2, 2.210's ff, 2.204 tile 7 re-shown | FILE vs FILE |
 | 2 | **Interior barlines claimed by position:** the vertical stroke at a cell edge spanning the staff (`Q.CELL_BOX`, `Q.BARLINE_COLUMN`) is an `ink` claim; consumers cannot take it | same saved gather; parity with `on_a_barline` / `ink_is_a_barline` / `rest_is_a_barline` (every box they refuse is refused or narrowed); 2.204's barline abstentions counted with stems ON in both arms | FILE vs FILE |
 | 3 | **Heads claim after the one-head check** = 2.220 milestones 1-2 with fix A (owned by 2.220); 2.221 adds only that a passing head claims before layers 4-5 | as 2.220 | FILE vs FILE |
@@ -132,7 +133,7 @@ reports the three measures (`docs/measuring.md` §0). Lanes run on Sonnet.
 
 ## 8. Questions for Sean
 
-1. Should accidentals, rests and dots claim with the noteheads, or after them?
+1. ~~Should accidentals, rests and dots claim with the noteheads, or after them?~~ ANSWERED 2026-10-28 (DECISIONS): AFTER the noteheads, "because they're a little bit harder to read"; Sean is open to a small test of whether the order matters (milestone 0b).
 2. When a word or dynamic we read clearly covers ink the detector also called a notehead, may the word take it outright, or should the note be written blue until more scores confirm it? (2.107's "it is letters" covered the sf case only.)
 3. Do we need the brackets and braces read before anything else, or is the system's left barline enough for now?
 4. Inside the staff, is a word ever anything other than a dynamic or a short word like *pizz.* or *dolce*?
