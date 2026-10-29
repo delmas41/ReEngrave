@@ -746,3 +746,5 @@ The 18 Litolff `stem_readers_disagree` heads still on the "wrong side" after rou
 - 17 cannot tell.
 
 **Process lesson:** the stop rule's "notes not written vs OFF" counts removing an invented note as a cost. On these 18 the trade is 9 right notes lost vs 7 invented notes removed, not the plain +5% loss the count showed. Judge a parked lane with the 2.218 lines (unwritten->wrong, invented->removed), not notes-not-written alone. Next: 2.210 (a stem member needs head-shaped ink) should remove the 7 invented notes without the 9 losses; re-measure 2.204 after it lands.
+
+**CORRECTION (2026-10-28, 2.210 round 2 read the OFF exported file):** OFF WRITES only 4 of the 8 non-notes above -- tile 7 (sharp + natural), 9 (tremolo slash), 10 and 11 (rest pieces). Tiles 5, 16 (`clipped_fragment`) and 12 (`too_narrow`) carry a decided duration verdict but are refused and never written; tile 4 was narrowed. The count above was taken from duration verdicts, not the written file. So the trade on these 18 is 9 right notes lost vs 4 invented notes removed: 2.204 stays parked on the merits. Lesson (again, as 2.216's): count at the exported file, never at a verdict.
