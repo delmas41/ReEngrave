@@ -1,0 +1,254 @@
+[
+ {
+  "role": "control",
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1438.0,
+   2649.0,
+   1628.0,
+   2712.0
+  ],
+  "cell": "16/1/4/7",
+  "ours": "control: adds up",
+  "note": "the exporter's own sum fills the bar (not red, not partial, not unread)",
+  "red": false,
+  "width_sp": 12.1,
+  "tile": 1,
+  "crop_origin": [
+   1438,
+   2601
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1993.0,
+   1384.0,
+   2114.0,
+   1447.0
+  ],
+  "cell": "16/0/7/12",
+  "ours": "missing: heads in a beamed group",
+  "note": "beamed sixteenths merged with the beam; heads not written",
+  "red": true,
+  "width_sp": 7.7,
+  "tile": 2,
+  "crop_origin": [
+   1959,
+   1336
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1321.0,
+   1610.5,
+   1433.0,
+   1673.5
+  ],
+  "cell": "4/0/8/6",
+  "ours": "missing: quarter rest",
+  "note": "quarter rest on the print, nothing written",
+  "red": true,
+  "width_sp": 7.1,
+  "tile": 3,
+  "crop_origin": [
+   1282,
+   1563
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   811.0,
+   1414.0,
+   975.0,
+   1477.0
+  ],
+  "cell": "10/0/7/2",
+  "ours": "value: flag missed",
+  "note": "first note an eighth with a flag, written as a quarter",
+  "red": true,
+  "width_sp": 10.4,
+  "tile": 4,
+  "crop_origin": [
+   798,
+   1366
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 1,
+  "box": [
+   1201.0,
+   1132.0,
+   1266.0,
+   1195.0
+  ],
+  "cell": "1/0/0/3",
+  "ours": "extra: tempo-mark note",
+  "note": "metronome half note above the staff counted as a head; whole rest then 4 beats",
+  "red": true,
+  "width_sp": 4.1,
+  "tile": 5,
+  "crop_origin": [
+   1139,
+   1084
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   1343.0,
+   3547.5,
+   1526.0,
+   3610.5
+  ],
+  "cell": "9/1/9/5",
+  "ours": "cut/shifted bar",
+  "note": "cell reaches past the barline: next bar's first note counted",
+  "red": true,
+  "width_sp": 11.6,
+  "tile": 6,
+  "crop_origin": [
+   1340,
+   3500
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   5124.0,
+   2897.0,
+   5492.0,
+   3025.0
+  ],
+  "cell": "8/0/8/12",
+  "ours": "value: dot missed",
+  "note": "first note a dotted quarter, written as a quarter",
+  "red": true,
+  "width_sp": 11.5,
+  "tile": 7,
+  "crop_origin": [
+   5116,
+   2801
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   921.0,
+   2649.0,
+   1016.0,
+   2712.0
+  ],
+  "cell": "16/1/4/3",
+  "ours": "voices: one beam group split in two voices",
+  "note": "one beamed run written as two voices",
+  "red": true,
+  "width_sp": 6.0,
+  "tile": 8,
+  "crop_origin": [
+   874,
+   2601
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   1881.0,
+   4328.0,
+   2347.0,
+   4456.0
+  ],
+  "cell": "4/1/1/2",
+  "ours": "value: flag missed",
+  "note": "middle note an eighth with a flag, written as a quarter",
+  "red": true,
+  "width_sp": 14.6,
+  "tile": 9,
+  "crop_origin": [
+   1922,
+   4232
+  ]
+ },
+ {
+  "role": "control",
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   2347.0,
+   6289.0,
+   2808.0,
+   6417.0
+  ],
+  "cell": "4/1/10/3",
+  "ours": "control: adds up",
+  "note": "the exporter's own sum fills the bar (not red, not partial, not unread)",
+  "red": false,
+  "width_sp": 14.4,
+  "tile": 10,
+  "crop_origin": [
+   2385,
+   6193
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2459.0,
+   5161.0,
+   2988.0,
+   5289.0
+  ],
+  "cell": "14/1/4/3",
+  "ours": "extra: neighbour staff rest",
+  "note": "rest of the staff above counted in this bar",
+  "red": true,
+  "width_sp": 16.5,
+  "tile": 11,
+  "crop_origin": [
+   2531,
+   5065
+  ]
+ },
+ {
+  "role": "case",
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   1990.0,
+   1505.5,
+   2386.0,
+   1633.5
+  ],
+  "cell": "8/0/3/3",
+  "ours": "voices: two voices read as one",
+  "note": "two voices each fill the bar",
+  "red": true,
+  "width_sp": 12.4,
+  "tile": 12,
+  "crop_origin": [
+   1996,
+   1409
+  ]
+ }
+]

@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_29": "whole rest- 1. yes 2. no 3-12 yes",
+ "tally": "plain rests 8/8 whole rests; blue 3/4 -- tile 2 (Brahms p12 m88, blue, bar shares a black head and a beam) is NOT a whole rest: blue was right to keep it marked",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 2,
+   "answer": "no",
+   "written": "blue"
+  },
+  {
+   "tile": 3,
+   "answer": "yes",
+   "written": "blue"
+  },
+  {
+   "tile": 4,
+   "answer": "yes",
+   "written": "blue"
+  },
+  {
+   "tile": 5,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 6,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 7,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 8,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 9,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 10,
+   "answer": "yes",
+   "written": "blue"
+  },
+  {
+   "tile": 11,
+   "answer": "yes",
+   "written": "plain"
+  },
+  {
+   "tile": 12,
+   "answer": "yes",
+   "written": "plain"
+  }
+ ]
+}

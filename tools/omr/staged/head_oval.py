@@ -53,10 +53,12 @@ LINE_WINDOW_SPACES = 3.0
 LEFT_EDGE_SPACES = 0.5
 
 
-def _line_rows(ink_wide: Any) -> Any:
-    """Boolean per row: a line row (ink over most of the wide window), dilated by one pixel either way."""
+def _line_rows(ink_wide: Any, dilate: bool = True) -> Any:
+    """Boolean per row: a line row (ink over most of the wide window), dilated by one pixel either way (`dilate=False`: the rows themselves)."""
     w = max(1, ink_wide.shape[1])
     rows = ink_wide.sum(axis=1) / float(w) >= LINE_ROW_SHARE
+    if not dilate:
+        return rows
     out = rows.copy()
     out[1:] |= rows[:-1]
     out[:-1] |= rows[1:]

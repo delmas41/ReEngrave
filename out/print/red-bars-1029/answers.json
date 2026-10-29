@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "red bars - 1. bar has a 8 rest and then 3 unison 8 notes (2 voices) with stems in both directions. 2. 8 rest followed by 3 8 notes - single voice 3. flat, quarter and quarter rest. 4.  4 8 notes with a nat be fore the second one. the first 8 note is lower in pitchand seperate and the following 3 are connected by a beam 5. whole rest 6. crosses over a barline and includes 2 bars 7. 2 dot quarters 8. bar doesnt cover whole measure 9. orange box is larger than the tile - quarter, 8 dot, quarter 10. box is larger than tile- dot 2 12. box is larger than the tile",
+ "tally": "Sean read the bar contents (not yet compared with our written file). Bar CUT confirmed on 2/2 (tile 6 Litolff p9 s1 c5 spans two bars; tile 8 p16 bar short of the measure). Tile 5 (Litolff p1, the tempo-mark case) is a whole-rest bar. Tile 11 not answered. Tiles 9, 10, 12: our tile window was narrower than the Brahms bar (tile flaw).",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "8 rest then 3 unison eighths (2 voices), stems both directions"
+  },
+  {
+   "tile": 2,
+   "answer": "8 rest then 3 eighths, single voice"
+  },
+  {
+   "tile": 3,
+   "answer": "flat, quarter and quarter rest"
+  },
+  {
+   "tile": 4,
+   "answer": "4 eighths, natural before the second; first lower and separate, last 3 beamed"
+  },
+  {
+   "tile": 5,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 6,
+   "answer": "box crosses a barline and includes 2 bars"
+  },
+  {
+   "tile": 7,
+   "answer": "2 dotted quarters"
+  },
+  {
+   "tile": 8,
+   "answer": "box does not cover the whole measure"
+  },
+  {
+   "tile": 9,
+   "answer": "(box larger than tile) quarter, dotted eighth, quarter"
+  },
+  {
+   "tile": 10,
+   "answer": "(box larger than tile) dotted half"
+  },
+  {
+   "tile": 11,
+   "answer": null
+  },
+  {
+   "tile": 12,
+   "answer": "box larger than the tile"
+  }
+ ]
+}
