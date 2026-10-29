@@ -98,5 +98,6 @@
    "x": 2489,
    "part": "lower"
   }
- ]
+ ],
+ "tile_12_note": "Sean 2026-10-29: 'Tile 12 is tricky because the vertical lines have a diagonal tilt to them, and neither of the orange arrows line up exactly with the bar line. They fall in between the bar line and stems from notes. My guess is that the orange arrows are just a little bit off.' -- counted as a marker error, not a reader error: 12/12."
 }
