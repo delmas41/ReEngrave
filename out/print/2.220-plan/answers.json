@@ -1,0 +1,109 @@
+{
+ "answered": "2026-10-28",
+ "by": "Sean",
+ "verbatim": "1.2 2. part of ff 3. flag 4.2 5.2 6.4 but box also includes a good amount of a sharp 7-8. 2",
+ "tally": {
+  "right": 1,
+  "wrong": 5,
+  "invented": 2,
+  "of": 8
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 2,
+   "box_sp": [
+    1.93,
+    1.22
+   ],
+   "seans_answer": "half",
+   "written": "quarter",
+   "verdict": "wrong"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 4,
+   "box_sp": [
+    3.88,
+    1.03
+   ],
+   "seans_answer": "part of an ff (not a note)",
+   "written": "quarter",
+   "verdict": "invented"
+  },
+  {
+   "tile": 3,
+   "plate": "brahms",
+   "page": 5,
+   "box_sp": [
+    1.52,
+    2.22
+   ],
+   "seans_answer": "flag (not a note)",
+   "written": "eighth",
+   "verdict": "invented"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 4,
+   "box_sp": [
+    1.92,
+    1.21
+   ],
+   "seans_answer": "half",
+   "written": "quarter",
+   "verdict": "wrong"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 10,
+   "box_sp": [
+    1.33,
+    1.85
+   ],
+   "seans_answer": "half",
+   "written": "quarter",
+   "verdict": "wrong"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "page": 19,
+   "box_sp": [
+    2.15,
+    1.14
+   ],
+   "seans_answer": "quarter (box also includes a good amount of a sharp)",
+   "written": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 6,
+   "box_sp": [
+    1.91,
+    1.51
+   ],
+   "seans_answer": "half",
+   "written": "quarter",
+   "verdict": "wrong"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 8,
+   "box_sp": [
+    1.91,
+    1.21
+   ],
+   "seans_answer": "half",
+   "written": "quarter",
+   "verdict": "wrong"
+  }
+ ]
+}

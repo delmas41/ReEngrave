@@ -1,0 +1,202 @@
+[
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2094.9775,
+   2075.9875,
+   2125.375,
+   2095.2025
+  ],
+  "subject": "glyph/2/1/0/11/2",
+  "cls": "noteheadBlackOnLine",
+  "box_sp": [
+   1.93,
+   1.22
+  ],
+  "slit_rows_share": 0.1918,
+  "window": "F",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 1,
+  "crop_origin": [
+   2015,
+   2006
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2037.34,
+   465.77,
+   2097.48,
+   481.735
+  ],
+  "subject": "glyph/4/0/0/11/15",
+  "cls": "noteheadBlackOnLine",
+  "box_sp": [
+   3.88,
+   1.03
+  ],
+  "slit_rows_share": 0.5,
+  "window": "F",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 2,
+  "crop_origin": [
+   1972,
+   395
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1600.325,
+   6699.0,
+   1642.125,
+   6760.05
+  ],
+  "subject": "glyph/5/1/12/1/7",
+  "cls": "noteheadBlackOnLine",
+  "box_sp": [
+   1.52,
+   2.22
+  ],
+  "slit_rows_share": 0.5188,
+  "window": "U",
+  "written": "eighth",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 3,
+  "crop_origin": [
+   1429,
+   6569
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   518.415,
+   1089.4850000000001,
+   548.655,
+   1108.5425
+  ],
+  "subject": "glyph/4/0/4/0/4",
+  "cls": "noteheadBlackInSpace",
+  "box_sp": [
+   1.92,
+   1.21
+  ],
+  "slit_rows_share": 0.3889,
+  "window": "U",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 4,
+  "crop_origin": [
+   439,
+   1020
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1423.7825,
+   1700.8425,
+   1444.73,
+   1729.98
+  ],
+  "subject": "glyph/10/0/9/6/3",
+  "cls": "noteheadBlackInSpace",
+  "box_sp": [
+   1.33,
+   1.85
+  ],
+  "slit_rows_share": 0.4054,
+  "window": "F",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 5,
+  "crop_origin": [
+   1339,
+   1636
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   4449.43,
+   1106.935,
+   4508.0175,
+   1138.0
+  ],
+  "subject": "glyph/19/0/2/8/13",
+  "cls": "noteheadBlackInSpace",
+  "box_sp": [
+   2.15,
+   1.14
+  ],
+  "slit_rows_share": 0.6957,
+  "window": "F",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 6,
+  "crop_origin": [
+   4286,
+   962
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2448.4775,
+   2828.1675,
+   2478.56,
+   2851.95
+  ],
+  "subject": "glyph/6/1/5/11/1",
+  "cls": "noteheadBlackOnLine",
+  "box_sp": [
+   1.91,
+   1.51
+  ],
+  "slit_rows_share": 0.3444,
+  "window": "U",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 7,
+  "crop_origin": [
+   2369,
+   2761
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   769.7275,
+   2039.955,
+   799.81,
+   2059.0125
+  ],
+  "subject": "glyph/8/1/1/2/0",
+  "cls": "noteheadBlackOnLine",
+  "box_sp": [
+   1.91,
+   1.21
+  ],
+  "slit_rows_share": 0.3472,
+  "window": "F",
+  "written": "quarter",
+  "why": "not_head_sized: fill null, detector black kept",
+  "tile": 8,
+  "crop_origin": [
+   690,
+   1970
+  ]
+ }
+]

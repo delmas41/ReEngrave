@@ -21,3 +21,8 @@ READER disagreement where both decide: detector vs slit 7.6% Litolff / 1.7% Brah
 
 ## Crops (not yet answered)
 8 class-A tiles (6 Litolff, 2 Brahms) in the plan worktree `out/print/2.220-plan/` (key outside the tiles folder). Question for Sean: half note, filled note, or not a note?
+
+## Sean's answers on the 8 class-A tiles (2026-10-28, `out/print/2.220-plan/answers.json`)
+"1.2 2. part of ff 3. flag 4.2 5.2 6.4 but box also includes a good amount of a sharp 7-8. 2"
+STAGED wrote all 8 filled (quarter/eighth). Tally: 5 wrong (tiles 1, 4, 5, 7, 8 are half notes), 1 right (tile 6, a quarter, but its box takes in a sharp), 2 INVENTED (tile 2 is part of an ff; tile 3 is a flag).
+Observation: the 5 real halves have box widths 1.3-1.9 sp; the 3 that are not plain heads are larger (3.88 wide, 2.22 tall, 2.15 wide). So `not_head_sized` separates them partly, but a "larger box = hollow" rule would invent 2 notes and get 1 wrong of 8: size cannot decide fill; a box that is not head-sized is a question about identity (is it a head at all?) before fill.
