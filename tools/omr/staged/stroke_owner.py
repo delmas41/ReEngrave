@@ -63,7 +63,7 @@ ATTACH_MIN_TOUCHES = 2
 
 #: the claimant tiers, in convention order (module doc). Consumers are not here.
 TIERS: Tuple[Tuple[str, ...], ...] = (
-    ("clef", "meter", "key_signature", "leading_column", "arc_trace"),
+    ("clef", "meter", "key_signature", "leading_column", "arc_trace", "barline"),
     ("head", "ledger"),
     ("accidental",),
     ("arc", "hairpin"),

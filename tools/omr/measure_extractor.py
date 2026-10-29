@@ -179,6 +179,11 @@ _DETECT_BARLINES_COUNTER_KEYS = frozenset({
     "n_barline_clusters_rejected_no_prong",
     "n_barlines_dropped_close_outlier",
     "n_barline_clusters_rejected_vote_outlier",
+    "n_barline_columns_through_ink",
+    "n_barline_columns_reinforced_staves",
+    "n_barline_columns_added_missed",
+    "n_barline_columns_rejected_no_through_ink",
+    "n_barline_columns_abstained",
 })
 _EXTRACT_MEASURES_COUNTER_KEYS = frozenset({
     "n_one_line_staves_excluded_from_cells",
@@ -1056,11 +1061,31 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         _bump(counts, "n_barline_clusters_rejected_no_prong",
               len(clusters) - len(accepted))
         n_before_outliers = len(accepted)
+        # ROADMAP 2.221 m2 (`OMR_BARLINE_SYSTEM_COLUMNS`, default ON): the system's columns read once, through-ink first.
+        _sys_cols = (_system_barline_columns(bin_img, staves, clusters, cluster_obs, _x_by_staff, _drop_close_outliers(accepted), counts)
+                     if _system_columns_enabled(pws) and n_staves >= 3 else None)
+        if _sys_cols is not None:
+            accepted = _sys_cols[0]
+            for _x, _ev in _sys_cols[1].items():
+                evidence[_x] = {**evidence.get(_x, {}), "n_votes": _ev["n_votes"], "n_staves_in_system": n_staves,
+                                "min_votes": min_votes, "connectivity": _ev["coverage"], "span_ink": None,
+                                "accept_prong": "system_column"}
+            n_before_outliers = len(accepted)
+        # THE ONE STRUCTURE PASS (Sean 2026-10-29: no new reading pass per symbol): this system's columns and left-edge rules, once, for
+        # every claimant to read (`pws.system_structure[system_index]`; 2.221 m1b claims brackets and braces from it).
+        if _system_columns_enabled(pws):
+            if not hasattr(pws, "system_structure") or pws.system_structure is None:
+                pws.system_structure = {}
+            pws.system_structure[sys_idx] = {
+                "columns": [{"x": x, **{k: v for k, v in e.items() if k in ("span", "staff_indices", "reinforced", "n_votes")}}
+                            for x, e in sorted((_sys_cols[1] if _sys_cols is not None else {}).items())],
+                "left_edge": _left_edge_read(bin_img, staves)}
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
         # gaps. Remove the smaller member of any adjacent pair whose gap is
         # < 0.5 × median gap.
-        accepted = _drop_close_outliers(accepted)
+        if _sys_cols is None:
+            accepted = _drop_close_outliers(accepted)
         # ⚠️ The site whose docstring admits it decides blind — it defaults to
         # dropping the LEFT member of an implausibly close pair. Now at least
         # the page records how often it had to.
@@ -1087,6 +1112,238 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 choir_cue_c_override=cue_c_override,
             ))
     return pws
+
+
+# ─── 2.221 m2: the system's barline columns, read once (flag OMR_BARLINE_SYSTEM_COLUMNS, default ON) ───────────────────────────────
+
+
+def _system_columns_enabled(pws=None) -> bool:
+    """The flag AND the page being read by the STAGED page-wide pass (`staged/pipeline.prepare_pages` sets `pws.staged_page_wide`).
+    LEGACY callers (`transcribe.py:4844`, `run_pipeline.py:73`, `visualize.py:140`, `staff_line_removal.py:317`, the training evals) never
+    set it, so their behaviour is unchanged whatever the environment says."""
+    if pws is not None and not getattr(pws, "staged_page_wide", False):
+        return False
+    raw = os.environ.get("OMR_BARLINE_SYSTEM_COLUMNS")
+    if raw is None:
+        return True            # default ON (Sean 2026-10-29); an explicit 0/false/no/off/empty disables
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
+    """The system's left edge (systemic barline, brackets, braces), read ONCE by the existing stroke reader `bracket_reader.read_brackets`
+    (measured on five publishers, benchmarks/omr-bracket-reading-2026-09; it names strokes and levels, picks bracket vs brace by REACH,
+    not by a width cut-off). Chosen over the m2 draft `left_edge_rules`, which labelled kinds from three numbers tuned on two plates and
+    called a bracket+systemic-barline pair a `brace` (Litolff p6 s0) and a whole Brahms group a `brace` (p5 s0). Pass `.levels` /
+    `.blocks` to the 2.221 m1b claimant."""
+    from .bracket_reader import read_brackets, strokes_at_left_edge, covered_staves, is_rule
+    out = dict(read_brackets(bin_img, staves))
+    # WHOLE MARKS with a KIND, by SHAPE measured along the mark (Sean 2026-10-29, tiles 3/6 braces, 7/11 pieces of a bracket): a BRACKET is a
+    # constant-width straight rule with a hook turning RIGHT at its top and bottom; a BRACE bends and has no right hook. Per stroke, on rows
+    # off the staff lines: `hook_sp` = how far the ink at the top/bottom 6% reaches right of the middle's right edge; `bend_sp` = how far the
+    # middle's left edge lies left of the ends'; `width_sp` = median width of the middle third. Measured on Brahms p5 and Litolff p4 (14
+    # strokes): braces hook 0.00-0.09 sp, brackets 0.70-1.27 sp (nothing between); width 0.33-0.44 sp for braces/systemic barlines,
+    # 0.58-0.83 for brackets. Kind: hook >= 0.5 and width >= 0.5 -> bracket; hook <= 0.3 over exactly 2 staves -> brace; the rightmost thin
+    # (< 0.5 sp) stroke over >= 3 staves -> systemic_barline; anything else -> kind None (ABSTAIN, shape given). The claimant's second
+    # witness is the detector's `brace` box: agree -> decide, disagree -> abstain. The mark's box runs top hook to bottom hook.
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    sp = float(np.median([s.line_spacing_px for s in ordered]))
+    anchor = float(np.median([s.x_start for s in ordered]))
+    strokes, _geom = strokes_at_left_edge(bin_img, ordered)
+    line_rows = {int(y) + d for s_ in ordered for y in s_.line_ys for d in range(-3, 4)}
+    marks: list[dict] = []
+    for st in strokes:
+        if not is_rule(st) or (st.x_centre - anchor) / sp > 0.5:
+            continue
+        cov = covered_staves(st, ordered)
+        if len(cov) < 2:
+            continue
+        c, pad = int(round(st.x_centre)), int(1.6 * sp)
+        x_off = max(0, c - pad)
+        rows = []
+        for y in range(st.y_top, st.y_bot + 1):
+            if y in line_rows:
+                continue
+            row = bin_img[y, x_off:c + pad + 1] < 128
+            m0 = c - x_off
+            seg = np.where(row[max(0, m0 - 4):m0 + 5])[0]
+            if seg.size == 0:
+                continue
+            m = max(0, m0 - 4) + int(seg[len(seg) // 2])
+            l = m
+            while l > 0 and row[l - 1]:
+                l -= 1
+            r = m
+            while r < len(row) - 1 and row[r + 1]:
+                r += 1
+            rows.append((y, l + x_off, r + x_off))
+        if len(rows) < 20:
+            continue
+        ys = np.array([r_[0] for r_ in rows], float)
+        lf = np.array([r_[1] for r_ in rows], float)
+        rt = np.array([r_[2] for r_ in rows], float)
+        t = (ys - st.y_top) / max(1, st.y_bot - st.y_top)
+        mid, end, top, bot = (t > 0.35) & (t < 0.65), (t < 0.15) | (t > 0.85), t < 0.06, t > 0.94
+        if not (mid.any() and end.any()):
+            continue
+        reach = max(rt[top].max() if top.any() else 0.0, rt[bot].max() if bot.any() else 0.0)
+        hook = (reach - float(np.median(rt[mid]))) / sp
+        bend = (float(np.median(lf[end])) - float(np.median(lf[mid]))) / sp
+        width = float(np.median(rt[mid] - lf[mid] + 1)) / sp
+        kind = None
+        if hook >= 0.5 and width >= 0.5 and len(cov) >= 3:
+            kind = "bracket"
+        elif hook <= 0.3 and len(cov) == 2 and width < 0.5:
+            kind = "brace"
+        elif width < 0.5 and len(cov) >= 3:
+            kind = "systemic_barline"
+        x1 = max(int(st.x_right), int(min(reach, st.x_right + 1.2 * sp))) if kind == "bracket" else int(st.x_right)
+        marks.append({"kind": kind, "box": [int(min(st.x_left, lf.min())), int(st.y_top), x1, int(st.y_bot)],
+                      "staff_indices": [ordered[i].staff_index for i in cov], "hook_sp": round(hook, 2), "bend_sp": round(bend, 2),
+                      "width_sp": round(width, 2), "height_sp": st.height_spacings})
+    # the systemic barline is the RIGHTMOST thin stroke only; collinear thin pieces of a tilted rule are joined
+    thin = [m for m in marks if m["kind"] == "systemic_barline"]
+    if thin:
+        xr = max(m["box"][2] for m in thin)
+        keep = [m for m in thin if m["box"][2] >= xr - sp]
+        for m in thin:
+            if m not in keep:
+                m["kind"] = None
+        for m in keep[1:]:
+            keep[0]["box"] = [min(keep[0]["box"][0], m["box"][0]), min(keep[0]["box"][1], m["box"][1]),
+                              max(keep[0]["box"][2], m["box"][2]), max(keep[0]["box"][3], m["box"][3])]
+            keep[0]["staff_indices"] = sorted(set(keep[0]["staff_indices"]) | set(m["staff_indices"]))
+            marks.remove(m)
+    out["marks"] = marks
+    return out
+
+
+def _gap_has_rule(bin_img: np.ndarray, upper: Staff, lower: Staff, x_up: float, x_low: float) -> bool:
+    """Is there ink on the rule's own line (x interpolated from the upper staff's x to the lower's, +-2 px) on 90% of the rows between
+    the two staves? A barline drawn through the gap leaves it; a stem ends at its note, a slur curves off the line."""
+    top, bot = upper.bottom_y + 1, lower.top_y
+    if bot - top < 3:
+        return False
+    w = bin_img.shape[1]
+    # the rule's own column in THIS gap: a leaning scan moves it a few px from the staves' x, so look +-8 px of their mean for ONE column
+    # inked on 90% of the gap's rows (one column, not a window: a window would let a stem plus a slur pass), the run thin like a rule.
+    c = int(round((x_up + x_low) / 2.0))
+    lo, hi = max(0, c - 8), min(w, c + 9)
+    if lo >= hi:
+        return False
+    frac = (bin_img[top:bot, lo:hi] < 128).mean(axis=0)
+    sp = max(1.0, (upper.line_spacing_px + lower.line_spacing_px) / 2.0)
+    good = np.where(frac >= 0.9)[0]
+    if good.size == 0:
+        return False
+    runs, start = [], good[0]
+    for a, b in zip(good[:-1], good[1:]):
+        if b != a + 1:
+            runs.append((start, a))
+            start = b
+    runs.append((start, good[-1]))
+    return any((b - a + 1) <= 0.7 * sp for a, b in runs)
+
+
+def _system_barline_columns(bin_img, staves, clusters, cluster_obs, x_by_staff_of, accepted_old, counts):
+    """Read the system's barline columns ONCE, on the page raster, through-ink first (Sean 2026-10-29: "sometimes the barlines extend
+    the length of the whole system"). Returns (accepted xs, {x: evidence}) or None = leave the old columns alone.
+
+    PATH: STAGED GATHER (via `staged/pipeline.py`); also reached by LEGACY `transcribe.py`'s call of `detect_barlines`, which stays
+    unchanged while the flag is OFF.
+
+    A candidate column is a cluster of per-staff full-height rules. Its CROSSED GAPS are the inter-staff gaps holding the rule's ink
+    (`_gap_has_rule`). The system's CONSENSUS G = the gaps crossed by at least half of its columns that show a rule on >= 75% of the
+    staves. No such column -> None (an open score; the old rule stands, nothing is guessed).
+      * through-ink column (crosses >= 75% of G, rule seen on >= 2 staves; ink through < 3 gaps also needs the rule on half the staves it joins): a barline for
+        every staff it joins; staves of the joined run with no rule of their own are REINFORCED (counted); added if the old rule missed it.
+      * no through-ink, a MINORITY of staves show a rule: not a barline; REJECTED if the old rule cut it.
+      * no through-ink, a MAJORITY show a rule and NO gap holds it: a stem alignment in a system whose barlines run through the gaps;
+        REJECTED if cut.
+      * anything else (half-and-half; a majority with some through-ink): ABSTAIN, the old decision stands (counted).
+    """
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    n = len(ordered)
+    pos = {s.staff_index: i for i, s in enumerate(ordered)}
+    cands = []
+    for ci, cl in enumerate(clusters):
+        x = int(round(sum(cl) / len(cl)))
+        votes = {pos[si] for _x, si in cluster_obs[ci] if si in pos}
+        xb = x_by_staff_of(ci)
+        # THE SCAN TILTS (CLAUDE.md section 5: measure against the staff LOCALLY): a rule on Litolff p6 sys 1 drifts 21 px over the system
+        # (2487 -> 2508), more than the +-8 px window. So the rule's x in each gap is the line through the staves that DID see it
+        # (Theil-Sen: median of pairwise slopes, immune to a stem alignment that one staff reported), read at that gap's own y; a staff
+        # with no vote of its own gets the line's x, never the cluster's mean x. Fewer than 2 voters -> the staves' own x, else the mean.
+        pts = sorted(((ordered[pos[si]].top_y + ordered[pos[si]].bottom_y) / 2.0, float(xv)) for si, xv in xb.items() if si in pos)
+        slope = 0.0
+        if len(pts) >= 2:
+            sl = [(b[1] - a[1]) / (b[0] - a[0]) for i, a in enumerate(pts) for b in pts[i + 1:] if b[0] != a[0]]
+            slope = float(np.median(sl)) if sl else 0.0
+        icpt = float(np.median([px - slope * py for py, px in pts])) if pts else float(x)
+
+        def _x_at(y: float, _s=slope, _i=icpt, _have=bool(pts), _x=x) -> float:
+            return _s * y + _i if _have else float(_x)
+        crossed = set()
+        for g in range(n - 1):
+            xu = _x_at(float(ordered[g].bottom_y))
+            xl = _x_at(float(ordered[g + 1].top_y))
+            if _gap_has_rule(bin_img, ordered[g], ordered[g + 1], xu, xl):
+                crossed.add(g)
+        cands.append((x, votes, crossed))
+    core = [c for c in cands if c[2] and len(c[1]) >= 0.75 * n]
+    if not core:
+        return None
+    gcount = Counter(g for c in core for g in c[2])
+    consensus = {g for g, k in gcount.items() if k * 2 >= len(core)}
+    if not consensus:
+        return None
+    old = list(accepted_old)
+
+    def was_cut(x: int) -> bool:
+        return any(abs(a - x) <= 12 for a in old)
+
+    out: list[int] = []
+    ev: dict[int, dict[str, object]] = {}
+    x_lo = float(np.median([s.x_start for s in ordered]))
+    edge = 4.0 * float(np.median([s.line_spacing_px for s in ordered]))
+    for x, votes, crossed in cands:
+        if x - x_lo < edge:
+            # the system's header column (brace, bracket, opening rule, clef): no bar stands here, `_measure_x_boundaries` drops it
+            # whatever; this reader leaves what the old rule did.
+            continue
+        coverage = len(crossed & consensus) / len(consensus)
+        joined: set[int] = set()
+        for g in crossed:
+            joined.update((g, g + 1))
+        # Ink through three or more gaps in a row on the rule's own line is a rule, not a stem: the staves that show no rule of their own
+        # (clipped, faint) are reinforced. A rule through only one or two gaps must ALSO be seen on half the staves it joins.
+        if (coverage >= 0.75 and len(votes) >= 2 and joined
+                and (len(crossed) >= 3 or len(votes & joined) * 2 >= len(joined))):
+            out.append(x)
+            ev[x] = {"n_votes": len(votes), "coverage": round(coverage, 3),
+                     "span": "through_system" if len(crossed) == n - 1 else "through_group",
+                     "staff_indices": [ordered[i].staff_index for i in sorted(joined)],
+                     "reinforced": [ordered[i].staff_index for i in sorted(joined - votes)]}
+            _bump(counts, "n_barline_columns_through_ink")
+            _bump(counts, "n_barline_columns_reinforced_staves", len(joined - votes))
+            if not was_cut(x):
+                _bump(counts, "n_barline_columns_added_missed")
+            continue
+        frac = len(votes) / n
+        if frac < 0.5 or (frac > 0.5 and not crossed):
+            if was_cut(x):
+                _bump(counts, "n_barline_columns_rejected_no_through_ink")
+            continue
+        if was_cut(x):
+            out.append(x)
+            ev[x] = {"n_votes": len(votes), "coverage": round(coverage, 3), "span": "per_staff",
+                     "staff_indices": [ordered[i].staff_index for i in sorted(votes)], "reinforced": []}
+            _bump(counts, "n_barline_columns_abstained")
+    for a in old:
+        if a - x_lo < edge:
+            out.append(a)
+            ev[a] = {"n_votes": 0, "coverage": 0.0}
+    out.sort()
+    return out, ev
 
 
 def _drop_close_outliers(xs: list[int]) -> list[int]:

@@ -52,6 +52,7 @@ def prepare_pages(pdf_path: str, pages: Sequence[int], *,
     out: List[Tuple[Any, List[Any]]] = []
     for p in pages:
         pws = detect_staves(render_page(pdf_path, p, dpi=dpi))
+        pws.staged_page_wide = True      # the page-wide pass's switch: LEGACY callers of `detect_barlines` never set it (2.221 m2)
         cells = extract_measures(pws)
         # ⚠️ THE SECOND IMAGE, AND IT IS NOT OPTIONAL. `extract_measures`
         # leaves `image_no_staff=None`; `line_detection` PREFERS that variant
