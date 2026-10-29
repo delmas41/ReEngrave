@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "1. Bracket 2. In poco sostenuto 3. Brace 4. Bracket 5. Cresc 6. Brace 7. Part of a bracket 8. Bracket 9. Barline 10. F pesante 11. Part of a bracket 12. F",
+ "tally": "every claim is real word/bracket/brace ink (10/10 claimed tiles): words 3/3 right (2, 5, 10); the left-edge kind is wrong on 4 of 7 -- 3 and 6 are braces read as rules, 7 and 11 are PART of a bracket read as a brace (partial claims); 1, 4, 8 brackets right. Unclaimed: 9 is a barline (for the page-wide barline reader), 12 a lone f (not claimed by design).",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "bracket"
+  },
+  {
+   "tile": 2,
+   "answer": "Un poco sostenuto"
+  },
+  {
+   "tile": 3,
+   "answer": "brace"
+  },
+  {
+   "tile": 4,
+   "answer": "bracket"
+  },
+  {
+   "tile": 5,
+   "answer": "cresc"
+  },
+  {
+   "tile": 6,
+   "answer": "brace"
+  },
+  {
+   "tile": 7,
+   "answer": "part of a bracket"
+  },
+  {
+   "tile": 8,
+   "answer": "bracket"
+  },
+  {
+   "tile": 9,
+   "answer": "barline"
+  },
+  {
+   "tile": 10,
+   "answer": "f pesante"
+  },
+  {
+   "tile": 11,
+   "answer": "part of a bracket"
+  },
+  {
+   "tile": 12,
+   "answer": "f"
+  }
+ ]
+}

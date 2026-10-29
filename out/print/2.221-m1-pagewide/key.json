@@ -1,0 +1,239 @@
+[
+ {
+  "tile": 1,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   644.0,
+   2598.0,
+   661.0,
+   3719.0
+  ],
+  "claim": "obs:078803",
+  "owner": "bracket",
+  "source": "edge_scan",
+  "text": null,
+  "kind": "rule",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 2,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   1494.0,
+   1337.0,
+   2374.0,
+   1443.0
+  ],
+  "claim": "obs:021193",
+  "owner": "word",
+  "source": "direction_word",
+  "text": "Un poco sostenuto",
+  "kind": null,
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 3,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   622.0,
+   6114.0,
+   628.0,
+   6416.0
+  ],
+  "claim": "obs:078804",
+  "owner": "bracket",
+  "source": "edge_scan",
+  "text": null,
+  "kind": "rule",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 4,
+  "what": "claim_matching_no_truth_mark",
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   1224.0,
+   5149.0,
+   1240.0,
+   6903.0
+  ],
+  "claim": "obs:021205",
+  "owner": "bracket",
+  "source": "edge_scan",
+  "text": null,
+  "kind": "rule",
+  "truth_cls": null,
+  "truth_overlaps": [
+   [
+    "brace",
+    0.34
+   ],
+   [
+    "brace",
+    0.43
+   ]
+  ]
+ },
+ {
+  "tile": 5,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2574.0,
+   1831.0,
+   2775.0,
+   1875.0
+  ],
+  "claim": "obs:078792",
+  "owner": "word",
+  "source": "direction_word",
+  "text": "Cresc",
+  "kind": null,
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 6,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   626.0,
+   1704.0,
+   635.0,
+   1961.0
+  ],
+  "claim": "obs:078800",
+  "owner": "bracket",
+  "source": "edge_scan",
+  "text": null,
+  "kind": "rule",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 7,
+  "what": "random_claim",
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   348.0,
+   426.1,
+   353.0,
+   538.0
+  ],
+  "claim": "obs:050683",
+  "owner": "bracket",
+  "source": "detector_box",
+  "text": null,
+  "kind": "brace",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 8,
+  "what": "random_claim",
+  "plate": "litolff",
+  "page": 1,
+  "box": [
+   644.0,
+   1145.0,
+   662.0,
+   3158.0
+  ],
+  "claim": "obs:010238",
+  "owner": "bracket",
+  "source": "edge_scan",
+  "text": null,
+  "kind": "rule",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 9,
+  "what": "unclaimed_truth_mark",
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   5390.881019830028,
+   3312.92,
+   5397.6033994334275,
+   3756.12
+  ],
+  "claim": "b4041",
+  "owner": null,
+  "source": null,
+  "text": null,
+  "kind": null,
+  "truth_cls": "brace",
+  "truth_overlaps": null
+ },
+ {
+  "tile": 10,
+  "what": "random_claim",
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   1619.0,
+   6891.0,
+   1965.0,
+   6977.0
+  ],
+  "claim": "obs:021202",
+  "owner": "word",
+  "source": "direction_word",
+  "text": "f pesante",
+  "kind": null,
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 11,
+  "what": "random_claim",
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   348.0,
+   644.0,
+   355.1,
+   834.9
+  ],
+  "claim": "obs:050685",
+  "owner": "bracket",
+  "source": "detector_box",
+  "text": null,
+  "kind": "brace",
+  "truth_cls": null,
+  "truth_overlaps": null
+ },
+ {
+  "tile": 12,
+  "what": "unclaimed_truth_mark",
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   1840.654296875,
+   4098.216170212766,
+   1909.470703125,
+   4174.907234042553
+  ],
+  "claim": "q718",
+  "owner": null,
+  "source": null,
+  "text": null,
+  "kind": null,
+  "truth_cls": "dynamicF",
+  "truth_overlaps": null
+ }
+]

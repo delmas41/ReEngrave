@@ -61,6 +61,8 @@ CLEF_BOX_COVER_MIN = 0.9
 OWNER_CLEF = "clef"
 OWNER_COLUMN = "leading_column"
 OWNER_METER = "meter"
+#: lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, `arc_claim.py`): a traced arc's strokes, `unit: ink` rows only, ONE per system arc; not in OWNERS.
+OWNER_ARC = "arc"
 #: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
 #: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
 OWNER_KEY = "key_signature"
