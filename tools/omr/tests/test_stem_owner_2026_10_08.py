@@ -209,7 +209,8 @@ class TestTheStemWitness(unittest.TestCase):
     def test_a_ledger_witness_that_disagrees_makes_the_head_abstain(self):
         """The tile-7 shape: the ledger reading names B, the stem names A. Neither
         is trusted alone (rule 8) -- the head abstains and says why."""
-        v = _contest(self.UP_TO_A, note_first=B_KEY)
+        with mock.patch.dict(os.environ, {OWN.LEDGER_WINS_ENV: "0"}):  # 2.216 ON decides instead
+            v = _contest(self.UP_TO_A, note_first=B_KEY)
         self.assertEqual(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "stem_disagrees")
         self.assertEqual(v.detail["stem_owner"], A_KEY)

@@ -1,0 +1,138 @@
+[
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 19,
+  "cx": 1228.6025390625,
+  "cy": 3361.885498046875,
+  "box": [
+   1209.2880859375,
+   3346.30224609375,
+   1247.9169921875,
+   3377.46875
+  ],
+  "rg": "glyph/19/0/12/0/21",
+  "was": "16th",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   972,
+   3073
+  ]
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 19,
+  "cx": 1330.4423828125,
+  "cy": 3562.4033203125,
+  "box": [
+   1307.17724609375,
+   3545.72265625,
+   1353.70751953125,
+   3579.083984375
+  ],
+  "rg": "glyph/19/0/13/0/5",
+  "was": "continue/continue",
+  "value": "continue/begin",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1074,
+   3274
+  ]
+ },
+ {
+  "kind": "beam",
+  "page": 14,
+  "cx": 3583.4212500000003,
+  "cy": 3298.4987499999997,
+  "box": [
+   3564.755,
+   3281.195,
+   3602.0875,
+   3315.8025
+  ],
+  "rg": "glyph/14/0/11/5/2",
+  "value": "continue",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 3,
+  "crop_origin": [
+   3327,
+   3010
+  ]
+ },
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 19,
+  "cx": 1229.91943359375,
+  "cy": 3547.03955078125,
+  "box": [
+   1211.0439453125,
+   3530.7978515625,
+   1248.794921875,
+   3563.28125
+  ],
+  "rg": "glyph/19/0/13/0/8",
+  "was": "16th",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   973,
+   3259
+  ]
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 19,
+  "cx": 1332.417724609375,
+  "cy": 3377.02978515625,
+  "box": [
+   1313.76171875,
+   3360.34912109375,
+   1351.07373046875,
+   3393.71044921875
+  ],
+  "rg": "glyph/19/0/12/0/5",
+  "was": "continue/continue",
+  "value": "continue/begin",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   1076,
+   3089
+  ]
+ },
+ {
+  "kind": "beam",
+  "page": 5,
+  "cx": 5064.4625,
+  "cy": 4013.6,
+  "box": [
+   5044.25,
+   3997.375,
+   5084.675,
+   4029.825
+  ],
+  "rg": "glyph/5/1/0/9/19",
+  "value": "begin",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 6,
+  "crop_origin": [
+   4808,
+   3725
+  ]
+ }
+]

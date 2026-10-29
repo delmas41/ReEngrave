@@ -1,0 +1,56 @@
+{
+ "judge": "sean",
+ "date": "2026-10-26",
+ "via": "blind-tile sheet out/print/2.206b/tiles/sheet.png, key out/print/2.206b/key.json",
+ "answers": {
+  "1": {
+   "sean": "dotted quarter",
+   "verdict": "BAD: real note lost (brahms p14 glyph/14/1/9/3/4); ON narrows it to flag_ink_unread"
+  },
+  "2": {
+   "sean": "half",
+   "verdict": "good: blue note gained, a half"
+  },
+  "3": {
+   "sean": "quarter",
+   "verdict": "control, unchanged, matches"
+  },
+  "4": {
+   "sean": "quarter",
+   "verdict": "BAD: real note lost (brahms p5 glyph/5/1/12/9/12); ON narrows it to beam_discounted_uncertain"
+  },
+  "5": {
+   "sean": "sixteenth",
+   "verdict": "BAD: blue guess lost; ON writes it unmarked as an eighth beam end, wrong in both arms (Sean: sixteenth)"
+  },
+  "6": {
+   "sean": "tremolo slash",
+   "verdict": "good: a 'dot' lost that is really a tremolo slash"
+  },
+  "7": {
+   "sean": "dotted quarter",
+   "verdict": "BAD: real note lost (brahms p14 glyph/14/1/9/3/2); same bar as tile 1"
+  },
+  "8": {
+   "sean": "dotted quarter",
+   "verdict": "control, unchanged, matches (dot after a dotted quarter)"
+  },
+  "9": {
+   "sean": "eighth",
+   "verdict": "pitch changed A3 -> Ab3 (key -2 -> -3); the print's key signature shows three flats (agent reading of the key crop, not Sean's answer): ON matches the print. Sean's answer addresses the duration (eighth, both arms agree)"
+  },
+  "10": {
+   "sean": "eighth",
+   "verdict": "good: 'words' lost on what is really an eighth note"
+  },
+  "11": {
+   "sean": "eighth",
+   "verdict": "good: beam gained on an eighth"
+  },
+  "12": {
+   "sean": "eighth rest",
+   "verdict": "control; the orange box lands on an eighth rest, not on the 'cresc.' word the key names (key box vs tile box disagree: control not scored)"
+  }
+ },
+ "summary": "4 good (2,6,10,11), 4 BAD real notes the eraser fix loses (1,4,5,7), tile 9 pitch change matches the print, 3 controls (3,8,12)"
+}

@@ -1,0 +1,46 @@
+{
+ "date": "2026-10-28",
+ "verbatim": "1. Green 2 green 3 blue 4 green 5 green 6 blue 7 green 8 green",
+ "tiles": {
+  "1": {
+   "sean": "green = staff 2: Oboe",
+   "subject": "litolff glyph/6/0/0/8/9",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 1: Flute (stem up), ledger says staff 2: Oboe"
+  },
+  "2": {
+   "sean": "green = staff 4: Bassoon (Fag.)",
+   "subject": "brahms glyph/24/1/3/2/5",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 3: Clarinet (Klar. (B)) (stem up), ledger says staff 4: Bassoon (Fag.)"
+  },
+  "3": {
+   "sean": "blue = staff 3: Clarinet (Cl.)",
+   "subject": "litolff glyph/14/0/1/8/0",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 2: Oboe (stem up), ledger says staff 3: Clarinet (Cl.)"
+  },
+  "4": {
+   "sean": "green = staff 2: Oboe",
+   "subject": "brahms glyph/3/0/0/2/2",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 1: Flute (stem up), ledger says staff 2: Oboe"
+  },
+  "5": {
+   "sean": "green = staff 4: Bassoon (Fag.)",
+   "subject": "brahms glyph/11/0/2/0/15",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 3: Clarinet (Klar. (B)) (stem up), ledger says staff 4: Bassoon (Fag.)"
+  },
+  "6": {
+   "sean": "blue = staff 2: Oboe",
+   "subject": "litolff glyph/16/0/0/14/0",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 1: Flute (stem up), ledger says staff 2: Oboe"
+  },
+  "7": {
+   "sean": "green = staff 2: Oboe",
+   "subject": "litolff glyph/6/1/0/9/4",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 1: Flute (stem up), ledger says staff 2: Oboe"
+  },
+  "8": {
+   "sean": "green = staff 4: Bassoon (Fag.)",
+   "subject": "brahms glyph/7/1/3/1/2",
+   "verdict": "LEDGER RIGHT, STEM WRONG: stem says staff 5: Horn ((C) Hr.) (stem down), ledger says staff 4: Bassoon (Fag.)"
+  }
+ }
+}

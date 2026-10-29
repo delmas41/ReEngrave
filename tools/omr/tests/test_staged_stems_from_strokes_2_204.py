@@ -235,7 +235,8 @@ def build(strokes, *, finder=(), heads=(HEAD,), extra=None, cls="noteheadBlackIn
 
 def run(on, strokes, **kw):
     log, gs = build(strokes, **kw)
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
+    # 2.202 beams-from-strokes is default ON since 2026-10-28; this file isolates the STEMS flag, so pin the beam reader off.
+    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0", rhythm.BEAMS_FROM_STROKES_ENV: "0"}):
         adjudicate.run(log)
     return log, gs
 

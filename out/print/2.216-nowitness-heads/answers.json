@@ -1,0 +1,41 @@
+{
+ "date": "2026-10-28",
+ "verbatim": "none of the tiles are a real note",
+ "tiles": {
+  "1": {
+   "sean": "not a note",
+   "subject": "brahms glyph/14/1/3/0/7",
+   "verdict": "FALSE HEAD: not a real note (noteheadBlackInSpace); owner_not_read drop is right"
+  },
+  "2": {
+   "sean": "not a note",
+   "subject": "brahms glyph/21/0/3/3/23",
+   "verdict": "FALSE HEAD: not a real note (noteheadHalfInSpace); owner_not_read drop is right"
+  },
+  "3": {
+   "sean": "not a note",
+   "subject": "brahms glyph/21/0/4/3/24",
+   "verdict": "FALSE HEAD: not a real note (noteheadHalfInSpace); owner_not_read drop is right"
+  },
+  "4": {
+   "sean": "not a note",
+   "subject": "brahms glyph/6/1/3/0/13",
+   "verdict": "FALSE HEAD: not a real note (noteheadBlackInSpace); owner_not_read drop is right"
+  },
+  "5": {
+   "sean": "not a note",
+   "subject": "brahms glyph/6/1/3/0/42",
+   "verdict": "FALSE HEAD: not a real note (noteheadBlackOnLine); owner_not_read drop is right"
+  },
+  "6": {
+   "sean": "not a note",
+   "subject": "brahms glyph/6/1/4/0/13",
+   "verdict": "FALSE HEAD: not a real note (noteheadBlackOnLine); owner_not_read drop is right"
+  },
+  "7": {
+   "sean": "not a note",
+   "subject": "brahms glyph/6/1/4/0/8",
+   "verdict": "FALSE HEAD: not a real note (noteheadBlackInSpace); owner_not_read drop is right"
+  }
+ }
+}

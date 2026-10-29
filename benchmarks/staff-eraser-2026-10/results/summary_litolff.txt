@@ -1,0 +1,23 @@
+
+litolff: 2707 cells; line thickness sp p10/50/90 [0.25, 0.26, 0.32]; cut sp p10/50/90 [0.45, 0.45, 0.45]; columns erased although the walk was truncated: 159313 of 12413208 (1.28%)
+| class | boxes | walk truncated in box | lose ink: main | reach | band* | median max loss sp main / reach | lost px main / reach |
+|---|---|---|---|---|---|---|---|
+| beam | 1390 | 119 | 118 | 83 | 2 | 0.16 / 0.13 | 83174 / 26518 |
+| head black on line | 2417 | 244 | 396 | 299 | 0 | 0.11 / 0.11 | 70126 / 25201 |
+| head black in space | 2257 | 473 | 546 | 181 | 2 | 0.17 / 0.11 | 338006 / 15277 |
+| head half/whole | 823 | 289 | 351 | 160 | 2 | 0.17 / 0.13 | 187390 / 35468 |
+| rest whole/half | 883 | 247 | 407 | 238 | 0 | 0.17 / 0.17 | 267136 / 23940 |
+| rest quarter | 469 | 240 | 340 | 260 | 7 | 0.17 / 0.17 | 221558 / 46602 |
+| rest 8th/16th | 149 | 53 | 87 | 60 | 0 | 0.17 / 0.17 | 30415 / 9017 |
+| flag | 141 | 39 | 59 | 39 | 0 | 0.17 / 0.14 | 28777 / 7664 |
+| tie/slur | 1337 | 259 | 348 | 288 | 15 | 0.15 / 0.14 | 235203 / 99482 |
+| accidental/key | 960 | 259 | 386 | 266 | 5 | 0.17 / 0.17 | 167398 / 51387 |
+| dot/staccato | 218 | 14 | 18 | 7 | 0 | 0.16 / 0.17 | 9820 / 1421 |
+| ledger line | 3762 | 365 | 211 | 181 | 1 | 0.04 / 0.04 | 17253 / 13670 |
+| clef | 268 | 160 | 172 | 147 | 5 | 0.23 / 0.17 | 300828 / 43845 |
+| dynamic/text | 1127 | 90 | 113 | 49 | 0 | 0.17 / 0.15 | 82472 / 11639 |
+| time sig | 36 | 7 | 14 | 10 | 0 | 0.17 / 0.17 | 5140 / 2992 |
+| other | 192 | 14 | 17 | 14 | 0 | 0.11 / 0.11 | 1587 / 1061 |
+  main: overcut px 3063313 (unboxed 1214772); residue px 386434; erased px 287697982
+  reach: overcut px 913236 (unboxed 531602); residue px 274432; erased px 281402428
+  band: overcut px 14639 (unboxed 8273); residue px 274432; erased px 276771092

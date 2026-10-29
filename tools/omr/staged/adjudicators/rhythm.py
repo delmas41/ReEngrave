@@ -3921,16 +3921,16 @@ def _stem_flush_to_head(own_stems, head_box, space) -> bool:
     return False
 
 
-#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
+#: ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default ON since 2026-10-28, Sean "land on"; an explicit 0/false/no/off disables; step 3 of the shared ink map, plan `docs/plan-2026-10-22-shared-ink-map.md` §5).
 #: A head's beam levels from the STROKE MAP (`Q.STROKE`, `Q.GLYPH_STROKES`; they exist only under `OMR_STROKE_MAP`): the detector's beam boxes
 #: are read against the strokes they stand on, and the horizontal strokes touching the head's own stem at its tip are counted. A cell with no
 #: stroke map, a box with no `Q.GLYPH_STROKES` row, a stem the map holds no stroke for: the block says nothing and the head is read as today
-#: (rule 8). An allow-list: an empty value or a typo must not switch a document onto an unpriced ADJUDICATE change.
+#: (rule 8). Default ON like `OMR_STROKE_OWNER`.
 BEAMS_FROM_STROKES_ENV = "OMR_BEAMS_FROM_STROKES"
 
 
 def beams_from_strokes_enabled() -> bool:
-    return os.environ.get(BEAMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(BEAMS_FROM_STROKES_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _owner_on() -> bool:
@@ -3964,7 +3964,9 @@ def _stroke_views(ev: Evidence, cell) -> list:
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
-            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id))
+            space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
+            profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
+            ends=tuple(float(v) for v in (d.get("ends") or ())[:4])))
     return out
 
 
@@ -3998,7 +4000,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
     views = _stroke_views(ev, cell)
     if not views or side not in ("up", "down") or head_box is None or not own_stems:
         return None
-    role = _BS.roles(views)
+    role = _BS.roles(views, face_join=True, trough=True)      # 2.202f: the cover rule (Sean 2026-10-28) and the thickness trough
     stem_sv = None
     for st in _voice_stems(own_stems, head_box)[side]:
         b = _xywh(st)
@@ -4007,7 +4009,7 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             break
     if stem_sv is None:
         return None
-    tip = _BS.tip_reading(views, role, stem_sv, side)
+    tip = _BS.tip_reading(views, role, stem_sv, side, head_box=head_box, face_join=True)
     yolo = [b for b in kept if b.reader == READERS.DETECTOR]
     # The older filters (the 2.74 ink test: a stroke standing on one stem is not a beam) already take most hook-shaped boxes out of `kept`
     # before this block runs (milestone: 0 of 418 map-hook boxes were still in `kept`). A box the detector called a beam and the strokes show
@@ -4043,10 +4045,10 @@ def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, det
             continue            # an older filter removed a box the strokes call a beam: not this block's business (nothing is added back)
         boxes.append(sup)
     # every stroke that moved the reading is a row this verdict used
-    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"])]
+    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"]) | set(tip["doubt"])]
     rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
     return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
-            "tip_levels": len(tip["beams"]), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed")},
+            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed", "doubt", "own_head", "joined")},
             "boxes": boxes, "rows": rows, "settled": None}
 
 
@@ -4931,10 +4933,24 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 possible = max(possible, p2, certain)
                 certain, certain_conflicts = c2, cc2
                 settled.append("box_flag" if sb["flag_levels"] else "box_narrowed")
+                # ROADMAP 2.202d (Sean 2026-10-16 "Clean tip means no beam"; 2.202c tiles 1, 5, 9 all quarters): every beam box the map removed
+                # stands on NO beam- or hook-shaped stroke at all AND this stem's tip was read clean (a stem stroke, no beam, hook or stub, no
+                # flag): the boxes are refuted by the ink, so their level is not a candidate. Without this the head is narrowed [0, 1] and the
+                # bar leaves the note unwritten (`beams_ambiguous`), the false value gone and the true one with it.
+                if (not sb["flag_levels"] and sb["tip_levels"] == 0 and not certain_conflicts and sb["tip"].get("stem") is not None
+                        and sb.get("tip_clean")
+                        and sb["boxes"] and all(bx.get("support") == "unsupported" and bx.get("reason") == "no_beam_or_hook_shaped_stroke"
+                                                for bx in sb["boxes"])):
+                    possible = max(p2, certain)
+                    settled.append("clean_tip")
             if not certain_conflicts:
                 if sb["tip_levels"] > certain:
                     possible = max(possible, sb["tip_levels"])
                     settled.append("stroke_candidate")
+                elif sb["tip_levels"] < certain <= sb["tip_levels"] + len(sb["tip"].get("doubt") or ()):
+                    # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
+                    # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
+                    settled.append("trough_abstains")
                 elif sb["tip_levels"] < certain:
                     possible = max(possible, certain)
                     certain = sb["tip_levels"]

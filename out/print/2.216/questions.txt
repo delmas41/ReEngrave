@@ -1,0 +1,8 @@
+Tile 01: Which staff does the boxed note belong to: staff 1, Flute or staff 2, Oboe?
+Tile 02: Which staff does the boxed note belong to: staff 3, Clarinet (Klar. (B)) or staff 4, Bassoon (Fag.)?
+Tile 03: Which staff does the boxed note belong to: staff 3, Clarinet (Cl.) or staff 2, Oboe?
+Tile 04: Which staff does the boxed note belong to: staff 1, Flute or staff 2, Oboe?
+Tile 05: Which staff does the boxed note belong to: staff 3, Clarinet (Klar. (B)) or staff 4, Bassoon (Fag.)?
+Tile 06: Which staff does the boxed note belong to: staff 2, Oboe or staff 1, Flute?
+Tile 07: Which staff does the boxed note belong to: staff 1, Flute or staff 2, Oboe?
+Tile 08: Which staff does the boxed note belong to: staff 5, Horn ((C) Hr.) or staff 4, Bassoon (Fag.)?

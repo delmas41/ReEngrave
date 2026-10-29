@@ -1,4 +1,4 @@
-"""ROADMAP 2.202 (STAGED ADJUDICATE `rhythm._beams_from_strokes` + pure `beam_strokes`), flag `OMR_BEAMS_FROM_STROKES`, default OFF, step 3 of the shared ink map.
+"""ROADMAP 2.202 (STAGED ADJUDICATE `rhythm._beams_from_strokes` + pure `beam_strokes`), flag `OMR_BEAMS_FROM_STROKES`, default ON since 2026-10-28, step 3 of the shared ink map.
 
 A head's beam levels from the stroke map: a detector beam box on no beam-shaped stroke NARROWS; a box on a short hook of a stem that carries
 no spanning beam is a FLAG (Sean 2026-10-22); the strokes at the stem tip are counted and a stroke no box named is a candidate only. Every
@@ -347,10 +347,32 @@ class TestOtherGuards(unittest.TestCase):
         v = log2.verdict(Q.DURATION, h)
         self.assertNotIn("beams_from_strokes", v.detail)
 
-    def test_the_flag_is_an_allow_list(self):
-        for val, want in (("1", True), ("true", True), ("on", True), ("", False), ("0", False), ("yes please", False), ("off", False)):
+    def test_the_flag_is_default_ON_and_an_explicit_off_list_disables(self):
+        with mock.patch.dict(os.environ):
+            os.environ.pop(FLAG, None)
+            self.assertTrue(rhythm.beams_from_strokes_enabled())
+        for val, want in (("1", True), ("true", True), ("on", True), ("0", False), ("false", False), ("no", False), ("off", False)):
             with mock.patch.dict(os.environ, {FLAG: val}):
                 self.assertEqual(rhythm.beams_from_strokes_enabled(), want, val)
+
+
+class TestCleanTip2_202d(unittest.TestCase):
+    """2.202d (Sean "Clean tip means no beam"): a beam box standing on a BLOB only (a head's ink), the stem's tip clean -> the box is refuted, the
+    head is DECIDED with no level, not narrowed [0, 1] and dropped. Twins: a beam-shaped stroke left at the tip keeps it narrowed."""
+
+    def blob(self):
+        return S("blob", (260, 800, 120, 60), 1.2, 0.6, [0], sag=0.3, angle=0.0)
+
+    def test_RED_box_on_a_blob_with_a_clean_tip_decides_no_beam(self):
+        s = [dict(stem_stroke(0), touches=[1]), self.blob()]
+        v = dur(True, s, boxes=[((251, 757, 364, 63), [1])], heads=(0,))
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertIn("clean_tip", v.detail["beams_from_strokes"]["settled"])
+
+    def test_TWIN_a_long_unclassified_curve_at_the_tip_keeps_it_narrowed(self):
+        s = [dict(stem_stroke(0), touches=[1]), hook_stroke([0], length=2.69, box=(251, 770, 270, 25))]
+        v = dur(True, s, boxes=[((251, 760, 270, 40), [1])], heads=(0,))
+        self.assertEqual(v.outcome, Outcome.NARROWED)
 
 
 if __name__ == "__main__":

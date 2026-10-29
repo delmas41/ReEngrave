@@ -1,0 +1,269 @@
+[
+ {
+  "kind": "flag",
+  "side": "lost",
+  "page": 19,
+  "cx": 4471.7625,
+  "cy": 6512.375,
+  "box": [
+   4452.375,
+   6495.325,
+   4491.15,
+   6529.425
+  ],
+  "rg": "glyph/19/1/10/7/10",
+  "value": "16th",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   4215,
+   6224
+  ]
+ },
+ {
+  "kind": "flag",
+  "side": "gained",
+  "page": 19,
+  "cx": 1623.6374999999998,
+  "cy": 5438.924999999999,
+  "box": [
+   1603.975,
+   5422.15,
+   1643.3,
+   5455.7
+  ],
+  "rg": "glyph/19/1/5/1/3",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1367,
+   5150
+  ]
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 19,
+  "cx": 1332.417724609375,
+  "cy": 3377.02978515625,
+  "box": [
+   1313.76171875,
+   3360.34912109375,
+   1351.07373046875,
+   3393.71044921875
+  ],
+  "rg": "glyph/19/0/12/0/5",
+  "value": "16th",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1076,
+   3089
+  ]
+ },
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 14,
+  "cx": 4553.395,
+  "cy": 4941.365,
+  "box": [
+   4535.41,
+   4925.2875,
+   4571.38,
+   4957.4425
+  ],
+  "rg": "glyph/14/1/3/7/0",
+  "was": "eighth",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   4297,
+   4653
+  ]
+ },
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 14,
+  "cx": 4554.7575,
+  "cy": 5011.5337500000005,
+  "box": [
+   4536.2275,
+   4997.7725,
+   4573.2875,
+   5025.295
+  ],
+  "rg": "glyph/14/1/3/7/6",
+  "was": "eighth",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   4298,
+   4723
+  ]
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 4,
+  "cx": 2106.44,
+  "cy": 1670.24,
+  "box": [
+   2093.96,
+   1663.6,
+   2118.92,
+   1676.88
+  ],
+  "rg": "glyph/4/0/8/11/7",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   1980,
+   1528
+  ]
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 19,
+  "cx": 1415.821044921875,
+  "cy": 3389.979248046875,
+  "box": [
+   1397.60400390625,
+   3373.95703125,
+   1434.0380859375,
+   3406.00146484375
+  ],
+  "rg": "glyph/19/0/12/0/10",
+  "was": "continue/continue",
+  "value": "continue/begin",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1159,
+   3101
+  ]
+ },
+ {
+  "kind": "flag",
+  "side": "lost",
+  "page": 19,
+  "cx": 1831.2075,
+  "cy": 986.08125,
+  "box": [
+   1812.6775,
+   968.505,
+   1849.7375,
+   1003.6575
+  ],
+  "rg": "glyph/19/0/2/1/3",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   1575,
+   698
+  ]
+ },
+ {
+  "kind": "flag",
+  "page": 4,
+  "cx": 2323.255,
+  "cy": 2125.1075,
+  "box": [
+   2310.1825,
+   2114.24,
+   2336.3275,
+   2135.975
+  ],
+  "rg": "glyph/4/1/0/13/1",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 9,
+  "crop_origin": [
+   2197,
+   1983
+  ]
+ },
+ {
+  "kind": "note",
+  "page": 9,
+  "cx": 724.17,
+  "cy": 3113.91625,
+  "box": [
+   712.3575,
+   3102.025,
+   735.9825,
+   3125.8075
+  ],
+  "rg": "glyph/9/1/6/1/4",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 10,
+  "crop_origin": [
+   598,
+   2972
+  ]
+ },
+ {
+  "kind": "beam",
+  "page": 14,
+  "cx": 984.4208984375,
+  "cy": 495.69091796875,
+  "box": [
+   963.3125,
+   477.8447265625,
+   1005.529296875,
+   513.537109375
+  ],
+  "rg": "glyph/14/0/0/0/13",
+  "value": "begin",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 11,
+  "crop_origin": [
+   728,
+   207
+  ]
+ },
+ {
+  "kind": "note",
+  "page": 19,
+  "cx": 5162.7162499999995,
+  "cy": 1042.21625,
+  "box": [
+   5142.96,
+   1029.0,
+   5182.4725,
+   1055.4325
+  ],
+  "rg": "glyph/19/0/2/10/5",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 12,
+  "crop_origin": [
+   4906,
+   754
+  ]
+ }
+]

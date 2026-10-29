@@ -1,0 +1,21 @@
+LANE REPORT  OMR_ERASER_FIX (OFF=1 ON=1), OMR_METER_SLOT (OFF=1 ON=1), OMR_REST_OWN_STROKE (OFF=1 ON=1), OMR_STEM_TIP_TRUE_EDGE (OFF=1 ON=1), OMR_BEAM_OWN_EXTENT (OFF=0 ON=1)  --from gather
+  OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT
+  OMR_METER_SLOT: read in staged/gather.py, time_signature_locator.py -> GATHER
+  OMR_REST_OWN_STROKE: read in staged/adjudicators/head_rest_shape.py -> ADJUDICATE..EXPORT
+  OMR_STEM_TIP_TRUE_EDGE: read in staged/gather.py, staged/stroke_map.py -> GATHER
+  OMR_BEAM_OWN_EXTENT: read in line_detection.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5038 notes+rests OFF, 5038 ON, 5038 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 2560 -> 2560
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (233 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6555 notes+rests OFF, 6555 ON, 6555 paired)
+  file:   beams ~4 | note values ~2 | blue marks -1 | words -2
+  red bars 164 -> 162 | notes not written 3168 -> 3168
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+
+tiles: 9 (6 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 7290 s

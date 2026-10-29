@@ -54,6 +54,13 @@ ANCHOR_STRIDE_SPACES = 3.0
 ANCHOR_HALF_WINDOW_SPACES = 1.5
 LINE_SEARCH_SPACES = 0.4
 LINE_MIN_INK = 0.5
+#: ROADMAP 2.202b. A horizontal / curve stroke's thickness is read on the UNERASED raster (CLAUDE §7: a thickness must not be read off an erased
+#: line). `tools/omr/staff_line_removal.py` erases a whole vertical run through a line row when the run it WALKS (bounded at `cap + 2` rows each side)
+#: is <= its crossing cut (0.45 sp): a beam 0.6 sp thick lying on a line is walked for ~37 rows, looks like 44 <= 45, and is erased from the line to
+#: 37 rows below it, leaving a 0.19 sp sliver (Litolff p16, the 2.202 tile). The ink the eraser took is `raw & ~erased`; the stroke's own pixels plus
+#: the erased pixels CONTIGUOUS to them in a column are what was printed there (the eraser only ever takes line rows and the run it walked with them,
+#: never a neighbour's ink). False: the 2.202 reading (erased raster only); the control test turns it off to prove the fix is what moves the number.
+THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
@@ -250,6 +257,55 @@ def strokes_in_box(res: "CellStrokes", box: Sequence[float]) -> List[Tuple[int, 
     return out
 
 
+def _restored_thickness(m: np.ndarray, x0: int, y0: int, scale: float, erased: np.ndarray, raw: np.ndarray, sp_canonical: float,
+                        factor: float) -> Optional[float]:
+    """ROADMAP 2.202b: the median column run of one horizontal / curve stroke with the ink the staff-line erase took out of its columns put back, in
+    REDUCED px (the unit of `_measure`'s `thick`) times the axis `factor`; None when no column of the stroke touches erased ink (the erased reading IS the
+    printed one). Done at CANONICAL resolution (the 16 px/sp reduction would let a line 0.06 sp clear of a beam join it).
+
+    `erased` / `raw` are the canonical rasters (0 = ink). Per column: a run of (the stroke's own pixels + pixels the erase removed) that contains a pixel
+    of the stroke. The eraser only ever removes line rows and the run it walked with them, so the added pixels are never a neighbour's ink."""
+    import cv2
+    H, W = erased.shape
+    inv = 1.0 / scale
+    h, w = m.shape
+    cx0, cy0 = int(round(x0 * inv)), int(round(y0 * inv))
+    cw, ch = max(1, int(round(w * inv))), max(1, int(round(h * inv)))
+    pad = int(math.ceil(0.5 * sp_canonical))
+    ya, yb = max(0, cy0 - pad), min(H, cy0 + ch + pad)
+    xa, xb = max(0, cx0), min(W, cx0 + cw)
+    if yb <= ya or xb <= xa:
+        return None
+    up = cv2.resize(m.astype(np.uint8), (cw, ch), interpolation=cv2.INTER_NEAREST).astype(bool)
+    S = np.zeros((yb - ya, xb - xa), bool)
+    ry0, rx0 = cy0 - ya, max(0, cx0) - cx0
+    sub = up[:, rx0:rx0 + (xb - xa)]
+    hh = min(sub.shape[0], S.shape[0] - ry0)
+    if hh <= 0:
+        return None
+    S[ry0:ry0 + hh, :sub.shape[1]] = sub[:hh]
+    ink_e = erased[ya:yb, xa:xb] == 0
+    E = (raw[ya:yb, xa:xb] == 0) & ~ink_e
+    # the stroke's footprint is one reduced pixel coarse: its erased ink is the ink within one reduced pixel (`inv` canonical px) of it, up and down
+    k = max(1, int(round(inv)))
+    foot = cv2.dilate(S.astype(np.uint8), np.ones((2 * k + 1, 1), np.uint8)).astype(bool)
+    S = foot & ink_e
+    if not E.any() or not S.any():
+        return None
+    T = S | E
+    start = T.copy()
+    start[1:] &= ~T[:-1]
+    seg = np.cumsum(start, axis=0) * T
+    nseg = int(seg.max()) + 1
+    key = seg + np.arange(T.shape[1])[None, :] * nseg
+    has = np.unique(key[S])
+    G = np.isin(key, has) & T
+    cols = foot.any(axis=0)
+    if not cols.any() or not (G & E).any():
+        return None          # no column of the stroke touches ink the erase took: the erased reading IS the printed one, keep it exactly
+    return float(np.median(G.sum(axis=0)[cols])) * scale * factor
+
+
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
                 raw: Optional[np.ndarray] = None) -> Optional[CellStrokes]:
     """Every stroke of one cell. `erased` = `cell.image_no_staff` (0 = ink); `raw` = `cell.binary` (0 = ink) for the local staff.
@@ -299,11 +355,16 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
 
     staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
                        [y * scale for y in nominal_lines_canonical], sp)
+    restore = THICKNESS_FROM_UNERASED and raw is not None and raw.ndim == 2 and raw.shape == erased.shape
 
     built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int]] = []
     for kind, m, x0, y0 in pieces:
         h, w = m.shape
         mm = _measure(m, x0, y0)
+        if restore and kind in ("horizontal", "curve") and abs(math.cos(mm["theta"])) >= abs(math.sin(mm["theta"])):
+            rt = _restored_thickness(m, x0, y0, scale, erased, raw, float(sp_canonical), abs(math.cos(mm["theta"])))
+            if rt is not None:
+                mm["thick"] = max(mm["thick"], rt)
         ang = -math.degrees(mm["theta"])
         ang = ang + 180.0 if ang <= -90.0 else (ang - 180.0 if ang > 90.0 else ang)
         mid = staff.lines_at(x0 + w / 2.0)
@@ -359,3 +420,61 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
     for s in out:
         s.component_n_strokes = per[s.component]
     return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built])
+
+
+#: ROADMAP 2.206d (flag `OMR_STEM_TIP_TRUE_EDGE`, default ON since 2026-10-27). The stem finder's box can be a thin core of a thick stem (Brahms p14: 4 px
+#: of a 25 px stem); the stroke map holds the stem's whole width. Measured over the rows this far from either end of the stem (L7: head and
+#: stem fuse up to 1.2 sp beside a head) and refused where the stroke is wider than `STEM_TRUE_WIDTH_MAX_SPACES` (Litolff's widest plain stem
+#: 0.43 sp, Brahms 0.37 at p90; a fused or doubled stroke is not a stem's width).
+STEM_TRUE_END_MARGIN_SPACES = 1.5
+STEM_TRUE_WIDTH_MAX_SPACES = 0.7
+
+
+def stem_true_edges(res: "CellStrokes", stem_box: Sequence[float]) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.206d: `(x0, x1)` in canonical cell px of the stroke the finder's stem box lies on, measured mid-stem; `None` where no stroke
+    carries the box's centre at the mid rows or the measured width is not a stem's. The finder says WHICH stroke; the stroke says how wide."""
+    if res is None or isinstance(res, str) or not getattr(res, "masks", None):
+        return None
+    x, y, w, h = (float(v) for v in stem_box)
+    sp = float(res.sp_canonical)
+    s = float(res.scale)
+    margin = STEM_TRUE_END_MARGIN_SPACES * sp
+    ya, yb = y + margin, y + h - margin
+    if yb - ya < 0.5 * sp:                      # a short stem: the middle half
+        ya, yb = y + 0.25 * h, y + 0.75 * h
+    cx = (x + w / 2.0) * s
+    best = None
+    for m, mx0, my0 in res.masks:
+        mh, mw = m.shape
+        r0, r1 = max(0, int(round(ya * s)) - my0), min(mh, int(round(yb * s)) - my0)
+        c = int(round(cx)) - mx0
+        if r1 <= r0 or not (0 <= c < mw):
+            continue
+        hits = int(m[r0:r1, c].sum())
+        if hits and (best is None or hits > best[0]):
+            best = (hits, m, mx0, r0, r1)
+    if best is None:
+        return None
+    _, m, mx0, r0, r1 = best
+    lefts, rights = [], []
+    for r in range(r0, r1):
+        row = m[r]
+        c = int(round(cx)) - mx0
+        if not row[c]:
+            nz = np.flatnonzero(row)
+            if nz.size == 0:
+                continue
+            c = int(nz[np.argmin(np.abs(nz - c))])
+        a = c
+        while a > 0 and row[a - 1]:
+            a -= 1
+        b = c
+        while b < row.size - 1 and row[b + 1]:
+            b += 1
+        lefts.append(a); rights.append(b + 1)
+    if len(lefts) < 3:
+        return None
+    x0, x1 = (mx0 + float(np.median(lefts))) / s, (mx0 + float(np.median(rights))) / s
+    if x1 - x0 > STEM_TRUE_WIDTH_MAX_SPACES * sp:
+        return None
+    return x0, x1

@@ -224,3 +224,63 @@ def read_key_signature(
         # detector or the locator is then free to answer.
         return None
     return read
+
+
+def claimed_header_edge(
+    cell: MeasureCell,
+    *,
+    config: KeySignatureTemplateConfig = DEFAULT_TEMPLATE_CONFIG,
+    max_run_gap_spaces: float = 2.0,
+) -> float | None:
+    """ROADMAP 2.206b: the x (header-cell canonical px) where the ink the CLEF and the KEY SIGNATURE own ends -- a meter stands to the right of it.
+
+    The clef is the best of the three clef templates (>= `clef_min_score`); the key is the chain of accidental matches (>= `min_score`) that
+    starts within `max_run_gap_spaces` of the clef's right edge and whose every next match starts within that gap of the last one's right edge
+    (`key_object`'s run ladder: a gap wider than 2.0 spaces ends the run). None where no clef is found: nothing is claimed, the caller
+    searches as before (a refusal to bound, never a guess at where the bound is).
+    """
+    metrics = staff_metrics(cell)
+    if metrics is None:
+        return None
+    spacing, _top, _bottom = metrics
+    if spacing <= 0:
+        return None
+    image = cell.image_no_staff if cell.image_no_staff is not None else cell.image
+    if image is None:
+        return None
+    if image.ndim == 3:
+        image = image[:, :, 0]
+    space = config.template_em_px / 4.0
+    scale = space / spacing
+    ink = cv2.resize((255 - image).astype(np.uint8), None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+    templates = _templates(config.template_em_px)
+
+    def _fits(t: np.ndarray) -> bool:
+        return t.shape[0] <= ink.shape[0] and t.shape[1] <= ink.shape[1]
+
+    best = None
+    for name in ("gClef", "fClef", "cClef"):
+        t = templates.get(name)
+        if t is None or not _fits(t):
+            continue
+        _, score, _, loc = cv2.minMaxLoc(cv2.matchTemplate(ink, t, cv2.TM_CCOEFF_NORMED))
+        if best is None or score > best[0]:
+            best = (float(score), loc[0] + t.shape[1])
+    if best is None or best[0] < config.clef_min_score:
+        return None
+    edge = float(best[1])
+    gap = max_run_gap_spaces * space
+    cands: list[tuple[int, int]] = []
+    for _sign, glyph in ACCIDENTAL_GLYPHS:
+        t = templates.get(glyph)
+        if t is None or not _fits(t):
+            continue
+        resp = cv2.matchTemplate(ink, t, cv2.TM_CCOEFF_NORMED)
+        ys, xs = np.where(resp >= config.min_score)
+        cands.extend((int(x), int(x) + t.shape[1]) for x in set(xs.tolist()))
+    for x0, x1 in sorted(cands):
+        if x0 < edge - space * 0.5:
+            continue
+        if x0 - edge <= gap:
+            edge = max(edge, float(x1))
+    return edge / scale

@@ -26,6 +26,8 @@ meter/key/clef are right or abstained, and the cleanup — counted in
 fix-actions per page — is small enough that Sean would rather fix than
 re-enter.
 
+**North star** (Sean, 2026-10-26): all ink is accounted for one time.
+
 Sean is a musician who reads these plates. He is the cheapest evidence in the
 project. Ask him.
 
@@ -163,15 +165,19 @@ The full list with Sean's quotes and dates is `docs/page-facts.md`; the
 registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 
 - A whole rest means the BAR whatever the meter. A meter or key change is
-  printed on every staff at one bar; a change HOLDS until the printed
+  printed on every staff at one bar (a majority of the system's staves is
+  enough); a change HOLDS until the printed
   return — where the bars overturn a carry, a return was MISSED: label and
   mark, never switch silently.
 - Stems: up → right, down → left. Every note on one stem shares one written
   value; a whole note has no stem. An arc is OVER its notes, a hairpin
   BETWEEN; of stacked arcs the nearer is the tie.
-- **The ledger lines name the owner**; there is no far note without one, so
+- **The ledger lines name the owner** (with the stem as a second witness:
+  disagree -> GUESSED with both staves, ROADMAP 2.216; far-head position is
+  ledger lines only); there is no far note without one, so
   "no rungs either way" is OUR failure — abstain and count it.
-- **Measure against the staff LOCALLY**, at the subject's x; a scanned staff
+- **Measure against the staff LOCALLY**, at the subject's x or its own bar's
+  own lines (never a staff-wide value); a scanned staff
   tilts and ~1 px decides a near-boundary pitch.
 - Litolff MERGES and Breitkopf SHATTERS: an ink component is not a mark.
   A cell index restarts per system: key a bar on (page, system, cell).
@@ -187,6 +193,10 @@ registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 ## 6. How a session works
 
 Check yourself against Sean's past answers first: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`.
+**Before a question reaches Sean, grep `docs/page-facts.md` and DECISIONS
+for it** (Sean, 2026-10-28: 2.204 asked him the seconds-on-both-sides
+question he had answered on 10-26). When a ruling changes a page fact, every
+lane whose code reads that fact re-tests against it before its next measure.
 
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
 the four root assets first (`docs/running.md` §1). Never `git checkout` a

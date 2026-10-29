@@ -71,10 +71,17 @@ def setUpModule():
     global _TIP_UNBLOCKED_WAS
     _TIP_UNBLOCKED_WAS = os.environ.get("OMR_TIP_UNBLOCKED")
     os.environ["OMR_TIP_UNBLOCKED"] = "0"
+    global _TRUE_EDGE_WAS
+    _TRUE_EDGE_WAS = os.environ.get("OMR_STEM_TIP_TRUE_EDGE")
+    os.environ["OMR_STEM_TIP_TRUE_EDGE"] = "0"      # ON since 2026-10-27; these pin the finder-box window
 
 
 def tearDownModule():
     import os
+    if _TRUE_EDGE_WAS is None:
+        os.environ.pop("OMR_STEM_TIP_TRUE_EDGE", None)
+    else:
+        os.environ["OMR_STEM_TIP_TRUE_EDGE"] = _TRUE_EDGE_WAS
     if _TIP_UNBLOCKED_WAS is None:
         os.environ.pop("OMR_TIP_UNBLOCKED", None)
     else:

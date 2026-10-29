@@ -1,0 +1,175 @@
+{
+ "flags": [
+  [
+   "OMR_ERASER_FIX",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    4,
+    11
+   ],
+   "counts": {
+    "note": {
+     "gained": 4,
+     "lost": 1,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 18,
+     "lost": 0,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 27
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "beam": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 1
+    },
+    "clef": {
+     "gained": 1,
+     "lost": 3,
+     "changed": 0
+    },
+    "key": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    1184,
+    1187
+   ],
+   "paired": 1183,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    559,
+    556
+   ],
+   "control": null,
+   "judged": {
+    "worse": [
+     {
+      "item": "2.83-fix-review",
+      "tile": "tile_05",
+      "subject": "glyph/4/0/7/7/10",
+      "answer": "4",
+      "now": "refused as not a note (stacked_head_duplicate)"
+     }
+    ],
+    "lost": [],
+    "better": [],
+    "scored": 136
+   },
+   "seconds": [
+    3.2,
+    3.2
+   ]
+  },
+  "brahms": {
+   "pages": [
+    5,
+    14
+   ],
+   "counts": {
+    "rest": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "note": {
+     "gained": 2,
+     "lost": 6,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 1,
+     "lost": 3,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "dynamic": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    1913,
+    1908
+   ],
+   "paired": 1906,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    1171,
+    1178
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "scored": 167
+   },
+   "seconds": [
+    6.9,
+    6.9
+   ]
+  }
+ },
+ "notes": [
+  "OMR_ERASER_FIX: read in staff_line_removal.py -> ADJUDICATE..EXPORT",
+  "NOT THE FROZEN SAMPLE: benchmarks/staff-eraser-2026-10/subset_sample.json (a development control)"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1403.3
+}
