@@ -562,6 +562,18 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     mini = {"observations": glyph_obs, "abstentions": [], "verdicts": [v for v in vs if v["quantity"] in JQ]}
     work.mkdir(parents=True, exist_ok=True)
     stem = "%s.%s" % (plate, arm)
+    # ROADMAP 2.230 m2 (development aid, small files): which bars were written red, and who owns each stroke, so two arms can be
+    # diffed by place without a re-run.
+    rb = (red.get("bars_list") if isinstance(red, dict) else None) or []
+    (work / (stem + ".red-bars.json")).write_text(json.dumps(
+        [{k: b.get(k) for k in ("page", "system", "staff", "cell", "measure", "part", "events", "want_quarters",
+                                "counted_quarters", "words")} for b in rb], default=str))
+    owner = {}
+    for v in vs:
+        if v.get("quantity") == "stroke_owner" and isinstance(v.get("detail"), dict) and page_of(v["subject"]) in cp:
+            owner[v["subject"]] = {"strokes": {o: [x[0], x[1], x[2]] for o, x in (v["detail"].get("strokes") or {}).items()},
+                                   "boxes": v["detail"].get("boxes") or {}}
+    (work / (stem + ".owner.json")).write_text(json.dumps(owner, default=str))
     (work / (stem + ".musicxml")).write_text(xml)
     (work / (stem + ".mini-record.json")).write_text(json.dumps(mini, default=str))
     out = dict(plate=plate, arm=arm, mode=mode, flags=[list(f) for f in flags], hosts=sym["hosts"], loose=sym["loose"],

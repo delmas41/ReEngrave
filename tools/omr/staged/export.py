@@ -474,7 +474,10 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     carried), or None. Only a verdict whose reason is `claim_narrowed:<owner>` counts -- none is filed with the flag OFF."""
     v = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
     if v is not None and v.get("outcome") == "narrowed" and v.get("reason") in WHOLE_REST_NARROWED_REASONS:
-        # ROADMAP 2.230 m1: a whole rest the old refusal took, kept GUESSED (flag OMR_WHOLE_REST_HANGS).
+        # ROADMAP 2.230 m1: a whole rest the old refusal took, kept GUESSED (flag OMR_WHOLE_REST_HANGS) -- READ (plain) under m2's
+        # OMR_WHOLE_REST_PLAIN when no other head or rest box stands in its bar.
+        if whole_rest_plain_enabled() and not _bar_has_other_head_or_rest_box(rec, sub):
+            return None
         return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
                 "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "not_a_rest", "support": 0.5}],
                 "chosen": {"value": "whole_rest"}}
@@ -1154,6 +1157,33 @@ FOUND_WHOLE_REST_ENV = "OMR_FOUND_WHOLE_REST"
 FOUND_WHOLE_REST_RULE = "empty_bar_whole_rest_found"
 
 
+#: ROADMAP 2.230 m2 (flag `OMR_WHOLE_REST_PLAIN`, default OFF; effective only with `OMR_FOUND_WHOLE_REST` / `OMR_WHOLE_REST_HANGS`, each for
+#: its own rest): the found-by-search rest and the ink-rescued restWhole are written READ (plain), not GUESSED (Sean 2026-10-29 "close to
+#: landing without blue"), UNLESS the bar holds any other head or rest box (detected, kept or refused): that is the confusion case and
+#: stays blue.
+WHOLE_REST_PLAIN_ENV = "OMR_WHOLE_REST_PLAIN"
+
+
+def whole_rest_plain_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_PLAIN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _bar_has_other_head_or_rest_box(rec: "Record", sub: str) -> bool:
+    """True when a detector box of a head or rest class other than `sub` stands in `sub`'s bar (page, system, staff, cell)."""
+    idx = rec.__dict__.get("_head_rest_boxes_by_bar")
+    if idx is None:
+        idx = {}
+        for o in rec.obs_of(Q.GLYPH_BOX):
+            val = o.get("value")
+            lc = str(val[0] if isinstance(val, (list, tuple)) and val else "").lower()
+            if lc.startswith("notehead") or lc.startswith("rest"):
+                s = _parse_subject(o["subject"])
+                idx.setdefault((s["page"], s["system"], s["staff"], s["cell"]), set()).add(o["subject"])
+        rec.__dict__["_head_rest_boxes_by_bar"] = idx
+    s = _parse_subject(sub)
+    return bool(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()) - {sub})
+
+
 def found_whole_rest_enabled() -> bool:
     return os.environ.get(FOUND_WHOLE_REST_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
@@ -1200,7 +1230,8 @@ def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_ou
             "duration_beats": 4.0, "duration_type": "whole", "dots": 0,
             "beam_levels": 0, "key_alteration": None, "printed_accidental": None, "tuplet": None,
             "glyph": o["subject"], "bbox_page": _corners_to_wh(pb) if pb else None,
-            "unboxed_rest": True, "found_whole_rest": True, "guess": guess,
+            "unboxed_rest": True, "found_whole_rest": True,
+            "guess": None if (whole_rest_plain_enabled() and not _bar_has_other_head_or_rest_box(rec, o["subject"])) else guess,
         })
         if relocated is not None:
             relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1

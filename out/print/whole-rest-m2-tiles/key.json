@@ -1,0 +1,312 @@
+[
+ {
+  "plate": "litolff",
+  "rg": "glyph/11/1/8/0/2",
+  "page": 11,
+  "blue": false,
+  "measure": "221",
+  "part": "P10",
+  "bar": [
+   341.7875,
+   3183.8425,
+   649.5425,
+   3249.0475
+  ],
+  "other_classes": [
+   "accidentalFlat",
+   "noteheadBlackInSpace",
+   "noteheadBlackOnLine",
+   "tie"
+  ],
+  "other_marks": [
+   "accidentalFlat",
+   "tie"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackInSpace",
+   "noteheadBlackOnLine"
+  ],
+  "role": "plain+other mark",
+  "tile": 1
+ },
+ {
+  "plate": "brahms",
+  "rg": "glyph/12/1/5/3/0",
+  "page": 12,
+  "blue": true,
+  "measure": "88",
+  "part": "P6",
+  "bar": [
+   2362.555,
+   5283.82,
+   2761.3225,
+   5326.0
+  ],
+  "other_classes": [
+   "beam",
+   "noteheadBlackInSpace"
+  ],
+  "other_marks": [
+   "beam"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackInSpace"
+  ],
+  "role": "blue",
+  "tile": 2
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/0/2/5/2",
+  "page": 10,
+  "blue": true,
+  "measure": "179",
+  "part": "P3",
+  "bar": [
+   1263.0,
+   720.2375,
+   1398.6075,
+   779.3
+  ],
+  "other_classes": [
+   "beam",
+   "dynamicF",
+   "noteheadBlackInSpace"
+  ],
+  "other_marks": [
+   "beam",
+   "dynamicF"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackInSpace"
+  ],
+  "role": "blue",
+  "tile": 3
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/0/6/0/5",
+  "page": 10,
+  "blue": true,
+  "measure": "174",
+  "part": "P7",
+  "bar": [
+   355.5925,
+   1206.0,
+   649.96,
+   1338.615
+  ],
+  "other_classes": [
+   "clefF",
+   "clefG",
+   "noteheadBlackInSpace",
+   "rest64th",
+   "tie"
+  ],
+  "other_marks": [
+   "clefF",
+   "clefG",
+   "tie"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackInSpace",
+   "rest64th"
+  ],
+  "role": "blue",
+  "tile": 4
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/9/1/4/2/1",
+  "page": 9,
+  "blue": false,
+  "measure": "164",
+  "part": "P6",
+  "bar": [
+   848.0,
+   2787.28,
+   1004.96,
+   2854.8
+  ],
+  "other_classes": [
+   "clefG"
+  ],
+  "other_marks": [
+   "clefG"
+  ],
+  "other_head_or_rest": [],
+  "role": "plain+other mark",
+  "tile": 5
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/9/1/4/0/2",
+  "page": 9,
+  "blue": false,
+  "measure": "162",
+  "part": "P6",
+  "bar": [
+   365.14794921875,
+   2792.9306640625,
+   686.83349609375,
+   2857.201171875
+  ],
+  "other_classes": [
+   "arpeggiato",
+   "clefG"
+  ],
+  "other_marks": [
+   "arpeggiato",
+   "clefG"
+  ],
+  "other_head_or_rest": [],
+  "role": "plain+other mark",
+  "tile": 6
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/9/0/0/8/1",
+  "page": 9,
+  "blue": false,
+  "measure": "155",
+  "part": "P1",
+  "bar": [
+   1525.0,
+   413.2875,
+   1676.9875,
+   480.855
+  ],
+  "other_classes": [],
+  "other_marks": [],
+  "other_head_or_rest": [],
+  "role": "plain",
+  "tile": 7
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/11/0/4/0/1",
+  "page": 11,
+  "blue": false,
+  "measure": "203",
+  "part": "P7",
+  "bar": [
+   362.36328125,
+   1030.7890625,
+   689.0,
+   1095.4150390625
+  ],
+  "other_classes": [
+   "arpeggiato",
+   "clefF",
+   "noteheadBlackInSpace"
+  ],
+  "other_marks": [
+   "arpeggiato",
+   "clefF"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackInSpace"
+  ],
+  "role": "plain+other mark",
+  "tile": 8
+ },
+ {
+  "plate": "brahms",
+  "rg": "glyph/12/0/6/1/4",
+  "page": 12,
+  "blue": false,
+  "measure": "72",
+  "part": "P7",
+  "bar": [
+   1232.0,
+   1862.4975,
+   1521.4325,
+   1978.77
+  ],
+  "other_classes": [
+   "beam",
+   "clefG",
+   "tie"
+  ],
+  "other_marks": [
+   "beam",
+   "clefG",
+   "tie"
+  ],
+  "other_head_or_rest": [],
+  "role": "plain+other mark",
+  "tile": 9
+ },
+ {
+  "plate": "brahms",
+  "rg": "glyph/12/0/4/3/2",
+  "page": 12,
+  "blue": true,
+  "measure": "74",
+  "part": "P5",
+  "bar": [
+   1882.0,
+   1407.555,
+   2123.98,
+   1531.5975
+  ],
+  "other_classes": [
+   "beam",
+   "noteheadBlackOnLine",
+   "tie"
+  ],
+  "other_marks": [
+   "beam",
+   "tie"
+  ],
+  "other_head_or_rest": [
+   "noteheadBlackOnLine"
+  ],
+  "role": "blue",
+  "tile": 10
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/9/0/0/9/1",
+  "page": 9,
+  "blue": false,
+  "measure": "156",
+  "part": "P1",
+  "bar": [
+   1677.0,
+   426.045,
+   1794.9675,
+   483.375
+  ],
+  "other_classes": [],
+  "other_marks": [],
+  "other_head_or_rest": [],
+  "role": "plain",
+  "tile": 11
+ },
+ {
+  "plate": "brahms",
+  "rg": "glyph/8/0/6/0/5",
+  "page": 8,
+  "blue": false,
+  "measure": "46",
+  "part": "P10",
+  "bar": [
+   666.8875,
+   2380.7375,
+   1202.79,
+   2495.4325
+  ],
+  "other_classes": [
+   "clefG",
+   "keyFlat"
+  ],
+  "other_marks": [
+   "clefG",
+   "keyFlat"
+  ],
+  "other_head_or_rest": [],
+  "role": "plain+other mark",
+  "tile": 12
+ }
+]

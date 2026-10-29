@@ -1,0 +1,24 @@
+LANE REPORT  OMR_FOUND_WHOLE_REST (OFF=0 ON=1), OMR_WHOLE_REST_HANGS (OFF=0 ON=1), OMR_WHOLE_REST_PLAIN (OFF=0 ON=1)  --from adjudicate
+  OMR_FOUND_WHOLE_REST: read in staged/export.py -> ADJUDICATE..EXPORT
+  OMR_WHOLE_REST_HANGS: read in staged/adjudicators/family_precision.py, staged/adjudicators/notehead_precision.py, staged/adjudicators/stroke_owner.py, staged/export.py ... -> ADJUDICATE..EXPORT
+  OMR_WHOLE_REST_PLAIN: read in staged/export.py -> ADJUDICATE..EXPORT
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5416 notes+rests OFF, 5489 ON, 5416 paired)
+  file:   rests +129 | blue marks +14 -1 | words +2 -138
+  red bars 246 -> 248 | notes not written 2263 -> 2181
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 154 of 8964 (e.g. glyph/10/0/0/10/3, glyph/10/0/0/12/2, glyph/10/0/0/9/2)
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6539 notes+rests OFF, 6566 ON, 6539 paired)
+  file:   rests +65 | blue marks +14 | words -65
+  red bars 164 -> 164 | notes not written 3184 -> 3157
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 60 of 12326 (e.g. glyph/0/0/4/6/6, glyph/12/0/4/0/4, glyph/12/0/4/0/4)
+  Sean's judged answers (232 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1375 s
