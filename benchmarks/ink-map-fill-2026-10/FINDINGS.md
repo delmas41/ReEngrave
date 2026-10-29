@@ -61,3 +61,10 @@ Cause: m1 called a box "written" when it had a duration verdict, and refused box
 - First replay lost 7 Litolff chord-mates: a value-unchanged `not_one_head` guess filed under DURATION made `_event_duration_certain` false, so a partial bar dropped later onsets. Fixed by filing that guess under `notehead_is_not_a_notehead` (identity, not value). Lesson: a guess's QUANTITY is a claim EXPORT acts on; a blue mark is not free.
 - Tiles `out/print/2.220-m2/` (seed 2220, `m2_tiles.py`): 5 hollow_over_black, 2 half_not_hollow, 2 not_one_head, 3 controls. Not yet answered. By eye (not evidence): tiles 4, 8, 11 look like halves (the 3 value changes); tile 10 (kept quarter, blue) is the middle of a sharp; tiles 6, 12 (half_not_hollow) look like real halves with a slur/line through the hole, so that rule would mark real halves blue.
 - Cost: `not_one_head` blue on 216 Litolff notes in 2 pages (mostly `too_small` boxes), 2 of 2 live m1 tiles were real quarters: this rule may be too costly as blue; Sean to decide.
+
+## Milestone 2: Sean's 12 tiles (2026-10-28)
+"1.2 2.8 3. Trem slash 4.2 5.4 6.2 7.dot 4 8.2 9.8 10. Part of a sharp 11-12.2"
+- hollow_over_black value changes (quarter -> half): 3 of 3 right (4, 8, 11). Tile 1 kept its right half; tile 10 (part of a sharp) is now blue.
+- half_not_hollow: 0 of 2. Tiles 6 and 12 are real halves marked blue. Drop this rule.
+- not_one_head: 1 of 2. Tile 3 (a tremolo slash) is rightly blue; tile 5 (a real quarter) is wrongly blue. Together with about 216 Litolff blue marks on 2 pages, it should be recorded but not mark blue.
+- Controls 2 and 9 are right. Control 7 is a dotted quarter written as a quarter: a pre-existing dot loss, not this lane.
