@@ -1,5 +1,51 @@
 # Acceptance — FINDINGS
 
+## red bars (2026-10-29)
+
+STAGED EXPORT of the saved frozen-sample records (main 1b47854a4, `lane-2.222-one-head/out/lane-report/2.222-gather`), no re-adjudication, no gather. Scripts and crops: `out/red-bars/` on `lane-red-bars-1029`. Control: the export reproduces the ranking's counts exactly (Litolff 246 = 147 short + 99 over, 5,677 hosts; Brahms 164 = 66 + 98, 6,539 hosts).
+
+**Prior work used.** 2.173 (omr-red-bars): what a red bar is (held bar written, nothing padded). 2.8 bar-sum hold-out and 2.117 partial bars: the `why` field (`short_without_an_unread_symbol`, `voice_overfull`, `nothing_before_or_after_the_gap`). voices lanes (omr-staged-voices, omr-voice-split, omr-unison-two-voices): the rules for when a bar is two voices. omr-staged-duration-beams, beam-piece-duration, omr-duration-narrowed: where a value is decided. 2.167c (held bars, voices 2-7%) and 2.179 census: earlier counts. ink-rules duration/voice rows and page-facts (eighth only on evidence, tuplet only where marked, grace notes never in the sum). Kept: the exporter's own report as the record of what was counted. Dropped: any per-bar fix by arithmetic (CLAUDE s4: the bar sum is the weakest witness; here it also fails as a classifier, see the cross-tab). Tried and dropped this lane, controls failed: an interior-barline stroke test (13% of non-red Litolff cells show one, 16-19% of red: no signal) and "far head in the bar" as a cause (cells with a far head are red 10.0% vs 10.3% without).
+
+**Cause and process lesson.**
+1. `voice_overfull` is not a voice problem. `export._plan_one_stream` (export.py:5656) returns it whenever any stream's total exceeds the bar, for one voice too. Of 99 Litolff / 98 Brahms overfull bars only 3 / 1 were written as two voices. Real voice-split faults are a minority (below). The ranking's label sent the first read wrong.
+2. Arithmetic alone cannot say why a bar is red. Against the crops: bars whose total is fixed by removing one event were really a missing flag (value), a neighbour's ink, or a cut bar; single-event short bars were a missing rest, a cut bar, or unclear. Rule 7: classes below rest on my reading of the print (n = 23 Litolff, 16 Brahms), NOT Sean's, until the tiles come back.
+3. The commonest faults are a mark absent from the reading that is then scored as "no mark": 3 of 3 Brahms flag cases checked on the record are `head_and_marks` DECIDED 1.0 READ with the flag plainly on the print.
+
+**Counts, per page (Litolff 9 pages, Brahms 8).** Record-own splits (ours, exact):
+| | Litolff /pg | Brahms /pg |
+|---|---|---|
+| red bars | 27.3 (246) | 20.5 (164) |
+| short / overfull | 16.3 / 11.0 | 8.2 / 12.2 |
+| a doubled-staff copy of another red bar | 2.2 | 0 |
+| a whole rest in the bar (whole-rest lane; counted, left) | 0.4 | 1.6 |
+| neighbouring cells sum to the bar or to two bars (cut/shifted bar, arithmetic) | 3.8 | 1.2 |
+| written as two voices, a voice does not fill | 2.7 | 1.0 |
+| overfull, one extra event compatible / one value compatible / both / neither | 4.7 / 0.8 / 2.6 / 0.8 | 2.5 / 1.6 / 5.4 / 0.5 |
+| short, one event only / standard gap with 2+ events / other | 4.2 / 5.2 / ... | 1.6 / 5.0 / ... |
+| same-cell red on 4+ staves of a system (a column) | 69 bars in 12 columns | 34 bars in 7 columns |
+
+Print classes, projected from the crop sample (wide error, about +-15 points; ours until Sean's tiles):
+| class | Litolff /pg | Brahms /pg | rests on |
+|---|---|---|---|
+| value read wrong (eighth flag/beam missed or invented, dot missed) | 5.3 | 7.8 | my crop look: Litolff 5 of 23, Brahms 6 of 16 |
+| extra ink counted (neighbour staff head/rest, tempo-mark note, accidental read as head) | 5.0 | 4.5 | my crops |
+| bar cut at a false or missed barline | 4.7 | ~0 | my crops + arithmetic pairs |
+| symbol on the print not written: rest with no box | 4.1 | ~0 | my crops (3 of 12 Litolff short; quarter/eighth rests) |
+| symbol not written: head/chord (merged with a beam; refused as duplicate, too narrow, value undecided) | 2.7 | 3.3 | my crops |
+| voices wrong (two voices read as one; one beam group split in two) | 2.7 | 3.9 | my crops |
+| cannot tell | 2.7 | 1.1 | |
+Not found in the sample: meter wrong (meter is `carried` in 239 of 246 Litolff, 154 of 164 Brahms bars and the staves of a column agree), tuplets, grace notes counted.
+
+**Top causes, upstream, owner.**
+1. Value read wrong. Flag/dot absent from the reading becomes a READ plain value: `rhythm.adjudicate_duration` (rhythm.py:4615, `head_and_marks` returns at 5823-5826; flags via `_attached_flags` 2099, hook/tip reader 5451, 5582); dots decided but unattached `export.py:3038`. Owner: claim-order layer 5 (flags/beams on stems; beams 2.202 ON, stems 2.204 parked) and layer 3 dots (ranking row 5). The flag reader consumes the erased raster (ink-rules row 104, retires with 2.206). No lane yet on "absent flag = READ quarter" (rule 8).
+2. Extra ink counted. A glyph the owner/pitch chain lets through: `restate_pitch` falls back to the geometry position when the far-head decision abstained (`consequences.py:111-131`), so a tempo-mark note (G6, `Q.NOTEHEAD_POSITION` abstained `ledger_not_read`) and a neighbour staff's head (position 11.4, owner `distance`, `ownership.py:655`) are written; cells are padded so the neighbour's ink is inside. Owner: layer 1/3 (words above the staff; each cell claims its own, 2.186) and the far-head owner 2.216 (already next on the roadmap). 2.222 one-head check covers the "slab" case.
+3. Symbols not written. A quarter/eighth rest never boxed stays an unclaimed `blob` stroke (the same fall-through as whole rests; `consequences.size_unboxed_rest` consequences.py:819 only sizes rests that were proven); heads dropped as `too_narrow` / `chord_value_undecided` / duplicate (`export._place_notes` 1145). Owner: layer 3 rests + 2.194 unclaimed blob; whole rests belong to lane-whole-rest-1029, arcs to lane-arcs-claim-1029, head trim to lane-head-trim-1029. Not duplicated here.
+Next (Litolff only, ~17%): the cut bar. `gather_measures` (gather.py:268) records only the cell COUNT; the cut is in the shared measure extractor. System 9/1 cell 5 (10 of 10 staves overfull) and cell 6 (9 short) are one missed barline; 6/1 cells 12-13 (6 and 9 staves short) one false cut. One wrong column makes ~10 red bars. The structure adjudicator already names the check (`structure.py:206`, "merged bar sums to a multiple, split bar to a fraction") but nothing acts on it.
+
+**Tiles for Sean** (blind, only the orange box drawn): `out/red-bars/tiles-1029/tiles/` (sheet.png, tile_01-12), key in `out/red-bars/tiles-1029/key.json` (outside the tile folder). 10 red bars across the classes + 2 controls that add up (the exporter's own sum, not red, not partial, not unread). Question: "Is anything in this bar missing, extra, or a different value?" Caveat: Brahms bars are 12-16 spaces wide, the tile is 12 wide, so the orange box runs off the edge on those.
+
+Not measured: Sean's judged answers right->wrong (nothing changed in the file). Open: the print classes need Sean's tiles before any lane opens (rule 7).
+
 ## 2026-10-29 product ranking (STAGED, exported file)
 
 Written by the manager from the ranking lane's report. The lane was a subagent whose write was refused ("subagents return findings as text"). Scripts, crops and judged scores are on branch `lane-ranking-1029b` (a10b7a336), `out/print/2.229-ranking/`. The `work/` outputs were left local in worktree `agent-abbe8b17c659e77cb`.
