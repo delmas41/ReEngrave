@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- Judged scorer LANDED (lane-scorer-blue)
+
+Sean "land the scorer". Tooling only: `judged.py` reads galleries without manifest.json from key.json (46 rows regained subjects, all 2.220); `lane_report.written_moves` scores the value EXPORT wrote at each judged place, plain or blue (printed '1 (1 blue)'). Reason: right->wrong was 0 on Litolff p10 while Sean's judged half was written as a quarter. `judged-tiles.json` rebuilt; docs/measuring.md; test_staged_lane_report_blue_scorer. No reader or flag changes.
+
 ## 2026-10-29 -- ROADMAP 2.220b LANDED ON: the head trim strips only the line's own rows
 
 Sean "Land on". STAGED GATHER: `head_ink.trim_head` / `trim_line_only` and `head_oval._line_rows(dilate=...)`. `OMR_HEAD_TRIM_LINE_ONLY` default ON (explicit 0/false/no/off disables; deny-list per `test_flag_default_direction`): the end trim strips only a staff line's own undilated rows, at most one locally measured line thickness per end; the old 1 px dilations shaved in-space heads on Litolff to ~0.57 sp. In-space too_small on Litolff 245 -> 3 (46 become too_tall, recorded only); file near-neutral (Litolff unchanged, Brahms +1 blue), judged right->wrong 0. 2.220's tile 5 now reads too_tall; `test_head_ink_2_220.SeansTiles` pinned to the old trim. FINDINGS 5j in benchmarks/shared-ink-map-2026-10.
