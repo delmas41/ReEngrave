@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_28": "2.212- 1. 8 2.part of a Nat accidental 3.2 4. A large box around 2 notes a 3rd apart and a Nat accidental 5. 2 6. A large box around multiple note heads (both halfs) 7. Dot 4 8.8 9. Dot 2 10. Part of FF 11. Full 8 including stem and flag 12. A very difficult to read natural sign up against a barline - very rare",
+ "note": "Sean headed it 2.212; the answers match the 2.221 census sheet (tile 10 ff, tiles 4/11 accidentals)",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "8",
+   "verdict": "real note"
+  },
+  {
+   "tile": 2,
+   "answer": "part of a Nat accidental",
+   "verdict": "not a note (natural)"
+  },
+  {
+   "tile": 3,
+   "answer": "2",
+   "verdict": "real note"
+  },
+  {
+   "tile": 4,
+   "answer": "A large box around 2 notes a 3rd apart and a Nat accidental",
+   "verdict": "box spans 2 heads + natural"
+  },
+  {
+   "tile": 5,
+   "answer": "2",
+   "verdict": "real note"
+  },
+  {
+   "tile": 6,
+   "answer": "A large box around multiple note heads (both halfs)",
+   "verdict": "box spans several heads; no rest"
+  },
+  {
+   "tile": 7,
+   "answer": "Dot 4",
+   "verdict": "real note"
+  },
+  {
+   "tile": 8,
+   "answer": "8",
+   "verdict": "real note"
+  },
+  {
+   "tile": 9,
+   "answer": "Dot 2",
+   "verdict": "real note"
+  },
+  {
+   "tile": 10,
+   "answer": "Part of FF",
+   "verdict": "not a note (ff)"
+  },
+  {
+   "tile": 11,
+   "answer": "Full 8 including stem and flag",
+   "verdict": "real note"
+  },
+  {
+   "tile": 12,
+   "answer": "A very difficult to read natural sign up against a barline - very rare",
+   "verdict": "not a note (natural)"
+  }
+ ]
+}

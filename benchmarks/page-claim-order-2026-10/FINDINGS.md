@@ -55,3 +55,10 @@ Small (about 0.5-0.8% of written heads) but not zero, with large tails (some hea
 - Shared ink is a candidate pool, not ownership (a sharp touching a head cannot be split by this raster).
 - Word ink under head boxes the detector never drew (milestone 6) is invisible here.
 - Not re-adjudicated: a 2.202f gather, not a baseline re-run after today's 2.220 work.
+
+## Sean's 12 census tiles (2026-10-28)
+7 real notes (1, 3, 5, 7, 8, 9, 11), 3 not notes (2 and 12 naturals; 10 part of an ff), 2 oversized boxes (4: two heads a third apart + a natural; 6: several half heads, the "rest" partner was not a rest).
+- Dynamic-letter group (1, 3, 5, 8, 10): 1 of 5 is ink taken from a dynamic (the ff). The other 4 are real notes beside letters: the letter overlap count is mostly chance, as its shifted control said.
+- Barline group (2, 12): 0 of 2 are barline ink; both are NATURALS written as notes. The culprit is accidentals, not barlines.
+- 0b (4, 6, 7, 11): 2 real notes, 2 boxes spanning more than one head.
+- Lesson: the junk written as notes on this sample is ff letters and naturals; layer-order alone would not catch the naturals (they claim after heads, Sean q1), the one-head check (2.220 fix A) must.
