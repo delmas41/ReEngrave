@@ -621,15 +621,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only quantity (`OMR_STROKE_MAP`, default ON): the share of each covered stroke's ink inside the box. Its first stage reader is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5; `claims.covering`'s `ink` branch counts strokes, not shares. Leaves the day a decision reads it."),
     "DETAIL Q.CLAIMED_AREA.shares": (
         "producer-only (`OMR_STROKE_MAP`, default ON): on a `unit: ink` claim, the share of each claimed stroke's ink inside the owner. Leaves the day the ink branch of the consult reads it (plan step 5)."),
-    # ── lane-arcs-claim-1029 (`OMR_ARC_CLAIM`, default OFF): the arc claim row's own measurements, producer-only until the page-wide anchoring step reads them ──
-    "DETAIL Q.CLAIMED_AREA.arc_shape": (
-        "producer-only (`OMR_ARC_CLAIM`, default OFF): the traced arc's shape on its claim row. Leaves the day the page-wide anchoring step (Sean 2026-10-29) reads it."),
-    "DETAIL Q.CLAIMED_AREA.no_map_cells": (
-        "producer-only (`OMR_ARC_CLAIM`, default OFF): the count of the arc's staff cells with no stroke map, so none is skipped silently. Leaves the day a decision reads it."),
-    "DETAIL Q.CLAIMED_AREA.x_left_page": (
-        "producer-only (`OMR_ARC_CLAIM`, default OFF): the claimed arc's left page-x. Leaves the day the page-wide anchoring step reads it."),
-    "DETAIL Q.CLAIMED_AREA.x_right_page": (
-        "producer-only (`OMR_ARC_CLAIM`, default OFF): the claimed arc's right page-x. Leaves the day the page-wide anchoring step reads it."),
     "DETAIL Q.STROKE.n_below_floor": (
         "producer-only quantity (`OMR_STROKE_MAP`, default ON); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.thickness_spread_spaces": (

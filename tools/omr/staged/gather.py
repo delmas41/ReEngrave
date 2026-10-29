@@ -14479,14 +14479,13 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         if not got_all:
             counts["no_stroke_arcs"] += 1
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page", reason=ABSTAIN.NO_INK, owner=AC.OWNER, unit="ink",
-                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces, no_map_cells=no_map)
+                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces)
             continue
         counts["rows"] += 1
         counts["strokes"] += len(got_all)
         log.observe(ssub, Q.CLAIMED_AREA, got_all, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=AC.OWNER, owner_row=None,
                     owner_glyph=d.get("subject"), unit="ink", scope="system_arc", standing="READ", source="system_arc", shares=shares,
-                    pieces=pieces, cells=cells_hit, x_left_page=d.get("x_left_page"), x_right_page=d.get("x_right_page"),
-                    arc_shape=d.get("shape"), no_map_cells=no_map, cover_min=AC.ON_TRACE_SHARE_MIN)
+                    pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN)
         if progress:
             print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
     return counts
