@@ -7560,6 +7560,93 @@ def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
             print(f"  gather glyph strokes {R.cell(*ck).to_key()}: {len(dets)} boxes")
 
 
+#: ROADMAP 2.220 (step 6 of the shared ink map, milestone 1): `OMR_FILL_FROM_STROKES` -- file one `Q.HEAD_INK` row per notehead-classed box,
+#: the fill read on that head's own ink (`stroke_map.head_mask`). **Default OFF.** PRODUCER ONLY: nothing reads the rows, so flag on writes a
+#: byte-identical exported file (milestone 1's proof). Needs `OMR_STROKE_MAP` (the masks it reads).
+FILL_FROM_STROKES_ENV = "OMR_FILL_FROM_STROKES"
+
+
+def fill_from_strokes_enabled() -> bool:
+    return os.environ.get(FILL_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def gather_head_ink(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
+                    stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False) -> None:
+    """ROADMAP 2.220 milestone 1 (flag `OMR_FILL_FROM_STROKES`, default OFF), STAGED GATHER: `Q.HEAD_INK`, one row per notehead-classed
+    detector box -- one fill reading taken from that head's OWN ink (`stroke_map.head_mask`: the box's strokes minus stems, beams, ledger
+    rungs and the strokes an accidental / key / flag / dynamic box of the cell covers; the eraser's line pixels put back inside the head's
+    hull), never from the box. Measured on that mask: enclosed paper (`hole_share`, after a 1-px close), 2.148's slit and 2.23's
+    centre/ring window, both laid on the MASK'S EXTENT (fix D, never a centroid), the extent in spaces, `line_px_restored`, `stem_cut`,
+    `n_pieces`. Fix A: an extent that holds another mark's ink, or is not one head's size, ABSTAINS `not_one_head` (its measures filed).
+    Fix C: a two-head column over a head-sized box is clipped to the box's rows first (`stack_clipped`). `stroke_set` (the kept ordinals)
+    is the twin key milestone 3 will merge on. Decides nothing, nothing reads it."""
+    if not fill_from_strokes_enabled() or not stroke_map_enabled() or not stroke_cells:
+        return
+    import numpy as np
+    from . import stroke_map as SM
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+        res = stroke_cells.get(ck)
+        if res is None:
+            continue
+        dets = detections.get(R.cell(*ck).to_key(), ())
+        heads = [gi for gi, d in enumerate(dets) if str(d.smufl_name).lower().startswith("notehead")]
+        if not heads:
+            continue
+        frame = frame_cell(c.measure_index)
+        if isinstance(res, str):
+            for gi in heads:
+                log.abstain(R.glyph(c.page_index, key[0], key[1], c.measure_index, gi), Q.HEAD_INK, reader=READERS.CV_HEAD_INK,
+                            frame=frame, reason=res)
+            continue
+        erased, raw = getattr(c, "image_no_staff", None), getattr(c, "binary", None)
+
+        def _xyxy(d: Any) -> Tuple[float, float, float, float]:
+            return (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical)
+
+        foreign: Dict[int, str] = {}
+        for d in dets:
+            if SM.is_foreign_class(d.smufl_name):
+                for i, sh in SM.strokes_in_box(res, _xyxy(d)):
+                    if sh >= SM.COVER_SHARE_MIN:
+                        foreign.setdefault(i, str(d.smufl_name))
+        sp = float(res.sp_canonical)
+        for gi in heads:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            hm = SM.head_mask(res, erased, raw, _xyxy(dets[gi]), foreign)
+            detail: Dict[str, Any] = {"pieces": hm["pieces"], "n_pieces": len(hm["pieces"]), "stroke_set": ",".join(map(str, hm["pieces"]))}
+            if hm["dropped"]:
+                detail["dropped"] = hm["dropped"]
+            slit = None
+            if hm.get("mask") is not None:
+                M, (ox, oy) = hm["mask"], hm["origin"]
+                img = np.where(M, 0, 255).astype(np.uint8)
+                ex0, ey0, ex1, ey1 = hm["extent"]
+                ext = (ex0 - ox, ey0 - oy, ex1 - ex0, ey1 - ey0)
+                iw = head_interior_white(img, ext)
+                win = notehead_ink_under(img, ext)
+                slit = float(iw["rows_share"]) if iw and iw.get("rows_read") else None
+                detail.update(extent=hm["extent"], extent_sp=hm["extent_sp"], centre=hm["centre"], hole_share=hm["hole_share"],
+                              n_holes=hm["n_holes"], hole_sp2=hm["hole_sp2"], slit_rows_share=slit,
+                              window=(win or {}).get("windows"), line_px_restored=hm["line_px_restored"], stem_cut=hm["stem_cut"],
+                              stack_clipped=hm["stack_clipped"], size_margin_sp=hm["size_margin_sp"],
+                              box_sp=[round((dets[gi].width_canonical) / sp, 3), round(dets[gi].height_canonical / sp, 3)])
+            if hm.get("not_one_head"):
+                detail["not_one_head"] = hm["not_one_head"]
+            value, why, margin = SM.head_ink_value(hm, slit)
+            if value is None:
+                reason = {"not_one_head": ABSTAIN.NOT_ONE_HEAD, "no_head_ink": ABSTAIN.NO_HEAD_INK, "ring_open": ABSTAIN.RING_OPEN,
+                          "readers_split": ABSTAIN.READERS_SPLIT, "no_stroke_map": ABSTAIN.NO_MASK}[why]
+                log.abstain(g, Q.HEAD_INK, reader=READERS.CV_HEAD_INK, frame=frame, reason=reason, **detail)
+            else:
+                log.observe(g, Q.HEAD_INK, value, reader=READERS.CV_HEAD_INK, frame=frame, margin=margin, **detail)
+        if progress:
+            print(f"  gather head ink {R.cell(*ck).to_key()}: {len(heads)} heads")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # One accidental family -- the type from the mark's own strokes (ROADMAP 2.201)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -16029,6 +16116,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.220 (flag OMR_FILL_FROM_STROKES, default OFF; producer only, nothing reads it): one fill reading per head box, on that
+        # head's own ink. Needs the map and the final box set, both here; files rows only.
+        gather_head_ink(log, cells, local, detections, stroke_cells, progress=progress)
         # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
         # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
         gather_accidental_family(cells, local, detections, stroke_cells)

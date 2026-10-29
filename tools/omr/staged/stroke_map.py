@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -478,3 +478,270 @@ def stem_true_edges(res: "CellStrokes", stem_box: Sequence[float]) -> Optional[T
     if x1 - x0 > STEM_TRUE_WIDTH_MAX_SPACES * sp:
         return None
     return x0, x1
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.220, step 6 of the shared ink map: ONE head's own ink, its fill read on it (`Q.HEAD_INK`, flag `OMR_FILL_FROM_STROKES`)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# WHY (benchmarks/ink-map-fill-2026-10/FINDINGS.md): `map_strokes` claims verticals and horizontals before it looks for blobs, so a hollow
+# head's ring falls apart into lunes and rims and `Stroke.hole_share` is 0.0 on every written half. `head_mask` puts ONE head back together
+# from the strokes a detector head box covers, minus the strokes another mark owns (a stem: `vertical`; a beam or a ledger rung: a
+# `horizontal` at least `HEAD_OWNED_HORIZONTAL_SPACES` long; any stroke an accidental / key / flag / dynamic box of the same cell covers),
+# at CANONICAL resolution, with the staff-line pixels the eraser took put back only inside the head's own convex hull (the eraser's cut
+# through a ring tangent to a line is mended, the line outside is left alone). Every number is then measured on that one mask.
+# PURE: numpy + cv2, nothing from the pipeline; `gather.gather_head_ink` is the only caller.
+
+#: A `horizontal` stroke at least this long is a beam or a ledger rung, not a head's rim (plan 2026-10-28 §2: "longer than about 2 sp").
+HEAD_OWNED_HORIZONTAL_SPACES = 2.0
+#: ... and nowhere as thick as this (a beam is ~0.5 sp, a rung ~0.15; a head in the horizontal opening ~0.65-0.7; the thickest sample of the profile): a long `horizontal`
+#: that is somewhere as thick as a head is a head MERGED with its neighbour (Litolff merges a head with an accidental's bar or a beam
+#: end); it is kept, and its extent then says `not_one_head`.
+HEAD_OWNED_HORIZONTAL_MAX_THICK_SPACES = 0.6
+#: The canonical crop around the kept pieces, each side. It only bounds the crop: the mask is the pieces' own ink, so the extent does not
+#: depend on it (fix D, 2.115's lesson: a centre that moves with the window is not a measurement; pinned by the window-stability test).
+HEAD_WINDOW_MARGIN_SPACES = 0.3
+#: An enclosed paper component smaller than this is a scan speck inside a filled head, not a hole (sp^2; ~30 canonical px at 100 px/sp).
+HEAD_HOLE_MIN_SP2 = 0.003
+#: Fix A (DECISIONS 2026-10-28): ONE head's ink is at most this wide / tall. A printed notehead is ~1.3-1.4 sp wide and ~1 sp tall
+#: (benchmarks/omr-notehead-width-2026-09). An ink extent past these holds more than one head's ink (a sharp, a flag, a dynamic's letters,
+#: a chord): `not_one_head`. Filed with its margin (`size_margin_sp`); the consumer (milestone 2) keeps its own cut.
+HEAD_INK_MAX_WIDTH_SPACES = 1.75
+HEAD_INK_MAX_HEIGHT_SPACES = 1.4
+#: ... and at least this, both ways (a fragment of a letter, or a rim alone, is not a head).
+HEAD_INK_MIN_SPACES = 0.6
+#: Fix C (2.129/2.132): a stacked pair makes an ink column two heads tall over a head-sized box. The mask is clipped to the box's own rows
+#: widened by this, and the clip filed (`stack_clipped`), BEFORE the extent is judged. Never applied to a box itself taller than one head.
+HEAD_STACK_CLIP_SPACES = 0.15
+#: 2.148's cuts on the slit (`rhythm.HEAD_INTERIOR_WHITE_HOLLOW_MIN` / `_FILLED_MAX`), restated only so the producer's own reading files a
+#: margin; the consumer keeps its own cut (plan 10-22 §4: the measurement is shared, the cut stays per consumer).
+HEAD_SLIT_HOLLOW_MIN = 0.18
+HEAD_SLIT_FILLED_MAX = 0.06
+#: Detector classes whose box, covering a stroke, says that stroke is not a head's ink (fix A: "holds a sharp, a flag or an ff").
+FOREIGN_PREFIXES = ("accidental", "key", "flag", "dynamic")
+FOREIGN_EXCLUDE = ("dynamiccrescendohairpin", "dynamicdiminuendohairpin", "keyboard")
+
+
+def is_foreign_class(name: Optional[str]) -> bool:
+    n = str(name or "").lower()
+    return n.startswith(FOREIGN_PREFIXES) and not n.startswith(FOREIGN_EXCLUDE)
+
+
+def _upsample_into(dst: np.ndarray, m: np.ndarray, x0: int, y0: int, scale: float, wx0: int, wy0: int) -> None:
+    """OR the reduced-frame mask `m` (origin x0, y0) into `dst`, a canonical window whose origin is (wx0, wy0)."""
+    import cv2
+    inv = 1.0 / scale
+    h, w = m.shape
+    cx0, cy0 = int(round(x0 * inv)), int(round(y0 * inv))
+    cw, ch = max(1, int(round(w * inv))), max(1, int(round(h * inv)))
+    up = cv2.resize(m.astype(np.uint8), (cw, ch), interpolation=cv2.INTER_NEAREST).astype(bool)
+    H, W = dst.shape
+    ax0, ay0 = cx0 - wx0, cy0 - wy0
+    sx0, sy0 = max(0, -ax0), max(0, -ay0)
+    dx0, dy0 = max(0, ax0), max(0, ay0)
+    dx1, dy1 = min(W, ax0 + cw), min(H, ay0 + ch)
+    if dx1 <= dx0 or dy1 <= dy0:
+        return
+    dst[dy0:dy1, dx0:dx1] |= up[sy0:sy0 + (dy1 - dy0), sx0:sx0 + (dx1 - dx0)]
+
+
+def mask_holes(M: np.ndarray, sp: float) -> Tuple[float, int, float]:
+    """`(hole_share, n_holes, hole_sp2)` of a boolean mask after a 1-px close: enclosed paper components of at least `HEAD_HOLE_MIN_SP2`,
+    over (ink + those holes). The mask is padded with paper, so a line crossing the crop never encloses the paper beside it."""
+    import cv2
+    if M is None or not M.any():
+        return 0.0, 0, 0.0
+    pad = np.zeros((M.shape[0] + 2, M.shape[1] + 2), np.uint8)
+    pad[1:-1, 1:-1] = M
+    pad = cv2.morphologyEx(pad, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+    pad[0, :] = pad[-1, :] = 0
+    pad[:, 0] = pad[:, -1] = 0
+    n, lab, st, _ = cv2.connectedComponentsWithStats((1 - pad).astype(np.uint8), connectivity=4)
+    outside = int(lab[0, 0])
+    floor = HEAD_HOLE_MIN_SP2 * sp * sp
+    holes = [int(st[i, cv2.CC_STAT_AREA]) for i in range(1, n) if i != outside and st[i, cv2.CC_STAT_AREA] >= floor]
+    ink = int(pad.sum())
+    tot = float(sum(holes))
+    return (round(tot / (ink + tot), 4) if ink + tot else 0.0), len(holes), round(tot / (sp * sp), 4)
+
+
+def head_mask(res: "CellStrokes", erased: np.ndarray, raw: Optional[np.ndarray], box: Sequence[float],
+              foreign: Optional[Dict[int, str]] = None) -> Dict[str, Any]:
+    """ROADMAP 2.220: ONE head's own ink under the detector head box `box` = (x0, y0, x1, y1) (canonical cell px), from the cell's stroke
+    map `res`. `erased` = `cell.image_no_staff`, `raw` = `cell.binary` (0 = ink, canonical). `foreign` = {stroke ordinal: class} for the
+    strokes an accidental / key / flag / dynamic box of the same cell covers (fix A).
+
+    Always returns `pieces` (kept stroke ordinals), `dropped` ([ordinal, why]), `why` and `not_one_head`; when a mask was built also `mask`
+    (bool, the crop), `origin` (crop x0, y0), `extent` [x0, y0, x1, y1] canonical, `extent_sp` [w, h], `centre` (the extent's midpoint --
+    fix D: never a centroid), `hole_share`, `n_holes`, `hole_sp2`, `line_px_restored`, `stem_cut` ('left' / 'right' / None),
+    `stack_clipped`, `size_margin_sp`. `why`: None (a mask of one head), 'not_one_head', 'no_head_ink', 'no_stroke_map'."""
+    import cv2
+    out: Dict[str, Any] = {"pieces": [], "dropped": [], "why": None, "not_one_head": None}
+    if res is None or isinstance(res, str) or not getattr(res, "masks", None) or erased is None:
+        out["why"] = "no_stroke_map"
+        return out
+    foreign = dict(foreign or {})
+    sp = float(res.sp_canonical)
+    got = strokes_in_box(res, box)
+    covered = [i for i, sh in got if sh >= COVER_SHARE_MIN]
+    partial = [i for i, sh in got if sh < COVER_SHARE_MIN]
+    kept: List[int] = []
+    owned: List[int] = []
+    stems: List[int] = []
+
+    def _owned_by(i: int) -> Optional[str]:
+        st = res.strokes[i]
+        if st.kind == "vertical":
+            return "stem_or_vertical"
+        if (st.kind == "horizontal" and st.length_sp >= HEAD_OWNED_HORIZONTAL_SPACES
+                and max(st.profile or [0]) / TARGET_SP_PX < HEAD_OWNED_HORIZONTAL_MAX_THICK_SPACES):
+            return "beam_or_rung"
+        if i in foreign:
+            return "foreign:" + str(foreign[i])
+        return None
+
+    for i in covered:
+        why = _owned_by(i)
+        if why is None:
+            kept.append(i)
+        else:
+            out["dropped"].append([i, why])
+            owned.append(i)
+    kept_set = set(kept)
+    for i in partial:            # a sliver of a head piece the box cut: kept only when it is a blob / rim touching a kept piece
+        st = res.strokes[i]
+        if _owned_by(i) is not None:
+            owned.append(i)
+            continue
+        if st.kind in ("blob", "horizontal") and any(j in kept_set for j, _c in st.touches):
+            kept.append(i)
+    # every owned stroke TOUCHING a kept piece is owned elsewhere too, even where the box does not reach it (the stem beside a head)
+    for i in list(kept):
+        for j, _c in res.strokes[i].touches:
+            if j not in owned and _owned_by(j) is not None:
+                owned.append(j)
+            if res.strokes[j].kind == "vertical" and j not in stems:
+                stems.append(j)
+    out["pieces"] = sorted(kept)
+    if not kept:
+        if any(w.startswith("foreign:") for _i, w in out["dropped"]):
+            out["why"], out["not_one_head"] = "not_one_head", "ink_is_another_marks"
+        else:
+            out["why"] = "no_head_ink"
+        return out
+
+    H, W = erased.shape
+    xs0 = [res.strokes[i].box[0] for i in kept] + [float(box[0])]
+    ys0 = [res.strokes[i].box[1] for i in kept] + [float(box[1])]
+    xs1 = [res.strokes[i].box[0] + res.strokes[i].box[2] for i in kept] + [float(box[2])]
+    ys1 = [res.strokes[i].box[1] + res.strokes[i].box[3] for i in kept] + [float(box[3])]
+    mg = int(math.ceil(HEAD_WINDOW_MARGIN_SPACES * sp))
+    wx0, wy0 = max(0, int(min(xs0)) - mg), max(0, int(min(ys0)) - mg)
+    wx1, wy1 = min(W, int(math.ceil(max(xs1))) + mg), min(H, int(math.ceil(max(ys1))) + mg)
+    if wx1 - wx0 < 4 or wy1 - wy0 < 4:
+        out["why"] = "no_head_ink"
+        return out
+    E = np.asarray(erased[wy0:wy1, wx0:wx1]) == 0
+    Rw = (np.asarray(raw[wy0:wy1, wx0:wx1]) == 0) if raw is not None and getattr(raw, "shape", None) == erased.shape else None
+    K = np.zeros_like(E)
+    for i in kept:
+        m, x0, y0 = res.masks[i]
+        _upsample_into(K, m, x0, y0, res.scale, wx0, wy0)
+    O = np.zeros_like(E)
+    for i in sorted(set(owned)):
+        m, x0, y0 = res.masks[i]
+        _upsample_into(O, m, x0, y0, res.scale, wx0, wy0)
+    def _hull(mask: np.ndarray) -> np.ndarray:
+        pts = np.column_stack(np.nonzero(mask)[::-1]).astype(np.int32)
+        hh = np.zeros(mask.shape, np.uint8)
+        cv2.fillConvexPoly(hh, cv2.convexHull(pts), 1)
+        return hh.astype(bool)
+
+    k = max(1, int(round(1.0 / res.scale)))
+    # The pieces are the SEED, not the mask: `map_strokes` cut the remainder a reduced pixel clear of the openings and does not file a
+    # piece under its floor (a half's lune beside its stem is often one), so the head's own ink is the erased ink, outside every owned
+    # stroke's footprint, connected to the seed within a fifth of a space of its hull.
+    seed = cv2.dilate(K.astype(np.uint8), np.ones((2 * k + 1, 2 * k + 1), np.uint8)).astype(bool) & E & ~O
+    if not seed.any():
+        out["why"] = "no_head_ink"
+        return out
+    r = max(1, int(round(0.2 * sp)))
+    region = cv2.dilate(_hull(seed).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))).astype(bool)
+    cand = (E & ~O & region).astype(np.uint8)
+    n_c, lab_c = cv2.connectedComponents(cand, connectivity=8)
+    keep_l = np.unique(lab_c[seed & cand.astype(bool)])
+    K = np.isin(lab_c, keep_l[keep_l > 0])
+    # The ink the staff-line erase took (`raw & ~erased`, never an owned stroke's) comes back only within the head's own columns and only
+    # where it touches the head: the eraser's walk through a ring tangent to a line takes the line AND the rim under it as one flat band,
+    # which this mends; the line beyond the head, and a line that does not touch it, are left alone.
+    restored = 0
+    M = K
+    if Rw is not None:
+        L = Rw & ~E & ~O
+        kc = np.nonzero(K.any(axis=0))[0]
+        L[:, :int(kc[0])] = False
+        L[:, int(kc[-1]) + 1:] = False
+        if L.any():
+            n_l, lab_l = cv2.connectedComponents(L.astype(np.uint8), connectivity=8)
+            touch = cv2.dilate(K.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+            ids = np.unique(lab_l[touch & L])
+            back = np.isin(lab_l, ids[ids > 0])
+            restored = int(back.sum())
+            M = K | back
+    # Inside the head's own outline every ink pixel is the head's (the stem's ink fused along its side, a rung through it).
+    M = M | (E & _hull(M))
+    clipped = False
+    ys, xs = np.nonzero(M)
+    ex0, ey0, ex1, ey1 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
+    box_h = (float(box[3]) - float(box[1])) / sp
+    if (ey1 - ey0) / sp > HEAD_INK_MAX_HEIGHT_SPACES and box_h <= HEAD_INK_MAX_HEIGHT_SPACES:
+        c = int(math.ceil(HEAD_STACK_CLIP_SPACES * sp))
+        r0, r1 = max(0, int(float(box[1])) - wy0 - c), min(M.shape[0], int(math.ceil(float(box[3]))) - wy0 + c)
+        M2 = np.zeros_like(M)
+        M2[r0:r1] = M[r0:r1]
+        if M2.any():
+            M, clipped = M2, True
+            ys, xs = np.nonzero(M)
+            ex0, ey0, ex1, ey1 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
+    w_sp, h_sp = (ex1 - ex0) / sp, (ey1 - ey0) / sp
+    hole, n_holes, hole_sp2 = mask_holes(M[ey0:ey1, ex0:ex1], sp)
+    stem_cut = None
+    if stems:
+        cx = wx0 + (ex0 + ex1) / 2.0
+        sx = [res.strokes[j].box[0] + res.strokes[j].box[2] / 2.0 for j in stems]
+        stem_cut = "left" if min(sx, key=lambda v: abs(v - cx)) < cx else "right"
+    noh = None
+    foreign_dropped = any(wd.startswith("foreign:") for _i, wd in out["dropped"])
+    if w_sp > HEAD_INK_MAX_WIDTH_SPACES or h_sp > HEAD_INK_MAX_HEIGHT_SPACES:
+        noh = "holds_another_marks_ink" if foreign_dropped else ("too_wide" if w_sp > HEAD_INK_MAX_WIDTH_SPACES else "too_tall")
+    elif w_sp < HEAD_INK_MIN_SPACES or h_sp < HEAD_INK_MIN_SPACES:
+        noh = "too_small"
+    out.update(mask=M, origin=(wx0, wy0), extent=[wx0 + ex0, wy0 + ey0, wx0 + ex1, wy0 + ey1],
+               extent_sp=[round(w_sp, 3), round(h_sp, 3)],
+               centre=[round(wx0 + (ex0 + ex1) / 2.0, 1), round(wy0 + (ey0 + ey1) / 2.0, 1)],
+               hole_share=hole, n_holes=n_holes, hole_sp2=hole_sp2, line_px_restored=restored, stem_cut=stem_cut,
+               stack_clipped=clipped, not_one_head=noh,
+               size_margin_sp=round(min(HEAD_INK_MAX_WIDTH_SPACES - w_sp, HEAD_INK_MAX_HEIGHT_SPACES - h_sp,
+                                        w_sp - HEAD_INK_MIN_SPACES, h_sp - HEAD_INK_MIN_SPACES), 3))
+    if noh:
+        out["why"] = "not_one_head"
+    return out
+
+
+def head_ink_value(hm: Dict[str, Any], slit: Optional[float]) -> Tuple[Optional[str], Optional[str], Optional[float]]:
+    """`(value, why, margin)`: the producer's own reading of one head mask. `hollow` where the mask ENCLOSES paper and 2.148's slit (on the
+    mask's extent) reads hollow; `filled` where it encloses none and the slit reads filled. Otherwise None and why: 'not_one_head' (fix A),
+    'no_head_ink' / 'no_stroke_map', 'ring_open' (white inside but not enclosed), 'readers_split' (the two disagree, or the slit sits between
+    its cuts). `margin` = the slit's signed distance past the cut it passed (hollow: slit - 0.18; filled: 0.06 - slit); None with no value."""
+    if hm.get("why") in ("not_one_head", "no_head_ink", "no_stroke_map") or hm.get("not_one_head"):
+        return None, hm.get("why") or "not_one_head", None
+    if slit is None:
+        return None, "readers_split", None
+    hole = float(hm.get("hole_share") or 0.0)
+    if hole > 0 and slit >= HEAD_SLIT_HOLLOW_MIN:
+        return "hollow", None, round(slit - HEAD_SLIT_HOLLOW_MIN, 4)
+    if hole == 0 and slit <= HEAD_SLIT_FILLED_MAX:
+        return "filled", None, round(HEAD_SLIT_FILLED_MAX - slit, 4)
+    if hole == 0 and slit >= HEAD_SLIT_HOLLOW_MIN:
+        return None, "ring_open", None
+    return None, "readers_split", None
