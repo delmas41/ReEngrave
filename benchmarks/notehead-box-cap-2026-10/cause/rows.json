@@ -1,0 +1,5867 @@
+[
+{
+"plate": "litolff",
+"key": "glyph/2/1/0/11/2",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2094.9775,
+2075.9875,
+2125.375,
+2095.2025
+],
+"sp": 15.75,
+"w": 1.9300000000000024,
+"h": 1.2199999999999804,
+"n_notes": 1,
+"pitches": [
+"E-16"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.2063492063492063,
+"slack_w": 0.025238095238097724,
+"slack_h": 0.013650793650774151,
+"comp_w": 5.2063492063492065,
+"comp_h": 5.26984126984127,
+"comp_in": 0.2724984266834487,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 1,
+"dense_h": 1.2063492063492063,
+"dense_w": 1.7777777777777777,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/0/12/8",
+"page": 2,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2221.79,
+2074.885,
+2253.605,
+2092.21
+],
+"sp": 15.75,
+"w": 2.0200000000000036,
+"h": 1.0999999999999885,
+"n_notes": 1,
+"pitches": [
+"E-16"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0317460317460316,
+"ink_h": 1.0793650793650793,
+"slack_w": -0.011746031746028063,
+"slack_h": 0.020634920634909237,
+"comp_w": 5.26984126984127,
+"comp_h": 5.904761904761905,
+"comp_in": 0.22540983606557377,
+"stem_in_box": 1.0793650793650793,
+"n_marks": 1,
+"dense_h": 0.9523809523809523,
+"dense_w": 1.7142857142857142,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/0/11/15",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2037.34,
+465.77,
+2097.48,
+481.735
+],
+"sp": 15.5,
+"w": 3.8800000000000066,
+"h": 1.030000000000002,
+"n_notes": 1,
+"pitches": [
+"E-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.967741935483871,
+"ink_h": 1.032258064516129,
+"slack_w": 0.9122580645161356,
+"slack_h": -0.0022580645161269786,
+"comp_w": 4.645161290322581,
+"comp_h": 7.032258064516129,
+"comp_in": 0.26570048309178745,
+"stem_in_box": 1.032258064516129,
+"n_marks": 1,
+"dense_h": 1.032258064516129,
+"dense_w": 1.5483870967741935,
+"group": "big",
+"kind": "loose",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/0/11/10",
+"page": 4,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2080.585,
+373.855,
+2112.67,
+398.655
+],
+"sp": 15.5,
+"w": 2.0700000000000025,
+"h": 1.599999999999997,
+"n_notes": 1,
+"pitches": [
+"B-15"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.064516129032258,
+"ink_h": 1.6129032258064515,
+"slack_w": 0.0054838709677444974,
+"slack_h": -0.012903225806454532,
+"comp_w": 2.193548387096774,
+"comp_h": 6.645161290322581,
+"comp_in": 0.4402332361516035,
+"stem_in_box": 1.6129032258064515,
+"n_marks": 1,
+"dense_h": 1.6129032258064515,
+"dense_w": 2.0,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/0/3/10",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1077.48,
+1968.6,
+1097.48,
+2009.4
+],
+"sp": 16.0,
+"w": 1.25,
+"h": 2.5500000000000114,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.25,
+"ink_h": 2.5,
+"slack_w": 0.0,
+"slack_h": 0.05000000000001137,
+"comp_w": 4.3125,
+"comp_h": 5.5625,
+"comp_in": 0.36659589525831565,
+"stem_in_box": 2.3125,
+"n_marks": 1,
+"dense_h": 1.6875,
+"dense_w": 1.1875,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/0/12/2",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2512.04,
+1925.24,
+2542.92,
+1948.92
+],
+"sp": 16.0,
+"w": 1.9300000000000068,
+"h": 1.480000000000004,
+"n_notes": 1,
+"pitches": [
+"D6"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9375,
+"ink_h": 1.5,
+"slack_w": -0.007499999999993179,
+"slack_h": -0.01999999999999602,
+"comp_w": 2.8125,
+"comp_h": 4.5,
+"comp_in": 0.2853075170842825,
+"stem_in_box": 1.5,
+"n_marks": 1,
+"dense_h": 1.4375,
+"dense_w": 1.5625,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/0/2/6",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+745.315,
+1894.0775,
+785.32,
+1909.8275
+],
+"sp": 15.75,
+"w": 2.5399999999999996,
+"h": 1.0,
+"n_notes": 1,
+"pitches": [
+"C6"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.5396825396825395,
+"ink_h": 1.0158730158730158,
+"slack_w": 0.0003174603174600499,
+"slack_h": -0.015873015873015817,
+"comp_w": 3.365079365079365,
+"comp_h": 5.2063492063492065,
+"comp_in": 0.35040234089246525,
+"stem_in_box": 1.0158730158730158,
+"n_marks": 1,
+"dense_h": 1.0158730158730158,
+"dense_w": 2.4126984126984126,
+"group": "big",
+"kind": "wide_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/0/3/4",
+"page": 8,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+825.45,
+1904.7875,
+865.77,
+1929.3575
+],
+"sp": 15.75,
+"w": 2.559999999999996,
+"h": 1.5600000000000105,
+"n_notes": 1,
+"pitches": [
+"A-15"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.6031746031746033,
+"ink_h": 1.5238095238095237,
+"slack_w": -0.043174603174607196,
+"slack_h": 0.036190476190486764,
+"comp_w": 4.507936507936508,
+"comp_h": 7.174603174603175,
+"comp_in": 0.3304289544235925,
+"stem_in_box": 1.5238095238095237,
+"n_marks": 2,
+"dense_h": 1.5238095238095237,
+"dense_w": 2.2857142857142856,
+"group": "big",
+"kind": "wide_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/0/13/2",
+"page": 9,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+2337.485,
+455.655,
+2363.0,
+486.9975
+],
+"sp": 15.75,
+"w": 1.619999999999992,
+"h": 1.9900000000000018,
+"n_notes": 2,
+"pitches": [
+"G4",
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6507936507936507,
+"ink_h": 1.9682539682539681,
+"slack_w": -0.03079365079365881,
+"slack_h": 0.021746031746033623,
+"comp_w": 7.682539682539683,
+"comp_h": 7.238095238095238,
+"comp_in": 0.1159882295242766,
+"stem_in_box": 1.9682539682539681,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.6507936507936507,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/0/14/4",
+"page": 9,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+2470.5325,
+458.3325,
+2494.1575,
+486.6825
+],
+"sp": 15.75,
+"w": 1.5,
+"h": 1.8000000000000014,
+"n_notes": 2,
+"pitches": [
+"G4",
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.8412698412698412,
+"slack_w": 0.039682539682539764,
+"slack_h": -0.04126984126983979,
+"comp_w": 7.555555555555555,
+"comp_h": 7.174603174603175,
+"comp_in": 0.11995515695067265,
+"stem_in_box": 1.8412698412698412,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/0/0/10/11",
+"page": 10,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+2062.86,
+419.28,
+2097.0375,
+470.31
+],
+"sp": 15.75,
+"w": 2.169999999999986,
+"h": 3.240000000000002,
+"n_notes": 1,
+"pitches": [
+"A-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.1587301587301586,
+"ink_h": 3.238095238095238,
+"slack_w": 0.011269841269827552,
+"slack_h": 0.001904761904763852,
+"comp_w": 8.253968253968255,
+"comp_h": 9.26984126984127,
+"comp_in": 0.2124175574255174,
+"stem_in_box": 2.2857142857142856,
+"n_marks": 1,
+"dense_h": 2.3492063492063493,
+"dense_w": 2.1587301587301586,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/0/0/10",
+"page": 10,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+525.115,
+2045.62,
+554.565,
+2061.895
+],
+"sp": 15.5,
+"w": 1.900000000000003,
+"h": 1.0500000000000058,
+"n_notes": 1,
+"pitches": [
+"F6"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.935483870967742,
+"ink_h": 1.032258064516129,
+"slack_w": -0.03548387096773897,
+"slack_h": 0.017741935483876814,
+"comp_w": 2.3225806451612905,
+"comp_h": 3.7419354838709675,
+"comp_in": 0.31922723091076355,
+"stem_in_box": 1.032258064516129,
+"n_marks": 1,
+"dense_h": 1.032258064516129,
+"dense_w": 1.6129032258064515,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/0/7/4",
+"page": 16,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+1380.75,
+417.5975,
+1417.605,
+470.2025
+],
+"sp": 15.75,
+"w": 2.340000000000001,
+"h": 3.3399999999999976,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.3492063492063493,
+"ink_h": 3.3015873015873014,
+"slack_w": -0.009206349206348108,
+"slack_h": 0.03841269841269623,
+"comp_w": 8.380952380952381,
+"comp_h": 9.396825396825397,
+"comp_in": 0.2171142467000455,
+"stem_in_box": 2.0952380952380953,
+"n_marks": 1,
+"dense_h": 2.5396825396825395,
+"dense_w": 2.3492063492063493,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/0/3/1",
+"page": 16,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+929.82,
+2016.8,
+951.87,
+2049.4025
+],
+"sp": 15.75,
+"w": 1.399999999999997,
+"h": 2.0700000000000123,
+"n_notes": 1,
+"pitches": [
+"C6"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 2.0317460317460316,
+"slack_w": 0.0031746031746002767,
+"slack_h": 0.03825396825398064,
+"comp_w": 1.5873015873015872,
+"comp_h": 5.079365079365079,
+"comp_in": 0.6112204724409449,
+"stem_in_box": 2.0317460317460316,
+"n_marks": 1,
+"dense_h": 1.9682539682539681,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/1/12/3",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2218.44,
+2259.2,
+2247.4,
+2292.96
+],
+"sp": 16.0,
+"w": 1.8100000000000023,
+"h": 2.1100000000000136,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.75,
+"ink_h": 2.125,
+"slack_w": 0.060000000000002274,
+"slack_h": -0.014999999999986358,
+"comp_w": 7.875,
+"comp_h": 7.875,
+"comp_in": 0.23249299719887956,
+"stem_in_box": 2.125,
+"n_marks": 1,
+"dense_h": 1.875,
+"dense_w": 1.625,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/1/1/7",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+618.9325,
+536.9725,
+640.825,
+565.795
+],
+"sp": 15.75,
+"w": 1.3900000000000026,
+"h": 1.8299999999999994,
+"n_notes": 1,
+"pitches": [
+"C6"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 1.7777777777777777,
+"slack_w": -0.006825396825394181,
+"slack_h": 0.052222222222221726,
+"comp_w": 2.1587301587301586,
+"comp_h": 3.873015873015873,
+"comp_in": 0.6185714285714285,
+"stem_in_box": 1.5238095238095237,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.3968253968253967,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/1/7/1",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1532.1025,
+2313.8975,
+1556.83,
+2346.9725
+],
+"sp": 15.75,
+"w": 1.5699999999999976,
+"h": 2.0999999999999885,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 2.0952380952380953,
+"slack_w": -0.017301587301589594,
+"slack_h": 0.004761904761893199,
+"comp_w": 1.8412698412698412,
+"comp_h": 5.4603174603174605,
+"comp_in": 0.5971291866028708,
+"stem_in_box": 2.0952380952380953,
+"n_marks": 1,
+"dense_h": 1.8412698412698412,
+"dense_w": 1.3968253968253967,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/1/12/4",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2493.65,
+2114.695,
+2516.28,
+2158.25
+],
+"sp": 15.5,
+"w": 1.460000000000007,
+"h": 2.8099999999999894,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4193548387096775,
+"ink_h": 2.774193548387097,
+"slack_w": 0.04064516129032958,
+"slack_h": 0.03580645161289242,
+"comp_w": 5.096774193548387,
+"comp_h": 8.838709677419354,
+"comp_in": 0.19125036949453147,
+"stem_in_box": 2.6451612903225805,
+"n_marks": 1,
+"dense_h": 2.3225806451612905,
+"dense_w": 1.3548387096774193,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/1/2/0",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+769.7275,
+2039.955,
+799.81,
+2059.0125
+],
+"sp": 15.75,
+"w": 1.9099999999999988,
+"h": 1.209999999999993,
+"n_notes": 1,
+"pitches": [
+"D6"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.2063492063492063,
+"slack_w": 0.005238095238094154,
+"slack_h": 0.003650793650786799,
+"comp_w": 2.0952380952380953,
+"comp_h": 4.253968253968254,
+"comp_in": 0.42238648363252373,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/1/2/2",
+"page": 9,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+849.04,
+541.05,
+875.855,
+571.4300000000001
+],
+"sp": 15.5,
+"w": 1.7300000000000035,
+"h": 1.960000000000007,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6774193548387097,
+"ink_h": 1.935483870967742,
+"slack_w": 0.05258064516129379,
+"slack_h": 0.024516129032265077,
+"comp_w": 4.903225806451613,
+"comp_h": 7.67741935483871,
+"comp_in": 0.30153846153846153,
+"stem_in_box": 1.935483870967742,
+"n_marks": 1,
+"dense_h": 1.6774193548387097,
+"dense_w": 1.5483870967741935,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/1/2/1",
+"page": 10,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+788.105,
+2234.51,
+808.895,
+2266.325
+],
+"sp": 15.75,
+"w": 1.3199999999999976,
+"h": 2.0199999999999747,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3333333333333333,
+"ink_h": 1.7142857142857142,
+"slack_w": -0.01333333333333564,
+"slack_h": 0.3057142857142605,
+"comp_w": 1.7142857142857142,
+"comp_h": 5.142857142857143,
+"comp_in": 0.3885630498533724,
+"stem_in_box": 1.7142857142857142,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 0.8888888888888888,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/1/7/4",
+"page": 16,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1383.27,
+515.62,
+1411.305,
+552.6325
+],
+"sp": 15.75,
+"w": 1.7800000000000051,
+"h": 2.3500000000000028,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7777777777777777,
+"ink_h": 2.3492063492063493,
+"slack_w": 0.0022222222222274546,
+"slack_h": 0.0007936507936534554,
+"comp_w": 7.809523809523809,
+"comp_h": 8.380952380952381,
+"comp_in": 0.1765681127383255,
+"stem_in_box": 2.0952380952380953,
+"n_marks": 1,
+"dense_h": 2.3492063492063493,
+"dense_w": 1.6507936507936507,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/2/12/2",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+2201.0,
+2436.8,
+2247.88,
+2475.04
+],
+"sp": 16.0,
+"w": 2.930000000000007,
+"h": 2.3899999999999864,
+"n_notes": 1,
+"pitches": [
+"A4"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.9375,
+"ink_h": 2.375,
+"slack_w": -0.007499999999993179,
+"slack_h": 0.014999999999986358,
+"comp_w": 5.9375,
+"comp_h": 8.5,
+"comp_in": 0.3574450084602369,
+"stem_in_box": 2.375,
+"n_marks": 1,
+"dense_h": 2.375,
+"dense_w": 2.0625,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/2/3/10",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+893.4825,
+2467.38,
+923.7225,
+2487.3825
+],
+"sp": 15.75,
+"w": 1.9200000000000006,
+"h": 1.2700000000000036,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.2698412698412698,
+"slack_w": -0.04825396825396755,
+"slack_h": 0.0001587301587337997,
+"comp_w": 7.936507936507937,
+"comp_h": 7.301587301587301,
+"comp_in": 0.09141146672806816,
+"stem_in_box": 1.2698412698412698,
+"n_marks": 1,
+"dense_h": 1.0158730158730158,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/2/4/11",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1054.38,
+2464.0725,
+1086.0375,
+2487.0675
+],
+"sp": 15.75,
+"w": 2.0099999999999874,
+"h": 1.459999999999993,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0317460317460316,
+"ink_h": 1.4603174603174602,
+"slack_w": -0.02174603174604428,
+"slack_h": -0.0003174603174671553,
+"comp_w": 8.063492063492063,
+"comp_h": 7.492063492063492,
+"comp_in": 0.08400145772594753,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 1.0158730158730158,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/2/4/9",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1125.255,
+2465.3325,
+1156.755,
+2486.28
+],
+"sp": 15.75,
+"w": 2.0,
+"h": 1.3300000000000138,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.3333333333333333,
+"slack_w": 0.031746031746031855,
+"slack_h": -0.0033333333333194215,
+"comp_w": 6.285714285714286,
+"comp_h": 7.365079365079365,
+"comp_in": 0.09939103958242715,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 1.9047619047619047,
+"group": "big",
+"kind": "wide_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/2/5/16",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1209.64,
+2465.805,
+1240.825,
+2484.39
+],
+"sp": 15.75,
+"w": 1.9799999999999964,
+"h": 1.1800000000000024,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.1428571428571428,
+"slack_w": 0.011746031746028285,
+"slack_h": 0.03714285714285959,
+"comp_w": 5.333333333333333,
+"comp_h": 7.174603174603175,
+"comp_in": 0.11287916459472899,
+"stem_in_box": 1.1428571428571428,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 1.9047619047619047,
+"group": "big",
+"kind": "wide_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/2/14/0",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2485.5925,
+2422.65,
+2516.305,
+2444.5425
+],
+"sp": 15.75,
+"w": 1.9499999999999769,
+"h": 1.3899999999999955,
+"n_notes": 1,
+"pitches": [
+"A5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.3968253968253967,
+"slack_w": 0.04523809523807221,
+"slack_h": -0.0068253968254012864,
+"comp_w": 8.0,
+"comp_h": 7.428571428571429,
+"comp_in": 0.13597650513950074,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/2/2/5",
+"page": 6,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+838.24,
+686.0325,
+861.55,
+722.8875
+],
+"sp": 15.75,
+"w": 1.4799999999999964,
+"h": 2.340000000000001,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5238095238095237,
+"ink_h": 2.3492063492063493,
+"slack_w": -0.043809523809527295,
+"slack_h": -0.009206349206348108,
+"comp_w": 7.492063492063492,
+"comp_h": 8.317460317460318,
+"comp_in": 0.1351711871943086,
+"stem_in_box": 2.3492063492063493,
+"n_marks": 1,
+"dense_h": 1.9047619047619047,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/2/4/2",
+"page": 6,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1157.145,
+685.875,
+1179.825,
+719.7375
+],
+"sp": 15.75,
+"w": 1.440000000000004,
+"h": 2.1499999999999972,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 2.1587301587301586,
+"slack_w": -0.020317460317456293,
+"slack_h": -0.008730158730161364,
+"comp_w": 7.428571428571429,
+"comp_h": 8.19047619047619,
+"comp_in": 0.11049011177987962,
+"stem_in_box": 2.1587301587301586,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/2/4/3",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1226.0475,
+2303.2,
+1249.0425,
+2344.6225
+],
+"sp": 15.75,
+"w": 1.4600000000000075,
+"h": 2.630000000000008,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2698412698412698,
+"ink_h": 2.6666666666666665,
+"slack_w": 0.19015873015873774,
+"slack_h": -0.03666666666665863,
+"comp_w": 1.3333333333333333,
+"comp_h": 2.9206349206349205,
+"comp_in": 0.967741935483871,
+"stem_in_box": 2.4761904761904763,
+"n_marks": 1,
+"dense_h": 2.0317460317460316,
+"dense_w": 1.1428571428571428,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/2/9/2",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2194.4725,
+2276.74,
+2218.7275,
+2305.2475
+],
+"sp": 15.75,
+"w": 1.540000000000007,
+"h": 1.8100000000000105,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5238095238095237,
+"ink_h": 1.4603174603174602,
+"slack_w": 0.016190476190483194,
+"slack_h": 0.34968253968255025,
+"comp_w": 4.507936507936508,
+"comp_h": 4.507936507936508,
+"comp_in": 0.2223639455782313,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/2/12/0",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2532.785,
+2308.7125,
+2558.3,
+2343.3625
+],
+"sp": 15.75,
+"w": 1.6200000000000208,
+"h": 2.200000000000006,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 2.1587301587301586,
+"slack_w": 0.03269841269843354,
+"slack_h": 0.04126984126984734,
+"comp_w": 7.682539682539683,
+"comp_h": 8.253968253968255,
+"comp_in": 0.1656294877932025,
+"stem_in_box": 2.1587301587301586,
+"n_marks": 1,
+"dense_h": 2.1587301587301586,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/0/2/13/9",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1735.5425,
+714.37,
+1758.695,
+770.9125
+],
+"sp": 15.75,
+"w": 1.4699999999999949,
+"h": 3.590000000000001,
+"n_notes": 1,
+"pitches": [
+"C-15"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 3.3015873015873014,
+"slack_w": 0.00968253968253463,
+"slack_h": 0.2884126984126998,
+"comp_w": 6.7936507936507935,
+"comp_h": 9.587301587301587,
+"comp_in": 0.1985373781148429,
+"stem_in_box": 3.3015873015873014,
+"n_marks": 1,
+"dense_h": 2.4126984126984126,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/2/1/1",
+"page": 8,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+696.8,
+2245.88,
+727.52,
+2281.72
+],
+"sp": 16.0,
+"w": 1.9200000000000017,
+"h": 2.2399999999999807,
+"n_notes": 2,
+"pitches": [
+"C5",
+"C5"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.8125,
+"ink_h": 2.25,
+"slack_w": 0.1075000000000017,
+"slack_h": -0.010000000000019327,
+"comp_w": 1.8125,
+"comp_h": 6.6875,
+"comp_in": 0.5336617405582923,
+"stem_in_box": 1.6875,
+"n_marks": 1,
+"dense_h": 0.6875,
+"dense_w": 0.9375,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/2/3/2",
+"page": 8,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+839.68,
+2252.76,
+864.64,
+2282.04
+],
+"sp": 16.0,
+"w": 1.5600000000000023,
+"h": 1.829999999999984,
+"n_notes": 2,
+"pitches": [
+"B-14",
+"B-14"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5625,
+"ink_h": 1.8125,
+"slack_w": -0.0024999999999977263,
+"slack_h": 0.017499999999984084,
+"comp_w": 3.8125,
+"comp_h": 7.9375,
+"comp_in": 0.20772442588726514,
+"stem_in_box": 1.5625,
+"n_marks": 1,
+"dense_h": 1.5625,
+"dense_w": 1.5,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/2/10/6",
+"page": 9,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1806.4975,
+732.225,
+1841.1475,
+761.3625
+],
+"sp": 15.75,
+"w": 2.200000000000006,
+"h": 1.8499999999999956,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.2222222222222223,
+"ink_h": 1.8412698412698412,
+"slack_w": -0.02222222222221637,
+"slack_h": 0.00873015873015448,
+"comp_w": 8.253968253968255,
+"comp_h": 7.873015873015873,
+"comp_in": 0.1336797354747284,
+"stem_in_box": 1.8412698412698412,
+"n_marks": 1,
+"dense_h": 1.8412698412698412,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/0/2/1/5",
+"page": 10,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+660.2375,
+732.6800000000001,
+699.6125,
+753.9425
+],
+"sp": 15.75,
+"w": 2.5,
+"h": 1.3499999999999956,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.5396825396825395,
+"ink_h": 1.3333333333333333,
+"slack_w": -0.03968253968253954,
+"slack_h": 0.01666666666666239,
+"comp_w": 8.507936507936508,
+"comp_h": 7.365079365079365,
+"comp_in": 0.15194185782421077,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 2.5396825396825395,
+"group": "big",
+"kind": "wide_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/2/0/10",
+"page": 10,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+523.7875,
+2366.605,
+551.665,
+2441.1025
+],
+"sp": 15.75,
+"w": 1.7699999999999962,
+"h": 4.729999999999997,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7142857142857142,
+"ink_h": 4.444444444444445,
+"slack_w": 0.05571428571428205,
+"slack_h": 0.28555555555555223,
+"comp_w": 1.7777777777777777,
+"comp_h": 4.571428571428571,
+"comp_in": 0.9894894894894894,
+"stem_in_box": 4.444444444444445,
+"n_marks": 1,
+"dense_h": 2.2857142857142856,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/2/6/4",
+"page": 10,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1387.8075,
+2406.295,
+1412.3775,
+2436.6925
+],
+"sp": 15.75,
+"w": 1.5600000000000105,
+"h": 1.9300000000000024,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.9682539682539681,
+"slack_w": 0.09968253968255025,
+"slack_h": -0.038253968253965764,
+"comp_w": 2.0317460317460316,
+"comp_h": 5.26984126984127,
+"comp_in": 0.43451652386780903,
+"stem_in_box": 1.9682539682539681,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 1.1428571428571428,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/2/16/7",
+"page": 11,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2584.8575,
+2235.075,
+2616.515,
+2253.5025
+],
+"sp": 15.75,
+"w": 2.0099999999999874,
+"h": 1.170000000000015,
+"n_notes": 1,
+"pitches": [
+"A4"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0317460317460316,
+"ink_h": 1.2063492063492063,
+"slack_w": -0.02174603174604428,
+"slack_h": -0.036349206349191254,
+"comp_w": 5.523809523809524,
+"comp_h": 7.174603174603175,
+"comp_in": 0.1177007299270073,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 1,
+"dense_h": 1.0158730158730158,
+"dense_w": 1.3968253968253967,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/2/7/3",
+"page": 16,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1385.48,
+666.88,
+1412.68,
+696.16
+],
+"sp": 16.0,
+"w": 1.7000000000000028,
+"h": 1.8299999999999983,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.75,
+"ink_h": 1.75,
+"slack_w": -0.04999999999999716,
+"slack_h": 0.0799999999999983,
+"comp_w": 5.6875,
+"comp_h": 7.9375,
+"comp_in": 0.2643020594965675,
+"stem_in_box": 1.75,
+"n_marks": 1,
+"dense_h": 1.6875,
+"dense_w": 1.5,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/2/11/4",
+"page": 16,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2152.5225,
+2351.795,
+2175.8325,
+2384.3975
+],
+"sp": 15.75,
+"w": 1.4799999999999964,
+"h": 2.0699999999999976,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.6507936507936507,
+"slack_w": 0.019682539682536193,
+"slack_h": 0.4192063492063469,
+"comp_w": 1.6507936507936507,
+"comp_h": 4.380952380952381,
+"comp_in": 0.7150259067357513,
+"stem_in_box": 1.6507936507936507,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "loose",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/3/14/6",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+2475.8375,
+2579.475,
+2507.0225,
+2626.725
+],
+"sp": 15.75,
+"w": 1.9799999999999964,
+"h": 3.0,
+"n_notes": 2,
+"pitches": [
+"G3",
+"G3"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 3.0476190476190474,
+"slack_w": 0.011746031746028285,
+"slack_h": -0.04761904761904745,
+"comp_w": 8.063492063492063,
+"comp_h": 7.428571428571429,
+"comp_in": 0.2589239524055872,
+"stem_in_box": 2.3492063492063493,
+"n_marks": 1,
+"dense_h": 2.9206349206349205,
+"dense_w": 1.9682539682539681,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/3/0/8",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+427.515,
+888.5,
+445.34000000000003,
+917.64
+],
+"sp": 15.5,
+"w": 1.150000000000003,
+"h": 1.8799999999999992,
+"n_notes": 1,
+"pitches": [
+"B-12"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.096774193548387,
+"ink_h": 1.935483870967742,
+"slack_w": 0.05322580645161601,
+"slack_h": -0.055483870967742766,
+"comp_w": 7.161290322580645,
+"comp_h": 4.774193548387097,
+"comp_in": 0.11373873873873874,
+"stem_in_box": 1.935483870967742,
+"n_marks": 1,
+"dense_h": 1.1612903225806452,
+"dense_w": 1.032258064516129,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/3/3/5",
+"page": 4,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+912.21,
+881.06,
+936.39,
+909.115
+],
+"sp": 15.5,
+"w": 1.5599999999999967,
+"h": 1.810000000000004,
+"n_notes": 1,
+"pitches": [
+"B-12"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5483870967741935,
+"ink_h": 1.8064516129032258,
+"slack_w": 0.011612903225803217,
+"slack_h": 0.0035483870967782938,
+"comp_w": 7.548387096774194,
+"comp_h": 6.903225806451613,
+"comp_in": 0.13103802672147996,
+"stem_in_box": 1.8064516129032258,
+"n_marks": 1,
+"dense_h": 1.6774193548387097,
+"dense_w": 1.5483870967741935,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/3/6/2",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1344.87,
+814.255,
+1375.405,
+835.645
+],
+"sp": 15.5,
+"w": 1.9700000000000053,
+"h": 1.3799999999999992,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.935483870967742,
+"ink_h": 1.4193548387096775,
+"slack_w": 0.03451612903226331,
+"slack_h": -0.039354838709678264,
+"comp_w": 8.0,
+"comp_h": 7.354838709677419,
+"comp_in": 0.12323943661971831,
+"stem_in_box": 1.4193548387096775,
+"n_marks": 1,
+"dense_h": 1.3548387096774193,
+"dense_w": 1.6774193548387097,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/3/7/5",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1458.42,
+813.48,
+1488.18,
+835.49
+],
+"sp": 15.5,
+"w": 1.9199999999999995,
+"h": 1.4199999999999995,
+"n_notes": 1,
+"pitches": [
+"D4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.935483870967742,
+"ink_h": 1.3548387096774193,
+"slack_w": -0.015483870967742508,
+"slack_h": 0.06516129032258022,
+"comp_w": 7.935483870967742,
+"comp_h": 7.419354838709677,
+"comp_in": 0.11764705882352941,
+"stem_in_box": 1.3548387096774193,
+"n_marks": 1,
+"dense_h": 1.2903225806451613,
+"dense_w": 1.6774193548387097,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/3/11/9",
+"page": 4,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2088.335,
+855.33,
+2112.205,
+883.85
+],
+"sp": 15.5,
+"w": 1.539999999999993,
+"h": 1.8399999999999987,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5483870967741935,
+"ink_h": 1.8709677419354838,
+"slack_w": -0.008387096774200575,
+"slack_h": -0.030967741935485016,
+"comp_w": 2.5806451612903225,
+"comp_h": 7.806451612903226,
+"comp_in": 0.29689703808180534,
+"stem_in_box": 1.8709677419354838,
+"n_marks": 1,
+"dense_h": 1.4193548387096775,
+"dense_w": 1.4838709677419355,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/3/3/8",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+976.0125,
+2601.845,
+1030.1925,
+2620.9025
+],
+"sp": 15.75,
+"w": 3.440000000000004,
+"h": 1.210000000000022,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 3.4285714285714284,
+"ink_h": 1.2063492063492063,
+"slack_w": 0.011428571428575562,
+"slack_h": 0.0036507936508156646,
+"comp_w": 2.4761904761904763,
+"comp_h": 3.6825396825396823,
+"comp_in": 0.3117437722419929,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 2,
+"dense_h": 1.2063492063492063,
+"dense_w": 2.2222222222222223,
+"group": "big",
+"kind": "wide_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/3/3/6",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+991.605,
+2580.11,
+1024.365,
+2602.9475
+],
+"sp": 15.75,
+"w": 2.0799999999999996,
+"h": 1.4500000000000057,
+"n_notes": 1,
+"pitches": [
+"G3"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.4603174603174602,
+"slack_w": 0.11174603174603148,
+"slack_h": -0.010317460317454508,
+"comp_w": 2.4761904761904763,
+"comp_h": 3.6825396825396823,
+"comp_in": 0.31743772241992885,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "edge",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/3/4/8",
+"page": 4,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1059.105,
+2559.005,
+1089.8175,
+2580.74
+],
+"sp": 15.75,
+"w": 1.9500000000000057,
+"h": 1.3799999999999792,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.3968253968253967,
+"slack_w": -0.018253968253962416,
+"slack_h": -0.016825396825417505,
+"comp_w": 7.936507936507937,
+"comp_h": 7.238095238095238,
+"comp_in": 0.1161662817551963,
+"stem_in_box": 1.3968253968253967,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.7777777777777777,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/3/8/18",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1742.4725,
+846.6875,
+1793.5025,
+875.51
+],
+"sp": 15.75,
+"w": 3.2399999999999984,
+"h": 1.8299999999999994,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 3.3015873015873014,
+"ink_h": 1.8412698412698412,
+"slack_w": -0.06158730158730297,
+"slack_h": -0.011269841269841763,
+"comp_w": 9.26984126984127,
+"comp_h": 7.873015873015873,
+"comp_in": 0.15211062590975255,
+"stem_in_box": 1.8412698412698412,
+"n_marks": 1,
+"dense_h": 1.8412698412698412,
+"dense_w": 2.7301587301587302,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/3/10/9",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2236.155,
+2430.04,
+2271.96,
+2453.29
+],
+"sp": 15.5,
+"w": 2.3099999999999894,
+"h": 1.5,
+"n_notes": 1,
+"pitches": [
+"G-13"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.3225806451612905,
+"ink_h": 1.4838709677419355,
+"slack_w": -0.012580645161301085,
+"slack_h": 0.016129032258064502,
+"comp_w": 5.67741935483871,
+"comp_h": 7.096774193548387,
+"comp_in": 0.18332704639758582,
+"stem_in_box": 1.4838709677419355,
+"n_marks": 1,
+"dense_h": 1.4838709677419355,
+"dense_w": 1.7419354838709677,
+"group": "big",
+"kind": "edge",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/0/3/2/1",
+"page": 8,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+693.1375,
+824.94,
+723.85,
+845.415
+],
+"sp": 15.75,
+"w": 1.9499999999999986,
+"h": 1.2999999999999943,
+"n_notes": 1,
+"pitches": [
+"E-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.2698412698412698,
+"slack_w": -0.01825396825396952,
+"slack_h": 0.0301587301587245,
+"comp_w": 7.936507936507937,
+"comp_h": 7.365079365079365,
+"comp_in": 0.10681307711504867,
+"stem_in_box": 1.2698412698412698,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.6507936507936507,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/0/3/4/4",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+879.8325,
+872.3475,
+919.8375,
+896.9175
+],
+"sp": 15.75,
+"w": 2.5399999999999996,
+"h": 1.5600000000000032,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.5396825396825395,
+"ink_h": 1.5873015873015872,
+"slack_w": 0.0003174603174600499,
+"slack_h": -0.02730158730158405,
+"comp_w": 8.571428571428571,
+"comp_h": 7.111111111111111,
+"comp_in": 0.11890960363465455,
+"stem_in_box": 1.5873015873015872,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 2.3492063492063493,
+"group": "big",
+"kind": "wide_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/0/3/9/4",
+"page": 8,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1319.5025,
+845.73,
+1349.7425,
+870.1425
+],
+"sp": 15.75,
+"w": 1.9200000000000006,
+"h": 1.5500000000000014,
+"n_notes": 1,
+"pitches": [
+"B13"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.5238095238095237,
+"slack_w": 0.015238095238095939,
+"slack_h": 0.026190476190477652,
+"comp_w": 7.936507936507937,
+"comp_h": 7.619047619047619,
+"comp_in": 0.13254628387442985,
+"stem_in_box": 1.5238095238095237,
+"n_marks": 1,
+"dense_h": 1.5238095238095237,
+"dense_w": 1.8412698412698412,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/3/1/2",
+"page": 8,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+701.92,
+2412.76,
+724.64,
+2445.72
+],
+"sp": 16.0,
+"w": 1.4200000000000017,
+"h": 2.059999999999974,
+"n_notes": 1,
+"pitches": [
+"C3"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.375,
+"ink_h": 2.0625,
+"slack_w": 0.045000000000001705,
+"slack_h": -0.002500000000026148,
+"comp_w": 1.625,
+"comp_h": 6.875,
+"comp_in": 0.38967136150234744,
+"stem_in_box": 2.0625,
+"n_marks": 1,
+"dense_h": 0.9375,
+"dense_w": 1.1875,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/3/3/5",
+"page": 8,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+837.92,
+2374.36,
+868.16,
+2407.0
+],
+"sp": 16.0,
+"w": 1.8900000000000006,
+"h": 2.039999999999992,
+"n_notes": 1,
+"pitches": [
+"A-13"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5625,
+"ink_h": 2.0625,
+"slack_w": 0.32750000000000057,
+"slack_h": -0.022500000000007958,
+"comp_w": 4.8125,
+"comp_h": 8.125,
+"comp_in": 0.22316043425814233,
+"stem_in_box": 1.625,
+"n_marks": 1,
+"dense_h": 1.3125,
+"dense_w": 1.4375,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/3/16/9",
+"page": 8,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2220.36,
+2433.72,
+2253.16,
+2451.96
+],
+"sp": 16.0,
+"w": 2.049999999999983,
+"h": 1.1400000000000148,
+"n_notes": 1,
+"pitches": [
+"A-12"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0625,
+"ink_h": 1.125,
+"slack_w": -0.012500000000017053,
+"slack_h": 0.01500000000001478,
+"comp_w": 5.0625,
+"comp_h": 6.125,
+"comp_in": 0.11360992632803413,
+"stem_in_box": 1.125,
+"n_marks": 1,
+"dense_h": 0.625,
+"dense_w": 1.5,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/3/1/15",
+"page": 9,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+718.2025,
+829.6525,
+792.07,
+870.6025
+],
+"sp": 15.75,
+"w": 4.690000000000004,
+"h": 2.5999999999999956,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 4.634920634920635,
+"ink_h": 2.6031746031746033,
+"slack_w": 0.055079365079368614,
+"slack_h": -0.003174603174607604,
+"comp_w": 8.380952380952381,
+"comp_h": 8.634920634920634,
+"comp_in": 0.2149431510557661,
+"stem_in_box": 2.6031746031746033,
+"n_marks": 1,
+"dense_h": 1.7777777777777777,
+"dense_w": 3.8095238095238093,
+"group": "big",
+"kind": "tall_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/3/11/5",
+"page": 10,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+2189.875,
+2471.8925,
+2221.2175,
+2483.705
+],
+"sp": 15.75,
+"w": 1.9900000000000126,
+"h": 0.75,
+"n_notes": 1,
+"pitches": [
+"E-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 0.7619047619047619,
+"slack_w": 0.021746031746044503,
+"slack_h": -0.011904761904761862,
+"comp_w": 2.1587301587301586,
+"comp_h": 3.746031746031746,
+"comp_in": 0.2776659959758551,
+"stem_in_box": 0.7619047619047619,
+"n_marks": 1,
+"dense_h": 0.7619047619047619,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/2/4/6",
+"page": 11,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+944.885,
+751.42,
+972.1325,
+813.6325
+],
+"sp": 15.75,
+"w": 1.7300000000000038,
+"h": 3.950000000000006,
+"n_notes": 1,
+"pitches": [
+"A-12"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7142857142857142,
+"ink_h": 4.0,
+"slack_w": 0.015714285714289566,
+"slack_h": -0.04999999999999405,
+"comp_w": 3.1746031746031744,
+"comp_h": 6.5396825396825395,
+"comp_in": 0.6512890094979648,
+"stem_in_box": 3.0476190476190474,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/2/6/2",
+"page": 11,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1163.83,
+738.82,
+1198.165,
+806.0725
+],
+"sp": 15.75,
+"w": 2.1800000000000024,
+"h": 4.269999999999996,
+"n_notes": 1,
+"pitches": [
+"C3"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.1587301587301586,
+"ink_h": 4.253968253968254,
+"slack_w": 0.02126984126984377,
+"slack_h": 0.016031746031742067,
+"comp_w": 2.5396825396825395,
+"comp_h": 6.73015873015873,
+"comp_in": 0.7067039106145251,
+"stem_in_box": 2.5396825396825395,
+"n_marks": 2,
+"dense_h": 1.3968253968253967,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/2/7/0",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+1301.2625,
+713.4625,
+1333.55,
+809.065
+],
+"sp": 15.75,
+"w": 2.049999999999994,
+"h": 6.070000000000005,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7777777777777777,
+"ink_h": 5.904761904761905,
+"slack_w": 0.27222222222221637,
+"slack_h": 0.16523809523809962,
+"comp_w": 4.761904761904762,
+"comp_h": 6.73015873015873,
+"comp_in": 0.6735537190082644,
+"stem_in_box": 3.6825396825396823,
+"n_marks": 2,
+"dense_h": 1.3968253968253967,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/2/15/8",
+"page": 11,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+2271.8625,
+748.4275,
+2303.205,
+780.5575
+],
+"sp": 15.75,
+"w": 1.9899999999999838,
+"h": 2.0399999999999996,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.8412698412698412,
+"ink_h": 1.6507936507936507,
+"slack_w": 0.14873015873014261,
+"slack_h": 0.3892063492063489,
+"comp_w": 1.8412698412698412,
+"comp_h": 4.0,
+"comp_in": 0.7231638418079096,
+"stem_in_box": 1.6507936507936507,
+"n_marks": 1,
+"dense_h": 1.5238095238095237,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/3/3/1",
+"page": 11,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+877.2775,
+2359.645,
+916.6525,
+2426.2675
+],
+"sp": 15.75,
+"w": 2.5,
+"h": 4.229999999999997,
+"n_notes": 1,
+"pitches": [
+"A-13"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.4761904761904763,
+"ink_h": 4.190476190476191,
+"slack_w": 0.023809523809523725,
+"slack_h": 0.039523809523806186,
+"comp_w": 1.9682539682539681,
+"comp_h": 5.523809523809524,
+"comp_in": 0.8821917808219178,
+"stem_in_box": 3.619047619047619,
+"n_marks": 2,
+"dense_h": 2.9206349206349205,
+"dense_w": 1.7777777777777777,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/3/2/7",
+"page": 16,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+897.255,
+2483.74,
+919.62,
+2517.76
+],
+"sp": 15.75,
+"w": 1.4200000000000006,
+"h": 2.1600000000000277,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 1.8412698412698412,
+"slack_w": 0.023174603174603847,
+"slack_h": 0.3187301587301865,
+"comp_w": 4.507936507936508,
+"comp_h": 4.825396825396825,
+"comp_in": 0.2605703048180924,
+"stem_in_box": 1.8412698412698412,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/3/10/2",
+"page": 16,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2008.515,
+2486.26,
+2031.3525,
+2516.185
+],
+"sp": 15.75,
+"w": 1.4499999999999913,
+"h": 1.8999999999999826,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 1.7142857142857142,
+"slack_w": 0.05317460317459455,
+"slack_h": 0.1857142857142684,
+"comp_w": 1.5238095238095237,
+"comp_h": 4.317460317460317,
+"comp_in": 0.7393767705382436,
+"stem_in_box": 1.7142857142857142,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.3968253968253967,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/4/7/5",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+1308.6325,
+1010.7525,
+1334.1475,
+1040.52
+],
+"sp": 15.75,
+"w": 1.6200000000000063,
+"h": 1.8899999999999955,
+"n_notes": 2,
+"pitches": [
+"D5",
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 1.9047619047619047,
+"slack_w": 0.03269841269841911,
+"slack_h": -0.014761904761909195,
+"comp_w": 7.682539682539683,
+"comp_h": 7.365079365079365,
+"comp_in": 0.14785242290748898,
+"stem_in_box": 1.7142857142857142,
+"n_marks": 1,
+"dense_h": 1.9047619047619047,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/4/0/4",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+518.415,
+1089.4850000000001,
+548.655,
+1108.5425
+],
+"sp": 15.75,
+"w": 1.9200000000000006,
+"h": 1.209999999999993,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.2698412698412698,
+"slack_w": -0.04825396825396755,
+"slack_h": -0.05984126984127669,
+"comp_w": 2.2222222222222223,
+"comp_h": 4.317460317460317,
+"comp_in": 0.5458937198067633,
+"stem_in_box": 1.2698412698412698,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.7777777777777777,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/4/1/5",
+"page": 4,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+615.94,
+1082.7125,
+650.59,
+1122.7175
+],
+"sp": 15.75,
+"w": 2.1999999999999984,
+"h": 2.5399999999999925,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.2222222222222223,
+"ink_h": 2.5396825396825395,
+"slack_w": -0.02222222222222392,
+"slack_h": 0.00031746031745294445,
+"comp_w": 8.253968253968255,
+"comp_h": 8.253968253968255,
+"comp_in": 0.2308550185873606,
+"stem_in_box": 1.6507936507936507,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.9682539682539681,
+"group": "big",
+"kind": "wide_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/4/4/1",
+"page": 4,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1052.7025,
+1082.87,
+1084.5175,
+1106.18
+],
+"sp": 15.75,
+"w": 2.019999999999989,
+"h": 1.4800000000000109,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0317460317460316,
+"ink_h": 1.4603174603174602,
+"slack_w": -0.011746031746042718,
+"slack_h": 0.019682539682550626,
+"comp_w": 8.063492063492063,
+"comp_h": 7.238095238095238,
+"comp_in": 0.1521135452020981,
+"stem_in_box": 1.3968253968253967,
+"n_marks": 1,
+"dense_h": 1.3968253968253967,
+"dense_w": 1.7142857142857142,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/4/5/7",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1202.395,
+2774.1025,
+1237.2025,
+2790.955
+],
+"sp": 15.75,
+"w": 2.2100000000000075,
+"h": 1.0699999999999976,
+"n_notes": 1,
+"pitches": [
+"D4"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.0793650793650793,
+"slack_w": 0.24174603174603937,
+"slack_h": -0.009365079365081685,
+"comp_w": 2.9206349206349205,
+"comp_h": 5.587301587301587,
+"comp_in": 0.20521446593776282,
+"stem_in_box": 1.0793650793650793,
+"n_marks": 1,
+"dense_h": 0.4444444444444444,
+"dense_w": 0.4444444444444444,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/0/4/0/9",
+"page": 10,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+525.6925,
+988.9975,
+550.735,
+1044.7525
+],
+"sp": 15.75,
+"w": 1.5900000000000012,
+"h": 3.540000000000007,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 3.5555555555555554,
+"slack_w": 0.0026984126984139767,
+"slack_h": -0.015555555555548217,
+"comp_w": 7.619047619047619,
+"comp_h": 6.73015873015873,
+"comp_in": 0.17508813160987075,
+"stem_in_box": 3.0476190476190474,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/4/1/2",
+"page": 10,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+656.71,
+2667.945,
+684.43,
+2698.6575
+],
+"sp": 15.75,
+"w": 1.7599999999999945,
+"h": 1.9499999999999769,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7142857142857142,
+"ink_h": 1.9682539682539681,
+"slack_w": 0.04571428571428027,
+"slack_h": -0.018253968253991282,
+"comp_w": 6.666666666666667,
+"comp_h": 5.396825396825397,
+"comp_in": 0.3010909090909091,
+"stem_in_box": 1.9682539682539681,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/5/11/1",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2448.4775,
+2828.1675,
+2478.56,
+2851.95
+],
+"sp": 15.75,
+"w": 1.9099999999999988,
+"h": 1.5099999999999874,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.5238095238095237,
+"slack_w": -0.058253968253969335,
+"slack_h": -0.013809523809536373,
+"comp_w": 7.936507936507937,
+"comp_h": 7.301587301587301,
+"comp_in": 0.11238880451290953,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.7777777777777777,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/6/4/2",
+"page": 9,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1113.79,
+1233.5025,
+1136.785,
+1264.6875
+],
+"sp": 15.75,
+"w": 1.4600000000000075,
+"h": 1.9799999999999964,
+"n_notes": 1,
+"pitches": [
+"A3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 1.9682539682539681,
+"slack_w": 0.06317460317461077,
+"slack_h": 0.011746031746028285,
+"comp_w": 2.2222222222222223,
+"comp_h": 4.507936507936508,
+"comp_in": 0.4326923076923077,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 0.5714285714285714,
+"dense_w": 1.2063492063492063,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/1/5/5/9",
+"page": 9,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1494.2,
+2894.4,
+1525.88,
+2937.12
+],
+"sp": 16.0,
+"w": 1.980000000000004,
+"h": 2.6699999999999875,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0,
+"ink_h": 2.6875,
+"slack_w": -0.01999999999999602,
+"slack_h": -0.017500000000012506,
+"comp_w": 8.0,
+"comp_h": 8.75,
+"comp_in": 0.13898858075040782,
+"stem_in_box": 1.6875,
+"n_marks": 1,
+"dense_h": 1.0,
+"dense_w": 1.125,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/6/11/3",
+"page": 10,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+2196.6475,
+2924.29,
+2227.5175,
+2932.3225
+],
+"sp": 15.75,
+"w": 1.959999999999993,
+"h": 0.5100000000000162,
+"n_notes": 1,
+"pitches": [
+"B3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 0.5079365079365079,
+"slack_w": 0.5631746031745963,
+"slack_h": 0.00206349206350831,
+"comp_w": 2.2857142857142856,
+"comp_h": 3.873015873015873,
+"comp_in": 0.19642857142857142,
+"stem_in_box": 0.5079365079365079,
+"n_marks": 1,
+"dense_h": 0.5079365079365079,
+"dense_w": 0.6349206349206349,
+"group": "big",
+"kind": "loose",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/6/7/4",
+"page": 16,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1388.625,
+1280.21,
+1414.77,
+1310.45
+],
+"sp": 15.75,
+"w": 1.6599999999999988,
+"h": 1.9200000000000006,
+"n_notes": 1,
+"pitches": [
+"A2"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6507936507936507,
+"ink_h": 1.9047619047619047,
+"slack_w": 0.009206349206348108,
+"slack_h": 0.015238095238095939,
+"comp_w": 1.6507936507936507,
+"comp_h": 2.984126984126984,
+"comp_in": 0.8232662192393736,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 1.5238095238095237,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/7/7/1",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1305.76,
+1484.12,
+1336.64,
+1506.04
+],
+"sp": 16.0,
+"w": 1.9300000000000068,
+"h": 1.3700000000000045,
+"n_notes": 1,
+"pitches": [
+"F4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9375,
+"ink_h": 1.0,
+"slack_w": -0.007499999999993179,
+"slack_h": 0.37000000000000455,
+"comp_w": 5.0,
+"comp_h": 7.0,
+"comp_in": 0.11068909386869234,
+"stem_in_box": 1.0,
+"n_marks": 1,
+"dense_h": 0.5625,
+"dense_w": 0.8125,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/7/10/3",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1654.04,
+1476.44,
+1702.52,
+1521.4
+],
+"sp": 16.0,
+"w": 3.030000000000001,
+"h": 2.8100000000000023,
+"n_notes": 1,
+"pitches": [
+"F4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 3.0625,
+"ink_h": 2.8125,
+"slack_w": -0.03249999999999886,
+"slack_h": -0.0024999999999977263,
+"comp_w": 6.0,
+"comp_h": 8.4375,
+"comp_in": 0.2231100184388445,
+"stem_in_box": 1.5,
+"n_marks": 1,
+"dense_h": 0.875,
+"dense_w": 0.9375,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/7/4/15",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1287.315,
+3033.2575,
+1306.53,
+3072.475
+],
+"sp": 15.75,
+"w": 1.2199999999999949,
+"h": 2.489999999999984,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2698412698412698,
+"ink_h": 2.4761904761904763,
+"slack_w": -0.049841269841274904,
+"slack_h": 0.013809523809507507,
+"comp_w": 7.238095238095238,
+"comp_h": 6.857142857142857,
+"comp_in": 0.20028358738036156,
+"stem_in_box": 2.4761904761904763,
+"n_marks": 1,
+"dense_h": 2.0952380952380953,
+"dense_w": 1.2063492063492063,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/7/11/0",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2450.0525,
+2994.8275,
+2480.45,
+3015.46
+],
+"sp": 15.75,
+"w": 1.9300000000000024,
+"h": 1.3100000000000105,
+"n_notes": 1,
+"pitches": [
+"F6"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.2063492063492063,
+"slack_w": 0.025238095238097724,
+"slack_h": 0.10365079365080421,
+"comp_w": 7.936507936507937,
+"comp_h": 4.253968253968254,
+"comp_in": 0.2811480756686236,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 1,
+"dense_h": 1.2063492063492063,
+"dense_w": 1.7142857142857142,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/0/7/5/3",
+"page": 9,
+"cls": "noteheadHalfInSpace",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+1197.685,
+1394.21,
+1223.88,
+1423.195
+],
+"sp": 15.5,
+"w": 1.6900000000000106,
+"h": 1.8699999999999934,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6129032258064515,
+"ink_h": 1.8709677419354838,
+"slack_w": 0.07709677419355909,
+"slack_h": -0.0009677419354903183,
+"comp_w": 1.7419354838709677,
+"comp_h": 4.387096774193548,
+"comp_in": 0.625,
+"stem_in_box": 1.3548387096774193,
+"n_marks": 1,
+"dense_h": 1.2903225806451613,
+"dense_w": 1.2903225806451613,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/9/1/6/5/16",
+"page": 9,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1505.54,
+3187.5475,
+1525.8575,
+3216.685
+],
+"sp": 15.75,
+"w": 1.290000000000007,
+"h": 1.8499999999999885,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2698412698412698,
+"ink_h": 1.8412698412698412,
+"slack_w": 0.020158730158737148,
+"slack_h": 0.008730158730147375,
+"comp_w": 7.301587301587301,
+"comp_h": 7.746031746031746,
+"comp_in": 0.15224405984159578,
+"stem_in_box": 1.8412698412698412,
+"n_marks": 1,
+"dense_h": 1.8412698412698412,
+"dense_w": 1.2698412698412698,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/8/2/15",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+792.88,
+1572.84,
+818.0,
+1607.4
+],
+"sp": 16.0,
+"w": 1.5700000000000003,
+"h": 2.160000000000011,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5625,
+"ink_h": 2.125,
+"slack_w": 0.007500000000000284,
+"slack_h": 0.0350000000000108,
+"comp_w": 7.6875,
+"comp_h": 8.25,
+"comp_in": 0.10981098109810981,
+"stem_in_box": 2.125,
+"n_marks": 1,
+"dense_h": 1.125,
+"dense_w": 1.375,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/8/3/4",
+"page": 2,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+904.0,
+1566.92,
+926.88,
+1678.28
+],
+"sp": 16.0,
+"w": 1.4299999999999997,
+"h": 6.959999999999994,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4375,
+"ink_h": 6.6875,
+"slack_w": -0.007500000000000284,
+"slack_h": 0.27249999999999375,
+"comp_w": 7.4375,
+"comp_h": 13.0625,
+"comp_in": 0.2794491525423729,
+"stem_in_box": 6.6875,
+"n_marks": 1,
+"dense_h": 3.0625,
+"dense_w": 1.4375,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/1/8/7/9",
+"page": 4,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1539.68,
+3267.2,
+1570.72,
+3296.64
+],
+"sp": 16.0,
+"w": 1.9399999999999977,
+"h": 1.8400000000000034,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9375,
+"ink_h": 1.8125,
+"slack_w": 0.0024999999999977263,
+"slack_h": 0.02750000000000341,
+"comp_w": 6.0625,
+"comp_h": 5.875,
+"comp_in": 0.17006388804380895,
+"stem_in_box": 1.8125,
+"n_marks": 1,
+"dense_h": 1.6875,
+"dense_w": 1.8125,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/6/12/5",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2455.01,
+1286.225,
+2477.5325,
+1327.49
+],
+"sp": 15.75,
+"w": 1.4299999999999735,
+"h": 2.6200000000000063,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 2.5396825396825395,
+"slack_w": -0.030317460317486722,
+"slack_h": 0.08031746031746678,
+"comp_w": 7.428571428571429,
+"comp_h": 8.507936507936508,
+"comp_in": 0.17902251510159253,
+"stem_in_box": 2.4761904761904763,
+"n_marks": 1,
+"dense_h": 2.0317460317460316,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/8/11/13",
+"page": 6,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2433.315,
+3166.63,
+2454.97,
+3206.1275
+],
+"sp": 15.25,
+"w": 1.4199999999999833,
+"h": 2.5899999999999963,
+"n_notes": 1,
+"pitches": [
+"F5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4426229508196722,
+"ink_h": 2.557377049180328,
+"slack_w": -0.022622950819688903,
+"slack_h": 0.03262295081966826,
+"comp_w": 7.344262295081967,
+"comp_h": 8.59016393442623,
+"comp_in": 0.11507415055378262,
+"stem_in_box": 2.4918032786885247,
+"n_marks": 1,
+"dense_h": 2.2950819672131146,
+"dense_w": 1.4426229508196722,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/0/8/6/3",
+"page": 10,
+"cls": "noteheadHalfOnLine",
+"reader": "yolo_rescue_lowconf",
+"score": null,
+"box": [
+1418.585,
+1585.1925,
+1445.36,
+1623.78
+],
+"sp": 15.75,
+"w": 1.6999999999999913,
+"h": 2.4499999999999913,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6507936507936507,
+"ink_h": 2.4761904761904763,
+"slack_w": 0.049206349206340594,
+"slack_h": -0.02619047619048498,
+"comp_w": 1.6507936507936507,
+"comp_h": 4.9523809523809526,
+"comp_in": 0.7350565428109854,
+"stem_in_box": 1.7777777777777777,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/1/8/12/2",
+"page": 10,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2421.2,
+3262.2,
+2443.6,
+3294.36
+],
+"sp": 16.0,
+"w": 1.4000000000000057,
+"h": 2.0100000000000193,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4375,
+"ink_h": 2.0,
+"slack_w": -0.037499999999994316,
+"slack_h": 0.010000000000019327,
+"comp_w": 7.4375,
+"comp_h": 8.0625,
+"comp_in": 0.09749806551457313,
+"stem_in_box": 2.0,
+"n_marks": 1,
+"dense_h": 1.0625,
+"dense_w": 1.4375,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/6/6/2",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1164.46,
+1340.855,
+1192.0225,
+1369.6775
+],
+"sp": 15.75,
+"w": 1.75,
+"h": 1.8299999999999994,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.7777777777777777,
+"ink_h": 1.8412698412698412,
+"slack_w": -0.02777777777777768,
+"slack_h": -0.011269841269841763,
+"comp_w": 4.825396825396825,
+"comp_h": 5.714285714285714,
+"comp_in": 0.4047058823529412,
+"stem_in_box": 1.5238095238095237,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 1.2063492063492063,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/7/2/1",
+"page": 11,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+777.995,
+3043.9625,
+803.51,
+3073.415
+],
+"sp": 15.75,
+"w": 1.6199999999999992,
+"h": 1.869999999999992,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 1.8412698412698412,
+"slack_w": 0.032698412698412005,
+"slack_h": 0.028730158730150723,
+"comp_w": 1.6507936507936507,
+"comp_h": 3.9365079365079363,
+"comp_in": 0.7348754448398577,
+"stem_in_box": 1.5238095238095237,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.5873015873015872,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/8/2/4",
+"page": 16,
+"cls": "noteheadBlackOnLine",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+747.705,
+1498.07,
+767.865,
+1528.1525
+],
+"sp": 15.75,
+"w": 1.279999999999998,
+"h": 1.9099999999999988,
+"n_notes": 1,
+"pitches": [
+"E-15"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2063492063492063,
+"ink_h": 1.9047619047619047,
+"slack_w": 0.07365079365079175,
+"slack_h": 0.005238095238094154,
+"comp_w": 2.5396825396825395,
+"comp_h": 4.253968253968254,
+"comp_in": 0.3859191655801825,
+"stem_in_box": 1.9047619047619047,
+"n_marks": 1,
+"dense_h": 1.1428571428571428,
+"dense_w": 1.2063492063492063,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/0/9/15/3",
+"page": 2,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2357.4,
+1782.16,
+2387.96,
+1799.92
+],
+"sp": 16.0,
+"w": 1.9099999999999966,
+"h": 1.1099999999999994,
+"n_notes": 1,
+"pitches": [
+"G3"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.75,
+"ink_h": 0.8125,
+"slack_w": 0.1599999999999966,
+"slack_h": 0.29749999999999943,
+"comp_w": 1.8125,
+"comp_h": 3.5625,
+"comp_in": 0.44840525328330205,
+"stem_in_box": 0.8125,
+"n_marks": 1,
+"dense_h": 0.8125,
+"dense_w": 1.25,
+"group": "big",
+"kind": "edge",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/9/10/4",
+"page": 2,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2054.04,
+3477.32,
+2075.64,
+3513.64
+],
+"sp": 16.0,
+"w": 1.3499999999999943,
+"h": 2.269999999999982,
+"n_notes": 1,
+"pitches": [
+"C3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.375,
+"ink_h": 2.3125,
+"slack_w": -0.025000000000005684,
+"slack_h": -0.04250000000001819,
+"comp_w": 7.375,
+"comp_h": 8.3125,
+"comp_in": 0.10233236151603499,
+"stem_in_box": 2.3125,
+"n_marks": 1,
+"dense_h": 2.3125,
+"dense_w": 1.375,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/9/11/3",
+"page": 2,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2100.24,
+3479.08,
+2128.4,
+3511.72
+],
+"sp": 16.0,
+"w": 1.7600000000000193,
+"h": 2.039999999999992,
+"n_notes": 1,
+"pitches": [
+"D3"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.75,
+"ink_h": 2.0625,
+"slack_w": 0.010000000000019327,
+"slack_h": -0.022500000000007958,
+"comp_w": 7.8125,
+"comp_h": 7.6875,
+"comp_in": 0.11358071199849312,
+"stem_in_box": 1.75,
+"n_marks": 1,
+"dense_h": 2.0625,
+"dense_w": 1.6875,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/10/0/9/6/3",
+"page": 10,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1423.7825,
+1700.8425,
+1444.73,
+1729.98
+],
+"sp": 15.75,
+"w": 1.3299999999999994,
+"h": 1.850000000000003,
+"n_notes": 1,
+"pitches": [
+"E-14"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3333333333333333,
+"ink_h": 1.8412698412698412,
+"slack_w": -0.0033333333333338544,
+"slack_h": 0.008730158730161808,
+"comp_w": 4.507936507936508,
+"comp_h": 6.476190476190476,
+"comp_in": 0.43157894736842106,
+"stem_in_box": 1.5873015873015872,
+"n_marks": 1,
+"dense_h": 1.5873015873015872,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "head_ink_itself_this_big"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/7/7/1",
+"page": 11,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1298.29,
+1460.375,
+1322.005,
+1502.845
+],
+"sp": 15.5,
+"w": 1.5300000000000094,
+"h": 2.7400000000000015,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4838709677419355,
+"ink_h": 2.5806451612903225,
+"slack_w": 0.046129032258073854,
+"slack_h": 0.15935483870967904,
+"comp_w": 1.6774193548387097,
+"comp_h": 4.838709677419355,
+"comp_in": 0.6695059625212947,
+"stem_in_box": 1.8709677419354838,
+"n_marks": 1,
+"dense_h": 1.096774193548387,
+"dense_w": 1.3548387096774193,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "box_runs_along_stem"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/8/6/4",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1559.1575,
+1607.175,
+1590.815,
+1625.13
+],
+"sp": 15.75,
+"w": 2.0100000000000016,
+"h": 1.14000000000001,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6507936507936507,
+"ink_h": 0.7619047619047619,
+"slack_w": 0.35920634920635086,
+"slack_h": 0.37809523809524803,
+"comp_w": 4.698412698412699,
+"comp_h": 4.634920634920635,
+"comp_in": 0.1457384515289525,
+"stem_in_box": 0.7619047619047619,
+"n_marks": 1,
+"dense_h": 0.5714285714285714,
+"dense_w": 1.4603174603174602,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/10/5/12",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1446.735,
+3422.6125,
+1468.47,
+3463.8775
+],
+"sp": 15.75,
+"w": 1.380000000000008,
+"h": 2.619999999999992,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3333333333333333,
+"ink_h": 2.6031746031746033,
+"slack_w": 0.04666666666667485,
+"slack_h": 0.01682539682538886,
+"comp_w": 7.428571428571429,
+"comp_h": 8.634920634920634,
+"comp_in": 0.14291581108829568,
+"stem_in_box": 2.6031746031746033,
+"n_marks": 1,
+"dense_h": 2.4761904761904763,
+"dense_w": 1.3333333333333333,
+"group": "big",
+"kind": "tall_ink",
+"eye": "two_heads_one_blob"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/10/9/9",
+"page": 6,
+"cls": "noteheadWholeInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2076.19,
+3465.295,
+2106.43,
+3483.88
+],
+"sp": 15.75,
+"w": 1.9199999999999862,
+"h": 1.1800000000000024,
+"n_notes": 1,
+"pitches": [
+"C3"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9047619047619047,
+"ink_h": 1.2063492063492063,
+"slack_w": 0.015238095238081506,
+"slack_h": -0.026349206349203902,
+"comp_w": 7.936507936507937,
+"comp_h": 7.174603174603175,
+"comp_in": 0.0703551912568306,
+"stem_in_box": 1.2063492063492063,
+"n_marks": 1,
+"dense_h": 1.2063492063492063,
+"dense_w": 0.7619047619047619,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/9/4/5",
+"page": 11,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1080.6675,
+3389.2675,
+1111.695,
+3407.38
+],
+"sp": 15.75,
+"w": 1.9699999999999949,
+"h": 1.1500000000000115,
+"n_notes": 1,
+"pitches": [
+"C3"
+],
+"thick": 4.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9682539682539681,
+"ink_h": 1.1428571428571428,
+"slack_w": 0.0017460317460267216,
+"slack_h": 0.007142857142868664,
+"comp_w": 8.0,
+"comp_h": 7.174603174603175,
+"comp_in": 0.10421686746987951,
+"stem_in_box": 1.1428571428571428,
+"n_marks": 1,
+"dense_h": 0.9523809523809523,
+"dense_w": 1.3968253968253967,
+"group": "big",
+"kind": "edge",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/10/12/1",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2096.22,
+3534.24,
+2125.83,
+3565.5825
+],
+"sp": 15.75,
+"w": 1.880000000000008,
+"h": 1.9900000000000126,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.8412698412698412,
+"ink_h": 2.0317460317460316,
+"slack_w": 0.03873015873016694,
+"slack_h": -0.041746031746018986,
+"comp_w": 1.2698412698412698,
+"comp_h": 2.5396825396825395,
+"comp_in": 0.5757575757575758,
+"stem_in_box": 2.0317460317460316,
+"n_marks": 2,
+"dense_h": 1.3968253968253967,
+"dense_w": 0.9523809523809523,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/10/16/1",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2590.685,
+3537.39,
+2622.6575,
+3569.9925
+],
+"sp": 15.75,
+"w": 2.029999999999991,
+"h": 2.0699999999999976,
+"n_notes": 1,
+"pitches": [
+"F3"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0317460317460316,
+"ink_h": 2.0952380952380953,
+"slack_w": -0.0017460317460407104,
+"slack_h": -0.025238095238097724,
+"comp_w": 5.333333333333333,
+"comp_h": 7.238095238095238,
+"comp_in": 0.32331902718168815,
+"stem_in_box": 2.0952380952380953,
+"n_marks": 1,
+"dense_h": 1.6507936507936507,
+"dense_w": 1.0158730158730158,
+"group": "big",
+"kind": "tall_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/1/2/4/0",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1053.735,
+2206.8825,
+1077.36,
+2227.2
+],
+"sp": 15.75,
+"w": 1.5,
+"h": 1.289999999999978,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.2698412698412698,
+"slack_w": 0.039682539682539764,
+"slack_h": 0.020158730158708282,
+"comp_w": 1.5873015873015872,
+"comp_h": 3.8095238095238093,
+"comp_in": 0.6714801444043321,
+"stem_in_box": 1.2698412698412698,
+"n_marks": 1,
+"dense_h": 1.2698412698412698,
+"dense_w": 1.3968253968253967,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/3/12/9",
+"page": 8,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1633.6,
+2436.12,
+1654.72,
+2452.76
+],
+"sp": 16.0,
+"w": 1.3200000000000074,
+"h": 1.0400000000000205,
+"n_notes": 1,
+"pitches": [
+"A-12"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3125,
+"ink_h": 1.0625,
+"slack_w": 0.00750000000000739,
+"slack_h": -0.022499999999979536,
+"comp_w": 6.25,
+"comp_h": 6.0,
+"comp_in": 0.08603351955307263,
+"stem_in_box": 1.0625,
+"n_marks": 1,
+"dense_h": 0.625,
+"dense_w": 1.25,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/10/17/4",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2384.0,
+3517.44,
+2407.36,
+3537.92
+],
+"sp": 16.0,
+"w": 1.460000000000008,
+"h": 1.2800000000000011,
+"n_notes": 1,
+"pitches": [
+"A-13"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4375,
+"ink_h": 0.875,
+"slack_w": 0.022500000000007958,
+"slack_h": 0.40500000000000114,
+"comp_w": 7.5,
+"comp_h": 3.5625,
+"comp_in": 0.0863017665797857,
+"stem_in_box": 0.875,
+"n_marks": 1,
+"dense_h": 0.875,
+"dense_w": 1.4375,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/0/10/6",
+"page": 16,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1943.625,
+2010.6575,
+1966.1475,
+2032.3925
+],
+"sp": 15.75,
+"w": 1.4300000000000024,
+"h": 1.3799999999999937,
+"n_notes": 1,
+"pitches": [
+"E-16"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 1.3333333333333333,
+"slack_w": 0.03317460317460563,
+"slack_h": 0.04666666666666042,
+"comp_w": 2.0952380952380953,
+"comp_h": 5.4603174603174605,
+"comp_in": 0.3389423076923077,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 1.3968253968253967,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/0/1/1/3",
+"page": 16,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+665.1975,
+545.7025,
+689.1375,
+566.965
+],
+"sp": 15.75,
+"w": 1.5200000000000036,
+"h": 1.350000000000003,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5238095238095237,
+"ink_h": 1.3333333333333333,
+"slack_w": -0.0038095238095201545,
+"slack_h": 0.016666666666669716,
+"comp_w": 7.555555555555555,
+"comp_h": 7.365079365079365,
+"comp_in": 0.051822323462414575,
+"stem_in_box": 1.3333333333333333,
+"n_marks": 1,
+"dense_h": 0.5714285714285714,
+"dense_w": 1.3968253968253967,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/9/8/5",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1736.96,
+3444.52,
+1761.28,
+3466.6
+],
+"sp": 16.0,
+"w": 1.519999999999996,
+"h": 1.3799999999999955,
+"n_notes": 1,
+"pitches": [
+"A-13"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5,
+"ink_h": 1.375,
+"slack_w": 0.01999999999999602,
+"slack_h": 0.0049999999999954525,
+"comp_w": 7.625,
+"comp_h": 7.4375,
+"comp_in": 0.07516611295681064,
+"stem_in_box": 1.375,
+"n_marks": 1,
+"dense_h": 1.375,
+"dense_w": 1.4375,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/0/3/1/9",
+"page": 6,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+676.5375,
+823.6925,
+701.895,
+839.6
+],
+"sp": 15.75,
+"w": 1.6099999999999974,
+"h": 1.0100000000000018,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 4.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 0.5714285714285714,
+"slack_w": 0.02269841269841022,
+"slack_h": 0.4385714285714304,
+"comp_w": 7.619047619047619,
+"comp_h": 7.0476190476190474,
+"comp_in": 0.053659878921298844,
+"stem_in_box": 0.5714285714285714,
+"n_marks": 1,
+"dense_h": 0.5714285714285714,
+"dense_w": 1.0158730158730158,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/6/1/0/9/9",
+"page": 6,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2107.36,
+1948.6,
+2129.6,
+1970.68
+],
+"sp": 16.0,
+"w": 1.3899999999999864,
+"h": 1.3800000000000097,
+"n_notes": 1,
+"pitches": [
+"B-15"
+],
+"thick": 5.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4375,
+"ink_h": 1.375,
+"slack_w": -0.04750000000001364,
+"slack_h": 0.005000000000009663,
+"comp_w": 4.5625,
+"comp_h": 4.3125,
+"comp_in": 0.2523148148148148,
+"stem_in_box": 1.375,
+"n_marks": 1,
+"dense_h": 1.375,
+"dense_w": 1.375,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/16/1/2/5/3",
+"page": 16,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1270.8675,
+2353.685,
+1292.9175,
+2372.1125
+],
+"sp": 15.75,
+"w": 1.399999999999997,
+"h": 1.170000000000015,
+"n_notes": 1,
+"pitches": [
+"E5"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3968253968253967,
+"ink_h": 0.8888888888888888,
+"slack_w": 0.0031746031746002767,
+"slack_h": 0.2811111111111262,
+"comp_w": 1.4603174603174602,
+"comp_h": 3.5555555555555554,
+"comp_in": 0.4437596302003082,
+"stem_in_box": 0.8888888888888888,
+"n_marks": 1,
+"dense_h": 0.8888888888888888,
+"dense_w": 1.2698412698412698,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/1/9/2",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1798.76,
+2248.16,
+1824.2,
+2268.8
+],
+"sp": 16.0,
+"w": 1.5900000000000034,
+"h": 1.2900000000000205,
+"n_notes": 1,
+"pitches": [
+"A-15"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5625,
+"ink_h": 1.3125,
+"slack_w": 0.02750000000000341,
+"slack_h": -0.022499999999979536,
+"comp_w": 2.3125,
+"comp_h": 4.3125,
+"comp_in": 0.4317718940936864,
+"stem_in_box": 1.3125,
+"n_marks": 1,
+"dense_h": 1.25,
+"dense_w": 1.4375,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/4/0/1/6/3",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1346.0425,
+542.485,
+1370.77,
+564.85
+],
+"sp": 15.75,
+"w": 1.5699999999999976,
+"h": 1.4200000000000006,
+"n_notes": 1,
+"pitches": [
+"A-15"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5873015873015872,
+"ink_h": 1.4603174603174602,
+"slack_w": -0.017301587301589594,
+"slack_h": -0.04031746031745964,
+"comp_w": 4.825396825396825,
+"comp_h": 3.746031746031746,
+"comp_in": 0.48899188876013905,
+"stem_in_box": 1.4603174603174602,
+"n_marks": 1,
+"dense_h": 1.4603174603174602,
+"dense_w": 1.5873015873015872,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/11/0/2/15/3",
+"page": 11,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2346.8325,
+724.4875,
+2370.615,
+745.5925
+],
+"sp": 15.75,
+"w": 1.5099999999999874,
+"h": 1.3400000000000012,
+"n_notes": 1,
+"pitches": [
+"G3"
+],
+"thick": 4.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5238095238095237,
+"ink_h": 1.3968253968253967,
+"slack_w": -0.013809523809536373,
+"slack_h": -0.05682539682539556,
+"comp_w": 1.3968253968253967,
+"comp_h": 7.174603174603175,
+"comp_in": 0.1629139072847682,
+"stem_in_box": 1.1428571428571428,
+"n_marks": 1,
+"dense_h": 0.38095238095238093,
+"dense_w": 0.5714285714285714,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/2/1/5/14/2",
+"page": 2,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2479.6175,
+2868.84,
+2503.2425,
+2890.575
+],
+"sp": 15.75,
+"w": 1.5,
+"h": 1.3799999999999792,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.3968253968253967,
+"slack_w": 0.039682539682539764,
+"slack_h": -0.016825396825417505,
+"comp_w": 7.555555555555555,
+"comp_h": 7.428571428571429,
+"comp_in": 0.080545229244114,
+"stem_in_box": 1.3968253968253967,
+"n_marks": 1,
+"dense_h": 1.3333333333333333,
+"dense_w": 1.3968253968253967,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/0/3/21/3",
+"page": 8,
+"cls": "noteheadHalfInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2549.2575,
+841.635,
+2577.6075,
+863.685
+],
+"sp": 15.75,
+"w": 1.7999999999999943,
+"h": 1.399999999999997,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.8412698412698412,
+"ink_h": 1.3968253968253967,
+"slack_w": -0.041269841269846896,
+"slack_h": 0.0031746031746002767,
+"comp_w": 7.0476190476190474,
+"comp_h": 7.238095238095238,
+"comp_in": 0.1598240469208211,
+"stem_in_box": 1.3968253968253967,
+"n_marks": 1,
+"dense_h": 1.2063492063492063,
+"dense_w": 1.7142857142857142,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "litolff",
+"key": "glyph/8/1/0/17/8",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2363.19,
+1904.315,
+2386.185,
+1926.05
+],
+"sp": 15.75,
+"w": 1.459999999999993,
+"h": 1.3799999999999937,
+"n_notes": 1,
+"pitches": [
+"A-15"
+],
+"thick": 4.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4603174603174602,
+"ink_h": 1.3968253968253967,
+"slack_w": -0.0003174603174671553,
+"slack_h": -0.01682539682540307,
+"comp_w": 4.825396825396825,
+"comp_h": 7.428571428571429,
+"comp_in": 0.10254527655408713,
+"stem_in_box": 1.3968253968253967,
+"n_marks": 1,
+"dense_h": 1.3968253968253967,
+"dense_w": 1.3968253968253967,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/25/0/0/3/2",
+"page": 25,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2374.275,
+343.6,
+2420.75,
+401.075
+],
+"sp": 27.5,
+"w": 1.6899999999999966,
+"h": 2.089999999999999,
+"n_notes": 1,
+"pitches": [
+"A-16"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.709090909090909,
+"ink_h": 1.9636363636363636,
+"slack_w": -0.019090909090912378,
+"slack_h": 0.12636363636363535,
+"comp_w": 3.272727272727273,
+"comp_h": 3.5272727272727273,
+"comp_in": 0.3684449489216799,
+"stem_in_box": 1.8909090909090909,
+"n_marks": 1,
+"dense_h": 1.9272727272727272,
+"dense_w": 1.709090909090909,
+"group": "big",
+"kind": "tall_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/8/0/2/7/11",
+"page": 8,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+3533.825,
+1254.2,
+3590.2,
+1278.675
+],
+"sp": 27.5,
+"w": 2.05,
+"h": 0.8899999999999967,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.0,
+"ink_h": 0.9090909090909091,
+"slack_w": 0.04999999999999982,
+"slack_h": -0.019090909090912378,
+"comp_w": 8.072727272727272,
+"comp_h": 6.872727272727273,
+"comp_in": 0.07813891362422083,
+"stem_in_box": 0.9090909090909091,
+"n_marks": 2,
+"dense_h": 0.8727272727272727,
+"dense_w": 0.7636363636363637,
+"group": "big",
+"kind": "edge",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "brahms",
+"key": "glyph/8/0/2/12/13",
+"page": 8,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+5157.0,
+1213.5,
+5191.1,
+1299.85
+],
+"sp": 27.5,
+"w": 1.2400000000000133,
+"h": 3.1399999999999966,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2363636363636363,
+"ink_h": 3.1272727272727274,
+"slack_w": 0.0036363636363769825,
+"slack_h": 0.012727272727269145,
+"comp_w": 7.236363636363636,
+"comp_h": 9.127272727272727,
+"comp_in": 0.17923133776792313,
+"stem_in_box": 2.036363636363636,
+"n_marks": 1,
+"dense_h": 1.490909090909091,
+"dense_w": 1.2363636363636363,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/19/0/2/8/13",
+"page": 19,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+4449.43,
+1106.935,
+4508.0175,
+1138.0
+],
+"sp": 27.25,
+"w": 2.1499999999999866,
+"h": 1.140000000000002,
+"n_notes": 1,
+"pitches": [
+"F4"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.165137614678899,
+"ink_h": 1.1376146788990826,
+"slack_w": -0.015137614678912392,
+"slack_h": 0.0023853211009192687,
+"comp_w": 5.137614678899083,
+"comp_h": 6.7889908256880735,
+"comp_in": 0.16121053397351956,
+"stem_in_box": 1.1376146788990826,
+"n_marks": 1,
+"dense_h": 1.1376146788990826,
+"dense_w": 1.798165137614679,
+"group": "big",
+"kind": "edge",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/3/2/14",
+"page": 5,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2036.4425,
+4743.26,
+2085.22,
+4806.2075
+],
+"sp": 27.25,
+"w": 1.7899999999999887,
+"h": 2.310000000000008,
+"n_notes": 1,
+"pitches": [
+"E-13"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.798165137614679,
+"ink_h": 2.2752293577981653,
+"slack_w": -0.008165137614690288,
+"slack_h": 0.03477064220184278,
+"comp_w": 2.4220183486238533,
+"comp_h": 3.63302752293578,
+"comp_in": 0.45979503350413875,
+"stem_in_box": 2.2018348623853212,
+"n_marks": 1,
+"dense_h": 2.2018348623853212,
+"dense_w": 1.798165137614679,
+"group": "big",
+"kind": "tall_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/3/2/6",
+"page": 5,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2024.725,
+4705.9275,
+2083.04,
+4734.8125
+],
+"sp": 27.25,
+"w": 2.140000000000002,
+"h": 1.060000000000008,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 2.128440366972477,
+"ink_h": 1.0642201834862386,
+"slack_w": 0.011559633027524718,
+"slack_h": -0.004220183486230544,
+"comp_w": 2.4220183486238533,
+"comp_h": 3.63302752293578,
+"comp_in": 0.27769018525817896,
+"stem_in_box": 1.0642201834862386,
+"n_marks": 1,
+"dense_h": 1.0275229357798166,
+"dense_w": 2.128440366972477,
+"group": "big",
+"kind": "wide_ink",
+"eye": "head_merged_with_neighbour_ink"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/0/4/0/16",
+"page": 5,
+"cls": "noteheadBlackInSpace",
+"reader": "yolo_rescue_stem_head",
+"score": null,
+"box": [
+1221.80322265625,
+1635.52587890625,
+1382.55078125,
+1650.779296875
+],
+"sp": 27.5,
+"w": 5.845365767045455,
+"h": 0.5546697443181818,
+"n_notes": 1,
+"pitches": [
+"D2"
+],
+"thick": 7.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 5.8545454545454545,
+"ink_h": 0.5454545454545454,
+"slack_w": -0.009179687499999645,
+"slack_h": 0.00921519886363642,
+"comp_w": 11.854545454545455,
+"comp_h": 6.545454545454546,
+"comp_in": 0.17378773686865048,
+"stem_in_box": 0.5454545454545454,
+"n_marks": 1,
+"dense_h": 0.5454545454545454,
+"dense_w": 5.818181818181818,
+"group": "big",
+"kind": "wide_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/19/1/8/1/12",
+"page": 19,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1336.675,
+5953.25,
+1371.05,
+6026.95
+],
+"sp": 27.5,
+"w": 1.25,
+"h": 2.6799999999999935,
+"n_notes": 1,
+"pitches": [
+"E15"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.2363636363636363,
+"ink_h": 2.690909090909091,
+"slack_w": 0.013636363636363669,
+"slack_h": -0.010909090909097419,
+"comp_w": 1.2,
+"comp_h": 2.690909090909091,
+"comp_in": 0.9924078091106291,
+"stem_in_box": 2.6545454545454548,
+"n_marks": 1,
+"dense_h": 0.6909090909090909,
+"dense_w": 1.018181818181818,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/12/0/10/1/3",
+"page": 12,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1304.15,
+2770.2,
+1345.775,
+2842.35
+],
+"sp": 27.75,
+"w": 1.5,
+"h": 2.600000000000003,
+"n_notes": 1,
+"pitches": [
+"B-14"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5135135135135136,
+"ink_h": 2.5945945945945947,
+"slack_w": -0.013513513513513598,
+"slack_h": 0.005405405405408459,
+"comp_w": 7.495495495495495,
+"comp_h": 8.612612612612613,
+"comp_in": 0.1932440657334145,
+"stem_in_box": 2.234234234234234,
+"n_marks": 1,
+"dense_h": 1.981981981981982,
+"dense_w": 1.5135135135135136,
+"group": "big",
+"kind": "tall_ink",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/12/1/7",
+"page": 5,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1600.325,
+6699.0,
+1642.125,
+6760.05
+],
+"sp": 27.5,
+"w": 1.5199999999999982,
+"h": 2.2200000000000064,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 7.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5272727272727273,
+"ink_h": 2.2181818181818183,
+"slack_w": -0.007272727272729096,
+"slack_h": 0.0018181818181881582,
+"comp_w": 7.527272727272727,
+"comp_h": 5.418181818181818,
+"comp_in": 0.11493620765508139,
+"stem_in_box": 2.2181818181818183,
+"n_marks": 1,
+"dense_h": 1.2727272727272727,
+"dense_w": 1.2727272727272727,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/12/3/3",
+"page": 5,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2544.075,
+6699.275,
+2586.975,
+6771.05
+],
+"sp": 27.5,
+"w": 1.5600000000000034,
+"h": 2.61000000000002,
+"n_notes": 1,
+"pitches": [
+"F4"
+],
+"thick": 7.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.5636363636363637,
+"ink_h": 2.618181818181818,
+"slack_w": -0.003636363636360329,
+"slack_h": -0.008181818181798306,
+"comp_w": 7.527272727272727,
+"comp_h": 5.6,
+"comp_in": 0.12817629862828872,
+"stem_in_box": 2.618181818181818,
+"n_marks": 1,
+"dense_h": 0.8727272727272727,
+"dense_w": 1.4545454545454546,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/19/0/12/3/9",
+"page": 19,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2489.65,
+3347.0,
+2543.275,
+3433.9
+],
+"sp": 27.5,
+"w": 1.95,
+"h": 3.1600000000000033,
+"n_notes": 1,
+"pitches": [
+"B-13"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.9272727272727272,
+"ink_h": 2.690909090909091,
+"slack_w": 0.022727272727272707,
+"slack_h": 0.46909090909091233,
+"comp_w": 7.963636363636364,
+"comp_h": 5.418181818181818,
+"comp_in": 0.3353846153846154,
+"stem_in_box": 2.1818181818181817,
+"n_marks": 1,
+"dense_h": 2.1818181818181817,
+"dense_w": 1.709090909090909,
+"group": "big",
+"kind": "loose",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/25/0/13/3/13",
+"page": 25,
+"cls": "noteheadHalfOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+2642.4125,
+3941.6225,
+2673.75,
+3999.9375
+],
+"sp": 27.25,
+"w": 1.1500000000000032,
+"h": 2.140000000000002,
+"n_notes": 1,
+"pitches": [
+"E-13"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.1009174311926606,
+"ink_h": 2.128440366972477,
+"slack_w": 0.04908256880734263,
+"slack_h": 0.011559633027524718,
+"comp_w": 1.1376146788990826,
+"comp_h": 2.5688073394495414,
+"comp_in": 0.8910776361529548,
+"stem_in_box": 2.128440366972477,
+"n_marks": 1,
+"dense_h": 0.6972477064220184,
+"dense_w": 0.8807339449541285,
+"group": "big",
+"kind": "stem_in_box",
+"eye": "not_a_notehead"
+},
+{
+"plate": "brahms",
+"key": "glyph/4/1/5/0/5",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+957.7041015625,
+5342.021484375,
+996.26171875,
+5376.615234375
+],
+"sp": 27.5,
+"w": 1.4020951704545455,
+"h": 1.2579545454545455,
+"n_notes": 1,
+"pitches": [
+"C4"
+],
+"thick": 6.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3818181818181818,
+"ink_h": 1.2727272727272727,
+"slack_w": 0.020276988636363624,
+"slack_h": -0.01477272727272716,
+"comp_w": 2.2181818181818183,
+"comp_h": 4.254545454545455,
+"comp_in": 0.47257569109258446,
+"stem_in_box": 1.2727272727272727,
+"n_marks": 1,
+"dense_h": 1.2,
+"dense_w": 1.3818181818181818,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/14/0/7/0/2",
+"page": 14,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+966.7666015625,
+2243.9052734375,
+1008.2158203125,
+2277.6787109375
+],
+"sp": 28.5,
+"w": 1.454358552631579,
+"h": 1.185032894736842,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 6.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4385964912280702,
+"ink_h": 1.1929824561403508,
+"slack_w": 0.015762061403508776,
+"slack_h": -0.007949561403508776,
+"comp_w": 7.473684210526316,
+"comp_h": 6.385964912280702,
+"comp_in": 0.21298385696927616,
+"stem_in_box": 1.1929824561403508,
+"n_marks": 1,
+"dense_h": 1.1578947368421053,
+"dense_w": 1.368421052631579,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/0/6/1",
+"page": 5,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+3947.2,
+3964.1,
+3988.45,
+3997.65
+],
+"sp": 27.5,
+"w": 1.5,
+"h": 1.2200000000000066,
+"n_notes": 1,
+"pitches": [
+"D6"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.490909090909091,
+"ink_h": 1.2,
+"slack_w": 0.009090909090909038,
+"slack_h": 0.02000000000000668,
+"comp_w": 1.9636363636363636,
+"comp_h": 3.9272727272727272,
+"comp_in": 0.42877906976744184,
+"stem_in_box": 1.2,
+"n_marks": 1,
+"dense_h": 1.1636363636363636,
+"dense_w": 1.4545454545454546,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/0/0/10/6/5",
+"page": 0,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+5224.71875,
+5623.375,
+5266.65625,
+5661.875
+],
+"sp": 32.0,
+"w": 1.310546875,
+"h": 1.203125,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 7.2,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3125,
+"ink_h": 1.21875,
+"slack_w": -0.001953125,
+"slack_h": -0.015625,
+"comp_w": 7.34375,
+"comp_h": 6.21875,
+"comp_in": 0.14249097052312712,
+"stem_in_box": 1.1875,
+"n_marks": 1,
+"dense_h": 1.0625,
+"dense_w": 1.25,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/12/1/6/1/7",
+"page": 12,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1464.7775,
+5414.0875,
+1504.1825,
+5446.8325
+],
+"sp": 27.75,
+"w": 1.419999999999999,
+"h": 1.1800000000000288,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4054054054054055,
+"ink_h": 1.1531531531531531,
+"slack_w": 0.014594594594593557,
+"slack_h": 0.02684684684687566,
+"comp_w": 7.45945945945946,
+"comp_h": 6.846846846846847,
+"comp_in": 0.0861317610869008,
+"stem_in_box": 1.045045045045045,
+"n_marks": 1,
+"dense_h": 1.009009009009009,
+"dense_w": 1.3693693693693694,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/19/0/12/3/5",
+"page": 19,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2576.275,
+3286.5,
+2613.125,
+3317.3
+],
+"sp": 27.5,
+"w": 1.3399999999999967,
+"h": 1.1200000000000065,
+"n_notes": 1,
+"pitches": [
+"A-14"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3454545454545455,
+"ink_h": 1.0909090909090908,
+"slack_w": -0.005454545454548709,
+"slack_h": 0.029090909090915718,
+"comp_w": 5.163636363636364,
+"comp_h": 4.0,
+"comp_in": 0.424295010845987,
+"stem_in_box": 1.0909090909090908,
+"n_marks": 1,
+"dense_h": 1.0545454545454545,
+"dense_w": 1.3454545454545455,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/0/0/0/0/20",
+"page": 0,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+1647.271484375,
+1616.177734375,
+1690.826171875,
+1649.279296875
+],
+"sp": 32.25,
+"w": 1.3505329457364341,
+"h": 1.02640503875969,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3643410852713178,
+"ink_h": 1.0232558139534884,
+"slack_w": -0.01380813953488369,
+"slack_h": 0.0031492248062015005,
+"comp_w": 1.9534883720930232,
+"comp_h": 6.604651162790698,
+"comp_in": 0.2968604289710911,
+"stem_in_box": 1.0232558139534884,
+"n_marks": 1,
+"dense_h": 0.6511627906976745,
+"dense_w": 1.2403100775193798,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/14/1/0/2/10",
+"page": 14,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2012.2,
+4215.125,
+2048.775,
+4245.65
+],
+"sp": 27.5,
+"w": 1.3300000000000016,
+"h": 1.1099999999999868,
+"n_notes": 1,
+"pitches": [
+"G5"
+],
+"thick": 6.8,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3454545454545455,
+"ink_h": 1.1272727272727272,
+"slack_w": -0.015454545454543833,
+"slack_h": -0.01727272727274043,
+"comp_w": 1.9272727272727272,
+"comp_h": 4.9818181818181815,
+"comp_in": 0.38025659301496795,
+"stem_in_box": 1.1272727272727272,
+"n_marks": 1,
+"dense_h": 1.1272727272727272,
+"dense_w": 1.3454545454545455,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/14/1/2/2/6",
+"page": 14,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2237.7,
+4736.55,
+2274.55,
+4764.6
+],
+"sp": 27.5,
+"w": 1.3400000000000132,
+"h": 1.0200000000000067,
+"n_notes": 1,
+"pitches": [
+"A4"
+],
+"thick": 6.6,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3454545454545455,
+"ink_h": 1.018181818181818,
+"slack_w": -0.005454545454532278,
+"slack_h": 0.0018181818181886023,
+"comp_w": 1.4181818181818182,
+"comp_h": 4.4363636363636365,
+"comp_in": 0.3870265563778842,
+"stem_in_box": 1.018181818181818,
+"n_marks": 1,
+"dense_h": 0.8,
+"dense_w": 1.3454545454545455,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/4/0/3/7/10",
+"page": 4,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+3945.15,
+1335.935,
+3982.0575,
+1368.68
+],
+"sp": 27.75,
+"w": 1.3299999999999927,
+"h": 1.1800000000000042,
+"n_notes": 1,
+"pitches": [
+"B2"
+],
+"thick": 6.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3333333333333333,
+"ink_h": 1.1891891891891893,
+"slack_w": -0.0033333333333405157,
+"slack_h": -0.009189189189185099,
+"comp_w": 1.4054054054054055,
+"comp_h": 6.63063063063063,
+"comp_in": 0.45411663807890223,
+"stem_in_box": 1.1891891891891893,
+"n_marks": 1,
+"dense_h": 1.117117117117117,
+"dense_w": 1.2972972972972974,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/12/1/10/8/7",
+"page": 12,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+4834.26,
+6292.5275,
+4872.1375,
+6323.865
+],
+"sp": 27.25,
+"w": 1.3899999999999852,
+"h": 1.1499999999999866,
+"n_notes": 1,
+"pitches": [
+"C5"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3944954128440368,
+"ink_h": 1.1376146788990826,
+"slack_w": -0.004495412844051527,
+"slack_h": 0.012385321100903957,
+"comp_w": 7.1192660550458715,
+"comp_h": 4.660550458715596,
+"comp_in": 0.14365813001969996,
+"stem_in_box": 1.1376146788990826,
+"n_marks": 1,
+"dense_h": 0.9541284403669725,
+"dense_w": 1.3944954128440368,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/12/0/6/7/0",
+"page": 12,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+3168.96,
+1803.1125,
+3206.4225,
+1836.4125
+],
+"sp": 27.75,
+"w": 1.3500000000000032,
+"h": 1.1999999999999984,
+"n_notes": 1,
+"pitches": [
+"A5"
+],
+"thick": 7.4,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3333333333333333,
+"ink_h": 1.1891891891891893,
+"slack_w": 0.016666666666669938,
+"slack_h": 0.010810810810809146,
+"comp_w": 2.126126126126126,
+"comp_h": 4.216216216216216,
+"comp_in": 0.3,
+"stem_in_box": 1.1891891891891893,
+"n_marks": 1,
+"dense_h": 1.1891891891891893,
+"dense_w": 1.3333333333333333,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/5/1/10/3/1",
+"page": 5,
+"cls": "noteheadBlackInSpace",
+"reader": "detector",
+"score": null,
+"box": [
+2309.775,
+6424.45,
+2348.275,
+6457.725
+],
+"sp": 27.5,
+"w": 1.4,
+"h": 1.21000000000002,
+"n_notes": 1,
+"pitches": [
+"D4"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.3818181818181818,
+"ink_h": 1.2363636363636363,
+"slack_w": 0.018181818181818077,
+"slack_h": -0.026363636363616383,
+"comp_w": 1.5636363636363637,
+"comp_h": 4.036363636363636,
+"comp_in": 0.3886760323541933,
+"stem_in_box": 0.9818181818181818,
+"n_marks": 1,
+"dense_h": 0.9454545454545454,
+"dense_w": 1.309090909090909,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/14/1/4/5/14",
+"page": 14,
+"cls": "noteheadWholeOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+3544.45,
+5232.15,
+3589.275,
+5262.675
+],
+"sp": 27.5,
+"w": 1.6300000000000099,
+"h": 1.1100000000000199,
+"n_notes": 1,
+"pitches": [
+"G4"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.6,
+"ink_h": 1.1272727272727272,
+"slack_w": 0.030000000000009797,
+"slack_h": -0.017272727272707344,
+"comp_w": 2.327272727272727,
+"comp_h": 6.872727272727273,
+"comp_in": 0.2077277561148529,
+"stem_in_box": 1.1272727272727272,
+"n_marks": 1,
+"dense_h": 0.6909090909090909,
+"dense_w": 0.6181818181818182,
+"group": "control",
+"kind": "control"
+},
+{
+"plate": "brahms",
+"key": "glyph/12/1/1/1/3",
+"page": 12,
+"cls": "noteheadBlackOnLine",
+"reader": "detector",
+"score": null,
+"box": [
+1457.4,
+4263.225,
+1497.0,
+4298.15
+],
+"sp": 27.5,
+"w": 1.4399999999999966,
+"h": 1.2699999999999736,
+"n_notes": 1,
+"pitches": [
+"D5"
+],
+"thick": 7.0,
+"detail": {
+"category": "notehead"
+},
+"ink_w": 1.4545454545454546,
+"ink_h": 1.2727272727272727,
+"slack_w": -0.01454545454545797,
+"slack_h": -0.0027272727272991126,
+"comp_w": 7.454545454545454,
+"comp_h": 7.2727272727272725,
+"comp_in": 0.10579922921636997,
+"stem_in_box": 1.2727272727272727,
+"n_marks": 1,
+"dense_h": 1.2,
+"dense_w": 1.309090909090909,
+"group": "control",
+"kind": "control"
+}
+]

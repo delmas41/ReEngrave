@@ -1,0 +1,42 @@
+{
+ "litolff": {
+  "oversized": 108,
+  "by_cause": {
+   "head_ink_itself_this_big": 24,
+   "not_a_notehead": 19,
+   "head_merged_with_neighbour_ink": 27,
+   "two_heads_one_blob": 31,
+   "box_runs_along_stem": 7
+  },
+  "by_cause_reader": {
+   "head_ink_itself_this_big|detector": 21,
+   "not_a_notehead|detector": 17,
+   "head_merged_with_neighbour_ink|detector": 21,
+   "not_a_notehead|yolo_rescue_stem_head": 2,
+   "two_heads_one_blob|detector": 21,
+   "two_heads_one_blob|yolo_rescue_stem_head": 3,
+   "two_heads_one_blob|yolo_rescue_lowconf": 7,
+   "head_merged_with_neighbour_ink|yolo_rescue_stem_head": 4,
+   "head_merged_with_neighbour_ink|yolo_rescue_lowconf": 2,
+   "box_runs_along_stem|yolo_rescue_stem_head": 2,
+   "box_runs_along_stem|yolo_rescue_lowconf": 2,
+   "box_runs_along_stem|detector": 3,
+   "head_ink_itself_this_big|yolo_rescue_stem_head": 2,
+   "head_ink_itself_this_big|yolo_rescue_lowconf": 1
+  },
+  "two_heads_written_as_one_note": 26
+ },
+ "brahms": {
+  "oversized": 13,
+  "by_cause": {
+   "not_a_notehead": 10,
+   "head_merged_with_neighbour_ink": 3
+  },
+  "by_cause_reader": {
+   "not_a_notehead|detector": 8,
+   "head_merged_with_neighbour_ink|detector": 3,
+   "not_a_notehead|yolo_rescue_stem_head": 2
+  },
+  "two_heads_written_as_one_note": 0
+ }
+}
