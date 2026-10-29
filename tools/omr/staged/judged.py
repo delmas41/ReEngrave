@@ -187,7 +187,7 @@ def _verb(v: Any) -> Tuple[str, Dict[str, Any]]:
     if isinstance(v, str):
         return v, {}
     if isinstance(v, dict):
-        for k in ("sean_raw", "sean", "values", "answer"):
+        for k in ("sean_raw", "sean", "values", "answer", "seans_answer"):
             if isinstance(v.get(k), str):
                 return v[k], {x: y for x, y in v.items() if x != k}
             if (isinstance(v.get(k), list) and v[k]
@@ -300,7 +300,7 @@ def _subjects_of(t: Dict[str, Any]) -> Tuple[List[str], str]:
     """`(subject keys, kind)` -- kind is glyph / cell / none. Only keys the
     manifest actually gave; a key is never constructed from a guess."""
     h = t.get("hidden") if isinstance(t.get("hidden"), dict) else {}
-    for raw in (t.get("subject"), t.get("glyph"), h.get("key"),
+    for raw in (t.get("subject"), t.get("glyph"), t.get("rg"), h.get("key"),
                 t.get("subject_2_23")):
         if isinstance(raw, str) and raw.startswith("glyph/"):
             return [raw], "glyph"
@@ -343,6 +343,32 @@ def _date_in(s: Any) -> Optional[str]:
     return m.group(0) if m else None
 
 
+_TYPE_WORDS = frozenset({"whole", "half", "quarter", "eighth", "16th", "32nd"})
+
+
+def _lane_report_key(path: pathlib.Path) -> List[Dict[str, Any]]:
+    """A blind gallery cut by lane_report / the 2.220 lanes has no manifest.json: its key.json IS the manifest (tile
+    number, plate, the glyph key as `subject` or `rg`, the page box). Before this the 2.220 tiles had no subject, were
+    'unscored', and the landing check could not see them (a half written blue-half OFF and blue-quarter ON scored 0).
+    Only keys that name a written VALUE (`written`, or an `off` and `on`) are read, and they are value questions: a key
+    from some other gallery (an owner side, a meter) must not have its answers read as durations."""
+    if not path.exists():
+        return []
+    try:
+        d = json.loads(path.read_text())
+    except ValueError:
+        return []
+    out = []
+    for t in (d if isinstance(d, list) else []):
+        sub = t.get("subject") or t.get("rg")
+        if isinstance(t, dict) and isinstance(t.get("tile"), int) and \
+                ("written" in t or (isinstance(t.get("off"), str) and t["off"] in _TYPE_WORDS
+                                   and isinstance(t.get("on"), str) and t["on"] in _TYPE_WORDS)) and \
+                isinstance(sub, str) and sub.startswith("glyph/"):
+            out.append(dict(t, question="what is the printed note value", page_box=t.get("page_box") or t.get("box")))
+    return out
+
+
 def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
               ) -> List[Dict[str, Any]]:
     """The normalised tiles of one gallery."""
@@ -352,6 +378,8 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
     man_path = answers_path.parent / "manifest.json"
     mmeta, tiles = (manifest_tiles(json.loads(man_path.read_text()))
                     if man_path.exists() else ({}, []))
+    if not tiles:
+        tiles = _lane_report_key(answers_path.parent / "key.json")
     by_alias: Dict[str, Dict[str, Any]] = {}
     for t in tiles:
         for a in _aliases(t):
