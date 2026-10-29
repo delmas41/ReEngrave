@@ -64,7 +64,11 @@ OWNER_METER = "meter"
 #: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
 #: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
 OWNER_KEY = "key_signature"
-OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY)
+#: ROADMAP 2.221 m1 / m1b (docs/plan-2026-10-28-page-claim-order.md §7, §9): a word or dynamic READ outside the staves, and a bracket or
+#: brace at a system's left edge, claim their ink PAGE-WIDE before any head (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, OFF)
+OWNER_WORD = "word"
+OWNER_BRACKET = "bracket"
+OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY, OWNER_WORD, OWNER_BRACKET)
 ENV_KEY = "OMR_KEY_SIGNATURE_CLAIM"
 #: classes that are owners' own ink, never measured as a box inside a claim
 OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "brace", "bracket")
@@ -221,4 +225,122 @@ def covering(rows: Iterable[Any], key: str, box_strokes: Optional[Sequence[int]]
         clef_cover = d.get("owner") == OWNER_CLEF and float(got.get("box_cover", 0.0)) >= CLEF_BOX_COVER_MIN
         if got.get("named") or at_edge or clef_cover or got.get("tail") is not None or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
             out.append((r, got))
+    return out
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# ROADMAP 2.221 m1 / m1b: the PAGE-WIDE claims (words, dynamics, brackets, braces). Sean 2026-10-29: "arcs as well as words and dynamic
+# markings need to be treated system or page wide not based on individual measures"; "Can 1 and 1b read on the same pass as barlines? I
+# don't want to add reading passes every time we add a symbol". So nothing here READS the page: the word claim is bookkeeping on rows the
+# text readers already filed (accepted `Q.DIRECTION_WORD`, `Q.DYNAMIC_LETTER`), the bracket claim takes the left-edge vertical-rule scan's
+# strokes as INPUT (`bracket_reader.Stroke`, the scan the barline lane shares). ONE row per mark per (page, system), filed on the SYSTEM.
+#
+# CONVENTION ASSUMED: a word read by the lexicon outside the staff lines, a dynamic spelled from two or more detector letters outside them,
+# and a thin rule or a brace standing at or left of the system's staff start hold no notehead's ink. WHAT WOULD FALSIFY IT: Sean's tiles
+# showing a real note under a claimed word / dynamic / bracket. NOT CONFIRMED beyond the two plates (out/print/2.221-m1-pagewide/).
+# ---------------------------------------------------------------------------------------------------------------------------------
+ENV_WORDS = "OMR_CLAIM_WORDS_FIRST"
+ENV_BRACKETS = "OMR_CLAIM_BRACKETS_FIRST"
+#: a word / dynamic is OUTSIDE the staves when at most this share of its box's height lies inside any staff's line band (top line to
+#: bottom line, +- `WORD_BAND_PAD_SPACES`); a word inside the staff is milestone 4 ("almost always short", Sean 2026-10-28), not claimed
+WORD_BAND_OVERLAP_MAX = 0.25
+WORD_BAND_PAD_SPACES = 0.5
+#: two detector dynamic letters belong to ONE printed dynamic when the gap between their boxes is at most this (staff spaces) and their
+#: boxes overlap vertically by at least `LETTER_ROW_OVERLAP_MIN` of the smaller height (the `ff` of Litolff p4 is two `dynamicF` boxes)
+LETTER_JOIN_GAP_SPACES = 0.6
+LETTER_ROW_OVERLAP_MIN = 0.5
+#: two letter boxes are the SAME ink (a twin) when they overlap by this share of the smaller box (gather `_same_ink_boxes`' cut)
+LETTER_TWIN_SHARE = 0.5
+#: a bracket / brace stroke claims only at or left of the system's staff start (`Stroke.offset_spacings`, the systemic barline stands AT
+#: it; a tall stem to its right is a note's) and only this tall (staff spaces; a bracket spans a block, a brace a pair of staves)
+BRACKET_MAX_OFFSET_SPACES = 0.5
+BRACKET_MIN_HEIGHT_SPACES = 4.0
+
+
+def words_first_enabled() -> bool:
+    """`OMR_CLAIM_WORDS_FIRST` (ROADMAP 2.221 m1), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_WORDS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def brackets_first_enabled() -> bool:
+    """`OMR_CLAIM_BRACKETS_FIRST` (ROADMAP 2.221 m1b), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_BRACKETS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def band_share(box: Sequence[float], bands: Iterable[Tuple[float, float]]) -> float:
+    """The largest share of `box`'s height that lies inside any one staff line band `(lo, hi)` (page px). Measured; decides nothing."""
+    h = max(1.0, float(box[3]) - float(box[1]))
+    best = 0.0
+    for lo, hi in bands:
+        best = max(best, max(0.0, min(float(box[3]), hi) - max(float(box[1]), lo)) / h)
+    return best
+
+
+def _overlap_small(a: Sequence[float], b: Sequence[float]) -> float:
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    small = max(1.0, min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1])))
+    return ix * iy / small
+
+
+def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spacing: float,
+                      words: Iterable[str]) -> List[Dict[str, Any]]:
+    """Join one system's detector dynamic letters `(page box, letter, row id)` into printed runs, left to right; PURE.
+
+    Twins (one ink boxed twice, `LETTER_TWIN_SHARE`) fold into one slot; a slot whose twins name DIFFERENT letters leaves the run
+    unspelled (`text` None, `why` `twin_letters_disagree`). A run is READ only when it has at least two slots and its spelling is in
+    `words` (the dynamic vocabulary, a convention); a lone letter is the detector's word alone (`why` `lone_letter`), a spelling outside
+    the vocabulary is `not_a_dynamic`. Returns `{box, text, slots, rows, read, why}` per run; the caller claims only `read` runs."""
+    vocab = set(words)
+    slots: List[Dict[str, Any]] = []
+    for box, letter, rid in sorted(letters, key=lambda t: (float(t[0][0]), float(t[0][1]))):
+        b = [float(v) for v in box]
+        twin = next((s for s in slots if _overlap_small(s["box"], b) >= LETTER_TWIN_SHARE), None)
+        if twin is not None:
+            twin["letters"].add(str(letter))
+            twin["rows"].append(rid)
+            twin["box"] = [min(twin["box"][0], b[0]), min(twin["box"][1], b[1]), max(twin["box"][2], b[2]), max(twin["box"][3], b[3])]
+            continue
+        slots.append({"box": b, "letters": {str(letter)}, "rows": [rid]})
+    slots.sort(key=lambda s: s["box"][0])
+    runs: List[List[Dict[str, Any]]] = []
+    for s in slots:
+        if runs:
+            last = runs[-1][-1]
+            gap = s["box"][0] - last["box"][2]
+            hs = min(s["box"][3] - s["box"][1], last["box"][3] - last["box"][1])
+            ov = min(s["box"][3], last["box"][3]) - max(s["box"][1], last["box"][1])
+            if gap <= LETTER_JOIN_GAP_SPACES * spacing and hs > 0 and ov >= LETTER_ROW_OVERLAP_MIN * hs:
+                runs[-1].append(s)
+                continue
+        runs.append([s])
+    out: List[Dict[str, Any]] = []
+    for run in runs:
+        box = [min(s["box"][0] for s in run), min(s["box"][1] for s in run), max(s["box"][2] for s in run), max(s["box"][3] for s in run)]
+        rows = [r for s in run for r in s["rows"]]
+        if any(len(s["letters"]) > 1 for s in run):
+            out.append({"box": box, "text": None, "slots": len(run), "rows": rows, "read": False, "why": "twin_letters_disagree"})
+            continue
+        text = "".join(next(iter(s["letters"])) for s in run)
+        if len(run) < 2:
+            why = "lone_letter"
+        elif text not in vocab:
+            why = "not_a_dynamic"
+        else:
+            why = None
+        out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
+    return out
+
+
+def bracket_areas(strokes: Iterable[Any], is_rule: Any) -> List[Dict[str, Any]]:
+    """The bracket / brace claims of ONE system from the left-edge vertical-rule scan's strokes (`bracket_reader.Stroke`); PURE, it reads
+    no raster. A thin straight stroke (`is_rule`) is a bracket's rule or the systemic barline (`kind` `rule`); a tall curved one is a
+    brace (`kind` `brace`). Both only at or left of the staff start and at least `BRACKET_MIN_HEIGHT_SPACES` tall."""
+    out: List[Dict[str, Any]] = []
+    for stk in strokes:
+        if float(stk.height_spacings) < BRACKET_MIN_HEIGHT_SPACES or float(stk.offset_spacings) > BRACKET_MAX_OFFSET_SPACES:
+            continue
+        out.append({"area": [float(stk.x_left), float(stk.y_top), float(stk.x_right + 1), float(stk.y_bot + 1)],
+                    "kind": "rule" if is_rule(stk) else "brace", "height_spaces": round(float(stk.height_spacings), 2),
+                    "thickness_spaces": round(float(stk.thickness_spacings), 3), "offset_spaces": round(float(stk.offset_spacings), 2)})
     return out
