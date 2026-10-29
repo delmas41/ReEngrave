@@ -1,0 +1,310 @@
+[
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1965.88,
+   3415.08,
+   1988.76,
+   3436.36
+  ],
+  "rg": "glyph/2/1/9/10/1",
+  "group": "b_dynamic",
+  "share": 0.795,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_dynamic",
+  "tile": 1,
+  "crop_origin": [
+   1882,
+   3346
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   979.16,
+   1478.2,
+   996.12,
+   1493.72
+  ],
+  "rg": "glyph/2/0/7/4/5",
+  "group": "a_barline",
+  "share": 0.649,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "a_barline",
+  "tile": 2,
+  "crop_origin": [
+   893,
+   1407
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1059.105,
+   2559.005,
+   1089.8175,
+   2580.74
+  ],
+  "rg": "glyph/4/1/3/4/8",
+  "group": "b_dynamic",
+  "share": 0.955,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_dynamic",
+  "tile": 3,
+  "crop_origin": [
+   979,
+   2491
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   2535.615,
+   2478.665,
+   2575.62,
+   2538.6725
+  ],
+  "rg": "glyph/10/1/3/14/4",
+  "other": "glyph/10/1/3/14/6",
+  "other_cls": "accidentalNatural",
+  "head_box": [
+   2549.3175,
+   2498.6675,
+   2575.62,
+   2520.875
+  ],
+  "other_box": [
+   2535.615,
+   2478.665,
+   2559.555,
+   2538.6725
+  ],
+  "shared_px": 124,
+  "head_ink": 352,
+  "role": "case",
+  "side": "0b",
+  "group": "0b_accidental",
+  "tile": 4,
+  "crop_origin": [
+   2461,
+   2429
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2282.7775,
+   3521.68,
+   2309.8675,
+   3545.7775
+  ],
+  "rg": "glyph/6/1/10/10/7",
+  "group": "b_dynamic",
+  "share": 1.0,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_dynamic",
+  "tile": 5,
+  "crop_origin": [
+   2201,
+   3454
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2097.52,
+   3472.52,
+   2128.4,
+   3511.72
+  ],
+  "rg": "glyph/2/1/9/11/3",
+  "other": "glyph/2/1/9/11/2",
+  "other_cls": "rest8th",
+  "head_box": [
+   2100.24,
+   3479.08,
+   2128.4,
+   3511.72
+  ],
+  "other_box": [
+   2097.52,
+   3472.52,
+   2127.28,
+   3507.24
+  ],
+  "shared_px": 527,
+  "head_ink": 603,
+  "role": "case",
+  "side": "0b",
+  "group": "0b_rest",
+  "tile": 6,
+  "crop_origin": [
+   2018,
+   3413
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   4416.35,
+   425.275,
+   4470.525,
+   456.075
+  ],
+  "rg": "glyph/25/0/0/7/9",
+  "other": "glyph/25/0/0/7/12",
+  "other_cls": "augmentationDot",
+  "head_box": [
+   4419.375,
+   425.275,
+   4459.525,
+   453.325
+  ],
+  "other_box": [
+   4416.35,
+   447.0,
+   4470.525,
+   456.075
+  ],
+  "shared_px": 243,
+  "head_ink": 1055,
+  "role": "case",
+  "side": "0b",
+  "group": "0b_dot",
+  "tile": 7,
+  "crop_origin": [
+   4251,
+   280
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1408.1475,
+   3326.7175,
+   1430.8275,
+   3347.98
+  ],
+  "rg": "glyph/2/1/8/6/7",
+  "group": "b_dynamic",
+  "share": 1.0,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_dynamic",
+  "tile": 8,
+  "crop_origin": [
+   1324,
+   3258
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   2873.4,
+   4657.8,
+   2916.3,
+   4690.8
+  ],
+  "rg": "glyph/25/1/1/4/12",
+  "group": "b_word",
+  "share": 1.0,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_word",
+  "tile": 9,
+  "crop_origin": [
+   2702,
+   4514
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2037.34,
+   465.77,
+   2097.48,
+   481.735
+  ],
+  "rg": "glyph/4/0/0/11/15",
+  "group": "b_dynamic",
+  "share": 1.0,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "b_dynamic",
+  "tile": 10,
+  "crop_origin": [
+   1972,
+   395
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   5284.325,
+   3621.9725,
+   5327.3375,
+   3747.125
+  ],
+  "rg": "glyph/25/0/12/9/7",
+  "other": "glyph/25/0/12/9/13",
+  "other_cls": "accidentalFlat",
+  "head_box": [
+   5287.1,
+   3621.9725,
+   5324.285,
+   3654.44
+  ],
+  "other_box": [
+   5284.325,
+   3623.6375,
+   5327.3375,
+   3747.125
+  ],
+  "shared_px": 712,
+  "head_ink": 718,
+  "role": "case",
+  "side": "0b",
+  "group": "0b_accidental",
+  "tile": 11,
+  "crop_origin": [
+   5113,
+   3524
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   979.0,
+   1461.88,
+   996.44,
+   1474.68
+  ],
+  "rg": "glyph/2/0/7/4/12",
+  "group": "a_barline",
+  "share": 0.647,
+  "n_hosts": 1,
+  "role": "case",
+  "side": "a_barline",
+  "tile": 12,
+  "crop_origin": [
+   893,
+   1389
+  ]
+ }
+]
