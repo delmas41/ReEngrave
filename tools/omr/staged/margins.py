@@ -162,6 +162,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "claimed_by:meter": THRESHOLD, "claimed_by:clef": THRESHOLD, "claimed_by:leading_column": THRESHOLD,
         # ROADMAP 2.183: how deep inside the key run the box's centre stands (staff spaces; the next-slot rest: tolerance minus offset)
         "claimed_by:key_signature": THRESHOLD,
+        # ROADMAP 2.221: the box's ink share inside the READ word's / bracket's claim minus `claims.INSIDE_SHARE_MIN`
+        "claimed_by:word": THRESHOLD, "claimed_by:bracket": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },
@@ -171,6 +173,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "claimed_by:meter": THRESHOLD, "claimed_by:clef": THRESHOLD, "claimed_by:leading_column": THRESHOLD,
         # ROADMAP 2.183: how deep inside the key run the box's centre stands (staff spaces; the next-slot rest: tolerance minus offset)
         "claimed_by:key_signature": THRESHOLD,
+        # ROADMAP 2.221: the box's ink share inside the READ word's / bracket's claim minus `claims.INSIDE_SHARE_MIN`
+        "claimed_by:word": THRESHOLD, "claimed_by:bracket": THRESHOLD,
         # ROADMAP 2.150: the class's width floor minus the box's width, in staff spaces
         "rest_narrower_than_its_class": THRESHOLD,
         # ROADMAP 2.150b: the binding one of {stroke length, head evidence} over its cut, as a ratio minus 1

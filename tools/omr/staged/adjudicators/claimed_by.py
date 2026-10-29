@@ -29,7 +29,7 @@ from .. import geometry as _geom
 from ..record import Kind, Q, Scope
 
 #: which owner names a refusal when several refuse (the most specific mark first; the header column, a prior, last)
-_ORDER = (_claims.OWNER_METER, _claims.OWNER_KEY, _claims.OWNER_CLEF, _claims.OWNER_COLUMN)
+_ORDER = (_claims.OWNER_METER, _claims.OWNER_KEY, _claims.OWNER_CLEF, _claims.OWNER_BRACKET, _claims.OWNER_WORD, _claims.OWNER_COLUMN)
 
 
 def enabled() -> bool:
@@ -189,6 +189,17 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
             elif voted_under:
                 why = "detector_scored_the_head_above_the_clef"
             (narrowing if why else refusing).append((owner, r, margin, why or "clef_read"))
+            continue
+        if owner in (_claims.OWNER_WORD, _claims.OWNER_BRACKET):
+            # ROADMAP 2.221 (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST): a READ word (lexicon-accepted, outside the staves) or a
+            # bracket / brace rule claims its ink BEFORE the heads (Sean 2026-10-28). A box holding >= INSIDE_SHARE_MIN of its own ink inside
+            # the claim does not take it: REFUSED -- but a head a stem stands on is a note (as the meter, rule 8): NARROWED, written blue.
+            if standing != "READ":
+                continue
+            if stemmed:
+                narrowing.append((owner, r, margin, owner + "_over_a_stemmed_head"))
+            else:
+                refusing.append((owner, r, margin, owner + "_read"))
             continue
         if owner == _claims.OWNER_COLUMN:
             t = e.get("through") or {}

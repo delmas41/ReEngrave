@@ -925,6 +925,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_KEY_SIGNATURE_CLAIM": ("staged/gather.py", "gather_key_signature_claim"),
     "CV_KEY_OBJECT": ("staged/gather.py", "gather_key_object"),
     "CV_CLEF_SLOT_CLAIM": ("staged/gather.py", "gather_clef_slot_claim"),
+    "CV_PAGE_CLAIMS": ("staged/gather.py", "gather_word_bracket_claims"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.

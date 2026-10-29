@@ -14883,6 +14883,122 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
                 print(f"  gather claimed area (clef slot) {ssub.to_key()}")
 
 
+def gather_word_bracket_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                               detections: Dict[str, List[Any]], *, progress: bool = False,
+                               stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `word` and `bracket` -- ROADMAP 2.221 m1 (flag `OMR_CLAIM_WORDS_FIRST`) and m1b (flag
+    `OMR_CLAIM_BRACKETS_FIRST`), both default OFF; both need the register (`OMR_CLAIMED_REGISTER`).
+
+    PATH: STAGED GATHER, PAGE raster. AFTER `gather_direction_words` (reads its accepted rows) -- a hard edge: the word reader runs last,
+    so the claim rows are filed after it, beside the register's other owners, and the one consult (`adjudicators/claimed_by`) reads them.
+    Sean 2026-10-28: the easiest, most recognisable things claim their ink first; a layer claims only what it READ. Words "can't easily be
+    mistaken for other things, but a small box grabbing a part of a word can be mistaken for a lot of things"; "a lot of notes claimed ink
+    that were actually brackets ... since they're easy to see and determine from the big picture, we should put those first".
+
+    * `word` (m1): each ACCEPTED `Q.DIRECTION_WORD` row (the lexicon gate passed it: that is the READ) whose box lies OUTSIDE the staff
+      lines of the cell it is drawn against (at most `WORD_BAND_OVERLAP_MAX` of its height inside the staff's line band +- half a space;
+      a word inside the staff is milestone 4, "almost always short", narrowing only). One area row per cell the word's box meets, standing
+      READ, with `boxes_inside` measured as for every owner; the strokes it stands on are filed beside it where the stroke map exists.
+    * `bracket` (m1b): each rule `bracket_reader.strokes_at_left_edge` reads at a system's left edge that `is_rule` (thin, straight), crosses a
+      gap, is at least `claims.BRACKET_MIN_HEIGHT_SPACES` tall and stands at or left of the staff start (`claims.BRACKET_MAX_OFFSET_SPACES`):
+      the bracket, the brace, the systemic barline. One area row per cell its rectangle meets, standing READ.
+
+    ⚠️ This reader draws the claim and measures `boxes_inside`; it decides nothing about any box. DECLINED, NOT DEFAULTED: no raster, no
+    staff geometry, or a bracket reader that raised is an abstention (rule 8), never "nothing claimed"."""
+    from . import claims as CL
+    words_on, brackets_on = CL.words_first_enabled(), CL.brackets_first_enabled()
+    if not (words_on or brackets_on):
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    page_sub = R.page(p)
+    staff_of = {st.staff_index: st for st in pws.staves}
+    cells_by_sys: Dict[int, List[Any]] = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None and getattr(c, "bbox_page_px", None) and c.staff_index in staff_of:
+            cells_by_sys.setdefault(key[0], []).append(c)
+
+    def _file(area, owner, owner_row, source, standing="READ", **extra):
+        n = 0
+        for sys_idx, cs in sorted(cells_by_sys.items()):
+            for c in cs:
+                st = staff_of[c.staff_index]
+                li = local[c.staff_index][1]
+                sp = _spacing(st)
+                lines = list(st.line_ys)
+                k = c.measure_index
+                if not sp or len(lines) < 5 or not CL.overlaps(area, c.bbox_page_px):
+                    continue
+                if owner == CL.OWNER_WORD:
+                    band_lo, band_hi = lines[0] - 0.5 * sp, lines[4] + 0.5 * sp
+                    h = max(1.0, area[3] - area[1])
+                    in_band = max(0.0, min(area[3], band_hi) - max(area[1], band_lo)) / h
+                    if in_band > CL.WORD_BAND_OVERLAP_MAX:
+                        continue                          # a word on this staff's lines: milestone 4's, not claimed here
+                dets = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+                inside = _claim_boxes_inside(binary, area, dets, c, lambda gi, k=k, li=li, sys_idx=sys_idx: R.glyph(p, sys_idx, li, k, gi).to_key(),
+                                             lines, sp)
+                if not inside and not stroke_cells:
+                    continue
+                ssub = R.staff(p, sys_idx, li)
+                log.observe(ssub, Q.CLAIMED_AREA, [round(float(v), 1) for v in area], reader=READERS.CV_PAGE_CLAIMS, frame=frame_cell(k),
+                            cell=k, owner=owner, owner_row=owner_row, owner_glyph=None, unit="area", standing=standing, source=source,
+                            boxes_inside=inside, space_page_px=round(sp, 3), **extra)
+                n += 1
+                if stroke_cells:
+                    from . import stroke_map as SM
+                    res = stroke_cells.get((p, sys_idx, li, k))
+                    upc = getattr(c, "upscale_factor", None)
+                    if res is None or isinstance(res, str) or not upc:
+                        continue
+                    cb = c.bbox_page_px
+                    canon = [(area[0] - cb[0]) * upc, (area[1] - cb[1]) * upc, (area[2] - cb[0]) * upc, (area[3] - cb[1]) * upc]
+                    mine = [(i, sh) for i, sh in SM.strokes_in_box(res, canon) if sh >= SM.COVER_SHARE_MIN]
+                    if mine:
+                        _file_ink_claim(log, ssub, strokes=mine, why=None, cell=k, owner=owner, owner_row=owner_row, owner_glyph=None,
+                                        standing=standing, source=source, cover_min=SM.COVER_SHARE_MIN)
+        return n
+
+    if words_on:
+        for r in log.all_rows():
+            if r.quantity != Q.DIRECTION_WORD or getattr(r, "reason", None) is not None or not isinstance(r.value, str):
+                continue
+            if CL.page_of_key(r.subject.to_key()) != p:
+                continue
+            bb = (r.detail or {}).get("bbox_page_px")
+            if not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                continue
+            _file([float(v) for v in bb], CL.OWNER_WORD, r.id, "direction_word", text=r.value, category=(r.detail or {}).get("category"))
+    if brackets_on:
+        from ..bracket_reader import is_rule, strokes_at_left_edge
+        by_sys: Dict[int, List[Any]] = {}
+        for st in pws.staves:
+            key = local.get(st.staff_index)
+            if key is not None:
+                by_sys.setdefault(key[0], []).append(st)
+        for sys_idx, sts in sorted(by_sys.items()):
+            sts = sorted(sts, key=lambda s: s.top_y)
+            if len(sts) < 2:
+                continue                                  # a rule must cross a gap to be read (the reader's own trap 2)
+            try:
+                strokes, geom = strokes_at_left_edge(binary, sts)
+            except Exception as exc:                      # noqa: BLE001
+                log.abstain(R.system(p, sys_idx), Q.CLAIMED_AREA, reader=READERS.CV_PAGE_CLAIMS, frame=FRAME_PAGE,
+                            reason=ABSTAIN.READER_UNAVAILABLE, owner=CL.OWNER_BRACKET, unit="area", error=type(exc).__name__)
+                continue
+            for stk in strokes:
+                if not is_rule(stk) or stk.height_spacings < CL.BRACKET_MIN_HEIGHT_SPACES or stk.offset_spacings > CL.BRACKET_MAX_OFFSET_SPACES:
+                    continue
+                area = [float(stk.x_left), float(stk.y_top), float(stk.x_right + 1), float(stk.y_bot + 1)]
+                _file(area, CL.OWNER_BRACKET, None, "bracket_reader", height_spaces=stk.height_spacings,
+                      thickness_spaces=stk.thickness_spacings, offset_spaces=stk.offset_spacings)
+    if progress:
+        print(f"  gather word/bracket claims p{p}")
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -16230,6 +16346,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                              ocr_fallback=ocr_fallback)
         gather_direction_words(log, pws, cells, local, detections,  # hard edge: last
                                roster=roster, work_id=work_id)
+        # ROADMAP 2.221 m1 / m1b (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default OFF): AFTER the word reader (reads its
+        # accepted rows); page raster. Files the READ words' and brackets' claims into the register the one consult reads.
+        gather_word_bracket_claims(log, pws, cells, local, detections, stroke_cells=stroke_cells)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries

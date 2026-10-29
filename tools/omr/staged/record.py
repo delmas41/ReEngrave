@@ -2973,6 +2973,7 @@ class READERS(_Vocab):
     #: detector never boxed (a clef we carry from other systems) still has the clef's INK at its start: the slot between the system's clef
     #: offset and the key claim, drawn as the clef's claim (area, and strokes where the stroke map is on).
     CV_CLEF_SLOT_CLAIM = "cv_clef_slot_claim"
+    CV_PAGE_CLAIMS = "cv_page_claims"          # ROADMAP 2.221: the READ words' and brackets' claims
     #: `gather.gather_unboxed_rest_ink` -- ROADMAP 2.99. The same erased raster
     #: (one crop, one signal) asked what rest-sized ink no box covers is.
     CV_UNBOXED_REST_SHAPE = "cv_unboxed_rest_shape"

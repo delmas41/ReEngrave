@@ -64,8 +64,17 @@ OWNER_METER = "meter"
 #: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
 #: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
 OWNER_KEY = "key_signature"
-OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY)
+#: ROADMAP 2.221 m1 / m1b (docs/plan-2026-10-28-page-claim-order.md; Sean 2026-10-28): the page-wide claim order. A WORD read outside the staves
+#: (an accepted `Q.DIRECTION_WORD`: the lexicon gate passed it) and a BRACKET or BRACE rule at a system's left edge claim their ink BEFORE any head
+#: box does ("words ... can't easily be mistaken for other things, but a small box grabbing a part of a word can be mistaken for a lot of things";
+#: "a lot of notes claimed ink that were actually brackets"). Both owners are filed by `gather.gather_word_bracket_claims`, each behind its own
+#: flag, default OFF; the one consult (`adjudicators/claimed_by`) refuses a box on them, or NARROWS it where a stem stands on the box.
+OWNER_WORD = "word"
+OWNER_BRACKET = "bracket"
+OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY, OWNER_WORD, OWNER_BRACKET)
 ENV_KEY = "OMR_KEY_SIGNATURE_CLAIM"
+ENV_WORDS = "OMR_CLAIM_WORDS_FIRST"
+ENV_BRACKETS = "OMR_CLAIM_BRACKETS_FIRST"
 #: classes that are owners' own ink, never measured as a box inside a claim
 OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "brace", "bracket")
 
@@ -78,6 +87,33 @@ def enabled() -> bool:
 def key_enabled() -> bool:
     """`OMR_KEY_SIGNATURE_CLAIM` (ROADMAP 2.183), default ON (Sean 2026-10-23); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV_KEY, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def words_first_enabled() -> bool:
+    """`OMR_CLAIM_WORDS_FIRST` (ROADMAP 2.221 m1), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_WORDS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def brackets_first_enabled() -> bool:
+    """`OMR_CLAIM_BRACKETS_FIRST` (ROADMAP 2.221 m1b), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_BRACKETS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: a bracket / brace rule is claimed only when it stands at or left of the system's staff start (the systemic barline stands AT it; a
+#: tall stem that crosses a gap and stands to its right is a note's, never a bracket): `bracket_reader.Stroke.offset_spacings` <= this
+BRACKET_MAX_OFFSET_SPACES = 0.5
+#: ... and a rule is claimed at least this tall (staff spaces): a bracket spans a block, a brace a pair (the reader's own floor is 2.0)
+BRACKET_MIN_HEIGHT_SPACES = 4.0
+
+
+#: a word is claimed outside the staves: at most this share of its box's height may lie inside the cell's staff-line band (+- half a space)
+WORD_BAND_OVERLAP_MAX = 0.25
+
+
+def page_of_key(key: str) -> Optional[int]:
+    """The page a subject key belongs to (`glyph/4/1/1/4/17` -> 4), None for a document-level key."""
+    parts = str(key).split("/")
+    return int(parts[1]) if len(parts) >= 2 and parts[1].lstrip("-").isdigit() else None
 
 
 def key_active() -> bool:
