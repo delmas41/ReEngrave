@@ -176,3 +176,31 @@ Stays PER CELL, not on this pass: noteheads, stems, beams, flags, accidentals, d
 1. Verify each row: which reader, page or cell level, which raster it reads.
 2. Find any reader that runs the same scan twice or per cell where it could run once per page, for example hairpins read by two readers and arcs read by both `gather_system_arcs` and `gather_arc_ink`.
 3. Order inside the pass: structure (staff, barlines, brackets, braces) -> system registers (clef, key, meter) -> text -> dynamics -> arcs -> repeats -> then the per-cell readers. This follows §3 and Sean's order: easiest and clearest first.
+
+### 10a. Audit of the inventory (2026-10-29, read-only; file:line on main a7e1fce89)
+
+**Corrections to the draft table above:**
+- **Barlines** are read BEFORE GATHER: `pipeline.prepare_pages` (staged/pipeline.py:49-55) -> `measure_extractor.detect_barlines` (:687, per-staff scan + system vote, page.binary). `gather_geometry`/`gather_systems`/`gather_measures` read no pixels. measure_extractor is shared with LEGACY.
+- **Clef, key, meter** readers read the per-staff header crop. Only `gather_meter_object` and `gather_key_object` work per system.
+- **The tempo-mark note** ("♩=108") is read by nothing, staged or legacy. `direction_lexicon.py:221-226` refuses text with a digit or bracket.
+- **Arcs** (`gather_system_arcs` arcs_system.py:749, `gather_arc_ink` gather.py:8708) are both SEEDED by per-cell detector boxes. An arc never boxed is never read. The arc claim exists only on lane-arcs-claim-1029.
+- **Hairpins:** `gather_wedge_boxes` :4288 (detector classes + `hairpin_detection` on page.binary). A CV-only hairpin has no box, so its ink is unowned. `gather_wedge_rescue` reads staccatissimo wedges, not hairpins.
+- **Brackets and braces:** per-cell detector boxes only. `bracket_reader.read_brackets` (:308) has no consumer.
+
+**Duplicate passes found** (the concern Sean named):
+1. `header_cells_for_page` is built 3x per page (gather.py:12394 clef, :12763 key, :13067 meter). staff_header.py:514-542 says to pass `windows` and nobody does.
+2. direction_text builds page ink plus blanked detections 3x per page (gather.py ~15373; direction_text.py:922-923, 1364, 1386-1387).
+3. "Page ink minus detections" is built separately three times (gather.py:3930, :4357-4384, direction_text), with different parameters.
+4. The page gray/ink conversion is repeated (gather.py:3934, :11346, :11471, :13904, :13957, :14068), with no per-page cache.
+5. The full detector is re-run three times on the same cell image, differing only in floor (gather.py:779 at 0.10, :936 at 0.03, :1119 at 0.05). One run at 0.03 could feed all three.
+6. Arcs: `gather_arc_ink` recomputes coverage Q.SYSTEM_ARC's trace already holds.
+7. Repeat dots test each shared barline twice (gather.py:14083-14086).
+8. Four OCR entry points (bar numbers, volta numerals, margin labels, direction words) share one Surya worker. The crops above the top staff overlap.
+
+**Not read by any STAGED reader:**
+- octave lines, pedal, segno, coda: detector box only. The ownership verdicts exist; export writes nothing.
+- rehearsal letters;
+- page header, footer and title;
+- the tempo-mark note glyph;
+- trill extension lines;
+- fermatas at system level (read per cell only).
