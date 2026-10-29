@@ -1,0 +1,66 @@
+{
+ "sean_2026_10_29": "In the arc claim, all tiles are arcs except the third tile.",
+ "tally": "every claimed arc is an arc: 8/8 random claims, and both claims that matched no hand-truth arc (4, 10) ARE arcs (the hand truth missed them); tile 3, a hand-truth tie the claim did not take, is NOT an arc (the claim was right, the truth label wrong); tile 11 (no detector box) is a real arc nothing reads",
+ "tiles": [
+  {
+   "tile": 1,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 2,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 3,
+   "role": "truth_box_no_claim",
+   "answer": "not an arc"
+  },
+  {
+   "tile": 4,
+   "role": "claimed_no_truth",
+   "answer": "arc"
+  },
+  {
+   "tile": 5,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 6,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 7,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 8,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 9,
+   "role": "claimed_random",
+   "answer": "arc"
+  },
+  {
+   "tile": 10,
+   "role": "claimed_no_truth",
+   "answer": "arc"
+  },
+  {
+   "tile": 11,
+   "role": "truth_no_detector_box",
+   "answer": "arc"
+  },
+  {
+   "tile": 12,
+   "role": "claimed_random",
+   "answer": "arc"
+  }
+ ]
+}
