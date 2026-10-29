@@ -218,6 +218,8 @@ RULES = [
     R(RESTS, "rest_is_not_a_rest", "rest_touches_two_staff_lines,rest_off_center,rest_narrower_than_its_class", "A", "a rest hangs from or sits on ONE line, in the bar's middle",
       "a whole or half rest touches exactly one line; a whole rest is near the bar's centre; a rest has its class's width", "2.33 six refusals; Sean 2026-09-11", "kept"),
     R(RESTS, "rest_is_not_a_rest", "rest_outside_its_staff", "A", "a rest stays within its staff band", "farther outside the staff than the class is ever printed", "2.33", "kept"),
+    R(RESTS, "rest_is_not_a_rest", "whole_rest_ink_not_a_block,claim_narrowed:arc", "C", "whole rest judged by its own ink (OMR_WHOLE_REST_HANGS)", "a whole rest is a block: a box whose only ink is a vertical or a curve is refused; a block-shaped stroke an arc box claims just as well is written GUESSED, never READ",
+      "Sean 2026-10-29 (a displaced whole rest in a multi-voice bar is real: no staff-position band)", "convention kept (A); flag OFF by default"),
     R(RESTS, "rest_is_not_a_rest", "rest_clipped_by_crop", "U", "rest flush against the crop edge", "a notehead sliced by the cell's crop edge reads as a rest", S_NONE, "open: C if neighbour-staff bleed, A if only a crop edge"),
     R(RESTS, "rest_is_not_a_rest", "rest_on_a_dynamic_letter", "C", "rest on a dynamic letter", "letters read as a rest", "Sean 2026-10-13 (2.107)", "retires with 2.205"),
     R(RESTS, "rest_is_not_a_rest", "rest_in_a_key_signature_slot,rest_is_a_meter_digit,inside_the_meter,claimed_by:meter,claimed_by:clef,claimed_by:leading_column,claimed_by:key_signature,claim_narrowed:clef,claim_narrowed:meter,claim_narrowed:leading_column,claim_narrowed:key_signature", "C",

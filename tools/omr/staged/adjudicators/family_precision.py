@@ -874,6 +874,43 @@ def _whole_rest_hangs_narrowing(ev: Evidence, this_row, two_lines: Ruling, used,
                                  "staff spaces under the head cut")
 
 
+def _whole_rest_ink_not_a_block_refusal(ev: Evidence, this_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`OMR_WHOLE_REST_HANGS`: a restWhole box that owns none of the strokes it covers, every one of which is a shape that can never be a block
+    (a vertical, a curve), is not a rest block -> refused with the lost strokes' shapes. Else None (no stroke-owner
+    verdict, no ink, contested: rule 8, cannot tell is not a refusal)."""
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    entry = ((getattr(v, "detail", None) or {}).get("boxes") or {}).get(ev.subject.to_key())
+    if not entry or entry[0] not in ("refused", "contested") or not entry[1]:
+        return None
+    strokes = (getattr(v, "detail", None) or {}).get("strokes") or {}
+    if entry[0] == "contested":
+        # the block shape FITS and an ARC box claims the same stroke just as well (a rest on / under a slur's line): the ink cannot tell,
+        # so it is NARROWED {rest, arc ink} and written GUESSED (blue); not refused (rule 8), not READ plain (a contest is no read).
+        arcs = [x for x in entry[1] if x[1] == "contested"
+                and any(c[1] == "arc" for c in (strokes.get(str(x[0])) or [None] * 5)[4] or ())]
+        if not arcs:
+            return None
+        from ..record import Candidate
+        cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=1.0))
+        detail["whole_rest_ink"] = ["contested_with_arc"]
+        return Ruling.narrow(cands, "claim_narrowed:arc", used=(this_row.id,), **detail)
+    shapes = []
+    for x in entry[1]:
+        cand = next((c for c in (strokes.get(str(x[0])) or [None] * 5)[4] or () if c[0] == ev.subject.to_key()), None)
+        # only a SHAPE KIND that is no block (a vertical, a curve) refuses: a blob or horizontal piece a little over `BLOCK_MAX_H_SP` is a
+        # real rest fused with a line stub (4 of 6 such refusals were real whole rests on the print, 2026-10-29 m3 crops), so it stays.
+        if cand is None or not str(cand[4]).startswith("not_a_whole_rest_block") \
+                or ("kind=blob" in str(cand[4]) or "kind=horizontal" in str(cand[4])):
+            return None
+        shapes.append(cand[4])
+    detail["whole_rest_ink"] = shapes
+    return Ruling(value=True, reason="whole_rest_ink_not_a_block", used=(this_row.id,),
+                  detail=detail)
+
+
 def _stems_connected_to_a_head(ev: Evidence, cell, stems):
     """ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`): a rest is refused for a stem,
     and a stem is a stroke that touches a notehead (Sean 2026-10-11). Flag unset, or
@@ -1882,13 +1919,13 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
                    Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER,
-                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
-           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_on_a_dynamic_letter",
@@ -1904,7 +1941,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_has_a_stem",
                                      "rest_touches_two_staff_lines",
                                      "rest_off_center",
-                                     "whole_rest_hangs",
+                                     "whole_rest_hangs", "whole_rest_ink_not_a_block", "claim_narrowed:arc",
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
@@ -2039,6 +2076,13 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             off_center = _rest_off_center_refusal(ev, box_row, detail)
             if off_center is not None:
                 return off_center
+        # With the flag ON the box is read by its OWN INK instead (Sean 2026-10-29: a displaced rest in a multi-voice bar is real, so no
+        # staff-position band): the stroke owner tested every stroke the box covers against the whole-rest block shape (`stroke_owner`
+        # `whole_rest`: blob or horizontal, h <= BLOCK_MAX_H_SP, w <= REST_BLOCK_MAX_W_SP) and the box owns none -> not a rest block.
+        if str(detail.get("class")) == "restWhole" and whole_rest_hangs_enabled():
+            not_block = _whole_rest_ink_not_a_block_refusal(ev, box_row, detail)
+            if not_block is not None:
+                return not_block
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical
