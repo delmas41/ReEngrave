@@ -138,3 +138,15 @@ reports the three measures (`docs/measuring.md` §0). Lanes run on Sonnet.
 2. ANSWERED 2026-10-28 (DECISIONS): the word takes it outright; words claim first ("a small box grabbing a part of a word can be mistaken for a lot of things"). Was: When a word or dynamic we read clearly covers ink the detector also called a notehead, may the word take it outright, or should the note be written blue until more scores confirm it? (2.107's "it is letters" covered the sf case only.)
 3. ANSWERED 2026-10-28 (DECISIONS): YES, brackets and braces claim first with structure ("a lot of notes claimed ink that were actually brackets"); milestone 1b. Was: Do we need the brackets and braces read before anything else, or is the system's left barline enough for now?
 4. ANSWERED 2026-10-28 (DECISIONS): "Words inside staff are almost always short" -- a convention prior for milestone 4, narrowing only. Was: Inside the staff, is a word ever anything other than a dynamic or a short word like *pizz.* or *dolce*?
+
+## 9. Page-wide marks: claim early, anchor late (Sean, 2026-10-29)
+
+Sean: *"arcs as well as words and dynamic markings need to be treated system or page wide not based on individual measures"*; *"later we will assign notes or locations in each bar where these page wide symbols are anchored with start and stop points"*; on anchoring *"it may need to be done page wide rather than measure specific"*; he approved the order below with "perfect - document that".
+
+Scope (page-wide) and timing (which stage) are separate choices. A page-wide mark is read and anchored page-wide, but in two different stages:
+
+1. **GATHER, page-wide: claim and record.** Each arc, word or dynamic is read once per system or page, across barlines and system breaks, and CLAIMS its ink (one owner: "arc", "word", "dynamic"). Later readers may mark that ink but never take it. GATHER also records, without deciding, where the mark's ends are and which heads stand near each end, as CANDIDATES (Q.SYSTEM_ARC's anchor_left / anchor_right are the start of this). No kind (tie/slur) is decided here.
+2. **Heads read bar by bar** (ADJUDICATE), as now: head, pitch, onset.
+3. **Anchoring, page-wide, after the heads are read.** One pass over every claimed mark on the page binds each end to a note or a place in a bar (start and stop), choosing only among the candidates GATHER recorded. The arc's kind then FOLLOWS by Sean's rule (page-facts §1: two adjacent notes of the same pitch -> tie; anything else -> slur; stacked -> the one nearer the staff is the tie). An end that cannot be bound abstains, and the mark stays claimed; it is never dropped.
+
+Why not anchor at claim time: the claim runs before heads so no head takes arc ink, and anchoring needs the heads read. Binding then would bind to unread heads, a guess. Measured 2026-10-29 (lane-arcs-claim-1029): deciding the kind before step 3 existed left ~550 Litolff / ~800 Brahms arcs without readable ends, and Brahms p0 slurs right fell 45 -> 35. So only step 1's claim lands now (DECISIONS 2026-10-29); steps 3's anchoring and kind are ROADMAP 2.223.
