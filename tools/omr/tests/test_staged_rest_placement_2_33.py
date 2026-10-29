@@ -96,7 +96,10 @@ class TestRestOffCenter(unittest.TestCase):
         log = Log()
         _bar_box(log)
         g = _rest(log, 0, "restWhole", page_box=[400.0, 1000.0, 440.0, 1040.0])
-        _run(log, Q.REST_IS_NOT_A_REST)
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"OMR_WHOLE_REST_HANGS": "0"}):   # default ON since 2026-10-29 drops the centring test
+            _run(log, Q.REST_IS_NOT_A_REST)
         v = log.verdict(Q.REST_IS_NOT_A_REST, g)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertIs(v.value, True)

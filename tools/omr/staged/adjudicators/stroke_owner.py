@@ -119,16 +119,37 @@ def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
     return out
 
 
+def _found_whole_rests(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]], claims: List[SO.Claim]) -> List[SO.Claim]:
+    """ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`): the bar the 2.52 search FOUND a whole rest in (`Q.EMPTY_BAR_REST_SEARCH` found=True --
+    the unboxed blob) claims the strokes inside its ink box as a `whole_rest`, exactly as a detector `restWhole` box does, so the stroke
+    must fit the block shape and no later reader takes it. Only where no detector box of the cell already stands on the same strokes."""
+    if not SO.whole_rest_claims():
+        return []
+    taken = {o for c in claims if c.family == "whole_rest" for o in c.covers}
+    out: List[SO.Claim] = []
+    for r in ev.rows(Q.EMPTY_BAR_REST_SEARCH, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        d = r.detail or {}
+        pb = d.get("bbox_page_px")
+        if not r.value or not (isinstance(pb, (list, tuple)) and len(pb) == 4):
+            continue
+        x0, y0, x1, y1 = (float(t) for t in pb)
+        inside = tuple(o for o, b in sorted(page.items())
+                       if x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1 and o not in taken)
+        if inside:
+            out.append(SO.Claim("found_whole_rest/" + r.id, "whole_rest", "restWhole", inside, (), r.id))
+    return out
+
+
 @decision(
     quantity=Q.STROKE_OWNER,
     scope=Kind.CELL,
     # GATHER rows only (the strokes, the boxes and what each stands on, the register's areas): it needs no verdict, so it stands ahead of
     # every precision rule and every consumer (adjudicate.ORDER).
-    wants=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA),
+    wants=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA, Q.EMPTY_BAR_REST_SEARCH),
     subjects_from=Q.STROKE,
     reasons=("strokes_owned", "some_strokes_contested", "no_claimant", "no_strokes"),
     mode=Mode.ADDITIVE,
-    composed_from=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA),
+    composed_from=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA, Q.EMPTY_BAR_REST_SEARCH),
 )
 def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     """Which mark owns each stroke of this cell (module doc; the rule is `stroke_owner.own_strokes`)."""
@@ -140,6 +161,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     claims += _areas(ev, cell, page)
     arc_claims = _arc_claims(ev, cell)
     claims += arc_claims
+    claims += _found_whole_rests(ev, cell, page, claims)
     from .rhythm import beams_from_strokes_enabled
     owned = SO.own_strokes(inks, claims, tiers=SO.TIERS, acc_bar_clear_of_note=beams_from_strokes_enabled())   # 2.202f
     by_ord = {i.ordinal: i for i in inks}
@@ -154,7 +176,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
         used.extend(w.row_ids)
     boxes: Dict[str, Any] = {}
     for c in claims:
-        if c.area or c.family not in ("head", "rest", "accidental"):
+        if c.area or c.family not in ("head", "rest", "accidental", "whole_rest"):
             continue
         bv = SO.box_verdict(c, owned, by_ord)
         if bv["verdict"] in ("refused", "contested"):
